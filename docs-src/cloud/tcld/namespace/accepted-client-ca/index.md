@@ -9,13 +9,9 @@ tags:
 
 The `tcld namespace accepted-client-ca` commands manage the client CA certificates of the specified [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud. The certificates are used to verify client connections.
 
-:::important
+:::note
 
-Do not use a CA certificate that is signed with an insecure signature algorithm, such as SHA-1.
-Such signatures will be rejected.
-Existing CA certificates that use SHA-1 can stop working without warning.
-
-For more information about the vulnerabilities of SHA-1, see [SHAttered](https://shattered.io/).
+Base64 versions of the CA certificate files are accepted by these commands.
 
 :::
 
@@ -25,3 +21,13 @@ Alias: `ca`
 - [tcld namespace accepted-client-ca list](/cloud/tcld/namespace/accepted-client-ca/list)
 - [tcld namespace accepted-client-ca set](/cloud/tcld/namespace/accepted-client-ca/set)
 - [tcld namespace accepted-client-ca remove](/cloud/tcld/namespace/accepted-client-ca/remove)
+
+:::important
+
+Do not use a CA certificate that is signed with an insecure signature algorithm, such as SHA-1.
+Such signatures will be rejected.
+Existing CA certificates that use SHA-1 can stop working without warning.
+
+For more information about the vulnerabilities of SHA-1, see [SHAttered](https://shattered.io/).
+
+:::

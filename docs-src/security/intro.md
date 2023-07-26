@@ -85,7 +85,7 @@ When these are provided the frontend invokes the implementation of these interfa
 
 See https://github.com/temporalio/samples-server/blob/main/extensibility/authorizer for a sample implementation.
 
-![](/img/docs/frontend-authorization-order-of-operations.png)
+![](/diagrams/frontend-authorization-order-of-operations.png)
 
 ### Single sign-on integration
 

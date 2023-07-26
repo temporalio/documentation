@@ -7,10 +7,10 @@ description: The Features section of the Temporal Developer's guide provides bas
 toc_max_heading_level: 4
 tags:
 - guide-context
-- python
-- how-to
 - developer-guide
 - sdk
+- python
+- how-to
 - timers
 - sleep
 ---
@@ -21,16 +21,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
-
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete or missing for some languages.
-Information may change at any time.
-
-If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
-
-:::
 
 In this section you can find the following:
 
@@ -253,7 +243,7 @@ Workflow timeouts are set when <a class="tdlp" href="#workflow-timeouts">startin
 - **<a class="tdlp" href="/workflows#workflow-run-timeout">Workflow Run Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Run Timeout?</span><br /><br /><span class="tdlppd">This is the maximum amount of time that a single Workflow Run is restricted to.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-run-timeout">Learn more</a></span></span></a>**: restricts the maximum amount of time that a single Workflow Run can last.
 - **<a class="tdlp" href="/workflows#workflow-task-timeout">Workflow Task Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task Timeout?</span><br /><br /><span class="tdlppd">A Workflow Task Timeout is the maximum amount of time that the Temporal Server will wait for a Worker to start processing a Workflow Task after the Task has been pulled from the Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-task-timeout">Learn more</a></span></span></a>**: restricts the maximum amount of time that a Worker can execute a Workflow Task.
 
-Set the timeout from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
+Set the timeout to either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
 Available timeouts are:
 
@@ -261,32 +251,20 @@ Available timeouts are:
 - `run_timeout`
 - `task_timeout`
 
-```python
-handle = await client.start_workflow(
-    "your-workflow-name",
-    "some arg",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-    start_signal="your-signal-name",
-    # Set Workflow Timeout duration
-    execution_timeout=timedelta(seconds=2),
-    # run_timeout=timedelta(seconds=2),
-    # task_timeout=timedelta(seconds=2),
-)
-```
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/workflow_timeouts_retries/workflows_dacx.py">View source code</a>
 
 ```python
-handle = await client.execute_workflow(
-    "your-workflow-name",
-    "some arg",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-    start_signal="your-signal-name",
-    # Set Workflow Timeout duration
-    execution_timeout=timedelta(seconds=2),
-    # run_timeout=timedelta(seconds=2),
-    # task_timeout=timedelta(seconds=2),
-)
+# ...
+    result = await client.execute_workflow(
+        YourWorkflow.run,
+        "your timeout argument",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+        # Set Workflow Timeout duration
+        execution_timeout=timedelta(seconds=2),
+        # run_timeout=timedelta(seconds=2),
+        # task_timeout=timedelta(seconds=2),
+    )
 ```
 
 ### Workflow retries
@@ -297,28 +275,19 @@ Use a <a class="tdlp" href="/retry-policies#">Retry Policy<span class="tdlpiw"><
 
 Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
 
-Set the Retry Policy from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
+Set the Retry Policy to either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/workflow_timeouts_retries/workflows_dacx.py">View source code</a>
 
 ```python
-handle = await client.start_workflow(
-    "your-workflow-name",
-    "some arg",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-    start_signal="your-signal-name",
-    retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
-)
-```
-
-```python
-handle = await client.execute_workflow(
-    "your-workflow-name",
-    "some arg",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-    start_signal="your-signal-name",
-    retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
-)
+# ...
+    handle = await client.execute_workflow(
+        YourWorkflow.run,
+        "your retry policy argument",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+        retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
+    )
 ```
 
 ## Activity timeouts
@@ -341,17 +310,17 @@ Available timeouts are:
 - schedule_to_start_timeout
 - start_to_close_timeout
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/activity_timeouts_retires/your_workflows_dacx.py">View source code</a>
+
 ```python
-@workflow.defn
-class YourWorkflow:
-    @workflow.run
-    async def run(self, name: str) -> str:
-        return await workflow.execute_activity(
+# ...
+        activity_timeout_result = await workflow.execute_activity(
             your_activity,
-            name,
-            schedule_to_close_timeout=timedelta(seconds=5),
-            # schedule_to_start_timeout=timedelta(seconds=5),
-            # start_to_close_timeout=timedelta(seconds=5),
+            YourParams(greeting, "Activity Timeout option"),
+            # Activity Execution Timeout
+            start_to_close_timeout=timedelta(seconds=10),
+            # schedule_to_start_timeout=timedelta(seconds=10),
+            # schedule_to_close_timeout=timedelta(seconds=10),
         )
 ```
 
@@ -363,37 +332,29 @@ Activity Executions are automatically associated with a default <a class="tdlp" 
 
 To create an Activity Retry Policy in Python, set the [RetryPolicy](https://python.temporal.io/temporalio.common.RetryPolicy.html) class within the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) or [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) function.
 
-The following example sets the maximum interval to 2 seconds.
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/activity_timeouts_retires/your_workflows_dacx.py">View source code</a>
 
 ```python
-workflow.execute_activity(
-    your_activity,
-    name,
-    start_to_close_timeout=timedelta(seconds=10),
-    retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
-)
+from temporalio.common import RetryPolicy
+# ...
+        activity_result = await workflow.execute_activity(
+            your_activity,
+            YourParams(greeting, "Retry Policy options"),
+            start_to_close_timeout=timedelta(seconds=10),
+            # Retry Policy
+            retry_policy=RetryPolicy(
+                backoff_coefficient=2.0,
+                maximum_attempts=5,
+                initial_interval=timedelta(seconds=1),
+                maximum_interval=timedelta(seconds=2),
+                # non_retryable_error_types=["ValueError"],
+            ),
+        )
 ```
-
-### Activity retry simulator
-
-Use this tool to visualize total Activity Execution times and experiment with different Activity timeouts and Retry Policies.
-
-The simulator is based on a common Activity use-case, which is to call a third party HTTP API and return the results.
-See the example code snippets below.
-
-Use the Activity Retries settings to configure how long the API request takes to succeed or fail.
-There is an option to generate scenarios.
-The _Task Time in Queue_ simulates the time the Activity Task might be waiting in the Task Queue.
-
-Use the Activity Timeouts and Retry Policy settings to see how they impact the success or failure of an Activity Execution.
-
-import RetrySimulator from '/docs/components/RetrySimulator/RetrySimulator';
-
-<RetrySimulator />
 
 ## Activity Heartbeats
 
-An <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeat<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></span></span></a> is a ping from the <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> that is executing the Activity to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
+An <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeat<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></span></span></a> is a ping from the <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> that is executing the Activity to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 Each Heartbeat informs the Temporal Cluster that the <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a> is making progress and the Worker has not crashed.
 If the Cluster does not receive a Heartbeat within a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a> time period, the Activity will be considered failed and another <a class="tdlp" href="/workers#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task-execution">Learn more</a></span></span></a> may be scheduled according to the Retry Policy.
 
@@ -450,7 +411,7 @@ workflow.execute_activity(
 There are three steps to follow:
 
 1. The Activity provides the external system with identifying information needed to complete the Activity Execution.
-   Identifying information can be a <a class="tdlp" href="/activities#task-token">Task Token<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Token?</span><br /><br /><span class="tdlppd">A Task Token is a unique Id that correlates to an Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#task-token">Learn more</a></span></span></a>, or a combination of Namespace, Workflow Id, and Activity Id.
+   Identifying information can be a <a class="tdlp" href="/activities#task-token">Task Token<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Token?</span><br /><br /><span class="tdlppd">A Task Token is a unique identifier for an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#task-token">Learn more</a></span></span></a>, or a combination of Namespace, Workflow Id, and Activity Id.
 2. The Activity Function completes in a way that identifies it as waiting to be completed by an external system.
 3. The Temporal Client is used to Heartbeat and complete the Activity.
 
@@ -546,16 +507,37 @@ To be sure that the Child Workflow Execution has started, first call the Child W
 
 Then get the value of an object that acts as a proxy for a result that is initially unknown, which is what waits until the Child Workflow Execution has spawned.
 
-To spawn a Child Workflow Execution in Python, use the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function. `execute_child_workflow()` starts the Child Workflow and waits for completion.
+To spawn a Child Workflow Execution in Python, use the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function which starts the Child Workflow and waits for completion or
+use the [`start_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function to start a Child Workflow and return its handle.
+This is useful if you want to do something after it has only started, or to get the Workflow/Run ID, or to be able to signal it while running.
+
+:::note
+
+`execute_child_workflow()` is a helper function for `start_child_workflow()` plus `await handle`.
+
+:::
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_child_workflow/your_child_workflow_dacx.py">View source code</a>
 
 ```python
-await workflow.execute_child_workflow(MyWorkflow.run, "my child arg", id="my-child-id")
-```
+# ...
+@workflow.defn
+class ComposeGreetingWorkflow:
+    @workflow.run
+    async def run(self, input: ComposeGreetingInput) -> str:
+        return f"{input.greeting}, {input.name}!"
 
-Alternatively, use the [`start_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function to start a Child Workflow and return its handle. This is useful if you want to do something after it has only started, or to get the workflow/run ID, or to be able to signal it while running. To wait for completion, simply `await` the handle. `execute_child_workflow()` is a helper function for `start_child_workflow()` + `await handle`.
 
-```python
-await workflow.start_child_workflow(MyWorkflow.run, "my child arg", id="my-child-id")
+@workflow.defn
+class GreetingWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_child_workflow(
+            ComposeGreetingWorkflow.run,
+            ComposeGreetingInput("Hello", name),
+            id="hello-child-workflow-workflow-child-id",
+# ...
+        )
 ```
 
 #### Parent Close Policy
@@ -566,21 +548,30 @@ The default Parent Close Policy option is set to terminate the Child Workflow Ex
 
 Set the `parent_close_policy` parameter inside the [`start_child_workflow`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function or the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function to specify the behavior of the Child Workflow when the Parent Workflow closes.
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_child_workflow/your_child_workflow_dacx.py">View source code</a>
+
 ```python
-async def run(self, name: str) -> str:
-    return await workflow.execute_child_workflow(
-        ComposeGreeting.run,
-        ComposeGreetingInput("Hello", name),
-        id="hello-child-workflow-workflow-child-id",
-        parent_close_policy=TERMINATE,
-    )
+from temporalio.workflow import ParentClosePolicy
+# ...
+# ...
+@workflow.defn
+class ComposeGreetingWorkflow:
+    @workflow.run
+    async def run(self, input: ComposeGreetingInput) -> str:
+        return f"{input.greeting}, {input.name}!"
+
+
+@workflow.defn
+class GreetingWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_child_workflow(
+            ComposeGreetingWorkflow.run,
+            ComposeGreetingInput("Hello", name),
+            id="hello-child-workflow-workflow-child-id",
+            parent_close_policy=ParentClosePolicy.ABANDON,
+        )
 ```
-
-:::note
-
-`execute_child_workflow()` is a shortcut function for `temporalio.workflow.start_child_workflow()` plus `handle.result()`.
-
-:::
 
 ## Continue-As-New
 
@@ -589,8 +580,18 @@ The Workflow Execution spawned from the use of Continue-As-New has the same Work
 
 To Continue-As-New in Python, call the [`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) function from inside your Workflow, which will stop the Workflow immediately and Continue-As-New.
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/continue_as_new/your_workflows_dacx.py">View source code</a>
+
 ```python
-workflow.continue_as_new("your-workflow-name")
+# ...
+@workflow.defn
+class LoopingWorkflow:
+    @workflow.run
+    async def run(self, iteration: int) -> None:
+        if iteration == 5:
+            return
+        await asyncio.sleep(10)
+        workflow.continue_as_new(iteration + 1)
 ```
 
 ## Timers
@@ -605,8 +606,11 @@ Sleeping is a resource-light operation: it does not tie up the process, and you 
 
 To set a Timer in Python, call the [`asyncio.sleep()`](https://docs.python.org/3/library/asyncio-task.html#sleeping) function and pass the duration in seconds you want to wait before continuing.
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/continue_as_new/your_workflows_dacx.py">View source code</a>
+
 ```python
-await asyncio.sleep(5)
+# ...
+        await asyncio.sleep(10)
 ```
 
 ## Schedule a Workflow
@@ -798,13 +802,17 @@ A <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span cla
 
 A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
 
-You can set each Workflow to repeat on a schedule with the `cron_schedule` option from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods:
+You can set each Workflow to repeat on a schedule with the `cron_schedule` option from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_cron_job/your_cron_dacx.py">View source code</a>
 
 ```python
-await client.start_workflow(
-    "your_workflow_name",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-    cron_schedule="* * * * *",
-)
+# ...
+    result = await client.execute_workflow(
+        CronWorkflow.run,
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+        cron_schedule="* * * * *",
+    )
+    print(f"Results: {result}")
 ```

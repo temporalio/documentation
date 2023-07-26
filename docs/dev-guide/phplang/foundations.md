@@ -21,16 +21,6 @@ import TabItem from '@theme/TabItem';
 
 The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Application</span><br /><br /><span class="tdlppd">A Temporal Application is a set of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-application">Learn more</a></span></span></a>—that is, all the relevant steps to start a [Workflow Execution](#develop-workflows) that executes an [Activity](#develop-activities).
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete or missing for some languages.
-Information may change at any time.
-
-If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
-
-:::
-
 In this section you can find the following:
 
 - <a class="tdlp" href="#run-a-development-server">Run a development Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install Temporal CLI and run a development server</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-development-server">Learn more</a></span></span></a>
@@ -42,6 +32,22 @@ In this section you can find the following:
 - <a class="tdlp" href="#run-a-dev-worker">Run a dev Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>
 - <a class="tdlp" href="#run-a-dev-worker">Run a Temporal Cloud Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>
 - <a class="tdlp" href="#start-workflow-execution">Start a Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#start-workflow-execution">Learn more</a></span></span></a>
+
+**Resources**
+
+- Join the `#php-sdk` channel on the [Temporal Slack](https://temporal.io/slack) or [open issues on GitHub](https://github.com/temporalio/sdk-php/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc).
+- PHP SDK samples
+  - [Beginner-advanced library](https://github.com/temporalio/samples-php#samples)
+  - [Subscription Workflow sample](https://github.com/temporalio/subscription-workflow-project-template-php)
+- Talks
+  - 🆕 PHPConf 2021: [Fault tolerant workflow orchestration on PHP](https://www.youtube.com/watch?v=pdxHkIqX62A)
+  - PHPConf 2020: [Designing hybrid Go/PHP applications using RoadRunner](https://www.youtube.com/watch?v=mj6d-IGzSYE)
+  - (Slides) [Distributed Workflows on PHP](https://docs.google.com/presentation/d/1NBZlnJFCc-PgYxQk0_YYxUTmfKgzUf6Z-XHXfPETLac/edit?usp=sharing)
+  - (Russian) [Orchestrate it! Complex business processes in PHP](https://www.youtube.com/watch?v=upL8o-OXYEc) (2 hour workshop)
+  - (Russian) [Orchestration and Murphy's Law: Handling Errors-Business Processes](https://www.youtube.com/watch?v=0NCMEaFMj_M) (2 hour workshop)
+  - (Russian) PHP Russia https://phprussia.ru/moscow/2021/abstracts/7390 (video pending)
+  - (Russian) [FWDays Keynote: Fault Tolerant Workflow Orchestration on PHP](https://fwdays.com/en/event/php-fwdays-2021/review/fault-tolerant-workflow-orchestration-on-php) (video pending)
+- The PHP SDK is often used with [Roadrunner](https://roadrunner.dev/) (maintained by [SpiralScout](https://github.com/spiral?type=source), the maintainers of the PHP SDK)
 
 ## Run a development server
 
@@ -133,7 +139,7 @@ A <a class="tdlp" href="/temporal#temporal-sdk">Temporal SDK<span class="tdlpiw"
 
 An SDK provides you with the following:
 
-- A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> to communicate with a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
+- A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> to communicate with a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 - APIs to develop <a class="tdlp" href="/workflows#">Workflows<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a>.
 - APIs to create and manage <a class="tdlp" href="/workers#worker">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a>.
 - APIs to author <a class="tdlp" href="/activities#activity-definition">Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a>.
@@ -171,7 +177,7 @@ Additionally, several of the [Tutorials](https://learn.temporal.io) are backed b
 
 ## Connect to a dev Cluster
 
-A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> enables you to communicate with the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
+A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> enables you to communicate with the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 Communication with a Temporal Cluster includes, but isn't limited to, the following:
 
 - Starting Workflow Executions.
@@ -395,7 +401,7 @@ However, there is a limit of the total size of the data ends up encoded into a g
 A single argument is limited to a maximum size of 2 MB.
 And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
 
-Also, keep in mind that all Payload data is recorded in the <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> and large Event Histories can affect Worker performance.
+Also, keep in mind that all Payload data is recorded in the <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> and large Event Histories can affect Worker performance.
 This is because the entire Event History could be transferred to a Worker Process with a <a class="tdlp" href="/workers#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task">Learn more</a></span></span></a>.
 
 <!--TODO link to gRPC limit section when available -->
@@ -414,7 +420,7 @@ The default implementation uses a JSON serializer, but an alternative implementa
 
 All data returned from an Activity must be serializable.
 
-There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a>.
+There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a>.
 
 Return values must be serializable to a byte array using the provided [DataConverter](https://github.com/temporalio/sdk-php/blob/master/src/DataConverter/DataConverterInterface.php) interface.
 The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
@@ -476,7 +482,7 @@ The call to spawn an Activity Execution generates the [ScheduleActivityTask](/re
 This results in the set of three <a class="tdlp" href="/workers#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task">Learn more</a></span></span></a> related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
-Therefore, the Activity implementation code must be _stateless_.
+Activity implementation code should be _idempotent_.
 
 The values passed to Activities through invocation parameters or returned through a result value are recorded in the Execution history.
 The entire Execution history is transferred from the Temporal service to Workflow Workers when a Workflow state needs to recover.
@@ -608,7 +614,7 @@ A <a class="tdlp" href="/workers#worker-entity">Worker Entity<span class="tdlpiw
 Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
 For more information, see the [Worker tuning guide](/dev-guide/worker-performance).
 
-A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
+A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
 
 The [RoadRunner application server](https://roadrunner.dev/) will launch multiple Temporal PHP Worker processes based on provided `.rr.yaml` configuration.
 
@@ -725,7 +731,7 @@ $worker->registerActivityFinalizer(fn() => $kernel->showtdown());
 [Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.
-To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](#child-workflows) or External Workflow APIs.
+To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](features#child-workflows) or External Workflow APIs.
 
 See the [Customize Workflow Type](#customize-workflow-type) section to see how to customize the name of the Workflow Type.
 

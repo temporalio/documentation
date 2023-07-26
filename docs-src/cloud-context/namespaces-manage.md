@@ -15,7 +15,7 @@ To list Namespaces:
 
 - On the left side of the window, select **Namespaces**.
 
-To edit a Namespace (including custom Search Attributes, certificates, certificate filters, permissions, and users), find the Namespace and do either of the following:
+To edit a Namespace (including custom Search Attributes, certificates, certificate filters, Codec Server endpoint, permissions, and users), find the Namespace and do either of the following:
 
 - On the right end of the Namespace row, select the three vertical dots (⋮). Click **Edit**.
 - Select the Namespace name. In the top-right portion of the page, select **Edit**.
@@ -25,6 +25,8 @@ On the **Edit** page, you can do the following:
 - Add a [custom Search Attribute](/visibility#custom-search-attributes).
 - [Manage CA certificates](/cloud/how-to-manage-certificates-in-temporal-cloud).
 - [Manage certificate filters](/cloud/how-to-manage-certificates-in-temporal-cloud#manage-certificate-filters-using-temporal-cloud-ui).
+- Set [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) for all users on the Namespace.
+  Each user on the Namespace has the option to [override this setting](/production-readiness/develop#web-ui) in their browser.
 - Manage [Namespace-level permissions](/cloud/#namespace-level-permissions).
 - Add users.
 

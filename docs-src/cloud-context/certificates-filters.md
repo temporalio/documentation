@@ -7,7 +7,7 @@ tags:
   - guide-context
 ---
 
-To limit access to specific [end-entity certificates](/cloud/how-to-manage-certificates-in-temporal-cloud), you can create certificate filters.
+To limit access to specific [end-entity certificates](/cloud/how-to-manage-certificates-in-temporal-cloud), create certificate filters.
 Each filter contains values for one or more of the following fields:
 
 - commonName (CN)

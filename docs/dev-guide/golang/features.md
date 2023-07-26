@@ -27,16 +27,6 @@ import TabItem from '@theme/TabItem';
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete or missing for some languages.
-Information may change at any time.
-
-If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
-
-:::
-
 In this section you can find the following:
 
 - [How to develop Signals](#signals)
@@ -275,19 +265,154 @@ if err != nil {
 // ...
 ```
 
-The `QueryWorkflowWithOptions()` API provides similar functionality, but with the ability to set additional configurations through [QueryWorkflowWithOptionsRequest](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsRequest).
-When using this API, you will also receive a structured response of type [QueryWorkflowWithOptionsResponse](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsResponse).
+The value of `response` returned by the Query needs to be decoded into `result`.
+Because this is a future, use `Get()` on `response` to get the result, such as a string in this example.
+
+```go
+var result string
+if err != response.Get(&result); err != nil {
+  // ...
+}
+log.Println("Received Query result. Result: " + result)
+```
+
+## Updates
+
+An <a class="tdlp" href="/workflows#update">Update<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Update?</span><br /><br /><span class="tdlppd">An Update is a request to and a response from Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#update">Learn more</a></span></span></a> is an operation that can mutate the state of a Workflow Execution and return a response.
+
+### Define Update
+
+In Go, you define an Update type, also known as an Update name, as a `string` value.
+You must ensure the arguments and result are <a class="tdlp" href="/dataconversion#">serializable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>.
+When sending and receiving the Update, use the Update name as an identifier.
+The name does not link to the data type(s) sent with the Update.
+Ensure that every Workflow listening to the same Update name can handle the same Update arguments.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go">View source code</a>
+
+```go
+// YourUpdateName holds a string value used to correlate Updates.
+const YourUpdateName = "your_update_name"
+// ...
+func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error) {
+// ...
+	err := workflow.SetUpdateHandler(ctx, YourUpdateName, func(ctx workflow.Context, arg YourUpdateArg) (YourUpdateResult, error) {
+// ...
+	}
+// ...
+}
+```
+
+### Handle Update
+
+Register an Update handler for a given name using the [SetUpdateHandler](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandler) API from the `go.temporal.io/sdk/workflow` package.
+The handler function can accept multiple serializable input parameters, but we recommend using only a single parameter.
+This practice enables you to add fields in future versions while maintaining backward compatibility.
+You can optionally include a `workflow.Context` parameter in the first position of the function.
+The function can return either a serializable value with an error or just an error.
+The Workflow's WorkflowPanicPolicy configuration determines how panics are handled inside the Handler function.
+WorkflowPanicPolicy is set in the Worker Options.
+
+Update handlers, unlike Query handlers, can change Workflow state.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go">View source code</a>
 
 ```go
 // ...
-response, err := temporalClient.QueryWorkflowWithOptions(context.Background(), &client.QueryWorkflowWithOptionsRequest{
-    WorkflowID: workflowID,
-    RunID: runID,
-    QueryType: queryType,
-    Args: args,
-})
-if err != nil {
-  // ...
+func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error) {
+	counter := param.StartCount
+	err := workflow.SetUpdateHandler(ctx, YourUpdateName, func(ctx workflow.Context, arg YourUpdateArg) (YourUpdateResult, error) {
+		counter += arg.Add
+		result := YourUpdateResult{
+			Total: counter,
+		}
+		return result, nil
+	})
+// ...
+}
+```
+
+#### Validator function
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go">View source code</a>
+
+```go
+Validate certain aspects of the data sent to the Workflow using an Update validator function.
+For instance, a counter Workflow might never want to accept a non-positive number.
+Invoke the `SetUpdateHandlerWithOptions` API and define a validator function as one of the options.
+
+When you use a Validator function, the Worker receives the Update first, before any Events are written to the Event History.
+If the Update is rejected, it's not recorded in the Event History.
+If it's accepted, the `WorkflowExecutionUpdateAccepted` Event occurs.
+Afterwards, the Worker executes the accepted Update and, upon completion, a `WorkflowExecutionUpdateCompleted` Event gets written into the Event History.
+The Validator function, unlike the Update Handler, can not change the state of the Workflow.
+
+The platform treats a panic in the Validator function as a rejection of the Update."
+
+// UpdatableWorkflowWithValidator is a Workflow Definition.
+// This Workflow Definition has an Update handler that uses the isPositive() validator function.
+// After setting the Update hanlder it sleeps for 1 minutue.
+// Updates can be sent to the Workflow during this time.
+func UpdatableWorkflowWithValidator(ctx workflow.Context, param WFParam) (WFResult, error) {
+	counter := param.StartCount
+	err := workflow.SetUpdateHandlerWithOptions(
+		ctx, YourValidatedUpdateName,
+		func(ctx workflow.Context, arg YourUpdateArg) (YourUpdateResult, error) {
+// ...
+		},
+		// Set the isPositive validator.
+		workflow.UpdateHandlerOptions{Validator: isPositive},
+	)
+	if err != nil {
+		return WFResult{}, err
+	}
+// ...
+}
+
+// isPositive is a validator function.
+// It returns an error if the int value is below 1.
+// This function can not change the state of the Workflow.
+// workflow.Context can be used to log
+func isPositive(ctx workflow.Context, u YourUpdateArg) error {
+	log := workflow.GetLogger(ctx)
+	if u.Add < 1 {
+		log.Debug("Rejecting non-positive number, positive integers only", "UpdateValue", u.Add)
+		return fmt.Errorf("addend must be a positive integer (%v)", u.Add)
+	}
+	log.Debug("Accepting Update", "UpdateValue", u.Add)
+	return nil
+}
+```
+
+### Send Update from Client
+
+Invoke the UpdateWorkflow() method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to dispatch an <a class="tdlp" href="/workflows#update">Update<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Update?</span><br /><br /><span class="tdlppd">An Update is a request to and a response from Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#update">Learn more</a></span></span></a> to a Workflow Execution.
+
+You must provide the Workflow Id, but specifying a Run Id is optional.
+If you supply only the Workflow Id (and provide an empty string as the Run Id param), the currently running Workflow Execution receives the Update.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/update/main_dacx.go">View source code</a>
+
+```go
+func main() {
+// ...
+	// Set the Update argument values.
+	updateArg := yourupdate.YourUpdateArg{
+		Add: n,
+	}
+	// Call the UpdateWorkflow API.
+	// A blank RunID means that the Update is routed to the most recent Workflow Run of the specified Workflow ID.
+	updateHandle, err := temporalClient.UpdateWorkflow(context.Background(), yourupdate.YourUpdateWFID, "", yourupdate.YourUpdateName, updateArg)
+	if err != nil {
+		log.Fatalln("Error issuing Update request", err)
+	}
+	// Get the result of the Update.
+	var updateResult yourupdate.YourUpdateResult
+	err = updateHandle.Get(context.Background(), &updateResult)
+	if err != nil {
+		log.Fatalln("Update encountered an error", err)
+	}
+	log.Println("Update succeeded, new total: ", updateResult.Total)
 }
 ```
 
@@ -431,7 +556,7 @@ if err != nil {
 
 ## Activity Heartbeats
 
-An <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeat<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></span></span></a> is a ping from the <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> that is executing the Activity to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
+An <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeat<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></span></span></a> is a ping from the <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> that is executing the Activity to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 Each Heartbeat informs the Temporal Cluster that the <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a> is making progress and the Worker has not crashed.
 If the Cluster does not receive a Heartbeat within a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a> time period, the Activity will be considered failed and another <a class="tdlp" href="/workers#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task-execution">Learn more</a></span></span></a> may be scheduled according to the Retry Policy.
 
@@ -523,7 +648,7 @@ if err != nil {
 There are three steps to follow:
 
 1. The Activity provides the external system with identifying information needed to complete the Activity Execution.
-   Identifying information can be a <a class="tdlp" href="/activities#task-token">Task Token<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Token?</span><br /><br /><span class="tdlppd">A Task Token is a unique Id that correlates to an Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#task-token">Learn more</a></span></span></a>, or a combination of Namespace, Workflow Id, and Activity Id.
+   Identifying information can be a <a class="tdlp" href="/activities#task-token">Task Token<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Token?</span><br /><br /><span class="tdlppd">A Task Token is a unique identifier for an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#task-token">Learn more</a></span></span></a>, or a combination of Namespace, Workflow Id, and Activity Id.
 2. The Activity Function completes in a way that identifies it as waiting to be completed by an external system.
 3. The Temporal Client is used to Heartbeat and complete the Activity.
 
@@ -753,20 +878,19 @@ Use any of the following action to help Schedule a Workflow Execution and take c
 
 ### Create Schedule
 
-<a class="tdlp" href="/workflows#schedule">Schedules<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a> are initiated with the `create` call.
+Schedules are initiated with the `create` call.
 The user generates a unique Schedule ID for each new Schedule.
 
-To create a Schedule in Go, use `Create()` on the <a class="tdlp" href="/temporal#temporal-client">Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a>.
+To create a Schedule in Go, use `Create()` on the Client.
 Schedules must be initialized with a Schedule ID, <a class="tdlp" href="/workflows#spec">Spec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#spec">Learn more</a></span></span></a>, and <a class="tdlp" href="/workflows#action">Action<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#action">Learn more</a></span></span></a> in `client.ScheduleOptions{}`.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/create/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/create/main_dacx.go">View source code</a>
 
 ```go
 func main() {
 // ...
-    // Create Schedule and Workflow IDs
-	scheduleID := "schedule_" + uuid.New()
-	workflowID := "schedule_workflow_" + uuid.New()
+	scheduleID := "schedule_id"
+	workflowID := "schedule_workflow_id"
 	// Create the schedule.
 	scheduleHandle, err := temporalClient.ScheduleClient().Create(ctx, client.ScheduleOptions{
 		ID:   scheduleID,
@@ -778,170 +902,164 @@ func main() {
 		},
 	})
 // ...
+}
+// ...
 ```
 
 ### Backfill Schedule
 
-Backfilling a <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a> executes Actions ahead of the Schedule's specified time range.
-This is useful for executing a missed or delayed <a class="tdlp" href="/workflows#action">Action<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#action">Learn more</a></span></span></a>, or for testing the <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a> ahead of time.
+Backfilling a Schedule executes <a class="tdlp" href="/workers#workflow-task">Workflow Tasks<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task">Learn more</a></span></span></a> ahead of the Schedule's specified time range.
+This is useful for executing a missed or delayed Action, or for testing the Workflow ahead of time.
 
-To backfill a Schedule in Go, use `Backfill()` on [`ScheduleHandle`](https://pkg.go.dev/go.temporal.io/sdk/internal#ScheduleClient).
-Specify the start and end times to execute the Workflow, along with the <a class="tdlp" href="/workflows#overlap-policy">Overlap Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#overlap-policy">Learn more</a></span></span></a>.
+To backfill a Schedule in Go, use `Backfill()` on `ScheduleHandle`.
+Specify the start and end times to execute the Workflow, along with the overlap policy.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/backfill/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/backfill/main_dacx.go">View source code</a>
 
 ```go
 func main() {
 // ...
+	err = scheduleHandle.Backfill(ctx, client.ScheduleBackfillOptions{
 		Backfill: []client.ScheduleBackfill{
 			{
-				Start: now.Add(-4 * time.Minute),
-				End: now.Add(-2 * time.Minute),
+				Start:   now.Add(-4 * time.Minute),
+				End:     now.Add(-2 * time.Minute),
 				Overlap: enums.SCHEDULE_OVERLAP_POLICY_ALLOW_ALL,
 			},
 			{
-				Start: now.Add(-2 * time.Minute),
-				End: now,
+				Start:   now.Add(-2 * time.Minute),
+				End:     now,
 				Overlap: enums.SCHEDULE_OVERLAP_POLICY_ALLOW_ALL,
 			},
 		},
 	})
-		
+	if err != nil {
+		log.Fatalln("Unable to Backfill Schedule", err)
+	}
+// ...
+}
 // ...
 ```
 
 ### Delete Schedule
 
-Deleting a <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a> erases a Schedule.
-Deletion does not affect any <a class="tdlp" href="/workflows#">Workflows<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a> started by the Schedule.
+Deleting a Schedule erases a Schedule.
+Deletion does not affect any Workflows started by the Schedule.
 
 To delete a Schedule, use `Delete()` on the `ScheduleHandle`.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/delete/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/delete/main_dacx.go">View source code</a>
 
 ```go
 func main() {
 // ...
-	scheduleHandle.Delete(ctx)	
-}
+	defer func() {
+		log.Println("Deleting schedule", "ScheduleID", scheduleHandle.GetID())
+		err = scheduleHandle.Delete(ctx)
+		if err != nil {
+			log.Fatalln("Unable to delete schedule", err)
+		}
+	}()
 // ...
 ```
 
 ### Describe Schedule
 
-`Describe` retrieves information about the current <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a> configuration.
-This can include details about the Schedule <a class="tdlp" href="/workflows#spec">Spec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#spec">Learn more</a></span></span></a> (such as Intervals or CronExpressions) and Schedule State.
+`Describe` retrieves information about the current Schedule configuration.
+This can include details about the Schedule Spec (such as Intervals), CronExpressions, and Schedule State.
 
-To describe a Schedule, use `Describe()` on the `ScheduleHandle`.
+To describe a Schedule, use `Describe()` on the ScheduleHandle.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/describe/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/describe/main_dacx.go">View source code</a>
 
 ```go
 func main() {
 // ...
-	// describe schedule
 	scheduleHandle.Describe(ctx)
-}
 // ...
 ```
 
 ### List Schedules
 
-The `List` action returns a list of existing <a class="tdlp" href="/workflows#schedule">Schedules<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a> and their respective Schedule IDs.
+The `List` action returns all available Schedules and their respective Schedule IDs.
 
-To return information on all Schedules, use [`ScheduleClient.List()`](https://pkg.go.dev/go.temporal.io/sdk/internal#ScheduleClient).
+To return information on all Schedules, use `ScheduleClient.List()`.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/list/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/list/main_dacx.go">View source code</a>
 
 ```go
 func main() {
 // ...
-	// list schedules
 	listView, _ := temporalClient.ScheduleClient().List(ctx, client.ScheduleListOptions{
 		PageSize: 1,
 	})
-// ...
-}
+
+	for listView.HasNext() {
+		log.Println(listView.Next())
+	}
 // ...
 ```
 
 ### Pause Schedule
 
-`Pause` and `Unpause` enable the start or stop of all future <a class="tdlp" href="/workflows#">Workflow Runs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a> on a given <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a>.
+`Pause` and `Unpause` enable the start or stop of all future Workflow Runs on a given Schedule.
 
 Pausing a Schedule halts all future Workflow Runs.
-Pause a Schedule by setting `State.Paused` to `true`, or by using `Pause()` on the `ScheduleHandle`.
+Pausing can be enabled by setting `State.Paused` to `true`, or by using `Pause()` on the ScheduleHandle.
 
 Unpausing a Schedule allows the Workflow to execute as planned.
-To unpause a Schedule, use `Unpause()` on the `ScheduleHandle`, or set `State.Paused` to `false`.
+To unpause a Schedule, use `Unpause()` on `ScheduleHandle`.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/pause/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/pause/main_dacx.go">View source code</a>
 
 ```go
 func main() {
 // ...
-	scheduleHandle, err := temporalClient.ScheduleClient().Create(ctx, client.ScheduleOptions{
-// ...
-		Paused: true,
-	})
-// ...
-	scheduleHandle.Unpause(ctx, client.ScheduleUnpauseOptions{
-		Note: "The Schedule has been unpaused.",
-	})
-	scheduleHandle.Pause(ctx, client.SchedulePauseOptions{
+	err = scheduleHandle.Pause(ctx, client.SchedulePauseOptions{
 		Note: "The Schedule has been paused.",
 	})
-}
 // ...
+	err = scheduleHandle.Unpause(ctx, client.ScheduleUnpauseOptions{
+		Note: "The Schedule has been unpaused.",
+	})
 ```
 
 ### Trigger Schedule
 
-Triggering a <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a> immediately executes an <a class="tdlp" href="/workflows#action">Action<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#action">Learn more</a></span></span></a> defined in that Schedule.
-By default, `trigger` is subject to the `AllowAll` Overlap Policy.
+Triggering a Schedule immediately executes an Action defined in that Schedule.
+By default, `trigger` is subject to the Overlap Policy.
 
-To trigger a Scheduled <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>, use `trigger()` on `ScheduleHandle`.
+To trigger a Scheduled Workflow Execution, use `trigger()` on `ScheduleHandle`.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/trigger/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/trigger/main_dacx.go">View source code</a>
 
 ```go
 func main() {
 // ...
-	// Create a Schedule to trigger
-	scheduleHandle, _ := temporalClient.ScheduleClient().Create(ctx, client.ScheduleOptions{
-		ID: "trigger-schedule",
-		Spec: client.ScheduleSpec{},
-		Action: &client.ScheduleWorkflowAction{},
-		Paused: true,
-		Overlap: enums.SCHEDULE_OVERLAP_POLICY_ALLOW_ALL,
-	})
-// ...
-	// Trigger Schedule
 	for i := 0; i < 5; i++ {
 		scheduleHandle.Trigger(ctx, client.ScheduleTriggerOptions{
 			Overlap: enums.SCHEDULE_OVERLAP_POLICY_ALLOW_ALL,
 		})
 		time.Sleep(2 * time.Second)
 	}
-}
 // ...
 ```
 
 ### Update Schedule
 
-Updating a <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a> changes the configuration of an existing Schedule.
-These changes can be made to <a class="tdlp" href="/workflows#action">Actions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#action">Learn more</a></span></span></a>, Action parameters, <a class="tdlp" href="/workflows#memo">Memos<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Memo?</span><br /><br /><span class="tdlppd">A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is returned when you describe or list Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#memo">Learn more</a></span></span></a>, and the Workflow's Cancellation Policy.
+Updating a Schedule changes the configuration of an existing Schedule.
+These changes can be made to Workflow Actions, Action parameters, Memos, and the Workflow's Cancellation Policy.
 
-Use `Update()` on the `ScheduleHandle` to modify a Schedule.
+Use `Update()` on the ScheduleHandle to modify a Schedule.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/update/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/update/main_dacx.go">View source code</a>
 
 ```go
 func main() {
 // ...
 	updateSchedule := func(input client.ScheduleUpdateInput) (*client.ScheduleUpdate, error) {
 		return &client.ScheduleUpdate{
-			Schedule:  &input.Description.Schedule,
+			Schedule: &input.Description.Schedule,
 		}, nil
 	}
 
