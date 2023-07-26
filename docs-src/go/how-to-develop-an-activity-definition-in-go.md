@@ -3,6 +3,8 @@ id: how-to-develop-an-activity-definition-in-go
 title: How to develop an Activity Definition in Go
 sidebar_label: Activity Definition
 description: In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
+tags:
+  - go-sdk
 ---
 
 In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.

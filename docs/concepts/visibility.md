@@ -20,6 +20,14 @@ import TabItem from '@theme/TabItem';
 
 This guide provides a comprehensive overview of Temporal Visibility.
 
+:::tip Support, stability, and dependency info
+
+- For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
+- For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
+- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports advanced Visibility features](/cluster-deployment-guide#supported-databases). Visibility configuration in Temporal Cluster is updated and Dual Visibility is enabled. For details, see [Visibility store setup](/cluster-deployment-guide#visibility-store).
+
+:::
+
 The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Cluster.
 
 The [Visibility store](/cluster-deployment-guide#visibility-store) in your Temporal Cluster stores persisted Workflow Execution Event History data and is set up as a part of your <a class="tdlp" href="/clusters#persistence">Persistence store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#persistence">Learn more</a></span></span></a> to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
@@ -32,15 +40,7 @@ With Temporal Server v1.21, you can set up <a class="tdlp" href="#dual-visibilit
 
 Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/cluster-deployment-guide#supported-databases) for updates. -->
 
-:::tip Support, stability, and dependency info
-
-- For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
-- For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
-- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports advanced Visibility features](/cluster-deployment-guide#supported-databases). Visibility configuration in Temporal Cluster is updated and Dual Visibility is enabled. For details, see [Visibility store setup](/cluster-deployment-guide#visibility-store).
-
-:::
-
-## Standard Visibility
+## What is standard Visibility? {#standard-visibility}
 
 Standard Visibility, within the Temporal Platform, is the subsystem and APIs that list Workflow Executions by a predefined set of filters.
 
@@ -51,7 +51,7 @@ Closed Workflow Executions can be filtered by a time constraint and either a Wor
 Support for standard Visibility is deprecated beginning with Temporal Server v1.21.
 For updates, check [Supported databases](/cluster-deployment-guide#supported-databases).
 
-## Advanced Visibility
+## What is advanced Visibility? {#advanced-visibility}
 
 Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a> through a custom SQL-like <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a>.
 
@@ -61,7 +61,7 @@ Visibility, within the Temporal Platform, is the subsystem and APIs that enable 
   We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
 - On Temporal Cloud, [advanced Visibility is enabled by default for all users](/cloud/how-to-get-started-with-temporal-cloud#invite-users).
 
-## Dual Visibility
+## What is Dual Visibility? {#dual-visibility}
 
 Dual Visibility is a feature that lets you set a secondary Visibility store in addition to a primary store in your Temporal Cluster.
 Setting up Dual Visibility is optional and can be used to [migrate your Visibility database](/cluster-deployment-guide#migrating-visibility-database) or create a backup Visibility store.
@@ -89,7 +89,7 @@ When migrating from one Visibility store database to another, set up the databas
 You can plan your migration using specific dynamic configuration keys that help you transition your read and write operations from the primary to the secondary Visibility store.
 For details on migrating your Visibility store databases, see <a class="tdlp" href="/cluster-deployment-guide#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Dual Visibility</span><br /><br /><span class="tdlppd">To enable Dual Visibility, set up a secondary Visibility store with your primary Visibility, and configure your Temporal Cluster to enable read and/or write operations on the secondary Visibility store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#dual-visibility">Learn more</a></span></span></a>.
 
-## List Filter
+## What is a List Filter? {#list-filter}
 
 A List Filter is the SQL-like string that is provided as the parameter to a <a class="tdlp" href="/clusters#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#visibility">Learn more</a></span></span></a> List API.
 
@@ -198,7 +198,7 @@ order by StartTime desc, CloseTime asc
 order by CustomIntField asc
 ``` -->
 
-## Search Attribute
+## What is a Search Attribute? {#search-attribute}
 
 A Search Attribute is an indexed field used in a <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a> to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
 

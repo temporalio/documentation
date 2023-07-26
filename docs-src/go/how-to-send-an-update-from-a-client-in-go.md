@@ -3,6 +3,8 @@ id: how-to-send-an-update-from-a-client-in-go
 title: How to send an Update from a Temporal Client in Go
 sidebar_label: Send Update from Client
 description: Use the UpdateWorkflow method on an instance of the Go SDK Temporal Client to send an Update to a Workflow Execution.
+tags:
+  - go-sdk
 ---
 
 Invoke the UpdateWorkflow() method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to dispatch an [Update](/concepts/what-is-an-update) to a Workflow Execution.

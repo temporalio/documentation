@@ -2,7 +2,9 @@
 id: how-to-list-a-schedule-in-go
 title: How to list a Schedule in Go
 sidebar_label: List Schedules
-description: To list all Schedules in Go, use `ScheduleClient.List()`.
+description: To list all Schedules in Go, use ScheduleClient.List().
+tags:
+  - go-sdk
 ---
 
 The `List` action returns all available Schedules and their respective Schedule IDs.

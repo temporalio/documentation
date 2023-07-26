@@ -3,6 +3,8 @@ id: how-to-enable-sessions-on-a-worker
 title: How to enable Sessions on a Worker
 sidebar_label: Enable Sessions
 description: Set EnableSessionWorker to true in the Worker options.
+tags:
+  - go-sdk
 ---
 
 Set `EnableSessionWorker` to `true` in the Worker options.

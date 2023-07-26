@@ -5,8 +5,7 @@ sidebar_label: describe
 description: Description of Workflow Execution.
 tags:
   - tctl
-  - admin
-  - workflow
+  - cli-reference
 ---
 
 The `tctl admin workflow describe` command describes internal information of the current [Workflow Execution](/workflows/#workflow-execution).

@@ -5,6 +5,7 @@ sidebar_label: list
 description: How to list batch jobs using tctl.
 tags:
   - tctl
+  - cli-reference
 ---
 
 The `tctl batch list` command lists all batch jobs.

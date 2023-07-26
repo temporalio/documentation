@@ -1,10 +1,10 @@
 ---
 id: description
-title: temporal  description
+title: temporal description
 sidebar_label: description
 description: Namespace description
 tags:
-    - cli
+  - cli-reference
 ---
 
 Namespace description.

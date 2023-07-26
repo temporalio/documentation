@@ -1,10 +1,10 @@
 ---
 id: search-attribute
-title: temporal  search-attribute
+title: temporal search-attribute
 sidebar_label: search-attribute
 description: Set Search Attribute on a schedule.
 tags:
-    - cli
+  - cli-reference
 ---
 
 Set Search Attribute on a schedule (format: key=value).

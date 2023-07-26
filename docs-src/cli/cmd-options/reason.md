@@ -1,10 +1,10 @@
 ---
 id: reason
-title: temporal  reason
+title: temporal reason
 sidebar_label: reason
 description: Reason for the operation
 tags:
-    - cli
+  - cli-reference
 ---
 
 Reason for the operation.

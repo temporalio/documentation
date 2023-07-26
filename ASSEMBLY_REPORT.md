@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday July 26 2023 06:41:48 AM -0700
+Last assembled: Wednesday July 26 2023 16:13:19 PM -0400
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -692,6 +692,8 @@ python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-tem
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
 
+cloud-context/certificates-filters -> #manage-certificate-filters
+
 concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
@@ -947,17 +949,5 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-go/async-activity-completion -> /dev-guide/go/features#asynchronous-activity-completion
-
-java/async-activity-completion -> /dev-guide/java/features#asynchronous-activity-completion
-
-php/async-activity-completion -> /dev-guide/php/features#asynchronous-activity-completion
-
-python/async-activity-completion -> /dev-guide/python/features#asynchronous-activity-completion
-
-typescript/async-activity-completion -> /dev-guide/typescript/features#asynchronous-activity-completion
-
-cloud-context/certificates-filters -> #manage-certificate-filters
 
 

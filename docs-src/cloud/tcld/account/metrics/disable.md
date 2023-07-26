@@ -5,6 +5,7 @@ sidebar_label: disable
 description: How to disable the metrics endpoint for a Temporal Cloud account using tcld.
 tags:
   - tcld
+  - cli-reference
 ---
 
 The `tcld account metrics disable` command disables the metrics endpoint for the Temporal Cloud account that is currently logged in.

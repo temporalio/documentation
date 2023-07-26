@@ -2,7 +2,9 @@
 id: how-to-backfill-a-schedule-in-go
 title: How to backfill a Schedule in Go
 sidebar_label: Backfill Schedule
-description: To backfill a Schedule in Go, use `Backfill()` on `ScheduleHandle`.
+description: To backfill a Schedule in Go, use Backfill() on ScheduleHandle.
+tags:
+  - go-sdk
 ---
 
 Backfilling a Schedule executes [Workflow Tasks](/concepts/what-is-a-workflow-task) ahead of the Schedule's specified time range.
