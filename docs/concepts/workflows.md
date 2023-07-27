@@ -573,7 +573,7 @@ If multiple deliveries of a Signal would be a problem for your Workflow, add ide
 
 [^1]: The Cluster usually deduplicates Signals, but does not guarantee deduplication: During shard migration, two Signal Events (and therefore two deliveries to the Workflow Execution) can be recorded for a single Signal because the deduping info is stored only in memory.
 
-## Signal-With-Start
+### Signal-With-Start
 
 Signal-With-Start is a Client method that takes the following arguments:
 
@@ -583,7 +583,7 @@ Signal-With-Start is a Client method that takes the following arguments:
 - Signal input
 
 If there is a running Workflow Execution with the given Workflow Id, it will be Signaled.
-Otherwise, a new Workflow Execution will be started and immediately Signaled.
+Otherwise, a new Workflow Execution is started and immediately sent the Signal.
 
 How to Signal-With-Start in:
 
