@@ -1,6 +1,6 @@
 ---
 id: how-to-cancel-a-workflow-in-python
-title: How to Cancel a Workflow Execution in Python
+title: How to cancel a Workflow Execution in Python
 sidebar_label: Cancel a Workflow Execution
 description: Cancel a Workflow Execution
 ---

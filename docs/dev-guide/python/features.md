@@ -505,7 +505,8 @@ The following are the main differences between canceling and terminating a Workf
 
 ##### Cancel
 
-Canceling a Workflow provides a graceful way to stop Workflow Execution. This action resembles sending a `SIGTERM` to a process.
+Canceling a Workflow provides a graceful way to stop Workflow Execution.
+This action resembles sending a `SIGTERM` to a process.
 
 - The system records a `WorkflowExecutionCancelRequested` event in the Workflow History.
 - The Workflow code can handle the cancelation and execute any cleanup logic.
@@ -516,7 +517,8 @@ For more information, see How to cancel a Workflow Execution.
 
 ##### Terminate
 
-Terminating a Workflow forcefully stops Workflow Execution. This action resembles killing a process.
+Terminating a Workflow forcefully stops Workflow Execution.
+This action resembles killing a process.
 
 - The system records a `WorkflowExecutionTerminated` event in the Workflow History.
 - The termination forcefully and immediately stops the Workflow Execution.
@@ -535,7 +537,7 @@ In summary:
 In most cases, canceling is preferable because it allows the Workflow to finish gracefully.
 Terminate only if the Workflow is stuck and cannot be canceled normally.
 
-### How to Cancel a Workflow Execution in Python {#cancel-a-workflow-execution}
+### How to cancel a Workflow Execution in Python {#cancel-a-workflow-execution}
 
 To cancel a Workflow in Python, use the [cancel()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#cancel) function on the Workflow Handle ID.
 
