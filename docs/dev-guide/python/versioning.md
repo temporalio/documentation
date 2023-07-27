@@ -23,7 +23,7 @@ a non-deterministic issue if not handled correctly.
 
 Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY)
 
-## How to use Worker Versioning in Python {#worker-versioning}
+## Worker Versioning
 
 To use [Worker Versioning](/workers#worker-versioning) in Python, you need to do the following:
 

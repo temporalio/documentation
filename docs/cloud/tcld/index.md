@@ -37,7 +37,7 @@ Automatically confirm all prompts.
 You can specify the value for this modifier by setting the AUTO_CONFIRM environment variable.
 The default value is `false`.
 
-## How to install tcld {#install-tcld}
+## Install tcld
 
 You can install [tcld](/cloud/tcld) in two ways.
 

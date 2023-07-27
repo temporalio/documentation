@@ -230,7 +230,7 @@ export async function myWorkflow(): Promise<void> {
 Upgrading Workflow dependencies (such as ones installed into `node_modules`) _might_ break determinism in unpredictable ways.
 We recommended using a lock file (`package-lock.json` or `yarn.lock`) to fix Workflow dependency versions and gain control of when they're updated.
 
-## How to use Worker Versioning in TypeScript {#worker-versioning}
+## Worker Versioning
 
 To use [Worker Versioning](/workers#worker-versioning) in TypeScript, you need to do the following:
 

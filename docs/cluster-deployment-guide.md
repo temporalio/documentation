@@ -28,7 +28,7 @@ Legacy production deployment information is available [here](/kb/legacy-oss-prod
 
 :::
 
-## How to set up Visibility in a Temporal Cluster {#visibility-store}
+## Visibility store
 
 A <a class="tdlp" href="/clusters#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#visibility">Learn more</a></span></span></a> store is set up as a part of your <a class="tdlp" href="/clusters#persistence">Persistence store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#persistence">Learn more</a></span></span></a> to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
 
@@ -69,7 +69,7 @@ The following databases are supported as Visibility stores:
 You can use any combination of the supported databases for your Persistence and Visibility stores.
 For updates, check [Server release notes](https://github.com/temporalio/temporal/releases).
 
-### How to set up MySQL Visibility store {#mysql}
+### MySQL
 
 :::tip Support, stability, and dependency info
 - MySQL v5.7 and later.
@@ -158,7 +158,7 @@ setup_mysql_schema() {
 
 Note that the script uses [temporal-sql-tool](https://github.com/temporalio/temporal/blob/3b982585bf0124839e697952df4bba01fe4d9543/tools/sql/main.go) to run the setup.
 
-### How to set up PostgreSQL Visibility store {#postgresql}
+### PostgreSQL
 
 :::tip Support, stability, and dependency info
 - PostgreSQL v9.6 and later.
@@ -240,7 +240,7 @@ setup_postgres_schema() {
 
 Note that the script uses [temporal-sql-tool](https://github.com/temporalio/temporal/blob/3b982585bf0124839e697952df4bba01fe4d9543/tools/sql/main.go) to run the setup.
 
-### How to set up SQLite Visibility store {#sqlite}
+### SQLite
 
 :::tip Support, stability, and dependency info
 - SQLite v3.31.0 and later.
@@ -301,7 +301,7 @@ Visibility data is stored in a database table called `executions_visibility` tha
 
 For an example of setting up the SQLite schema, see [Temporalite](https://github.com/temporalio/temporalite/blob/main/server.go) setup.
 
-### How to set up Cassandra Visibility store {#cassandra}
+### Cassandra
 
 :::tip Support, stability, and dependency info
 - Support for Cassandra as a Visibility database is deprecated beginning with Temporal Server v1.21. For updates, check the [Temporal Server release notes](https://github.com/temporalio/temporal/releases).
@@ -379,7 +379,7 @@ setup_cassandra_schema() {
 }
 ```
 
-### How to integrate Elasticsearch into a Temporal Cluster {#elasticsearch}
+### Elasticsearch
 
 :::tip Support, stability, and dependency info
 - Elasticsearch v8 is supported beginning with Temporal Server version 1.18.0.
@@ -470,7 +470,7 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
   - [index privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-indices): `manage`
   - [cluster privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-cluster): `monitor` or `manage`.
 
-### How to set up Dual Visibility {#dual-visibility}
+### Dual Visibility
 
 :::tip Support, stability, and dependency info
 - Supported from Temporal Server v1.21 onwards.
@@ -660,7 +660,7 @@ For details on the configuration options, see:
 - <a class="tdlp" href="/references/dynamic-configuration#secondary-visibility-settings">Secondary Visibility dynamic configuration reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Dynamic configuration reference</span><br /><br /><span class="tdlppd">Dynamic configuration key values can be set to override the default values in a Cluster configuration.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/dynamic-configuration#secondary-visibility-settings">Learn more</a></span></span></a>
 - [Migrating Visibility databases](/cluster-deployment-guide#migrating-visibility-database)
 
-### How to migrate Visibility database {#migrating-visibility-database}
+### Migrating Visibility database
 
 :::tip Support, stability, and dependency info
 - Supported beginning with Temporal Server v1.21.
@@ -778,7 +778,7 @@ When you are ready to deprecate your primary store, follow these steps.
            closeIdleConnectionsInterval: 15s
    ```
 
-### Managing custom Search Attributes {#custom-search-attributes}
+### Custom Search Attributes
 
 To manage your custom Search Attributes on Temporal Cloud, use `tcld`.
 With Temporal Cloud, you can create and rename custom Search Attributes.
@@ -790,7 +790,7 @@ If you remove a custom Search Attribute and add a new one, the new custom Search
 This might cause unexpected results when you use the List API to retrieve results using the new custom Search Attribute.
 These constraints do not apply if you use Elasticsearch.
 
-#### How to create custom Search Attributes {#create-custom-search-attributes}
+#### Create custom Search Attributes
 
 Add custom Search Attributes to your Visibility store using `tctl` for a self-hosted Temporal Cluster and `tcld` for Temporal Cloud.
 
@@ -860,7 +860,7 @@ add_custom_search_attributes() {
 
 When your Visibility store is set up and running, these custom Search Attributes are available to use in your Workflow code.
 
-#### How to remove custom Search Attributes {#remove-custom-search-attributes}
+#### Remove custom Search Attributes
 
 To remove a Search Attribute key from your self-hosted Temporal Cluster Visibility store, use the command `tctl search-attribute remove`.
 Removing Search Attributes is not supported on Temporal Cloud.
@@ -883,11 +883,11 @@ If you remove a custom Search Attribute and add a new one, the new custom Search
 This might cause unexpected results when you use the List API to retrieve results using the new custom Search Attribute.
 These constraints do not apply if you use Elasticsearch.
 
-## How to use Archival {#archival}
+## Archival
 
 <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Archival?</span><br /><br /><span class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#archival">Learn more</a></span></span></a> is a feature that automatically backs up Workflow Execution Event Histories and Visibility data from Temporal Cluster persistence to a custom blob store.
 
-### How to set up Archival {#set-up-archival}
+### Set up Archival
 
 <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Archival?</span><br /><br /><span class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#archival">Learn more</a></span></span></a> consists of the following elements:
 
@@ -1020,7 +1020,7 @@ You can retrieve archived Event Histories by copying the `workflowId` and `runId
 ./tctl --ns samples-namespace wf show --wid <workflowId> --rid <runId>
 ```
 
-### How to create a custom Archiver {#custom-archiver}
+### Custom Archiver
 
 To archive data with a given provider, using the <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Archival?</span><br /><br /><span class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#archival">Learn more</a></span></span></a> feature, Temporal must have a corresponding Archiver component installed.
 The platform does not limit you to the existing providers.
@@ -1125,7 +1125,7 @@ As for now, try to make your syntax similar to the one used by our advanced list
 - [s3store](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store#visibility-query-syntax)
 - [gcloud](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud#visibility-query-syntax)
 
-## How to upgrade the Temporal Server version {#upgrade-server}
+## Upgrade Server
 
 If a newer version of the <a class="tdlp" href="/clusters#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#temporal-server">Learn more</a></span></span></a> is available, a notification appears in the Temporal Web UI.
 
@@ -1285,7 +1285,7 @@ We recommend preparing a staging Cluster and then do the following to verify the
 4. Upgrade the server.
 5. Now do the same to the live environment cluster.
 
-## How to set up health checks for a Temporal Cluster {#health-checks}
+## Health checks
 
 The [Frontend Service](/clusters#frontend-service) supports TCP or [gRPC](https://github.com/grpc/grpc/blob/875066b61e3b57af4bb1d6e36aabe95a4f6ba4f7/src/proto/grpc/health/v1/health.proto#L45) health checks on port 7233.
 
@@ -1313,7 +1313,7 @@ service {
   }
 ```
 
-## How to set up Multi-Cluster Replication {#set-up-multi-cluster-replication}
+## Set up Multi-Cluster Replication
 
 The <a class="tdlp" href="/clusters#multi-cluster-replication">Multi-Cluster Replication<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Multi-Cluster Replication?</span><br /><br /><span class="tdlppd">Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#multi-cluster-replication">Learn more</a></span></span></a> feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
 
