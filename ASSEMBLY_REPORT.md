@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday July 27 2023 07:36:34 AM -0700
+Last assembled: Thursday July 27 2023 07:48:35 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -951,5 +951,9 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-execution
+
+python/how-to-cancel-a-workflow-in-python -> #cancel-a-workflow-execution
 
 

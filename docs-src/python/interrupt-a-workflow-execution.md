@@ -24,7 +24,7 @@ This action resembles sending a `SIGTERM` to a process.
 - A Workflow Task gets scheduled to process the cancelation.
 - The system doesn't forcefully stop the Workflow.
 
-For more information, see How to cancel a Workflow Execution.
+For more information, see [How to cancel a Workflow Execution](/python/how-to-cancel-a-workflow-in-python).
 
 ##### Terminate
 
@@ -36,7 +36,7 @@ This action resembles killing a process.
 - The Workflow code gets no chance to handle termination.
 - A Workflow Task doesn't get scheduled.
 
-For more information, see How to terminate a Workflow Execution.
+For more information, see [How to terminate a Workflow Execution](/python/how-to-terminate-a-workflow-execution-in-python).
 
 ##### Summary
 
