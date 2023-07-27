@@ -5,6 +5,8 @@ sidebar_label: visibility-archival-state
 description: Flag to set visibility archival state.
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Flag to set visibility archival state, valid values are "disabled" and "enabled".

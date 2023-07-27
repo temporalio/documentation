@@ -5,6 +5,9 @@ sidebar_label: update
 description: Updates a Namespace.
 tags:
   - cli-reference
+  - temporal-cli
+  - operator
+  - namespace
 ---
 
 The `temporal operator namespace update` command updates a given [Namespace](/concepts/what-is-a-namespace).

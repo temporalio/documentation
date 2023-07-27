@@ -5,6 +5,9 @@ sidebar_label: list
 description: List all remote Clusters.
 tags:
   - cli-reference
+  - temporal-cli
+  - operator
+  - cluster
 ---
 
 The `temporal operator cluster list` command prints a list of all remote [Clusters](/concepts/what-is-a-temporal-cluster) on the system.

@@ -5,6 +5,8 @@ sidebar_label: interval
 description: Interval duration to include phase offset.
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Interval duration, e.g. 90m, or 90m/13m to include phase offset.

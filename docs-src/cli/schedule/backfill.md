@@ -5,6 +5,8 @@ sidebar_label: backfill
 description: Backfills a past time range of actions.
 tags:
   - cli-reference
+  - temporal-cli
+  - schedule
 ---
 
 The `temporal schedule backfill` command executes Actions ahead of their specified time range.

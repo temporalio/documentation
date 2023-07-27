@@ -5,6 +5,7 @@ sidebar_label: execution-timeout
 description: Timeout (in seconds) for a WorkflowExecution, including retries and continue-as-new tasks.
 tags:
   - cli-reference
+  - temporal-cli
 ---
 
 Timeout (in seconds) for a WorkflowExecution, including retries and continue-as-new tasks.

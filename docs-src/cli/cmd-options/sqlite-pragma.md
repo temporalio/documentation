@@ -5,6 +5,8 @@ sidebar_label: sqlite-pragma
 description: Specify sqlite pragma statements in pragma=value format.
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Specify sqlite pragma statements in pragma=value format.

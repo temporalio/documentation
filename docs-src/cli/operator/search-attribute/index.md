@@ -5,6 +5,9 @@ sidebar_label: search-attribute
 description: Operations applying to Search Attributes.
 tags:
   - cli-reference
+  - temporal-cli
+  - operator
+  - search-attribute
 ---
 
 Search Attribute commands enable operations for the creation, listing, and removal of [Search Attributes](/concepts/what-is-a-search-attribute).

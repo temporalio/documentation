@@ -5,6 +5,8 @@ sidebar_label: schedule
 description: Operations performed on Schedules.
 tags:
   - cli-reference
+  - temporal-cli
+  - schedule
 ---
 
 Schedule commands allow the user to create, use, and update [Schedules](/concepts/what-is-a-schedule).

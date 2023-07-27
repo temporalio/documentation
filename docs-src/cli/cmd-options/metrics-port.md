@@ -5,6 +5,8 @@ sidebar_label: metrics-port
 description: Port for /metrics
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Port for /metrics (default: 0).

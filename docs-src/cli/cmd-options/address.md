@@ -5,6 +5,7 @@ sidebar_label: address
 description: The host and port for the Temporal Frontend Service.
 tags:
   - cli-reference
+  - temporal-cli
 ---
 
 The host and port (formatted as host:port) for the Temporal Frontend Service.

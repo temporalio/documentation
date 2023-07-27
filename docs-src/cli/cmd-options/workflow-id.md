@@ -5,6 +5,8 @@ sidebar_label: workflow-id
 description: Workflow Id
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Workflow Id.

@@ -5,4 +5,6 @@ sidebar_label: completion
 description: Output shell completion code for the specified shell (zsh, bash).
 tags:
   - cli-reference
+  - temporal-cli
+  - completion
 ---

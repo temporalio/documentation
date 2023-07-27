@@ -5,6 +5,9 @@ sidebar_label: describe
 description: Describe a Namespace by its name or Id.
 tags:
   - cli-reference
+  - temporal-cli
+  - operator
+  - namespace
 ---
 
 The `temporal operator namespace describe` command provides a description of a [Namespace](/concepts/what-is-a-namespace).

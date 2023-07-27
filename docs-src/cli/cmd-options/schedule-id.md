@@ -5,6 +5,8 @@ sidebar_label: schedule-id
 description: Schedule Id
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Schedule Id.

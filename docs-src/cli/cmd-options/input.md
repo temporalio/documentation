@@ -5,6 +5,8 @@ sidebar_label: input
 description: Optional JSON input to provide to the Workflow.
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Optional JSON input to provide to the Workflow.

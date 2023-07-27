@@ -4,7 +4,8 @@ title: temporal cron
 sidebar_label: cron
 description: Optional Cron Schedule for the Workflow.
 tags:
-  - cli
+  - cli-reference
+  - temporal-cli
 ---
 
 ```text

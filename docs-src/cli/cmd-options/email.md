@@ -5,6 +5,7 @@ sidebar_label: email
 description: Owner email
 tags:
   - cli-reference
+  - temporal-cli
 ---
 
 Owner email.

@@ -5,6 +5,8 @@ sidebar_label: history-archival-state
 description: Flag to set history archival state, valid values are "disabled" and "enabled"
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Flag to set history archival state, valid values are "disabled" and "enabled".

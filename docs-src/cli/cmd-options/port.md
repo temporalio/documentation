@@ -5,6 +5,8 @@ sidebar_label: port
 description: Port for the frontend gRPC service.
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Port for the frontend gRPC service.

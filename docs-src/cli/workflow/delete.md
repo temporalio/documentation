@@ -5,6 +5,8 @@ sidebar_label: delete
 description: Deletes a Workflow Execution.
 tags:
   - cli-reference
+  - temporal-cli
+  - workflow
 ---
 
 The `temporal workflow delete` command deletes the specified [Workflow Execution](/concepts/what-is-a-workflow-execution).

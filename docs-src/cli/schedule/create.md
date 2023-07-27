@@ -5,6 +5,8 @@ sidebar_label: create
 description: Create a new Schedule.
 tags:
   - cli-reference
+  - temporal-cli
+  - schedule
 ---
 
 The `temporal schedule create` command creates a new [Schedule](/concepts/what-is-a-schedule).

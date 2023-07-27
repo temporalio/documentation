@@ -5,6 +5,8 @@ sidebar_label: query
 description: Visibility Query of Search Attributes describing the Workflow Executions to reset.
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Visibility Query of Search Attributes describing the Workflow Executions to reset.

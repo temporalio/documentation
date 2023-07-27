@@ -5,6 +5,8 @@ sidebar_label: ui-asset-path
 description: UI Custom Assets path.
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 UI Custom Assets path.

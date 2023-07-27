@@ -5,6 +5,8 @@ sidebar_label: fail
 description: Fails an Activity.
 tags:
   - cli-reference
+  - temporal-cli
+  - activity
 ---
 
 The `temporal activity fail` command fails an [Activity Execution](/concepts/what-is-an-activity-execution).

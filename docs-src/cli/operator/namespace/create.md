@@ -5,6 +5,9 @@ sidebar_label: create
 description: Registers a new Namespace.
 tags:
   - cli-reference
+  - temporal-cli
+  - operator
+  - namespace
 ---
 
 The `temporal operator namespace create` command creates a new [Namespace](/concepts/what-is-a-namespace).

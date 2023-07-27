@@ -5,6 +5,9 @@ sidebar_label: upsert
 description: Add or update a remote Cluster.
 tags:
   - cli-reference
+  - temporal-cli
+  - operator
+  - cluster
 ---
 
 The `temporal operator cluster upsert` command allows the user to add or update a remote [Cluster](/concepts/what-is-a-temporal-cluster).

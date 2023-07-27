@@ -5,6 +5,7 @@ sidebar_label: db-filename
 description: File in which to persist Temporal state.
 tags:
   - cli-reference
+  - temporal-cli
 ---
 
 File in which to persist Temporal state (by default, Workflows are lost when the process dies).

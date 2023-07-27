@@ -5,6 +5,7 @@ sidebar_label: archived
 description: List archived Workflow Executions.
 tags:
   - cli-reference
+  - temporal-cli
 ---
 
 List archived Workflow Executions.

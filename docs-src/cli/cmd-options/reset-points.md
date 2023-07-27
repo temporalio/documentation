@@ -5,6 +5,8 @@ sidebar_label: reset-points
 description: Only show Workflow Events that are eligible for reset.
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Only show Workflow Events that are eligible for reset.

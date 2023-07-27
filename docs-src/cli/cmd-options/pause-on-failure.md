@@ -5,6 +5,8 @@ sidebar_label: pause-on-failure
 description: Pause schedule after any workflow failure.
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Pause schedule after any workflow failure.

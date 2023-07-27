@@ -5,6 +5,8 @@ sidebar_label: fields
 description: Customize fields to print.
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Customize fields to print.

@@ -5,6 +5,7 @@ sidebar_label: data
 description: Namespace data in a key=value format
 tags:
   - cli-reference
+  - temporal-cli
 ---
 
 Namespace data in a key=value format.

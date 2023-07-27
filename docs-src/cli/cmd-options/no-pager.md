@@ -5,6 +5,8 @@ sidebar_label: no-pager
 description: Disables the interactive pager.
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Disables the interactive pager.

@@ -5,6 +5,8 @@ sidebar_label: ui-port
 description: Port for the Web UI.
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Port for the Web UI.

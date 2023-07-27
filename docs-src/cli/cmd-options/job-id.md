@@ -5,6 +5,8 @@ sidebar_label: job-id
 description: Batch Job Id
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Batch Job Id.

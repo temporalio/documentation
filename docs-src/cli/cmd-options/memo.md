@@ -5,6 +5,8 @@ sidebar_label: memo
 description: Set a memo on a schedule (in key=value format).
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Set a memo on a schedule (format: key=value).

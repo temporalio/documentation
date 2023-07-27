@@ -5,6 +5,8 @@ sidebar_label: headless
 description: Disable the Web UI.
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Disable the Web UI.

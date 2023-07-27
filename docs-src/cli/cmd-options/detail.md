@@ -5,6 +5,7 @@ sidebar_label: detail
 description: Detail to fail the Activity.
 tags:
   - cli-reference
+  - temporal-cli
 ---
 
 Detail to fail the Activity.

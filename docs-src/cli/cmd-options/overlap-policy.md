@@ -5,6 +5,8 @@ sidebar_label: overlap-policy
 description: Overlap policy.
 tags:
   - cli-reference
+  - temporal-cli
+
 ---
 
 Overlap policy (options: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll).
