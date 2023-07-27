@@ -4,6 +4,9 @@ title: tctl v1.17 batch command reference
 sidebar_label: batch
 description: How to use the tctl v1.17 batch command
 toc_max_heading_level: 4
+keywords:
+- tctl
+- cli-reference
 tags:
 - tctl
 - cli-reference

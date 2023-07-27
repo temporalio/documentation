@@ -4,10 +4,15 @@ title: Temporal Web UI environment variables reference
 sidebar_label: Web UI env vars
 description: How to set  environmental variables for Temporal Web UI.
 toc_max_heading_level: 4
+keywords:
+- docker
+- webui
+- ui-server
+- reference
 tags:
 - docker
 - webui
-- ui server
+- ui-server
 - reference
 ---
 

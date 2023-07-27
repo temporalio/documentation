@@ -4,6 +4,9 @@ title: tcld user command reference
 sidebar_label: user
 description: How to use Temporal Cloud's tcld user command
 toc_max_heading_level: 4
+keywords:
+- tcld
+- cli-reference
 tags:
 - tcld
 - cli-reference

@@ -4,6 +4,8 @@ title: Temporal Cloud pricing
 sidebar_label: Pricing
 description: Temporal Cloud pricing information
 toc_max_heading_level: 4
+keywords:
+- guide-context
 tags:
 - guide-context
 ---
