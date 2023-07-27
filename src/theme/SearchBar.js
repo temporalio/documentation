@@ -14,11 +14,11 @@ function SearchBar({ onClick, open }) {
       <div className="widget">
         <div className="widget-text">
           <SearchIcon open={open} />
-          <div class="ask">Search</div>
+          <div className="ask">Search</div>
         </div>
         <div className="ai-container">
           <span className="ai-text">
-            <span class="ai-text-temporal">Temporal</span>IQ
+            <span className="ai-text-temporal">Temporal</span>IQ
           </span>
         </div>
       </div>
@@ -29,7 +29,7 @@ function SearchBar({ onClick, open }) {
 function Modal({ show, close }) {
   if (show) {
     return (
-      <div stl className="modal-overlay" onClick={close}>
+      <div className="modal-overlay" onClick={close}>
         <div className="modal" onClick={(e) => e.stopPropagation()}>
           <iframe src="https://iq.temporal.io" />
         </div>
