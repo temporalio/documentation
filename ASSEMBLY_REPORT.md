@@ -732,6 +732,8 @@ cli/cmd-options/reason -> /cli/cmd-options#reason
 
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
+cli/workflow/list -> /cli/workflow#list
+
 concepts/what-is-the-temporal-web-ui -> /web-ui#
 
 cli/cmd-options/name -> /cli/cmd-options#name
