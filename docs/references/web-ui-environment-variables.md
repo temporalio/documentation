@@ -7,7 +7,7 @@ toc_max_heading_level: 4
 keywords:
 - docker
 - webui
-- ui-server
+- ui server
 - reference
 tags:
 - docker

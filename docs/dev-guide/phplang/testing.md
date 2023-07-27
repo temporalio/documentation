@@ -11,7 +11,7 @@ keywords:
 - developer-guide
 - sdk
 - php
-- php
+- PHP
 tags:
 - guide-context
 - developer-guide

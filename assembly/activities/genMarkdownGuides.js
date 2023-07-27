@@ -157,7 +157,7 @@ function genKeywordsMatter(guideCfg) {
     }
   }
   for (const kw of keywords) {
-    s = `${s}- ${localRef(guideCfg.id, kw)}\n`;
+    s = `${s}- ${(guideCfg.id, kw)}\n`;
   }
   return s;
 }

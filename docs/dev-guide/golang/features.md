@@ -12,12 +12,12 @@ keywords:
 - developer-guide
 - how-to
 - go-sdk
-- activities
-- activity-heartbeats
+- Activities
+- Activity Heartbeats
 - timers
 - sleep
 - sdk
-- go
+- Go
 - workers
 - sessions
 - task-routing

@@ -11,7 +11,7 @@ keywords:
 - java
 - developer-guide
 - how-to
-- java
+- Java
 - timers
 - sleep
 - workers

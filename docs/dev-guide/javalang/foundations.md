@@ -10,7 +10,7 @@ keywords:
 - guide-context
 - cli
 - developer-guide
-- java
+- Java
 - java
 - how-to
 - workers
