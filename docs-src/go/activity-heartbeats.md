@@ -4,8 +4,8 @@ title: How to Heartbeat an Activity
 sidebar_label: Activity Heartbeats
 description: An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
 tags:
-  - Activities
-  - Activity Heartbeats
+  - activities
+  - activity heartbeats
 ---
 
 An [Activity Heartbeat](/concepts/what-is-an-activity-heartbeat) is a ping from the [Worker Process](/concepts/what-is-a-worker-process) that is executing the Activity to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster).

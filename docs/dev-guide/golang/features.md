@@ -12,8 +12,9 @@ keywords:
 - developer-guide
 - how-to
 - go-sdk
-- Activities
-- Activity Heartbeats
+- activities
+- retries
+- activity heartbeats
 - timers
 - sleep
 - Go SDK
@@ -30,6 +31,7 @@ tags:
 - how-to
 - go-sdk
 - activities
+- retries
 - activity-heartbeats
 - timers
 - sleep
