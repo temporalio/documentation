@@ -31,14 +31,14 @@ We generally recommend writing the majority of your tests as integration tests.
 
 Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
 
-## Testing Activities {#test-activities}
+## Test Activities
 
 An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.
 This behavior allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
 
-## Testing Workflows {#test-workflows}
+## Test Workflows
 
-### How to mock Activities {#mock-activities}
+### Mock Activities
 
 Mock the Activity invocation when unit testing your Workflows.
 
@@ -128,7 +128,7 @@ To mock a failure, use the `expectFailure()` method:
 $this->activityMocks->expectFailure('SimpleActivity.echo', new \LogicException('something went wrong'));
 ```
 
-### How to skip time {#skip-time}
+### Skip time
 
 Some long-running Workflows can persist for months or even years.
 Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds rather than the Workflow's specified amount.
@@ -147,7 +147,7 @@ Time is a global property of an instance of `TestWorkflowEnvironment`: skipping 
 If you need different time behaviors for different tests, run your tests in a series or with separate instances of the test server.
 For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
 
-#### Set up time skipping {#setting-up}
+#### Setting up
 
 Learn to set up the time-skipping test framework in the SDK of your choice.
 

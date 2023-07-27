@@ -21,11 +21,11 @@ This section covers features related to viewing the state of the application, in
 - [Logging](#logging)
 - [Visibility](#visibility)
 
-## How to use Visibility APIs {#visibility}
+## Visibility
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
 
-### How to use Search Attributes {#search-attributes}
+### Search Attributes
 
 The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
@@ -52,7 +52,7 @@ The steps to using custom Search Attributes are:
 
 Here is how to query Workflow Executions:
 
-### How to set custom Search Attributes {#custom-search-attributes}
+### Custom Search Attributes
 
 After you've created custom Search Attributes in your Cluster (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
@@ -72,7 +72,7 @@ $workflow = $this->workflowClient->newWorkflowStub(
 );
 ```
 
-### How to upsert Search Attributes {#upsert-search-attributes}
+### Upsert Search Attributes
 
 You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
 
@@ -95,7 +95,7 @@ class GreetingWorkflow implements GreetingWorkflowInterface
 }
 ```
 
-### How to remove a Search Attribute from a Workflow {#remove-search-attribute}
+### Remove Search Attribute
 
 To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
 

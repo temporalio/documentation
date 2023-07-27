@@ -67,7 +67,7 @@ Path to config directory.
 
 An optional timeout for the context of an RPC call (in seconds). (default: 5)
 
-## temporal cron {#cron}
+## cron
 
 ```text
 Optional Cron Schedule for the Workflow.
