@@ -5,7 +5,7 @@ sidebar_label: schedule
 description: How to use the Temporal CLI schedule command
 toc_max_heading_level: 4
 keywords:
-- cli-reference
+- cli reference
 tags:
 - cli-reference
 ---

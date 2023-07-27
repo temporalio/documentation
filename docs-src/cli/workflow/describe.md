@@ -4,7 +4,7 @@ title: temporal workflow describe
 sidebar_label: describe
 description: Show information about a Workflow Execution.
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 The `temporal workflow describe` command shows information about a given [Workflow Execution](/concepts/what-is-a-workflow-execution).

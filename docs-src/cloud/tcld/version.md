@@ -5,7 +5,7 @@ sidebar_label: version
 description: How to get version information about tcld.
 tags:
   - tcld
-  - cli-reference
+  - cli reference
 ---
 
 The `tcld version` command gets version information about tcld.

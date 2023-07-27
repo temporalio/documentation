@@ -24,7 +24,7 @@ async function generateGuide(config, guideCfg) {
   for (const section of guideCfg.sections) {
     switch (section.type) {
       case "h2":
-        if (section.node.tags && Array.isArray(section.node.tags) && section.node.tags.includes("cli-reference")) {
+        if (section.node.tags && Array.isArray(section.node.tags) && section.node.tags.includes("cli reference")) {
           guideStr = `${guideStr}## ${section.node.label}\n\n`;
         } else {
           guideStr = `${guideStr}## ${section.node.title} {#${localRef(section.node.id, section.node.label)}}\n\n`;
@@ -33,7 +33,7 @@ async function generateGuide(config, guideCfg) {
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
       case "h3":
-        if (section.node.tags && Array.isArray(section.node.tags) && section.node.tags.includes("cli-reference")) {
+        if (section.node.tags && Array.isArray(section.node.tags) && section.node.tags.includes("cli reference")) {
           guideStr = `${guideStr}### ${section.node.label}\n\n`;
         } else {
           guideStr = `${guideStr}### ${section.node.title} {#${localRef(section.node.id, section.node.label)}}\n\n`;
@@ -42,7 +42,7 @@ async function generateGuide(config, guideCfg) {
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
       case "h4":
-        if (section.node.tags && Array.isArray(section.node.tags) && section.node.tags.includes("cli-reference")) {
+        if (section.node.tags && Array.isArray(section.node.tags) && section.node.tags.includes("cli reference")) {
           guideStr = `${guideStr}#### ${section.node.label}\n\n`;
         } else {
           guideStr = `${guideStr}#### ${section.node.title} {#${localRef(section.node.id, section.node.label)}}\n\n`;

@@ -4,7 +4,7 @@ title: temporal operator search-attribute list
 sidebar_label: list
 description: Lists all Search Attributes that can be used in list Workflow Queries.
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 The `temporal operator search-attribute list` command displays a list of all [Search Attributes](/concepts/what-is-a-search-attribute) that can be used in `temporal workflow list --query`.

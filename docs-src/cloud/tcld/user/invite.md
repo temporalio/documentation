@@ -5,7 +5,7 @@ sidebar_label: invite
 description: How to invite users to join Temporal Cloud using tcld.
 tags:
   - tcld
-  - cli-reference
+  - cli reference
 ---
 
 The `tcld namespace invite` command invites the specified user to join Temporal Cloud.

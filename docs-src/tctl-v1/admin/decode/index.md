@@ -5,7 +5,7 @@ sidebar_label: decode
 description: Decoding payloads.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl admin decode` command allows the user to decode payloads sent and received from executed Activities.

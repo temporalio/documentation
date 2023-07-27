@@ -5,7 +5,7 @@ sidebar_label: list_gossip
 description: How to describe ringpop membership items
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl admin membership list_gossip` command lists the ringpop membership items present on the targeted membership.

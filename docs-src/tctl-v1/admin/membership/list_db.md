@@ -5,7 +5,7 @@ sidebar_label: list_db
 description: How to describe Cluster membership items
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl admin membership list_db` command lists the Cluster items in a targeted membership.

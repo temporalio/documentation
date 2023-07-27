@@ -5,7 +5,7 @@ sidebar_label: delete
 description: How to delete users in Temporal Cloud using tcld.
 tags:
   - tcld
-  - cli-reference
+  - cli reference
 ---
 
 The `tcld user delete` command deletes the specified user in Temporal Cloud.

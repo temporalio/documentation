@@ -5,7 +5,7 @@ sidebar_label: describe_task
 description: displaying information on a Task within a shard
 tags:
   - tctl
-  - cli-reference
+  - cli reference
   - history-shards
 ---
 

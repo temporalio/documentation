@@ -9,7 +9,7 @@ keywords:
 - term
 - tctl
 - cli
-- cli-reference
+- cli reference
 tags:
 - term
 - tctl

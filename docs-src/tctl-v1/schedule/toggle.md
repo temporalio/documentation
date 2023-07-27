@@ -5,7 +5,7 @@ sidebar_label: toggle
 description: How to toggle (pause/unpause) a Schedule using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 ```shell

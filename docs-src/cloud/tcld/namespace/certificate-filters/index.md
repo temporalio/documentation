@@ -5,7 +5,7 @@ sidebar_label: certificate-filters
 description: How to manage certificate filters for a Namespace in Temporal Cloud using tcld.
 tags:
   - tcld
-  - cli-reference
+  - cli reference
 ---
 
 The `tcld namespace certificate-filters` commands manage optional certificate filters for the specified [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud. The Namespace can use certificate filters to authorize client certificates based on distinguished name (DN) fields.

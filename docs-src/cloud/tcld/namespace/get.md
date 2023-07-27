@@ -5,7 +5,7 @@ sidebar_label: get
 description: How to get information about a Namespace in Temporal Cloud using tcld.
 tags:
   - tcld
-  - cli-reference
+  - cli reference
 ---
 
 The `tcld namespace get` command gets information about the specified [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.

@@ -4,7 +4,7 @@ title: temporal active-cluster
 sidebar_label: active-cluster
 description: Active cluster name
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 Active cluster name.

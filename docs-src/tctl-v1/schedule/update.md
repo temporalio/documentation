@@ -5,7 +5,7 @@ sidebar_label: update
 description: How to update a Schedule using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 Any part of the Schedule configuration can be updated at any time.

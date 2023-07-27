@@ -5,7 +5,7 @@ sidebar_label: workflow
 description: How to use the Temporal CLI workflow command
 toc_max_heading_level: 4
 keywords:
-- cli-reference
+- cli reference
 tags:
 - cli-reference
 ---

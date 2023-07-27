@@ -5,7 +5,7 @@ sidebar_label: operator
 description: How to use the Temporal CLI operator commands
 toc_max_heading_level: 4
 keywords:
-- cli-reference
+- cli reference
 tags:
 - cli-reference
 ---

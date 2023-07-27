@@ -4,7 +4,7 @@ title: temporal output
 sidebar_label: output
 description: Output format.
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 format output as: table, json, card.

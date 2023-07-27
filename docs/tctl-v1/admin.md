@@ -6,7 +6,7 @@ description: How to use the tctl v1.17 admin command
 toc_max_heading_level: 4
 keywords:
 - tctl
-- cli-reference
+- cli reference
 - db
 - history-shards
 tags:

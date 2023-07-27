@@ -5,7 +5,7 @@ sidebar_label: server
 description: How to use the Temporal CLI server command
 toc_max_heading_level: 4
 keywords:
-- cli-reference
+- cli reference
 tags:
 - cli-reference
 ---

@@ -5,7 +5,7 @@ sidebar_label: terminate
 description: How to terminate a batch job using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl batch terminate` command terminates a batch job.
