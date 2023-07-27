@@ -542,7 +542,7 @@ Terminate only if the Workflow is stuck and cannot be canceled normally.
 To cancel a Workflow in Python, use the [cancel()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#cancel) function on the Workflow Handle ID.
 
 ```python
-your_workflow_id_handle.cancel()
+await client.get_workflow_handle("your_workflow_id").cancel()
 ```
 
 ### How to terminate a Workflow Execution in Python {#terminate-a-workflow-execution}
@@ -550,7 +550,7 @@ your_workflow_id_handle.cancel()
 To terminate a Workflow in Python, use the [terminate()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#terminate) function on the Workflow Handle ID.
 
 ```python
-your_workflow_id_handle.terminate()
+await client.get_workflow_handle("your_workflow_id").terminate()
 ```
 
 ## How to start a Child Workflow Execution {#child-workflows}

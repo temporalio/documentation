@@ -8,5 +8,5 @@ description: Terminate a Workflow Execution.
 To terminate a Workflow in Python, use the [terminate()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#terminate) function on the Workflow Handle ID.
 
 ```python
-your_workflow_id_handle.terminate()
+await client.get_workflow_handle("your_workflow_id").terminate()
 ```

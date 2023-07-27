@@ -8,5 +8,5 @@ description: Cancel a Workflow Execution
 To cancel a Workflow in Python, use the [cancel()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#cancel) function on the Workflow Handle ID.
 
 ```python
-your_workflow_id_handle.cancel()
+await client.get_workflow_handle("your_workflow_id").cancel()
 ```
