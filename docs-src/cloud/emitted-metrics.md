@@ -12,26 +12,26 @@ tags:
 
 Temporal tracks the following metrics for your various Namespaces.
 
-- temporal_cloud_v0_frontend_service_error_count
-- temporal_cloud_v0_frontend_service_request_count
-- temporal_cloud_v0_poll_success_count
-- temporal_cloud_v0_poll_success_sync_count
-- temporal_cloud_v0_poll_timeout_count
-- temporal_cloud_v0_schedule_action_success_count
-- temporal_cloud_v0_schedule_buffer_overruns_count
-- temporal_cloud_v0_schedule_missed_catchup_window_count
-- temporal_cloud_v0_schedule_rate_limited_count
-- temporal_cloud_v0_service_latency_bucket
-- temporal_cloud_v0_service_latency_count
-- temporal_cloud_v0_service_latency_sum
-- temporal_cloud_v0_state_transition_count
-- temporal_cloud_v0_total_action_count
-- temporal_cloud_v0_workflow_cancel_count
-- temporal_cloud_v0_workflow_continued_as_new_count
-- temporal_cloud_v0_workflow_failed_count
-- temporal_cloud_v0_workflow_success_count
-- temporal_cloud_v0_workflow_terminate_count
-- temporal_cloud_v0_workflow_timeout_count
+- temporal_cloud_v0_frontend_service_error_count - gRPC errors returned aggregated by operation
+- temporal_cloud_v0_frontend_service_request_count - gRPC requests received aggregated by operation
+- temporal_cloud_v0_poll_success_count - Tasks that are successfully matched to a poller
+- temporal_cloud_v0_poll_success_sync_count - Tasks that are successfully sync matched to a poller
+- temporal_cloud_v0_poll_timeout_count - When no tasks are available for a poller before timing out
+- temporal_cloud_v0_schedule_action_success_count - Successful execution of a Scheduled Workflow
+- temporal_cloud_v0_schedule_buffer_overruns_count - When average schedule run length is greater than average schedule interval while a `buffer_all` overlap policy is configured
+- temporal_cloud_v0_schedule_missed_catchup_window_count - Skipped Scheduled executions when Workflows were delayed longer than the catchup window
+- temporal_cloud_v0_schedule_rate_limited_count - Workflows that were delayed due to exceeding a rate limit
+- temporal_cloud_v0_service_latency_bucket - Latency for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations
+- temporal_cloud_v0_service_latency_count - Count of latency observations for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations
+- temporal_cloud_v0_service_latency_sum - Sum of latency observation time for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations
+- temporal_cloud_v0_state_transition_count - Count of state transitions for each namespace
+- temporal_cloud_v0_total_action_count - Approximate count of Temporal Cloud actions
+- temporal_cloud_v0_workflow_cancel_count - Workflows canceled before completing execution
+- temporal_cloud_v0_workflow_continued_as_new_count - Workflow executions that were continued as new from a past execution
+- temporal_cloud_v0_workflow_failed_count - Workflows that failed before completion
+- temporal_cloud_v0_workflow_success_count - Workflows that successfully completed
+- temporal_cloud_v0_workflow_terminate_count - Workflows terminated before completing execution
+- temporal_cloud_v0_workflow_timeout_count - Workflows that timed out before completing execution
 
 Metrics for all Namespaces in your account are available from the metrics endpoint.
 The `temporal_namespace` label identifies the Namespace that is associated with each metric so that each user can build their own dashboard to meet their needs.

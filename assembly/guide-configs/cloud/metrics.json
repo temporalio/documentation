@@ -28,6 +28,10 @@
     },
     {
       "type": "h2",
+      "id": "cloud/how-to-use-metrics"
+    },
+    {
+      "type": "h2",
       "id": "cloud/prometheus-grafana-setup"
     }
   ]
