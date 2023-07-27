@@ -16,7 +16,7 @@ Signal-With-Start is a Client method that takes the following arguments:
 - Signal input
 
 If there is a running Workflow Execution with the given Workflow Id, it will be Signaled.
-Otherwise, a new Workflow Execution will be started and immediately Signaled.
+Otherwise, a new Workflow Execution is started and immediately sent the Signal.
 
 How to Signal-With-Start in:
 
