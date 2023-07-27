@@ -12,7 +12,7 @@ tags:
 
 Temporal Cloud and SDKs generate metrics for monitoring performance and troubleshooting errors.
 
-Temporal Cloud emits metrics through a [Prometheus HTTP API endpoint](https://prometheus.io/docs/prometheus/latest/querying/api/) which can be directly used as a Prometheus data source in Grafana or to query and export Cloud metrics to any observability platform.
+Temporal Cloud emits metrics through a [Prometheus HTTP API endpoint](https://prometheus.io/docs/prometheus/latest/querying/api/), which can be directly used as a Prometheus data source in Grafana or to query and export Cloud metrics to any observability platform.
 
 The open-source SDKs require you to set up a Prometheus scrape endpoint for Prometheus to collect and aggregate the Worker and Client metrics.
 
