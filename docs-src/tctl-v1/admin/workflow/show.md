@@ -5,8 +5,7 @@ sidebar_label: show
 description: Showing Workflow history.
 tags:
   - tctl
-  - admin
-  - workflow
+  - cli-reference
 ---
 
 The `tctl admin workflow show` command displays Workflow history from the database.

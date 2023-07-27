@@ -1,12 +1,13 @@
 ---
 id: cron
-title: temporal  cron
+title: temporal cron
 sidebar_label: cron
-description: Optional Cron Schedule for the Workflow. 
+description: Optional Cron Schedule for the Workflow.
 tags:
-    - cli
+  - cli
 ---
 
+```text
 Optional Cron Schedule for the Workflow.
 ┌───────────── minute (0 - 59)
 │ ┌───────────── hour (0 - 23)
@@ -14,5 +15,4 @@ Optional Cron Schedule for the Workflow.
 │ │ │ ┌───────────── month (1 - 12)
 │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
 │ │ │ │ │
-
----
+```

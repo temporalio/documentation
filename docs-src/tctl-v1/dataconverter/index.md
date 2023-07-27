@@ -5,6 +5,7 @@ sidebar_label: dataconverter
 description: How to operate custom Data Converters using tctl.
 tags:
   - tctl
+  - cli-reference
 ---
 
 The `tctl dataconverter` command enables custom [Data Converter](/concepts/what-is-a-data-converter) operations.
