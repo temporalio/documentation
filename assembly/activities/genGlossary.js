@@ -1,6 +1,8 @@
 import fs from "fs-extra";
 import path from "path";
+import { localRef } from "../common/index.js";
 
+const ukid = "glossary gen unknown id";
 const glossFrontmatter = `---
 id: glossary
 title: Glossary
@@ -37,7 +39,7 @@ async function getTerms(config, sourceNodes) {
   for (const node of sourceNodes) {
     if (node.tags !== undefined) {
       tagloop: for (const tag of node.tags) {
-        if (tag == "term") {
+        if (localRef(node.id, tag) == "term") {
           const slug = await findSlug(matchedGuides.full_index, node.id);
           const term = {
             label: node.label,
@@ -98,7 +100,7 @@ async function findSlug(fullIndex, nodeId) {
 function genTagString(tags) {
   let s = "_Tags: ";
   for (const tag of tags) {
-    s = `${s}[${tag}](/tags/${tag}), `;
+    s = `${s}[${localRef(ukid, tag)}](/tags/${localRef(ukid, tag)}), `;
   }
   s = s.slice(0, -2);
   s = `${s}_\n\n`;

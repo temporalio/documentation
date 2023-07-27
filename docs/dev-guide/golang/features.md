@@ -16,6 +16,8 @@ keywords:
 - Activity Heartbeats
 - timers
 - sleep
+- Go SDK
+- How-to
 - sdk
 - Go
 - workers
@@ -31,6 +33,8 @@ tags:
 - activity-heartbeats
 - timers
 - sleep
+- go-sdk
+- how-to
 - sdk
 - go
 - workers
