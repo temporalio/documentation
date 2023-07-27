@@ -5,8 +5,8 @@ sidebar_label: Namespace-level permissions
 description: Namespace-level permissions are Namespace Admin, Write, and Read-Only.
 tags:
   - temporal-cloud
-  - namespaces
-  - users
+  - namespace
+  - user
   - explanation
 ---
 

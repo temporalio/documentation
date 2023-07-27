@@ -17,7 +17,7 @@ tags:
 The operating envelope of Temporal Cloud includes availability, regions, throughput, and latency.
 If you need more details, [contact us](https://pages.temporal.io/contact-us).
 
-## Availability
+## What is Temporal Cloud's SLA on Availability? {#availability}
 
 The Temporal Cloud service level agreement (SLA) promises 99.9% availability of the cloud service and a 99.9% guarantee against service errors.
 
@@ -53,14 +53,14 @@ Internally, our components are distributed across a minimum of three availabilit
 
 For current system status and information about recent incidents, see [Temporal Status](https://status.temporal.io/).
 
-## Regions
+## Where is Temporal Cloud hosted and running? {#regions}
 
 Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS).
 Although Temporal Cloud currently runs only on AWS, it works with applications running in any cloud or data center.
 
-To reduce latency, we recommend that you create your <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in a region that is geographically close to where your <a class="tdlp" href="/workers#worker">Workers<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a> are hosted, but your Workers and <a class="tdlp" href="/temporal#temporal-client">Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> code don't need to be hosted on AWS.
+To reduce latency, we recommend that you create your <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in a region that is geographically close to where your <a class="tdlp" href="/workers#worker">Workers<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a> are hosted, but your Workers and <a class="tdlp" href="/temporal#temporal-client">Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client?</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> code don't need to be hosted on AWS.
 
-## Throughput
+## What kind of throughput can I get with Temporal Cloud? {#throughput}
 
 A Namespace has a default quota of 200 <a class="tdlp" href="/cloud/introduction/pricing#action">Actions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Action?</span><br /><br /><span class="tdlppd">An Action is the fundamental pricing unit in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/introduction/pricing#action">Learn more</a></span></span></a> per second with spikes up to 400 Actions per second.
 However, Temporal Cloud can provide more than 150,000 Actions per second.
@@ -70,7 +70,7 @@ Actions like Start or Signal Workflow Execution always receive higher priority t
 
 To raise your quota, create a <a class="tdlp" href="/cloud/introduction/support#support-ticket">support ticket<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/introduction/support#support-ticket">Learn more</a></span></span></a>.
 
-## Latency
+## What kind of latency can I expect from Temporal Cloud? {#latency}
 
 Our latency SLO is 200ms per region for p99.
 Latency is greatly influenced by the actual throughput of a single <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>.

@@ -5,6 +5,7 @@ sidebar_label: accepted-client-ca
 description: How to managed the end-entity certificates for the metrics endpoint of a Temporal Cloud account using tcld.
 tags:
   - tcld
+  - cli-reference
 ---
 
 The `tcld account metrics accepted-client-ca` commands manage the end-entity certificates for the metrics endpoint of the Temporal Cloud account that is currently logged in.

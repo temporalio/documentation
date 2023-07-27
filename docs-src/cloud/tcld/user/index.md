@@ -5,6 +5,7 @@ sidebar_label: user
 description: How to manage users in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli-reference
 ---
 
 The `tcld user` commands manage users in Temporal Cloud.

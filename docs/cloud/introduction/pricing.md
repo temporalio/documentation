@@ -23,7 +23,7 @@ Temporal Cloud is a consumption-based service; you pay only for what you need wh
 
 This page introduces the elements of Temporal Cloud pricing so that you can estimate costs for your implementation. To gain a reliable estimate, [contact our team](https://pages.temporal.io/contact-us).
 
-## Action
+## What is an Action? {#action}
 
 Actions are the fundamental consumption pricing unit in Temporal Cloud.
 An Action in Temporal occurs as part of an execution of your Workflow.
@@ -84,7 +84,7 @@ The following operations result in Actions.
 
 [Reach out to our team](https://pages.temporal.io/contact-us) to get more information or to help size your number of Actions.
 
-## Storage
+## What are the Temporal Cloud storage prices? {#storage}
 
 An execution of a particular Workflow could exist for a few seconds, a day, month, or even forever. Temporal collects the Event History during this time and dispatches work when necessary. In this context, a Workflow Execution has only two states, open (active) or closed.
 
@@ -108,7 +108,7 @@ If you purchase Temporal Cloud credits (as outlined earlier), running storage co
 | 500 to 1999         | $0.013           |
 | 2000 or more        | $0.010           |
 
-## Support
+## What kind of support do I get with Temporal Cloud? {#support}
 
 With a subscription to Temporal Cloud, you also gain access to our support organization of developer success engineers and solution architects. Our experts assist with a range of work streams from Workflow design reviews to setting up observability to break/fix support with an agreed-upon set of SLAs.
 
@@ -126,7 +126,7 @@ If an issue occurs, the team provides support through our <a class="tdlp" href="
 Business hours for Temporal Support are 0500–1700 Monday–Friday (Pacific Time).
 For P0 issues, coverage is 24×7.
 
-## SSO and SAML
+## What is the price for SSO and SAML? {#sso-and-saml}
 
 We offer single sign-on (SSO) integration using SAML at a monthly fixed fee based on the number of users registered in Temporal Cloud:
 
@@ -136,11 +136,11 @@ We offer single sign-on (SSO) integration using SAML at a monthly fixed fee base
 | 26 to 50  | $300               |
 | 51+       | $500               |
 
-## Pricing estimates
+## How to estimate costs {#pricing-estimates}
 
 Temporal Cloud employs a consumption-based pricing model that's based on storage and execution, factors that vary from one Workflow to the next. You can estimate the cost of a specific Workflow by running it at a low volume and then using its storage and compute measurements to project your production-scale cost. Our team is happy to [help you estimate the cost](https://pages.temporal.io/contact-us) for your specific workloads.
 
-## Pricing FAQ
+## Pricing FAQ {#pricing-faq}
 
 Q: What’s the minimum cost to run Temporal Cloud?
 

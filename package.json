@@ -2,6 +2,7 @@
   "name": "temporal-documentation",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "assemble": "./assemble.js",
     "build": "docusaurus build",
@@ -9,8 +10,8 @@
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus",
     "format": "dprint fmt",
-    "gen-cloud": "snipsync && ./assemble.js --cloud && dprint fmt && docusaurus build",
     "gen": "snipsync && ./assemble.js && dprint fmt && docusaurus build",
+    "gen-cloud": "snipsync && ./assemble.js --cloud && dprint fmt && docusaurus build",
     "lint": "vale docs-src/**/*.md",
     "lint:go": "vale docs-src/go/*.md",
     "lint:java": "vale docs-src/java/*.md",
@@ -23,10 +24,22 @@
     "write-heading-ids": "docusaurus write-heading-ids",
     "write-translations": "docusaurus write-translations"
   },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "dependencies": {
-    "@docusaurus/core": "^2.4.0",
-    "@docusaurus/preset-classic": "^2.4.0",
-    "@docusaurus/theme-mermaid": "^2.2.0",
+    "@docusaurus/core": "^2.4.1",
+    "@docusaurus/preset-classic": "^2.4.1",
+    "@docusaurus/theme-mermaid": "^2.4.1",
     "@mdx-js/react": "^1.5.8",
     "beautiful-react-diagrams": "^0.5.1",
     "chart.js": "3.7.1",
@@ -45,18 +58,6 @@
     "typescript": "4.x",
     "uuid": "^8.3.2",
     "webpack-font-preload-plugin": "^1.5.0"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "dprint": "^0.38.3",

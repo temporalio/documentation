@@ -4,7 +4,7 @@ title: temporal operator cluster describe
 sidebar_label: describe
 description: Show information about the Cluster.
 tags:
-    - cli
+  - cli-reference
 ---
 
 The `temporal operator cluster describe` command shows information about the [Cluster](/concepts/what-is-a-temporal-cluster).

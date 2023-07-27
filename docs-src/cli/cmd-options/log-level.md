@@ -1,10 +1,10 @@
 ---
 id: log-level
-title: temporal  log-level
+title: temporal log-level
 sidebar_label: log-level
-description: Set the log level. 
+description: Set the log level.
 tags:
-    - cli
+  - cli-reference
 ---
 
 Set the log level.

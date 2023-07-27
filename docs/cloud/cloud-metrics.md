@@ -26,7 +26,7 @@ To ensure security of your metrics, a CA certificate dedicated to observability 
 Only clients that use certificates signed by that CA, or that chain up to the CA, can query the metrics endpoint.
 For more information about CA certificates in Temporal Cloud, see [Certificate requirements](https://docs.temporal.io/cloud/certificates-intro#certificate-requirements).
 
-## Configure via UI
+## How to configure a metrics endpoint using Temporal Cloud UI {#configure-via-ui}
 
 :::note
 
@@ -80,7 +80,7 @@ $ curl --cert client.pem --key client-key.pem "https://<account-id>.tmprl.cloud/
 }
 ```
 
-## Configure via CLI (tcld)
+## How to configure a metrics endpoint using the tcld CLI {#configure-via-cli-(tcld)}
 
 To add a certificate to a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#add"> `tcld account metrics accepted-client-ca add`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld account metrics accepted-client-ca add</span><br /><br /><span class="tdlppd">How to add end-entity certificates to the metrics endpoint of a Temporal Cloud account using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/account#add">Learn more</a></span></span></a>.
 
@@ -90,7 +90,7 @@ To disable a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#dis
 
 See the <a class="tdlp" href="/cloud/tcld/account#metrics">tcld account metrics command<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld account metrics</span><br /><br /><span class="tdlppd">How to configure the metrics endpoint for a Temporal Cloud account using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/account#metrics">Learn more</a></span></span></a> reference for details.
 
-## Available metrics
+## What metrics are emitted from Temporal Cloud? {#available-metrics}
 
 Temporal tracks the following metrics for your various Namespaces.
 
@@ -122,7 +122,7 @@ Metrics lag real-time performance by approximately one minute.
 
 We retain raw metrics for seven days.
 
-## Prometheus and Grafana setup
+## How to set up Grafana with Temporal Cloud observability to view metrics {#prometheus-and-grafana-setup}
 
 Temporal Cloud and SDKs generate metrics for monitoring performance and troubleshooting errors.
 

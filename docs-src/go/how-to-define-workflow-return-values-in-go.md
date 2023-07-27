@@ -3,6 +3,8 @@ id: how-to-define-workflow-return-values-in-go
 title: How to define Workflow return values in Go
 sidebar_label: Workflow return values
 description: A Go-based Workflow Definition can return either just an error or a customValue, error combination.
+tags:
+  - go-sdk
 ---
 
 A Go-based Workflow Definition can return either just an `error` or a `customValue, error` combination.
@@ -31,7 +33,7 @@ type YourWorkflowResultObject struct {
 }
 // ...
 // YourWorkflowDefinition is your custom Workflow Definition.
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
 // ...
 	if err != nil {
 		return nil, err

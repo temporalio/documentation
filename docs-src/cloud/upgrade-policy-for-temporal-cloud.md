@@ -5,8 +5,8 @@ sidebar_label: Upgrade policy
 description: Basic upgrade policy for customers of Temporal Cloud
 tags:
   - explanation
-  - temporal-cloud
-  - operations
+  - temporal cloud
+  - upgrade
 ---
 
 All customers will automatically be upgraded to the latest minor version.

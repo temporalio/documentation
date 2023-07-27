@@ -5,6 +5,7 @@ sidebar_label: delete
 description: How to delete a Schedule using tctl
 tags:
   - tctl
+  - cli-reference
 ---
 
 A Schedule can be deleted.

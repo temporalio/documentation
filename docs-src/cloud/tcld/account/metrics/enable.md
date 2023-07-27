@@ -5,6 +5,7 @@ sidebar_label: enable
 description: How to enable the metrics endpoint for a Temporal Cloud account using tcld.
 tags:
   - tcld
+  - cli-reference
 ---
 
 The `tcld account metrics enable` command enables the metrics endpoint for the Temporal Cloud account that is currently logged in.

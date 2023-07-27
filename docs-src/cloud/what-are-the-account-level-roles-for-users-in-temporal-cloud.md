@@ -6,7 +6,7 @@ description: Account-level Roles are Global Admin, Developer, and Read-Only.
 tags:
   - temporal-cloud
   - temporal-cloud-account
-  - users
+  - user
   - explanation
 ---
 
