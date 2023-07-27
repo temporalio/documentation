@@ -6,6 +6,10 @@ sidebar_position: 5
 description: There is a tight coupling between Temporal Task Queues and Worker Processes.
 slug: /workers
 toc_max_heading_level: 4
+keywords:
+- term
+- explanation
+- versioning
 tags:
 - term
 - explanation

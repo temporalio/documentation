@@ -5,7 +5,7 @@ sidebar_label: describe
 description: How to describe the progress of a batch job using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl batch describe` command describes the progress of a batch job.

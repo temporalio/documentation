@@ -5,6 +5,12 @@ sidebar_label: Observability
 sidebar_position: 3
 description: The Observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view what Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 toc_max_heading_level: 4
+keywords:
+- guide-context
+- developer-guide
+- sdk
+- python
+- how-to
 tags:
 - guide-context
 - developer-guide

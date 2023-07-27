@@ -4,7 +4,7 @@ title: temporal enable-connection
 sidebar_label: enable-connection
 description: Enable cross-cluster connection
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 Enable cross-cluster connection.

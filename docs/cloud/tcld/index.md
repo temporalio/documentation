@@ -4,6 +4,9 @@ title: tcld command reference
 sidebar_label: CLI (tcld)
 description: How to use Temporal Cloud's tcld operational tool
 toc_max_heading_level: 4
+keywords:
+- operation-guide
+- tcld
 tags:
 - operation-guide
 - tcld

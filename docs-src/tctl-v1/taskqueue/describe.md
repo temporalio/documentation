@@ -5,7 +5,7 @@ sidebar_label: describe
 description: How to describe the poller information of a Task Queue using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl taskqueue describe` command describes the poller information of a [Task Queue](/concepts/what-is-a-task-queue).

@@ -4,7 +4,7 @@ title: temporal retention
 sidebar_label: retention
 description: Workflow Execution retention
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 Workflow Execution retention.

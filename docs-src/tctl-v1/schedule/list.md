@@ -5,7 +5,7 @@ sidebar_label: list
 description: How to list Schedules using tctl
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 ```shell

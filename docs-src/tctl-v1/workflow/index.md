@@ -5,7 +5,7 @@ sidebar_label: workflow
 description: How to operate Workflow Executions using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl workflow` commands enable [Workflow Execution](/workflows#workflow-execution) operations.

@@ -5,7 +5,7 @@ sidebar_label: get_search_attributes
 description: Showing existing search attributes.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl admin cluster get_search_attributes` command retrieves existing Search Attributes for a given Cluster.

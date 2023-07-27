@@ -4,6 +4,9 @@ title: tcld request command reference
 sidebar_label: request
 description: How to use Temporal Cloud's tcld request command.
 toc_max_heading_level: 4
+keywords:
+- tcld
+- cli reference
 tags:
 - tcld
 - cli-reference

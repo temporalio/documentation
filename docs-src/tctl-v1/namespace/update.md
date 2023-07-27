@@ -5,7 +5,7 @@ sidebar_label: update
 description: How to update a Namespace using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl namespace update` command updates a [Namespace](/concepts/what-is-a-namespace).

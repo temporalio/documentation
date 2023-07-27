@@ -5,7 +5,7 @@ sidebar_label: base64
 description: Decoding Payloads to Base64.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl admin decode base64` command decodes base64 Payloads.
