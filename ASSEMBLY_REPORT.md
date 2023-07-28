@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday July 27 2023 14:17:25 PM -0500
+Last assembled: Friday July 28 2023 11:32:03 AM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -731,8 +731,6 @@ cli/cmd-options/detail -> /cli/cmd-options#detail
 cli/cmd-options/reason -> /cli/cmd-options#reason
 
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
-
-cli/workflow/list -> /cli/workflow#list
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
 
