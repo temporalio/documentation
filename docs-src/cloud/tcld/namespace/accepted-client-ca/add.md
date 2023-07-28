@@ -40,7 +40,7 @@ Alias: `-r`
 tcld namespace accepted-client-ca add --request-id <request_id> --ca-certificate <encoded_certificate>
 ```
 
-#### `--resource-version`
+#### --resource-version
 
 Specify a resource version (ETag) to update from. If not specified, the latest version is used.
 
@@ -52,7 +52,7 @@ Alias: `-v`
 tcld namespace accepted-client-ca add --resource-version <etag> --ca-certificate <encoded_certificate>
 ```
 
-#### `--ca-certificate`
+#### --ca-certificate
 
 _Required modifier unless `--ca-certificate-file` is specified_
 
@@ -68,7 +68,7 @@ Alias: `-c`
 tcld namespace accepted-client-ca add --ca-certificate <encoded_certificate>
 ```
 
-#### `--ca-certificate-file`
+#### --ca-certificate-file
 
 _Required modifier unless `--ca-certificate` is specified_
 
