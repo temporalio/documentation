@@ -4,8 +4,10 @@ title: How to set Workflow Timeouts in Go
 sidebar_label: Workflow Timeouts
 description: Create an instance of StartWorkflowOptions.
 tags:
-  - go
-  - how-to
+  - go-sdk
+  - how-to-doc-type
+  - workflow-options
+  - workflow-execution
 ---
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set a timeout, and pass the instance to the `ExecuteWorkflow` call.

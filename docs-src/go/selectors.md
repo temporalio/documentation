@@ -4,7 +4,9 @@ title: Go SDK Selectors
 sidebar_label: Selectors
 description: Implementing Selectors in the Temporal Go SDK.
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - go-sdk
+  - api
 ---
 
 ### Overview

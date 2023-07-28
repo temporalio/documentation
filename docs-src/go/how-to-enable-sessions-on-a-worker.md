@@ -5,6 +5,9 @@ sidebar_label: Enable Sessions
 description: Set EnableSessionWorker to true in the Worker options.
 tags:
   - go-sdk
+  - workers
+  - sessions
+  - how-to-doc-type
 ---
 
 Set `EnableSessionWorker` to `true` in the Worker options.

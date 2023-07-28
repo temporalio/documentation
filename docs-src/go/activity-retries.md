@@ -4,8 +4,9 @@ title: How to set an Activity Retry Policy
 sidebar_label: Activity retries
 description: Activity Executions are automatically associated with a default Retry Policy if a custom one is not provided.
 tags:
-  - activities
-  - retries
+  - activity
+  - retry-and-timeout-policies
+  - activity-execution
 ---
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.

@@ -5,6 +5,8 @@ sidebar_label: Handle Update
 description: Use the SetUpateHandler API from the go.temporal.io/sdk/workflow package to register an Update Handler for a given name.
 tags:
   - go-sdk
+  - how-to-doc-type
+  
 ---
 
 Register an Update handler for a given name using the [SetUpdateHandler](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandler) API from the `go.temporal.io/sdk/workflow` package.

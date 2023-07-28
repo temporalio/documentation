@@ -4,7 +4,9 @@ title: Workflow timeouts
 description: Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 sidebar_label: Workflow timeouts
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - workflow-execution
+  - workflow-options
 ---
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.

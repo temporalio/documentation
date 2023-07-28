@@ -5,6 +5,9 @@ sidebar_label: Worker Session
 description: Enable Sessions on the Worker via the Worker Options and then use the `CreateSession` API to create a Context object that can be passed to the calls to spawn Activity Executions.
 tags:
   - go-sdk
+  - how-to-doc-type
+  - sessions
+  - api
 ---
 
 Use the [`CreateSession`](https://pkg.go.dev/go.temporal.io/sdk/workflow#CreateSession) API to create a Context object that can be passed to calls to spawn Activity Executions.

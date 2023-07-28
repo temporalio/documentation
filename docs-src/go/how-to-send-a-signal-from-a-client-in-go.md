@@ -4,8 +4,10 @@ title: How to send a Signal from a Temporal Client in Go
 sidebar_label: Send Signal from Client
 description: Use the `SignalWorkflow()` method on an instance of the Go SDK Temporal Client to send a Signal to a Workflow Execution.
 tags:
-  - go
-  - how-to
+  - go-sdk
+  - how-to-doc-type
+  - signals
+  - signals-feature
 ---
 
 Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a [Signal](/concepts/what-is-a-signal) to a [Workflow Execution](/workflows#workflow-execution).

@@ -4,8 +4,10 @@ title: How to handle a Signal in Go
 sidebar_label: Handle Signal
 description: Use the `GetSignalChannel()` API from the `go.temporal.io/sdk/workflow` package to get the Signal Channel.
 tags:
-  - go
-  - how-to
+  - go-sdk
+  - how-to-doc-type
+  - signals
+  - signals-feature
 ---
 
 Use the `GetSignalChannel()` API from the `go.temporal.io/sdk/workflow` package to get the Signal Channel.
