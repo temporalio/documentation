@@ -6,18 +6,6 @@ sidebar_position: 1
 description: The Foundations section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/go/foundations
 toc_max_heading_level: 4
-keywords:
-- guide-context
-- cli
-- developer-guide
-- go
-- go-sdk
-- workflow-type
-- activities
-- best practices
-- how-to
-- options
-- workers
 tags:
 - guide-context
 - cli
@@ -26,7 +14,7 @@ tags:
 - go-sdk
 - workflow-type
 - activities
-- best-practices
+- best practices
 - how-to
 - options
 - workers
@@ -52,7 +40,7 @@ In this section you can find the following:
 - <a class="tdlp" href="#run-a-temporal-cloud-worker">Run a Temporal Cloud Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run a Temporal Cloud Worker</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-temporal-cloud-worker">Learn more</a></span></span></a>
 - <a class="tdlp" href="#start-workflow-execution">Start a Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#start-workflow-execution">Learn more</a></span></span></a>
 
-## How to install Temporal CLI and run a development server {#run-a-development-server}
+## Run a development server
 
 This section describes how to install the [Temporal CLI](/cli) and run a development Cluster.
 The local development Cluster comes packaged with the [Temporal Web UI](/web-ui).
@@ -136,7 +124,7 @@ For a full list of options, run:
 temporal server start-dev --help
 ```
 
-## How to install a Temporal SDK {#install-a-temporal-sdk}
+## Install a Temporal SDK
 
 A <a class="tdlp" href="/temporal#temporal-sdk">Temporal SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal SDK?</span><br /><br /><span class="tdlppd">A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-sdk">Learn more</a></span></span></a> provides a framework for <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Application?</span><br /><br /><span class="tdlppd">A Temporal Application is a set of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-application">Learn more</a></span></span></a> development.
 
@@ -161,13 +149,13 @@ Or clone the Go SDK repo to your preferred location:
 git clone git@github.com:temporalio/sdk-go.git
 ```
 
-### How to find the Go SDK API reference {#api-reference}
+### API reference
 
 The Temporal Go SDK API reference is published on [pkg.go.dev](https://pkg.go.dev/go.temporal.io/sdk).
 
 - Short link: [`t.mp/go-api`](https://t.mp/go-api)
 
-### Where are SDK-specific code examples? {#code-samples}
+### Code samples
 
 You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio?q=samples-&type=all&language=&sort=).
 
@@ -183,7 +171,7 @@ Additionally, several of the [Tutorials](https://learn.temporal.io) are backed b
 - [eCommerce application example in Go](https://github.com/temporalio/temporal-ecommerce): Showcases a per-user shopping cart–style Workflow Definition that includes an API for adding and removing items from the cart as well as a web UI.
   This application sample works in conjunction with the [eCommerce in Go tutorial](https://temporal.io/blog/build-an-ecommerce-app-with-temporal-part-1).
 
-## How to connect a Temporal Client to a Temporal Cluster {#connect-to-a-dev-cluster}
+## Connect to a dev Cluster
 
 A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client?</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> enables you to communicate with the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 Communication with a Temporal Cluster includes, but isn't limited to, the following:
@@ -241,7 +229,7 @@ func main() {
 }
 ```
 
-## How to connect to Temporal Cloud {#connect-to-temporal-cloud}
+## Connect to Temporal Cloud
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
@@ -311,7 +299,7 @@ func main() {
 }
 ```
 
-## How to develop a basic Workflow {#develop-workflows}
+## Develop Workflows
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>.
 
@@ -337,7 +325,7 @@ func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
 }
 ```
 
-### How to define Workflow parameters {#workflow-parameters}
+### Workflow parameters
 
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
@@ -381,7 +369,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 }
 ```
 
-### How to define Workflow return parameters {#workflow-return-values}
+### Workflow return values
 
 Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
@@ -427,7 +415,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 }
 ```
 
-### How to customize Workflow Type in Go {#customize-workflow-type}
+### Customize Workflow Type
 
 In Go, by default, the Workflow Type name is the same as the function name.
 
@@ -462,7 +450,7 @@ func main() {
 }
 ```
 
-### How develop Workflow logic {#workflow-logic-requirements}
+### Workflow logic requirements
 
 Workflow logic is constrained by <a class="tdlp" href="/workflows#deterministic-constraints">deterministic execution requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#deterministic-constraints">Learn more</a></span></span></a>.
 Therefore, each language is limited to the use of certain idiomatic techniques.
@@ -494,7 +482,7 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 ```go
 ```
 
-## How to develop an Activity Definition in Go {#activity-definition}
+## Activity Definition
 
 In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
 Below is an example of both a basic Activity Definition and of an Activity defined as a Struct method.
@@ -539,7 +527,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 }
 ```
 
-### How to develop Activity Parameters {#activity-parameters}
+### Activity parameters
 
 There is no explicit limit to the total number of parameters that an <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a> may support.
 However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
@@ -577,7 +565,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 }
 ```
 
-### How to define Activity return values {#activity-return-values}
+### Activity return values
 
 All data returned from an Activity must be serializable.
 
@@ -609,7 +597,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 }
 ```
 
-### How to customize Activity Type in Go {#customize-activity-type}
+### Customize Activity Type
 
 To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
 
@@ -631,7 +619,7 @@ func main() {
 }
 ```
 
-## How to start an Activity Execution {#activity-execution}
+## Activity Execution
 
 Calls to spawn <a class="tdlp" href="/activities#activity-execution">Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a> are written within a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>.
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
@@ -681,7 +669,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 }
 ```
 
-### How to set the required Activity Timeouts {#required-timeout}
+### Required timeout
 
 Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a <a class="tdlp" href="/activities#start-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a> or a <a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a>.
@@ -710,7 +698,7 @@ if err != nil {
 }
 ```
 
-### Go ActivityOptions reference {#activity-options-reference}
+### Activity Options reference
 
 Create an instance of [`ActivityOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ActivityOptions) from the `go.temporal.io/sdk/workflow` package and use [`WithActivityOptions()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#WithActivityOptions) to apply it to the instance of `workflow.Context`.
 
@@ -913,7 +901,7 @@ if err != nil {
 }
 ```
 
-### How to get the results of an Activity Execution {#get-activity-results}
+### Get Activity results
 
 The call to spawn an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a> generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
@@ -960,7 +948,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 It is idiomatic to invoke multiple Activity Executions from within a Workflow.
 Therefore, it is also idiomatic to either block on the results of the Activity Executions or continue on to execute additional logic, checking for the Activity Execution results at a later time.
 
-## How to develop a Worker in Go {#develop-worker}
+## Develop Worker
 
 Create an instance of [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by calling [`worker.New()`](https://pkg.go.dev/go.temporal.io/sdk/worker#New), available through the `go.temporal.io/sdk/worker` package, and pass it the following parameters:
 
@@ -1036,7 +1024,7 @@ func main() {
 // ...
 ```
 
-### How to set WorkerOptions in Go {#workeroptions}
+### WorkerOptions
 
 Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/worker#Options) from the `go.temporal.io/sdk/worker` package, set any of the optional fields, and pass the instance to the [`New`](https://pkg.go.dev/go.temporal.io/sdk/worker#New) call.
 
@@ -1467,7 +1455,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-## How to run a Temporal Cloud Worker {#run-a-temporal-cloud-worker}
+## Run a Temporal Cloud Worker
 
 To run a Worker that uses [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
@@ -1538,7 +1526,7 @@ func main() {
 }
 ```
 
-### How to register types {#register-types}
+### Register types
 
 All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -1565,7 +1553,7 @@ w.RegisterWorkflow(WorkflowB)
 w.RegisterWorkflow(WorkflowC)
 ```
 
-### How to set RegisterWorkflowOptions in Go {#registerworkflowoptions}
+### RegisterWorkflowOptions
 
 Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#RegisterOptions) from the `go.temporal.io/sdk/workflow` package and pass it to the [`RegisterWorkflowWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/worker#WorkflowRegistry) call when registering the Workflow Type with the Worker.
 
@@ -1598,7 +1586,7 @@ w.RegisterWorkflowWithOptions(YourWorkflowDefinition, registerOptions)
 // ...
 ```
 
-### How to set RegisterActivityOptions in Go {#registeractivityoptions}
+### RegisterActivityOptions
 
 Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/activity#RegisterOptions) from the `go.temporal.io/sdk/activity` package and pass it to the [`RegisterActivityWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/worker#ActivityRegistry) call when registering the Activity Type with the Worker.
 
@@ -1651,7 +1639,7 @@ w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
 // ...
 ```
 
-## How to start a Workflow Execution {#start-workflow-execution}
+## Start Workflow Execution
 
 [Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
@@ -1711,7 +1699,7 @@ If the invocation process does not have direct access to the statically defined 
 workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "YourWorkflowDefinition", param)
 ```
 
-### How to set a Workflow's Task Queue {#set-task-queue}
+### Set Task Queue
 
 In most SDKs, the only Workflow Option that must be set is the name of the <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>.
 
@@ -1734,7 +1722,7 @@ if err != nil {
 }
 ```
 
-### How to set a custom Workflow Id in Go {#workflow-id}
+### Workflow Id
 
 Although it is not required, we recommend providing your own <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></span></span></a> that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
@@ -1755,7 +1743,7 @@ if err != nil {
 }
 ```
 
-### Go StartWorkflowOptions reference {#workflow-options-reference}
+### Workflow Options reference
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.
 
@@ -1994,7 +1982,7 @@ if err != nil {
 }
 ```
 
-### How to get the results of a Workflow Execution {#get-workflow-results}
+### Get Workflow results
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 

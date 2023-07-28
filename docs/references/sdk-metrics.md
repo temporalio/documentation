@@ -4,8 +4,6 @@ title: Temporal SDK metrics reference
 sidebar_label: SDK metrics
 description: The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.
 toc_max_heading_level: 4
-keywords:
-- reference
 tags:
 - reference
 ---

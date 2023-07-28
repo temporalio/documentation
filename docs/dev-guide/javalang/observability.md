@@ -6,12 +6,6 @@ sidebar_position: 3
 description: The Observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view what Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 slug: /dev-guide/java/observability
 toc_max_heading_level: 4
-keywords:
-- guide-context
-- developer-guide
-- java
-- how-to
-- sdk
 tags:
 - guide-context
 - developer-guide
@@ -31,7 +25,7 @@ This section covers features related to viewing the state of the application, in
 - [Logging](#logging)
 - [Visibility](#visibility)
 
-## How to emit metrics {#metrics}
+## Metrics
 
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the <a class="tdlp" href="/references/sdk-metrics#">SDK metrics reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">SDK metrics</span><br /><br /><span class="tdlppd">The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/sdk-metrics#">Learn more</a></span></span></a>.
@@ -73,7 +67,7 @@ The following example shows how to use `MicrometerClientStatsReporter` to define
 For more details, see the [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics).
 For details on configuring a Prometheus scrape endpoint with Micrometer, see the [Micrometer Prometheus Configuring](https://micrometer.io/docs/registry/prometheus#_configuring) documentation.
 
-## How to setup Tracing {#tracing}
+## Tracing
 
 Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
 
@@ -123,7 +117,7 @@ WorkerFactory factory = WorkerFactory.newInstance(client, factoryOptions);
 
 For more information, see the Temporal [OpenTracing module](https://github.com/temporalio/sdk-java/blob/master/temporal-opentracing/README.md).
 
-## How to log from a Workflow {#logging}
+## Logging
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
 
@@ -137,17 +131,17 @@ private static final Logger logger = Workflow.getLogger(DynamicDslWorkflow.class
 
 Logs in replay mode are omitted unless the [`WorkerFactoryOptions.Builder.setEnableLoggingInReplay(boolean)`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactoryOptions.Builder.html#setEnableLoggingInReplay(boolean)) method is set to true.
 
-### How to provide a custom logger {#custom-logger}
+### Custom logger
 
 Use a custom logger for logging.
 
 To set a custom logger, supply your own logging implementation and configuration details the same way you would in any other Java application.
 
-## How to use Visibility APIs {#visibility}
+## Visibility
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
 
-### How to use Search Attributes {#search-attributes}
+### Search Attributes
 
 The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
@@ -174,7 +168,7 @@ The steps to using custom Search Attributes are:
 
 Here is how to query Workflow Executions:
 
-### How to set custom Search Attributes {#custom-search-attributes}
+### Custom Search Attributes
 
 After you've created custom Search Attributes in your Cluster (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
@@ -196,7 +190,7 @@ WorkflowOptions workflowOptions =
 - `Double`
 - `OffsetDateTime`
 
-### How to upsert Search Attributes {#upsert-search-attributes}
+### Upsert Search Attributes
 
 You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
 
@@ -224,7 +218,7 @@ The results of `upsertSearchAttributes()` output the following search attributes
   }
 ```
 
-### How to remove a Search Attribute from a Workflow {#remove-search-attribute}
+### Remove Search Attribute
 
 To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
 

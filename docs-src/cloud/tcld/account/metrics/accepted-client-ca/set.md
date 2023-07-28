@@ -22,7 +22,7 @@ Alias: `s`
 
 The following modifiers control the behavior of the command.
 
-##### `--request-id`
+##### --request-id
 
 Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
 
@@ -34,7 +34,7 @@ Alias: `-r`
 tcld account metrics accepted-client-ca set --request-id <request_id> --ca-certificate <encoded_certificate>
 ```
 
-##### `--resource-version`
+##### --resource-version
 
 Specify a resource version (ETag) to update from. If not specified, the latest version is used.
 
@@ -46,7 +46,7 @@ Alias: `-v`
 tcld account metrics accepted-client-ca set --resource-version <etag> --ca-certificate <encoded_certificate>
 ```
 
-##### `--ca-certificate`
+##### --ca-certificate
 
 _Required modifier unless `--ca-certificate-file` is specified_
 
@@ -62,7 +62,7 @@ Alias: `-c`
 tcld account metrics accepted-client-ca set --ca-certificate <encoded_certificate>
 ```
 
-##### `--ca-certificate-file`
+##### --ca-certificate-file
 
 _Required modifier unless `--ca-certificate` is specified_
 
