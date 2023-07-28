@@ -20,7 +20,7 @@ tcld user list
 
 The following modifiers control the behavior of the command.
 
-### `--namespace`
+#### --namespace
 
 List users that have permissions to the Namespace.
 
@@ -32,13 +32,13 @@ Alias: `-n`
 tcld user list --namespace <namespace_id>
 ```
 
-### `--page-token`
+#### --page-token
 
 Page token for paging list users request.
 
 Alias: `-p`
 
-### `--page-size`
+#### --page-size
 
 Page size for paging list users request.
 

@@ -6,10 +6,6 @@ sidebar_position: 4
 description: The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 slug: /dev-guide/go/testing
 toc_max_heading_level: 4
-keywords:
-- guide-context
-- go
-- how-to
 tags:
 - guide-context
 - go
@@ -33,7 +29,7 @@ We generally recommend writing the majority of your tests as integration tests.
 
 Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
 
-## Test frameworks {#test-frameworks}
+## Test frameworks
 
 The Temporal Go SDK provides a test framework to facilitate testing Workflow implementations.
 
@@ -83,7 +79,7 @@ func TestUnitTestSuite(t *testing.T) {
 }
 ```
 
-## Testing Activities {#test-activities}
+## Test Activities
 
 An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.
 This behavior allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
@@ -145,19 +141,19 @@ Additionally, the framework will validate that the signature of the "mock" funct
 
 Since this can be an entire function, there is no limitation as to what we can do here. In this example, we assert that the `value` param has the same content as the value param we passed to the Workflow.
 
-### Run an Activity {#run-an-activity}
+### Run an Activity
 
 If an Activity references its context, you need to mock that context when testing in isolation.
 
-### Listen to Heartbeats {#listen-to-heartbeats}
+### Listen to Heartbeats
 
 When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in your test code so that you can verify them.
 
-### Cancel an Activity {#cancel-an-activity}
+### Cancel an Activity
 
 If an Activity is supposed to react to a Cancellation, you can test whether it reacts correctly by canceling it.
 
-## Testing Workflows {#test-workflows}
+## Test Workflows
 
 When running unit tests on Workflows, we want to test the Workflow logic in isolation.
 The simplest test case we can write is to have the test environment execute the Workflow and then evaluate the results.
@@ -243,13 +239,13 @@ func (s *UnitTestSuite) Test_ProgressWorkflow() {
 When using "Signal-With-Start", set the delay to `0`.
 :::
 
-### How to mock Activities {#mock-activities}
+### Mock Activities
 
 Mock the Activity invocation when unit testing your Workflows.
 
 When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
 
-### How to skip time {#skip-time}
+### Skip time
 
 Some long-running Workflows can persist for months or even years.
 Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds rather than the Workflow's specified amount.
@@ -268,25 +264,25 @@ Time is a global property of an instance of `TestWorkflowEnvironment`: skipping 
 If you need different time behaviors for different tests, run your tests in a series or with separate instances of the test server.
 For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
 
-#### Set up time skipping {#setting-up}
+#### Setting up
 
 Learn to set up the time-skipping test framework in the SDK of your choice.
 
-#### Skip time automatically {#automatic-method}
+#### Automatic method
 
 You can skip time automatically in the SDK of your choice.
 Start a test server process that skips time as needed.
 For example, in the time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities are running.
 
-#### Skip time manually {#manual-method}
+#### Manual method
 
 Learn to skip time manually in the SDK of your choice.
 
-#### Skip time in Activities {#skip-time-in-activities}
+#### Skip time in Activities
 
 Learn to skip time in Activities in the SDK of your choice.
 
-## How to Replay a Workflow Execution {#replay}
+## Replay
 
 Replay recreates the exact state of a Workflow Execution.
 You can replay a Workflow from the beginning of its Event History.

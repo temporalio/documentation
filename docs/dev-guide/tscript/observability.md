@@ -6,12 +6,6 @@ sidebar_position: 3
 description: The Observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view what Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 slug: /dev-guide/typescript/observability
 toc_max_heading_level: 3
-keywords:
-- guide-context
-- developer-guide
-- sdk
-- typescript
-- client
 tags:
 - guide-context
 - developer-guide
@@ -31,7 +25,7 @@ This section covers features related to viewing the state of the application, in
 - [Logging](#logging)
 - [Visibility](#visibility)
 
-## How to emit metrics {#metrics}
+## Metrics
 
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the <a class="tdlp" href="/references/sdk-metrics#">SDK metrics reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">SDK metrics</span><br /><br /><span class="tdlppd">The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/sdk-metrics#">Learn more</a></span></span></a>.
@@ -64,7 +58,7 @@ telemetryOptions: {
   },
 ```
 
-## How to setup Tracing {#tracing}
+## Tracing
 
 Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
 
@@ -113,7 +107,7 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
 
 Similarly, you can customize the OpenTelemetry `NodeSDK` propagators by following the instructions in the [Initialize the SDK](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node#initialize-the-sdk) section of the `README.md` file.
 
-## How to log from a Workflow in TypeScript {#logging}
+## Logging
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
 
@@ -350,7 +344,7 @@ The injected sink function contributes to the overall Workflow Task processing d
 - If you have a long-running sink function, such as one that tries to communicate with external services, you might start seeing Workflow Task timeouts.
 - The effect is multiplied when using `callDuringReplay: true` and replaying long Workflow histories because the Workflow Task timer starts when the first history page is delivered to the Worker.
 
-### How to provide a custom logger {#custom-logger}
+### Custom logger
 
 Use a custom logger for logging.
 
@@ -401,11 +395,11 @@ const logger = winston.createLogger({
 Runtime.install({ logger });
 ```
 
-## How to use Visibility APIs {#visibility}
+## Visibility
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
 
-### How to use Search Attributes {#search-attributes}
+### Search Attributes
 
 The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
@@ -445,7 +439,7 @@ const response = await connection.workflowService.listWorkflowExecutions({
 
 where `query` is a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>.
 
-### How to set custom Search Attributes {#custom-search-attributes}
+### Custom Search Attributes
 
 After you've created custom Search Attributes in your Cluster (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
@@ -477,7 +471,7 @@ const { searchAttributes } = await handle.describe();
 
 The type of `searchAttributes` is `Record<string, string[] | number[] | boolean[] | Date[]>`.
 
-### How to upsert Search Attributes {#upsert-search-attributes}
+### Upsert Search Attributes
 
 You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
 
@@ -507,7 +501,7 @@ export async function example(): Promise<SearchAttributes> {
 
 <!--SNIPEND-->
 
-### How to remove a Search Attribute from a Workflow {#remove-search-attribute}
+### Remove Search Attribute
 
 To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
 

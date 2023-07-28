@@ -12,7 +12,7 @@ The `tcld namespace certificates-filter add` command adds additional certificate
 
 The following modifiers control the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 Specify a Namespace hosted on Temporal Cloud.
 If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
@@ -25,7 +25,7 @@ Alias: `-n`
 tcld namespace certificate-filters add --namespace <namespace_id> --certificate-filter-file <file>
 ```
 
-#### `--request-id`
+#### --request-id
 
 Specify a request identifier to use for the asynchronous operation.
 If not specified, the server assigns a request identifier.
@@ -38,7 +38,7 @@ Alias: `-r`
 tcld namespace certificate-filters add --request-id <request_id> --certificate-filter-file <file>
 ```
 
-#### `--resource-version`
+#### --resource-version
 
 Specify a resource version (ETag) to update from.
 If not specified, the latest version is used.
@@ -51,7 +51,7 @@ Alias: `-v`
 tcld namespace certificate-filters add --resource-version <etag> --certificate-filter-file <file>
 ```
 
-#### `--certificate-filter-file`
+#### --certificate-filter-file
 
 _Required modifier unless `--certificate-filter-value` is specified._
 
@@ -65,7 +65,7 @@ Aliases: `-f`, `--file`
 tcld namespace certificate-filters add --certificate-filter-file <file>
 ```
 
-#### `--certificate-filter-input`
+#### --certificate-filter-input
 
 _Required modifier unless `--certificate-filter-file` is specified._
 

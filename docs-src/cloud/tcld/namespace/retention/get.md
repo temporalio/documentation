@@ -14,7 +14,7 @@ Alias: `g`
 
 The following modifier controls the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 _Required modifier_
 
