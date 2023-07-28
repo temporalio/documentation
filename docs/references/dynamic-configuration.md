@@ -4,8 +4,6 @@ title: Temporal Cluster dynamic configuration reference
 sidebar_label: Dynamic configuration
 description: Temporal Cluster provides dynamic configuration keys that you can update and apply to a running Cluster without restarting your services.
 toc_max_heading_level: 4
-keywords:
-- reference
 tags:
 - reference
 ---

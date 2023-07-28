@@ -16,7 +16,7 @@ Alias: `r`
 
 The following modifiers control the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
@@ -28,7 +28,7 @@ Alias: `-n`
 tcld namespace accepted-client-ca remove --namespace <namespace_id> --ca-certificate <encoded_certificate>
 ```
 
-#### `--request-id`
+#### --request-id
 
 Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
 
@@ -40,7 +40,7 @@ Alias: `-r`
 tcld namespace accepted-client-ca remove --request-id <request_id> --ca-certificate <encoded_certificate>
 ```
 
-#### `--resource-version`
+#### --resource-version
 
 Specify a resource version (ETag) to update from. If not specified, the latest version is used.
 
@@ -52,7 +52,7 @@ Alias: `-v`
 tcld namespace accepted-client-ca remove --resource-version <etag> --ca-certificate <encoded_certificate>
 ```
 
-#### `--ca-certificate`
+#### --ca-certificate
 
 _Required modifier unless `--ca-certificate-fingerprint` or `--ca-certificate-file` is specified_
 
@@ -70,7 +70,7 @@ Alias: `-c`
 tcld namespace accepted-client-ca remove --ca-certificate <encoded_certificate>
 ```
 
-#### `--ca-certificate-file`
+#### --ca-certificate-file
 
 _Required modifier unless `--ca-certificate-fingerprint` or `--ca-certificate` is specified_
 
@@ -88,7 +88,7 @@ Alias: `-f`
 tcld namespace accepted-client-ca remove --ca-certificate-file <path>
 ```
 
-#### `--ca-certificate-fingerprint`
+#### --ca-certificate-fingerprint
 
 _Required modifier unless `--ca-certificate` or `--ca-certificate-file` is specified_
 

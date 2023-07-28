@@ -16,14 +16,14 @@ Alias: `c`
 
 The following modifiers control the behavior of the command.
 
-### `--request-id`
+#### --request-id
 
 The request identifier to use for the asynchronous operation.
 If not set, the server assigns an identifier.
 
 Alias: `-r`
 
-### `--ca-certificate`
+#### --ca-certificate
 
 _Required modifier unless `--ca-certificate-file` is specified_
 
@@ -33,7 +33,7 @@ If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca
 
 Alias: `-c`
 
-### `--namespace`
+#### --namespace
 
 _Required modifier_
 
@@ -41,7 +41,7 @@ Specify the name of the Namespace to create.
 
 Alias: `-n`
 
-### `--region`
+#### --region
 
 _Required modifier_
 
@@ -51,13 +51,13 @@ Valid options: `ap-northeast-1` | `ap-southeast-1` | `ap-southeast-2` | `ca-cent
 
 Alias: `--re`
 
-### `--retention-days`
+#### --retention-days
 
 The number of days that data about closed Workflow Executions will be retained (default: 30).
 
 Alias: `--rd`
 
-### `--ca-certificate-file`
+#### --ca-certificate-file
 
 _Required modifier unless `--ca-certificate` is specified_
 
@@ -67,7 +67,7 @@ If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca
 
 Alias: `--cf`
 
-### `--certificate-filter-file`
+#### --certificate-filter-file
 
 _Required modifier unless `--certificate-filter-input` is specified_
 
@@ -80,7 +80,7 @@ If both `--certificate-filter-file` and `--certificate-filter-input` are specifi
 
 Alias: `--cff`
 
-### `--certificate-filter-input`
+#### --certificate-filter-input
 
 _Required modifier unless `--certificate-filter-file` is specified_
 
@@ -93,7 +93,7 @@ If both `--certificate-filter-input` and `--certificate-filter-file` are specifi
 
 Alias: `--cfi`
 
-### `--search-attribute`
+#### --search-attribute
 
 _Required modifier; can be specified more than once_
 
@@ -103,7 +103,7 @@ Valid values for _type_: `Bool` | `Datetime` | `Double` | `Int` | `Keyword` | `T
 
 Alias: `--sa`
 
-### `--user-namespace-permission`
+#### --user-namespace-permission
 
 _Can be specified more than once_
 

@@ -4,8 +4,6 @@ title: Temporal Commands reference
 sidebar_label: Commands
 description: A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.
 toc_max_heading_level: 4
-keywords:
-- reference
 tags:
 - reference
 ---

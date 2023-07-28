@@ -4,11 +4,6 @@ title: Temporal production readiness - Develop
 sidebar_label: Develop
 description: This guide explains what you need to develop to use Temporal in your production environment.
 toc_max_heading_level: 4
-keywords:
-- guide-context
-- production-readiness
-- security
-- how-to
 tags:
 - guide-context
 - production-readiness
@@ -20,7 +15,7 @@ tags:
 
 This guide explains what you need to develop to use Temporal in your production environment.
 
-## How to encrypt data using a custom Data Converter {#securing-your-data}
+## Securing your data
 
 Temporal Server stores and persists the data handled in your Workflow Execution.
 Encrypting this data ensures that any sensitive application data is secure when handled by the Temporal Server.
@@ -324,7 +319,7 @@ Content is planned but not yet available.
 </TabItem>
 </Tabs>
 
-## Codec Server setup {#codec-server-setup}
+## Codec Server setup
 
 Use a Codec Server to decode your encoded <a class="tdlp" href="/dataconversion#payload">payloads<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload?</span><br /><br /><span class="tdlppd">A Payload represents binary data such as input and output from Activities and Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload">Learn more</a></span></span></a> and integrate it with the Temporal Web UI and CLI commands when debugging your Workflows.
 

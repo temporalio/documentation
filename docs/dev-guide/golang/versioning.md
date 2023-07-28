@@ -6,10 +6,6 @@ sidebar_position: 6
 description: The Versioning section of the Temporal Developer's guide covers how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 slug: /dev-guide/go/versioning
 toc_max_heading_level: 4
-keywords:
-- go
-- versioning
-- how-to
 tags:
 - go
 - versioning
@@ -175,7 +171,7 @@ from one package to another package, that changes the `ActivityType`, which tech
 Activity. But, we don't want to fail on that change, so we only check the function name part of the
 `ActivityType`.
 
-## How to use Worker Versioning in Go {#worker-versioning}
+## Worker Versioning
 
 To use Worker Versioning in Go, you need to do the following:
 

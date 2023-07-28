@@ -4,8 +4,6 @@ title: How to manage SAML authentication with Temporal Cloud
 sidebar_label: SAML
 description: Integrate a SAML identity provider with your Temporal Cloud account.
 toc_max_heading_level: 4
-keywords:
-- guide-context
 tags:
 - guide-context
 ---
@@ -32,7 +30,7 @@ For more information, contact your account manager.
    - [Okta](#configure-saml-with-okta)
 1. [Share your connection information with us and test your connection.](#finish-saml-configuration)
 
-## How to configure SAML with Azure AD {#configure-saml-with-azure-ad}
+## Configure SAML with Azure AD
 
 If you want to use the general Microsoft login mechanism, you don't need to set up SAML with Azure AD.
 Just select **Continue with Microsoft** on the Temporal Cloud sign-in page.
@@ -84,7 +82,7 @@ To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
 
 To finish setting up Azure AD as your SAML IdP, see [Finish SAML configuration](#finish-saml-configuration).
 
-## How to configure SAML with Okta {#configure-saml-with-okta}
+## Configure SAML with Okta
 
 To use Okta as your SAML IdP, configure a new Okta application integration.
 
@@ -130,7 +128,7 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
 
 To finish setting up Okta as your SAML IdP, see the next section, [Finish SAML configuration](#finish-saml-configuration).
 
-## How to finish your SAML configuration {#finish-saml-configuration}
+## Finish SAML configuration
 
 After you configure SAML with your IdP, we can finish the configuration on our side.
 [Create a support ticket](/cloud/how-to-create-a-ticket-for-temporal-support) that includes the following information:

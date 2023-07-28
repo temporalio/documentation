@@ -16,7 +16,7 @@ Alias: `a`
 
 The following modifiers control the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
@@ -28,7 +28,7 @@ Alias: `-n`
 tcld namespace accepted-client-ca add --namespace <namespace_id> --ca-certificate <encoded_certificate>
 ```
 
-#### `--request-id`
+#### --request-id
 
 Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
 

@@ -6,9 +6,6 @@ sidebar_position: 4
 description: A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 slug: /retry-policies
 toc_max_heading_level: 4
-keywords:
-- term
-- explanation
 tags:
 - term
 - explanation

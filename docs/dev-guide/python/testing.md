@@ -5,14 +5,6 @@ sidebar_label: Testing
 sidebar_position: 4
 description: The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 toc_max_heading_level: 4
-keywords:
-- guide-context
-- developer-guide
-- python
-- testing
-- sdk
-- how-to
-- time-skipping
 tags:
 - guide-context
 - developer-guide
@@ -40,18 +32,18 @@ We generally recommend writing the majority of your tests as integration tests.
 
 Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
 
-## Test frameworks {#test-frameworks}
+## Test frameworks
 
 Some SDKs have support or examples for popular test frameworks, runners, or libraries.
 
 One recommended framework for testing in Python for the Temporal SDK is [pytest](https://docs.pytest.org/), which can help with fixtures to stand up and tear down test environments, provide useful test discovery, and make it easy to write parameterized tests.
 
-## Testing Activities {#test-activities}
+## Test Activities
 
 An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.
 This behavior allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
 
-### Run an Activity {#run-an-activity}
+### Run an Activity
 
 If an Activity references its context, you need to mock that context when testing in isolation.
 
@@ -60,7 +52,7 @@ To run an Activity in a test, use the [`ActivityEnvironment`](https://python.tem
 This class allows you to run any callable inside an Activity context.
 Use it to test the behavior of your code under various conditions.
 
-### Listen to Heartbeats {#listen-to-heartbeats}
+### Listen to Heartbeats
 
 When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in your test code so that you can verify them.
 
@@ -83,9 +75,9 @@ await env.run(activity_with_heartbeats, "test")
 assert heartbeats == ["param: test", "second heartbeat"]
 ```
 
-## Testing Workflows {#test-workflows}
+## Test Workflows
 
-### How to mock Activities {#mock-activities}
+### Mock Activities
 
 Mock the Activity invocation when unit testing your Workflows.
 
@@ -131,7 +123,7 @@ async def test_mock_activity(client: Client):
 The mocked Activity implementation should have the same signature as the real implementation (including the input and output types) and the same name.
 When the Workflow invokes the Activity, it invokes the mocked implementation instead of the real one, allowing you to test your Workflow isolated.
 
-### How to skip time {#skip-time}
+### Skip time
 
 Some long-running Workflows can persist for months or even years.
 Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds rather than the Workflow's specified amount.
@@ -150,7 +142,7 @@ Time is a global property of an instance of `TestWorkflowEnvironment`: skipping 
 If you need different time behaviors for different tests, run your tests in a series or with separate instances of the test server.
 For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
 
-#### Skip time automatically {#automatic-method}
+#### Automatic method
 
 You can skip time automatically in the SDK of your choice.
 Start a test server process that skips time as needed.
@@ -162,7 +154,7 @@ Use the [`start_local()`](https://python.temporal.io/temporalio.testing.Workflow
 
 Use the [`from_client()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#from_client) method for an existing Temporal Server.
 
-#### Skip time manually {#manual-method}
+#### Manual method
 
 Learn to skip time manually in the SDK of your choice.
 
@@ -179,7 +171,7 @@ async def test_manual_time_skipping():
         # Your code here
 ```
 
-### Assert in Workflow {#assert-in-workflow}
+### Assert in Workflow
 
 The `assert` statement is a convenient way to insert debugging assertions into the Workflow context.
 
@@ -187,7 +179,7 @@ The `assert` method is available in Python and TypeScript.
 
 For information about assert statements in Python, see [`assert`](https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement) in the Python Language Reference.
 
-## How to Replay a Workflow Execution {#replay}
+## Replay
 
 Replay recreates the exact state of a Workflow Execution.
 You can replay a Workflow from the beginning of its Event History.

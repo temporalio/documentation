@@ -5,10 +5,6 @@ sidebar_label: Temporal Cloud
 sidebar_position: 3
 description: Temporal Cloud documentation, including explanations and usage.
 toc_max_heading_level: 4
-keywords:
-- term
-- explanation
-- temporal-cloud
 tags:
 - term
 - explanation
@@ -32,7 +28,7 @@ To request a Temporal Cloud account, complete the [request form](https://pages.t
 - [Manage Namespaces in Temporal Cloud](/cloud/how-to-manage-namespaces-in-temporal-cloud)
 - [tcld (Temporal Cloud command-line interface)](/cloud/tcld)
 
-## What is an Action? {#action}
+## Action
 
 An Action is the fundamental pricing unit in <a class="tdlp" href="#">Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Temporal Cloud?</span><br /><br /><span class="tdlppd">Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#">Learn more</a></span></span></a>.
 
@@ -72,12 +68,12 @@ The following operations result in Actions, which are billed monthly.
   The default throttle is 80% of the <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a>.
   Heartbeats don't apply to Local Activities.
 
-## What is a Temporal Cloud Account Id? {#temporal-cloud-account-id}
+## Temporal Cloud Account Id
 
 A Temporal Cloud Account Id is a unique identifier for a customer for the entire time they use Temporal Cloud.
 Temporal Technologies assigns each Account Id, which is an opaque code of five or six alphanumeric characters, such as `f45a2`.
 
-## What are the account-level Roles for users in Temporal Cloud? {#account-level-roles}
+## Account-level Roles
 
 When a Global Admin invites a user to join an account, the Global Admin selects one of the following Roles for that user:
 
@@ -89,7 +85,7 @@ When a Global Admin invites a user to join an account, the Global Admin selects 
   - Has Namespace Admin permissions for each Namespace created by that user
 - **Read-Only:** Can only read information
 
-## What is a Cloud Namespace Name? {#temporal-cloud-namespace-name}
+## Temporal Cloud Namespace Name
 
 A Cloud Namespace Name is a customer-supplied name for a [Namespace](/namespaces) in Temporal Cloud.
 Each Namespace Name, such as `accounting-production`, is unique within the scope of a customer's account.
@@ -102,7 +98,7 @@ Each Namespace Name must conform to the following rules:
 - Each hyphen (-) character must be immediately preceded _and_ followed by a letter or number; consecutive hyphens are not permitted.
 - All letters in a Namespace Name must be lowercase.
 
-## What is a Cloud Namespace Id? {#temporal-cloud-namespace-id}
+## Temporal Cloud Namespace Id
 
 A Cloud Namespace Id is a globally unique identifier for a [Namespace](/namespaces) in Temporal Cloud.
 A Namespace Id is formed by concatenating the following:
@@ -113,7 +109,7 @@ A Namespace Id is formed by concatenating the following:
 
 For example, for the Account Id `f45a2` and Namespace Name `accounting-production`, the Namespace Id is `accounting-production.f45a2`.
 
-## What are the Namespace-level permissions for users in Temporal Cloud? {#namespace-level-permissions}
+## Namespace-level permissions
 
 A [Global Admin](/cloud/#account-level-roles) can assign permissions for any [Namespace](/namespaces) in an account.
 A Developer can assign permissions for a Namespace they create.
