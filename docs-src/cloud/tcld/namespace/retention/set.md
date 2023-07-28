@@ -14,7 +14,7 @@ Alias: `s`
 
 The following modifiers control the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 _Required modifier_
 
@@ -23,7 +23,7 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
-#### `--retention-days`
+#### --retention-days
 
 _Required modifier_
 
