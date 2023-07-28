@@ -99,11 +99,6 @@ module.exports = {
           href: "https://learn.temporal.io",
           right: "left",
         },
-        {
-          label: "Temporal IQ",
-          href: "https://iq.temporal.io",
-          right: "left",
-        },
       ],
     },
     footer: {
