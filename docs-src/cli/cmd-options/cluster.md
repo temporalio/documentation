@@ -1,10 +1,10 @@
 ---
 id: cluster
-title: temporal  cluster
+title: temporal cluster
 sidebar_label: cluster
 description: Cluster name
 tags:
-    - cli
+  - cli reference
 ---
 
 Cluster name.

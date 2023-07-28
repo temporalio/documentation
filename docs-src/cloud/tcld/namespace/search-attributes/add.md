@@ -5,6 +5,7 @@ sidebar_label: add
 description: How to add custom Search Attributes to a Namespace in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli reference
 ---
 
 The `tcld namespace search-attributes add` command adds custom [Search Attributes](/concepts/what-is-a-search-attribute) to a Namespace in Temporal Cloud.

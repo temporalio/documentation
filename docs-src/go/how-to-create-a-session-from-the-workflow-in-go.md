@@ -3,6 +3,8 @@ id: how-to-create-a-session-from-the-workflow-in-go
 title: How to create a Worker Session in Go
 sidebar_label: Worker Session
 description: Enable Sessions on the Worker via the Worker Options and then use the `CreateSession` API to create a Context object that can be passed to the calls to spawn Activity Executions.
+tags:
+  - go-sdk
 ---
 
 Use the [`CreateSession`](https://pkg.go.dev/go.temporal.io/sdk/workflow#CreateSession) API to create a Context object that can be passed to calls to spawn Activity Executions.

@@ -5,6 +5,7 @@ sidebar_label: remove
 description: How to remove client CA certificates from a Namespace in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli reference
 ---
 
 The `tcld namespace accepted-client-ca remove` command removes client CA certificates from a [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.

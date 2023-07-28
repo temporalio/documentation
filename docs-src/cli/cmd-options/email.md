@@ -1,10 +1,10 @@
 ---
 id: email
-title: temporal  email
+title: temporal email
 sidebar_label: email
 description: Owner email
 tags:
-    - cli
+  - cli reference
 ---
 
 Owner email.

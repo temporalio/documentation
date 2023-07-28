@@ -5,6 +5,7 @@ sidebar_label: resend-invite
 description: How to resend an invitation to a user in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli reference
 ---
 
 The `tcld user resend-invite` command resends an invitation to the specified user in Temporal Cloud.

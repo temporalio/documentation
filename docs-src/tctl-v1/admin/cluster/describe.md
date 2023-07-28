@@ -5,7 +5,7 @@ sidebar_label: describe
 description: Displaying Cluster information.
 tags:
   - tctl
-  - admin
+  - cli reference
 ---
 
 The `tctl admin cluster describe` command provides information for the current Cluster.

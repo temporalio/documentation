@@ -6,6 +6,10 @@ sidebar_position: 6
 description: The Versioning section of the Temporal Developer's guide covers how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 slug: /dev-guide/java/versioning
 toc_max_heading_level: 4
+keywords:
+- java
+- workflow-versions
+- how-to
 tags:
 - java
 - workflow-versions
@@ -109,7 +113,7 @@ The Id that is passed to the `getVersion` call identifies the change. Each chang
 a change spawns multiple places in the Workflow code and the new code should be either executed in all of them or
 in none of them, then they have to share the Id.
 
-## Worker Versioning
+## How to use Worker Versioning in Java {#worker-versioning}
 
 To use Worker Versioning in Java, you need to do the following:
 

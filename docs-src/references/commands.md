@@ -50,7 +50,7 @@ This Command is triggered by a call to spawn a [Child Workflow Execution](/conce
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [ChildWorkflowExecutionStarted](/references/events/#childworkflowexecutionstarted)
 
-By default, OSS users cannot have more than 50,000 pending Child Workflows.
+By default, you cannot have more than 2,000 pending Child Workflows.
 
 ### SignalExternalWorkflowExecution
 
@@ -59,7 +59,7 @@ This Command is triggered by a call to [Signal](/concepts/what-is-a-signal) anot
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [SignalExternalWorkflowExecutionInitiated](/references/events/#signalexternalworkflowexecutioninitiated)
 
-By default, OSS users cannot have more than 50,000 pending Signals to other Workflows.
+By default, you cannot have more than 2,000 pending Signals to other Workflows.
 
 ### RequestCancelExternalWorkflowExecution
 
@@ -68,7 +68,7 @@ This Command is triggered by a call to request cancellation of another Workflow 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [RequestCancelExternalWorkflowExecutionInitiated](/references/events/#requestcancelexternalworkflowexecutioninitiated)
 
-By default, OSS users cannot have more than 50,000 pending Signals to other Workflows.
+By default, you cannot have more than 2,000 pending Signals to other Workflows.
 
 ### ScheduleActivityTask
 
@@ -77,7 +77,7 @@ This Command is triggered by a call to execute an [Activity](/concepts/what-is-a
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [ActivityTaskScheduled](/references/events/#activitytaskscheduled)
 
-By default, OSS users cannot schedule more than 50,000 Activities.
+By default, you cannot schedule more than 2,000 Activities concurrently.
 
 ### RequestCancelActivityTask
 

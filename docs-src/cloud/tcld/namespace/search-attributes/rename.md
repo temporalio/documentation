@@ -5,6 +5,7 @@ sidebar_label: rename
 description: How to rename an existing custom Search Attribute in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli reference
 ---
 
 The `tcld namespace search-attributes rename` command renames a custom [Search Attribute](/concepts/what-is-a-search-attribute) in Temporal Cloud.

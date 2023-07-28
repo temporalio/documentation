@@ -4,7 +4,7 @@ title: temporal operator cluster health
 sidebar_label: health
 description: Checks the health of the Frontend Service.
 tags:
-    - cli
+  - cli reference
 ---
 
 The `temporal operator cluster health` command checks the health of the [Frontend Service](/concepts/what-is-a-frontend-service).

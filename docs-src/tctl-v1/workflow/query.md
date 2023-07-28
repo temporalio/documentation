@@ -5,6 +5,7 @@ sidebar_label: query
 description: How to send a Query to a Workflow Execution using tctl.
 tags:
   - tctl
+  - cli reference
 ---
 
 Alias: `q`

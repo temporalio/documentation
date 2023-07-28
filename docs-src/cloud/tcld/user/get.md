@@ -5,6 +5,7 @@ sidebar_label: get
 description: How to get user information in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli reference
 ---
 
 The `tcld user get` command gets information about the specified user in Temporal Cloud.

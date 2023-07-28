@@ -4,7 +4,7 @@ title: temporal operator namespace update
 sidebar_label: update
 description: Updates a Namespace.
 tags:
-    - cli
+  - cli reference
 ---
 
 The `temporal operator namespace update` command updates a given [Namespace](/concepts/what-is-a-namespace).

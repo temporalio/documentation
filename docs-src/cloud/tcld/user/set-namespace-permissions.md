@@ -5,6 +5,7 @@ sidebar_label: set-namespace-permissions
 description: How to set Namespace-level permissions for a user in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli reference
 ---
 
 The `tcld user set-namespace-permissions` command sets [Namespace-level permissions](/cloud/#namespace-level-permissions) for a specified user in Temporal Cloud.

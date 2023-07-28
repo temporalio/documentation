@@ -4,7 +4,7 @@ title: temporal workflow count
 sidebar_label: count
 description: Count Workflow Executions (requires ElasticSearch to be enabled).
 tags:
-    - cli
+  - cli reference
 ---
 
 The `temporal workflow count` command returns a count of [Workflow Executions](/concepts/what-is-a-workflow-execution).

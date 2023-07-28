@@ -4,7 +4,7 @@ title: temporal batch terminate
 sidebar_label: terminate
 description: Stop a Batch operation job.
 tags:
-    - cli
+  - cli reference
 ---
 
 The `temporal batch terminate` command terminates a Batch job with the provided Job ID.

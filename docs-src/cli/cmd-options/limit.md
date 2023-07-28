@@ -1,10 +1,10 @@
 ---
 id: limit
-title: temporal  limit
+title: temporal limit
 sidebar_label: limit
-description: Number of items to print. 
+description: Number of items to print.
 tags:
-    - cli
+  - cli reference
 ---
 
 Number of items to print on a page.

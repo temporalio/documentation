@@ -5,6 +5,7 @@ sidebar_label: set
 description: How to set the client CA certificates for a Namespace in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli reference
 ---
 
 The `tcld namespace accepted-client-ca set` command sets the client CA certificates for a [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.

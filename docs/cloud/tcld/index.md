@@ -4,6 +4,9 @@ title: tcld command reference
 sidebar_label: CLI (tcld)
 description: How to use Temporal Cloud's tcld operational tool
 toc_max_heading_level: 4
+keywords:
+- operation-guide
+- tcld
 tags:
 - operation-guide
 - tcld
@@ -37,7 +40,7 @@ Automatically confirm all prompts.
 You can specify the value for this modifier by setting the AUTO_CONFIRM environment variable.
 The default value is `false`.
 
-## Install tcld
+## How to install tcld {#install-tcld}
 
 You can install [tcld](/cloud/tcld) in two ways.
 

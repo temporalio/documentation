@@ -5,6 +5,7 @@ sidebar_label: update-codec-server
 description: How to update the Codec Server configuration with tcld.
 tags:
   - tcld
+  - cli reference
 ---
 
 The `tcld namespace update-codec-server` command updates the configuration of a codec server for Temporal Cloud, which allows payloads to be decodec through a remote endpoint.

@@ -4,7 +4,7 @@ title: temporal activity index
 sidebar_label: activity
 description: Operations that can be performed on Workflow Activities.
 tags:
-    - cli
+  - cli reference
 ---
 
 Activity commands operate on [Activity Executions](/concepts/what-is-an-activity-execution).

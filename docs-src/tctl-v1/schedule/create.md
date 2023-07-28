@@ -5,6 +5,7 @@ sidebar_label: create
 description: How to create a Schedule using tctl.
 tags:
   - tctl
+  - cli reference
 ---
 
 With tctl, create a Schedule like this:

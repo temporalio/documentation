@@ -1,10 +1,10 @@
 ---
 id: no-fold
-title: temporal  no-fold
+title: temporal no-fold
 sidebar_label: no-fold
 description: Disable folding
 tags:
-    - cli
+  - cli reference
 ---
 
 Disable folding.
