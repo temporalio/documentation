@@ -62,7 +62,7 @@ Alias: `-c`
 tcld account metrics accepted-client-ca add --ca-certificate <encoded_certificate>
 ```
 
-#### --ca-certificate-file
+##### --ca-certificate-file
 
 _Required modifier unless `--ca-certificate` is specified_
 
