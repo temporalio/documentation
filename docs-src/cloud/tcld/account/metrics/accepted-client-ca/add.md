@@ -46,7 +46,7 @@ Alias: `-v`
 tcld account metrics accepted-client-ca add --resource-version <etag> --ca-certificate <encoded_certificate>
 ```
 
-#### --ca-certificate
+##### --ca-certificate
 
 _Required modifier unless `--ca-certificate-file` is specified_
 
