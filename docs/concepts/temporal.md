@@ -6,6 +6,9 @@ sidebar_position: 1
 description: The Temporal Platform explained.
 slug: /temporal
 toc_max_heading_level: 4
+keywords:
+- term
+- explanation
 tags:
 - term
 - explanation

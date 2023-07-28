@@ -4,6 +4,9 @@ title: tctl v1.17 data-converter command reference
 sidebar_label: dataconverter
 description: How to use the tctl v1.17 dataconverter command
 toc_max_heading_level: 4
+keywords:
+- tctl
+- cli reference
 tags:
 - tctl
 - cli-reference

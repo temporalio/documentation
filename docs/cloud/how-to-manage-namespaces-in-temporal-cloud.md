@@ -4,6 +4,9 @@ title: How to manage Namespaces in Temporal Cloud
 sidebar_label: Namespaces
 description: Create Namespaces, use Namespace endpoints for access, and obtain Namespace information.
 toc_max_heading_level: 4
+keywords:
+- guide-context
+- how-to
 tags:
 - guide-context
 - how-to

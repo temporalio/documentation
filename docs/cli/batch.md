@@ -4,6 +4,8 @@ title: Temporal CLI batch command reference
 sidebar_label: batch
 description: How to use the Temporal CLI batch command
 toc_max_heading_level: 4
+keywords:
+- cli reference
 tags:
 - cli-reference
 - temporal-cli

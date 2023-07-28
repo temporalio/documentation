@@ -4,6 +4,9 @@ title: Temporal CLI task-queue command reference
 sidebar_label: task-queue
 description: How to use the Temporal CLI task-queue command
 toc_max_heading_level: 4
+keywords:
+- cli reference
+- cli
 tags:
 - cli-reference
 - temporal-cli

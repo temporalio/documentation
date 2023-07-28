@@ -4,6 +4,8 @@ title: Temporal CLI operator command reference
 sidebar_label: operator
 description: How to use the Temporal CLI operator commands
 toc_max_heading_level: 4
+keywords:
+- cli reference
 tags:
 - cli-reference
 - temporal-cli

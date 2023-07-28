@@ -4,6 +4,9 @@ title: tcld namespace command reference
 sidebar_label: namespace
 description: How to use Temporal Cloud's tcld namespace command
 toc_max_heading_level: 4
+keywords:
+- tcld
+- cli reference
 tags:
 - tcld
 - cli-reference
