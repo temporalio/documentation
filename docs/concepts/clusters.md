@@ -105,11 +105,13 @@ Ports are configurable in the Cluster configuration.
 
 ### History Service
 
-The History Service is responsible for persisting Workflow Execution state and determining what to do next to progress the Workflow Execution by using <a class="tdlp" href="#history-shard">History Shards<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a History Shard?</span><br /><br /><span class="tdlppd">A History Shard is an important unit within a Temporal Cluster by which the scale of concurrent Workflow Execution throughput can be measured.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#history-shard">Learn more</a></span></span></a>.
+The History Service is responsible for persisting Workflow Execution state to the Workflow History.
+When the Workflow Execution is able to progress, the History Service adds a Task with the Workflow's updated history to the Task Queue.
+From there, a Worker can poll for work, receive this updated history, and resume execution.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">History Service</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-history-service.svg" alt="History Service" height="1040" width="1140" /></div></div>
 
-The total number of History Services can be between 1 and the total number of History Shards.
+The total number of History Services can be between 1 and the total number of <a class="tdlp" href="#history-shard">History Shards<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a History Shard?</span><br /><br /><span class="tdlppd">A History Shard is an important unit within a Temporal Cluster by which the scale of concurrent Workflow Execution throughput can be measured.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#history-shard">Learn more</a></span></span></a>.
 An individual History Service can support a large number of History Shards.
 Temporal recommends starting at a ratio of 1 History Service for every 500 History Shards.
 
@@ -124,7 +126,7 @@ Ports are configurable in the Cluster configuration.
 
 #### History Shard
 
-A History Shard is an important unit within a Temporal Cluster by which the scale of concurrent Workflow Execution throughput can be measured.
+A History Shard is an important unit within a Temporal Cluster by which concurrent Workflow Execution throughput can be scaled.
 
 Each History Shard maps to a single persistence partition.
 A History Shard assumes that only one concurrent operation can be within a partition at a time.

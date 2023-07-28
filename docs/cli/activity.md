@@ -5,6 +5,9 @@ sidebar_label: activity
 description: How to use the Temporal CLI activity command
 toc_max_heading_level: 4
 tags:
+- cli-reference
+- temporal-cli
+- activity
 - cli reference
 ---
 
