@@ -4,8 +4,6 @@ title: How to get started with Temporal Cloud
 sidebar_label: Get started
 description: Create an account, issue certificates, create a Namespace, invite users, and connect.
 toc_max_heading_level: 4
-keywords:
-- guide-context
 tags:
 - guide-context
 ---

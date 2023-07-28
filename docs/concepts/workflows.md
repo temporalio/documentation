@@ -6,17 +6,6 @@ sidebar_position: 2
 description: This guide provides a comprehensive overview of Temporal Workflows.
 slug: /workflows
 toc_max_heading_level: 4
-keywords:
-- term
-- explanation
-- continue-as-new
-- resets
-- timeouts
-- signals
-- queries
-- updates
-- child-workflow
-- child-workflow-executions
 tags:
 - term
 - explanation

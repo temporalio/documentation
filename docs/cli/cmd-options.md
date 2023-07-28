@@ -4,9 +4,6 @@ title: Temporal CLI command options reference
 sidebar_label: cmd options
 description: How to use the Temporal CLI command options
 toc_max_heading_level: 4
-keywords:
-- cli reference
-- cli
 tags:
 - cli-reference
 - temporal-cli

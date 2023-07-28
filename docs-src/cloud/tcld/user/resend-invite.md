@@ -15,7 +15,7 @@ Alias: `ri`
 
 The following modifiers control the behavior of the command.
 
-### `--user-email`
+#### --user-email
 
 Specify the email address of the user to resend an invitation to.
 
@@ -25,7 +25,7 @@ Specify the email address of the user to resend an invitation to.
 tcld user resend-invite --user-email <test@example.com>
 ```
 
-### `--user-id`
+#### --user-id
 
 Specify the user identifier of the user to resend an invitation to.
 
@@ -35,7 +35,7 @@ Specify the user identifier of the user to resend an invitation to.
 tcld user resend-invite --user-id <test-user-id>
 ```
 
-### `--request-id`
+#### --request-id
 
 The request identifier to use for the asynchronous operation.
 

@@ -4,10 +4,6 @@ title: Errors
 sidebar_label: Errors
 description: This reference lists possible Workflow Task errors and how to resolve them.
 toc_max_heading_level: 4
-keywords:
-- errors
-- strongly-typed
-- error
 tags:
 - errors
 - strongly-typed

@@ -14,7 +14,7 @@ Alias: `ucs`
 
 The following modifiers control the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 _Required modifier._
 
@@ -28,7 +28,7 @@ Alias: `-n`
 tcld namespace update-codec-server --namespace <namespace_id> --endpoint <http_url>
 ```
 
-#### `--endpoint`
+#### --endpoint
 
 _Required modifier._
 
@@ -43,7 +43,7 @@ Alias: `-e`
 tcld namespace update-codec-server --namespace <namespace_id> --endpoint <https_url>
 ```
 
-#### `--pass-access-token`
+#### --pass-access-token
 
 Enables a user access token to be passed with the remote endpoint.
 This is set to `false` by default.
@@ -56,7 +56,7 @@ Alias: `--pat`
 tcld namespace update-codec-server --namespace <namespace_id> --endpoint <https_url> --pass-access-token <bool>
 ```
 
-#### `--include-credentials`
+#### --include-credentials
 
 Enables the inclusion of cross-origin credentials.
 This is set to `false` by default.

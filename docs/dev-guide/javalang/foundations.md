@@ -6,20 +6,11 @@ sidebar_position: 1
 description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/java/foundations
 toc_max_heading_level: 4
-keywords:
-- guide-context
-- cli
-- developer-guide
-- Java
-- java
-- how-to
-- workers
-- options
 tags:
 - guide-context
 - cli
 - developer-guide
-- java
+- Java
 - java
 - how-to
 - workers

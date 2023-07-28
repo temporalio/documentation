@@ -15,7 +15,7 @@ Alias: `d`
 
 The following modifiers control the behavior of the command.
 
-### `--user-email`
+#### --user-email
 
 Specify the email address of the user to delete.
 
@@ -25,7 +25,7 @@ Specify the email address of the user to delete.
 tcld user delete --user-email <test@example.com>
 ```
 
-### `--user-id`
+#### --user-id
 
 Specify the user identifier of the user to delete.
 
@@ -35,7 +35,7 @@ Specify the user identifier of the user to delete.
 tcld user delete --user-id <test-user-id>
 ```
 
-### `--request-id`
+#### --request-id
 
 The request identifier to use for the asynchronous operation.
 
@@ -43,7 +43,7 @@ If not set, the server assigns an identifier.
 
 Alias: `-r`
 
-#### `--resource-version`
+#### --resource-version
 
 Specify a resource version (ETag) to update from.
 If not specified, the latest version is used.

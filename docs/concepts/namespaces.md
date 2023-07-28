@@ -6,9 +6,6 @@ sidebar_position: 9
 description: This guide provides a comprehensive overview of Namespaces.
 slug: /namespaces
 toc_max_heading_level: 4
-keywords:
-- term
-- explanation
 tags:
 - term
 - explanation

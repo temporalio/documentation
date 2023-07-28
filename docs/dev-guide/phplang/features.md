@@ -6,13 +6,6 @@ sidebar_position: 2
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 slug: /dev-guide/php/features
 toc_max_heading_level: 4
-keywords:
-- guide-context
-- php
-- developer-guide
-- how-to
-- timers
-- sleep
 tags:
 - guide-context
 - php

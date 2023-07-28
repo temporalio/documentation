@@ -4,10 +4,6 @@ title: How to manage Audit Logging in Temporal Cloud
 sidebar_label: Audit Logging
 description: Create, consume, and manage Audit Logs.
 toc_max_heading_level: 4
-keywords:
-- term
-- explanation
-- guide-context
 tags:
 - term
 - explanation

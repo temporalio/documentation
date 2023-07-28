@@ -4,11 +4,6 @@ title: Temporal production readiness - Develop
 sidebar_label: Develop
 description: This guide explains what you need to develop to use Temporal in your production environment.
 toc_max_heading_level: 4
-keywords:
-- guide-context
-- production-readiness
-- security
-- how-to
 tags:
 - guide-context
 - production-readiness

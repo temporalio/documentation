@@ -6,18 +6,6 @@ sidebar_position: 1
 description: The Foundations section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/go/foundations
 toc_max_heading_level: 4
-keywords:
-- guide-context
-- cli
-- developer-guide
-- go
-- go-sdk
-- workflow-type
-- activities
-- best practices
-- how-to
-- options
-- workers
 tags:
 - guide-context
 - cli
@@ -26,7 +14,7 @@ tags:
 - go-sdk
 - workflow-type
 - activities
-- best-practices
+- best practices
 - how-to
 - options
 - workers

@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday July 27 2023 19:34:08 PM -0400
+Last assembled: Friday July 28 2023 12:02:21 PM -0500
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly
 
 89 guide configurations found.
 
@@ -731,8 +731,6 @@ cli/cmd-options/detail -> /cli/cmd-options#detail
 cli/cmd-options/reason -> /cli/cmd-options#reason
 
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
-
-cli/workflow/list -> /cli/workflow#list
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
 

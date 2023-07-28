@@ -14,7 +14,7 @@ Alias: `i`
 
 The following modifiers control the behavior of the command.
 
-### `--user-email`
+#### --user-email
 
 _Required modifier_
 
@@ -23,7 +23,7 @@ You can supply this modifier multiple times to invite multiple users in a single
 
 Alias: `-e`
 
-### `--account-role`
+#### --account-role
 
 _Required modifier_
 
@@ -33,7 +33,7 @@ Available account roles: `admin` | `developer` | `read`.
 
 Alias: `--ar`
 
-### `--namespace-permission`
+#### --namespace-permission
 
 Specify the [Namespace-level permissions](/cloud/#namespace-level-permissions) for the invited user.
 You can supply this modifier multiple times to set multiple Namespace permissions in a single request.
@@ -44,7 +44,7 @@ Available namespace permissions: `Admin` | `Write` | `Read`.
 
 Alias: `-p`
 
-### `--request-id`
+#### --request-id
 
 The request identifier to use for the asynchronous operation.
 

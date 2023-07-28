@@ -6,21 +6,12 @@ sidebar_position: 2
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 slug: /dev-guide/java/features
 toc_max_heading_level: 4
-keywords:
-- guide-context
-- java
-- developer-guide
-- how-to
-- Java
-- timers
-- sleep
-- workers
 tags:
 - guide-context
 - java
 - developer-guide
 - how-to
-- java
+- Java
 - timers
 - sleep
 - workers
