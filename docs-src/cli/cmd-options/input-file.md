@@ -4,7 +4,7 @@ title: temporal input-file
 sidebar_label: input-file
 description: Passes optional input for the Workflow from a JSON file.
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 Passes optional input for the Workflow from a JSON file.

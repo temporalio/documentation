@@ -4,7 +4,7 @@ title: temporal job-id
 sidebar_label: job-id
 description: Batch Job Id
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 Batch Job Id.

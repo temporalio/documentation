@@ -4,7 +4,7 @@ title: temporal end-time
 sidebar_label: end-time
 description: Backfill end time.
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 Backfill end time.

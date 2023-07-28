@@ -4,7 +4,7 @@ title: temporal namespace
 sidebar_label: namespace
 description: Identifies a Namespace in the Temporal Workflow.
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 Specify namespaces that should be pre-created (namespace "default" is always created).

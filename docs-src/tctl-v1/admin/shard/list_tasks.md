@@ -5,7 +5,7 @@ sidebar_label: list_tasks
 description: listing tasks for a given shard Id and Task type
 tags:
   - tctl
-  - cli-reference
+  - cli reference
   - history-shards
 ---
 

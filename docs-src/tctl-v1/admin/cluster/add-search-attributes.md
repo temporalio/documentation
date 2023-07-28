@@ -5,7 +5,7 @@ sidebar_label: add_search_attributes
 description: Adding custom Search Attributes to a Cluster.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl admin cluster add-search-attributes` command allows Search Attributes to be added to a Cluster.

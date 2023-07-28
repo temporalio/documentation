@@ -5,7 +5,7 @@ sidebar_label: delete
 description: Deleting the Workflow Execution.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl admin workflow delete` command deletes the current [Workflow Execution](/workflows/#workflow-execution) and the mutableState record.

@@ -5,7 +5,7 @@ sidebar_label: list
 description: How to list open or closed Workflow Executions using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl workflow list` command lists open or closed [Workflow Executions](/workflows#workflow-execution).

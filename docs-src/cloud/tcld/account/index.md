@@ -5,7 +5,7 @@ sidebar_label: account
 description: How to manage accounts in Temporal Cloud using tcld.
 tags:
   - tcld
-  - cli-reference
+  - cli reference
 ---
 
 The `tcld account` commands manage accounts in Temporal Cloud.

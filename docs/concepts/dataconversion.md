@@ -6,6 +6,12 @@ sidebar_position: 10
 description: This guide provides an overview of data handling using a Data Converter on the Temporal Platform.
 slug: /dataconversion
 toc_max_heading_level: 4
+keywords:
+- term
+- explanation
+- payloads
+- security
+- how-to
 tags:
 - term
 - explanation

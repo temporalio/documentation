@@ -6,6 +6,10 @@ sidebar_position: 6
 description: The Versioning section of the Temporal TypeScript SDK developer's guide explains how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 slug: /dev-guide/typescript/versioning
 toc_max_heading_level: 4
+keywords:
+- guide-context
+- typescript
+- how-to
 tags:
 - guide-context
 - typescript

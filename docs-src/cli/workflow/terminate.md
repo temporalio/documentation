@@ -4,7 +4,7 @@ title: temporal workflow terminate
 sidebar_label: terminate
 description: Terminate Workflow Execution by Id or List Filter.
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 The `temporal workflow terminate` command terminates a [Workflow Execution](/concepts/what-is-a-workflow-execution)

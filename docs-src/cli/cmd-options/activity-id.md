@@ -4,7 +4,7 @@ title: temporal activity-id
 sidebar_label: activity-id
 description: Identifies the Activity Execution.
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 Identifies the Activity Execution.

@@ -5,7 +5,7 @@ sidebar_label: describe
 description: How to show information about a Workflow Execution using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl workflow describe` command shows information about a [Workflow Execution](/workflows#workflow-execution).

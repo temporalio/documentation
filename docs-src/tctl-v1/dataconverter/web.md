@@ -5,7 +5,7 @@ sidebar_label: web
 description: How to specify the WebSocket URL of a custom Data Converter using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl dataconverter web` command specifies the WebSocket URL of a custom [Data Converter](/concepts/what-is-a-data-converter) to use with Temporal Web.

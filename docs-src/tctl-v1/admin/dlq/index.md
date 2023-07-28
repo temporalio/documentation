@@ -5,7 +5,7 @@ sidebar_label: dlq
 description: Running admin operations on DLQ.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl admin dlq` commands run admin operations on a given dead-letter queue (DLQ).
