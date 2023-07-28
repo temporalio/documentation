@@ -34,7 +34,7 @@ Alias: `-r`
 tcld account metrics accepted-client-ca add --request-id <request_id> --ca-certificate <encoded_certificate>
 ```
 
-#### --resource-version
+##### --resource-version
 
 Specify a resource version (ETag) to update from. If not specified, the latest version is used.
 
