@@ -4,8 +4,7 @@ title: temporal identity
 sidebar_label: identity
 description: Specify operator's identity.
 tags:
-  - cli-reference
-  - temporal-cli
+  - cli reference
 ---
 
 Specify operator's identity.

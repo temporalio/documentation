@@ -4,9 +4,7 @@ title: temporal start-time
 sidebar_label: start-time
 description: Backfill start time.
 tags:
-  - cli-reference
-  - temporal-cli
-
+  - cli reference
 ---
 
 Backfill start time.

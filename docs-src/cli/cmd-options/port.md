@@ -4,9 +4,7 @@ title: temporal port
 sidebar_label: port
 description: Port for the frontend gRPC service.
 tags:
-  - cli-reference
-  - temporal-cli
-
+  - cli reference
 ---
 
 Port for the frontend gRPC service.

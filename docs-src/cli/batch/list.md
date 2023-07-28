@@ -4,9 +4,7 @@ title: temporal batch list
 sidebar_label: list
 description: List Batch operation jobs.
 tags:
-  - cli-reference
-  - temporal-cli
-  - batch
+  - cli reference
 ---
 
 When used, `temporal batch list` returns all Batch jobs.

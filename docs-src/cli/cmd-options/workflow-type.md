@@ -4,9 +4,7 @@ title: temporal workflow-type
 sidebar_label: workflow-type
 description: Workflow type name.
 tags:
-  - cli-reference
-  - temporal-cli
-
+  - cli reference
 ---
 
 Workflow type name.

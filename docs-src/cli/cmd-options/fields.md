@@ -4,9 +4,7 @@ title: temporal fields
 sidebar_label: fields
 description: Customize fields to print.
 tags:
-  - cli-reference
-  - temporal-cli
-
+  - cli reference
 ---
 
 Customize fields to print.

@@ -4,8 +4,7 @@ title: temporal cluster
 sidebar_label: cluster
 description: Cluster name
 tags:
-  - cli-reference
-  - temporal-cli
+  - cli reference
 ---
 
 Cluster name.

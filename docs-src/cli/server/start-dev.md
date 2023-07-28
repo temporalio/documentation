@@ -4,9 +4,7 @@ title: temporal server start-dev
 sidebar_label: start-dev
 description: Start Temporal development server.
 tags:
-  - cli-reference
-  - temporal-cli
-  - server
+  - cli reference
 ---
 
 The `temporal server start-dev` command starts the Temporal Server on `localhost:7233`.

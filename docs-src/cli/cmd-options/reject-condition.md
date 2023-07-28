@@ -4,9 +4,7 @@ title: temporal reject-condition
 sidebar_label: reject-condition
 description: Optional flag for rejecting Queries based on Workflow state.
 tags:
-  - cli-reference
-  - temporal-cli
-
+  - cli reference
 ---
 
 Optional flag for rejecting Queries based on Workflow state.

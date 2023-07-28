@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday July 26 2023 16:42:39 PM -0400
+Last assembled: Thursday July 27 2023 19:34:08 PM -0400
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -723,6 +723,8 @@ cli/cmd-options/detail -> /cli/cmd-options#detail
 cli/cmd-options/reason -> /cli/cmd-options#reason
 
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
+
+cli/workflow/list -> /cli/workflow#list
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
 

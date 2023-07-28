@@ -5,6 +5,8 @@ sidebar_label: Debugging
 sidebar_position: 5
 description: The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.
 toc_max_heading_level: 4
+keywords:
+- guide-context
 tags:
 - guide-context
 ---

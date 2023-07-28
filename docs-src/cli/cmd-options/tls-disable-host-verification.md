@@ -4,9 +4,7 @@ title: temporal tls-disable-host-verification
 sidebar_label: tls-disable-host-verification
 description: Disables TLS host name verification if already enabled.
 tags:
-  - cli-reference
-  - temporal-cli
-
+  - cli reference
 ---
 
 Disables TLS host name verification if already enabled.

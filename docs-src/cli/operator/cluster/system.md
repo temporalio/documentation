@@ -4,10 +4,7 @@ title: temporal operator cluster system
 sidebar_label: system
 description: Shows information about the system and its capabilities.
 tags:
-  - cli-reference
-  - temporal-cli
-  - operator
-  - cluster
+  - cli reference
 ---
 
 The `temporal operator cluster system` command provides information about the system the [Cluster](/concepts/what-is-a-temporal-cluster) is running on.

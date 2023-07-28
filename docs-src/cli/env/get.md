@@ -4,9 +4,7 @@ title: temporal env get
 sidebar_label: get
 description: Prints environmental properties.
 tags:
-  - cli-reference
-  - temporal-cli
-  - environment
+  - cli reference
 ---
 
 The `temporal env get` command prints the environmental properties for the environment in use.

@@ -4,8 +4,7 @@ title: temporal description
 sidebar_label: description
 description: Namespace description
 tags:
-  - cli-reference
-  - temporal-cli
+  - cli reference
 ---
 
 Namespace description.

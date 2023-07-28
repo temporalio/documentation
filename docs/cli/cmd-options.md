@@ -4,6 +4,9 @@ title: Temporal CLI command options reference
 sidebar_label: cmd options
 description: How to use the Temporal CLI command options
 toc_max_heading_level: 4
+keywords:
+- cli reference
+- cli
 tags:
 - cli-reference
 - cli
@@ -317,9 +320,7 @@ Promote local namespace to global namespace.
 ## query
 
 Visibility Query of Search Attributes describing the Workflow Executions to reset.
-See https://docs.
-temporal.
-io/docs/tctl/workflow/list#--query.
+For details, see the <a class="tdlp" href="/cli/workflow#list">temporal workflow list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal workflow list</span><br /><br /><span class="tdlppd">List Workflow Executions based on a Query.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/workflow#list">Learn more</a></span></span></a> command.
 
 ## raw
 

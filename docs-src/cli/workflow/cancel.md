@@ -4,9 +4,7 @@ title: temporal workflow cancel
 sidebar_label: cancel
 description: Cancel a Workflow Execution.
 tags:
-  - cli-reference
-  - temporal-cli
-  - workflow
+  - cli reference
 ---
 
 The `temporal workflow cancel` command cancels a [Workflow Execution](/concepts/what-is-a-workflow-execution).

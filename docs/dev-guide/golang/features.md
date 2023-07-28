@@ -6,16 +6,39 @@ sidebar_position: 2
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 slug: /dev-guide/go/features
 toc_max_heading_level: 4
+keywords:
+- guide-context
+- go
+- developer-guide
+- how-to
+- go-sdk
+- activities
+- retries
+- activity heartbeats
+- timers
+- sleep
+- Go SDK
+- How-to
+- sdk
+- Go
+- workers
+- sessions
+- task-routing
 tags:
 - guide-context
 - go
 - developer-guide
 - how-to
 - go-sdk
+- activities
+- retries
+- activity-heartbeats
 - timers
 - sleep
+- go-sdk
+- how-to
 - sdk
-- Go
+- go
 - workers
 - sessions
 - task-routing

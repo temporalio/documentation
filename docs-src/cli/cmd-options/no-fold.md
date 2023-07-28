@@ -4,8 +4,7 @@ title: temporal no-fold
 sidebar_label: no-fold
 description: Disable folding
 tags:
-  - temporal-cli
-  - cli-reference
+  - cli reference
 ---
 
 Disable folding.

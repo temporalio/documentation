@@ -4,9 +4,7 @@ title: temporal ip
 sidebar_label: ip
 description: IPv4 address to bind the frontend service to.
 tags:
-  - cli-reference
-  - temporal-cli
-
+  - cli reference
 ---
 
 IPv4 address to bind the frontend service to.

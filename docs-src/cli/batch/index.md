@@ -4,9 +4,7 @@ title: temporal batch index
 sidebar_label: batch
 description: Operations performed on Batch jobs.
 tags:
-  - cli-reference
-  - temporal-cli
-  - batch
+  - cli reference
 ---
 
 Batch commands allow you to change multiple [Workflow Executions](/concepts/what-is-a-workflow-execution) in the background.

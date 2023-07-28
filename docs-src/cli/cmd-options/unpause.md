@@ -4,9 +4,7 @@ title: temporal unpause
 sidebar_label: unpause
 description: Unpauses the Schedule.
 tags:
-  - cli-reference
-  - temporal-cli
-
+  - cli reference
 ---
 
 Unpauses the Schedule.

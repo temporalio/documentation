@@ -4,9 +4,7 @@ title: temporal log-level
 sidebar_label: log-level
 description: Set the log level.
 tags:
-  - cli-reference
-  - temporal-cli
-
+  - cli reference
 ---
 
 Set the log level.

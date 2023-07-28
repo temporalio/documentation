@@ -4,9 +4,7 @@ title: temporal workflow reset
 sidebar_label: reset
 description: Resets a Workflow Execution by Event Id or reset type.
 tags:
-  - cli-reference
-  - temporal-cli
-  - workflow
+  - cli reference
 ---
 
 The `temporal workflow reset` command resets a [Workflow Execution](/concepts/what-is-a-workflow-execution).

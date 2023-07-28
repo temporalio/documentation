@@ -4,8 +4,7 @@ title: temporal email
 sidebar_label: email
 description: Owner email
 tags:
-  - cli-reference
-  - temporal-cli
+  - cli reference
 ---
 
 Owner email.

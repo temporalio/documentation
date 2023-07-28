@@ -4,9 +4,7 @@ title: temporal workflow execute
 sidebar_label: execute
 description: Start a new Workflow Execution and prints its progress.
 tags:
-  - cli-reference
-  - temporal-cli
-  - workflow
+  - cli reference
 ---
 
 The `temporal workflow execute` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution) and prints its progress.

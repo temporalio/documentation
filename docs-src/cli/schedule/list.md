@@ -4,9 +4,7 @@ title: temporal schedule list
 sidebar_label: list
 description: Lists Schedules.
 tags:
-  - cli-reference
-  - temporal-cli
-  - schedule
+  - cli reference
 ---
 
 The `temporal schedule list` command lists all [Schedule](/concepts/what-is-a-schedule) configurations.

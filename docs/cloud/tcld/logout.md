@@ -4,6 +4,9 @@ title: tcld logout command reference
 sidebar_label: logout
 description: How to use Temporal Cloud's tcld logout command.
 toc_max_heading_level: 4
+keywords:
+- tcld
+- cli reference
 tags:
 - tcld
 - cli-reference

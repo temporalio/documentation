@@ -4,9 +4,7 @@ title: temporal schedule describe
 sidebar_label: describe
 description: Get Schedule configuration and current state.
 tags:
-  - cli-reference
-  - temporal-cli
-  - schedule
+  - cli reference
 ---
 
 The `temporal schedule describe` command shows the current [Schedule](/concepts/what-is-a-schedule) configuration.

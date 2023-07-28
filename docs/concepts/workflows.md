@@ -6,6 +6,17 @@ sidebar_position: 2
 description: This guide provides a comprehensive overview of Temporal Workflows.
 slug: /workflows
 toc_max_heading_level: 4
+keywords:
+- term
+- explanation
+- continue-as-new
+- resets
+- timeouts
+- signals
+- queries
+- updates
+- child-workflow
+- child-workflow-executions
 tags:
 - term
 - explanation
@@ -295,24 +306,15 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 Each pending Activity generates a metadata entry in the Workflow's mutable state.
 Too many entries create a large mutable state, which causes unstable persistence.
 
-To protect the system, Temporal enforces a maximum of 50,000 pending Activities, Child Workflows, Signals, and Workflow cancellation requests.
-Currently, there is no limit on the total number of Signals that a Workflow Execution can receive. <!--From Temporal server v1.21, the default maximum number of Signals that a Workflow Execution can receive is 10000. -->
+To protect the system, Temporal enforces a maximum number (2,000 by default) of pending Activities, Child Workflows, Signals, or Cancellation requests per Workflow.
 These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/master/service/history/configs/config.go):
 
-- `limit.numPendingActivities.error`
-- `limit.numPendingChildExecutions.error`
-- `limit.numPendingSignals.error`
-- `limit.numPendingCancelRequests.error`
-- `history.maximumSignalsPerExecution`
+- `NumPendingActivitiesLimit`
+- `NumPendingChildExecutionsLimit`
+- `NumPendingSignalsLimit`
+- `NumPendingCancelRequestsLimit`
 
-By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass 50,000 <!--2000 in from v1.21--> pending Activities, Child Workflows, Workflow cancellation requests, or Signals. <!-- The Workflow Execution fails if the number of pending Signals exceeds 2000, or if the total number of Signals received exceeds 10000. -->
-Similar constraints are enforced for `SignalExternalWorkflowExecution`, `RequestCancelExternalWorkflowExecution`, and `StartChildWorkflowExecution` Commands.
-
-:::note
-
-Cloud users are limited to 2,000 each of pending Activities, Child Workflows, Workflow cancellation requests, and Signals.
-
-:::
+By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass any of these limits (by producing enough `ScheduleActivityTask`, `StartChildWorkflowExecution`, `SignalExternalWorkflowExecution`, or `RequestCancelExternalWorkflowExecution` Commands to exceed a limit).
 
 ### What is a Command? {#command}
 
@@ -623,7 +625,8 @@ Stack Trace Queries are available only for running Workflow Executions.
 :::tip Support, stability, and dependency info
 
 - Released in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
-- Available in the Go SDK since [v1.23.0](https://pkg.go.dev/go.temporal.io/sdk/client?tab=versions)
+- Available in the [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.23.1/client#Client.UpdateWorkflowWithOptions) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
+- Available in the [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
 
 :::
 

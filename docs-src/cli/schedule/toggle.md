@@ -4,9 +4,7 @@ title: temporal schedule toggle
 sidebar_label: toggle
 description: Pauses or unpauses a Schedule.
 tags:
-  - cli-reference
-  - temporal-cli
-  - schedule
+  - cli reference
 ---
 
 The `temporal schedule toggle` command can pause and unpause a [Schedule](/concepts/what-is-a-schedule).

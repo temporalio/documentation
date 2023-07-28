@@ -4,9 +4,7 @@ title: temporal time-zone
 sidebar_label: time-zone
 description: Time zone (IANA name).
 tags:
-  - cli-reference
-  - temporal-cli
-
+  - cli reference
 ---
 
 Time zone (IANA name).
