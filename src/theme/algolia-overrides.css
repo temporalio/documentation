@@ -1,0 +1,51 @@
+.search-container {
+  display: flex;
+  width: 30vw;
+  justify-content: space-between;
+}
+
+@media (max-width: 1218px) {
+  .search-container {
+    width: auto;
+  }
+
+  .DocSearch-Button:first-child {
+    margin-right: 15px;
+  }
+}
+
+@media (max-width: 1065px) {
+  /* prevent navbar text from wrapping */
+  .navbar__link[href="/changelog"] {
+    display: none;
+  }
+}
+
+@media (min-width: 1218px) {
+  .DocSearch.DocSearch-Button {
+    width: 14vw;
+  }
+}
+
+@media (max-width: 1217px) {
+  .DocSearch .DocSearch-Button-Keys {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .DocSearch .DocSearch-Button-Placeholder {
+    display: block;
+  }
+
+  .DocSearch .hide-small {
+    display: none;
+  }
+}
+
+@media (max-width: 409px) {
+  /* hide Search text */
+  .DocSearch-Button:first-child .DocSearch-Button-Placeholder {
+    display: none;
+  }
+}

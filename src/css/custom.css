@@ -85,7 +85,7 @@ a:hover {
   border-style: solid;
 }
 
-/* If we scope things with .intro we can attach to the tailwind styles on only the intro page */
+/* If we scope things with .tailwindcss we can attach to the tailwind styles on only the intro page */
 .tailwindcss .flex {
   display: flex;
 }
@@ -262,25 +262,26 @@ main.p-6,
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.tailwindcss .space-x-3> :not([hidden])~ :not([hidden]) {
+.tailwindcss .space-x-3 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-left: calc(0.75rem * (1 - var(--tw-space-x-reverse)));
   margin-right: calc(0.75rem * var(--tw-space-x-reverse));
 }
 
-.tailwindcss .space-x-4> :not([hidden])~ :not([hidden]) {
+.tailwindcss .space-x-4 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-left: calc(1rem * (1 - var(--tw-space-x-reverse)));
   margin-right: calc(1rem * var(--tw-space-x-reverse));
 }
 
-.tailwindcss .space-y-3> :not([hidden])~ :not([hidden]) {
+.tailwindcss .space-y-3 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
   margin-top: calc(0.75rem * (1 - var(--tw-space-y-reverse)));
 }
 
-.tailwindcss p {}
+.tailwindcss p {
+}
 
 main.max-w-screen-lg {
   max-width: 1024px;
