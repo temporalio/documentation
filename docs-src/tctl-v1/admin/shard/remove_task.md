@@ -5,7 +5,7 @@ sidebar_label: remove_task
 description: removing a Task with given information
 tags:
   - tctl
-  - cli-reference
+  - cli reference
   - history-shards
 ---
 

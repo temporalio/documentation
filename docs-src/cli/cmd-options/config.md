@@ -4,7 +4,7 @@ title: temporal config
 sidebar_label: config
 description: Path to config directory.
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 Path to config directory.

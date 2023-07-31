@@ -6,6 +6,11 @@ sidebar_position: 4
 description: The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 slug: /dev-guide/typescript/testing
 toc_max_heading_level: 4
+keywords:
+- guide-context
+- developer-guide
+- sdk
+- typescript
 tags:
 - guide-context
 - developer-guide

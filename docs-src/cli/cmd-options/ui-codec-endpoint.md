@@ -4,7 +4,7 @@ title: temporal ui-codec-endpoint
 sidebar_label: ui-codec-endpoint
 description: UI Remote data converter HTTP endpoint.
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 UI Remote data converter HTTP endpoint.

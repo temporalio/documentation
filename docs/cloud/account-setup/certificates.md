@@ -5,6 +5,12 @@ sidebar_label: Certificates
 sidebar_position: 1
 description: Create certificates and use them to control access to Namespaces.
 toc_max_heading_level: 4
+keywords:
+- introduction
+- temporal-cloud
+- certificates
+- explanation
+- how-to
 tags:
 - introduction
 - temporal-cloud

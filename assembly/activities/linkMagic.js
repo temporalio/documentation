@@ -53,26 +53,26 @@ async function replaceWithLocalRefs(guideConfig, fullIndex) {
   return guideConfig;
 }
 
-async function genRefString(node) {
-  const parts = node.id.split("/");
-  const id = parts[1];
-  let refString = `---
-id: ${id}
-title: ${node.title}
-description: ${node.description}
-sidebar_label: ${node.label}\n`;
+// async function genRefString(node) {
+//   const parts = node.id.split("/");
+//   const id = parts[1];
+//   let refString = `---
+// id: ${id}
+// title: ${node.title}
+// description: ${node.description}
+// sidebar_label: ${node.label}\n`;
 
-  if (node.tags != undefined) {
-    refString = `${refString}tags:\n`;
-    for (const tag of node.tags) {
-      refString = `${refString} - ${tag}\n`;
-    }
-  }
-  refString = `${refString}---\n\n`;
-  refString = `${refString}<!-- This file is generated. Do not edit it directly. -->\n\n`;
-  refString = `${refString}${node.markdown_content}`;
-  return refString;
-}
+//   if (node.tags != undefined) {
+//     refString = `${refString}tags:\n`;
+//     for (const tag of node.tags) {
+//       refString = `${refString} - ${tag}\n`;
+//     }
+//   }
+//   refString = `${refString}---\n\n`;
+//   refString = `${refString}<!-- This file is generated. Do not edit it directly. -->\n\n`;
+//   refString = `${refString}${node.markdown_content}`;
+//   return refString;
+// }
 
 async function parseAndReplace(raw_content, link_index, current_guide_id) {
   const lines = raw_content.toString().split("\n");

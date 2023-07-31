@@ -5,7 +5,7 @@ sidebar_label: get
 description: How to get user information in Temporal Cloud using tcld.
 tags:
   - tcld
-  - cli-reference
+  - cli reference
 ---
 
 The `tcld user get` command gets information about the specified user in Temporal Cloud.
@@ -15,7 +15,7 @@ Alias: `g`
 
 The following modifiers control the behavior of the command.
 
-### `--user-email`
+#### --user-email
 
 Specify the email address of the user to get information about.
 
@@ -25,7 +25,7 @@ Specify the email address of the user to get information about.
 tcld user delete --user-email <test@example.com>
 ```
 
-### `--user-id`
+#### --user-id
 
 Specify the user identifier of the user to get information about.
 

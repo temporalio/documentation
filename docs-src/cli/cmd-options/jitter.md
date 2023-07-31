@@ -4,7 +4,7 @@ title: temporal jitter
 sidebar_label: jitter
 description: Jitter duration.
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 Jitter duration.

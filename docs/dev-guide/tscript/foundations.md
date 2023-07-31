@@ -6,6 +6,15 @@ sidebar_position: 1
 description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/typescript/foundations
 toc_max_heading_level: 3
+keywords:
+- guide-context
+- cli
+- developer-guide
+- sdk
+- typescript
+- how-to
+- go
+- workers
 tags:
 - guide-context
 - cli

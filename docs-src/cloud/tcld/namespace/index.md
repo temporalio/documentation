@@ -5,7 +5,7 @@ sidebar_label: namespace
 description: How to operate Namespaces in Temporal Cloud using tcld.
 tags:
   - tcld
-  - cli-reference
+  - cli reference
 ---
 
 The `tcld namespace` commands enable [Namespace](/concepts/what-is-a-namespace) operations in Temporal Cloud.

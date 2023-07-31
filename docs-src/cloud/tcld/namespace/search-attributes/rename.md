@@ -5,7 +5,7 @@ sidebar_label: rename
 description: How to rename an existing custom Search Attribute in Temporal Cloud using tcld.
 tags:
   - tcld
-  - cli-reference
+  - cli reference
 ---
 
 The `tcld namespace search-attributes rename` command renames a custom [Search Attribute](/concepts/what-is-a-search-attribute) in Temporal Cloud.
@@ -14,7 +14,7 @@ The `tcld namespace search-attributes rename` command renames a custom [Search A
 
 The following modifiers control the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
@@ -26,7 +26,7 @@ Alias: `-n`
 tcld namespace search-attributes rename --namespace <namespace_id> --existing-name <value> --new-name <value>
 ```
 
-#### `--request-id`
+#### --request-id
 
 Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
 
@@ -38,7 +38,7 @@ Alias: `-r`
 tcld namespace search-attributes rename --request-id <request_id> --existing-name <value> --new-name <value>
 ```
 
-#### `--resource-version`
+#### --resource-version
 
 Specify a resource version (ETag) to update from. If not specified, the latest version is used.
 
@@ -50,7 +50,7 @@ Alias: `-v`
 tcld namespace search-attributes rename --resource-version <etag> --existing-name <value> --new-name <value>
 ```
 
-#### `--existing-name`
+#### --existing-name
 
 _Required modifier_
 
@@ -64,7 +64,7 @@ Alias: `--en`
 tcld namespace search-attributes rename --existing-name <value> --new-name <value>
 ```
 
-#### `--new-name`
+#### --new-name
 
 _Required modifier_
 

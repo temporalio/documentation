@@ -5,7 +5,7 @@ sidebar_label: showid
 description: How to show Workflow History for a specified Workflow Id and optional Run Id using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl workflow showid` command shows the Workflow Execution Event History for the specified [Workflow Id](/concepts/what-is-a-workflow-id) and optional [Run Id](/concepts/what-is-a-run-id).

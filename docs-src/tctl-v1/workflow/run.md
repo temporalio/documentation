@@ -5,7 +5,7 @@ sidebar_label: run
 description: How to start a new Workflow Execution and get Workflow progress using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl workflow run` command starts a new [Workflow Execution](/workflows#workflow-execution) and can show the progress of a Workflow Execution.

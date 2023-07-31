@@ -4,7 +4,7 @@ title: temporal input-parallelism
 sidebar_label: input-parallelism
 description: Number of goroutines to run in parallel.
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 Number of goroutines to run in parallel.

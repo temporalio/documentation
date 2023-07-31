@@ -5,6 +5,9 @@ sidebar_label: Temporal Cloud
 sidebar_position: 3
 description: Temporal Cloud documentation, including explanations and usage.
 toc_max_heading_level: 4
+keywords:
+- term
+- explanation
 tags:
 - term
 - explanation

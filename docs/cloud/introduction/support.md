@@ -5,6 +5,11 @@ sidebar_label: Support
 sidebar_position: 2
 description: Create an account, issue certificates, create a Namespace, invite users, and connect.
 toc_max_heading_level: 4
+keywords:
+- temporal-cloud
+- support
+- introduction
+- how-to
 tags:
 - temporal-cloud
 - support

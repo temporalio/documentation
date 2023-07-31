@@ -5,6 +5,15 @@ sidebar_label: Users
 sidebar_position: 3
 description: Create Namespaces, use Namespace endpoints for access, and obtain Namespace information.
 toc_max_heading_level: 4
+keywords:
+- temporal-cloud
+- temporal-cloud-account
+- introduction
+- how-to
+- users
+- user
+- explanation
+- namespace
 tags:
 - temporal-cloud
 - temporal-cloud-account

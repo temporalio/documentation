@@ -5,6 +5,15 @@ sidebar_label: Get started
 sidebar_position: 2
 description: Create an account, issue certificates, create a Namespace, invite users, and connect.
 toc_max_heading_level: 4
+keywords:
+- introduction
+- temporal-cloud
+- explanation
+- certificates
+- namespaces
+- how-to
+- users
+- temporal-cloud-account
 tags:
 - introduction
 - temporal-cloud

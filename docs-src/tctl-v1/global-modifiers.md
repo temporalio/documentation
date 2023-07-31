@@ -5,7 +5,7 @@ sidebar_label: Global modifiers
 description: Global modifiers are provided before command modifiers.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 You can supply the values for many of these modifiers by setting [environment variables](/tctl-v1/environment-variables) instead of including the modifiers in a tctl command.

@@ -5,7 +5,7 @@ sidebar_label: metrics
 description: How to configure the metrics endpoint for a Temporal Cloud account using tcld.
 tags:
   - tcld
-  - cli-reference
+  - cli reference
 ---
 
 The `tcld account metrics` commands configure the metrics endpoint for the Temporal Cloud account that is currently logged in.

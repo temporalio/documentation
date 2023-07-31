@@ -5,7 +5,7 @@ sidebar_label: admin
 description: How to run admin-level tctl commands.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 A `tctl admin` command allows the user to run admin operations.

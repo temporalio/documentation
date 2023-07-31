@@ -5,6 +5,16 @@ sidebar_label: Pricing
 sidebar_position: 1
 description: Temporal Cloud pricing information
 toc_max_heading_level: 4
+keywords:
+- temporal-cloud
+- pricing
+- introduction
+- term
+- explanation
+- storage
+- support
+- security
+- faq
 tags:
 - temporal-cloud
 - pricing

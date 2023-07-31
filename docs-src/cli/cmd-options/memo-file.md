@@ -4,7 +4,7 @@ title: temporal memo-file
 sidebar_label: memo-file
 description: Set a memo from a file.
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 Set a memo from a file.

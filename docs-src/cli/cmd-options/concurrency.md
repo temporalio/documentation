@@ -4,7 +4,7 @@ title: temporal concurrency
 sidebar_label: concurrency
 description: Request concurrency.
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 Request concurrency.

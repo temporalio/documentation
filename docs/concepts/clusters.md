@@ -6,6 +6,9 @@ sidebar_position: 8
 description: This guide provides a comprehensive overview of Temporal Clusters.
 slug: /clusters
 toc_max_heading_level: 4
+keywords:
+- term
+- explanation
 tags:
 - term
 - explanation

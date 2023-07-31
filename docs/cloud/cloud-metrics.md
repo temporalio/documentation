@@ -5,6 +5,17 @@ sidebar_label: Metrics
 sidebar_position: 6
 description: Configure and track performance metrics for Temporal Cloud.
 toc_max_heading_level: 4
+keywords:
+- introduction
+- temporal-cloud
+- metrics
+- how-to
+- observability
+- cli-tcld
+- explanation
+- reference
+- promentheus
+- grafana
 tags:
 - introduction
 - temporal-cloud

@@ -4,7 +4,7 @@ title: temporal task-queue
 sidebar_label: task-queue
 description: Task Queue
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 Task Queue.

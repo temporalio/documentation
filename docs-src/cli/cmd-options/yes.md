@@ -4,7 +4,7 @@ title: temporal  yes
 sidebar_label: yes
 description: Confirm all prompts.
 tags:
-  - cli-reference
+  - cli reference
 ---
 
 Confirm all prompts.
