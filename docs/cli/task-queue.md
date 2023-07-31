@@ -4,8 +4,11 @@ title: Temporal CLI task-queue command reference
 sidebar_label: task-queue
 description: How to use the Temporal CLI task-queue command
 toc_max_heading_level: 4
-tags:
+keywords:
 - cli reference
+- cli
+tags:
+- cli-reference
 - cli
 ---
 
@@ -17,7 +20,7 @@ import TabItem from '@theme/TabItem';
 Task Queue commands allow operations to be performed on <a class="tdlp" href="/workers#task-queue">Task Queues<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>.
 To run a Task Queue command, run `temporal task-queue [command] [command options]`
 
-## describe
+## temporal task-queue describe {#describe}
 
 The `temporal task-queue describe` command provides [poller](/dev-guide/worker-performance#poller-count) information for a given <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>.
 

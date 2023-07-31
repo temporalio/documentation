@@ -4,6 +4,10 @@ title: How to manage Audit Logging in Temporal Cloud
 sidebar_label: Audit Logging
 description: Create, consume, and manage Audit Logs.
 toc_max_heading_level: 4
+keywords:
+- term
+- explanation
+- guide-context
 tags:
 - term
 - explanation
@@ -17,13 +21,13 @@ Audit Logging is a feature of <a class="tdlp" href="/cloud/index#">Temporal Clou
 Audit Logging answers "who, when, and what" questions about Temporal Cloud resources.
 These answers can help you evaluate the security of your organization, and they can provide information that you need to satisfy audit and compliance requirements.
 
-## Supported integrations
+## Which integrations are supported by Audit Logging? {#supported-integrations}
 
 Audit Logging supports the [Amazon Kinesis](https://docs.aws.amazon.com/kinesis/) streaming-data platform.
 By using [Amazon Kinesis Data Firehose](https://docs.aws.amazon.com/firehose/latest/dev/what-is-this-service.html), you can route Temporal Audit Logs in [Amazon Simple Storage Service](https://docs.aws.amazon.com/s3/) (S3).
 We plan to release additional integrations.
 
-## Supported events
+## Which events are supported by Audit Logging? {#supported-events}
 
 The first release of Audit Logging supports Admin Operation events.
 
@@ -67,7 +71,7 @@ The log sent to the Kinesis stream is JSON in the following format:
 }
 ```
 
-## Configure Audit Logging
+## How to configure Audit Logging {#configure-audit-logging}
 
 To set up Audit Logging, you must have an Amazon Web Services (AWS) account and set up Kinesis Data Streams.
 
@@ -105,7 +109,7 @@ If you chose the **Manual** access method, continue with the following steps:
 1. Select **Next** on this page and on the next two pages.
 1. On the **Review** page, select **Create stack**.
 
-## Consume an Audit Log
+## How to consume an Audit Log {#consume-an-audit-log}
 
 After you create an Audit Log sink, wait for the logs to flow into the Kinesis stream.
 You should see the first logs 2–10 minutes after you configure the sink.
@@ -186,7 +190,7 @@ The following is a sample result.
 }
 ```
 
-## Troubleshoot Audit Logging
+## How to troubleshoot Audit Logging {#troubleshoot-audit-logging}
 
 The Audit Logging page of the Temporal Cloud UI provides the current status of an Audit Log sink.
 
@@ -199,7 +203,7 @@ Temporal retains Audit Log information for up to 30 days.
 If you experience an issue with an Audit Log sink, we can provide the missing audit information.
 Open a support ticket to request assistance.
 
-## Delete an Audit Log sink
+## How to delete an Audit Log sink {#delete-an-audit-log-sink}
 
 When you no longer need Audit Logging, you can delete the Audit Log sink.
 
