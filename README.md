@@ -116,7 +116,7 @@ You must receive approval from us in both cases before submitting a Pull Request
 
 ## How to fix a typo
 
-**STOP! [Make sure you are eligible to put up a Pull Request!](#how-to-get-approval-to-put-up-a-pr]**
+**STOP! [Make sure you are eligible to put up a Pull Request!](#how-to-get-approval-to-put-up-a-pr)**
 
 **Once approved, you may follow these steps.**
 
@@ -163,7 +163,7 @@ git push origin yourfix
 
 ## How to make changes to this repository
 
-**STOP! [Make sure you are eligible to put up a Pull Request!](#how-to-get-approval-to-put-up-a-pr]**
+**STOP! [Make sure you are eligible to put up a Pull Request!](#how-to-get-approval-to-put-up-a-pr)**
 
 **Once approved, you may follow these steps.**
 
