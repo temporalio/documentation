@@ -17,6 +17,7 @@
     "lint:java": "vale docs-src/java/*.md",
     "lint:py": "vale docs-src/python/*.md",
     "lint:ts": "vale docs-src/typescript/*.md",
+    "postinstall": "patch-package",
     "serve": "docusaurus serve",
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
@@ -46,7 +47,9 @@
     "clsx": "^1.1.1",
     "fs-extra": "^10.1.0",
     "gray-matter": "^4.0.3",
+    "patch-package": "^8.0.0",
     "path": "^0.12.7",
+    "postinstall-postinstall": "^2.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-player": "^2.6.0",
@@ -60,7 +63,7 @@
     "webpack-font-preload-plugin": "^1.5.0"
   },
   "devDependencies": {
-    "dprint": "^0.38.3",
+    "dprint": "^0.40.0",
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.23.2"
   }

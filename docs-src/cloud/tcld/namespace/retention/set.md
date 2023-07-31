@@ -5,7 +5,7 @@ sidebar_label: set
 description: How to set the length of time a closed Workflow will be preserved before deletion for a Namespace in Temporal Cloud using tcld.
 tags:
   - tcld
-  - cli-reference
+  - cli reference
 ---
 
 Set the length of time (in days) a closed Workflow will be preserved before deletion for the specified Namespace.
@@ -14,7 +14,7 @@ Alias: `s`
 
 The following modifiers control the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 _Required modifier_
 
@@ -23,7 +23,7 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
-#### `--retention-days`
+#### --retention-days
 
 _Required modifier_
 

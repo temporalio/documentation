@@ -5,7 +5,7 @@ sidebar_label: stack
 description: How to query Workflow Executions with __stack_trace using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl workflow stack` command queries [Workflow Execution](/workflows#workflow-execution) with `__stack_trace` as the query type.

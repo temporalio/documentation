@@ -4,6 +4,11 @@ title: tctl v1.17 admin command reference
 sidebar_label: admin
 description: How to use the tctl v1.17 admin command
 toc_max_heading_level: 4
+keywords:
+- tctl
+- cli reference
+- db
+- history-shards
 tags:
 - tctl
 - cli-reference

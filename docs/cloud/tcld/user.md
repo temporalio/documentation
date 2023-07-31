@@ -4,6 +4,9 @@ title: tcld user command reference
 sidebar_label: user
 description: How to use Temporal Cloud's tcld user command
 toc_max_heading_level: 4
+keywords:
+- tcld
+- cli reference
 tags:
 - tcld
 - cli-reference
@@ -35,7 +38,7 @@ Alias: `d`
 
 The following modifiers control the behavior of the command.
 
-### `--user-email`
+#### --user-email
 
 Specify the email address of the user to delete.
 
@@ -45,7 +48,7 @@ Specify the email address of the user to delete.
 tcld user delete --user-email <test@example.com>
 ```
 
-### `--user-id`
+#### --user-id
 
 Specify the user identifier of the user to delete.
 
@@ -55,7 +58,7 @@ Specify the user identifier of the user to delete.
 tcld user delete --user-id <test-user-id>
 ```
 
-### `--request-id`
+#### --request-id
 
 The request identifier to use for the asynchronous operation.
 
@@ -63,7 +66,7 @@ If not set, the server assigns an identifier.
 
 Alias: `-r`
 
-#### `--resource-version`
+#### --resource-version
 
 Specify a resource version (ETag) to update from.
 If not specified, the latest version is used.
@@ -79,7 +82,7 @@ Alias: `g`
 
 The following modifiers control the behavior of the command.
 
-### `--user-email`
+#### --user-email
 
 Specify the email address of the user to get information about.
 
@@ -89,7 +92,7 @@ Specify the email address of the user to get information about.
 tcld user delete --user-email <test@example.com>
 ```
 
-### `--user-id`
+#### --user-id
 
 Specify the user identifier of the user to get information about.
 
@@ -107,7 +110,7 @@ Alias: `i`
 
 The following modifiers control the behavior of the command.
 
-### `--user-email`
+#### --user-email
 
 _Required modifier_
 
@@ -116,7 +119,7 @@ You can supply this modifier multiple times to invite multiple users in a single
 
 Alias: `-e`
 
-### `--account-role`
+#### --account-role
 
 _Required modifier_
 
@@ -126,7 +129,7 @@ Available account roles: `admin` | `developer` | `read`.
 
 Alias: `--ar`
 
-### `--namespace-permission`
+#### --namespace-permission
 
 Specify the [Namespace-level permissions](/cloud/#namespace-level-permissions) for the invited user.
 You can supply this modifier multiple times to set multiple Namespace permissions in a single request.
@@ -137,7 +140,7 @@ Available namespace permissions: `Admin` | `Write` | `Read`.
 
 Alias: `-p`
 
-### `--request-id`
+#### --request-id
 
 The request identifier to use for the asynchronous operation.
 
@@ -163,7 +166,7 @@ tcld user list
 
 The following modifiers control the behavior of the command.
 
-### `--namespace`
+#### --namespace
 
 List users that have permissions to the Namespace.
 
@@ -175,13 +178,13 @@ Alias: `-n`
 tcld user list --namespace <namespace_id>
 ```
 
-### `--page-token`
+#### --page-token
 
 Page token for paging list users request.
 
 Alias: `-p`
 
-### `--page-size`
+#### --page-size
 
 Page size for paging list users request.
 
@@ -198,7 +201,7 @@ Alias: `ri`
 
 The following modifiers control the behavior of the command.
 
-### `--user-email`
+#### --user-email
 
 Specify the email address of the user to resend an invitation to.
 
@@ -208,7 +211,7 @@ Specify the email address of the user to resend an invitation to.
 tcld user resend-invite --user-email <test@example.com>
 ```
 
-### `--user-id`
+#### --user-id
 
 Specify the user identifier of the user to resend an invitation to.
 
@@ -218,7 +221,7 @@ Specify the user identifier of the user to resend an invitation to.
 tcld user resend-invite --user-id <test-user-id>
 ```
 
-### `--request-id`
+#### --request-id
 
 The request identifier to use for the asynchronous operation.
 
@@ -235,7 +238,7 @@ Alias: `ri`
 
 The following modifiers control the behavior of the command.
 
-### `--account-role`
+#### --account-role
 
 _Required modifier_
 
@@ -245,7 +248,7 @@ Available account roles: `admin` | `developer` | `read`.
 
 Alias: `-ar`
 
-### `--user-email`
+#### --user-email
 
 Specify the email address of the user to assign an account-level Role to.
 
@@ -257,7 +260,7 @@ Alias: `-e`
 tcld user set-account-role --user-email <test@example.com> --account-role Developer
 ```
 
-### `--user-id`
+#### --user-id
 
 Specify the user identifier of the user to assign an account-level Role to.
 
@@ -269,7 +272,7 @@ Alias: `--id`
 tcld user set-account-role --user-id <test-user-id> --account-role Developer
 ```
 
-### `--request-id`
+#### --request-id
 
 The request identifier to use for the asynchronous operation.
 
@@ -277,7 +280,7 @@ If not set, the server assigns an identifier.
 
 Alias: `-r`
 
-### `--resource-version`
+#### --resource-version
 
 Specify a resource version (ETag) to update from.
 If not specified, the latest version is used.
@@ -293,7 +296,7 @@ Alias: `snp`
 
 The following modifiers control the behavior of the command.
 
-### `--user-email`
+#### --user-email
 
 Specify the email address of the user to assign Namespace-level permissions to.
 
@@ -303,7 +306,7 @@ Specify the email address of the user to assign Namespace-level permissions to.
 tcld user set-namespace-permissions --user-email <test@example.com>
 ```
 
-### `--user-id`
+#### --user-id
 
 Specify the user identifier of the user to assign Namespace-level permissions to.
 
@@ -313,7 +316,7 @@ Specify the user identifier of the user to assign Namespace-level permissions to
 tcld user set-namespace-permissions --user-id <test-user-id>
 ```
 
-### `--request-id`
+#### --request-id
 
 The request identifier to use to assign Namespace-level permissions to.
 
@@ -321,14 +324,14 @@ If not set, the server assigns an identifier.
 
 Alias: `-r`
 
-### `--resource-version`
+#### --resource-version
 
 Specify a resource version (ETag) to assign Namespace-level permissions to.
 If not specified, the latest version is used.
 
 Alias: `-v`
 
-### `--namespace-permission`
+#### --namespace-permission
 
 Specify the [Namespace-level permissions](/cloud/#namespace-level-permissions) for the invited user.
 You can supply this modifier multiple times to set multiple Namespace permissions in a single request.

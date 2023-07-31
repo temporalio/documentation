@@ -5,7 +5,7 @@ sidebar_label: close_shard
 description: closing a shard with a given shard Id
 tags:
   - tctl
-  - cli-reference
+  - cli reference
   - history-shards
 ---
 

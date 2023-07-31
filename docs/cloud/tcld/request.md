@@ -4,6 +4,9 @@ title: tcld request command reference
 sidebar_label: request
 description: How to use Temporal Cloud's tcld request command.
 toc_max_heading_level: 4
+keywords:
+- tcld
+- cli reference
 tags:
 - tcld
 - cli-reference
@@ -28,7 +31,7 @@ The `tcld request get` command gets the status of the specified request in Tempo
 
 The following modifiers control the behavior of the command.
 
-### `--namespace`
+#### --namespace
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
@@ -40,7 +43,7 @@ Alias: `-n`
 tcld namespace get --namespace <namespace_id> --request-id <request_id>
 ```
 
-### `--request`
+#### --request
 
 _Required modifier_
 

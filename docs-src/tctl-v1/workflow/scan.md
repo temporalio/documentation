@@ -5,7 +5,7 @@ sidebar_label: scan
 description: How to quickly list Workflow Executions without sorting using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl workflow scan` command lists [Workflow Executions](/workflows#workflow-execution).

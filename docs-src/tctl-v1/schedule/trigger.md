@@ -5,7 +5,7 @@ sidebar_label: trigger
 description: How to trigger a Schedule Action using tctl
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 Starting a Workflow Run immediately with a Schedule, regardless of its configured Spec, is a common use case.

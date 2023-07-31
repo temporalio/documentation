@@ -5,7 +5,7 @@ sidebar_label: listarchived
 description: How to list archived Workflow Executions using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl workflow listarchived` command lists archived [Workflow Executions](/workflows#workflow-execution).

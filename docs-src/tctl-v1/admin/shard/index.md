@@ -5,7 +5,7 @@ sidebar_label: shard
 description: Admin-level operations on a specific shard
 tags:
   - tctl
-  - cli-reference
+  - cli reference
   - history-shards
 ---
 

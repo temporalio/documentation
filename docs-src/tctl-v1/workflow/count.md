@@ -5,7 +5,7 @@ sidebar_label: count
 description: How to count Workflow Executions using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl workflow count` command counts [Workflow Executions](/workflows#workflow-execution).

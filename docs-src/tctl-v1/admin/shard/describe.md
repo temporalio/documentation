@@ -5,7 +5,7 @@ sidebar_label: describe
 description: Describes Id of shard.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
   - history-shards
 ---
 

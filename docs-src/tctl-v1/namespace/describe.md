@@ -5,7 +5,7 @@ sidebar_label: describe
 description: How to describe a Namespace using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl namespace describe` command describes a [Namespace](/namespaces).

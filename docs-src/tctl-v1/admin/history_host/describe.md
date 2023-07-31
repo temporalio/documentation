@@ -5,7 +5,7 @@ sidebar_label: describe
 description: Describing the information in a history host
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl admin history_host describe` command describes the internal information of history host.

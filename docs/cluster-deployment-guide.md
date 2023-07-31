@@ -5,6 +5,13 @@ sidebar_label: Cluster deployment
 sidebar_position: 4
 description: This guide provides a comprehensive overview to deploy and operate a Temporal Cluster in a live environment.
 toc_max_heading_level: 4
+keywords:
+- guide-context
+- operation-guide
+- filtered-lists
+- visibility
+- how-to
+- cluster
 tags:
 - guide-context
 - operation-guide
