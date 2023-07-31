@@ -63,7 +63,7 @@
     "webpack-font-preload-plugin": "^1.5.0"
   },
   "devDependencies": {
-    "dprint": "^0.38.3",
+    "dprint": "^0.40.0",
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.23.2"
   }
