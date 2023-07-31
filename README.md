@@ -183,7 +183,7 @@ Otherwise, the following steps provide a much higher level view of the steps to 
 
 ### How to install the dependencies for this repo
 
-Make sure NodeJS is installed. We recommend using a version newer than [Node.js](https://nodejs.org/en/download/). 16.0.0. (On a Mac, use the command `brew install node@16`)
+Make sure NodeJS is installed. We recommend using a version newer than [Node.js](https://nodejs.org/en/download/). 18.0.0. (On a Mac, use the command `brew install node@16`)
 
 Make sure you have [Yarn installed](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable).
 
