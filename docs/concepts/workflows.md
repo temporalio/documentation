@@ -408,6 +408,8 @@ A Reset terminates a [Workflow Execution](/workflows#workflow-execution), remove
 
 A Run Id is a globally unique, platform-level identifier for a [Workflow Execution](/workflows#workflow-execution).
 
+The current Run Id is mutable and can change during a [Workflow Retry](retry-policies). You shouldn't rely on storing the current Run Id, or using it for any logical choices, because a Workflow Retry changes the Run Id and can lead to non-determinism issues.
+
 Temporal guarantees that only one Workflow Execution with a given <a class="tdlp" href="#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-id">Learn more</a></span></span></a> can be in an Open state at any given time.
 But when a Workflow Execution reaches a Closed state, it is possible to have another Workflow Execution in an Open state with the same Workflow Id.
 For example, a Temporal Cron Job is a chain of Workflow Executions that all have the same Workflow Id.
@@ -415,20 +417,31 @@ Each Workflow Execution within the chain is considered a _Run_.
 
 A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow Id with other Workflow Executions.
 
+### Which operations lead to non-determinism issues?
+
+An operation like `ContinueAsNew`, `Retry`, `Cron`, and `Reset` creates a [Workflow Execution Chain](/workflows#workflow-execution-chain) as identified by the [`first_execution_run_id`](https://github.com/temporalio/api/blob/master/temporal/api/history/v1/message.proto).
+
+Each operation creates a new Workflow Execution inside a chain run and saves its information as `first_execution_run_id`.
+Thus, the Run Id is updated during each operation on a Workflow Execution.
+
+- The `first_execution_run_id` is the Run Id of the first Workflow Execution in a Chain run.
+- The `original_execution_run_id` is the Run Id when the `WorkflowExecutionStarted` Event occurs.
+
+A Workflow `Reset` changes the first execution Run Id, but preserves the original execution Run Id.
+For example, when a new Workflow Execution in the chain starts, it stores its Run Id in `original_execution_run_id`.
+A reset doesn't change that field, but the current Run Id is updated.
+
 :::caution
 
-Don't rely on storing the current Run Id or using it for any logical choices.
-A Workflow Retry changes the Run Id.
-Because the current Run Id is mutable, relying on it might produce non-determinism issues.
+Because of this behavior, you shouldn't rely on the current Run Id in your code to make logical choices.
 
 :::
 
 **Learn more**
 
-For more information, see the following links.
+For more information, see the following link.
 
 - [`message.proto`](https://github.com/temporalio/api/blob/master/temporal/api/history/v1/message.proto#L75-L82)
-- [Non-determinism issues for Run Ids](/kb/non-determinism-issues-for-run-ids)
 
 ### What is a Workflow Id? {#workflow-id}
 
