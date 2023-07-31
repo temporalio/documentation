@@ -4,6 +4,38 @@ Hello World!
 
 Welcome to the Temporal Platform's documentation repository!
 
+**Table of contents**
+
+- [What is the goal of this README?](#what-is-the-goal-of-this-readme)
+  - [What do we mean by the “Temporal Platform information corpus”?](#what-do-we-mean-by-the-temporal-platform-information-corpus)
+- [What is in this repository?](#what-is-in-this-repository)
+  - [`/docs-src` Markdown “source-of-truth” Information nodes](#docs-src-markdown-source-of-truth-information-nodes)
+  - [`/docs` Markdown files for Docusaurus](#docs-markdown-files-for-docusaurus)
+  - [`/assembly` Assembly Workflow](#assembly-assembly-workflow)
+  - [Snipsync code synchronization tooling](#snipsync-code-synchronization-tooling)
+  - [`/changelog` Docs site changelog](#changelog-docs-site-changelog)
+- [How to get approval to put up a Pull Request](#how-to-get-approval-to-put-up-a-pull-request)
+- [How to fix a typo](#how-to-fix-a-typo)
+- [How to make changes to this repository](#how-to-make-changes-to-this-repository)
+  - [How to install the dependencies for this repo](#how-to-install-the-dependencies-for-this-repo)
+  - [How to follow style guidance](#how-to-follow-style-guidance)
+  - [What is the philosophy around versioning the documentation?](#what-is-the-philosophy-around-versioning-the-document)
+  - [How to explicitly identify support, stability, and dependency info](#how-to-explicitly-identify-support-stability-and-dependency-info)
+  - [How to auto format files](#how-auto-format-files)
+  - [How to run the Assembly Workflow](#how-to-run-the-assembly-workflow)
+  - [How to create a new guide configuration](#how-to-create-a-new-guide-configuration)
+  - [How to use DACX](#how-to-use-dacx)
+- [Local development command reference](#local-development-command-reference)
+  - [`yarn`](#yarn)
+  - [`yarn build`](#yarn-build)
+  - [`yarn start`](#yarn-start)
+  - [`yarn assemble`]
+    - [`--cloud`](#--cloud)
+    - [`--samples`](#--samples)
+  - [`yarn format`](#yarn-format)
+  - [`yarn snipsync](#yarn-snipsync)
+    - [`--clear`](#--clear)
+
 ## What is the goal of this README?
 
 The goal of this README is to empower contribution to the Temporal Platform information corpus, specifically docs.temporal.io. See [How to make changes to this repository](#how-to-make-changes-to-this-repository).
