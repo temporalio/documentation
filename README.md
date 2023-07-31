@@ -174,7 +174,7 @@ Otherwise, the following steps provide a much higher level view of the steps to 
 1. Clone the repo.
 2. [Install the dependencies](#install-the-dependencies).
 3. Make changes to the information nodes in `docs-src` & guide configurations in `assemble/guide-configs` while [following our style guidance](#how-to-follow-style-guidance).
-   1. See [How to construct a guide config](#how-to-construct-a-guide-config).
+   1. See [How to construct a guide config](#how-to-create-a-new-guide-configuration).
    2. See [How to use DACX](#how-to-use-dacx).
    3. See [How to use SnipSync](#how-to-use-snipsync).
 4. [Run the Assembly Workflow](#how-to-run-the-assembly-workflow).
