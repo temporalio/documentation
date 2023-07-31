@@ -6,6 +6,14 @@ sidebar_position: 3
 description: The Observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view what Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 slug: /dev-guide/go/observability
 toc_max_heading_level: 4
+keywords:
+- guide-context
+- go
+- how-to
+- developer-guide
+- sdk
+- log
+- client
 tags:
 - guide-context
 - go
@@ -27,7 +35,7 @@ This section covers features related to viewing the state of the application, in
 - [Logging](#logging)
 - [Visibility](#visibility)
 
-## Metrics
+## How to emit metrics {#metrics}
 
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the <a class="tdlp" href="/references/sdk-metrics#">SDK metrics reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">SDK metrics</span><br /><br /><span class="tdlppd">The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/sdk-metrics#">Learn more</a></span></span></a>.
@@ -57,7 +65,7 @@ The Go SDK currently supports the [Tally](https://pkg.go.dev/go.temporal.io/sdk/
 
 For more information, see the [Go sample for metrics](https://github.com/temporalio/samples-go/tree/main/metrics).
 
-## Tracing and Context Propogation
+## Tracing and Context Propagation {#tracing-and-context-propogation}
 
 The Go SDK provides support for distributed tracing through [OpenTracing](https://opentracing.io/).
 Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
@@ -179,7 +187,7 @@ c, err := client.Dial(client.Options{
 OpenTracing and OpenTelemetry are natively supported by [Jaeger](https://www.jaegertracing.io/docs/1.46/features/#native-support-for-opentracing-and-opentelemetry).
 For more information on configuring and using tracing, see the documentation provided by [OpenTracing](https://opentracing.io), [OpenTelemetry](https://opentelemetry.io/), and [Datadog](https://docs.datadoghq.com/tracing/).
 
-## Logging
+## How to log from a Workflow {#logging}
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
 
@@ -220,7 +228,7 @@ workflow.WithActivityOptions(ctx, ao)
 }
 ```
 
-### Custom logger
+### How to provide a custom logger {#custom-logger}
 
 Use a custom logger for logging.
 
@@ -252,11 +260,11 @@ func main() {
 }
 ```
 
-## Visibility
+## How to use Visibility APIs {#visibility}
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
 
-### Search Attributes
+### How to use Search Attributes {#search-attributes}
 
 The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
@@ -307,7 +315,7 @@ for _, exec := range resp.Executions {
 }
 ```
 
-### Custom Search Attributes
+### How to set custom Search Attributes {#custom-search-attributes}
 
 After you've created custom Search Attributes in your Cluster (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
@@ -341,7 +349,7 @@ func (c *Client) CallYourWorkflow(ctx context.Context, workflowID string, payloa
 }
 ```
 
-### Upsert Search Attributes
+### How to upsert Search Attributes {#upsert-search-attributes}
 
 You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
 
@@ -378,7 +386,7 @@ map[string]interface{}{
 }
 ```
 
-### Remove Search Attribute
+### How to remove a Search Attribute from a Workflow {#remove-search-attribute}
 
 To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
 
