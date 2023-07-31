@@ -29,7 +29,7 @@ Welcome to the Temporal Platform's documentation repository!
   - [`yarn`](#yarn)
   - [`yarn build`](#yarn-build)
   - [`yarn start`](#yarn-start)
-  - [`yarn assemble`]
+  - [`yarn assemble`](#yarn-assemble)
     - [`--cloud`](#--cloud)
     - [`--samples`](#--samples)
   - [`yarn format`](#yarn-format)
