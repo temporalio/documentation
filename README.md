@@ -187,7 +187,7 @@ Make sure NodeJS is installed. We recommend using a version newer than [Node.js]
 
 Make sure you have [Yarn installed](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable).
 
-In the root of the repo run `yarn`. This installs the Docusaurus framework packages and the other packages that help generate the the `build` output.
+In the root of the repo run `yarn`. This installs the Docusaurus framework packages and the other packages that help generate the `build` output.
 
 Change directory into `assembly` and run `yarn` there as well. This installs the Assembly Workflow dependencies that generates information nodes and generates the guides into `/docs` .
 
