@@ -4,7 +4,9 @@ title: How to Continue-As-New
 description: Continue-As-New enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
 sidebar_label: Continue-As-New
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - workflow-execution
+  - continue-as-new
 ---
 
 [Continue-As-New](/concepts/what-is-continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
