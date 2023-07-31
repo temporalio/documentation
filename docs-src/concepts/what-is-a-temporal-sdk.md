@@ -50,7 +50,6 @@ The following SDKs are in alpha/pre-alpha development stages, but are not yet su
 
 - [.NET](https://github.com/temporalio/sdk-dotnet)
 - [Rust](https://github.com/temporalio/sdk-core)
-- [Ruby](https://github.com/temporalio/sdk-ruby)
 
 ### Third-party SDKs
 
