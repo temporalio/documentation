@@ -2,6 +2,9 @@
 id: how-to-set-a-workflow-task-queue-in-php
 title: How to set a Workflow Task Queue in PHP
 sidebar_label: Task Queues
+tags:
+ - php
+ - task queues
 ---
 
 In PHP, a Task Queue is represented in code by its name as a `string`.

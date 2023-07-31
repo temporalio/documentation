@@ -2,6 +2,10 @@
 id: how-to-execute-a-local-activity-in-php
 title: How to execute a Local Activity in PHP
 sidebar_label: Local Activity
+description: Execute a Local Activity
+tags:
+ - local activity
+ - activity
 ---
 
 To execute a Local Activity, use `#[LocalActivityInterface]`.

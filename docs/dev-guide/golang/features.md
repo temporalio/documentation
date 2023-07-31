@@ -12,11 +12,13 @@ keywords:
 - developer-guide
 - how-to
 - go-sdk
+- dacx
 - activities
 - retries
 - activity heartbeats
 - timers
 - sleep
+- schedule
 - Go SDK
 - How-to
 - sdk
@@ -30,11 +32,13 @@ tags:
 - developer-guide
 - how-to
 - go-sdk
+- dacx
 - activities
 - retries
 - activity-heartbeats
 - timers
 - sleep
+- schedule
 - go-sdk
 - how-to
 - sdk

@@ -15,6 +15,8 @@ keywords:
 - workflow-type
 - activities
 - best practices
+- activity
+- dacx
 - how-to
 - options
 - workers
@@ -27,6 +29,8 @@ tags:
 - workflow-type
 - activities
 - best-practices
+- activity
+- dacx
 - how-to
 - options
 - workers

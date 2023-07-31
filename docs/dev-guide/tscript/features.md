@@ -11,6 +11,8 @@ keywords:
 - developer-guide
 - sdk
 - typescript
+- activity retry policy
+- retry policy
 - how-to
 - timers
 - sleep
@@ -19,6 +21,8 @@ tags:
 - developer-guide
 - sdk
 - typescript
+- activity-retry-policy
+- retry-policy
 - how-to
 - timers
 - sleep
