@@ -114,11 +114,11 @@ From there, a Worker can poll for work, receive this updated history, and resume
 
 <div class="tdiw"><div class="tditw"><p class="tdit">History Service</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-history-service.svg" alt="History Service" height="1040" width="1140" /></div></div>
 
-The total number of History Services can be between 1 and the total number of <a class="tdlp" href="#history-shard">History Shards<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a History Shard?</span><br /><br /><span class="tdlppd">A History Shard is an important unit within a Temporal Cluster by which the scale of concurrent Workflow Execution throughput can be measured.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#history-shard">Learn more</a></span></span></a>.
-An individual History Service can support a large number of History Shards.
-Temporal recommends starting at a ratio of 1 History Service for every 500 History Shards.
+The total number of History Service processes can be between 1 and the total number of <a class="tdlp" href="#history-shard">History Shards<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a History Shard?</span><br /><br /><span class="tdlppd">A History Shard is an important unit within a Temporal Cluster by which the scale of concurrent Workflow Execution throughput can be measured.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#history-shard">Learn more</a></span></span></a>.
+An individual History Service can support many History Shards.
+Temporal recommends starting at a ratio of 1 History Service process for every 500 History Shards.
 
-Although the total number of History Shards remains static for the life of the Cluster, the number of History Services can change.
+Although the total number of History Shards remains static for the life of the Cluster, the number of History Service processess can change.
 
 The History Service talks to the Matching Service and the database.
 
