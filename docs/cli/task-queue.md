@@ -4,6 +4,10 @@ title: Temporal CLI task-queue command reference
 sidebar_label: task-queue
 description: How to use the Temporal CLI task-queue command
 toc_max_heading_level: 4
+keywords:
+- cli-reference
+- temporal-cli
+- task-queue
 tags:
 - cli-reference
 - temporal-cli
@@ -18,7 +22,7 @@ import TabItem from '@theme/TabItem';
 Task Queue commands allow operations to be performed on <a class="tdlp" href="/workers#task-queue">Task Queues<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>.
 To run a Task Queue command, run `temporal task-queue [command] [command options]`
 
-## describe
+## temporal task-queue describe {#describe}
 
 The `temporal task-queue describe` command provides [poller](/dev-guide/worker-performance#poller-count) information for a given <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>.
 
@@ -48,7 +52,7 @@ Use the options listed below to modify what this command returns.
 
 - <a class="tdlp" href="/cli/cmd-options#time-format">--time-format<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal time-format</span><br /><br /><span class="tdlppd">Format time as either relative, iso, raw.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#time-format">Learn more</a></span></span></a>
 
-## list-partition
+## temporal task-queue list-partition {#list-partition}
 
 The `temporal task-queue list-partition` command displays the partitions of a <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>, along with the matching node they are assigned to.
 

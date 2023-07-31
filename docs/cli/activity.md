@@ -4,6 +4,10 @@ title: Temporal CLI activity command reference
 sidebar_label: activity
 description: How to use the Temporal CLI activity command
 toc_max_heading_level: 4
+keywords:
+- cli-reference
+- temporal-cli
+- activity
 tags:
 - cli-reference
 - temporal-cli
@@ -19,7 +23,7 @@ Activity commands operate on <a class="tdlp" href="/activities#activity-executio
 
 To run an Activity command, type `temporal activity [command] [command options]`
 
-## complete
+## temporal activity complete {#complete}
 
 The `temporal activity complete` command completes an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>.
 Along with completing the Activity, the result given upon return can be set as well.
@@ -50,7 +54,7 @@ Use the options listed below to change the behavior of this command.
 
 - <a class="tdlp" href="/cli/cmd-options#workflow-id">--workflow-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal workflow-id</span><br /><br /><span class="tdlppd">Workflow Id</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#workflow-id">Learn more</a></span></span></a>
 
-## fail
+## temporal activity fail {#fail}
 
 The `temporal activity fail` command fails an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>.
 The Activity must already be running on a valid <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a>.

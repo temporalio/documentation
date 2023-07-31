@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday July 28 2023 12:02:21 PM -0500
+Last assembled: Monday July 31 2023 11:22:14 AM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
 89 guide configurations found.
 
-1478 information nodes found.
+1481 information nodes found.
 
-1242 information nodes are attached to guides.
+1245 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -462,16 +462,6 @@ python/heartbeat-timeout -> /dev-guide/python/features#heartbeat-timeout
 
 typescript/heartbeat-timeout -> /dev-guide/typescript/features#heartbeat-timeout
 
-go/async-activity-completion -> /dev-guide/go/features#asynchronous-activity-completion
-
-java/async-activity-completion -> /dev-guide/java/features#asynchronous-activity-completion
-
-php/async-activity-completion -> /dev-guide/php/features#asynchronous-activity-completion
-
-python/async-activity-completion -> /dev-guide/python/features#asynchronous-activity-completion
-
-typescript/async-activity-completion -> /dev-guide/typescript/features#asynchronous-activity-completion
-
 concepts/what-is-a-reset -> /workflows#reset
 
 concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
@@ -702,6 +692,8 @@ python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-tem
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
 
+cloud-context/certificates-filters -> #manage-certificate-filters
+
 concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
@@ -731,6 +723,8 @@ cli/cmd-options/detail -> /cli/cmd-options#detail
 cli/cmd-options/reason -> /cli/cmd-options#reason
 
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
+
+cli/workflow/list -> /cli/workflow#list
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
 
@@ -914,9 +908,15 @@ typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
+concepts/what-is-worker-versioning -> /workers#worker-versioning
+
 python/tracing -> /dev-guide/python/observability#tracing
 
 python/logging -> /dev-guide/python/observability#logging
+
+python/how-to-cancel-a-workflow-in-python -> #cancel-a-workflow-execution
+
+python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-execution
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
@@ -940,8 +940,6 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
-concepts/what-is-worker-versioning -> /workers#worker-versioning
-
 go/testing -> /dev-guide/go/testing#replay
 
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
@@ -957,9 +955,5 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-cloud-context/certificates-filters -> #manage-certificate-filters
-
-cli/workflow/list -> /cli/workflow#list
 
 

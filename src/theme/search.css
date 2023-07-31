@@ -1,101 +1,8 @@
-.widget-container {
-  display: flex;
-  position: absolute;
-  top: 15px;
-  right: 60px;
-  width: calc(30% - 60px);
-  font-family: Inter, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  border-radius: 100px;
-  color: #7B7B7B;
-  background: #ebedf0;
-  border: 2px solid #ffffff;
-  z-index: 9999;
-  cursor: pointer;
-  outline: none;
-  overflow: hidden;
-}
-
-.navbar-sidebar--show .widget-container {
-  display: none;
-}
-
-.widget-container:hover {
-  border: 2px solid #7B7B7B;
-}
-
-.widget {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 3px;
-  width: 100%;
-}
-
-.widget-text {
-  position: relative;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  flex-grow: 1;
-  flex-direction: row;
-  padding-left: 16px;
-}
-
 .temporal-ball {
   position: absolute;
   left: 0;
-  animation: popBall .5s 5s;
+  animation: popBall 0.5s 5s;
 }
-
-.search {
-  position: absolute;
-  left: 8px;
-  top: 1px;
-  flex-shrink: 0;
-}
-
-.ai-container {
-  position: relative;
-  display: inline-flex;
-  text-align: right;
-  background: #141414;
-  height: 100%;
-}
-
-.ask {
-  margin-left: 20px;
-}
-
-.ai-text {
-  padding: 2px 8px;
-  font-weight: 500;
-  font-size: .8em;
-  color: #ffffff;
-  display: inline-flex;
-  position: relative;
-  z-index: 1;
-}
-
-.ai-text-temporal {
-  margin-right: 3px;
-}
-
-@media only screen and (max-width: 996px) {
-  .widget-container {
-    right: 4px;
-    top: -15px;
-    min-width: 120px;
-  }
-
-  .ai-text-temporal {
-    display: none;
-  }
-}
-
-
 
 .modal-overlay {
   box-sizing: border-box;
@@ -111,16 +18,17 @@
 .modal {
   box-sizing: border-box;
   width: 100%;
-  max-width: 540px;
+  max-width: 600px;
   height: calc(80% - 108px);
   position: fixed;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #F4F4F4;
+  background: #f4f4f4;
   border-radius: 16px;
   z-index: 99999;
   box-shadow: inset 1px 1px 0 0 hsla(0, 0%, 100%, 0.5), 0 3px 8px 0 #555a64;
+  overflow: hidden;
 }
 
 iframe {

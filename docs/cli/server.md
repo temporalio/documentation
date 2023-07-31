@@ -4,6 +4,10 @@ title: Temporal CLI server command reference
 sidebar_label: server
 description: How to use the Temporal CLI server command
 toc_max_heading_level: 4
+keywords:
+- cli-reference
+- temporal-cli
+- server
 tags:
 - cli-reference
 - temporal-cli
@@ -19,7 +23,7 @@ Server commands allow you to start and manage the <a class="tdlp" href="/cluster
 
 Currently, `cli` server functionality extends to starting the Server.
 
-## start-dev
+## temporal server start-dev {#start-dev}
 
 The `temporal server start-dev` command starts the Temporal Server on `localhost:7233`.
 
