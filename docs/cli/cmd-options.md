@@ -4,8 +4,11 @@ title: Temporal CLI command options reference
 sidebar_label: cmd options
 description: How to use the Temporal CLI command options
 toc_max_heading_level: 4
-tags:
+keywords:
 - cli reference
+- cli
+tags:
+- cli-reference
 - cli
 ---
 
@@ -67,7 +70,7 @@ Path to config directory.
 
 An optional timeout for the context of an RPC call (in seconds). (default: 5)
 
-## cron
+## temporal cron {#cron}
 
 ```text
 Optional Cron Schedule for the Workflow.
