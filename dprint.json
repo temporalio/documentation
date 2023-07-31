@@ -54,6 +54,6 @@
     "https://plugins.dprint.dev/typescript-0.69.5.wasm",
     "https://plugins.dprint.dev/json-0.15.3.wasm",
     "https://plugins.dprint.dev/markdown-0.13.3.wasm",
-    "https://plugins.dprint.dev/prettier-0.9.0.json@76c20538ea4231b3daa9b62059f90ec144200cab5477b7e95b730cbb3ed48957"
+    "https://plugins.dprint.dev/prettier-v2.4.1.wasm""
   ]
 }
