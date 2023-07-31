@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday July 31 2023 07:10:59 AM -0400
+Last assembled: Thursday July 27 2023 07:48:35 AM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 89 guide configurations found.
 
-1478 information nodes found.
+1481 information nodes found.
 
-1242 information nodes are attached to guides.
+1245 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -951,5 +951,9 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-execution
+
+python/how-to-cancel-a-workflow-in-python -> #cancel-a-workflow-execution
 
 
