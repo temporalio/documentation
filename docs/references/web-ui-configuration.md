@@ -4,9 +4,6 @@ title: Temporal Web UI configuration reference
 sidebar_label: Web UI config
 description: The Temporal Web UI Server uses a configuration file for many of the UI's settings.
 toc_max_heading_level: 4
-keywords:
-- reference
-- web-ui
 tags:
 - reference
 - web-ui

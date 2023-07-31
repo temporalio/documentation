@@ -5,12 +5,6 @@ sidebar_label: Foundations
 sidebar_position: 1
 description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 toc_max_heading_level: 4
-keywords:
-- guide-context
-- cli
-- developer-guide
-- python
-- sdk
 tags:
 - guide-context
 - cli
@@ -39,7 +33,7 @@ In this section you can find the following:
 - <a class="tdlp" href="#run-a-dev-worker">Run a Temporal Cloud Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>
 - <a class="tdlp" href="#start-workflow-execution">Start a Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#start-workflow-execution">Learn more</a></span></span></a>
 
-## How to install Temporal CLI and run a development server {#run-a-development-server}
+## Run a development server
 
 This section describes how to install the [Temporal CLI](/cli) and run a development Cluster.
 The local development Cluster comes packaged with the [Temporal Web UI](/web-ui).
@@ -123,7 +117,7 @@ For a full list of options, run:
 temporal server start-dev --help
 ```
 
-## How to install a Temporal SDK {#install-a-temporal-sdk}
+## Install a Temporal SDK
 
 A <a class="tdlp" href="/temporal#temporal-sdk">Temporal SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal SDK?</span><br /><br /><span class="tdlppd">A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-sdk">Learn more</a></span></span></a> provides a framework for <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Application?</span><br /><br /><span class="tdlppd">A Temporal Application is a set of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-application">Learn more</a></span></span></a> development.
 
@@ -143,11 +137,11 @@ To install the latest version of the Temporal Python package, run the following 
 pip install temporalio
 ```
 
-### How to find the Python SDK API reference {#api-reference}
+### API reference
 
 The Temporal Python SDK API reference is published on [python.temporal.io](https://python.temporal.io/index.html).
 
-### Where are SDK-specific code examples? {#code-samples}
+### Code samples
 
 You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio?q=samples-&type=all&language=&sort=).
 
@@ -155,7 +149,7 @@ Additionally, several of the [Tutorials](https://learn.temporal.io) are backed b
 
 - [Python samples library](https://github.com/temporalio/samples-python)
 
-## How to connect a Temporal Client to a Temporal Cluster {#connect-to-a-dev-cluster}
+## Connect to a dev Cluster
 
 A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client?</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> enables you to communicate with the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 Communication with a Temporal Cluster includes, but isn't limited to, the following:
@@ -199,7 +193,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-## How to connect to Temporal Cloud {#connect-to-temporal-cloud}
+## Connect to Temporal Cloud
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
@@ -238,7 +232,7 @@ async def main():
     )
 ```
 
-## How to develop a basic Workflow {#develop-workflows}
+## Develop Workflows
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>.
 
@@ -265,7 +259,7 @@ class YourWorkflow:
         )
 ```
 
-### How to define Workflow parameters {#workflow-parameters}
+### Workflow parameters
 
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
@@ -287,7 +281,7 @@ class YourParams:
     name: str
 ```
 
-### How to define Workflow return parameters {#workflow-return-values}
+### Workflow return values
 
 Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
@@ -314,7 +308,7 @@ class YourWorkflow:
         )
 ```
 
-### How to customize your Workflow Type {#workflow-type}
+### Workflow Type
 
 Workflows have a Type that are referred to as the Workflow name.
 
@@ -339,7 +333,7 @@ class YourWorkflow:
         )
 ```
 
-### How develop Workflow logic {#workflow-logic-requirements}
+### Workflow logic requirements
 
 Workflow logic is constrained by <a class="tdlp" href="/workflows#deterministic-constraints">deterministic execution requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#deterministic-constraints">Learn more</a></span></span></a>.
 Therefore, each language is limited to the use of certain idiomatic techniques.
@@ -356,7 +350,7 @@ Workflow code must be deterministic. This means:
 
 All API safe for Workflows used in the [`temporalio.workflow`](https://python.temporal.io/temporalio.workflow.html) must run in the implicit [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html) and be _deterministic_.
 
-## How to develop a basic Activity {#develop-activities}
+## Develop Activities
 
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
@@ -377,7 +371,7 @@ async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
 
-### How to develop Activity Parameters {#activity-parameters}
+### Activity parameters
 
 There is no explicit limit to the total number of parameters that an <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a> may support.
 However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
@@ -411,7 +405,7 @@ async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
 
-### How to define Activity return values {#activity-return-values}
+### Activity return values
 
 All data returned from an Activity must be serializable.
 
@@ -430,7 +424,7 @@ async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
 
-### How to customize your Activity Type {#activity-type}
+### Activity Type
 
 Activities have a Type that are referred to as the Activity name.
 The following examples demonstrate how to set a custom name for your Activity Type.
@@ -447,7 +441,7 @@ async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
 
-## How to start an Activity Execution {#activity-execution}
+## Activity Execution
 
 Calls to spawn <a class="tdlp" href="/activities#activity-execution">Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a> are written within a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>.
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
@@ -489,7 +483,7 @@ class YourWorkflow:
         )
 ```
 
-### How to set the required Activity Timeouts {#required-timeout}
+### Required timeout
 
 Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a <a class="tdlp" href="/activities#start-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a> or a <a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a>.
@@ -517,7 +511,7 @@ Available timeouts are:
         )
 ```
 
-### How to get the results of an Activity Execution {#get-activity-results}
+### Get Activity results
 
 The call to spawn an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a> generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
@@ -545,7 +539,7 @@ class YourWorkflow:
         )
 ```
 
-## How to run Worker Processes {#run-a-dev-worker}
+## Run a dev Worker
 
 The <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> is where Workflow Functions and Activity Functions are executed.
 
@@ -586,7 +580,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### How to register types {#register-types}
+### Register types
 
 All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -614,7 +608,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-## How to start a Workflow Execution {#start-workflow-execution}
+## Start Workflow Execution
 
 [Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
@@ -649,7 +643,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### How to set a Workflow's Task Queue {#set-task-queue}
+### Set Task Queue
 
 In most SDKs, the only Workflow Option that must be set is the name of the <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>.
 
@@ -678,7 +672,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### How to set a Workflow Id {#workflow-id}
+### Workflow Id
 
 Although it is not required, we recommend providing your own <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></span></span></a> that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
@@ -707,7 +701,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### How to get the results of a Workflow Execution {#get-workflow-results}
+### Get Workflow results
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 

@@ -4,10 +4,6 @@ title: Web UI Docker Environmental Variables
 sidebar_label: Web UI Docker env vars
 description: How to set the docker environmental variables quickly.
 toc_max_heading_level: 4
-keywords:
-- docker
-- webui
-- reference
 tags:
 - docker
 - webui

@@ -4,8 +4,6 @@ title: Temporal OSS Cluster metrics reference
 sidebar_label: Cluster metrics
 description: The Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and set up alerts.
 toc_max_heading_level: 4
-keywords:
-- reference
 tags:
 - reference
 ---
