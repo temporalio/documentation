@@ -2,7 +2,7 @@
 id: pricing-storage
 title: What are the Temporal Cloud storage prices?
 sidebar_label: Storage
-description: Temporal Cloud pricing information
+description: Pricing for Temporal Cloud storage.
 tags:
   - pricing
   - temporal cloud

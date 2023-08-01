@@ -18,6 +18,6 @@ The Temporal Cloud service is consumption based. You pay only for what you need 
 
 Temporal sends a monthly bill based on your consumption. You can pay this bill with a credit card, ACH, wire transfer, or Temporal Credits.
 
-\*_Can I purchase Temporal Cloud through my Amazon, Azure, or Google Cloud Platform marketplace?_
+**Can I purchase Temporal Cloud through my Amazon, Azure, or Google Cloud Platform marketplace?**
 
 You can purchase Temporal Cloud credits in the AWS Marketplace. Please contact our team at sales@temporal.io to learn more about our private offer on the AWS Marketplace.

@@ -41,4 +41,4 @@ When we receive an alert that an SLO is not being met, we page our on-call engin
 
 Internally, our components are distributed across a minimum of three availability zones per region.
 
-For current system status and information about recent incidents, see [Temporal Status](https://status.temporal.io/).
+For current system status and information about recent incidents, see [Temporal Status](https://status.temporal.io).

@@ -16,4 +16,4 @@ To enable a metrics endpoint, use [`tcld account metrics enable`](/cloud/tcld/ac
 
 To disable a metrics endpoint, use [`tcld account metrics disable`](/cloud/tcld/account/metrics/disable).
 
-See the [tcld account metrics command](/cloud/tcld/account/metrics/index) reference for details.
+For more information, see [tcld account metrics command](/cloud/tcld/account/metrics/index).

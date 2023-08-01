@@ -16,7 +16,7 @@ Temporal tracks the following metrics for your various Namespaces.
 
 - `temporal_cloud_v0_frontend_service_request_count`: gRPC requests received aggregated by operation.
 
-- `temporal_cloud_v0_poll_success_count`: Tasks that are successfully matched to a poller/
+- `temporal_cloud_v0_poll_success_count`: Tasks that are successfully matched to a poller.
 
 - `temporal_cloud_v0_poll_success_sync_count`: Tasks that are successfully sync matched to a poller.
 
@@ -24,7 +24,7 @@ Temporal tracks the following metrics for your various Namespaces.
 
 - `temporal_cloud_v0_schedule_action_success_count`: Successful execution of a Scheduled Workflow.
 
-- `temporal_cloud_v0_schedule_buffer_overruns_count`: When average schedule run length is greater than average schedule interval while a `buffer_all` overlap policy is configured
+- `temporal_cloud_v0_schedule_buffer_overruns_count`: When average schedule run length is greater than average schedule interval while a `buffer_all` overlap policy is configured.
 
 - `temporal_cloud_v0_schedule_missed_catchup_window_count`: Skipped Scheduled executions when Workflows were delayed longer than the catchup window.
 

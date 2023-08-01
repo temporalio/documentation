@@ -10,7 +10,7 @@ tags:
 To run a Worker that talks to Temporal Cloud, you need the following:
 
 - A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
-  See [certificate requirements](/cloud/certificates-requirements).
+  For more information about CA certificates and private keys, see [certificate requirements](/cloud/certificates-requirements).
 - Your [Temporal Cloud Namespace Id](/concepts/what-is-a-cloud-namespace-id), which includes your [Temporal Cloud Namespace Name](/concepts/what-is-a-cloud-namespace-name) and the unique five- or six-digit [Temporal Cloud Account Id](/concepts/what-is-a-cloud-account-id) that is appended to it.
   This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
   Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.

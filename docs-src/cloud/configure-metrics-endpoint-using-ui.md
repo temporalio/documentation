@@ -11,7 +11,7 @@ tags:
 
 :::note
 
-To view and manage third-party integration settings, your user account must have the Global Admin [Role](https://docs.temporal.io/cloud/#account-level-roles).
+To view and manage third-party integration settings, your user account must have the Global Admin [Role](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud).
 
 :::
 

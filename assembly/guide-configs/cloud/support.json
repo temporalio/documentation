@@ -5,7 +5,7 @@
     "title": "What kind of support does Temporal Cloud provide?",
     "sidebar_label": "Support",
     "sidebar_position": 2,
-    "description": "Create an account, issue certificates, create a Namespace, invite users, and connect.",
+    "description": "Temporal Cloud users can reach out for help through our community Slack channel, or file a support ticket through Zendesk. ",
     "use_description": false,
     "toc_max_heading_level": 4,
     "add_tabs_support": false,
