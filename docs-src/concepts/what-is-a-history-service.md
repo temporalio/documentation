@@ -11,7 +11,7 @@ The History Service is responsible for persisting Workflow Execution state to th
 When the Workflow Execution is able to progress, the History Service adds a Task with the Workflow's updated history to the Task Queue.
 From there, a Worker can poll for work, receive this updated history, and resume execution.
 
-![History Service](/diagrams/temporal-history-service.svg)
+![Block diagram of how the History Service relates to the other services of the Temporal Server and to a Temporal Cluster](/diagrams/temporal-history-service.svg)
 
 The total number of History Service processes can be between 1 and the total number of [History Shards](/concepts/what-is-a-history-shard).
 An individual History Service can support many History Shards.
