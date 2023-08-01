@@ -415,11 +415,11 @@ Verify your Prometheus configuration and restart Prometheus.
 If you’re running Grafana as a container, you can set your SDK metrics Prometheus data source in your Grafana configuration.
 See the example Grafana configuration described in the [Prometheus and Grafana setup for open-source Temporal Cluster](/kb/prometheus-grafana-setup) KB article.
 
-### Grafana dashboards setup
+#### Grafana dashboards setup
 
 To set up your dashboards in Grafana, either use the UI or configure them in your Grafana deployment.
 
-In this article, we will configure our dashboards using the UI.
+In this section, we will configure our dashboards using the UI.
 
 1. Go to **Create&nbsp;> Dashboard** and add an empty panel.
 2. On the **Panel configuration** page, in the **Query** tab, select the "Temporal Cloud metrics" or "Temporal SDK metrics" data source
