@@ -11,6 +11,6 @@ tags:
 
 Set up your Temporal Cloud Account for your team.
 
-- [Namespaces](/cloud/account-setup/namespaces)
 - [Certificates](/cloud/account-setup/certificates)
+- [Namespaces](/cloud/account-setup/namespaces)
 - [Users](/cloud/account-setup/users)
