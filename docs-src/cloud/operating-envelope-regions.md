@@ -9,7 +9,21 @@ tags:
   - explanation
 ---
 
-Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS).
+Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS):
+
+| Code              | Region                  |
+|-------------------|-------------------------|
+| ap-northeast-1    | Asia Pacific (Tokyo)    |
+| ap-southeast-1    | Asia Pacific (Singapore)|
+| ap-southeast-2    | Asia Pacific (Sydney)   |
+| ca-central-1      | Canada (Central)        |
+| eu-central-1      | EU (Frankfurt)          |
+| eu-west-1         | EU (Ireland)            |
+| eu-west-2         | EU (London)             |
+| us-east-1         | US East (N. Virginia)   |
+| us-east-2         | US East (Ohio)          |
+| us-west-2         | US West (Oregon)        |
+
 Although Temporal Cloud currently runs only on AWS, it works with applications running in any cloud or data center.
 
 To reduce latency, we recommend that you create your [Namespace](/concepts/what-is-a-namespace) in a region that is geographically close to where your [Workers](/concepts/what-is-a-worker) are hosted, but your Workers and [Client](/concepts/what-is-a-temporal-client) code don't need to be hosted on AWS.

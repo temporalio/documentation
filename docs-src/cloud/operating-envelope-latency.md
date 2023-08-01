@@ -10,7 +10,12 @@ tags:
 ---
 
 Our latency SLO is 200ms per region for p99.
-Latency is greatly influenced by the actual throughput of a single [Workflow Execution](/concepts/what-is-a-workflow-execution).
-Concurrent operations on the same Workflow Execution could lead to increased latency.
+In June 2023, latency measurements over a week period for starting and signaling Workflow Executions were:
 
-Typical latency for starting and signaling Workflow Executions is less than 100ms.
+- `StartWorkflowExecution`: 90ms p90, 125ms p99
+- `SignalWorkflowExecution`: 53ms p90, 95ms p99
+- `SignalWithStartWorkflowExecution`: 87ms p90, 116ms p99
+
+We work on improving latency, so these numbers will decrease over time.
+
+Concurrent operations on the same Workflow Execution could lead to increased latency.
