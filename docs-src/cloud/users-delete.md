@@ -26,6 +26,7 @@ To delete a user, a user must have the Global Admin account-level [Role](/cloud/
 1. In the **Delete User** dialog, select **Delete**.
 
 You can delete a user in two other ways in Web UI:
+
 - On the user profile page, select the down arrow next to **Edit User** and then select **Delete**.
 - On the **Edit User** page, select **Delete User**.
 

@@ -28,7 +28,7 @@ Each user can be assigned permissions for individual Namespaces.
 
 <!--- How to invite users to your Temporal Cloud account using Web UI --->
 
-### How to invite users using Web UI 
+### How to invite users using Web UI
 
 1. In Temporal Web UI, select **Settings** in the left portion of the window.
 1. On the **Settings** page, select **Create Users** in the upper-right portion of the window.
