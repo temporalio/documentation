@@ -3,9 +3,7 @@ id: cron
 title: temporal cron
 sidebar_label: cron
 description: Optional Cron Schedule for the Workflow.
-tags:
-  - cli-reference
-  - temporal-cli
+tags: cli reference, temporal cli, options-feature, command-line-interface-cli, cron, workflow
 ---
 
 ```text

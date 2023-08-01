@@ -3,10 +3,7 @@ id: describe
 title: temporal batch describe
 sidebar_label: describe
 description: Describe a Batch operation job.
-tags:
-  - cli-reference
-  - temporal-cli
-  - batch
+tags: cli reference, temporal cli, batch, job id, cli-feature, command-line-interface-cli
 ---
 
 The `temporal batch describe` command shows the progress of an ongoing Batch job.
