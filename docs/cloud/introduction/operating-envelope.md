@@ -9,13 +9,11 @@ keywords:
 - temporal cloud
 - introduction
 - operations
-- temporal-cloud
 - explanation
 tags:
 - temporal-cloud
 - introduction
 - operations
-- temporal-cloud
 - explanation
 ---
 
