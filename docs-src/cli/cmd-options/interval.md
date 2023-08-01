@@ -3,9 +3,12 @@ id: interval
 title: temporal interval
 sidebar_label: interval
 description: Interval duration to include phase offset.
-tags:
-  - cli-reference
-  - temporal-cli
+tags: 
+    - cli reference
+    - temporal cli
+    - options-feature
+    - command-line-interface-cli
+    - interval
 
 ---
 

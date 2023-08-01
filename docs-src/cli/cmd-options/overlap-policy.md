@@ -3,9 +3,12 @@ id: overlap-policy
 title: temporal overlap-policy
 sidebar_label: overlap-policy
 description: Overlap policy.
-tags:
-  - cli-reference
-  - temporal-cli
+tags: 
+    - cli reference
+    - temporal cli
+    - options-feature
+    - command-line-interface-cli
+    - overlap policy
 
 ---
 

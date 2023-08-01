@@ -4,10 +4,12 @@ title: temporal operator search-attribute remove
 sidebar_label: remove
 description: Removes custom search attribute metadata only (Elasticsearch index schema is not modified).
 tags:
-  - cli-reference
-  - temporal-cli
+  - cli reference
+  - temporal cli
   - operator
-  - search-attribute
+  - command-line-interface-cli
+  - search attribute
+  - search attribute remove
 ---
 
 The `temporal operator search-attribute remove` command removes custom [Search Attribute](/concepts/what-is-a-search-attribute) metadata.

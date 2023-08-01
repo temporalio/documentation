@@ -4,10 +4,12 @@ title: temporal operator search-attribute create
 sidebar_label: create
 description: Adds one or more custom Search Attributes.
 tags:
-  - cli-reference
-  - temporal-cli
+  - cli reference
+  - temporal cli
   - operator
-  - search-attribute
+  - command-line-interface-cli
+  - search attribute
+  - search attribute create
 ---
 
 The `temporal operator search-attribute create` command adds one or more custom [Search Attributes](/concepts/what-is-a-search-attribute).

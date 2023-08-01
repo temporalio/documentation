@@ -4,9 +4,11 @@ title: temporal schedule create
 sidebar_label: create
 description: Create a new Schedule.
 tags:
-  - cli-reference
-  - temporal-cli
+  - cli reference
+  - temporal cli
   - schedule
+  - command-line-interface-cli
+  - schedule create
 ---
 
 The `temporal schedule create` command creates a new [Schedule](/concepts/what-is-a-schedule).

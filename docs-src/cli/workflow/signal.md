@@ -4,9 +4,13 @@ title: temporal workflow signal
 sidebar_label: signal
 description: Signal Workflow Execution by Id or List Filter.
 tags:
-  - cli-reference
-  - temporal-cli
+  - cli reference
+  - temporal cli
   - workflow
+  - command-line-interface-cli
+  - workflow signal
+  - signals-feature
+  - signals
 ---
 
 The `temporal workflow signal` command is used to [Signal](/concepts/what-is-a-signal) a [Workflow Execution](/concepts/what-is-a-workflow-execution) by ID or [List Filter](/concepts/what-is-a-list-filter).

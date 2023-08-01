@@ -3,9 +3,13 @@ id: history-uri
 title: temporal history-uri
 sidebar_label: history-uri
 description: Optionally specify history archival URI
-tags:
-  - cli-reference
-  - temporal-cli
+tags: 
+    - cli reference
+    - temporal cli
+    - options-feature
+    - command-line-interface-cli
+    - history
+    - archival
 
 ---
 

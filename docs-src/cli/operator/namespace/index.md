@@ -4,9 +4,10 @@ title: temporal operator namespace
 sidebar_label: namespace
 description: Operations applying to Namespaces.
 tags:
-  - cli-reference
-  - temporal-cli
+  - cli reference
+  - temporal cli
   - operator
+  - command-line-interface-cli
   - namespace
 ---
 

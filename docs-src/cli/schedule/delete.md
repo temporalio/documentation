@@ -4,9 +4,11 @@ title: temporal schedule delete
 sidebar_label: delete
 description: Deletes a Schedule.
 tags:
-  - cli-reference
-  - temporal-cli
+  - cli reference
+  - temporal cli
   - schedule
+  - command-line-interface-cli
+  - schedule delete
 ---
 
 The `temporal schedule delete` command deletes a [Schedule](/concepts/what-is-a-schedule).

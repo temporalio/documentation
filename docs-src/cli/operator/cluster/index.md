@@ -4,9 +4,10 @@ title: temporal operator cluster
 sidebar_label: cluster
 description: Operations performed on the Temporal Server.
 tags:
-  - cli-reference
-  - temporal-cli
+  - cli reference
+  - temporal cli
   - operator
+  - command-line-interface-cli
   - cluster
 ---
 

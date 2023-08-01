@@ -3,9 +3,12 @@ id: no-fold
 title: temporal no-fold
 sidebar_label: no-fold
 description: Disable folding
-tags:
-  - temporal-cli
-  - cli-reference
+tags: 
+    - cli reference
+    - temporal cli
+    - options-feature
+    - command-line-interface-cli
+    - child workflows
 ---
 
 Disable folding.
