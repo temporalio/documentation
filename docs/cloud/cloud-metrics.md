@@ -42,7 +42,7 @@ For more information about CA certificates in Temporal Cloud, see [Certificate r
 
 :::note
 
-To view and manage third-party integration settings, your user account must have the Global Admin [Role](https://docs.temporal.io/cloud/#account-level-roles).
+To view and manage third-party integration settings, your user account must have the Global Admin <a class="tdlp" href="/cloud/account-setup/users#account-level-roles">Role<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the account-level Roles for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Account-level Roles are Global Admin, Developer, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/users#account-level-roles">Learn more</a></span></span></a>.
 
 :::
 
@@ -100,7 +100,7 @@ To enable a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#enab
 
 To disable a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#disable"> `tcld account metrics disable`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld account metrics disable</span><br /><br /><span class="tdlppd">How to disable the metrics endpoint for a Temporal Cloud account using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/account#disable">Learn more</a></span></span></a>.
 
-See the <a class="tdlp" href="/cloud/tcld/account#metrics">tcld account metrics command<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld account metrics</span><br /><br /><span class="tdlppd">How to configure the metrics endpoint for a Temporal Cloud account using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/account#metrics">Learn more</a></span></span></a> reference for details.
+For more information, see <a class="tdlp" href="/cloud/tcld/account#metrics">tcld account metrics command<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld account metrics</span><br /><br /><span class="tdlppd">How to configure the metrics endpoint for a Temporal Cloud account using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/account#metrics">Learn more</a></span></span></a>.
 
 ## What metrics are emitted from Temporal Cloud? {#available-metrics}
 
@@ -110,7 +110,7 @@ Temporal tracks the following metrics for your various Namespaces.
 
 - `temporal_cloud_v0_frontend_service_request_count`: gRPC requests received aggregated by operation.
 
-- `temporal_cloud_v0_poll_success_count`: Tasks that are successfully matched to a poller/
+- `temporal_cloud_v0_poll_success_count`: Tasks that are successfully matched to a poller.
 
 - `temporal_cloud_v0_poll_success_sync_count`: Tasks that are successfully sync matched to a poller.
 
@@ -118,7 +118,7 @@ Temporal tracks the following metrics for your various Namespaces.
 
 - `temporal_cloud_v0_schedule_action_success_count`: Successful execution of a Scheduled Workflow.
 
-- `temporal_cloud_v0_schedule_buffer_overruns_count`: When average schedule run length is greater than average schedule interval while a `buffer_all` overlap policy is configured
+- `temporal_cloud_v0_schedule_buffer_overruns_count`: When average schedule run length is greater than average schedule interval while a `buffer_all` overlap policy is configured.
 
 - `temporal_cloud_v0_schedule_missed_catchup_window_count`: Skipped Scheduled executions when Workflows were delayed longer than the catchup window.
 

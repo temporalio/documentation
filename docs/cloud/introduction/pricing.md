@@ -122,7 +122,7 @@ If you purchase Temporal Cloud credits (as outlined earlier), running storage co
 
 With a subscription to Temporal Cloud, you also gain access to our support organization of developer success engineers and solution architects. Our experts assist with a range of work streams from Workflow design reviews to setting up observability to break/fix support with an agreed-upon set of SLAs.
 
-The members of the Temporal Developer Success team are engineers who are Temporal experts and open source contributors. They're backed by the main contributors to the open source Temporal project. They provide deep knowledge of how Temporal works and how you can optimize your deployment.
+The Temporal Developer Success team brings a deep knowledge of how Temporal works and how you can optimize your deployment. This team is comprised of engineers who know Temporal inside and out, and continue to contribute to its development.
 
 They also investigate your Workflows to optimize their environments and possibly reduce costs associated with Actions and storage. They ensure your instance is performance tuned and help with other ongoing maintenance, like upgrades of the Temporal software and maintenance of the platform.
 
@@ -160,6 +160,6 @@ The Temporal Cloud service is consumption based. You pay only for what you need 
 
 Temporal sends a monthly bill based on your consumption. You can pay this bill with a credit card, ACH, wire transfer, or Temporal Credits.
 
-\*_Can I purchase Temporal Cloud through my Amazon, Azure, or Google Cloud Platform marketplace?_
+**Can I purchase Temporal Cloud through my Amazon, Azure, or Google Cloud Platform marketplace?**
 
 You can purchase Temporal Cloud credits in the AWS Marketplace. Please contact our team at sales@temporal.io to learn more about our private offer on the AWS Marketplace.

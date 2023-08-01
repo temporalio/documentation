@@ -56,7 +56,7 @@ When we receive an alert that an SLO is not being met, we page our on-call engin
 
 Internally, our components are distributed across a minimum of three availability zones per region.
 
-For current system status and information about recent incidents, see [Temporal Status](https://status.temporal.io/).
+For current system status and information about recent incidents, see [Temporal Status](https://status.temporal.io).
 
 ## Where is Temporal Cloud hosted and running? {#regions}
 
@@ -75,7 +75,7 @@ Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS):
 | us-east-2      | US East (Ohio)           |
 | us-west-2      | US West (Oregon)         |
 
-Although Temporal Cloud currently runs only on AWS, it works with applications running in any cloud or data center.
+Temporal Cloud currently runs in 10 regions in Amazon Web Services and it works with applications running in any cloud or data center.
 
 To reduce latency, we recommend that you create your <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in a region that is geographically close to where your <a class="tdlp" href="/workers#worker">Workers<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a> are hosted, but your Workers and <a class="tdlp" href="/temporal#temporal-client">Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client?</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> code don't need to be hosted on AWS.
 
@@ -98,6 +98,6 @@ In June 2023, latency measurements over a week period for starting and signaling
 - `SignalWorkflowExecution`: 53ms p90, 95ms p99
 - `SignalWithStartWorkflowExecution`: 87ms p90, 116ms p99
 
-We work on improving latency, so these numbers will decrease over time.
+As we continue working on improving latencies, these numbers will decrease over time
 
 Concurrent operations on the same Workflow Execution could lead to increased latency.

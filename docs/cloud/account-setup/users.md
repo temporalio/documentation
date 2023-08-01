@@ -3,7 +3,7 @@ id: users
 title: How to manage users in Temporal Cloud
 sidebar_label: Users
 sidebar_position: 3
-description: Create Namespaces, use Namespace endpoints for access, and obtain Namespace information.
+description: Invite users, set account level roles, and set Namespace-level positions for users.
 toc_max_heading_level: 4
 keywords:
 - temporal cloud
