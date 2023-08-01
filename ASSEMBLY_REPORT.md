@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday July 27 2023 07:48:35 AM -0700
+Last assembled: Monday July 31 2023 11:19:14 AM -0500
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly
 
 89 guide configurations found.
 
@@ -914,6 +914,10 @@ python/tracing -> /dev-guide/python/observability#tracing
 
 python/logging -> /dev-guide/python/observability#logging
 
+python/how-to-cancel-a-workflow-in-python -> #cancel-a-workflow-execution
+
+python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-execution
+
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 php/handle-signal -> #handle-signal
@@ -951,9 +955,5 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-execution
-
-python/how-to-cancel-a-workflow-in-python -> #cancel-a-workflow-execution
 
 
