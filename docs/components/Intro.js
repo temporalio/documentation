@@ -250,21 +250,26 @@ const cloudInfo = {
   listOne: [
     {
       book: true,
-      path: "/cloud/how-to-get-started-with-temporal-cloud",
+      path: "/cloud/introduction",
+      name: "Introduction",
+    },
+    {
+      book: true,
+      path: "/cloud/get-started",
       name: "Get started",
     },
     {
       book: true,
-      path: "/cloud/how-to-manage-certificates-in-temporal-cloud",
-      name: "Manage certificates",
-    },
-    {
-      book: true,
-      path: "/cloud/how-to-manage-namespaces-in-temporal-cloud",
-      name: "Manage Namespaces",
+      path: "/cloud/account-setup/",
+      name: "Account setup",
     },
   ],
   listTwo: [
+    {
+      book: true,
+      path: "/cloud/metrics",
+      name: "Metrics",
+    },
     {
       cli: true,
       path: "/cloud/tcld",

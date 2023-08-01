@@ -4,11 +4,11 @@ Last assembled: Tuesday August 01 2023 16:26:34 PM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
-89 guide configurations found.
+92 guide configurations found.
 
-1481 information nodes found.
+1500 information nodes found.
 
-1245 information nodes are attached to guides.
+1265 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -987,5 +987,4 @@ cloud-context/certificates-filters -> #manage-certificate-filters
 cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
-
 
