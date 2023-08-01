@@ -5,7 +5,7 @@ sidebar_label: Issue certificates
 description: You can issue root CA and end-entity certificates in two ways.
 tags:
   - how-to
-  - temporal-cloud
+  - temporal cloud
   - certificates
 ---
 

@@ -5,7 +5,7 @@ sidebar_label: Delete a Namespace
 description: To delete a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.
 tags:
   - how-to
-  - temporal-cloud
+  - temporal cloud
   - namespaces
 ---
 

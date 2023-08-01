@@ -4,7 +4,7 @@ title: How to estimate costs
 sidebar_label: Pricing estimates
 description: You can estimate the cost of a specific Workflow by running it at a low volume and then using its storage and compute measurements to project your production-scale cost.
 tags:
-  - temporal-cloud
+  - temporal cloud
   - pricing
   - explanation
 ---

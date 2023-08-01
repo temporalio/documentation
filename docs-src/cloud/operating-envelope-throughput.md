@@ -4,7 +4,7 @@ title: What kind of throughput can I get with Temporal Cloud?
 sidebar_label: Throughput
 description: Temporal Cloud can provide more than 150,000 Actions per second.
 tags:
-  - temporal-cloud
+  - temporal cloud
   - explanation
   - operations
 ---

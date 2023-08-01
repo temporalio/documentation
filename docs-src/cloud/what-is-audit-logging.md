@@ -6,7 +6,7 @@ description: Audit Logging is a feature that provides forensic access informatio
 tags:
   - term
   - explanation
-  - temporal-cloud
+  - temporal cloud
   - operations
 ---
 

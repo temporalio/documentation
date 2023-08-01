@@ -4,7 +4,7 @@ title: Temporal Cloud pricing
 sidebar_label: Pricing
 description: Temporal Cloud pricing information.
 tags:
-  - temporal-cloud
+  - temporal cloud
   - pricing
   - introduction
 ---

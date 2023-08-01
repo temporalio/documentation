@@ -7,7 +7,7 @@ description: Integrate a SAML identity provider with your Temporal Cloud account
 toc_max_heading_level: 4
 keywords:
 - introduction
-- temporal-cloud
+- temporal cloud
 - security
 - how-to
 tags:

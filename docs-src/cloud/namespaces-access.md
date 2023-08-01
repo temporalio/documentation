@@ -6,7 +6,7 @@ description: You can access a Namespace in Temporal Cloud via gRPC and HTTPS end
 tags:
   - how-to
   - namespaces
-  - temporal-cloud
+  - temporal cloud
 ---
 
 <!--- How to access a Namespace in Temporal Cloud --->

@@ -5,7 +5,7 @@ sidebar_label: Certificate requirements
 description: Certificates provided to Temporal for your Namespaces must meet certain requirements.
 tags:
   - explanation
-  - temporal-cloud
+  - temporal cloud
   - certificates
 ---
 

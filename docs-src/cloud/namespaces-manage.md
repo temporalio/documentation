@@ -6,7 +6,7 @@ description: To manage Namespaces in Temporal Cloud, use either Temporal Cloud U
 tags:
   - how-to
   - namespaces
-  - temporal-cloud
+  - temporal cloud
 ---
 
 <!--- How to manage Namespaces in Temporal Cloud using Temporal Cloud UI --->

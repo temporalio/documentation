@@ -7,13 +7,13 @@ description: Create an account, issue certificates, create a Namespace, invite u
 toc_max_heading_level: 4
 keywords:
 - introduction
-- temporal-cloud
+- temporal cloud
 - explanation
 - certificates
 - namespaces
 - how-to
 - users
-- temporal-cloud-account
+- temporal cloud account
 tags:
 - introduction
 - temporal-cloud

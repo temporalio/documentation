@@ -4,8 +4,8 @@ title: How to delete an Audit Log sink
 sidebar_label: Delete an Audit Log sink
 description: On the Audit Logging page, choose Delete.
 tags:
-  - temporal-cloud
-  - audit-logging
+  - temporal cloud
+  - audit logging
   - how-to
 ---
 

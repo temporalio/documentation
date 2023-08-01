@@ -5,8 +5,8 @@ sidebar_label: Consume an Audit Log
 description: You must implement your own consumer of the Kinesis stream.
 tags:
   - how-to
-  - temporal-cloud
-  - audit-logging
+  - temporal cloud
+  - audit logging
 ---
 
 After you create an Audit Log sink, wait for the logs to flow into the Kinesis stream.

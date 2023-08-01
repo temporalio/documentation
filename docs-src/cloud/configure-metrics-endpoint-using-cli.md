@@ -6,8 +6,8 @@ sidebar_label: Configure via CLI (tcld)
 tags:
   - how-to
   - observability
-  - temporal-cloud
-  - cli-tcld
+  - temporal cloud
+  - tcld cli
 ---
 
 To add a certificate to a metrics endpoint, use [`tcld account metrics accepted-client-ca add`](/cloud/tcld/account/metrics/accepted-client-ca/add).

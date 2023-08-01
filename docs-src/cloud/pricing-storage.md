@@ -5,7 +5,7 @@ sidebar_label: Storage
 description: Temporal Cloud pricing information
 tags:
   - pricing
-  - temporal-cloud
+  - temporal cloud
   - storage
   - explanation
 ---

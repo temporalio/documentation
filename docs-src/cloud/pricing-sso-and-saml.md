@@ -4,7 +4,7 @@ title: What is the price for SSO and SAML?
 sidebar_label: SSO and SAML
 description: We offer single sign-on (SSO) integration using SAML at a monthly fixed fee based on the number of users registered in Temporal Cloud.
 tags:
-  - temporal-cloud
+  - temporal cloud
   - pricing
   - security
   - explanation

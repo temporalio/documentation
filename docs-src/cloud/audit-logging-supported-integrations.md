@@ -5,8 +5,8 @@ sidebar_label: Supported integrations
 description: Audit Logging currently supports Amazon Kinesis.
 tags:
   - explanation
-  - temporal-cloud
-  - audit-logging
+  - temporal cloud
+  - audit logging
 ---
 
 Audit Logging supports the [Amazon Kinesis](https://docs.aws.amazon.com/kinesis/) streaming-data platform.

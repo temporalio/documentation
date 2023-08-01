@@ -6,7 +6,7 @@ description: To use Okta as your SAML IdP, configure a new Okta application inte
 tags:
   - how-to
   - security
-  - temporal-cloud
+  - temporal cloud
 ---
 
 To use Okta as your SAML IdP, configure a new Okta application integration.

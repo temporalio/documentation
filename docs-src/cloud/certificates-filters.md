@@ -5,7 +5,7 @@ sidebar_label: Manage certificate filters
 description: To limit access to specific CA certificates, you can create certificate filters.
 tags:
   - how-to
-  - temporal-cloud
+  - temporal cloud
   - certificates
 ---
 

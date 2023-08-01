@@ -4,8 +4,8 @@ title: How to manage users in your Temporal Cloud Account
 sidebar_label: Users
 description: Learn how to invite users and manage their roles and permissions.
 tags:
-  - temporal-cloud
-  - temporal-cloud-account
+  - temporal cloud
+  - temporal cloud account
   - introduction
 ---
 

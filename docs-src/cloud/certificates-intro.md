@@ -5,7 +5,7 @@ sidebar_label: Manage certificates
 description: Certificates needed for Temporal Cloud and Worker Processes
 tags:
   - introduction
-  - temporal-cloud
+  - temporal cloud
   - certificates
 ---
 

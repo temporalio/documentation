@@ -5,7 +5,7 @@ sidebar_label: Cloud metrics
 description: Configure and track performance metrics for Temporal Cloud.
 tags:
   - introduction
-  - temporal-cloud
+  - temporal cloud
   - metrics
 ---
 

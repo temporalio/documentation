@@ -5,7 +5,7 @@ sidebar_label: Manage certificates
 description: To manage certificates for Temporal Cloud Namespaces, use the `tcld namespace accepted-client-ca` commands.
 tags:
   - how-to
-  - temporal-cloud
+  - temporal cloud
   - certificates
 ---
 

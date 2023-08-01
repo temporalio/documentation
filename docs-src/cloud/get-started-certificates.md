@@ -5,7 +5,7 @@ sidebar_label: Issue CA certificates
 description: Learn requirements for CA certificates
 tags:
   - explanation
-  - temporal-cloud
+  - temporal cloud
   - certificates
 ---
 

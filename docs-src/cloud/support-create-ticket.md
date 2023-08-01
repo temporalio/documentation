@@ -4,7 +4,7 @@ title: How to create a ticket for Temporal Support
 sidebar_label: Support ticket
 description: To request assistance from Temporal Support, create a ticket in Zendesk.
 tags:
-  - temporal-cloud
+  - temporal cloud
   - support
   - how-to
 ---

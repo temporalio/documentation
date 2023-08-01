@@ -4,7 +4,7 @@ title: How to finish your SAML configuration
 sidebar_label: Finish SAML configuration
 description: To finish your SAML configuration, send us the sign-in URL, X.509 certificate, and IdP domains and then test your connection.
 tags:
-  - temporal-cloud
+  - temporal cloud
   - security
   - how-to
 ---

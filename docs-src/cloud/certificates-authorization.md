@@ -5,7 +5,7 @@ sidebar_label: Control authorization
 description: Temporal Cloud requires full CA chains, so you can achieve authorization in two ways.
 tags:
   - how-to
-  - temporal-cloud
+  - temporal cloud
   - certificates
 ---
 

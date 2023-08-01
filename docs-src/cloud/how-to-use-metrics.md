@@ -4,7 +4,7 @@ title: How to use Temporal Cloud performance metrics
 description: Most Temporal Cloud metrics are suffixed with _count. This indicates that they behave largely like a Prometheus counter.
 sidebar_label: How to use
 tags:
-  - temporal-cloud
+  - temporal cloud
   - promentheus
   - metrics
 ---

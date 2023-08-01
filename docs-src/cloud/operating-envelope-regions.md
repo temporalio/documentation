@@ -5,7 +5,7 @@ sidebar_label: Regions
 description: Temporal Cloud currently runs in 10 regions in AWS.
 tags:
   - operations
-  - temporal-cloud
+  - temporal cloud
   - explanation
 ---
 

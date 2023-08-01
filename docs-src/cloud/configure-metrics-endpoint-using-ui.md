@@ -6,7 +6,7 @@ sidebar_label: Configure via UI
 tags:
   - how-to
   - observability
-  - temporal-cloud
+  - temporal cloud
 ---
 
 :::note

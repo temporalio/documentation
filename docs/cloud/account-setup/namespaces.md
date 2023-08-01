@@ -7,7 +7,7 @@ description: Create Namespaces, use Namespace endpoints for access, and obtain N
 toc_max_heading_level: 4
 keywords:
 - introduction
-- temporal-cloud
+- temporal cloud
 - namespaces
 - term
 - explanation

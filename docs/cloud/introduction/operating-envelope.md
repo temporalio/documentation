@@ -6,7 +6,7 @@ sidebar_position: 1
 description: The operating envelope of Temporal Cloud includes availability, regions, throughput, and latency.
 toc_max_heading_level: 4
 keywords:
-- temporal-cloud
+- temporal cloud
 - introduction
 - operations
 - explanation

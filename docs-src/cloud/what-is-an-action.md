@@ -6,7 +6,7 @@ description: An Action is the fundamental pricing unit in Temporal Cloud.
 tags:
   - term
   - pricing
-  - temporal-cloud
+  - temporal cloud
   - explanation
 ---
 

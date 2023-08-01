@@ -6,7 +6,7 @@ sidebar_label: Prometheus and Grafana setup
 tags:
   - how-to
   - grafana
-  - temporal-cloud
+  - temporal cloud
   - observability
 ---
 
@@ -43,7 +43,7 @@ If you're following through with the examples provided here, ensure that you hav
 
 Before you set up your Temporal Cloud metrics, ensure that you have the following:
 
-- [Global Admin privileges](/cloud#account-level-roles) to the Temporal Cloud account.
+- [Global Admin privileges](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud) to the Temporal Cloud account.
 - [CA certificate and key](/cloud/certificates-intro) for the Observability integration. You will need the certificate to set up the Observability endpoint in Temporal Cloud.
 
 The following steps describe how to set up Observability on Temporal Cloud to generate an endpoint:

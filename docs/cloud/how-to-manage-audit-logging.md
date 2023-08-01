@@ -8,9 +8,9 @@ toc_max_heading_level: 4
 keywords:
 - term
 - explanation
-- temporal-cloud
+- temporal cloud
 - operations
-- audit-logging
+- audit logging
 - how-to
 - troubleshooting
 tags:

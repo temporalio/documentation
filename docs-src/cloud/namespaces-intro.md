@@ -5,7 +5,7 @@ sidebar_label: Manage Namespaces
 description: You can create and manage Namespaces from your Temporal Cloud UI.
 tags:
   - introduction
-  - temporal-cloud
+  - temporal cloud
   - namespaces
 ---
 

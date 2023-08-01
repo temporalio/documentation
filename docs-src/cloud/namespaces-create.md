@@ -5,7 +5,7 @@ sidebar_label: Create a Namespace
 description: To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.
 tags:
   - how-to
-  - temporal-cloud
+  - temporal cloud
   - namespaces
 ---
 
