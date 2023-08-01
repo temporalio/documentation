@@ -5,6 +5,7 @@ sidebar_label: list
 description: How to list all Namespaces using tctl.
 tags:
   - tctl
+  - cli reference
 ---
 
 The `tctl namespace list` command lists all [Namespaces](/concepts/what-is-a-namespace).

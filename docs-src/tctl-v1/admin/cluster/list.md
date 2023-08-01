@@ -5,7 +5,7 @@ sidebar_label: list
 description: Listing Cluster information.
 tags:
   - tctl
-  - admin
+  - cli reference
 ---
 
 The `tctl admin cluster list` command lists Cluster information on the given Cluster.

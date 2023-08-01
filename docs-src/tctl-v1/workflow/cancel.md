@@ -5,6 +5,7 @@ sidebar_label: cancel
 description: How to cancel a Workflow Execution using tctl.
 tags:
   - tctl
+  - cli reference
 ---
 
 The `tctl workflow cancel --query` command cancels a [Workflow Execution](/workflows#workflow-execution).

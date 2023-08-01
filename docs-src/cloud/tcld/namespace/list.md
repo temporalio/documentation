@@ -5,6 +5,7 @@ sidebar_label: list
 description: How to list all Namespaces in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli reference
 ---
 
 The `tcld namespace list` command lists all [Namespaces](/concepts/what-is-a-namespace) in Temporal Cloud.

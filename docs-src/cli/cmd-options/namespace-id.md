@@ -1,10 +1,10 @@
 ---
 id: namespace-id
-title: temporal  namespace-id
+title: temporal namespace-id
 sidebar_label: namespace-id
 description: Namespace Id
 tags:
-    - cli
+  - cli reference
 ---
 
 Namespace Id.

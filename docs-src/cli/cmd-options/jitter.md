@@ -1,10 +1,10 @@
 ---
 id: jitter
-title: temporal  jitter
+title: temporal jitter
 sidebar_label: jitter
 description: Jitter duration.
 tags:
-    - cli
+  - cli reference
 ---
 
 Jitter duration.

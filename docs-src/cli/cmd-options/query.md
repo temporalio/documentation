@@ -1,13 +1,11 @@
 ---
 id: query
-title: temporal  query
+title: temporal query
 sidebar_label: query
 description: Visibility Query of Search Attributes describing the Workflow Executions to reset.
 tags:
-    - cli
+  - cli reference
 ---
 
 Visibility Query of Search Attributes describing the Workflow Executions to reset.
-See https://docs.
-temporal.
-io/docs/tctl/workflow/list#--query.
+For details, see the [temporal workflow list](/cli/workflow/list) command.

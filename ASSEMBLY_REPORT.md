@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday July 25 2023 14:25:51 PM -0500
+Last assembled: Thursday July 27 2023 07:48:35 AM -0700
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-88 guide configurations found.
+89 guide configurations found.
 
-1474 information nodes found.
+1481 information nodes found.
 
-1238 information nodes are attached to guides.
+1245 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -24,6 +24,8 @@ concepts/what-is-advanced-visibility -> /visibility#advanced-visibility
 
 clusters/how-to-upgrade-the-temporal-server-version -> #upgrade-server
 
+concepts/what-is-dual-visibility -> /visibility#dual-visibility
+
 clusters/how-to-set-up-mysql-visibility-store -> #mysql
 
 clusters/how-to-set-up-postgresql-visibility-store -> #postgresql
@@ -37,6 +39,10 @@ clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster -> #elasticsearc
 clusters/how-to-set-up-visibility-in-a-temporal-cluster -> #supported-databases
 
 references/configuration -> /references/configuration#sql
+
+references/dynamic-configuration -> /references/dynamic-configuration#secondary-visibility-settings
+
+concepts/what-is-cluster-configuration -> /clusters#cluster-configuration
 
 concepts/what-is-archival -> /clusters#archival
 
@@ -61,6 +67,8 @@ concepts/what-is-a-payload-codec -> /dataconversion#payload-codec
 concepts/what-is-a-codec-server -> /dataconversion#codec-server
 
 concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
+
+concepts/what-is-the-temporal-cli -> /cli/index#
 
 references/web-ui-configuration -> /references/web-ui-configuration#
 
@@ -350,8 +358,6 @@ concepts/what-is-an-activity -> /activities#
 
 concepts/what-is-an-activity-task -> /workers#activity-task
 
-concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
-
 concepts/what-is-a-retry-policy -> /retry-policies#
 
 concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
@@ -456,16 +462,6 @@ python/heartbeat-timeout -> /dev-guide/python/features#heartbeat-timeout
 
 typescript/heartbeat-timeout -> /dev-guide/typescript/features#heartbeat-timeout
 
-go/async-activity-completion -> /dev-guide/go/features#asynchronous-activity-completion
-
-java/async-activity-completion -> /dev-guide/java/features#asynchronous-activity-completion
-
-php/async-activity-completion -> /dev-guide/php/features#asynchronous-activity-completion
-
-python/async-activity-completion -> /dev-guide/python/features#asynchronous-activity-completion
-
-typescript/async-activity-completion -> /dev-guide/typescript/features#asynchronous-activity-completion
-
 concepts/what-is-a-reset -> /workflows#reset
 
 concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
@@ -481,8 +477,6 @@ go/namespaces -> /dev-guide/go/features#namespaces
 java/namespaces -> /dev-guide/java/features#namespaces
 
 clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
-
-references/dynamic-configuration -> /references/dynamic-configuration#
 
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
@@ -536,6 +530,8 @@ python/add-sdk -> /dev-guide/python/foundations#install-a-temporal-sdk
 
 typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
 
+clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
+
 clusters/how-to-create-custom-search-attribute-keys -> /cluster-deployment-guide#create-custom-search-attributes
 
 clusters/how-to-remove-a-custom-search-attribute-key -> /cluster-deployment-guide#remove-custom-search-attributes
@@ -588,6 +584,8 @@ python/child-workflows -> /dev-guide/python/features#child-workflows
 
 typescript/child-workflows -> /dev-guide/typescript/features#child-workflows
 
+go/how-to-set-workeroptions-in-go -> /dev-guide/go/foundations#stickyscheduletostarttimeout
+
 concepts/what-is-a-worker-session -> #worker-session
 
 go/worker-sessions -> /dev-guide/go/features#worker-sessions
@@ -601,6 +599,8 @@ php/developing-workflows -> /dev-guide/php/foundations#develop-workflows
 python/developing-workflows -> /dev-guide/python/foundations#develop-workflows
 
 typescript/developing-workflows -> /dev-guide/typescript/foundations#develop-workflows
+
+go/versioning -> /dev-guide/go/versioning#
 
 java/versioning -> /dev-guide/java/versioning#
 
@@ -723,6 +723,8 @@ cli/cmd-options/detail -> /cli/cmd-options#detail
 cli/cmd-options/reason -> /cli/cmd-options#reason
 
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
+
+cli/workflow/list -> /cli/workflow#list
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
 
@@ -906,6 +908,8 @@ typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
+concepts/what-is-worker-versioning -> /workers#worker-versioning
+
 python/tracing -> /dev-guide/python/observability#tracing
 
 python/logging -> /dev-guide/python/observability#logging
@@ -932,8 +936,6 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
-concepts/what-is-worker-versioning -> /workers#worker-versioning
-
 go/testing -> /dev-guide/go/testing#replay
 
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
@@ -944,28 +946,14 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
+go/selectors -> /dev-guide/go/features#selectors
+
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
 
-concepts/what-is-the-temporal-cli -> /cli/index#
+python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-execution
 
-typescript/tracing -> /dev-guide/typescript/observability#tracing
-
-typescript/logging -> /dev-guide/typescript/observability#logging
-
-concepts/what-is-dual-visibility -> /visibility#dual-visibility
-
-clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
-
-go/how-to-set-workeroptions-in-go -> /dev-guide/go/foundations#stickyscheduletostarttimeout
-
-go/versioning -> /dev-guide/go/versioning#
-
-go/selectors -> /dev-guide/go/features#selectors
-
-cloud-context/get-started-certificates -> /cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates
-
-cloud-context/certificates-filters -> #manage-certificate-filters
+python/how-to-cancel-a-workflow-in-python -> #cancel-a-workflow-execution
 
 

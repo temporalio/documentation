@@ -4,8 +4,8 @@ title: How to set a Cron Schedule in Go
 sidebar_label: Cron Schedule
 description: Create an instance of `StartWorkflowOptions` from the `go.temporal.io/sdk/client` package, set the `CronSchedule` field, and pass the instance to the `ExecuteWorkflow` call.
 tags:
-  - go
-  - how-to
+  - Go SDK
+  - How-to
 ---
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `CronSchedule` field, and pass the instance to the `ExecuteWorkflow` call.

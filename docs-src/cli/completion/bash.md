@@ -4,7 +4,7 @@ title: temporal completion bash
 sidebar_label: bash
 description: bash completion output
 tags:
-    - cli
+  - cli reference
 ---
 
 source <(temporal completion bash)

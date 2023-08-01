@@ -1,10 +1,10 @@
 ---
 id: archived
-title: temporal  archived
+title: temporal archived
 sidebar_label: archived
 description: List archived Workflow Executions.
 tags:
-    - cli
+  - cli reference
 ---
 
 List archived Workflow Executions.

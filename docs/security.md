@@ -5,6 +5,10 @@ sidebar_label: Security
 sidebar_position: 6
 description: This guide is an overview of the Temporal Platform security features.
 toc_max_heading_level: 4
+keywords:
+- security
+- guide-context
+- term
 tags:
 - security
 - guide-context
@@ -105,11 +109,11 @@ The default JWT `ClaimMapper` implementation can be used as is or as a base for 
 
 To enable SSO for the Temporal Web UI edit the web service's configuration per the [Temporal Web README](https://github.com/temporalio/web#configuring-authentication-optional).
 
-## Plugins
+## Temporal Cluster plugins conceptual context {#plugins}
 
 Temporal Clusters support some pluggable components.
 
-### Claim Mapper
+### What is a ClaimMapper Plugin? {#claim-mapper}
 
 The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).
 
@@ -220,7 +224,7 @@ Multiple permissions for the same Namespace are overridden by the `ClaimMapper`.
 }
 ```
 
-### Authorizer Plugin
+### What is an Authorizer Plugin? {#authorizer-plugin}
 
 The `Authorizer` plugin contains a single `Authorize` method, which is invoked for each incoming API call.
 `Authorize` receives information about the API call, along with the role and permission claims of the caller.
@@ -254,7 +258,7 @@ If an `Authorizer` is not set in the server options, Temporal uses the `nopAutho
 a := authorization.NewDefaultAuthorizer()
 ```
 
-#### Authorize API calls
+#### How to authorize SDK API calls {#authorize-api-calls}
 
 When authentication is enabled, you can authorize API calls made to the Frontend Service.
 
@@ -266,8 +270,6 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 <TabItem value="go">
 
 Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -308,26 +310,20 @@ Related read:
 
 Content is planned but not yet available.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
 </TabItem>
 <TabItem value="python">
 
 Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
 
 Content is planned but not yet available.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
 </TabItem>
 </Tabs>
 
-## Data Converter
+## Data Converter {#data-converter}
 
 Each Temporal SDK provides a <a class="tdlp" href="/dataconversion#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a> that can be customized with a custom <a class="tdlp" href="/dataconversion#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-codec">Learn more</a></span></span></a> to encode and secure your data.
 
