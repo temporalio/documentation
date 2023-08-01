@@ -31,5 +31,3 @@ For most cases, Temporal's API and default logging implementations will be enoug
 If you require more control over the format, threshold, and destination of output, consider using a third-party implementation alongside Temporal's logging API, or integrate a third-party library.
 
 <!-- TODO: should I add example links down here or within the text? -->
-
-
