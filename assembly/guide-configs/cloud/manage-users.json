@@ -25,6 +25,18 @@
         {
             "type": "h2",
             "id": "cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/users-update-roles"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/users-update-permissions"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/users-delete"
         }
     ]
 }

@@ -13,5 +13,5 @@ tags:
 - What are the available Account-level roles?
 - What are the Namespace-level permissions?
 - How to update an account-level Role in Temporal Cloud
-- How to update an account-level Role in Temporal Cloud
+- How to update Namespace-level permissions in Temporal Cloud
 - How to delete a user from your Temporal Cloud account
