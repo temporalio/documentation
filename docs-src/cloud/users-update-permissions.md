@@ -1,11 +1,12 @@
 ---
 id: users-update-permissions
-title: How to update Namespace-level permissions in Temporal Cloud
+title: How to update an account-level Role in Temporal Cloud
 sidebar_label: Update permissions
 description: Use Namespaces or Settings in Web UI or the `tcld user set-namespace-permissions` command.
 tags:
-  - temporal-cloud
+  - temporal cloud
   - how-to
+  - namespaces
   - users
 ---
 

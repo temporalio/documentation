@@ -4,9 +4,10 @@ title: How to update an account-level Role in Temporal Cloud
 sidebar_label: Update Roles
 description: Use Settings in Web UI or the `tcld user set-account-role` command.
 tags:
-  - temporal-cloud
+  - temporal cloud
   - how-to
   - users
+  - temporal cloud account
 ---
 
 You can update the account-level [Role](/cloud/#account-level-roles) for a user by using either Web UI or tcld.

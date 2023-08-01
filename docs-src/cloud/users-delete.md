@@ -4,9 +4,10 @@ title: How to delete a user from your Temporal Cloud account
 sidebar_label: Delete users
 description: Use Settings in Web UI or the `tcld user delete` command.
 tags:
-  - temporal-cloud
+  - temporal cloud
   - how-to
   - users
+  - temporal cloud account
 ---
 
 You can delete a user from your Temporal Cloud Account by using either Web UI or tcld.
