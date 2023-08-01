@@ -1,9 +1,9 @@
 docs/cloud/index.md linguist-generated=true
 docs/cloud/how-to-create-a-ticket-for-temporal-support.md linguist-generated=true
-docs/cloud/how-to-get-started-with-temporal-cloud.md linguist-generated=true
+docs/cloud/get-started.md linguist-generated=true
 docs/cloud/how-to-manage-audit-logging.md linguist-generated=true
-docs/cloud/how-to-manage-certificates-in-temporal-cloud.md linguist-generated=true
-docs/cloud/how-to-manage-namespaces-in-temporal-cloud.md linguist-generated=true
+docs/cloud/account-setup/certificates.md linguist-generated=true
+docs/cloud/account-setup/namespaces.md linguist-generated=true
 docs/cloud/how-to-manage-saml-with-temporal-cloud.md linguist-generated=true
 docs/cloud/how-to-monitor-temporal-cloud-metrics.md linguist-generated=true
 docs/cloud/tcld/account.md linguist-generated=true

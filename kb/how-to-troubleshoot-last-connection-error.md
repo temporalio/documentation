@@ -65,7 +65,7 @@ If you are using an existing certificate management infrastructure, contact the 
 
 If you are using a self-signed certificate or don't have an existing infrastructure, you can generate a new certificate using OpenSSL or [certstrap](https://github.com/square/certstrap).
 
-For information on generating a self-signed certificate, see [Control authorization](/cloud/how-to-manage-certificates-in-temporal-cloud#control-authorization).
+For information on generating a self-signed certificate, see [Control authorization](/cloud/account-setup/certificates#control-authorization).
 
 ### Update the CA certification in the server configuration
 
@@ -88,4 +88,4 @@ Add reminders to your calendar to issue new CA certificates well before the expi
 The preceding steps should help you troubleshoot the `failed reaching server: last connection error` error caused by an expired TLS certificate.
 
 If this issue persists, verify that the Client you are using to connect to the server is using the correct TLS certification and that the Client requests reach the server after the roles are fully initialized.
-If you still need help, [create a support ticket](/cloud/how-to-create-a-ticket-for-temporal-support).
+If you still need help, [create a support ticket](/cloud/introduction/support#support-ticket).

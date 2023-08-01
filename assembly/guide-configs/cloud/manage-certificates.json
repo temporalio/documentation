@@ -1,9 +1,10 @@
 {
-  "file_name": "how-to-manage-certificates-in-temporal-cloud.md",
-  "id": "how-to-manage-certificates-in-temporal-cloud",
-  "file_dir": "cloud",
+  "file_name": "certificates.md",
+  "id": "certificates",
+  "file_dir": "cloud/account-setup",
   "title": "How to manage certificates in Temporal Cloud",
   "sidebar_label": "Certificates",
+  "sidebar_position": 1,
   "description": "Create certificates and use them to control access to Namespaces.",
   "use_description": false,
   "toc_max_heading_level": 4,
@@ -11,27 +12,27 @@
   "sections": [
     {
       "type": "p",
-      "id": "cloud-context/certificates-intro"
+      "id": "cloud/certificates-intro"
     },
     {
       "type": "h2",
-      "id": "cloud-context/certificates-requirements"
+      "id": "cloud/certificates-requirements"
     },
     {
       "type": "h2",
-      "id": "cloud-context/certificates-issue"
+      "id": "cloud/certificates-issue"
     },
     {
       "type": "h2",
-      "id": "cloud-context/certificates-authorization"
+      "id": "cloud/certificates-authorization"
     },
     {
       "type": "h2",
-      "id": "cloud-context/certificates-namespace"
+      "id": "cloud/certificates-namespace"
     },
     {
       "type": "h2",
-      "id": "cloud-context/certificates-filters"
+      "id": "cloud/certificates-filters"
     }
   ]
 }
