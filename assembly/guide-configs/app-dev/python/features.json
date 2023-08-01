@@ -147,14 +147,6 @@
       "id": "python/interrupt-a-workflow-execution"
     },
     {
-      "type": "h3",
-      "id": "python/how-to-cancel-a-workflow-in-python"
-    },
-    {
-      "type": "h3",
-      "id": "python/how-to-terminate-a-workflow-execution-in-python"
-    },
-    {
       "type": "h2",
       "id": "python/child-workflows"
     },

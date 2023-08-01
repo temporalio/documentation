@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday July 31 2023 12:53:44 PM -0700
+Last assembled: Tuesday August 01 2023 03:03:58 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 89 guide configurations found.
 
-1481 information nodes found.
+1482 information nodes found.
 
-1245 information nodes are attached to guides.
+1246 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -913,10 +913,6 @@ concepts/what-is-worker-versioning -> /workers#worker-versioning
 python/tracing -> /dev-guide/python/observability#tracing
 
 python/logging -> /dev-guide/python/observability#logging
-
-python/how-to-cancel-a-workflow-in-python -> #cancel-a-workflow-execution
-
-python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-execution
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 

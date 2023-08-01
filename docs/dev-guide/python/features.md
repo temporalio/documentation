@@ -521,7 +521,11 @@ This action resembles sending a `SIGTERM` to a process.
 - The Workflow code can handle the cancelation and execute any cleanup logic.
 - The system doesn't forcefully stop the Workflow.
 
-For more information, see <a class="tdlp" href="#cancel-a-workflow-execution">How to cancel a Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to cancel a Workflow Execution in Python</span><br /><br /><span class="tdlppd">To cancel a Workflow Execution in Python, use cancel() on the Workflow handle.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#cancel-a-workflow-execution">Learn more</a></span></span></a>.
+To cancel a Workflow Execution in Python, use the [cancel()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#cancel) function on the Workflow handle.
+
+```python
+await client.get_workflow_handle("your_workflow_id").cancel()
+```
 
 ##### Terminate
 
@@ -533,7 +537,11 @@ This action resembles killing a process.
 - The Workflow code gets no chance to handle termination.
 - A Workflow Task doesn't get scheduled.
 
-For more information, see <a class="tdlp" href="#terminate-a-workflow-execution">How to terminate a Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to terminate a Workflow Execution in Python</span><br /><br /><span class="tdlppd">To terminate a Workflow Execution in Python, use terminate() on the Workflow handle.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#terminate-a-workflow-execution">Learn more</a></span></span></a>.
+To terminate a Workflow Execution in Python, use the [terminate()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#terminate) function on the Workflow handle.
+
+```python
+await client.get_workflow_handle("your_workflow_id").terminate()
+```
 
 ##### Summary
 
@@ -544,22 +552,6 @@ In summary:
 
 In most cases, canceling is preferable because it allows the Workflow to finish gracefully.
 Terminate only if the Workflow is stuck and cannot be canceled normally.
-
-### How to cancel a Workflow Execution in Python {#cancel-a-workflow-execution}
-
-To cancel a Workflow Execution in Python, use the [cancel()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#cancel) function on the Workflow handle.
-
-```python
-await client.get_workflow_handle("your_workflow_id").cancel()
-```
-
-### How to terminate a Workflow Execution in Python {#terminate-a-workflow-execution}
-
-To terminate a Workflow Execution in Python, use the [terminate()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#terminate) function on the Workflow handle.
-
-```python
-await client.get_workflow_handle("your_workflow_id").terminate()
-```
 
 ## How to start a Child Workflow Execution {#child-workflows}
 

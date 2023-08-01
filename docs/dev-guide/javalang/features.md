@@ -752,6 +752,55 @@ Alternatively, set the [`doNotCompleteOnReturn()`](https://www.javadoc.io/doc/io
 
 When this method is called during an Activity Execution, the Activity Execution does not complete when its method returns.
 
+## How to interrupt a Workflow Execution {#interrupt-a-workflow-execution}
+
+You can interrupt a Workflow Execution in one of the following ways:
+
+- [Cancel](#cancel)
+- [Terminate](#terminate)
+
+The following are the main differences between canceling and terminating a Workflow in Temporal:
+
+##### Cancel
+
+Canceling a Workflow provides a graceful way to stop Workflow Execution.
+This action resembles sending a `SIGTERM` to a process.
+
+- The system records a `WorkflowExecutionCancelRequested` event in the Workflow History.
+- A Workflow Task gets scheduled to process the cancelation.
+- The Workflow code can handle the cancelation and execute any cleanup logic.
+- The system doesn't forcefully stop the Workflow.
+
+To cancel a Workflow Execution in Java, use the
+
+```java
+```
+
+##### Terminate
+
+Terminating a Workflow forcefully stops Workflow Execution.
+This action resembles killing a process.
+
+- The system records a `WorkflowExecutionTerminated` event in the Workflow History.
+- The termination forcefully and immediately stops the Workflow Execution.
+- The Workflow code gets no chance to handle termination.
+- A Workflow Task doesn't get scheduled.
+
+To terminate a Workflow Execution in Java, use the
+
+```java
+```
+
+##### Summary
+
+In summary:
+
+- Canceling provides a graceful way to stop the Workflow and allows it to handle cancelation logic.
+- Termination forcefully stops the Workflow and prevents any further events.
+
+In most cases, canceling is preferable because it allows the Workflow to finish gracefully.
+Terminate only if the Workflow is stuck and cannot be canceled normally.
+
 ## How to start a Child Workflow Execution {#child-workflows}
 
 A <a class="tdlp" href="/workflows#child-workflow">Child Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Child Workflow Execution?</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#child-workflow">Learn more</a></span></span></a> is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.

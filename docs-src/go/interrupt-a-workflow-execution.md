@@ -24,10 +24,9 @@ This action resembles sending a `SIGTERM` to a process.
 - The Workflow code can handle the cancelation and execute any cleanup logic.
 - The system doesn't forcefully stop the Workflow.
 
-To cancel a Workflow Execution in Python, use the [cancel()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#cancel) function on the Workflow handle.
+To cancel a Workflow Execution in Go, use the
 
-```python
-await client.get_workflow_handle("your_workflow_id").cancel()
+```go
 ```
 
 ##### Terminate
@@ -40,10 +39,9 @@ This action resembles killing a process.
 - The Workflow code gets no chance to handle termination.
 - A Workflow Task doesn't get scheduled.
 
-To terminate a Workflow Execution in Python, use the [terminate()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#terminate) function on the Workflow handle.
+To terminate a Workflow Execution in Go, use the
 
-```python
-await client.get_workflow_handle("your_workflow_id").terminate()
+```go
 ```
 
 ##### Summary

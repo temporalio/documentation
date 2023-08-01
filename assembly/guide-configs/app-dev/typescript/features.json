@@ -157,6 +157,10 @@
     },
     {
       "type": "h2",
+      "id": "typescript/interrupt-a-workflow-execution"
+    },
+    {
+      "type": "h2",
       "id": "typescript/child-workflows"
     },
     {

@@ -137,6 +137,10 @@
     },
     {
       "type": "h2",
+      "id": "java/interrupt-a-workflow-execution"
+    },
+    {
+      "type": "h2",
       "id": "java/child-workflows"
     },
     {
