@@ -1,12 +1,12 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday August 01 2023 12:29:40 PM -0700
+Last assembled: Tuesday August 01 2023 14:23:39 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-dail-macbook
 
 92 guide configurations found.
 
-1503 information nodes found.
+1504 information nodes found.
 
 1265 information nodes are attached to guides.
 
@@ -981,5 +981,7 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+cloud/users-invite -> /cloud/account-setup/users#invite-users
 
 
