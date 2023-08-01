@@ -1856,10 +1856,6 @@
     {
       "source": "/archive-data",
       "destination": "/cluster-deployment-guide#archival"
-    },
-    {
-      "source": "/kb/non-determinism-issues-for-run-ids",
-      "destination": "/workflows#run-id"
     }
   ]
 }
