@@ -18,7 +18,7 @@ In November, we published the following content:
   All client-side requests made to the Temporal Cluster are gRPC requests.
   Sometimes, when these requests can't be completed, you'll see this particular error message: "Context: deadline exceeded."
 
-- [Why you shouldn't use Run Ids in Workflow logic](/workflows#which-operations-lead-to-non-determinism-issues).
+- [Why you shouldn't use Run Ids in Workflow logic](/kb/non-determinism-issues-for-run-ids).
   The current Run Id is mutable and can change during a Workflow Retry. You should not rely on storing the current Run Id, or using it for any logical choices, because a Workflow Retry changes the Run Id and can lead to non-determinism issues.
 
 We also added the following functionality to the documentation site:

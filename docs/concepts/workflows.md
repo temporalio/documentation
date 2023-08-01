@@ -406,7 +406,7 @@ A Reset terminates a [Workflow Execution](/workflows#workflow-execution), remove
 
 ### What is a Run Id? {#run-id}
 
-A Run Id is a globally unique, platform-level identifier for a <a class="tdlp" href="#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-execution">Learn more</a></span></span></a>.
+A Run Id is a globally unique, platform-level identifier for a [Workflow Execution](/workflows#workflow-execution).
 
 Temporal guarantees that only one Workflow Execution with a given <a class="tdlp" href="#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-id">Learn more</a></span></span></a> can be in an Open state at any given time.
 But when a Workflow Execution reaches a Closed state, it is possible to have another Workflow Execution in an Open state with the same Workflow Id.
@@ -419,9 +419,7 @@ A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow I
 
 Don't rely on storing the current Run Id or using it for any logical choices.
 A Workflow Retry changes the Run Id.
-Because the current Run Id is mutable, relying on it might produce non-determinism issues,
-
-, see the file.
+Because the current Run Id is mutable, relying on it might produce non-determinism issues.
 
 :::
 
