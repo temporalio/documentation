@@ -9,11 +9,13 @@ keywords:
 - temporal cloud
 - introduction
 - operations
+- temporal-cloud
 - explanation
 tags:
 - temporal-cloud
 - introduction
 - operations
+- temporal-cloud
 - explanation
 ---
 
@@ -24,7 +26,7 @@ If you need more details, [contact us](https://pages.temporal.io/contact-us).
 
 ## What is Temporal Cloud's SLA on Availability? {#availability}
 
-The Temporal Cloud service level agreement (SLA) promises 99.9% availability of the cloud service and a 99.9% guarantee against service errors.
+Temporal Cloud provides 99.99% availability, and its service level agreement (SLA) has a 99.9% guarantee against service errors.
 
 To calculate the service-error rate, we capture all requests that arrive in a region during a five-minute interval and record the number of gRPC service errors that occurred.
 For each region, we calculate the service-error rate as `1 - (count of errors / count of requests)`.
@@ -60,7 +62,21 @@ For current system status and information about recent incidents, see [Temporal 
 
 ## Where is Temporal Cloud hosted and running? {#regions}
 
-Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS).
+Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS):
+
+| Code           | Region                   |
+| -------------- | ------------------------ |
+| ap-northeast-1 | Asia Pacific (Tokyo)     |
+| ap-southeast-1 | Asia Pacific (Singapore) |
+| ap-southeast-2 | Asia Pacific (Sydney)    |
+| ca-central-1   | Canada (Central)         |
+| eu-central-1   | EU (Frankfurt)           |
+| eu-west-1      | EU (Ireland)             |
+| eu-west-2      | EU (London)              |
+| us-east-1      | US East (N. Virginia)    |
+| us-east-2      | US East (Ohio)           |
+| us-west-2      | US West (Oregon)         |
+
 Although Temporal Cloud currently runs only on AWS, it works with applications running in any cloud or data center.
 
 To reduce latency, we recommend that you create your <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in a region that is geographically close to where your <a class="tdlp" href="/workers#worker">Workers<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a> are hosted, but your Workers and <a class="tdlp" href="/temporal#temporal-client">Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client?</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> code don't need to be hosted on AWS.
@@ -78,7 +94,12 @@ To raise your quota, create a <a class="tdlp" href="/cloud/introduction/support#
 ## What kind of latency can I expect from Temporal Cloud? {#latency}
 
 Our latency SLO is 200ms per region for p99.
-Latency is greatly influenced by the actual throughput of a single <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>.
-Concurrent operations on the same Workflow Execution could lead to increased latency.
+In June 2023, latency measurements over a week period for starting and signaling Workflow Executions were:
 
-Typical latency for starting and signaling Workflow Executions is less than 100ms.
+- `StartWorkflowExecution`: 90ms p90, 125ms p99
+- `SignalWorkflowExecution`: 53ms p90, 95ms p99
+- `SignalWithStartWorkflowExecution`: 87ms p90, 116ms p99
+
+We work on improving latency, so these numbers will decrease over time.
+
+Concurrent operations on the same Workflow Execution could lead to increased latency.

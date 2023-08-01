@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday August 01 2023 09:26:14 AM -0400
+Last assembled: Tuesday August 01 2023 09:43:39 AM -0400
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -718,6 +718,8 @@ cloud/support-create-ticket -> /cloud/introduction/support#support-ticket
 
 concepts/what-is-a-cloud-namespace-id -> /cloud/account-setup/namespaces#temporal-cloud-namespace-id
 
+cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud -> /cloud/account-setup/users#account-level-roles
+
 cloud/what-is-an-action -> /cloud/introduction/pricing#action
 
 concepts/what-is-a-reset -> /workflows#reset
@@ -979,7 +981,5 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud -> /cloud/account-setup/users#account-level-roles
 
 

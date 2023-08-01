@@ -11,18 +11,18 @@ tags:
 
 Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS):
 
-| Code              | Region                  |
-|-------------------|-------------------------|
-| ap-northeast-1    | Asia Pacific (Tokyo)    |
-| ap-southeast-1    | Asia Pacific (Singapore)|
-| ap-southeast-2    | Asia Pacific (Sydney)   |
-| ca-central-1      | Canada (Central)        |
-| eu-central-1      | EU (Frankfurt)          |
-| eu-west-1         | EU (Ireland)            |
-| eu-west-2         | EU (London)             |
-| us-east-1         | US East (N. Virginia)   |
-| us-east-2         | US East (Ohio)          |
-| us-west-2         | US West (Oregon)        |
+| Code           | Region                   |
+| -------------- | ------------------------ |
+| ap-northeast-1 | Asia Pacific (Tokyo)     |
+| ap-southeast-1 | Asia Pacific (Singapore) |
+| ap-southeast-2 | Asia Pacific (Sydney)    |
+| ca-central-1   | Canada (Central)         |
+| eu-central-1   | EU (Frankfurt)           |
+| eu-west-1      | EU (Ireland)             |
+| eu-west-2      | EU (London)              |
+| us-east-1      | US East (N. Virginia)    |
+| us-east-2      | US East (Ohio)           |
+| us-west-2      | US West (Oregon)         |
 
 Although Temporal Cloud currently runs only on AWS, it works with applications running in any cloud or data center.
 
