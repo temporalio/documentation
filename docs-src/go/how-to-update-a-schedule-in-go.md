@@ -5,7 +5,6 @@ sidebar_label: Update Schedule
 description: To update a Schedule in Go, use `updateSchedule()` on the ScheduleHandle.
 tags:
   - schedule
-  
   - go
 ---
 

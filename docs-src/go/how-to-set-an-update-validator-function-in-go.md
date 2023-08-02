@@ -4,7 +4,6 @@ title: How to set an Update validator function in go
 sidebar_label: Validator function
 description: Use the SetUpdateHandlerWithOptions API and pass it a validator function to validate inputs.
 tags:
-  
   - go
 ---
 

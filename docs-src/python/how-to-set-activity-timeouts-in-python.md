@@ -5,7 +5,6 @@ sidebar_label: Set Activity Timeouts
 description: Set Activity timeouts from within your Workflow Definition.
 tags:
   - activity
-  
   - python
 ---
 

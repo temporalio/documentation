@@ -5,7 +5,6 @@ sidebar_label: Trigger Schedule
 description: To trigger a Schedule in Go, use `trigger()` on `ScheduleHandle`.
 tags:
   - schedule
-  
   - go
 ---
 
