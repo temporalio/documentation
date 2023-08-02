@@ -1,5 +1,5 @@
 ---
-id: what-are-the-account-level-roles-for-users-in-temporal-cloud
+id: users-account-level-roles
 title: What are the account-level Roles for users in Temporal Cloud?
 sidebar_label: Account-level Roles
 description: Account-level Roles are Global Admin, Developer, and Read-Only.

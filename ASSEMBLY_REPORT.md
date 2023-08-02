@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday August 02 2023 12:47:03 PM -0700
+Last assembled: Wednesday August 02 2023 16:57:02 PM -0400
 
-Assembly Workflow Id: docs-full-assembly-dail-macbook
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 92 guide configurations found.
 
@@ -720,13 +720,15 @@ cloud/support-create-ticket -> /cloud/introduction/support#support-ticket
 
 concepts/what-is-a-cloud-namespace-id -> /cloud/account-setup/namespaces#temporal-cloud-namespace-id
 
+cloud/users-account-level-roles -> #account-level-roles
+
+cloud/users-namespace-level-permissions -> #namespace-level-permissions
+
 cloud/users-update-roles -> #update-roles
 
 cloud/users-update-permissions -> #update-permissions
 
 cloud/users-delete -> #delete-users
-
-cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud -> /cloud/account-setup/users#account-level-roles
 
 cloud/what-is-an-action -> /cloud/introduction/pricing#action
 

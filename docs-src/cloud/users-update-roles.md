@@ -10,7 +10,7 @@ tags:
   - temporal cloud account
 ---
 
-You can update the account-level [Role](/cloud/#account-level-roles) for a user by using either Web UI or tcld.
+You can update the account-level [Role](/cloud/users-account-level-roles) for a user by using either Web UI or tcld.
 
 :::info
 
