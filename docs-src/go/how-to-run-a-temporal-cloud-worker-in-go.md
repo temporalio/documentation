@@ -4,7 +4,11 @@ title: How to run a Temporal Cloud Worker in Go
 sidebar_label: Run a Cloud Worker
 description: Use a certificate key pair and your Temporal Cloud Namespace to connect to Temporal Cloud.
 tags:
-  - go-sdk
+  - go sdk
+  - how-to-doc-type
+  - developer-guide-doc-type
+  - temporal cloud
+  - worker
 ---
 
 To run a Worker that talks to Temporal Cloud, you need the following:

@@ -4,7 +4,10 @@ title: How to connect to a Temporal dev Cluster in Go
 sidebar_label: Connect to a dev Cluster
 description: Use the Dial() method on the Temporal Client and omit setting any client options. If there is a local dev Cluster running, the Client will connect to it.
 tags:
-  - go-sdk
+  - go sdk
+  - developer-guide-how-to
+  - how-to-doc-type
+  - dev cluster
 ---
 
 Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).

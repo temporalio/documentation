@@ -4,7 +4,10 @@ title: How to connect to Temporal Cloud
 sidebar_label: Connect to Temporal Cloud
 description: Use a certificate key pair and your Temporal Cloud Namespace to connect to Temporal Cloud.
 tags:
-  - go-sdk
+  - go sdk
+  - developer-guide-doc-type
+  - how-to-doc-type
+  - temporal cloud
 ---
 
 To connect to and run Workflows through Temporal Cloud, you need the following:

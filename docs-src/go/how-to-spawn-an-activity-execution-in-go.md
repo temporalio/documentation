@@ -5,7 +5,10 @@ sidebar_label: Activity Execution
 description: Use the ExecuteActivity() API call available from the go.temporal.io/sdk/workflow package.
 tags:
   - activity
-  - go
+  - go sdk
+  - developer-guide-doc-type
+  - how-to-doc-type
+  - activity execution
 ---
 
 To spawn an [Activity Execution](/concepts/what-is-an-activity-execution), call [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) inside your Workflow Definition.

@@ -4,7 +4,10 @@ title: How to develop a Worker in Go
 sidebar_label: Develop Worker
 description: Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.
 tags:
-  - go-sdk
+  - go sdk
+  - how-to-doc-type
+  - developer-guide-doc-type
+  - worker
 ---
 
 Create an instance of [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by calling [`worker.New()`](https://pkg.go.dev/go.temporal.io/sdk/worker#New), available through the `go.temporal.io/sdk/worker` package, and pass it the following parameters:

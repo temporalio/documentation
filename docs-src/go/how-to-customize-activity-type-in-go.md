@@ -4,7 +4,10 @@ title: How to customize Activity Type in Go
 sidebar_label: Customize Activity Type
 description: To customize the Workflow Type set the Name parameter with RegisterOptions when registering your Workflow with a Worker.
 tags:
-  - go-sdk
+  - go sdk
+  - workflow and activity types
+  - how-to-doc-type
+  - developer-guide-doc-type
 ---
 
 To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.

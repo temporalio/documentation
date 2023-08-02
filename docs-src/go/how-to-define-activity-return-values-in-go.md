@@ -4,7 +4,12 @@ title: How to define Activity return values in Go
 sidebar_label: Activity return values
 description: A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination.
 tags:
-  - go-sdk
+  - go sdk
+  - activity definition
+  - activity
+  - return values
+  - how-to-doc-type
+  - developer-guide-doc-type
 ---
 
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
