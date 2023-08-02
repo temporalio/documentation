@@ -4,10 +4,11 @@ title: How to Heartbeat an Activity in Go
 sidebar_label: Activity Heartbeats
 description: Use, the `RecordHeartbeat` API to report that the execution is alive and progressing.
 tags:
-  - go-sdk
+  - go sdk
   - how-to-doc-type
   - activity
   - heartbeat
+  - developer-guide-doc-type
 ---
 
 To [Heartbeat](/concepts/what-is-an-activity-heartbeat) in an Activity in Go, use the `RecordHeartbeat` API.

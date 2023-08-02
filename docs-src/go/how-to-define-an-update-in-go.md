@@ -4,8 +4,10 @@ title: How to define an Update in Go
 sidebar_label: Define Update
 description: Define an Update by giving it a name to identify it.
 tags:
-  - go-sdk
+  - go sdk
   - how-to-doc-type
+  - developer-guide-doc-type
+  - updates
 ---
 
 In Go, you define an Update type, also known as an Update name, as a `string` value.

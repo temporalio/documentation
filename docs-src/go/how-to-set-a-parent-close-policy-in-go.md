@@ -4,11 +4,11 @@ title: How to set a Parent Close Policy in Go
 sidebar_label: Parent Close Policy
 description: Create an instance of `ChildWorkflowOptions` from the `go.temporal.io/sdk/workflow` package, set the `ParentClosePolicy` field, apply the options to the instance of `workflow.Context`, and pass the context to the `ExecuteChildWorkflow` call.
 tags:
-  - go-sdk
+  - go sdk
   - how-to-doc-type
   - api
-  - child-workflows
-  - retry-and-timeout-policies
+  - child workflows
+  - retry and timeout policies
 ---
 
 In Go, a Parent Close Policy is set on the `ParentClosePolicy` field of an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions).

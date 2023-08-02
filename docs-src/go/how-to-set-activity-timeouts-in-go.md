@@ -6,9 +6,11 @@ description: Create an instance of StartWorkflowOptions.
 tags:
   - go-sdk
   - how-to-doc-type
-  - retry-and-timeout-policies
+  - retry and timeout policies
   - activity
-  - activity-execution
+  - activity execution
+  - timeouts
+  - developer-guide-doc-type
 ---
 
 To set an Activity Timeout in Go, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the Activity Timeout field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.

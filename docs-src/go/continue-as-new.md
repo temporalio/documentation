@@ -5,7 +5,7 @@ description: Continue-As-New enables a Workflow Execution to close successfully 
 sidebar_label: Continue-As-New
 tags:
   - developer-guide-doc-type
-  - workflow-execution
+  - workflow execution
   - continue-as-new
 ---
 

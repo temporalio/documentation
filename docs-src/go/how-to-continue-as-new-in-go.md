@@ -4,10 +4,10 @@ title: How to Continue-As-New-in-Go
 sidebar_label: Continue-As-New
 description: To cause a Workflow Execution to Continue-As-New, the Workflow function should return the result of the `NewContinueAsNewError()` API available from the `go.temporal.io/sdk/workflow` package.
 tags:
-  - go-sdk
+  - go sdk
   - developer-guide-doc-type
   - continue-as-new
-  - workflow-execution
+  - workflow execution
   - api
 ---
 

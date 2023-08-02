@@ -5,12 +5,11 @@ description: A Child Workflow Execution is a Workflow Execution that is schedule
 sidebar_label: Child Workflows
 tags:
   - developer-guide-doc-type
-  - child-workflows
-  - go-sdk
+  - child workflows
+  - go sdk
   - api
   - events
-  - introduction-doc-type
-  - workflow-execution
+  - workflow execution
 ---
 
 A [Child Workflow Execution](/concepts/what-is-a-child-workflow-execution) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.

@@ -4,10 +4,11 @@ title: How to set a Workflow Retry Policy in Go
 sidebar_label: Workflow Retry Policy
 description: Create an instance of `StartWorkflowOptions` from the `go.temporal.io/sdk/client` package, set the `RetryPolicy` field, and pass the instance to the `ExecuteWorkflow` call.
 tags:
-  - go-sdk
+  - go sdk
   - how-to-doc-type
-  - retry-and-timeout-policies
-  - workflow-options
+  - retry and timeout policies
+  - workflow options
+  - developer-guide-doc-type
 ---
 
 Create an instance of a [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) from the `go.temporal.io/sdk/temporal` package and provide it as the value to the `RetryPolicy` field of the instance of `StartWorkflowOptions`.

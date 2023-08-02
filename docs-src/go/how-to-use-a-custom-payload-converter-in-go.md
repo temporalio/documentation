@@ -4,9 +4,11 @@ title: How to use a custom Payload Converter in Go
 sidebar_label: Custom Payload Converter
 description: Use a `CompositeDataConverter` to apply custom `PayloadConverter` in a specified order.
 tags:
-  - go-sdk
+  - go sdk
   - developer-guide-doc-type
-  - data-converter
+  - data converter
+  - payload converter
+  - how-to-doc-type
 ---
 
 Use [CompositeDataConverter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter) to apply custom, type-specific Payload Converters in a specified order.

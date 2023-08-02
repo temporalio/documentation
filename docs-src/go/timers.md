@@ -5,7 +5,8 @@ description: A Timer lets a Workflow sleep for a fixed time period.
 sidebar_label: Timers
 tags:
   - developer-guide-doc-type
-  - go-sdk
+  - go sdk
+  - timers
 ---
 
 A Workflow can set a durable timer for a fixed time period.

@@ -7,8 +7,7 @@ tags:
   - activity
   - heartbeat
   - how-to-doc-type
-  - go-sdk
-  - workers
+  - go sdk
 ---
 
 An [Activity Heartbeat](/concepts/what-is-an-activity-heartbeat) is a ping from the [Worker Process](/concepts/what-is-a-worker-process) that is executing the Activity to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster).

@@ -6,8 +6,9 @@ description: You can adjust the maximum concurrent Sessions of a Worker.
 tags:
   - developer-guide-doc-type
   - sessions
-  - concurrency-control
+  - concurrency control
   - workers
+  - go sdk
 ---
 
 You can adjust the maximum concurrent Sessions of a Worker.

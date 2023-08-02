@@ -7,6 +7,7 @@ tags:
   - developer-guide-doc-type
   - activity
   - async
+  - go sdk
 ---
 
 [Asynchronous Activity Completion](/concepts/what-is-asynchronous-activity-completion) enables the Activity Function to return without the Activity Execution completing.

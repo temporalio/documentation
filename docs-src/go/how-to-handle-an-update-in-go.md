@@ -4,8 +4,10 @@ title: How to handle an Update in Go
 sidebar_label: Handle Update
 description: Use the SetUpateHandler API from the go.temporal.io/sdk/workflow package to register an Update Handler for a given name.
 tags:
-  - go-sdk
+  - go sdk
   - how-to-doc-type
+  - developer-guide-doc-type
+  - updates
   
 ---
 

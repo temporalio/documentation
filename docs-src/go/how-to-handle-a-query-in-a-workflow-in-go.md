@@ -4,9 +4,10 @@ title: How to handle a Query in a Workflow in Go
 sidebar_label: Handling Queries
 description: Use the `SetQueryHandler` API to set a Query Handler that listens for a Query by name.
 tags:
-  - go-sdk
+  - go sdk
   - how-to-doc-type
   - query
+  - developer-guide-doc-type
 ---
 
 Use the `SetQueryHandler` API from the `go.temporal.io/sdk/workflow` package to set a Query Handler that listens for a Query by name.

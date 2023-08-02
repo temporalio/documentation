@@ -7,6 +7,7 @@ tags:
   - activity
   - retry-and-timeout-policies
   - activity-execution
+  - retries
 ---
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.

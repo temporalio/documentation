@@ -4,7 +4,10 @@ title: How to use custom payload conversion
 description: Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.
 sidebar_label: Custom payload conversion
 tags:
-  - guide-context
+  - go sdk
+  - developer-guide-doc-type
+  - payload conversion
+  - data converter
 ---
 
 Temporal SDKs provide a [Payload Converter](/concepts/what-is-a-payload-converter) that can be customized to convert a custom data type to [Payload](/concepts/what-is-a-payload) and back.

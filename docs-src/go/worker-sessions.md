@@ -8,6 +8,7 @@ tags:
   - api
   - sessions
   - workers
+  - go sdk
 ssdi:
   - This feature is currently available only in the Go SDK.
 ---

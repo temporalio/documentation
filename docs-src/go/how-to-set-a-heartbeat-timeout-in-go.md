@@ -4,10 +4,12 @@ title: How to set a Heartbeat Timeout in Go
 sidebar_label: Retry Policy
 description: Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `HeartbeatTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 tags:
-  - go-sdk
+  - go sdk
   - how-to-doc-type
   - activity
   - heartbeat
+  - developer-guide-doc-type
+  - timeouts
 ---
 
 To set a [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.

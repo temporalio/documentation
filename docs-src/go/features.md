@@ -6,6 +6,8 @@ sidebar_label: Features
 tags:
   - developer-guide-doc-type
   - introduction-doc-type
+  - feature-request
+  - go sdk
 ---
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.

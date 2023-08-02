@@ -4,9 +4,10 @@ title: How to set Timers in Go
 sidebar_label: Timers
 description: To set a Timer in Go, use the `NewTimer()` function.
 tags:
-  - go-sdk
+  - go sdk
   - how-to-doc-type
   - api
+  - timers
 ---
 
 To set a Timer in Go, use the [`NewTimer()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewTimer) function and pass the duration you want to wait before continuing.

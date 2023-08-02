@@ -4,11 +4,11 @@ title: How to define a Signal in Go
 sidebar_label: Define Signal
 description: Structs should be used to define Signals and carry data.
 tags:
-  - go-sdk
+  - go sdk
   - how-to-doc-type
   - signals
   - signals-feature
-
+  - developer-guide-doc-type
 ---
 
 Structs should be used to define Signals and carry data, as long as the struct is [serializable via the Data Converter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter.ToPayload).

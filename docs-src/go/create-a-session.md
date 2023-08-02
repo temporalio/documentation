@@ -8,6 +8,7 @@ tags:
   - sessions
   - workers
   - how-to-doc-type
+  - go sdk
 ---
 
 Within the Workflow code use the Workflow APIs to create a Session with whichever Worker picks up the first Activity Task.

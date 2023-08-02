@@ -8,6 +8,7 @@ tags:
   - retry-and-timeout-policies
   - activity-execution
   - activity
+  - timeouts
 ---
 
 Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.

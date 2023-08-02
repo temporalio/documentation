@@ -4,7 +4,11 @@ title: How to describe a Schedule in Go
 sidebar_label: Describe Schedule
 description: To describe a Schedule in Go, use Describe() on the ScheduleHandle.
 tags:
-  - go-sdk
+  - go sdk
+  - how-to-doc-type
+  - developer-guide-doc-type
+  - schedule
+  - schedule describe
 ---
 
 `Describe` retrieves information about the current Schedule configuration.

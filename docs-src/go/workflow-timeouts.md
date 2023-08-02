@@ -5,8 +5,10 @@ description: Each Workflow timeout controls the maximum duration of a different 
 sidebar_label: Workflow timeouts
 tags:
   - developer-guide-doc-type
-  - workflow-execution
-  - workflow-options
+  - workflow execution
+  - workflow options
+  - timeouts
+  - go sdk
 ---
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.

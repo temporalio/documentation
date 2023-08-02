@@ -7,6 +7,7 @@ tags:
   - developer-guide-doc-type
   - workers
   - sessions
+  - go sdk
 ---
 
 Enable the Worker to use Sessions.

@@ -4,10 +4,11 @@ title: How to send a Signal-With-Start in Go
 sidebar_label: Signal-With-Start
 description: Use the `SignalWithStartWorkflow()` API on the Go SDK Temporal Client to start a Workflow Execution (if not already running) and pass it the Signal at the same time.
 tags:
-  - go-sdk
+  - go sdk
   - how-to-doc-type
   - signals
   - signals-feature
+  - developer-guide-doc-type
 ---
 
 Use the `SignalWithStartWorkflow()` API on the Go SDK Temporal Client to start a Workflow Execution (if not already running) and pass it the Signal at the same time.

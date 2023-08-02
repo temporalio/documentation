@@ -5,8 +5,10 @@ sidebar_label: Selectors
 description: Implementing Selectors in the Temporal Go SDK.
 tags:
   - developer-guide-doc-type
-  - go-sdk
+  - go sdk
   - api
+  - selectors
+  - goroutines
 ---
 
 ### Overview
