@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday August 01 2023 14:51:37 PM -0700
+Last assembled: Wednesday August 02 2023 12:47:03 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-dail-macbook
 
@@ -702,6 +702,8 @@ cloud/what-is-audit-logging -> /cloud/how-to-manage-audit-logging#
 
 cloud/namespaces-create -> /cloud/account-setup/namespaces#create-a-namespace
 
+cloud/users-invite -> /cloud/account-setup/users#invite-users
+
 go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
 
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
@@ -717,6 +719,12 @@ concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
 cloud/support-create-ticket -> /cloud/introduction/support#support-ticket
 
 concepts/what-is-a-cloud-namespace-id -> /cloud/account-setup/namespaces#temporal-cloud-namespace-id
+
+cloud/users-update-roles -> #update-roles
+
+cloud/users-update-permissions -> #update-permissions
+
+cloud/users-delete -> #delete-users
 
 cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud -> /cloud/account-setup/users#account-level-roles
 
@@ -981,7 +989,5 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-cloud/users-invite -> /cloud/account-setup/users#invite-users
 
 

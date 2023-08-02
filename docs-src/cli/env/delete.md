@@ -5,6 +5,10 @@ sidebar_label: delete
 description: Delete an environment or environmental property.
 tags:
   - cli reference
+  - temporal cli
+  - environment
+  - env delete
+  - command-line-interface-cli
 ---
 
 The `temporal env delete` command deletes a given environment or environmental property.

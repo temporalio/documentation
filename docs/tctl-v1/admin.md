@@ -5,11 +5,19 @@ sidebar_label: admin
 description: How to use the tctl v1.17 admin command
 toc_max_heading_level: 4
 keywords:
+- cli
+- temporal cli
+- temporal
+- temporal server
 - tctl
 - cli reference
 - db
-- history-shards
+- history shards
 tags:
+- cli
+- temporal-cli
+- temporal
+- temporal-server
 - tctl
 - cli-reference
 - db

@@ -2,6 +2,10 @@
 id: how-to-set-a-workflow-run-timeout-in-php
 title: How to set Workflow Run Timeout in PHP
 sidebar_label: Workflow Run Timeout
+description: Set a Workflow Run Timeout
+tags:
+    - php
+    - workflow run timeout
 ---
 
 `WorkflowRunTimeout` runs timeout limits duration of a single Workflow invocation.

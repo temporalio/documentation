@@ -4,8 +4,7 @@ title: How to visualize an Activity Retry Policy with timeouts
 sidebar_label: Activity retry simulator
 description: Use this tool to visualize total Activity Execution times and experiment with various Activity timeouts and Retry Policies.
 tags:
-  - Retry Policies
-  - Activities
+  - guide-context
 ---
 
 Use this tool to visualize total Activity Execution times and experiment with different Activity timeouts and Retry Policies.

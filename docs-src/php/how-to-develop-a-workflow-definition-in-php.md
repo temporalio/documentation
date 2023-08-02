@@ -2,6 +2,10 @@
 id: how-to-develop-a-workflow-definition-in-php
 title: Develop a Workflow Definition in PHP
 sidebar_label: Workflow Definition
+description: Develop a Workflow Definition in PHP
+tags:
+    - php
+    - workflow definition
 ---
 
 In the Temporal PHP SDK programming model, Workflows are a class method. Classes must implement interfaces that are annotated with `#[WorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.

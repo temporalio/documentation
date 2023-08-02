@@ -27,7 +27,7 @@ You can update Namespace-level [permissions](/cloud/#namespace-level-permissions
 
 ### How to update Namespace-level permissions for a user using Web UI
 
-::: note
+:::note
 
 A user who has the Global Admin account-level [Role](/cloud/#account-level-roles) has Namespace Admin permissions for all Namespaces.
 

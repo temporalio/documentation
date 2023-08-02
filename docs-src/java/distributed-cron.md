@@ -1,6 +1,10 @@
 ---
 id: distributed-cron
 title: Distributed CRON
+sidebar_label: Distributed CRON
+description: How to use Temporal as a distributed CRON
+tags:
+  - cron
 ---
 
 <!-- prettier-ignore -->

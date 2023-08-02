@@ -12,13 +12,9 @@ keywords:
 - developer-guide
 - how-to
 - go-sdk
-- activities
-- retries
-- activity heartbeats
 - timers
 - sleep
-- Go SDK
-- How-to
+- schedule
 - sdk
 - Go
 - workers
@@ -30,13 +26,9 @@ tags:
 - developer-guide
 - how-to
 - go-sdk
-- activities
-- retries
-- activity-heartbeats
 - timers
 - sleep
-- go-sdk
-- how-to
+- schedule
 - sdk
 - go
 - workers

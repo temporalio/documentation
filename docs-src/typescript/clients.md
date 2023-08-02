@@ -3,6 +3,9 @@ id: clients
 title: Workflow Clients in TypeScript
 sidebar_label: Clients
 description: Workflow Clients are embedded in your application code, and connect to Temporal Server via gRPC. They are the only way to schedule new Workflow Executions with Temporal Server.
+tags:
+  - client
+  - typescript
 ---
 
 <!-- prettier-ignore -->

@@ -28,8 +28,8 @@ To delete a user, a user must have the Global Admin account-level [Role](/cloud/
 
 You can delete a user in two other ways in Web UI:
 
-- On the user profile page, select the down arrow next to **Edit User** and then select **Delete**.
-- On the **Edit User** page, select **Delete User**.
+- User profile page: Select the down arrow next to **Edit User** and then select **Delete**.
+- **Edit User** page: Select **Delete User**.
 
 <!-- How to delete a user from your Temporal Cloud account using tcld -->
 

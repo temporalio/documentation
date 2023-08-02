@@ -5,6 +5,12 @@ sidebar_label: complete
 description: Completes an Activity.
 tags:
   - cli reference
+  - temporal cli
+  - activity
+  - activity complete
+  - activity execution
+  - cli-feature
+  - command-line-interface-cli
 ---
 
 The `temporal activity complete` command completes an [Activity Execution](/concepts/what-is-an-activity-execution).

@@ -5,6 +5,10 @@ sidebar_label: set
 description: Set environmental properties.
 tags:
   - cli reference
+  - temporal cli
+  - environment
+  - env set
+  - command-line-interface-cli
 ---
 
 The `temporal env set` command sets the value for an environmental property.

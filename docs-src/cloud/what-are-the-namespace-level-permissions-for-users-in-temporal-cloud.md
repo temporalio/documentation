@@ -6,7 +6,7 @@ description: Namespace-level permissions are Namespace Admin, Write, and Read-On
 tags:
   - temporal cloud
   - namespace
-  - user
+  - users
   - explanation
 ---
 

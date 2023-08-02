@@ -1810,6 +1810,10 @@
       "destination": "/cloud/introduction/support#support-ticket"
     },
     {
+      "source": "/cloud/how-to-get-started-with-temporal-cloud",
+      "destination": "/cloud/get-started"
+    },
+    {
       "source": "/kb/prometheus-grafana-setup-cloud",
       "destination": "/cloud/metrics#prometheus-and-grafana-setup"
     },
@@ -1884,6 +1888,10 @@
     {
       "source": "/archive-data",
       "destination": "/cluster-deployment-guide#archival"
+    },
+    {
+      "source": "/kb/non-determinism-issues-for-run-ids",
+      "destination": "/workflows#run-id"
     }
   ]
 }
