@@ -4,11 +4,11 @@ title: How to set an Update validator function in go
 sidebar_label: Validator function
 description: Use the SetUpdateHandlerWithOptions API and pass it a validator function to validate inputs.
 tags:
-	- how-to-doc-type
-	- go sdk
-	- developer-guide-doc-type
-	- updates
-	- validation
+- how-to-doc-type
+- go sdk
+- developer-guide-doc-type
+- updates
+- validation
 ---
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go">View source code</a>
