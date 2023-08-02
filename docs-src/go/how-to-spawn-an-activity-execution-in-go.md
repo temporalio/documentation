@@ -5,7 +5,7 @@ sidebar_label: Activity Execution
 description: Use the ExecuteActivity() API call available from the go.temporal.io/sdk/workflow package.
 tags:
   - activity
-  - dacx
+  
   - go
 ---
 

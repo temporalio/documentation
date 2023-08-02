@@ -12,7 +12,7 @@ keywords:
 - developer-guide
 - how-to
 - go-sdk
-- dacx
+
 - activities
 - retries
 - activity heartbeats
@@ -32,7 +32,7 @@ tags:
 - developer-guide
 - how-to
 - go-sdk
-- dacx
+
 - activities
 - retries
 - activity-heartbeats
