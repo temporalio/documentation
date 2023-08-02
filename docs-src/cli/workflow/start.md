@@ -5,6 +5,11 @@ sidebar_label: start
 description: Starts a new Workflow Execution.
 tags:
   - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow start
+  - workflow execution
 ---
 
 The `temporal workflow start` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution).

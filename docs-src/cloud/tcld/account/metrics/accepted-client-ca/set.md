@@ -12,7 +12,7 @@ The `tcld account metrics accepted-client-ca set` command sets the end-entity ce
 
 :::info
 
-The end-entity certificates for the metrics endpoint must chain up to the CA certificate used for the account. For more information, see [Certificate requirements](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements).
+The end-entity certificates for the metrics endpoint must chain up to the CA certificate used for the account. For more information, see [Certificate requirements](/cloud/certificates-intro#certificate-requirements).
 
 :::
 

@@ -5,6 +5,11 @@ sidebar_label: update
 description: Updates a Schedule with a new definition (full replacement, not patch).
 tags:
   - cli reference
+  - temporal cli
+  - schedule
+  - command-line-interface-cli
+  - schedule update
+  - updates
 ---
 
 The `temporal schedule update` command updates an existing [Schedule](/concepts/what-is-a-schedule).

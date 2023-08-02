@@ -6,6 +6,10 @@ description: Stop a Batch operation job.
 tags:
   - cli reference
   - temporal cli
+  - batch
+  - batch terminate
+  - cli-feature
+  - command-line-interface-cli
 ---
 
 The `temporal batch terminate` command terminates a Batch job with the provided Job ID.

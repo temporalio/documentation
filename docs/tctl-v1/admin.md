@@ -12,7 +12,7 @@ keywords:
 - tctl
 - cli reference
 - db
-- history-shards
+- history shards
 tags:
 - cli
 - temporal-cli

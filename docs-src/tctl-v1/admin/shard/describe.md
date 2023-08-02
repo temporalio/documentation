@@ -6,7 +6,7 @@ description: Describes Id of shard.
 tags:
   - tctl
   - cli reference
-  - history-shards
+  - history shards
 ---
 
 The `tctl admin shard describe` command shows the Id for the specified shard.
