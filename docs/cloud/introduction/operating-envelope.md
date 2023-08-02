@@ -101,4 +101,3 @@ In June 2023, latency measurements over a week period for starting and signaling
 As we continue working on improving latencies, these numbers will decrease over time
 
 Concurrent operations on the same Workflow Execution could lead to increased latency.
-

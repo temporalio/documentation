@@ -280,4 +280,3 @@ var yourActivityResult YourActivityResultType
 err := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 // ...
 ```
-

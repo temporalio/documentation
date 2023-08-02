@@ -200,4 +200,3 @@ To remove a Search Attribute, use the [`upsert_search_attributes()`](https://pyt
 # ...
         workflow.upsert_search_attributes({"CustomKeywordField": []})
 ```
-

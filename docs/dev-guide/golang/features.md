@@ -760,7 +760,7 @@ There are three steps to follow:
 2. The Activity Function completes in a way that identifies it as waiting to be completed by an external system.
 3. The Temporal Client is used to Heartbeat and complete the Activity.
 
-1. Provide the external system with a Task Token to complete the Activity Execution.
+4. Provide the external system with a Task Token to complete the Activity Execution.
    To do this, use the `GetInfo()` API from the `go.temporal.io/sdk/activity` package.
 
 ```go
@@ -1478,6 +1478,7 @@ To set your custom Payload Converter, use [`NewCompositeDataConverter`](https://
 ## How to use Worker Session APIs {#worker-sessions}
 
 :::tip Support, stability, and dependency info
+
 - This feature is currently available only in the Go SDK.
 
 :::
@@ -1861,4 +1862,3 @@ Usage of Selectors is best learned by example:
 - Receiving information in a Channel ([Mutex example](https://github.com/temporalio/samples-go/blob/14980b3792cc3a8447318fefe9a73fe0a580d4b9/mutex/mutex_workflow.go))
 - Looping through a list of work and scheduling them all in parallel ([DSL example](https://github.com/temporalio/samples-go/blob/14980b3792cc3a8447318fefe9a73fe0a580d4b9/dsl/workflow.go))
 - Executing activities in parallel, pick the first result, cancel remainder ([Pick First example](https://github.com/temporalio/samples-go/blob/14980b3792cc3a8447318fefe9a73fe0a580d4b9/pickfirst/pickfirst_workflow.go))
-

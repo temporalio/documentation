@@ -539,4 +539,3 @@ temporal --codec-endpoint "http://localhost:8888" --namespace "yourNamespace" wo
 For details, see the [CLI reference](/cli/).
 
 Currently in Temporal Cloud, you can set the Codec Server endpoint only from the Web UI.
-
