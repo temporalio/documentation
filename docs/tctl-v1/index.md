@@ -9,7 +9,7 @@ keywords:
 - term
 - tctl
 - cli
-- cli-reference
+- cli reference
 tags:
 - term
 - tctl
@@ -87,7 +87,7 @@ To see help for [tctl](/tctl-v1) commands, enter the following commands.
 | `tctl workflow -h`  | Display help for <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a> operations     |
 | `tctl taskqueue -h` | Display help for <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a> operations |
 
-## tctl v1.17 global modifiers {#global-modifiers}
+## Global modifiers
 
 You can supply the values for many of these modifiers by setting <a class="tdlp" href="#environment-variables">environment variables<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Environment variables for tctl</span><br /><br /><span class="tdlppd">What are the environment variables for tctl?</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#environment-variables">Learn more</a></span></span></a> instead of including the modifiers in a tctl command.
 
@@ -159,7 +159,7 @@ Display the version of tctl in the CLI.
 
 The URL and port number for a Codec Server.
 
-## Environment variables for tctl {#environment-variables}
+## Environment variables
 
 Setting environment variables for repeated parameters can shorten tctl commands.
 

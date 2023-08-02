@@ -6,7 +6,7 @@ description: How to use the tctl v1.17 workflow command
 toc_max_heading_level: 4
 keywords:
 - tctl
-- cli-reference
+- cli reference
 tags:
 - tctl
 - cli-reference
@@ -50,7 +50,7 @@ The `tctl workflow` commands enable [Workflow Execution](/workflows#workflow-exe
 - <a class="tdlp" href="#start">tctl workflow start<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl workflow start</span><br /><br /><span class="tdlppd">How to start a new Workflow Execution using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#start">Learn more</a></span></span></a>
 - <a class="tdlp" href="#terminate">tctl workflow terminate<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl workflow terminate</span><br /><br /><span class="tdlppd">How to terminate a Workflow Execution using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#terminate">Learn more</a></span></span></a>
 
-## tctl workflow cancel {#cancel}
+## cancel
 
 The `tctl workflow cancel --query` command cancels a [Workflow Execution](/workflows#workflow-execution).
 
@@ -88,7 +88,7 @@ Alias: `-r`
 tctl workflow cancel --run_id <id>
 ```
 
-## tctl workflow count {#count}
+## count
 
 The `tctl workflow count` command counts [Workflow Executions](/workflows#workflow-execution).
 This command requires Elasticsearch to be enabled.
@@ -113,7 +113,7 @@ To count all open [Workflow Executions](/workflows#workflow-execution):
 tctl workflow count --query 'ExecutionStatus="Running"'
 ```
 
-## tctl workflow describe {#describe}
+## describe
 
 The `tctl workflow describe` command shows information about a [Workflow Execution](/workflows#workflow-execution).
 This information can be used to locate a failed Workflow Execution, for example.
@@ -173,7 +173,7 @@ If successful, the command returns the Run Id of all deployments, and the times 
 tctl workflow describe --reset_points_only
 ```
 
-## tctl workflow describeid {#describeid}
+## describeid
 
 The `tctl workflow describeid` command shows information about a [Workflow Execution](/workflows#workflow-execution) for the specified <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></span></span></a> and optional <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Run Id?</span><br /><br /><span class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#run-id">Learn more</a></span></span></a>.
 
@@ -203,7 +203,7 @@ Show only events that are eligible for reset.
 tctl workflow describeid <workflow_id> --reset_points_only
 ```
 
-## tctl workflow list {#list}
+## list
 
 The `tctl workflow list` command lists open or closed [Workflow Executions](/workflows#workflow-execution).
 
@@ -457,7 +457,7 @@ Specify the maximum number of [Workflow Executions](/workflows#workflow-executio
 tctl workflow list --pagesize <value>
 ```
 
-## tctl workflow listall {#listall}
+## listall
 
 The `tctl workflow listall` command lists all open or closed [Workflow Executions](/workflows#workflow-execution).
 
@@ -655,7 +655,7 @@ Alias: `-q`
 tctl workflow listall --query <value>
 ```
 
-## tctl workflow listarchived {#listarchived}
+## listarchived
 
 The `tctl workflow listarchived` command lists archived [Workflow Executions](/workflows#workflow-execution).
 
@@ -765,7 +765,7 @@ List all pages.
 tctl workflow listarchived --all
 ```
 
-## tctl workflow observe {#observe}
+## observe
 
 The `tctl workflow observe` command shows the progress of the <a class="tdlp" href="/workflows#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> of a [Workflow Execution](/workflows#workflow-execution).
 
@@ -822,7 +822,7 @@ The default value is 0.
 tctl workflow observe --max_field_length <length>
 ```
 
-## tctl workflow observeid {#observeid}
+## observeid
 
 The `tctl workflow observeid` command shows the progress of the <a class="tdlp" href="/workflows#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> of a [Workflow Execution](/workflows#workflow-execution) for the specified <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></span></span></a> and optional <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Run Id?</span><br /><br /><span class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#run-id">Learn more</a></span></span></a>.
 
@@ -853,7 +853,7 @@ The default value is 0.
 tctl workflow observeid --max_field_length <length>
 ```
 
-## tctl workflow query {#query}
+## query
 
 Alias: `q`
 
@@ -956,7 +956,7 @@ Valid values are `not_open` and `not_completed_cleanly`.
 tctl workflow query --query_reject_condition <value>
 ```
 
-## tctl workflow reset {#reset}
+## reset
 
 The `tctl workflow reset` command resets a [Workflow Execution](/workflows#workflow-execution) by either [`eventId`](#eventid)or [`resetType`](#resettype).
 
@@ -1051,7 +1051,7 @@ Specify the binary checksum when using `--reset_type BadBinary`.
 tctl workflow reset --reset_bad_binary_checksum <value>
 ```
 
-## tctl workflow reset-batch {#reset-batch}
+## reset-batch
 
 The `tctl workflow reset-batch` command resets a batch of [Workflow Executions](/workflows#workflow-execution) by [`resetType`](#resettype).
 
@@ -1201,7 +1201,7 @@ Specify the binary checksum when using `--reset_type BadBinary`.
 tctl workflow reset-batch --reset_bad_binary_checksum <value>
 ```
 
-## tctl workflow run {#run}
+## run
 
 The `tctl workflow run` command starts a new [Workflow Execution](/workflows#workflow-execution) and can show the progress of a Workflow Execution.
 The command is entered in the following format:
@@ -1417,7 +1417,7 @@ The default value is 0.
 tctl workflow run --max_field_length <length>
 ```
 
-## tctl workflow scan {#scan}
+## scan
 
 The `tctl workflow scan` command lists [Workflow Executions](/workflows#workflow-execution).
 It is faster than the `tctl workflow listall` command, but the results are not sorted.
@@ -1514,7 +1514,7 @@ Alias: `-q`
 tctl workflow scan --query <value>
 ```
 
-## tctl workflow show {#show}
+## show
 
 The `tctl workflow show` command shows the <a class="tdlp" href="/workflows#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> for the specified [Workflow Execution](/workflows#workflow-execution).
 
@@ -1630,7 +1630,7 @@ Show only events that are eligible for reset.
 tctl workflow show --reset_points_only
 ```
 
-## tctl workflow showid {#showid}
+## showid
 
 The `tctl workflow showid` command shows the Workflow Execution Event History for the specified <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></span></span></a> and optional <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Run Id?</span><br /><br /><span class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#run-id">Learn more</a></span></span></a>.
 
@@ -1753,7 +1753,7 @@ Show only events that are eligible for reset.
 tctl workflow showid <workflow_id> --reset_points_only
 ```
 
-## tctl workflow signal {#signal}
+## signal
 
 The `tctl workflow signal` command <a class="tdlp" href="/workflows#signal">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#signal">Learn more</a></span></span></a> a [Workflow Execution](/workflows#workflow-execution).
 
@@ -1899,7 +1899,7 @@ Pass input for the <a class="tdlp" href="/workflows#signal">Signal<span class="t
 tctl workflow signal --query <query> --input_file <filename>
 ```
 
-## tctl workflow stack {#stack}
+## stack
 
 The `tctl workflow stack` command queries [Workflow Execution](/workflows#workflow-execution) with `__stack_trace` as the query type.
 
@@ -1972,7 +1972,7 @@ Valid values are `not_open` and `not_completed_cleanly`.
 tctl workflow stack --query_reject_condition <value>
 ```
 
-## tctl workflow start {#start}
+## start
 
 The `tctl workflow start` command starts a new [Workflow Execution](/workflows#workflow-execution).
 Unlike `run`, this command returns the Workflow Id and Run Id immediately after starting the Workflow.
@@ -2183,7 +2183,7 @@ To list valid Search Attributes and value types, use the `tctl cluster get-searc
 tctl workflow start --search_attr_value <value>
 ```
 
-## tctl workflow terminate {#terminate}
+## terminate
 
 The `tctl workflow terminate` command terminates a [Workflow Execution](/workflows#workflow-execution).
 

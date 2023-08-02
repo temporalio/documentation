@@ -6,7 +6,7 @@ description: How to use the tctl 1.17 schedule command
 toc_max_heading_level: 4
 keywords:
 - tctl
-- cli-reference
+- cli reference
 tags:
 - tctl
 - cli-reference
@@ -38,7 +38,7 @@ A <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img s
 - <a class="tdlp" href="#trigger">Trigger an Action on a Schedule using tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl schedule trigger</span><br /><br /><span class="tdlppd">How to trigger a Schedule Action using tctl</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#trigger">Learn more</a></span></span></a>
 - <a class="tdlp" href="#update">Update a Schedule using tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl schedule update</span><br /><br /><span class="tdlppd">How to update a Schedule using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#update">Learn more</a></span></span></a>
 
-## tctl schedule backfill {#backfill}
+## backfill
 
 Backfilling a Schedule means having it do now what it would have done over a specified time range (generally in the past, although it won't prevent you from giving a time range in the future).
 You might use this to fill in runs from a time period when the Schedule was paused due to an external condition that's now resolved, or a period before the Schedule was created.
@@ -54,7 +54,7 @@ Note that, similar to <a class="tdlp" href="#trigger">tctl schedule trigger<span
 Specifying `AllowAll` runs all the backfilled Workflows at once; `BufferAll` runs them sequentially.
 The other policies don't make much sense in this context.
 
-## tctl schedule create {#create}
+## create
 
 With tctl, create a Schedule like this:
 
@@ -91,7 +91,7 @@ If you use both `--time-zone` and also `CRON_TZ`, they must agree.
 
 See `tctl schedule create --help` for the full set of available options.
 
-## tctl schedule delete {#delete}
+## delete
 
 A Schedule can be deleted.
 
@@ -103,7 +103,7 @@ However, Workflow Executions started by a Schedule can be identified by the Sear
 $ tctl schedule delete --schedule-id 'your-schedule-id'
 ```
 
-## tctl schedule describe {#describe}
+## describe
 
 Display the current Schedule configuration as well as extra information about past, current, and future Runs.
 
@@ -113,7 +113,7 @@ tctl schedule describe --schedule-id 'your-schedule-id'
 
 Because the Schedule Spec is converted to canonical representations, the output might not be in the same form as it was input.
 
-## tctl schedule list {#list}
+## list
 
 ```shell
 tctl schedule list
@@ -123,14 +123,14 @@ Note that if you're using standard Visibility, listing Schedules will currently 
 
 Because the Schedule Spec is converted to canonical representations, the output might not be in the same form as it was input.
 
-## tctl schedule toggle {#toggle}
+## toggle
 
 ```shell
 $ tctl schedule toggle --schedule-id 'your-schedule-id' --pause --reason "paused because the database is down"
 $ tctl schedule toggle --schedule-id 'your-schedule-id' --unpause --reason "the database is back up"
 ```
 
-## tctl schedule trigger {#trigger}
+## trigger
 
 Starting a Workflow Run immediately with a Schedule, regardless of its configured Spec, is a common use case.
 
@@ -147,7 +147,7 @@ If you really want it to run right now, you can override the overlap policy for 
 $ tctl schedule trigger --schedule-id 'your-schedule-id' --overlap-policy 'AllowAll'
 ```
 
-## tctl schedule update {#update}
+## update
 
 Any part of the Schedule configuration can be updated at any time.
 

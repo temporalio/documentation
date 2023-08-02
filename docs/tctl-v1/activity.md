@@ -6,7 +6,7 @@ description: How to use the tctl v1.17 activity command
 toc_max_heading_level: 4
 keywords:
 - tctl
-- cli-reference
+- cli reference
 tags:
 - tctl
 - cli-reference
@@ -32,7 +32,7 @@ The `tctl activity` commands enable <a class="tdlp" href="/activities#activity-e
 - <a class="tdlp" href="#complete">tctl activity complete<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl activity complete</span><br /><br /><span class="tdlppd">How to provide a result and complete an Activity Execution using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#complete">Learn more</a></span></span></a>
 - <a class="tdlp" href="#fail">tctl activity fail<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl activity fail</span><br /><br /><span class="tdlppd">How to fail an Activity Execution using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#fail">Learn more</a></span></span></a>
 
-## tctl activity complete {#complete}
+## complete
 
 The `tctl activity complete` command completes an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>.
 
@@ -94,7 +94,7 @@ Specify the identity of the operator when using tctl to complete an <a class="td
 tctl activity complete --identity <value>
 ```
 
-## tctl activity fail {#fail}
+## fail
 
 The `tctl activity fail` command fails an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>.
 

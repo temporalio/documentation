@@ -6,7 +6,7 @@ description: How to use the tctl v1.17 namespace command
 toc_max_heading_level: 4
 keywords:
 - tctl
-- cli-reference
+- cli reference
 tags:
 - tctl
 - cli-reference
@@ -36,7 +36,7 @@ Alias: `n`
 - <a class="tdlp" href="#register">tctl namespace register<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl namespace register</span><br /><br /><span class="tdlppd">How to register a Namespace using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#register">Learn more</a></span></span></a>
 - <a class="tdlp" href="#update">tctl namespace update<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl namespace update</span><br /><br /><span class="tdlppd">How to update a Namespace using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#update">Learn more</a></span></span></a>
 
-## tctl namespace describe {#describe}
+## describe
 
 The `tctl namespace describe` command describes a [Namespace](/namespaces).
 
@@ -71,7 +71,7 @@ ActiveClusterName: dc1
 Clusters: dc1, dc2
 ```
 
-## tctl namespace list {#list}
+## list
 
 The `tctl namespace list` command lists all <a class="tdlp" href="/namespaces#">Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a>.
 
@@ -79,7 +79,7 @@ The `tctl namespace list` command lists all <a class="tdlp" href="/namespaces#">
 
 The command has no modifiers.
 
-## tctl namespace register {#register}
+## register
 
 The `tctl namespace register` command registers a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a>.
 
@@ -221,7 +221,7 @@ The URI cannot be changed after Archival is first enabled.
 tctl namespace register --visibility_uri <uri>
 ```
 
-## tctl namespace update {#update}
+## update
 
 The `tctl namespace update` command updates a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a>.
 
