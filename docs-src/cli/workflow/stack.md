@@ -5,6 +5,12 @@ sidebar_label: stack
 description: Query a Workflow Execution with __stack_trace as the query type.
 tags:
   - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow stack
+  - query
+  - stack trace
 ---
 
 The `temporal workflow stack` command queries a [Workflow Execution](/concepts/what-is-a-workflow-execution) with `--stack-trace` as the [Query](/concepts/what-is-a-query#stack-trace-query) type.

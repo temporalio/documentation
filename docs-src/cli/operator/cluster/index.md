@@ -5,6 +5,10 @@ sidebar_label: cluster
 description: Operations performed on the Temporal Server.
 tags:
   - cli reference
+  - temporal cli
+  - operator
+  - command-line-interface-cli
+  - cluster
 ---
 
 Operator commands enable actions on [Namespaces](/concepts/what-is-a-namespace), [Search Attributes](/concepts/what-is-a-search-attribute), and [Temporal Clusters](/concepts/what-is-a-temporal-cluster).

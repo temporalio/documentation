@@ -6,7 +6,7 @@ description: removing a Task with given information
 tags:
   - tctl
   - cli reference
-  - history-shards
+  - history shards
 ---
 
 The `tctl admin shard remove_task` command removes a Task from the shard.

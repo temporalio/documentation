@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday August 02 2023 10:16:34 AM +1000
+Last assembled: Wednesday August 02 2023 10:21:34 AM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -981,5 +981,11 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+cloud-context/certificates-filters -> #manage-certificate-filters
+
+cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace
+
+cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
 

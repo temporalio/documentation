@@ -13,8 +13,6 @@ keywords:
 - go
 - go-sdk
 - workflow-type
-- activities
-- best practices
 - how-to
 - options
 - workers
@@ -25,8 +23,6 @@ tags:
 - go
 - go-sdk
 - workflow-type
-- activities
-- best-practices
 - how-to
 - options
 - workers
