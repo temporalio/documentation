@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday July 27 2023 07:48:35 AM -0700
+Last assembled: Wednesday August 02 2023 10:16:34 AM +1000
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly
 
-89 guide configurations found.
+92 guide configurations found.
 
-1481 information nodes found.
+1500 information nodes found.
 
-1245 information nodes are attached to guides.
+1265 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -85,6 +85,8 @@ concepts/what-is-a-run-id -> /workflows#run-id
 concepts/what-is-a-task-queue -> /workers#task-queue
 
 concepts/what-is-a-state-transition -> /workflows#state-transition
+
+cloud/metrics-intro -> /cloud/metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui
 
 concepts/what-is-an-activity-execution -> /activities#activity-execution
 
@@ -269,6 +271,8 @@ cloud/tcld/account/metrics/enable -> #enable
 cloud/tcld/account/metrics/disable -> #disable
 
 cloud/tcld/account/metrics/accepted-client-ca/index -> #accepted-client-ca
+
+cloud/certificates-intro -> /cloud/account-setup/certificates#certificate-requirements
 
 cloud/tcld/account/metrics/accepted-client-ca/add -> #add
 
@@ -462,12 +466,6 @@ python/heartbeat-timeout -> /dev-guide/python/features#heartbeat-timeout
 
 typescript/heartbeat-timeout -> /dev-guide/typescript/features#heartbeat-timeout
 
-concepts/what-is-a-reset -> /workflows#reset
-
-concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
-
-concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
-
 concepts/what-is-persistence -> #persistence
 
 concepts/what-is-a-history-shard -> #history-shard
@@ -478,6 +476,8 @@ java/namespaces -> /dev-guide/java/features#namespaces
 
 clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
 
+cloud/prometheus-grafana-setup -> /cloud/metrics#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
+
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
 go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
@@ -485,6 +485,8 @@ go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
 java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conversion
 
 concepts/what-is-a-retention-period -> /clusters#retention-period
+
+cloud/namespaces-intro -> #
 
 go/register-namespaces -> /dev-guide/go/features#register-namespace
 
@@ -686,15 +688,41 @@ python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
 
+cloud/operating-envelope-intro -> /cloud/introduction/operating-envelope#
+
+cloud/pricing-intro -> /cloud/introduction/pricing#
+
+cloud/support-intro -> /cloud/introduction/support#
+
+cloud/users-intro -> /cloud/account-setup/users#
+
+cloud/saml-intro -> /cloud/how-to-manage-saml-with-temporal-cloud#
+
+cloud/what-is-audit-logging -> /cloud/how-to-manage-audit-logging#
+
+cloud/namespaces-create -> /cloud/account-setup/namespaces#create-a-namespace
+
 go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
 
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
 
-cloud-context/certificates-filters -> #manage-certificate-filters
+cloud/certificates-filters -> #manage-certificate-filters
 
-concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
+concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
+
+concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
+
+cloud/support-create-ticket -> /cloud/introduction/support#support-ticket
+
+concepts/what-is-a-cloud-namespace-id -> /cloud/account-setup/namespaces#temporal-cloud-namespace-id
+
+cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud -> /cloud/account-setup/users#account-level-roles
+
+cloud/what-is-an-action -> /cloud/introduction/pricing#action
+
+concepts/what-is-a-reset -> /workflows#reset
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
@@ -898,8 +926,6 @@ typescript/observability -> /dev-guide/typescript/observability#tracing
 
 concepts/what-is-a-task-token -> /activities#task-token
 
-cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace
-
 clusters/how-to-install-temporal-cli -> #run-a-development-server
 
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
@@ -913,6 +939,10 @@ concepts/what-is-worker-versioning -> /workers#worker-versioning
 python/tracing -> /dev-guide/python/observability#tracing
 
 python/logging -> /dev-guide/python/observability#logging
+
+python/how-to-cancel-a-workflow-in-python -> #cancel-a-workflow-execution
+
+python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-execution
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
@@ -944,16 +974,12 @@ go/logging -> /dev-guide/go/observability#logging
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
-cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
+cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate-requirements
 
 go/selectors -> /dev-guide/go/features#selectors
 
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-execution
-
-python/how-to-cancel-a-workflow-in-python -> #cancel-a-workflow-execution
 
 

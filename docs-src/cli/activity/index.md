@@ -4,8 +4,8 @@ title: temporal activity index
 sidebar_label: activity
 description: Operations that can be performed on Workflow Activities.
 tags:
-  - cli-reference
-  - temporal-cli
+  - cli reference
+  - temporal cli
   - activity
 ---
 
