@@ -16,7 +16,7 @@ You have full control over how you secure your applications and services.
 
 ### Data Converter: Client-side encryption
 
-The optional [Data Converter](/concepts/what-is-a-data-converter) capability of the Temporal Platform let you transparently encrypt data before it's sent to Temporal Cloud and decrypt it when it comes out.
+The optional [Data Converter](/concepts/what-is-a-data-converter) capability of the Temporal Platform lets you transparently encrypt data before it's sent to Temporal Cloud and decrypt it when it comes out.
 Temporal Cloud does not need decrypted data to operate.
 
 The Data Converter runs on your Temporal Workers and [Clients](/concepts/what-is-a-temporal-client); Temporal Cloud cannot see or decrypt your data.
