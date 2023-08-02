@@ -8,7 +8,6 @@ toc_max_heading_level: 4
 keywords:
 - guide-context
 - activity
-
 - python
 - developer-guide
 - sdk
@@ -18,7 +17,6 @@ keywords:
 tags:
 - guide-context
 - activity
-
 - python
 - developer-guide
 - sdk

@@ -12,7 +12,6 @@ keywords:
 - developer-guide
 - how-to
 - go-sdk
-
 - activities
 - retries
 - activity heartbeats
@@ -32,7 +31,6 @@ tags:
 - developer-guide
 - how-to
 - go-sdk
-
 - activities
 - retries
 - activity-heartbeats

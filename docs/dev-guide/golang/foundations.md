@@ -16,7 +16,6 @@ keywords:
 - activities
 - best practices
 - activity
-
 - how-to
 - options
 - workers
@@ -30,7 +29,6 @@ tags:
 - activities
 - best-practices
 - activity
-
 - how-to
 - options
 - workers
