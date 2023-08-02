@@ -2,6 +2,11 @@
 id: how-to-create-a-temporal-client-in-php
 title: How to create a Temporal Client in PHP
 sidebar_label: Temporal Client
+description: Create a Temporal Client
+tags: 
+    - client
+    - temporal client
+    - php
 ---
 
 The following example represents a console command that starts a Workflow, prints its IDs, and then waits for its result:

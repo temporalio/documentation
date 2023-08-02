@@ -5,6 +5,11 @@ sidebar_label: query
 description: Query a Workflow Execution.
 tags:
   - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow query
+  - query
 ---
 
 The `temporal workflow query` command sends a [Query](/concepts/what-is-a-query) to a [Workflow Execution](/concepts/what-is-a-workflow-execution).

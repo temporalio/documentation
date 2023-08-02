@@ -13,11 +13,9 @@ keywords:
 - go
 - go-sdk
 - workflow-type
-- activities
-- best practices
+- activity
 - how-to-doc-type
 - retry and timeout policies
-- activity
 - activity execution
 - timeouts
 - developer-guide-doc-type
@@ -31,11 +29,9 @@ tags:
 - go
 - go-sdk
 - workflow-type
-- activities
-- best-practices
+- activity
 - how-to-doc-type
 - retry-and-timeout-policies
-- activity
 - activity-execution
 - timeouts
 - developer-guide-doc-type

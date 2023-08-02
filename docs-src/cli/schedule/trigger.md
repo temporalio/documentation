@@ -5,6 +5,10 @@ sidebar_label: trigger
 description: Triggers an immediate action.
 tags:
   - cli reference
+  - temporal cli
+  - schedule
+  - command-line-interface-cli
+  - schedule trigger
 ---
 
 The `temporal schedule trigger` command triggers an immediate action with a given [Schedule](/concepts/what-is-a-schedule).

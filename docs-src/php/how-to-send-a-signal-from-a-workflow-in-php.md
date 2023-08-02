@@ -2,9 +2,13 @@
 id: how-to-send-a-signal-from-a-workflow-in-php
 title: How to send Signal a Workflow in PHP
 sidebar_label: Signal a Workflow
+description: To send a Siganl to a Workflow, use WorkflowClient->newWorkflowStub or WorkflowClient->newUntypedWorkflowStub.
+tags:
+    - signal
+    - workflow
 ---
 
-To send signal to a Workflow use `WorkflowClient`->`newWorkflowStub` or `WorkflowClient`->`newUntypedWorkflowStub`:
+To send Signal to a Workflow use `WorkflowClient`->`newWorkflowStub` or `WorkflowClient`->`newUntypedWorkflowStub`:
 
 ```php
 $workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);

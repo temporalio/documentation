@@ -2,6 +2,12 @@
 id: workers
 title: Workers in Java
 sidebar_label: Workers
+description: Workers are services that execute Workflows and Activities.
+tags:
+    - java
+    - workers
+    - workflow
+    - activity
 ---
 
 ## What is a Worker?

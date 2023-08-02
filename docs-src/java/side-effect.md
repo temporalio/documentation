@@ -1,6 +1,12 @@
 ---
 id: side-effect
 title: SideEffect
+sidebar_label: Side Effect
+description: Use Side Effect to execute a function once and record its result into the Workflow history.
+tags:
+    - side effect
+    - java
+    - workflow
 ---
 
 Workflow code must be deterministic.

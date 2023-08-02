@@ -5,6 +5,11 @@ sidebar_label: list
 description: List all Namespaces.
 tags:
   - cli reference
+  - temporal cli
+  - operator
+  - command-line-interface-cli
+  - namespace
+  - namespace list
 ---
 
 The `temporal operator namespace list` command lists all [Namespaces](/namespaces) on the [Server](/concepts/what-is-a-frontend-service).

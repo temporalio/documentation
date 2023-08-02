@@ -12,6 +12,8 @@ keywords:
 - developer-guide
 - Java
 - java
+- api reference
+- code samples
 - how-to
 - workers
 - options
@@ -21,6 +23,8 @@ tags:
 - developer-guide
 - java
 - java
+- api-reference
+- code-samples
 - how-to
 - workers
 - options
