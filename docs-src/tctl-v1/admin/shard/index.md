@@ -5,8 +5,8 @@ sidebar_label: shard
 description: Admin-level operations on a specific shard
 tags:
   - tctl
-  - cli-reference
-  - history-shards
+  - cli reference
+  - history shards
 ---
 
 The `tctl admin shard` commands enable admin-level operations on a specified shard.

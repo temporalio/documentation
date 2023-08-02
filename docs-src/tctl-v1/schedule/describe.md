@@ -5,7 +5,7 @@ sidebar_label: describe
 description: How to describe a Schedule using tctl
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 Display the current Schedule configuration as well as extra information about past, current, and future Runs.

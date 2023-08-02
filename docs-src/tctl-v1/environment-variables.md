@@ -5,7 +5,7 @@ sidebar_label: Environment variables
 description: What are the environment variables for tctl?
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 Setting environment variables for repeated parameters can shorten tctl commands.

@@ -5,7 +5,7 @@ sidebar_label: complete
 description: How to provide a result and complete an Activity Execution using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl activity complete` command completes an [Activity Execution](/concepts/what-is-an-activity-execution).

@@ -5,7 +5,7 @@ sidebar_label: signal
 description: How to Signal a Workflow Execution using tctl.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl workflow signal` command [Signals](/concepts/what-is-a-signal) a [Workflow Execution](/workflows#workflow-execution).

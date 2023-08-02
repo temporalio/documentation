@@ -5,7 +5,7 @@ sidebar_label: delete
 description: How to delete a Namespace in Temporal Cloud using tcld.
 tags:
   - tcld
-  - cli-reference
+  - cli reference
 ---
 
 The `tcld namespace delete` command deletes the specified [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.

@@ -5,7 +5,7 @@ sidebar_label: db
 description: Running admin operations on database
 tags:
   - tctl
-  - cli-reference
+  - cli reference
   - db
 ---
 

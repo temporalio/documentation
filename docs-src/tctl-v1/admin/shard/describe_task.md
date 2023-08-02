@@ -5,8 +5,8 @@ sidebar_label: describe_task
 description: displaying information on a Task within a shard
 tags:
   - tctl
-  - cli-reference
-  - history-shards
+  - cli reference
+  - history shards
 ---
 
 The `tctl admin shard describe_task` command describes a specified Task's Task Id, Task type, shard Id, and task visibility timestamp.

@@ -5,7 +5,7 @@ sidebar_label: import
 description: How to set certificate filters for a Namespace in Temporal Cloud using tcld.
 tags:
   - tcld
-  - cli-reference
+  - cli reference
 ---
 
 The `tcld namespace certificate-filters import` command sets certificate filters for a [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.

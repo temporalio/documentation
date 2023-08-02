@@ -5,7 +5,7 @@ sidebar_label: purge
 description: Deleting DLQ messages.
 tags:
   - tctl
-  - cli-reference
+  - cli reference
 ---
 
 The `tctl admin dlq purge` command deletes DLQ messages that have a Task Id equal to or less than the provided Task Id.

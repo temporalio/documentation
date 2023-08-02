@@ -5,7 +5,7 @@ sidebar_label: remove
 description: How to remove end-entity certificates from the metrics endpoint of a Temporal Cloud account using tcld.
 tags:
   - tcld
-  - cli-reference
+  - cli reference
 ---
 
 The `tcld account metrics accepted-client-ca remove` command removes end-entity certificates from the metrics endpoint of a Temporal Cloud account.

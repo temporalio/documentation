@@ -5,8 +5,8 @@ sidebar_label: list_tasks
 description: listing tasks for a given shard Id and Task type
 tags:
   - tctl
-  - cli-reference
-  - history-shards
+  - cli reference
+  - history shards
 ---
 
 The `tctl admin shard list_tasks` command will list the Tasks available for a given shard Id and Task type.
