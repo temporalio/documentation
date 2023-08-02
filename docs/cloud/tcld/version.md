@@ -24,3 +24,4 @@ Alias: `v`
 `tcld version`
 
 The command has no modifiers.
+

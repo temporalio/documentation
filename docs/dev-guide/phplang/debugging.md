@@ -16,6 +16,8 @@ tags:
 
 ## Debugging {#debug}
 
+
+
 ### How to debug in a development environment {#debug-in-a-development-environment}
 
 In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the [Web UI](/web-ui) or [`tctl`](/tctl-v1).
@@ -30,3 +32,4 @@ You can debug production Workflows using:
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/dev-guide/worker-performance).
 
 Debug Server performance with <a class="tdlp" href="/cloud/metrics#">Cloud metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to monitor Temporal Cloud metrics</span><br /><br /><span class="tdlppd">Configure and track performance metrics for Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/metrics#">Learn more</a></span></span></a> or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).
+

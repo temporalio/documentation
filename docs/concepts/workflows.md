@@ -636,7 +636,6 @@ Stack Trace Queries are available only for running Workflow Executions.
 ## What is an Update? {#update}
 
 :::tip Support, stability, and dependency info
-
 - Released in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
 - Available in the [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.23.1/client#Client.UpdateWorkflowWithOptions) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
 - Available in the [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
@@ -889,7 +888,6 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 ## What is a Schedule? {#schedule}
 
 :::tip Support, stability, and dependency info
-
 - Introduced in Temporal Server version 1.17.0
 - Available in Temporal CLI (and tctl v1.17)
 - Available in Temporal Cloud in Public Preview
@@ -1085,3 +1083,4 @@ Each State Transition is recorded in a persistence store.
 Some operations, such as <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeats<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></span></span></a>, require only one State Transition each.
 Most operations require multiple State Transitions.
 For example, a simple Workflow with two sequential <a class="tdlp" href="/workers#activity-task">Activity Tasks<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task">Learn more</a></span></span></a> (and no retries) produces 11 State Transitions: two for Workflow start, four for each Activity, and one for Workflow completion.
+
