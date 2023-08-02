@@ -8,6 +8,9 @@ slug: /dev-guide/java/foundations
 toc_max_heading_level: 4
 keywords:
 - guide-context
+- cli-feature
+- developer-guide-doc-type
+- how-to-doc-type
 - cli
 - developer-guide
 - Java
@@ -19,6 +22,9 @@ keywords:
 - options
 tags:
 - guide-context
+- cli-feature
+- developer-guide-doc-type
+- how-to-doc-type
 - cli
 - developer-guide
 - java

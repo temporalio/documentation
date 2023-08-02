@@ -8,6 +8,9 @@ slug: /dev-guide/php/foundations
 toc_max_heading_level: 4
 keywords:
 - guide-context
+- cli-feature
+- developer-guide-doc-type
+- how-to-doc-type
 - cli
 - developer-guide
 - php
@@ -26,6 +29,9 @@ keywords:
 - workflow execution
 tags:
 - guide-context
+- cli-feature
+- developer-guide-doc-type
+- how-to-doc-type
 - cli
 - developer-guide
 - php

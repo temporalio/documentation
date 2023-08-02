@@ -12,6 +12,12 @@ keywords:
 - developer-guide
 - how-to
 - go-sdk
+- go sdk
+- how-to-doc-type
+- activity
+- activity options
+- timeouts
+- developer-guide-doc-type
 - timers
 - sleep
 - schedule
@@ -26,6 +32,12 @@ tags:
 - developer-guide
 - how-to
 - go-sdk
+- go-sdk
+- how-to-doc-type
+- activity
+- activity-options
+- timeouts
+- developer-guide-doc-type
 - timers
 - sleep
 - schedule

@@ -7,6 +7,9 @@ description: The Foundations section of the Temporal Developer's guide covers th
 toc_max_heading_level: 4
 keywords:
 - guide-context
+- cli-feature
+- developer-guide-doc-type
+- how-to-doc-type
 - cli
 - developer-guide
 - python
@@ -16,6 +19,9 @@ keywords:
 - activity
 tags:
 - guide-context
+- cli-feature
+- developer-guide-doc-type
+- how-to-doc-type
 - cli
 - developer-guide
 - python
