@@ -19,7 +19,7 @@ Each Workflow Execution within the chain is considered a _Run_.
 
 A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow Id with other Workflow Executions.
 
-### Which operations lead to non-determinism issues?
+#### Which operations lead to non-determinism issues?
 
 An operation like `ContinueAsNew`, `Retry`, `Cron`, and `Reset` creates a [Workflow Execution Chain](/workflows#workflow-execution-chain) as identified by the [`first_execution_run_id`](https://github.com/temporalio/api/blob/master/temporal/api/history/v1/message.proto).
 
