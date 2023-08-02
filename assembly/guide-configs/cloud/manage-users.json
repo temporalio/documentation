@@ -1,0 +1,30 @@
+{
+    "file_name": "users.md",
+    "id": "users",
+    "file_dir": "cloud/account-setup",
+    "title": "How to manage users in Temporal Cloud",
+    "sidebar_label": "Users",
+    "sidebar_position": 3,
+    "description": "Invite users, set account level roles, and set Namespace-level positions for users.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cloud/users-intro"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/users-invite"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud"
+        }
+    ]
+}

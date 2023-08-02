@@ -4,6 +4,7 @@
   "file_dir": "cloud",
   "title": "How to manage SAML authentication with Temporal Cloud",
   "sidebar_label": "SAML",
+  "sidebar_position": 7,
   "description": "Integrate a SAML identity provider with your Temporal Cloud account.",
   "use_description": false,
   "toc_max_heading_level": 4,
@@ -11,19 +12,19 @@
   "sections": [
     {
       "type": "p",
-      "id": "cloud-context/saml-intro"
+      "id": "cloud/saml-intro"
     },
     {
       "type": "h2",
-      "id": "cloud-context/saml-how-to-configure-with-azure-ad"
+      "id": "cloud/saml-how-to-configure-with-azure-ad"
     },
     {
       "type": "h2",
-      "id": "cloud-context/saml-how-to-configure-with-okta"
+      "id": "cloud/saml-how-to-configure-with-okta"
     },
     {
       "type": "h2",
-      "id": "cloud-context/saml-finish"
+      "id": "cloud/saml-finish"
     }
   ]
 }

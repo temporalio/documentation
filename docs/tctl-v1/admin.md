@@ -8,7 +8,7 @@ keywords:
 - tctl
 - cli reference
 - db
-- history-shards
+- history shards
 tags:
 - tctl
 - cli-reference
