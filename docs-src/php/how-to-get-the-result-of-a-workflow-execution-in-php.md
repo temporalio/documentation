@@ -2,6 +2,9 @@
 id: how-to-get-the-result-of-a-workflow-execution-in-php
 title: How to get the result of an Workflow Execution in PHP
 sidebar_label: Workflow Execution
+description: Get the result of a Workflow Execution
+tags:
+    - workflow execution
 ---
 
 If you need to wait for the completion of a Workflow after an asynchronous start, make a blocking call to

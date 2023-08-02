@@ -2,6 +2,10 @@
 id: how-to-spawn-a-child-workflow-execution-in-php
 title: How to spawn a Child Workflow Execution in PHP
 sidebar_label: Child Workflow Execution
+description: Spawn a Child Workflow Execution from within a Workflow
+tags:
+    - php
+    - child workflow
 ---
 
 Besides Activities, a Workflow can also start other Workflows.

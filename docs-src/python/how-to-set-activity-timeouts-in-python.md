@@ -3,6 +3,9 @@ id: how-to-set-activity-timeouts-in-python
 title: How to set Activity Timeouts in Python
 sidebar_label: Set Activity Timeouts
 description: Set Activity timeouts from within your Workflow Definition.
+tags:
+  - activity
+  - python
 ---
 
 Activity options are set as keyword arguments after the Activity arguments.

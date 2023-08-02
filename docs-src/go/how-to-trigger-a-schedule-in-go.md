@@ -3,6 +3,9 @@ id: how-to-trigger-a-schedule-in-go
 title: How to trigger a Schedule in Go
 sidebar_label: Trigger Schedule
 description: To trigger a Schedule in Go, use `trigger()` on `ScheduleHandle`.
+tags:
+  - schedule
+  - go
 ---
 
 Triggering a Schedule immediately executes an Action defined in that Schedule.

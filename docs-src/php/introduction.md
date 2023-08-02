@@ -2,6 +2,9 @@
 id: introduction
 title: PHP SDK introduction
 sidebar_label: PHP SDK introduction
+description: Introduction to the Temporal PHP SDK
+tags:
+ - php
 ---
 
 :::info Try the Developer's guide

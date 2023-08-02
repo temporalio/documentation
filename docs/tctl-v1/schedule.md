@@ -5,9 +5,17 @@ sidebar_label: schedule
 description: How to use the tctl 1.17 schedule command
 toc_max_heading_level: 4
 keywords:
+- cli
+- temporal cli
+- temporal
+- temporal server
 - tctl
 - cli reference
 tags:
+- cli
+- temporal-cli
+- temporal
+- temporal-server
 - tctl
 - cli-reference
 ---

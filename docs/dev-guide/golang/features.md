@@ -14,6 +14,7 @@ keywords:
 - go-sdk
 - timers
 - sleep
+- schedule
 - sdk
 - Go
 - workers
@@ -27,6 +28,7 @@ tags:
 - go-sdk
 - timers
 - sleep
+- schedule
 - sdk
 - go
 - workers

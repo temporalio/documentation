@@ -2,6 +2,9 @@
 id: code-samples-php
 title: Code samples
 sidebar_label: Code samples
+description: Code samples for Temporal PHP SDK
+tags:
+ - code samples
 ---
 
 - [PHP samples repo](https://github.com/temporalio/samples-php)

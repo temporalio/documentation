@@ -2,6 +2,10 @@
 id: how-to-define-a-query-in-php
 title: How to define a Query in PHP
 sidebar_label: Define a Query
+description: Define a Query in PHP
+tags:
+ - workflow
+ - query
 ---
 
 Workflows can answer synchronous [Queries](/concepts/what-is-a-query) and receive [Signals](/concepts/what-is-a-signal).

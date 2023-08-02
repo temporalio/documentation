@@ -2,6 +2,9 @@
 id: how-to-handle-a-query-in-a-workflow-in-php
 title: How to handle a Query in PHP
 sidebar_label: Handle a Query
+description: To handle Queries in PHP, use Query handlers.
+tags:
+ - query
 ---
 
 You can add custom Query types to handle Queries such as Querying the current state of a

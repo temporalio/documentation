@@ -2,6 +2,10 @@
 id: how-to-continue-as-new-in-php
 title: How to Continue-As-New in PHP
 sidebar_label: Continue-As-New
+description: To continue a Workflow as new, use Workflow::continueAsNew or Workflow::newContinueAsNewStub.
+tags:
+ - continue-as-new
+ - workflow
 ---
 
 Workflows that need to rerun periodically could naively be implemented as a big **while** loop with a sleep where the entire logic of the Workflow is inside the body of the **while** loop.

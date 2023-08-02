@@ -5,9 +5,17 @@ sidebar_label: dataconverter
 description: How to use the tctl v1.17 dataconverter command
 toc_max_heading_level: 4
 keywords:
+- cli
+- temporal cli
+- temporal
+- temporal server
 - tctl
 - cli reference
 tags:
+- cli
+- temporal-cli
+- temporal
+- temporal-server
 - tctl
 - cli-reference
 ---
