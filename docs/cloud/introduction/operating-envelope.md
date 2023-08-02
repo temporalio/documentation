@@ -2,7 +2,7 @@
 id: operating-envelope
 title: What is the operating envelope of Temporal Cloud?
 sidebar_label: Operating envelope
-sidebar_position: 1
+sidebar_position: 2
 description: The operating envelope of Temporal Cloud includes availability, regions, throughput, and latency.
 toc_max_heading_level: 4
 keywords:

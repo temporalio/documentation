@@ -2,7 +2,7 @@
 id: support
 title: What kind of support does Temporal Cloud provide?
 sidebar_label: Support
-sidebar_position: 2
+sidebar_position: 4
 description: Temporal Cloud users can reach out for help through our community Slack channel, or file a support ticket through Zendesk. 
 toc_max_heading_level: 4
 keywords:

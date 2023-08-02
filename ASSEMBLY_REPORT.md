@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday August 01 2023 14:27:28 PM -0400
+Last assembled: Tuesday August 01 2023 18:20:50 PM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly-dail-macbook
 
-92 guide configurations found.
+93 guide configurations found.
 
-1500 information nodes found.
+1503 information nodes found.
 
-1265 information nodes are attached to guides.
+1268 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -724,6 +724,10 @@ cloud/what-is-an-action -> /cloud/introduction/pricing#action
 
 concepts/what-is-a-reset -> /workflows#reset
 
+concepts/what-is-the-temporal-web-ui -> /web-ui#
+
+cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate-requirements
+
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
 cli/cmd-options/fields -> /cli/cmd-options#fields
@@ -753,8 +757,6 @@ cli/cmd-options/reason -> /cli/cmd-options#reason
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
 cli/workflow/list -> /cli/workflow#list
-
-concepts/what-is-the-temporal-web-ui -> /web-ui#
 
 cli/cmd-options/name -> /cli/cmd-options#name
 
@@ -973,8 +975,6 @@ go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 go/logging -> /dev-guide/go/observability#logging
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
-
-cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate-requirements
 
 go/selectors -> /dev-guide/go/features#selectors
 
