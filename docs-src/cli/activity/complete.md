@@ -2,7 +2,7 @@
 id: complete
 title: temporal activity complete
 sidebar_label: complete
-description: Completes an Activity.
+description: Completes an Activity Execution.
 tags:
   - cli reference
   - temporal cli
@@ -18,7 +18,7 @@ Along with completing the Activity, the result given upon return can be set as w
 
 `temporal activity complete --activity-id=MyActivity --result=ActivityComplete`
 
-Use the options listed below to change the behavior of this command.
+Use the following options to change the behavior of this command.
 
 - [--activity-id](/cli/cmd-options/activity-id)
 

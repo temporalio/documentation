@@ -12,11 +12,12 @@ tags:
     - command-line-interface-cli
 ---
 
-When used, `temporal batch list` returns all Batch jobs.
+The `temporal batch list` command returns all Batch jobs.
 Batch Jobs can be returned for an entire Cluster or a single Namespace.
+
 `temporal batch list --namespace=MyNamespace`
 
-Use the command options listed below to change the information returned by this command.
+Use the following options to change the behavior of this command.
 
 - [--fields](/cli/cmd-options/fields)
 

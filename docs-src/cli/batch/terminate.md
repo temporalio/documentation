@@ -13,11 +13,11 @@ tags:
 ---
 
 The `temporal batch terminate` command terminates a Batch job with the provided Job ID.
-A reason for terminating the Batch Job can also be provided for future reference.
+For future reference, provide a reason for terminating the Batch Job.
 
 `temporal batch terminate --job-id=MyJobId --reason=JobReason`
 
-Use the command options listed below to change the behavior of this command.
+Use the following options to change the behavior of this command.
 
 - [--fields](/cli/cmd-options/fields)
 

@@ -13,4 +13,9 @@ tags:
 ---
 
 List archived Workflow Executions.
+
+:::note
+
 Currently an experimental feature.
+
+:::

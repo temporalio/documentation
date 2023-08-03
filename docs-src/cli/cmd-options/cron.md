@@ -10,7 +10,6 @@ tags:
     - command-line-interface-cli
     - cron
 ---
-
 ```text
 Optional Cron Schedule for the Workflow.
 ┌───────────── minute (0 - 59)
@@ -19,4 +18,5 @@ Optional Cron Schedule for the Workflow.
 │ │ │ ┌───────────── month (1 - 12)
 │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
 │ │ │ │ │
+* * * * *
 ```

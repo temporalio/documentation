@@ -11,4 +11,5 @@ tags:
     - external temporal and state events
 ---
 
-File in which to persist Temporal state (by default, Workflows are lost when the process dies).
+File in which to persist Temporal state.
+By default, Workflows are lost when the process dies.

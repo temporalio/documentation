@@ -2,7 +2,7 @@
 id: fail
 title: temporal activity fail
 sidebar_label: fail
-description: Fails an Activity.
+description: Fails an Activity Execution.
 tags: 
     - cli reference
     - temporal cli 
@@ -15,9 +15,10 @@ tags:
 
 The `temporal activity fail` command fails an [Activity Execution](/concepts/what-is-an-activity-execution).
 The Activity must already be running on a valid [Workflow](/concepts/what-is-a-workflow).
+
 `temporal fail --workflow-id=meaningful-business-id --activity-id=MyActivity`
 
-Use the options listed below to change the behavior of this command.
+Use the following options to change the behavior of this command.
 
 - [--activity-id](/cli/cmd-options/activity-id)
 

@@ -2,7 +2,7 @@
 id: describe
 title: temporal batch describe
 sidebar_label: describe
-description: Describe a Batch operation job.
+description: Provide information about a Batch operation job.
 tags:
   - cli reference
   - temporal cli
@@ -15,9 +15,10 @@ tags:
 The `temporal batch describe` command shows the progress of an ongoing Batch job.
 
 Pass a valid Job ID to return a Batch Job's information.
+
 `temporal batch describe --jobid=MyJobId`
 
-Use the command options listed below to change the information returned by this command.
+Use the following options to change the behavior of this command.
 
 - [--fields](/cli/cmd-options/fields)
 
