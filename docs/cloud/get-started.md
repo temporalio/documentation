@@ -8,20 +8,16 @@ toc_max_heading_level: 4
 keywords:
 - certificates
 - explanation
-- how-to
 - introduction
 - namespaces
 - temporal cloud
-- temporal cloud account
 - users
 tags:
 - certificates
 - explanation
-- how-to
 - introduction
 - namespaces
 - temporal-cloud
-- temporal-cloud-account
 - users
 ---
 
@@ -61,54 +57,12 @@ If you don't already have a Namespace (or want to create another), see the follo
 
 <a class="tdlp" href="/cloud/account-setup/namespaces#create-a-namespace">Create a Namespace in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a Namespace in Temporal Cloud</span><br /><br /><span class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#create-a-namespace">Learn more</a></span></span></a>
 
-## Invite users {#invite-users}
+## Get started - Invite users {#invite-users}
 
-:::caution
+Adding a user to your Temporal Cloud account includes sending an email invite that the user must then accept.
+To add users, see the following:
 
-Access to Temporal Cloud is authorized via single sign-on (SSO), currently limited to Google OAuth.
-The email addresses of all users who need access to Temporal Cloud must be registered with Google.
-
-If an email address is not associated with a Google Account, the user must follow the instructions in the [Use an existing email address](https://support.google.com/accounts/answer/27441?hl=en#existingemail) section of [Create a Google Account](https://support.google.com/accounts/answer/27441).
-
-**Important:** Do _not_ create a Gmail account when creating a Google Account.
-
-:::
-
-When you create a user in Temporal Cloud, the prospective user receives an email invitation.
-Before accepting the invitation, the user must be logged in to Google using the email address that received the invitation.
-The user must then click **Accept Invite** in the message.
-Attempting to log in to Temporal Cloud without first accepting the invite doesn't work.
-
-### Roles and permissions
-
-Each user in Temporal Cloud is assigned a Role.
-Each user can be assigned permissions for individual Namespaces.
-
-- [Account-level Roles](/cloud/#account-level-roles)
-- [Namespace-level permissions](/cloud/#namespace-level-permissions)
-
-<!--- How to invite users in Temporal Cloud using Web UI --->
-
-### Invite users using Web UI
-
-:::info
-
-To invite users, a user must have the Global Admin account-level [Role](/cloud/#account-level-roles).
-
-:::
-
-1. In Temporal Web UI, click **Settings** in the lower-left portion of the window.
-1. On the **Settings** page, click **Create Users** in the upper-right portion of the window.
-1. On the **Create Users** page in the **Email Addresses** box, type or paste one or more email addresses.
-1. In **Account-Level Role**, select a [Role](/cloud/#account-level-roles).
-   The Role applies to all users whose email addresses appear in **Email Addresses**.
-1. If the account has any Namespaces, they are listed under **Grant access to Namespaces**.
-   To add a permission, select the checkbox next to a Namespace, and then select a [permission](/cloud/#namespace-level-permissions).
-   Repeat as needed.
-1. When all permissions are assigned, click **Send Invite**.
-
-Temporal sends an email message to each user.
-To join Temporal Cloud, a user must click **Accept Invite** in the message.
+<a class="tdlp" href="/cloud/account-setup/users#invite-users">How to invite users to your Temporal Cloud account<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to invite users to your Temporal Cloud account</span><br /><br /><span class="tdlppd">Assign Roles and Namespace permissions, and send invites</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/users#invite-users">Learn more</a></span></span></a>
 
 ## Get started - Connect {#connect-to-temporal-cloud}
 
