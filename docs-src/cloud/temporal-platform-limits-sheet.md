@@ -10,7 +10,7 @@ tags:
 ---
 
 Running into limits can cause unexpected failures.
-Knowing the limits of Temporal can prevent that.
+Knowing Temporal's limits can prevent that.
 
 This section details many of the errors and warnings coded into the Temporal Platform.
 Errors are hard limits that fail when reached.

@@ -191,7 +191,7 @@ You can define default values for Activity and Workflow [Retry Policies](/concep
 The Persistence store in the Cluster has default size limits set for optimal performance. The dynamic configuration keys relating to some of these are listed below.
 
 The default values on these keys are based on extensive testing.
-You can change these values, but ensure that you are provisioning enough database resources to handle the changed values.
+When changing these values, make sure that you're provisioning enough database resources to handle these changes.
 
 For details on platform limits, see the [Temporal Platform limits sheet](/cloud/introduction/operating-envelope#limits-sheet).
 
