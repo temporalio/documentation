@@ -7,28 +7,28 @@ description: The Foundations section of the Temporal Developer's guide covers th
 slug: /dev-guide/typescript/foundations
 toc_max_heading_level: 3
 keywords:
-- cli
-- cli-feature
-- developer-guide
-- developer-guide-doc-type
-- go
 - guide-context
-- how-to
+- cli-feature
+- developer-guide-doc-type
 - how-to-doc-type
+- cli
+- developer-guide
 - sdk
 - typescript
+- how-to
+- go
 - workers
 tags:
-- cli
-- cli-feature
-- developer-guide
-- developer-guide-doc-type
-- go
 - guide-context
-- how-to
+- cli-feature
+- developer-guide-doc-type
 - how-to-doc-type
+- cli
+- developer-guide
 - sdk
 - typescript
+- how-to
+- go
 - workers
 ---
 

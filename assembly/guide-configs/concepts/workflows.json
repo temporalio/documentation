@@ -3,7 +3,7 @@
   "id": "workflows",
   "slug": "/workflows",
   "file_dir": "concepts",
-  "title": "Workflows",
+  "title": "What is a Workflow?",
   "sidebar_label": "Workflows",
   "sidebar_position": 2,
   "description": "This guide provides a comprehensive overview of Temporal Workflows.",

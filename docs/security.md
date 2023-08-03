@@ -6,12 +6,12 @@ sidebar_position: 6
 description: This guide is an overview of the Temporal Platform security features.
 toc_max_heading_level: 4
 keywords:
-- guide-context
 - security
+- guide-context
 - term
 tags:
-- guide-context
 - security
+- guide-context
 - term
 ---
 

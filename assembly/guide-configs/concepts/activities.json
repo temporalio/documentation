@@ -3,7 +3,7 @@
   "id": "activities",
   "slug": "/activities",
   "file_dir": "concepts",
-  "title": "Activities",
+  "title": "What is an Activity?",
   "sidebar_label": "Activities",
   "sidebar_position": 3,
   "description": "This guide provides a comprehensive overview of Temporal Activities.",

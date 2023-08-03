@@ -1,20 +1,20 @@
 ---
 id: visibility
-title: Visibility
+title: What is Visibility?
 sidebar_label: Visibility
 sidebar_position: 7
 description: This guide provides a comprehensive overview of Temporal Visibility.
 slug: /visibility
 toc_max_heading_level: 4
 keywords:
+- term
 - explanation
 - filtered-lists
-- term
 - visibility
 tags:
+- term
 - explanation
 - filtered-lists
-- term
 - visibility
 ---
 

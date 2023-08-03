@@ -1,18 +1,18 @@
 ---
 id: activities
-title: Activities
+title: What is an Activity?
 sidebar_label: Activities
 sidebar_position: 3
 description: This guide provides a comprehensive overview of Temporal Activities.
 slug: /activities
 toc_max_heading_level: 4
 keywords:
-- explanation
 - term
+- explanation
 - timeouts
 tags:
-- explanation
 - term
+- explanation
 - timeouts
 ---
 
