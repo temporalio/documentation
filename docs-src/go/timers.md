@@ -4,7 +4,8 @@ title: What is a Timer?
 description: A Timer lets a Workflow sleep for a fixed time period.
 sidebar_label: Timers
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - go sdk
   - timers
   - sleep
 ---

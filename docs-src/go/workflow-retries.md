@@ -4,7 +4,9 @@ title: Workflow retries
 description: A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 sidebar_label: Workflow retries
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - retry-and-timeout-policies
+  - workflow-execution
 ---
 
 A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.

@@ -4,7 +4,9 @@ title: How to define a Signal
 description: A Signal has a name and can have arguments.
 sidebar_label: Define Signal
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - signals
+  - signals-feature
 ---
 
 A Signal has a name and can have arguments.

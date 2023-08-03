@@ -6,18 +6,18 @@ sidebar_position: 2
 description: Create an account, issue certificates, create a Namespace, invite users, and connect.
 toc_max_heading_level: 4
 keywords:
-- introduction
-- temporal cloud
-- explanation
 - certificates
+- explanation
+- introduction
 - namespaces
+- temporal cloud
 - users
 tags:
-- introduction
-- temporal-cloud
-- explanation
 - certificates
+- explanation
+- introduction
 - namespaces
+- temporal-cloud
 - users
 ---
 
