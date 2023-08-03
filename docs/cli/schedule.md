@@ -5,12 +5,11 @@ sidebar_label: schedule
 description: How to use the Temporal CLI schedule command
 toc_max_heading_level: 4
 keywords:
-- cli reference
-- temporal cli
-- schedule
-- command-line-interface-cli
-- schedule backfill
 - backfill
+- cli reference
+- command-line-interface-cli
+- schedule
+- schedule backfill
 - schedule create
 - schedule delete
 - schedule describe
@@ -18,14 +17,14 @@ keywords:
 - schedule toggle
 - schedule trigger
 - schedule update
+- temporal cli
 - updates
 tags:
-- cli-reference
-- temporal-cli
-- schedule
-- command-line-interface-cli
-- schedule-backfill
 - backfill
+- cli-reference
+- command-line-interface-cli
+- schedule
+- schedule-backfill
 - schedule-create
 - schedule-delete
 - schedule-describe
@@ -33,6 +32,7 @@ tags:
 - schedule-toggle
 - schedule-trigger
 - schedule-update
+- temporal-cli
 - updates
 ---
 

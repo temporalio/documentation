@@ -4,8 +4,11 @@ title: How to get the result of an Activity Execution in Go
 sidebar_label: Activity Execution result
 description: Use the Future returned from the `ExecuteActivity` API call to retrieve the result.
 tags:
-  - developer-guide
-  - go
+  - developer-guide-doc-type
+  - go sdk
+  - how-to-doc-type
+  - activity execution
+  - activity
 ---
 
 The `ExecuteActivity` API call returns an instance of [`workflow.Future`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Futures) which has the following two methods:
