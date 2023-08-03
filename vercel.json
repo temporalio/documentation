@@ -1892,6 +1892,10 @@
     {
       "source": "/kb/non-determinism-issues-for-run-ids",
       "destination": "/workflows#run-id"
+    },
+    {
+      "source": "/kb/temporal-platform-limits-sheet",
+      "destination": "/cloud/introduction/operating-envelope#limits-sheet"
     }
   ]
 }

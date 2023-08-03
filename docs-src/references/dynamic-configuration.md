@@ -193,7 +193,7 @@ The Persistence store in the Cluster has default size limits set for optimal per
 The default values on these keys are based on extensive testing.
 You can change these values, but ensure that you are provisioning enough database resources to handle the changed values.
 
-For details on platform limits, see the [Temporal Platform limits sheet](/kb/temporal-platform-limits-sheet).
+For details on platform limits, see the [Temporal Platform limits sheet](/cloud/introduction/operating-envelope#limits-sheet).
 
 | Dynamic configuration key               | Type | Description                                                                                                                                                                                                                                     | Default value            |
 | --------------------------------------- | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |

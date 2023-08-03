@@ -29,6 +29,14 @@
     {
       "type": "h2",
       "id": "cloud/operating-envelope-latency"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/temporal-platform-limits-sheet"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/default-limits-temporal-cloud"
     }
   ]
 }
