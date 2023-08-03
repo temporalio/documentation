@@ -4,7 +4,11 @@ title: How to run a Temporal Cloud Worker
 description: The Worker Process is where Workflow Functions and Activity Functions are executed.
 sidebar_label: Run a Temporal Cloud Worker
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - go sdk
+  - temporal cloud
+  - worker
+  - client options
 ---
 
 To run a Worker that uses [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:

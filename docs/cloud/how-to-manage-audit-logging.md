@@ -6,20 +6,20 @@ sidebar_position: 8
 description: Create, consume, and manage Audit Logs.
 toc_max_heading_level: 4
 keywords:
-- term
-- explanation
-- temporal cloud
-- operations
 - audit logging
+- explanation
 - how-to
+- operations
+- temporal cloud
+- term
 - troubleshooting
 tags:
-- term
-- explanation
-- temporal-cloud
-- operations
 - audit-logging
+- explanation
 - how-to
+- operations
+- temporal-cloud
+- term
 - troubleshooting
 ---
 

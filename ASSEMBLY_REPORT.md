@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday August 03 2023 06:27:08 AM -0700
+Last assembled: Thursday August 03 2023 14:19:21 PM -0400
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 92 guide configurations found.
 
@@ -975,8 +975,6 @@ go/logging -> /dev-guide/go/observability#logging
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate-requirements
-
-go/selectors -> /dev-guide/go/features#selectors
 
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 

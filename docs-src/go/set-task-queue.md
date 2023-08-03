@@ -4,7 +4,12 @@ title: How to set a Workflow's Task Queue
 description: In most SDKs, the only Workflow Option that must be set is the name of the Task Queue.
 sidebar_label: Set Task Queue
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - go sdk
+  - task queue
+  - workflow options
+  - worker
+  - workflow
 ---
 
 In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/concepts/what-is-a-task-queue).
