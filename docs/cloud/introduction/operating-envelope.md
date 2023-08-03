@@ -111,7 +111,7 @@ Concurrent operations on the same Workflow Execution could lead to increased lat
 ## Temporal Platform limits sheet {#limits-sheet}
 
 Running into limits can cause unexpected failures.
-Knowing the limits of Temporal can prevent that.
+Knowing Temporal's limits can prevent that.
 
 This section details many of the errors and warnings coded into the Temporal Platform.
 Errors are hard limits that fail when reached.
@@ -152,7 +152,7 @@ For details on dynamic configuration keys, see <a class="tdlp" href="/references
 
 ## Default limits for Temporal Cloud {#default-limits}
 
-Temporal Cloud sets default limits for the following aspects: [Account level](#account-level), [Namespace level](#namespace-level), [List Filters](#list-filters).
+Temporal Cloud sets default limits for [Account level](#account-level), [Namespace level](#namespace-level), and [List Filters](#list-filters).
 
 #### Account level
 
@@ -181,8 +181,6 @@ The following limits are applied to each Namespace:
 
 #### List Filters
 
-The following limit is applied to List Filters:
-
 The **ORDER BY** operator isn't supported in List Filters in Temporal Cloud.
 This means that you can't apply custom ordering of Workflows with Cloud Visibility features.
 Lists of Workflows are still ordered by a default ordering rule.
@@ -190,6 +188,6 @@ Be aware that this rule might change.
 
 #### Increasing limits
 
-Some of the Temporal Cloud limits mentioned above can be increased by [submitting a support ticket](/cloud/introduction/support#support-ticket).
+Some of the default Temporal Cloud limits can be increased by [submitting a support ticket](/cloud/introduction/support#support-ticket).
 
 The default values are intended to guard against unintentional resource usage.

@@ -657,7 +657,7 @@ An Update has four phases.
 
 1. **Admission.** The Temporal Cluster first validates Update submissions against the configured resource usage limits.
    For example, limits apply to concurrent requests and requests per second.
-   See the [Temporal Platform limits sheet](/cloud/introduction/operating-envelope#limits-sheet) for more details.
+   See the [Temporal Platform limits sheet](/cloud/introduction/operating-envelope#limits-sheet) for more information concerning usage limits.
    When this phase is complete, the Platform changes the status of the Update to **Admitted**.
    At this stage, the Platform hasn't yet persisted the Update to the Workflow Execution's Event History or sent it to a Worker.
 1. **Validation.** An optional developer provided function that performs request validation.

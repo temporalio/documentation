@@ -38,7 +38,6 @@ The following limits are applied to each Namespace:
 
 #### List Filters
 
-
 The **ORDER BY** operator isn't supported in List Filters in Temporal Cloud.
 This means that you can't apply custom ordering of Workflows with Cloud Visibility features.
 Lists of Workflows are still ordered by a default ordering rule.
