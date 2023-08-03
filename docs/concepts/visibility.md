@@ -7,14 +7,14 @@ description: This guide provides a comprehensive overview of Temporal Visibility
 slug: /visibility
 toc_max_heading_level: 4
 keywords:
-- term
 - explanation
 - filtered-lists
+- term
 - visibility
 tags:
-- term
 - explanation
 - filtered-lists
+- term
 - visibility
 ---
 

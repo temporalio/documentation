@@ -5,217 +5,217 @@ sidebar_label: cmd options
 description: How to use the Temporal CLI command options
 toc_max_heading_level: 4
 keywords:
-- cli reference
-- temporal cli
+- actions
 - active cluster
-- options-feature
-- command-line-interface-cli
-- activity id
 - activity
 - activity execution
+- activity id
 - address
-- frontend
 - archival
-- workflow execution
+- backfill
+- batch job
+- ca-certificate
 - calendar
-- server
+- certificate key
+- child workflows
+- cli reference
 - cluster
 - codec server
-- endpoint
+- command-line-interface-cli
+- command-line-interface-cli,
 - concurrency control
 - configuration
 - context
-- timeouts and heartbeats
-- cron
-- namespace
-- external temporal and state events
-- child workflows
-- namespace description
-- failures
-- resets-feature
-- cross-cluster-connection
-- schedule backfill
-- backfill
-- environment
-- event id
-- events
-- retries
-- timeout
 - continue-as-new
+- cron
+- cross-cluster-connection
+- data converters
+- endpoint
+- environment
+- event
+- event id
+- event type
+- events
+- external temporal and state events
+- failures
+- frontend
 - frontend address
-- grpc
-- requests
-- web ui
-- temporal ui
-- history
-- operator
-- workflow id
-- reuse policy
-- goroutine
-- workflow
-- interval
-- command-line-interface-cli,
 - frontend service
-- server options and configurations
-- batch job
+- goroutine
+- grpc
+- history
+- http
+- interval
+- ip address
 - job id
 - log-feature
 - logging
 - logging and metrics
-- search attributes
 - memo
 - metrics
-- namespace management
+- namespace
+- namespace description
 - namespace id
-- pager
-- event
-- workflow task failure
+- namespace management
 - nondeterministic
 - notes
-- overlap policy
-- schedule pause
-- schedule
-- query
-- queries-feature
-- visibility
-- workflow visibility
-- event type
 - operation
-- workflow state
-- actions
-- reset point
-- retention policy
-- workflow run
-- schedule id
-- sqlite
+- operator
+- options-feature
+- overlap policy
+- pager
+- port
 - pragma
+- queries-feature
+- query
+- requests
+- reset point
+- resets-feature
+- retention policy
+- retries
+- reuse policy
+- schedule
+- schedule backfill
+- schedule id
+- schedule pause
+- schedule unpause
 - schedules
+- search attribute
+- search attributes
+- server
+- server options and configurations
+- sqlite
+- start-to-close
 - task queue
 - task queue type
-- workflow task
-- start-to-close
+- temporal cli
+- temporal ui
 - time
 - time zone
-- ca-certificate
-- x509-certificate
+- timeout
+- timeouts and heartbeats
 - tls
-- verification
-- certificate key
 - tls server
-- search attribute
-- data converters
-- http
-- ip address
-- port
-- schedule unpause
 - uri
+- verification
+- visibility
+- web ui
+- workflow
+- workflow execution
+- workflow id
+- workflow run
+- workflow state
+- workflow task
+- workflow task failure
 - workflow type
+- workflow visibility
+- x509-certificate
 tags:
-- cli-reference
-- temporal-cli
+- actions
 - active-cluster
-- options-feature
-- command-line-interface-cli
-- activity-id
 - activity
 - activity-execution
+- activity-id
 - address
-- frontend
 - archival
-- workflow-execution
+- backfill
+- batch-job
+- ca-certificate
 - calendar
-- server
+- certificate-key
+- child-workflows
+- cli-reference
 - cluster
 - codec-server
-- endpoint
+- command-line-interface-cli
+- command-line-interface-cli,
 - concurrency-control
 - configuration
 - context
-- timeouts-and-heartbeats
-- cron
-- namespace
-- external-temporal-and-state-events
-- child-workflows
-- namespace-description
-- failures
-- resets-feature
-- cross-cluster-connection
-- schedule-backfill
-- backfill
-- environment
-- event-id
-- events
-- retries
-- timeout
 - continue-as-new
+- cron
+- cross-cluster-connection
+- data-converters
+- endpoint
+- environment
+- event
+- event-id
+- event-type
+- events
+- external-temporal-and-state-events
+- failures
+- frontend
 - frontend-address
-- grpc
-- requests
-- web-ui
-- temporal-ui
-- history
-- operator
-- workflow-id
-- reuse-policy
-- goroutine
-- workflow
-- interval
-- command-line-interface-cli,
 - frontend-service
-- server-options-and-configurations
-- batch-job
+- goroutine
+- grpc
+- history
+- http
+- interval
+- ip-address
 - job-id
 - log-feature
 - logging
 - logging-and-metrics
-- search-attributes
 - memo
 - metrics
-- namespace-management
+- namespace
+- namespace-description
 - namespace-id
-- pager
-- event
-- workflow-task-failure
+- namespace-management
 - nondeterministic
 - notes
-- overlap-policy
-- schedule-pause
-- schedule
-- query
-- queries-feature
-- visibility
-- workflow-visibility
-- event-type
 - operation
-- workflow-state
-- actions
-- reset-point
-- retention-policy
-- workflow-run
-- schedule-id
-- sqlite
+- operator
+- options-feature
+- overlap-policy
+- pager
+- port
 - pragma
+- queries-feature
+- query
+- requests
+- reset-point
+- resets-feature
+- retention-policy
+- retries
+- reuse-policy
+- schedule
+- schedule-backfill
+- schedule-id
+- schedule-pause
+- schedule-unpause
 - schedules
+- search-attribute
+- search-attributes
+- server
+- server-options-and-configurations
+- sqlite
+- start-to-close
 - task-queue
 - task-queue-type
-- workflow-task
-- start-to-close
+- temporal-cli
+- temporal-ui
 - time
 - time-zone
-- ca-certificate
-- x509-certificate
+- timeout
+- timeouts-and-heartbeats
 - tls
-- verification
-- certificate-key
 - tls-server
-- search-attribute
-- data-converters
-- http
-- ip-address
-- port
-- schedule-unpause
 - uri
+- verification
+- visibility
+- web-ui
+- workflow
+- workflow-execution
+- workflow-id
+- workflow-run
+- workflow-state
+- workflow-task
+- workflow-task-failure
 - workflow-type
+- workflow-visibility
+- x509-certificate
 ---
 
 <!-- THIS FILE IS GENERATED. DO NOT EDIT THIS FILE DIRECTLY -->
