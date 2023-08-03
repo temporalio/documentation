@@ -140,6 +140,7 @@ function genTagsMatter(guideCfg) {
       }
     }
   }
+  tags.sort();
   for (const t of tags) {
     s = `${s}- ${localRef(guideCfg.id, t)}\n`;
   }
@@ -156,6 +157,7 @@ function genKeywordsMatter(guideCfg) {
       }
     }
   }
+  keywords.sort();
   for (const kw of keywords) {
     s = `${s}- ${(guideCfg.id, kw)}\n`;
   }

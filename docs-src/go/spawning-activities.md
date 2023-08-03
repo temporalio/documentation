@@ -4,7 +4,11 @@ title: How to start an Activity Execution
 description: Calls to spawn Activity Executions are written within a Workflow Definition.
 sidebar_label: Activity Execution
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - how-to-doc-type
+  - activity execution
+  - activity
+  - go sdk
 ---
 
 Calls to spawn [Activity Executions](/concepts/what-is-an-activity-execution) are written within a [Workflow Definition](/concepts/what-is-a-workflow-definition).

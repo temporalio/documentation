@@ -7,13 +7,13 @@ description: The Testing section of the Temporal Developer's guide covers the ma
 slug: /dev-guide/typescript/testing
 toc_max_heading_level: 4
 keywords:
-- guide-context
 - developer-guide
+- guide-context
 - sdk
 - typescript
 tags:
-- guide-context
 - developer-guide
+- guide-context
 - sdk
 - typescript
 ---

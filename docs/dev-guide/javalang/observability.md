@@ -7,16 +7,16 @@ description: The Observability section of the Temporal Developer's guide covers 
 slug: /dev-guide/java/observability
 toc_max_heading_level: 4
 keywords:
-- guide-context
 - developer-guide
-- java
+- guide-context
 - how-to
+- java
 - sdk
 tags:
-- guide-context
 - developer-guide
-- java
+- guide-context
 - how-to
+- java
 - sdk
 ---
 

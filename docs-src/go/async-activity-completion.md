@@ -4,7 +4,10 @@ title: How to asynchronously complete an Activity
 description: Asynchronous Activity Completion enables the Activity Function to return without the Activity Execution completing.
 sidebar_label: Asynchronous Activity Completion
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - activity
+  - async
+  - go sdk
 ---
 
 [Asynchronous Activity Completion](/concepts/what-is-asynchronous-activity-completion) enables the Activity Function to return without the Activity Execution completing.

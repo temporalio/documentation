@@ -4,7 +4,11 @@ title: How to define Workflow parameters
 description: Temporal Workflows may have any number of custom parameters.
 sidebar_label: Workflow parameters
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - go sdk
+  - workflow parameters
+  - workflows
+  - workflow definition
 ---
 
 Temporal Workflows may have any number of custom parameters.
