@@ -11,17 +11,20 @@ tags:
 
 A Task Queue is a dynamic queue in Temporal polled by one or more Workers.
 
-Workers bundle Workflow code and node modules using Webpack v5 and execute them inside V8 isolates. Activities are directly required and run by Workers in the Node.js environment.
+Workers bundle Workflow code and node modules using Webpack v5 and execute them inside V8 isolates.
+Activities are directly required and run by Workers in the Node.js environment.
 
-Workers are flexible. You can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers on a single machine.
+Workers are flexible.
+You can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers on a single machine.
 
-There are three main things the Worker needs:
+The Worker need three main things:
 
-- `taskQueue`: the Task Queue to poll. This is the only required argument.
+- `taskQueue`: The Task Queue to poll. This is the only required argument.
 - `activities`: Optional. Imported and supplied directly to the Worker.
-- Workflow bundle, specify one of the following options:
-  - a `workflowsPath` to your `workflows.ts` file to pass to Webpack. For example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies.
-  - Or pass a prebuilt bundle to `workflowBundle`, if you prefer to handle the bundling yourself.
+- Workflow bundle. Choose one of the following options:
+  - Specify `workflowsPath` pointing to your `workflows.ts` file to pass to Webpack; for example, `require.resolve('./workflows')`.
+    Workflows are bundled with their dependencies.
+  - If you prefer to handle the bundling yourself, pass a prebuilt bundle to `workflowBundle`.
 
 ```ts
 import { Worker } from '@temporalio/worker';
@@ -53,14 +56,14 @@ run().catch((err) => {
 
 `taskQueue` is the only required option; however, use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
 
-When scheduling a Workflow, a `taskQueue` must be specified.
+When scheduling a Workflow, you must specify `taskQueue`.
 
 ```ts
-import { Connection, WorkflowClient } from '@temporalio/client';
-// This is the code that is used to start a workflow.
+import { Client, Connection } from '@temporalio/client';
+// This is the code that is used to start a Workflow.
 const connection = await Connection.create();
-const client = new WorkflowClient({ connection });
-const result = await client.execute(yourWorkflow, {
+const client = new Client({ connection });
+const result = await client.workflow.execute(yourWorkflow, {
   // required
   taskQueue: 'your-task-queue',
   // required
@@ -78,4 +81,5 @@ const worker = await Worker.create({
 });
 ```
 
-Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option to `proxyActivities()`, `startChild()`, or `executeChild()`. If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
+Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option to `proxyActivities()`, `startChild()`, or `executeChild()`.
+If you do not specify `taskQueue`, the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
