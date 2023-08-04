@@ -10,4 +10,5 @@ tags:
     - command-line-interface-cli
 ---
 
-Print raw data as json (prefer this over -o json for scripting).
+Print raw data in a JSON format.
+Recommended to use this over -o json for scripting.

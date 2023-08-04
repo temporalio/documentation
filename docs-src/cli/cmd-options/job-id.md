@@ -10,7 +10,6 @@ tags:
     - command-line-interface-cli
     - batch job
     - job id
-
 ---
 
 Batch Job Id.

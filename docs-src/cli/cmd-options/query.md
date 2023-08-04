@@ -15,5 +15,5 @@ tags:
     - workflow visibility
 ---
 
-Visibility Query of Search Attributes describing the Workflow Executions to reset.
-For details, see the [temporal workflow list](/cli/workflow/list) command.
+Provides a SQL-like Query of Search Attributes to return Workflow Executions to reset.
+For more information, refer to the [`temporal workflow list` command](/cli/workflow/list).

@@ -10,4 +10,4 @@ tags:
     - command-line-interface-cli
 ---
 
-format output as: table, json, card.
+Format output as: table, json, card.

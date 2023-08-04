@@ -9,7 +9,7 @@ tags:
     - options-feature
     - command-line-interface-cli
     - overlap policy
-
 ---
 
-Overlap policy (options: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll).
+Overlap policy.
+Options: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll.

@@ -8,7 +8,6 @@ tags:
     - temporal cli
     - options-feature
     - command-line-interface-cli
-
 ---
 
-Separator for the input file. The default is a tab ('\t'). (default: '\t')
+Separator for the input file. The default is a tab (`\t`).

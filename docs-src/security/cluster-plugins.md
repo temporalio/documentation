@@ -1,6 +1,6 @@
 ---
 id: cluster-plugins
-title: Temporal Cluster plugins conceptual context
+title: Temporal Cluster plugins
 sidebar_label: Plugins
 description: Temporal Clusters support some pluggable components.
 tags:
