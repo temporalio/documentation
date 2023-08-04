@@ -1,6 +1,6 @@
 ---
 id: retry-policies
-title: What is a Retry Policy?
+title: What is a Temporal Retry Policy?
 sidebar_label: Retry Policies
 sidebar_position: 4
 description: A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.

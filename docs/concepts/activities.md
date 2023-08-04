@@ -1,6 +1,6 @@
 ---
 id: activities
-title: What is an Activity?
+title: What is a Temporal Activity?
 sidebar_label: Activities
 sidebar_position: 3
 description: This guide provides a comprehensive overview of Temporal Activities.
