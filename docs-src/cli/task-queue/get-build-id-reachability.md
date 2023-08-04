@@ -1,24 +1,22 @@
 ---
-id: list
-title: temporal operator search-attribute list
-sidebar_label: list
-description: Lists all Search Attributes that can be used in list Workflow Queries.
+id: get-build-id-reachability
+title: temporal task-queue get-build-id-reachability
+sidebar_label: get-build-id-reachability
+description: Retrieves information about the reachability of Build IDs on one or more Task Queues
 tags:
   - cli reference
   - temporal cli
-  - operator
+  - task queue
   - command-line-interface-cli
-  - search attribute
-  - search attribute list
 ---
 
-The `temporal operator search-attribute list` command displays a list of all [Search Attributes](/concepts/what-is-a-search-attribute) that can be used in [Queries](/concepts/what-is-a-query).
-
-`temporal workflow list --query`.
-
-Use the options listed below to change the command's behavior.
+Determines if Build IDs may be used for for new, existing, or closed Workflows. 
+Both the `--build-id` and `--task-queue` flags may be specified multiple times. 
+Reachability for the provided Build IDs will be checked against all task queues if one isn't provided.
 
 - [--address](/cli/cmd-options/address)
+
+- [--build-id](/cli/cmd-options/build-id)
 
 - [--codec-auth](/cli/cmd-options/codec-auth)
 
@@ -34,7 +32,9 @@ Use the options listed below to change the command's behavior.
 
 - [--namespace](/cli/cmd-options/namespace)
 
-- [--output](/cli/cmd-options/output)
+- [--reachability-type](/cli/cmd-options/reachability-type)
+
+- [--task-queue](/cli/cmd-options/task-queue)
 
 - [--tls](/cli/cmd-options/tls)
 

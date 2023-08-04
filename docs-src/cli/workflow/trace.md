@@ -17,26 +17,42 @@ The `temporal workflow trace` command tracks the progress of a [Workflow Executi
 
 Use the options listed below to change the command's behavior.
 
+- [--address](/cli/cmd-options/address)
+
+- [--codec-auth](/cli/cmd-options/codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
+
+- [--color](/cli/cmd-options/color)
+
 - [--concurrency](/cli/cmd-options/concurrency)
+
+- [--context-timeout](/cli/cmd-options/context-timeout)
 
 - [--depth](/cli/cmd-options/depth)
 
-- [--fields](/cli/cmd-options/fields)
+- [--env](/cli/cmd-options/env)
 
 - [--fold](/cli/cmd-options/fold)
 
-- [--limit](/cli/cmd-options/limit)
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
+
+- [--namespace](/cli/cmd-options/namespace)
 
 - [--no-fold](/cli/cmd-options/no-fold)
 
-- [--no-pager](/cli/cmd-options/no-pager)
-
-- [--output](/cli/cmd-options/output)
-
-- [--pager](/cli/cmd-options/pager)
-
 - [--run-id](/cli/cmd-options/run-id)
 
-- [--time-format](/cli/cmd-options/time-format)
+- [--tls](/cli/cmd-options/tls)
+
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options/tls-server-name)
 
 - [--workflow-id](/cli/cmd-options/workflow-id)

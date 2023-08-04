@@ -13,3 +13,5 @@ tags:
 ---
 
 Environment (or 'env') commands allow the user to configure the properties for the environment in use.
+
+Use `env <env name>` alongside other commands to point the CLI at a different Temporal Server instance.

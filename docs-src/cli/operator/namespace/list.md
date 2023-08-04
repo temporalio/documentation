@@ -18,14 +18,31 @@ The `temporal operator namespace list` command lists all [Namespaces](/namespace
 
 Use the options listed below to change the command's output.
 
-- [--fields](/cli/cmd-options/fields)
 
-- [--limit](/cli/cmd-options/limit)
+- [--address](/cli/cmd-options/address)
 
-- [--no-pager](/cli/cmd-options/no-pager)
+- [--codec-auth](/cli/cmd-options/codec-auth)
 
-- [--output](/cli/cmd-options/output)
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
 
-- [--pager](/cli/cmd-options/pager)
+- [--color](/cli/cmd-options/color)
 
-- [--time-format](/cli/cmd-options/time-format)
+- [--context-timeout](/cli/cmd-options/context-timeout)
+
+- [--env](/cli/cmd-options/env)
+
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
+
+- [--namespace](/cli/cmd-options/namespace)
+
+- [--tls](/cli/cmd-options/tls)
+
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options/tls-server-name)

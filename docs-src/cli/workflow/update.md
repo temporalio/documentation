@@ -1,19 +1,17 @@
 ---
-id: signal
-title: temporal workflow signal
-sidebar_label: signal
-description: Signal Workflow Execution by Id or List Filter.
+id: update
+title: temporal workflow update
+sidebar_label: update
+description: Updates a running workflow synchronously.
 tags:
   - cli reference
   - temporal cli
   - workflow
   - command-line-interface-cli
-  - workflow signal
-  - signals-feature
-  - signals
+  - workflow execution
 ---
 
-The `temporal workflow signal` command is used to [Signal](/concepts/what-is-a-signal) a [Workflow Execution](/concepts/what-is-a-workflow-execution) by [ID](/concepts/what-is-a-workflow-id) or [List Filter](/concepts/what-is-a-list-filter).
+The `temporal workflow update` command synchronously updates a running [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 Use the options listed below to change the command's behavior.
 
@@ -29,19 +27,15 @@ Use the options listed below to change the command's behavior.
 
 - [--env](/cli/cmd-options/env)
 
+- [--first-execution-run-id](/cli/cmd-options/first-execution-run-id)
+
 - [--grpc-meta](/cli/cmd-options/grpc-meta)
 
 - [--input](/cli/cmd-options/input)
 
-- [--input-file](/cli/cmd-options/input-file)
-
 - [--name](/cli/cmd-options/name)
 
 - [--namespace](/cli/cmd-options/namespace)
-
-- [--query](/cli/cmd-options/query)
-
-- [--reason](/cli/cmd-options/reason)
 
 - [--run-id](/cli/cmd-options/run-id)
 
@@ -59,4 +53,3 @@ Use the options listed below to change the command's behavior.
 
 - [--workflow-id](/cli/cmd-options/workflow-id)
 
-- [--yes](/cli/cmd-options/yes)

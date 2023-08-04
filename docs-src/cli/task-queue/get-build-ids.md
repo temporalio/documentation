@@ -1,22 +1,16 @@
 ---
-id: list
-title: temporal operator search-attribute list
-sidebar_label: list
-description: Lists all Search Attributes that can be used in list Workflow Queries.
+id: get-build-ids
+title: temporal task-queue get-build-ids
+sidebar_label: get-build-ids
+description: Fetch the sets of worker Build ID versions on the Task Queue
 tags:
   - cli reference
   - temporal cli
-  - operator
+  - task queue
   - command-line-interface-cli
-  - search attribute
-  - search attribute list
 ---
 
-The `temporal operator search-attribute list` command displays a list of all [Search Attributes](/concepts/what-is-a-search-attribute) that can be used in [Queries](/concepts/what-is-a-query).
-
-`temporal workflow list --query`.
-
-Use the options listed below to change the command's behavior.
+Fetch the sets of compatible build IDs associated with a Task Queue and associated information.
 
 - [--address](/cli/cmd-options/address)
 
@@ -32,9 +26,11 @@ Use the options listed below to change the command's behavior.
 
 - [--grpc-meta](/cli/cmd-options/grpc-meta)
 
+- [--max-sets](/cli/cmd-options/max-sets)
+
 - [--namespace](/cli/cmd-options/namespace)
 
-- [--output](/cli/cmd-options/output)
+- [--task-queue](/cli/cmd-options/task-queue)
 
 - [--tls](/cli/cmd-options/tls)
 

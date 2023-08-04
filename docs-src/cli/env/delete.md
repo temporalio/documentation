@@ -13,11 +13,13 @@ tags:
 
 The `temporal env delete` command deletes a given environment or environmental property.
 
-Deleting a given environment (such as 'local') and its saved values is achieved by passing a valid [Namespace](/concepts/what-is-a-namespace) name.
+`temporal env delete [environment or property]`
+
+Pass a valid [Namespace](/concepts/what-is-a-namespace) into the command to delete an environment and its saved values.
 
 `temporal env delete local`
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
 - [--fields](/cli/cmd-options/fields)
 

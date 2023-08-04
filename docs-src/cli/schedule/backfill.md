@@ -13,7 +13,7 @@ tags:
 ---
 
 The `temporal schedule backfill` command executes Actions ahead of their specified time range.
-Backfilling can be used to fill in [Workflow Runs](/concepts/what-is-a-run-id) from a time period when the Schedule was paused, or from before the Schedule was created.
+Backfilling fills in [Workflow Runs](/concepts/what-is-a-run-id) from a time period when the Schedule was paused, or from before the Schedule was created.
 
 Schedule backfills require a valid Schedule ID, along with the time in which to run the Schedule and a change to the overlap policy.
 
@@ -26,22 +26,39 @@ temporal schedule backfill --schedule-id 'your-schedule-id' \
 
 Use the options provided below to change this command's behavior.
 
+- [--address](/cli/cmd-options/address)
+
+- [--codec-auth](/cli/cmd-options/codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
+
+- [--color](/cli/cmd-options/color)
+
+- [--context-timeout](/cli/cmd-options/context-timeout)
+
 - [--end-time](/cli/cmd-options/end-time)
 
-- [--fields](/cli/cmd-options/fields)
+- [--env](/cli/cmd-options/env)
 
-- [--limit](/cli/cmd-options/limit)
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
 
-- [--no-pager](/cli/cmd-options/no-pager)
-
-- [--output](/cli/cmd-options/output)
+- [--namespace](/cli/cmd-options/namespace)
 
 - [--overlap-policy](/cli/cmd-options/overlap-policy)
-
-- [--pager](/cli/cmd-options/pager)
 
 - [--schedule-id](/cli/cmd-options/schedule-id)
 
 - [--start-time](/cli/cmd-options/start-time)
 
-- [--time-format](/cli/cmd-options/time-format)
+- [--tls](/cli/cmd-options/tls)
+
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options/tls-server-name)
+

@@ -1,22 +1,17 @@
 ---
 id: list
-title: temporal operator search-attribute list
+title: temporal env list
 sidebar_label: list
-description: Lists all Search Attributes that can be used in list Workflow Queries.
+description: Print all environments.
 tags:
   - cli reference
   - temporal cli
-  - operator
+  - environment
+  - env list
   - command-line-interface-cli
-  - search attribute
-  - search attribute list
 ---
 
-The `temporal operator search-attribute list` command displays a list of all [Search Attributes](/concepts/what-is-a-search-attribute) that can be used in [Queries](/concepts/what-is-a-query).
-
-`temporal workflow list --query`.
-
-Use the options listed below to change the command's behavior.
+List all environments.
 
 - [--address](/cli/cmd-options/address)
 

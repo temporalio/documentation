@@ -12,11 +12,14 @@ tags:
 ---
 
 The `temporal env set` command sets the value for an environmental property.
+Property names match CLI option names.
+
+`temporal env set prod.tls-cert-path /home/my-user/certs/cluster.cert`
 
 Properties can be set for the entire system, such as the frontend address:
 `temporal env set local.address 127.0.0.1:7233`
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
 - [--fields](/cli/cmd-options/fields)
 

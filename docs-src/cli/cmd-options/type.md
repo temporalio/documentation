@@ -11,4 +11,5 @@ tags:
   - search attribute
 ---
 
-Search attribute type: [Text Keyword Int Double Bool Datetime KeywordList].
+Search attribute type.
+Options are: Text, Keyword, Int, Double, Bool, Datetime, KeywordList.
