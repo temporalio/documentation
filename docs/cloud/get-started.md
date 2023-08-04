@@ -9,19 +9,15 @@ keywords:
 - certificates
 - explanation
 - introduction
-- temporal cloud
-- explanation
-- certificates
 - namespaces
+- temporal cloud
 - users
 tags:
 - certificates
 - explanation
 - introduction
-- temporal-cloud
-- explanation
-- certificates
 - namespaces
+- temporal-cloud
 - users
 ---
 

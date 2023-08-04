@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday August 04 2023 11:48:36 AM -0500
+Last assembled: Friday August 04 2023 14:22:54 PM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -986,20 +986,8 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate-requirements
 
-go/selectors -> /dev-guide/go/features#selectors
-
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-cloud/users-invite -> /cloud/account-setup/users#invite-users
-
-cloud/users-update-roles -> #update-roles
-
-cloud/users-update-permissions -> #update-permissions
-
-cloud/users-delete -> #delete-users
-
-cloud/users-account-level-roles -> #account-level-roles
 
 
