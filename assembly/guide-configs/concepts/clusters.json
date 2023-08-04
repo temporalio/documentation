@@ -3,7 +3,7 @@
   "id": "clusters",
   "slug": "/clusters",
   "file_dir": "concepts",
-  "title": "What is a Cluster?",
+  "title": "What is a Temporal Cluster?",
   "sidebar_label": "Clusters",
   "sidebar_position": 8,
   "description": "This guide provides a comprehensive overview of Temporal Clusters.",
