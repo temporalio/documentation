@@ -2,6 +2,9 @@
 id: how-to-send-a-signal-with-start-in-php
 title: How to send Signal-With-Start in PHP
 sidebar_label: Signal-With-Start
+description: To send a Signal-With-Start to a Workflow, use WorkflowClient->startWithSignal.
+tags:
+ - signal
 ---
 
 In cases where you may not know if a Workflow is running, and want to send a Signal to it, use `startwithSignal`.

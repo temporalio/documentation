@@ -2,6 +2,10 @@
 id: how-to-set-a-cron-schedule-in-php
 title: How to set a CRON schedule in PHP
 sidebar_label: Activity Execution
+description: Set a CRON schedule with CronSchedule().
+tags:
+ - cron
+ - workflow options
 ---
 
 Set your Cron Schedule with `CronSchedule('* * * * *')`.

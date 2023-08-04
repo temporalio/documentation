@@ -4,7 +4,11 @@ title: How to set RegisterActivityOptions in Go
 sidebar_label: RegisterActivityOptions
 description: Create an instance of `RegisterOptions` from the `go.temporal.io/sdk/activity` package and pass it to the `RegisterActivityWithOptions` call when registering the Activity Type with the Worker.
 tags:
-  - developer-guide
+  - developer-guide-doc-type
+  - go sdk
+  - how-to-doc-type
+  - activity options
+  - activity
 ---
 
 Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/activity#RegisterOptions) from the `go.temporal.io/sdk/activity` package and pass it to the [`RegisterActivityWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/worker#ActivityRegistry) call when registering the Activity Type with the Worker.

@@ -3,7 +3,10 @@ id: code-samples-go
 title: Code samples
 sidebar_label: Code samples
 tags:
-  - go-sdk
+  - go sdk
+  - code samples
+  - reference-doc-type
+  - developer-guide-doc-type
 ---
 
 - [Go Samples repo](https://github.com/temporalio/samples-go#samples-directory)

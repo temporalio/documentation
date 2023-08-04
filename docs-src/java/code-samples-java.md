@@ -2,6 +2,10 @@
 id: code-samples-java
 title: Code samples
 sidebar_label: Code samples
+description: Code samples for the Temporal Java SDK
+tags:
+    - java
+    - code samples
 ---
 
 - [Java samples library](https://github.com/temporalio/samples-java)

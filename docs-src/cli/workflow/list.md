@@ -5,6 +5,10 @@ sidebar_label: list
 description: List Workflow Executions based on a Query.
 tags:
   - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow list
 ---
 
 The `temporal workflow list` command provides a list of [Workflow Executions](/concepts/what-is-a-workflow-execution) that meet the criteria of a given [Query](/concepts/what-is-a-query).

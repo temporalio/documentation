@@ -3,6 +3,10 @@ id: workflows
 title: Workflows in Java
 sidebar_label: Workflows
 description: The core abstraction of the Temporal solution is a fault-oblivious stateful Workflow.
+tags:
+ - java
+ - workflow
+ - child workflow
 ---
 
 import RelatedReadList from '../components/RelatedReadList.js'

@@ -4,7 +4,10 @@ title: How develop Workflow logic
 description: Workflow logic is constrained by deterministic execution requirements.
 sidebar_label: Workflow logic requirements
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - workflows
+  - deterministic
+  - go sdk
 ---
 
 Workflow logic is constrained by [deterministic execution requirements](/concepts/what-is-a-workflow-definition#deterministic-constraints).

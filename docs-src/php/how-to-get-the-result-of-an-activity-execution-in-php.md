@@ -2,6 +2,10 @@
 id: how-to-get-the-result-of-an-activity-execution-in-php
 title: How to get the result of an Activity Execution in PHP
 sidebar_label: Activity Execution
+description: How to get the result of an Activity Execution in PHP
+tags:
+    - php
+    - activity execution
 ---
 
 `Workflow::newActivityStub`returns a client-side stub an implements an Activity interface. The client-side stub can be used within the Workflow code. It takes the Activity's type and`ActivityOptions` as arguments.

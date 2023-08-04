@@ -7,12 +7,12 @@ description: This guide provides a comprehensive overview of Temporal Activities
 slug: /activities
 toc_max_heading_level: 4
 keywords:
-- term
 - explanation
+- term
 - timeouts
 tags:
-- term
 - explanation
+- term
 - timeouts
 ---
 

@@ -4,8 +4,12 @@ title: Go StartWorkflowOptions reference
 sidebar_label: Workflow Options reference
 description: Create an instance of `StartWorkflowOptions` from the `go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.
 tags:
-  - developer-guide
-  - options
+  - developer-guide-doc-type
+  - workflow options
+  - go sdk
+  - workflow execution
+  - workflows
+  - reference-doc-type
 ---
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.

@@ -1,12 +1,12 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday August 02 2023 11:52:17 AM -0700
+Last assembled: Thursday August 03 2023 15:16:42 PM -0400
 
 Assembly Workflow Id: docs-full-assembly-dail-macbook
 
 93 guide configurations found.
 
-1503 information nodes found.
+1504 information nodes found.
 
 1268 information nodes are attached to guides.
 
@@ -702,6 +702,8 @@ cloud/what-is-audit-logging -> /cloud/how-to-manage-audit-logging#
 
 cloud/namespaces-create -> /cloud/account-setup/namespaces#create-a-namespace
 
+cloud/users-invite -> /cloud/account-setup/users#invite-users
+
 go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
 
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
@@ -718,7 +720,15 @@ cloud/support-create-ticket -> /cloud/introduction/support#support-ticket
 
 concepts/what-is-a-cloud-namespace-id -> /cloud/account-setup/namespaces#temporal-cloud-namespace-id
 
-cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud -> /cloud/account-setup/users#account-level-roles
+cloud/users-account-level-roles -> #account-level-roles
+
+cloud/users-namespace-level-permissions -> #namespace-level-permissions
+
+cloud/users-update-roles -> #update-roles
+
+cloud/users-update-permissions -> #update-permissions
+
+cloud/users-delete -> #delete-users
 
 cloud/what-is-an-action -> /cloud/introduction/pricing#action
 
@@ -976,7 +986,7 @@ go/logging -> /dev-guide/go/observability#logging
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
-go/selectors -> /dev-guide/go/features#selectors
+cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate-requirements
 
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
