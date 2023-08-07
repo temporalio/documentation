@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday August 07 2023 10:04:21 AM -0500
+Last assembled: Monday August 07 2023 12:27:57 PM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -734,11 +734,53 @@ cloud/what-is-an-action -> /cloud/introduction/pricing#action
 
 concepts/what-is-a-reset -> /workflows#reset
 
+concepts/what-is-the-temporal-web-ui -> /web-ui#
+
+cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate-requirements
+
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
-cli/cmd-options/fields -> /cli/cmd-options#fields
+cli/cmd-options/address -> /cli/cmd-options#address
+
+cli/cmd-options/codec-auth -> /cli/cmd-options#codec-auth
+
+cli/cmd-options/codec-endpoint -> /cli/cmd-options#codec-endpoint
+
+cli/cmd-options/color -> /cli/cmd-options#color
+
+cli/cmd-options/context-timeout -> /cli/cmd-options#context-timeout
+
+cli/cmd-options/env -> /cli/cmd-options#env
+
+cli/cmd-options/grpc-meta -> /cli/cmd-options#grpc-meta
 
 cli/cmd-options/identity -> /cli/cmd-options#identity
+
+cli/cmd-options/namespace -> /cli/cmd-options#namespace
+
+cli/cmd-options/result -> /cli/cmd-options#result
+
+cli/cmd-options/run-id -> /cli/cmd-options#run-id
+
+cli/cmd-options/tls -> /cli/cmd-options#tls
+
+cli/cmd-options/tls-ca-path -> /cli/cmd-options#tls-ca-path
+
+cli/cmd-options/tls-cert-path -> /cli/cmd-options#tls-cert-path
+
+cli/cmd-options/tls-disable-host-verification -> /cli/cmd-options#tls-disable-host-verification
+
+cli/cmd-options/tls-key-path -> /cli/cmd-options#tls-key-path
+
+cli/cmd-options/tls-server-name -> /cli/cmd-options#tls-server-name
+
+cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
+
+cli/cmd-options/detail -> /cli/cmd-options#detail
+
+cli/cmd-options/reason -> /cli/cmd-options#reason
+
+cli/cmd-options/fields -> /cli/cmd-options#fields
 
 cli/cmd-options/limit -> /cli/cmd-options#limit
 
@@ -748,23 +790,11 @@ cli/cmd-options/output -> /cli/cmd-options#output
 
 cli/cmd-options/pager -> /cli/cmd-options#pager
 
-cli/cmd-options/result -> /cli/cmd-options#result
-
-cli/cmd-options/run-id -> /cli/cmd-options#run-id
-
 cli/cmd-options/time-format -> /cli/cmd-options#time-format
-
-cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
-
-cli/cmd-options/detail -> /cli/cmd-options#detail
-
-cli/cmd-options/reason -> /cli/cmd-options#reason
 
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
 cli/workflow/list -> /cli/workflow#list
-
-concepts/what-is-the-temporal-web-ui -> /web-ui#
 
 cli/cmd-options/name -> /cli/cmd-options#name
 
@@ -799,6 +829,8 @@ cli/cmd-options/yes -> /cli/cmd-options#yes
 cli/cmd-options/namespace-id -> /cli/cmd-options#namespace-id
 
 cli/cmd-options/promote-global -> /cli/cmd-options#promote-global
+
+cli/cmd-options/verbose -> /cli/cmd-options#verbose
 
 cli/cmd-options/type -> /cli/cmd-options#type
 
@@ -858,8 +890,6 @@ concepts/what-is-standard-visibility -> /visibility#standard-visibility
 
 cli/cmd-options/unpause -> /cli/cmd-options#unpause
 
-cli/cmd-options/config -> /cli/cmd-options#config
-
 cli/cmd-options/db-filename -> /cli/cmd-options#db-filename
 
 cli/cmd-options/dynamic-config-value -> /cli/cmd-options#dynamic-config-value
@@ -873,8 +903,6 @@ cli/cmd-options/log-format -> /cli/cmd-options#log-format
 cli/cmd-options/log-level -> /cli/cmd-options#log-level
 
 cli/cmd-options/metrics-port -> /cli/cmd-options#metrics-port
-
-cli/cmd-options/namespace -> /cli/cmd-options#namespace
 
 cli/cmd-options/port -> /cli/cmd-options#port
 
@@ -919,8 +947,6 @@ cli/cmd-options/skip-base-is-not-current -> /cli/cmd-options#skip-base-is-not-cu
 cli/cmd-options/skip-current-open -> /cli/cmd-options#skip-current-open
 
 cli/cmd-options/follow -> /cli/cmd-options#follow
-
-cli/cmd-options/output-filename -> /cli/cmd-options#output-filename
 
 cli/cmd-options/concurrency -> /cli/cmd-options#concurrency
 
@@ -984,10 +1010,12 @@ go/logging -> /dev-guide/go/observability#logging
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
-cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate-requirements
-
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+cli/cmd-options/config -> /cli/cmd-options#config
+
+cli/cmd-options/output-filename -> /cli/cmd-options#output-filename
 
 
