@@ -1103,7 +1103,7 @@
     },
     {
       "source": "/server-security",
-      "destination": "/server/security"
+      "destination": "/security"
     },
     {
       "source": "/server-versions-and-dependencies",
@@ -1518,10 +1518,6 @@
       "destination": "/workflows#workflow-task-timeout"
     },
     {
-      "source": "/concepts/what-is-a-cloud-namespace-name",
-      "destination": "/cloud/account-setup/namespaces"
-    },
-    {
       "source": "/concepts/what-is-a-workflow-type",
       "destination": "/workflows#workflow-type"
     },
@@ -1774,8 +1770,20 @@
       "destination": "/cloud"
     },
     {
+      "source": "/cloud/account-setup/certificates:path*",
+      "destination": "/cloud/certificates:path*"
+    },
+    {
+      "source": "/cloud/account-setup/namespaces:path*",
+      "destination": "/cloud/namespaces:path*"
+    },
+    {
+      "source": "/cloud/account-setup/users:path*",
+      "destination": "/cloud/users:path*"
+    },
+    {
       "source": "/kb/cloud/how-to-manage-certificates-in-temporal-cloud:path*",
-      "destination": "/cloud/account-setup/certificates:path*"
+      "destination": "/cloud/certificates:path*"
     },
     {
       "source": "/server/production-deployment/#scaling-and-metrics",
@@ -1791,23 +1799,31 @@
     },
     {
       "source": "/cloud/how-to-manage-namespaces-in-temporal-cloud:path*",
-      "destination": "/cloud/account-setup/namespaces:path*"
+      "destination": "/cloud/namespaces:path*"
     },
     {
       "source": "/cloud/how-to-manage-certificates-in-temporal-cloud:path*",
-      "destination": "/cloud/account-setup/certificates:path*"
+      "destination": "/cloud/certificates:path*"
     },
     {
       "source": "/cloud/how-to-monitor-temporal-cloud-metrics",
       "destination": "/cloud/metrics"
     },
     {
-      "source": "/cloud/pricing:path*",
-      "destination": "cloud/introduction/pricing:path*"
+      "source": "/cloud/introduction/security-cloud:path*",
+      "destination": "cloud/security:path*"
+    },
+    {
+      "source": "/cloud/introduction/operating-envelope:path*",
+      "destination": "cloud/operating-envelope:path*"
+    },
+    {
+      "source": "/cloud/introduction/support:path*",
+      "destination": "/cloud/support:path*"
     },
     {
       "source": "/cloud/how-to-create-a-ticket-for-temporal-support",
-      "destination": "/cloud/introduction/support#support-ticket"
+      "destination": "/cloud/support#support-ticket"
     },
     {
       "source": "/cloud/how-to-get-started-with-temporal-cloud",
@@ -1819,7 +1835,7 @@
     },
     {
       "source": "/kb/cloud-namespace-naming-considerations",
-      "destination": "/cloud/account-setup/namespaces#best-practices"
+      "destination": "/cloud/namespaces#best-practices"
     },
     {
       "source": "/typescript/versioning",

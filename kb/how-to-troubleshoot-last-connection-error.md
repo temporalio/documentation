@@ -88,4 +88,4 @@ Add reminders to your calendar to issue new CA certificates well before the expi
 The preceding steps should help you troubleshoot the `failed reaching server: last connection error` error caused by an expired TLS certificate.
 
 If this issue persists, verify that the Client you are using to connect to the server is using the correct TLS certification and that the Client requests reach the server after the roles are fully initialized.
-If you still need help, [create a support ticket](/cloud/introduction/support#support-ticket).
+If you still need help, [create a support ticket](/cloud/support#support-ticket).
