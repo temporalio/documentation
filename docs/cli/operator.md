@@ -420,7 +420,6 @@ Use the options listed below to change the command's behavior.
 
 - <a class="tdlp" href="/cli/cmd-options#yes">--yes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  yes</span><br /><br /><span class="tdlppd">Confirm all prompts.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#yes">Learn more</a></span></span></a>
 
-
 ### describe
 
 The `temporal operator namespace describe` command provides a description of a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a>.
@@ -460,7 +459,6 @@ Use the options listed below to change the command's output.
 
 - <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls-server-name</span><br /><br /><span class="tdlppd">Overrides the target TLS server name.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
-
 ### list
 
 The `temporal operator namespace list` command lists all [Namespaces](/namespaces) on the <a class="tdlp" href="/clusters#frontend-service">Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Frontend Service?</span><br /><br /><span class="tdlppd">The Frontend Service is a stateless gateway service that exposes a strongly typed Proto API. The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#frontend-service">Learn more</a></span></span></a>.
@@ -468,7 +466,6 @@ The `temporal operator namespace list` command lists all [Namespaces](/namespace
 `temporal operator namespace list`
 
 Use the options listed below to change the command's output.
-
 
 - <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal address</span><br /><br /><span class="tdlppd">The host and port for the Temporal Frontend Service.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
@@ -612,7 +609,6 @@ Use the options listed below to change the command's behavior.
 - <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls-server-name</span><br /><br /><span class="tdlppd">Overrides the target TLS server name.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
 - <a class="tdlp" href="/cli/cmd-options#type">--type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal type</span><br /><br /><span class="tdlppd">Search attribute type.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#type">Learn more</a></span></span></a>
-
 
 ### list
 

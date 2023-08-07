@@ -394,7 +394,7 @@ Flag to indicate whether a Namespace is a Global Namespace.
 
 ## grpc-meta
 
-Contains gRPC metadata to send with requests (format: key=value). 
+Contains gRPC metadata to send with requests (format: key=value).
 Values must be in a valid JSON format.
 
 ## headless
@@ -412,7 +412,7 @@ Optionally specify history archival URI (cannot be changed after first time arch
 
 ## id-reuse-policy
 
-Allows the same Workflow Id to be used in a new Workflow Execution. 
+Allows the same Workflow Id to be used in a new Workflow Execution.
 Options: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning.
 
 ## identity
@@ -563,9 +563,10 @@ Recommended to use this over -o json for scripting.
 
 Specify how you'd like to filter the reachability of Build IDs.
 Valid choices are:
-    - `open`: reachable by one or more open Workflows.
-    - `closed`: reachable by one or more closed Workflows.
-    - `existing`: reachable by either open or closed Workflows.
+
+- `open`: reachable by one or more open Workflows.
+- `closed`: reachable by one or more closed Workflows.
+- `existing`: reachable by either open or closed Workflows.
 
 Build IDs that are reachable by new Workflows are always reported.
 
@@ -710,7 +711,7 @@ Print applied Namespace changes.
 
 ## visibility-archival-state
 
-Visibility archival state. 
+Visibility archival state.
 Valid values: "disabled", "enabled".
 
 ## visibility-uri

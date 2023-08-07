@@ -98,7 +98,6 @@ Use the options provided below to change this command's behavior.
 
 - <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls-server-name</span><br /><br /><span class="tdlppd">Overrides the target TLS server name.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
-
 ## create
 
 The `temporal schedule create` command creates a new <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule?</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a>.
@@ -431,7 +430,6 @@ Use the options provided below to change this command's behavior.
 - <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls-key-path</span><br /><br /><span class="tdlppd">Path to private certificate key.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
 - <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls-server-name</span><br /><br /><span class="tdlppd">Overrides the target TLS server name.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
-
 
 ## update
 
