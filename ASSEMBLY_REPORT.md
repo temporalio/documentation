@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday August 03 2023 15:16:42 PM -0400
+Last assembled: Monday August 07 2023 10:09:56 AM -0500
 
-Assembly Workflow Id: docs-full-assembly-dail-macbook
+Assembly Workflow Id: docs-full-assembly
 
 93 guide configurations found.
 
-1504 information nodes found.
+1507 information nodes found.
 
-1268 information nodes are attached to guides.
+1271 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -734,10 +734,6 @@ cloud/what-is-an-action -> /cloud/introduction/pricing#action
 
 concepts/what-is-a-reset -> /workflows#reset
 
-concepts/what-is-the-temporal-web-ui -> /web-ui#
-
-cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate-requirements
-
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
 cli/cmd-options/fields -> /cli/cmd-options#fields
@@ -767,6 +763,8 @@ cli/cmd-options/reason -> /cli/cmd-options#reason
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
 cli/workflow/list -> /cli/workflow#list
+
+concepts/what-is-the-temporal-web-ui -> /web-ui#
 
 cli/cmd-options/name -> /cli/cmd-options#name
 
