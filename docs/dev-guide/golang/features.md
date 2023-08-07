@@ -7,7 +7,6 @@ description: The Features section of the Temporal Developer's guide provides bas
 slug: /dev-guide/go/features
 toc_max_heading_level: 4
 keywords:
-- action
 - activity
 - activity execution
 - activity options
@@ -16,12 +15,15 @@ keywords:
 - async
 - backfill
 - child workflows
+- client
 - code sample
 - concurrency control
 - continue-as-new
+- create
 - cron
 - data converter
-- describe - go sdk - how-to-doc-type - developer-guide-doc-type - schedule - schedule describe
+- delete
+- describe
 - developer-guide-doc-type
 - error handling
 - events
@@ -32,10 +34,12 @@ keywords:
 - heartbeat
 - how-to-doc-type
 - introduction-doc-type
+- list
 - mutability
 - namespace
 - namespace management
 - namespace registration
+- pause
 - payload conversion
 - payload converter
 - query
@@ -44,15 +48,9 @@ keywords:
 - retry and timeout policies
 - retry-and-timeout-policies
 - schedule
-- schedule create
-- schedule delete
-- schedule list
-- schedule pause
-- schedule trigger
-- schedule unpause
-- schedule update
 - schedules
 - selectors
+- session
 - sessions
 - side effects
 - signals
@@ -60,15 +58,17 @@ keywords:
 - task routing
 - timeouts
 - timers
-- updates
-- validation
+- trigger
+- unpause
+- update
+- worker
 - workers
+- workflow
 - workflow execution
 - workflow options
 - workflow-execution
 - workflows
 tags:
-- action
 - activity
 - activity-execution
 - activity-options
@@ -77,12 +77,15 @@ tags:
 - async
 - backfill
 - child-workflows
+- client
 - code-sample
 - concurrency-control
 - continue-as-new
+- create
 - cron
 - data-converter
-- describe---go-sdk---how-to-doc-type---developer-guide-doc-type---schedule---schedule-describe
+- delete
+- describe
 - developer-guide-doc-type
 - error-handling
 - events
@@ -93,10 +96,12 @@ tags:
 - heartbeat
 - how-to-doc-type
 - introduction-doc-type
+- list
 - mutability
 - namespace
 - namespace-management
 - namespace-registration
+- pause
 - payload-conversion
 - payload-converter
 - query
@@ -105,15 +110,9 @@ tags:
 - retry-and-timeout-policies
 - retry-and-timeout-policies
 - schedule
-- schedule-create
-- schedule-delete
-- schedule-list
-- schedule-pause
-- schedule-trigger
-- schedule-unpause
-- schedule-update
 - schedules
 - selectors
+- session
 - sessions
 - side-effects
 - signals
@@ -121,9 +120,12 @@ tags:
 - task-routing
 - timeouts
 - timers
-- updates
-- validation
+- trigger
+- unpause
+- update
+- worker
 - workers
+- workflow
 - workflow-execution
 - workflow-options
 - workflow-execution
