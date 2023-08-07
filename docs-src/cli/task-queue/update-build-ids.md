@@ -10,5 +10,5 @@ tags:
   - command-line-interface-cli
 ---
 
-Provides various commands for adding or changing the sets of compatible build IDs associated with a Task Queue. 
+Provides various commands for adding or changing the sets of compatible build IDs associated with a Task Queue.
 See the help text provided for each sub-command for more.

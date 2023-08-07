@@ -14,6 +14,8 @@ keywords:
 - archival
 - backfill
 - batch job
+- build
+- build id
 - ca-certificate
 - calendar
 - certificate key
@@ -120,6 +122,8 @@ tags:
 - archival
 - backfill
 - batch-job
+- build
+- build-id
 - ca-certificate
 - calendar
 - certificate-key
@@ -238,7 +242,17 @@ The host and port (formatted as host:port) for the Temporal Frontend Service.
 ## archived
 
 List archived Workflow Executions.
+
+:::note
+
 Currently an experimental feature.
+
+:::
+
+## build-id
+
+Identifies the Build to retrieve reachability information for.
+May be specified multiple times.
 
 ## calendar
 
@@ -262,19 +276,15 @@ Endpoint for a remote Codec Server.
 
 ## color
 
-when to use color: auto, always, never. (default: auto)
+When to use color: auto, always, never. (default: auto)
 
 ## concurrency
 
 Request concurrency.
 
-## config
-
-Path to config directory.
-
 ## context-timeout
 
-An optional timeout for the context of an RPC call (in seconds). (default: 5)
+An optional timeout for the context of an RPC call (in seconds).
 
 ## cron
 
@@ -286,19 +296,24 @@ Optional Cron Schedule for the Workflow.
 │ │ │ ┌───────────── month (1 - 12)
 │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
 │ │ │ │ │
+* * * * *
 ```
 
 ## data
 
 Namespace data in a key=value format.
 
+Values must be in JSON format.
+
 ## db-filename
 
-File in which to persist Temporal state (by default, Workflows are lost when the process dies).
+File in which to persist Temporal state.
+By default, Workflows are lost when the process dies.
 
 ## depth
 
-Number of Child Workflows to expand, -1 to expand all Child Workflows.
+The number of Child Workflows to fetch and expand.
+Use `-1` to fetch Child Workflows at any depth.
 
 ## description
 
@@ -306,7 +321,7 @@ Namespace description.
 
 ## detail
 
-Detail to fail the Activity.
+A provided reason for failing an Activity.
 
 ## dry-run
 
@@ -314,7 +329,8 @@ Simulate reset without resetting any Workflow Executions.
 
 ## dynamic-config-value
 
-Dynamic config value, as KEY=JSON_VALUE (string values need quotes).
+Dynamic config value, formatted as `KEY=JSON_VALUE`.
+String values require quotations.
 
 ## email
 
@@ -330,7 +346,7 @@ Backfill end time.
 
 ## env
 
-Name of the environment to read environmental variables from. (default: default)
+Name of the environment to read environmental variables from.
 
 ## event-id
 
@@ -343,17 +359,26 @@ Input file that specifies Workflow Executions to exclude from resetting.
 
 ## execution-timeout
 
-Timeout (in seconds) for a WorkflowExecution, including retries and continue-as-new tasks.
+Timeout (in seconds) for a WorkflowExecution, including retries and `ContinueAsNew`tasks.
+
+## existing-compatible-build-id
+
+A Build Id that already exists in the version sets known by the Task Queue.
+New Build Ids are stored in the version set containing this Id, making them compatible with the versions in that set.
 
 ## fields
 
 Customize fields to print.
 Set to 'long' to automatically print more of main fields.
 
+## first-execution-run-id
+
+Run update on the last execution in the chain that started with this Run Id.
+
 ## fold
 
 Statuses for which Child Workflows will be folded in (this will reduce the number of information fetched and displayed).
-Case-insensitive and ignored if --no-fold supplied.
+Case-insensitive and ignored if `--no-fold` is supplied.
 
 ## follow
 
@@ -365,11 +390,12 @@ Frontend address of the remote Cluster.
 
 ## global
 
-Flag to indicate whether Namespace is a Global Namespace.
+Flag to indicate whether a Namespace is a Global Namespace.
 
 ## grpc-meta
 
-Contains gRPC metadata to send with requests (format: key=value). Values must be in a valid JSON format.
+Contains gRPC metadata to send with requests (format: key=value). 
+Values must be in a valid JSON format.
 
 ## headless
 
@@ -377,19 +403,21 @@ Disable the Web UI.
 
 ## history-archival-state
 
-Flag to set history archival state, valid values are "disabled" and "enabled".
+Sets the history archival state.
+Valid values are "disabled" and "enabled".
 
 ## history-uri
 
 Optionally specify history archival URI (cannot be changed after first time archival is enabled).
 
+## id-reuse-policy
+
+Allows the same Workflow Id to be used in a new Workflow Execution. 
+Options: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning.
+
 ## identity
 
 Specify operator's identity.
-
-## id-reuse-policy
-
-Allows the same Workflow Id to be used in a new Workflow Execution (AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning).
 
 ## input-file
 
@@ -404,7 +432,7 @@ Each goroutine processes one line for every second.
 
 ## input-separator
 
-Separator for the input file. The default is a tab ('\t'). (default: '\t')
+Separator for the input file. The default is a tab (`\t`).
 
 ## input
 
@@ -413,7 +441,7 @@ Pass "null" for null values.
 
 ## interval
 
-Interval duration, e.g. 90m, or 90m/13m to include phase offset.
+Interval duration, such as 90m, or 90m/13m to include phase offset.
 
 ## ip
 
@@ -431,7 +459,6 @@ Batch Job Id.
 ## limit
 
 Number of items to print on a page.
-By default, `--limit` is set to 0, allowing all results to print to one page.
 
 ## log-format
 
@@ -460,7 +487,8 @@ Use valid JSON formats for value.
 
 ## metrics-port
 
-Port for /metrics (default: 0).
+Port for `/metrics`.
+Disabled by default.
 
 ## name
 
@@ -468,7 +496,7 @@ Frontend address of the remote Cluster.
 
 ## namespace
 
-Specify namespaces that should be pre-created (namespace "default" is always created).
+Identifies a Namespace in the Temporal Workflow.
 
 ## namespace-id
 
@@ -485,31 +513,29 @@ Disables the interactive pager.
 
 ## non-deterministic
 
-Reset Workflow Execution only if its last Event is WorkflowTaskFailed with a nondeterministic error.
+Reset Workflow Execution only if its last Event is `WorkflowTaskFailed` with a nondeterministic error.
 
 ## notes
 
 Initial value of notes field.
 
-## output-filename
-
-Serializes Event History to a file.
-
 ## output
 
-format output as: table, json, card.
+Format output as: table, json, card.
 
 ## overlap-policy
 
-Overlap policy (options: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll).
+Overlap policy.
+Options: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll.
 
 ## pager
 
-Sets the pager for Temporal CLI to use (options: less, more, favoritePager).
+Sets the pager for Temporal CLI to use.
+Options are less, more, and favoritePager.
 
 ## pause-on-failure
 
-Pause schedule after any workflow failure.
+Pause schedule after any Workflow failure.
 
 ## pause
 
@@ -521,20 +547,32 @@ Port for the frontend gRPC service.
 
 ## promote-global
 
-Promote local namespace to global namespace.
+Promote local Namespace to global Namespace.
 
 ## query
 
-Visibility Query of Search Attributes describing the Workflow Executions to reset.
-For details, see the <a class="tdlp" href="/cli/workflow#list">temporal workflow list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal workflow list</span><br /><br /><span class="tdlppd">List Workflow Executions based on a Query.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/workflow#list">Learn more</a></span></span></a> command.
+Provides a SQL-like Query of Search Attributes to return Workflow Executions to reset.
+For more information, refer to the <a class="tdlp" href="/cli/workflow#list">`temporal workflow list` command<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal workflow list</span><br /><br /><span class="tdlppd">List Workflow Executions based on a Query.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/workflow#list">Learn more</a></span></span></a>.
 
 ## raw
 
-Print raw data as json (prefer this over -o json for scripting).
+Print raw data in a JSON format.
+Recommended to use this over -o json for scripting.
+
+## reachability-type
+
+Specify how you'd like to filter the reachability of Build IDs.
+Valid choices are:
+    - `open`: reachable by one or more open Workflows.
+    - `closed`: reachable by one or more closed Workflows.
+    - `existing`: reachable by either open or closed Workflows.
+
+Build IDs that are reachable by new Workflows are always reported.
 
 ## reapply-type
 
-Event types to reapply after the reset point: Signal, None.
+Event types to reapply after the reset point.
+Options: Signal, None.
 
 ## reason
 
@@ -575,12 +613,12 @@ Schedule Id.
 
 ## search-attribute
 
-Set Search Attribute on a schedule (format: key=value).
+Set Search Attribute on a Schedule (formatted as key=value).
 Use valid JSON formats for value.
 
 ## skip-base-is-not-current
 
-Skip a Workflow Execution if the base Run is not the current Run.
+Skip a Workflow Execution if the base Run is not the current Workflow Run.
 
 ## skip-current-open
 
@@ -597,7 +635,8 @@ Backfill start time.
 
 ## task-queue-type
 
-Task Queue type [workflow|activity] (default: workflow).
+Task Queue type, which can be either workflow or activity.
+The default type is workflow.
 
 ## task-queue
 
@@ -625,7 +664,7 @@ Path to x509 certificate.
 
 ## tls-disable-host-verification
 
-Disables TLS host name verification if already enabled.
+Disables TLS host name verification.
 
 ## tls-key-path
 
@@ -633,11 +672,16 @@ Path to private certificate key.
 
 ## tls-server-name
 
-Provides an override for the target TLS server name.
+Overrides the target TLS server name.
+
+## tls
+
+Enable TLS encryption without additional options such as mTLS or client certificates.
 
 ## type
 
-Search attribute type: [Text Keyword Int Double Bool Datetime KeywordList].
+Search attribute type.
+Options are: Text, Keyword, Int, Double, Bool, Datetime, KeywordList.
 
 ## ui-asset-path
 
@@ -654,18 +698,25 @@ IPv4 address to bind the Web UI to.
 ## ui-port
 
 Port for the Web UI.
+Default: `--port` + 1000 (e.g. 4000)
 
 ## unpause
 
 Unpauses the Schedule.
 
+## verbose
+
+Print applied Namespace changes.
+
 ## visibility-archival-state
 
-Flag to set visibility archival state, valid values are "disabled" and "enabled".
+Visibility archival state. 
+Valid values: "disabled", "enabled".
 
 ## visibility-uri
 
-Optionally specify visibility archival URI (cannot be changed after first time archival is enabled).
+Specify visibility archival URI.
+This cannot be changed after first-time archival is enabled.
 
 ## workflow-id
 

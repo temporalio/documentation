@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday August 03 2023 15:16:42 PM -0400
+Last assembled: Monday August 07 2023 10:57:45 AM -0500
 
-Assembly Workflow Id: docs-full-assembly-dail-macbook
+Assembly Workflow Id: docs-full-assembly
 
 93 guide configurations found.
 
-1504 information nodes found.
+1518 information nodes found.
 
-1268 information nodes are attached to guides.
+1275 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -740,9 +740,47 @@ cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
-cli/cmd-options/fields -> /cli/cmd-options#fields
+cli/cmd-options/address -> /cli/cmd-options#address
+
+cli/cmd-options/codec-auth -> /cli/cmd-options#codec-auth
+
+cli/cmd-options/codec-endpoint -> /cli/cmd-options#codec-endpoint
+
+cli/cmd-options/color -> /cli/cmd-options#color
+
+cli/cmd-options/context-timeout -> /cli/cmd-options#context-timeout
+
+cli/cmd-options/env -> /cli/cmd-options#env
+
+cli/cmd-options/grpc-meta -> /cli/cmd-options#grpc-meta
 
 cli/cmd-options/identity -> /cli/cmd-options#identity
+
+cli/cmd-options/namespace -> /cli/cmd-options#namespace
+
+cli/cmd-options/result -> /cli/cmd-options#result
+
+cli/cmd-options/run-id -> /cli/cmd-options#run-id
+
+cli/cmd-options/tls -> /cli/cmd-options#tls
+
+cli/cmd-options/tls-ca-path -> /cli/cmd-options#tls-ca-path
+
+cli/cmd-options/tls-cert-path -> /cli/cmd-options#tls-cert-path
+
+cli/cmd-options/tls-disable-host-verification -> /cli/cmd-options#tls-disable-host-verification
+
+cli/cmd-options/tls-key-path -> /cli/cmd-options#tls-key-path
+
+cli/cmd-options/tls-server-name -> /cli/cmd-options#tls-server-name
+
+cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
+
+cli/cmd-options/detail -> /cli/cmd-options#detail
+
+cli/cmd-options/reason -> /cli/cmd-options#reason
+
+cli/cmd-options/fields -> /cli/cmd-options#fields
 
 cli/cmd-options/limit -> /cli/cmd-options#limit
 
@@ -752,17 +790,7 @@ cli/cmd-options/output -> /cli/cmd-options#output
 
 cli/cmd-options/pager -> /cli/cmd-options#pager
 
-cli/cmd-options/result -> /cli/cmd-options#result
-
-cli/cmd-options/run-id -> /cli/cmd-options#run-id
-
 cli/cmd-options/time-format -> /cli/cmd-options#time-format
-
-cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
-
-cli/cmd-options/detail -> /cli/cmd-options#detail
-
-cli/cmd-options/reason -> /cli/cmd-options#reason
 
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
@@ -801,6 +829,8 @@ cli/cmd-options/yes -> /cli/cmd-options#yes
 cli/cmd-options/namespace-id -> /cli/cmd-options#namespace-id
 
 cli/cmd-options/promote-global -> /cli/cmd-options#promote-global
+
+cli/cmd-options/verbose -> /cli/cmd-options#verbose
 
 cli/cmd-options/type -> /cli/cmd-options#type
 
@@ -860,8 +890,6 @@ concepts/what-is-standard-visibility -> /visibility#standard-visibility
 
 cli/cmd-options/unpause -> /cli/cmd-options#unpause
 
-cli/cmd-options/config -> /cli/cmd-options#config
-
 cli/cmd-options/db-filename -> /cli/cmd-options#db-filename
 
 cli/cmd-options/dynamic-config-value -> /cli/cmd-options#dynamic-config-value
@@ -875,8 +903,6 @@ cli/cmd-options/log-format -> /cli/cmd-options#log-format
 cli/cmd-options/log-level -> /cli/cmd-options#log-level
 
 cli/cmd-options/metrics-port -> /cli/cmd-options#metrics-port
-
-cli/cmd-options/namespace -> /cli/cmd-options#namespace
 
 cli/cmd-options/port -> /cli/cmd-options#port
 
@@ -921,8 +947,6 @@ cli/cmd-options/skip-base-is-not-current -> /cli/cmd-options#skip-base-is-not-cu
 cli/cmd-options/skip-current-open -> /cli/cmd-options#skip-current-open
 
 cli/cmd-options/follow -> /cli/cmd-options#follow
-
-cli/cmd-options/output-filename -> /cli/cmd-options#output-filename
 
 cli/cmd-options/concurrency -> /cli/cmd-options#concurrency
 
@@ -985,8 +1009,6 @@ go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 go/logging -> /dev-guide/go/observability#logging
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
-
-cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate-requirements
 
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 

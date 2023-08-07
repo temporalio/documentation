@@ -10,8 +10,8 @@ tags:
   - command-line-interface-cli
 ---
 
-Determines if Build IDs may be used for for new, existing, or closed Workflows. 
-Both the `--build-id` and `--task-queue` flags may be specified multiple times. 
+Determines if Build IDs may be used for for new, existing, or closed Workflows.
+Both the `--build-id` and `--task-queue` flags may be specified multiple times.
 Reachability for the provided Build IDs will be checked against all task queues if one isn't provided.
 
 - [--address](/cli/cmd-options/address)

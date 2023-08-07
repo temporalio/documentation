@@ -33,11 +33,11 @@ The `temporal server start-dev` command starts the Temporal Server on `localhost
 
 The results of any command run on the Server can be viewed at http://localhost:7233.
 
-- <a class="tdlp" href="/cli/cmd-options#config">--config<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal config</span><br /><br /><span class="tdlppd">Path to config directory.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#config">Learn more</a></span></span></a>
+- [--config](/cli/cmd-options/config)
 
 - <a class="tdlp" href="/cli/cmd-options#db-filename">--db-filename<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal db-filename</span><br /><br /><span class="tdlppd">File in which to persist Temporal state.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#db-filename">Learn more</a></span></span></a>
 
-- <a class="tdlp" href="/cli/cmd-options#dynamic-config-value">--dynamic-config-value<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal dynamic-config-value</span><br /><br /><span class="tdlppd">Dynamic config value, as KEY=JSON_VALUE.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#dynamic-config-value">Learn more</a></span></span></a>
+- <a class="tdlp" href="/cli/cmd-options#dynamic-config-value">--dynamic-config-value<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal dynamic-config-value</span><br /><br /><span class="tdlppd">Dynamic config value, formatted as KEY=JSON_VALUE.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#dynamic-config-value">Learn more</a></span></span></a>
 
 - <a class="tdlp" href="/cli/cmd-options#headless">--headless<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal headless</span><br /><br /><span class="tdlppd">Disable the Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#headless">Learn more</a></span></span></a>
 

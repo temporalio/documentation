@@ -12,5 +12,5 @@ tags:
   - archival
 ---
 
-Visibility archival state. 
+Visibility archival state.
 Valid values: "disabled", "enabled".

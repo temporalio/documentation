@@ -18,7 +18,6 @@ The `temporal operator namespace list` command lists all [Namespaces](/namespace
 
 Use the options listed below to change the command's output.
 
-
 - [--address](/cli/cmd-options/address)
 
 - [--codec-auth](/cli/cmd-options/codec-auth)

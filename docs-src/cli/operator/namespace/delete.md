@@ -46,4 +46,3 @@ Use the options listed below to change the command's behavior.
 - [--tls-server-name](/cli/cmd-options/tls-server-name)
 
 - [--yes](/cli/cmd-options/yes)
-

@@ -10,4 +10,5 @@ tags:
   - command-line-interface-cli
   - namespace
 ---
+
 Print applied Namespace changes.

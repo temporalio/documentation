@@ -49,4 +49,3 @@ Use the options listed below to change the command's behavior.
 - [--tls-server-name](/cli/cmd-options/tls-server-name)
 
 - [--type](/cli/cmd-options/type)
-

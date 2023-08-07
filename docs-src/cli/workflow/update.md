@@ -52,4 +52,3 @@ Use the options listed below to change the command's behavior.
 - [--tls-server-name](/cli/cmd-options/tls-server-name)
 
 - [--workflow-id](/cli/cmd-options/workflow-id)
-

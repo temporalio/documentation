@@ -13,5 +13,5 @@ tags:
     - reuse policy
 ---
 
-Allows the same Workflow Id to be used in a new Workflow Execution. 
+Allows the same Workflow Id to be used in a new Workflow Execution.
 Options: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning.
