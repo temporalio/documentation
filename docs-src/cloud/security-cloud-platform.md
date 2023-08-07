@@ -39,7 +39,7 @@ For more information, see [How to manage SAML authentication with Temporal Cloud
 
 Authorization is managed at the account and Namespace level.
 Users and systems are assigned one or more preconfigured roles.
-Users hold [account-level Roles](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud) of administrators, developers, and read-only users.
+Users hold [account-level Roles](/cloud/users-account-level-roles) of administrators, developers, and read-only users.
 Systems and applications processes hold their own distinct roles.
 
 ### Monitoring
