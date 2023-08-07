@@ -65,7 +65,7 @@ If you are using an existing certificate management infrastructure, contact the 
 
 If you are using a self-signed certificate or don't have an existing infrastructure, you can generate a new certificate using OpenSSL or [certstrap](https://github.com/square/certstrap).
 
-For information on generating a self-signed certificate, see [Control authorization](/cloud/account-setup/certificates#control-authorization).
+For information on generating a self-signed certificate, see [Control authorization](/cloud/certificates#control-authorization).
 
 ### Update the CA certification in the server configuration
 

@@ -4,6 +4,7 @@ title: How to manage users in Temporal Cloud
 sidebar_label: Users
 sidebar_position: 3
 description: Invite users, set account level roles, and set Namespace-level positions for users.
+slug: /cloud/users
 toc_max_heading_level: 4
 keywords:
 - explanation
@@ -100,7 +101,7 @@ A Developer can assign permissions for a Namespace they create.
 
 For a Namespace, a user can have one of the following permissions:
 
-- **Namespace Admin:** Can <a class="tdlp" href="/cloud/account-setup/namespaces#create-a-namespace">create<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage Namespaces in Temporal Cloud</span><br /><br /><span class="tdlppd">You can create and manage Namespaces from your Temporal Cloud UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#create-a-namespace">Learn more</a></span></span></a> and <a class="tdlp" href="/cloud/account-setup/namespaces#manage-namespaces">edit Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage Namespaces in Temporal Cloud</span><br /><br /><span class="tdlppd">You can create and manage Namespaces from your Temporal Cloud UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#manage-namespaces">Learn more</a></span></span></a>; can create, rename, update, and delete [Workflows](/workflows)
+- **Namespace Admin:** Can <a class="tdlp" href="/cloud/namespaces#create-a-namespace">create<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage Namespaces in Temporal Cloud</span><br /><br /><span class="tdlppd">You can create and manage Namespaces from your Temporal Cloud UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/namespaces#create-a-namespace">Learn more</a></span></span></a> and <a class="tdlp" href="/cloud/namespaces#manage-namespaces">edit Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage Namespaces in Temporal Cloud</span><br /><br /><span class="tdlppd">You can create and manage Namespaces from your Temporal Cloud UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/namespaces#manage-namespaces">Learn more</a></span></span></a>; can create, rename, update, and delete [Workflows](/workflows)
 - **Write:** Can create, rename, update, and delete Workflows within the Namespace
 - **Read-Only:** Can only read information from the Namespace
 

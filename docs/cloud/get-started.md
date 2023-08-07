@@ -48,21 +48,21 @@ To get started with Temporal Cloud, follow these onboarding steps:
 You must provide your own certificates to access Temporal Cloud.
 For certificate requirements, see the following:
 
-- <a class="tdlp" href="/cloud/account-setup/certificates#certificate-requirements">Requirements for CA certificates<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#certificate-requirements">Learn more</a></span></span></a>
-- <a class="tdlp" href="/cloud/account-setup/certificates#issue-certificates">Issue root CA and end-entity certificates<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#issue-certificates">Learn more</a></span></span></a>
+- <a class="tdlp" href="/cloud/certificates#certificate-requirements">Requirements for CA certificates<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/certificates#certificate-requirements">Learn more</a></span></span></a>
+- <a class="tdlp" href="/cloud/certificates#issue-certificates">Issue root CA and end-entity certificates<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/certificates#issue-certificates">Learn more</a></span></span></a>
 
 ## Get started - Namespaces {#create-a-namespace}
 
 If you don't already have a Namespace (or want to create another), see the following:
 
-<a class="tdlp" href="/cloud/account-setup/namespaces#create-a-namespace">Create a Namespace in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a Namespace in Temporal Cloud</span><br /><br /><span class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#create-a-namespace">Learn more</a></span></span></a>
+<a class="tdlp" href="/cloud/namespaces#create-a-namespace">Create a Namespace in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a Namespace in Temporal Cloud</span><br /><br /><span class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/namespaces#create-a-namespace">Learn more</a></span></span></a>
 
 ## Get started - Invite users {#invite-users}
 
 Adding a user to your Temporal Cloud account includes sending an email invite that the user must then accept.
 To add users, see the following:
 
-<a class="tdlp" href="/cloud/account-setup/users#invite-users">How to invite users to your Temporal Cloud account<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to invite users to your Temporal Cloud account</span><br /><br /><span class="tdlppd">Assign Roles and Namespace permissions, and send invites</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/users#invite-users">Learn more</a></span></span></a>
+<a class="tdlp" href="/cloud/users#invite-users">How to invite users to your Temporal Cloud account<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to invite users to your Temporal Cloud account</span><br /><br /><span class="tdlppd">Assign Roles and Namespace permissions, and send invites</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/users#invite-users">Learn more</a></span></span></a>
 
 ## Get started - Connect {#connect-to-temporal-cloud}
 

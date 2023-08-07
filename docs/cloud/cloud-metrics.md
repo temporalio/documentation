@@ -42,7 +42,7 @@ For more information about CA certificates in Temporal Cloud, see [Certificate r
 
 :::note
 
-To view and manage third-party integration settings, your user account must have the Global Admin <a class="tdlp" href="/cloud/account-setup/users#account-level-roles">Role<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the account-level Roles for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Account-level Roles are Global Admin, Developer, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/users#account-level-roles">Learn more</a></span></span></a>.
+To view and manage third-party integration settings, your user account must have the Global Admin <a class="tdlp" href="/cloud/users#account-level-roles">Role<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the account-level Roles for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Account-level Roles are Global Admin, Developer, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/users#account-level-roles">Learn more</a></span></span></a>.
 
 :::
 
@@ -191,7 +191,7 @@ The process for setting up observability includes the following steps:
 
 If you're following through with the examples provided here, ensure that you have the following:
 
-- Root CA certificates and end-entity certificates. See <a class="tdlp" href="/cloud/account-setup/certificates#certificate-requirements">Certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#certificate-requirements">Learn more</a></span></span></a> for details.
+- Root CA certificates and end-entity certificates. See <a class="tdlp" href="/cloud/certificates#certificate-requirements">Certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/certificates#certificate-requirements">Learn more</a></span></span></a> for details.
 - Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See Connect to a Cluster for details.
 
   - [Go](/dev-guide/go/foundations#connect-to-a-cluster)
@@ -206,8 +206,8 @@ If you're following through with the examples provided here, ensure that you hav
 
 Before you set up your Temporal Cloud metrics, ensure that you have the following:
 
-- <a class="tdlp" href="/cloud/account-setup/users#account-level-roles">Global Admin privileges<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the account-level Roles for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Account-level Roles are Global Admin, Developer, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/users#account-level-roles">Learn more</a></span></span></a> to the Temporal Cloud account.
-- <a class="tdlp" href="/cloud/account-setup/certificates#">CA certificate and key<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a> for the Observability integration. You will need the certificate to set up the Observability endpoint in Temporal Cloud.
+- <a class="tdlp" href="/cloud/users#account-level-roles">Global Admin privileges<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the account-level Roles for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Account-level Roles are Global Admin, Developer, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/users#account-level-roles">Learn more</a></span></span></a> to the Temporal Cloud account.
+- <a class="tdlp" href="/cloud/certificates#">CA certificate and key<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/certificates#">Learn more</a></span></span></a> for the Observability integration. You will need the certificate to set up the Observability endpoint in Temporal Cloud.
 
 The following steps describe how to set up Observability on Temporal Cloud to generate an endpoint:
 

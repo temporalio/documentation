@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday August 04 2023 11:33:54 AM -0700
+Last assembled: Monday August 07 2023 13:20:18 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-dail-macbook
 
 93 guide configurations found.
 
-1504 information nodes found.
+1507 information nodes found.
 
-1268 information nodes are attached to guides.
+1271 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -272,7 +272,7 @@ cloud/tcld/account/metrics/disable -> #disable
 
 cloud/tcld/account/metrics/accepted-client-ca/index -> #accepted-client-ca
 
-cloud/certificates-intro -> /cloud/account-setup/certificates#certificate-requirements
+cloud/certificates-intro -> /cloud/certificates#certificate-requirements
 
 cloud/tcld/account/metrics/accepted-client-ca/add -> #add
 
@@ -688,21 +688,21 @@ python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
 
-cloud/operating-envelope-intro -> /cloud/introduction/operating-envelope#
+cloud/operating-envelope-intro -> /cloud/operating-envelope#
 
-cloud/pricing-intro -> /cloud/introduction/pricing#
+cloud/pricing-intro -> /cloud/pricing#
 
-cloud/support-intro -> /cloud/introduction/support#
+cloud/support-intro -> /cloud/support#
 
-cloud/users-intro -> /cloud/account-setup/users#
+cloud/users-intro -> /cloud/users#
 
 cloud/saml-intro -> /cloud/how-to-manage-saml-with-temporal-cloud#
 
 cloud/what-is-audit-logging -> /cloud/how-to-manage-audit-logging#
 
-cloud/namespaces-create -> /cloud/account-setup/namespaces#create-a-namespace
+cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
 
-cloud/users-invite -> /cloud/account-setup/users#invite-users
+cloud/users-invite -> /cloud/users#invite-users
 
 go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
 
@@ -716,9 +716,9 @@ concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
 
-cloud/support-create-ticket -> /cloud/introduction/support#support-ticket
+cloud/support-create-ticket -> /cloud/support#support-ticket
 
-concepts/what-is-a-cloud-namespace-id -> /cloud/account-setup/namespaces#temporal-cloud-namespace-id
+concepts/what-is-a-cloud-namespace-id -> /cloud/namespaces#temporal-cloud-namespace-id
 
 cloud/users-account-level-roles -> #account-level-roles
 
@@ -730,13 +730,13 @@ cloud/users-update-permissions -> #update-permissions
 
 cloud/users-delete -> #delete-users
 
-cloud/what-is-an-action -> /cloud/introduction/pricing#action
+cloud/what-is-an-action -> /cloud/pricing#action
 
 concepts/what-is-a-reset -> /workflows#reset
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
 
-cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate-requirements
+cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
@@ -985,8 +985,6 @@ go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 go/logging -> /dev-guide/go/observability#logging
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
-
-cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate-requirements
 
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 

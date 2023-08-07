@@ -28,7 +28,7 @@ Before considering an appropriate Namespace configuration, you should be aware o
   Access to Temporal by [Worker Processes](/workers#worker-process) is permitted at the Namespace level.
   Isolating applications or environments (development, test, staging, production) should take this into consideration.
 - A Namespace is an endpoint.
-  To access a Namespace from a Temporal Client requires mTLS authorization, which requires [CA certificates](/cloud/account-setup/certificates#ca-certificates).
+  To access a Namespace from a Temporal Client requires mTLS authorization, which requires [CA certificates](/cloud/certificates#ca-certificates).
 - [Workflow Id](/workflows#workflow-id) uniqueness is per Namespace.
 - [Task Queue](/workers#task-queue) names are unique per Namespace.
 - Closed Workflow retention is per Namespace.
