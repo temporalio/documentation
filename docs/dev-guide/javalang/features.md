@@ -7,22 +7,22 @@ description: The Features section of the Temporal Developer's guide provides bas
 slug: /dev-guide/java/features
 toc_max_heading_level: 4
 keywords:
-- guide-context
-- java
-- developer-guide
-- how-to
 - Java
-- timers
+- developer-guide
+- guide-context
+- how-to
+- java
 - sleep
+- timers
 - workers
 tags:
-- guide-context
 - java
 - developer-guide
+- guide-context
 - how-to
 - java
-- timers
 - sleep
+- timers
 - workers
 ---
 

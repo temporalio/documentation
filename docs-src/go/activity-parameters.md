@@ -4,7 +4,12 @@ title: How to develop Activity Parameters
 sidebar_label: Activity parameters
 description: When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - activity
+  - activity parameters
+  - activity definition
+  - how-to-doc-type
+  - developer-guide-doc-type
 ---
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/concepts/what-is-an-activity-definition) may support.

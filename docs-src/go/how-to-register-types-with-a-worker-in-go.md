@@ -4,9 +4,11 @@ title: How to register types with a Worker in Go
 sidebar_label: Register Types
 description: The `RegisterWorkflow()` and `RegisterActivity()` calls create an in-memory mapping between the Workflow Types and their implementations.
 tags:
-  - developer-guide
-  - go
-  - workers
+  - developer-guide-doc-type
+  - go sdk
+  - worker
+  - how-to-doc-type
+  - workflow and activity types
 ---
 
 The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in-memory mapping between the Workflow Types and their implementations, inside the Worker process.

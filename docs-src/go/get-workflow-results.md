@@ -4,7 +4,12 @@ title: How to get the results of a Workflow Execution
 description: If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 sidebar_label: Get Workflow results
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - workflow execution
+  - go sdk
+  - workflows
+  - run id
+  - workflow id
 ---
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.

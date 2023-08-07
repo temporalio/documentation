@@ -4,9 +4,10 @@ title: Additional Session usage information
 sidebar_label: Session metadata
 description: The Session Context also stores some Session metadata, which can be retrieved by the GetSessionInfo API.
 tags:
-  - go
+  - go sdk
   - sessions
-  - task-routing
+  - task routing
+  - api
 ---
 
 ```go
