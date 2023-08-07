@@ -2,7 +2,7 @@
 id: pricing
 title: What is the pricing for Temporal Cloud?
 sidebar_label: Pricing
-sidebar_position: 1
+sidebar_position: 3
 description: Temporal Cloud pricing information
 toc_max_heading_level: 4
 keywords:

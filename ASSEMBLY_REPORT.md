@@ -4,7 +4,7 @@ Last assembled: Friday August 04 2023 11:33:54 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-dail-macbook
 
-92 guide configurations found.
+93 guide configurations found.
 
 1504 information nodes found.
 
@@ -734,6 +734,10 @@ cloud/what-is-an-action -> /cloud/introduction/pricing#action
 
 concepts/what-is-a-reset -> /workflows#reset
 
+concepts/what-is-the-temporal-web-ui -> /web-ui#
+
+cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate-requirements
+
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
 cli/cmd-options/fields -> /cli/cmd-options#fields
@@ -763,8 +767,6 @@ cli/cmd-options/reason -> /cli/cmd-options#reason
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
 cli/workflow/list -> /cli/workflow#list
-
-concepts/what-is-the-temporal-web-ui -> /web-ui#
 
 cli/cmd-options/name -> /cli/cmd-options#name
 
