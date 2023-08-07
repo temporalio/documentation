@@ -4,8 +4,11 @@ title: How to get the result of a Workflow Execution in Go
 sidebar_label: Workflow Execution result
 description: Use the Future returned by `ExecuteWorkflow` API call to retrieve the result.
 tags:
-  - developer-guide
-  - go
+  - developer-guide-doc-type
+  - go sdk
+  - how-to-doc-type
+  - workflow execution
+  - workflow run
 ---
 
 The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowRun), which is the `workflowRun` variable in the following line.

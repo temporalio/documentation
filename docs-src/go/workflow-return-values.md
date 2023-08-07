@@ -4,7 +4,10 @@ title: How to define Workflow return parameters
 description: Workflow return values must also be serializable.
 sidebar_label: Workflow return values
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - workflows
+  - return values
+  - workflow definition
 ---
 
 Workflow return values must also be serializable.

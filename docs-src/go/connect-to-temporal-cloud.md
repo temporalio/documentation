@@ -4,7 +4,9 @@ title: How to connect to Temporal Cloud
 description: Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
 sidebar_label: Connect to Temporal Cloud
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - go sdk
+  - temporal cloud
 ---
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:

@@ -7,12 +7,12 @@ description: The Testing section of the Temporal Developer's guide covers the ma
 slug: /dev-guide/go/testing
 toc_max_heading_level: 4
 keywords:
-- guide-context
 - go
+- guide-context
 - how-to
 tags:
-- guide-context
 - go
+- guide-context
 - how-to
 ---
 

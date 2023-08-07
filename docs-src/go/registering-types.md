@@ -4,7 +4,9 @@ title: How to register types
 description: How to register Workflow and Activity Types
 sidebar_label: Register types
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - workflow and activity types
+  - go sdk
 ---
 
 All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
