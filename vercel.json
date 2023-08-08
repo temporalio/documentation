@@ -1826,8 +1826,16 @@
       "destination": "/cloud/support#support-ticket"
     },
     {
-      "source": "/cloud/how-to-get-started-with-temporal-cloud",
-      "destination": "/cloud/get-started"
+      "source": "/cloud/how-to-get-started-with-temporal-cloud:path*",
+      "destination": "/cloud/get-started:path*"
+    },
+    {
+      "source": "/cloud/how-to-manage-saml-with-temporal-cloud:path*",
+      "destination": "/cloud/saml:path*"
+    },
+    {
+      "source": "/cloud/how-to-manage-audit-logging:path*",
+      "destination": "/cloud/audit-logging:path*"
     },
     {
       "source": "/kb/prometheus-grafana-setup-cloud",

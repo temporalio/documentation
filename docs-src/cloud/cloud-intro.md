@@ -24,6 +24,6 @@ To request a Temporal Cloud account, complete the [request form](https://pages.t
   - [Manage certificates](/cloud/certificates-intro)
   - [Manage users](/cloud/users-intro)
 - [Metrics setup](/cloud/metrics-intro)
-- [SAML](/cloud/saml-intro)
+- [SAML](/cloud/saml)
 - [Audit logging](/cloud/what-is-audit-logging)
 - [tcld (Temporal Cloud command-line interface)](/cloud/tcld)

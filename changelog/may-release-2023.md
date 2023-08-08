@@ -44,4 +44,4 @@ Starting with Data encryption, the [Develop guide](https://docs.temporal.io/prod
 
 ## Temporal Cloud SAML integration guide
 
-The [SAML integration guide](/cloud/how-to-manage-saml-with-temporal-cloud) shows you how to integrate with your SAML based identity provider.
+The [SAML integration guide](/cloud/saml) shows you how to integrate with your SAML based identity provider.
