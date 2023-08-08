@@ -29,70 +29,70 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Activity commands operate on <a class="tdlp" href="/activities#activity-execution">Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>.
+Activity commands operate on [Activity Executions](/activities#activity-execution).
 
 To run an Activity command, type `temporal activity [command] [command options]`
 
 ## complete
 
-The `temporal activity complete` command completes an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>.
+The `temporal activity complete` command completes an [Activity Execution](/activities#activity-execution).
 Along with completing the Activity, the result given upon return can be set as well.
 
 `temporal activity complete --activity-id=MyActivity --result=ActivityComplete`
 
 Use the options listed below to change the behavior of this command.
 
-- <a class="tdlp" href="/cli/cmd-options#activity-id">--activity-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal activity-id</span><br /><br /><span class="tdlppd">Identifies the Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#activity-id">Learn more</a></span></span></a>
+- [--activity-id](/cli/cmd-options#activity-id)
 
-- <a class="tdlp" href="/cli/cmd-options#fields">--fields<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal fields</span><br /><br /><span class="tdlppd">Customize fields to print.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#fields">Learn more</a></span></span></a>
+- [--fields](/cli/cmd-options#fields)
 
-- <a class="tdlp" href="/cli/cmd-options#identity">--identity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal identity</span><br /><br /><span class="tdlppd">Specify operator's identity.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#identity">Learn more</a></span></span></a>
+- [--identity](/cli/cmd-options#identity)
 
-- <a class="tdlp" href="/cli/cmd-options#limit">--limit<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal limit</span><br /><br /><span class="tdlppd">Number of items to print.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#limit">Learn more</a></span></span></a>
+- [--limit](/cli/cmd-options#limit)
 
-- <a class="tdlp" href="/cli/cmd-options#no-pager">--no-pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal no-pager</span><br /><br /><span class="tdlppd">Disables the interactive pager.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#no-pager">Learn more</a></span></span></a>
+- [--no-pager](/cli/cmd-options#no-pager)
 
-- <a class="tdlp" href="/cli/cmd-options#output">--output<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal output</span><br /><br /><span class="tdlppd">Output format.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#output">Learn more</a></span></span></a>
+- [--output](/cli/cmd-options#output)
 
-- <a class="tdlp" href="/cli/cmd-options#pager">--pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal pager</span><br /><br /><span class="tdlppd">Sets the pager for Temporal CLI to use.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#pager">Learn more</a></span></span></a>
+- [--pager](/cli/cmd-options#pager)
 
-- <a class="tdlp" href="/cli/cmd-options#result">--result<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal result</span><br /><br /><span class="tdlppd">Set the result value of Activity completion.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#result">Learn more</a></span></span></a>
+- [--result](/cli/cmd-options#result)
 
-- <a class="tdlp" href="/cli/cmd-options#run-id">--run-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal run-id</span><br /><br /><span class="tdlppd">Identifies the current Workflow Run.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#run-id">Learn more</a></span></span></a>
+- [--run-id](/cli/cmd-options#run-id)
 
-- <a class="tdlp" href="/cli/cmd-options#time-format">--time-format<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal time-format</span><br /><br /><span class="tdlppd">Format time as either relative, iso, raw.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#time-format">Learn more</a></span></span></a>
+- [--time-format](/cli/cmd-options#time-format)
 
-- <a class="tdlp" href="/cli/cmd-options#workflow-id">--workflow-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal workflow-id</span><br /><br /><span class="tdlppd">Workflow Id</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#workflow-id">Learn more</a></span></span></a>
+- [--workflow-id](/cli/cmd-options#workflow-id)
 
 ## fail
 
-The `temporal activity fail` command fails an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>.
-The Activity must already be running on a valid <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a>.
+The `temporal activity fail` command fails an [Activity Execution](/activities#activity-execution).
+The Activity must already be running on a valid [Workflow](/workflows#).
 `temporal fail --workflow-id=meaningful-business-id --activity-id=MyActivity`
 
 Use the options listed below to change the behavior of this command.
 
-- <a class="tdlp" href="/cli/cmd-options#activity-id">--activity-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal activity-id</span><br /><br /><span class="tdlppd">Identifies the Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#activity-id">Learn more</a></span></span></a>
+- [--activity-id](/cli/cmd-options#activity-id)
 
-- <a class="tdlp" href="/cli/cmd-options#detail">--detail<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal detail</span><br /><br /><span class="tdlppd">Detail to fail the Activity.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#detail">Learn more</a></span></span></a>
+- [--detail](/cli/cmd-options#detail)
 
-- <a class="tdlp" href="/cli/cmd-options#fields">--fields<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal fields</span><br /><br /><span class="tdlppd">Customize fields to print.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#fields">Learn more</a></span></span></a>
+- [--fields](/cli/cmd-options#fields)
 
-- <a class="tdlp" href="/cli/cmd-options#identity">--identity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal identity</span><br /><br /><span class="tdlppd">Specify operator's identity.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#identity">Learn more</a></span></span></a>
+- [--identity](/cli/cmd-options#identity)
 
-- <a class="tdlp" href="/cli/cmd-options#limit">--limit<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal limit</span><br /><br /><span class="tdlppd">Number of items to print.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#limit">Learn more</a></span></span></a>
+- [--limit](/cli/cmd-options#limit)
 
-- <a class="tdlp" href="/cli/cmd-options#no-pager">--no-pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal no-pager</span><br /><br /><span class="tdlppd">Disables the interactive pager.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#no-pager">Learn more</a></span></span></a>
+- [--no-pager](/cli/cmd-options#no-pager)
 
-- <a class="tdlp" href="/cli/cmd-options#output">--output<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal output</span><br /><br /><span class="tdlppd">Output format.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#output">Learn more</a></span></span></a>
+- [--output](/cli/cmd-options#output)
 
-- <a class="tdlp" href="/cli/cmd-options#pager">--pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal pager</span><br /><br /><span class="tdlppd">Sets the pager for Temporal CLI to use.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#pager">Learn more</a></span></span></a>
+- [--pager](/cli/cmd-options#pager)
 
-- <a class="tdlp" href="/cli/cmd-options#reason">--reason<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal reason</span><br /><br /><span class="tdlppd">Reason for the operation</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#reason">Learn more</a></span></span></a>
+- [--reason](/cli/cmd-options#reason)
 
-- <a class="tdlp" href="/cli/cmd-options#run-id">--run-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal run-id</span><br /><br /><span class="tdlppd">Identifies the current Workflow Run.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#run-id">Learn more</a></span></span></a>
+- [--run-id](/cli/cmd-options#run-id)
 
-- <a class="tdlp" href="/cli/cmd-options#time-format">--time-format<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal time-format</span><br /><br /><span class="tdlppd">Format time as either relative, iso, raw.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#time-format">Learn more</a></span></span></a>
+- [--time-format](/cli/cmd-options#time-format)
 
-- <a class="tdlp" href="/cli/cmd-options#workflow-id">--workflow-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal workflow-id</span><br /><br /><span class="tdlppd">Workflow Id</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#workflow-id">Learn more</a></span></span></a>
+- [--workflow-id](/cli/cmd-options#workflow-id)
 

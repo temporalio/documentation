@@ -26,10 +26,10 @@ You can debug production Workflows using:
 - [Web UI](/web-ui)
 - [tctl](/tctl-v1)
 - [Replay](#replay)
-- <a class="tdlp" href="/dev-guide/python/observability#tracing">Tracing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to setup Tracing</span><br /><br /><span class="tdlppd">Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/observability#tracing">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/observability#logging">Logging<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to log from a Workflow</span><br /><br /><span class="tdlppd">Send logs and errors to a logging service, so that when things go wrong, you can see what happened.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/observability#logging">Learn more</a></span></span></a>
+- [Tracing](/dev-guide/python/observability#tracing)
+- [Logging](/dev-guide/python/observability#logging)
 
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/dev-guide/worker-performance).
 For more information, see [Observability ▶️ Metrics](/dev-guide/python/observability#metrics) for setting up SDK metrics.
 
-Debug Server performance with <a class="tdlp" href="/cloud/metrics#">Cloud metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to monitor Temporal Cloud metrics</span><br /><br /><span class="tdlppd">Configure and track performance metrics for Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/metrics#">Learn more</a></span></span></a> or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).
+Debug Server performance with [Cloud metrics](/cloud/metrics#) or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).

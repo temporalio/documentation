@@ -528,7 +528,7 @@ Promote local namespace to global namespace.
 ## query
 
 Visibility Query of Search Attributes describing the Workflow Executions to reset.
-For details, see the <a class="tdlp" href="/cli/workflow#list">temporal workflow list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal workflow list</span><br /><br /><span class="tdlppd">List Workflow Executions based on a Query.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/workflow#list">Learn more</a></span></span></a> command.
+For details, see the [temporal workflow list](/cli/workflow#list) command.
 
 ## raw
 

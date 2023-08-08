@@ -120,7 +120,8 @@ function centeredImage(image, dimensions) {
 }
 
 function linkPreview(newPath, linkText, nodeTitle, description) {
-  return `<a class="tdlp" href="${newPath}">${linkText}<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">${nodeTitle}</span><br /><br /><span class="tdlppd">${description}</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="${newPath}">Learn more</a></span></span></a>`;
+  // return `<a class="tdlp" href="${newPath}">${linkText}<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">${nodeTitle}</span><br /><br /><span class="tdlppd">${description}</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="${newPath}">Learn more</a></span></span></a>`;
+  return `[${linkText}](${newPath})`;
 }
 
 function getImageDimensions(imgPath) {

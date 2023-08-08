@@ -37,7 +37,7 @@ Environment (or 'env') commands allow the user to configure the properties for t
 
 The `temporal env get` command prints the environmental properties for the environment in use.
 
-For example, passing the 'local' <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> returns the name, address, and certificate paths for the local environment.
+For example, passing the 'local' [Namespace](/namespaces#) returns the name, address, and certificate paths for the local environment.
 `temporal env get local`
 `Output: tls-cert-path  /home/my-user/certs/cluster.cert tls-key-path   /home/my-user/certs/cluster.key address        127.0.0.1:7233 namespace      accounting`
 
@@ -47,17 +47,17 @@ Output can be narrowed down to a specific option.
 
 Use the options listed below to change the command's behavior.
 
-- <a class="tdlp" href="/cli/cmd-options#fields">--fields<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal fields</span><br /><br /><span class="tdlppd">Customize fields to print.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#fields">Learn more</a></span></span></a>
+- [--fields](/cli/cmd-options#fields)
 
-- <a class="tdlp" href="/cli/cmd-options#limit">--limit<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal limit</span><br /><br /><span class="tdlppd">Number of items to print.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#limit">Learn more</a></span></span></a>
+- [--limit](/cli/cmd-options#limit)
 
-- <a class="tdlp" href="/cli/cmd-options#no-pager">--no-pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal no-pager</span><br /><br /><span class="tdlppd">Disables the interactive pager.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#no-pager">Learn more</a></span></span></a>
+- [--no-pager](/cli/cmd-options#no-pager)
 
-- <a class="tdlp" href="/cli/cmd-options#output">--output<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal output</span><br /><br /><span class="tdlppd">Output format.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#output">Learn more</a></span></span></a>
+- [--output](/cli/cmd-options#output)
 
-- <a class="tdlp" href="/cli/cmd-options#pager">--pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal pager</span><br /><br /><span class="tdlppd">Sets the pager for Temporal CLI to use.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#pager">Learn more</a></span></span></a>
+- [--pager](/cli/cmd-options#pager)
 
-- <a class="tdlp" href="/cli/cmd-options#time-format">--time-format<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal time-format</span><br /><br /><span class="tdlppd">Format time as either relative, iso, raw.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#time-format">Learn more</a></span></span></a>
+- [--time-format](/cli/cmd-options#time-format)
 
 ## set
 
@@ -68,37 +68,37 @@ Properties can be set for the entire system, such as the frontend address:
 
 Use the options listed below to change the command's behavior.
 
-- <a class="tdlp" href="/cli/cmd-options#fields">--fields<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal fields</span><br /><br /><span class="tdlppd">Customize fields to print.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#fields">Learn more</a></span></span></a>
+- [--fields](/cli/cmd-options#fields)
 
-- <a class="tdlp" href="/cli/cmd-options#limit">--limit<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal limit</span><br /><br /><span class="tdlppd">Number of items to print.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#limit">Learn more</a></span></span></a>
+- [--limit](/cli/cmd-options#limit)
 
-- <a class="tdlp" href="/cli/cmd-options#no-pager">--no-pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal no-pager</span><br /><br /><span class="tdlppd">Disables the interactive pager.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#no-pager">Learn more</a></span></span></a>
+- [--no-pager](/cli/cmd-options#no-pager)
 
-- <a class="tdlp" href="/cli/cmd-options#output">--output<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal output</span><br /><br /><span class="tdlppd">Output format.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#output">Learn more</a></span></span></a>
+- [--output](/cli/cmd-options#output)
 
-- <a class="tdlp" href="/cli/cmd-options#pager">--pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal pager</span><br /><br /><span class="tdlppd">Sets the pager for Temporal CLI to use.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#pager">Learn more</a></span></span></a>
+- [--pager](/cli/cmd-options#pager)
 
-- <a class="tdlp" href="/cli/cmd-options#time-format">--time-format<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal time-format</span><br /><br /><span class="tdlppd">Format time as either relative, iso, raw.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#time-format">Learn more</a></span></span></a>
+- [--time-format](/cli/cmd-options#time-format)
 
 ## delete
 
 The `temporal env delete` command deletes a given environment or environmental property.
 
-Deleting a given environment (such as 'local') and its saved values is achieved by passing a valid <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> name.
+Deleting a given environment (such as 'local') and its saved values is achieved by passing a valid [Namespace](/namespaces#) name.
 
 `temporal env delete local`
 
 Use the options listed below to change the command's behavior.
 
-- <a class="tdlp" href="/cli/cmd-options#fields">--fields<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal fields</span><br /><br /><span class="tdlppd">Customize fields to print.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#fields">Learn more</a></span></span></a>
+- [--fields](/cli/cmd-options#fields)
 
-- <a class="tdlp" href="/cli/cmd-options#limit">--limit<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal limit</span><br /><br /><span class="tdlppd">Number of items to print.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#limit">Learn more</a></span></span></a>
+- [--limit](/cli/cmd-options#limit)
 
-- <a class="tdlp" href="/cli/cmd-options#no-pager">--no-pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal no-pager</span><br /><br /><span class="tdlppd">Disables the interactive pager.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#no-pager">Learn more</a></span></span></a>
+- [--no-pager](/cli/cmd-options#no-pager)
 
-- <a class="tdlp" href="/cli/cmd-options#output">--output<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal output</span><br /><br /><span class="tdlppd">Output format.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#output">Learn more</a></span></span></a>
+- [--output](/cli/cmd-options#output)
 
-- <a class="tdlp" href="/cli/cmd-options#pager">--pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal pager</span><br /><br /><span class="tdlppd">Sets the pager for Temporal CLI to use.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#pager">Learn more</a></span></span></a>
+- [--pager](/cli/cmd-options#pager)
 
-- <a class="tdlp" href="/cli/cmd-options#time-format">--time-format<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal time-format</span><br /><br /><span class="tdlppd">Format time as either relative, iso, raw.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#time-format">Learn more</a></span></span></a>
+- [--time-format](/cli/cmd-options#time-format)
 

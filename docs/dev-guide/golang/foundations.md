@@ -89,20 +89,20 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Application?</span><br /><br /><span class="tdlppd">A Temporal Application is a set of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-application">Learn more</a></span></span></a>—that is, all the relevant steps to start a [Workflow Execution](#develop-workflows) that executes an [Activity](#develop-activities).
+The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](#develop-workflows) that executes an [Activity](#develop-activities).
 
 In this section you can find the following:
 
-- <a class="tdlp" href="#run-a-development-server">Run a development Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install Temporal CLI and run a development server</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-development-server">Learn more</a></span></span></a>
-- <a class="tdlp" href="#install-a-temporal-sdk">Install your SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install a Temporal SDK</span><br /><br /><span class="tdlppd">A Temporal SDK provides a framework for Temporal Application development.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#install-a-temporal-sdk">Learn more</a></span></span></a>
-- <a class="tdlp" href="#connect-to-a-dev-cluster">Connect to a dev Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to connect a Temporal Client to a Temporal Cluster</span><br /><br /><span class="tdlppd">When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#connect-to-a-dev-cluster">Learn more</a></span></span></a>
-- <a class="tdlp" href="#connect-to-temporal-cloud">Connect to Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to connect to Temporal Cloud</span><br /><br /><span class="tdlppd">Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#connect-to-temporal-cloud">Learn more</a></span></span></a>
-- <a class="tdlp" href="#develop-workflows">Develop a Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a basic Workflow</span><br /><br /><span class="tdlppd">Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-workflows">Learn more</a></span></span></a>
-- <a class="tdlp" href="#activity-definition">Develop an Activity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop an Activity Definition in Go</span><br /><br /><span class="tdlppd">In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-definition">Learn more</a></span></span></a>
-- <a class="tdlp" href="#activity-execution">Start an Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start an Activity Execution</span><br /><br /><span class="tdlppd">Calls to spawn Activity Executions are written within a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-execution">Learn more</a></span></span></a>
-- <a class="tdlp" href="#develop-worker">Run a dev Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker in Go</span><br /><br /><span class="tdlppd">Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-worker">Learn more</a></span></span></a>
-- <a class="tdlp" href="#run-a-temporal-cloud-worker">Run a Temporal Cloud Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run a Temporal Cloud Worker</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-temporal-cloud-worker">Learn more</a></span></span></a>
-- <a class="tdlp" href="#start-workflow-execution">Start a Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#start-workflow-execution">Learn more</a></span></span></a>
+- [Run a development Cluster](#run-a-development-server)
+- [Install your SDK](#install-a-temporal-sdk)
+- [Connect to a dev Cluster](#connect-to-a-dev-cluster)
+- [Connect to Temporal Cloud](#connect-to-temporal-cloud)
+- [Develop a Workflow](#develop-workflows)
+- [Develop an Activity](#activity-definition)
+- [Start an Activity Execution](#activity-execution)
+- [Run a dev Worker](#develop-worker)
+- [Run a Temporal Cloud Worker](#run-a-temporal-cloud-worker)
+- [Start a Workflow Execution](#start-workflow-execution)
 
 ## How to install Temporal CLI and run a development server {#run-a-development-server}
 
@@ -190,14 +190,14 @@ temporal server start-dev --help
 
 ## How to install a Temporal SDK {#install-a-temporal-sdk}
 
-A <a class="tdlp" href="/temporal#temporal-sdk">Temporal SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal SDK?</span><br /><br /><span class="tdlppd">A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-sdk">Learn more</a></span></span></a> provides a framework for <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Application?</span><br /><br /><span class="tdlppd">A Temporal Application is a set of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-application">Learn more</a></span></span></a> development.
+A [Temporal SDK](/temporal#temporal-sdk) provides a framework for [Temporal Application](/temporal#temporal-application) development.
 
 An SDK provides you with the following:
 
-- A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client?</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> to communicate with a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
-- APIs to develop <a class="tdlp" href="/workflows#">Workflows<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a>.
-- APIs to create and manage <a class="tdlp" href="/workers#worker">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a>.
-- APIs to author <a class="tdlp" href="/activities#activity-definition">Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a>.
+- A [Temporal Client](/temporal#temporal-client) to communicate with a [Temporal Cluster](/clusters#).
+- APIs to develop [Workflows](/workflows#).
+- APIs to create and manage [Worker Processes](/workers#worker).
+- APIs to author [Activities](/activities#activity-definition).
 
 [![Build Status](https://badge.buildkite.com/ce6df3b1a8b375270261ae70fb2d2756af298fef3a0dac4d20.svg?theme=github&branch=master)](https://buildkite.com/temporal/temporal-go-client) [![Coverage Status](https://coveralls.io/repos/github/temporalio/temporal-go-sdk/badge.svg?branch=master)](https://coveralls.io/github/temporalio/temporal-go-sdk?branch=master) [![Go reference](https://pkg.go.dev/badge/go.temporal.io/sdk)](https://pkg.go.dev/go.temporal.io/sdk)
 
@@ -237,7 +237,7 @@ Additionally, several of the [Tutorials](https://learn.temporal.io) are backed b
 
 ## How to connect a Temporal Client to a Temporal Cluster {#connect-to-a-dev-cluster}
 
-A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client?</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> enables you to communicate with the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
+A [Temporal Client](/temporal#temporal-client) enables you to communicate with the [Temporal Cluster](/clusters#).
 Communication with a Temporal Cluster includes, but isn't limited to, the following:
 
 - Starting Workflow Executions.
@@ -300,11 +300,11 @@ func main() {
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
-- An address that includes your <a class="tdlp" href="/namespaces#">Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> and a port number: `<Namespace>.<ID>.tmprl.cloud:<port>`.
+- An address that includes your [Cloud Namespace Name](/namespaces#) and a port number: `<Namespace>.<ID>.tmprl.cloud:<port>`.
 - mTLS CA certificate.
 - mTLS private key.
 
-For more information about managing and generating client certificates for Temporal Cloud, see <a class="tdlp" href="/cloud/account-setup/certificates#">How to manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a>.
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/account-setup/certificates#).
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
@@ -314,12 +314,12 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 To connect to and run Workflows through Temporal Cloud, you need the following:
 
 - A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
-  See <a class="tdlp" href="/cloud/account-setup/certificates#certificate-requirements">certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#certificate-requirements">Learn more</a></span></span></a>.
-- Your <a class="tdlp" href="/cloud/account-setup/namespaces#temporal-cloud-namespace-id">Temporal Cloud Namespace Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Id?</span><br /><br /><span class="tdlppd">A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#temporal-cloud-namespace-id">Learn more</a></span></span></a>, which includes your <a class="tdlp" href="/cloud/account-setup/namespaces#temporal-cloud-namespace-name">Temporal Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#temporal-cloud-namespace-name">Learn more</a></span></span></a> and the unique five- or six-digit <a class="tdlp" href="/cloud/account-setup/namespaces#temporal-cloud-account-id">Temporal Cloud Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#temporal-cloud-account-id">Learn more</a></span></span></a> that is appended to it.
+  See [certificate requirements](/cloud/account-setup/certificates#certificate-requirements).
+- Your [Temporal Cloud Namespace Id](/cloud/account-setup/namespaces#temporal-cloud-namespace-id), which includes your [Temporal Cloud Namespace Name](/cloud/account-setup/namespaces#temporal-cloud-namespace-name) and the unique five- or six-digit [Temporal Cloud Account Id](/cloud/account-setup/namespaces#temporal-cloud-account-id) that is appended to it.
   This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
   Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
 
-For more information about managing and generating client certificates for Temporal Cloud, see <a class="tdlp" href="/cloud/account-setup/certificates#">How to manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a>.
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/account-setup/certificates#).
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
@@ -371,12 +371,12 @@ func main() {
 
 ## How to develop a basic Workflow {#develop-workflows}
 
-Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>.
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definition).
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go. -->
 
-In the Temporal Go SDK programming model, a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a> is an exportable function.
+In the Temporal Go SDK programming model, a [Workflow Definition](/workflows#workflow-definition) is an exportable function.
 Below is an example of a basic Workflow Definition.
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
@@ -501,7 +501,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 In Go, by default, the Workflow Type name is the same as the function name.
 
-To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a <a class="tdlp" href="#develop-worker">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker in Go</span><br /><br /><span class="tdlppd">Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-worker">Learn more</a></span></span></a>.
+To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a [Worker](#develop-worker).
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
@@ -534,7 +534,7 @@ func main() {
 
 ### How develop Workflow logic {#workflow-logic-requirements}
 
-Workflow logic is constrained by <a class="tdlp" href="/workflows#deterministic-constraints">deterministic execution requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#deterministic-constraints">Learn more</a></span></span></a>.
+Workflow logic is constrained by [deterministic execution requirements](/workflows#deterministic-constraints).
 Therefore, each language is limited to the use of certain idiomatic techniques.
 However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
@@ -617,14 +617,14 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 
 ### How to develop Activity Parameters {#activity-parameters}
 
-There is no explicit limit to the total number of parameters that an <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a> may support.
+There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
 However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
 
 A single argument is limited to a maximum size of 2 MB.
 And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
 
-Also, keep in mind that all Payload data is recorded in the <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> and large Event Histories can affect Worker performance.
-This is because the entire Event History could be transferred to a Worker Process with a <a class="tdlp" href="/workers#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task">Learn more</a></span></span></a>.
+Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
+This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/workers#workflow-task).
 
 <!--TODO link to gRPC limit section when available -->
 
@@ -660,7 +660,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 
 All data returned from an Activity must be serializable.
 
-There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a>.
+There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflows#event-history).
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go. -->
@@ -719,9 +719,9 @@ func main() {
 
 ## How to start an Activity Execution {#activity-execution}
 
-Calls to spawn <a class="tdlp" href="/activities#activity-execution">Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a> are written within a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>.
+Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
-This results in the set of three <a class="tdlp" href="/workers#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task">Learn more</a></span></span></a> related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+This results in the set of three [Activity Task](/workers#activity-task) related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
 Activity implementation code should be _idempotent_.
@@ -736,7 +736,7 @@ Otherwise, no additional limitations exist on Activity implementations.
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go. -->
 
-    To spawn an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>, call [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) inside your Workflow Definition.
+    To spawn an [Activity Execution](/activities#activity-execution), call [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) inside your Workflow Definition.
     The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/workflow) package.
     The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
     	The Activity function name can be provided as a variable object (no quotations) or as a string.
@@ -773,7 +773,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 ### How to set the required Activity Timeouts {#required-timeout}
 
 Activity Execution semantics rely on several parameters.
-The only required value that needs to be set is either a <a class="tdlp" href="/activities#start-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a> or a <a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a>.
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/activities#start-to-close-timeout) or a [Start-To-Close Timeout](/activities#start-to-close-timeout).
 These values are set in the Activity Options.
 
 To set an Activity Timeout in Go, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the Activity Timeout field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
@@ -834,7 +834,7 @@ if err != nil {
 }
 ```
 
-- <a class="tdlp" href="/activities#activity-id">What is an Activity Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Id?</span><br /><br /><span class="tdlppd">A unique identifier for an Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-id">Learn more</a></span></span></a>
+- [What is an Activity Id](/activities#activity-id)
 
 #### TaskQueueName
 
@@ -853,11 +853,11 @@ if err != nil {
 }
 ```
 
-- <a class="tdlp" href="/workers#task-queue">What is a Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>
+- [What is a Task Queue](/workers#task-queue)
 
 #### ScheduleToCloseTimeout
 
-To set a <a class="tdlp" href="/activities#schedule-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#schedule-to-close-timeout">Learn more</a></span></span></a>, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a [Schedule-To-Close Timeout](/activities#schedule-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 This or `StartToCloseTimeout` must be set.
 
@@ -878,7 +878,7 @@ if err != nil {
 
 #### ScheduleToStartTimeout
 
-To set a <a class="tdlp" href="/activities#schedule-to-start-timeout">Schedule-To-Start Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule-To-Start Timeout?</span><br /><br /><span class="tdlppd">A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task Queue to when a Worker picks it up from the Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#schedule-to-start-timeout">Learn more</a></span></span></a>, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToStartTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a [Schedule-To-Start Timeout](/activities#schedule-to-start-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToStartTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 - Type: `time.Duration`
 - Default: ∞ (infinity - no limit)
@@ -897,7 +897,7 @@ if err != nil {
 
 #### StartToCloseTimeout
 
-To set a <a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a>, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `StartToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a [Start-To-Close Timeout](/activities#start-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `StartToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 This or `ScheduleToCloseTimeout` must be set.
 
@@ -918,7 +918,7 @@ if err != nil {
 
 #### HeartbeatTimeout
 
-To set a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a>, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a [Heartbeat Timeout](/activities#heartbeat-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 ```go
 activityoptions := workflow.ActivityOptions{
@@ -967,7 +967,7 @@ if err != nil {
 
 #### RetryPolicy
 
-To set a <a class="tdlp" href="/retry-policies#">RetryPolicy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a>, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a [RetryPolicy](/retry-policies#), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 - Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
 - Default:
@@ -1004,7 +1004,7 @@ if err != nil {
 
 ### How to get the results of an Activity Execution {#get-activity-results}
 
-The call to spawn an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a> generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
+The call to spawn an [Activity Execution](/activities#activity-execution) generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
 
 The `ExecuteActivity` API call returns an instance of [`workflow.Future`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Futures) which has the following two methods:
@@ -1201,7 +1201,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 
 #### MaxConcurrentLocalActivityExecutionSize
 
-Set the maximum concurrent <a class="tdlp" href="/activities#local-activity">Local Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Local Activity?</span><br /><br /><span class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#local-activity">Learn more</a></span></span></a> for the Worker.
+Set the maximum concurrent [Local Activity Executions](/activities#local-activity) for the Worker.
 
 - Type: `int`
 - Default: `1000`
@@ -1405,7 +1405,7 @@ This method of passing dependencies between Activity Task Executions is not reco
 
 Instead, we recommend using a struct with fields that contain dependencies and develop Activity Definitions as struct methods and then pass all the dependencies on the structure initialization.
 
-- <a class="tdlp" href="#activity-definition">How to develop an Activity Definition using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop an Activity Definition in Go</span><br /><br /><span class="tdlppd">In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-definition">Learn more</a></span></span></a>
+- [How to develop an Activity Definition using the Go SDK](#activity-definition)
 
 :::
 
@@ -1563,11 +1563,11 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 
 To run a Worker that uses [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
-- An address that includes your <a class="tdlp" href="/namespaces#">Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> and a port number: `<Namespace>.<ID>.tmprl.cloud:<port>`.
+- An address that includes your [Cloud Namespace Name](/namespaces#) and a port number: `<Namespace>.<ID>.tmprl.cloud:<port>`.
 - mTLS CA certificate.
 - mTLS private key.
 
-For more information about managing and generating client certificates for Temporal Cloud, see <a class="tdlp" href="/cloud/account-setup/certificates#">How to manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a>.
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/account-setup/certificates#).
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
@@ -1577,12 +1577,12 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 To run a Worker that talks to Temporal Cloud, you need the following:
 
 - A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
-  See <a class="tdlp" href="/cloud/account-setup/certificates#certificate-requirements">certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#certificate-requirements">Learn more</a></span></span></a>.
-- Your <a class="tdlp" href="/cloud/account-setup/namespaces#temporal-cloud-namespace-id">Temporal Cloud Namespace Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Id?</span><br /><br /><span class="tdlppd">A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#temporal-cloud-namespace-id">Learn more</a></span></span></a>, which includes your <a class="tdlp" href="/cloud/account-setup/namespaces#temporal-cloud-namespace-name">Temporal Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#temporal-cloud-namespace-name">Learn more</a></span></span></a> and the unique five- or six-digit <a class="tdlp" href="/cloud/account-setup/namespaces#temporal-cloud-account-id">Temporal Cloud Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#temporal-cloud-account-id">Learn more</a></span></span></a> that is appended to it.
+  See [certificate requirements](/cloud/account-setup/certificates#certificate-requirements).
+- Your [Temporal Cloud Namespace Id](/cloud/account-setup/namespaces#temporal-cloud-namespace-id), which includes your [Temporal Cloud Namespace Name](/cloud/account-setup/namespaces#temporal-cloud-namespace-name) and the unique five- or six-digit [Temporal Cloud Account Id](/cloud/account-setup/namespaces#temporal-cloud-account-id) that is appended to it.
   This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
   Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
 
-For more information about managing and generating client certificates for Temporal Cloud, see <a class="tdlp" href="/cloud/account-setup/certificates#">How to manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a>.
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/account-setup/certificates#).
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
@@ -1644,7 +1644,7 @@ The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in
 
 **Registering Activity `structs`**
 
-Per <a class="tdlp" href="#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop an Activity Definition in Go</span><br /><br /><span class="tdlppd">In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-definition">Learn more</a></span></span></a> best practices, you might have an Activity struct that has multiple methods and fields.
+Per [Activity Definition](#activity-definition) best practices, you might have an Activity struct that has multiple methods and fields.
 When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
 
 **Registering multiple Types**
@@ -1673,7 +1673,7 @@ Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/
 
 #### Name
 
-See <a class="tdlp" href="#customize-workflow-type">How to customize a Workflow Type in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to customize Workflow Type in Go</span><br /><br /><span class="tdlppd">To customize the Workflow Type set the Name parameter with RegisterOptions when registering your Workflow with a Worker.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#customize-workflow-type">Learn more</a></span></span></a>
+See [How to customize a Workflow Type in Go](#customize-workflow-type)
 
 #### DisableAlreadyRegisteredCheck
 
@@ -1707,7 +1707,7 @@ Options for registering an Activity
 
 #### Name
 
-See <a class="tdlp" href="#customize-activity-type">How to customize Activity Type in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to customize Activity Type in Go</span><br /><br /><span class="tdlppd">To customize the Workflow Type set the Name parameter with RegisterOptions when registering your Workflow with a Worker.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#customize-activity-type">Learn more</a></span></span></a>.
+See [How to customize Activity Type in Go](#customize-activity-type).
 
 #### DisableAlreadyRegisteredCheck
 
@@ -1808,7 +1808,7 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "Yo
 
 ### How to set a Workflow's Task Queue {#set-task-queue}
 
-In most SDKs, the only Workflow Option that must be set is the name of the <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>.
+In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/workers#task-queue).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
 
@@ -1831,7 +1831,7 @@ if err != nil {
 
 ### How to set a custom Workflow Id in Go {#workflow-id}
 
-Although it is not required, we recommend providing your own <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></span></span></a> that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+Although it is not required, we recommend providing your own [Workflow Id](/workflows#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `ID` field, and pass the instance to the `ExecuteWorkflow` call.
 
@@ -1872,7 +1872,7 @@ The following fields are available:
 
 #### ID
 
-Although it is not required, we recommend providing your own <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></span></span></a> that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+Although it is not required, we recommend providing your own [Workflow Id](/workflows#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
 Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `ID` field, and pass the instance to the `ExecuteWorkflow` call.
 
@@ -2157,7 +2157,7 @@ Then call the `Get()` method on the instance of `WorkflowRun` that is returned, 
 
 **Get last completion result**
 
-In the case of a <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#temporal-cron-job">Learn more</a></span></span></a>, you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
+In the case of a [Temporal Cron Job](/workflows#temporal-cron-job), you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
 
 To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult) and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) APIs, available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your Workflow code.
 

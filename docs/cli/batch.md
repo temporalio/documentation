@@ -29,15 +29,15 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Batch commands allow you to change multiple <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a> in the background.
-In order to do this, you provide the command with a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a> and the type of Batch job to execute.
+Batch commands allow you to change multiple [Workflow Executions](/workflows#workflow-execution) in the background.
+In order to do this, you provide the command with a [List Filter](/visibility#list-filter) and the type of Batch job to execute.
 
 The List Filter identifies the Workflow Executions that will be affected by the Batch job.
 The Batch type determines the other parameters that need to be provided, along with what is being affected on the Workflow Executions.
 
 There are three types of Batch Jobs:
 
-- Signal: sends a <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#signal">Learn more</a></span></span></a> to the Workflow Executions specified by the List Filter.
+- Signal: sends a [Signal](/workflows#signal) to the Workflow Executions specified by the List Filter.
 - Cancel: cancels the Workflow Executions specified by the List Filter.
 - Terminate: terminates the Workflow Executions specified by the List Filter.
 
@@ -52,17 +52,17 @@ Batch Jobs can be returned for an entire Cluster or a single Namespace.
 
 Use the command options listed below to change the information returned by this command.
 
-- <a class="tdlp" href="/cli/cmd-options#fields">--fields<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal fields</span><br /><br /><span class="tdlppd">Customize fields to print.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#fields">Learn more</a></span></span></a>
+- [--fields](/cli/cmd-options#fields)
 
-- <a class="tdlp" href="/cli/cmd-options#limit">--limit<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal limit</span><br /><br /><span class="tdlppd">Number of items to print.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#limit">Learn more</a></span></span></a>
+- [--limit](/cli/cmd-options#limit)
 
-- <a class="tdlp" href="/cli/cmd-options#no-pager">--no-pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal no-pager</span><br /><br /><span class="tdlppd">Disables the interactive pager.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#no-pager">Learn more</a></span></span></a>
+- [--no-pager](/cli/cmd-options#no-pager)
 
-- <a class="tdlp" href="/cli/cmd-options#output">--output<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal output</span><br /><br /><span class="tdlppd">Output format.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#output">Learn more</a></span></span></a>
+- [--output](/cli/cmd-options#output)
 
-- <a class="tdlp" href="/cli/cmd-options#pager">--pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal pager</span><br /><br /><span class="tdlppd">Sets the pager for Temporal CLI to use.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#pager">Learn more</a></span></span></a>
+- [--pager](/cli/cmd-options#pager)
 
-- <a class="tdlp" href="/cli/cmd-options#time-format">--time-format<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal time-format</span><br /><br /><span class="tdlppd">Format time as either relative, iso, raw.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#time-format">Learn more</a></span></span></a>
+- [--time-format](/cli/cmd-options#time-format)
 
 ## describe
 
@@ -73,19 +73,19 @@ Pass a valid Job ID to return a Batch Job's information.
 
 Use the command options listed below to change the information returned by this command.
 
-- <a class="tdlp" href="/cli/cmd-options#fields">--fields<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal fields</span><br /><br /><span class="tdlppd">Customize fields to print.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#fields">Learn more</a></span></span></a>
+- [--fields](/cli/cmd-options#fields)
 
-- <a class="tdlp" href="/cli/cmd-options#job-id">--job-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal job-id</span><br /><br /><span class="tdlppd">Batch Job Id</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#job-id">Learn more</a></span></span></a>
+- [--job-id](/cli/cmd-options#job-id)
 
-- <a class="tdlp" href="/cli/cmd-options#limit">--limit<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal limit</span><br /><br /><span class="tdlppd">Number of items to print.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#limit">Learn more</a></span></span></a>
+- [--limit](/cli/cmd-options#limit)
 
-- <a class="tdlp" href="/cli/cmd-options#no-pager">--no-pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal no-pager</span><br /><br /><span class="tdlppd">Disables the interactive pager.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#no-pager">Learn more</a></span></span></a>
+- [--no-pager](/cli/cmd-options#no-pager)
 
-- <a class="tdlp" href="/cli/cmd-options#output">--output<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal output</span><br /><br /><span class="tdlppd">Output format.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#output">Learn more</a></span></span></a>
+- [--output](/cli/cmd-options#output)
 
-- <a class="tdlp" href="/cli/cmd-options#pager">--pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal pager</span><br /><br /><span class="tdlppd">Sets the pager for Temporal CLI to use.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#pager">Learn more</a></span></span></a>
+- [--pager](/cli/cmd-options#pager)
 
-- <a class="tdlp" href="/cli/cmd-options#time-format">--time-format<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal time-format</span><br /><br /><span class="tdlppd">Format time as either relative, iso, raw.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#time-format">Learn more</a></span></span></a>
+- [--time-format](/cli/cmd-options#time-format)
 
 ## terminate
 
@@ -96,19 +96,19 @@ A reason for terminating the Batch Job can also be provided for future reference
 
 Use the command options listed below to change the behavior of this command.
 
-- <a class="tdlp" href="/cli/cmd-options#fields">--fields<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal fields</span><br /><br /><span class="tdlppd">Customize fields to print.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#fields">Learn more</a></span></span></a>
+- [--fields](/cli/cmd-options#fields)
 
-- <a class="tdlp" href="/cli/cmd-options#job-id">--job-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal job-id</span><br /><br /><span class="tdlppd">Batch Job Id</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#job-id">Learn more</a></span></span></a>
+- [--job-id](/cli/cmd-options#job-id)
 
-- <a class="tdlp" href="/cli/cmd-options#limit">--limit<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal limit</span><br /><br /><span class="tdlppd">Number of items to print.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#limit">Learn more</a></span></span></a>
+- [--limit](/cli/cmd-options#limit)
 
-- <a class="tdlp" href="/cli/cmd-options#no-pager">--no-pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal no-pager</span><br /><br /><span class="tdlppd">Disables the interactive pager.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#no-pager">Learn more</a></span></span></a>
+- [--no-pager](/cli/cmd-options#no-pager)
 
-- <a class="tdlp" href="/cli/cmd-options#output">--output<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal output</span><br /><br /><span class="tdlppd">Output format.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#output">Learn more</a></span></span></a>
+- [--output](/cli/cmd-options#output)
 
-- <a class="tdlp" href="/cli/cmd-options#pager">--pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal pager</span><br /><br /><span class="tdlppd">Sets the pager for Temporal CLI to use.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#pager">Learn more</a></span></span></a>
+- [--pager](/cli/cmd-options#pager)
 
-- <a class="tdlp" href="/cli/cmd-options#reason">--reason<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal reason</span><br /><br /><span class="tdlppd">Reason for the operation</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#reason">Learn more</a></span></span></a>
+- [--reason](/cli/cmd-options#reason)
 
-- <a class="tdlp" href="/cli/cmd-options#time-format">--time-format<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal time-format</span><br /><br /><span class="tdlppd">Format time as either relative, iso, raw.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#time-format">Learn more</a></span></span></a>
+- [--time-format](/cli/cmd-options#time-format)
 

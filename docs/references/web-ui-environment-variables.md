@@ -46,8 +46,8 @@ The environment variables are defined in the [UI server configuration template f
 
 ## `TEMPORAL_ADDRESS`
 
-The <a class="tdlp" href="/clusters#frontend-service">Frontend Service<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Frontend Service?</span><br /><br /><span class="tdlppd">The Frontend Service is a stateless gateway service that exposes a strongly typed Proto API. The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#frontend-service">Learn more</a></span></span></a> address for the Temporal Cluster.
-This environmental variable can be set <a class="tdlp" href="/references/web-ui-configuration#temporalgrpcaddress">in the base configuration file<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Web UI configuration reference</span><br /><br /><span class="tdlppd">The Temporal Web UI Server uses a configuration file for many of the UI's settings.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/web-ui-configuration#temporalgrpcaddress">Learn more</a></span></span></a> using `temporalGrpcAddress`.
+The [Frontend Service](/clusters#frontend-service) address for the Temporal Cluster.
+This environmental variable can be set [in the base configuration file](/references/web-ui-configuration#temporalgrpcaddress) using `temporalGrpcAddress`.
 
 This variable is required for setting other environmental variables.
 
@@ -65,7 +65,7 @@ Stores a value such as "" or "/custom-path" that allows the UI to be served from
 
 Enables or disables Web UI authentication and authorization methods.
 
-When enabled, the Web UI will use the provider information in the <a class="tdlp" href="/references/web-ui-configuration#auth">UI configuration file<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Web UI configuration reference</span><br /><br /><span class="tdlppd">The Temporal Web UI Server uses a configuration file for many of the UI's settings.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/web-ui-configuration#auth">Learn more</a></span></span></a> to verify the identity of users.
+When enabled, the Web UI will use the provider information in the [UI configuration file](/references/web-ui-configuration#auth) to verify the identity of users.
 
 All auth-related variables can be defined when `TEMPORAL_AUTH_ENABLED` is set to "true".
 Disabling the variable will retain given values.
@@ -74,7 +74,7 @@ Disabling the variable will retain given values.
 
 The .well-known IDP discovery URL for authentication and authorization.
 
-This can be set as in the UI server configuration with <a class="tdlp" href="/references/web-ui-configuration#auth">auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Web UI configuration reference</span><br /><br /><span class="tdlppd">The Temporal Web UI Server uses a configuration file for many of the UI's settings.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/web-ui-configuration#auth">Learn more</a></span></span></a>.
+This can be set as in the UI server configuration with [auth](/references/web-ui-configuration#auth).
 
 ## `TEMPORAL_AUTH_ISSUER_URL`
 
@@ -102,7 +102,7 @@ Callback URLs are invoked by IDP after user has finished authenticating in IDP.
 
 ## `TEMPORAL_UI_ENABLED`
 
-Enables or disables the <a class="tdlp" href="/references/web-ui-configuration#enableui">browser UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Web UI configuration reference</span><br /><br /><span class="tdlppd">The Temporal Web UI Server uses a configuration file for many of the UI's settings.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/web-ui-configuration#enableui">Learn more</a></span></span></a> for the Temporal Cluster.
+Enables or disables the [browser UI](/references/web-ui-configuration#enableui) for the Temporal Cluster.
 
 Enabling the browser UI allows the Server to be accessed from your web browser.
 If disabled, the server cannot be viewed on the web, but the UI server APIs remain available for use.
@@ -111,14 +111,14 @@ If disabled, the server cannot be viewed on the web, but the UI server APIs rema
 
 Enables or disables OpenAPI features for the Temporal Web UI.
 
-This can be set initially with the <a class="tdlp" href="/references/web-ui-configuration#enableopenapi">enableOpenAPI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Web UI configuration reference</span><br /><br /><span class="tdlppd">The Temporal Web UI Server uses a configuration file for many of the UI's settings.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/web-ui-configuration#enableopenapi">Learn more</a></span></span></a> UI configuration.
+This can be set initially with the [enableOpenAPI](/references/web-ui-configuration#enableopenapi) UI configuration.
 The documentation can be found at `/openapi/` on your Temporal Cluster.
 
 This variable requires `TEMPORAL_UI_ENABLED` to be set to 'true'.
 
 ## `TEMPORAL_DEFAULT_NAMESPACE`
 
-The default <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> that the Web UI opens first.
+The default [Namespace](/namespaces#) that the Web UI opens first.
 
 ## `TEMPORAL_FEEDBACK_URL`
 
@@ -138,19 +138,19 @@ Determines how often the UI Server reads the configuration file for new values.
 
 The path for the Transport Layer Security (TLS) Certificate Authority file.
 
-In order to <a class="tdlp" href="/references/web-ui-configuration#tls">configure TLS for your server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Web UI configuration reference</span><br /><br /><span class="tdlppd">The Temporal Web UI Server uses a configuration file for many of the UI's settings.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/web-ui-configuration#tls">Learn more</a></span></span></a>, you'll need a CA certificate issued by a trusted Certificate Authority.
+In order to [configure TLS for your server](/references/web-ui-configuration#tls), you'll need a CA certificate issued by a trusted Certificate Authority.
 Set this variable to properly locate and use the file.
 
 ## `TEMPORAL_TLS_CERT`
 
 The path for the Transport Layer Security (TLS) Certificate.
 
-In order to <a class="tdlp" href="/references/web-ui-configuration#tls">configure TLS for your server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Web UI configuration reference</span><br /><br /><span class="tdlppd">The Temporal Web UI Server uses a configuration file for many of the UI's settings.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/web-ui-configuration#tls">Learn more</a></span></span></a>, you'll need a self-signed certificate.
+In order to [configure TLS for your server](/references/web-ui-configuration#tls), you'll need a self-signed certificate.
 Set the path to allow the environment to locate and use the certificate.
 
 ## `TEMPORAL_TLS_KEY`
 
-The path for the Transport Layer Security (TLS) <a class="tdlp" href="/references/web-ui-configuration#tls">key file<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Web UI configuration reference</span><br /><br /><span class="tdlppd">The Temporal Web UI Server uses a configuration file for many of the UI's settings.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/web-ui-configuration#tls">Learn more</a></span></span></a>.
+The path for the Transport Layer Security (TLS) [key file](/references/web-ui-configuration#tls).
 
 A key file is used to create private and public keys for encryption and signing.
 Together, these keys are used to create certificates.
@@ -188,7 +188,7 @@ Because of this, TLS operates a go-between server.
 
 ## `TEMPORAL_CODEC_ENDPOINT`
 
-The endpoint for the <a class="tdlp" href="/dataconversion#codec-server">Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Codec Server?</span><br /><br /><span class="tdlppd">A Codec Server is an HTTP server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#codec-server">Learn more</a></span></span></a>, if configured.
+The endpoint for the [Codec Server](/dataconversion#codec-server), if configured.
 
 ## `TEMPORAL_CODEC_PASS_ACCESS_TOKEN`
 

@@ -57,7 +57,7 @@ The configuration includes two sections such that intra-Cluster and external tra
 - `internode`: Configuration for encrypting communication between nodes in the cluster.
 - `frontend`: Configuration for encrypting the Frontend's public endpoints.
 
-A customized configuration can be passed using either the <a class="tdlp" href="/references/server-options#withconfig">WithConfig<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Server options</span><br /><br /><span class="tdlppd">You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/server-options#withconfig">Learn more</a></span></span></a> or <a class="tdlp" href="/references/server-options#withconfigloader">WithConfigLoader<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Server options</span><br /><br /><span class="tdlppd">You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/server-options#withconfigloader">Learn more</a></span></span></a> Server options.
+A customized configuration can be passed using either the [WithConfig](/references/server-options#withconfig) or [WithConfigLoader](/references/server-options#withconfigloader) Server options.
 
 See [TLS configuration reference](/references/configuration/#tls) for more details.
 
@@ -85,13 +85,13 @@ To restrict access to specific users, authentication and authorization is perfor
 #### Authorization
 
 :::note
-Information regarding <a class="tdlp" href="#authorizer-plugin">`Authorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Authorizer Plugin?</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#authorizer-plugin">Learn more</a></span></span></a> and <a class="tdlp" href="#claim-mapper">`ClaimMapper`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a ClaimMapper Plugin?</span><br /><br /><span class="tdlppd">The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#claim-mapper">Learn more</a></span></span></a> has been moved to another location.
+Information regarding [`Authorizer`](#authorizer-plugin) and [`ClaimMapper`](#claim-mapper) has been moved to another location.
 :::
 
 Temporal offers two plugin interfaces for implementing API call authorization:
 
-- <a class="tdlp" href="#claim-mapper">`ClaimMapper`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a ClaimMapper Plugin?</span><br /><br /><span class="tdlppd">The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#claim-mapper">Learn more</a></span></span></a>
-- <a class="tdlp" href="#authorizer-plugin">`Authorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Authorizer Plugin?</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#authorizer-plugin">Learn more</a></span></span></a>
+- [`ClaimMapper`](#claim-mapper)
+- [`Authorizer`](#authorizer-plugin)
 
 The authorization and claim mapping logic is customizable, making it available to a variety of use cases and identity schemes.
 When these are provided the frontend invokes the implementation of these interfaces before executing the requested operation.
@@ -250,7 +250,7 @@ The following arguments must be passed to `Authorizer`:
 
 :::
 
-Configure your `Authorizer` when you start the server via the <a class="tdlp" href="/references/server-options#withauthorizer">`temporal.WithAuthorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Server options</span><br /><br /><span class="tdlppd">You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/server-options#withauthorizer">Learn more</a></span></span></a> server option.
+Configure your `Authorizer` when you start the server via the [`temporal.WithAuthorizer`](/references/server-options#withauthorizer) server option.
 
 If an `Authorizer` is not set in the server options, Temporal uses the `nopAuthority` authorizer that unconditionally allows all API calls to pass through.
 
@@ -325,14 +325,14 @@ Content is planned but not yet available.
 
 ## Data Converter {#data-converter}
 
-Each Temporal SDK provides a <a class="tdlp" href="/dataconversion#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a> that can be customized with a custom <a class="tdlp" href="/dataconversion#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-codec">Learn more</a></span></span></a> to encode and secure your data.
+Each Temporal SDK provides a [Data Converter](/dataconversion#) that can be customized with a custom [Payload Codec](/dataconversion#payload-codec) to encode and secure your data.
 
 For details on what data can be encoded, how to secure it, and what to consider when using encryption, see [Data encryption](/production-readiness/develop#securing-your-data).
 
 #### Codec Server
 
-You can use a <a class="tdlp" href="/dataconversion#codec-server">Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Codec Server?</span><br /><br /><span class="tdlppd">A Codec Server is an HTTP server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#codec-server">Learn more</a></span></span></a> with your custom Payload Codec to decode the data you see on your Web UI and CLI locally through remote endpoints.
-However, ensure that you consider all security implications of <a class="tdlp" href="/dataconversion#remote-data-encoding">remote data encoding<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is remote data encoding?</span><br /><br /><span class="tdlppd">Remote data encding is using your custom Data Converter to decode (and encode) your Payloads remotely through endpoints.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#remote-data-encoding">Learn more</a></span></span></a> before using a Codec Server.
+You can use a [Codec Server](/dataconversion#codec-server) with your custom Payload Codec to decode the data you see on your Web UI and CLI locally through remote endpoints.
+However, ensure that you consider all security implications of [remote data encoding](/dataconversion#remote-data-encoding) before using a Codec Server.
 
 For details on how to set up a Codec Server, see [Codec Server setup](/production-readiness/develop#codec-server-setup).
 

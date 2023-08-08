@@ -48,30 +48,30 @@ To get started with Temporal Cloud, follow these onboarding steps:
 You must provide your own certificates to access Temporal Cloud.
 For certificate requirements, see the following:
 
-- <a class="tdlp" href="/cloud/account-setup/certificates#certificate-requirements">Requirements for CA certificates<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#certificate-requirements">Learn more</a></span></span></a>
-- <a class="tdlp" href="/cloud/account-setup/certificates#issue-certificates">Issue root CA and end-entity certificates<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#issue-certificates">Learn more</a></span></span></a>
+- [Requirements for CA certificates](/cloud/account-setup/certificates#certificate-requirements)
+- [Issue root CA and end-entity certificates](/cloud/account-setup/certificates#issue-certificates)
 
 ## Get started - Namespaces {#create-a-namespace}
 
 If you don't already have a Namespace (or want to create another), see the following:
 
-<a class="tdlp" href="/cloud/account-setup/namespaces#create-a-namespace">Create a Namespace in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a Namespace in Temporal Cloud</span><br /><br /><span class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#create-a-namespace">Learn more</a></span></span></a>
+[Create a Namespace in Temporal Cloud](/cloud/account-setup/namespaces#create-a-namespace)
 
 ## Get started - Invite users {#invite-users}
 
 Adding a user to your Temporal Cloud account includes sending an email invite that the user must then accept.
 To add users, see the following:
 
-<a class="tdlp" href="/cloud/account-setup/users#invite-users">How to invite users to your Temporal Cloud account<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to invite users to your Temporal Cloud account</span><br /><br /><span class="tdlppd">Assign Roles and Namespace permissions, and send invites</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/users#invite-users">Learn more</a></span></span></a>
+[How to invite users to your Temporal Cloud account](/cloud/account-setup/users#invite-users)
 
 ## Get started - Connect {#connect-to-temporal-cloud}
 
-Connecting your <a class="tdlp" href="/temporal#temporal-client">Temporal Clients<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client?</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> and <a class="tdlp" href="/workers#worker-process">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> to Temporal Cloud is similar to connecting them to your own [Temporal Cluster](/clusters).
+Connecting your [Temporal Clients](/temporal#temporal-client) and [Worker Processes](/workers#worker-process) to Temporal Cloud is similar to connecting them to your own [Temporal Cluster](/clusters).
 The primary difference is the requirement to provide client certificates and private keys.
 
-- <a class="tdlp" href="/dev-guide/go/foundations#connect-to-temporal-cloud">Connect to Temporal Cloud in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to connect to Temporal Cloud</span><br /><br /><span class="tdlppd">Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/foundations#connect-to-temporal-cloud">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/foundations#connect-to-temporal-cloud">Connect to Temporal Cloud in Python<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to connect to Temporal Cloud</span><br /><br /><span class="tdlppd">Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/foundations#connect-to-temporal-cloud">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/foundations#connect-to-temporal-cloud">Connect to Temporal Cloud in TypeScript<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to connect to Temporal Cloud</span><br /><br /><span class="tdlppd">Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/foundations#connect-to-temporal-cloud">Learn more</a></span></span></a>
+- [Connect to Temporal Cloud in Go](/dev-guide/go/foundations#connect-to-temporal-cloud)
+- [Connect to Temporal Cloud in Python](/dev-guide/python/foundations#connect-to-temporal-cloud)
+- [Connect to Temporal Cloud in TypeScript](/dev-guide/typescript/foundations#connect-to-temporal-cloud)
 
-- <a class="tdlp" href="/dev-guide/go/foundations#run-a-temporal-cloud-worker">Run a Temporal Cloud Worker in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run a Temporal Cloud Worker</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/foundations#run-a-temporal-cloud-worker">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/foundations#run-a-temporal-cloud-worker">Run a Temporal Cloud Worker in TypeScript<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run a Temporal Cloud Worker</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/foundations#run-a-temporal-cloud-worker">Learn more</a></span></span></a>
+- [Run a Temporal Cloud Worker in Go](/dev-guide/go/foundations#run-a-temporal-cloud-worker)
+- [Run a Temporal Cloud Worker in TypeScript](/dev-guide/typescript/foundations#run-a-temporal-cloud-worker)

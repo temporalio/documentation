@@ -41,18 +41,18 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Application?</span><br /><br /><span class="tdlppd">A Temporal Application is a set of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-application">Learn more</a></span></span></a>—that is, all the relevant steps to start a [Workflow Execution](#develop-workflows) that executes an [Activity](#develop-activities).
+The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](#develop-workflows) that executes an [Activity](#develop-activities).
 
 In this section you can find the following:
 
-- <a class="tdlp" href="#run-a-development-server">Run a development Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install Temporal CLI and run a development server</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-development-server">Learn more</a></span></span></a>
-- <a class="tdlp" href="#install-a-temporal-sdk">Install your SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install a Temporal SDK</span><br /><br /><span class="tdlppd">A Temporal SDK provides a framework for Temporal Application development.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#install-a-temporal-sdk">Learn more</a></span></span></a>
-- <a class="tdlp" href="#connect-to-a-dev-cluster">Connect to a dev Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a Temporal Client in Java</span><br /><br /><span class="tdlppd">To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#connect-to-a-dev-cluster">Learn more</a></span></span></a>
-- <a class="tdlp" href="#develop-workflows">Develop a Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Workflow Definition in Java</span><br /><br /><span class="tdlppd">In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-workflows">Learn more</a></span></span></a>
-- <a class="tdlp" href="#develop-activities">Develop an Activity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a basic Activity</span><br /><br /><span class="tdlppd">One of the primary things that Workflows do is orchestrate the execution of Activities.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-activities">Learn more</a></span></span></a>
-- <a class="tdlp" href="#activity-execution">Start an Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start an Activity Execution</span><br /><br /><span class="tdlppd">Calls to spawn Activity Executions are written within a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-execution">Learn more</a></span></span></a>
-- <a class="tdlp" href="#run-a-dev-worker">Run a dev Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker Program in Java</span><br /><br /><span class="tdlppd">Use the `newWorker` method on an instance of a `WorkerFactory` to create a new Worker in Java.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>
-- <a class="tdlp" href="#start-workflow-execution">Start a Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to spawn a Workflow Execution in Java</span><br /><br /><span class="tdlppd">Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#start-workflow-execution">Learn more</a></span></span></a>
+- [Run a development Cluster](#run-a-development-server)
+- [Install your SDK](#install-a-temporal-sdk)
+- [Connect to a dev Cluster](#connect-to-a-dev-cluster)
+- [Develop a Workflow](#develop-workflows)
+- [Develop an Activity](#develop-activities)
+- [Start an Activity Execution](#activity-execution)
+- [Run a dev Worker](#run-a-dev-worker)
+- [Start a Workflow Execution](#start-workflow-execution)
 
 ## How to install Temporal CLI and run a development server {#run-a-development-server}
 
@@ -140,14 +140,14 @@ temporal server start-dev --help
 
 ## How to install a Temporal SDK {#install-a-temporal-sdk}
 
-A <a class="tdlp" href="/temporal#temporal-sdk">Temporal SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal SDK?</span><br /><br /><span class="tdlppd">A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-sdk">Learn more</a></span></span></a> provides a framework for <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Application?</span><br /><br /><span class="tdlppd">A Temporal Application is a set of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-application">Learn more</a></span></span></a> development.
+A [Temporal SDK](/temporal#temporal-sdk) provides a framework for [Temporal Application](/temporal#temporal-application) development.
 
 An SDK provides you with the following:
 
-- A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client?</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> to communicate with a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
-- APIs to develop <a class="tdlp" href="/workflows#">Workflows<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a>.
-- APIs to create and manage <a class="tdlp" href="/workers#worker">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a>.
-- APIs to author <a class="tdlp" href="/activities#activity-definition">Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a>.
+- A [Temporal Client](/temporal#temporal-client) to communicate with a [Temporal Cluster](/clusters#).
+- APIs to develop [Workflows](/workflows#).
+- APIs to create and manage [Worker Processes](/workers#worker).
+- APIs to author [Activities](/activities#activity-definition).
 
 [![Build status](https://badge.buildkite.com/663f6d1be81be6700c28c242b35905f20b68c4fda7b2c7c4e3.svg?branch=master)](https://buildkite.com/temporal/java-sdk-public)
 
@@ -195,7 +195,7 @@ Additionally, several of the [Tutorials](https://learn.temporal.io) are backed b
 
 ## How to create a Temporal Client in Java {#connect-to-a-dev-cluster}
 
-A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client?</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> enables you to communicate with the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
+A [Temporal Client](/temporal#temporal-client) enables you to communicate with the [Temporal Cluster](/clusters#).
 Communication with a Temporal Cluster includes, but isn't limited to, the following:
 
 - Starting Workflow Executions.
@@ -271,11 +271,11 @@ WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptio
 
 For more information, see the following:
 
-- <a class="tdlp" href="#start-workflow-execution">How to spawn a Workflow Execution in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to spawn a Workflow Execution in Java</span><br /><br /><span class="tdlppd">Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#start-workflow-execution">Learn more</a></span></span></a>
+- [How to spawn a Workflow Execution in Java](#start-workflow-execution)
 
 ## How to develop a Workflow Definition in Java {#develop-workflows}
 
-Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>.
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definition).
 
 In the Temporal Java SDK programming model, a Workflow Definition comprises a Workflow interface annotated with `@WorkflowInterface` and a Workflow implementation that implements the Workflow interface.
 
@@ -367,7 +367,7 @@ Ensure that your Client can handle an Object type return or is able to convert t
 
 Related references:
 
-- <a class="tdlp" href="/dataconversion#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>
+- [Data Converter](/dataconversion#)
 - Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
 
 ### How to customize your Workflow Type {#workflow-type}
@@ -404,7 +404,7 @@ When you set the Workflow Type this way, the value of the `name` parameter does 
 
 ### How develop Workflow logic {#workflow-logic-requirements}
 
-Workflow logic is constrained by <a class="tdlp" href="/workflows#deterministic-constraints">deterministic execution requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#deterministic-constraints">Learn more</a></span></span></a>.
+Workflow logic is constrained by [deterministic execution requirements](/workflows#deterministic-constraints).
 Therefore, each language is limited to the use of certain idiomatic techniques.
 However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
@@ -441,9 +441,9 @@ Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/la
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
 An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Cluster.
-For the Workflow to be able to execute the Activity, we must define the <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a>.
+For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
 
-An <a class="tdlp" href="/activities#">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity?</span><br /><br /><span class="tdlppd">In day-to-day conversation, the term "Activity" denotes an Activity Type, Activity Definition, or Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#">Learn more</a></span></span></a> is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
+An [Activity Definition](/activities#) is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
 
 An Activity interface is annotated with `@ActivityInterface` and an Activity implementation implements this Activity interface.
 To handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
@@ -505,14 +505,14 @@ Use `Activity.getExecutionContext()` to get information about the Activity type 
 
 ### How to develop Activity Parameters {#activity-parameters}
 
-There is no explicit limit to the total number of parameters that an <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a> may support.
+There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
 However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
 
 A single argument is limited to a maximum size of 2 MB.
 And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
 
-Also, keep in mind that all Payload data is recorded in the <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> and large Event Histories can affect Worker performance.
-This is because the entire Event History could be transferred to a Worker Process with a <a class="tdlp" href="/workers#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task">Learn more</a></span></span></a>.
+Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
+This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/workers#workflow-task).
 
 <!--TODO link to gRPC limit section when available -->
 
@@ -561,14 +561,14 @@ For more details, see [Dynamic Activity Reference](https://www.javadoc.io/doc/io
 
 All data returned from an Activity must be serializable.
 
-There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a>.
+There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflows#event-history).
 
 Activity return values must be serializable and deserializable by the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.17.0/io/temporal/common/converter/DataConverter.html).
 
 The `execute` method for `DynamicActivity` can return type Object.
 Ensure that your Workflow or Client can handle an Object type return or is able to convert the Object type response.
 
-- <a class="tdlp" href="/dataconversion#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>
+- [Data Converter](/dataconversion#)
 - Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
 
 ### How to customize your Activity Type {#activity-type}
@@ -617,9 +617,9 @@ The Activity type for the method annotated with `@ActivityMethod` is set to `A_a
 
 ## How to start an Activity Execution {#activity-execution}
 
-Calls to spawn <a class="tdlp" href="/activities#activity-execution">Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a> are written within a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>.
+Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
-This results in the set of three <a class="tdlp" href="/workers#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task">Learn more</a></span></span></a> related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+This results in the set of three [Activity Task](/workers#activity-task) related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
 Activity implementation code should be _idempotent_.
@@ -636,17 +636,17 @@ Activities are not executable on their own. You cannot start an Activity Executi
 
 Note that before an Activity Execution is invoked:
 
-- Activity options (either <a class="tdlp" href="/activities#start-to-close-timeout"> `setStartToCloseTimeout`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a> or <a class="tdlp" href="/activities#schedule-to-close-timeout"> `ScheduleToCloseTimeout`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#schedule-to-close-timeout">Learn more</a></span></span></a> are required) must be set for the Activity.
-  For details, see <a class="tdlp" href="/dev-guide/java/features#activity-timeouts">How to set Activity timeouts<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set Activity timeouts</span><br /><br /><span class="tdlppd">Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#activity-timeouts">Learn more</a></span></span></a>.
+- Activity options (either [`setStartToCloseTimeout`](/activities#start-to-close-timeout) or [`ScheduleToCloseTimeout`](/activities#schedule-to-close-timeout) are required) must be set for the Activity.
+  For details, see [How to set Activity timeouts](/dev-guide/java/features#activity-timeouts).
 - The Activity must be registered with a Worker.
-  See <a class="tdlp" href="#run-a-dev-worker">Worker Program<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker Program in Java</span><br /><br /><span class="tdlppd">Use the `newWorker` method on an instance of a `WorkerFactory` to create a new Worker in Java.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>
+  See [Worker Program](#run-a-dev-worker)
 - Activity code must be thread-safe.
 
 Activities should only be instantiated using stubs from within a Workflow.
 An `ActivityStub` returns a client-side stub that implements an Activity interface.
 You can invoke Activities using `Workflow.newActivityStub`(type-safe) or `Workflow.newUntypedActivityStub` (untyped).
 
-Calling a method on the Activity interface schedules the Activity invocation with the Temporal service, and generates an <a class="tdlp" href="/workflows#activitytaskscheduled"> `ActivityTaskScheduled` Event<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event?</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#activitytaskscheduled">Learn more</a></span></span></a>.
+Calling a method on the Activity interface schedules the Activity invocation with the Temporal service, and generates an [`ActivityTaskScheduled` Event](/workflows#activitytaskscheduled).
 
 Activities can be invoked synchronously or asynchronously.
 
@@ -815,12 +815,12 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 }
 ```
 
-For details on getting the results of an Activity Execution, see <a class="tdlp" href="#activity-execution-result">Activity Execution Result<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to get the result of an Activity Execution</span><br /><br /><span class="tdlppd">To get the results of an asynchronously invoked Activity method, use the `Promise` `get` method to block until the Activity method result is available.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-execution-result">Learn more</a></span></span></a>.
+For details on getting the results of an Activity Execution, see [Activity Execution Result](#activity-execution-result).
 
 ### How to set the required Activity Timeouts {#required-timeout}
 
 Activity Execution semantics rely on several parameters.
-The only required value that needs to be set is either a <a class="tdlp" href="/activities#start-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a> or a <a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a>.
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/activities#start-to-close-timeout) or a [Start-To-Close Timeout](/activities#start-to-close-timeout).
 These values are set in the Activity Options.
 
 Set your Activity Timeout from the [`ActivityOptions.Builder`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) class.
@@ -888,7 +888,7 @@ The following table lists all `ActivityOptions` that can be configured for an Ac
 
 #### ScheduleToCloseTimeout
 
-To set a <a class="tdlp" href="/activities#schedule-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#schedule-to-close-timeout">Learn more</a></span></span></a>, use [`ActivityOptions.newBuilder.setScheduleToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+To set a [Schedule-To-Close Timeout](/activities#schedule-to-close-timeout), use [`ActivityOptions.newBuilder.setScheduleToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
 This or `StartToCloseTimeout` must be set.
 
@@ -924,7 +924,7 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
 
 #### ScheduleToStartTimeout
 
-To set a <a class="tdlp" href="/activities#schedule-to-start-timeout">Schedule-To-Start Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule-To-Start Timeout?</span><br /><br /><span class="tdlppd">A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task Queue to when a Worker picks it up from the Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#schedule-to-start-timeout">Learn more</a></span></span></a>, use [`ActivityOptions.newBuilder.setScheduleToStartTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+To set a [Schedule-To-Start Timeout](/activities#schedule-to-start-timeout), use [`ActivityOptions.newBuilder.setScheduleToStartTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
 - Type: `Duration`
 - Default: Unlimited. This timeout is non-retryable.
@@ -960,7 +960,7 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
 
 #### StartToCloseTimeout
 
-To set a <a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a>, use [`ActivityOptions.newBuilder.setStartToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+To set a [Start-To-Close Timeout](/activities#start-to-close-timeout), use [`ActivityOptions.newBuilder.setStartToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
 This or `ScheduleToClose` must be set.
 
@@ -996,7 +996,7 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
 
 #### HeartbeatTimeout
 
-To set a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a>, use [`ActivityOptions.newBuilder.setHeartbeatTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+To set a [Heartbeat Timeout](/activities#heartbeat-timeout), use [`ActivityOptions.newBuilder.setHeartbeatTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
 - Type: `Duration`
 - Default: None
@@ -1069,11 +1069,11 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
                       .build();
   ```
 
-See <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>
+See [Task Queue](/workers#task-queue)
 
 #### RetryOptions
 
-To set a Retry Policy, known as the <a class="tdlp" href="/retry-policies#">Retry Options<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a> in Java, use [`ActivityOptions.newBuilder.setRetryOptions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+To set a Retry Policy, known as the [Retry Options](/retry-policies#) in Java, use [`ActivityOptions.newBuilder.setRetryOptions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
 - Type: `RetryOptions`
 - Default: Server-defined Activity Retry policy.
@@ -1146,7 +1146,7 @@ To set a Retry Policy, known as the <a class="tdlp" href="/retry-policies#">Retr
 
 ### How to get the result of an Activity Execution {#activity-execution-result}
 
-The call to spawn an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a> generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
+The call to spawn an [Activity Execution](/activities#activity-execution) generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
 
 To get the results of an asynchronously invoked Activity method, use the `Promise` `get` method to block until the Activity method result is available.
@@ -1196,13 +1196,13 @@ When the download is complete, the download service potentially can complete the
 
 ## How to develop a Worker Program in Java {#run-a-dev-worker}
 
-The <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> is where Workflow Functions and Activity Functions are executed.
+The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
 
-- Each <a class="tdlp" href="/workers#worker-entity">Worker Entity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Entity?</span><br /><br /><span class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-entity">Learn more</a></span></span></a> in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
-- Each Worker Entity must also associate itself with exactly one <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>.
+- Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
+- Each Worker Entity must also associate itself with exactly one [Task Queue](/workers#task-queue).
 - Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
 
-A <a class="tdlp" href="/workers#worker-entity">Worker Entity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Entity?</span><br /><br /><span class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-entity">Learn more</a></span></span></a> is the component within a Worker Process that listens to a specific Task Queue.
+A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
 
 Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
 For more information, see the [Worker tuning guide](/dev-guide/worker-performance).
@@ -1334,7 +1334,7 @@ The Temporal Cluster then creates the first Workflow Task, resulting in the firs
 
 Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
 
-See <a class="tdlp" href="/dev-guide/java/features#signal-with-start"> `SignalwithStart`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to send a Signal-with-Start in Java</span><br /><br /><span class="tdlppd">To send Signals to a Workflow Execution whose status is unknown, use `SignalWithStart` with a `WorkflowStub` in the Client code.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#signal-with-start">Learn more</a></span></span></a> to start a Workflow Execution to receive a Signal from within another Workflow.
+See [`SignalwithStart`](/dev-guide/java/features#signal-with-start) to start a Workflow Execution to receive a Signal from within another Workflow.
 
 **Using `WorkflowStub`**
 
@@ -1349,7 +1349,7 @@ You can use a typed or untyped `WorkflowStub` in the client code.
 - An untyped `WorkflowStub` does not use the Workflow interface, and is not type safe. It is more flexible because it has methods from the `WorkflowStub` interface, such as `start`, `signalWithStart`, `getResults` (sync and async), `query`, `signal`, `cancel` and `terminate`.
   Note that the Temporal Java SDK also provides typed `WorkflowStub` versions for these methods.
   When using untyped `WorkflowStub`, we rely on the Workflow Type, Activity Type, Child Workflow Type, as well as Query and Signal names.
-  For details, see <a class="tdlp" href="#connect-to-a-dev-cluster">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a Temporal Client in Java</span><br /><br /><span class="tdlppd">To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#connect-to-a-dev-cluster">Learn more</a></span></span></a>.
+  For details, see [Temporal Client](#connect-to-a-dev-cluster).
 
 A Workflow Execution can be started either synchronously or asynchronously.
 
@@ -1430,7 +1430,7 @@ To check what type is running when your Dynamic Workflow `execute` method runs, 
 String type = Workflow.getInfo().getWorkflowType();
 ```
 
-See <a class="tdlp" href="#get-workflow-results">Workflow Execution Result<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to get the result of a Workflow Execution in Java</span><br /><br /><span class="tdlppd">A synchronous Workflow Execution blocks your client thread until the Workflow Execution completes (or fails) and get the results (or error in case of failure). An asynchronous Workflow Execution immediately returns a value to the caller.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#get-workflow-results">Learn more</a></span></span></a> for details on how to get the results of the Workflow Execution.
+See [Workflow Execution Result](#get-workflow-results) for details on how to get the results of the Workflow Execution.
 
 **Using `ExternalWorkflowStub`**
 
@@ -1449,11 +1449,11 @@ See the [Temporal Polyglot](https://github.com/tsurdilo/temporal-polyglot) code 
 
 **Recurring start**
 
-You can start a Workflow Execution on a regular schedule by using <a class="tdlp" href="/dev-guide/java/features#cron-schedule"> `setCronSchedule`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set a Cron Schedule in Java</span><br /><br /><span class="tdlppd">Set the Cron Schedule with the `WorkflowStub` instance in the Client code using [`WorkflowOptions.Builder.setCronSchedule`</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#cron-schedule">Learn more</a></span></span></a> Workflow option in the Client code.
+You can start a Workflow Execution on a regular schedule by using [`setCronSchedule`](/dev-guide/java/features#cron-schedule) Workflow option in the Client code.
 
 ### How to set a Workflow's Task Queue {#set-task-queue}
 
-In most SDKs, the only Workflow Option that must be set is the name of the <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>.
+In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/workers#task-queue).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
 
@@ -1476,7 +1476,7 @@ YourWorkflowInterface workflow1 =
 
 ### How to set a Workflow Id {#workflow-id}
 
-Although it is not required, we recommend providing your own <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></span></span></a> that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+Although it is not required, we recommend providing your own [Workflow Id](/workflows#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
 Set the Workflow Id with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowId​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
@@ -1554,7 +1554,7 @@ YourWorkflowInterface workflow1 =
 
 #### WorkflowExecutionTimeout
 
-Set the <a class="tdlp" href="/workflows#workflow-execution-timeout">Workflow Execution Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution Timeout?</span><br /><br /><span class="tdlppd">A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution-timeout">Learn more</a></span></span></a> with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowExecutionTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+Set the [Workflow Execution Timeout](/workflows#workflow-execution-timeout) with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowExecutionTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
 - Type: `time.Duration`
 - Default: Unlimited
@@ -1658,7 +1658,7 @@ GreetWorkflowInterface workflow1 =
 
 #### CronSchedule
 
-A <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#temporal-cron-job">Learn more</a></span></span></a> is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
+A [Temporal Cron Job](/workflows#temporal-cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
 A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
 
