@@ -65,7 +65,7 @@ If you are using an existing certificate management infrastructure, contact the 
 
 If you are using a self-signed certificate or don't have an existing infrastructure, you can generate a new certificate using OpenSSL or [certstrap](https://github.com/square/certstrap).
 
-For information on generating a self-signed certificate, see [Control authorization](/cloud/certificates#control-authorization).
+For information on generating a self-signed certificate, see [Control authorization](/cloud/certificates-authorization).
 
 ### Update the CA certification in the server configuration
 
@@ -73,8 +73,8 @@ Update the new CA certificate in the Temporal Cloud server configuration.
 
 You can update certificates using any of the following methods:
 
-- [Update certificates using Temporal Cloud UI](https://docs.temporal.io/cloud/how-to-manage-certificates-in-temporal-cloud#update-certificates-using-temporal-cloud-ui)
-- [Update certificates using tcld](https://docs.temporal.io/cloud/how-to-manage-certificates-in-temporal-cloud#update-certificates-using-tcld)
+- [Update certificates using Temporal Cloud UI](/cloud/certificates-namespace#update-certificates-using-temporal-cloud-ui)
+- [Update certificates using tcld](/cloud/certificates-namespace#update-certificates-using-tcld)
 
 After you update the TLS certification in the server configuration, retry your connection.
 
@@ -88,4 +88,4 @@ Add reminders to your calendar to issue new CA certificates well before the expi
 The preceding steps should help you troubleshoot the `failed reaching server: last connection error` error caused by an expired TLS certificate.
 
 If this issue persists, verify that the Client you are using to connect to the server is using the correct TLS certification and that the Client requests reach the server after the roles are fully initialized.
-If you still need help, [create a support ticket](/cloud/support#support-ticket).
+If you still need help, [create a support ticket](/cloud/support-create-ticket).

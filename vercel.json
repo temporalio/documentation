@@ -862,8 +862,12 @@
       "destination": "/java/task-queues"
     },
     {
-      "source": "/java-testing-and-debugging",
-      "destination": "/java/testing-and-debugging"
+      "source": "/java-testing-and-debugging:path*",
+      "destination": "/java/testing:path*"
+    },
+    {
+      "source": "/java/testing-and-debugging:path*",
+      "destination": "/java/testing:path*"
     },
     {
       "source": "/java-sdk-tutorial-prerequisites",

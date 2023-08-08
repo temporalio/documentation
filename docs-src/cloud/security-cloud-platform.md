@@ -33,13 +33,13 @@ For more information, see [Requirements for CA certificates in Temporal Cloud](/
 
 Authentication to gRPC endpoints is provided by mTLS per Namespace.
 
-For more information, see [How to manage SAML authentication with Temporal Cloud](/cloud/saml).
+For more information, see [How to manage SAML authentication with Temporal Cloud](/cloud/how-to-manage-saml-with-temporal-cloud).
 
 ### Access
 
 Authorization is managed at the account and Namespace level.
 Users and systems are assigned one or more preconfigured roles.
-Users hold [account-level Roles](/cloud/users#account-level-roles) of administrators, developers, and read-only users.
+Users hold [account-level Roles](/cloud/users-account-level-roles) of administrators, developers, and read-only users.
 Systems and applications processes hold their own distinct roles.
 
 ### Monitoring
