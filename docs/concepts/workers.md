@@ -7,12 +7,12 @@ description: There is a tight coupling between Temporal Task Queues and Worker P
 slug: /workers
 toc_max_heading_level: 4
 keywords:
-- term
 - explanation
+- term
 - versioning
 tags:
-- term
 - explanation
+- term
 - versioning
 ---
 

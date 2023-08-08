@@ -2,6 +2,10 @@
 id: activities
 title: Activities in PHP
 sidebar_label: Activities
+description: Activities in PHP
+tags:
+    - php
+    - activities
 ---
 
 :::info Try the Developer's guide

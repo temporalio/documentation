@@ -4,8 +4,11 @@ title: How to spawn a Workflow Execution in Go
 sidebar_label: Workflow Execution
 description: Use the `ExecuteWorkflow()` method on the Go SDK `Client`, which is available via `Dial()` in the `go.temporal.io/sdk/client` package.
 tags:
-  - developer-guide
-  - go
+  - developer-guide-doc-type
+  - go sdk
+  - workflows
+  - workflow execution
+  - how-to-doc-type
 ---
 
 To spawn a [Workflow Execution](/workflows#workflow-execution), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).

@@ -1,6 +1,16 @@
 ---
 id: versioning
 title: Versioning
+sidebar_label: Versioning
+description: Temporal Workflow Versioning
+tags:
+    - php
+    - versioning
+    - workflow versioning
+    - temporal versioning
+    - temporal workflow versioning
+    - temporal php versioning
+    - temporal php workflow versioning
 ---
 
 The definition code of a Temporal Workflow must be deterministic because Temporal uses event sourcing

@@ -4,7 +4,8 @@ title: How to install a Temporal SDK
 description: A Temporal SDK provides a framework for Temporal Application development.
 sidebar_label: Install a Temporal SDK
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - go sdk
 ---
 
 A [Temporal SDK](/concepts/what-is-a-temporal-sdk) provides a framework for [Temporal Application](/concepts/what-is-a-temporal-application) development.

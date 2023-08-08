@@ -5,6 +5,9 @@ sidebar_label: server
 description: Commands for managing the Temporal Server.
 tags:
   - cli reference
+  - temporal cli
+  - server
+  - command-line-interface-cli
 ---
 
 Server commands allow you to start and manage the [Temporal Server](/concepts/what-is-the-temporal-server) from the command line.

@@ -2,6 +2,9 @@
 id: how-to-set-a-schedule-to-close-timeout-in-php
 title: How to set Schedule-to-Close Timeout in PHP
 sidebar_label: Schedule-to-Start Timeout
+description: Set Schedule-to-Close Timeout with ActivityOptions.
+tags:
+ - activity
 ---
 
 Because Activities are reentrant, only a single stub can be used for multiple Activity invocations.

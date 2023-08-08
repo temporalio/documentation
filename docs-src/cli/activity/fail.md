@@ -3,8 +3,14 @@ id: fail
 title: temporal activity fail
 sidebar_label: fail
 description: Fails an Activity.
-tags:
-  - cli reference
+tags: 
+    - cli reference
+    - temporal cli 
+    - activity
+    - activity execution 
+    - activity fail
+    - cli-feature
+    - command-line-interface-cli
 ---
 
 The `temporal activity fail` command fails an [Activity Execution](/concepts/what-is-an-activity-execution).

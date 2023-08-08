@@ -5,10 +5,14 @@ sidebar_label: batch
 description: Operations performed on Batch jobs.
 tags:
   - cli reference
+  - temporal cli
+  - batch
+  - cli-feature
+  - command-line-interface-cli
 ---
 
 Batch commands allow you to change multiple [Workflow Executions](/concepts/what-is-a-workflow-execution) in the background.
-In order to do this, you provide the command with a [List Filter](/concepts/what-is-visibility) and the type of Batch job to execute.
+In order to do this, you provide the command with a [List Filter](/concepts/what-is-a-list-filter) and the type of Batch job to execute.
 
 The List Filter identifies the Workflow Executions that will be affected by the Batch job.
 The Batch type determines the other parameters that need to be provided, along with what is being affected on the Workflow Executions.

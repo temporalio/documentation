@@ -2,6 +2,10 @@
 id: how-to-set-a-heartbeat-timeout-in-php
 title: How to set a Heartbeat Timeout in PHP
 sidebar_label: Heartbeat Timeout
+description: Set a Heartbeat Timeout
+tags:
+    - php
+    - heartbeat timeout
 ---
 
 Some Activities are long-running.

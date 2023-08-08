@@ -4,7 +4,11 @@ title: How to use Worker Session APIs
 sidebar_label: Worker Sessions
 description: To use Worker Sessions for Activity Executions the Worker must be enabled to use Sessions for the Workflows and Activities it is registered with.
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - api
+  - sessions
+  - workers
+  - go sdk
 ssdi:
   - This feature is currently available only in the Go SDK.
 ---

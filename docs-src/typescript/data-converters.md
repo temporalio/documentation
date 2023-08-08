@@ -2,7 +2,10 @@
 id: data-converters
 title: Data Converters
 sidebar_label: Data Converters
-description: Learn and customize how data is serialized in the TypeScript SDK
+description: Learn and customize how data is serialized in the TypeScript SDK.
+tags:
+    - typescript
+    - data converters
 ---
 
 > Background reading: [Data Converters in Temporal](/concepts/what-is-a-data-converter/)

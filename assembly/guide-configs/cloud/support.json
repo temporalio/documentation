@@ -1,0 +1,22 @@
+{
+    "file_name": "support.md",
+    "id": "support",
+    "file_dir": "cloud/introduction",
+    "title": "What kind of support does Temporal Cloud provide?",
+    "sidebar_label": "Support",
+    "sidebar_position": 4,
+    "description": "Temporal Cloud users can reach out for help through our community Slack channel, or file a support ticket through Zendesk. ",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cloud/support-intro"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/support-create-ticket"
+        }
+    ]
+}

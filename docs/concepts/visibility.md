@@ -7,14 +7,14 @@ description: This guide provides a comprehensive overview of Temporal Visibility
 slug: /visibility
 toc_max_heading_level: 4
 keywords:
-- term
 - explanation
 - filtered-lists
+- term
 - visibility
 tags:
-- term
 - explanation
 - filtered-lists
+- term
 - visibility
 ---
 
@@ -64,7 +64,7 @@ Visibility, within the Temporal Platform, is the subsystem and APIs that enable 
 - For Temporal Server versions 1.19.1 and earlier, you must <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">integrate with ElasticSearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a> to use advanced Visibility.
   Elasticsearch takes on the Visibility request load, relieving potential performance issues.
   We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
-- On Temporal Cloud, [advanced Visibility is enabled by default for all users](/cloud/how-to-get-started-with-temporal-cloud#invite-users).
+- On Temporal Cloud, [advanced Visibility is enabled by default for all users](/cloud/get-started#invite-users).
 
 ## What is Dual Visibility? {#dual-visibility}
 

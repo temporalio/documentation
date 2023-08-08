@@ -2,6 +2,9 @@
 id: how-to-define-activity-parameters-in-php
 title: Define Activity parameters in PHP
 sidebar_label: Activity parameters
+description: Define Activity parameters
+tags:
+ - activity
 ---
 
 Each method defines a single Activity type.

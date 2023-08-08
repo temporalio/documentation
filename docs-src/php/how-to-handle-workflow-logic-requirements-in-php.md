@@ -2,6 +2,11 @@
 id: how-to-handle-workflow-logic-requirements-in-php
 title: How to handle Workflow logic requirements in PHP
 sidebar_label: Activity Execution
+description: How to handle Workflow logic requirements in PHP
+tags:
+ - workflow
+ - replay
+ - activity
 ---
 
 \*\*Temporal uses the [Microsoft Azure Event Sourcing pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/event-sourcing) to recover the state of a Workflow object including its local variable values.

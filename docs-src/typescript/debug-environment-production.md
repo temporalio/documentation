@@ -18,4 +18,4 @@ You can debug production Workflows using:
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/dev-guide/worker-performance).
 For information on setting up SDK metrics, see [Metrics](/dev-guide/typescript/observability#metrics) in the Observability section of the TypeScript SDK developer's guide.
 
-Debug Server performance with [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).
+Debug Server performance with [Cloud metrics](/cloud/metrics-intro) or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).

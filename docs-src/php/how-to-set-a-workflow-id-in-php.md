@@ -2,6 +2,10 @@
 id: how-to-set-a-workflow-id-in-php
 title: How to set a Workflow Id in PHP
 sidebar_label: Workflow Id
+description: Set a Workflow Id
+tags:
+    - php
+    - workflow id
 ---
 
 The following code example grabs the `userID` as an input and uses it to start the Workflow. The `userID` is used as Workflow Id. You can use this to cancel your Workflow later.

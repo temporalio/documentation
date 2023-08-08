@@ -2,6 +2,9 @@
 id: how-to-define-workflow-return-values-in-php
 title: Define Workflow return values in PHP
 sidebar_label: Workflow return values
+description: Define Workflow return values
+tags:
+ - workflow
 ---
 
 A Workflow method returns a Generator.
