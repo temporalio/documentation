@@ -489,7 +489,7 @@ Use valid JSON formats for value.
 ## metrics-port
 
 Port for `/metrics`.
-Disabled by default.
+Enabled by default with a randomly assigned port.
 
 ## name
 
