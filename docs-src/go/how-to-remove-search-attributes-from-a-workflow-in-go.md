@@ -4,8 +4,11 @@ title: How to remove Search Attributes from a Workflow in Go
 sidebar_label: How to remove Search Attributes from a Workflow
 description: How to remove Search Attributes from a Workflow
 tags:
-  - developer-guide
-  - go
+  - developer-guide-doc-type
+  - go sdk
+  - search attributes
+  - workflows
+  - how-to-doc-type
 ---
 
 **There is no support for removing a field.**
