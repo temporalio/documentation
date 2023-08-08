@@ -4,7 +4,12 @@ title: How to debug in a production environment
 description: Debug production Workflows using the Web UI, tctl, Replays, Tracing, or Logging.
 sidebar_label: Debug in a production environment
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - go sdk
+  - debugging
+  - production
+  - workflow
+  - logging and metrics
 ---
 
 You can debug production Workflows using:

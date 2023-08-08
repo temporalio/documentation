@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday August 07 2023 12:19:50 PM -0500
+Last assembled: Tuesday August 08 2023 13:19:17 PM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -1013,5 +1013,9 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+cli/cmd-options/config -> /cli/cmd-options#config
+
+cli/cmd-options/output-filename -> /cli/cmd-options#output-filename
 
 

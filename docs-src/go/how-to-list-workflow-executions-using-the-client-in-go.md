@@ -4,9 +4,14 @@ title: How to list Workflow Executions using the Client in Go
 sidebar_label: List Workflow Executions using the Client
 description: List Workflow Executions using the Client
 tags:
-  - developer-guide
-  - go
-  - client
+  - developer-guide-doc-type
+  - go sdk
+  - temporal client
+  - developer-guide-doc-type
+  - workflow executions
+  - search attributes
+  - list filter
+  - visibility
 ---
 
 The [ListWorkflow()](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) function retrieves a list of [Workflow Executions](/concepts/what-is-a-workflow-execution) that match the [Search Attributes](/concepts/what-is-a-search-attribute) of a given [List Filter](/concepts/what-is-a-list-filter).

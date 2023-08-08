@@ -3,16 +3,17 @@ id: cron
 title: temporal cron
 sidebar_label: cron
 description: Optional Cron Schedule for the Workflow.
-tags: 
-    - cli reference
-    - temporal cli
-    - options-feature
-    - command-line-interface-cli
-    - cron
+tags:
+  - cli reference
+  - temporal cli
+  - options-feature
+  - command-line-interface-cli
+  - cron
 ---
 
+The Cron schedule can be formatted like the following:
+
 ```text
-Optional Cron Schedule for the Workflow.
 ┌───────────── minute (0 - 59)
 │ ┌───────────── hour (0 - 23)
 │ │ ┌───────────── day of the month (1 - 31)

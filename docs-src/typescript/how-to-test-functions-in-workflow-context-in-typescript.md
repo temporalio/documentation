@@ -34,7 +34,7 @@ const worker = await Worker.create({
 });
 
 const result = await worker.runUntil(
-  testEnv.workflowClient.execute(functionToTest, workflowOptions),
+  testEnv.client.workflow.execute(functionToTest, workflowOptions),
 );
 
 assert.equal(result, 42);

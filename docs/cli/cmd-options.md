@@ -288,8 +288,9 @@ An optional timeout for the context of an RPC call (in seconds).
 
 ## cron
 
+The Cron schedule can be formatted like the following:
+
 ```text
-Optional Cron Schedule for the Workflow.
 ┌───────────── minute (0 - 59)
 │ ┌───────────── hour (0 - 23)
 │ │ ┌───────────── day of the month (1 - 31)

@@ -4,7 +4,9 @@ title: How to emit metrics
 description: Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 sidebar_label: Metrics
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - go sdk
+  - logging and metrics
 ---
 
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
