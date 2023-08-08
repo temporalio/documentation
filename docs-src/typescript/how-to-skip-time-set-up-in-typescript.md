@@ -33,7 +33,7 @@ afterAll(async () => {
 });
 ```
 
-`TestWorkflowEnvironment` has a [`client.workflow`](https://typescript.temporal.io/api/classes/testing.testworkflowenvironment/#workflowclient) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection) for creating Workers:
+`TestWorkflowEnvironment` has [`client.workflow`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment/#workflowclient) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection) for creating Workers:
 
 ```typescript
 import { Worker } from '@temporalio/worker';
@@ -57,4 +57,4 @@ test('workflowFoo', async () => {
 ```
 
 This test uses the test connection to create a Worker, runs the Worker until the Workflow is complete, and then makes an assertion about the Workflow’s result.
-The Workflow is executed using `testEnv.workflowClient`, which is connected to the test server.
+The Workflow is executed using `testEnv.client.workflow`, which is connected to the test server.
