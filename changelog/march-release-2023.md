@@ -14,6 +14,6 @@ Since our last change log in January 2023, we published the following content:
 
 - The term [Replay](/workflows#replays) is now defined in the Workflow concept page.
 
-- The Temporal Cloud [Audit Logging guide](/cloud/how-to-manage-audit-logging) is now available.
+- The Temporal Cloud [Audit Logging guide](/cloud/audit-logging) is now available.
 
 - Guidance on how to submit a [support ticket](/cloud/support#support-ticket) for Temporal Cloud users is now available.

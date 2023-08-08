@@ -79,7 +79,7 @@ Asynchronous Activity Completion occurs when an external system provides the fin
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Audit Logging](/cloud/how-to-manage-audit-logging#)
+#### [Audit Logging](/cloud/audit-logging#)
 Audit Logging is a feature that provides forensic access information for accounts, users, and Namespaces.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/tags/temporal-cloud), [operations](/tags/operations)_
