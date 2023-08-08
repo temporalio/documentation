@@ -23,7 +23,7 @@ The following limits are applied to the entire account:
 
 The following limits are applied to each Namespace:
 
-- Actions per second: 200 (with spikes to 400)
+- [Actions](/cloud/what-is-an-action) per second: 200 (with spikes to 400)
 - Certificates: 32-KB payload or 16 certificates, whichever is smaller
 - Concurrent Task pollers: 2,000 (configurable; maximum of 100,000)
 - Custom Search Attributes (maximum per type)
