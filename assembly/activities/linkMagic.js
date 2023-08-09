@@ -3,6 +3,7 @@ import sizeOf from "image-size";
 import fs from "fs-extra";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
+import { localRef } from "../common/index.js";
 
 const docsLinkRegex = "\\[([a-zA-Z0-9-_#.&`',?\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)(#[a-zA-Z0-9-_.]+)?\\)";
 const linkRegex = RegExp(docsLinkRegex, "gm");
@@ -125,7 +126,8 @@ function linkPreview(newPath, linkText, link) {
   let tags = "";
   if (link.node_tags.length > 0) {
     tags = `<div class="preview-modal-tags">`;
-    for (const t of link.node_tags) {
+    for (let t of link.node_tags) {
+      t = localRef(link.node_id, t);
       tags = `${tags}<a class="preview-modal-tag" href="/tags/${t}">${t}</a> `;
     }
     tags = tags.slice(0, -1);

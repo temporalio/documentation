@@ -22,7 +22,6 @@ keywords:
 - cluster
 - codec server
 - command-line-interface-cli
-- command-line-interface-cli,
 - concurrency control
 - configuration
 - context
@@ -128,7 +127,6 @@ tags:
 - cluster
 - codec-server
 - command-line-interface-cli
-- command-line-interface-cli,
 - concurrency-control
 - configuration
 - context
@@ -528,7 +526,7 @@ Promote local namespace to global namespace.
 ## query
 
 Visibility Query of Search Attributes describing the Workflow Executions to reset.
-For details, see the [temporal workflow list](/cli/workflow#list) <span id="i-49164ca9-ce74-499a-9d0d-1f40af13fa33" class="clickable-i clickable-link-preview">i</span><div id="preview-modal-49164ca9-ce74-499a-9d0d-1f40af13fa33" class="preview-modal"><div class="modal-header"><div id="x-49164ca9-ce74-499a-9d0d-1f40af13fa33" class="clickable-x clickable-link-preview">x</div><b>Link preview:</b>&nbsp;&nbsp<a href="/cli/workflow#list">/cli/workflow#list</a></div><div class="preview-modal-title">temporal workflow list</div><div class="preview-modal-description">List Workflow Executions based on a Query.</div><div class="preview-modal-tags"><a class="preview-modal-tag" href="/tags/cli reference">cli reference</a> <a class="preview-modal-tag" href="/tags/temporal cli">temporal cli</a> <a class="preview-modal-tag" href="/tags/workflow">workflow</a> <a class="preview-modal-tag" href="/tags/command-line-interface-cli">command-line-interface-cli</a> <a class="preview-modal-tag" href="/tags/workflow list">workflow list</a></div></div> command.
+For details, see the [temporal workflow list](/cli/workflow#list) <span id="i-eb3f6cf9-2512-4ff4-ad3d-76586811f5a5" class="clickable-i clickable-link-preview">i</span><div id="preview-modal-eb3f6cf9-2512-4ff4-ad3d-76586811f5a5" class="preview-modal"><div class="modal-header"><div id="x-eb3f6cf9-2512-4ff4-ad3d-76586811f5a5" class="clickable-x clickable-link-preview">x</div><b>Link preview:</b>&nbsp;&nbsp<a href="/cli/workflow#list">/cli/workflow#list</a></div><div class="preview-modal-title">temporal workflow list</div><div class="preview-modal-description">List Workflow Executions based on a Query.</div><div class="preview-modal-tags"><a class="preview-modal-tag" href="/tags/cli-reference">cli-reference</a> <a class="preview-modal-tag" href="/tags/temporal-cli">temporal-cli</a> <a class="preview-modal-tag" href="/tags/workflow">workflow</a> <a class="preview-modal-tag" href="/tags/command-line-interface-cli">command-line-interface-cli</a> <a class="preview-modal-tag" href="/tags/workflow-list">workflow-list</a></div></div> command.
 
 ## raw
 
