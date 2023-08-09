@@ -326,6 +326,11 @@ module.exports = {
       async: true,
       defer: true,
     },
+    {
+      src: "/scripts/link-previews.js",
+      async: true,
+      defer: true,
+    },
   ],
   plugins: [
     function preloadFontPlugin() {

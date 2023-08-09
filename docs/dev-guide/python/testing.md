@@ -192,7 +192,7 @@ For information about assert statements in Python, see [`assert`](https://docs.p
 Replay recreates the exact state of a Workflow Execution.
 You can replay a Workflow from the beginning of its Event History.
 
-Replay succeeds only if the <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a> is compatible with the provided history from a deterministic point of view.
+Replay succeeds only if the [Workflow Definition](/workflows#workflow-definition) <span id="i-5c6a76c8-751d-47de-9099-28edfb61edd7" class="clickable-i clickable-link-preview">🔗</span><div id="preview-modal-5c6a76c8-751d-47de-9099-28edfb61edd7" class="preview-modal"><div class="modal-header"><div id="x-5c6a76c8-751d-47de-9099-28edfb61edd7" class="clickable-x clickable-link-preview">x</div><b>Link preview</b></div><div class="preview-modal-title">What is a Workflow Definition?</div><div class="preview-modal-description">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</div><div class="preview-modal-tags"><span class="preview-modal-tag">term</span> <span class="preview-modal-tag">explanation</span></div></div> is compatible with the provided history from a deterministic point of view.
 
 When you test changes to your Workflow Definitions, we recommend doing the following as part of your CI checks:
 

@@ -776,38 +776,90 @@ h1 {
   margin: 0 auto;
 }
 
-.tdlpiw {
-  margin-left: 2px;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-a.tdlp .tdlpc {
+/* By default, the element is hidden */
+.clickable-i {
   display: none;
-  padding: 7px 15px;
-  margin-top: -125px;
-  margin-left: -120px;
-  max-width: 365px;
-  color: var(--ifm-preview-text);
 }
 
-a.tdlp:hover .tdlpc {
-  display: inline;
-  position: absolute;
-  background-color: var(--ifm-background-color);
-  border: 1px solid #dbdbdb;
-  border-radius: 3px;
-  z-index: 5;
+/* When the screen width is greater than or equal to 1024px (common desktop size), the element is shown */
+@media (min-width: 1024px) {
+  .clickable-i {
+    display: inline-block;
+    font-style: italic;
+    margin-left: 1px;
+    font-size: 0.8em;
+    vertical-align: middle;
+    cursor: pointer;
+    font-weight: 600;
+  }
 }
 
-.tdlppt {
+.clickable-x {
+  cursor: pointer;
+  max-width: min-content;
+  padding: 0px 7px 2px 7px; /* Adjust the padding to your preference */
+  border: 2px solid #141414; /* Border styling */
+  vertical-align: middle; /* Align it vertically in the middle */
+  font-size: 0.8em; /* Adjust font size if needed */
   font-weight: 600;
-  font-size: 1em;
+  margin-right: 15px;
 }
 
-.tdlppd {
+.preview-modal {
+  max-width: fit-content;
+  background-color: white;
+  border: 1px solid #a4bcc4; /* Soft blue color */
+  border-radius: 3px;
+  color: #141414;
+  position: absolute;
+  z-index: 1000; /* Ensuring the modal is above other content */
+  transform: translateY(-6em); /* Slightly above the clicked spot */
+  padding: 15px; /* Some padding for the content inside the modal */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: a little shadow for depth */
+  display: none; /* Default to hidden */
+}
+
+.modal-header {
+  display: flex;
+  align-items: center; /* Vertically center align the children */
+  margin-bottom: 15px;
+}
+
+.preview-modal-title {
+  font-size: 1.1em;
+  font-weight: 400;
+  margin-bottom: 15px;
+}
+
+.preview-modal-description {
+  font-size: 0.9em;
+  font-weight: 400;
+  margin-bottom: 15px;
+}
+
+.preview-modal-tags {
+  list-style-type: none; /* Remove default bullet points */
+  padding: 0; /* Remove default padding */
+  display: flex; /* Make list items display horizontally */
+  flex-wrap: wrap; /* Allow the tags to wrap onto the next line if needed */
+}
+
+.preview-modal-tag {
+  background-color: #f2f2f2; /* Slight gray background */
+  border-radius: 3px; /* Rounded corners */
+  padding: 3px 7px; /* Some space around the text inside each tag */
+  margin-right: 5px; /* Space between tags horizontally */
+  margin-bottom: 5px; /* Space between tags vertically (when they wrap to the next line) */
   font-size: 0.8em;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .dacx-source-link {

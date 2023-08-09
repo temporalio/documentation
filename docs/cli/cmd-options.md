@@ -528,7 +528,7 @@ Promote local namespace to global namespace.
 ## query
 
 Visibility Query of Search Attributes describing the Workflow Executions to reset.
-For details, see the <a class="tdlp" href="/cli/workflow#list">temporal workflow list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal workflow list</span><br /><br /><span class="tdlppd">List Workflow Executions based on a Query.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/workflow#list">Learn more</a></span></span></a> command.
+For details, see the [temporal workflow list](/cli/workflow#list) <span id="i-7db71be3-f6e7-4ebc-91f7-2a30eb439f2c" class="clickable-i clickable-link-preview">🔗</span><div id="preview-modal-7db71be3-f6e7-4ebc-91f7-2a30eb439f2c" class="preview-modal"><div class="modal-header"><div id="x-7db71be3-f6e7-4ebc-91f7-2a30eb439f2c" class="clickable-x clickable-link-preview">x</div><b>Link preview</b></div><div class="preview-modal-title">temporal workflow list</div><div class="preview-modal-description">List Workflow Executions based on a Query.</div><div class="preview-modal-tags"><span class="preview-modal-tag">cli reference</span> <span class="preview-modal-tag">temporal cli</span> <span class="preview-modal-tag">workflow</span> <span class="preview-modal-tag">command-line-interface-cli</span> <span class="preview-modal-tag">workflow list</span></div></div> command.
 
 ## raw
 

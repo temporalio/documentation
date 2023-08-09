@@ -265,7 +265,7 @@ By default, Activities, Child Workflows, and Continue-as-New use the same compat
 
 If you want to override this behavior, you can specify your intent via the `VersioningIntent` field on the appropriate options struct.
 
-<!-- For more information refer to the <a class="tdlp" href="/workers#worker-versioning">conceptual documentation<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Worker Versioning?</span><br /><br /><span class="tdlppd">Worker Versioning lets you more easily deploy changes to Workflow Definitions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-versioning">Learn more</a></span></span></a>. -->
+<!-- For more information refer to the [conceptual documentation](/workers#worker-versioning) <span id="i-a20ed885-ec6f-49b8-b9b1-9cd10dcd73cd" class="clickable-i clickable-link-preview">🔗</span><div id="preview-modal-a20ed885-ec6f-49b8-b9b1-9cd10dcd73cd" class="preview-modal"><div class="modal-header"><div id="x-a20ed885-ec6f-49b8-b9b1-9cd10dcd73cd" class="clickable-x clickable-link-preview">x</div><b>Link preview</b></div><div class="preview-modal-title">What is Worker Versioning?</div><div class="preview-modal-description">Worker Versioning lets you more easily deploy changes to Workflow Definitions.</div><div class="preview-modal-tags"><span class="preview-modal-tag">explanation</span> <span class="preview-modal-tag">versioning</span></div></div>. -->
 
 For example, if you want to use the latest default version for an Activity, do the following inside your Workflow code:
 

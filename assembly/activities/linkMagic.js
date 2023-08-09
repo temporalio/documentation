@@ -2,6 +2,7 @@ import svgParser from "svg-parser";
 import sizeOf from "image-size";
 import fs from "fs-extra";
 import path from "path";
+import { v4 as uuidv4 } from "uuid";
 
 const docsLinkRegex = "\\[([a-zA-Z0-9-_#.&`',?\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)(#[a-zA-Z0-9-_.]+)?\\)";
 const linkRegex = RegExp(docsLinkRegex, "gm");
@@ -119,8 +120,18 @@ function centeredImage(image, dimensions) {
   return `<div class="tdiw"><div class="tditw"><p class="tdit">${image[1]}</p></div><div class="tdiiw"><img class="img_ev3q" src="${image[2]}" alt="${image[1]}" height="${dimensions.height}" width="${dimensions.width}" /></div></div>`;
 }
 
-function linkPreview(newPath, linkText, nodeTitle, description) {
-  return `<a class="tdlp" href="${newPath}">${linkText}<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">${nodeTitle}</span><br /><br /><span class="tdlppd">${description}</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="${newPath}">Learn more</a></span></span></a>`;
+function linkPreview(newPath, linkText, link) {
+  const id = uuidv4();
+  let tags = "";
+  if (link.node_tags.length > 0) {
+    tags = `<div class="preview-modal-tags">`;
+    for (const t of link.node_tags) {
+      tags = `${tags}<span class="preview-modal-tag">${t}</span> `;
+    }
+    tags = tags.slice(0, -1);
+    tags = `${tags}</div>`;
+  }
+  return `[${linkText}](${newPath}) <span id="i-${id}" class="clickable-i clickable-link-preview">🔗</span><div id="preview-modal-${id}" class="preview-modal"><div class="modal-header"><div id="x-${id}" class="clickable-x clickable-link-preview">x</div><b>Link preview</b></div><div class="preview-modal-title">${link.node_title}</div><div class="preview-modal-description">${link.node_description}</div>${tags}</div>`;
 }
 
 function getImageDimensions(imgPath) {
@@ -161,7 +172,7 @@ async function replaceLinks(line, match, link, current_guide_id) {
     newPath = `${localRef}`;
   }
   // convert to link preview
-  const html = linkPreview(newPath, match[1], link.node_title, link.node_description);
+  const html = linkPreview(newPath, match[1], link);
   line = line.replaceAll(replaceable, html);
   pushToLinkMapping(link.node_id, newPath);
   return line;

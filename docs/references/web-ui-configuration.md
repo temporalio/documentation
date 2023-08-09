@@ -23,7 +23,7 @@ Multiple configuration files can be created for configuring specific areas of th
 ## enableUi
 
 Enables the browser UI.
-This configuration can be set dynamically with the <a class="tdlp" href="/references/web-ui-environment-variables#temporaluienabled">TEMPORAL_UI_ENABLED<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Web UI environmental variables</span><br /><br /><span class="tdlppd">How to set  environmental variables for Temporal Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/web-ui-environment-variables#temporaluienabled">Learn more</a></span></span></a> environment variable.
+This configuration can be set dynamically with the [TEMPORAL_UI_ENABLED](/references/web-ui-environment-variables#temporaluienabled) <span id="i-09488885-17de-4e0b-a8ca-c95a11c73d92" class="clickable-i clickable-link-preview">🔗</span><div id="preview-modal-09488885-17de-4e0b-a8ca-c95a11c73d92" class="preview-modal"><div class="modal-header"><div id="x-09488885-17de-4e0b-a8ca-c95a11c73d92" class="clickable-x clickable-link-preview">x</div><b>Link preview</b></div><div class="preview-modal-title">Temporal Web UI environmental variables</div><div class="preview-modal-description">How to set  environmental variables for Temporal Web UI.</div><div class="preview-modal-tags"><span class="preview-modal-tag">docker</span> <span class="preview-modal-tag">webui</span> <span class="preview-modal-tag">ui server</span> <span class="preview-modal-tag">reference</span></div></div> environment variable.
 If disabled—that is, set to `false`—the UI server APIs remain available.
 
 ```yaml
@@ -33,7 +33,7 @@ enableUi: true
 ## enableOpenApi
 
 Enables the UI Server's Open API reference documentation at `/openapi/`.
-This configuration can be set dynamically with the <a class="tdlp" href="/references/web-ui-environment-variables#temporalopenapienabled">TEMPORAL_OPEN_API_ENABLED<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Web UI environmental variables</span><br /><br /><span class="tdlppd">How to set  environmental variables for Temporal Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/web-ui-environment-variables#temporalopenapienabled">Learn more</a></span></span></a> environment variable.
+This configuration can be set dynamically with the [TEMPORAL_OPEN_API_ENABLED](/references/web-ui-environment-variables#temporalopenapienabled) <span id="i-0002c78e-be3d-44bb-9a56-2299942df615" class="clickable-i clickable-link-preview">🔗</span><div id="preview-modal-0002c78e-be3d-44bb-9a56-2299942df615" class="preview-modal"><div class="modal-header"><div id="x-0002c78e-be3d-44bb-9a56-2299942df615" class="clickable-x clickable-link-preview">x</div><b>Link preview</b></div><div class="preview-modal-title">Temporal Web UI environmental variables</div><div class="preview-modal-description">How to set  environmental variables for Temporal Web UI.</div><div class="preview-modal-tags"><span class="preview-modal-tag">docker</span> <span class="preview-modal-tag">webui</span> <span class="preview-modal-tag">ui server</span> <span class="preview-modal-tag">reference</span></div></div> environment variable.
 For example, if you are currently viewing the Web UI at `http://localhost:8080`, the page is available at [localhost:8080/openapi/](http://localhost:8080/openapi/).
 
 ```yaml
