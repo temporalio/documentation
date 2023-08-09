@@ -1,5 +1,5 @@
 ---
-id: how-to-manage-saml-with-temporal-cloud
+id: saml
 title: How to manage SAML authentication with Temporal Cloud
 sidebar_label: SAML
 sidebar_position: 7
@@ -36,9 +36,9 @@ For more information, contact your account manager.
    The Account Id is the five or six characters following the period (.), such as `f45a2`.
    You will need the Account Id to construct your callback URL and your entity identifier.
 1. Configure SAML with your IdP by following one of these sets of instructions:
-   - [Microsoft Azure Active Directory (Azure AD)](#configure-saml-with-azure-ad)
-   - [Okta](#configure-saml-with-okta)
-1. [Share your connection information with us and test your connection.](#finish-saml-configuration)
+   - [Microsoft Azure Active Directory (Azure AD)](/cloud/saml-azure-ad)
+   - <a class="tdlp" href="#configure-saml-with-okta">Okta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to configure SAML with Okta</span><br /><br /><span class="tdlppd">To use Okta as your SAML IdP, configure a new Okta application integration.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#configure-saml-with-okta">Learn more</a></span></span></a>
+1. <a class="tdlp" href="#finish-saml-configuration">Share your connection information with us and test your connection.<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to finish your SAML configuration</span><br /><br /><span class="tdlppd">To finish your SAML configuration, send us the sign-in URL, X.509 certificate, and IdP domains and then test your connection.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#finish-saml-configuration">Learn more</a></span></span></a>
 
 ## How to configure SAML with Azure AD {#configure-saml-with-azure-ad}
 
@@ -90,7 +90,7 @@ To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
    - In the **SAML Certificates** section of the **SAML-based Sign-on** page, select the download link for **Certificate (Base64)**.
    - In the **Set up _APPLICATION_NAME_** section of the **SAML-based Sign-on** page, copy the value of **Login URL**.
 
-To finish setting up Azure AD as your SAML IdP, see [Finish SAML configuration](#finish-saml-configuration).
+To finish setting up Azure AD as your SAML IdP, see <a class="tdlp" href="#finish-saml-configuration">Finish SAML configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to finish your SAML configuration</span><br /><br /><span class="tdlppd">To finish your SAML configuration, send us the sign-in URL, X.509 certificate, and IdP domains and then test your connection.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#finish-saml-configuration">Learn more</a></span></span></a>.
 
 ## How to configure SAML with Okta {#configure-saml-with-okta}
 
@@ -137,7 +137,7 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
    - Copy the IdP settings.
    - Download the active certificate.
 
-To finish setting up Okta as your SAML IdP, see the next section, [Finish SAML configuration](#finish-saml-configuration).
+To finish setting up Okta as your SAML IdP, see the next section, <a class="tdlp" href="#finish-saml-configuration">Finish SAML configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to finish your SAML configuration</span><br /><br /><span class="tdlppd">To finish your SAML configuration, send us the sign-in URL, X.509 certificate, and IdP domains and then test your connection.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#finish-saml-configuration">Learn more</a></span></span></a>.
 
 ## How to finish your SAML configuration {#finish-saml-configuration}
 

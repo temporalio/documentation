@@ -4,8 +4,11 @@ title: How to configure tracing in Go
 sidebar_label: Configure tracing
 description: Configure tracing
 tags:
-  - go
-  - how-to
+  - go sdk
+  - how-to-doc-type
+  - tracing
+  - interceptor
+  - developer-guide-doc-type
 ---
 
 The [Go SDK](https://github.com/temporalio/sdk-go) provides support for distributed tracing with **_Interceptors_**.

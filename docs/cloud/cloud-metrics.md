@@ -36,7 +36,7 @@ You can use your own observability tool to query an endpoint and review Namespac
 
 To ensure security of your metrics, a CA certificate dedicated to observability is required.
 Only clients that use certificates signed by that CA, or that chain up to the CA, can query the metrics endpoint.
-For more information about CA certificates in Temporal Cloud, see [Certificate requirements](https://docs.temporal.io/cloud/certificates-intro#certificate-requirements).
+For more information about CA certificates in Temporal Cloud, see <a class="tdlp" href="/cloud/certificates#certificate-requirements">Certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/certificates#certificate-requirements">Learn more</a></span></span></a>.
 
 ## How to configure a metrics endpoint using Temporal Cloud UI {#configure-via-ui}
 
@@ -191,7 +191,7 @@ The process for setting up observability includes the following steps:
 
 If you're following through with the examples provided here, ensure that you have the following:
 
-- Root CA certificates and end-entity certificates. See <a class="tdlp" href="/cloud/certificates#certificate-requirements">Certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/certificates#certificate-requirements">Learn more</a></span></span></a> for details.
+- Root CA certificates and end-entity certificates. See <a class="tdlp" href="/cloud/certificates#certificate-requirements">Certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/certificates#certificate-requirements">Learn more</a></span></span></a> for details.
 - Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See Connect to a Cluster for details.
 
   - [Go](/dev-guide/go/foundations#connect-to-a-cluster)
@@ -207,7 +207,8 @@ If you're following through with the examples provided here, ensure that you hav
 Before you set up your Temporal Cloud metrics, ensure that you have the following:
 
 - <a class="tdlp" href="/cloud/users#account-level-roles">Global Admin privileges<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the account-level Roles for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Account-level Roles are Global Admin, Developer, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/users#account-level-roles">Learn more</a></span></span></a> to the Temporal Cloud account.
-- <a class="tdlp" href="/cloud/certificates#">CA certificate and key<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/certificates#">Learn more</a></span></span></a> for the Observability integration. You will need the certificate to set up the Observability endpoint in Temporal Cloud.
+- [CA certificate and key](/cloud/certificates) for the Observability integration.
+  You will need the certificate to set up the Observability endpoint in Temporal Cloud.
 
 The following steps describe how to set up Observability on Temporal Cloud to generate an endpoint:
 
@@ -392,7 +393,8 @@ To add the Temporal Cloud Prometheus HTTP API endpoint that we generated in the 
 3. Enter a name for your Temporal Cloud metrics data source, such as _Temporal Cloud metrics_.
 4. In the **HTTP section**, paste the URL that was generated in the Observability section on the Temporal Cloud UI.
 5. In the **Auth section**, enable **TLS Client Auth**.
-6. In the **TLS/SSL Auth Details** section, paste the end-entity certificate and key. Note that the end-entity certificate used here must be part of the certificate chain with the root CA certificates used in your [Temporal Cloud observability setup](#temporal-cloud-metrics-setup).
+6. In the **TLS/SSL Auth Details** section, paste the end-entity certificate and key.
+   Note that the end-entity certificate used here must be part of the certificate chain with the root CA certificates used in your [Temporal Cloud observability setup](#temporal-cloud-metrics-setup).
 7. Click **Save and test** to verify that the data source is working.
 
 If you see issues in setting this data source, verify your CA certificate chain and ensure that you are setting the correct certificates in your Temporal Cloud observability setup and in the TLS authentication in Grafana.

@@ -33,7 +33,7 @@ For more information, see [Requirements for CA certificates in Temporal Cloud](/
 
 Authentication to gRPC endpoints is provided by mTLS per Namespace.
 
-For more information, see [How to manage SAML authentication with Temporal Cloud](/cloud/how-to-manage-saml-with-temporal-cloud).
+For more information, see [How to manage SAML authentication with Temporal Cloud](/cloud/saml).
 
 ### Access
 

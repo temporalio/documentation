@@ -13,7 +13,7 @@ Temporal Cloud is a fully scalable, robust, production-friendly SaaS with incred
 
 In this section you'll find the following information:
 
-- [Security](/cloud/security-cloud-intro)
-- [Operating envelope](/cloud/operating-envelope-intro)
-- [Pricing](/cloud/pricing-intro)
-- [Support](/cloud/support-intro)
+- [Security](/cloud/security)
+- [Operating envelope](/cloud/operating-envelope)
+- [Pricing](/cloud/pricing)
+- [Support](/cloud/support)

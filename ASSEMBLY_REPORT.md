@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday August 07 2023 20:42:23 PM -0700
+Last assembled: Tuesday August 08 2023 18:43:26 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-dail-macbook
 
@@ -688,17 +688,19 @@ python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
 
-cloud/operating-envelope-intro -> /cloud/operating-envelope#
+cloud/users-account-level-roles -> /cloud/users#account-level-roles
 
-cloud/pricing-intro -> /cloud/pricing#
+cloud/get-started-certificates -> #issue-ca-certificates
 
-cloud/support-intro -> /cloud/support#
+cloud/get-started-namespace -> #create-a-namespace
 
-cloud/users-intro -> /cloud/users#
+cloud/get-started-invite -> #invite-users
 
-cloud/saml-intro -> /cloud/how-to-manage-saml-with-temporal-cloud#
+cloud/get-started-connect -> #connect-to-temporal-cloud
 
-cloud/what-is-audit-logging -> /cloud/how-to-manage-audit-logging#
+cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
+
+cloud/certificates-issue -> /cloud/certificates#issue-certificates
 
 cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
 
@@ -712,17 +714,25 @@ typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connec
 
 cloud/certificates-filters -> #manage-certificate-filters
 
+cloud/users-namespace-level-permissions -> /cloud/users#namespace-level-permissions
+
+cloud/namespaces-access -> #access-namespaces
+
+cloud/namespaces-manage -> #manage-namespaces
+
+cloud/namespaces-delete -> #delete-a-namespace
+
 concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
 
 cloud/support-create-ticket -> /cloud/support#support-ticket
 
-concepts/what-is-a-cloud-namespace-id -> /cloud/namespaces#temporal-cloud-namespace-id
+concepts/what-is-a-cloud-namespace-id -> #temporal-cloud-namespace-id
 
-cloud/users-account-level-roles -> #account-level-roles
+cloud/saml-okta -> #configure-saml-with-okta
 
-cloud/users-namespace-level-permissions -> #namespace-level-permissions
+cloud/saml-finish -> #finish-saml-configuration
 
 cloud/users-update-roles -> #update-roles
 
@@ -735,8 +745,6 @@ cloud/what-is-an-action -> /cloud/pricing#action
 concepts/what-is-a-reset -> /workflows#reset
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
-
-cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 

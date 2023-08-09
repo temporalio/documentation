@@ -1,5 +1,5 @@
 ---
-id: how-to-manage-audit-logging
+id: audit-logging
 title: How to manage Audit Logging in Temporal Cloud
 sidebar_label: Audit Logging
 sidebar_position: 8

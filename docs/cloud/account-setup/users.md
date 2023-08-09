@@ -44,7 +44,7 @@ Attempting to log in to Temporal Cloud without first accepting the invite doesn'
 
 :::info
 
-To invite users, a user must have the Global Admin account-level [Role](/cloud/#account-level-roles).
+To invite users, a user must have the Global Admin account-level <a class="tdlp" href="#account-level-roles">Role<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the account-level Roles for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Account-level Roles are Global Admin, Developer, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#account-level-roles">Learn more</a></span></span></a>.
 
 :::
 
@@ -53,8 +53,8 @@ To invite users, a user must have the Global Admin account-level [Role](/cloud/#
 Each user in Temporal Cloud is assigned a Role.
 Each user can be assigned permissions for individual Namespaces.
 
-- [Account-level Roles](/cloud/#account-level-roles)
-- [Namespace-level permissions](/cloud/#namespace-level-permissions)
+- <a class="tdlp" href="#account-level-roles">Account-level Roles<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the account-level Roles for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Account-level Roles are Global Admin, Developer, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#account-level-roles">Learn more</a></span></span></a>
+- <a class="tdlp" href="#namespace-level-permissions">Namespace-level permissions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the Namespace-level permissions for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Namespace-level permissions are Namespace Admin, Write, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#namespace-level-permissions">Learn more</a></span></span></a>
 
 <!--- How to invite users to your Temporal Cloud account using Web UI --->
 
@@ -63,10 +63,10 @@ Each user can be assigned permissions for individual Namespaces.
 1. In Temporal Web UI, select **Settings** in the left portion of the window.
 1. On the **Settings** page, select **Create Users** in the upper-right portion of the window.
 1. On the **Create Users** page in the **Email Addresses** box, type or paste one or more email addresses.
-1. In **Account-Level Role**, select a [Role](/cloud/#account-level-roles).
+1. In **Account-Level Role**, select a <a class="tdlp" href="#account-level-roles">Role<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the account-level Roles for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Account-level Roles are Global Admin, Developer, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#account-level-roles">Learn more</a></span></span></a>.
    The Role applies to all users whose email addresses appear in **Email Addresses**.
 1. If the account has any Namespaces, they are listed under **Grant access to Namespaces**.
-   To add a permission, select the checkbox next to a Namespace, and then select a [permission](/cloud/#namespace-level-permissions).
+   To add a permission, select the checkbox next to a Namespace, and then select a <a class="tdlp" href="#namespace-level-permissions">permission<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the Namespace-level permissions for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Namespace-level permissions are Namespace Admin, Write, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#namespace-level-permissions">Learn more</a></span></span></a>.
    Repeat as needed.
 1. When all permissions are assigned, select **Send Invite**.
 
@@ -88,20 +88,20 @@ When a Global Admin invites a user to join an account, the Global Admin selects 
 
 - **Global Admin**
   - Has full administrative permissions across the account, including users and usage
-  - Has Namespace Admin [permissions](/cloud/#namespace-level-permissions) on all [Namespaces](/namespaces) in the account
+  - Has Namespace Admin <a class="tdlp" href="#namespace-level-permissions">permissions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the Namespace-level permissions for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Namespace-level permissions are Namespace Admin, Write, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#namespace-level-permissions">Learn more</a></span></span></a> on all <a class="tdlp" href="/namespaces#">Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in the account
 - **Developer**
-  - Can create and update Namespaces; has full control over [Workflows](/workflows)
+  - Can create and update Namespaces; has full control over <a class="tdlp" href="/workflows#">Workflows<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a>
   - Has Namespace Admin permissions for each Namespace created by that user
 - **Read-Only:** Can only read information
 
 ## What are the Namespace-level permissions for users in Temporal Cloud? {#namespace-level-permissions}
 
-A [Global Admin](/cloud/#account-level-roles) can assign permissions for any [Namespace](/namespaces) in an account.
+A <a class="tdlp" href="#account-level-roles">Global Admin<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the account-level Roles for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Account-level Roles are Global Admin, Developer, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#account-level-roles">Learn more</a></span></span></a> can assign permissions for any <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in an account.
 A Developer can assign permissions for a Namespace they create.
 
 For a Namespace, a user can have one of the following permissions:
 
-- **Namespace Admin:** Can <a class="tdlp" href="/cloud/namespaces#create-a-namespace">create<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage Namespaces in Temporal Cloud</span><br /><br /><span class="tdlppd">You can create and manage Namespaces from your Temporal Cloud UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/namespaces#create-a-namespace">Learn more</a></span></span></a> and <a class="tdlp" href="/cloud/namespaces#manage-namespaces">edit Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage Namespaces in Temporal Cloud</span><br /><br /><span class="tdlppd">You can create and manage Namespaces from your Temporal Cloud UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/namespaces#manage-namespaces">Learn more</a></span></span></a>; can create, rename, update, and delete [Workflows](/workflows)
+- **Namespace Admin:** Can <a class="tdlp" href="/cloud/namespaces#create-a-namespace">create<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a Namespace in Temporal Cloud</span><br /><br /><span class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/namespaces#create-a-namespace">Learn more</a></span></span></a> and <a class="tdlp" href="/cloud/namespaces#manage-namespaces">edit Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage Namespaces in Temporal Cloud</span><br /><br /><span class="tdlppd">To manage Namespaces in Temporal Cloud, use either Temporal Cloud UI or tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/namespaces#manage-namespaces">Learn more</a></span></span></a>; can create, rename, update, and delete <a class="tdlp" href="/workflows#">Workflows<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a>
 - **Write:** Can create, rename, update, and delete Workflows within the Namespace
 - **Read-Only:** Can only read information from the Namespace
 
@@ -133,7 +133,7 @@ For details, see the [tcld user set-account-role](/cloud/tcld/user#set-account-r
 
 ## How to update Namespace-level permissions in Temporal Cloud {#update-permissions}
 
-You can update Namespace-level [permissions](/cloud/#namespace-level-permissions) by using either Web UI or tcld.
+You can update Namespace-level <a class="tdlp" href="#namespace-level-permissions">permissions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the Namespace-level permissions for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Namespace-level permissions are Namespace Admin, Write, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#namespace-level-permissions">Learn more</a></span></span></a> by using either Web UI or tcld.
 
 <!-- How to update Namespace-level permissions for a Namespace in Temporal Cloud using Web UI -->
 
@@ -152,7 +152,7 @@ You can update Namespace-level [permissions](/cloud/#namespace-level-permissions
 
 :::note
 
-A user who has the Global Admin account-level [Role](/cloud/#account-level-roles) has Namespace Admin permissions for all Namespaces.
+A user who has the Global Admin account-level <a class="tdlp" href="#account-level-roles">Role<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the account-level Roles for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Account-level Roles are Global Admin, Developer, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#account-level-roles">Learn more</a></span></span></a> has Namespace Admin permissions for all Namespaces.
 
 :::
 
@@ -174,7 +174,7 @@ You can delete a user from your Temporal Cloud Account by using either Web UI or
 
 :::info
 
-To delete a user, a user must have the Global Admin account-level [Role](/cloud/#account-level-roles).
+To delete a user, a user must have the Global Admin account-level <a class="tdlp" href="#account-level-roles">Role<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the account-level Roles for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Account-level Roles are Global Admin, Developer, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#account-level-roles">Learn more</a></span></span></a>.
 
 :::
 

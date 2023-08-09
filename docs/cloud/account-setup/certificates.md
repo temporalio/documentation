@@ -173,18 +173,18 @@ Temporal Cloud requires full CA chains, so you can achieve authorization in two 
 Each certificate must belong to a chain up to the root CA certificate.
 Temporal uses the root CA certificate as the trusted authority for access to your Namespaces.
 
-1. Ensure that your certificates meet the [certificate requirements](#certificate-requirements).
+1. Ensure that your certificates meet the <a class="tdlp" href="#certificate-requirements">certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#certificate-requirements">Learn more</a></span></span></a>.
 1. <a class="tdlp" href="/cloud/tcld/namespace#add">Add client CA certificates to a Cloud Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace accepted-client-ca add</span><br /><br /><span class="tdlppd">How to add client CA certificates to a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/namespace#add">Learn more</a></span></span></a>.
 
 ### Option 2: Use the same root certificate for all Namespaces but create a separate certificate filter for each Namespace
 
-[How to manage certificate filters in Temporal Cloud](#manage-certificate-filters)
+<a class="tdlp" href="#manage-certificate-filters">How to manage certificate filters in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificate filters in Temporal Cloud</span><br /><br /><span class="tdlppd">To limit access to specific CA certificates, you can create certificate filters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#manage-certificate-filters">Learn more</a></span></span></a>
 
 ## How to add, update, and remove certificates in a Temporal Cloud Namespace {#manage-certificates}
 
 :::note
 
-To manage certificates for a Namespace, a user must have [Namespace Admin](/cloud/#namespace-level-permissions) permission for that Namespace.
+To manage certificates for a Namespace, a user must have <a class="tdlp" href="/cloud/users#namespace-level-permissions">Namespace Admin<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the Namespace-level permissions for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Namespace-level permissions are Namespace Admin, Write, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/users#namespace-level-permissions">Learn more</a></span></span></a> permission for that Namespace.
 
 :::
 
@@ -255,7 +255,7 @@ One way to meet this requirement is to add a version or a date to the common nam
 
 ## How to manage certificate filters in Temporal Cloud {#manage-certificate-filters}
 
-To limit access to specific <a class="tdlp" href="#">end-entity certificates<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#">Learn more</a></span></span></a>, create certificate filters.
+To limit access to specific <a class="tdlp" href="#end-entity-certificates">end-entity certificates<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#end-entity-certificates">Learn more</a></span></span></a>, create certificate filters.
 Each filter contains values for one or more of the following fields:
 
 - commonName (CN)

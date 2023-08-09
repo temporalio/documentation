@@ -3,8 +3,11 @@ id: how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execu
 title: How to upsert custom Search Attributes to Workflow during Execution
 sidebar_label: How to upsert custom Search Attributes to Workflow during Execution
 tags:
-  - developer-guide
-  - go
+  - developer-guide-doc-type
+  - go sdk
+  - how-to-doc-type
+  - search attributes
+  - workflow executions
 ---
 
 In advanced cases, you may want to dynamically update these attributes as the Workflow progresses.

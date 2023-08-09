@@ -14,7 +14,7 @@ You can delete a user from your Temporal Cloud Account by using either Web UI or
 
 :::info
 
-To delete a user, a user must have the Global Admin account-level [Role](/cloud/#account-level-roles).
+To delete a user, a user must have the Global Admin account-level [Role](/cloud/users-account-level-roles).
 
 :::
 

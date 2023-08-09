@@ -1,5 +1,5 @@
 ---
-id: security-cloud
+id: security
 title: What kind of security does Temporal Cloud provide?
 sidebar_label: Security
 sidebar_position: 1
@@ -71,7 +71,7 @@ For more information, see [How to manage SAML authentication with Temporal Cloud
 
 Authorization is managed at the account and Namespace level.
 Users and systems are assigned one or more preconfigured roles.
-Users hold [account-level Roles](/cloud/users#account-level-roles) of administrators, developers, and read-only users.
+Users hold <a class="tdlp" href="/cloud/users#account-level-roles">account-level Roles<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the account-level Roles for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Account-level Roles are Global Admin, Developer, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/users#account-level-roles">Learn more</a></span></span></a> of administrators, developers, and read-only users.
 Systems and applications processes hold their own distinct roles.
 
 ### Monitoring
