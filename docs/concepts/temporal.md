@@ -1,6 +1,6 @@
 ---
 id: temporal
-title: Temporal
+title: What is Temporal?
 sidebar_label: Temporal
 sidebar_position: 1
 description: The Temporal Platform explained.

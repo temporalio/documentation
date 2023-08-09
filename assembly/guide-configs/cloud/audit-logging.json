@@ -1,6 +1,7 @@
 {
   "file_name": "how-to-manage-audit-logging.md",
-  "id": "how-to-manage-audit-logging",
+  "id": "audit-logging",
+  "slug": "/cloud/audit-logging",
   "file_dir": "cloud",
   "title": "How to manage Audit Logging in Temporal Cloud",
   "sidebar_label": "Audit Logging",

@@ -11,7 +11,7 @@ tags:
 
 :::info
 
-To delete a Namespace, a user must have Namespace Admin [permission](/cloud/#namespace-level-permissions) for that Namespace.
+To delete a Namespace, a user must have Namespace Admin [permission](/cloud/users-namespace-level-permissions) for that Namespace.
 
 :::
 

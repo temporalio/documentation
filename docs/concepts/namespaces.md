@@ -1,6 +1,6 @@
 ---
 id: namespaces
-title: Namespaces
+title: What is a Temporal Namespace?
 sidebar_label: Namespaces
 sidebar_position: 9
 description: This guide provides a comprehensive overview of Namespaces.
