@@ -4,7 +4,11 @@ title: Testing Workflows
 description: Testing provides a framework to facilitate Workflow and integration testing.
 sidebar_label: Test Workflows
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - go sdk
+  - testing
+  - testing-guide-doc-type
+  - workflows
 ---
 
 When running unit tests on Workflows, we want to test the Workflow logic in isolation.

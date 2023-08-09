@@ -4,7 +4,11 @@ title: Skip time automatically
 description: The test server included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time.
 sidebar_label: Automatic method
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - go sdk
+  - testing
+  - testing-guide-doc-type
+  - timers
 ---
 
 You can skip time automatically in the SDK of your choice.

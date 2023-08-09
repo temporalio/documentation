@@ -4,7 +4,11 @@ title: How to skip time
 description: The test server included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time.
 sidebar_label: Skip time
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - go sdk
+  - testing
+  - testing-guide-doc-type
+  - workflows
 ---
 
 Some long-running Workflows can persist for months or even years.

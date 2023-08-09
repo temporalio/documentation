@@ -4,7 +4,10 @@ title: Testing
 description: The Testing section of the Temporal Application development guide describes the frameworks that facilitate Workflow and integration testing.
 sidebar_label: Testing
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - go sdk
+  - testing
+  - testing-guide-doc-type
 ---
 
 The Testing section of the Temporal Application development guide describes the frameworks that facilitate Workflow and integration testing.
