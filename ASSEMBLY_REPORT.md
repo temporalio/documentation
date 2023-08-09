@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday August 09 2023 10:38:20 AM -0600
+Last assembled: Wednesday August 09 2023 10:42:57 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -729,6 +729,8 @@ concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
 cloud/support-create-ticket -> /cloud/support#support-ticket
 
 concepts/what-is-a-cloud-namespace-id -> #temporal-cloud-namespace-id
+
+cloud/saml-azure-ad -> #configure-saml-with-azure-ad
 
 cloud/saml-okta -> #configure-saml-with-okta
 
