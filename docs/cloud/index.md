@@ -26,15 +26,16 @@ To request a Temporal Cloud account, complete the [request form](https://pages.t
 :::
 
 - [Introduction to Temporal Cloud](/cloud/introduction)
-  - <a class="tdlp" href="/cloud/introduction/operating-envelope#">Operating envelope<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the operating envelope of Temporal Cloud?</span><br /><br /><span class="tdlppd">The operating envelope of Temporal Cloud includes availability, regions, throughput, and latency.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/introduction/operating-envelope#">Learn more</a></span></span></a>
-  - <a class="tdlp" href="/cloud/introduction/pricing#">Pricing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cloud pricing</span><br /><br /><span class="tdlppd">Temporal Cloud pricing information.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/introduction/pricing#">Learn more</a></span></span></a>
-  - <a class="tdlp" href="/cloud/introduction/support#">Support<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How do I get support from Temporal?</span><br /><br /><span class="tdlppd">We have an active community Slack and an active community forum where you can post questions and ask for help. We also offer a ticketing system for Temporal Cloud customers.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/introduction/support#">Learn more</a></span></span></a>
+  - [Security](/cloud/security)
+  - [Operating envelope](/cloud/operating-envelope)
+  - [Pricing](/cloud/pricing)
+  - [Support](/cloud/support)
 - [Get started with Temporal Cloud](/cloud/get-started)
 - [Account setup](/cloud/account-setup)
-  - <a class="tdlp" href="/cloud/account-setup/namespaces#">Manage Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage Namespaces in Temporal Cloud</span><br /><br /><span class="tdlppd">You can create and manage Namespaces from your Temporal Cloud UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#">Learn more</a></span></span></a>
-  - <a class="tdlp" href="/cloud/account-setup/certificates#">Manage certificates<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a>
-  - <a class="tdlp" href="/cloud/account-setup/users#">Manage users<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage users in your Temporal Cloud account</span><br /><br /><span class="tdlppd">Learn how to invite users and manage their roles and permissions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/users#">Learn more</a></span></span></a>
-- <a class="tdlp" href="/cloud/metrics#">Metrics setup<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to monitor Temporal Cloud metrics</span><br /><br /><span class="tdlppd">Configure and track performance metrics for Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/metrics#">Learn more</a></span></span></a>
-- <a class="tdlp" href="/cloud/how-to-manage-saml-with-temporal-cloud#">SAML<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage SAML authentication with Temporal Cloud</span><br /><br /><span class="tdlppd">To authenticate users of your Temporal Cloud account, you can connect an IdP using SAML 2.0.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/how-to-manage-saml-with-temporal-cloud#">Learn more</a></span></span></a>
-- <a class="tdlp" href="/cloud/how-to-manage-audit-logging#">Audit logging<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Audit Logging?</span><br /><br /><span class="tdlppd">Audit Logging is a feature that provides forensic access information for accounts, users, and Namespaces.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/how-to-manage-audit-logging#">Learn more</a></span></span></a>
+  - [Manage certificates](/cloud/certificates)
+  - [Manage Namespaces](/cloud/namespaces)
+  - [Manage users](/cloud/users)
+- [Metrics setup](/cloud/metrics)
+- [SAML](/cloud/saml)
+- [Audit logging](/cloud/audit-logging)
 - [tcld (Temporal Cloud command-line interface)](/cloud/tcld)

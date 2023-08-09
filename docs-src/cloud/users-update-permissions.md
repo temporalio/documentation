@@ -10,7 +10,7 @@ tags:
   - users
 ---
 
-You can update Namespace-level [permissions](/cloud/#namespace-level-permissions) by using either Web UI or tcld.
+You can update Namespace-level [permissions](/cloud/users-namespace-level-permissions) by using either Web UI or tcld.
 
 <!-- How to update Namespace-level permissions for a Namespace in Temporal Cloud using Web UI -->
 
@@ -29,7 +29,7 @@ You can update Namespace-level [permissions](/cloud/#namespace-level-permissions
 
 :::note
 
-A user who has the Global Admin account-level [Role](/cloud/#account-level-roles) has Namespace Admin permissions for all Namespaces.
+A user who has the Global Admin account-level [Role](/cloud/users-account-level-roles) has Namespace Admin permissions for all Namespaces.
 
 :::
 
