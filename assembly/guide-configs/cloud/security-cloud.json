@@ -1,6 +1,7 @@
 {
   "file_name": "security-cloud.md",
-  "id": "security-cloud",
+  "id": "security",
+  "slug": "/cloud/security",
   "file_dir": "cloud/introduction",
   "title": "What kind of security does Temporal Cloud provide?",
   "sidebar_label": "Security",

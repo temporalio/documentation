@@ -25,11 +25,11 @@ To edit a Namespace (including custom Search Attributes, certificates, certifica
 On the **Edit** page, you can do the following:
 
 - Add a [custom Search Attribute](/visibility#custom-search-attributes).
-- [Manage CA certificates](/cloud/certificates-intro).
-- [Manage certificate filters](/cloud/certificates-intro#manage-certificate-filters-using-temporal-cloud-ui).
+- [Manage CA certificates](/cloud/certificates).
+- [Manage certificate filters](/cloud/certificates-filters#manage-certificate-filters-using-temporal-cloud-ui).
 - Set [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) for all users on the Namespace.
   Each user on the Namespace has the option to [override this setting](/production-readiness/develop#web-ui) in their browser.
-- Manage [Namespace-level permissions](/cloud/#namespace-level-permissions).
+- Manage [Namespace-level permissions](/cloud/users-namespace-level-permissions).
 - Add users.
 
 To add a user to a Namespace, scroll to the bottom of the page and select **Add User**.

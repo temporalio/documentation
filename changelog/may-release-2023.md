@@ -40,8 +40,8 @@ While the guide is "reverting" to language specific information, it's still embr
 
 ## Production readiness guide
 
-Starting with Data encryption, the [Develop guide](https://docs.temporal.io/production-readiness/develop) focuses on the production aspects of Temporal Application development.
+Starting with Data encryption, the [Develop guide](/production-readiness/develop) focuses on the production aspects of Temporal Application development.
 
 ## Temporal Cloud SAML integration guide
 
-The [SAML integration guide](/cloud/how-to-manage-saml-with-temporal-cloud) shows you how to integrate with your SAML based identity provider.
+The [SAML integration guide](/cloud/saml) shows you how to integrate with your SAML based identity provider.

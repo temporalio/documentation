@@ -1,6 +1,7 @@
 {
   "file_name": "operating-envelope.md",
   "id": "operating-envelope",
+  "slug": "/cloud/operating-envelope",
   "file_dir": "cloud/introduction",
   "title": "What is the operating envelope of Temporal Cloud?",
   "sidebar_label": "Operating envelope",
