@@ -1,6 +1,6 @@
 ---
 id: clusters
-title: Clusters
+title: What is a Temporal Cluster?
 sidebar_label: Clusters
 sidebar_position: 8
 description: This guide provides a comprehensive overview of Temporal Clusters.
