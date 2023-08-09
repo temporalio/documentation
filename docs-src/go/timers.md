@@ -7,7 +7,6 @@ tags:
   - developer-guide-doc-type
   - go sdk
   - timers
-  - sleep
 ---
 
 A Workflow can set a durable timer for a fixed time period.

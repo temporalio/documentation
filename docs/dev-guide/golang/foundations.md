@@ -24,10 +24,12 @@ keywords:
 - deterministic
 - developer-guide-doc-type
 - go sdk
+- go-sdk
 - how-to
 - how-to-doc-type
 - introduction-doc-type
 - reference-doc-type
+- retry and timeout policies
 - return values
 - run id
 - task queue
@@ -62,10 +64,12 @@ tags:
 - deterministic
 - developer-guide-doc-type
 - go-sdk
+- go-sdk
 - how-to
 - how-to-doc-type
 - introduction-doc-type
 - reference-doc-type
+- retry-and-timeout-policies
 - return-values
 - run-id
 - task-queue
