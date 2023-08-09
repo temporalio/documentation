@@ -785,12 +785,14 @@ h1 {
 @media (min-width: 1024px) {
   .clickable-i {
     display: inline-block;
-    font-style: italic;
-    margin-left: 1px;
-    font-size: 0.8em;
+    margin-left: 0px;
+    font-size: 0.6em;
     vertical-align: middle;
     cursor: pointer;
     font-weight: 600;
+    padding: 0px 6px 0px 6px; /* Adjust the padding to your preference */
+    border: 1px solid #141414; /* Border styling */
+    background-color: #54d892;
   }
 }
 
@@ -806,7 +808,7 @@ h1 {
 }
 
 .preview-modal {
-  max-width: fit-content;
+  max-width: 800px;
   background-color: white;
   border: 1px solid #a4bcc4; /* Soft blue color */
   border-radius: 3px;
@@ -823,6 +825,10 @@ h1 {
   display: flex;
   align-items: center; /* Vertically center align the children */
   margin-bottom: 15px;
+}
+
+.modal-header a {
+  color: #141414 !important;
 }
 
 .preview-modal-title {
@@ -845,6 +851,7 @@ h1 {
 }
 
 .preview-modal-tag {
+  color: #141414 !important;
   background-color: #f2f2f2; /* Slight gray background */
   border-radius: 3px; /* Rounded corners */
   padding: 3px 7px; /* Some space around the text inside each tag */

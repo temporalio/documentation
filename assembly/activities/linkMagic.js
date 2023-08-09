@@ -126,12 +126,12 @@ function linkPreview(newPath, linkText, link) {
   if (link.node_tags.length > 0) {
     tags = `<div class="preview-modal-tags">`;
     for (const t of link.node_tags) {
-      tags = `${tags}<span class="preview-modal-tag">${t}</span> `;
+      tags = `${tags}<a class="preview-modal-tag" href="/tags/${t}">${t}</a> `;
     }
     tags = tags.slice(0, -1);
     tags = `${tags}</div>`;
   }
-  return `[${linkText}](${newPath}) <span id="i-${id}" class="clickable-i clickable-link-preview">🔗</span><div id="preview-modal-${id}" class="preview-modal"><div class="modal-header"><div id="x-${id}" class="clickable-x clickable-link-preview">x</div><b>Link preview</b></div><div class="preview-modal-title">${link.node_title}</div><div class="preview-modal-description">${link.node_description}</div>${tags}</div>`;
+  return `[${linkText}](${newPath}) <span id="i-${id}" class="clickable-i clickable-link-preview">i</span><div id="preview-modal-${id}" class="preview-modal"><div class="modal-header"><div id="x-${id}" class="clickable-x clickable-link-preview">x</div><b>Link preview:</b>&nbsp;&nbsp<a href="${newPath}">${newPath}</a></div><div class="preview-modal-title">${link.node_title}</div><div class="preview-modal-description">${link.node_description}</div>${tags}</div>`;
 }
 
 function getImageDimensions(imgPath) {

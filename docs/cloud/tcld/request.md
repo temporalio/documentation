@@ -21,7 +21,7 @@ The `tcld request` commands manage asynchronous requests in Temporal Cloud.
 
 Alias: `r`
 
-- [tcld request get](#get) <span id="i-1e117ed8-65ec-4f5e-a59f-d8ea78b8b30e" class="clickable-i clickable-link-preview">🔗</span><div id="preview-modal-1e117ed8-65ec-4f5e-a59f-d8ea78b8b30e" class="preview-modal"><div class="modal-header"><div id="x-1e117ed8-65ec-4f5e-a59f-d8ea78b8b30e" class="clickable-x clickable-link-preview">x</div><b>Link preview</b></div><div class="preview-modal-title">tcld request get</div><div class="preview-modal-description">How to get the status of an asynchronous request in Temporal Cloud using tcld.</div><div class="preview-modal-tags"><span class="preview-modal-tag">tcld</span> <span class="preview-modal-tag">cli reference</span></div></div>
+- [tcld request get](#get) <span id="i-6350988e-983b-48d8-98e5-7571701ba1cb" class="clickable-i clickable-link-preview">i</span><div id="preview-modal-6350988e-983b-48d8-98e5-7571701ba1cb" class="preview-modal"><div class="modal-header"><div id="x-6350988e-983b-48d8-98e5-7571701ba1cb" class="clickable-x clickable-link-preview">x</div><b>Link preview:</b>&nbsp;&nbsp<a href="#get">#get</a></div><div class="preview-modal-title">tcld request get</div><div class="preview-modal-description">How to get the status of an asynchronous request in Temporal Cloud using tcld.</div><div class="preview-modal-tags"><a class="preview-modal-tag" href="/tags/tcld">tcld</a> <a class="preview-modal-tag" href="/tags/cli reference">cli reference</a></div></div>
 
 ## get
 
