@@ -11,9 +11,9 @@ tags:
 
 :::info
 
-The user who creates a [Namespace](/namespaces) is automatically granted [Namespace Admin](/cloud/#namespace-level-permissions) permission for that Namespace.
+The user who creates a [Namespace](/namespaces) is automatically granted [Namespace Admin](/cloud/users-namespace-level-permissions) permission for that Namespace.
 
-To create a Namespace, a user must have the Developer or Global Admin account-level [Role](/cloud/#account-level-roles).
+To create a Namespace, a user must have the Developer or Global Admin account-level [Role](/cloud/users-account-level-roles).
 
 :::
 
@@ -30,11 +30,11 @@ If you want to increase this limit, open a [support ticket](/cloud/support-creat
 
 To create a Namespace in Temporal Cloud, gather the following information:
 
-- [Namespace Name](/cloud/#cloud-namespace) and region.
+- [Namespace Name](/concepts/what-is-a-cloud-namespace-name) and region.
 - [Retention Period](/clusters/#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution).
-- [CA certificate](/cloud/certificates-intro#certificate-requirements) for the Namespace.
+- [CA certificate](/cloud/certificates-requirements) for the Namespace.
 - [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/production-readiness/develop#securing-your-data).
-- [Permissions](/cloud/#namespace-level-permissions) for each user.
+- [Permissions](/cloud/users-namespace-level-permissions) for each user.
 
 <!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
 

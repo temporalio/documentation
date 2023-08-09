@@ -11,7 +11,7 @@ tags:
 
 :::note
 
-To manage certificates for a Namespace, a user must have [Namespace Admin](/cloud/#namespace-level-permissions) permission for that Namespace.
+To manage certificates for a Namespace, a user must have [Namespace Admin](/cloud/users-namespace-level-permissions) permission for that Namespace.
 
 :::
 

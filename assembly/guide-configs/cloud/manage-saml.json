@@ -1,6 +1,7 @@
 {
   "file_name": "how-to-manage-saml-with-temporal-cloud.md",
-  "id": "how-to-manage-saml-with-temporal-cloud",
+  "id": "saml",
+  "slug": "/cloud/saml",
   "file_dir": "cloud",
   "title": "How to manage SAML authentication with Temporal Cloud",
   "sidebar_label": "SAML",
@@ -16,11 +17,11 @@
     },
     {
       "type": "h2",
-      "id": "cloud/saml-how-to-configure-with-azure-ad"
+      "id": "cloud/saml-azure-ad"
     },
     {
       "type": "h2",
-      "id": "cloud/saml-how-to-configure-with-okta"
+      "id": "cloud/saml-okta"
     },
     {
       "type": "h2",

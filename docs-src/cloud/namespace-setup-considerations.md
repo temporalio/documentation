@@ -17,7 +17,7 @@ Customers should consider not only a Namespace naming convention but also how to
 Before considering an appropriate Namespace configuration, you should be aware of the following constraints:
 
 - Each Temporal account has a default limit of 10 Namespaces.
-  You can request an increase by [creating a ticket for Temporal Support](/cloud/introduction/support#support-ticket).
+  You can request an increase by [creating a ticket for Temporal Support](/cloud/support-create-ticket).
 - Cross-Namespace communications between [Workflows](/workflows) is not yet supported.
   For now, you can use the [SDK client](/temporal#temporal-client) from within an [Activity](/activities) as a workaround.
 - Each Namespace has a rate limit ("throttling").
@@ -28,11 +28,11 @@ Before considering an appropriate Namespace configuration, you should be aware o
   Access to Temporal by [Worker Processes](/workers#worker-process) is permitted at the Namespace level.
   Isolating applications or environments (development, test, staging, production) should take this into consideration.
 - A Namespace is an endpoint.
-  To access a Namespace from a Temporal Client requires mTLS authorization, which requires [CA certificates](/cloud/account-setup/certificates#ca-certificates).
+  To access a Namespace from a Temporal Client requires mTLS authorization, which requires [CA certificates](/cloud/certificates-requirements#ca-certificates).
 - [Workflow Id](/workflows#workflow-id) uniqueness is per Namespace.
 - [Task Queue](/workers#task-queue) names are unique per Namespace.
 - Closed Workflow retention is per Namespace.
-- RBAC [permissions](/cloud/#namespace-level-permissions) are implemented at the Namespace level.
+- RBAC [permissions](/cloud/users-namespace-level-permissions) are implemented at the Namespace level.
 
 ### General guidance
 
