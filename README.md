@@ -82,13 +82,15 @@ Please make comments and suggestions in the appropriate source nodes.
 
 The `/assembly` directory contains a Temporal Application written in JavaScript that uses Temporal's TypeScript SDK. This application acts as a build wrapper around the Docusaurus framework to assemble and generate the files in `/docs`.
 
-These generated files are actually put together from many individual files, which we call Information Nodes. These Information Nodes now live in the `docs-src` directory. The reasons for modularizing our information are many, but one of them is that it provides a fun use case for combining our pre-build processes, usually a set of independent scripts, into a Temporal Workflow.
+Generated files are composed of many individual files, known as information nodes, contained in the `docs-src` directory. 
 
-Each JSON configuration file in [assembly/guide-configs](https://github.com/temporalio/documentation/blob/main/assembly/guide-configs) represents a user-facing narrative that pieces together the Information Nodes, such as [Concepts](https://docs.temporal.io/temporal/#) and [the Go SDK dev guide](https://docs.temporal.io/dev-guide/go/).
+Modularizing our content not only tidies up the repository, but also provides a great example of Temporal at work. Our pre-build processes, a set of independent scripts, are invoked in a Temporal Workflow to generate and format what goes into Docusaurus.
 
-The Assembly Workflow can be run using a local Cluster (such as [Temporal CLI](https://github.com/temporalio/documentation/blob/main/kb/all-the-ways-to-run-a-cluster#temporal-cli)) or [Temporal Cloud](https://docs.temporal.io/cloud/).
+Each JSON configuration file in [assembly/guide-configs](https://github.com/temporalio/documentation/blob/main/assembly/guide-configs) represents a user-facing narrative that pieces together concepts, how-to guides, and SDK-specific developer guides.
 
-See [How to run the Assembly Workflow](#how-to-run-the-assembly-workflow) for details.
+Run the Assembly Workflow with a local Cluster (such as [Temporal CLI](https://github.com/temporalio/documentation/blob/main/kb/all-the-ways-to-run-a-cluster#temporal-cli)) or [Temporal Cloud](https://docs.temporal.io/cloud/).
+
+See [How to run the Assembly Workflow](#how-to-run-the-assembly-workflow) for more information about this Workflow.
 
 #### DACX Information Node generation tooling
 
@@ -98,7 +100,7 @@ One of the things the Assembly Workflow can do, is generate Information Nodes fo
 
 This directory contains logs of major changes to the documentation.
 
-The information at [docs.temporal.io](http://docs.temporal.io) changes frequently, but bigger and more notable changes over a period of time are often captured and logged there.
+The information at [docs.temporal.io](http://docs.temporal.io) changes frequently, but bigger and more notable changes are captured in the changelog.
 
 ### Snipsync code synchronization tooling
 
