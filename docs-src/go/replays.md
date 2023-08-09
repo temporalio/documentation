@@ -4,7 +4,11 @@ title: How to Replay a Workflow Execution
 description: Replay recreates the exact state of a Workflow Execution.
 sidebar_label: Replay
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - go sdk
+  - testing
+  - testing-guide-doc-type
+  - replay
 ---
 
 Replay recreates the exact state of a Workflow Execution.
