@@ -12,5 +12,5 @@ tags:
     - schedule
 ---
 
-Set Search Attribute on a Schedule (formatted as key=value).
+Set Search Attribute on a Schedule (formatted as `key=value`).
 Use valid JSON formats for value.
