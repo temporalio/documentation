@@ -12,5 +12,5 @@ tags:
     - command-line-interface-cli
 ---
 
-Identifies the Build to retrieve reachability information for.
-May be specified multiple times.
+Identifies the build to retrieve reachability information for.
+Can be specified multiple times.
