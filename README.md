@@ -390,24 +390,24 @@ All the logic of the DACX tool is built into the Assembly Workflow.
 
 **Why use DACX?**
 
-1. The tool is similar [Snipsync](https://github.com/temporalio/snipsync), but with DACX you write documentation in the same file as the code. As a code sample developer, you can write the documentation inline with the code and then use the docs Assembly Workflow to generate Markdown guides from those code samples. However, rather than curating the information and code in the Markdown file within the documentation repo like you do with Snipsync, you curate the information within the source code file. As with both tools, you need to work within both repositories to manufacture the end result.
+DACX is similar to [Snipsync](https://github.com/temporalio/snipsync), except that DACX lets you write the documentation within the code. 
+Rather than curating the information and code within the documentation repository, you curate the information within the source code's repository. 
+The Assembly Workflow then generates Markdown guides from the narrative inlined with the code.
+As a result, DACX provides rich content in multiple places. 
 
-2. DACX provides rich content in multiple places for the next big training event and is suited to meet our long term LLM goals. This is because DACX source files contain parts of the narrative inline with the code and the published guides will put the full narrative together, each complimenting the other. During the next training event, LLMs will consume both DACX source files and the generated guides.
-
-#### Choose a source repo
+To start using DACX, choose a source repo.
 
 - Go → https://github.com/temporalio/documentation-samples-go
 - Python → https://github.com/temporalio/documentation-samples-python
 - Java → TODO
 - TypeScript → TODO
 
-#### Or register a new one
+You can also register a new source repo with the Assembly Workflow.
 
-The Assembly Workflow needs to know which repos contain DACX files.
 
-Edit `/assembly/config.json` , the [Assembly configuration](https://github.com/temporalio/documentation/blob/main/assembly/config.json) file, to add your repository to the list of `documentation_samples_repos` .
+Add your repository under the `documentation_samples_repos` section of the [Assembly configuration](https://github.com/temporalio/documentation/blob/main/assembly/config.json) file.
 
-Specify a branch name in the `ref` field if you change has not merged into the main of the source repo.
+Specify a branch name in the `ref` field if your changes are not merged into the main branch of the source repo.
 
 Example:
 
