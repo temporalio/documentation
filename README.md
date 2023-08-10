@@ -301,20 +301,20 @@ First, you must have a Namespace setup to operate with. We recommend using the [
 temporal server start-dev
 ```
 
-Then again in a separate terminal, run the Worker in `/assembly`
+In a separate terminal, run the Worker in the `/assembly` folder.
 
 ```bash
 cd assembly
 ./worker.js
 ```
 
-In another terminal start the Workflow from the root of the repo:
+In another terminal, start the Workflow from the root of this repository.
 
 ```bash
 yarn assemble
 ```
 
-After the Workflow completes, we recommend running the auto formatter:
+Run the auto-formatter after the Workflow Execution is completed.
 
 ```bash
 yarn format
@@ -324,7 +324,7 @@ yarn format
 
 ### How to create a new guide configuration
 
-Guide configurations live in `assembly/guide-configs`.
+Guide configurations are stored in `assembly/guide-configs`.
 
 They are more or less organized to reflect the intended output in the `docs` directory, however this is purely for file management purposes and does not affect where the guide output is written to.
 
