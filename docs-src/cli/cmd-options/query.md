@@ -16,4 +16,4 @@ tags:
 ---
 
 Provides a SQL-like Query of Search Attributes to return Workflow Executions to reset.
-For more information, refer to the [`temporal workflow list` command](/cli/workflow/list).
+For more information, refer to the [temporal workflow list](/cli/workflow/list) command.
