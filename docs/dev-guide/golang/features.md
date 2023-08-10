@@ -152,7 +152,7 @@ In this section you can find the following:
 - [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
 - [How to register Namespaces](#namespaces)
 - [How to use custom payload conversion](#custom-payload-conversion)
-- [How to develop updates](#updates)
+- <a class="tdlp" href="#updates">How to develop updates<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Updates</span><br /><br /><span class="tdlppd">An Update is an operation that can mutate the state of a Workflow Execution and return a response.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#updates">Learn more</a></span></span></a>
 
 ## How to develop with Signals {#signals}
 

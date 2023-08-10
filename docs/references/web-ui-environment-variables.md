@@ -175,13 +175,13 @@ This variable can be used instead of providing a path for `TEMPORAL_TLS_KEY`.
 
 ## `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION`
 
-Enables or disables [Transport Layer Security (TLS) host verification](/references/web-ui-configuration#tls).
+Enables or disables <a class="tdlp" href="/references/web-ui-configuration#tls">Transport Layer Security (TLS) host verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Web UI configuration reference</span><br /><br /><span class="tdlppd">The Temporal Web UI Server uses a configuration file for many of the UI's settings.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/web-ui-configuration#tls">Learn more</a></span></span></a>.
 
 When enabled, TLS checks the Host Server to ensure that files are being sent to and from the correct URL.
 
 ## `TEMPORAL_TLS_SERVER_NAME`
 
-The server on which to operate [Transport Layer Security (TLS) protocols](/references/web-ui-configuration#tls).
+The server on which to operate <a class="tdlp" href="/references/web-ui-configuration#tls">Transport Layer Security (TLS) protocols<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Web UI configuration reference</span><br /><br /><span class="tdlppd">The Temporal Web UI Server uses a configuration file for many of the UI's settings.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/web-ui-configuration#tls">Learn more</a></span></span></a>.
 
 TLS allows the current server to transmit encrypted files to other URLs without having to reveal itself.
 Because of this, TLS operates a go-between server.
