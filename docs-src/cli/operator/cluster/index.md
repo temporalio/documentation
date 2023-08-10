@@ -11,8 +11,7 @@ tags:
   - cluster
 ---
 
-Operator commands enable actions on [Namespaces](/concepts/what-is-a-namespace), [Search Attributes](/concepts/what-is-a-search-attribute), and [Temporal Clusters](/concepts/what-is-a-temporal-cluster).
-These actions are performed through subcommands for each Operator area.
+Cluster commands enable actions on [Temporal Clusters](/concepts/what-is-a-temporal-cluster).
 
 Cluster commands follow this syntax:
 `temporal operator [command] [subcommand] [command options]`.
