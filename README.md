@@ -108,13 +108,11 @@ This repository has [Snipsync](https://github.com/temporalio/snipsync) installed
 
 ## How to get approval to put up a Pull Request
 
-We absolutely encourage contributions!
+We absolutely encourage contributions, but we need to know what you plan to change.
 
-But to save time you must let us know what you plan to change before submitting a Pull Request.
+If you aren't part of the temporalio organization, [file a Github issue](https://github.com/temporalio/documentation/issues) to suggest a change.
 
-If you aren't part of the temporalio organization, you must file a Github issue https://github.com/temporalio/documentation/issues.
-
-If you are part of the temporalio organization, you must use Temporal’s internal tracking system to submit a Work Task to our team.
+If you are part of the temporalio organization, use Temporal’s internal tracking system to submit a Work Task to our team.
 
 You must receive approval from us in both cases before submitting a Pull Request. If you submit a Pull Request without proper approval, we will close it.
 
@@ -122,9 +120,10 @@ You must receive approval from us in both cases before submitting a Pull Request
 
 **STOP! [Make sure you are eligible to put up a Pull Request!](#how-to-get-approval-to-put-up-a-pr)**
 
-**Once approved, you may follow these steps.**
 
-If you are want broader guidance on making changes to this repo, see the [How to make changes to this repository](#how-to-make-changes-to-this-repository). Otherwise these steps will enable you to fix a piece of content.
+**Once approved, follow the steps below to make changes to this repository.**
+
+For more information, refer to [How to make changes to this repository](#how-to-make-changes-to-this-repository).
 
 ```bash
 git clone https://github.com/temporalio/documentation
@@ -137,8 +136,7 @@ Find the source node in the `docs-src` directory.
 
 Make your changes in the source file.
 
-Run the Assembly Workflow. This means you must have a Worker running in `/assembly`
-So in a new terminal,
+Open a new terminal. Start the Worker.
 
 ```bash
 cd assembly
@@ -146,13 +144,13 @@ yarn install
 ./worker.js
 ```
 
-Then run the WF from the root of the repo
+Open another terminal. Run the Workflow from the root of the repository.
 
 ```bash
 yarn assemble
 ```
 
-Format all the files
+Format all files.
 
 ```bash
 yarn format
