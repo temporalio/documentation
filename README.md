@@ -422,15 +422,12 @@ Example:
 
 #### Identify DACX files
 
-In the source repository, identify the DACX files.
-
-Assembly identifies DACX files by the file’s name.
-
-Within your source repo, add `_dacx` to the file name right before the extension.
-
-Do this for every file that contains DACX.
+The Assembly Workflow identifies DACX files by the inclusion of `_dacx` in filenames.
+In your source repository, add `_dacx` at the end of the file name, but before the file extension, to identify files using DACX.
 
 For example, `my_main_workflow_file_dacx.go`.
+
+This must be done for every file that contains DACX.
 
 #### Write documentation using vanilla Markdown
 
@@ -438,7 +435,7 @@ In the source repository, write your documentation as Markdown using multiline c
 
 The Assembly Workflow identifies all multiline comments as Markdown documentation.
 
-Single line comments are treated the same as the rest of the code.
+Single-line comments are treated the same as the rest of the code.
 
 Single line commenting is still highly encouraged to make the code understandable.
 
