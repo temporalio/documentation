@@ -156,7 +156,7 @@ Format all files.
 yarn format
 ```
 
-Put up your changes
+Add your changes to the remote repository.
 
 ```bash
 git add . && git commit -m "change deets"
@@ -167,15 +167,16 @@ git push origin yourfix
 
 **STOP! [Make sure you are eligible to put up a Pull Request!](#how-to-get-approval-to-put-up-a-pr)**
 
-**Once approved, you may follow these steps.**
+**Once approved, follow the steps below to make changes to this repository.**
 
-If you are looking for the quick way to fix a typo, check out the “[How to fix a typo](#how-to-fix-a-typo)” section.
+If you 're looking to fix a typo or something minor, check out the “[How to fix a typo](#how-to-fix-a-typo)” section of this README.
 
-Otherwise, the following steps provide a much higher level view of the steps to making changes. Particularly if you plan on embedding sourced code snippets or generating information nodes.
+This section provides a higher-level view of the change proposal process, particularly for changes involving embedded code snippets or file generation.
 
-1. Clone the repo.
+1. Clone the documentation repository.
 2. [Install the dependencies](#install-the-dependencies).
-3. Make changes to the information nodes in `docs-src` & guide configurations in `assemble/guide-configs` while [following our style guidance](#how-to-follow-style-guidance).
+3. Make changes to the information nodes in `docs-src`. Edit the guide configurations in `assemble/guide-configs` if files were added, deleted, or renamed.
+All changes must [follow our style guidance](#how-to-follow-style-guidance).
    1. See [How to construct a guide config](#how-to-create-a-new-guide-configuration).
    2. See [How to use DACX](#how-to-use-dacx).
    3. See [How to use SnipSync](#how-to-use-snipsync).
