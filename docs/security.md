@@ -213,7 +213,7 @@ Multiple permissions for the same Namespace are overridden by the `ClaimMapper`.
 ```
 {
    "permissions":[
-      "system:read",
+      "temporal-system:read",
       "namespace1:write"
    ],
    "aud":[
