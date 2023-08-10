@@ -12,4 +12,4 @@ tags:
     - namespace management
 ---
 
-Promote local Namespace to global Namespace.
+Promote local Namespace to Global Namespace.
