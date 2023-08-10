@@ -109,7 +109,7 @@ As we continue working on improving latencies, these numbers will decrease over 
 
 Concurrent operations on the same Workflow Execution could lead to increased latency.
 
-## What ar the Temporal Platform limits? {#upgrade-policy}
+## What are the Temporal Platform limits? {#upgrade-policy}
 
 :::note
 

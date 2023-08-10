@@ -1,6 +1,6 @@
 ---
 slug: temporal-platform-limits-sheet
-title: What ar the Temporal Platform limits?
+title: What are the Temporal Platform limits?
 sidebar_label: Upgrade policy
 description: Basic upgrade policy for customers of Temporal Cloud
 tags:
