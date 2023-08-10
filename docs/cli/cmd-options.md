@@ -475,6 +475,12 @@ Options: ["debug" "info" "warn" "error" "fatal"].
 
 Maximum length for each attribute field.
 
+## max-sets
+
+Limits how many compatible sets will be returned.
+Specify 1 to return only the current default major version set.
+0 returns all sets.
+
 ## memo
 
 Set a memo on a schedule (format: key=value).

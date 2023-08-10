@@ -137,7 +137,7 @@ Fetch the sets of compatible build IDs associated with a Task Queue and associat
 
 - <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal grpc-meta</span><br /><br /><span class="tdlppd">Contains gRPC metadata to send with requests.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
 
-- [--max-sets](/cli/cmd-options/max-sets)
+- <a class="tdlp" href="/cli/cmd-options#max-sets">--max-sets<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal max-sets</span><br /><br /><span class="tdlppd">Limits how many compatible sets will be returned</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#max-sets">Learn more</a></span></span></a>
 
 - <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal namespace</span><br /><br /><span class="tdlppd">Identifies a Namespace in the Temporal Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
 

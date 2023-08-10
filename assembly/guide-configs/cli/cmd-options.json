@@ -223,6 +223,10 @@
     },
     {
       "type": "h2",
+      "id": "cli/cmd-options/max-sets"
+    },
+    {
+      "type": "h2",
       "id": "cli/cmd-options/memo"
     },
     {
