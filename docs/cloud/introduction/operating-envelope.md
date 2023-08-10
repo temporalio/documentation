@@ -109,7 +109,7 @@ As we continue working on improving latencies, these numbers will decrease over 
 
 Concurrent operations on the same Workflow Execution could lead to increased latency.
 
-## Temporal Platform limits sheet {#upgrade-policy}
+## What ar the Temporal Platform limits? {#upgrade-policy}
 
 :::note
 
@@ -174,7 +174,7 @@ These limits apply specifically to each Workflow Execution and do not pertain to
 
 For details on dynamic configuration keys, see <a class="tdlp" href="/references/dynamic-configuration#">Dynamic configuration reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Dynamic configuration reference</span><br /><br /><span class="tdlppd">Dynamic configuration key values can be set to override the default values in a Cluster configuration.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/dynamic-configuration#">Learn more</a></span></span></a>.
 
-## Default limits for Temporal Cloud
+## What are the default limits for Temporal Cloud?
 
 The Temporal Cloud service sets default limits for the following aspects:
 

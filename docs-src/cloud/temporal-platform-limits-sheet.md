@@ -1,6 +1,6 @@
 ---
 slug: temporal-platform-limits-sheet
-title: Temporal Platform limits sheet
+title: What ar the Temporal Platform limits?
 sidebar_label: Upgrade policy
 description: Basic upgrade policy for customers of Temporal Cloud
 tags:
@@ -72,7 +72,7 @@ These limits apply specifically to each Workflow Execution and do not pertain to
 
 For details on dynamic configuration keys, see [Dynamic configuration reference](/references/dynamic-configuration).
 
-## Default limits for Temporal Cloud
+## What are the default limits for Temporal Cloud?
 
 The Temporal Cloud service sets default limits for the following aspects:
 
