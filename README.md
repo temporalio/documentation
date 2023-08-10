@@ -198,9 +198,10 @@ Change the directory to `assembly`.  Run `yarn` to install the Assembly Workflow
 
 ### How to follow style guidance
 
-In general, Temporal content follows the [Google developer documentation style guide](https://developers.google.com/style). When the Google guide is silent about an issue, we follow the [Microsoft Writing Style Guide](https://docs.microsoft.com/en-us/style-guide/welcome/). And we also maintain a set of Temporal-specific style guidelines that override the Google and Microsoft guides defined below.
+The content included in the Temporal information corpus follows the [Google developer documentation style guide](https://developers.google.com/style), with deference to the [Microsoft Writing Style Guide](https://docs.microsoft.com/en-us/style-guide/welcome/) for issues left unanswered by Google. 
+In addition, we maintain a set of Temporal-specific style guidelines that override certain aspects of the Google and Microsoft guides.
 
-But we recommend that you use the Vale extension for your IDE and follow the suggestions.
+We recommend that you use the Vale extension for your IDE. Vale allows you to configure rulesets in its own configuration file, making it useful for defining Temporal's style guidelines.
 
 If you have VSCode, we recommend using the Vale VSCode extension.
 
@@ -246,13 +247,13 @@ Do not mix words and en dashes (or hyphens, for that matter).
 
 #### Infinitive verb forms in headings
 
-Titles and headings should use infinitive verb forms whenever possible. People tend to search by using infinitive verb forms, so using them helps SEO.
+Use questions and infinitive verb forms for titles and headings. People tend to word their search queries with infinitive verb forms; aligning our titles with what's commonly searched improves SEO.
 
 - Correct: "How to install Temporal"
 - Incorrect: "Installing Temporal"
 
 #### Infinitive verb forms in labels
-
+Treat labels like headings or titles and use infinitive verb forms when possible.
 - Correct: "Install Temporal"
 - Incorrect: "Installing Temporal"
 
@@ -297,7 +298,10 @@ If you don't run this command locally before posting a Pull Request, a Github ac
 
 ### How to run the Assembly Workflow
 
-First, you must have a Namespace setup to operate with. We recommend using the [Temporal CLI’s development Server](https://docs.temporal.io/cli/#starting-the-temporal-server). In a separate terminal run:
+Make sure you have a Namespace set up to operate out of.
+We recommend using the [Temporal CLI’s development Server](https://docs.temporal.io/cli/#starting-the-temporal-server). 
+
+In a separate terminal run:
 
 ```bash
 temporal server start-dev
@@ -322,7 +326,8 @@ Run the auto-formatter after the Workflow Execution is completed.
 yarn format
 ```
 
-**TIP**: Make your changes in the **source files** that are named in the configuration file. For example, if you found a typo in the Concept section *What is a Task?*, open [docs/concepts/what-is-a-task.md](https://github.com/temporalio/documentation/blob/main/docs/concepts/what-is-a-task.md) and make the edit directly there.
+**Make your changes in the _source files_  named in the configuration file.**
+For instance, if you find a typo under "What is a Task?" (located in the Workers section of the Temporal docs website), open [docs/concepts/what-is-a-task.md](https://github.com/temporalio/documentation/blob/main/docs/concepts/what-is-a-task.md) and make the edit directly there.
 
 ### How to create a new guide configuration
 
@@ -330,8 +335,8 @@ Guide configurations are stored in `assembly/guide-configs`.
 
 They are more or less organized to reflect the intended output in the `docs` directory, however this is purely for file management purposes and does not affect where the guide output is written to.
 
-A guide configuration just links the independent nodes together into a guide narrative.
-Some of the guide level metadata is supplied directly in the guide configuration, and some of it is generated from the source nodes. For example, the “keywords” and “tags” metadata are generated from the source nodes attached to the config.
+Guide configurations link independent source nodes together into a guide-style narrative.
+Some of the guide-level metadata is supplied directly in the guide configuration,  while the rest is generated from the source nodes. For example, the “keywords” and “tags” metadata are generated from the source nodes attached to the config.
 
 Example configuration:
 
