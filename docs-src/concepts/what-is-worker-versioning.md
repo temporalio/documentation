@@ -208,7 +208,7 @@ You can use the Temporal CLI to do this with the following command:
 temporal task-queue get-build-id-reachability
 ```
 
-The command determines, for each Task Queue, whether the Build ID in question is unreachable, only reachable by closed Workflows, or reachable by open and new Workfloww.
+The command determines, for each Task Queue, whether the Build ID in question is unreachable, only reachable by closed Workflows, or reachable by open and new Workflow.
 For example, this "2.0" Build ID is shown here by the CLI to be reachable by both new Workflows and some existing Workflows:
 
 ```command
