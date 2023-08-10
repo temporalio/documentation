@@ -273,7 +273,7 @@ We use the `ssdi` metadata tag in `docs-src` nodes to explicitly call out this i
 
 #### How to explicitly identify support, stability, and dependency info
 
-Use the `ssdi` metadata tag.
+Use the `ssdi` metadata in a `docs-src` node to explicitly call out support, stability, and dependency information.
 Example:
 
 ```markdown
