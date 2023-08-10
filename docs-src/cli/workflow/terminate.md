@@ -20,7 +20,7 @@ Any further [Command](/concepts/what-is-a-command) Tasks cannot be scheduled aft
 Workflow terminations require a valid [Workflow ID](/concepts/what-is-a-workflow-id) to function.
 `temporal workflow terminate --workflow-id=meaningful-business-id`
 
-Use the options listed below to change termination behavior.
+Use the following options to change termination behavior.
 
 - [--address](/cli/cmd-options/address)
 
