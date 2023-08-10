@@ -15,7 +15,7 @@ tags:
 
 The `temporal workflow signal` command is used to [Signal](/concepts/what-is-a-signal) a [Workflow Execution](/concepts/what-is-a-workflow-execution) by [ID](/concepts/what-is-a-workflow-id) or [List Filter](/concepts/what-is-a-list-filter).
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
 - [--address](/cli/cmd-options/address)
 
