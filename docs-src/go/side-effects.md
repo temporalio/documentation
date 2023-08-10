@@ -4,7 +4,9 @@ title: Side Effects
 description: A Side Effect is used to produce non-deterministic code, such as generating a UUID or a random number.
 sidebar_label: Side Effects
 tags:
-  - guide-context
+  - go sdk
+  - developer-guide-doc-type
+  - side effects
 ---
 
 Side Effects are used to execute non-deterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow. This is done by storing the non-deterministic results of the Side Effect into the Workflow [Event History](/workflows/#event-history).

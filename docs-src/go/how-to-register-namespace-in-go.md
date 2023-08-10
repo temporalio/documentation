@@ -4,9 +4,12 @@ title: How to register a Namespace in Go
 sidebar_label: Register Namespaces
 description: Use the `NamespaceClient` interface with the `Register` APIs to register your namespace.
 tags:
-  - developer-guide
-  - go
-  - workers
+  - go sdk
+  - developer-guide-doc-type
+  - namespace
+  - namespace registration
+  - how-to-doc-type
+  - retention-policy
 ---
 
 Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) with the `NamespaceClient` interface to register a [Namespace](/concepts/what-is-a-namespace) and set the [Retention Period](/concepts/what-is-a-retention-period) for the Workflow Execution Event History for the Namespace.

@@ -30,7 +30,7 @@ If the Worker's clock doesn't match the Temporal Cluster, synchronize all clocks
 
 Cloud users cannot access some of the logs needed to diagnose the source of the error.
 
-If you're using Temporal Cloud, create a [support ticket](https://docs.temporal.io/cloud/introduction/support#support-ticket) with as much information as possible, including the Namespace Name and the Workflow Ids of some Workflow Executions in which the issue occurs.
+If you're using Temporal Cloud, create a [support ticket](/cloud/support#support-ticket) with as much information as possible, including the Namespace Name and the Workflow Ids of some Workflow Executions in which the issue occurs.
 
 :::
 
@@ -119,5 +119,5 @@ If you increase `frontend.keepAliveMaxConnectionAge` values, consider monitoring
 
 Still unable to resolve your issue?
 
-- If you use Temporal Cloud, create a [support ticket](https://docs.temporal.io/cloud/introduction/support#support-ticket).
+- If you use Temporal Cloud, create a [support ticket](/cloud/support#support-ticket).
 - If you use our open source software or Temporal Cloud, check for similar questions and possible solutions in our [community forum](https://community.temporal.io) or [community Slack](https://temporal.io/slack).

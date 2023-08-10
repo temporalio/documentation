@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday August 07 2023 12:27:57 PM -0500
+Last assembled: Thursday August 10 2023 09:45:25 AM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -1017,5 +1017,25 @@ go/how-to-customize-activity-type-in-go -> #customize-activity-type
 cli/cmd-options/config -> /cli/cmd-options#config
 
 cli/cmd-options/output-filename -> /cli/cmd-options#output-filename
+
+cloud/get-started-certificates -> #issue-ca-certificates
+
+cloud/get-started-namespace -> #create-a-namespace
+
+cloud/get-started-invite -> #invite-users
+
+cloud/get-started-connect -> #connect-to-temporal-cloud
+
+cloud/certificates-issue -> /cloud/certificates#issue-certificates
+
+cloud/namespaces-access -> #access-namespaces
+
+cloud/namespaces-manage -> #manage-namespaces
+
+cloud/namespaces-delete -> #delete-a-namespace
+
+cloud/saml-okta -> #configure-saml-with-okta
+
+cloud/saml-finish -> #finish-saml-configuration
 
 

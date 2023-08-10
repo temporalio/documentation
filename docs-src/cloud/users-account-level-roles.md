@@ -14,8 +14,8 @@ When a Global Admin invites a user to join an account, the Global Admin selects 
 
 - **Global Admin**
   - Has full administrative permissions across the account, including users and usage
-  - Has Namespace Admin [permissions](/cloud/#namespace-level-permissions) on all [Namespaces](/namespaces) in the account
+  - Has Namespace Admin [permissions](/cloud/users-namespace-level-permissions) on all [Namespaces](/concepts/what-is-a-namespace) in the account
 - **Developer**
-  - Can create and update Namespaces; has full control over [Workflows](/workflows)
+  - Can create and update Namespaces; has full control over [Workflows](/concepts/what-is-a-workflow)
   - Has Namespace Admin permissions for each Namespace created by that user
 - **Read-Only:** Can only read information
