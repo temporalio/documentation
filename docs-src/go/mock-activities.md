@@ -7,8 +7,7 @@ tags:
   - developer-guide-doc-type
   - go sdk
   - testing
-  - testing-guide-doc-type
-  - activities
+  - activity
   
 ---
 

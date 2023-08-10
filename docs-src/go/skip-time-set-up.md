@@ -7,8 +7,7 @@ tags:
   - developer-guide-doc-type
   - go sdk
   - testing
-  - testing-guide-doc-type
-  - workflows
+  - workflow
 ---
 
 Learn to set up the time-skipping test framework in the SDK of your choice.

@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday August 09 2023 11:03:24 AM -0500
+Last assembled: Thursday August 10 2023 15:59:34 PM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -272,7 +272,7 @@ cloud/tcld/account/metrics/disable -> #disable
 
 cloud/tcld/account/metrics/accepted-client-ca/index -> #accepted-client-ca
 
-cloud/certificates-intro -> /cloud/account-setup/certificates#certificate-requirements
+cloud/certificates-intro -> /cloud/certificates#certificate-requirements
 
 cloud/tcld/account/metrics/accepted-client-ca/add -> #add
 
@@ -688,21 +688,23 @@ python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
 
-cloud/operating-envelope-intro -> /cloud/introduction/operating-envelope#
+cloud/users-account-level-roles -> /cloud/users#account-level-roles
 
-cloud/pricing-intro -> /cloud/introduction/pricing#
+cloud/get-started-certificates -> #issue-ca-certificates
 
-cloud/support-intro -> /cloud/introduction/support#
+cloud/get-started-namespace -> #create-a-namespace
 
-cloud/users-intro -> /cloud/account-setup/users#
+cloud/get-started-invite -> #invite-users
 
-cloud/saml-intro -> /cloud/how-to-manage-saml-with-temporal-cloud#
+cloud/get-started-connect -> #connect-to-temporal-cloud
 
-cloud/what-is-audit-logging -> /cloud/how-to-manage-audit-logging#
+cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 
-cloud/namespaces-create -> /cloud/account-setup/namespaces#create-a-namespace
+cloud/certificates-issue -> /cloud/certificates#issue-certificates
 
-cloud/users-invite -> /cloud/account-setup/users#invite-users
+cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
+
+cloud/users-invite -> /cloud/users#invite-users
 
 go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
 
@@ -712,17 +714,27 @@ typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connec
 
 cloud/certificates-filters -> #manage-certificate-filters
 
+cloud/users-namespace-level-permissions -> /cloud/users#namespace-level-permissions
+
+cloud/namespaces-access -> #access-namespaces
+
+cloud/namespaces-manage -> #manage-namespaces
+
+cloud/namespaces-delete -> #delete-a-namespace
+
 concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
 
-cloud/support-create-ticket -> /cloud/introduction/support#support-ticket
+cloud/support-create-ticket -> /cloud/support#support-ticket
 
-concepts/what-is-a-cloud-namespace-id -> /cloud/account-setup/namespaces#temporal-cloud-namespace-id
+concepts/what-is-a-cloud-namespace-id -> #temporal-cloud-namespace-id
 
-cloud/users-account-level-roles -> #account-level-roles
+cloud/saml-azure-ad -> #configure-saml-with-azure-ad
 
-cloud/users-namespace-level-permissions -> #namespace-level-permissions
+cloud/saml-okta -> #configure-saml-with-okta
+
+cloud/saml-finish -> #finish-saml-configuration
 
 cloud/users-update-roles -> #update-roles
 
@@ -730,13 +742,11 @@ cloud/users-update-permissions -> #update-permissions
 
 cloud/users-delete -> #delete-users
 
-cloud/what-is-an-action -> /cloud/introduction/pricing#action
+cloud/what-is-an-action -> /cloud/pricing#action
 
 concepts/what-is-a-reset -> /workflows#reset
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
-
-cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate-requirements
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
@@ -918,6 +928,12 @@ cli/cmd-options/ui-port -> /cli/cmd-options#ui-port
 
 cli/cmd-options/task-queue-type -> /cli/cmd-options#task-queue-type
 
+cli/cmd-options/max-sets -> /cli/cmd-options#max-sets
+
+cli/cmd-options/build-id -> /cli/cmd-options#build-id
+
+cli/cmd-options/reachability-type -> /cli/cmd-options#reachability-type
+
 cli/cmd-options/query -> /cli/cmd-options#query
 
 cli/cmd-options/reset-points -> /cli/cmd-options#reset-points
@@ -955,6 +971,8 @@ cli/cmd-options/depth -> /cli/cmd-options#depth
 cli/cmd-options/fold -> /cli/cmd-options#fold
 
 cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
+
+cli/cmd-options/first-execution-run-id -> /cli/cmd-options#first-execution-run-id
 
 typescript/testing -> /dev-guide/typescript/testing#replay
 
@@ -1013,6 +1031,18 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+cloud/operating-envelope-intro -> /cloud/introduction/operating-envelope#
+
+cloud/pricing-intro -> /cloud/introduction/pricing#
+
+cloud/support-intro -> /cloud/introduction/support#
+
+cloud/users-intro -> /cloud/account-setup/users#
+
+cloud/saml-intro -> /cloud/how-to-manage-saml-with-temporal-cloud#
+
+cloud/what-is-audit-logging -> /cloud/how-to-manage-audit-logging#
 
 cli/cmd-options/config -> /cli/cmd-options#config
 
