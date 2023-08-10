@@ -12,4 +12,4 @@ tags:
 ---
 
 Dynamic config value, formatted as `KEY=JSON_VALUE`.
-String values require quotations.
+String values require quotation marks.
