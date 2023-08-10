@@ -1,18 +1,21 @@
 ---
 slug: temporal-platform-limits-sheet
 title: Temporal Platform limits sheet
+sidebar_label: Upgrade policy
+description: Basic upgrade policy for customers of Temporal Cloud
 tags:
   - error
   - warn
   - limits
-date: 2023-09-11T00:00:00Z
 ---
 
-:::caution
+:::note
 
-This page will be removed in the near future.
+These limits apply to the [Temporal Platform](/temporal).
 
-For the latest information on the Temporal Platform limits, see [Temporal Platform limits sheet](/cloud/operating-envelope#temporal-platform-limits-sheet).
+For Temporal Cloud users, some limits can be increased by [submitting a support ticket](/cloud/support).
+
+Such limits include dynamic configuration variables, such as `limit.maxIDLength` and `limit.maxWorkflowExecutionTimeout`.
 
 :::
 
@@ -21,7 +24,12 @@ Knowing the limits of Temporal can prevent that.
 
 This page details many of the errors and warnings coded into the Temporal Platform.
 Errors are hard limits that fail when reached.
-Warnings are soft limits that produce a warning log on the server side.
+
+<!-- Warnings are soft limits that produce a warning log on the server side.
+
+Warnings go to server logs so users can't see them.
+
+Ideally there should be a way to export them as metrics or something, but there is nothing right now. -->
 
 <!-- truncate -->
 
