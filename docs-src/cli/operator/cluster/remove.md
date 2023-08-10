@@ -16,7 +16,7 @@ The `temporal operator cluster remove` command removes a remote [Cluster](/conce
 
 `temporal operator cluster remove --name=SomeCluster`
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
 - [--address](/cli/cmd-options/address)
 

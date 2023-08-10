@@ -16,7 +16,7 @@ This command also provides information about past, current, and future [Workflow
 
 `temporal schedule describe --schedule-id 'your-schedule-id' [command options]`
 
-Use the options below to change this command's output.
+Use the following options to change this command's behavior.
 
 - [--address](/cli/cmd-options/address)
 

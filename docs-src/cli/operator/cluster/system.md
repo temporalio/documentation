@@ -17,7 +17,7 @@ This information can be used to diagnose problems occurring in the [Temporal Ser
 
 `temporal operator cluster system`
 
-Use the options listed below to change this command's output.
+Use the following options to change this command's behavior.
 
 - [--address](/cli/cmd-options/address)
 

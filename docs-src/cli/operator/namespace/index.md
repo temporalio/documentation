@@ -14,4 +14,4 @@ tags:
 Namespace commands perform operations on [Namespaces](/concepts/what-is-a-namespace) contained in the [Temporal Cluster](/concepts/what-is-a-temporal-cluster).
 
 Namespace commands follow this syntax:
-`temporal operator namespace COMMAND [ARGS]`
+`temporal operator namespace COMMAND [ARGS]`.

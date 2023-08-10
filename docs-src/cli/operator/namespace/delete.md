@@ -15,7 +15,7 @@ tags:
 The `temporal operator namespace delete` command deletes a given [Namespace](/concepts/what-is-a-namespace) from the system.
 The command follow the syntax `temporal operator namespace delete <namespace>`
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the behavior of this command.
 
 - [--address](/cli/cmd-options/address)
 

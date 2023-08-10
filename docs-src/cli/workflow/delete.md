@@ -13,7 +13,7 @@ tags:
 
 The `temporal workflow delete` command deletes the specified [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
 - [--address](/cli/cmd-options/address)
 

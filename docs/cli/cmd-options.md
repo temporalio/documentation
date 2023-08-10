@@ -251,8 +251,8 @@ Currently an experimental feature.
 
 ## build-id
 
-Identifies the Build to retrieve reachability information for.
-May be specified multiple times.
+Identifies the build to retrieve reachability information for.
+Can be specified multiple times.
 
 ## calendar
 
@@ -331,7 +331,7 @@ Simulate reset without resetting any Workflow Executions.
 ## dynamic-config-value
 
 Dynamic config value, formatted as `KEY=JSON_VALUE`.
-String values require quotations.
+String values require quotation marks.
 
 ## email
 
@@ -360,7 +360,7 @@ Input file that specifies Workflow Executions to exclude from resetting.
 
 ## execution-timeout
 
-Timeout (in seconds) for a WorkflowExecution, including retries and `ContinueAsNew`tasks.
+Timeout (in seconds) for a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>, including retries and `ContinueAsNew` tasks.
 
 ## existing-compatible-build-id
 
@@ -395,7 +395,7 @@ Flag to indicate whether a Namespace is a Global Namespace.
 
 ## grpc-meta
 
-Contains gRPC metadata to send with requests (format: key=value).
+Contains gRPC metadata to send with requests (format: `key=value`).
 Values must be in a valid JSON format.
 
 ## headless
@@ -522,7 +522,8 @@ Initial value of notes field.
 
 ## output
 
-Format output as: table, json, card.
+Format of output.
+Options: table, json, card.
 
 ## overlap-policy
 
@@ -548,22 +549,22 @@ Port for the frontend gRPC service.
 
 ## promote-global
 
-Promote local Namespace to global Namespace.
+Promote local Namespace to Global Namespace.
 
 ## query
 
 Provides a SQL-like Query of Search Attributes to return Workflow Executions to reset.
-For more information, refer to the <a class="tdlp" href="/cli/workflow#list">`temporal workflow list` command<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal workflow list</span><br /><br /><span class="tdlppd">List Workflow Executions based on a Query.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/workflow#list">Learn more</a></span></span></a>.
+For more information, refer to the <a class="tdlp" href="/cli/workflow#list">temporal workflow list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal workflow list</span><br /><br /><span class="tdlppd">List Workflow Executions based on a Query.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/workflow#list">Learn more</a></span></span></a> command.
 
 ## raw
 
 Print raw data in a JSON format.
-Recommended to use this over -o json for scripting.
+For scripting, we recommend using this option instead of `-o json`.
 
 ## reachability-type
 
 Specify how you'd like to filter the reachability of Build IDs.
-Valid choices are:
+The following are valid choices:
 
 - `open`: reachable by one or more open Workflows.
 - `closed`: reachable by one or more closed Workflows.
@@ -615,12 +616,12 @@ Schedule Id.
 
 ## search-attribute
 
-Set Search Attribute on a Schedule (formatted as key=value).
+Set Search Attribute on a Schedule (formatted as `key=value`).
 Use valid JSON formats for value.
 
 ## skip-base-is-not-current
 
-Skip a Workflow Execution if the base Run is not the current Workflow Run.
+Skip a Workflow Execution if the base Workflow Run is not the current Workflow Run.
 
 ## skip-current-open
 
@@ -683,7 +684,7 @@ Enable TLS encryption without additional options such as mTLS or client certific
 ## type
 
 Search attribute type.
-Options are: Text, Keyword, Int, Double, Bool, Datetime, KeywordList.
+Options: Text, Keyword, Int, Double, Bool, Datetime, KeywordList.
 
 ## ui-asset-path
 
@@ -700,7 +701,7 @@ IPv4 address to bind the Web UI to.
 ## ui-port
 
 Port for the Web UI.
-Default: `--port` + 1000 (e.g. 4000)
+Default: `--port` + 1000 (for example, 4000).
 
 ## unpause
 
@@ -712,13 +713,13 @@ Print applied Namespace changes.
 
 ## visibility-archival-state
 
-Visibility archival state.
+Visibility Archival state.
 Valid values: "disabled", "enabled".
 
 ## visibility-uri
 
-Specify visibility archival URI.
-This cannot be changed after first-time archival is enabled.
+Specify URI for Visibility Archival.
+This cannot be changed after Archival is enabled.
 
 ## workflow-id
 

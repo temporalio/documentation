@@ -19,7 +19,7 @@ However, Workflow Executions started by a Schedule can be identified by their [S
 
 `temporal schedule delete --schedule-id 'your-schedule-id' [command options]`
 
-Use the options below to change the behavior of this command.
+Use the following options to change this command's behavior.
 
 - [--address](/cli/cmd-options/address)
 

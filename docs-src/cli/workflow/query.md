@@ -19,7 +19,7 @@ Queries can also be used on completed [Workflows](/concepts/what-is-a-workflow-e
 
 `temporal workflow query --workflow-id=meaningful-business-id --type=MyQueryType`
 
-Use the command options listed below to change the information returned by this command.
+Use the following command options to change the information returned by this command.
 
 - [--address](/cli/cmd-options/address)
 

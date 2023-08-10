@@ -20,7 +20,7 @@ The output of this command can be changed to show as printed ('raw') or to only 
 
 `temporal workflow describe --workflow-id=meaningful-business-id --raw=true --reset-points=true`
 
-Use the command options listed below to change the information returned by this command.
+Use the following command options to change the information returned by this command.
 
 - [--address](/cli/cmd-options/address)
 

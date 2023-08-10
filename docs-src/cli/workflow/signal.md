@@ -13,7 +13,7 @@ tags:
   - signals
 ---
 
-The `temporal workflow signal` command is used to [Signal](/concepts/what-is-a-signal) a [Workflow Execution](/concepts/what-is-a-workflow-execution) by [ID](/concepts/what-is-a-workflow-id) or [List Filter](/concepts/what-is-a-list-filter).
+The `temporal workflow signal` command is used to send a [Signal](/concepts/what-is-a-signal) to a [Workflow Execution](/concepts/what-is-a-workflow-execution) by [Workflow Id](/concepts/what-is-a-workflow-id) or [List Filter](/concepts/what-is-a-list-filter).
 
 Use the following options to change the command's behavior.
 

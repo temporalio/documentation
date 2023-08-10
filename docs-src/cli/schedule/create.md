@@ -27,7 +27,7 @@ temporal schedule create \
 Any combination of `--calendar`, `--interval`, and `--cron` is supported.
 Actions will be executed at any time specified in the Schedule.
 
-Use the options provided below to change the command's behavior.
+Use the following options to change this command's behavior.
 
 - [--address](/cli/cmd-options/address)
 

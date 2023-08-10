@@ -49,7 +49,7 @@ To run a Schedule command, run `temporal schedule [command] [command options]`.
 ## backfill
 
 The `temporal schedule backfill` command executes Actions ahead of their specified time range.
-Backfilling fills in <a class="tdlp" href="/workflows#run-id">Workflow Runs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Run Id?</span><br /><br /><span class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#run-id">Learn more</a></span></span></a> from a time period when the Schedule was paused, or from before the Schedule was created.
+Backfilling adds <a class="tdlp" href="/workflows#run-id">Workflow Runs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Run Id?</span><br /><br /><span class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#run-id">Learn more</a></span></span></a> from a time period when the Schedule was paused, or from before the Schedule was created.
 
 Schedule backfills require a valid Schedule ID, along with the time in which to run the Schedule and a change to the overlap policy.
 
@@ -60,7 +60,7 @@ temporal schedule backfill --schedule-id 'your-schedule-id' \
 --end-time '2022-05-31T23:59:59Z'
 ```
 
-Use the options provided below to change this command's behavior.
+Use the following options to change this command's behavior.
 
 - <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal address</span><br /><br /><span class="tdlppd">The host and port for the Temporal Frontend Service.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
@@ -116,7 +116,7 @@ temporal schedule create \
 Any combination of `--calendar`, `--interval`, and `--cron` is supported.
 Actions will be executed at any time specified in the Schedule.
 
-Use the options provided below to change the command's behavior.
+Use the following options to change this command's behavior.
 
 - <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal address</span><br /><br /><span class="tdlppd">The host and port for the Temporal Frontend Service.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
@@ -208,7 +208,7 @@ However, Workflow Executions started by a Schedule can be identified by their <a
 
 `temporal schedule delete --schedule-id 'your-schedule-id' [command options]`
 
-Use the options below to change the behavior of this command.
+Use the following options to change this command's behavior.
 
 - <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal address</span><br /><br /><span class="tdlppd">The host and port for the Temporal Frontend Service.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
@@ -247,7 +247,7 @@ This command also provides information about past, current, and future <a class=
 
 `temporal schedule describe --schedule-id 'your-schedule-id' [command options]`
 
-Use the options below to change this command's output.
+Use the following options to change this command's behavior.
 
 - <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal address</span><br /><br /><span class="tdlppd">The host and port for the Temporal Frontend Service.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
@@ -347,7 +347,7 @@ Schedule toggles are passed in this format:
 `temporal schedule toggle --schedule-id 'your-schedule-id' --pause --reason "paused because the database is down"`
 `temporal schedule toggle --schedule-id 'your-schedule-id' --unpause --reason "the database is back up"`
 
-Use the options provided below to change this command's behavior.
+Use the following options to change this command's behavior.
 
 - <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal address</span><br /><br /><span class="tdlppd">The host and port for the Temporal Frontend Service.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
@@ -397,7 +397,7 @@ Schedule triggers are passed in this format:
 The Overlap Policy of the Schedule can be overridden as well.
 `temporal schedule trigger --schedule-id 'your-schedule-id' --overlap-policy 'AllowAll'`
 
-Use the options provided below to change this command's behavior.
+Use the following options to change this command's behavior.
 
 - <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal address</span><br /><br /><span class="tdlppd">The host and port for the Temporal Frontend Service.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
@@ -448,7 +448,7 @@ temporal schedule update 			    \
 Updating a Schedule takes the given options and replaces the entire configuration of the Schedule with what's provided.
 If you only change one value of the Schedule, be sure to provide the other unchanged fields to prevent them from being overwritten.
 
-Use the options provided below to change the command's behavior.
+Use the following options to change the command's behavior.
 
 - <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal address</span><br /><br /><span class="tdlppd">The host and port for the Temporal Frontend Service.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 

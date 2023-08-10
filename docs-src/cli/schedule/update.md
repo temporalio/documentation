@@ -27,7 +27,7 @@ temporal schedule update 			    \
 Updating a Schedule takes the given options and replaces the entire configuration of the Schedule with what's provided.
 If you only change one value of the Schedule, be sure to provide the other unchanged fields to prevent them from being overwritten.
 
-Use the options provided below to change the command's behavior.
+Use the following options to change the command's behavior.
 
 - [--address](/cli/cmd-options/address)
 

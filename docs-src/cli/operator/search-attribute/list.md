@@ -16,7 +16,7 @@ The `temporal operator search-attribute list` command displays a list of all [Se
 
 `temporal workflow list --query`.
 
-Use the options listed below to change the command's behavior.
+Use the following options to change this command's behavior.
 
 - [--address](/cli/cmd-options/address)
 

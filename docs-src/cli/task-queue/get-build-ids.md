@@ -2,7 +2,7 @@
 id: get-build-ids
 title: temporal task-queue get-build-ids
 sidebar_label: get-build-ids
-description: Fetch the sets of worker Build ID versions on the Task Queue
+description: Fetch the sets of worker Build ID versions on the Task Queue.
 tags:
   - cli reference
   - temporal cli

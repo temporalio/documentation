@@ -20,7 +20,7 @@ Schedule toggles are passed in this format:
 `temporal schedule toggle --schedule-id 'your-schedule-id' --pause --reason "paused because the database is down"`
 `temporal schedule toggle --schedule-id 'your-schedule-id' --unpause --reason "the database is back up"`
 
-Use the options provided below to change this command's behavior.
+Use the following options to change this command's behavior.
 
 - [--address](/cli/cmd-options/address)
 

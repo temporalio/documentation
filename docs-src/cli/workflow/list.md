@@ -20,7 +20,7 @@ The command can also return a list of archived Workflow Executions.
 
 `temporal workflow list --archived=true`
 
-Use the command options listed below to change the information returned by this command.
+Use the following command options to change the information returned by this command.
 
 - [--address](/cli/cmd-options/address)
 

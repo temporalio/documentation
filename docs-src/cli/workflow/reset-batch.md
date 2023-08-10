@@ -23,7 +23,7 @@ The input file must have a [Workflow ID](/concepts/what-is-a-workflow-id) on eac
 Workflow Executions can also be found by [Query](/concepts/what-is-a-query).
 `temporal workflow reset-batch --query=MyQuery
 
-Use the options listed below to change reset behavior.
+Use the following options to change reset behavior.
 
 - [--address](/cli/cmd-options/address)
 

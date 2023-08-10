@@ -21,7 +21,7 @@ Information about the Task Queue can be returned to troubleshoot server issues.
 
 `temporal task-queue describe --task-queue=MyTaskQueue --task-queue-type="activity"`
 
-Use the options listed below to modify what this command returns.
+Use the following options to change the behavior of this command.
 
 - [--fields](/cli/cmd-options/fields)
 - [--address](/cli/cmd-options/address)

@@ -22,7 +22,7 @@ Single quotes('') are used to wrap input as JSON.
 
 `temporal workflow execute --workflow-id=meaningful-business-id --type-MyWorkflow --task-queue-MyTaskQueue --input='{"JSON": "Input"}'`
 
-Use the command options listed below to change how the Workflow Execution behaves during its run.
+Use the following command options to change how the Workflow Execution behaves during its run.
 
 - [--address](/cli/cmd-options/address)
 

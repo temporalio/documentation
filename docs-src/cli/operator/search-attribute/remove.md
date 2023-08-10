@@ -15,7 +15,7 @@ tags:
 The `temporal operator search-attribute remove` command removes custom [Search Attribute](/concepts/what-is-a-search-attribute) metadata.
 This command does not remove custom Search Attributes from Elasticsearch or change the index schema.
 
-Use the options listed below to change the command's behavior.
+Use the following options to change this command's behavior.
 
 - [--address](/cli/cmd-options/address)
 

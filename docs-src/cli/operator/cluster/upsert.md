@@ -18,7 +18,7 @@ The `temporal operator cluster upsert` command allows the user to add or update 
 Upserting can also be used to enable or disabled cross-cluster connection.
 `temporal operator cluster upsert --enable-connection=true`
 
-Use the options listed below to change the behavior of this command.
+Use the following options to change the behavior of this command.
 
 - [--address](/cli/cmd-options/address)
 

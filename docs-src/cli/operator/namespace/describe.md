@@ -17,7 +17,7 @@ Namespaces are identified by Namespace ID.
 
 `temporal operator namespace describe --namespace-id=meaningful-business-id`
 
-Use the options listed below to change the command's output.
+Use the following options to change the behavior of this command.
 
 - [--address](/cli/cmd-options/address)
 

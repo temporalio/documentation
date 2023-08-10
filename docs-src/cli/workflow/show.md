@@ -14,7 +14,7 @@ tags:
 
 The `temporal workflow show` command provides the [Event History](/concepts/what-is-an-event-history) for a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the behavior of this command.
 
 - [--address](/cli/cmd-options/address)
 

@@ -21,7 +21,7 @@ Schedule triggers are passed in this format:
 The Overlap Policy of the Schedule can be overridden as well.
 `temporal schedule trigger --schedule-id 'your-schedule-id' --overlap-policy 'AllowAll'`
 
-Use the options provided below to change this command's behavior.
+Use the following options to change this command's behavior.
 
 - [--address](/cli/cmd-options/address)
 
