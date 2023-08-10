@@ -11,7 +11,7 @@ tags:
 ---
 
 Specify how you'd like to filter the reachability of Build IDs.
-Valid choices are:
+The following are valid choices:
 
 - `open`: reachable by one or more open Workflows.
 - `closed`: reachable by one or more closed Workflows.
