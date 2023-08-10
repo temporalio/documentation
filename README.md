@@ -200,17 +200,17 @@ In general, Temporal content follows the [Google developer documentation style 
 
 But we recommend that you use the Vale extension for your IDE and follow the suggestions.
 
-If you have VSCode, we recommend the Vale VSCode extension.
+If you have VSCode, we recommend using the Vale VSCode extension.
 
-For details on the styles, see the rulesets defined in the `vale/styles` configuration.
+For more information on general style rules, see the rulesets defined in the `vale/styles` configuration file.
 
 #### Capitalization of core terms
 
 Many of Temporal's core terms can be used in a generic way.
 
-To differentiate one of Temporal's core terms from a generic instance of a term, always treat the Temporal term as a proper noun in documentation.
+To differentiate one of Temporal's core terms from a generic instance of a term, always treat the Temporal term as a proper noun.
 
-Generic versions of the same term should not be capitalized and should be used sparingly to avoid confusion.
+Do not capitalize generic versions of Temporal terms. Use generic versions sparingly to avoid confusion.
 
 - Correct: "Next, register the Activity within the Workflow."
 
@@ -218,7 +218,8 @@ Generic versions of the same term should not be capitalized and should be used s
 
 #### Abbreviation of "identifier"
 
-In text, do not abbreviate the word "identifier" as "ID", "Id", or "id" unless it is part of a Temporal core term, such as "Workflow Id" or "Activity Id".
+Do not abbreviate the word "identifier" as "ID", "Id", or "id" unless it is part of a Temporal core term. For core terms, the correct abbreviation is "Id", such as in "Workflow Id" or "Activity Id".
+
 
 - Correct: "You can provide an order identifier or customer identifier as a Workflow Id."
 
@@ -228,8 +229,8 @@ In code (and when quoting or referring to code in text), follow the conventions 
 
 #### En dashes in ranges
 
-Using an en dash (`&ndash;` or the character `–`) in a range of numbers is acceptable.
-Even better is to use words such as _from_, _to_, and _through_.
+Using an en dash (`&ndash;` or the character `–`) for a range of numbers is acceptable.
+However, we recommend using _from_, _to_, and _through_ instead of an en dash when possible.
 
 #### Be consistent.
 
@@ -256,26 +257,23 @@ Titles and headings should use infinitive verb forms whenever possible. People t
 #### Sentence casing in headings
 
 Use sentence casing for titles and headings.
-Sentence casing means that only the first letter of the first word and proper nouns are capitalized.
+Sentence casing means that only proper nouns and the first letter of the first word are capitalized.
 
 - Correct: "How to get started with Temporal"
 - Incorrect: "How To Get Started With Temporal"
 
 ### What is the philosophy around versioning the documentation?
 
-The Temporal Platform includes many different components and core dependencies. Each of these components is often independently versioned and documents their stability and support for their own dependencies. For example, the [Temporal Go SDK reference](https://pkg.go.dev/go.temporal.io/sdk?tab=versions) provides that view.
+The Temporal Platform includes many different components and core dependencies. Many components are independently versioned, meaning that they document their stability and support for their own dependencies. The [Temporal Go SDK reference](https://pkg.go.dev/go.temporal.io/sdk?tab=versions) provides a good example of document versioning.
 
 The goal of this information set, in regards to versioning, is to remain “current”. That is, this information should serve the needs of the Platform’s user base as best it can based on what is/has recently happened across all the components of the Temporal Platform.
-We should explicitly call out support, stability, and dependency information whenever possible inline with the rest of the information. This contrasts with publishing versions of documentation sets to match the versioned components of the platform.
+Make explicit callouts to support, stability, and dependency information whenever possible.
 
-We use the `ssdi` metadata tag in `docs-src` nodes to explicitly call out support, stability, and dependency information when needed.
+We use the `ssdi` metadata tag in `docs-src` nodes to explicitly call out this information.
 
 #### How to explicitly identify support, stability, and dependency info
 
 Use the `ssdi` metadata tag.
-
-Add this metadata tag to the information node’s metadata tag in the `/docs-src` directory.
-
 Example:
 
 ```markdown
@@ -291,9 +289,9 @@ ssdi:
 
 ### How to auto format files
 
-Run `yarn format` .
+Run `yarn format`.
 
-If you do not run this command locally and put up a Pull Request, a Github action runs the formatting.
+If you don't run this command locally before posting a Pull Request, a Github action runs the formatting.
 
 ### How to run the Assembly Workflow
 
