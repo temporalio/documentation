@@ -11,5 +11,5 @@ tags:
 ---
 
 Limits how many compatible sets will be returned.
-Specify 1 to only return the current default major version set.
+Specify 1 to return only the current default major version set.
 0 returns all sets.
