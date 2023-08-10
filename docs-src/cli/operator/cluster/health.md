@@ -15,7 +15,7 @@ tags:
 The `temporal operator cluster health` command checks the health of the [Frontend Service](/concepts/what-is-a-frontend-service).
 A successful execution returns a list of [Cluster](/concepts/what-is-a-temporal-cluster) metrics.
 
-Use the options listed below to change the behavior and output of this command.
+Use the following options to change the behavior and output of this command.
 
 - [--address](/cli/cmd-options/address)
 
