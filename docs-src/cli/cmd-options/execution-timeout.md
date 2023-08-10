@@ -14,4 +14,4 @@ tags:
     - continue-as-new
 ---
 
-Timeout (in seconds) for a WorkflowExecution, including retries and `ContinueAsNew`tasks.
+Timeout (in seconds) for a WorkflowExecution, including retries and `ContinueAsNew` tasks.
