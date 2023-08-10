@@ -486,7 +486,7 @@ lines: 1-52, 64
 
 #### Basic line selection requirements
 
-You must select both the opening multiline comment line and the closing multiline comment line whenever selecting multiline comments, as either a distinct selection or as part of a large group of Markdown and code.
+You must select both the opening multiline comment line and the closing multiline comment line when selecting multiline comments, as either a distinct selection or as part of a large group of Markdown and code.
 
 For example:
 
@@ -513,7 +513,7 @@ lines: 1-7
 @dacx */
 ```
 
-In the above example, we capture lines 1-7 to capture the whole multiline comment section. Notion is not good at showing line numbers in code blocks, but most editors do it well by default.
+In the above example, we capture lines 1-7 to capture the whole multiline comment section. 
 
 We could also capture the full multiline comment as part of capturing a group of Markdown and code:
 
@@ -529,7 +529,7 @@ lines: 1-12
 
 #### Use Assembly to generate the info nodes
 
-In the documentation repo, run `yarn assemble --samples` to generate the information nodes into their respective language specific docs-src directory.
+In the documentation repository, run `yarn assemble --samples` to generate the information nodes into their respective language-specific directories.
 
 For example, information nodes generated from `.go` files are generated into the `/docs-src/go` directory.
 
@@ -576,13 +576,13 @@ For example:
 
 In the documentation repo, run `yarn assemble` to generate the guides from the guide configurations.
 
-Locally you can preview your work in the docs repo using `yarn start`
+Preview your work locally with the command `yarn start`
 
 ### How to use Snipsync
 
 Make sure your source code repository is registered in the `snipsync.config.yaml` file.
 
-In the `docs-src` Information Nodes, place your [snipsync](https://github.com/temporalio/snipsync) snippet wrappers where you want the snippet to be.
+Place your [snipsync](https://github.com/temporalio/snipsync) snippet wrappers where you want the snippet to be within the information node.
 
 ```
 <!--SNIPSTART typescript-hello-client -->
