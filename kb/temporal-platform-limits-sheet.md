@@ -27,7 +27,7 @@ Warnings are soft limits that produce a warning log on the server side.
 
 :::caution
 
-These limits are per Workflow Execution, and do not apply to the entire Temporal Platform or per Namespace.
+These limits apply specifically to each Workflow Execution and do not pertain to the entire Temporal Platform or individual Namespaces.
 
 :::
 

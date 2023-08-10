@@ -35,7 +35,7 @@ Ideally there should be a way to export them as metrics or something, but there 
 
 :::caution
 
-These limits are per Workflow Execution, and do not apply to the entire Temporal Platform or per Namespace.
+These limits apply specifically to each Workflow Execution and do not pertain to the entire Temporal Platform or individual Namespaces.
 
 :::
 
