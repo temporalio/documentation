@@ -351,6 +351,10 @@
     },
     {
       "type": "h2",
+      "id": "cli/cmd-options/set-as-default"
+    },
+    {
+      "type": "h2",
       "id": "cli/cmd-options/skip-base-is-not-current"
     },
     {

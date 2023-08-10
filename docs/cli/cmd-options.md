@@ -625,6 +625,12 @@ Schedule Id.
 Set Search Attribute on a Schedule (formatted as `key=value`).
 Use valid JSON formats for value.
 
+## set-as-default
+
+When set, establishes the compatible set being targeted as the default for the Task Queue.
+
+If a different set is the current default, the targeted set replaces it.
+
 ## skip-base-is-not-current
 
 Skip a Workflow Execution if the base Workflow Run is not the current Workflow Run.

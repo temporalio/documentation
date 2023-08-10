@@ -4,7 +4,6 @@ title: temporal set-as-default
 sidebar_label: set-as-default
 description: Establishes the compatible set being targeted as the default for the Task Queue.
 tags:
-tags: 
     - cli reference
     - temporal cli
     - options-feature
