@@ -17,7 +17,7 @@ When invoked successfully, the Workflow and Run ID are returned immediately afte
 
 `temporal workflow start --task-queue=MyTaskQueue --type=MyWorkflow`
 
-Use the command options listed below to change how the Workflow Execution behaves upon starting.
+Use the following command options to change how the Workflow Execution behaves upon starting.
 
 - [--address](/cli/cmd-options/address)
 
