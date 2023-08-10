@@ -2,7 +2,7 @@
 id: update
 title: temporal workflow update
 sidebar_label: update
-description: Updates a running workflow synchronously.
+description: Updates a running Workflow Execution synchronously.
 tags:
   - cli reference
   - temporal cli
