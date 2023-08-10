@@ -13,4 +13,4 @@ tags:
 ---
 
 Port for the Web UI.
-Default: `--port` + 1000 (e.g. 4000)
+Default: `--port` + 1000 (for example, 4000).
