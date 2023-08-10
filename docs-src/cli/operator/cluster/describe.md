@@ -15,7 +15,7 @@ tags:
 The `temporal operator cluster describe` command shows information about the [Cluster](/concepts/what-is-a-temporal-cluster).
 This information can include information about other connected services, such as a remote [Codec Server](/concepts/what-is-a-codec-server).
 
-Use the options listed below to change the output of this command.
+Use the following options to change the output of this command.
 
 - [--address](/cli/cmd-options/address)
 
