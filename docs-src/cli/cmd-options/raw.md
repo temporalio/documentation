@@ -11,4 +11,4 @@ tags:
 ---
 
 Print raw data in a JSON format.
-Recommended to use this over -o json for scripting.
+For scripting, we recommend using this option instead of `-o json`.
