@@ -12,7 +12,7 @@ tags:
 ---
 
 Batch commands change multiple [Workflow Executions](/concepts/what-is-a-workflow-execution) by providing a [List Filter](/concepts/what-is-visibility) and the type of Batch job to execute.
-The List Filter identifies the Workflow Executions in the Batch job, while the Batch type determines what will happen to the Workflow Executions.
+The List Filter identifies the Workflow Executions in the Batch job; the Batch type determines what will happen to the Workflow Executions.
 
 There are three types of Batch Jobs:
 
