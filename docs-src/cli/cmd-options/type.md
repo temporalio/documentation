@@ -12,4 +12,4 @@ tags:
 ---
 
 Search attribute type.
-Options are: Text, Keyword, Int, Double, Bool, Datetime, KeywordList.
+Options: Text, Keyword, Int, Double, Bool, Datetime, KeywordList.
