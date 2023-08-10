@@ -58,7 +58,8 @@ Consider registering your already published information with Temporal IQ and rea
 
 ## What is in this repository?
 
-This repository contains the following:
+This repository contains a large chunk of the Temporal Platform information corpus, divided into "source-of-truth" Markdown files and "generated" Markdown files, along with a changelog and an Assembly Workflow.
+Each component is explained further along in this README.
 
 ### `/docs-src` Markdown “source-of-truth” Information nodes
 
@@ -104,7 +105,8 @@ The information at [docs.temporal.io](http://docs.temporal.io) changes frequentl
 
 ### Snipsync code synchronization tooling
 
-This repository has [Snipsync](https://github.com/temporalio/snipsync) installed and checks in the snippets that are merged into the docs.
+This repository is configured for [Snipsync](https://github.com/temporalio/snipsync), which checks in the snippets included throughout our documentation.
+For more information, see [How to Use Snipsync](#how-to-use-snipsync).
 
 ## How to get approval to put up a Pull Request
 
@@ -186,13 +188,13 @@ All changes must [follow our style guidance](#how-to-follow-style-guidance).
 
 ### How to install the dependencies for this repo
 
-Make sure NodeJS is installed. We recommend using a version newer than [Node.js](https://nodejs.org/en/download/). 18.0.0. (On a Mac, use the command `brew install node@16`)
+**Before proceeding, make sure [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) and [NodeJS](https://nodejs.org/en/download/) are installed. Make sure you install the latest version of NodeJS (greater than 18.0.0).**
 
-Make sure you have [Yarn installed](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable).
+On a Mac, use the command `brew install node@16`.
 
-In the root of the repo run `yarn`. This installs the Docusaurus framework packages and the other packages that help generate the `build` output.
+In the root directory of the repository, run `yarn` to install the packages needed to generate the `build` output. This includes the Docusaurus framework.
 
-Change directory into `assembly` and run `yarn` there as well. This installs the Assembly Workflow dependencies that generates information nodes and generates the guides into `/docs` .
+Change the directory to `assembly`.  Run `yarn` to install the Assembly Workflow dependencies needed to generate the information nodes and their resulting guides.
 
 ### How to follow style guidance
 
