@@ -4,7 +4,9 @@ title: How to develop with Signals
 description: A Signal is a message sent to a running Workflow Execution
 sidebar_label: Signals
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - signals
+  - signals-feature
 ---
 
 A [Signal](/concepts/what-is-a-signal) is a message sent to a running Workflow Execution.

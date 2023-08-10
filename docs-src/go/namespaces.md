@@ -4,7 +4,10 @@ title: How to create and manage Namespaces
 sidebar_label: Namespaces
 description: You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..
 tags:
-  - guide-context
+  - go sdk
+  - developer-guide-doc-type
+  - namespace
+  - namespace management
 ---
 
 You can create, update, deprecate or delete your [Namespaces](/concepts/what-is-a-namespace) using either tctl or SDK APIs.

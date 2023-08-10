@@ -4,10 +4,11 @@ title: How to set Activity Timeouts in Go
 sidebar_label: Activity Timeouts
 description: Create an instance of StartWorkflowOptions.
 tags:
-  - go sdk
+  - go-sdk
   - how-to-doc-type
+  - retry and timeout policies
   - activity
-  - activity options
+  - activity execution
   - timeouts
   - developer-guide-doc-type
 ---

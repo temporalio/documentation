@@ -4,7 +4,9 @@ title: How to send a Signal from a Workflow
 description: A Workflow can send a Signal to another Workflow, in which case it's called an External Signal
 sidebar_label: Send Signal from Workflow
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - signals
+  - signals-feature
 ---
 
 A Workflow can send a Signal to another Workflow, in which case it's called an _External Signal_.

@@ -4,7 +4,10 @@ title: How to register Namespaces
 sidebar_label: Register Namespace
 description: On Temporal Cloud, use the Temporal Cloud UI or tcld commands, and on self-hosted Temporal Cluster, use `tctl namespace register` or `RegisterNamespaceRequest` API to create Namespaces.
 tags:
-  - guide-context
+  - go sdk
+  - developer-guide-doc-type
+  - namespace
+  - namespace registration
 ---
 
 Registering a Namespace creates a Namespace on the Temporal Cluster or Temporal Cloud.
