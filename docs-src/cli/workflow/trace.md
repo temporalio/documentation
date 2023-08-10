@@ -15,7 +15,7 @@ tags:
 
 The `temporal workflow trace` command tracks the progress of a [Workflow Execution](/concepts/what-is-a-workflow-execution) and any [Child Workflows](/concepts/what-is-a-child-workflow-execution) it generates.
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
 - [--address](/cli/cmd-options/address)
 
