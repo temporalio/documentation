@@ -13,5 +13,5 @@ tags:
   - uri
 ---
 
-Specify visibility archival URI.
-This cannot be changed after first-time archival is enabled.
+Specify URI for Visibility Archival.
+This cannot be changed after Archival is enabled.
