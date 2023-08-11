@@ -4,17 +4,25 @@ title: temporal workflow execute
 sidebar_label: execute
 description: Start a new Workflow Execution and prints its progress.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow execute
+  - workflow execution
 ---
 
 The `temporal workflow execute` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution) and prints its progress.
-The command doesn't finish until the [Workflow](/concepts/what-is-a-workflow) completes.
+The command doesn't finish until the Workflow Execution completes.
+
+To execute a [Workflow](/concepts/what-is-a-workflow) from the CLI:
+`temporal workflow execute --workflow-id=meaningful-business-id --type=MyWorkflow --task-queue=MyTaskQueue`
 
 Single quotes('') are used to wrap input as JSON.
 
-Use the command options listed below to change how the Workflow Execution behaves during its run.
-Make sure to write the command in this format:
-`temporal workflow execute [command options]`
+`temporal workflow execute --workflow-id=meaningful-business-id --type-MyWorkflow --task-queue-MyTaskQueue --input='{"JSON": "Input"}'`
+
+Use the following command options to change how the Workflow Execution behaves during its run.
 
 - [--address](/cli/cmd-options/address)
 
@@ -67,6 +75,8 @@ Make sure to write the command in this format:
 - [--task-timeout](/cli/cmd-options/task-timeout)
 
 - [--time-format](/cli/cmd-options/time-format)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

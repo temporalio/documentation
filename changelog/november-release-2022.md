@@ -6,7 +6,7 @@ date: 2022-11-23T00:00:00Z
 
 In November, we published the following content:
 
-- [How to test your Workflows and Activities section of the Developer's guide](/application-development/testing?lang=typescript).
+- [How to test your Workflows and Activities section of the Developer's guide](/dev-guide/typescript/testing).
   This section was expanded significantly to cover many aspects of testing your application code, such as testing frameworks, replays, skipping time, Heartbeats, and cancellation.
   The only caveat is that most of the available samples are in TypeScript.
   However, more are on the way!
@@ -14,12 +14,11 @@ In November, we published the following content:
 - [Setting up Prometheus and Grafana to view metrics](/kb/prometheus-grafana-setup).
   The Temporal Cluster and SDKs emit metrics that can be used to monitor performance and troubleshoot issues.
   After you enable your monitoring tool, you can relay these metrics to any monitoring and observability platform.
-  
 - [Troubleshooting the DeadlineExceeded error](/kb/deadline-exceeded-troubleshooting).
   All client-side requests made to the Temporal Cluster are gRPC requests.
   Sometimes, when these requests can't be completed, you'll see this particular error message: "Context: deadline exceeded."
 
-- [Why you shouldn't use Run Ids in Workflow logic](/kb/non-determinism-issues-for-run-ids).
+- [Why you shouldn't use Run Ids in Workflow logic](/workflows#which-operations-lead-to-non-determinism-issues).
   The current Run Id is mutable and can change during a Workflow Retry. You should not rely on storing the current Run Id, or using it for any logical choices, because a Workflow Retry changes the Run Id and can lead to non-determinism issues.
 
 We also added the following functionality to the documentation site:

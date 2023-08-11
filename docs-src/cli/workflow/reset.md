@@ -4,15 +4,24 @@ title: temporal workflow reset
 sidebar_label: reset
 description: Resets a Workflow Execution by Event Id or reset type.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow reset
+  - resets-feature
 ---
 
 The `temporal workflow reset` command resets a [Workflow Execution](/concepts/what-is-a-workflow-execution).
-A reset allows the Workflow to be resumed from a certain point without losing your parameters or [Event History](/concepts/what-is-an-event-history).
+A reset resumes the Workflow from a certain point without losing your parameters or [Event History](/concepts/what-is-an-event-history).
 
-Use the options listed below to change reset behavior.
-Make sure to write the command as follows:
-`temporal workflow reset [command options]`
+The Workflow Execution can be set to a given [Event Type](/concepts/what-is-an-event).
+For example, `temporal workflow reset --workflow-id=meaningful-business-id --type=LastContinuedAsNew`.
+
+The Workflow Execution can also be reset to any Event after WorkflowTaskStarted.
+For example, `temporal workflow reset --workflow-id=meaningful-business-id --event-id=MyLastEvent`.
+
+Use the following options to change reset behavior.
 
 - [--address](/cli/cmd-options/address)
 
@@ -37,6 +46,8 @@ Make sure to write the command as follows:
 - [--reason](/cli/cmd-options/reason)
 
 - [--run-id](/cli/cmd-options/run-id)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

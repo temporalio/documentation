@@ -4,14 +4,17 @@ title: temporal workflow show
 sidebar_label: show
 description: Show Event History for a Workflow Execution.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow show
+  - event history
 ---
 
-The `temporal workflow show` command provides the [Event History](/concepts/what-is-an-event-history) for a specified [Workflow Execution](/concepts/what-is-a-workflow-execution).
+The `temporal workflow show` command provides the [Event History](/concepts/what-is-an-event-history) for a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
-Use the options listed below to change the command's behavior.
-Make sure to write the command as follows:
-`temporal workflow show [command options]`
+Use the following options to change the behavior of this command.
 
 - [--address](/cli/cmd-options/address)
 
@@ -41,8 +44,6 @@ Make sure to write the command as follows:
 
 - [--output](/cli/cmd-options/output)
 
-- [--output-filename](/cli/cmd-options/output-filename)
-
 - [--pager](/cli/cmd-options/pager)
 
 - [--reset-points](/cli/cmd-options/reset-points)
@@ -50,6 +51,8 @@ Make sure to write the command as follows:
 - [--run-id](/cli/cmd-options/run-id)
 
 - [--time-format](/cli/cmd-options/time-format)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

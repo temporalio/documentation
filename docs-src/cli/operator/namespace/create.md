@@ -4,14 +4,26 @@ title: temporal operator namespace create
 sidebar_label: create
 description: Registers a new Namespace.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - operator
+  - command-line-interface-cli
+  - namespace
+  - namespace create
 ---
 
 The `temporal operator namespace create` command creates a new [Namespace](/concepts/what-is-a-namespace).
+The Namespace can be created on the active [Cluster](/concepts/what-is-a-temporal-cluster), or any named Cluster within the system.
+`temporal operator namespace --cluster=MyCluster`
+
+Global Namespaces can also be created.
+`temporal operator namespace create --global`
+
+Other settings, such as [retention](/concepts/what-is-a-retention-period) and [Visibility Archival State](/concepts/what-is-visibility), can be configured according to the application's needs.
+The Visibility Archive can be set on a separate URI.
+`temporal operator namespace create --retention=RetentionMyWorkflow --visibility-archival-state="enabled" --visibility-uri="some-uri"`
 
 Use the options listed below to change the command's behavior.
-Make sure to write the command as follows:
-`temporal operator namespace create [command options] [arguments]`
 
 - [--active-cluster](/cli/cmd-options/active-cluster)
 
@@ -46,6 +58,8 @@ Make sure to write the command as follows:
 - [--namespace](/cli/cmd-options/namespace)
 
 - [--retention](/cli/cmd-options/retention)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

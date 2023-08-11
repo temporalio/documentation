@@ -2,6 +2,10 @@
 id: activities
 title: Activities in Java
 sidebar_label: Activities
+description: Activities are implementations of certain tasks that need to be performed during a Workflow Execution.
+tags:
+ - java
+ - activity
 ---
 
 ## What is an Activity?

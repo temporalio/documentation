@@ -4,14 +4,16 @@ title: temporal workflow delete
 sidebar_label: delete
 description: Deletes a Workflow Execution.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow delete
 ---
 
 The `temporal workflow delete` command deletes the specified [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
-Use the options listed below to change the command's behavior.
-Make sure to write the command as follows:
-`temporal workflow delete [command options]`
+Use the following options to change the command's behavior.
 
 - [--address](/cli/cmd-options/address)
 
@@ -29,7 +31,13 @@ Make sure to write the command as follows:
 
 - [--namespace](/cli/cmd-options/namespace)
 
+- [--query](/cli/cmd-options/query)
+
+- [--reason](/cli/cmd-options/reason)
+
 - [--run-id](/cli/cmd-options/run-id)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 
@@ -42,3 +50,5 @@ Make sure to write the command as follows:
 - [--tls-server-name](/cli/cmd-options/tls-server-name)
 
 - [--workflow-id](/cli/cmd-options/workflow-id)
+
+- [--yes](/cli/cmd-options/yes)

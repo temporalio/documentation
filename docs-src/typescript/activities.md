@@ -3,6 +3,9 @@ id: activities
 title: Activities in TypeScript
 sidebar_label: Activities
 description: Activities are the only way to interact with external resources in Temporal, like making an HTTP request or accessing the file system. Unlike Workflows, Activities execute in the standard Node.js environment.
+tags:
+  - explanation
+  - how-to
 ---
 
 **`@temporalio/activity`** [![NPM](https://img.shields.io/npm/v/@temporalio/activity)](https://www.npmjs.com/package/@temporalio/activity) [API reference](https://typescript.temporal.io/api/namespaces/activity) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/activity)
@@ -196,7 +199,7 @@ You can route tasks to specific machines with the [Sticky Queues pattern](/types
 
 :::
 
-Advanced users can also register [Activity Interceptors](/typescript/interceptors) here.
+Advanced users can also register [Activity Interceptors](/typescript/how-to-implement-interceptors-in-typescript) here.
 For more on Activity and Workflow registration, see [the Worker docs](/typescript/workers) for more details.
 
 ### Using pure ESM Node Modules
@@ -471,10 +474,11 @@ The [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/
 ```ts
 import { Context } from '@temporalio/activity';
 import fetch from 'node-fetch';
+import type { AbortSignal as FetchAbortSignal } from 'node-fetch/externals';
 
 export async function cancellableFetch(url: string): Promise<Uint8Array> {
   const response = await fetch(url, {
-    signal: Context.current().cancellationSignal,
+    signal: Context.current().cancellationSignal as FetchAbortSignal,
   });
   const contentLengthHeader = response.headers.get('Content-Length');
   if (contentLengthHeader === null) {
@@ -505,7 +509,7 @@ Please get in touch with us if you find the need for them.
 
 ### Activity Interceptors
 
-Interceptors are a mechanism for users to modify inbound and outbound SDK calls. Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities, but you can also use them to run code after an Activity failure (and before the next retry). See the [Interceptors docs](/typescript/interceptors) and the [SDK API Reference](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptor) for more information.
+Interceptors are a mechanism for users to modify inbound and outbound SDK calls. Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities, but you can also use them to run code after an Activity failure (and before the next retry). See the [Interceptors docs](/typescript/how-to-implement-interceptors-in-typescript) and the [SDK API Reference](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptor) for more information.
 
 ### Async Activity Completion
 

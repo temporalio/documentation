@@ -3,6 +3,9 @@ id: troubleshooting
 title: Troubleshooting Issues with the TypeScript SDK
 sidebar_label: Troubleshooting
 description: This document is a quick checklist of common user errors for your reference.
+tags:
+ - errors
+ - reference
 ---
 
 This document is a quick checklist of common user errors for your reference.
@@ -65,7 +68,7 @@ We do offer a [bundleWorkflowCode](/typescript/workers/#prebuilt-workflow-bundle
 
 The TypeScript SDK's [Worker](/typescript/workers) bundles Workflows based on `workflowsPath` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
 
-If Webpack fails to create the bundle, the SDK will throw an error and emit webpack logs using the SDK's [logger](/typescript/logging#logs-generated-by-sdk-components).
+If Webpack fails to create the bundle, the SDK will throw an error and emit webpack logs using the SDK's [logger](/typescript/how-to-log-from-a-workflow-in-typescript#logs-generated-by-sdk-components).
 
 If you do not see Webpack output in your terminal make sure that you have not disabled SDK logging (see reference to `Runtime.install()` in the link above).
 
@@ -264,7 +267,7 @@ Querying a Workflow Execution whose query handler causes an error can result in 
 Some troubleshooting actions you can take:
 
 - Verify the connection from your Worker to the Temporal Server is working and doesn't have unusually high latency
-- If you are running Temporal Server yourself, check your [server metrics](/server/production-deployment/#scaling-and-metrics) to ensure it's not overloaded
+- If you are running Temporal Server yourself, check your [server metrics](/kb/legacy-oss-prod-deploy/#scaling-and-metrics) to ensure it's not overloaded
 - If what's timing out is a query, check the logs of your Workers to see if they are having issues handling the query
 
 If none of the preceding actions help you discover why timeouts are occurring, please try to produce a minimal repro and we'll be glad to help.

@@ -1,0 +1,211 @@
+{
+  "file_name": "features.md",
+  "file_dir": "/dev-guide/javalang",
+  "slug": "/dev-guide/java/features",
+  "id": "features",
+  "title": "Java SDK developer's guide - Features",
+  "sidebar_label": "Features",
+  "sidebar_position": 2,
+  "description": "The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "java/features"
+    },
+    {
+      "type": "h2",
+      "id": "java/signals"
+    },
+    {
+      "type": "h3",
+      "id": "java/define-signal"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-define-a-signal-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-handle-a-signal-in-a-workflow-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/send-signal-from-client"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-send-a-signal-from-a-client-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/send-signal-from-workflow"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-send-a-signal-from-a-workflow-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-send-a-signal-with-start-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/queries"
+    },
+    {
+      "type": "h3",
+      "id": "java/define-query"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-define-a-query-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/handle-query"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-handle-a-query-in-a-workflow-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/send-query"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-send-a-query-to-a-workflow-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/workflow-timeouts"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-set-workflow-timeouts-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/workflow-retries"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-set-workflow-retry-options-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/activity-timeouts"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-set-activity-timeouts-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/activity-retries"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-set-activity-retry-options-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/activity-heartbeats"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-heartbeat-an-activity-in-java"
+    },
+    {
+      "type": "h4",
+      "id": "java/heartbeat-timeout"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-set-a-heartbeat-timeout-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/async-activity-completion"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-asynchronously-complete-an-activity-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/child-workflows"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-spawn-a-child-workflow-execution-in-java"
+    },
+    {
+      "type": "h4",
+      "id": "java/parent-close-policy"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-set-a-parent-close-policy-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/continue-as-new"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-continue-as-new-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/timers"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-set-timers-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/how-to-set-a-cron-schedule-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/side-effects"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-use-a-side-effect-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/namespaces"
+    },
+    {
+      "type": "h3",
+      "id": "java/register-namespaces"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-register-namespace-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/manage-namespaces"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-manage-namespaces-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/custom-payload-conversion"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-use-a-custom-payload-converter-in-java"
+    }
+  ]
+}

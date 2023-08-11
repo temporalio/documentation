@@ -4,8 +4,11 @@ title: How to set an Activity Retry Policy in Go
 sidebar_label: Retry Policy
 description: Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 tags:
-  - go
-  - how-to
+  - go sdk
+  - how-to-doc-type
+  - activity
+  - retry and timeout policies
+  - activity options
 ---
 
 To set a [RetryPolicy](/concepts/what-is-a-retry-policy), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.

@@ -31,11 +31,11 @@
     },
     {
       "source": "/sdks-introduction",
-      "destination": "/application-development"
+      "destination": "/dev-guide"
     },
     {
       "source": "/other-sdks",
-      "destination": "/application-development"
+      "destination": "/dev-guide"
     },
     {
       "source": "/get-started",
@@ -46,24 +46,340 @@
       "destination": "/glossary"
     },
     {
-      "source": "/application-development-guide",
-      "destination": "/application-development"
+      "source": "/tasks:path*",
+      "destination": "/workers:path*"
     },
     {
-      "source": "/samples-library",
-      "destination": "/application-development/foundations#code-samples"
+      "source": "/application-development-guide",
+      "destination": "/dev-guide"
+    },
+    {
+      "source": "/application-development/foundations:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "go"
+        }
+      ],
+      "destination": "/dev-guide/go/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/features:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "go"
+        }
+      ],
+      "destination": "/dev-guide/go/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/observability:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "go"
+        }
+      ],
+      "destination": "/dev-guide/go/observability:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/testing:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "go"
+        }
+      ],
+      "destination": "/dev-guide/go/testing:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/foundations:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "java"
+        }
+      ],
+      "destination": "/dev-guide/java/foundations:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/features:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "java"
+        }
+      ],
+      "destination": "/dev-guide/java/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/observability:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "java"
+        }
+      ],
+      "destination": "/dev-guide/java/observability:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/testing:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "java"
+        }
+      ],
+      "destination": "/dev-guide/java/testing:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/foundations:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "php"
+        }
+      ],
+      "destination": "/dev-guide/php/foundations:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/features:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "php"
+        }
+      ],
+      "destination": "/dev-guide/php/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/observability:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "php"
+        }
+      ],
+      "destination": "/dev-guide/php/observability:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/testing:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "php"
+        }
+      ],
+      "destination": "/dev-guide/php/testing:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/foundations:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "python"
+        }
+      ],
+      "destination": "/dev-guide/python/foundations:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/features:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "python"
+        }
+      ],
+      "destination": "/dev-guide/python/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/observability:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "python"
+        }
+      ],
+      "destination": "/dev-guide/python/observability:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/testing:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "python"
+        }
+      ],
+      "destination": "/dev-guide/python/testing:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/foundations:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "typescript"
+        }
+      ],
+      "destination": "/dev-guide/typescript/foundations:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/features:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "typescript"
+        }
+      ],
+      "destination": "/dev-guide/typescript/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/observability:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "typescript"
+        }
+      ],
+      "destination": "/dev-guide/typescript/observability:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/testing:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "typescript"
+        }
+      ],
+      "destination": "/dev-guide/typescript/testing:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "go"
+        }
+      ],
+      "destination": "/dev-guide/go",
+      "permanent": false
+    },
+    {
+      "source": "/application-development:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "java"
+        }
+      ],
+      "destination": "/dev-guide/java",
+      "permanent": false
+    },
+    {
+      "source": "/application-development:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "php"
+        }
+      ],
+      "destination": "/dev-guide/php",
+      "permanent": false
+    },
+    {
+      "source": "/application-development:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "python"
+        }
+      ],
+      "destination": "/dev-guide/python",
+      "permanent": false
+    },
+    {
+      "source": "/application-development:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "typescript"
+        }
+      ],
+      "destination": "/dev-guide/typescript",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/foundations",
+      "destination": "/dev-guide"
+    },
+    {
+      "source": "/application-development/features",
+      "destination": "/dev-guide"
+    },
+    {
+      "source": "/application-development/observability",
+      "destination": "/dev-guide"
+    },
+    {
+      "source": "/application-development/testing",
+      "destination": "/dev-guide"
+    },
+    {
+      "source": "/application-development",
+      "destination": "/dev-guide"
+    },
+    {
+      "source": "/dev-guide/golang/versioning:path*",
+      "destination": "/dev-guide/go/versioning:path*"
     },
     {
       "source": "/change-log",
       "destination": "/changelog"
-    },
-    {
-      "source": "/blog/airbyte-case-study/",
-      "destination": "https://temporal.io/case-studies/airbyte-case-study"
-    },
-    {
-      "source": "/blog/zebra-medical-case-study/",
-      "destination": "https://temporal.io/case-studies/zebra-medical-case-study"
     },
     {
       "source": "/blog/how-datadog-ensures-database-reliability-with-temporal",
@@ -139,15 +455,19 @@
     },
     {
       "source": "/concepts/task-queues",
-      "destination": "/tasks"
+      "destination": "/workers"
     },
     {
       "source": "/concepts/what-is-a-retry-policy/#visualizing-retry-policies",
-      "destination": "/application-development/features#activity-retry-simulator"
+      "destination": "/dev-guide/activity-retry-simulator"
     },
     {
       "source": "/retry-policies/#visualizing-retry-policies",
-      "destination": "/application-development/features#activity-retry-simulator"
+      "destination": "/dev-guide/activity-retry-simulator"
+    },
+    {
+      "source": "/application-development/features#activity-retry-simulator",
+      "destination": "/dev-guide/activity-retry-simulator"
     },
     {
       "source": "/temporal-explained/introduction",
@@ -195,7 +515,7 @@
     },
     {
       "source": "/content/how-to-develop-a-worker-program-in-typescript",
-      "destination": "/typescript/how-to-develop-a-worker-program-in-typescript"
+      "destination": "/typescript/run-a-dev-worker"
     },
     {
       "source": "/go/run-your-first-app-tutorial",
@@ -307,35 +627,35 @@
     },
     {
       "source": "/go-activities",
-      "destination": "/application-development/foundations#develop-activities"
+      "destination": "/dev-guide/go/foundations#develop-activities"
     },
     {
       "source": "/go/activities",
-      "destination": "/application-development/foundations#develop-activities"
+      "destination": "/dev-guide/go/foundations#develop-activities"
     },
     {
       "source": "/go/how-to-develop-an-activity-in-go",
-      "destination": "/application-development/foundations#develop-activities"
+      "destination": "/dev-guide/go/foundations#develop-activities"
     },
     {
       "source": "/go/how-to-spawn-an-activity-execution-in-go",
-      "destination": "/application-development/foundations#activity-execution"
+      "destination": "/dev-guide/go/foundations#activity-execution"
     },
     {
       "source": "/go/how-to-get-the-result-of-an-activity-execution-in-go",
-      "destination": "/application-development/foundations#get-activity-results"
+      "destination": "/dev-guide/go/foundations#get-activity-results"
     },
     {
       "source": "/go/how-to-heartbeat-an-activity-in-go",
-      "destination": "/application-development/features#activity-heartbeats"
+      "destination": "/dev-guide/go/features#activity-heartbeats"
     },
     {
       "source": "/go/child-workflows",
-      "destination": "/application-development/features#child-workflows"
+      "destination": "/dev-guide/go/features#child-workflows"
     },
     {
       "source": "/go/how-to-spawn-a-child-workflow-execution-in-go",
-      "destination": "/application-development/features#child-workflows"
+      "destination": "/dev-guide/go/features#child-workflows"
     },
     {
       "source": "/go-continue-as-new",
@@ -347,31 +667,31 @@
     },
     {
       "source": "/go-create-workflows",
-      "destination": "/application-development/foundations#develop-workflows"
+      "destination": "/dev-guide/go/foundations#develop-workflows"
     },
     {
       "source": "/go/create-workflows",
-      "destination": "/application-development/foundations#develop-workflows"
+      "destination": "/dev-guide/go/foundations#develop-workflows"
     },
     {
       "source": "/go/workflows",
-      "destination": "/application-development/foundations#develop-workflows"
+      "destination": "/dev-guide/go/foundations#develop-workflows"
     },
     {
       "source": "/go/how-to-develop-a-workflow-in-go",
-      "destination": "/application-development/foundations#develop-workflows"
+      "destination": "/dev-guide/go/foundations#develop-workflows"
     },
     {
       "source": "/go/how-to-spawn-a-workflow-execution-in-go",
-      "destination": "/application-development/foundations#start-workflow-execution"
+      "destination": "/dev-guide/go/foundations#start-workflow-execution"
     },
     {
       "source": "/go/how-to-get-the-result-of-a-workflow-execution-in-go",
-      "destination": "/application-development/foundations#get-workflow-results"
+      "destination": "/dev-guide/go/foundations#get-workflow-results"
     },
     {
       "source": "/go/distributed-cron",
-      "destination": "/application-development/features#temporal-cron-jobs"
+      "destination": "/dev-guide/go/features#temporal-cron-jobs"
     },
     {
       "source": "/go-error-handling",
@@ -383,11 +703,11 @@
     },
     {
       "source": "/go/queries",
-      "destination": "/application-development/features#queries"
+      "destination": "/dev-guide/go/features#queries"
     },
     {
       "source": "/go/retries",
-      "destination": "/application-development/features#activity-timeouts"
+      "destination": "/dev-guide/go/features#activity-timeouts"
     },
     {
       "source": "/go-run-your-first-app",
@@ -415,19 +735,19 @@
     },
     {
       "source": "/go/signals",
-      "destination": "/application-development/features#signals"
+      "destination": "/dev-guide/go/features#signals"
     },
     {
       "source": "/go/how-to-use-signals-in-go",
-      "destination": "/application-development/features#signals"
+      "destination": "/dev-guide/go/features#signals"
     },
     {
       "source": "/go/how-to-send-a-signal-to-a-workflow-execution-in-go",
-      "destination": "/application-development/features#signals"
+      "destination": "/dev-guide/go/features#signals"
     },
     {
       "source": "/go/how-to-handle-a-signal-in-a-workflow-in-go",
-      "destination": "/application-development/features#signals"
+      "destination": "/dev-guide/go/features#signals"
     },
     {
       "source": "/go-sync-vs-async-start",
@@ -439,7 +759,7 @@
     },
     {
       "source": "/go/task-queues",
-      "destination": "/tasks"
+      "destination": "/workers"
     },
     {
       "source": "/go/testing",
@@ -463,19 +783,19 @@
     },
     {
       "source": "/go/workers",
-      "destination": "/application-development/foundations#run-a-dev-worker"
+      "destination": "/dev-guide/go/foundations#run-a-dev-worker"
     },
     {
       "source": "/go/how-to-develop-a-worker-program-in-go",
-      "destination": "/application-development/foundations#run-a-dev-worker"
+      "destination": "/dev-guide/go/foundations#run-a-dev-worker"
     },
     {
       "source": "/go/how-to-develop-a-worker-in-go",
-      "destination": "/application-development/foundations#run-a-dev-worker"
+      "destination": "/dev-guide/go/foundations#run-a-dev-worker"
     },
     {
       "source": "/go-execute-activity",
-      "destination": "/application-development-guide#activity-execution"
+      "destination": "/dev-guide/go/foundations#activity-execution"
     },
     {
       "source": "/go-activity-async-completion",
@@ -542,8 +862,12 @@
       "destination": "/java/task-queues"
     },
     {
-      "source": "/java-testing-and-debugging",
-      "destination": "/java/testing-and-debugging"
+      "source": "/java-testing-and-debugging:path*",
+      "destination": "/java/testing:path*"
+    },
+    {
+      "source": "/java/testing-and-debugging:path*",
+      "destination": "/java/testing:path*"
     },
     {
       "source": "/java-sdk-tutorial-prerequisites",
@@ -659,11 +983,11 @@
     },
     {
       "source": "/content/how-to-develop-a-worker-program-in-php",
-      "destination": "/application-development/foundations#run-a-dev-worker"
+      "destination": "/dev-guide/php/foundations#run-a-dev-worker"
     },
     {
       "source": "/php/how-to-develop-a-worker-program-in-php",
-      "destination": "/application-development/foundations#run-a-dev-worker"
+      "destination": "/dev-guide/php/foundations#run-a-dev-worker"
     },
     {
       "source": "/server",
@@ -727,23 +1051,27 @@
     },
     {
       "source": "/server-production-deploy",
-      "destination": "/server/production-deploy"
+      "destination": "/kb/legacy-oss-prod-deploy"
     },
     {
       "source": "/server-production-deployment",
-      "destination": "/server/production-deploy"
+      "destination": "/kb/legacy-oss-prod-deploy"
+    },
+    {
+      "source": "/server/production-deploy",
+      "destination": "/kb/legacy-oss-prod-deploy"
     },
     {
       "source": "/server-quick-install",
-      "destination": "/application-development/foundations#run-a-development-cluster"
+      "destination": "/dev-guide"
     },
     {
       "source": "/server/quick-install",
-      "destination": "/application-development/foundations#run-a-development-cluster"
+      "destination": "/dev-guide"
     },
     {
       "source": "/clusters/quick-install",
-      "destination": "/application-development/foundations#run-a-development-cluster"
+      "destination": "/dev-guide"
     },
     {
       "source": "/server/security",
@@ -755,7 +1083,7 @@
     },
     {
       "source": "/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose",
-      "destination": "/application-development/foundations#run-a-development-cluster"
+      "destination": "/kb/all-the-ways-to-run-a-cluster#docker--docker-compose"
     },
     {
       "source": "/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development",
@@ -763,7 +1091,7 @@
     },
     {
       "source": "/content/how-to-quickly-install-the-temporal-server",
-      "destination": "/application-development/foundations#run-a-development-cluster"
+      "destination": "/kb/all-the-ways-to-run-a-cluster"
     },
     {
       "source": "/content/how-to-integrate-elasticsearch-into-a-temporal-cluster",
@@ -779,7 +1107,7 @@
     },
     {
       "source": "/server-security",
-      "destination": "/server/security"
+      "destination": "/security"
     },
     {
       "source": "/server-versions-and-dependencies",
@@ -795,7 +1123,7 @@
     },
     {
       "source": "/operation/how-to-tune-workers",
-      "destination": "/application-development/worker-performance"
+      "destination": "/dev-guide/worker-performance"
     },
     {
       "source": "/cadence-to-temporal",
@@ -979,11 +1307,11 @@
     },
     {
       "source": "/concepts/what-is-an-activity-task",
-      "destination": "/tasks#activity-task"
+      "destination": "/workers#activity-task"
     },
     {
       "source": "/concepts/what-is-an-activity-task-execution",
-      "destination": "/tasks#activity-task-execution"
+      "destination": "/workers#activity-task-execution"
     },
     {
       "source": "/concepts/what-is-an-activity-type",
@@ -1095,15 +1423,15 @@
     },
     {
       "source": "/concepts/what-is-a-sticky-execution",
-      "destination": "/tasks#sticky-execution"
+      "destination": "/workers#sticky-execution"
     },
     {
       "source": "/concepts/what-is-a-task-queue",
-      "destination": "/tasks#task-queue"
+      "destination": "/workers#task-queue"
     },
     {
       "source": "/concepts/what-is-task-routing",
-      "destination": "/tasks#task-routing"
+      "destination": "/workers#task-routing"
     },
     {
       "source": "/concepts/what-is-a-task-token",
@@ -1111,7 +1439,7 @@
     },
     {
       "source": "/concepts/what-is-a-task",
-      "destination": "/tasks"
+      "destination": "/workers"
     },
     {
       "source": "/concepts/what-is-temporal",
@@ -1187,7 +1515,7 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-task-execution",
-      "destination": "/tasks#workflow-task-execution"
+      "destination": "/workers#workflow-task-execution"
     },
     {
       "source": "/concepts/what-is-a-workflow-task-timeout",
@@ -1198,24 +1526,400 @@
       "destination": "/workflows#workflow-type"
     },
     {
+      "source": "/content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl",
+      "destination": "/cluster-deployment-guide#create-custom-search-attributes"
+    },
+    {
+      "source": "archive-data",
+      "destination": "/cluster-deployment-guide#archival"
+    },
+    {
+      "source": "/blog/airbyte-case-study/",
+      "destination": "https://temporal.io/case-studies/airbyte-case-study"
+    },
+    {
+      "source": "/blog/build-an-ecommerce-app-with-temporal-part-1/",
+      "destination": "https://learn.temporal.io/tutorials/go/ecommerce/build-an-ecommerce-app-with-temporal-part-1"
+    },
+    {
+      "source": "/blog/descript-case-study/",
+      "destination": "https://temporal.io/case-studies/descript-case-study"
+    },
+    {
+      "source": "/blog/tags/case-study",
+      "destination": "https://temporal.io/use-cases"
+    },
+    {
+      "source": "/blog/zebra-medical-case-study/",
+      "destination": "https://temporal.io/case-studies/zebra-medical-case-study"
+    },
+    {
+      "source": "/clusters/how-to-upgrade-the-temporal-server-version",
+      "destination": "/cluster-deployment-guide#upgrade-server"
+    },
+    {
+      "source": "/concepts/what-is-a-claimmapper-plugin",
+      "destination": "/security#claim-mapper"
+    },
+    {
+      "source": "/concepts/what-is-a-claimmapper-plugin/#default-jwt-claimmapper",
+      "destination": "/security#default-jwt-claimmapper"
+    },
+    {
+      "source": "/concepts/what-is-a-retention-period",
+      "destination": "clusters#retention-period"
+    },
+    {
+      "source": "/concepts/what-is-multi-cluster-replication",
+      "destination": "/clusters#multi-cluster-replication"
+    },
+    {
+      "source": "/configure-temporal-server",
+      "destination": "/references/configuration"
+    },
+    {
+      "source": "/configuring-temporal-server",
+      "destination": "/references/configuration"
+    },
+    {
+      "source": "/archive-data#providers",
+      "destination": "/cluster-deployment-guide#provider"
+    },
+    {
+      "source": "/configure-temporal-server#membership---required",
+      "destination": "/blog/workflow-engine-principles#membership-and-routing-1350"
+    },
+    {
+      "source": "/configuring-temporal-server#clustermetadata",
+      "destination": "/references/configuration#clustermetadata"
+    },
+    {
+      "source": "/filter-workflows",
+      "destination": "/visibility#list-filter"
+    },
+    {
+      "source": "/go-queries",
+      "destination": "/dev-guide/go/features#queries"
+    },
+    {
+      "source": "/go-sessions",
+      "destination": "/dev-guide/go"
+    },
+    {
+      "source": "/go-sessions#use-cases",
+      "destination": "/dev-guide/go"
+    },
+    {
+      "source": "/go-workers",
+      "destination": "/dev-guide/go/foundations#develop-worker"
+    },
+    {
+      "source": "/go/how-to-develop-a-workflow-definition-in-go#workflow-logic-requirements-in-go",
+      "destination": "/dev-guide/go/foundations#develop-workflows"
+    },
+    {
+      "source": "/go/side-effect",
+      "destination": "/dev-guide/go/features#side-effects"
+    },
+    {
+      "source": "/install-temporal-server",
+      "destination": "/clusters#temporal-server"
+    },
+    {
+      "source": "/java-quick-start",
+      "destination": "/dev-guide/java"
+    },
+    {
+      "source": "/java/how-to-provide-an-authorization-token-in-java",
+      "destination": "/security#authorizer-plugin"
+    },
+    {
+      "source": "/learn-archival",
+      "destination": "/clusters#archival"
+    },
+    {
+      "source": "/learn-cli",
+      "destination": "/cli"
+    },
+    {
+      "source": "/learn-server-configuration#tls",
+      "destination": "/references/configuration#tls"
+    },
+    {
+      "source": "/learn-workflow-filtering",
+      "destination": "/visibility#list-filter"
+    },
+    {
+      "source": "/php-sdk-overview",
+      "destination": "/dev-guide/php"
+    },
+    {
+      "source": "/queries",
+      "destination": "/workflows#query"
+    },
+    {
+      "source": "/server-workflow-search",
+      "destination": "/visibility#search-attribute"
+    },
+    {
+      "source": "/server/elasticsearch-setup",
+      "destination": "/cluster-deployment-guide#elasticsearch"
+    },
+    {
+      "source": "/server/versions-and-dependencies",
+      "destination": "/clusters/#version-and-support"
+    },
+    {
+      "source": "/shared/continue-as-new",
+      "destination": "/workflows#continue-as-new"
+    },
+    {
+      "source": "/external-resources",
+      "destination": "https://docs.temporal.io"
+    },
+    {
+      "source": "/filter-workflows",
+      "destination": "/visibility#list-filter"
+    },
+    {
+      "source": "/go/how-to-develop-a-workflow-definition-in-go",
+      "destination": "/dev-guide/go/foundations#develop-workflows"
+    },
+    {
+      "source": "/learn-server-configuration",
+      "destination": "/references/configuration"
+    },
+    {
+      "source": "/next/java/how-to-develop-an-activity-in-java",
+      "destination": "/dev-guide/java/foundations#develop-activities"
+    },
+    {
+      "source": "/next/java/how-to-develop-an-activity-in-java/#return-values",
+      "destination": "/dev-guide/java/foundations#workflow-return-values"
+    },
+    {
+      "source": "/php/versioning",
+      "destination": "/dev-guide/php"
+    },
+    {
+      "source": "/php/versioning#workflowgetversion",
+      "destination": "/dev-guide/php"
+    },
+    {
+      "source": "/server-architecture",
+      "destination": "/security#authorizer-plugin"
+    },
+    {
+      "source": "/server/production-deployment",
+      "destination": "/kb/legacy-oss-prod-deploy#temporal-server"
+    },
+    {
+      "source": "/tctl-next",
+      "destination": "/cli"
+    },
+    {
+      "source": "/tctl-next/modifiers#--event-id",
+      "destination": "/cli/cmd-options#event-id"
+    },
+    {
+      "source": "/tctl-next/workflow#reset",
+      "destination": "/cli"
+    },
+    {
+      "source": "/java/quick-start",
+      "destination": "/dev-guide/java"
+    },
+    {
+      "source": "/typescript/versioning",
+      "destination": "/dev-guide/typescript/versioning"
+    },
+    {
       "source": "/typescript/:path*",
-      "destination": "https://legacy-documentation-sdks.temporal.io/typescript/:path*"
+      "destination": "/dev-guide/typescript"
     },
     {
       "source": "/go/:path*",
-      "destination": "https://legacy-documentation-sdks.temporal.io/go/:path*"
+      "destination": "/dev-guide/go"
     },
     {
       "source": "/java/:path*",
-      "destination": "https://legacy-documentation-sdks.temporal.io/java/:path*"
+      "destination": "/dev-guide/java"
     },
     {
-      "source": "/security#codec-server",
-      "destination": "/dataconversion"
+      "source": "/concepts/what-is-a-retry-policy",
+      "destination": "/retry-policies"
     },
     {
-      "source": "/security#codec-server",
-      "destination": "/dataconversion#codec-server"
+      "source": "/php/introduction",
+      "destination": "/dev-guide/php"
+    },
+    {
+      "source": "/external-resources/#how-temporal-works",
+      "destination": "/kb/how-to-explain-temporal#how-temporal-works"
+    },
+    {
+      "source": "/application-development/worker-performance",
+      "destination": "/dev-guide/worker-performance"
+    },
+    {
+      "source": "/cli/index",
+      "destination": "/cli"
+    },
+    {
+      "source": "/php/activities#local-activity",
+      "destination": "/dev-guide/php/foundations#develop-activities"
+    },
+    {
+      "source": "/cloud/index",
+      "destination": "/cloud"
+    },
+    {
+      "source": "/cloud/account-setup/certificates:path*",
+      "destination": "/cloud/certificates:path*"
+    },
+    {
+      "source": "/cloud/account-setup/namespaces:path*",
+      "destination": "/cloud/namespaces:path*"
+    },
+    {
+      "source": "/cloud/account-setup/users:path*",
+      "destination": "/cloud/users:path*"
+    },
+    {
+      "source": "/kb/cloud/how-to-manage-certificates-in-temporal-cloud:path*",
+      "destination": "/cloud/certificates:path*"
+    },
+    {
+      "source": "/server/production-deployment/#scaling-and-metrics",
+      "destination": "/kb/legacy-oss-prod-deploy#scaling-and-metrics"
+    },
+    {
+      "source": "/cloud/release-notes",
+      "destination": "https://temporal.io/change-log/product-area/cloud"
+    },
+    {
+      "source": "/cloud/release-notes/:path*",
+      "destination": "https://temporal.io/change-log/product-area/cloud"
+    },
+    {
+      "source": "/cloud/how-to-manage-namespaces-in-temporal-cloud:path*",
+      "destination": "/cloud/namespaces:path*"
+    },
+    {
+      "source": "/cloud/how-to-manage-certificates-in-temporal-cloud:path*",
+      "destination": "/cloud/certificates:path*"
+    },
+    {
+      "source": "/cloud/how-to-monitor-temporal-cloud-metrics",
+      "destination": "/cloud/metrics"
+    },
+    {
+      "source": "/cloud/introduction/security-cloud:path*",
+      "destination": "cloud/security:path*"
+    },
+    {
+      "source": "/cloud/introduction/operating-envelope:path*",
+      "destination": "cloud/operating-envelope:path*"
+    },
+    {
+      "source": "/cloud/introduction/support:path*",
+      "destination": "/cloud/support:path*"
+    },
+    {
+      "source": "/cloud/how-to-create-a-ticket-for-temporal-support",
+      "destination": "/cloud/support#support-ticket"
+    },
+    {
+      "source": "/cloud/how-to-get-started-with-temporal-cloud:path*",
+      "destination": "/cloud/get-started:path*"
+    },
+    {
+      "source": "/cloud/how-to-manage-saml-with-temporal-cloud:path*",
+      "destination": "/cloud/saml:path*"
+    },
+    {
+      "source": "/cloud/how-to-manage-audit-logging:path*",
+      "destination": "/cloud/audit-logging:path*"
+    },
+    {
+      "source": "/kb/prometheus-grafana-setup-cloud",
+      "destination": "/cloud/metrics#prometheus-and-grafana-setup"
+    },
+    {
+      "source": "/kb/cloud-namespace-naming-considerations",
+      "destination": "/cloud/namespaces#best-practices"
+    },
+    {
+      "source": "/typescript/versioning",
+      "destination": "/dev-guide/typescript/versioning"
+    },
+    {
+      "source": "/java/quick-start",
+      "destination": "/dev-guide/java"
+    },
+    {
+      "source": "/java/how-to-provide-an-authorization-token-in-java",
+      "destination": "/security#authorizer-plugin"
+    },
+    {
+      "source": "/go/side-effect",
+      "destination": "/dev-guide/go/features#side-effects"
+    },
+    {
+      "source": "/go/how-to-develop-a-workflow-definition-in-go",
+      "destination": "/dev-guide/go/foundations#develop-workflows"
+    },
+    {
+      "source": "/tctl-next/workflow#reset",
+      "destination": "/cli/workflow#reset"
+    },
+    {
+      "source": "/tctl-next/modifiers#--event-id",
+      "destination": "/cli/cmd-options#event-id"
+    },
+    {
+      "source": "/php/versioning#workflowgetversion",
+      "destination": "/dev-guide/php"
+    },
+    {
+      "source": "/php/activities#local-activity",
+      "destination": "/dev-guide/php/foundations#develop-activities"
+    },
+    {
+      "source": "/kb/additional-resources",
+      "destination": "/kb/how-to-explain-temporal"
+    },
+    {
+      "source": "/external-resources/#how-temporal-works",
+      "destination": "/kb/how-to-explain-temporal#how-temporal-works"
+    },
+    {
+      "source": "/external-resources",
+      "destination": "/kb/how-to-explain-temporal"
+    },
+    {
+      "source": "/go-sessions/#use-cases",
+      "destination": "/dev-guide/go/features#recreate-session"
+    },
+    {
+      "source": "/configure-temporal-server#membership---required",
+      "destination": "/blog/workflow-engine-principles#membership-and-routing-1350"
+    },
+    {
+      "source": "/archive-data#providers",
+      "destination": "/cluster-deployment-guide#providers"
+    },
+    {
+      "source": "/concepts/what-is-a-retention-period",
+      "destination": "/clusters#retention-period"
+    },
+    {
+      "source": "/archive-data",
+      "destination": "/cluster-deployment-guide#archival"
+    },
+    {
+      "source": "/kb/non-determinism-issues-for-run-ids",
+      "destination": "/workflows#run-id"
     }
   ]
 }

@@ -4,8 +4,10 @@ title: How to emit metrics in Go
 sidebar_label: Emit metrics
 description: Emit metrics
 tags:
-  - go
-  - how-to
+  - go sdk
+  - how-to-doc-type
+  - developer-guide-doc-type
+  - logging and metrics
 ---
 
 To emit metrics from the Temporal Client in Go, create a [metrics handler](https://pkg.go.dev/go.temporal.io/sdk/internal/common/metrics#Handler) from the [Client Options](https://pkg.go.dev/go.temporal.io/sdk@v1.15.0/internal#ClientOptions) and specify a listener address to be used by Prometheus.

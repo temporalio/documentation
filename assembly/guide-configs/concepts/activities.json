@@ -1,9 +1,11 @@
 {
   "file_name": "activities.md",
   "id": "activities",
-  "file_dir": "/",
-  "title": "Activities",
+  "slug": "/activities",
+  "file_dir": "concepts",
+  "title": "What is a Temporal Activity?",
   "sidebar_label": "Activities",
+  "sidebar_position": 3,
   "description": "This guide provides a comprehensive overview of Temporal Activities.",
   "use_description": true,
   "toc_max_heading_level": 4,

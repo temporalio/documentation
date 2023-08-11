@@ -4,14 +4,19 @@ title: temporal operator namespace list
 sidebar_label: list
 description: List all Namespaces.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - operator
+  - command-line-interface-cli
+  - namespace
+  - namespace list
 ---
 
 The `temporal operator namespace list` command lists all [Namespaces](/namespaces) on the [Server](/concepts/what-is-a-frontend-service).
 
-Use the options listed below to change the command's output.
-Make sure to write the command as follows:
-`temporal operator namespace list [command options]`
+`temporal operator namespace list`
+
+Use the following options to change this command's behavior.
 
 - [--address](/cli/cmd-options/address)
 
@@ -28,6 +33,8 @@ Make sure to write the command as follows:
 - [--grpc-meta](/cli/cmd-options/grpc-meta)
 
 - [--namespace](/cli/cmd-options/namespace)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

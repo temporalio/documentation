@@ -1,9 +1,11 @@
 {
   "file_name": "namespaces.md",
   "id": "namespaces",
-  "file_dir": "/",
-  "title": "Namespaces",
+  "slug": "/namespaces",
+  "file_dir": "concepts",
+  "title": "What is a Temporal Namespace?",
   "sidebar_label": "Namespaces",
+  "sidebar_position": 9,
   "description": "This guide provides a comprehensive overview of Namespaces.",
   "use_description": true,
   "toc_max_heading_level": 4,

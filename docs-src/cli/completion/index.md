@@ -1,8 +1,11 @@
 ---
 id: index
-title: temporal completion
+title: temporal completion index
 sidebar_label: completion
 description: Output shell completion code for the specified shell (zsh, bash).
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - completion
+  - command-line-interface-cli
 ---

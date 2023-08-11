@@ -1,5 +1,7 @@
 ---
 id: how-to-set-up-health-checks
+title: How to set up health checks for a Temporal Cluster
+description: The Frontend Service supports TCP or gRPC health checks on port 7233.
 sidebar_label: Health checks
 tags:
   - how-to

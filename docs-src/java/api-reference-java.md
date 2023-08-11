@@ -1,7 +1,11 @@
 ---
 id: api-reference-java
-title: API reference
+title: How to find the Java SDK API reference
+description: The Java SDK API reference is published on javadoc.io
 sidebar_label: API reference
+tags:
+    - java
+    - api reference
 ---
 
 The Temporal Java SDK API reference is published on [javadoc.io](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html).

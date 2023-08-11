@@ -4,14 +4,21 @@ title: temporal operator cluster upsert
 sidebar_label: upsert
 description: Add or update a remote Cluster.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - operator
+  - command-line-interface-cli
+  - cluster
+  - cluster upsert
 ---
 
 The `temporal operator cluster upsert` command allows the user to add or update a remote [Cluster](/concepts/what-is-a-temporal-cluster).
+`temporal operator cluster upsert --frontend-address="127.0.2.1"`
 
-Use the options listed below to change the behavior of this command.
-Make sure to write the command as follows:
-`temporal operator cluster upsert [command options]`
+Upserting can also be used to enable or disabled cross-cluster connection.
+`temporal operator cluster upsert --enable-connection=true`
+
+Use the following options to change the behavior of this command.
 
 - [--address](/cli/cmd-options/address)
 
@@ -32,6 +39,8 @@ Make sure to write the command as follows:
 - [--grpc-meta](/cli/cmd-options/grpc-meta)
 
 - [--namespace](/cli/cmd-options/namespace)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

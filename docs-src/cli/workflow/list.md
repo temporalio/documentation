@@ -4,15 +4,23 @@ title: temporal workflow list
 sidebar_label: list
 description: List Workflow Executions based on a Query.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow list
 ---
 
 The `temporal workflow list` command provides a list of [Workflow Executions](/concepts/what-is-a-workflow-execution) that meet the criteria of a given [Query](/concepts/what-is-a-query).
 By default, this command returns a list of up to 10 closed Workflow Executions.
 
-Use the command options listed below to change the information returned by this command.
-Make sure to write the command as follows:
-`temporal workflow list [command options]`
+`temporal workflow list --query=MyQuery`
+
+The command can also return a list of archived Workflow Executions.
+
+`temporal workflow list --archived=true`
+
+Use the following command options to change the information returned by this command.
 
 - [--address](/cli/cmd-options/address)
 
@@ -45,6 +53,8 @@ Make sure to write the command as follows:
 - [--query](/cli/cmd-options/query)
 
 - [--time-format](/cli/cmd-options/time-format)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

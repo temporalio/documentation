@@ -2,6 +2,10 @@
 id: how-to-set-a-heartbeat-for-an-activity-in-php
 title: How to set a Heartbeat for an Activity in PHP
 sidebar_label: Heartbeat an Activity
+description: Set a Heartbeat for an Activity with ActivityOptions.
+tags:
+    - activity
+    - heartbeat
 ---
 
 Some Activities are long-running.

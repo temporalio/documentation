@@ -3,6 +3,13 @@ id: workers
 title: Workers and Task Queues in TypeScript
 sidebar_label: Workers
 description: A Worker is a process that connects to the Temporal Server, polls Task Queues for Commands sent from Clients, and executes Workflows and Activities in response to those Commands.
+tags:
+  - worker
+  - task queue
+  - activity
+  - workflow
+  - nodejs
+  - typescript
 ---
 
 **`@temporalio/worker`** [![NPM](https://img.shields.io/npm/v/@temporalio/worker)](https://www.npmjs.com/package/@temporalio/worker) [API reference](https://typescript.temporal.io/api/namespaces/worker) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/worker)
@@ -37,8 +44,6 @@ If you are experiencing issues, you can check the status of Workers and the Task
 </details>
 
 ### How to develop a Worker
-
-See the [How to develop a Worker](/application-development/foundations?lang=typescript#run-a-dev-worker) in the Developer's guide.
 
 <details>
 <summary>
@@ -215,11 +220,11 @@ Workflow Code:
 
 <!--SNIPSTART typescript-sticky-queues-workflow-->
 
-[activities-sticky-queues/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-sticky-queues/src/workflows.ts)
+[worker-specific-task-queues/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/worker-specific-task-queues/src/workflows.ts)
 
 ```ts
 const { getUniqueTaskQueue } = proxyActivities<
-  ReturnType<typeof createNonStickyActivities>
+  ReturnType<typeof createNormalActivities>
 >({
   startToCloseTimeout: '1 minute',
 });
@@ -229,7 +234,7 @@ export async function fileProcessingWorkflow(maxAttempts = 5): Promise<void> {
     try {
       const uniqueWorkerTaskQueue = await getUniqueTaskQueue();
       const activities = proxyActivities<
-        ReturnType<typeof createStickyActivities>
+        ReturnType<typeof createActivitiesForSameWorker>
       >({
         taskQueue: uniqueWorkerTaskQueue,
         // Note the use of scheduleToCloseTimeout.
@@ -268,7 +273,7 @@ Worker Code:
 
 <!--SNIPSTART typescript-sticky-queues-worker-->
 
-[activities-sticky-queues/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-sticky-queues/src/worker.ts)
+[worker-specific-task-queues/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/worker-specific-task-queues/src/worker.ts)
 
 ```ts
 async function run() {
@@ -277,12 +282,12 @@ async function run() {
   const workers = await Promise.all([
     Worker.create({
       workflowsPath: require.resolve('./workflows'),
-      activities: createNonStickyActivities(uniqueWorkerTaskQueue),
-      taskQueue: 'sticky-activity-tutorial',
+      activities: createNormalActivities(uniqueWorkerTaskQueue),
+      taskQueue: 'normal-task-queue',
     }),
     Worker.create({
       // No workflows for this queue
-      activities: createStickyActivities(),
+      activities: createActivitiesForSameWorker(),
       taskQueue: uniqueWorkerTaskQueue,
     }),
   ]);

@@ -4,18 +4,27 @@ title: temporal workflow cancel
 sidebar_label: cancel
 description: Cancel a Workflow Execution.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow cancel
+  - cancellation
 ---
 
 The `temporal workflow cancel` command cancels a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 Canceling a running Workflow Execution records a [`WorkflowExecutionCancelRequested` event](/references/events#workflow-execution-cancel-requested) in the [Event History](/concepts/what-is-an-event-history).
-A new [Command](/concepts/what-is-a-command) Task will be scheduled, and the Workflow Execution performs cleanup work.
+A new [Workflow Task](/concepts/what-is-a-workflow-task) will be scheduled, and the Workflow Execution performs cleanup work.
 
-Use the options listed below to change the behavior of this command.
-Make sure to write the command as follows:
-`temporal workflow cancel [command options]`
+`temporal workflow cancel --workflow-id=meaningful-business-id`
 
+In addition to Workflow IDs, Workflows can also be [Signaled](/concepts/what-is-a-signal) by a [Query](/concepts/what-is-a-query).
+`temporal workflow cancel --query=MyQuery`
+
+Use the following options to change the behavior of this command.
+
+- [--fields](/cli/cmd-options/fields)
 - [--address](/cli/cmd-options/address)
 
 - [--codec-auth](/cli/cmd-options/codec-auth)
@@ -37,6 +46,8 @@ Make sure to write the command as follows:
 - [--reason](/cli/cmd-options/reason)
 
 - [--run-id](/cli/cmd-options/run-id)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

@@ -4,14 +4,24 @@ title: temporal env get
 sidebar_label: get
 description: Prints environmental properties.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - environment
+  - env get
+  - command-line-interface-cli
 ---
 
 The `temporal env get` command prints the environmental properties for the environment in use.
 
-Use the options listed below to change the command's behavior.
-Make sure to write the command as follows:
-`temporal env get [command options] [arguments]`
+For example, passing the 'local' [Namespace](/concepts/what-is-a-namespace) returns the name, address, and certificate paths for the local environment.
+`temporal env get local`
+`Output: tls-cert-path  /home/my-user/certs/cluster.cert tls-key-path   /home/my-user/certs/cluster.key address        127.0.0.1:7233 namespace      accounting`
+
+Output can be narrowed down to a specific option.
+`temporal env get local.tls-key-path`
+`tls-key-path  /home/my-user/certs/cluster.key`
+
+Use the following options to change the command's behavior.
 
 - [--address](/cli/cmd-options/address)
 
@@ -28,6 +38,8 @@ Make sure to write the command as follows:
 - [--grpc-meta](/cli/cmd-options/grpc-meta)
 
 - [--namespace](/cli/cmd-options/namespace)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

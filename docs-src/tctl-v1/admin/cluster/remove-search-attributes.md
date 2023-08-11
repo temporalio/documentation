@@ -5,7 +5,7 @@ sidebar_label: remove_search_attributes
 description: Removing custom search metadat from a Cluster.
 tags:
   - tctl
-  - admin
+  - cli reference
 ---
 
 > The Temporal tctl documentation covers version 1.17 of the Temporal CLI.

@@ -4,13 +4,17 @@ title: temporal schedule list
 sidebar_label: list
 description: Lists Schedules.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - schedule
+  - command-line-interface-cli
+  - schedule list
 ---
 
 The `temporal schedule list` command lists all [Schedule](/concepts/what-is-a-schedule) configurations.
 Listing Schedules in [Standard Visibility](/concepts/what-is-standard-visibility) will only provide Schedule IDs.
 
-`temporal schedule list [command options]`
+`temporal schedule list`
 
 Use the options below to change the behavior of this command.
 
@@ -41,6 +45,8 @@ Use the options below to change the behavior of this command.
 - [--pager](/cli/cmd-options/pager)
 
 - [--time-format](/cli/cmd-options/time-format)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

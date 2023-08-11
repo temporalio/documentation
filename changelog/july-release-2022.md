@@ -12,17 +12,23 @@ Your feedback is invaluable to us as we work to improve the information that is 
 
 :::
 
-- Python examples are now available in much of the [Foundations section](/application-development/foundations) of the Developer's guide.
+- Python examples are now available in much of the [Foundations section](/dev-guide/python/foundations) of the Developer's guide.
 
-- We added an [Observability section](/application-development/observability) to the Developer's guide.
+- We added an Observability section to the Developer's guide.
+  - [Go](/dev-guide/go/observability)
+  - [Java](/dev-guide/java/observability)
+  - [PHP](/dev-guide/php/observability)
+  - [Python](/dev-guide/python/observability)
+  - [TypeScript](/dev-guide/typescript/observability)
 
 :::info Reminder
 
-The [Developer's guide](/application-development) is rapidly increasing its coverage of SDK how-to information, but if you can't find what you are looking for there, it might be in the [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
+The [Developer's guide](/dev-guide) is rapidly increasing its coverage of SDK how-to information, but if you can't find what you are looking for there, it might be in the older docs for SDKs (which is now deprecated, use docs.temporal.io).
 
 :::
 
-- Temporal Cloud release notes are now available at [docs.temporal.io/cloud/release-notes](/cloud/release-notes/).
+- Temporal Cloud release notes are now available at `docs.temporal.io/cloud/release-notes`.
+  (After this changelog was published, the release notes moved to [temporal.io/change-log/product-area/cloud](https://temporal.io/change-log/product-area/cloud).)
 
 - Experimental [Schedule feature](/workflows/#schedules) documentation is now available.
 

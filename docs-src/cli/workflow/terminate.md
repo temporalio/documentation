@@ -4,7 +4,12 @@ title: temporal workflow terminate
 sidebar_label: terminate
 description: Terminate Workflow Execution by Id or List Filter.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow terminate
+  - termination
 ---
 
 The `temporal workflow terminate` command terminates a [Workflow Execution](/concepts/what-is-a-workflow-execution)
@@ -12,9 +17,10 @@ The `temporal workflow terminate` command terminates a [Workflow Execution](/con
 Terminating a running Workflow Execution records a [`WorkflowExecutionTerminated` event](/references/events#workflowexecutionterminated) as the closing Event in the [Event History](/concepts/what-is-an-event-history).
 Any further [Command](/concepts/what-is-a-command) Tasks cannot be scheduled after running this command.
 
-Use the options listed below to change termination behavior.
-Make sure to write the command as follows:
-`temporal workflow terminate [command options]`
+Workflow terminations require a valid [Workflow ID](/concepts/what-is-a-workflow-id) to function.
+`temporal workflow terminate --workflow-id=meaningful-business-id`
+
+Use the following options to change termination behavior.
 
 - [--address](/cli/cmd-options/address)
 
@@ -37,6 +43,8 @@ Make sure to write the command as follows:
 - [--reason](/cli/cmd-options/reason)
 
 - [--run-id](/cli/cmd-options/run-id)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

@@ -1,16 +1,11 @@
 import React from "react";
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import { SdkLogos } from "./SdkLogos";
 
 function InfoSVG() {
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M12 6.5C8.67188 6.5 6 9.19531 6 12.5C6 15.8281 8.67188 18.5 12 18.5C15.3047 18.5 18 15.8281 18 12.5C18 9.19531 15.3047 6.5 12 6.5ZM12 17.375C9.30469 17.375 7.125 15.1953 7.125 12.5C7.125 9.82812 9.30469 7.625 12 7.625C14.6719 7.625 16.875 9.82812 16.875 12.5C16.875 15.1953 14.6719 17.375 12 17.375ZM12.9375 14.375H12.5625V12.3125C12.5625 12.0078 12.3047 11.75 12 11.75H11.25C10.9219 11.75 10.6875 12.0078 10.6875 12.3125C10.6875 12.6406 10.9219 12.875 11.25 12.875H11.4375V14.375H11.0625C10.7344 14.375 10.5 14.6328 10.5 14.9375C10.5 15.2656 10.7344 15.5 11.0625 15.5H12.9375C13.2422 15.5 13.5 15.2656 13.5 14.9375C13.5 14.6328 13.2422 14.375 12.9375 14.375ZM12 11C12.3984 11 12.75 10.6719 12.75 10.25C12.75 9.85156 12.3984 9.5 12 9.5C11.5781 9.5 11.25 9.85156 11.25 10.25C11.25 10.6719 11.5781 11 12 11Z"
         fill="currentColor"
@@ -25,13 +20,7 @@ function InfoSVG() {
 
 function ExitSVG() {
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M18.75 5.25H14.25M18.75 5.25L12 12M18.75 5.25V9.75"
         stroke="currentColor"
@@ -51,13 +40,7 @@ function ExitSVG() {
 
 function BookSVG() {
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M12 18.75V8.25C12 7.42157 12.6716 6.75 13.5 6.75H19.05C19.2985 6.75 19.5 6.95147 19.5 7.2V17.0357"
         stroke="currentColor"
@@ -70,18 +53,8 @@ function BookSVG() {
         strokeWidth="1.125"
         strokeLinecap="round"
       />
-      <path
-        d="M13.5 17.25H19.5"
-        stroke="currentColor"
-        strokeWidth="1.125"
-        strokeLinecap="round"
-      />
-      <path
-        d="M10.5 17.25H4.5"
-        stroke="currentColor"
-        strokeWidth="1.125"
-        strokeLinecap="round"
-      />
+      <path d="M13.5 17.25H19.5" stroke="currentColor" strokeWidth="1.125" strokeLinecap="round" />
+      <path d="M10.5 17.25H4.5" stroke="currentColor" strokeWidth="1.125" strokeLinecap="round" />
       <path
         d="M12 18.75C12 17.9216 12.6716 17.25 13.5 17.25"
         stroke="currentColor"
@@ -112,10 +85,7 @@ function HatSVG() {
         d="m64 76.82a2 2 0 0 1 -.85-.19l-62-29.17a2 2 0 0 1 0-3.62l62-29.18a2 2 0 0 1 1.7 0l62 29.18a2 2 0 0 1 0 3.62l-62 29.17a2 2 0 0 1 -.85.19zm-57.3-31.17 57.3 27 57.3-27-57.3-26.97z"
         fill="currentColor"
       />
-      <path
-        d="m24 80a2 2 0 0 1 -2-2v-21a2 2 0 0 1 4 0v21a2 2 0 0 1 -2 2z"
-        fill="currentColor"
-      />
+      <path d="m24 80a2 2 0 0 1 -2-2v-21a2 2 0 0 1 4 0v21a2 2 0 0 1 -2 2z" fill="currentColor" />
       <path d="m104 80a2 2 0 0 1 -2-2v-21a2 2 0 0 1 4 0v21a2 2 0 0 1 -2 2z" />
       <path
         d="m64 100.53c-22.62 0-42-12.39-42-22.53a2 2 0 0 1 4 0c0 6.34 16 18.53 38 18.53s38-12.19 38-18.53a2 2 0 0 1 4 0c0 10.14-19.38 22.53-42 22.53z"
@@ -125,10 +95,7 @@ function HatSVG() {
         d="m94 101a2 2 0 0 1 -2-2v-37.76l-28.89-14.45a2 2 0 1 1 1.78-3.58l30 15a2 2 0 0 1 1.11 1.79v39a2 2 0 0 1 -2 2z"
         fill="currentColor"
       />
-      <path
-        d="m94 110a6 6 0 1 1 6-6 6 6 0 0 1 -6 6zm0-8a2 2 0 1 0 2 2 2 2 0 0 0 -2-2z"
-        fill="currentColor"
-      />
+      <path d="m94 110a6 6 0 1 1 6-6 6 6 0 0 1 -6 6zm0-8a2 2 0 1 0 2 2 2 2 0 0 0 -2-2z" fill="currentColor" />
       <path
         d="m97 122h-6a2 2 0 0 1 -2-2.17l1-12a2 2 0 0 1 4 .15 2 2 0 0 1 4-.15l1 12a2 2 0 0 1 -2 2.17zm-3.83-4h1.66l-.83-9.83a.76.76 0 0 1 0-.15.76.76 0 0 1 0 .15z"
         fill="currentColor"
@@ -139,13 +106,7 @@ function HatSVG() {
 
 function CliSVG() {
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M12.75 15.75H18"
         stroke="currentColor"
@@ -163,45 +124,6 @@ function CliSVG() {
     </svg>
   );
 }
-
-const supportedTech = [
-  {
-    link: " /application-development?lang=go",
-    image: "/img/golang.svg",
-    alt: "Go lang logo",
-    class: "w-10 h-8",
-  },
-  {
-    link: " /application-development?lang=java",
-    image: "/img/java.svg",
-    alt: "Java logo",
-    class: "w-7 h-7",
-  },
-  {
-    link: " /application-development?lang=php",
-    image: "/img/php.svg",
-    alt: "php logo",
-    class: "w-10",
-  },
-  {
-    link: " /application-development?lang=python",
-    image: "/img/python.svg",
-    alt: "Python logo",
-    class: "w-7 h-7",
-  },
-  {
-    link: " /application-development?lang=typescript",
-    image: "/img/typescript.svg",
-    alt: "TypeScript logo",
-    class: "w-7 h-7",
-  },
-  {
-    link: " /application-development?lang=js",
-    image: "/img/javascript.svg",
-    alt: "JavaScript logo",
-    class: "w-7 h-7",
-  },
-];
 
 const coreConcepts = {
   listOne: [
@@ -254,28 +176,28 @@ const appDevGuideLinks = {
   listOne: [
     {
       book: true,
-      path: "/application-development/foundations",
-      name: "Foundations",
+      path: "/dev-guide/go",
+      name: "Go dev guide",
     },
     {
       book: true,
-      path: "/application-development/features",
-      name: "Features",
+      path: "/dev-guide/java",
+      name: "Java dev guide",
     },
     {
       book: true,
-      path: "/application-development/observability",
-      name: "Observability",
+      path: "/dev-guide/python",
+      name: "Python dev guide",
     },
     {
       book: true,
-      path: "/application-development/testing",
-      name: "Testing",
+      path: "/dev-guide/typescript",
+      name: "TypeScript dev guide",
     },
     {
       book: true,
-      path: "/application-development/worker-performance",
-      name: "Worker Performance",
+      path: "/dev-guide/php",
+      name: "PHP dev guide",
     },
   ],
   listTwo: [
@@ -291,40 +213,13 @@ const appDevGuideLinks = {
     },
     {
       exit: true,
-      path: "https://typescript.temporal.io/",
-      name: "TypeScript SDK API reference",
-    },
-    {
-      exit: true,
       path: "https://python.temporal.io",
       name: "Python SDK API reference",
     },
-  ],
-};
-
-const appByLang = {
-  listOne: [
     {
-      book: true,
-      path: "https://legacy-documentation-sdks.temporal.io/go",
-      name: "Go",
-    },
-    {
-      book: true,
-      path: "https://legacy-documentation-sdks.temporal.io/java",
-      name: "Java",
-    },
-  ],
-  listTwo: [
-    {
-      book: true,
-      path: "https://legacy-documentation-sdks.temporal.io/php/introduction",
-      name: "PHP",
-    },
-    {
-      book: true,
-      path: "https://legacy-documentation-sdks.temporal.io/typescript/introduction",
-      name: "TypeScript",
+      exit: true,
+      path: "https://typescript.temporal.io/",
+      name: "TypeScript SDK API reference",
     },
   ],
 };
@@ -355,21 +250,26 @@ const cloudInfo = {
   listOne: [
     {
       book: true,
-      path: "/cloud/how-to-get-started-with-temporal-cloud",
+      path: "/cloud/introduction",
+      name: "Introduction",
+    },
+    {
+      book: true,
+      path: "/cloud/get-started",
       name: "Get started",
     },
     {
       book: true,
-      path: "/cloud/how-to-manage-certificates-in-temporal-cloud",
-      name: "Manage certificates",
-    },
-    {
-      book: true,
-      path: "/cloud/how-to-manage-namespaces-in-temporal-cloud",
-      name: "Manage Namespaces",
+      path: "/cloud/account-setup/",
+      name: "Account setup",
     },
   ],
   listTwo: [
+    {
+      book: true,
+      path: "/cloud/metrics",
+      name: "Metrics",
+    },
     {
       cli: true,
       path: "/cloud/tcld",
@@ -377,7 +277,7 @@ const cloudInfo = {
     },
     {
       exit: true,
-      path: "/cloud/release-notes",
+      path: "https://temporal.io/change-log/product-area/cloud",
       name: "Release notes",
     },
   ],
@@ -432,30 +332,6 @@ const references = {
   ],
 };
 
-const displayTechListItems = () => {
-  return supportedTech.map((tech) => {
-    return (
-      <li className="list-logo" key={tech.alt}>
-        <a href={tech.link}>
-          <img
-            className={`${tech.class} pr-1 transition hover:scale-110 code-logo`}
-            src={tech.image}
-            alt={tech.alt}
-          />
-        </a>
-      </li>
-    );
-  });
-};
-
-const displaySupportedTech = () => {
-  return (
-    <div className="supported-tech">
-      <ul className="landing-card-list-b logos">{displayTechListItems()}</ul>
-    </div>
-  );
-};
-
 const displayLinks = (links) => {
   return links.map((link, i) => {
     return (
@@ -465,10 +341,7 @@ const displayLinks = (links) => {
           {link.book && <BookSVG />}
           {link.hat && <HatSVG />}
           {link.cli && <CliSVG />}
-          <Link
-            to={useBaseUrl(link.path)}
-            className="hover:underline font-normal"
-          >
+          <Link to={useBaseUrl(link.path)} className="hover:underline font-normal">
             {link.name}
           </Link>
         </div>
@@ -480,80 +353,43 @@ const displayLinks = (links) => {
 function Explained() {
   return (
     <div className="landing-card">
-      <p className="main-subhead">
-        Temporal Platform explanation and usage information.
-      </p>
+      <p className="main-subhead">Temporal Platform explanation and usage information.</p>
       <div className="landing-card-section">
         <h2 className="h2-landing">Core concepts</h2>
-        <p className="landing-card-p">
-          Temporal terminology, system architecture, and key components
-          explained.
-        </p>
-        <ul className="landing-card-list">
-          {displayLinks(coreConcepts.listOne)}
-        </ul>
-        <ul className="landing-card-list">
-          {displayLinks(coreConcepts.listTwo)}
-        </ul>
+        <p className="landing-card-p">Temporal terminology, system architecture, and key components explained.</p>
+        <ul className="landing-card-list">{displayLinks(coreConcepts.listOne)}</ul>
+        <ul className="landing-card-list">{displayLinks(coreConcepts.listTwo)}</ul>
       </div>
       <div className="landing-card-section">
         <div className="badge-header">
-          <a className="header-link" href="/application-development">
+          <a className="header-link" href="/dev-guide">
             <h2 className="h2-landing">Developer's guide</h2>
           </a>
           <div className="badge-purple">New</div>
         </div>
-        {displaySupportedTech()}
-        <p className="landing-card-p">
-          How-to guides for Temporal Application developers.{" "}
+        {SdkLogos()}
+        <p className="landing-card-p">How-to guides for Temporal Application developers. </p>
+        <ul className="landing-card-list">{displayLinks(appDevGuideLinks.listOne)}</ul>
+        <ul className="landing-card-list">{displayLinks(appDevGuideLinks.listTwo)}</ul>
+        <p className="landing-card-p mt-4 mb-0">
+          For our .NET SDK, see the <a href="https://github.com/temporalio/sdk-dotnet#readme">README</a> and{" "}
+          <a href="https://dotnet.temporal.io/">API reference</a>.<br />
+          For our Ruby SDK, see the <a href="https://github.com/temporalio/sdk-ruby#readme">README</a>.
         </p>
-        <ul className="landing-card-list">
-          {displayLinks(appDevGuideLinks.listOne)}
-        </ul>
-        <ul className="landing-card-list">
-          {displayLinks(appDevGuideLinks.listTwo)}
-        </ul>
-      </div>
-      <div className="landing-card-section">
-        <a
-          className="header-link"
-          href="https://legacy-documentation-sdks.temporal.io/"
-        >
-          <h2 className="h2-landing">Legacy SDK docs</h2>
-        </a>
-        <p className="landing-card-p">
-          Developer's guide by language.{" "}
-          <span className="bold">
-            Most of this information is now included in the{" "}
-            <a className="nowrap" href="/application-development">
-              Developer's guide
-            </a>
-            .
-          </span>
-        </p>
-        <ul className="landing-card-list">{displayLinks(appByLang.listOne)}</ul>
-        <ul className="landing-card-list">{displayLinks(appByLang.listTwo)}</ul>
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/cluster-deployment-guide">
           <h2 className="h2-landing">Cluster deployment guide</h2>
         </a>
-        <p className="landing-card-p">
-          Temporal Cluster deployment information and how-to guides.
-        </p>
-        <ul className="landing-card-list">
-          {displayLinks(clusterGuide.listOne)}
-        </ul>
-        <ul className="landing-card-list">
-          {displayLinks(clusterGuide.listTwo)}
-        </ul>
+        <p className="landing-card-p">Temporal Cluster deployment information and how-to guides.</p>
+        <ul className="landing-card-list">{displayLinks(clusterGuide.listOne)}</ul>
+        <ul className="landing-card-list">{displayLinks(clusterGuide.listTwo)}</ul>
       </div>
       <div className="landing-card-section">
         <div className="flex items-center">
           <a className="header-link" href="/cloud">
             <h2 className="h2-landing">Temporal Cloud</h2>
           </a>
-          <div className="badge-blue">early access</div>
         </div>
         <p className="landing-card-p">Temporal Cloud tools and how-to guides</p>
         <ul className="landing-card-list">{displayLinks(cloudInfo.listOne)}</ul>
@@ -568,12 +404,8 @@ function Explained() {
         <a className="header-link" href="/references/">
           <h2 className="h2-landing">References</h2>
         </a>
-        <ul className="landing-card-list">
-          {displayLinks(references.listOne)}
-        </ul>
-        <ul className="landing-card-list">
-          {displayLinks(references.listTwo)}
-        </ul>
+        <ul className="landing-card-list">{displayLinks(references.listOne)}</ul>
+        <ul className="landing-card-list">{displayLinks(references.listTwo)}</ul>
       </div>
     </div>
   );
@@ -604,22 +436,15 @@ function SDKs() {
             fill="currentColor"
           />
         </svg>
-        <h2 className="mb-4 text-xl font-semibold">
-          SDK how-to guides (Legacy)
-        </h2>
+        <h2 className="mb-4 text-xl font-semibold">SDK how-to guides (Legacy)</h2>
       </div>
-      <p className="mb-4 flex font-medium">
-        SDK specific implementation guides and examples.
-      </p>
+      <p className="mb-4 flex font-medium">SDK specific implementation guides and examples.</p>
       <div className="grid grid-cols-2">
         <div>
           <ul className="flex flex-col space-y-2">
             {/* <ul className="grid grid-cols-2 gap-6 xl:gap-8"> */}
             <li className="">
-              <Link
-                className="flex items-center space-x-3 hover:underline"
-                to={useBaseUrl("/go/")}
-              >
+              <Link className="flex items-center space-x-3 hover:underline" to={useBaseUrl("/go/")}>
                 <img
                   className="h-8 w-8 transition hover:scale-110 code-logo"
                   src="/img/golang.svg"
@@ -629,15 +454,8 @@ function SDKs() {
               </Link>
             </li>
             <li className="">
-              <Link
-                className="flex items-center space-x-3 hover:underline"
-                to={useBaseUrl("/java")}
-              >
-                <img
-                  className="h-8 w-8 transition hover:scale-110 code-logo"
-                  src="/img/java.svg"
-                  alt="Java logo"
-                />
+              <Link className="flex items-center space-x-3 hover:underline" to={useBaseUrl("/java")}>
+                <img className="h-8 w-8 transition hover:scale-110 code-logo" src="/img/java.svg" alt="Java logo" />
                 <p className="font-normal">Java</p>
               </Link>
             </li>
@@ -648,16 +466,9 @@ function SDKs() {
           <ul className="flex flex-col space-y-2">
             {/* <ul className="grid grid-cols-2 gap-6 xl:gap-8"> */}
             <li className="">
-              <Link
-                className="flex items-center space-x-5"
-                to={useBaseUrl("/php/introduction")}
-              >
+              <Link className="flex items-center space-x-5" to={useBaseUrl("/php/introduction")}>
                 <div className="flex items-center space-x-3 hover:underline">
-                  <img
-                    className="h-8 w-8 transition hover:scale-110 code-logo"
-                    src="/img/php.svg"
-                    alt="PHP logo"
-                  />
+                  <img className="h-8 w-8 transition hover:scale-110 code-logo" src="/img/php.svg" alt="PHP logo" />
                   <p className="font-normal">PHP</p>{" "}
                 </div>
               </Link>
@@ -702,28 +513,19 @@ function Cluster() {
         </svg>
         <h2 className="mb-4 text-xl font-semibold">Cluster how-to guides</h2>
       </div>
-      <p className="mb-4 flex font-medium">
-        Temporal Cluster how-to guides and examples.
-      </p>
+      <p className="mb-4 flex font-medium">Temporal Cluster how-to guides and examples.</p>
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
-          <Link
-            to={useBaseUrl("/clusters/quick-install/#docker-compose")}
-            className="hover:underline"
-          >
+          <Link to={useBaseUrl("/clusters/quick-install/#docker-compose")} className="hover:underline">
             <a className="font-normal">Run a Cluster using Docker Compose</a>
           </Link>
         </li>
         <li className="">
           <Link
-            to={useBaseUrl(
-              "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
-            )}
+            to={useBaseUrl("/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster")}
             className="hover:underline"
           >
-            <a className="font-normal">
-              Integrate Elasticsearch into your Cluster
-            </a>
+            <a className="font-normal">Integrate Elasticsearch into your Cluster</a>
           </Link>
         </li>
         <li className="">
@@ -732,10 +534,7 @@ function Cluster() {
           </Link>
         </li>
         <li className="">
-          <Link
-            to={useBaseUrl("/clusters/quick-install/#helm-charts")}
-            className="hover:underline"
-          >
+          <Link to={useBaseUrl("/clusters/quick-install/#helm-charts")} className="hover:underline">
             <a className="font-normal">Deploy to Kubernetes</a>
           </Link>
         </li>
@@ -775,10 +574,7 @@ function Tools() {
       <ul className="flex flex-col space-y-2">
         {/* <ul className="grid grid-cols-2 gap-6 xl:gap-8"> */}
         <li className="">
-          <Link
-            className="flex items-center space-x-3 hover:underline"
-            to={useBaseUrl("/tctl-v1")}
-          >
+          <Link className="flex items-center space-x-3 hover:underline" to={useBaseUrl("/tctl-v1")}>
             <svg
               className="h-8 w-8 transition hover:scale-110 code-logo"
               fill="currentColor"
@@ -795,10 +591,7 @@ function Tools() {
           </Link>
         </li>
         <li className="">
-          <Link
-            className="flex items-center space-x-3 hover:underline"
-            to={useBaseUrl("/web-ui")}
-          >
+          <Link className="flex items-center space-x-3 hover:underline" to={useBaseUrl("/web-ui")}>
             <svg
               className="h-8 w-8 transition hover:scale-110 code-logo"
               fill="currentColor"
@@ -843,23 +636,15 @@ function Operation() {
         </svg>
         <h2 className="mb-4 text-xl font-semibold">Operation</h2>
       </div>
-      <p className="mb-4 flex font-medium">
-        Practical operation guides and information.
-      </p>
+      <p className="mb-4 flex font-medium">Practical operation guides and information.</p>
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
-          <a
-            href="/application-development/worker-performance"
-            className="font-normal hover:underline"
-          >
+          <a href="/dev-guide/worker-performance" className="font-normal hover:underline">
             Tune Workers
           </a>
         </li>
         <li className="">
-          <a
-            href="/server/production-deployment/"
-            className="font-normal hover:underline"
-          >
+          <a href="/production-readiness" className="font-normal hover:underline">
             Deploy to production
           </a>
         </li>

@@ -4,14 +4,22 @@ title: temporal env delete
 sidebar_label: delete
 description: Delete an environment or environmental property.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - environment
+  - env delete
+  - command-line-interface-cli
 ---
 
 The `temporal env delete` command deletes a given environment or environmental property.
 
-Use the options listed below to change the command's behavior.
-Make sure to write the command as follows:
-`temporal env delete [command options]`
+`temporal env delete [environment or property]`
+
+Pass a valid [Namespace](/concepts/what-is-a-namespace) into the command to delete an environment and its saved values.
+
+`temporal env delete local`
+
+Use the following options to change the command's behavior.
 
 - [--address](/cli/cmd-options/address)
 
@@ -28,6 +36,8 @@ Make sure to write the command as follows:
 - [--grpc-meta](/cli/cmd-options/grpc-meta)
 
 - [--namespace](/cli/cmd-options/namespace)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

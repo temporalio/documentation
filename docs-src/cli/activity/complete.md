@@ -2,16 +2,23 @@
 id: complete
 title: temporal activity complete
 sidebar_label: complete
-description: Completes an Activity.
+description: Completes an Activity Execution.
 tags:
-  - cli
+  - cli reference
+  - temporal cli
+  - activity
+  - activity complete
+  - activity execution
+  - cli-feature
+  - command-line-interface-cli
 ---
 
 The `temporal activity complete` command completes an [Activity Execution](/concepts/what-is-an-activity-execution).
+Along with completing the Activity, the result given upon return can be set as well.
 
-Use the options listed below to change the behavior of this command.
-Make sure to write the command as follows:
-`temporal activity complete [command options]`
+`temporal activity complete --activity-id=MyActivity --result=ActivityComplete`
+
+Use the following options to change the behavior of this command.
 
 - [--activity-id](/cli/cmd-options/activity-id)
 
@@ -36,6 +43,8 @@ Make sure to write the command as follows:
 - [--result](/cli/cmd-options/result)
 
 - [--run-id](/cli/cmd-options/run-id)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

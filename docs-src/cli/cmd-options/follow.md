@@ -1,11 +1,14 @@
 ---
 id: follow
-title: temporal  follow
+title: temporal follow
 sidebar_label: follow
 description: Follow the progress of a Workflow Execution.
-tags:
-    - cli
+tags: 
+    - cli reference
+    - temporal cli
+    - options-feature
+    - command-line-interface-cli
+    - workflow execution
 ---
 
-Alias: **-f**: Follow the progress of a Workflow Execution.
 Follow the progress of a Workflow Execution.

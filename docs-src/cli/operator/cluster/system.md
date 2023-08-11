@@ -4,14 +4,20 @@ title: temporal operator cluster system
 sidebar_label: system
 description: Shows information about the system and its capabilities.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - operator
+  - command-line-interface-cli
+  - cluster
+  - system
 ---
 
-The `temporal operator cluster system` command provides information about the system the Cluster is running on.
+The `temporal operator cluster system` command provides information about the system the [Cluster](/concepts/what-is-a-temporal-cluster) is running on.
+This information can be used to diagnose problems occurring in the [Temporal Server](/concepts/what-is-the-temporal-server).
 
-Use the options listed below to change this command's output.
-Make sure to write the command as follows:
-`temporal operator cluster system [command options]`
+`temporal operator cluster system`
+
+Use the following options to change this command's behavior.
 
 - [--address](/cli/cmd-options/address)
 
@@ -32,6 +38,8 @@ Make sure to write the command as follows:
 - [--namespace](/cli/cmd-options/namespace)
 
 - [--output](/cli/cmd-options/output)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

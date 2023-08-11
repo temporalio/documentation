@@ -4,15 +4,20 @@ title: temporal workflow start
 sidebar_label: start
 description: Starts a new Workflow Execution.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow start
+  - workflow execution
 ---
 
 The `temporal workflow start` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution).
 When invoked successfully, the Workflow and Run ID are returned immediately after starting the [Workflow](/concepts/what-is-a-workflow).
 
-Use the command options listed below to change how the Workflow Execution behaves upon starting.
-Make sure to write the command in this format:
-`temporal workflow start [command options]`
+`temporal workflow start --task-queue=MyTaskQueue --type=MyWorkflow`
+
+Use the following command options to change how the Workflow Execution behaves upon starting.
 
 - [--address](/cli/cmd-options/address)
 
@@ -65,6 +70,8 @@ Make sure to write the command in this format:
 - [--task-timeout](/cli/cmd-options/task-timeout)
 
 - [--time-format](/cli/cmd-options/time-format)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

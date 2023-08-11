@@ -5,7 +5,7 @@ tags:
   - troubleshooting
   - error
 
-date: 2022-11-09T00:00:00Z
+date: 2023-05-22T00:00:00Z
 ---
 
 All requests made to the [Temporal Cluster](/clusters) by the Client or Worker are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
@@ -16,13 +16,21 @@ The following sections discuss the nature of this error and how to troubleshoot 
 
 <!-- truncate -->
 
+### Check system clocks
+
+Timing skew can cause the system clock on a Worker to drift behind the system clock of the Temporal Cluster.
+If the difference between the two clocks exceeds an Activity's Start-To-Close Timeout, an `Activity complete after timeout` error occurs.
+
+If you receive an `Activity complete after timeout` error alongside `Context: deadline exceeded`, check the clocks on the Temporal Cluster's system and the system of the Worker sending that error.
+If the Worker's clock doesn't match the Temporal Cluster, synchronize all clocks to an NTP server.
+
 ### Check Frontend Service logs
 
 :::note
 
 Cloud users cannot access some of the logs needed to diagnose the source of the error.
 
-If you're using Temporal Cloud, create a [support ticket](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support) with as much information as possible, including the Namespace Name and the Workflow Ids of some Workflow Executions in which the issue occurs.
+If you're using Temporal Cloud, create a [support ticket](/cloud/support#support-ticket) with as much information as possible, including the Namespace Name and the Workflow Ids of some Workflow Executions in which the issue occurs.
 
 :::
 
@@ -35,7 +43,7 @@ OSS users can verify that the Frontend Service is connected and running by using
 tctl --address frontendAddress:frontendPort cluster health
 ```
 
-Use `grpc-health-probe` to check the Frontend Service, [Matching Service](/clusters#matching-service), and [History Service](/clusters#history-service).
+Use [`grpc-health-probe`](https://github.com/grpc-ecosystem/grpc-health-probe) to check the Frontend Service, [Matching Service](/clusters#matching-service), and [History Service](/clusters#history-service).
 
 ```
 ./grpc-health-probe -addr=frontendAddress:frontendPort -service=temporal.api.workflowservice.v1.WorkflowService
@@ -111,5 +119,5 @@ If you increase `frontend.keepAliveMaxConnectionAge` values, consider monitoring
 
 Still unable to resolve your issue?
 
-- If you use Temporal Cloud, create a [support ticket](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support).
+- If you use Temporal Cloud, create a [support ticket](/cloud/support#support-ticket).
 - If you use our open source software or Temporal Cloud, check for similar questions and possible solutions in our [community forum](https://community.temporal.io) or [community Slack](https://temporal.io/slack).

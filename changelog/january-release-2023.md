@@ -6,7 +6,7 @@ date: 2023-01-23T00:00:00Z
 
 Since our last change log in November 2022, we published the following content:
 
-- [How to set up Grafana with Temporal Cloud observability to view metrics](/kb/prometheus-grafana-setup-cloud).
+- [How to set up Grafana with Temporal Cloud observability to view metrics](/cloud/metrics#prometheus--grafana-setup).
   Temporal Cloud and SDKs emit metrics that can be used to monitor performance and troubleshoot errors.
   Temporal Cloud emits metrics through a Prometheus HTTP API endpoint, which can be directly used as a Prometheus data source in Grafana or to query and export Cloud metrics to any observability platform.
 
@@ -23,12 +23,12 @@ Since our last change log in November 2022, we published the following content:
 
 **Legacy docs for SDKs**
 
-To support all the SDKs, in 2022 we started building the [Dev guide](/application-development).
+To support all the SDKs, in 2022 we started building the [Dev guide](/dev-guide).
 This guide now provides a single set of docs across Go, Java, PHP, Python, and TypeScript with more languages potentially on the way.
 This guide is the focus of new information moving forward.
 
-We published the legacy language-specific docs for Go, Java, PHP, and TypeScript to [legacy-documentation-sdks.temporal.io](https://legacy-documentation-sdks.temporal.io/).
+We published the legacy language-specific docs for Go, Java, PHP, and TypeScript to a legacy site which is now deprecated (use docs.temporal.io).
 
-The documentation at [legacy-documentation-sdks.temporal.io](https://legacy-documentation-sdks.temporal.io/) is read-only but might still contain some information that is not yet represented in the [Dev guide](/application-development).
+The documentation at the legacy site (which is now deprecated, use docs.temporal.io) is read-only but might still contain some information that is not yet represented in the [Dev guide](/dev-guide).
 
 We are still encouraging users to use both sets of documentation at this time.

@@ -4,15 +4,23 @@ title: temporal workflow describe
 sidebar_label: describe
 description: Show information about a Workflow Execution.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow describe
 ---
 
 The `temporal workflow describe` command shows information about a given [Workflow Execution](/concepts/what-is-a-workflow-execution).
 This information can be used to locate Workflow Executions that weren't able to run successfully.
 
-Use the command options listed below to change the information returned by this command.
-Make sure to write the command in this format:
-`temporal workflow describe [command options]`
+`temporal workflow describe --workflow-id=meaningful-business-id`
+
+The output of this command can be changed to show as printed ('raw') or to only show the Workflow Execution's auto-reset points.
+
+`temporal workflow describe --workflow-id=meaningful-business-id --raw=true --reset-points=true`
+
+Use the following command options to change the information returned by this command.
 
 - [--address](/cli/cmd-options/address)
 
@@ -35,6 +43,8 @@ Make sure to write the command in this format:
 - [--reset-points](/cli/cmd-options/reset-points)
 
 - [--run-id](/cli/cmd-options/run-id)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

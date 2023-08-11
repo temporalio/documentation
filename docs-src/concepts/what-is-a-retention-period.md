@@ -11,7 +11,8 @@ tags:
 Retention Period is the duration for which the Temporal Cluster stores data associated with closed Workflow Executions on a Namespace in the Persistence store.
 
 - [How to set the Retention Period for a Namespace](/tctl-v1/namespace#register)
-- [How to set the Retention Period for a Namespace using an SDK](/application-development/features/#namespaces)
+- [How to set the Retention Period for a Namespace using the Go SDK](/go/namespaces)
+- [How to set the Retention Period for a Namespace using the Java SDK](/java/namespaces)
 
 A Retention Period applies to all closed Workflow Executions within a [Namespace](/concepts/what-is-a-namespace) and is set when the Namespace is registered.
 
@@ -23,4 +24,8 @@ On Temporal Cluster versions 1.17 and earlier, the maximum Retention Period you 
 Setting the Retention Period to 0 results in the error _A valid retention period is not set on request_.
 
 If you don't set the Retention Period value when using the [`tctl namespace register`](/tctl-v1/namespace#register) command, it defaults to 3 days.
-If you don't set the Retention Period value when using the [`RegisterNamespaceRequest`](/application-development/features/#namespaces) API, it returns an error.
+If you don't set the Retention Period value when using the Register Namespace Request API, it returns an error.
+
+When changing the Retention Period, the new duration applies to Workflow Executions that close after the change is saved.
+
+<!-- TODO link up to working API usage examples -->

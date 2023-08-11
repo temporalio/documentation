@@ -4,14 +4,18 @@ title: temporal workflow signal
 sidebar_label: signal
 description: Signal Workflow Execution by Id or List Filter.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow signal
+  - signals-feature
+  - signals
 ---
 
-The `temporal workflow signal` command is used to [Signal](/concepts/what-is-a-signal) a [Workflow Execution](/concepts/what-is-a-workflow-execution) by ID or [List Filter](/concepts/what-is-a-list-filter).
+The `temporal workflow signal` command is used to send a [Signal](/concepts/what-is-a-signal) to a [Workflow Execution](/concepts/what-is-a-workflow-execution) by [Workflow Id](/concepts/what-is-a-workflow-id) or [List Filter](/concepts/what-is-a-list-filter).
 
-Use the options listed below to change the command's behavior.
-Make sure to write the command as follows:
-`temporal workflow signal [command options]`
+Use the following options to change the command's behavior.
 
 - [--address](/cli/cmd-options/address)
 
@@ -40,6 +44,8 @@ Make sure to write the command as follows:
 - [--reason](/cli/cmd-options/reason)
 
 - [--run-id](/cli/cmd-options/run-id)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

@@ -11,9 +11,23 @@ tags:
 A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](/workflows#workflow-execution) or an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 (Retry Policies do not apply to [Workflow Task Executions](/concepts/what-is-a-workflow-task-execution), which always retry indefinitely.)
 
-- [Activity retry simulator](/application-development/features#activity-retry-simulator)
-- [How to set a custom Retry Policy for an Activity](/application-development/features#activity-retry-policy)
-- [How to set a Retry Policy for a Workflow](/application-development/features#workflow-retry-policy)
+- [Activity retry simulator](/dev-guide/activity-retry-simulator)
+
+---
+
+- [How to set a custom Retry Policy for an Activity in Go](/go/activity-retries)
+- [How to set a custom Retry Policy for an Activity in Java](/java/activity-retries)
+- [How to set a custom Retry Policy for an Activity in PHP](/php/activity-retries)
+- [How to set a custom Retry Policy for an Activity in Python](/python/activity-retries)
+- [How to set a custom Retry Policy for an Activity in TypeScript](/typescript/activity-retries)
+
+---
+
+- [How to set a Retry Policy for a Workflow in Go](/go/workflow-retries)
+- [How to set a Retry Policy for a Workflow in Java](/java/workflow-retries)
+- [How to set a Retry Policy for a Workflow in PHP](/php/workflow-retries)
+- [How to set a Retry Policy for a Workflow in Python](/python/workflow-retries)
+- [How to set a Retry Policy for a Workflow in TypeScript](/typescript/workflow-retries)
 
 <!-- ![Diagram that shows the retry interval and its formula](/img/retry-interval-diagram.png) -->
 
@@ -81,10 +95,9 @@ Non-Retryable Errors = []
 
 - **Description**: Specifies errors that shouldn't be retried.
   - **Default is none.**
-  - If one of those errors occurs, the [Activity Task Execution](#activity-task-execution) or [Workflow Execution](#workflow-execution) is not retried.
-  - The errors are matched against the `type` field of the [ApplicationFailure](/kb/failures#application-failure).
-- **Use case**: There may be errors that you know of that should not trigger a retry.
-  In this case, you can specify them such that, if they occur, the given execution is not retried.
+  - Errors are matched against the `type` field of the [Application Failure](/kb/failures#application-failure).
+  - If one of those errors occurs, a retry does not occur.
+- **Use case**: If you know of errors that should not trigger a retry, you can specify that, if they occur, the execution is not retried.
 
 ## Retry interval
 

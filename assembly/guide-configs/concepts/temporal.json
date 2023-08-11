@@ -1,9 +1,11 @@
 {
   "file_name": "temporal.md",
   "id": "temporal",
-  "file_dir": "/",
-  "title": "Temporal",
+  "slug": "/temporal",
+  "file_dir": "concepts",
+  "title": "What is Temporal?",
   "sidebar_label": "Temporal",
+  "sidebar_position": 1,
   "description": "The Temporal Platform explained.",
   "use_description": true,
   "toc_max_heading_level": 4,

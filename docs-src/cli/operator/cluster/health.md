@@ -4,14 +4,18 @@ title: temporal operator cluster health
 sidebar_label: health
 description: Checks the health of the Frontend Service.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - operator
+  - command-line-interface-cli
+  - cluster
+  - cluster health
 ---
 
 The `temporal operator cluster health` command checks the health of the [Frontend Service](/concepts/what-is-a-frontend-service).
+A successful execution returns a list of [Cluster](/concepts/what-is-a-temporal-cluster) metrics.
 
-Use the options listed below to change the behavior and output of this command.
-Make sure to write the command as follows:
-`temporal operator cluster health [command options]`
+Use the following options to change the behavior and output of this command.
 
 - [--address](/cli/cmd-options/address)
 
@@ -28,6 +32,8 @@ Make sure to write the command as follows:
 - [--grpc-meta](/cli/cmd-options/grpc-meta)
 
 - [--namespace](/cli/cmd-options/namespace)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

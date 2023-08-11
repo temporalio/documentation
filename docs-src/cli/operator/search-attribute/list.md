@@ -4,14 +4,19 @@ title: temporal operator search-attribute list
 sidebar_label: list
 description: Lists all Search Attributes that can be used in list Workflow Queries.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - operator
+  - command-line-interface-cli
+  - search attribute
+  - search attribute list
 ---
 
-The `temporal operator search-attrbute list` command displays a list of all [Search Attributes](/concepts/what-is-a-search-attribute) that can be used in `temporal workflow list --query`.
+The `temporal operator search-attribute list` command displays a list of all [Search Attributes](/concepts/what-is-a-search-attribute) that can be used in [Queries](/concepts/what-is-a-query).
 
-Use the options listed below to change the command's behavior.
-Make sure to write the command as follows:
-`temporal operator search-attribute list [command options]`
+`temporal workflow list --query`.
+
+Use the following options to change this command's behavior.
 
 - [--address](/cli/cmd-options/address)
 
@@ -30,6 +35,8 @@ Make sure to write the command as follows:
 - [--namespace](/cli/cmd-options/namespace)
 
 - [--output](/cli/cmd-options/output)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

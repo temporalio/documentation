@@ -2,9 +2,16 @@
 id: index
 title: temporal operator cluster
 sidebar_label: cluster
-description: Operations for running a Temporal Cluster.
+description: Operations performed on the Temporal Server.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - operator
+  - command-line-interface-cli
+  - cluster
 ---
 
-Cluster commands enabled operations on [Temporal Clusters](/concepts/what-is-a-temporal-cluster).
+Cluster commands enable actions on [Temporal Clusters](/concepts/what-is-a-temporal-cluster).
+
+Cluster commands follow this syntax:
+`temporal operator [command] [subcommand] [command options]`.

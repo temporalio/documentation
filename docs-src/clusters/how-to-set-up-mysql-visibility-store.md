@@ -10,20 +10,19 @@ tags:
 ssdi:
   - MySQL v5.7 and later.
   - Support for MySQL v5.7 will be deprecated for all Temporal Server versions after v1.20.
-  - With Temporal Server version 1.20 and later, Advanced Visibility is available on MySQL v8.0.17 and later.
+  - With Temporal Server version 1.20 and later, advanced Visibility is available on MySQL v8.0.17 and later.
 ---
 
 You can set MySQL as your [Visibility store](/concepts/what-is-visibility).
 Verify [supported versions](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) before you proceed.
 
 If using MySQL v8.0.17 or later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attributes) that you create must be associated with a Namespace in that Cluster.
-For details, see [Search Attributes](/application-development/observability#visibility).
 
 **Persistence configuration**
 
 Set your MySQL Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then define the Visibility store configuration under `datastores`.
 
-The following example shows how to set a Visibility store `mysql-visibility` and define the datastore configuration in your Temporal Cluster Configuration YAML.
+The following example shows how to set a Visibility store `mysql-visibility` and define the datastore configuration in your Temporal Cluster configuration YAML.
 
 ```yaml
 #...
@@ -36,10 +35,10 @@ persistence:
       #...
     mysql-visibility:
       sql:
-        pluginName: "mysql" # if using MySQL 8.0.17 or later with Temporal Server v1.20, use "mysql8" plugin for Advanced Visibility capabilities
+        pluginName: "mysql8" # For MySQL v8.0.17 and later. For earlier versions, use "mysql" plugin.
         databaseName: "temporal_visibility"
-        connectAddr: " " # remote address of this database; for example, 127.0.0.0:3306
-        connectProtocol: " " # protocol example: tcp
+        connectAddr: " " # Remote address of this database; for example, 127.0.0.0:3306
+        connectProtocol: " " # Protocol example: tcp
         user: "username_for_auth"
         password: "password_for_auth"
         maxConns: 2
@@ -50,14 +49,14 @@ persistence:
 
 For details on the configuration parameters and values, see [Cluster configuration](/references/configuration#sql).
 
-To enable Advanced Visibility features on your MySQL Visibility store, upgrade to MySQL v8.0.17 or later with Temporal Server v1.20 or later.
+To enable advanced Visibility features on your MySQL Visibility store, upgrade to MySQL v8.0.17 or later with Temporal Server v1.20 or later.
 See [Upgrade Server](/clusters/how-to-upgrade-the-temporal-server-version) on how to upgrade your Temporal Server and database schemas.
 
 For example configuration templates, see [MySQL Visibility store configuration](https://github.com/temporalio/temporal/blob/master/config/development-mysql.yaml).
 
 **Database schema and setup**
 
-Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in the following:
+Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions):
 
 - [MySQL v5.7 and later](https://github.com/temporalio/temporal/tree/master/schema/mysql/v57/visibility)
 - [MySQL v8.0.17 and later](https://github.com/temporalio/temporal/tree/master/schema/mysql/v8/visibility)

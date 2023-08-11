@@ -4,14 +4,18 @@ title: temporal operator cluster describe
 sidebar_label: describe
 description: Show information about the Cluster.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - operator
+  - command-line-interface-cli
+  - cluster
+  - describe
 ---
 
 The `temporal operator cluster describe` command shows information about the [Cluster](/concepts/what-is-a-temporal-cluster).
+This information can include information about other connected services, such as a remote [Codec Server](/concepts/what-is-a-codec-server).
 
-Use the options listed below to change the output of this command.
-Make sure to write the command as follows:
-`temporal operator cluster describe [command options]`
+Use the following options to change the output of this command.
 
 - [--address](/cli/cmd-options/address)
 
@@ -32,6 +36,8 @@ Make sure to write the command as follows:
 - [--namespace](/cli/cmd-options/namespace)
 
 - [--output](/cli/cmd-options/output)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

@@ -4,14 +4,18 @@ title: temporal operator namespace delete
 sidebar_label: delete
 description: Deletes an existing Namespace.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - operator
+  - command-line-interface-cli
+  - namespace
+  - namespace delete
 ---
 
 The `temporal operator namespace delete` command deletes a given [Namespace](/concepts/what-is-a-namespace) from the system.
+The command follow the syntax `temporal operator namespace delete <namespace>`
 
-Use the options listed below to change the command's behavior.
-Make sure to write the command as follows:
-`temporal operator namespace delete [command options] [arguments]`
+Use the following options to change the behavior of this command.
 
 - [--address](/cli/cmd-options/address)
 
@@ -28,6 +32,8 @@ Make sure to write the command as follows:
 - [--grpc-meta](/cli/cmd-options/grpc-meta)
 
 - [--namespace](/cli/cmd-options/namespace)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

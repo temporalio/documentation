@@ -7,13 +7,9 @@ tags:
   - term
 ---
 
-A Codec Server is an HTTP server that uses your custom [Payload Codec](/concepts/what-is-a-data-converter#payload-codec) to encode and decode your data remotely through endpoints.
+A Codec Server is an HTTP/HTTPS server that uses a [custom Payload Codec](/production-readiness/develop#securing-your-data) to decode your data remotely through endpoints.
 
-![](/img/tctl-diagram-codec-server.svg)
-
-You can [create a custom Payload Codec](/prod-readiness-context/data-encryption) with your encoding logic (such as encryption and/or compression), and apply it to the data processed in your Workflows.
-
-Using a custom Payload Codec in your Codec Server enables encoding and decoding data remotely through the endpoints that you expose on the Codec Server.
+![](/diagrams/tctl-diagram-codec-server.svg)
 
 A Codec Server follows the Temporal [Codec Server Protocol](https://github.com/temporalio/samples-go/tree/main/codec-server#codec-server-protocol).
 It implements two endpoints:
@@ -33,16 +29,15 @@ Most SDKs provide example Codec Server implementation samples, listed here:
 
 #### Usage
 
-When using tctl or the Web UI to perform some operations on a Workflow Execution, you can configure the exposed Codec Server endpoints to remotely encode data sent to the Temporal Server and decode data received from the Temporal Server.
+When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server. For details on what data is encoded, see [Securing your data](/production-readiness/develop#securing-your-data).
 
-When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server. For details on what data is encoded, see [Data encryption](/prod-readiness-context/data-encryption).
+To see decoded data when using the CLI or Web UI to perform some operations on a Workflow Execution, configure the Codec Server endpoint in the Web UI and CLI.
+When you configure the Codec Server endpoints, the CLI and Web UI send the encoded data to the Codec Server, and display the decoded data received from the Codec Server.
 
-Before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely.
-For example, codecs that perform encryption might need to be secured to prevent decryption by untrusted callers.
+For details on creating your Codec Server, see [Codec Server Setup](/production-readiness/develop#codec-server-setup).
 
-[Configure your Codec Server endpoints](/prod-readiness-context/how-to-set-up-codec-server) to decode the encoded data to its original format when viewed from the Web UI or tctl.
+After you start your Codec Server, [configure your Codec Server endpoints](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli).
 
-The following samples provide implementation examples for applying authentication on your Codec Server using the Go SDK.
-
-- [Codec Server](https://github.com/temporalio/samples-go/tree/main/codec-server)
-- [GRPC proxy server](https://github.com/temporalio/samples-go/tree/main/grpc-proxy)
+<!-- You can set your Codec Server endpoints to encode data sent to the Temporal Server (see [Remote data encoding](/concepts/what-is-remote-data-encoding)).
+However, before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely.
+For example, codecs that perform encryption might need to be secured to prevent decryption by untrusted callers. -->

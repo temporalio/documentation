@@ -2,11 +2,14 @@
 id: introduction
 title: PHP SDK introduction
 sidebar_label: PHP SDK introduction
+description: Introduction to the Temporal PHP SDK
+tags:
+ - php
 ---
 
 :::info Try the Developer's guide
 
-The majority of this information has moved into the [Developer's guide](/application-development/?lang=php).
+The majority of this information has moved into the [Developer's guide](/dev-guide/?lang=php).
 
 However, if you can't find what you are looking for there, we recommend checking this doc set as well.
 

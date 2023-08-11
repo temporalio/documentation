@@ -3,15 +3,21 @@ id: list
 title: temporal batch list
 sidebar_label: list
 description: List Batch operation jobs.
-tags:
-    - cli
+tags: 
+    - cli reference
+    - temporal cli
+    - batch
+    - batch list
+    - cli-feature
+    - command-line-interface-cli
 ---
 
-When used, `temporal batch list` returns all Batch jobs.
+The `temporal batch list` command returns all Batch jobs.
+Batch Jobs can be returned for an entire Cluster or a single Namespace.
 
-Use the command options listed below to change the information returned by this command.
-Make sure to write the command in this format:
-`temporal batch list [command options]`
+`temporal batch list --namespace=MyNamespace`
+
+Use the following options to change the behavior of this command.
 
 - [--address](/cli/cmd-options/address)
 
@@ -40,6 +46,8 @@ Make sure to write the command in this format:
 - [--pager](/cli/cmd-options/pager)
 
 - [--time-format](/cli/cmd-options/time-format)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

@@ -1,20 +1,24 @@
 ---
 id: index
-title: temporal batch
+title: temporal batch index
 sidebar_label: batch
 description: Operations performed on Batch jobs.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - batch
+  - cli-feature
+  - command-line-interface-cli
 ---
 
-Batch commands allow you to change multiple [Workflow Executions](/concepts/what-is-a-workflow-execution) without having to repeat yourself on the command line.
-In order to do this, you provide the command with a [List Filter](/concepts/what-is-visibility) and the type of Batch job to execute.
+Batch commands change multiple [Workflow Executions](/concepts/what-is-a-workflow-execution) by providing a [List Filter](/concepts/what-is-visibility) and the type of Batch Job to execute.
+The List Filter identifies the Workflow Executions in the Batch Job; the Batch type determines what will happen to the Workflow Executions.
 
-The List Filter identifies the Workflow Executions that will be affected by the Batch job.
-The Batch type determines the other parameters that need to be provided, along with what is being affected on the Workflow Executions.
+There are three types of Batch Jobs:
 
-To start the Batch job, run `temporal workflow query`.
-Running Signal, Terminate, or Cancel with the `--query` modifier will start a Batch job automatically.
+- Signal: sends a [Signal](/concepts/what-is-a-signal) to the Workflow Executions specified by the List Filter.
+- Cancel: cancels the Workflow Executions specified by the List Filter.
+- Terminate: terminates the Workflow Executions specified by the List Filter.
 
 A successfully started Batch job will return a Job ID.
 Use this Job ID to execute other actions on the Batch job.

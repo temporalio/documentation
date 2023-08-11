@@ -4,15 +4,20 @@ title: temporal operator namespace describe
 sidebar_label: describe
 description: Describe a Namespace by its name or Id.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - operator
+  - command-line-interface-cli
+  - namespace
+  - namespace describe
 ---
 
 The `temporal operator namespace describe` command provides a description of a [Namespace](/concepts/what-is-a-namespace).
-Namespaces can be identified by name or Namespace ID.
+Namespaces are identified by Namespace ID.
 
-Use the options listed below to change the command's output.
-Make sure to write the command as follows:
-`temporal operator namespace describe [command options] [arguments]`
+`temporal operator namespace describe --namespace-id=meaningful-business-id`
+
+Use the following options to change the behavior of this command.
 
 - [--address](/cli/cmd-options/address)
 
@@ -31,6 +36,8 @@ Make sure to write the command as follows:
 - [--namespace](/cli/cmd-options/namespace)
 
 - [--namespace-id](/cli/cmd-options/namespace-id)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

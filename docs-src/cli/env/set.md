@@ -4,14 +4,22 @@ title: temporal env set
 sidebar_label: set
 description: Set environmental properties.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - environment
+  - env set
+  - command-line-interface-cli
 ---
 
 The `temporal env set` command sets the value for an environmental property.
+Property names match CLI option names.
 
-Use the options listed below to change the command's behavior.
-Make sure to write the command as follows:
-`temporal env set [command options] [arguments]`
+`temporal env set prod.tls-cert-path /home/my-user/certs/cluster.cert`
+
+Properties can be set for the entire system, such as the frontend address:
+`temporal env set local.address 127.0.0.1:7233`
+
+Use the following options to change the command's behavior.
 
 - [--address](/cli/cmd-options/address)
 
@@ -28,6 +36,8 @@ Make sure to write the command as follows:
 - [--grpc-meta](/cli/cmd-options/grpc-meta)
 
 - [--namespace](/cli/cmd-options/namespace)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

@@ -2,9 +2,13 @@
 id: how-to-define-a-signal-in-php
 title: How to define a Signal in PHP
 sidebar_label: Define a Signal
+description: Workflows can receive external signals. To receive a signal, define a method in your Workflow class and annotate it with `#[SignalMethod]`.
+tags:
+    - php
+    - signal
 ---
 
-Workflows can answer synchronous [Queries](/app-dev-context/queries) and receive [Signals](/app-dev-context/signals).
+Workflows can answer synchronous [Queries](/concepts/what-is-a-query) and receive [Signals](/concepts/what-is-a-signal).
 
 All interface methods must have one of the following annotations:
 

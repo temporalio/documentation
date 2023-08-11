@@ -4,15 +4,26 @@ title: temporal workflow reset-batch
 sidebar_label: reset-batch
 description: Reset a batch of Workflow Executions by reset type (FirstWorkflowTask), LastWorkflowTask), LastContinuedAsNew
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow reset-batch
+  - resets-feature
 ---
 
-The `temporal workflow reset-batch` command resets a batch of [Workflow Executions](/concepts/what-is-a-workflow-execution) by `resetType`.
-Resetting a [Workflow](/concepts/what-is-a-workflow) allows the process to resume from a certain point without losing your parameters or [Event History](/concepts/what-is-an-event-history).
+The `temporal workflow reset-batch` command resets multiple [Workflow Executions](/concepts/what-is-a-workflow-execution) by `resetType`.
+Resetting a [Workflow](/concepts/what-is-a-workflow) resumes it from a certain point without losing your parameters or [Event History](/concepts/what-is-an-event-history).
 
-Use the options listed below to change reset behavior.
-Make sure to write the command as follows:
-`temporal workflow reset-batch [command options]`
+The set of Workflow Executions to reset can be specified in an input file.
+The input file must have a [Workflow ID](/concepts/what-is-a-workflow-id) on each line.
+
+`temporal workflow reset-batch --input-file=MyInput --input-separator="\t"`
+
+Workflow Executions can also be found by [Query](/concepts/what-is-a-query).
+`temporal workflow reset-batch --query=MyQuery
+
+Use the following options to change reset behavior.
 
 - [--address](/cli/cmd-options/address)
 
@@ -49,6 +60,8 @@ Make sure to write the command as follows:
 - [--skip-base-is-not-current](/cli/cmd-options/skip-base-is-not-current)
 
 - [--skip-current-open](/cli/cmd-options/skip-current-open)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

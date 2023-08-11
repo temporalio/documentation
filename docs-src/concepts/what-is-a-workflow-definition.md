@@ -10,7 +10,11 @@ tags:
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
-- [How to develop a Workflow Definition](/app-dev-context/developing-workflows)
+- [How to develop a Workflow Definition using the Go SDK](/go/developing-workflows)
+- [How to develop a Workflow Definition using the Java SDK](/java/how-to-develop-a-workflow-definition-in-java)
+- [How to develop a Workflow Definition using the PHP SDK](/php/developing-workflows)
+- [How to develop a Workflow Definition using the Python SDK](/python/developing-workflows)
+- [How to develop a Workflow Definition using the TypeScript SDK](/typescript/developing-workflows)
 
 A Workflow Definition is often also referred to as a Workflow Function.
 In Temporal's documentation, a Workflow Definition refers to the source for the instance of a Workflow Execution, while a Workflow Function refers to the source for the instance of a Workflow Function Execution.
@@ -40,7 +44,7 @@ The following are the two reasons why a Command might be generated out of sequen
 1. Code changes are made to a Workflow Definition that is in use by a running Workflow Execution.
 2. There is intrinsic non-deterministic logic (such as inline random branching).
 
-### Code changes can cause non-deterministic behavior
+### Code changes can cause non-deterministic behavior {#non-deterministic-change}
 
 The Workflow Definition can change in very limited ways once there is a Workflow Execution depending on it.
 To alleviate non-deterministic issues that arise from code changes, we recommend using [Workflow Versioning](#workflow-versioning).
@@ -67,7 +71,9 @@ The Workflow Execution would fail and return a non-deterministic error.
 
 The following are examples of minor changes that would not result in non-determinism errors when re-executing a History which already contain the Events:
 
-- Changing the duration of a Timer (unless changing from a duration of 0).
+- Changing the duration of a Timer, with the following exceptions:
+  - In Java, Python, and Go, changing a Timer’s duration from or to 0 is a non-deterministic behavior.
+  - In .NET, changing a Timer’s duration from or to -1 (which means "infinite") is a non-deterministic behavior.
 - Changing the arguments to:
   - The Activity Options in a call to spawn an Activity Execution (local or nonlocal).
   - The Child Workflow Options in a call to spawn a Child Workflow Execution.
@@ -96,15 +102,15 @@ When those APIs are used, the results are stored as part of the Event History, w
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
 
-### Workflow Versioning
+### Workflow Versioning {#workflow-versioning}
 
 The Workflow Versioning feature enables the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
 This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
 It is important to note that a practical way to handle different versions of Workflow Definitions, without using the versioning API, is to run the different versions on separate Task Queues.
 
-- [How to version Workflow Definitions in Go](https://legacy-documentation-sdks.temporal.io/go/versioning)
-- [How to version Workflow Definitions in Java](https://legacy-documentation-sdks.temporal.io/java/versioning)
-- [How to version Workflow Definitions in TypeScript](https://legacy-documentation-sdks.temporal.io/typescript/patching)
+- [How to version Workflow Definitions in Go](/go/versioning)
+- [How to version Workflow Definitions in Java](/java/versioning)
+- [How to version Workflow Definitions in TypeScript](/typescript/versioning)
 
 ### Handling unreliable Worker Processes
 

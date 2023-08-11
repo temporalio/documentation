@@ -10,12 +10,16 @@ tags:
 
 An Activity Execution is the full chain of [Activity Task Executions](/concepts/what-is-an-activity-task-execution).
 
-- [How to spawn an Activity Execution](/application-development/foundations#activity-execution)
+- [How to start an Activity Execution using the Go SDK](/go/spawning-activities)
+- [How to start an Activity Execution using the Java SDK](/java/spawning-activities)
+- [How to start an Activity Execution using the PHP SDK](/php/spawning-activities)
+- [How to start an Activity Execution using the Python SDK](/python/spawning-activities)
+- [How to start an Activity Execution using the TypeScript SDK](/typescript/spawning-activities)
 
 ![Activity Execution](/diagrams/activity-execution.svg)
 
 By default, an Activity Execution has no time limit.
-Activity Execution [timeouts](/application-development/features#activity-timeouts) and [retry policies](/concepts/what-is-a-retry-policy) can be customized.
+You can customize [Activity Execution timeouts](/concepts/what-is-a-start-to-close-timeout) and [retry policies](/concepts/what-is-a-retry-policy).
 
 If an Activity Execution fails (because it exhausted all retries, threw a [non-retryable error](/concepts/what-is-a-retry-policy#non-retryable-errors), or was canceled), the error is returned to the [Workflow](/workflows), which decides how to handle it.
 

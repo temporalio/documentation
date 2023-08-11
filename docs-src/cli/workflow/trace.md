@@ -4,14 +4,18 @@ title: temporal workflow trace
 sidebar_label: trace
 description: Trace progress of a Workflow Execution and its children.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow trace
+  - workflow execution
+  - child workflows
 ---
 
 The `temporal workflow trace` command tracks the progress of a [Workflow Execution](/concepts/what-is-a-workflow-execution) and any [Child Workflows](/concepts/what-is-a-child-workflow-execution) it generates.
 
-Use the options listed below to change the command's behavior.
-Make sure to write the command as follows:
-`temporal workflow trace [command options]`
+Use the following options to change the command's behavior.
 
 - [--address](/cli/cmd-options/address)
 
@@ -38,6 +42,8 @@ Make sure to write the command as follows:
 - [--no-fold](/cli/cmd-options/no-fold)
 
 - [--run-id](/cli/cmd-options/run-id)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

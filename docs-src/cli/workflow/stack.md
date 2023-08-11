@@ -4,15 +4,19 @@ title: temporal workflow stack
 sidebar_label: stack
 description: Query a Workflow Execution with __stack_trace as the query type.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow stack
+  - query
+  - stack trace
 ---
 
 The `temporal workflow stack` command queries a [Workflow Execution](/concepts/what-is-a-workflow-execution) with `--stack-trace` as the [Query](/concepts/what-is-a-query#stack-trace-query) type.
 Returning the stack trace of all the threads owned by a Workflow Execution can be great for troubleshooting in production.
 
-Use the options listed below to change the command's behavior.
-Make sure to write the command as follows:
-`temporal workflow stack [command options]`
+Use the following options to change the command's behavior.
 
 - [--address](/cli/cmd-options/address)
 
@@ -37,6 +41,8 @@ Make sure to write the command as follows:
 - [--reject-condition](/cli/cmd-options/reject-condition)
 
 - [--run-id](/cli/cmd-options/run-id)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

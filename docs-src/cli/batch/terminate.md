@@ -4,14 +4,20 @@ title: temporal batch terminate
 sidebar_label: terminate
 description: Stop a Batch operation job.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - batch
+  - batch terminate
+  - cli-feature
+  - command-line-interface-cli
 ---
 
 The `temporal batch terminate` command terminates a Batch job with the provided Job ID.
+For future reference, provide a reason for terminating the Batch Job.
 
-Use the command options listed below to change the behavior of this command.
-Make sure to write the command as follows:
-`temporal batch terminate [command options]`
+`temporal batch terminate --job-id=MyJobId --reason=JobReason`
+
+Use the following options to change the behavior of this command.
 
 - [--address](/cli/cmd-options/address)
 
@@ -32,6 +38,8 @@ Make sure to write the command as follows:
 - [--namespace](/cli/cmd-options/namespace)
 
 - [--reason](/cli/cmd-options/reason)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

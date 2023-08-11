@@ -4,7 +4,12 @@ title: temporal schedule update
 sidebar_label: update
 description: Updates a Schedule with a new definition (full replacement, not patch).
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - schedule
+  - command-line-interface-cli
+  - schedule update
+  - updates
 ---
 
 The `temporal schedule update` command updates an existing [Schedule](/concepts/what-is-a-schedule).
@@ -12,17 +17,17 @@ The `temporal schedule update` command updates an existing [Schedule](/concepts/
 Like `temporal schedule create`, updated Schedules need to follow a certain format:
 
 ```
-temporal schedule update 			\
---sid 'your-schedule-id' 	\
---wid 'your-workflow-id' 	\
---tq 'your-task-queue' 		\
---type 'YourWorkflowType'
+temporal schedule update 			    \
+    --schedule-id 'your-schedule-id' 	\
+    --workflow-id 'your-workflow-id' 	\
+    --task-queue 'your-task-queue' 		\
+    --workflow-type 'YourWorkflowType'
 ```
 
 Updating a Schedule takes the given options and replaces the entire configuration of the Schedule with what's provided.
 If you only change one value of the Schedule, be sure to provide the other unchanged fields to prevent them from being overwritten.
 
-Use the options provided below to change the command's behavior.
+Use the following options to change the command's behavior.
 
 - [--address](/cli/cmd-options/address)
 
@@ -87,6 +92,8 @@ Use the options provided below to change the command's behavior.
 - [--task-timeout](/cli/cmd-options/task-timeout)
 
 - [--time-zone](/cli/cmd-options/time-zone)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

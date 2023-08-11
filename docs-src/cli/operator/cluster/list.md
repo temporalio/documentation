@@ -4,14 +4,19 @@ title: temporal operator cluster list
 sidebar_label: list
 description: List all remote Clusters.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - operator
+  - command-line-interface-cli
+  - cluster
+  - cluster list
 ---
 
 The `temporal operator cluster list` command prints a list of all remote [Clusters](/concepts/what-is-a-temporal-cluster) on the system.
 
-Use the options listed below to change the command's behavior.
-Make sure to write the command as follows:
-`temporal operator cluster list [command options]`
+`temporal operator cluster list`
+
+Use the following options to change the command's behavior.
 
 - [--address](/cli/cmd-options/address)
 
@@ -40,6 +45,8 @@ Make sure to write the command as follows:
 - [--pager](/cli/cmd-options/pager)
 
 - [--time-format](/cli/cmd-options/time-format)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 

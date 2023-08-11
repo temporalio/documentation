@@ -5,7 +5,7 @@ sidebar_label: merge
 description: Merging DLQ messages.
 tags:
   - tctl
-  - admin
+  - cli reference
 ---
 
 The `tctl admib dlq merge` command allows dead-letter queue (DLQ) messages to be merged.

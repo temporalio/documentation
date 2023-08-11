@@ -2,6 +2,10 @@
 id: task-queues
 title: Task Queues in Java
 sidebar_label: Task Queues
+description: Task Queues in Java
+tags:
+  - java
+  - task queues
 ---
 
 In Java, a Task Queue is represented in code by its name as a `string`.

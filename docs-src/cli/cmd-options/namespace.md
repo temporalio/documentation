@@ -1,11 +1,15 @@
 ---
 id: namespace
-title: temporal  namespace
+title: temporal namespace
 sidebar_label: namespace
 description: Identifies a Namespace in the Temporal Workflow.
-tags:
-    - cli
+tags: 
+    - cli reference
+    - temporal cli
+    - options-feature
+    - command-line-interface-cli
+    - namespace
+    - namespace management
 ---
 
-Alias: **-n**
-Identifies a Namespace in the Temporal Workflow. (default: default)
+Identifies a Namespace in the Temporal Workflow.

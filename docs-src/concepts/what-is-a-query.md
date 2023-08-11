@@ -15,7 +15,11 @@ You can use Queries to expose the internal Workflow Execution state to the exter
 Queries are available for running or completed Workflows Executions only if the Worker is up and listening on the Task Queue.
 
 - [How to send a Query using tctl](/tctl-v1/workflow#query)
-- [How to send and handle Queries with an SDK](/application-development/features#queries)
+- [How to send and handle Queries with the Go SDK](/go/queries)
+- [How to send and handle Queries with the Java SDK](/java/queries)
+- [How to send and handle Queries with the PHP SDK](/php/queries)
+- [How to send and handle Queries with the Python SDK](/python/queries)
+- [How to send and handle Queries with the TypeScript SDK](/typescript/queries)
 
 Queries are sent from a Temporal Client to a Workflow Execution.
 The API call is synchronous.

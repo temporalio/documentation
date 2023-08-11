@@ -1,16 +1,12 @@
-import fs from 'fs-extra';
-import path from 'path';
-const plannedText = `Content is planned but not yet available.
+import fs from "fs-extra";
+import path from "path";
+import { localRef } from "../common/index.js";
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).`;
+const plannedText = `Content is planned but not yet available.`;
 
 export async function genMarkdownGuides(config) {
   console.log(`generating the full markdown for all guides...`);
-  const matchedGuidesPath = path.join(
-    config.root_dir,
-    config.temp_write_dir,
-    config.guide_configs_with_attached_nodes_file_name
-  );
+  const matchedGuidesPath = path.join(config.root_dir, config.temp_write_dir, config.attached_nodes_file_name);
   let matchedGuides = await fs.readJSON(matchedGuidesPath);
   const updatedGuides = [];
   for (let guideCfg of matchedGuides.cfgs) {
@@ -27,31 +23,43 @@ async function generateGuide(config, guideCfg) {
   let guideStr = await frontmatter(guideCfg);
   for (const section of guideCfg.sections) {
     switch (section.type) {
-      case 'h2':
-        guideStr = `${guideStr}## ${section.node.label}\n\n`;
+      case "h2":
+        if (section.node.tags && Array.isArray(section.node.tags) && section.node.tags.includes("cli reference")) {
+          guideStr = `${guideStr}## ${section.node.label}\n\n`;
+        } else {
+          guideStr = `${guideStr}## ${section.node.title} {#${localRef(section.node.id, section.node.label)}}\n\n`;
+        }
         guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
-      case 'h3':
-        guideStr = `${guideStr}### ${section.node.label}\n\n`;
+      case "h3":
+        if (section.node.tags && Array.isArray(section.node.tags) && section.node.tags.includes("cli reference")) {
+          guideStr = `${guideStr}### ${section.node.label}\n\n`;
+        } else {
+          guideStr = `${guideStr}### ${section.node.title} {#${localRef(section.node.id, section.node.label)}}\n\n`;
+        }
         guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
-      case 'h4':
-        guideStr = `${guideStr}#### ${section.node.label}\n\n`;
+      case "h4":
+        if (section.node.tags && Array.isArray(section.node.tags) && section.node.tags.includes("cli reference")) {
+          guideStr = `${guideStr}#### ${section.node.label}\n\n`;
+        } else {
+          guideStr = `${guideStr}#### ${section.node.title} {#${localRef(section.node.id, section.node.label)}}\n\n`;
+        }
         guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
-      case 'p':
-        guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
+      case "p":
         guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
+        guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
-      case 'langtabs':
+      case "langtabs":
         const tabStr = await generateLangTabs(section.langtabs);
         guideStr = `${guideStr}${tabStr}`;
         break;
       default:
-        console.log('unhandled section type...');
+        console.log("unhandled section type...");
         console.log(JSON.stringify(section));
     }
   }
@@ -61,7 +69,7 @@ async function generateGuide(config, guideCfg) {
 }
 
 function ssdi(ssdi) {
-  let infoStr = '';
+  let infoStr = "";
   if (ssdi.length > 0) {
     infoStr = `:::tip Support, stability, and dependency info\n`;
     for (const item of ssdi) {
@@ -74,15 +82,15 @@ function ssdi(ssdi) {
 
 async function generateLangTabs(langtabs) {
   let tabStr = `<Tabs\n`;
-  const unavailable = 'Content is not available';
+  const unavailable = "Content is not available";
   tabStr = `${tabStr}defaultValue="go"\n`;
   tabStr = `${tabStr}queryString="lang"\n`;
   tabStr = `${tabStr}values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>\n\n`;
   for (const tab of langtabs) {
     tabStr = `${tabStr}<TabItem value="${tab.lang}">\n\n`;
-    if (tab.id == 'none') {
+    if (tab.id == "none") {
       tabStr = `${tabStr}${plannedText}\n\n`;
-    } else if (tab.id == 'na') {
+    } else if (tab.id == "na") {
       tabStr = `${tabStr}Not applicable to this SDK.\n\n`;
     } else {
       tabStr = `${tabStr}${ssdi(tab.node.ssdi)}`;
@@ -99,8 +107,16 @@ async function frontmatter(guideCfg) {
   guideStr = `${guideStr}id: ${guideCfg.id}\n`;
   guideStr = `${guideStr}title: ${guideCfg.title}\n`;
   guideStr = `${guideStr}sidebar_label: ${guideCfg.sidebar_label}\n`;
+  if (guideCfg.sidebar_position != undefined) {
+    guideStr = `${guideStr}sidebar_position: ${guideCfg.sidebar_position}\n`;
+  }
   guideStr = `${guideStr}description: ${guideCfg.description}\n`;
+  if (guideCfg.slug != undefined) {
+    guideStr = `${guideStr}slug: ${guideCfg.slug}\n`;
+  }
   guideStr = `${guideStr}toc_max_heading_level: ${guideCfg.toc_max_heading_level}\n`;
+  guideStr = `${guideStr}${genKeywordsMatter(guideCfg)}`;
+  guideStr = `${guideStr}${genTagsMatter(guideCfg)}`;
   guideStr = `${guideStr}---\n\n`;
   guideStr = `${guideStr}<!-- THIS FILE IS GENERATED. DO NOT EDIT THIS FILE DIRECTLY -->\n\n`;
   if (guideCfg.add_tabs_support) {
@@ -113,21 +129,54 @@ async function frontmatter(guideCfg) {
   return guideStr;
 }
 
+function genTagsMatter(guideCfg) {
+  let s = "tags:\n";
+  const tags = [];
+  for (const section of guideCfg.sections) {
+    const sectionTags = section?.node?.tags ? section.node.tags : [];
+    for (const tag of sectionTags) {
+      if (!alreadyThere(tag, tags)) {
+        tags.push(tag);
+      }
+    }
+  }
+  tags.sort();
+  for (const t of tags) {
+    s = `${s}- ${localRef(guideCfg.id, t)}\n`;
+  }
+  return s;
+}
+function genKeywordsMatter(guideCfg) {
+  let s = "keywords:\n";
+  const keywords = [];
+  for (const section of guideCfg.sections) {
+    const sectionKWs = section?.node?.tags ? section.node.tags : [];
+    for (const kw of sectionKWs) {
+      if (!alreadyThere(kw, keywords)) {
+        keywords.push(kw);
+      }
+    }
+  }
+  keywords.sort();
+  for (const kw of keywords) {
+    s = `${s}- ${(guideCfg.id, kw)}\n`;
+  }
+  return s;
+}
+function alreadyThere(add, list) {
+  for (const l of list) {
+    if (add == l) {
+      return true;
+    }
+  }
+  return false;
+}
 async function writeGuide(config, guideCfg) {
-  let writePath = '';
-  if (guideCfg.file_dir != '/') {
-    writePath = path.join(
-      config.root_dir,
-      config.content_write_dir,
-      guideCfg.file_dir,
-      guideCfg.file_name
-    );
+  let writePath = "";
+  if (guideCfg.file_dir != "/") {
+    writePath = path.join(config.root_dir, config.content_write_dir, guideCfg.file_dir, guideCfg.file_name);
   } else {
-    writePath = path.join(
-      config.root_dir,
-      config.content_write_dir,
-      guideCfg.file_name
-    );
+    writePath = path.join(config.root_dir, config.content_write_dir, guideCfg.file_name);
   }
   await fs.writeFile(writePath, guideCfg.markdown_content);
 }

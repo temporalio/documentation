@@ -1,12 +1,14 @@
 ---
 id: how-to-develop-a-workflow-definition-in-java
 title: How to develop a Workflow Definition in Java
-sidebar_label: Workflow Definition
+sidebar_label: Develop Workflows
 description: In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.
 tags:
   - java
   - developer-guide
 ---
+
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/concepts/what-is-a-workflow-definition).
 
 In the Temporal Java SDK programming model, a Workflow Definition comprises a Workflow interface annotated with `@WorkflowInterface` and a Workflow implementation that implements the Workflow interface.
 

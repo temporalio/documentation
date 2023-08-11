@@ -4,15 +4,19 @@ title: temporal schedule describe
 sidebar_label: describe
 description: Get Schedule configuration and current state.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - schedule
+  - command-line-interface-cli
+  - schedule describe
 ---
 
 The `temporal schedule describe` command shows the current [Schedule](/concepts/what-is-a-schedule) configuration.
 This command also provides information about past, current, and future [Workflow Runs](/concepts/what-is-a-run-id).
 
-`temporal schedule describe --sid 'your-schedule-id' [command options]`
+`temporal schedule describe --schedule-id 'your-schedule-id' [command options]`
 
-Use the options below to change this command's output.
+Use the following options to change this command's behavior.
 
 - [--address](/cli/cmd-options/address)
 
@@ -39,6 +43,8 @@ Use the options below to change this command's output.
 - [--schedule-id](/cli/cmd-options/schedule-id)
 
 - [--time-format](/cli/cmd-options/time-format)
+
+- [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 
