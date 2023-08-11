@@ -40,8 +40,8 @@ func YourWorkflow(ctx workflow.Context, data string) (string, error) {
 }
 ```
 
-Now let's say we have replaced ActivityA with ActivityC, and deployed the updated code.
-If there is an existing Workflow Execution that was started by the original version of the Workflow code, where ActivityA had already completed and the result was recorded to history, the new version of the Workflow code will pick up that Workflow Execution and try to resume from there.
+Now let's say we replaced ActivityA with ActivityC and deployed the updated code.
+If an existing Workflow Execution was started by the original version of the Workflow code, where ActivityA had already completed and the result was recorded to history, the new version of the Workflow code picks up that Workflow Execution and tries to resume from there.
 However, the Workflow will fail because the new code expects a result for ActivityC from the history data, but instead it gets the result for ActivityA.
 This causes the Workflow to fail on the non-deterministic error.
 
