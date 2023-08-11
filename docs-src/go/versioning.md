@@ -113,7 +113,8 @@ Note that we have preserved the call to `GetVersion()`. There are two reasons to
 2. If you need to make additional changes for `Step1`, such as changing ActivityD to ActivityE, you
    only need to update `maxVersion` from 2 to 3 and branch from there.
 
-You only need to preserve the first call to `GetVersion()` for each `changeID`. All subsequent calls to `GetVersion()` with the same change Id are safe to remove.
+You need to preserve only the first call to `GetVersion()` for each `changeID`.
+All subsequent calls to `GetVersion()` with the same change Id are safe to remove.
 If necessary, you can remove the first `GetVersion()` call, but you need to ensure the following:
 
 - All executions with an older version are completed.
