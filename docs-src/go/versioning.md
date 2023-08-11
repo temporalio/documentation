@@ -80,8 +80,10 @@ if v == workflow.DefaultVersion {
 }
 ```
 
-Note that we have changed `maxSupported` from 1 to 2. A Workflow that had already passed this `GetVersion()` call before it was introduced will return `DefaultVersion`.
-A Workflow that was run with `maxSupported` set to 1, will return 1. New Workflows will return 2.
+Note that we changed `maxSupported` from 1 to 2.
+A Workflow that has already passed this `GetVersion()` call before it was introduced returns `DefaultVersion`.
+A Workflow that was run with `maxSupported` set to 1 returns 1.
+New Workflows return 2.
 
 After you are sure that all of the Workflow Executions prior to version 1 have completed, you can remove the code for that version.
 It should now look like the following:
