@@ -9,7 +9,7 @@ tags:
 ---
 
 The Temporal Platform consists of a [Temporal Cluster](/concepts/what-is-a-temporal-cluster) and [Worker Processes](/concepts/what-is-a-worker-process).
-Together these components create a runtime for Workflow Executions; that is-they create a runtime for your application.
+Together these components create a runtime for Workflow Executions; that is, they create a runtime for your application.
 
 ![The Temporal Platform](/diagrams/temporal-platform-simple.svg)
 
@@ -70,15 +70,15 @@ The Temporal Platform addresses both platform-level failures and application-lev
 
 #### Platform-level failure
 
-A platform-level failure refers to a failure that occurs within the underlying platform or infrastructure that supports an application or system.
+A platform-level failure is a failure that occurs within the underlying platform or infrastructure that supports an application or system.
 This type of failure can often be transparent to the application, meaning it is not directly visible to the user or application and can be detected and mitigated at a platform level.
 
-Temporal is made to insulate your application from platform-level failures, and any failure that can be handled transparently is pushed into the platform.
+Temporal insulates your application from platform-level failures, and any failure that can be handled transparently is pushed into the platform.
 In Temporal, platform-level failures include network issues, process crashes, hardware failures, and transient errors in downstream services or third-party APIs.
 
 #### Application-level failure
 
-Conversely, an application-level failure refers to a failure that occurs within the application itself.
+Conversely, an application-level failure is a failure that occurs within the application itself.
 This type of failure is directly visible to the user or application and must be detected and mitigated at the application level.
 
 Temporal cannot mitigate application-level failures for you, but Temporal greatly simplifies handling failures and debugging your application.
