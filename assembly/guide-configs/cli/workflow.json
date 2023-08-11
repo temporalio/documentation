@@ -72,6 +72,10 @@
     {
       "type": "h2",
       "id": "cli/workflow/trace"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/update"
     }
   ]
 }
