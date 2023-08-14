@@ -8,8 +8,6 @@ tags:
     - temporal cli
     - options-feature
     - command-line-interface-cli
-
 ---
 
 Number of items to print on a page.
-By default, `--limit` is set to 0, allowing all results to print to one page.

@@ -11,7 +11,6 @@ tags:
     - logging
     - log-feature
     - logging and metrics
-
 ---
 
 Set the log level.

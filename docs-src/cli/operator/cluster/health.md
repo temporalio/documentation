@@ -15,16 +15,32 @@ tags:
 The `temporal operator cluster health` command checks the health of the [Frontend Service](/concepts/what-is-a-frontend-service).
 A successful execution returns a list of [Cluster](/concepts/what-is-a-temporal-cluster) metrics.
 
-Use the options listed below to change the behavior and output of this command.
+Use the following options to change the behavior and output of this command.
 
-- [--fields](/cli/cmd-options/fields)
+- [--address](/cli/cmd-options/address)
 
-- [--limit](/cli/cmd-options/limit)
+- [--codec-auth](/cli/cmd-options/codec-auth)
 
-- [--no-pager](/cli/cmd-options/no-pager)
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
 
-- [--output](/cli/cmd-options/output)
+- [--color](/cli/cmd-options/color)
 
-- [--pager](/cli/cmd-options/pager)
+- [--context-timeout](/cli/cmd-options/context-timeout)
 
-- [--time-format](/cli/cmd-options/time-format)
+- [--env](/cli/cmd-options/env)
+
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
+
+- [--namespace](/cli/cmd-options/namespace)
+
+- [--tls](/cli/cmd-options/tls)
+
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options/tls-server-name)

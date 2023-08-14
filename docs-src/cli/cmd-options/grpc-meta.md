@@ -12,4 +12,5 @@ tags:
     - requests
 ---
 
-Contains gRPC metadata to send with requests (format: key=value). Values must be in a valid JSON format.
+Contains gRPC metadata to send with requests (format: `key=value`).
+Values must be in a valid JSON format.

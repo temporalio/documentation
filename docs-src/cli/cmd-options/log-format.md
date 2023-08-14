@@ -10,7 +10,6 @@ tags:
     - command-line-interface-cli
     - log-feature
     - logging
-
 ---
 
 Set the log formatting.

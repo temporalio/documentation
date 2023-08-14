@@ -22,17 +22,24 @@ A new [Workflow Task](/concepts/what-is-a-workflow-task) will be scheduled, and 
 In addition to Workflow IDs, Workflows can also be [Signaled](/concepts/what-is-a-signal) by a [Query](/concepts/what-is-a-query).
 `temporal workflow cancel --query=MyQuery`
 
-Use the options listed below to change the behavior of this command.
+Use the following options to change the behavior of this command.
 
 - [--fields](/cli/cmd-options/fields)
+- [--address](/cli/cmd-options/address)
 
-- [--limit](/cli/cmd-options/limit)
+- [--codec-auth](/cli/cmd-options/codec-auth)
 
-- [--no-pager](/cli/cmd-options/no-pager)
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
 
-- [--output](/cli/cmd-options/output)
+- [--color](/cli/cmd-options/color)
 
-- [--pager](/cli/cmd-options/pager)
+- [--context-timeout](/cli/cmd-options/context-timeout)
+
+- [--env](/cli/cmd-options/env)
+
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
+
+- [--namespace](/cli/cmd-options/namespace)
 
 - [--query](/cli/cmd-options/query)
 
@@ -40,7 +47,17 @@ Use the options listed below to change the behavior of this command.
 
 - [--run-id](/cli/cmd-options/run-id)
 
-- [--time-format](/cli/cmd-options/time-format)
+- [--tls](/cli/cmd-options/tls)
+
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options/tls-server-name)
 
 - [--workflow-id](/cli/cmd-options/workflow-id)
 

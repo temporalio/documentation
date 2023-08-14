@@ -12,3 +12,5 @@ tags:
 ---
 
 Namespace data in a key=value format.
+
+Values must be in JSON format.
