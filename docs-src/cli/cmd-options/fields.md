@@ -8,7 +8,6 @@ tags:
     - temporal cli
     - options-feature
     - command-line-interface-cli
-
 ---
 
 Customize fields to print.

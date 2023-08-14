@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday August 10 2023 09:53:05 AM -0500
+Last assembled: Thursday August 10 2023 15:55:57 PM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
 93 guide configurations found.
 
-1507 information nodes found.
+1518 information nodes found.
 
-1271 information nodes are attached to guides.
+1282 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -750,9 +750,47 @@ concepts/what-is-the-temporal-web-ui -> /web-ui#
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
-cli/cmd-options/fields -> /cli/cmd-options#fields
+cli/cmd-options/address -> /cli/cmd-options#address
+
+cli/cmd-options/codec-auth -> /cli/cmd-options#codec-auth
+
+cli/cmd-options/codec-endpoint -> /cli/cmd-options#codec-endpoint
+
+cli/cmd-options/color -> /cli/cmd-options#color
+
+cli/cmd-options/context-timeout -> /cli/cmd-options#context-timeout
+
+cli/cmd-options/env -> /cli/cmd-options#env
+
+cli/cmd-options/grpc-meta -> /cli/cmd-options#grpc-meta
 
 cli/cmd-options/identity -> /cli/cmd-options#identity
+
+cli/cmd-options/namespace -> /cli/cmd-options#namespace
+
+cli/cmd-options/result -> /cli/cmd-options#result
+
+cli/cmd-options/run-id -> /cli/cmd-options#run-id
+
+cli/cmd-options/tls -> /cli/cmd-options#tls
+
+cli/cmd-options/tls-ca-path -> /cli/cmd-options#tls-ca-path
+
+cli/cmd-options/tls-cert-path -> /cli/cmd-options#tls-cert-path
+
+cli/cmd-options/tls-disable-host-verification -> /cli/cmd-options#tls-disable-host-verification
+
+cli/cmd-options/tls-key-path -> /cli/cmd-options#tls-key-path
+
+cli/cmd-options/tls-server-name -> /cli/cmd-options#tls-server-name
+
+cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
+
+cli/cmd-options/detail -> /cli/cmd-options#detail
+
+cli/cmd-options/reason -> /cli/cmd-options#reason
+
+cli/cmd-options/fields -> /cli/cmd-options#fields
 
 cli/cmd-options/limit -> /cli/cmd-options#limit
 
@@ -762,17 +800,7 @@ cli/cmd-options/output -> /cli/cmd-options#output
 
 cli/cmd-options/pager -> /cli/cmd-options#pager
 
-cli/cmd-options/result -> /cli/cmd-options#result
-
-cli/cmd-options/run-id -> /cli/cmd-options#run-id
-
 cli/cmd-options/time-format -> /cli/cmd-options#time-format
-
-cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
-
-cli/cmd-options/detail -> /cli/cmd-options#detail
-
-cli/cmd-options/reason -> /cli/cmd-options#reason
 
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
@@ -811,6 +839,8 @@ cli/cmd-options/yes -> /cli/cmd-options#yes
 cli/cmd-options/namespace-id -> /cli/cmd-options#namespace-id
 
 cli/cmd-options/promote-global -> /cli/cmd-options#promote-global
+
+cli/cmd-options/verbose -> /cli/cmd-options#verbose
 
 cli/cmd-options/type -> /cli/cmd-options#type
 
@@ -870,8 +900,6 @@ concepts/what-is-standard-visibility -> /visibility#standard-visibility
 
 cli/cmd-options/unpause -> /cli/cmd-options#unpause
 
-cli/cmd-options/config -> /cli/cmd-options#config
-
 cli/cmd-options/db-filename -> /cli/cmd-options#db-filename
 
 cli/cmd-options/dynamic-config-value -> /cli/cmd-options#dynamic-config-value
@@ -886,8 +914,6 @@ cli/cmd-options/log-level -> /cli/cmd-options#log-level
 
 cli/cmd-options/metrics-port -> /cli/cmd-options#metrics-port
 
-cli/cmd-options/namespace -> /cli/cmd-options#namespace
-
 cli/cmd-options/port -> /cli/cmd-options#port
 
 cli/cmd-options/sqlite-pragma -> /cli/cmd-options#sqlite-pragma
@@ -901,6 +927,12 @@ cli/cmd-options/ui-ip -> /cli/cmd-options#ui-ip
 cli/cmd-options/ui-port -> /cli/cmd-options#ui-port
 
 cli/cmd-options/task-queue-type -> /cli/cmd-options#task-queue-type
+
+cli/cmd-options/max-sets -> /cli/cmd-options#max-sets
+
+cli/cmd-options/build-id -> /cli/cmd-options#build-id
+
+cli/cmd-options/reachability-type -> /cli/cmd-options#reachability-type
 
 cli/cmd-options/query -> /cli/cmd-options#query
 
@@ -932,8 +964,6 @@ cli/cmd-options/skip-current-open -> /cli/cmd-options#skip-current-open
 
 cli/cmd-options/follow -> /cli/cmd-options#follow
 
-cli/cmd-options/output-filename -> /cli/cmd-options#output-filename
-
 cli/cmd-options/concurrency -> /cli/cmd-options#concurrency
 
 cli/cmd-options/depth -> /cli/cmd-options#depth
@@ -941,6 +971,8 @@ cli/cmd-options/depth -> /cli/cmd-options#depth
 cli/cmd-options/fold -> /cli/cmd-options#fold
 
 cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
+
+cli/cmd-options/first-execution-run-id -> /cli/cmd-options#first-execution-run-id
 
 typescript/testing -> /dev-guide/typescript/testing#replay
 
