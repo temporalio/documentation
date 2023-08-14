@@ -180,6 +180,18 @@ Temporal uses the root CA certificate as the trusted authority for access to you
 
 <a class="tdlp" href="#manage-certificate-filters">How to manage certificate filters in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificate filters in Temporal Cloud</span><br /><br /><span class="tdlppd">To limit access to specific CA certificates, you can create certificate filters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#manage-certificate-filters">Learn more</a></span></span></a>
 
+## How to receive notifications about certificate expiration {#expiration-notifications}
+
+To keep your Namespace secure and online, you must update the CA certificate for the Namespace _before_ the certificate expires.
+
+To help you remember to do so, Temporal Cloud sends email notifications to users who have the Global Admin <a class="tdlp" href="/cloud/users#account-level-roles">Role<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the account-level Roles for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Account-level Roles are Global Admin, Developer, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/users#account-level-roles">Learn more</a></span></span></a> or the Namespace Admin <a class="tdlp" href="/cloud/users#namespace-level-permissions">permission<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the Namespace-level permissions for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Namespace-level permissions are Namespace Admin, Write, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/users#namespace-level-permissions">Learn more</a></span></span></a> 15 days before expiration and, if necessary, 10 days before expiration.
+
+If the certificate is not updated, 5 days before expiration Temporal Cloud creates a <a class="tdlp" href="/cloud/support#support-ticket">support ticket<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/support#support-ticket">Learn more</a></span></span></a> on behalf of the Global Admins and Namespace Admins.
+
+To ensure that you receive email notifications, configure your junk-email filters to permit email from `noreply@temporal.io`.
+
+After a support ticket is created, admins should expect a follow-up from the Temporal Developer Success team.
+
 ## How to add, update, and remove certificates in a Temporal Cloud Namespace {#manage-certificates}
 
 :::note
@@ -192,8 +204,10 @@ To manage certificates for Temporal Cloud Namespaces, use the **Namespaces** pag
 
 Don't let your certificates expire!
 Add reminders to your calendar to issue new CA certificates well before the expiration dates of the existing ones.
+Temporal Cloud begins sending notifications 15 days before expiration.
+For details, see the previous section (<a class="tdlp" href="#expiration-notifications">How to receive notifications about certificate expiration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to receive notifications about certificate expiration</span><br /><br /><span class="tdlppd">Temporal Cloud sends notifications when a certificate is close to expiration.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#expiration-notifications">Learn more</a></span></span></a>).
 
-When updating CA certificates, it's important to follow a rollover process.
+When updating CA certificates, it's important to follow a rollover process (sometimes referred to as "certificatev rotation").
 Doing so enables your Namespace to serve both CA certificates for a period of time until traffic to your old CA certificate ceases.
 
 Be aware that the subject of the existing certificate and the subject of the new certificate must not be identical.
