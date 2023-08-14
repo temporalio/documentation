@@ -1,6 +1,6 @@
 ---
 id: dataconversion
-title: Data conversion
+title: How does Temporal handle application data?
 sidebar_label: Data conversion
 sidebar_position: 10
 description: This guide provides an overview of data handling using a Data Converter on the Temporal Platform.

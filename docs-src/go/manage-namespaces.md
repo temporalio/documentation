@@ -4,7 +4,10 @@ title: How to manage Namespaces
 sidebar_label: Manage Namespaces
 description: You can get details for your Namespaces, update Namespace configuration, and deprecate or delete your Namespaces.
 tags:
-  - guide-context
+  - go sdk
+  - developer-guide-doc-type
+  - namespace
+  - namespace management
 ---
 
 You can get details for your Namespaces, update Namespace configuration, and deprecate or delete your Namespaces.

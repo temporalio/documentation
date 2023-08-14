@@ -1,5 +1,5 @@
 ---
-id: saml-how-to-configure-with-okta
+id: saml-okta
 title: How to configure SAML with Okta
 sidebar_label: Configure SAML with Okta
 description: To use Okta as your SAML IdP, configure a new Okta application integration.
@@ -52,4 +52,4 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
    - Copy the IdP settings.
    - Download the active certificate.
 
-To finish setting up Okta as your SAML IdP, see the next section, [Finish SAML configuration](#finish-saml-configuration).
+To finish setting up Okta as your SAML IdP, see the next section, [Finish SAML configuration](/cloud/saml-finish).

@@ -1,6 +1,7 @@
 {
   "file_name": "pricing.md",
   "id": "pricing",
+  "slug": "/cloud/pricing",
   "file_dir": "cloud/introduction",
   "title": "What is the pricing for Temporal Cloud?",
   "sidebar_label": "Pricing",

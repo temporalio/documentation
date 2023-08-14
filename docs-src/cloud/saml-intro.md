@@ -25,6 +25,6 @@ For more information, contact your account manager.
    The Account Id is the five or six characters following the period (.), such as `f45a2`.
    You will need the Account Id to construct your callback URL and your entity identifier.
 1. Configure SAML with your IdP by following one of these sets of instructions:
-   - [Microsoft Azure Active Directory (Azure AD)](#configure-saml-with-azure-ad)
-   - [Okta](#configure-saml-with-okta)
-1. [Share your connection information with us and test your connection.](#finish-saml-configuration)
+   - [Microsoft Azure Active Directory (Azure AD)](/cloud/saml-azure-ad)
+   - [Okta](/cloud/saml-okta)
+1. [Share your connection information with us and test your connection.](/cloud/saml-finish)

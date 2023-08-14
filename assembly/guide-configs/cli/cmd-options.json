@@ -27,6 +27,10 @@
     },
     {
       "type": "h2",
+      "id": "cli/cmd-options/build-id"
+    },
+    {
+      "type": "h2",
       "id": "cli/cmd-options/calendar"
     },
     {
@@ -52,10 +56,6 @@
     {
       "type": "h2",
       "id": "cli/cmd-options/concurrency"
-    },
-    {
-      "type": "h2",
-      "id": "cli/cmd-options/config"
     },
     {
       "type": "h2",
@@ -123,7 +123,15 @@
     },
     {
       "type": "h2",
+      "id": "cli/cmd-options/existing-compatible-build-id"
+    },
+    {
+      "type": "h2",
       "id": "cli/cmd-options/fields"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/first-execution-run-id"
     },
     {
       "type": "h2",
@@ -159,11 +167,11 @@
     },
     {
       "type": "h2",
-      "id": "cli/cmd-options/identity"
+      "id": "cli/cmd-options/id-reuse-policy"
     },
     {
       "type": "h2",
-      "id": "cli/cmd-options/id-reuse-policy"
+      "id": "cli/cmd-options/identity"
     },
     {
       "type": "h2",
@@ -215,6 +223,10 @@
     },
     {
       "type": "h2",
+      "id": "cli/cmd-options/max-sets"
+    },
+    {
+      "type": "h2",
       "id": "cli/cmd-options/memo"
     },
     {
@@ -255,10 +267,6 @@
     },
     {
       "type": "h2",
-      "id": "cli/cmd-options/output-filename"
-    },
-    {
-      "type": "h2",
       "id": "cli/cmd-options/output"
     },
     {
@@ -292,6 +300,10 @@
     {
       "type": "h2",
       "id": "cli/cmd-options/raw"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/reachability-type"
     },
     {
       "type": "h2",
@@ -336,6 +348,10 @@
     {
       "type": "h2",
       "id": "cli/cmd-options/search-attribute"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/set-as-default"
     },
     {
       "type": "h2",
@@ -395,6 +411,10 @@
     },
     {
       "type": "h2",
+      "id": "cli/cmd-options/tls"
+    },
+    {
+      "type": "h2",
       "id": "cli/cmd-options/type"
     },
     {
@@ -416,6 +436,10 @@
     {
       "type": "h2",
       "id": "cli/cmd-options/unpause"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/verbose"
     },
     {
       "type": "h2",

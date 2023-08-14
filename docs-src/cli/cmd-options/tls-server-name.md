@@ -2,7 +2,7 @@
 id: tls-server-name
 title: temporal tls-server-name
 sidebar_label: tls-server-name
-description: Provides an override for the target TLS server name.
+description: Overrides the target TLS server name.
 tags:
   - cli reference
   - temporal cli
@@ -11,4 +11,4 @@ tags:
   - tls server
 ---
 
-Provides an override for the target TLS server name.
+Overrides the target TLS server name.

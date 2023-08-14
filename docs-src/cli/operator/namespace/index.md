@@ -11,4 +11,7 @@ tags:
   - namespace
 ---
 
-Namespace commands allow [Namespace](/concepts/what-is-a-namespace) operations to be performed on the [Temporal Cluster](/concepts/what-is-a-temporal-cluster).
+Namespace commands perform operations on [Namespaces](/concepts/what-is-a-namespace) contained in the [Temporal Cluster](/concepts/what-is-a-temporal-cluster).
+
+Namespace commands follow this syntax:
+`temporal operator namespace COMMAND [ARGS]`.

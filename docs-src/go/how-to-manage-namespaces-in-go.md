@@ -4,8 +4,11 @@ title: How to manage Namespaces in Go
 sidebar_label: Manage Namespaces
 description:
 tags:
-  - developer-guide
-  - go
+  - go sdk
+  - developer-guide-doc-type
+  - namespace
+  - namespace management
+  - how-to-doc-type
 ---
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces-intro) or [tcld commands](/cloud/tcld/namespace/) to manage Namespaces.

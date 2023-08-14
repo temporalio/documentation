@@ -15,4 +15,4 @@ tags:
     - nondeterministic
 ---
 
-Reset Workflow Execution only if its last Event is WorkflowTaskFailed with a nondeterministic error.
+Reset Workflow Execution only if its last Event is `WorkflowTaskFailed` with a nondeterministic error.

@@ -10,7 +10,7 @@ tags:
     - command-line-interface-cli
     - logging and metrics
     - metrics
-
 ---
 
-Port for /metrics (default: 0).
+Port for `/metrics`.
+Enabled by default with a randomly assigned port.
