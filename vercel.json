@@ -1338,6 +1338,10 @@
       "destination": "/workflows#continue-as-new"
     },
     {
+      "source": "/concepts/what-is-a-cloud-namespace-name",
+      "destination": "/cloud/namespaces#temporal-cloud-namespace-name"
+    },
+    {
       "source": "/concepts/what-is-a-data-converter",
       "destination": "/security#data-converter"
     },
