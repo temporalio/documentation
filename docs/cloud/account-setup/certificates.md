@@ -26,8 +26,18 @@ tags:
 
 Temporal Cloud access is secured by the mutual Transport Layer Security (mTLS) protocol, which requires a CA certificate from the user.
 
-[Worker Processes](/workers/#worker-process) require CA certificates and private keys to connect to Temporal Cloud.
+<a class="tdlp" href="/workers#worker-process">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> require CA certificates and private keys to connect to Temporal Cloud.
 Temporal Cloud does not require an exchange of secrets; only the certificates produced by private keys are used for verification.
+
+:::caution Don't let your certificates expire
+
+An expired root CA certificate invalidates all downstream certificates.
+An expired end-entity certificate prevents a <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client?</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> from connecting to a Namespace or starting a Workflow Execution.
+If the client is on a Worker, any current Workflow Executions that are processed by that Worker either run indefinitely without making progress until the Worker resumes or fail because of timeouts.
+
+To update certificates, see <a class="tdlp" href="#manage-certificates">How to add, update, and remove certificates in a Temporal Cloud Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to add, update, and remove certificates in a Temporal Cloud Namespace</span><br /><br /><span class="tdlppd">To manage certificates for Temporal Cloud Namespaces, use the `tcld namespace accepted-client-ca` commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#manage-certificates">Learn more</a></span></span></a>.
+
+:::
 
 All certificates used by Temporal Cloud must meet the following requirements.
 
@@ -186,11 +196,13 @@ To keep your Namespace secure and online, you must update the CA certificate for
 
 To help you remember to do so, Temporal Cloud sends email notifications to users who have the Global Admin <a class="tdlp" href="/cloud/users#account-level-roles">Role<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the account-level Roles for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Account-level Roles are Global Admin, Developer, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/users#account-level-roles">Learn more</a></span></span></a> or the Namespace Admin <a class="tdlp" href="/cloud/users#namespace-level-permissions">permission<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the Namespace-level permissions for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Namespace-level permissions are Namespace Admin, Write, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/users#namespace-level-permissions">Learn more</a></span></span></a> 15 days before expiration and, if necessary, 10 days before expiration.
 
-If the certificate is not updated, 5 days before expiration Temporal Cloud creates a <a class="tdlp" href="/cloud/support#support-ticket">support ticket<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/support#support-ticket">Learn more</a></span></span></a> on behalf of the Global Admins and Namespace Admins.
+If the certificate is not updated, 5 days before expiration Temporal Cloud creates a support ticket on behalf of the Global Admins and Namespace Admins.
 
 To ensure that you receive email notifications, configure your junk-email filters to permit email from `noreply@temporal.io`.
 
 After a support ticket is created, admins should expect a follow-up from the Temporal Developer Success team.
+
+To change who receives certificate notifications for a Namespace (or to provide feedback about notifications), <a class="tdlp" href="/cloud/support#support-ticket">create a support ticket<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/support#support-ticket">Learn more</a></span></span></a>.
 
 ## How to add, update, and remove certificates in a Temporal Cloud Namespace {#manage-certificates}
 

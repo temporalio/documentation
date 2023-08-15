@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday August 14 2023 16:50:29 PM -0700
+Last assembled: Tuesday August 15 2023 09:40:20 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-dail-macbook
 
@@ -711,6 +711,8 @@ go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cl
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
+
+cloud/certificates-namespace -> #manage-certificates
 
 cloud/certificates-filters -> #manage-certificate-filters
 
