@@ -19,4 +19,4 @@ To ensure that you receive email notifications, configure your junk-email filter
 
 After a support ticket is created, admins should expect a follow-up from the Temporal Developer Success team.
 
-To change who receives certificate notifications for a Namespace (or to provide feedback about notifications), [create a support ticket](/cloud/support-create-ticket).
+To change who receives certificate-expiration notifications for a Namespace (or to provide feedback about such notifications), [create a support ticket](/cloud/support-create-ticket).

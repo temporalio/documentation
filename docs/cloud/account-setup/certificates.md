@@ -203,7 +203,7 @@ To ensure that you receive email notifications, configure your junk-email filter
 
 After a support ticket is created, admins should expect a follow-up from the Temporal Developer Success team.
 
-To change who receives certificate notifications for a Namespace (or to provide feedback about notifications), <a class="tdlp" href="/cloud/support#support-ticket">create a support ticket<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/support#support-ticket">Learn more</a></span></span></a>.
+To change who receives certificate-expiration notifications for a Namespace (or to provide feedback about such notifications), <a class="tdlp" href="/cloud/support#support-ticket">create a support ticket<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/support#support-ticket">Learn more</a></span></span></a>.
 
 ## How to add, update, and remove certificates in a Temporal Cloud Namespace {#manage-certificates}
 
@@ -220,7 +220,7 @@ Add reminders to your calendar to issue new CA certificates well before the expi
 Temporal Cloud begins sending notifications 15 days before expiration.
 For details, see the previous section (<a class="tdlp" href="#expiration-notifications">How to receive notifications about certificate expiration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to receive notifications about certificate expiration</span><br /><br /><span class="tdlppd">Temporal Cloud sends notifications when a certificate is close to expiration.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#expiration-notifications">Learn more</a></span></span></a>).
 
-When updating CA certificates, it's important to follow a rollover process (sometimes referred to as "certificatev rotation").
+When updating CA certificates, it's important to follow a rollover process (sometimes referred to as "certificate rotation").
 Doing so enables your Namespace to serve both CA certificates for a period of time until traffic to your old CA certificate ceases.
 
 Be aware that the subject of the existing certificate and the subject of the new certificate must not be identical.
