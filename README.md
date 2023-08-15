@@ -601,7 +601,7 @@ Run `yarn snipsync`, to merge the snippet contents (in this case, from `[sampl
 
 [Run the Assembly Workflow](https://www.notion.so/Documentation-repo-README-content-WIP-ddd0e586594246b3b9948919bbf7b12b?pvs=21).
 
-Format the files with `yarn format` .
+Format the files with `yarn format`.
 
 [Put up a Pull Request](#how-to-put-up-a-pull-request).
 
@@ -609,11 +609,11 @@ Format the files with `yarn format` .
 
 Commit your changes to a new branch.
 
-If you are outside the Temporal organization, you must fork the repository and create Pull Requests from branches on your own fork.
+If you are outside the Temporal organization, fork the repository and create Pull Requests from branches on your own fork.
 
-The README in GitHub's [first-contributions repo](https://github.com/firstcontributions/first-contributions) provides an example.
+See the README in GitHub's [first-contributions repo](https://github.com/firstcontributions/first-contributions) repo for guidance on forking and creating Pull Requests.
 
-You get a deployment preview for each push to the Pull Request.
+Vercel provides a deployment preview for each push to the Pull Request.
 
 !https://github.com/temporalio/documentation/raw/main/static/img/readme/vercel-deploy-preview.png
 
@@ -627,7 +627,7 @@ When we merge your Pull Request, a new build automatically occurs and your chang
 
 #### Assembly Workflow merge conflicts
 
-Running Assembly again will fix any merge conflict to ASSEMBLY_REPORT.md and generated guides in the docs directory.
+Run the Assembly Workflow to fix any merge conflict in ASSEMBLY_REPORT.md and any generated guides in the `/docs` directory.
 
 Restart your Worker after merging main and before running Assembly again.
 
@@ -654,13 +654,13 @@ This command spins up a local web server and serves up the contents of the `/bui
 
 ### `yarn assemble`
 
-This command starts the Assembly Workflow. You must have a Temporal Cluster to connect to for the Assembly Workflow to run.
+This command starts and runs the Assembly Workflow, provided you have a Temporal Cluster to connect to.
 
 It accepts the following arguments:
 
 #### `--cloud`
 
-When provided, this flag causes the Temporal Client to connect to a Temporal Cloud Namespace. This flag requires that the following private information is set in `assembly/secure` :
+When provided, this flag causes the Temporal Client to connect to a Temporal Cloud Namespace. This flag requires that the following private information is set in `assembly/secure`:
 
 - `docs-assembly.pem`: Paste and save the full CA certificate text.
 - `docs-assembly.key`: Paste and save the full secret that was generated with the certificate.
