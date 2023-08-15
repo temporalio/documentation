@@ -3,6 +3,10 @@ id: security
 title: Connection and Encryption in the TypeScript SDK
 sidebar_label: Connection and Security
 description: A summary of the security features you should know as a TypeScript SDK user.
+tags:
+ - security
+ - encryption
+ - tls
 ---
 
 Temporal Workers and Clients connect with your Temporal Cluster via gRPC, and must be configured securely for production.

@@ -25,7 +25,7 @@ During the past month, the following content has been added or improved:
   - [Python](/dev-guide/go/foundations/#connect-to-a-cluster)
   - [TypeScript](/dev-guide/go/foundations/#connect-to-a-cluster)
 
-- [Cloud metrics information](/cloud/how-to-monitor-temporal-cloud-metrics) was added to the Temporal Cloud docs.
+- [Cloud metrics information](/cloud/metrics) was added to the Temporal Cloud docs.
 
 - An early iteration of the Testing section was added to the Developer's guide.
 

@@ -4,7 +4,8 @@ title: How to handle a Query
 description: Queries are handled by your Workflow.
 sidebar_label: Handle Query
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - query
 ---
 
 Queries are handled by your Workflow.

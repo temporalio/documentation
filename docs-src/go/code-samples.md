@@ -4,7 +4,8 @@ title: Where are SDK-specific code examples?
 description: You can find a complete list of executable code samples in Temporal's GitHub repository.
 sidebar_label: Code samples
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - code samples
 ---
 
 You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio?q=samples-&type=all&language=&sort=).

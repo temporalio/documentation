@@ -4,8 +4,11 @@ title: How to asynchronously complete an Activity in Go
 sidebar_label: Asynchronous Activity Completion
 description: Provide the external system with a Task Token to complete the Activity Execution.
 tags:
-  - how-to
-  - go
+  - how-to-doc-type
+  - go sdk
+  - async
+  - activity
+  - developer-guide-doc-type
 ---
 
 1. Provide the external system with a Task Token to complete the Activity Execution.

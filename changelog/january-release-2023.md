@@ -6,7 +6,7 @@ date: 2023-01-23T00:00:00Z
 
 Since our last change log in November 2022, we published the following content:
 
-- [How to set up Grafana with Temporal Cloud observability to view metrics](/kb/prometheus-grafana-setup-cloud).
+- [How to set up Grafana with Temporal Cloud observability to view metrics](/cloud/metrics#prometheus--grafana-setup).
   Temporal Cloud and SDKs emit metrics that can be used to monitor performance and troubleshoot errors.
   Temporal Cloud emits metrics through a Prometheus HTTP API endpoint, which can be directly used as a Prometheus data source in Grafana or to query and export Cloud metrics to any observability platform.
 

@@ -4,8 +4,11 @@ title: How to spawn a Child Workflow Execution in Go
 sidebar_label: Child Workflow Execution
 description: Use the `ExecuteChildWorkflow`, available from the `go.temporal.io/sdk/workflow` package, to spawn a Child Workflow Execution in Go.
 tags:
-  - developer-guide
-  - go
+  - developer-guide-doc-type
+  - go sdk
+  - how-to-doc-type
+  - child workflows
+  - api
 ---
 
 To spawn a [Child Workflow Execution](/concepts/what-is-a-child-workflow-execution) in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API, which is available from the `go.temporal.io/sdk/workflow` package.

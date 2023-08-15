@@ -7,22 +7,28 @@ description: The Foundations section of the Temporal Developer's guide covers th
 slug: /dev-guide/typescript/foundations
 toc_max_heading_level: 3
 keywords:
-- guide-context
 - cli
+- cli-feature
 - developer-guide
+- developer-guide-doc-type
+- go
+- guide-context
+- how-to
+- how-to-doc-type
 - sdk
 - typescript
-- how-to
-- go
 - workers
 tags:
-- guide-context
 - cli
+- cli-feature
 - developer-guide
+- developer-guide-doc-type
+- go
+- guide-context
+- how-to
+- how-to-doc-type
 - sdk
 - typescript
-- how-to
-- go
 - workers
 ---
 
@@ -248,7 +254,7 @@ When you connect to [Temporal Cloud](/cloud), you need to provide additional con
 - mTLS CA certificate.
 - mTLS private key.
 
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
+For more information about managing and generating client certificates for Temporal Cloud, see <a class="tdlp" href="/cloud/certificates#">How to manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/certificates#">Learn more</a></span></span></a>.
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
@@ -466,7 +472,7 @@ export async function greet(name: string): Promise<string> {
 ### How to develop Activity Parameters {#activity-parameters}
 
 There is no explicit limit to the total number of parameters that an <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a> may support.
-However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
+However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
 
 A single argument is limited to a maximum size of 2 MB.
 And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
@@ -878,7 +884,7 @@ To run a Worker that uses [Temporal Cloud](/cloud), you need to provide addition
 - mTLS CA certificate.
 - mTLS private key.
 
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
+For more information about managing and generating client certificates for Temporal Cloud, see <a class="tdlp" href="/cloud/certificates#">How to manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/certificates#">Learn more</a></span></span></a>.
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
@@ -1061,17 +1067,20 @@ For any code to execute, a Worker Process must be running that contains a Worker
 
 A Task Queue is a dynamic queue in Temporal polled by one or more Workers.
 
-Workers bundle Workflow code and node modules using Webpack v5 and execute them inside V8 isolates. Activities are directly required and run by Workers in the Node.js environment.
+Workers bundle Workflow code and node modules using Webpack v5 and execute them inside V8 isolates.
+Activities are directly required and run by Workers in the Node.js environment.
 
-Workers are flexible. You can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers on a single machine.
+Workers are flexible.
+You can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers on a single machine.
 
-There are three main things the Worker needs:
+The Worker need three main things:
 
-- `taskQueue`: the Task Queue to poll. This is the only required argument.
+- `taskQueue`: The Task Queue to poll. This is the only required argument.
 - `activities`: Optional. Imported and supplied directly to the Worker.
-- Workflow bundle, specify one of the following options:
-  - a `workflowsPath` to your `workflows.ts` file to pass to Webpack. For example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies.
-  - Or pass a prebuilt bundle to `workflowBundle`, if you prefer to handle the bundling yourself.
+- Workflow bundle. Choose one of the following options:
+  - Specify `workflowsPath` pointing to your `workflows.ts` file to pass to Webpack; for example, `require.resolve('./workflows')`.
+    Workflows are bundled with their dependencies.
+  - If you prefer to handle the bundling yourself, pass a prebuilt bundle to `workflowBundle`.
 
 ```ts
 import { Worker } from '@temporalio/worker';
@@ -1103,14 +1112,14 @@ run().catch((err) => {
 
 `taskQueue` is the only required option; however, use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
 
-When scheduling a Workflow, a `taskQueue` must be specified.
+When scheduling a Workflow, you must specify `taskQueue`.
 
 ```ts
-import { Connection, WorkflowClient } from '@temporalio/client';
-// This is the code that is used to start a workflow.
+import { Client, Connection } from '@temporalio/client';
+// This is the code that is used to start a Workflow.
 const connection = await Connection.create();
-const client = new WorkflowClient({ connection });
-const result = await client.execute(yourWorkflow, {
+const client = new Client({ connection });
+const result = await client.workflow.execute(yourWorkflow, {
   // required
   taskQueue: 'your-task-queue',
   // required
@@ -1128,7 +1137,8 @@ const worker = await Worker.create({
 });
 ```
 
-Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option to `proxyActivities()`, `startChild()`, or `executeChild()`. If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
+Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option to `proxyActivities()`, `startChild()`, or `executeChild()`.
+If you do not specify `taskQueue`, the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
 
 ### How to set a Workflow Id {#workflow-id}
 
