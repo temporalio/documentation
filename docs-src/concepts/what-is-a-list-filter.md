@@ -41,20 +41,20 @@ Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** claus
 
 Search Attributes of type `Text` are broken up into words that match with the `=` operator.
 
-For example, if you have a custom `Text` Search Attribute named `Description` with either of the following values:
+For example, if you have a custom `Text` Search Attribute named `Description` with either of the following values—
 
 ```
 my-business-id-foobar
 my business id foobar
 ```
 
-then the following List Filter will match:
+—then the following List Filter matches—
 
 ```
 Description = 'foobar'
 ```
 
-but a partial word will not:
+—but a partial word does not:
 
 ```
 // Doesn't match
@@ -63,8 +63,7 @@ Description = 'foo'
 
 #### Keyword
 
-For Search Attributes of type `Keyword` like `WorkflowId`, the only type of partial string matching that works is using BETWEEN for suffixes.
-For example:
+For Search Attributes of type `Keyword` like `WorkflowId`, the only kind of partial string matching that works is using BETWEEN for suffixes.
 
 ```
 WorkflowId BETWEEN "order-" AND "order-~"
@@ -78,7 +77,7 @@ order-1234
 order-abracadabra
 ```
 
-It would not match `order-~~`.
+It does not match `order-~~`.
 
 ### Efficient API usage
 
