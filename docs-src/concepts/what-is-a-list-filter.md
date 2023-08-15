@@ -37,9 +37,11 @@ Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** claus
 
 ### Partial string match
 
+There are different options for partial string matching when the type of the Search Attribute is [Text](#text) versus [Keyword](#keyword).
+
 #### Text
 
-Search Attributes of type `Text` are broken up into words that match with the `=` operator.
+Search Attributes of type `Text` are [broken up into words](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) that match with the `=` operator.
 
 For example, if you have a custom `Text` Search Attribute named `Description` with either of the following values—
 
