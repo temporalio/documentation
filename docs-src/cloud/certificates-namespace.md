@@ -19,8 +19,10 @@ To manage certificates for Temporal Cloud Namespaces, use the **Namespaces** pag
 
 Don't let your certificates expire!
 Add reminders to your calendar to issue new CA certificates well before the expiration dates of the existing ones.
+Temporal Cloud begins sending notifications 15 days before expiration.
+For details, see the previous section ([How to receive notifications about certificate expiration](/cloud/certificates-notifications)).
 
-When updating CA certificates, it's important to follow a rollover process.
+When updating CA certificates, it's important to follow a rollover process (sometimes referred to as "certificate rotation").
 Doing so enables your Namespace to serve both CA certificates for a period of time until traffic to your old CA certificate ceases.
 
 Be aware that the subject of the existing certificate and the subject of the new certificate must not be identical.
