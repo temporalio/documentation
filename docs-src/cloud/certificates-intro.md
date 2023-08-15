@@ -13,12 +13,13 @@ tags:
 
 Temporal Cloud access is secured by the mutual Transport Layer Security (mTLS) protocol, which requires a CA certificate from the user.
 
-[Worker Processes](/concepts/what-is-a-worker-process) require CA certificates and private keys to connect to Temporal Cloud.
+A [Worker Process](/concepts/what-is-a-worker-process) requires a CA certificate and private key to connect to Temporal Cloud.
 Temporal Cloud does not require an exchange of secrets; only the certificates produced by private keys are used for verification.
 
 :::caution Don't let your certificates expire
 
 An expired root CA certificate invalidates all downstream certificates.
+
 An expired end-entity certificate prevents a [Temporal Client](/concepts/what-is-a-temporal-client) from connecting to a Namespace or starting a Workflow Execution.
 If the client is on a Worker, any current Workflow Executions that are processed by that Worker either run indefinitely without making progress until the Worker resumes or fail because of timeouts.
 
