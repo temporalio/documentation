@@ -323,7 +323,7 @@ cd assembly
 ./worker.js
 ```
 
-In another terminal, start the Workflow from the root of this repository.
+In a third terminal, start the Workflow from the root of this repository.
 
 ```bash
 yarn assemble
