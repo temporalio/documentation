@@ -29,6 +29,10 @@
     },
     {
       "type": "h2",
+      "id": "cloud/certificates-notifications"
+    },
+    {
+      "type": "h2",
       "id": "cloud/certificates-namespace"
     },
     {
