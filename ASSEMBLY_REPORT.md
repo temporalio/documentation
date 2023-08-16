@@ -2,13 +2,13 @@
 
 Last assembled: Wednesday August 16 2023 14:04:59 PM -0500
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-dail-macbook
 
 93 guide configurations found.
 
-1518 information nodes found.
+1519 information nodes found.
 
-1282 information nodes are attached to guides.
+1283 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -712,9 +712,15 @@ python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-tem
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
 
+cloud/certificates-namespace -> #manage-certificates
+
 cloud/certificates-filters -> #manage-certificate-filters
 
 cloud/users-namespace-level-permissions -> /cloud/users#namespace-level-permissions
+
+cloud/support-create-ticket -> /cloud/support#support-ticket
+
+cloud/certificates-notifications -> #expiration-notifications
 
 cloud/namespaces-access -> #access-namespaces
 
@@ -725,8 +731,6 @@ cloud/namespaces-delete -> #delete-a-namespace
 concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
-
-cloud/support-create-ticket -> /cloud/support#support-ticket
 
 concepts/what-is-a-cloud-namespace-id -> #temporal-cloud-namespace-id
 
