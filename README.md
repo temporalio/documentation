@@ -124,7 +124,7 @@ In both cases, you must receive approval from us before submitting a pull reques
 
 ## How to fix a typo
 
-**STOP! [Make sure you are eligible to put up a pull request!](#how-to-get-approval-to-create-a-pull-request)**
+**STOP! [Make sure you are eligible to create a pull request!](#how-to-get-approval-to-create-a-pull-request)**
 
 **After receiving approval, follow these steps to make changes to this repository.**
 
