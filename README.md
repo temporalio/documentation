@@ -21,7 +21,7 @@ Welcome to Temporal's documentation repository!
   - [How to follow style guidance](#how-to-follow-style-guidance)
   - [What is the philosophy around versioning the documentation?](#what-is-the-philosophy-around-versioning-the-document)
   - [How to explicitly identify support, stability, and dependency info](#how-to-explicitly-identify-support-stability-and-dependency-info)
-  - [How to auto-format files](#how-auto-format-files)
+  - [How to auto-format files](#how-to-auto-format-files)
   - [How to run the Assembly Workflow](#how-to-run-the-assembly-workflow)
   - [How to create a guide configuration](#how-to-create-a-guide-configuration)
   - [How to use DACX](#how-to-use-dacx)
@@ -139,7 +139,7 @@ git checkout -b yourfix
 
 Find the source node in the `docs-src` directory.
 
-Make your changes in the *source files*  named in the configuration file.
+Make your changes in the *source files* named in the configuration file.
 For instance, if you find a typo under "What is a Task?" (located in the Workers section of the Temporal docs website), open [docs/concepts/what-is-a-task.md](https://github.com/temporalio/documentation/blob/main/docs/concepts/what-is-a-task.md) and make the edit directly there.
 
 Open a new terminal. In the `assembly` directory, start the Worker.
