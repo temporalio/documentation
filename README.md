@@ -1,6 +1,6 @@
 # Temporal documentation
 
-Hello World!
+Hello, World!
 
 Welcome to Temporal's documentation repository!
 
@@ -14,16 +14,16 @@ Welcome to Temporal's documentation repository!
   - [/assembly Assembly Workflow](#assembly-assembly-workflow)
   - [/changelog Docs site changelog](#changelog-docs-site-changelog)
   - [Snipsync code synchronization tooling](#snipsync-code-synchronization-tooling)
-- [How to get approval to put up a Pull Request](#how-to-get-approval-to-put-up-a-pull-request)
+- [How to get approval to create a pull request](#how-to-get-approval-to-create-a-pull-request)
 - [How to fix a typo](#how-to-fix-a-typo)
 - [How to make changes to this repository](#how-to-make-changes-to-this-repository)
   - [How to install the dependencies for this repo](#how-to-install-the-dependencies-for-this-repo)
   - [How to follow style guidance](#how-to-follow-style-guidance)
   - [What is the philosophy around versioning the documentation?](#what-is-the-philosophy-around-versioning-the-document)
   - [How to explicitly identify support, stability, and dependency info](#how-to-explicitly-identify-support-stability-and-dependency-info)
-  - [How to auto format files](#how-auto-format-files)
+  - [How to auto-format files](#how-auto-format-files)
   - [How to run the Assembly Workflow](#how-to-run-the-assembly-workflow)
-  - [How to create a new guide configuration](#how-to-create-a-new-guide-configuration)
+  - [How to create a guide configuration](#how-to-create-a-guide-configuration)
   - [How to use DACX](#how-to-use-dacx)
 - [Local development command reference](#local-development-command-reference)
   - [`yarn`](#yarn)
@@ -33,7 +33,7 @@ Welcome to Temporal's documentation repository!
     - [`--cloud`](#--cloud)
     - [`--samples`](#--samples)
   - [`yarn format`](#yarn-format)
-  - [`yarn snipsync](#yarn-snipsync)
+  - [`yarn snipsync`](#yarn-snipsync)
     - [`--clear`](#--clear)
 
 ## What is the goal of this README?
@@ -48,18 +48,19 @@ This repository and its contents are open-source; individual and commercial use 
 
 ### What is the “Temporal Platform information corpus”?
 
-There is a lot of relevant information that might not be in this repository, but can be found in other locations.
+It is all of the Temporal Platform related information.
+It includes the relevant information that might not be in this repository but can be found in other locations.
 
 [Adding to this repository](#how-to-make-changes-to-this-repository) is only way to add to the information corpus.
 
 We plan to offer more ways to add to the corpus.
 
-Consider registering your already published information with Temporal IQ and reach out to us in Slack https://temporalio.slack.com/archives/C05JRT1GKEE.
+Consider registering your already published information with Temporal IQ and reach out to us in Slack: https://temporalio.slack.com/archives/C05JRT1GKEE.
 
 ## What is in this repository?
 
 This repository contains a large chunk of the Temporal Platform information corpus, divided into "source-of-truth" Markdown files and "generated" Markdown files, along with a changelog and an Assembly Workflow.
-Each component is explained further along in this README.
+Each component is explained later in this README.
 
 ### `/docs-src` information nodes
 
@@ -68,9 +69,9 @@ These nodes are registered to the Assembly Workflow with guide configurations. T
 
 ### `/docs` generated files for Docusaurus
 
-This directory contains the Markdown files that map directly to what you see in the documentation site. For example, `/docs/concepts/workflows` maps to `[docs.temporal.io/workflows](http://docs.temporal.io/workflows)` .
+This directory contains the Markdown files that map directly to what you see in the documentation site. For example, `/docs/concepts/workflows` maps to [docs.temporal.io/workflows](http://docs.temporal.io/workflows) .
 
-However, most of these files are generated from `docs-src` Information Nodes based on the guide configurations in `assembly/guide-configs` .
+However, most of these files are generated from `docs-src` information nodes based on the guide configurations in `assembly/guide-configs` .
 
 Generated content has the following note below the metadata:
 
@@ -87,17 +88,18 @@ The `/assembly` directory contains a Temporal Application written in JavaScript 
 
 Generated files are composed of many individual files, known as information nodes, contained in the `docs-src` directory.
 
-Modularizing our content not only tidies up the repository, but also provides a great example of Temporal at work. Our pre-build processes, a set of independent scripts, are invoked in a Temporal Workflow to generate and format what goes into Docusaurus.
+Modularizing our content not only tidies up the repository but also provides a great example of Temporal at work. Our pre-build processes, a set of independent scripts, are invoked in a Temporal Workflow to generate and format what goes into Docusaurus.
 
 Each JSON configuration file in [assembly/guide-configs](https://github.com/temporalio/documentation/blob/main/assembly/guide-configs) represents a user-facing narrative that pieces together concepts, how-to guides, and SDK-specific developer guides.
 
-Run the Assembly Workflow with a local Cluster (such as [Temporal CLI](https://github.com/temporalio/documentation/blob/main/kb/all-the-ways-to-run-a-cluster#temporal-cli)) or [Temporal Cloud](https://docs.temporal.io/cloud/).
+Run the Assembly Workflow with a local Cluster (such as [Temporal CLI](https://docs.temporal.io/kb/all-the-ways-to-run-a-cluster#temporal-cli)) or [Temporal Cloud](https://docs.temporal.io/cloud/).
 
 See [How to run the Assembly Workflow](#how-to-run-the-assembly-workflow) for more information about this Workflow.
 
-#### DACX Information Node generation tooling
+#### DACX information node generation tooling
 
-One of the things the Assembly Workflow can do, is generate Information Nodes for documentation code samples repositories.
+Beyond creating generated files, the Assembly Workflow can generate information nodes for documentation code-sample repositories.
+For more information, see [How to use DACX](#how-to-use-dacx).
 
 ### `/changelog` Docs site changelog
 
@@ -108,23 +110,23 @@ The information at [docs.temporal.io](http://docs.temporal.io) changes frequentl
 ### Snipsync code synchronization tooling
 
 This repository is configured for [Snipsync](https://github.com/temporalio/snipsync), which checks in the snippets included throughout our documentation.
-For more information, see [How to Use Snipsync](#how-to-use-snipsync).
+For more information, see [How to use Snipsync](#how-to-use-snipsync).
 
-## How to get approval to put up a Pull Request
+## How to get approval to create a pull request
 
 We absolutely encourage contributions, but we need to know what you plan to change.
 
-If you aren't part of the temporalio organization, [file a Github issue](https://github.com/temporalio/documentation/issues) to suggest a change.
+If you aren't part of the temporalio GitHub organization, [file a Github issue](https://github.com/temporalio/documentation/issues) to suggest a change.
 
-If you are part of the temporalio organization, use Temporal’s internal tracking system to submit a Work Task to our team.
+If you are part of the temporalio organization, use Temporal’s internal tracking system to submit a work task to our team.
 
-You must receive approval from us in both cases before submitting a Pull Request. If you submit a Pull Request without proper approval, we will close it.
+In both cases, you must receive approval from us before submitting a pull request. If you submit a pull request without proper approval, we will close it.
 
 ## How to fix a typo
 
-**STOP! [Make sure you are eligible to put up a Pull Request!](#how-to-get-approval-to-put-up-a-pr)**
+**STOP! [Make sure you are eligible to put up a pull request!](#how-to-get-approval-to-create-a-pull-request)**
 
-**Once approved, follow the steps below to make changes to this repository.**
+**After receiving approval, follow these steps to make changes to this repository.**
 
 For more information, refer to [How to make changes to this repository](#how-to-make-changes-to-this-repository).
 
@@ -137,9 +139,10 @@ git checkout -b yourfix
 
 Find the source node in the `docs-src` directory.
 
-Make your changes in the source file.
+Make your changes in the *source files*  named in the configuration file.
+For instance, if you find a typo under "What is a Task?" (located in the Workers section of the Temporal docs website), open [docs/concepts/what-is-a-task.md](https://github.com/temporalio/documentation/blob/main/docs/concepts/what-is-a-task.md) and make the edit directly there.
 
-Open a new terminal. Start the Worker.
+Open a new terminal. In the `assembly` directory, start the Worker.
 
 ```bash
 cd assembly
@@ -174,28 +177,28 @@ git push origin yourfix
 
 ## How to make changes to this repository
 
-**STOP! [Make sure you are eligible to put up a Pull Request!](#how-to-get-approval-to-put-up-a-pr)**
+**STOP! [Make sure you are eligible to create a pull request!](#how-to-get-approval-to-create-a-pull-request)**
 
-**Once approved, follow the steps below to make changes to this repository.**
+**After receiving approval, follow these steps to make changes to this repository.**
 
-If you 're looking to fix a typo or something minor, check out the “[How to fix a typo](#how-to-fix-a-typo)” section of this README.
+If you want to fix a typo or something minor, check out the [How to fix a typo](#how-to-fix-a-typo) section of this README.
 
 This section provides a higher-level view of the change proposal process, particularly for changes involving embedded code snippets or file generation.
 
 1. Clone the documentation repository.
-2. [Install the dependencies](#install-the-dependencies).
+2. [Install the dependencies](#how-to-install-the-dependencies-for-this-repo).
 3. Make changes to the information nodes in `docs-src`. Edit the guide configurations in `assemble/guide-configs` if files were added, deleted, or renamed.
    All changes must [follow our style guidance](#how-to-follow-style-guidance).
    1. See [How to construct a guide config](#how-to-create-a-new-guide-configuration).
    2. See [How to use DACX](#how-to-use-dacx).
-   3. See [How to use SnipSync](#how-to-use-snipsync).
+   3. See [How to use Snipsync](#how-to-use-snipsync).
 4. [Run the Assembly Workflow](#how-to-run-the-assembly-workflow).
-5. [Format the files](#how-to-auto-format-the-files).
-6. [Put up a Pull Request](#how-to-put-up-a-pull-request).
+5. [Format the files](#how-to-auto-format-files).
+6. [Create a pull request](#how-to-create-a-pull-request).
 
 ### How to install the dependencies for this repo
 
-**Before proceeding, make sure [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) and [NodeJS](https://nodejs.org/en/download/) are installed. Make sure you install the latest version of NodeJS (greater than 18.0.0).**
+**Before proceeding, make sure [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) and [Node.js](https://nodejs.org/en/download/) are installed. Make sure you install the latest version of Node.js (later than 18.0.0).**
 
 On a Mac, use the command `brew install node@16`.
 
@@ -210,9 +213,9 @@ In addition, we maintain a set of Temporal-specific style guidelines that overri
 
 We recommend that you use the Vale extension for your IDE. Vale allows you to configure rulesets in its own configuration file, making it useful for defining Temporal's style guidelines.
 
-If you have VSCode, we recommend using the Vale VSCode extension.
+If you have Visual Studio Code, we recommend using the Vale VSCode extension.
 
-For more information on general style rules, see the rulesets defined in the `vale/styles` configuration file.
+For more information on general style rules, see the rulesets defined in the `vale/styles` configuration files.
 
 #### Capitalization of core terms
 
@@ -241,8 +244,7 @@ In code (and when quoting or referring to code in text), follow the conventions 
 Using an en dash (`&ndash;` or the character `–`) for a range of numbers is acceptable.
 However, we recommend using _from_, _to_, and _through_ instead of an en dash when possible.
 
-#### Be consistent.
-
+Be consistent.
 If you use an en dash in one range, use en dashes in all ranges.
 Do not mix words and en dashes (or hyphens, for that matter).
 
@@ -278,9 +280,8 @@ Sentence casing means that only proper nouns and the first letter of the first w
 The Temporal Platform includes many different components and core dependencies. Many components are independently versioned, meaning that they document their stability and support for their own dependencies. The [Temporal Go SDK reference](https://pkg.go.dev/go.temporal.io/sdk?tab=versions) provides a good example of document versioning.
 
 The goal of this information set, in regards to versioning, is to remain “current”. That is, this information should serve the needs of the Platform’s user base as best it can based on what is/has recently happened across all the components of the Temporal Platform.
-Make explicit callouts to support, stability, and dependency information whenever possible.
 
-We use the `ssdi` metadata tag in `docs-src` nodes to explicitly call out this information.
+Whenever possible, we make explicit callouts to support, stability, and dependency information by using the `ssdi` metadata tag in `docs-src` nodes.
 
 #### How to explicitly identify support, stability, and dependency info
 
@@ -298,18 +299,18 @@ ssdi:
 ---
 ```
 
-### How to auto format files
+### How to auto-format files
 
 Run `yarn format`.
 
-If you don't run this command locally before posting a Pull Request, a Github action runs the formatting.
+If you don't run this command locally before posting a pull request, a GitHub action runs the formatting.
 
 ### How to run the Assembly Workflow
 
-Make sure you have a Namespace set up to operate out of.
-We recommend using the [Temporal CLI’s development Server](https://docs.temporal.io/cli/#starting-the-temporal-server).
+Make sure you have a Namespace set up and ready to use.
+We recommend using the [Temporal CLI development Server](https://docs.temporal.io/cli/#starting-the-temporal-server).
 
-In a separate terminal run:
+In a separate terminal, start the Temporal Server:
 
 ```bash
 temporal server start-dev
@@ -328,23 +329,20 @@ In another terminal, start the Workflow from the root of this repository.
 yarn assemble
 ```
 
-Run the auto-formatter after the Workflow Execution is completed.
+After the Workflow Execution is completed, run the auto-formatter.
 
 ```bash
 yarn format
 ```
 
-**Make your changes in the *source files*  named in the configuration file.**
-For instance, if you find a typo under "What is a Task?" (located in the Workers section of the Temporal docs website), open [docs/concepts/what-is-a-task.md](https://github.com/temporalio/documentation/blob/main/docs/concepts/what-is-a-task.md) and make the edit directly there.
-
-### How to create a new guide configuration
+### How to create a guide configuration
 
 Guide configurations are stored in `assembly/guide-configs`.
 
-They are more or less organized to reflect the intended output in the `docs` directory, however this is purely for file management purposes and does not affect where the guide output is written to.
+They are more or less organized to reflect the intended output in the `docs` directory; however, this arrangement is purely for file management purposes and does not affect where the guide output is written.
 
 Guide configurations link independent source nodes together into a guide-style narrative.
-Some of the guide-level metadata is supplied directly in the guide configuration, while the rest is generated from the source nodes. For example, the “keywords” and “tags” metadata are generated from the source nodes attached to the config.
+Some of the guide-level metadata is supplied directly in the guide configuration, and the rest is generated from the source nodes. For example, the “keywords” and “tags” metadata are generated from the source nodes attached to the config.
 
 Example configuration:
 
@@ -385,7 +383,8 @@ Example configuration:
     {
       "type": "h3",
       "id": "go/code-samples"
-    },
+    }
+  ]
 }
 ```
 
@@ -393,7 +392,7 @@ Example configuration:
 
 **What is DACX?**
 
-DACX is short for “Docs as code”.
+DACX is short for “Docs as code.”
 All the logic of the DACX tool is built into the Assembly Workflow.
 
 **Why use DACX?**
@@ -412,7 +411,7 @@ To start using DACX, choose a source repo.
 
 You can also register a new source repo with the Assembly Workflow.
 
-Add your repository under the `documentation_samples_repos` section of the [Assembly configuration](https://github.com/temporalio/documentation/blob/main/assembly/config.json) file.
+Add your repository in the `documentation_samples_repos` section of the [Assembly configuration](https://github.com/temporalio/documentation/blob/main/assembly/config.json) file.
 
 Specify a branch name in the `ref` field if your changes are not merged into the main branch of the source repo.
 
@@ -420,9 +419,9 @@ Example:
 
 ```go
 {
-  "org": "your-org" // for us that temporalio
+  "org": "your-org" // for us, this is temporalio
   "name": "your-repo" // name of the repository
-  "ref" : "your-branch-name" // name of your branch - optional
+  "ref" : "your-branch-name" // name of your branch; optional
   // if a branch is not specified, main is used
 }
 ```
@@ -438,13 +437,13 @@ This must be done for every file that contains DACX.
 
 #### Write documentation using vanilla Markdown
 
-In the source repository, write your documentation as Markdown using multiline comments.
+In the source repository, write your documentation as Markdown in multiline comments.
 
 The Assembly Workflow identifies all multiline comments as Markdown documentation.
 
 Single-line comments are treated the same as the rest of the code.
 
-Single line commenting is still highly encouraged to make the code understandable.
+Single-line commenting is still highly encouraged to make the code understandable.
 
 For example:
 
@@ -452,18 +451,18 @@ For example:
 /*
 This is treated as Markdown documentation.
 
-Format this information as you would like any other Markdown content.
+Format this information as you would any other Markdown content.
 
-Since Markdown maintains readablibilty, anyone can read this, even when a [link](/somelink) is present.
+Because Markdown maintains readability, anyone can read this, even when a [link](/somelink) is present.
 */
 
-// MyCode is my code and this is treated the same as the code
+// MyCode is my code; this comment is treated the same as the code
 func MyCode () error {
  // ...
 }
 ```
 
-#### Use `@dacx` comments to identify info nodes
+#### Use `@dacx` comments to identify information nodes
 
 In the source repository, add `@dacx` to a multiline comment at the bottom of the `_dacx` file.
 
@@ -491,9 +490,9 @@ lines: 1-52, 64
 @dacx */
 ```
 
-#### Basic line selection requirements
+#### Basic line-selection requirements
 
-You must select both the opening multiline comment line and the closing multiline comment line when selecting multiline comments, as either a distinct selection or as part of a large group of Markdown and code.
+You must select both the opening multiline comment line and the closing multiline comment line when selecting multiline comments, either as a distinct selection or as part of a large group of Markdown and code.
 
 For example:
 
@@ -501,12 +500,12 @@ For example:
 /*
 This is treated as Markdown documentation.
 
-Format this information as you would like any other Markdown content.
+Format this information as you would any other Markdown content.
 
-Since Markdown maintains readablibilty, anyone can read this, even when a [link](/somelink) is present.
+Because Markdown maintains readability, anyone can read this, even when a [link](/somelink) is present.
 */
 
-// MyCode is my code and this is treated the same as the code
+// MyCode is my code; this comment is treated the same as the code
 func MyCode () error {
  // ...
 }
@@ -520,7 +519,7 @@ lines: 1-7
 @dacx */
 ```
 
-In the above example, we capture lines 1-7 to capture the whole multiline comment section.
+In the preceding example, we capture lines 1 through 7 to capture the whole multiline comment section.
 
 We could also capture the full multiline comment as part of capturing a group of Markdown and code:
 
@@ -542,11 +541,11 @@ For example, information nodes generated from `.go` files are generated into the
 
 #### Add info nodes to an Assembly guide config
 
-In the documentation repo, register the information node to a [guide configuration](https://github.com/temporalio/documentation/tree/main/assembly/guide-configs).
+In the documentation repo, register the information node in a [guide configuration](https://github.com/temporalio/documentation/tree/main/assembly/guide-configs) file.
 
 Arrange the information nodes to create a linear experience.
 
-In many cases, information nodes are attached to Developer guide configurations.
+In many cases, information nodes are attached to developer guide configurations.
 
 For example:
 
@@ -576,6 +575,7 @@ For example:
       "id": "how-to-develop-a-workflow-in-go" // this is the id of the info node
     }
     // ...
+  ]
 }
 ```
 
@@ -583,7 +583,7 @@ For example:
 
 In the documentation repo, run `yarn assemble` to generate the guides from the guide configurations.
 
-Preview your work locally with the command `yarn start`
+Preview your work locally with the command `yarn start`.
 
 ### How to use Snipsync
 
@@ -597,23 +597,23 @@ Place your [snipsync](https://github.com/temporalio/snipsync) snippet wrappers
 
 ```
 
-Run `yarn snipsync`, to merge the snippet contents (in this case, from `[samples-typescript](https://github.com/temporalio/samples-typescript/blob/75bdcd613bd24f8f357cb96d1b83051353c5685a/hello-world/src/client.ts#L1)`) between the `SNIPSTART` and `SNIPEND` tags.
+Run `yarn snipsync` to merge the snippet contents (in this case, from `[samples-typescript](https://github.com/temporalio/samples-typescript/blob/75bdcd613bd24f8f357cb96d1b83051353c5685a/hello-world/src/client.ts#L1)`) between the `SNIPSTART` and `SNIPEND` tags.
 
 [Run the Assembly Workflow](https://www.notion.so/Documentation-repo-README-content-WIP-ddd0e586594246b3b9948919bbf7b12b?pvs=21).
 
 Format the files with `yarn format`.
 
-[Put up a Pull Request](#how-to-put-up-a-pull-request).
+[Create a pull request](#how-to-create-a-pull-request).
 
-### How to put up a Pull Request
+### How to create a pull request
 
 Commit your changes to a new branch.
 
-If you are outside the Temporal organization, fork the repository and create Pull Requests from branches on your own fork.
+If you are outside the Temporal organization, fork the repository and create pull requests from branches on your own fork.
 
-See the README in GitHub's [first-contributions repo](https://github.com/firstcontributions/first-contributions) repo for guidance on forking and creating Pull Requests.
+See the README in GitHub's [first-contributions](https://github.com/firstcontributions/first-contributions) repo for guidance on forking and creating pull requests.
 
-Vercel provides a deployment preview for each push to the Pull Request.
+Vercel provides a deployment preview for each push to the pull request.
 
 !https://github.com/temporalio/documentation/raw/main/static/img/readme/vercel-deploy-preview.png
 
