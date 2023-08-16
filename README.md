@@ -64,7 +64,7 @@ Each component is explained later in this README.
 
 ### `/docs-src` information nodes
 
-This directory contains editable Markdown files, known as "information nodes", that are used to generate the guides seen in the `/docs` directory and on our website.
+This directory contains editable Markdown files, known as "information nodes," that are used to generate the guides seen in the `/docs` directory and on our website.
 These nodes are registered to the Assembly Workflow with guide configurations. These configuration files can be found in `/assembly/guide-configs`.
 
 ### `/docs` generated files for Docusaurus
