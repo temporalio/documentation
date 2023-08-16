@@ -6,9 +6,7 @@ description: Use the `WorkflowReplayer` API to replay an existing Workflow Execu
 tags:
   - go sdk
   - how-to-doc-type
-  - developer-guide-doc-type
   - testing
-  - testing-guide-doc-type
   - workflow execution
   - event history
   - replay

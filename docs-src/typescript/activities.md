@@ -42,11 +42,11 @@ Note that we only import the type of our activities, the TypeScript compiler wil
 <!--SNIPSTART typescript-hello-workflow {"enable_source_link": false}-->
 
 ```ts
-import { proxyActivities } from '@temporalio/workflow';
+import * as workflow from '@temporalio/workflow';
 // Only import the activity types
 import type * as activities from './activities';
 
-const { greet } = proxyActivities<typeof activities>({
+const { greet } = workflow.proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute',
 });
 

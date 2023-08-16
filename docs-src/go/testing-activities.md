@@ -4,11 +4,10 @@ title: Testing Activities
 description: Testing provides a framework to facilitate Workflow and integration testing.
 sidebar_label: Test Activities
 tags:
-  - developer-guide-doc-type
+  - explanation-doc-type
   - go sdk
   - testing
-  - testing-guide-doc-type
-  - activities
+  - activity
 ---
 
 An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.

@@ -4,10 +4,9 @@ title: Test frameworks
 description: Testing provides a framework to facilitate Workflow and integration testing.
 sidebar_label: Test frameworks
 tags:
-  - developer-guide-doc-type
+  - explanation-doc-type
   - go sdk
   - testing
-  - testing-guide-doc-type
 ---
 
 The Temporal Go SDK provides a test framework to facilitate testing Workflow implementations.

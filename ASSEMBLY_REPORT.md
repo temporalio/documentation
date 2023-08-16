@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday August 14 2023 13:22:42 PM -0500
+Last assembled: Wednesday August 16 2023 14:04:59 PM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -1032,16 +1032,8 @@ go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
 
-cloud/operating-envelope-intro -> /cloud/introduction/operating-envelope#
+cloud/certificates-namespace -> #manage-certificates
 
-cloud/pricing-intro -> /cloud/introduction/pricing#
-
-cloud/support-intro -> /cloud/introduction/support#
-
-cloud/users-intro -> /cloud/account-setup/users#
-
-cloud/saml-intro -> /cloud/how-to-manage-saml-with-temporal-cloud#
-
-cloud/what-is-audit-logging -> /cloud/how-to-manage-audit-logging#
+cloud/certificates-notifications -> #expiration-notifications
 
 
