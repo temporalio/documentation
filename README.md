@@ -69,7 +69,7 @@ These nodes are registered to the Assembly Workflow with guide configurations. T
 
 ### `/docs` generated files for Docusaurus
 
-This directory contains the Markdown files that map directly to what you see in the documentation site. For example, `/docs/concepts/workflows` maps to [docs.temporal.io/workflows](http://docs.temporal.io/workflows) .
+This directory contains the Markdown files that map directly to what you see in the documentation site. For example, `/docs/concepts/workflows` maps to [docs.temporal.io/workflows](http://docs.temporal.io/workflows).
 
 However, most of these files are generated from `docs-src` information nodes based on the guide configurations in `assembly/guide-configs` .
 
