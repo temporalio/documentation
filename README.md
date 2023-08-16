@@ -576,6 +576,7 @@ For example:
     }
     // ...
   ]
+  ]
 }
 ```
 
@@ -623,13 +624,13 @@ If you don't belong to the Temporal organization, you may need to sign the Contr
 
 The @temporalio/education team tries to review GitHub issues and pull requests on a regular schedule.
 
-When we merge your Pull Request, a new build automatically occurs and your changes publish to [https://docs.temporal.io](https://docs.temporal.io/).
+When we merge your pull request, a new build automatically occurs and your changes publish to [https://docs.temporal.io](https://docs.temporal.io/).
 
 #### Assembly Workflow merge conflicts
 
 Run the Assembly Workflow to fix any merge conflict in ASSEMBLY_REPORT.md and any generated guides in the `/docs` directory.
 
-Restart your Worker after merging main and before running Assembly again.
+Restart your Worker after merging `main` into your branch and before running Assembly again.
 
 ### How to preview the site locally
 
@@ -645,12 +646,12 @@ This command ensures all the required dependencies are installed.
 
 ### `yarn build`
 
-This command triggers a Docusaurus build and results in the browser consumable Javascript in the `/build` directory.
+This command triggers a Docusaurus build and results in the browser-consumable JavaScript in the `/build` directory.
 Note that the `/build` directory is ignored by Git.
 
 ### `yarn start`
 
-This command spins up a local web server and serves up the contents of the `/build` directory to [localhost:3000](http://localhost:3000/).
+This command spins up a local web server and serves the contents of the `/build` directory to [localhost:3000](http://localhost:3000/).
 
 ### `yarn assemble`
 
@@ -672,10 +673,9 @@ When provided, this flag causes the Temporal Client to connect to a Temporal Clo
   "unique_id": "your-unique-custom-id",
   "namespace": "your-namespace"
 }
-
 ```
 
-#### `—samples`
+#### `--samples`
 
 When provided, this flag causes the Assembly Workflow to generate information nodes from the documentation samples repositories.
 
