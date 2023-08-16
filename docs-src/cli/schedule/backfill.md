@@ -16,6 +16,7 @@ The `temporal schedule backfill` command executes Actions ahead of their specifi
 Backfilling adds [Workflow Runs](/concepts/what-is-a-run-id) from a time period when the Schedule was paused, or from before the Schedule was created.
 
 Schedule backfills require a valid Schedule ID, along with the time in which to run the Schedule and a change to the overlap policy.
+The following example fills in Workflow Runs from a point when the Schedule was paused.
 
 ```
 temporal schedule backfill --schedule-id 'your-schedule-id' \
@@ -23,6 +24,8 @@ temporal schedule backfill --schedule-id 'your-schedule-id' \
 --start-time '2022-05-0101T00:00:00Z'		\
 --end-time '2022-05-31T23:59:59Z'
 ```
+
+Temporal recommends setting the Overlap Policy to 'BufferAll' to run backfilled Workflows sequentially.
 
 Use the following options to change this command's behavior.
 
