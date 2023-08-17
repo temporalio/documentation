@@ -3,6 +3,8 @@ id: workflows
 title: Workflows in TypeScript
 sidebar_label: Workflows
 description: Workflows are async functions that can orchestrate Activities and access special Workflow APIs, subject to deterministic limitations.
+tags:
+ - workflow
 ---
 
 import Tabs from '@theme/Tabs';

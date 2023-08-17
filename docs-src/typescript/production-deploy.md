@@ -3,6 +3,10 @@ id: production-deploy
 title: Production Deploy Checklist for TypeScript SDK
 sidebar_label: Deploy Checklist
 description: Recommended steps to take before deploying your Temporal app to production.
+tags:
+    - typescript
+    - production
+    - deploy
 ---
 
 The following are recommended steps to take before deploying your Temporal application to production.

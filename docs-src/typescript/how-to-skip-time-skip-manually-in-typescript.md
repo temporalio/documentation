@@ -40,7 +40,7 @@ test('sleeperWorkflow counts days correctly', async () => {
   // `start()` starts the test server in "normal" mode, not skipped time mode.
   // If you don't advance time using `testEnv.sleep()`, then `sleeperWorkflow()`
   // will run for days.
-  handle = await testEnv.workflowClient.start(sleeperWorkflow, {
+  handle = await testEnv.client.workflow.start(sleeperWorkflow, {
     workflowId: uuid4(),
     taskQueue,
   });

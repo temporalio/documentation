@@ -4,7 +4,10 @@ title: Tracing and Context Propagation
 description: Explains how the Go SDK supports tracing and custom context propogation.
 sidebar_label: Tracing and Context Propogation
 tags:
-- guide-context
+  - go sdk
+  - developer-guide-doc-type
+  - tracing
+  - context propagators
 ---
 
 The Go SDK provides support for distributed tracing through [OpenTracing](https://opentracing.io/).

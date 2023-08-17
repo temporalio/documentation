@@ -4,8 +4,11 @@ title: Go ActivityOptions reference
 sidebar_label: Activity Options reference
 description: Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package and use `WithActivityOptions()` to apply it to the instance of `workflow.Context`.
 tags:
-  - developer-guide
-  - go
+  - developer-guide-doc-type
+  - go sdk
+  - activity options
+  - activity
+  - reference-doc-type
 ---
 
 Create an instance of [`ActivityOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ActivityOptions) from the `go.temporal.io/sdk/workflow` package and use [`WithActivityOptions()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#WithActivityOptions) to apply it to the instance of `workflow.Context`.

@@ -4,7 +4,11 @@ title: tcld version command reference
 sidebar_label: version
 description: How to use Temporal Cloud's tcld version command.
 toc_max_heading_level: 4
+keywords:
+- cli reference
+- tcld
 tags:
+- cli-reference
 - tcld
 ---
 

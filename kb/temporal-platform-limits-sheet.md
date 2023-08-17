@@ -41,7 +41,7 @@ Warnings are soft limits that produce a warning log on the server side.
     - `SignalExternalWorkflowExecution`
     - `RequestCancelExternalWorkflowExecution`
     - `StartChildWorkflowExecution`
-  - The open source Temporal Cluster has a default limit of 50,000 pending Activities, Child Workflows, Signals, or Workflow cancellation requests, but you can override the limits in the dynamic configuration using these variables:
+  - As of v1.21, the open source Temporal Cluster has a default limit of 2,000 pending Activities, Child Workflows, Signals, or Workflow cancellation requests, but you can override the limits in the dynamic configuration using these variables:
     - `limit.numPendingActivities.error`
     - `limit.numPendingSignals.error`
     - `limit.numPendingCancelRequests.error`
@@ -77,5 +77,5 @@ The Temporal Cloud service sets default limits for the following aspects:
     Lists of Workflows are still ordered by a default ordering rule.
     Be aware that this rule might change.
 
-Some of the Temporal Cloud limits mentioned above can be increased by [submitting a support ticket](/cloud/how-to-create-a-ticket-for-temporal-support).
+Some of the Temporal Cloud limits mentioned above can be increased by [submitting a support ticket](/cloud/support#support-ticket).
 The default values are intended to guard against unintentional resource usage.

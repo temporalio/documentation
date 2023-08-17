@@ -5,6 +5,7 @@ sidebar_label: describeid
 description: How to show information about a Workflow Execution for a specified Workflow Id and optional Run Id using tctl.
 tags:
   - tctl
+  - cli reference
 ---
 
 The `tctl workflow describeid` command shows information about a [Workflow Execution](/workflows#workflow-execution) for the specified [Workflow Id](/concepts/what-is-a-workflow-id) and optional [Run Id](/concepts/what-is-a-run-id).

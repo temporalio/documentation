@@ -2,6 +2,11 @@
 id: search-apis
 title: Using Custom Searchable Attributes in Go
 sidebar_label: Search Attributes
+description: Search Attributes enable complex and business-logic-focused search queries for Workflow Executions.
+tags:
+  - search attributes
+  - visibility
+  - go
 ---
 
 ## Overview

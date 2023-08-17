@@ -2,6 +2,10 @@
 id: testing
 title: Testing PHP Workflows
 sidebar_label: Testing
+description: Testing PHP Workflows
+tags:
+ - testing
+ - php
 ---
 
 ## Testing Workflows

@@ -4,7 +4,9 @@ title: How to Signal-With-Start
 description: Signal-With-Start is used from the Client
 sidebar_label: Signal-With-Start
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - signals-feature
+  - signals
 ---
 
 Signal-With-Start is used from the Client.

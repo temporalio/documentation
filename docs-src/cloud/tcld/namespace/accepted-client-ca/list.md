@@ -5,6 +5,7 @@ sidebar_label: list
 description: How to list the client CA certificates for a Namespace in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli reference
 ---
 
 The `tcld namespace accepted-client-ca list` command lists the client CA certificates that are currently configured for a [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.
@@ -15,7 +16,7 @@ Alias: `l`
 
 The following modifier controls the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 

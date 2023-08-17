@@ -4,11 +4,14 @@ title: How to manage Namespaces in Go
 sidebar_label: Manage Namespaces
 description:
 tags:
-  - developer-guide
-  - go
+  - go sdk
+  - developer-guide-doc-type
+  - namespace
+  - namespace management
+  - how-to-doc-type
 ---
 
-On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud) or [tcld commands](/cloud/tcld/namespace/) to manage Namespaces.
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces-intro) or [tcld commands](/cloud/tcld/namespace/) to manage Namespaces.
 
 On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
 

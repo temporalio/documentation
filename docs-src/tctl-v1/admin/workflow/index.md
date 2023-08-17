@@ -5,8 +5,7 @@ sidebar_label: workflow
 description: Operating admin-level Workflow Executions.
 tags:
   - tctl
-  - admin
-  - workflow
+  - cli reference
 ---
 
 The `tctl admin workflow` commands enable administrator-level operations on Workflow Executions.

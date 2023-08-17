@@ -4,7 +4,11 @@ title: temporal schedule delete
 sidebar_label: delete
 description: Deletes a Schedule.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - schedule
+  - command-line-interface-cli
+  - schedule delete
 ---
 
 The `temporal schedule delete` command deletes a [Schedule](/concepts/what-is-a-schedule).
@@ -13,20 +17,36 @@ Deleting a Schedule does not affect any [Workflows](/concepts/what-is-a-workflow
 [Workflow Executions](/concepts/what-is-a-workflow-execution) started by Schedules can be cancelled or terminated like other Workflow Executions.
 However, Workflow Executions started by a Schedule can be identified by their [Search Attributes](/concepts/what-is-a-search-attribute), making them targetable by batch command for termination.
 
-`temporal schedule delete --sid 'your-schedule-id' [command options]`
+`temporal schedule delete --schedule-id 'your-schedule-id' [command options]`
 
-Use the options below to change the behavior of this command.
+Use the following options to change this command's behavior.
 
-- [--fields](/cli/cmd-options/fields)
+- [--address](/cli/cmd-options/address)
 
-- [--limit](/cli/cmd-options/limit)
+- [--codec-auth](/cli/cmd-options/codec-auth)
 
-- [--no-pager](/cli/cmd-options/no-pager)
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
 
-- [--output](/cli/cmd-options/output)
+- [--color](/cli/cmd-options/color)
 
-- [--pager](/cli/cmd-options/pager)
+- [--context-timeout](/cli/cmd-options/context-timeout)
+
+- [--env](/cli/cmd-options/env)
+
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
+
+- [--namespace](/cli/cmd-options/namespace)
 
 - [--schedule-id](/cli/cmd-options/schedule-id)
 
-- [--time-format](/cli/cmd-options/time-format)
+- [--tls](/cli/cmd-options/tls)
+
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options/tls-server-name)

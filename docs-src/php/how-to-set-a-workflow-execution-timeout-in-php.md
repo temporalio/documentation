@@ -2,6 +2,11 @@
 id: how-to-set-a-workflow-execution-timeout-in-php
 title: How to set Workflow Execution Timeout in PHP
 sidebar_label: Workflow Execution Timeout
+description: Set Workflow Execution Timeout with WorkflowOptions.
+tags:
+    - workflow
+    - workflow execution timeout
+    - workflow options
 ---
 
 The following code example creates a new Workflow and sets the Workflow Id.

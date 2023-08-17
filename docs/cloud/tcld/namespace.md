@@ -4,7 +4,11 @@ title: tcld namespace command reference
 sidebar_label: namespace
 description: How to use Temporal Cloud's tcld namespace command
 toc_max_heading_level: 4
+keywords:
+- cli reference
+- tcld
 tags:
+- cli-reference
 - tcld
 ---
 
@@ -36,14 +40,14 @@ Alias: `c`
 
 The following modifiers control the behavior of the command.
 
-### `--request-id`
+#### --request-id
 
 The request identifier to use for the asynchronous operation.
 If not set, the server assigns an identifier.
 
 Alias: `-r`
 
-### `--ca-certificate`
+#### --ca-certificate
 
 _Required modifier unless `--ca-certificate-file` is specified_
 
@@ -53,7 +57,7 @@ If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca
 
 Alias: `-c`
 
-### `--namespace`
+#### --namespace
 
 _Required modifier_
 
@@ -61,7 +65,7 @@ Specify the name of the Namespace to create.
 
 Alias: `-n`
 
-### `--region`
+#### --region
 
 _Required modifier_
 
@@ -71,13 +75,13 @@ Valid options: `ap-northeast-1` | `ap-southeast-1` | `ap-southeast-2` | `ca-cent
 
 Alias: `--re`
 
-### `--retention-days`
+#### --retention-days
 
 The number of days that data about closed Workflow Executions will be retained (default: 30).
 
 Alias: `--rd`
 
-### `--ca-certificate-file`
+#### --ca-certificate-file
 
 _Required modifier unless `--ca-certificate` is specified_
 
@@ -87,7 +91,7 @@ If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca
 
 Alias: `--cf`
 
-### `--certificate-filter-file`
+#### --certificate-filter-file
 
 _Required modifier unless `--certificate-filter-input` is specified_
 
@@ -100,7 +104,7 @@ If both `--certificate-filter-file` and `--certificate-filter-input` are specifi
 
 Alias: `--cff`
 
-### `--certificate-filter-input`
+#### --certificate-filter-input
 
 _Required modifier unless `--certificate-filter-file` is specified_
 
@@ -113,7 +117,7 @@ If both `--certificate-filter-input` and `--certificate-filter-file` are specifi
 
 Alias: `--cfi`
 
-### `--search-attribute`
+#### --search-attribute
 
 _Required modifier; can be specified more than once_
 
@@ -123,7 +127,7 @@ Valid values for _type_: `Bool` | `Datetime` | `Double` | `Int` | `Keyword` | `T
 
 Alias: `--sa`
 
-### `--user-namespace-permission`
+#### --user-namespace-permission
 
 _Can be specified more than once_
 
@@ -149,7 +153,7 @@ Alias: `d`
 
 The following modifiers control the behavior of the command.
 
-### `--namespace`
+#### --namespace
 
 _Required modifier_
 
@@ -157,14 +161,14 @@ Specify the Namespace hosted on Temporal Cloud to be deleted.
 
 Alias: `-n`
 
-### `--request-id`
+#### --request-id
 
 The request identifier to use for the asynchronous operation.
 If not set, the server assigns an identifier.
 
 Alias: `-r`
 
-### `--resource-version`
+#### --resource-version
 
 A resource version (ETag) to update from.
 If not set, the CLI uses the latest.
@@ -187,7 +191,7 @@ Alias: `g`
 
 The following modifier controls the behavior of the command.
 
-### `--namespace`
+#### --namespace
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
@@ -213,13 +217,9 @@ The command has no modifiers.
 
 The `tcld namespace accepted-client-ca` commands manage the client CA certificates of the specified <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud. The certificates are used to verify client connections.
 
-:::important
+:::note
 
-Do not use a CA certificate that is signed with an insecure signature algorithm, such as SHA-1.
-Such signatures will be rejected.
-Existing CA certificates that use SHA-1 can stop working without warning.
-
-For more information about the vulnerabilities of SHA-1, see [SHAttered](https://shattered.io/).
+Base64 versions of the CA certificate files are accepted by these commands.
 
 :::
 
@@ -229,6 +229,16 @@ Alias: `ca`
 - <a class="tdlp" href="#list">tcld namespace accepted-client-ca list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace accepted-client-ca list</span><br /><br /><span class="tdlppd">How to list the client CA certificates for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list">Learn more</a></span></span></a>
 - <a class="tdlp" href="#set">tcld namespace accepted-client-ca set<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace accepted-client-ca set</span><br /><br /><span class="tdlppd">How to set the client CA certificates for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#set">Learn more</a></span></span></a>
 - <a class="tdlp" href="#remove">tcld namespace accepted-client-ca remove<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace accepted-client-ca remove</span><br /><br /><span class="tdlppd">How to remove client CA certificates from a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#remove">Learn more</a></span></span></a>
+
+:::important
+
+Do not use a CA certificate that is signed with an insecure signature algorithm, such as SHA-1.
+Such signatures will be rejected.
+Existing CA certificates that use SHA-1 can stop working without warning.
+
+For more information about the vulnerabilities of SHA-1, see [SHAttered](https://shattered.io/).
+
+:::
 
 ### add
 
@@ -240,7 +250,7 @@ Alias: `a`
 
 The following modifiers control the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
@@ -252,7 +262,7 @@ Alias: `-n`
 tcld namespace accepted-client-ca add --namespace <namespace_id> --ca-certificate <encoded_certificate>
 ```
 
-#### `--request-id`
+#### --request-id
 
 Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
 
@@ -264,7 +274,7 @@ Alias: `-r`
 tcld namespace accepted-client-ca add --request-id <request_id> --ca-certificate <encoded_certificate>
 ```
 
-#### `--resource-version`
+#### --resource-version
 
 Specify a resource version (ETag) to update from. If not specified, the latest version is used.
 
@@ -276,7 +286,7 @@ Alias: `-v`
 tcld namespace accepted-client-ca add --resource-version <etag> --ca-certificate <encoded_certificate>
 ```
 
-#### `--ca-certificate`
+#### --ca-certificate
 
 _Required modifier unless `--ca-certificate-file` is specified_
 
@@ -292,7 +302,7 @@ Alias: `-c`
 tcld namespace accepted-client-ca add --ca-certificate <encoded_certificate>
 ```
 
-#### `--ca-certificate-file`
+#### --ca-certificate-file
 
 _Required modifier unless `--ca-certificate` is specified_
 
@@ -318,7 +328,7 @@ Alias: `l`
 
 The following modifier controls the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
@@ -340,7 +350,7 @@ Alias: `r`
 
 The following modifiers control the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
@@ -352,7 +362,7 @@ Alias: `-n`
 tcld namespace accepted-client-ca remove --namespace <namespace_id> --ca-certificate <encoded_certificate>
 ```
 
-#### `--request-id`
+#### --request-id
 
 Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
 
@@ -364,7 +374,7 @@ Alias: `-r`
 tcld namespace accepted-client-ca remove --request-id <request_id> --ca-certificate <encoded_certificate>
 ```
 
-#### `--resource-version`
+#### --resource-version
 
 Specify a resource version (ETag) to update from. If not specified, the latest version is used.
 
@@ -376,7 +386,7 @@ Alias: `-v`
 tcld namespace accepted-client-ca remove --resource-version <etag> --ca-certificate <encoded_certificate>
 ```
 
-#### `--ca-certificate`
+#### --ca-certificate
 
 _Required modifier unless `--ca-certificate-fingerprint` or `--ca-certificate-file` is specified_
 
@@ -394,7 +404,7 @@ Alias: `-c`
 tcld namespace accepted-client-ca remove --ca-certificate <encoded_certificate>
 ```
 
-#### `--ca-certificate-file`
+#### --ca-certificate-file
 
 _Required modifier unless `--ca-certificate-fingerprint` or `--ca-certificate` is specified_
 
@@ -412,7 +422,7 @@ Alias: `-f`
 tcld namespace accepted-client-ca remove --ca-certificate-file <path>
 ```
 
-#### `--ca-certificate-fingerprint`
+#### --ca-certificate-fingerprint
 
 _Required modifier unless `--ca-certificate` or `--ca-certificate-file` is specified_
 
@@ -467,7 +477,7 @@ Doing so enables your Namespace to serve both CA certificates for a period of ti
 
 The following modifiers control the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
@@ -479,7 +489,7 @@ Alias: `-n`
 tcld namespace accepted-client-ca set --namespace <namespace_id> --ca-certificate <encoded_certificate>
 ```
 
-#### `--request-id`
+#### --request-id
 
 Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
 
@@ -491,7 +501,7 @@ Alias: `-r`
 tcld namespace accepted-client-ca set --request-id <request_id> --ca-certificate <encoded_certificate>
 ```
 
-#### `--resource-version`
+#### --resource-version
 
 Specify a resource version (ETag) to update from. If not specified, the latest version is used.
 
@@ -503,7 +513,7 @@ Alias: `-v`
 tcld namespace accepted-client-ca set --resource-version <etag> --ca-certificate <encoded_certificate>
 ```
 
-#### `--ca-certificate`
+#### --ca-certificate
 
 _Required modifier unless `--ca-certificate-file` is specified_
 
@@ -519,7 +529,7 @@ Alias: `-c`
 tcld namespace accepted-client-ca set --ca-certificate <encoded_certificate>
 ```
 
-#### `--ca-certificate-file`
+#### --ca-certificate-file
 
 _Required modifier unless `--ca-certificate` is specified_
 
@@ -545,6 +555,79 @@ Alias: `cf`
 - <a class="tdlp" href="#export">tcld namespace certificate-filters export<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace certificate-filters export</span><br /><br /><span class="tdlppd">How to export certificate filters from a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#export">Learn more</a></span></span></a>
 - <a class="tdlp" href="#clear">tcld namespace certificate-filters clear<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace certificate-filters clear</span><br /><br /><span class="tdlppd">How to clear all certificate filters from a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#clear">Learn more</a></span></span></a>
 
+### add
+
+The `tcld namespace certificates-filter add` command adds additional certificate filters to the Namespace of a Temporal Cloud account.
+
+The following modifiers control the behavior of the command.
+
+#### --namespace
+
+Specify a Namespace hosted on Temporal Cloud.
+If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+
+Alias: `-n`
+
+**Example**
+
+```bash
+tcld namespace certificate-filters add --namespace <namespace_id> --certificate-filter-file <file>
+```
+
+#### --request-id
+
+Specify a request identifier to use for the asynchronous operation.
+If not specified, the server assigns a request identifier.
+
+Alias: `-r`
+
+**Example**
+
+```bash
+tcld namespace certificate-filters add --request-id <request_id> --certificate-filter-file <file>
+```
+
+#### --resource-version
+
+Specify a resource version (ETag) to update from.
+If not specified, the latest version is used.
+
+Alias: `-v`
+
+**Example**
+
+```bash
+tcld namespace certificate-filters add --resource-version <etag> --certificate-filter-file <file>
+```
+
+#### --certificate-filter-file
+
+_Required modifier unless `--certificate-filter-value` is specified._
+
+Specify a path to a JSON file defining the certificate filters for the Namespace.
+
+Aliases: `-f`, `--file`
+
+**Example**
+
+```bash
+tcld namespace certificate-filters add --certificate-filter-file <file>
+```
+
+#### --certificate-filter-input
+
+_Required modifier unless `--certificate-filter-file` is specified._
+
+The certificate filters, in JSON, that will be added to the Namespace.
+
+Aliases: `-i`, `--input`
+
+**Example**
+
+```bash
+tcld namespace certificate-filters add --certificate-filter-input <JSON>
+```
+
 ### clear
 
 The `tcld namespace certificate-filters clear` command clears all certificate filters from a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
@@ -559,7 +642,7 @@ Using this command allows _any_ client certificate that chains up to a configure
 
 The following modifiers control the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
@@ -571,7 +654,7 @@ Alias: `-n`
 tcld namespace certificate-filters clear --namespace <namespace_id>
 ```
 
-#### `--request-id`
+#### --request-id
 
 Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
 
@@ -583,7 +666,7 @@ Alias: `-r`
 tcld namespace certificate-filters clear --request-id <request_id>
 ```
 
-#### `--resource-version`
+#### --resource-version
 
 Specify a resource version (ETag) to update from. If not specified, the latest version is used.
 
@@ -605,7 +688,7 @@ Alias: `exp`
 
 The following modifiers control the behavior of the command.
 
-#### `--certificate-filter-file`
+#### --certificate-filter-file
 
 Specify a path to a JSON file where tcld can export the certificate filters.
 
@@ -617,7 +700,7 @@ Aliases: `--file`, `-f`
 tcld namespace certificate-filters export --certificate-filter-file <path>
 ```
 
-#### `--namespace`
+#### --namespace
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
@@ -629,7 +712,7 @@ Alias: `-n`
 tcld namespace certificate-filters import --namespace <namespace_id> --certificate-filter-input <json>
 ```
 
-#### `--request-id`
+#### --request-id
 
 Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
 
@@ -641,7 +724,7 @@ Alias: `-r`
 tcld namespace certificate-filters import --request-id <request_id> --certificate-filter-input <json>
 ```
 
-#### `--resource-version`
+#### --resource-version
 
 Specify a resource version (ETag) to update from. If not specified, the latest version is used.
 
@@ -670,7 +753,7 @@ A certificate filter can include any combination (and at least one) of the follo
 
 The following modifiers control the behavior of the command.
 
-#### `--certificate-filter-file`
+#### --certificate-filter-file
 
 _Required modifier unless `--certificate-filter-input` is specified_
 
@@ -686,7 +769,7 @@ Aliases: `--file`, `-f`
 tcld namespace certificate-filters import --certificate-filter-file <path>
 ```
 
-#### `--certificate-filter-input`
+#### --certificate-filter-input
 
 _Required modifier unless `--certificate-filter-file` is specified_
 
@@ -702,7 +785,7 @@ Aliases: `--input`, `-i`
 tcld namespace certificate-filters import --certificate-filter-input <json>
 ```
 
-#### `--namespace`
+#### --namespace
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
@@ -714,7 +797,7 @@ Alias: `-n`
 tcld namespace certificate-filters import --namespace <namespace_id> --certificate-filter-input <json>
 ```
 
-#### `--request-id`
+#### --request-id
 
 Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
 
@@ -726,7 +809,7 @@ Alias: `-r`
 tcld namespace certificate-filters import --request-id <request_id> --certificate-filter-input <json>
 ```
 
-#### `--resource-version`
+#### --resource-version
 
 Specify a resource version (ETag) to update from. If not specified, the latest version is used.
 
@@ -757,7 +840,7 @@ Alias: `a`
 
 The following modifiers control the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
@@ -769,7 +852,7 @@ Alias: `-n`
 tcld namespace search-attributes add --namespace <namespace_id> --search-attribute <value>
 ```
 
-#### `--request-id`
+#### --request-id
 
 Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
 
@@ -781,7 +864,7 @@ Alias: `-r`
 tcld namespace search-attributes add --request-id <request_id> --search-attribute <value>
 ```
 
-#### `--resource-version`
+#### --resource-version
 
 Specify a resource version (ETag) to update from. If not specified, the latest version is used.
 
@@ -793,7 +876,7 @@ Alias: `-v`
 tcld namespace search-attributes add --resource-version <etag> --search-attribute <value>
 ```
 
-#### `--search-attribute`
+#### --search-attribute
 
 _Required modifier; can be specified more than once_
 
@@ -822,7 +905,7 @@ The `tcld namespace search-attributes rename` command renames a custom <a class=
 
 The following modifiers control the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
@@ -834,7 +917,7 @@ Alias: `-n`
 tcld namespace search-attributes rename --namespace <namespace_id> --existing-name <value> --new-name <value>
 ```
 
-#### `--request-id`
+#### --request-id
 
 Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
 
@@ -846,7 +929,7 @@ Alias: `-r`
 tcld namespace search-attributes rename --request-id <request_id> --existing-name <value> --new-name <value>
 ```
 
-#### `--resource-version`
+#### --resource-version
 
 Specify a resource version (ETag) to update from. If not specified, the latest version is used.
 
@@ -858,7 +941,7 @@ Alias: `-v`
 tcld namespace search-attributes rename --resource-version <etag> --existing-name <value> --new-name <value>
 ```
 
-#### `--existing-name`
+#### --existing-name
 
 _Required modifier_
 
@@ -872,7 +955,7 @@ Alias: `--en`
 tcld namespace search-attributes rename --existing-name <value> --new-name <value>
 ```
 
-#### `--new-name`
+#### --new-name
 
 _Required modifier_
 
@@ -903,7 +986,7 @@ Alias: `g`
 
 The following modifier controls the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 _Required modifier_
 
@@ -926,7 +1009,7 @@ Alias: `s`
 
 The following modifiers control the behavior of the command.
 
-#### `--namespace`
+#### --namespace
 
 _Required modifier_
 
@@ -935,7 +1018,7 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
-#### `--retention-days`
+#### --retention-days
 
 _Required modifier_
 
@@ -947,4 +1030,67 @@ Alias: `--rd`
 
 ```bash
 tcld namespace retention set --namespace <namespace_id> --retention-days <retention_days>
+```
+
+## update-codec-server
+
+The `tcld namespace update-codec-server` command updates the configuration of a codec server for Temporal Cloud, which allows payloads to be decodec through a remote endpoint.
+
+Alias: `ucs`
+
+The following modifiers control the behavior of the command.
+
+#### --namespace
+
+_Required modifier._
+
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+
+Alias: `-n`
+
+**Example**
+
+```bash
+tcld namespace update-codec-server --namespace <namespace_id> --endpoint <http_url>
+```
+
+#### --endpoint
+
+_Required modifier._
+
+Specify an endpoint to decode payloads for all users interacting with this Namespace.
+Endpoints must be valid https URLs.
+
+Alias: `-e`
+
+**Example**
+
+```bash
+tcld namespace update-codec-server --namespace <namespace_id> --endpoint <https_url>
+```
+
+#### --pass-access-token
+
+Enables a user access token to be passed with the remote endpoint.
+This is set to `false` by default.
+
+Alias: `--pat`
+
+**Example**
+
+```bash
+tcld namespace update-codec-server --namespace <namespace_id> --endpoint <https_url> --pass-access-token <bool>
+```
+
+#### --include-credentials
+
+Enables the inclusion of cross-origin credentials.
+This is set to `false` by default.
+
+Alias: `--ic`
+
+**Example**
+
+```bash
+tcld namespace update-codec-server --namespace <namespace_id> --endpoint <https_url> --include-credentials true
 ```

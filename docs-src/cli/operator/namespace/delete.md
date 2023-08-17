@@ -4,23 +4,45 @@ title: temporal operator namespace delete
 sidebar_label: delete
 description: Deletes an existing Namespace.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - operator
+  - command-line-interface-cli
+  - namespace
+  - namespace delete
 ---
 
 The `temporal operator namespace delete` command deletes a given [Namespace](/concepts/what-is-a-namespace) from the system.
+The command follow the syntax `temporal operator namespace delete <namespace>`
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the behavior of this command.
 
-- [--fields](/cli/cmd-options/fields)
+- [--address](/cli/cmd-options/address)
 
-- [--limit](/cli/cmd-options/limit)
+- [--codec-auth](/cli/cmd-options/codec-auth)
 
-- [--no-pager](/cli/cmd-options/no-pager)
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
 
-- [--output](/cli/cmd-options/output)
+- [--color](/cli/cmd-options/color)
 
-- [--pager](/cli/cmd-options/pager)
+- [--context-timeout](/cli/cmd-options/context-timeout)
 
-- [--time-format](/cli/cmd-options/time-format)
+- [--env](/cli/cmd-options/env)
+
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
+
+- [--namespace](/cli/cmd-options/namespace)
+
+- [--tls](/cli/cmd-options/tls)
+
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options/tls-server-name)
 
 - [--yes](/cli/cmd-options/yes)

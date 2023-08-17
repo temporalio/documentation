@@ -4,6 +4,8 @@ title: Temporal SDK metrics reference
 sidebar_label: SDK metrics
 description: The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.
 toc_max_heading_level: 4
+keywords:
+- reference
 tags:
 - reference
 ---
@@ -14,7 +16,7 @@ tags:
 
 The information on this page is relevant to <a class="tdlp" href="/temporal#temporal-sdk">Temporal SDKs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal SDK?</span><br /><br /><span class="tdlppd">A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-sdk">Learn more</a></span></span></a>.
 
-See [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) for metrics emitted by <a class="tdlp" href="/cloud/index#">Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Temporal Cloud?</span><br /><br /><span class="tdlppd">Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#">Learn more</a></span></span></a>.
+See <a class="tdlp" href="/cloud/metrics#">Cloud metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to monitor Temporal Cloud metrics</span><br /><br /><span class="tdlppd">Configure and track performance metrics for Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/metrics#">Learn more</a></span></span></a> for metrics emitted by <a class="tdlp" href="/cloud/index#">Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Temporal Cloud?</span><br /><br /><span class="tdlppd">Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#">Learn more</a></span></span></a>.
 
 See <a class="tdlp" href="/references/cluster-metrics#">Cluster metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal OSS Cluster metrics reference</span><br /><br /><span class="tdlppd">The Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and set up alerts.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/cluster-metrics#">Learn more</a></span></span></a> for metrics emitted by the <a class="tdlp" href="/clusters#">OSS Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 

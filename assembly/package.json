@@ -2,9 +2,12 @@
   "name": "assembly",
   "type": "module",
   "version": "1.0.0",
-  "main": "assembly.js",
+  "main": "worker.js",
   "author": "cully@temporal.io",
   "license": "MIT",
+  "scripts": {
+    "worker": "nodemon --ext js"
+  },
   "dependencies": {
     "@notionhq/client": "^2.2.0",
     "@octokit/rest": "^19.0.7",
@@ -20,5 +23,8 @@
     "svg-parser": "^2.0.4",
     "tar-fs": "^2.1.1",
     "temporalio": "^1.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }

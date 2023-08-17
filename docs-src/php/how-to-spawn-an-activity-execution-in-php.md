@@ -2,6 +2,10 @@
 id: how-to-spawn-an-activity-execution-in-php
 title: How to spawn an Activity Execution in PHP
 sidebar_label: Spawn an Activity Execution
+description: Spawn an Activity Execution in PHP
+tags: 
+ - activity
+ - activity execution
 ---
 
 Activity implementation is an implementation of an Activity interface.

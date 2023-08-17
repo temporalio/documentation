@@ -5,6 +5,7 @@ sidebar_label: get_shardid
 description: Providing the shardId on command
 tags:
   - tctl
+  - cli reference
 ---
 
 The `tctl admin history_host get_shardid` command gets the `shardId` for a given `namespaceId` and `workflowId`.

@@ -5,15 +5,15 @@ sidebar_label: describe
 description: Describes Id of shard.
 tags:
   - tctl
-  - admin
-  - shard
+  - cli reference
+  - history shards
 ---
 
 The `tctl admin shard describe` command shows the Id for the specified shard.
 
 The modifier below controls the behavior of the command.
 
-#### --share_id value
+#### --shard_id value
 
 The Id of the shard to describe
 

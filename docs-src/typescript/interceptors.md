@@ -3,6 +3,10 @@ id: interceptors
 title: Interceptors in TypeScript SDK
 sidebar_label: Interceptors
 description: Interceptors are a mechanism for users to modify inbound and outbound SDK calls. Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities. You can compare these to "middleware" in other frameworks.
+tags:
+ - interceptors
+ - opentelemtry
+ - logs
 ---
 
 Interceptors are a mechanism for users to modify inbound and outbound SDK calls.
