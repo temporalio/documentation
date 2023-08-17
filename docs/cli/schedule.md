@@ -61,7 +61,7 @@ temporal schedule backfill --schedule-id 'your-schedule-id' \
 --end-time '2022-05-31T23:59:59Z'
 ```
 
-Temporal recommends setting the Overlap Policy to 'BufferAll' to run backfilled Workflows sequentially.
+Temporal recommends setting the Overlap Policy to `BufferAll` to run backfilled Workflows sequentially.
 
 Use the following options to change this command's behavior.
 
@@ -106,7 +106,7 @@ Use the following options to change this command's behavior.
 The `temporal schedule create` command creates a new <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule?</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a>.
 Newly created Schedules return a Schedule ID to be used in other Schedule commands.
 
-Schedules are set in the following format:
+Schedules use the following format:
 
 ```
 temporal schedule create \
@@ -132,7 +132,7 @@ temporal schedule create \
 ```
 
 Workflows don't run in parallel.
-Setting the `--overlap-policy` to 'BufferAll' allows Workflows to run sequentially if they would overlap.
+Setting the `--overlap-policy` to `BufferAll` allows Workflows to run sequentially if they would overlap.
 
 Any combination of `--calendar`, `--interval`, and `--cron` is supported.
 Traditional cron strings, along with `CronSchedule` features, are also supported.
