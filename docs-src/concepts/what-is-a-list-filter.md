@@ -71,7 +71,7 @@ For Search Attributes of type `Keyword` like `WorkflowId`, the only kind of part
 WorkflowId BETWEEN "order-" AND "order-~"
 ```
 
-would match WorkflowIds that have characters after `order-` with lower ASCII values than `~` (126, the highest-value printable character), such as the following:
+The preceding example matches WorkflowIds that have characters after `order-` with ASCII values lower than `~` (126, the highest-value printable character), such as the following:
 
 ```
 order-
