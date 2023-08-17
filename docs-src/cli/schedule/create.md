@@ -40,7 +40,7 @@ temporal schedule create \
 ```
 
 Workflows don't run in parallel.
-Setting the `--overlap-policy` to 'BufferAll' allows Workflows to run sequentially if they would overlap.
+Setting the `--overlap-policy` to `BufferAll` allows Workflows to run sequentially if they would overlap.
 
 Any combination of `--calendar`, `--interval`, and `--cron` is supported.
 Traditional cron strings, along with `CronSchedule` features, are also supported.
