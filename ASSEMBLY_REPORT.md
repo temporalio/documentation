@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday August 15 2023 15:27:05 PM -0700
+Last assembled: Thursday August 17 2023 11:57:46 AM -0500
 
-Assembly Workflow Id: docs-full-assembly-dail-macbook
+Assembly Workflow Id: docs-full-assembly
 
 93 guide configurations found.
 
@@ -712,15 +712,9 @@ python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-tem
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
 
-cloud/certificates-namespace -> #manage-certificates
-
 cloud/certificates-filters -> #manage-certificate-filters
 
 cloud/users-namespace-level-permissions -> /cloud/users#namespace-level-permissions
-
-cloud/support-create-ticket -> /cloud/support#support-ticket
-
-cloud/certificates-notifications -> #expiration-notifications
 
 cloud/namespaces-access -> #access-namespaces
 
@@ -731,6 +725,8 @@ cloud/namespaces-delete -> #delete-a-namespace
 concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
+
+cloud/support-create-ticket -> /cloud/support#support-ticket
 
 concepts/what-is-a-cloud-namespace-id -> #temporal-cloud-namespace-id
 
@@ -1035,5 +1031,9 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+cloud/certificates-namespace -> #manage-certificates
+
+cloud/certificates-notifications -> #expiration-notifications
 
 
