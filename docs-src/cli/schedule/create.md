@@ -14,7 +14,7 @@ tags:
 The `temporal schedule create` command creates a new [Schedule](/concepts/what-is-a-schedule).
 Newly created Schedules return a Schedule ID to be used in other Schedule commands.
 
-Schedules are set in the following format:
+Schedules use the following format:
 
 ```
 temporal schedule create \
