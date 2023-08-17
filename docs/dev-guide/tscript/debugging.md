@@ -265,7 +265,7 @@ You can "rewind time" using the `tctl` CLI, resetting Workflow History to some p
 - [Restarting and resetting Workflows by ID](/tctl-v1)
 - [Resetting all Workflows by binary checksum identifier](/tctl-v1)
 
-If you need to reset programmatically, the TS SDK does not have any high level APIs for this, but you can make raw gRPC calls to [resetWorkflowExecution](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1/#resetworkflowexecution).
+If you need to reset programmatically, the TS SDK does not have any high level APIs for this, but you can make raw gRPC calls to [resetWorkflowExecution](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.workflowservice-1/#resetworkflowexecution).
 
 Resetting should only be used to deal with serious logical bugs in your code: it's not for handling transient failures, like a downstream service being unreachable. It should not be used in the course of normal application flows.
 

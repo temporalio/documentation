@@ -39,11 +39,11 @@ Workflow Definitions are "just functions", which can store state, and orchestrat
 <!--SNIPSTART typescript-hello-workflow {"enable_source_link": false}-->
 
 ```ts
-import * as workflow from '@temporalio/workflow';
+import { proxyActivities } from '@temporalio/workflow';
 // Only import the activity types
 import type * as activities from './activities';
 
-const { greet } = workflow.proxyActivities<typeof activities>({
+const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute',
 });
 
