@@ -41,19 +41,12 @@
     "kb/*.md",
     "vercel.json"
   ],
-  "excludes": [
-    "**/node_modules",
-    "**/*-lock.json",
-    "blogs/**",
-    ".docusaurus/",
-    ".github",
-    "/build"
-  ],
+  "excludes": ["**/node_modules", "**/*-lock.json", "blogs/**", ".docusaurus/", ".github", "/build"],
   "incremental": true,
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.69.5.wasm",
     "https://plugins.dprint.dev/json-0.15.3.wasm",
     "https://plugins.dprint.dev/markdown-0.13.3.wasm",
-    "https://plugins.dprint.dev/prettier-0.9.0.json@76c20538ea4231b3daa9b62059f90ec144200cab5477b7e95b730cbb3ed48957"
+    "https://plugins.dprint.dev/prettier-0.27.0.json@3557a62b4507c55a47d8cde0683195b14d13c41dda66d0f0b0e111aed107e2fe"
   ]
 }

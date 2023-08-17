@@ -67,11 +67,7 @@ Description = 'foo'
 
 For Search Attributes of type `Keyword` like `WorkflowId`, the only kind of partial string matching that works is using BETWEEN for suffixes.
 
-```
-WorkflowId BETWEEN "order-" AND "order-~"
-```
-
-The preceding example matches WorkflowIds that have characters after `order-` with ASCII values lower than `~` (126, the highest-value printable character), such as the following:
+`WorkflowId BETWEEN "order-" AND "order-~"` matches WorkflowIds that have characters after `order-` with ASCII values lower than `~` (126, the highest-value printable character), such as the following:
 
 ```
 order-
