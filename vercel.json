@@ -1826,6 +1826,10 @@
       "destination": "cloud/operating-envelope:path*"
     },
     {
+      "source": "/cloud/introduction/pricing:path*",
+      "destination": "/cloud/pricing:path*"
+    },
+    {
       "source": "/cloud/introduction/support:path*",
       "destination": "/cloud/support:path*"
     },
