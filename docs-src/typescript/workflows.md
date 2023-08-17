@@ -37,13 +37,12 @@ A Workflow function becomes a **Workflow Execution** (instance) only when starte
 Workflow Definitions are "just functions", which can store state, and orchestrate [Activity functions](/typescript/activities).
 
 <!--SNIPSTART typescript-hello-workflow {"enable_source_link": false}-->
-
 ```ts
-import { proxyActivities } from '@temporalio/workflow';
+import * as workflow from '@temporalio/workflow';
 // Only import the activity types
 import type * as activities from './activities';
 
-const { greet } = proxyActivities<typeof activities>({
+const { greet } = workflow.proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute',
 });
 
@@ -52,7 +51,6 @@ export async function example(name: string): Promise<string> {
   return await greet(name);
 }
 ```
-
 <!--SNIPEND-->
 
 The snippet above uses `proxyActivities` to create functions that, when called, schedule a `greet` Activity in the system to say "Hello World".
@@ -154,9 +152,7 @@ The rest of this document explains the major Workflow APIs you should know:
 If you know the name of your signals and queries upfront, we recommend declaring them outside of the Workflow Definition.
 
 <!--SNIPSTART typescript-blocked-workflow-->
-
 [signals-queries/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/signals-queries/src/workflows.ts)
-
 ```ts
 import * as wf from '@temporalio/workflow';
 
@@ -179,7 +175,6 @@ export async function unblockOrCancel(): Promise<void> {
   }
 }
 ```
-
 <!--SNIPEND-->
 
 This helps provide type safety, since you can export the type signature of the signal or query to be called on the clientside.
@@ -667,17 +662,12 @@ export async function trackStepChanges(): Promise<void> {
 This leads to some nice patterns, like placing `await condition` inside an `if`:
 
 <!--SNIPSTART typescript-oneclick-buy-->
-
 [nextjs-ecommerce-oneclick/temporal/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/nextjs-ecommerce-oneclick/temporal/src/workflows.ts)
-
 ```ts
 export async function OneClickBuy(itemId: string) {
   const itemToBuy = itemId;
   let purchaseState: PurchaseState = 'PURCHASE_PENDING';
-  wf.setHandler(
-    cancelPurchase,
-    () => void (purchaseState = 'PURCHASE_CANCELED'),
-  );
+  wf.setHandler(cancelPurchase, () => void (purchaseState = 'PURCHASE_CANCELED'));
   wf.setHandler(purchaseStateQuery, () => purchaseState);
   if (await wf.condition(() => purchaseState === 'PURCHASE_CANCELED', '5s')) {
     return await canceledPurchase(itemToBuy);
@@ -687,7 +677,6 @@ export async function OneClickBuy(itemId: string) {
   }
 }
 ```
-
 <!--SNIPEND-->
 
 </details>
@@ -917,9 +906,7 @@ You should use [cancellationScopes](/typescript/cancellation-scopes) if you need
 [`executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#executechild) starts a child workflow and awaits (blocks until) its completion:
 
 <!--SNIPSTART typescript-child-workflow-->
-
 [child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/child-workflows/src/workflows.ts)
-
 ```ts
 import { executeChild } from '@temporalio/workflow';
 
@@ -933,12 +920,11 @@ export async function parentWorkflow(...names: string[]): Promise<string> {
         // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
         // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
       })
-    ),
+    )
   );
   return responseArray.join('\n');
 }
 ```
-
 <!--SNIPEND-->
 
 To control any running Workflow from inside a Workflow, use [`getExternalWorkflowHandle(workflowId)`](https://typescript.temporal.io/api/namespaces/workflow/#getexternalworkflowhandle).
@@ -1006,9 +992,7 @@ We need to call `continueAsNew` before our Workflow History exceeds 51,200 Event
 [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew) stops the current Workflow Execution and starts another one with new arguments and an empty Event History. Note that this is done immediately, so make sure that your Signal handlers have finished running before calling `continueAsNew`.
 
 <!--SNIPSTART typescript-continue-as-new-workflow-->
-
 [continue-as-new/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/continue-as-new/src/workflows.ts)
-
 ```ts
 import { continueAsNew, sleep } from '@temporalio/workflow';
 
@@ -1023,7 +1007,6 @@ export async function loopingWorkflow(iteration = 0): Promise<void> {
   // Unreachable code, continueAsNew is like `process.exit` and will stop execution once called.
 }
 ```
-
 <!--SNIPEND-->
 
 You can also call `continueAsNew` from a signal handler or `continueAsNew` to a different Workflow (or different Task Queue) using [`makeContinueAsNewFunc`](https://nodejs.temporal.io/api/namespaces/workflow/#makecontinueasnewfunc).

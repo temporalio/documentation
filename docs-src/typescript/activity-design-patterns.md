@@ -20,9 +20,7 @@ This is a helpful pattern for using closures to do the following:
 - Inject secret keys (such as environment variables) from the Worker to the Activity.
 
 <!--SNIPSTART typescript-activity-with-deps-->
-
 [activities-dependency-injection/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-dependency-injection/src/activities.ts)
-
 ```ts
 export interface DB {
   get(key: string): Promise<string>;
@@ -39,7 +37,6 @@ export const createActivities = (db: DB) => ({
   },
 });
 ```
-
 <!--SNIPEND-->
 
 <details>
@@ -48,7 +45,6 @@ export const createActivities = (db: DB) => ({
 When you register these in the Worker, pass your shared dependencies accordingly:
 
 <!--SNIPSTART typescript-activity-deps-worker {"enable_source_link": false}-->
-
 ```ts
 import { createActivities } from './activities';
 
@@ -74,26 +70,20 @@ run().catch((err) => {
   process.exit(1);
 });
 ```
-
 <!--SNIPEND-->
 
 Because Activities are always referenced by name, inside the Workflow they can be proxied as normal, although the types need some adjustment:
 
 <!--SNIPSTART typescript-activity-deps-workflow-->
-
 [activities-dependency-injection/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-dependency-injection/src/workflows.ts)
-
 ```ts
 import type { createActivities } from './activities';
 
 // Note usage of ReturnType<> generic since createActivities is a factory function
-const { greet, greet_es } = proxyActivities<
-  ReturnType<typeof createActivities>
->({
+const { greet, greet_es } = proxyActivities<ReturnType<typeof createActivities>>({
   startToCloseTimeout: '30 seconds',
 });
 ```
-
 <!--SNIPEND-->
 
 </details>

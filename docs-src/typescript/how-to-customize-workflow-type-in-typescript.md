@@ -13,13 +13,10 @@ In TypeScript, the Workflow Type is the Workflow function name and there isn't a
 In the following example, the Workflow Type is the name of the function, `helloWorld`.
 
 <!--SNIPSTART typescript-workflow-type -->
-
 [snippets/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/workflows.ts)
-
 ```ts
 export async function helloWorld(): Promise<string> {
   return '👋 Hello World!';
 }
 ```
-
 <!--SNIPEND-->
