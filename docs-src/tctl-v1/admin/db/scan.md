@@ -5,8 +5,8 @@ sidebar_label: scan
 description: Scanning for corrupted executions in a database
 tags:
   - tctl
-  - admin
   - db
+  - cli reference
 ---
 
 The `tctl admin db scan` command scans concrete Workflow Executions in a given database, and detects corrupted ones.

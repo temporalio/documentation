@@ -1,10 +1,13 @@
 ---
 id: color
-title: temporal  color
+title: temporal color
 sidebar_label: color
-description: When to use color
-tags:
-    - cli
+description: Color options for the CLI.
+tags: 
+    - cli reference
+    - temporal cli
+    - options-feature
+    - command-line-interface-cli
 ---
 
-when to use color: auto, always, never. (default: auto)
+When to use color: auto, always, never. (default: auto)

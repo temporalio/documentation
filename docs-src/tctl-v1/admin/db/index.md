@@ -3,8 +3,9 @@ id: index
 title: tctl admin db
 sidebar_label: db
 description: Running admin operations on database
+tags:
   - tctl
-  - admin
+  - cli reference
   - db
 ---
 

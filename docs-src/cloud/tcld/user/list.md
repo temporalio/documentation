@@ -5,6 +5,7 @@ sidebar_label: list
 description: How to list users in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli reference
 ---
 
 The `tcld user list` command returns a paginated list of users in Temporal Cloud.
@@ -19,7 +20,7 @@ tcld user list
 
 The following modifiers control the behavior of the command.
 
-### `--namespace`
+#### --namespace
 
 List users that have permissions to the Namespace.
 
@@ -31,13 +32,13 @@ Alias: `-n`
 tcld user list --namespace <namespace_id>
 ```
 
-### `--page-token`
+#### --page-token
 
 Page token for paging list users request.
 
 Alias: `-p`
 
-### `--page-size`
+#### --page-size
 
 Page size for paging list users request.
 

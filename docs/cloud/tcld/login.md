@@ -4,7 +4,11 @@ title: tcld login command reference
 sidebar_label: login
 description: How to use Temporal Cloud's tcld login command.
 toc_max_heading_level: 4
+keywords:
+- cli-reference
+- tcld
 tags:
+- cli-reference
 - tcld
 ---
 

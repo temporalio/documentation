@@ -5,6 +5,7 @@ sidebar_label: request
 description: How to manage asynchronous requests in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli reference
 ---
 
 The `tcld request` commands manage asynchronous requests in Temporal Cloud.

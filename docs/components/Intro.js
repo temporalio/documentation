@@ -250,21 +250,26 @@ const cloudInfo = {
   listOne: [
     {
       book: true,
-      path: "/cloud/how-to-get-started-with-temporal-cloud",
+      path: "/cloud/introduction",
+      name: "Introduction",
+    },
+    {
+      book: true,
+      path: "/cloud/get-started",
       name: "Get started",
     },
     {
       book: true,
-      path: "/cloud/how-to-manage-certificates-in-temporal-cloud",
-      name: "Manage certificates",
-    },
-    {
-      book: true,
-      path: "/cloud/how-to-manage-namespaces-in-temporal-cloud",
-      name: "Manage Namespaces",
+      path: "/cloud/account-setup/",
+      name: "Account setup",
     },
   ],
   listTwo: [
+    {
+      book: true,
+      path: "/cloud/metrics",
+      name: "Metrics",
+    },
     {
       cli: true,
       path: "/cloud/tcld",
@@ -272,7 +277,7 @@ const cloudInfo = {
     },
     {
       exit: true,
-      path: "/cloud/release-notes",
+      path: "https://temporal.io/change-log/product-area/cloud",
       name: "Release notes",
     },
   ],
@@ -385,7 +390,6 @@ function Explained() {
           <a className="header-link" href="/cloud">
             <h2 className="h2-landing">Temporal Cloud</h2>
           </a>
-          <div className="badge-blue">early access</div>
         </div>
         <p className="landing-card-p">Temporal Cloud tools and how-to guides</p>
         <ul className="landing-card-list">{displayLinks(cloudInfo.listOne)}</ul>

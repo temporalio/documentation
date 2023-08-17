@@ -12,16 +12,29 @@ tags:
 
 A Search Attribute is an indexed field used in a [List Filter](/concepts/what-is-a-list-filter) to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
 
-Each Search Attribute is a key-value pair metadata object and is part of the Workflow Execution visibility information, stored in the Visibility store. Use Search Attributes for metadata and search purposes only, not business logic.
+Each Search Attribute is a key-value pair metadata object included in a Workflow Execution's Visibility information.
+This information is available in the Visibility store.
 
-Temporal provides some [default Search Attributes](#default-search-attributes), such as `ExecutionStatus` of your Workflow Execution.
-You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store and assign values in a Workflow Execution.
+:::note
 
-Search Attribute values are assigned to a specific Workflow Execution and are available for that execution only for the duration of the specified Namespace [Retention Period](/concepts/what-is-a-retention-period).
+Search Attribute values are not encrypted because the Temporal Server must be able to read these values from the Visibility store when retrieving Workflow Execution details.
 
-Note that Search Attribute values are not encrypted because the Temporal Server must be able to read these values from the Visibility store when retrieving Workflow Execution details.
+:::
 
-When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal Cron Job](/concepts/what-is-a-temporal-cron-job), Search Attributes are carried over to the new Workflow Run by default.
+Temporal provides some [default Search Attributes](#default-search-attributes), such as `ExecutionStatus`, the current state of your Workflow Executions.
+You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store and assign values when starting a Workflow Execution or in Workflow code.
+
+When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal Cron Job](/concepts/what-is-a-temporal-cron-job), Search Attribute keys are carried over to the new Workflow Run by default.
+Search Attribute values are only available for as long as the Workflow is.
+
+Search Attributes are most effective for search purposes or tasks requiring collection-based result sets.
+For business logic in which you need to get information about a Workflow Execution, consider one of the following:
+
+- Storing state in a local variable and exposing it with a Query.
+- Storing state in an external datastore through Activities and fetching it directly from the store.
+
+If your business logic requires high throughput or low latency, store and fetch the data through Activities.
+You might experience lag due to time passing between the Workflow's state change and the Activity updating the Visibility store.
 
 ### Default Search Attributes
 
@@ -32,7 +45,7 @@ These Search Attributes are created when the initial index is created.
 | NAME                       | TYPE         | DEFINITION                                                                                                                                                                                                   |
 | -------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | BatcherUser                | Keyword      | Used by internal batcher Workflow that runs in `TemporalBatcher` Namespace division to indicate the user who started the batch operation.                                                                    |
-| BinaryChecksums            | Keyword      | List of binary Ids of Workers that run the Workflow Execution. Deprecated since server version 1.21 in favor of the `BuildIds` search attribute.                                                             |
+| BinaryChecksums            | Keyword List | List of binary Ids of Workers that run the Workflow Execution. Deprecated since server version 1.21 in favor of the `BuildIds` search attribute.                                                             |
 | BuildIds                   | Keyword List | List of Worker Build Ids that have processed the Workflow Execution, formatted as `versioned:{BuildId}` or `unversioned:{BuildId}`, or the sentinel `unversioned` value. Available from server version 1.21. |
 | CloseTime                  | Datetime     | The time at which the Workflow Execution completed.                                                                                                                                                          |
 | ExecutionDuration          | Int          | The time needed to run the Workflow Execution (in nanoseconds). Available only for closed Workflows.                                                                                                         |
@@ -44,7 +57,7 @@ These Search Attributes are created when the initial index is created.
 | StartTime                  | Datetime     | The time at which the Workflow Execution started.                                                                                                                                                            |
 | StateTransitionCount       | Int          | The number of times that Workflow Execution has persisted its state. Available only for closed Workflows.                                                                                                    |
 | TaskQueue                  | Keyword      | Task Queue used by Workflow Execution.                                                                                                                                                                       |
-| TemporalChangeVersion      | Keyword      | Stores change/version pairs if the GetVersion API is enabled.                                                                                                                                                |
+| TemporalChangeVersion      | Keyword List | Stores change/version pairs if the GetVersion API is enabled.                                                                                                                                                |
 | TemporalScheduledStartTime | Datetime     | The time that the Workflow is schedule to start according to the Schedule Spec. Can be manually triggered. Set on Schedules.                                                                                 |
 | TemporalScheduledById      | Keyword      | The Id of the Schedule that started the Workflow.                                                                                                                                                            |
 | TemporalSchedulePaused     | Boolean      | Indicates whether the Schedule has been paused. Set on Schedules.                                                                                                                                            |

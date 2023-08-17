@@ -1,10 +1,15 @@
 ---
 id: detail
-title: temporal  detail
+title: temporal detail
 sidebar_label: detail
-description: Detail to fail the Activity.
-tags:
-    - cli
+description: Reason to fail the Activity.
+tags: 
+    - cli reference
+    - temporal cli
+    - options-feature
+    - command-line-interface-cli
+    - activity
+    - failures
 ---
 
-Detail to fail the Activity.
+A provided reason for failing an Activity.

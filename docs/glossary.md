@@ -13,10 +13,10 @@ tags:
 
 The following terms are used in [Temporal Platform](/temporal) documentation.
 
-#### [Action](/cloud#action)
+#### [Action](/cloud/pricing#action)
 An Action is the fundamental pricing unit in Temporal Cloud.
 
-_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+_Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_
 
 
 #### [Activity](/activities#)
@@ -79,10 +79,10 @@ Asynchronous Activity Completion occurs when an external system provides the fin
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Audit Logging](/cloud/how-to-manage-audit-logging#)
+#### [Audit Logging](/cloud/audit-logging#)
 Audit Logging is a feature that provides forensic access information for accounts, users, and Namespaces.
 
-_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+_Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/tags/temporal-cloud), [operations](/tags/operations)_
 
 
 #### [Authorizer Plugin](/security#authorizer-plugin)
@@ -421,19 +421,19 @@ Temporal Cloud is a managed, hosted Temporal environment that provides a platfor
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Temporal Cloud Account Id](/cloud#temporal-cloud-account-id)
+#### [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id)
 A Temporal Cloud Account Id is a unique identifier for a customer.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Temporal Cloud Namespace Id](/cloud#temporal-cloud-namespace-id)
+#### [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id)
 A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Temporal Cloud Namespace Name](/cloud#temporal-cloud-namespace-name)
+#### [Temporal Cloud Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name)
 A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_

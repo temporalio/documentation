@@ -6,9 +6,14 @@ sidebar_position: 4
 description: The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 slug: /dev-guide/typescript/testing
 toc_max_heading_level: 4
-tags:
-- guide-context
+keywords:
 - developer-guide
+- guide-context
+- sdk
+- typescript
+tags:
+- developer-guide
+- guide-context
 - sdk
 - typescript
 ---
@@ -30,7 +35,7 @@ We generally recommend writing the majority of your tests as integration tests.
 
 Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
 
-## Test frameworks
+## Test frameworks {#test-frameworks}
 
 Some SDKs have support or examples for popular test frameworks, runners, or libraries.
 
@@ -47,12 +52,12 @@ TypeScript has sample tests for [Jest](https://jestjs.io/) and [Mocha](https://m
 - [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/mocha/workflows.test.ts)
 - Test coverage library: [`@temporalio/nyc-test-coverage`](https://github.com/temporalio/sdk-typescript/tree/main/packages/nyc-test-coverage)
 
-## Test Activities
+## Testing Activities {#test-activities}
 
 An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.
 This behavior allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
 
-### Run an Activity
+### Run an Activity {#run-an-activity}
 
 If an Activity references its context, you need to mock that context when testing in isolation.
 
@@ -79,7 +84,7 @@ const result = await env.run(activityFoo, 5, 35);
 assert.equal(result, 42);
 ```
 
-### Listen to Heartbeats
+### Listen to Heartbeats {#listen-to-heartbeats}
 
 When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in your test code so that you can verify them.
 
@@ -106,7 +111,7 @@ env.on('heartbeat', (d: unknown) => {
 await env.run(activityFoo);
 ```
 
-### Cancel an Activity
+### Cancel an Activity {#cancel-an-activity}
 
 If an Activity is supposed to react to a Cancellation, you can test whether it reacts correctly by canceling it.
 
@@ -135,9 +140,9 @@ await assert.rejects(env.run(activityFoo), (err) => {
 });
 ```
 
-## Test Workflows
+## Testing Workflows {#test-workflows}
 
-### Mock Activities
+### How to mock Activities {#mock-activities}
 
 Mock the Activity invocation when unit testing your Workflows.
 
@@ -160,7 +165,7 @@ const worker = await Worker.create({
 });
 ```
 
-### Skip time
+### How to skip time {#skip-time}
 
 Some long-running Workflows can persist for months or even years.
 Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds rather than the Workflow's specified amount.
@@ -179,7 +184,7 @@ Time is a global property of an instance of `TestWorkflowEnvironment`: skipping 
 If you need different time behaviors for different tests, run your tests in a series or with separate instances of the test server.
 For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
 
-#### Setting up
+#### Set up time skipping {#setting-up}
 
 Learn to set up the time-skipping test framework in the SDK of your choice.
 
@@ -207,7 +212,7 @@ afterAll(async () => {
 });
 ```
 
-`TestWorkflowEnvironment` has a [`client.workflow`](https://typescript.temporal.io/api/classes/testing.testworkflowenvironment/#workflowclient) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection) for creating Workers:
+`TestWorkflowEnvironment` has [`client.workflow`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment/#workflowclient) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection) for creating Workers:
 
 ```typescript
 import { Worker } from '@temporalio/worker';
@@ -231,16 +236,16 @@ test('workflowFoo', async () => {
 ```
 
 This test uses the test connection to create a Worker, runs the Worker until the Workflow is complete, and then makes an assertion about the Workflow’s result.
-The Workflow is executed using `testEnv.workflowClient`, which is connected to the test server.
+The Workflow is executed using `testEnv.client.workflow`, which is connected to the test server.
 
-#### Automatic method
+#### Skip time automatically {#automatic-method}
 
 You can skip time automatically in the SDK of your choice.
 Start a test server process that skips time as needed.
 For example, in the time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities are running.
 
 The test server starts in "normal" time.
-When you use `TestWorkflowEnvironment.workflowClient.execute()` or `.result()`, the test server switches to "skipped" time mode until the Workflow completes.
+When you use `TestWorkflowEnvironment.client.workflow.execute()` or `.result()`, the test server switches to "skipped" time mode until the Workflow completes.
 In "skipped" mode, timers (`sleep()` calls and `condition()` timeouts) are fast-forwarded except when Activities are running.
 
 `workflows.ts`
@@ -266,7 +271,7 @@ test('sleep completes almost immediately', async () => {
   });
   // Does not wait an entire day
   await worker.runUntil(
-    testEnv.workflowClient.execute(sleeperWorkflow, {
+    testEnv.client.workflow.execute(sleeperWorkflow, {
       workflowId: uuid(),
       taskQueue: 'test',
     }),
@@ -274,7 +279,7 @@ test('sleep completes almost immediately', async () => {
 });
 ```
 
-#### Manual method
+#### Skip time manually {#manual-method}
 
 Learn to skip time manually in the SDK of your choice.
 
@@ -309,7 +314,7 @@ test('sleeperWorkflow counts days correctly', async () => {
   // `start()` starts the test server in "normal" mode, not skipped time mode.
   // If you don't advance time using `testEnv.sleep()`, then `sleeperWorkflow()`
   // will run for days.
-  handle = await testEnv.workflowClient.start(sleeperWorkflow, {
+  handle = await testEnv.client.workflow.start(sleeperWorkflow, {
     workflowId: uuid4(),
     taskQueue,
   });
@@ -328,7 +333,7 @@ test('sleeperWorkflow counts days correctly', async () => {
 });
 ```
 
-#### Skip time in Activities
+#### Skip time in Activities {#skip-time-in-activities}
 
 Learn to skip time in Activities in the SDK of your choice.
 
@@ -423,7 +428,7 @@ it('sends reminder email if processOrder does not complete in time', async () =>
 
 <!--SNIPEND-->
 
-### Workflow context
+### Test functions in Workflow context {#workflow-context}
 
 For a function or method to run in the Workflow context (where it’s possible to get the current Workflow info, or running inside the sandbox in the case of TypeScript or Python), it needs to be run by the Worker as if it were a Workflow.
 
@@ -459,7 +464,7 @@ const worker = await Worker.create({
 });
 
 const result = await worker.runUntil(
-  testEnv.workflowClient.execute(functionToTest, workflowOptions),
+  testEnv.client.workflow.execute(functionToTest, workflowOptions),
 );
 
 assert.equal(result, 42);
@@ -479,7 +484,7 @@ export async function functionToTest(): Promise<number> {
 }
 ```
 
-### Assert in Workflow
+### Assert in Workflow {#assert-in-workflow}
 
 The `assert` statement is a convenient way to insert debugging assertions into the Workflow context.
 
@@ -521,11 +526,11 @@ const worker = await Worker.create({
 });
 
 await worker.runUntil(
-  testEnv.workflowClient.execute(functionToTest, workflowOptions), // throws WorkflowFailedError
+  testEnv.client.workflow.execute(functionToTest, workflowOptions), // throws WorkflowFailedError
 );
 ```
 
-## Replay
+## How to Replay a Workflow Execution {#replay}
 
 Replay recreates the exact state of a Workflow Execution.
 You can replay a Workflow from the beginning of its Event History.

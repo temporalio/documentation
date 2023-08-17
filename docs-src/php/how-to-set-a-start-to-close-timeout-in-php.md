@@ -2,6 +2,10 @@
 id: how-to-set-a-start-to-close-timeout-in-php
 title: How to set Start-to-Close Timeout in PHP
 sidebar_label: Start-to-Close Timeout
+description: Set Start-to-Close Timeout with ActivityOptions.
+tags: 
+    - activity
+    - timeout
 ---
 
 Because Activities are reentrant, only a single stub can be used for multiple Activity invocations.

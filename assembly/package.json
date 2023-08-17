@@ -2,11 +2,11 @@
   "name": "assembly",
   "type": "module",
   "version": "1.0.0",
-  "main": "assembly.js",
+  "main": "worker.js",
   "author": "cully@temporal.io",
   "license": "MIT",
   "scripts": {
-    "worker": "nodemon worker.js"
+    "worker": "nodemon --ext js"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.0",
@@ -25,6 +25,6 @@
     "temporalio": "^1.1.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^3.0.1"
   }
 }

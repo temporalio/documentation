@@ -11,7 +11,7 @@ tags:
 
 The information on this page is relevant to [Temporal SDKs](/concepts/what-is-a-temporal-sdk).
 
-See [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) for metrics emitted by [Temporal Cloud](/concepts/what-is-temporal-cloud).
+See [Cloud metrics](/cloud/metrics-intro) for metrics emitted by [Temporal Cloud](/concepts/what-is-temporal-cloud).
 
 See [Cluster metrics](/references/cluster-metrics) for metrics emitted by the [OSS Cluster](/concepts/what-is-a-temporal-cluster).
 

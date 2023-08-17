@@ -2,6 +2,11 @@
 id: testing
 title: Testing TypeScript Workflows
 sidebar_label: Testing
+description: Testing TypeScript Workflows
+tags:
+ - testing
+ - typescript
+ - jest
 ---
 
 :::note Sample available

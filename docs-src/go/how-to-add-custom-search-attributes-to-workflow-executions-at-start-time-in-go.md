@@ -4,9 +4,12 @@ title: How to add custom Search Attributes to Workflow Executions at start time 
 sidebar_label: Add custom Search Attributes to Workflow Executions at start time
 description: Add custom Search Attributes to Workflow Executions at start time
 tags:
-  - developer-guide
-  - go
-  - client
+  - developer-guide-doc-type
+  - go sdk
+  - temporal client
+  - how-to-doc-type
+  - search attributes
+  - workflow executions
 ---
 
 Provide key-value pairs in [`StartWorkflowOptions.SearchAttributes`](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).

@@ -4,9 +4,11 @@ title: How to set Mutable Side Effects in Go
 sidebar_label: Set Mutable Side Effects
 description: To use MutableSideEffect() in Go, provide the Workflow Id.
 tags:
-  - developer-guide
-  - sdk
-  - Go
+  - go sdk
+  - developer-guide-doc-type
+  - how-to-doc-type
+  - mutability
+  - side effects
 ---
 
 To use [`MutableSideEffect()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#MutableSideEffect) in Go, provide a unique name within the scope of the workflow.

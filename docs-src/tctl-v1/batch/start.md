@@ -5,6 +5,7 @@ sidebar_label: start
 description: How to start a batch job using tctl.
 tags:
   - tctl
+  - cli reference
 ---
 
 The `tctl batch start` command starts a batch job.

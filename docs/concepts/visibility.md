@@ -1,15 +1,20 @@
 ---
 id: visibility
-title: Visibility
+title: What is the Temporal Visibility feature?
 sidebar_label: Visibility
 sidebar_position: 7
 description: This guide provides a comprehensive overview of Temporal Visibility.
 slug: /visibility
 toc_max_heading_level: 4
-tags:
-- term
+keywords:
 - explanation
 - filtered-lists
+- term
+- visibility
+tags:
+- explanation
+- filtered-lists
+- term
 - visibility
 ---
 
@@ -19,6 +24,14 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 This guide provides a comprehensive overview of Temporal Visibility.
+
+:::tip Support, stability, and dependency info
+
+- For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
+- For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
+- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports advanced Visibility features](/cluster-deployment-guide#supported-databases). Visibility configuration in Temporal Cluster is updated and Dual Visibility is enabled. For details, see [Visibility store setup](/cluster-deployment-guide#visibility-store).
+
+:::
 
 The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Cluster.
 
@@ -32,15 +45,7 @@ With Temporal Server v1.21, you can set up <a class="tdlp" href="#dual-visibilit
 
 Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/cluster-deployment-guide#supported-databases) for updates. -->
 
-:::tip Support, stability, and dependency info
-
-- For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
-- For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
-- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports advanced Visibility features](/cluster-deployment-guide#supported-databases). Visibility configuration in Temporal Cluster is updated and Dual Visibility is enabled. For details, see [Visibility store setup](/cluster-deployment-guide#visibility-store).
-
-:::
-
-## Standard Visibility
+## What is standard Visibility? {#standard-visibility}
 
 Standard Visibility, within the Temporal Platform, is the subsystem and APIs that list Workflow Executions by a predefined set of filters.
 
@@ -51,16 +56,17 @@ Closed Workflow Executions can be filtered by a time constraint and either a Wor
 Support for standard Visibility is deprecated beginning with Temporal Server v1.21.
 For updates, check [Supported databases](/cluster-deployment-guide#supported-databases).
 
-## Advanced Visibility
+## What is advanced Visibility? {#advanced-visibility}
 
-Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through a custom SQL-like <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a>.
+Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a> through a custom SQL-like <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a>.
 
 - In Temporal Cluster version 1.20 and later, advanced Visibility is available on SQL databases like MySQL (version 8.0.17 and later) and PostgreSQL (version 12 and later), in addition to support for Elasticsearch.
 - For Temporal Server versions 1.19.1 and earlier, you must <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">integrate with ElasticSearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a> to use advanced Visibility.
   Elasticsearch takes on the Visibility request load, relieving potential performance issues.
   We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
+- On Temporal Cloud, [advanced Visibility is enabled by default for all users](/cloud/get-started#invite-users).
 
-## Dual Visibility
+## What is Dual Visibility? {#dual-visibility}
 
 Dual Visibility is a feature that lets you set a secondary Visibility store in addition to a primary store in your Temporal Cluster.
 Setting up Dual Visibility is optional and can be used to [migrate your Visibility database](/cluster-deployment-guide#migrating-visibility-database) or create a backup Visibility store.
@@ -88,7 +94,7 @@ When migrating from one Visibility store database to another, set up the databas
 You can plan your migration using specific dynamic configuration keys that help you transition your read and write operations from the primary to the secondary Visibility store.
 For details on migrating your Visibility store databases, see <a class="tdlp" href="/cluster-deployment-guide#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Dual Visibility</span><br /><br /><span class="tdlppd">To enable Dual Visibility, set up a secondary Visibility store with your primary Visibility, and configure your Temporal Cluster to enable read and/or write operations on the secondary Visibility store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#dual-visibility">Learn more</a></span></span></a>.
 
-## List Filter
+## What is a List Filter? {#list-filter}
 
 A List Filter is the SQL-like string that is provided as the parameter to a <a class="tdlp" href="/clusters#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#visibility">Learn more</a></span></span></a> List API.
 
@@ -197,20 +203,33 @@ order by StartTime desc, CloseTime asc
 order by CustomIntField asc
 ``` -->
 
-## Search Attribute
+## What is a Search Attribute? {#search-attribute}
 
 A Search Attribute is an indexed field used in a <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a> to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
 
-Each Search Attribute is a key-value pair metadata object and is part of the Workflow Execution visibility information, stored in the Visibility store. Use Search Attributes for metadata and search purposes only, not business logic.
+Each Search Attribute is a key-value pair metadata object included in a Workflow Execution's Visibility information.
+This information is available in the Visibility store.
 
-Temporal provides some [default Search Attributes](#default-search-attributes), such as `ExecutionStatus` of your Workflow Execution.
-You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store and assign values in a Workflow Execution.
+:::note
 
-Search Attribute values are assigned to a specific Workflow Execution and are available for that execution only for the duration of the specified Namespace <a class="tdlp" href="/clusters#retention-period">Retention Period<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retention Period?</span><br /><br /><span class="tdlppd">A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#retention-period">Learn more</a></span></span></a>.
+Search Attribute values are not encrypted because the Temporal Server must be able to read these values from the Visibility store when retrieving Workflow Execution details.
 
-Note that Search Attribute values are not encrypted because the Temporal Server must be able to read these values from the Visibility store when retrieving Workflow Execution details.
+:::
 
-When using <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></span></span></a> or a <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#temporal-cron-job">Learn more</a></span></span></a>, Search Attributes are carried over to the new Workflow Run by default.
+Temporal provides some [default Search Attributes](#default-search-attributes), such as `ExecutionStatus`, the current state of your Workflow Executions.
+You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store and assign values when starting a Workflow Execution or in Workflow code.
+
+When using <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></span></span></a> or a <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#temporal-cron-job">Learn more</a></span></span></a>, Search Attribute keys are carried over to the new Workflow Run by default.
+Search Attribute values are only available for as long as the Workflow is.
+
+Search Attributes are most effective for search purposes or tasks requiring collection-based result sets.
+For business logic in which you need to get information about a Workflow Execution, consider one of the following:
+
+- Storing state in a local variable and exposing it with a Query.
+- Storing state in an external datastore through Activities and fetching it directly from the store.
+
+If your business logic requires high throughput or low latency, store and fetch the data through Activities.
+You might experience lag due to time passing between the Workflow's state change and the Activity updating the Visibility store.
 
 ### Default Search Attributes
 
@@ -221,7 +240,7 @@ These Search Attributes are created when the initial index is created.
 | NAME                       | TYPE         | DEFINITION                                                                                                                                                                                                   |
 | -------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | BatcherUser                | Keyword      | Used by internal batcher Workflow that runs in `TemporalBatcher` Namespace division to indicate the user who started the batch operation.                                                                    |
-| BinaryChecksums            | Keyword      | List of binary Ids of Workers that run the Workflow Execution. Deprecated since server version 1.21 in favor of the `BuildIds` search attribute.                                                             |
+| BinaryChecksums            | Keyword List | List of binary Ids of Workers that run the Workflow Execution. Deprecated since server version 1.21 in favor of the `BuildIds` search attribute.                                                             |
 | BuildIds                   | Keyword List | List of Worker Build Ids that have processed the Workflow Execution, formatted as `versioned:{BuildId}` or `unversioned:{BuildId}`, or the sentinel `unversioned` value. Available from server version 1.21. |
 | CloseTime                  | Datetime     | The time at which the Workflow Execution completed.                                                                                                                                                          |
 | ExecutionDuration          | Int          | The time needed to run the Workflow Execution (in nanoseconds). Available only for closed Workflows.                                                                                                         |
@@ -233,7 +252,7 @@ These Search Attributes are created when the initial index is created.
 | StartTime                  | Datetime     | The time at which the Workflow Execution started.                                                                                                                                                            |
 | StateTransitionCount       | Int          | The number of times that Workflow Execution has persisted its state. Available only for closed Workflows.                                                                                                    |
 | TaskQueue                  | Keyword      | Task Queue used by Workflow Execution.                                                                                                                                                                       |
-| TemporalChangeVersion      | Keyword      | Stores change/version pairs if the GetVersion API is enabled.                                                                                                                                                |
+| TemporalChangeVersion      | Keyword List | Stores change/version pairs if the GetVersion API is enabled.                                                                                                                                                |
 | TemporalScheduledStartTime | Datetime     | The time that the Workflow is schedule to start according to the Schedule Spec. Can be manually triggered. Set on Schedules.                                                                                 |
 | TemporalScheduledById      | Keyword      | The Id of the Schedule that started the Workflow.                                                                                                                                                            |
 | TemporalSchedulePaused     | Boolean      | Indicates whether the Schedule has been paused. Set on Schedules.                                                                                                                                            |

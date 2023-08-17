@@ -1,6 +1,11 @@
 ---
 id: distributed-cron
 title: Distributed CRON
+sidebar_label: Distributed CRON
+description: Distributed CRON
+tags:
+    - cron
+    - workflow
 ---
 
 :::info Try the Developer's guide

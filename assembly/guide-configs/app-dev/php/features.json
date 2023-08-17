@@ -182,6 +182,10 @@
     {
       "type": "p",
       "id": "php/how-to-set-a-cron-schedule-in-php"
+    },
+    {
+      "type": "h2",
+      "id": "php/how-to-use-side-effects-in-php"
     }
   ]
 }

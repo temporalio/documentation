@@ -42,8 +42,6 @@ Though **neither are blessed for production use**, you can consult our [Docker-C
 
 The information in this page is being dispersed into [Knowledge base articles](/kb), [Cluster concept guide](/clusters), and the [Cluster deployment guide](/cluster-deployment-guide).
 
-:::
-
 ## Minimum Requirements
 
 - The minimum Temporal Server dependency is a database. We support [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/), with [SQLite on the way](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite+).

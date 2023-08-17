@@ -1,14 +1,18 @@
 ---
 id: activities
-title: Activities
+title: What is a Temporal Activity?
 sidebar_label: Activities
 sidebar_position: 3
 description: This guide provides a comprehensive overview of Temporal Activities.
 slug: /activities
 toc_max_heading_level: 4
-tags:
-- term
+keywords:
 - explanation
+- term
+- timeouts
+tags:
+- explanation
+- term
 - timeouts
 ---
 
@@ -34,7 +38,7 @@ When the Activity Function returns, the Worker sends the results back to the Tem
 The Event is added to the Workflow Execution's Event History.
 For other Activity-related Events, see [Activity Events](/workflows#activity-events).
 
-## Activity Definition
+## What is an Activity Definition? {#activity-definition}
 
 An Activity Definition is the code that defines the constraints of an <a class="tdlp" href="/workers#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task-execution">Learn more</a></span></span></a>.
 
@@ -55,14 +59,17 @@ Activity Definitions are named and referenced in code by their <a class="tdlp" h
 
 Temporal recommends that Activities be idempotent.
 
+Idempotent means that performing an operation multiple times has the same result as performing it once.
+In the context of Temporal, Activities should be designed to be safely executed multiple times without causing unexpected or undesired side effects.
+
 An Activity is idempotent if multiple <a class="tdlp" href="/workers#activity-task-execution">Activity Task Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task-execution">Learn more</a></span></span></a> do not change the state of the system beyond the first Activity Task Execution.
 
 We recommend using idempotency keys for critical side effects.
 
 The lack of idempotency might affect the correctness of your application but does not affect the Temporal Platform.
-In other words, lack of idempotency does not lead to a platform error.
+In other words, lack of idempotency doesn't lead to a platform error.
 
-In some cases, whether something is idempotent does not affect the correctness of an application.
+In some cases, whether something is idempotent doesn't affect the correctness of an application.
 For example, if you have a monotonically incrementing counter, you might not care that retries increment the counter because you don’t care about the actual value, only that the current value is greater than a previous value.
 
 #### Constraints
@@ -88,13 +95,13 @@ Activity Definitions must contain the following parameters:
 
 Other parameters, such as <a class="tdlp" href="/retry-policies#">Retry Policies<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a> and return values, can be seen in the implementation guides, listed in the next section.
 
-### Activity Type
+### What is an Activity Type? {#activity-type}
 
 An Activity Type is the mapping of a name to an Activity Definition.
 
 Activity Types are scoped through Task Queues.
 
-## Activity Execution
+## What is an Activity Execution? {#activity-execution}
 
 An Activity Execution is the full chain of <a class="tdlp" href="/workers#activity-task-execution">Activity Task Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task-execution">Learn more</a></span></span></a>.
 
@@ -142,7 +149,7 @@ The Workflow can also decide if it wants to wait for the Activity Cancellation t
 Cancellation can only be requested a single time.
 If you try to cancel your Activity Execution more than once, it will not receive more than one Cancellation request.
 
-### Activity Id
+### What is an Activity Id? {#activity-id}
 
 The identifier for an <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-execution">Learn more</a></span></span></a>.
 The identifier can be generated by the system, or it can be provided by the Workflow code that spawns the Activity Execution.
@@ -151,7 +158,7 @@ The identifier is unique among the open Activity Executions of a <a class="tdlp"
 
 An Activity Id can be used to <a class="tdlp" href="#asynchronous-activity-completion">complete the Activity asynchronously<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Asynchronous Activity Completion?</span><br /><br /><span class="tdlppd">Asynchronous Activity Completion occurs when an external system provides the final result of a computation, started by an Activity, to the Temporal System.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#asynchronous-activity-completion">Learn more</a></span></span></a>.
 
-### Schedule-To-Start Timeout
+### What is a Schedule-To-Start Timeout? {#schedule-to-start-timeout}
 
 A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an <a class="tdlp" href="/workers#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task">Learn more</a></span></span></a> is scheduled (that is, placed in a Task Queue) to when a <a class="tdlp" href="/workers#worker">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a> starts (that is, picks up from the Task Queue) that Activity Task.
 In other words, it's a limit for how long an Activity Task can be enqueued.
@@ -190,7 +197,7 @@ We do not recommend using this timeout unless you know what you are doing.
 
 In most cases, we recommend monitoring the `temporal_activity_schedule_to_start_latency` metric to know when Workers slow down picking up Activity Tasks, instead of setting this timeout.
 
-### Start-To-Close Timeout
+### What is a Start-To-Close Timeout? {#start-to-close-timeout}
 
 A Start-To-Close Timeout is the maximum time allowed for a single <a class="tdlp" href="/workers#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task-execution">Learn more</a></span></span></a>.
 
@@ -233,7 +240,7 @@ If this timeout is reached, the following actions occur:
   - The attempt count increments by 1 in the Workflow Execution's mutable state.
   - The Start-To-Close Timeout timer is reset.
 
-### Schedule-To-Close Timeout
+### What is a Schedule-To-Close Timeout? {#schedule-to-close-timeout}
 
 A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-execution">Learn more</a></span></span></a>, from when the first <a class="tdlp" href="/workers#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task">Learn more</a></span></span></a> is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
 
@@ -264,7 +271,7 @@ Therefore, the Temporal Server relies on the Start-To-Close Timeout to force Act
 
 :::
 
-### Activity Heartbeat
+### What is an Activity Heartbeat? {#activity-heartbeat}
 
 An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
 Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
@@ -338,7 +345,7 @@ And the following scenarios are not suitable for Heartbeating:
 - Making a quick API call.
 - Reading a small file from disk.
 
-### Heartbeat Timeout
+### What is a Heartbeat Timeout? {#heartbeat-timeout}
 
 A Heartbeat Timeout is the maximum time between <a class="tdlp" href="#activity-heartbeat">Activity Heartbeats<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-heartbeat">Learn more</a></span></span></a>.
 
@@ -352,29 +359,62 @@ A Heartbeat Timeout is the maximum time between <a class="tdlp" href="#activity-
 
 If this timeout is reached, the Activity Task fails and a retry occurs if a <a class="tdlp" href="/retry-policies#">Retry Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a> dictates it.
 
-### Asynchronous Activity Completion
+### What is Asynchronous Activity Completion? {#asynchronous-activity-completion}
 
 Asynchronous Activity Completion is a feature that enables an Activity Function to return without causing the Activity Execution to complete.
-The Temporal Client can then be used to both Heartbeat Activity Execution progress and eventually provide a result.
+The Temporal Client can then be used from anywhere to both Heartbeat Activity Execution progress and eventually provide complete the Activity Execution and provide a result.
 
-- <a class="tdlp" href="/dev-guide/go/features#asynchronous-activity-completion">How to complete an Activity Asynchronously in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to asynchronously complete an Activity</span><br /><br /><span class="tdlppd">Asynchronous Activity Completion enables the Activity Function to return without the Activity Execution completing.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#asynchronous-activity-completion">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/features#asynchronous-activity-completion">How to complete an Activity Asynchronously in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to asynchronously complete an Activity</span><br /><br /><span class="tdlppd">Asynchronous Activity Completion enables the Activity Function to return without the Activity Execution completing.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#asynchronous-activity-completion">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/features#asynchronous-activity-completion">How to complete an Activity Asynchronously in PHP<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to asynchronously complete an Activity</span><br /><br /><span class="tdlppd">Asynchronous Activity Completion enables the Activity Function to return without the Activity Execution completing.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/features#asynchronous-activity-completion">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/features#asynchronous-activity-completion">How to complete an Activity Asynchronously in Python<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to asynchronously complete an Activity</span><br /><br /><span class="tdlppd">Asynchronous Activity Completion enables the Activity Function to return without the Activity Execution completing.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/features#asynchronous-activity-completion">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/features#asynchronous-activity-completion">How to complete an Activity Asynchronously in TypeScript<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to asynchronously complete an Activity</span><br /><br /><span class="tdlppd">Asynchronous Activity Completion enables the Activity Function to return without the Activity Execution completing.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/features#asynchronous-activity-completion">Learn more</a></span></span></a>
+How to complete an Activity Asynchronously in:
+
+- [Go](/dev-guide/go/features#asynchronous-activity-completion)
+- [Java](/dev-guide/java/features#asynchronous-activity-completion)
+- [PHP](/dev-guide/php/features#asynchronous-activity-completion)
+- [Python](/dev-guide/python/features#asynchronous-activity-completion)
+- [TypeScript](/dev-guide/typescript/features#asynchronous-activity-completion)
 
 #### When to use Async Completion
 
-The intended use-case for this feature is when an external system has the final result of a computation, started by an Activity.
+When an external system has the final result of a computation that is started by an Activity, there are three main ways of getting the result to the Workflow:
 
-Consider using Asynchronous Activities instead of Signals if the external process is unreliable and might fail to send critical status updates through a Signal.
+1. The external system uses Async Completion to complete the Activity with the result.
+2. The Activity completes normally, without the result. Later, the external system sends a Signal to the Workflow with the result.
+3. A subsequent Activity [polls the external system](https://community.temporal.io/t/what-is-the-best-practice-for-a-polling-activity/328/2) for the result.
 
-Consider using <a class="tdlp" href="/workflows#signal">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#signal">Learn more</a></span></span></a> as an alternative to Asynchronous Activities to return data back to a Workflow Execution if there is a human in the process loop.
-The reason is that a human in the loop means multiple steps in the process.
-The first is the Activity Function that stores state in an external system and at least one other step where a human would “complete” the activity.
-If the first step fails, you want to detect that quickly and retry instead of waiting for the entire process, which could be significantly longer when humans are involved.
+If you don't have control over the external system—that is, you can't add Async Completion or a Signal to its code—then
 
-#### Task Token
+- you can poll (#3), or
+- if the external system can reliably call a webhook (and retry calling in the case of failure), you can write a webhook handler that sends a Signal to the Workflow (#2).
+
+The decision between using #1 vs #2 involves a few factors.
+Use Async Completion if
+
+- the external system is unreliable and might fail to Signal, or
+- you want the external process to Heartbeat or receive Cancellation.
+
+Otherwise, if the external system can reliably be trusted to do the task and Signal back with the result, and it doesn't need to Heartbeat or receive Cancellation, then you may want to use Signals.
+
+The benefit to using Signals has to do with the timing of failure retries.
+For example, consider an external process that is waiting for a human to review something and respond, and they could take up to a week to do so.
+If you use Async Completion (#1), you would
+
+- set a [Start-To-Close Timeout](/activities#start-to-close-timeout) of one week on the Activity,
+- in the Activity, notify the external process you need the human review, and
+- have the external process Asynchronously Complete the Activity when the human responds.
+
+If the Activity fails on the second step to notify the external system and doesn't throw an error (for example, if the Worker dies), then the Activity won't be retried for a week, when the Start-To-Close Timeout is hit.
+
+If you use Signals, you would:
+
+- set a [Start-To-Close Timeout](/activities#start-to-close-timeout) of one minute on the Activity,
+- in the Activity, notify the external process you need the human review,
+- complete the Activity without the result, and
+- have the external process Signal the Workflow when the human responds.
+
+If the Activity fails on the second step to notify the external system and doesn't throw an error, then the Activity will be retried in a minute.
+
+In the second scenario, the failure is retried sooner. This is particularly helpful in scenarios like this in which the external process might take a long time.
+
+#### What is a Task Token? {#task-token}
 
 A Task Token is a unique identifier for an <a class="tdlp" href="/workers#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task-execution">Learn more</a></span></span></a>.
 
@@ -383,7 +423,7 @@ A Task Token is a unique identifier for an <a class="tdlp" href="/workers#activi
 - a Task Token, or
 - an <a class="tdlp" href="#activity-id">Activity Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Id?</span><br /><br /><span class="tdlppd">A unique identifier for an Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-id">Learn more</a></span></span></a>, a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></span></span></a>, and optionally a <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Run Id?</span><br /><br /><span class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#run-id">Learn more</a></span></span></a>.
 
-## Local Activity
+## What is a Local Activity? {#local-activity}
 
 A Local Activity is an <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-execution">Learn more</a></span></span></a> that executes in the same process as the [Workflow Execution](/workflows#workflow-execution) that spawns it.
 
