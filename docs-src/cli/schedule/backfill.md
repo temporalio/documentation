@@ -25,7 +25,7 @@ temporal schedule backfill --schedule-id 'your-schedule-id' \
 --end-time '2022-05-31T23:59:59Z'
 ```
 
-Temporal recommends setting the Overlap Policy to 'BufferAll' to run backfilled Workflows sequentially.
+Temporal recommends setting the Overlap Policy to `BufferAll` to run backfilled Workflows sequentially.
 
 Use the following options to change this command's behavior.
 
