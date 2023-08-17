@@ -10,7 +10,9 @@ tags:
 Use the `CancelWorkflow` API to cancel a Workflow Execution using its Id.
 
 <!--SNIPSTART samples-go-cancellation-cancel-workflow-execution-trigger-->
+
 [cancellation/cancel/main.go](https://github.com/temporalio/samples-go/blob/master/cancellation/cancel/main.go)
+
 ```go
 func main() {
 	var workflowID string
@@ -37,8 +39,8 @@ func main() {
 	}
 	log.Println("Workflow Execution cancelled", "WorkflowID", workflowID)
 }
-
 ```
+
 <!--SNIPEND-->
 
 #### How to clean up after a Workflow is cancelled
@@ -47,7 +49,9 @@ Workflow Definitions can be written to handle execution cancellation requests wi
 In the Workflow Definition below, there is a special Activity that handles clean up should the execution be cancelled.
 
 <!--SNIPSTART samples-go-cancellation-workflow-definition-->
+
 [cancellation/workflow.go](https://github.com/temporalio/samples-go/blob/master/cancellation/workflow.go)
+
 ```go
 // YourWorkflow is a Workflow Definition that shows how it can be canceled.
 func YourWorkflow(ctx workflow.Context) error {
@@ -86,4 +90,5 @@ func YourWorkflow(ctx workflow.Context) error {
 	return nil
 }
 ```
+
 <!--SNIPEND-->

@@ -24,10 +24,16 @@ Inject Activity context via interceptor and log all Activity Executions
 </summary>
 
 <!--SNIPSTART typescript-activity-logging-interceptor-->
+
 [instrumentation/src/activities/interceptors.ts](https://github.com/temporalio/samples-typescript/blob/master/instrumentation/src/activities/interceptors.ts)
+
 ```ts
 import { Context } from '@temporalio/activity';
-import { ActivityInboundCallsInterceptor, ActivityExecuteInput, Next } from '@temporalio/worker';
+import {
+  ActivityExecuteInput,
+  ActivityInboundCallsInterceptor,
+  Next,
+} from '@temporalio/worker';
 import { Logger } from 'winston';
 
 /** An Activity Context with an attached logger */
@@ -41,7 +47,9 @@ export function getContext(): ContextWithLogger {
 }
 
 /** Logs Activity executions and their duration */
-export class ActivityInboundLogInterceptor implements ActivityInboundCallsInterceptor {
+export class ActivityInboundLogInterceptor
+  implements ActivityInboundCallsInterceptor
+{
   public readonly logger: Logger;
 
   constructor(ctx: Context, logger: Logger) {
@@ -54,7 +62,10 @@ export class ActivityInboundLogInterceptor implements ActivityInboundCallsInterc
     (ctx as ContextWithLogger).logger = this.logger;
   }
 
-  async execute(input: ActivityExecuteInput, next: Next<ActivityInboundCallsInterceptor, 'execute'>): Promise<unknown> {
+  async execute(
+    input: ActivityExecuteInput,
+    next: Next<ActivityInboundCallsInterceptor, 'execute'>,
+  ): Promise<unknown> {
     let error: any = undefined;
     const startTime = process.hrtime.bigint();
     try {
@@ -74,6 +85,7 @@ export class ActivityInboundLogInterceptor implements ActivityInboundCallsInterc
   }
 }
 ```
+
 <!--SNIPEND-->
 
 </details>
@@ -84,7 +96,9 @@ Use the injected logger from an Activity
 </summary>
 
 <!--SNIPSTART typescript-activity-use-injected-logger -->
+
 [instrumentation/src/activities/index.ts](https://github.com/temporalio/samples-typescript/blob/master/instrumentation/src/activities/index.ts)
+
 ```ts
 import { getContext } from './interceptors';
 
@@ -94,6 +108,7 @@ export async function greet(name: string): Promise<string> {
   return `Hello, ${name}!`;
 }
 ```
+
 <!--SNIPEND-->
 
 </details>
@@ -130,9 +145,11 @@ However, they differ from Activities in important ways:
 Explicitly declaring a Sink's interface is optional, but is useful for ensuring type safety in subsequent steps:
 
 <!--SNIPSTART typescript-logger-sink-interface-->
+
 [sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/workflows.ts)
+
 ```ts
-import { proxySinks, LoggerSinks, Sinks } from '@temporalio/workflow';
+import { LoggerSinks, proxySinks, Sinks } from '@temporalio/workflow';
 
 export interface AlertSinks extends Sinks {
   alerter: {
@@ -142,6 +159,7 @@ export interface AlertSinks extends Sinks {
 
 export type MySinks = AlertSinks & LoggerSinks;
 ```
+
 <!--SNIPEND-->
 
 ### Implementing Sinks
@@ -151,7 +169,9 @@ Implementing Sinks is a two-step process.
 #### Implement and inject the Sink function into a Worker
 
 <!--SNIPSTART typescript-logger-sink-worker-->
+
 [sinks/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/worker.ts)
+
 ```ts
 import { defaultSinks, InjectedSinks, Worker } from '@temporalio/worker';
 import { MySinks } from './workflows';
@@ -184,6 +204,7 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
+
 <!--SNIPEND-->
 
 - Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#sinks)
@@ -192,7 +213,9 @@ main().catch((err) => {
 #### Proxy and call a Sink function from a Workflow
 
 <!--SNIPSTART typescript-logger-sink-workflow-->
+
 [sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/workflows.ts)
+
 ```ts
 const { alerter, defaultWorkerLogger } = proxySinks<MySinks>();
 
@@ -202,6 +225,7 @@ export async function sinkWorkflow(): Promise<string> {
   return 'Hello, Temporal!';
 }
 ```
+
 <!--SNIPEND-->
 
 Some important features of the [InjectedSinkFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedSinkFunction) interface:
