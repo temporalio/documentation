@@ -1338,6 +1338,10 @@
       "destination": "/workflows#continue-as-new"
     },
     {
+      "source": "/concepts/what-is-a-cloud-namespace-name",
+      "destination": "/cloud/namespaces#temporal-cloud-namespace-name"
+    },
+    {
       "source": "/concepts/what-is-a-data-converter",
       "destination": "/security#data-converter"
     },
@@ -1820,6 +1824,10 @@
     {
       "source": "/cloud/introduction/operating-envelope:path*",
       "destination": "cloud/operating-envelope:path*"
+    },
+    {
+      "source": "/cloud/introduction/pricing:path*",
+      "destination": "/cloud/pricing:path*"
     },
     {
       "source": "/cloud/introduction/support:path*",
