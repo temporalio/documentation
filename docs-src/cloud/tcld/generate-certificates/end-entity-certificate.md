@@ -1,0 +1,100 @@
+---
+id: end-entity-certificate
+title: tcld generate-certificates end-entity-certificate
+sidebar_label: end-entity-certificate
+description: Generate end-entity (leaf) certificates with tcld.
+tags:
+  - tcld
+  - cli-reference
+---
+
+The `tcld generate-certificates end-entity-certificate` command generates end-entity (leaf) certificates for Temporal Cloud.
+
+`tcld generate-certificates end-entity-certificate <modifiers>`
+
+Alias: `leaf`
+
+The following modifiers control the behavior of the command.
+
+#### --organization
+
+Specify an organization name for certificate generation.
+
+Alias: `--org`
+
+**Example**
+
+```bash
+tcld generate-certificates end-entity-certificate --organization <value>
+```
+
+#### --organizaation-unit
+
+Specify the name of the organization unit (optional).
+
+**Example**
+
+```bash
+tcld generate-certificates end-entity-certificate --organization-unit <value>
+```
+
+#### --validity-period
+
+Specify the duration for which the certificate is valid for.
+Format values as d/h (e.g. 30d10h for a certificate lasting 30 days and 10 hours.)
+
+Alias: `-d`
+
+**Example**
+
+```bash
+tcld generate-certificates end-entity-certificate --validity-period <value>
+```
+
+#### --ca-certificate-file
+
+Specify the path of the x509 CA certificate for the certificate authority.
+
+Alias: `--ca-cert`
+
+**Example**
+
+```bash
+tcld generate-certificates end-entity-certificate --ca-certificate-file <path>
+```
+
+#### --ca-key-file
+
+Specify the path of the private key for the certificate authority.
+
+Alias: `--ca-key`
+
+**Example**
+
+```bash
+tcld generate-certificates end-entity-certificate --ca-key-file <path>
+```
+
+#### --certificate-file
+
+Specify a path where the generated x509 leaf certificate file will be stored.
+
+Alias: `--cert`
+
+**Example**
+
+```bash
+tcld generate-certificates end-entity-certificate --certificate-file <path>
+```
+
+#### --key-file
+
+Specify a path where the leaf certificate's private key will be stored.
+
+Alias: `--key`
+
+**Example**
+
+```bash
+tcld generate-certificates end-entity-certificate --key-file <path>
+```

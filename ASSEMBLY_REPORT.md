@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday August 18 2023 14:44:23 PM -0500
+Last assembled: Friday August 18 2023 15:17:47 PM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
-93 guide configurations found.
+94 guide configurations found.
 
-1519 information nodes found.
+1522 information nodes found.
 
-1283 information nodes are attached to guides.
+1286 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1037,5 +1037,9 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
+
+cloud/tcld/generate-certificates/end-entity-certificate -> #end-entity-certificate
 
 
