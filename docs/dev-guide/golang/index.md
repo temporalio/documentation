@@ -36,6 +36,7 @@ The Developer's guide is divided into the following sections:
    - [Continue-As-New](/dev-guide/go/features#continue-as-new)
    - [Schedules](/dev-guide/go/features#schedule-a-workflow)
    - [Cron Jobs](/dev-guide/go/features#temporal-cron-jobs)
+   - [Updates](/dev-guide/go/features#updates)
 
 3. [**Observability**](/dev-guide/go/observability): Methods for observing a Temporal Application.
 
