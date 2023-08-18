@@ -49,7 +49,7 @@ Warnings are soft limits that produce a warning log on the server side.
 - [Custom Search Attributes limits](/visibility/#custom-search-attributes-limits)
 - **Workflow Update limits**
   - Temporal will limit Workflow Executions to a maximum of 10 concurrently executing Updates. Update requests that would push the system beyond this limit result in an error. This limit can be adjusted globally or on a per-namespace basis via the `history.maxInFlightUpdates` dynamic configuration variable.
-  - Temporal will limit Workflow Executions to a maximum of 2,000 total Updates.  Update requests that would push the system beyond this limit result in an error. This limit can be adjusted globally or on a per-namespace basis via the `history.maxTotalUpdates` dynamic configuration variable.
+  - Temporal will limit Workflow Executions to a maximum of 2,000 total Updates. Update requests that would push the system beyond this limit result in an error. This limit can be adjusted globally or on a per-namespace basis via the `history.maxTotalUpdates` dynamic configuration variable.
 
 For details on dynamic configuration keys, see [Dynamic configuration reference](/references/dynamic-configuration).
 
