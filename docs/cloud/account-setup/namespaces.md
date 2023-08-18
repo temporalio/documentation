@@ -49,6 +49,12 @@ Each Namespace Name must conform to the following rules:
 A Temporal Cloud Account Id is a unique identifier for a customer for the entire time they use Temporal Cloud.
 Temporal Technologies assigns each Account Id, which is an opaque code of five or six alphanumeric characters, such as `f45a2`.
 
+:::info
+
+For more information on obtaining a Temporal Cloud Account Id, see our <a class="tdlp" href="/cloud/tcld/account#get">Cloud account commands<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld account get</span><br /><br /><span class="tdlppd">How to get information about an account in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/account#get">Learn more</a></span></span></a> page.
+
+:::
+
 ## What is a Cloud Namespace Id? {#temporal-cloud-namespace-id}
 
 A Cloud Namespace Id is a globally unique identifier for a [Namespace](/namespaces) in Temporal Cloud.

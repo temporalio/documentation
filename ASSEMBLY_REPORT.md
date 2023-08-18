@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday August 18 2023 09:21:54 AM -0700
+Last assembled: Friday August 18 2023 14:44:23 PM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -53,6 +53,8 @@ concepts/what-is-a-global-namespace -> /namespaces#global-namespace
 concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
+
+cloud/security-cloud-intro -> #
 
 references/server-options -> /references/server-options#withconfig
 
@@ -712,9 +714,15 @@ python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-tem
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
 
+cloud/certificates-namespace -> #manage-certificates
+
 cloud/certificates-filters -> #manage-certificate-filters
 
 cloud/users-namespace-level-permissions -> /cloud/users#namespace-level-permissions
+
+cloud/support-create-ticket -> /cloud/support#support-ticket
+
+cloud/certificates-notifications -> #expiration-notifications
 
 cloud/namespaces-access -> #access-namespaces
 
@@ -725,8 +733,6 @@ cloud/namespaces-delete -> #delete-a-namespace
 concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
-
-cloud/support-create-ticket -> /cloud/support#support-ticket
 
 concepts/what-is-a-cloud-namespace-id -> #temporal-cloud-namespace-id
 
@@ -1031,9 +1037,5 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-cloud/certificates-namespace -> #manage-certificates
-
-cloud/certificates-notifications -> #expiration-notifications
 
 
