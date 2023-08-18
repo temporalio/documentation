@@ -14,7 +14,7 @@ tags:
 The `temporal schedule create` command creates a new [Schedule](/concepts/what-is-a-schedule).
 Newly created Schedules return a Schedule ID to be used in other Schedule commands.
 
-Schedules need to follow a format like the example shown here:
+Schedules use the following format:
 
 ```
 temporal schedule create \
@@ -24,8 +24,35 @@ temporal schedule create \
     --workflow-type 'YourWorkflowType'
 ```
 
+Actions are executed at the times specified in the Schedule.
+For example, the following Schedule starts a Workflow every 5 hours at 15 minutes past the hour.
+A Workflow is also started at 11:03 on Fridays.
+
+```
+temporal schedule create \
+    --schedule-id 'your-schedule-id' \
+    --interval '5h/15m' \
+    --calendar '{"dayOfWeek":"Fri","hour":"11","minute":"3"}' \
+    --overlap-policy 'BufferAll' \
+    --workflow-id 'your-workflow-id' \
+    --task-queue 'your-task-queue' \
+    --workflow-type 'YourWorkflowType'
+```
+
+Workflows don't run in parallel.
+Setting the `--overlap-policy` to `BufferAll` allows Workflows to run sequentially if they would overlap.
+
 Any combination of `--calendar`, `--interval`, and `--cron` is supported.
-Actions will be executed at any time specified in the Schedule.
+Traditional cron strings, along with `CronSchedule` features, are also supported.
+
+```
+temporal schedule create \
+    --schedule-id 'your-schedule-id' \
+    --cron '3 11 * * Fri' \
+    --workflow-id 'your-workflow-id' \
+    --task-queue 'your-task-queue' \
+    --workflow-type 'YourWorkflowType'
+```
 
 Use the following options to change this command's behavior.
 

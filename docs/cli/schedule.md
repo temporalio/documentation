@@ -52,6 +52,7 @@ The `temporal schedule backfill` command executes Actions ahead of their specifi
 Backfilling adds <a class="tdlp" href="/workflows#run-id">Workflow Runs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Run Id?</span><br /><br /><span class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#run-id">Learn more</a></span></span></a> from a time period when the Schedule was paused, or from before the Schedule was created.
 
 Schedule backfills require a valid Schedule ID, along with the time in which to run the Schedule and a change to the overlap policy.
+The following example fills in Workflow Runs from a point when the Schedule was paused.
 
 ```
 temporal schedule backfill --schedule-id 'your-schedule-id' \
@@ -59,6 +60,8 @@ temporal schedule backfill --schedule-id 'your-schedule-id' \
 --start-time '2022-05-0101T00:00:00Z'		\
 --end-time '2022-05-31T23:59:59Z'
 ```
+
+Temporal recommends setting the Overlap Policy to `BufferAll` to run backfilled Workflows sequentially.
 
 Use the following options to change this command's behavior.
 
@@ -103,7 +106,7 @@ Use the following options to change this command's behavior.
 The `temporal schedule create` command creates a new <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule?</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a>.
 Newly created Schedules return a Schedule ID to be used in other Schedule commands.
 
-Schedules need to follow a format like the example shown here:
+Schedules use the following format:
 
 ```
 temporal schedule create \
@@ -113,8 +116,35 @@ temporal schedule create \
     --workflow-type 'YourWorkflowType'
 ```
 
+Actions are executed at the times specified in the Schedule.
+For example, the following Schedule starts a Workflow every 5 hours at 15 minutes past the hour.
+A Workflow is also started at 11:03 on Fridays.
+
+```
+temporal schedule create \
+    --schedule-id 'your-schedule-id' \
+    --interval '5h/15m' \
+    --calendar '{"dayOfWeek":"Fri","hour":"11","minute":"3"}' \
+    --overlap-policy 'BufferAll' \
+    --workflow-id 'your-workflow-id' \
+    --task-queue 'your-task-queue' \
+    --workflow-type 'YourWorkflowType'
+```
+
+Workflows don't run in parallel.
+Setting the `--overlap-policy` to `BufferAll` allows Workflows to run sequentially if they would overlap.
+
 Any combination of `--calendar`, `--interval`, and `--cron` is supported.
-Actions will be executed at any time specified in the Schedule.
+Traditional cron strings, along with `CronSchedule` features, are also supported.
+
+```
+temporal schedule create \
+    --schedule-id 'your-schedule-id' \
+    --cron '3 11 * * Fri' \
+    --workflow-id 'your-workflow-id' \
+    --task-queue 'your-task-queue' \
+    --workflow-type 'YourWorkflowType'
+```
 
 Use the following options to change this command's behavior.
 
