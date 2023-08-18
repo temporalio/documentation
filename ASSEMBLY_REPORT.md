@@ -1,6 +1,10 @@
 # Docs Assembly Workflow report
 
+<<<<<<< HEAD
 Last assembled: Thursday August 17 2023 15:30:02 PM -0500
+=======
+Last assembled: Thursday August 17 2023 16:14:13 PM -0500
+>>>>>>> main
 
 Assembly Workflow Id: docs-full-assembly
 
