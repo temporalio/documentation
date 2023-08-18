@@ -241,9 +241,6 @@ codec:
 Configures headers for forwarding.
 
 ```yaml
-  forwardHeaders:
-    - 
+forwardHeaders:
+  -
 ```
-
-
-
