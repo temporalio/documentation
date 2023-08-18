@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday August 18 2023 09:21:54 AM -0700
+Last assembled: Friday August 18 2023 14:30:40 PM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -53,6 +53,8 @@ concepts/what-is-a-global-namespace -> /namespaces#global-namespace
 concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
+
+cloud/security-cloud-intro -> #
 
 references/server-options -> /references/server-options#withconfig
 
