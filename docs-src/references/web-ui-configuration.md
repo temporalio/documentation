@@ -159,6 +159,22 @@ Prevents the user from resetting Workflows from the Web UI.
 workflowResetDisabled: false
 ```
 
+## batchActionsDisabled
+
+Prevents the execution of Batch actions.
+
+```yaml
+batchActionsDisabled: false
+```
+
+## hideWorkflowQueryErrors
+
+Hides any errors resulting from a Query to the Workflow.
+
+```yaml
+hideWorkflowQueryErrors: false
+```
+
 ## cors
 
 The name of the `cors` field stands for Cross-Origin Resource Sharing.
@@ -166,6 +182,7 @@ Use this field to provide a list of domains that are authorized to access the UI
 
 ```yaml
 cors:
+  cookieInsecure: false
   allowOrigins:
     - http://localhost:3000 # used at development by https://github.com/temporalio/ui
 ```
@@ -194,21 +211,17 @@ Auth configuration.
 auth:
   enabled: false
   providers:
-    - label: Auth0 oidc # for internal use; in future may expose as button text
-      type: oidc # for futureproofing; only oidc is supported today
+    - label: sso # for internal use; in future may expose as button text
+      type: oidc 
       providerUrl: https://myorg.us.auth0.com/
+      issuerUrl: 
       clientId: xxxxxxxxxxxxxxxxxxxx
       clientSecret: xxxxxxxxxxxxxxxxxxxx
+      callbackUrl: http://localhost:8080/auth/sso/callback
       scopes:
         - openid
         - profile
         - email
-      callbackUrl: http://localhost:8080/auth/sso/callback
-      passIdToken: false
-      options: # added as URL query params when redirecting to auth provider
-        audience: myorg-dev
-        organization: org_xxxxxxxxxxxx
-        invitation:
 ```
 
 ## codec
@@ -219,9 +232,18 @@ Codec Server configuration.
 codec:
   endpoint: http://your-codec-server-endpoint
   passAccessToken: false
+  includeCredentials: false
+  decodeEventHistoryDownload: false
 ```
 
 ## forwardHeaders
+
+Configures headers for forwarding.
+
+```yaml
+  forwardHeaders:
+    - 
+```
 
 
 
