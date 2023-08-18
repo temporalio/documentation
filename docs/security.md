@@ -6,12 +6,12 @@ sidebar_position: 6
 description: This guide is an overview of the Temporal Platform security features.
 toc_max_heading_level: 4
 keywords:
-- security
 - guide-context
+- security
 - term
 tags:
-- security
 - guide-context
+- security
 - term
 ---
 
@@ -109,7 +109,7 @@ The default JWT `ClaimMapper` implementation can be used as is or as a base for 
 
 To enable SSO for the Temporal Web UI edit the web service's configuration per the [Temporal Web README](https://github.com/temporalio/web#configuring-authentication-optional).
 
-## Temporal Cluster plugins conceptual context {#plugins}
+## Temporal Cluster plugins {#plugins}
 
 Temporal Clusters support some pluggable components.
 

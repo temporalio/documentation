@@ -33,7 +33,7 @@ You can debug production Workflows using:
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/dev-guide/worker-performance).
 For information on setting up SDK metrics, see [Metrics](/dev-guide/typescript/observability#metrics) in the Observability section of the TypeScript SDK developer's guide.
 
-Debug Server performance with [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).
+Debug Server performance with <a class="tdlp" href="/cloud/metrics#">Cloud metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to monitor Temporal Cloud metrics</span><br /><br /><span class="tdlppd">Configure and track performance metrics for Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/metrics#">Learn more</a></span></span></a> or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).
 
 ## How to troubleshoot common issues in the TypeScript SDK {#troubleshoot-common-issues}
 
@@ -265,7 +265,7 @@ You can "rewind time" using the `tctl` CLI, resetting Workflow History to some p
 - [Restarting and resetting Workflows by ID](/tctl-v1)
 - [Resetting all Workflows by binary checksum identifier](/tctl-v1)
 
-If you need to reset programmatically, the TS SDK does not have any high level APIs for this, but you can make raw gRPC calls to [resetWorkflowExecution](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.workflowservice-1/#resetworkflowexecution).
+If you need to reset programmatically, the TS SDK does not have any high level APIs for this, but you can make raw gRPC calls to [resetWorkflowExecution](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1/#resetworkflowexecution).
 
 Resetting should only be used to deal with serious logical bugs in your code: it's not for handling transient failures, like a downstream service being unreachable. It should not be used in the course of normal application flows.
 

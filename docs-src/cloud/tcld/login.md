@@ -5,7 +5,7 @@ sidebar_label: login
 description: How to log in to Temporal Cloud using tcld.
 tags:
   - tcld
-  - cli reference
+  - cli-reference
 ---
 
 The `tcld login` command logs in a user to Temporal Cloud.

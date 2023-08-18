@@ -3,6 +3,8 @@ id: workflows
 title: Workflows in TypeScript
 sidebar_label: Workflows
 description: Workflows are async functions that can orchestrate Activities and access special Workflow APIs, subject to deterministic limitations.
+tags:
+ - workflow
 ---
 
 import Tabs from '@theme/Tabs';
@@ -37,11 +39,11 @@ Workflow Definitions are "just functions", which can store state, and orchestrat
 <!--SNIPSTART typescript-hello-workflow {"enable_source_link": false}-->
 
 ```ts
-import { proxyActivities } from '@temporalio/workflow';
+import * as workflow from '@temporalio/workflow';
 // Only import the activity types
 import type * as activities from './activities';
 
-const { greet } = proxyActivities<typeof activities>({
+const { greet } = workflow.proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute',
 });
 

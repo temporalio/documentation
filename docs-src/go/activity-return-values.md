@@ -4,7 +4,9 @@ title: How to define Activity return values
 sidebar_label: Activity return values
 description: All data returned from an Activity must be serializable.
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - activity
+  - return values
 ---
 
 All data returned from an Activity must be serializable.

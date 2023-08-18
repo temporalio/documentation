@@ -4,7 +4,11 @@ title: How to connect a Temporal Client to a Temporal Cluster
 description: When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.
 sidebar_label: Connect to a dev Cluster
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - go sdk
+  - cluster-feature
+  - cluster
+  - client
 ---
 
 A [Temporal Client](/concepts/what-is-a-temporal-client) enables you to communicate with the [Temporal Cluster](/concepts/what-is-a-temporal-cluster).

@@ -1,18 +1,18 @@
 ---
 id: workers
-title: Workers
+title: What is a Temporal Worker?
 sidebar_label: Workers
 sidebar_position: 5
 description: There is a tight coupling between Temporal Task Queues and Worker Processes.
 slug: /workers
 toc_max_heading_level: 4
 keywords:
-- term
 - explanation
+- term
 - versioning
 tags:
-- term
 - explanation
+- term
 - versioning
 ---
 

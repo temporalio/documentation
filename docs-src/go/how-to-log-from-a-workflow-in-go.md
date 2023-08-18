@@ -4,10 +4,11 @@ title: How to log from a Workflow in Go
 sidebar_label: Log from a Workflow
 description: Log from a Workflow
 tags:
-  - developer-guide
-  - sdk
-  - go
-  - log
+  - developer-guide-doc-type
+  - go sdk
+  - logging and metrics
+  - how-to-doc-type
+  - workflow definition
 ---
 
 In Workflow Definitions you can use [`workflow.GetLogger(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLogger) to write logs.

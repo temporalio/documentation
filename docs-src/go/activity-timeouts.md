@@ -4,7 +4,11 @@ title: How to set Activity timeouts
 sidebar_label: Activity timeouts
 description: Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - retry-and-timeout-policies
+  - activity-execution
+  - activity
+  - timeouts
 ---
 
 Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.

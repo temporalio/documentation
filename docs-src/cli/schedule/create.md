@@ -5,12 +5,16 @@ sidebar_label: create
 description: Create a new Schedule.
 tags:
   - cli reference
+  - temporal cli
+  - schedule
+  - command-line-interface-cli
+  - schedule create
 ---
 
 The `temporal schedule create` command creates a new [Schedule](/concepts/what-is-a-schedule).
 Newly created Schedules return a Schedule ID to be used in other Schedule commands.
 
-Schedules need to follow a format like the example shown here:
+Schedules use the following format:
 
 ```
 temporal schedule create \
@@ -20,22 +24,61 @@ temporal schedule create \
     --workflow-type 'YourWorkflowType'
 ```
 
-Any combination of `--calendar`, `--interval`, and `--cron` is supported.
-Actions will be executed at any time specified in the Schedule.
+Actions are executed at the times specified in the Schedule.
+For example, the following Schedule starts a Workflow every 5 hours at 15 minutes past the hour.
+A Workflow is also started at 11:03 on Fridays.
 
-Use the options provided below to change the command's behavior.
+```
+temporal schedule create \
+    --schedule-id 'your-schedule-id' \
+    --interval '5h/15m' \
+    --calendar '{"dayOfWeek":"Fri","hour":"11","minute":"3"}' \
+    --overlap-policy 'BufferAll' \
+    --workflow-id 'your-workflow-id' \
+    --task-queue 'your-task-queue' \
+    --workflow-type 'YourWorkflowType'
+```
+
+Workflows don't run in parallel.
+Setting the `--overlap-policy` to `BufferAll` allows Workflows to run sequentially if they would overlap.
+
+Any combination of `--calendar`, `--interval`, and `--cron` is supported.
+Traditional cron strings, along with `CronSchedule` features, are also supported.
+
+```
+temporal schedule create \
+    --schedule-id 'your-schedule-id' \
+    --cron '3 11 * * Fri' \
+    --workflow-id 'your-workflow-id' \
+    --task-queue 'your-task-queue' \
+    --workflow-type 'YourWorkflowType'
+```
+
+Use the following options to change this command's behavior.
+
+- [--address](/cli/cmd-options/address)
 
 - [--calendar](/cli/cmd-options/calendar)
 
 - [--catchup-window](/cli/cmd-options/catchup-window)
 
+- [--codec-auth](/cli/cmd-options/codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
+
+- [--color](/cli/cmd-options/color)
+
+- [--context-timeout](/cli/cmd-options/context-timeout)
+
 - [--cron](/cli/cmd-options/cron)
 
 - [--end-time](/cli/cmd-options/end-time)
 
+- [--env](/cli/cmd-options/env)
+
 - [--execution-timeout](/cli/cmd-options/execution-timeout)
 
-- [--fields](/cli/cmd-options/fields)
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
 
 - [--input](/cli/cmd-options/input)
 
@@ -45,23 +88,17 @@ Use the options provided below to change the command's behavior.
 
 - [--jitter](/cli/cmd-options/jitter)
 
-- [--limit](/cli/cmd-options/limit)
-
 - [--max-field-length](/cli/cmd-options/max-field-length)
 
 - [--memo](/cli/cmd-options/memo)
 
 - [--memo-file](/cli/cmd-options/memo-file)
 
-- [--no-pager](/cli/cmd-options/no-pager)
+- [--namespace](/cli/cmd-options/namespace)
 
 - [--notes](/cli/cmd-options/notes)
 
-- [--output](/cli/cmd-options/output)
-
 - [--overlap-policy](/cli/cmd-options/overlap-policy)
-
-- [--pager](/cli/cmd-options/pager)
 
 - [--pause](/cli/cmd-options/pause)
 
@@ -81,9 +118,19 @@ Use the options provided below to change the command's behavior.
 
 - [--task-timeout](/cli/cmd-options/task-timeout)
 
-- [--time-format](/cli/cmd-options/time-format)
-
 - [--time-zone](/cli/cmd-options/time-zone)
+
+- [--tls](/cli/cmd-options/tls)
+
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options/tls-server-name)
 
 - [--workflow-id](/cli/cmd-options/workflow-id)
 

@@ -4,7 +4,10 @@ title: How to set the required Activity Timeouts
 description: The only required value that needs to be set is either a Schedule-To-Close Timeout or a Start-To-Close Timeout
 sidebar_label: Required timeout
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - activity
+  - activity execution
+  - timeouts
 ---
 
 Activity Execution semantics rely on several parameters.

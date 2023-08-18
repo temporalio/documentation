@@ -2,6 +2,9 @@
 id: workers
 title: Workers in PHP
 sidebar_label: Workers
+description: Workers in PHP
+tags:
+ - worker
 ---
 
 :::info Try the Developer's guide

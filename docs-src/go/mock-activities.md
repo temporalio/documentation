@@ -4,7 +4,10 @@ title: How to mock Activities
 description: Mock an Activity by providing mock Activity implementations to the Worker.
 sidebar_label: Mock Activities
 tags:
-  - guide-context
+  - go sdk
+  - testing
+  - activity
+  - workflow
 ---
 
 Mock the Activity invocation when unit testing your Workflows.

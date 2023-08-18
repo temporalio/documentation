@@ -4,8 +4,10 @@ title: How to set a custom logger in Go
 sidebar_label: Custom logger
 description: Set a custom logger
 tags:
-  - go
-  - how-to
+  - go sdk
+  - how-to-doc-type
+  - developer-guide-doc-type
+  - logging and metrics
 ---
 
 This field sets a custom Logger that is used for all logging actions of the instance of the Temporal Client.

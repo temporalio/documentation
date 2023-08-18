@@ -2,6 +2,10 @@
 id: task-queues
 title: Task Queues in PHP
 sidebar_label: Task Queues
+description: Task Queues in PHP
+tags:
+    - php
+    - task queues
 ---
 
 :::info Try the Developer's guide
