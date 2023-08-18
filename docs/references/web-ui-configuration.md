@@ -22,7 +22,7 @@ Multiple configuration files can be created for configuring specific areas of th
 
 ## temporalGrpcAddress
 
-The frontend adddress for the Temporal Cluster.
+The frontend address for the Temporal Cluster.
 
 The default address is localhost (127.0.0.1:7233).
 
@@ -247,10 +247,7 @@ codec:
 Configures headers for forwarding.
 
 ```yaml
-  forwardHeaders:
-    - 
+forwardHeaders:
+  -
 ```
-
-
-
 
