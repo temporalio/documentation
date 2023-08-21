@@ -105,7 +105,7 @@ run().catch((err) => {
 });
 ```
 
-Make sure that the Worker is using `NativeConnection`, and the client Connection uses `Connection`.
+Make sure that the Worker uses `NativeConnection` and the client Connection uses `Connection`.
 
 If you are using mTLS, is completely up to you how to get the `clientCert` and `clientKey` pair into your code, whether it is reading from filesystem, secrets manager, or both.
 Just keep in mind that they are whitespace sensitive and some environment variable systems have been known to cause frustration because they modify whitespace.
