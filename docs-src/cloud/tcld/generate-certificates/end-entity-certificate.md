@@ -77,7 +77,7 @@ tcld generate-certificates end-entity-certificate --ca-key-file <path>
 
 #### --certificate-file
 
-Specify a path where the generated x509 leaf certificate file will be stored.
+Specify a path where the generated X.509 leaf certificate file will be stored.
 
 Alias: `--cert`
 
