@@ -30,7 +30,7 @@ tcld generate-certificates end-entity-certificate --organization <value>
 
 #### --organizaation-unit
 
-Specify the name of the organization unit (optional).
+Optional: Specify the name of the organization unit.
 
 **Example**
 
