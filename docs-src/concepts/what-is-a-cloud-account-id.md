@@ -10,6 +10,7 @@ tags:
 
 A Temporal Cloud Account Id is a unique identifier for a customer for the entire time they use Temporal Cloud.
 Temporal Technologies assigns each Account Id, which is an opaque code of five or six alphanumeric characters, such as `f45a2`.
+The Account Id is shown in the upper-right corner of Workflows and Schedules listed in the Web UI.
 
 :::info
 
