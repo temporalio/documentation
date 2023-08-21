@@ -263,7 +263,7 @@ By default, Activities, Child Workflows, and Continue-as-New use the same compat
 
 If you want to override this behavior, you can specify your intent via the `VersioningIntent` field on the appropriate options struct.
 
-<!-- For more information refer to the <a class="tdlp" href="/workers#worker-versioning">conceptual documentation<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Worker Versioning?</span><br /><br /><span class="tdlppd">Worker Versioning lets you more easily deploy changes to Workflow Definitions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-versioning">Learn more</a></span></span></a>. -->
+<!-- For more information refer to the [conceptual documentation](/workers#worker-versioning). -->
 
 For example, if you want to use the latest default version for an Activity, do the following inside your Workflow code:
 
