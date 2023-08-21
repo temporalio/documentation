@@ -28,7 +28,7 @@ The process for setting up observability includes the following steps:
 
 If you're following through with the examples provided here, ensure that you have the following:
 
-- Root CA certificates and end-entity certificates. See [Certificate requirements](/cloud/certificates-intro#certificate-requirements) for details.
+- Root CA certificates and end-entity certificates. See [Certificate requirements](/cloud/certificates-requirements) for details.
 - Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See Connect to a Cluster for details.
 
   - [Go](/dev-guide/go/foundations#connect-to-a-cluster)
@@ -44,7 +44,8 @@ If you're following through with the examples provided here, ensure that you hav
 Before you set up your Temporal Cloud metrics, ensure that you have the following:
 
 - [Global Admin privileges](/cloud/users-account-level-roles) to the Temporal Cloud account.
-- [CA certificate and key](/cloud/certificates-intro) for the Observability integration. You will need the certificate to set up the Observability endpoint in Temporal Cloud.
+- [CA certificate and key](/cloud/certificates) for the Observability integration.
+  You will need the certificate to set up the Observability endpoint in Temporal Cloud.
 
 The following steps describe how to set up Observability on Temporal Cloud to generate an endpoint:
 
@@ -229,7 +230,8 @@ To add the Temporal Cloud Prometheus HTTP API endpoint that we generated in the 
 3. Enter a name for your Temporal Cloud metrics data source, such as _Temporal Cloud metrics_.
 4. In the **HTTP section**, paste the URL that was generated in the Observability section on the Temporal Cloud UI.
 5. In the **Auth section**, enable **TLS Client Auth**.
-6. In the **TLS/SSL Auth Details** section, paste the end-entity certificate and key. Note that the end-entity certificate used here must be part of the certificate chain with the root CA certificates used in your [Temporal Cloud observability setup](#temporal-cloud-metrics-setup).
+6. In the **TLS/SSL Auth Details** section, paste the end-entity certificate and key.
+   Note that the end-entity certificate used here must be part of the certificate chain with the root CA certificates used in your [Temporal Cloud observability setup](#temporal-cloud-metrics-setup).
 7. Click **Save and test** to verify that the data source is working.
 
 If you see issues in setting this data source, verify your CA certificate chain and ensure that you are setting the correct certificates in your Temporal Cloud observability setup and in the TLS authentication in Grafana.

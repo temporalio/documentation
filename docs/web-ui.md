@@ -123,7 +123,7 @@ Click a Schedule to see details, such as configured frequency, start and end tim
 
 On Temporal Cloud, **Settings** is visible only to [Global Admins](/cloud/#account-level-roles).
 
-Click **Settings** to see and manage the list of users in your account and to set up integrations such as [Observability](/cloud/metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui) and [Audit logging](/cloud/how-to-manage-audit-logging).
+Click **Settings** to see and manage the list of users in your account and to set up integrations such as [Observability](/cloud/metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui) and [Audit logging](/cloud/audit-logging).
 
 On self-hosted Temporal Clusters, manage your users, metrics, and logging in your [server configuration](/references/configuration#).
 

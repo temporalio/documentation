@@ -1,6 +1,6 @@
 ---
 id: temporal
-title: Temporal
+title: What is Temporal?
 sidebar_label: Temporal
 sidebar_position: 1
 description: The Temporal Platform explained.
@@ -105,11 +105,10 @@ For more information, see the knowledge base article on [Python sandbox environm
 
 ### SDKs in development
 
-The following SDKs are in alpha/pre-alpha development stages, but are not yet supported in the Developer's guide:
+The following SDKs are in development and do not yet have developer's guides:
 
 - [.NET](https://github.com/temporalio/sdk-dotnet)
 - [Rust](https://github.com/temporalio/sdk-core)
-- [Ruby](https://github.com/temporalio/sdk-ruby)
 
 ### Third-party SDKs
 

@@ -11,6 +11,7 @@ keywords:
 - env
 - env delete
 - env get
+- env list
 - env set
 - environment
 - temporal cli
@@ -21,6 +22,7 @@ tags:
 - env
 - env-delete
 - env-get
+- env-list
 - env-set
 - environment
 - temporal-cli
@@ -31,7 +33,9 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Environment (or 'env') commands allow the user to configure the properties for the environment in use.
+Environment (or 'env') commands let the user configure the properties for the environment in use.
+
+Use `env <env name>` alongside other commands to point the CLI at a different Temporal Server instance.
 
 ## get
 
@@ -45,60 +49,147 @@ Output can be narrowed down to a specific option.
 `temporal env get local.tls-key-path`
 `tls-key-path  /home/my-user/certs/cluster.key`
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
 
-- [--output](/cli/cmd-options#output)
+- [--color](/cli/cmd-options#color)
 
-- [--pager](/cli/cmd-options#pager)
+- [--context-timeout](/cli/cmd-options#context-timeout)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ## set
 
 The `temporal env set` command sets the value for an environmental property.
+Property names match CLI option names.
+
+`temporal env set prod.tls-cert-path /home/my-user/certs/cluster.cert`
 
 Properties can be set for the entire system, such as the frontend address:
 `temporal env set local.address 127.0.0.1:7233`
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
 
-- [--output](/cli/cmd-options#output)
+- [--color](/cli/cmd-options#color)
 
-- [--pager](/cli/cmd-options#pager)
+- [--context-timeout](/cli/cmd-options#context-timeout)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ## delete
 
 The `temporal env delete` command deletes a given environment or environmental property.
 
-Deleting a given environment (such as 'local') and its saved values is achieved by passing a valid [Namespace](/namespaces#) name.
+`temporal env delete [environment or property]`
+
+Pass a valid [Namespace](/namespaces#) into the command to delete an environment and its saved values.
 
 `temporal env delete local`
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
+
+## list
+
+List all environments.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--output](/cli/cmd-options#output)
 
-- [--pager](/cli/cmd-options#pager)
+- [--tls](/cli/cmd-options#tls)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 

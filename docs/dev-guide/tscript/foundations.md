@@ -254,7 +254,7 @@ When you connect to [Temporal Cloud](/cloud), you need to provide additional con
 - mTLS CA certificate.
 - mTLS private key.
 
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/account-setup/certificates#).
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates#).
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
@@ -472,7 +472,7 @@ export async function greet(name: string): Promise<string> {
 ### How to develop Activity Parameters {#activity-parameters}
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
-However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
+However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
 
 A single argument is limited to a maximum size of 2 MB.
 And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
@@ -884,7 +884,7 @@ To run a Worker that uses [Temporal Cloud](/cloud), you need to provide addition
 - mTLS CA certificate.
 - mTLS private key.
 
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/account-setup/certificates#).
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates#).
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 

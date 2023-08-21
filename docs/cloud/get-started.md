@@ -32,7 +32,7 @@ To request a Temporal Cloud account, complete the [request form](https://pages.t
 <!--- Onboarding guide for Temporal Cloud --->
 
 You received email from Temporal that welcomes you to your new Temporal account.
-Your email address is now the first [Global Admin](/cloud/#account-level-roles) for your account.
+Your email address is now the first [Global Admin](/cloud/users#account-level-roles) for your account.
 
 To get started with Temporal Cloud, follow these onboarding steps:
 
@@ -48,21 +48,21 @@ To get started with Temporal Cloud, follow these onboarding steps:
 You must provide your own certificates to access Temporal Cloud.
 For certificate requirements, see the following:
 
-- [Requirements for CA certificates](/cloud/account-setup/certificates#certificate-requirements)
-- [Issue root CA and end-entity certificates](/cloud/account-setup/certificates#issue-certificates)
+- [Requirements for CA certificates](/cloud/certificates#certificate-requirements)
+- [Issue root CA and end-entity certificates](/cloud/certificates#issue-certificates)
 
 ## Get started - Namespaces {#create-a-namespace}
 
 If you don't already have a Namespace (or want to create another), see the following:
 
-[Create a Namespace in Temporal Cloud](/cloud/account-setup/namespaces#create-a-namespace)
+[Create a Namespace in Temporal Cloud](/cloud/namespaces#create-a-namespace)
 
 ## Get started - Invite users {#invite-users}
 
 Adding a user to your Temporal Cloud account includes sending an email invite that the user must then accept.
 To add users, see the following:
 
-[How to invite users to your Temporal Cloud account](/cloud/account-setup/users#invite-users)
+[How to invite users to your Temporal Cloud account](/cloud/users#invite-users)
 
 ## Get started - Connect {#connect-to-temporal-cloud}
 

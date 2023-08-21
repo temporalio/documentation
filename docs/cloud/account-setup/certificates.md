@@ -4,6 +4,7 @@ title: How to manage certificates in Temporal Cloud
 sidebar_label: Certificates
 sidebar_position: 1
 description: Create certificates and use them to control access to Namespaces.
+slug: /cloud/certificates
 toc_max_heading_level: 4
 keywords:
 - certificates
@@ -25,8 +26,19 @@ tags:
 
 Temporal Cloud access is secured by the mutual Transport Layer Security (mTLS) protocol, which requires a CA certificate from the user.
 
-[Worker Processes](/workers/#worker-process) require CA certificates and private keys to connect to Temporal Cloud.
+A [Worker Process](/workers#worker-process) requires a CA certificate and private key to connect to Temporal Cloud.
 Temporal Cloud does not require an exchange of secrets; only the certificates produced by private keys are used for verification.
+
+:::caution Don't let your certificates expire
+
+An expired root CA certificate invalidates all downstream certificates.
+
+An expired end-entity certificate prevents a [Temporal Client](/temporal#temporal-client) from connecting to a Namespace or starting a Workflow Execution.
+If the client is on a Worker, any current Workflow Executions that are processed by that Worker either run indefinitely without making progress until the Worker resumes or fail because of timeouts.
+
+To update certificates, see [How to add, update, and remove certificates in a Temporal Cloud Namespace](#manage-certificates).
+
+:::
 
 All certificates used by Temporal Cloud must meet the following requirements.
 
@@ -179,11 +191,25 @@ Temporal uses the root CA certificate as the trusted authority for access to you
 
 [How to manage certificate filters in Temporal Cloud](#manage-certificate-filters)
 
+## How to receive notifications about certificate expiration {#expiration-notifications}
+
+To keep your Namespace secure and online, you must update the CA certificate for the Namespace _before_ the certificate expires.
+
+To help you remember to do so, Temporal Cloud sends email notifications to users who have the Global Admin [Role](/cloud/users#account-level-roles) or the Namespace Admin [permission](/cloud/users#namespace-level-permissions) 15 days before expiration and, if necessary, 10 days before expiration.
+
+If the certificate is not updated, 5 days before expiration Temporal Cloud creates a support ticket on behalf of the Global Admins and Namespace Admins.
+
+To ensure that you receive email notifications, configure your junk-email filters to permit email from `noreply@temporal.io`.
+
+After a support ticket is created, admins should expect a follow-up from the Temporal Developer Success team.
+
+To change who receives certificate-expiration notifications for a Namespace (or to provide feedback about such notifications), [create a support ticket](/cloud/support#support-ticket).
+
 ## How to add, update, and remove certificates in a Temporal Cloud Namespace {#manage-certificates}
 
 :::note
 
-To manage certificates for a Namespace, a user must have [Namespace Admin](/cloud/#namespace-level-permissions) permission for that Namespace.
+To manage certificates for a Namespace, a user must have [Namespace Admin](/cloud/users#namespace-level-permissions) permission for that Namespace.
 
 :::
 
@@ -191,8 +217,10 @@ To manage certificates for Temporal Cloud Namespaces, use the **Namespaces** pag
 
 Don't let your certificates expire!
 Add reminders to your calendar to issue new CA certificates well before the expiration dates of the existing ones.
+Temporal Cloud begins sending notifications 15 days before expiration.
+For details, see the previous section ([How to receive notifications about certificate expiration](#expiration-notifications)).
 
-When updating CA certificates, it's important to follow a rollover process.
+When updating CA certificates, it's important to follow a rollover process (sometimes referred to as "certificate rotation").
 Doing so enables your Namespace to serve both CA certificates for a period of time until traffic to your old CA certificate ceases.
 
 Be aware that the subject of the existing certificate and the subject of the new certificate must not be identical.
@@ -254,7 +282,7 @@ One way to meet this requirement is to add a version or a date to the common nam
 
 ## How to manage certificate filters in Temporal Cloud {#manage-certificate-filters}
 
-To limit access to specific [end-entity certificates](#), create certificate filters.
+To limit access to specific [end-entity certificates](#end-entity-certificates), create certificate filters.
 Each filter contains values for one or more of the following fields:
 
 - commonName (CN)

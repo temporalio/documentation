@@ -62,48 +62,84 @@ To run an Operator command, run `temporal operator [command] [subcommand] [comma
 
 ## cluster
 
-Operator commands enable actions on [Namespaces](/namespaces#), [Search Attributes](/visibility#search-attribute), and [Temporal Clusters](/clusters#).
-These actions are performed through subcommands for each Operator area.
+Cluster commands enable actions on [Temporal Clusters](/clusters#).
 
-To run an Operator command, run `temporal operator [command] [subcommand] [command options]`.
+Cluster commands follow this syntax:
+`temporal operator [command] [subcommand] [command options]`.
 
 ### describe
 
 The `temporal operator cluster describe` command shows information about the [Cluster](/clusters#).
 This information can include information about other connected services, such as a remote [Codec Server](/dataconversion#codec-server).
 
-Use the options listed below to change the output of this command.
+Use the following options to change the output of this command.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
 
 - [--fields](/cli/cmd-options#fields)
 
-- [--limit](/cli/cmd-options#limit)
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--output](/cli/cmd-options#output)
 
-- [--pager](/cli/cmd-options#pager)
+- [--tls](/cli/cmd-options#tls)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ### health
 
 The `temporal operator cluster health` command checks the health of the [Frontend Service](/clusters#frontend-service).
 A successful execution returns a list of [Cluster](/clusters#) metrics.
 
-Use the options listed below to change the behavior and output of this command.
+Use the following options to change the behavior and output of this command.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
 
-- [--output](/cli/cmd-options#output)
+- [--color](/cli/cmd-options#color)
 
-- [--pager](/cli/cmd-options#pager)
+- [--context-timeout](/cli/cmd-options#context-timeout)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ### list
 
@@ -111,11 +147,27 @@ The `temporal operator cluster list` command prints a list of all remote [Cluste
 
 `temporal operator cluster list`
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
 
 - [--fields](/cli/cmd-options#fields)
 
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
 - [--limit](/cli/cmd-options#limit)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--no-pager](/cli/cmd-options#no-pager)
 
@@ -124,6 +176,18 @@ Use the options listed below to change the command's behavior.
 - [--pager](/cli/cmd-options#pager)
 
 - [--time-format](/cli/cmd-options#time-format)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ### remove
 
@@ -131,21 +195,37 @@ The `temporal operator cluster remove` command removes a remote [Cluster](/clust
 
 `temporal operator cluster remove --name=SomeCluster`
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
 - [--name](/cli/cmd-options#name)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--namespace](/cli/cmd-options#namespace)
 
-- [--output](/cli/cmd-options#output)
+- [--tls](/cli/cmd-options#tls)
 
-- [--pager](/cli/cmd-options#pager)
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ### system
 
@@ -154,19 +234,39 @@ This information can be used to diagnose problems occurring in the [Temporal Ser
 
 `temporal operator cluster system`
 
-Use the options listed below to change this command's output.
+Use the following options to change this command's behavior.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
 
 - [--fields](/cli/cmd-options#fields)
 
-- [--limit](/cli/cmd-options#limit)
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--output](/cli/cmd-options#output)
 
-- [--pager](/cli/cmd-options#pager)
+- [--tls](/cli/cmd-options#tls)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ### upsert
 
@@ -176,27 +276,46 @@ The `temporal operator cluster upsert` command allows the user to add or update 
 Upserting can also be used to enable or disabled cross-cluster connection.
 `temporal operator cluster upsert --enable-connection=true`
 
-Use the options listed below to change the behavior of this command.
+Use the following options to change the behavior of this command.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
 
 - [--enable-connection](/cli/cmd-options#enable-connection)
 
-- [--fields](/cli/cmd-options#fields)
+- [--env](/cli/cmd-options#env)
 
 - [--frontend-address](/cli/cmd-options#frontend-address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--namespace](/cli/cmd-options#namespace)
 
-- [--output](/cli/cmd-options#output)
+- [--tls](/cli/cmd-options#tls)
 
-- [--pager](/cli/cmd-options#pager)
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ## namespace
 
-Namespace commands allow [Namespace](/namespaces#) operations to be performed on the [Temporal Cluster](/clusters#).
+Namespace commands perform operations on [Namespaces](/namespaces#) contained in the [Temporal Cluster](/clusters#).
+
+Namespace commands follow this syntax:
+`temporal operator namespace COMMAND [ARGS]`.
 
 ### create
 
@@ -215,7 +334,17 @@ Use the options listed below to change the command's behavior.
 
 - [--active-cluster](/cli/cmd-options#active-cluster)
 
+- [--address](/cli/cmd-options#address)
+
 - [--cluster](/cli/cmd-options#cluster)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
 
 - [--data](/cli/cmd-options#data)
 
@@ -223,25 +352,31 @@ Use the options listed below to change the command's behavior.
 
 - [--email](/cli/cmd-options#email)
 
-- [--fields](/cli/cmd-options#fields)
+- [--env](/cli/cmd-options#env)
 
 - [--global](/cli/cmd-options#global)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
 - [--history-archival-state](/cli/cmd-options#history-archival-state)
 
 - [--history-uri](/cli/cmd-options#history-uri)
 
-- [--limit](/cli/cmd-options#limit)
-
-- [--no-pager](/cli/cmd-options#no-pager)
-
-- [--output](/cli/cmd-options#output)
-
-- [--pager](/cli/cmd-options#pager)
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--retention](/cli/cmd-options#retention)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--visibility-archival-state](/cli/cmd-options#visibility-archival-state)
 
@@ -250,20 +385,37 @@ Use the options listed below to change the command's behavior.
 ### delete
 
 The `temporal operator namespace delete` command deletes a given [Namespace](/namespaces#) from the system.
+The command follow the syntax `temporal operator namespace delete <namespace>`
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the behavior of this command.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
 
-- [--output](/cli/cmd-options#output)
+- [--color](/cli/cmd-options#color)
 
-- [--pager](/cli/cmd-options#pager)
+- [--context-timeout](/cli/cmd-options#context-timeout)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--yes](/cli/cmd-options#yes)
 
@@ -274,21 +426,37 @@ Namespaces are identified by Namespace ID.
 
 `temporal operator namespace describe --namespace-id=meaningful-business-id`
 
-Use the options listed below to change the command's output.
+Use the following options to change the behavior of this command.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--namespace-id](/cli/cmd-options#namespace-id)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--tls](/cli/cmd-options#tls)
 
-- [--output](/cli/cmd-options#output)
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
 
-- [--pager](/cli/cmd-options#pager)
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ### list
 
@@ -296,23 +464,39 @@ The `temporal operator namespace list` command lists all [Namespaces](/namespace
 
 `temporal operator namespace list`
 
-Use the options listed below to change the command's output.
+Use the following options to change this command's behavior.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
 
-- [--output](/cli/cmd-options#output)
+- [--color](/cli/cmd-options#color)
 
-- [--pager](/cli/cmd-options#pager)
+- [--context-timeout](/cli/cmd-options#context-timeout)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ### update
 
-The `temporal operator namespace update` command updates a given [Namespace](/namespaces#).
+The `temporal operator namespace update` command updates a [Namespace](/namespaces#).
 
 Namespaces can be assigned a different active [Cluster](/clusters#).
 `temporal operator namespace update --active-cluster=NewActiveCluster`
@@ -328,7 +512,17 @@ Use the options listed below to change the command's behavior.
 
 - [--active-cluster](/cli/cmd-options#active-cluster)
 
+- [--address](/cli/cmd-options#address)
+
 - [--cluster](/cli/cmd-options#cluster)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
 
 - [--data](/cli/cmd-options#data)
 
@@ -336,27 +530,33 @@ Use the options listed below to change the command's behavior.
 
 - [--email](/cli/cmd-options#email)
 
-- [--fields](/cli/cmd-options#fields)
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
 - [--history-archival-state](/cli/cmd-options#history-archival-state)
 
 - [--history-uri](/cli/cmd-options#history-uri)
 
-- [--limit](/cli/cmd-options#limit)
-
-- [--no-pager](/cli/cmd-options#no-pager)
-
-- [--output](/cli/cmd-options#output)
-
-- [--pager](/cli/cmd-options#pager)
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--promote-global](/cli/cmd-options#promote-global)
 
-- [--reason](/cli/cmd-options#reason)
-
 - [--retention](/cli/cmd-options#retention)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
+
+- [--verbose](/cli/cmd-options#verbose)
 
 - [--visibility-archival-state](/cli/cmd-options#visibility-archival-state)
 
@@ -366,68 +566,123 @@ Use the options listed below to change the command's behavior.
 
 Search Attribute commands enable operations for the creation, listing, and removal of [Search Attributes](/visibility#search-attribute).
 
+Search Attribute commands follow this syntax:
+`temporal operator search-attribute COMMAND [ARGS]`.
+
 ### create
 
 The `temporal operator search-attribute create` command adds one or more custom [Search Attributes](/visibility#search-attribute).
 These Search Attributes can be used to [filter a list](/visibility#list-filter) of [Workflow Executions](/workflows#workflow-execution) that contain the given Search Attributes in their metadata.
 
-Use the options listed below to change the command's behavior.
+Use the following options to change this command's behavior.
 
 - [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
 - [--name](/cli/cmd-options#name)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--namespace](/cli/cmd-options#namespace)
 
-- [--output](/cli/cmd-options#output)
+- [--tls](/cli/cmd-options#tls)
 
-- [--pager](/cli/cmd-options#pager)
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--type](/cli/cmd-options#type)
 
 ### list
 
-The `temporal operator search-attribute list` command displays a list of all [Search Attributes](/visibility#search-attribute) that can be used in `temporal workflow list --query`.
+The `temporal operator search-attribute list` command displays a list of all [Search Attributes](/visibility#search-attribute) that can be used in [Queries](/workflows#query).
 
-Use the options listed below to change the command's behavior.
+`temporal workflow list --query`.
 
-- [--fields](/cli/cmd-options#fields)
+Use the following options to change this command's behavior.
 
-- [--limit](/cli/cmd-options#limit)
+- [--address](/cli/cmd-options#address)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--output](/cli/cmd-options#output)
 
-- [--pager](/cli/cmd-options#pager)
+- [--tls](/cli/cmd-options#tls)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ### remove
 
 The `temporal operator search-attribute remove` command removes custom [Search Attribute](/visibility#search-attribute) metadata.
-This command does not remove custom Search Attributes from Elasticsearch.
-The index schema is not modified.
+This command does not remove custom Search Attributes from Elasticsearch or change the index schema.
 
-Use the options listed below to change the command's behavior.
+Use the following options to change this command's behavior.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
 - [--name](/cli/cmd-options#name)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--namespace](/cli/cmd-options#namespace)
 
-- [--output](/cli/cmd-options#output)
+- [--tls](/cli/cmd-options#tls)
 
-- [--pager](/cli/cmd-options#pager)
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--yes](/cli/cmd-options#yes)
 

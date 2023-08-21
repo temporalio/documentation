@@ -1,6 +1,6 @@
 ---
 id: clusters
-title: Clusters
+title: What is a Temporal Cluster?
 sidebar_label: Clusters
 sidebar_position: 8
 description: This guide provides a comprehensive overview of Temporal Clusters.
@@ -362,7 +362,7 @@ Setting mTLS for `internode` and `frontend` separately lets you use different ce
 
 Use CA certificates to authenticate client connections to your Temporal Cluster.
 
-On Temporal Cloud, you can [set your CA certificates in your Temporal Cloud settings](/cloud/account-setup/certificates#) and use the end-entity certificates in your client calls.
+On Temporal Cloud, you can [set your CA certificates in your Temporal Cloud settings](/cloud/certificates#) and use the end-entity certificates in your client calls.
 
 On self-hosted Temporal Clusters, you can restrict access to Temporal Cluster endpoints by using the `clientCAFiles` or `clientCAData` property and the [`requireClientAuth`](/references/configuration#tls) property in your Cluster configuration.
 These properties can be specified in both the `internode` and `frontend` sections of the [mTLS configuration](/references/configuration#tls).

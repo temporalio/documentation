@@ -9,7 +9,7 @@ tags:
   - certificates
 ---
 
-To limit access to specific [end-entity certificates](/cloud/certificates-intro), create certificate filters.
+To limit access to specific [end-entity certificates](/cloud/certificates-requirements#end-entity-certificates), create certificate filters.
 Each filter contains values for one or more of the following fields:
 
 - commonName (CN)

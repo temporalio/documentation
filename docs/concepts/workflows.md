@@ -1,6 +1,6 @@
 ---
 id: workflows
-title: Workflows
+title: What is a Temporal Workflow?
 sidebar_label: Workflows
 sidebar_position: 2
 description: This guide provides a comprehensive overview of Temporal Workflows.

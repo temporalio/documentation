@@ -1,9 +1,10 @@
 ---
-id: security-cloud
+id: security
 title: What kind of security does Temporal Cloud provide?
 sidebar_label: Security
 sidebar_position: 1
 description: The security model of Temporal Cloud encompasses applications, data, and the Temporal Cloud platform.
+slug: /cloud/security
 toc_max_heading_level: 4
 keywords:
 - introduction
@@ -58,19 +59,19 @@ All communication within our production environments is over TLS 1.3.
 Data is stored in two separate locations: an Elasticsearch instance (used when filtering Workflows in SDK clients, the [CLI](/cloud/tcld), or the Web UI) and the core Temporal Cloud persistence layer.
 Both are encrypted at rest with AES-256-GCM.
 
-For more information, see [Requirements for CA certificates in Temporal Cloud](/cloud/account-setup/certificates#certificate-requirements).
+For more information, see [Requirements for CA certificates in Temporal Cloud](/cloud/certificates#certificate-requirements).
 
 ### Identity
 
 Authentication to gRPC endpoints is provided by mTLS per Namespace.
 
-For more information, see [How to manage SAML authentication with Temporal Cloud](/cloud/how-to-manage-saml-with-temporal-cloud).
+For more information, see [How to manage SAML authentication with Temporal Cloud](/cloud/saml).
 
 ### Access
 
 Authorization is managed at the account and Namespace level.
 Users and systems are assigned one or more preconfigured roles.
-Users hold [account-level Roles](/cloud/account-setup/users#account-level-roles) of administrators, developers, and read-only users.
+Users hold [account-level Roles](/cloud/users#account-level-roles) of administrators, developers, and read-only users.
 Systems and applications processes hold their own distinct roles.
 
 ### Monitoring

@@ -49,9 +49,10 @@ To run a Schedule command, run `temporal schedule [command] [command options]`.
 ## backfill
 
 The `temporal schedule backfill` command executes Actions ahead of their specified time range.
-Backfilling can be used to fill in [Workflow Runs](/workflows#run-id) from a time period when the Schedule was paused, or from before the Schedule was created.
+Backfilling adds [Workflow Runs](/workflows#run-id) from a time period when the Schedule was paused, or from before the Schedule was created.
 
 Schedule backfills require a valid Schedule ID, along with the time in which to run the Schedule and a change to the overlap policy.
+The following example fills in Workflow Runs from a point when the Schedule was paused.
 
 ```
 temporal schedule backfill --schedule-id 'your-schedule-id' \
@@ -60,34 +61,52 @@ temporal schedule backfill --schedule-id 'your-schedule-id' \
 --end-time '2022-05-31T23:59:59Z'
 ```
 
-Use the options provided below to change this command's behavior.
+Temporal recommends setting the Overlap Policy to `BufferAll` to run backfilled Workflows sequentially.
+
+Use the following options to change this command's behavior.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
 
 - [--end-time](/cli/cmd-options#end-time)
 
-- [--fields](/cli/cmd-options#fields)
+- [--env](/cli/cmd-options#env)
 
-- [--limit](/cli/cmd-options#limit)
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
-- [--no-pager](/cli/cmd-options#no-pager)
-
-- [--output](/cli/cmd-options#output)
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--overlap-policy](/cli/cmd-options#overlap-policy)
-
-- [--pager](/cli/cmd-options#pager)
 
 - [--schedule-id](/cli/cmd-options#schedule-id)
 
 - [--start-time](/cli/cmd-options#start-time)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ## create
 
 The `temporal schedule create` command creates a new [Schedule](/workflows#schedule).
 Newly created Schedules return a Schedule ID to be used in other Schedule commands.
 
-Schedules need to follow a format like the example shown here:
+Schedules use the following format:
 
 ```
 temporal schedule create \
@@ -97,22 +116,61 @@ temporal schedule create \
     --workflow-type 'YourWorkflowType'
 ```
 
-Any combination of `--calendar`, `--interval`, and `--cron` is supported.
-Actions will be executed at any time specified in the Schedule.
+Actions are executed at the times specified in the Schedule.
+For example, the following Schedule starts a Workflow every 5 hours at 15 minutes past the hour.
+A Workflow is also started at 11:03 on Fridays.
 
-Use the options provided below to change the command's behavior.
+```
+temporal schedule create \
+    --schedule-id 'your-schedule-id' \
+    --interval '5h/15m' \
+    --calendar '{"dayOfWeek":"Fri","hour":"11","minute":"3"}' \
+    --overlap-policy 'BufferAll' \
+    --workflow-id 'your-workflow-id' \
+    --task-queue 'your-task-queue' \
+    --workflow-type 'YourWorkflowType'
+```
+
+Workflows don't run in parallel.
+Setting the `--overlap-policy` to `BufferAll` allows Workflows to run sequentially if they would overlap.
+
+Any combination of `--calendar`, `--interval`, and `--cron` is supported.
+Traditional cron strings, along with `CronSchedule` features, are also supported.
+
+```
+temporal schedule create \
+    --schedule-id 'your-schedule-id' \
+    --cron '3 11 * * Fri' \
+    --workflow-id 'your-workflow-id' \
+    --task-queue 'your-task-queue' \
+    --workflow-type 'YourWorkflowType'
+```
+
+Use the following options to change this command's behavior.
+
+- [--address](/cli/cmd-options#address)
 
 - [--calendar](/cli/cmd-options#calendar)
 
 - [--catchup-window](/cli/cmd-options#catchup-window)
 
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
 - [--cron](/cli/cmd-options#cron)
 
 - [--end-time](/cli/cmd-options#end-time)
 
+- [--env](/cli/cmd-options#env)
+
 - [--execution-timeout](/cli/cmd-options#execution-timeout)
 
-- [--fields](/cli/cmd-options#fields)
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
 - [--input](/cli/cmd-options#input)
 
@@ -122,23 +180,17 @@ Use the options provided below to change the command's behavior.
 
 - [--jitter](/cli/cmd-options#jitter)
 
-- [--limit](/cli/cmd-options#limit)
-
 - [--max-field-length](/cli/cmd-options#max-field-length)
 
 - [--memo](/cli/cmd-options#memo)
 
 - [--memo-file](/cli/cmd-options#memo-file)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--notes](/cli/cmd-options#notes)
 
-- [--output](/cli/cmd-options#output)
-
 - [--overlap-policy](/cli/cmd-options#overlap-policy)
-
-- [--pager](/cli/cmd-options#pager)
 
 - [--pause](/cli/cmd-options#pause)
 
@@ -158,9 +210,19 @@ Use the options provided below to change the command's behavior.
 
 - [--task-timeout](/cli/cmd-options#task-timeout)
 
-- [--time-format](/cli/cmd-options#time-format)
-
 - [--time-zone](/cli/cmd-options#time-zone)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--workflow-id](/cli/cmd-options#workflow-id)
 
@@ -176,21 +238,37 @@ However, Workflow Executions started by a Schedule can be identified by their [S
 
 `temporal schedule delete --schedule-id 'your-schedule-id' [command options]`
 
-Use the options below to change the behavior of this command.
+Use the following options to change this command's behavior.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
 
-- [--output](/cli/cmd-options#output)
+- [--color](/cli/cmd-options#color)
 
-- [--pager](/cli/cmd-options#pager)
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--schedule-id](/cli/cmd-options#schedule-id)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ## describe
 
@@ -199,23 +277,45 @@ This command also provides information about past, current, and future [Workflow
 
 `temporal schedule describe --schedule-id 'your-schedule-id' [command options]`
 
-Use the options below to change this command's output.
+Use the following options to change this command's behavior.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
 
 - [--fields](/cli/cmd-options#fields)
 
-- [--limit](/cli/cmd-options#limit)
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--output](/cli/cmd-options#output)
-
-- [--pager](/cli/cmd-options#pager)
 
 - [--raw](/cli/cmd-options#raw)
 
 - [--schedule-id](/cli/cmd-options#schedule-id)
 
 - [--time-format](/cli/cmd-options#time-format)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ## list
 
@@ -226,9 +326,25 @@ Listing Schedules in [Standard Visibility](/visibility#standard-visibility) will
 
 Use the options below to change the behavior of this command.
 
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
 - [--fields](/cli/cmd-options#fields)
 
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
 - [--limit](/cli/cmd-options#limit)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--no-pager](/cli/cmd-options#no-pager)
 
@@ -237,6 +353,18 @@ Use the options below to change the behavior of this command.
 - [--pager](/cli/cmd-options#pager)
 
 - [--time-format](/cli/cmd-options#time-format)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ## toggle
 
@@ -249,17 +377,23 @@ Schedule toggles are passed in this format:
 `temporal schedule toggle --schedule-id 'your-schedule-id' --pause --reason "paused because the database is down"`
 `temporal schedule toggle --schedule-id 'your-schedule-id' --unpause --reason "the database is back up"`
 
-Use the options provided below to change this command's behavior.
+Use the following options to change this command's behavior.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
 
-- [--output](/cli/cmd-options#output)
+- [--color](/cli/cmd-options#color)
 
-- [--pager](/cli/cmd-options#pager)
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--pause](/cli/cmd-options#pause)
 
@@ -267,7 +401,17 @@ Use the options provided below to change this command's behavior.
 
 - [--schedule-id](/cli/cmd-options#schedule-id)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--unpause](/cli/cmd-options#unpause)
 
@@ -283,23 +427,39 @@ Schedule triggers are passed in this format:
 The Overlap Policy of the Schedule can be overridden as well.
 `temporal schedule trigger --schedule-id 'your-schedule-id' --overlap-policy 'AllowAll'`
 
-Use the options provided below to change this command's behavior.
+Use the following options to change this command's behavior.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
 
-- [--output](/cli/cmd-options#output)
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--overlap-policy](/cli/cmd-options#overlap-policy)
 
-- [--pager](/cli/cmd-options#pager)
-
 - [--schedule-id](/cli/cmd-options#schedule-id)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ## update
 
@@ -318,19 +478,31 @@ temporal schedule update 			    \
 Updating a Schedule takes the given options and replaces the entire configuration of the Schedule with what's provided.
 If you only change one value of the Schedule, be sure to provide the other unchanged fields to prevent them from being overwritten.
 
-Use the options provided below to change the command's behavior.
+Use the following options to change the command's behavior.
+
+- [--address](/cli/cmd-options#address)
 
 - [--calendar](/cli/cmd-options#calendar)
 
 - [--catchup-window](/cli/cmd-options#catchup-window)
 
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
 - [--cron](/cli/cmd-options#cron)
 
 - [--end-time](/cli/cmd-options#end-time)
 
+- [--env](/cli/cmd-options#env)
+
 - [--execution-timeout](/cli/cmd-options#execution-timeout)
 
-- [--fields](/cli/cmd-options#fields)
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
 - [--input](/cli/cmd-options#input)
 
@@ -340,23 +512,17 @@ Use the options provided below to change the command's behavior.
 
 - [--jitter](/cli/cmd-options#jitter)
 
-- [--limit](/cli/cmd-options#limit)
-
 - [--max-field-length](/cli/cmd-options#max-field-length)
 
 - [--memo](/cli/cmd-options#memo)
 
 - [--memo-file](/cli/cmd-options#memo-file)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--notes](/cli/cmd-options#notes)
 
-- [--output](/cli/cmd-options#output)
-
 - [--overlap-policy](/cli/cmd-options#overlap-policy)
-
-- [--pager](/cli/cmd-options#pager)
 
 - [--pause](/cli/cmd-options#pause)
 
@@ -376,9 +542,19 @@ Use the options provided below to change the command's behavior.
 
 - [--task-timeout](/cli/cmd-options#task-timeout)
 
-- [--time-format](/cli/cmd-options#time-format)
-
 - [--time-zone](/cli/cmd-options#time-zone)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--workflow-id](/cli/cmd-options#workflow-id)
 

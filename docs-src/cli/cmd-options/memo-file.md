@@ -9,7 +9,6 @@ tags:
     - options-feature
     - command-line-interface-cli
     - memo
-
 ---
 
 Set a memo from a file.

@@ -4,6 +4,7 @@ title: What is the pricing for Temporal Cloud?
 sidebar_label: Pricing
 sidebar_position: 3
 description: Temporal Cloud pricing information
+slug: /cloud/pricing
 toc_max_heading_level: 4
 keywords:
 - explanation
@@ -126,7 +127,7 @@ The Temporal Developer Success team brings a deep knowledge of how Temporal work
 
 They also investigate your Workflows to optimize their environments and possibly reduce costs associated with Actions and storage. They ensure your instance is performance tuned and help with other ongoing maintenance, like upgrades of the Temporal software and maintenance of the platform.
 
-If an issue occurs, the team provides support through our [support portal](/cloud/introduction/support#support-ticket), [community forum](https://community.temporal.io/), and (with Premium support) a dedicated Slack channel. Temporal offers two levels of support defined by their availability and SLAs.
+If an issue occurs, the team provides support through our [support portal](/cloud/support#support-ticket), [community forum](https://community.temporal.io/), and (with Premium support) a dedicated Slack channel. Temporal offers two levels of support defined by their availability and SLAs.
 
 |                     | **Basic**                                                                                   | **Premium**                                                                            |
 | ------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |

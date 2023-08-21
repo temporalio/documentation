@@ -1,9 +1,10 @@
 ---
-id: how-to-manage-saml-with-temporal-cloud
+id: saml
 title: How to manage SAML authentication with Temporal Cloud
 sidebar_label: SAML
 sidebar_position: 7
 description: Integrate a SAML identity provider with your Temporal Cloud account.
+slug: /cloud/saml
 toc_max_heading_level: 4
 keywords:
 - how-to
@@ -30,8 +31,8 @@ For more information, contact your account manager.
 
 ## Integrate SAML with your Temporal Cloud account
 
-1. Locate your [Temporal Cloud Account Id](/cloud/account-setup/namespaces#temporal-cloud-account-id).
-   One way to do so is to sign in to Temporal Cloud and find your [Namespace Id](/cloud/account-setup/namespaces#temporal-cloud-namespace-id).
+1. Locate your [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id).
+   One way to do so is to sign in to Temporal Cloud and find your [Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
    The Account Id is the five or six characters following the period (.), such as `f45a2`.
    You will need the Account Id to construct your callback URL and your entity identifier.
 1. Configure SAML with your IdP by following one of these sets of instructions:
@@ -141,7 +142,7 @@ To finish setting up Okta as your SAML IdP, see the next section, [Finish SAML c
 ## How to finish your SAML configuration {#finish-saml-configuration}
 
 After you configure SAML with your IdP, we can finish the configuration on our side.
-[Create a support ticket](/cloud/introduction/support#support-ticket) that includes the following information:
+[Create a support ticket](/cloud/support#support-ticket) that includes the following information:
 
 - The sign-in URL from your application
 - The X.509 SAML sign-in certificate

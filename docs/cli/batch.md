@@ -29,11 +29,8 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Batch commands allow you to change multiple [Workflow Executions](/workflows#workflow-execution) in the background.
-In order to do this, you provide the command with a [List Filter](/visibility#list-filter) and the type of Batch job to execute.
-
-The List Filter identifies the Workflow Executions that will be affected by the Batch job.
-The Batch type determines the other parameters that need to be provided, along with what is being affected on the Workflow Executions.
+Batch commands change multiple [Workflow Executions](/workflows#workflow-execution) by providing a [List Filter](/clusters#visibility) and the type of Batch Job to execute.
+The List Filter identifies the Workflow Executions in the Batch Job; the Batch type determines what will happen to the Workflow Executions.
 
 There are three types of Batch Jobs:
 
@@ -46,15 +43,32 @@ Use this Job ID to execute other actions on the Batch job.
 
 ## list
 
-When used, `temporal batch list` returns all Batch jobs.
+The `temporal batch list` command returns all Batch jobs.
 Batch Jobs can be returned for an entire Cluster or a single Namespace.
+
 `temporal batch list --namespace=MyNamespace`
 
-Use the command options listed below to change the information returned by this command.
+Use the following options to change the behavior of this command.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
 
 - [--fields](/cli/cmd-options#fields)
 
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
 - [--limit](/cli/cmd-options#limit)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--no-pager](/cli/cmd-options#no-pager)
 
@@ -63,52 +77,103 @@ Use the command options listed below to change the information returned by this 
 - [--pager](/cli/cmd-options#pager)
 
 - [--time-format](/cli/cmd-options#time-format)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ## describe
 
 The `temporal batch describe` command shows the progress of an ongoing Batch job.
 
 Pass a valid Job ID to return a Batch Job's information.
+
 `temporal batch describe --jobid=MyJobId`
 
-Use the command options listed below to change the information returned by this command.
+Use the following options to change the behavior of this command.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
 
 - [--fields](/cli/cmd-options#fields)
 
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
 - [--job-id](/cli/cmd-options#job-id)
 
-- [--limit](/cli/cmd-options#limit)
-
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--output](/cli/cmd-options#output)
 
-- [--pager](/cli/cmd-options#pager)
-
 - [--time-format](/cli/cmd-options#time-format)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ## terminate
 
 The `temporal batch terminate` command terminates a Batch job with the provided Job ID.
-A reason for terminating the Batch Job can also be provided for future reference.
+For future reference, provide a reason for terminating the Batch Job.
 
 `temporal batch terminate --job-id=MyJobId --reason=JobReason`
 
-Use the command options listed below to change the behavior of this command.
+Use the following options to change the behavior of this command.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
 - [--job-id](/cli/cmd-options#job-id)
 
-- [--limit](/cli/cmd-options#limit)
-
-- [--no-pager](/cli/cmd-options#no-pager)
-
-- [--output](/cli/cmd-options#output)
-
-- [--pager](/cli/cmd-options#pager)
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--reason](/cli/cmd-options#reason)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 

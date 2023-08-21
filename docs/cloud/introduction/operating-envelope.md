@@ -4,6 +4,7 @@ title: What is the operating envelope of Temporal Cloud?
 sidebar_label: Operating envelope
 sidebar_position: 2
 description: The operating envelope of Temporal Cloud includes availability, regions, throughput, and latency.
+slug: /cloud/operating-envelope
 toc_max_heading_level: 4
 keywords:
 - explanation
@@ -62,18 +63,19 @@ For current system status and information about recent incidents, see [Temporal 
 
 Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS):
 
-| Code           | Region                   |
-| -------------- | ------------------------ |
-| ap-northeast-1 | Asia Pacific (Tokyo)     |
-| ap-southeast-1 | Asia Pacific (Singapore) |
-| ap-southeast-2 | Asia Pacific (Sydney)    |
-| ca-central-1   | Canada (Central)         |
-| eu-central-1   | EU (Frankfurt)           |
-| eu-west-1      | EU (Ireland)             |
-| eu-west-2      | EU (London)              |
-| us-east-1      | US East (N. Virginia)    |
-| us-east-2      | US East (Ohio)           |
-| us-west-2      | US West (Oregon)         |
+| Area          | Code           | Region            |
+| ------------- | -------------- | ----------------- |
+| Asia Pacific  | ap-northeast-1 | Tokyo             |
+| Asia Pacific  | ap-south-1     | Mumbai            |
+| Asia Pacific  | ap-southeast-1 | Singapore         |
+| Asia Pacific  | ap-southeast-2 | Sydney            |
+| Europe        | eu-central-1   | Frankfurt         |
+| Europe        | eu-west-1      | Ireland           |
+| Europe        | eu-west-2      | London            |
+| North America | ca-central-1   | Central Canada    |
+| North America | us-east-1      | Northern Virginia |
+| North America | us-east-2      | Ohio              |
+| North America | us-west-2      | Oregon            |
 
 Furthermore, it is compatible with applications deployed in any cloud environment or data center.
 
@@ -81,13 +83,13 @@ To reduce latency, we recommend that you create your [Namespace](/namespaces#) i
 
 ## What kind of throughput can I get with Temporal Cloud? {#throughput}
 
-A Namespace has a default quota of 200 [Actions](/cloud/introduction/pricing#action) per second with spikes up to 400 Actions per second.
+A Namespace has a default quota of 200 [Actions](/cloud/pricing#action) per second with spikes up to 400 Actions per second.
 However, Temporal Cloud can provide more than 150,000 Actions per second.
 
 If your Action rate exceeds your quota, Temporal Cloud throttles Actions until the rate matches your quota.
 Actions like Start or Signal Workflow Execution always receive higher priority than other Actions, even when throttled.
 
-To raise your quota, create a [support ticket](/cloud/introduction/support#support-ticket).
+To raise your quota, create a [support ticket](/cloud/support#support-ticket).
 
 ## What kind of latency can I expect from Temporal Cloud? {#latency}
 

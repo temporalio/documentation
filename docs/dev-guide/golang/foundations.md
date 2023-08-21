@@ -24,10 +24,12 @@ keywords:
 - deterministic
 - developer-guide-doc-type
 - go sdk
+- go-sdk
 - how-to
 - how-to-doc-type
 - introduction-doc-type
 - reference-doc-type
+- retry and timeout policies
 - return values
 - run id
 - task queue
@@ -62,10 +64,12 @@ tags:
 - deterministic
 - developer-guide-doc-type
 - go-sdk
+- go-sdk
 - how-to
 - how-to-doc-type
 - introduction-doc-type
 - reference-doc-type
+- retry-and-timeout-policies
 - return-values
 - run-id
 - task-queue
@@ -304,7 +308,7 @@ When you connect to [Temporal Cloud](/cloud), you need to provide additional con
 - mTLS CA certificate.
 - mTLS private key.
 
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/account-setup/certificates#).
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates#).
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
@@ -314,12 +318,12 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 To connect to and run Workflows through Temporal Cloud, you need the following:
 
 - A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
-  See [certificate requirements](/cloud/account-setup/certificates#certificate-requirements).
-- Your [Temporal Cloud Namespace Id](/cloud/account-setup/namespaces#temporal-cloud-namespace-id), which includes your [Temporal Cloud Namespace Name](/cloud/account-setup/namespaces#temporal-cloud-namespace-name) and the unique five- or six-digit [Temporal Cloud Account Id](/cloud/account-setup/namespaces#temporal-cloud-account-id) that is appended to it.
+  See [certificate requirements](/cloud/certificates#certificate-requirements).
+- Your [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id), which includes your [Temporal Cloud Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name) and the unique five- or six-digit [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id) that is appended to it.
   This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
   Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
 
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/account-setup/certificates#).
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates#).
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
@@ -618,7 +622,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 ### How to develop Activity Parameters {#activity-parameters}
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
-However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
+However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
 
 A single argument is limited to a maximum size of 2 MB.
 And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
@@ -1567,7 +1571,7 @@ To run a Worker that uses [Temporal Cloud](/cloud), you need to provide addition
 - mTLS CA certificate.
 - mTLS private key.
 
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/account-setup/certificates#).
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates#).
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
@@ -1577,12 +1581,12 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 To run a Worker that talks to Temporal Cloud, you need the following:
 
 - A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
-  See [certificate requirements](/cloud/account-setup/certificates#certificate-requirements).
-- Your [Temporal Cloud Namespace Id](/cloud/account-setup/namespaces#temporal-cloud-namespace-id), which includes your [Temporal Cloud Namespace Name](/cloud/account-setup/namespaces#temporal-cloud-namespace-name) and the unique five- or six-digit [Temporal Cloud Account Id](/cloud/account-setup/namespaces#temporal-cloud-account-id) that is appended to it.
+  See [certificate requirements](/cloud/certificates#certificate-requirements).
+- Your [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id), which includes your [Temporal Cloud Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name) and the unique five- or six-digit [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id) that is appended to it.
   This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
   Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
 
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/account-setup/certificates#).
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates#).
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 

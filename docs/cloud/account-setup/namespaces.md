@@ -4,6 +4,7 @@ title: How to manage Namespaces in Temporal Cloud
 sidebar_label: Namespaces
 sidebar_position: 2
 description: Create Namespaces, use Namespace endpoints for access, and obtain Namespace information.
+slug: /cloud/namespaces
 toc_max_heading_level: 4
 keywords:
 - explanation
@@ -26,7 +27,7 @@ tags:
 A Namespace is a unit of isolation within the Temporal Platform.
 
 - [Create a Namespace](#create-a-namespace)
-- [Access a Namespace](#access-a-namespace)
+- [Access a Namespace](#access-namespaces)
 - [Manage Namespaces](#manage-namespaces)
 - [Delete a Namespace](#delete-a-namespace)
 
@@ -63,16 +64,16 @@ For example, for the Account Id `f45a2` and Namespace Name `accounting-productio
 
 :::info
 
-The user who creates a [Namespace](/namespaces) is automatically granted [Namespace Admin](/cloud/#namespace-level-permissions) permission for that Namespace.
+The user who creates a [Namespace](/namespaces) is automatically granted [Namespace Admin](/cloud/users#namespace-level-permissions) permission for that Namespace.
 
-To create a Namespace, a user must have the Developer or Global Admin account-level [Role](/cloud/#account-level-roles).
+To create a Namespace, a user must have the Developer or Global Admin account-level [Role](/cloud/users#account-level-roles).
 
 :::
 
 :::tip
 
 By default, each account has a quota of 10 Namespaces.
-If you want to increase this limit, open a [support ticket](/cloud/introduction/support#support-ticket).
+If you want to increase this limit, open a [support ticket](/cloud/support#support-ticket).
 
 :::
 
@@ -82,11 +83,11 @@ If you want to increase this limit, open a [support ticket](/cloud/introduction/
 
 To create a Namespace in Temporal Cloud, gather the following information:
 
-- [Namespace Name](/cloud/#cloud-namespace) and region.
+- [Namespace Name](#temporal-cloud-namespace-name) and region.
 - [Retention Period](/clusters/#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution).
-- [CA certificate](/cloud/account-setup/certificates#certificate-requirements) for the Namespace.
+- [CA certificate](/cloud/certificates#certificate-requirements) for the Namespace.
 - [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/production-readiness/develop#securing-your-data).
-- [Permissions](/cloud/#namespace-level-permissions) for each user.
+- [Permissions](/cloud/users#namespace-level-permissions) for each user.
 
 <!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
 
@@ -101,7 +102,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. In **Retention Period**, specify a value from 1 to 90 days.
    When choosing this value, consider your needs for Event History versus the cost of maintaining that Event History.
    Typically, a development Namespace has a short retention period and a production Namespace has a longer retention period.
-   (If you need to change this value later, contact [Temporal Support](/cloud/introduction/support#support-ticket).)
+   (If you need to change this value later, contact [Temporal Support](/cloud/support#support-ticket).)
 1. In **Certificate**, paste the CA certificate for this Namespace.
 1. Optional: In **Codec Server**, enter the URL and port number of your Codec Server endpoint.
    For details, see [Securing your data](/production-readiness/develop#securing-your-data).
@@ -124,7 +125,7 @@ Customers should consider not only a Namespace naming convention but also how to
 Before considering an appropriate Namespace configuration, you should be aware of the following constraints:
 
 - Each Temporal account has a default limit of 10 Namespaces.
-  You can request an increase by [creating a ticket for Temporal Support](/cloud/introduction/support#support-ticket).
+  You can request an increase by [creating a ticket for Temporal Support](/cloud/support#support-ticket).
 - Cross-Namespace communications between [Workflows](/workflows) is not yet supported.
   For now, you can use the [SDK client](/temporal#temporal-client) from within an [Activity](/activities) as a workaround.
 - Each Namespace has a rate limit ("throttling").
@@ -135,11 +136,11 @@ Before considering an appropriate Namespace configuration, you should be aware o
   Access to Temporal by [Worker Processes](/workers#worker-process) is permitted at the Namespace level.
   Isolating applications or environments (development, test, staging, production) should take this into consideration.
 - A Namespace is an endpoint.
-  To access a Namespace from a Temporal Client requires mTLS authorization, which requires [CA certificates](/cloud/account-setup/certificates#ca-certificates).
+  To access a Namespace from a Temporal Client requires mTLS authorization, which requires [CA certificates](/cloud/certificates#ca-certificates).
 - [Workflow Id](/workflows#workflow-id) uniqueness is per Namespace.
 - [Task Queue](/workers#task-queue) names are unique per Namespace.
 - Closed Workflow retention is per Namespace.
-- RBAC [permissions](/cloud/#namespace-level-permissions) are implemented at the Namespace level.
+- RBAC [permissions](/cloud/users#namespace-level-permissions) are implemented at the Namespace level.
 
 ### General guidance
 
@@ -202,7 +203,7 @@ Sample workflowId convention:
 
 <!--- How to access a Namespace in Temporal Cloud --->
 
-Each Namespace in Temporal Cloud has two unique endpoints, both of which include the [Namespace Id](/cloud/#cloud-namespace-id).
+Each Namespace in Temporal Cloud has two unique endpoints, both of which include the [Namespace Id](#temporal-cloud-namespace-id).
 
 - For programmatic access, a gRPC endpoint in the form `<NamespaceId>.tmprl.cloud`; for example, `accounting-production.f45a2.tmprl.cloud:7233`.
 - For accessing Temporal Web UI, an HTTPS endpoint in the form `https://cloud.temporal.io/namespaces/<namespaceId>`; for example, `https://cloud.temporal.io/namespaces/accounting-production.f45a2`.
@@ -225,11 +226,11 @@ To edit a Namespace (including custom Search Attributes, certificates, certifica
 On the **Edit** page, you can do the following:
 
 - Add a [custom Search Attribute](/visibility#custom-search-attributes).
-- [Manage CA certificates](/cloud/account-setup/certificates#).
-- [Manage certificate filters](/cloud/account-setup/certificates#manage-certificate-filters-using-temporal-cloud-ui).
+- [Manage CA certificates](/cloud/certificates).
+- [Manage certificate filters](/cloud/certificates#manage-certificate-filters-using-temporal-cloud-ui).
 - Set [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) for all users on the Namespace.
   Each user on the Namespace has the option to [override this setting](/production-readiness/develop#web-ui) in their browser.
-- Manage [Namespace-level permissions](/cloud/#namespace-level-permissions).
+- Manage [Namespace-level permissions](/cloud/users#namespace-level-permissions).
 - Add users.
 
 To add a user to a Namespace, scroll to the bottom of the page and select **Add User**.
@@ -246,16 +247,16 @@ To list Namespaces and get information about them, use the following [tcld](/clo
 - [tcld namespace get](/cloud/tcld/namespace#get)
 
 To manage certificates, use the [tcld namespace accepted-client-ca](/cloud/tcld/namespace#accepted-client-ca) commands.
-For more information, see [How to manage certificates in Temporal Cloud](/cloud/account-setup/certificates#).
+For more information, see [How to manage certificates in Temporal Cloud](/cloud/certificates#).
 
 To manage certificate filters, use the [tcld namespace certificate-filters](/cloud/tcld/namespace#certificate-filters) commands.
-For more information, see [How to manage certificate filters in Temporal Cloud](/cloud/account-setup/certificates#manage-certificate-filters).
+For more information, see [How to manage certificate filters in Temporal Cloud](/cloud/certificates#manage-certificate-filters).
 
 ## How to delete a Namespace in Temporal Cloud {#delete-a-namespace}
 
 :::info
 
-To delete a Namespace, a user must have Namespace Admin [permission](/cloud/#namespace-level-permissions) for that Namespace.
+To delete a Namespace, a user must have Namespace Admin [permission](/cloud/users#namespace-level-permissions) for that Namespace.
 
 :::
 

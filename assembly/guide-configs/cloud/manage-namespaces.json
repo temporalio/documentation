@@ -1,6 +1,7 @@
 {
   "file_name": "namespaces.md",
   "id": "namespaces",
+  "slug": "/cloud/namespaces",
   "file_dir": "cloud/account-setup",
   "title": "How to manage Namespaces in Temporal Cloud",
   "sidebar_label": "Namespaces",

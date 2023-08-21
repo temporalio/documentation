@@ -4,6 +4,7 @@ title: How to manage users in Temporal Cloud
 sidebar_label: Users
 sidebar_position: 3
 description: Invite users, set account level roles, and set Namespace-level positions for users.
+slug: /cloud/users
 toc_max_heading_level: 4
 keywords:
 - explanation
@@ -43,7 +44,7 @@ Attempting to log in to Temporal Cloud without first accepting the invite doesn'
 
 :::info
 
-To invite users, a user must have the Global Admin account-level [Role](/cloud/#account-level-roles).
+To invite users, a user must have the Global Admin account-level [Role](#account-level-roles).
 
 :::
 
@@ -52,8 +53,8 @@ To invite users, a user must have the Global Admin account-level [Role](/cloud/#
 Each user in Temporal Cloud is assigned a Role.
 Each user can be assigned permissions for individual Namespaces.
 
-- [Account-level Roles](/cloud/#account-level-roles)
-- [Namespace-level permissions](/cloud/#namespace-level-permissions)
+- [Account-level Roles](#account-level-roles)
+- [Namespace-level permissions](#namespace-level-permissions)
 
 <!--- How to invite users to your Temporal Cloud account using Web UI --->
 
@@ -62,10 +63,10 @@ Each user can be assigned permissions for individual Namespaces.
 1. In Temporal Web UI, select **Settings** in the left portion of the window.
 1. On the **Settings** page, select **Create Users** in the upper-right portion of the window.
 1. On the **Create Users** page in the **Email Addresses** box, type or paste one or more email addresses.
-1. In **Account-Level Role**, select a [Role](/cloud/#account-level-roles).
+1. In **Account-Level Role**, select a [Role](#account-level-roles).
    The Role applies to all users whose email addresses appear in **Email Addresses**.
 1. If the account has any Namespaces, they are listed under **Grant access to Namespaces**.
-   To add a permission, select the checkbox next to a Namespace, and then select a [permission](/cloud/#namespace-level-permissions).
+   To add a permission, select the checkbox next to a Namespace, and then select a [permission](#namespace-level-permissions).
    Repeat as needed.
 1. When all permissions are assigned, select **Send Invite**.
 
@@ -87,20 +88,20 @@ When a Global Admin invites a user to join an account, the Global Admin selects 
 
 - **Global Admin**
   - Has full administrative permissions across the account, including users and usage
-  - Has Namespace Admin [permissions](/cloud/#namespace-level-permissions) on all [Namespaces](/namespaces) in the account
+  - Has Namespace Admin [permissions](#namespace-level-permissions) on all [Namespaces](/namespaces#) in the account
 - **Developer**
-  - Can create and update Namespaces; has full control over [Workflows](/workflows)
+  - Can create and update Namespaces; has full control over [Workflows](/workflows#)
   - Has Namespace Admin permissions for each Namespace created by that user
 - **Read-Only:** Can only read information
 
 ## What are the Namespace-level permissions for users in Temporal Cloud? {#namespace-level-permissions}
 
-A [Global Admin](/cloud/#account-level-roles) can assign permissions for any [Namespace](/namespaces) in an account.
+A [Global Admin](#account-level-roles) can assign permissions for any [Namespace](/namespaces#) in an account.
 A Developer can assign permissions for a Namespace they create.
 
 For a Namespace, a user can have one of the following permissions:
 
-- **Namespace Admin:** Can [create](/cloud/account-setup/namespaces#create-a-namespace) and [edit Namespaces](/cloud/account-setup/namespaces#manage-namespaces); can create, rename, update, and delete [Workflows](/workflows)
+- **Namespace Admin:** Can [create](/cloud/namespaces#create-a-namespace) and [edit Namespaces](/cloud/namespaces#manage-namespaces); can create, rename, update, and delete [Workflows](/workflows#)
 - **Write:** Can create, rename, update, and delete Workflows within the Namespace
 - **Read-Only:** Can only read information from the Namespace
 
@@ -132,7 +133,7 @@ For details, see the [tcld user set-account-role](/cloud/tcld/user#set-account-r
 
 ## How to update Namespace-level permissions in Temporal Cloud {#update-permissions}
 
-You can update Namespace-level [permissions](/cloud/#namespace-level-permissions) by using either Web UI or tcld.
+You can update Namespace-level [permissions](#namespace-level-permissions) by using either Web UI or tcld.
 
 <!-- How to update Namespace-level permissions for a Namespace in Temporal Cloud using Web UI -->
 
@@ -151,7 +152,7 @@ You can update Namespace-level [permissions](/cloud/#namespace-level-permissions
 
 :::note
 
-A user who has the Global Admin account-level [Role](/cloud/#account-level-roles) has Namespace Admin permissions for all Namespaces.
+A user who has the Global Admin account-level [Role](#account-level-roles) has Namespace Admin permissions for all Namespaces.
 
 :::
 
@@ -173,7 +174,7 @@ You can delete a user from your Temporal Cloud Account by using either Web UI or
 
 :::info
 
-To delete a user, a user must have the Global Admin account-level [Role](/cloud/#account-level-roles).
+To delete a user, a user must have the Global Admin account-level [Role](#account-level-roles).
 
 :::
 

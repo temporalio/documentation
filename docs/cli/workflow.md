@@ -73,6 +73,9 @@ import TabItem from '@theme/TabItem';
 
 [Workflow](/workflows#) commands allow operations to be performed on [Workflow Executions](/workflows#workflow-execution).
 
+Workflow commands use this syntax:
+`temporal workflow COMMAND [ARGS]`.
+
 ## cancel
 
 The `temporal workflow cancel` command cancels a [Workflow Execution](/workflows#workflow-execution).
@@ -85,17 +88,24 @@ A new [Workflow Task](/workers#workflow-task) will be scheduled, and the Workflo
 In addition to Workflow IDs, Workflows can also be [Signaled](/workflows#signal) by a [Query](/workflows#query).
 `temporal workflow cancel --query=MyQuery`
 
-Use the options listed below to change the behavior of this command.
+Use the following options to change the behavior of this command.
 
 - [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
 
-- [--output](/cli/cmd-options#output)
+- [--color](/cli/cmd-options#color)
 
-- [--pager](/cli/cmd-options#pager)
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--query](/cli/cmd-options#query)
 
@@ -103,7 +113,17 @@ Use the options listed below to change the behavior of this command.
 
 - [--run-id](/cli/cmd-options#run-id)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--workflow-id](/cli/cmd-options#workflow-id)
 
@@ -114,43 +134,81 @@ Use the options listed below to change the behavior of this command.
 The `temporal workflow count` command returns a count of [Workflow Executions](/workflows#workflow-execution).
 This command requires Elasticsearch to be enabled.
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
 
-- [--output](/cli/cmd-options#output)
+- [--color](/cli/cmd-options#color)
 
-- [--pager](/cli/cmd-options#pager)
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--query](/cli/cmd-options#query)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ## delete
 
 The `temporal workflow delete` command deletes the specified [Workflow Execution](/workflows#workflow-execution).
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
 
-- [--output](/cli/cmd-options#output)
+- [--color](/cli/cmd-options#color)
 
-- [--pager](/cli/cmd-options#pager)
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
+
+- [--query](/cli/cmd-options#query)
+
+- [--reason](/cli/cmd-options#reason)
 
 - [--run-id](/cli/cmd-options#run-id)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--workflow-id](/cli/cmd-options#workflow-id)
+
+- [--yes](/cli/cmd-options#yes)
 
 ## describe
 
@@ -163,17 +221,23 @@ The output of this command can be changed to show as printed ('raw') or to only 
 
 `temporal workflow describe --workflow-id=meaningful-business-id --raw=true --reset-points=true`
 
-Use the command options listed below to change the information returned by this command.
+Use the following command options to change the information returned by this command.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
 
-- [--output](/cli/cmd-options#output)
+- [--color](/cli/cmd-options#color)
 
-- [--pager](/cli/cmd-options#pager)
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--raw](/cli/cmd-options#raw)
 
@@ -181,7 +245,17 @@ Use the command options listed below to change the information returned by this 
 
 - [--run-id](/cli/cmd-options#run-id)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--workflow-id](/cli/cmd-options#workflow-id)
 
@@ -197,13 +271,27 @@ Single quotes('') are used to wrap input as JSON.
 
 `temporal workflow execute --workflow-id=meaningful-business-id --type-MyWorkflow --task-queue-MyTaskQueue --input='{"JSON": "Input"}'`
 
-Use the command options listed below to change how the Workflow Execution behaves during its run.
+Use the following command options to change how the Workflow Execution behaves during its run.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
 
 - [--cron](/cli/cmd-options#cron)
+
+- [--env](/cli/cmd-options#env)
 
 - [--execution-timeout](/cli/cmd-options#execution-timeout)
 
 - [--fields](/cli/cmd-options#fields)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
 - [--id-reuse-policy](/cli/cmd-options#id-reuse-policy)
 
@@ -218,6 +306,8 @@ Use the command options listed below to change how the Workflow Execution behave
 - [--memo](/cli/cmd-options#memo)
 
 - [--memo-file](/cli/cmd-options#memo-file)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--no-pager](/cli/cmd-options#no-pager)
 
@@ -234,6 +324,18 @@ Use the command options listed below to change how the Workflow Execution behave
 - [--task-timeout](/cli/cmd-options#task-timeout)
 
 - [--time-format](/cli/cmd-options#time-format)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--type](/cli/cmd-options#type)
 
@@ -250,13 +352,29 @@ The command can also return a list of archived Workflow Executions.
 
 `temporal workflow list --archived=true`
 
-Use the command options listed below to change the information returned by this command.
+Use the following command options to change the information returned by this command.
+
+- [--address](/cli/cmd-options#address)
 
 - [--archived](/cli/cmd-options#archived)
 
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
 - [--fields](/cli/cmd-options#fields)
 
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
 - [--limit](/cli/cmd-options#limit)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--no-pager](/cli/cmd-options#no-pager)
 
@@ -267,6 +385,18 @@ Use the command options listed below to change the information returned by this 
 - [--query](/cli/cmd-options#query)
 
 - [--time-format](/cli/cmd-options#time-format)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 ## query
 
@@ -277,27 +407,43 @@ Queries can also be used on completed [Workflows](/workflows#workflow-execution)
 
 `temporal workflow query --workflow-id=meaningful-business-id --type=MyQueryType`
 
-Use the command options listed below to change the information returned by this command.
+Use the following command options to change the information returned by this command.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
 - [--input](/cli/cmd-options#input)
 
 - [--input-file](/cli/cmd-options#input-file)
 
-- [--limit](/cli/cmd-options#limit)
-
-- [--no-pager](/cli/cmd-options#no-pager)
-
-- [--output](/cli/cmd-options#output)
-
-- [--pager](/cli/cmd-options#pager)
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--reject-condition](/cli/cmd-options#reject-condition)
 
 - [--run-id](/cli/cmd-options#run-id)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--type](/cli/cmd-options#type)
 
@@ -306,27 +452,33 @@ Use the command options listed below to change the information returned by this 
 ## reset
 
 The `temporal workflow reset` command resets a [Workflow Execution](/workflows#workflow-execution).
-A reset allows the Workflow to be resumed from a certain point without losing your parameters or [Event History](/workflows#event-history).
+A reset resumes the Workflow from a certain point without losing your parameters or [Event History](/workflows#event-history).
 
 The Workflow Execution can be set to a given [Event Type](/workflows#event).
-`temporal workflow reset --workflow-id=meaningful-business-id --type=LastContinuedAsNew`
+For example, `temporal workflow reset --workflow-id=meaningful-business-id --type=LastContinuedAsNew`.
 
-Alternatively, the Workflow Execution can be reset to any Event after WorkflowTaskStarted.
-`temporal workflow reset --workflow-id=meaningful-business-id --event-id=MyLastEvent`
+The Workflow Execution can also be reset to any Event after WorkflowTaskStarted.
+For example, `temporal workflow reset --workflow-id=meaningful-business-id --event-id=MyLastEvent`.
 
-Use the options listed below to change reset behavior.
+Use the following options to change reset behavior.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
 
 - [--event-id](/cli/cmd-options#event-id)
 
-- [--fields](/cli/cmd-options#fields)
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
-- [--limit](/cli/cmd-options#limit)
-
-- [--no-pager](/cli/cmd-options#no-pager)
-
-- [--output](/cli/cmd-options#output)
-
-- [--pager](/cli/cmd-options#pager)
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--reapply-type](/cli/cmd-options#reapply-type)
 
@@ -334,7 +486,17 @@ Use the options listed below to change reset behavior.
 
 - [--run-id](/cli/cmd-options#run-id)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--type](/cli/cmd-options#type)
 
@@ -342,8 +504,8 @@ Use the options listed below to change reset behavior.
 
 ## reset-batch
 
-The `temporal workflow reset-batch` command resets a batch of [Workflow Executions](/workflows#workflow-execution) by `resetType`.
-Resetting a [Workflow](/workflows#) allows the process to resume from a certain point without losing your parameters or [Event History](/workflows#event-history).
+The `temporal workflow reset-batch` command resets multiple [Workflow Executions](/workflows#workflow-execution) by `resetType`.
+Resetting a [Workflow](/workflows#) resumes it from a certain point without losing your parameters or [Event History](/workflows#event-history).
 
 The set of Workflow Executions to reset can be specified in an input file.
 The input file must have a [Workflow ID](/workflows#workflow-id) on each line.
@@ -353,13 +515,25 @@ The input file must have a [Workflow ID](/workflows#workflow-id) on each line.
 Workflow Executions can also be found by [Query](/workflows#query).
 `temporal workflow reset-batch --query=MyQuery
 
-Use the options listed below to change reset behavior.
+Use the following options to change reset behavior.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
 
 - [--dry-run](/cli/cmd-options#dry-run)
 
+- [--env](/cli/cmd-options#env)
+
 - [--exclude-file](/cli/cmd-options#exclude-file)
 
-- [--fields](/cli/cmd-options#fields)
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
 - [--input-file](/cli/cmd-options#input-file)
 
@@ -367,15 +541,9 @@ Use the options listed below to change reset behavior.
 
 - [--input-separator](/cli/cmd-options#input-separator)
 
-- [--limit](/cli/cmd-options#limit)
-
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--non-deterministic](/cli/cmd-options#non-deterministic)
-
-- [--output](/cli/cmd-options#output)
-
-- [--pager](/cli/cmd-options#pager)
 
 - [--query](/cli/cmd-options#query)
 
@@ -385,29 +553,53 @@ Use the options listed below to change reset behavior.
 
 - [--skip-current-open](/cli/cmd-options#skip-current-open)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--type](/cli/cmd-options#type)
 
 ## show
 
-The `temporal workflow show` command provides the [Event History](/workflows#event-history) for a specified [Workflow Execution](/workflows#workflow-execution).
+The `temporal workflow show` command provides the [Event History](/workflows#event-history) for a [Workflow Execution](/workflows#workflow-execution).
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the behavior of this command.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
 
 - [--fields](/cli/cmd-options#fields)
 
 - [--follow](/cli/cmd-options#follow)
 
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
 - [--limit](/cli/cmd-options#limit)
 
 - [--max-field-length](/cli/cmd-options#max-field-length)
 
+- [--namespace](/cli/cmd-options#namespace)
+
 - [--no-pager](/cli/cmd-options#no-pager)
 
 - [--output](/cli/cmd-options#output)
-
-- [--output-filename](/cli/cmd-options#output-filename)
 
 - [--pager](/cli/cmd-options#pager)
 
@@ -417,29 +609,47 @@ Use the options listed below to change the command's behavior.
 
 - [--time-format](/cli/cmd-options#time-format)
 
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
+
 - [--workflow-id](/cli/cmd-options#workflow-id)
 
 ## signal
 
-The `temporal workflow signal` command is used to [Signal](/workflows#signal) a [Workflow Execution](/workflows#workflow-execution) by ID or [List Filter](/visibility#list-filter).
+The `temporal workflow signal` command is used to send a [Signal](/workflows#signal) to a [Workflow Execution](/workflows#workflow-execution) by [Workflow Id](/workflows#workflow-id) or [List Filter](/visibility#list-filter).
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
 - [--input](/cli/cmd-options#input)
 
 - [--input-file](/cli/cmd-options#input-file)
 
-- [--limit](/cli/cmd-options#limit)
-
 - [--name](/cli/cmd-options#name)
 
-- [--no-pager](/cli/cmd-options#no-pager)
-
-- [--output](/cli/cmd-options#output)
-
-- [--pager](/cli/cmd-options#pager)
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--query](/cli/cmd-options#query)
 
@@ -447,7 +657,17 @@ Use the options listed below to change the command's behavior.
 
 - [--run-id](/cli/cmd-options#run-id)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--workflow-id](/cli/cmd-options#workflow-id)
 
@@ -458,27 +678,43 @@ Use the options listed below to change the command's behavior.
 The `temporal workflow stack` command queries a [Workflow Execution](/workflows#workflow-execution) with `--stack-trace` as the [Query](/workflows#stack-trace-query) type.
 Returning the stack trace of all the threads owned by a Workflow Execution can be great for troubleshooting in production.
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
 - [--input](/cli/cmd-options#input)
 
 - [--input-file](/cli/cmd-options#input-file)
 
-- [--limit](/cli/cmd-options#limit)
-
-- [--no-pager](/cli/cmd-options#no-pager)
-
-- [--output](/cli/cmd-options#output)
-
-- [--pager](/cli/cmd-options#pager)
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--reject-condition](/cli/cmd-options#reject-condition)
 
 - [--run-id](/cli/cmd-options#run-id)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--workflow-id](/cli/cmd-options#workflow-id)
 
@@ -489,13 +725,27 @@ When invoked successfully, the Workflow and Run ID are returned immediately afte
 
 `temporal workflow start --task-queue=MyTaskQueue --type=MyWorkflow`
 
-Use the command options listed below to change how the Workflow Execution behaves upon starting.
+Use the following command options to change how the Workflow Execution behaves upon starting.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
 
 - [--cron](/cli/cmd-options#cron)
+
+- [--env](/cli/cmd-options#env)
 
 - [--execution-timeout](/cli/cmd-options#execution-timeout)
 
 - [--fields](/cli/cmd-options#fields)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
 - [--id-reuse-policy](/cli/cmd-options#id-reuse-policy)
 
@@ -510,6 +760,8 @@ Use the command options listed below to change how the Workflow Execution behave
 - [--memo](/cli/cmd-options#memo)
 
 - [--memo-file](/cli/cmd-options#memo-file)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--no-pager](/cli/cmd-options#no-pager)
 
@@ -527,6 +779,18 @@ Use the command options listed below to change how the Workflow Execution behave
 
 - [--time-format](/cli/cmd-options#time-format)
 
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
+
 - [--type](/cli/cmd-options#type)
 
 - [--workflow-id](/cli/cmd-options#workflow-id)
@@ -541,17 +805,23 @@ Any further [Command](/workflows#command) Tasks cannot be scheduled after runnin
 Workflow terminations require a valid [Workflow ID](/workflows#workflow-id) to function.
 `temporal workflow terminate --workflow-id=meaningful-business-id`
 
-Use the options listed below to change termination behavior.
+Use the following options to change termination behavior.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
 
-- [--output](/cli/cmd-options#output)
+- [--color](/cli/cmd-options#color)
 
-- [--pager](/cli/cmd-options#pager)
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--query](/cli/cmd-options#query)
 
@@ -559,7 +829,17 @@ Use the options listed below to change termination behavior.
 
 - [--run-id](/cli/cmd-options#run-id)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--workflow-id](/cli/cmd-options#workflow-id)
 
@@ -569,29 +849,89 @@ Use the options listed below to change termination behavior.
 
 The `temporal workflow trace` command tracks the progress of a [Workflow Execution](/workflows#workflow-execution) and any [Child Workflows](/workflows#child-workflow) it generates.
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
 
 - [--concurrency](/cli/cmd-options#concurrency)
 
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
 - [--depth](/cli/cmd-options#depth)
 
-- [--fields](/cli/cmd-options#fields)
+- [--env](/cli/cmd-options#env)
 
 - [--fold](/cli/cmd-options#fold)
 
-- [--limit](/cli/cmd-options#limit)
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--no-fold](/cli/cmd-options#no-fold)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--run-id](/cli/cmd-options#run-id)
 
-- [--output](/cli/cmd-options#output)
+- [--tls](/cli/cmd-options#tls)
 
-- [--pager](/cli/cmd-options#pager)
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
+
+- [--workflow-id](/cli/cmd-options#workflow-id)
+
+## update
+
+The `temporal workflow update` command synchronously updates a running [Workflow Execution](/workflows#workflow-execution).
+
+Use the options listed below to change the command's behavior.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--first-execution-run-id](/cli/cmd-options#first-execution-run-id)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--input](/cli/cmd-options#input)
+
+- [--name](/cli/cmd-options#name)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--run-id](/cli/cmd-options#run-id)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--workflow-id](/cli/cmd-options#workflow-id)
 

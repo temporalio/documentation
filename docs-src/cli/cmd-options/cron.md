@@ -20,5 +20,5 @@ The Cron schedule can be formatted like the following:
 │ │ │ ┌───────────── month (1 - 12)
 │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
 │ │ │ │ │
-0 0 1 1 0
+* * * * *
 ```

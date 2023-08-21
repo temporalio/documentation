@@ -10,7 +10,6 @@ tags:
     - command-line-interface-cli
     - namespace
     - namespace management
-
 ---
 
-Specify namespaces that should be pre-created (namespace "default" is always created).
+Identifies a Namespace in the Temporal Workflow.

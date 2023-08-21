@@ -6,7 +6,7 @@ date: 2022-08-23T00:00:00Z
 
 - We added a [Getting started with Temporal Cloud](/cloud/get-started) guide!
 
-- We also added guides for [managing certificates](/cloud/account-setup/certificates) and [managing Namespaces](/cloud/account-setup/namespaces) in Temporal Cloud.
+- We also added guides for [managing certificates](/cloud/certificates) and [managing Namespaces](/cloud/namespaces) in Temporal Cloud.
 
 - The Temporal blog moved from docs.temporal.io to [temporal.io/blog](https://temporal.io/blog).
 

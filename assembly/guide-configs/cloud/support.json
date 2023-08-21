@@ -1,6 +1,7 @@
 {
     "file_name": "support.md",
     "id": "support",
+    "slug": "/cloud/support",
     "file_dir": "cloud/introduction",
     "title": "What kind of support does Temporal Cloud provide?",
     "sidebar_label": "Support",

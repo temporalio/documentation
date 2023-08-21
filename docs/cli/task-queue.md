@@ -33,24 +33,35 @@ To run a Task Queue command, run `temporal task-queue [command] [command options
 The `temporal task-queue describe` command provides [poller](/dev-guide/worker-performance#poller-count) information for a given [Task Queue](/workers#task-queue).
 
 The [Server](/clusters#temporal-server) records the last time of each poll request.
-Should `LastAccessTime` exceeds one minute, it's likely that the Worker is at capacity (all Workflow and Activity slots are full) or that the Worker has shut down.
+A `LastAccessTime` value in excess of one minute can indicate the Worker is at capacity (all Workflow and Activity slots are full) or that the Worker has shut down.
 [Workers](/workers#worker) are removed if 5 minutes have passed since the last poll request.
 
-With this command, information about the Task Queue can be returned to troubleshoot server issues.
+Information about the Task Queue can be returned to troubleshoot server issues.
 
 `temporal task-queue describe --task-queue=MyTaskQueue --task-queue-type="activity"`
 
-Use the options listed below to modify what this command returns.
+Use the following options to change the behavior of this command.
+
+- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
 
 - [--fields](/cli/cmd-options#fields)
 
-- [--limit](/cli/cmd-options#limit)
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--output](/cli/cmd-options#output)
-
-- [--pager](/cli/cmd-options#pager)
 
 - [--task-queue](/cli/cmd-options#task-queue)
 
@@ -58,23 +69,134 @@ Use the options listed below to modify what this command returns.
 
 - [--time-format](/cli/cmd-options#time-format)
 
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
+
 ## list-partition
 
 The `temporal task-queue list-partition` command displays the partitions of a [Task Queue](/workers#task-queue), along with the matching node they are assigned to.
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
-- [--fields](/cli/cmd-options#fields)
+- [--address](/cli/cmd-options#address)
 
-- [--limit](/cli/cmd-options#limit)
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- [--no-pager](/cli/cmd-options#no-pager)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--output](/cli/cmd-options#output)
 
-- [--pager](/cli/cmd-options#pager)
+- [--task-queue](/cli/cmd-options#task-queue)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
+
+## get-build-ids
+
+Fetch the sets of compatible build IDs associated with a Task Queue and associated information.
+
+- [--address](/cli/cmd-options#address)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--max-sets](/cli/cmd-options#max-sets)
+
+- [--namespace](/cli/cmd-options#namespace)
 
 - [--task-queue](/cli/cmd-options#task-queue)
 
-- [--time-format](/cli/cmd-options#time-format)
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
+
+## get-build-id-reachability
+
+Determines whether Build IDs can be used for new, existing, or closed Workflows.
+Both the `--build-id` and `--task-queue` options can be specified multiple times.
+If a Task Queue isn't provided, reachability for the provided Build IDs is checked against all Task Queues.
+
+- [--address](/cli/cmd-options#address)
+
+- [--build-id](/cli/cmd-options#build-id)
+
+- [--codec-auth](/cli/cmd-options#codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+
+- [--color](/cli/cmd-options#color)
+
+- [--context-timeout](/cli/cmd-options#context-timeout)
+
+- [--env](/cli/cmd-options#env)
+
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--namespace](/cli/cmd-options#namespace)
+
+- [--reachability-type](/cli/cmd-options#reachability-type)
+
+- [--task-queue](/cli/cmd-options#task-queue)
+
+- [--tls](/cli/cmd-options#tls)
+
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
+
+## update-build-ids
+
+Provides various commands for adding or changing the sets of compatible build IDs associated with a Task Queue.
+See the help text provided for each sub-command for more.
 

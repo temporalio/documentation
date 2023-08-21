@@ -4,7 +4,10 @@ title: Mutable Side Effects
 description: Mutable Side Effects are a method of execution to produce non-deterministic code.
 sidebar_label: Mutable Side Effects
 tags:
-  - guide-context
+  - go sdk
+  - developer-guide-doc-type
+  - mutability
+  - side effects
 ---
 
 Mutable Side Effects execute the provided function once, and then it looks up the History of the value with the given Workflow ID.

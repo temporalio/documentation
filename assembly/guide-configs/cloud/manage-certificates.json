@@ -1,6 +1,7 @@
 {
   "file_name": "certificates.md",
   "id": "certificates",
+  "slug": "/cloud/certificates",
   "file_dir": "cloud/account-setup",
   "title": "How to manage certificates in Temporal Cloud",
   "sidebar_label": "Certificates",
@@ -25,6 +26,10 @@
     {
       "type": "h2",
       "id": "cloud/certificates-authorization"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/certificates-notifications"
     },
     {
       "type": "h2",

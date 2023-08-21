@@ -1,6 +1,6 @@
 ---
 id: visibility
-title: Visibility
+title: What is the Temporal Visibility feature?
 sidebar_label: Visibility
 sidebar_position: 7
 description: This guide provides a comprehensive overview of Temporal Visibility.

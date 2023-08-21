@@ -1,9 +1,10 @@
 ---
-id: how-to-manage-audit-logging
+id: audit-logging
 title: How to manage Audit Logging in Temporal Cloud
 sidebar_label: Audit Logging
 sidebar_position: 8
 description: Create, consume, and manage Audit Logs.
+slug: /cloud/audit-logging
 toc_max_heading_level: 4
 keywords:
 - audit logging
