@@ -48,8 +48,8 @@ tcld generate-certificates certificate-authority-certificate --organization <val
 
 #### --validity-period
 
-Specify the duration for which the certificate is valid for.
-Format values as d/h (e.g. 30d10h for a certificate lasting 30 days and 10 hours.)
+Specify the duration for which the certificate is valid.
+Format values as d/h (for example, `30d10h` for a certificate lasting 30 days and 10 hours).
 
 Alias: `-d`
 
@@ -61,7 +61,7 @@ tcld generate-certificates certificate-authority-certificate --validity-period <
 
 #### --ca-certificate-file
 
-Specify a path where the generated x509 certificate file will be stored.
+Specify a path where the generated X.509 certificate file will be stored.
 
 Alias: `--ca-cert`
 
@@ -85,12 +85,12 @@ tcld generate-certificates certificate-authority-certificate --ca-key-file <path
 
 #### --rsa-algorithm
 
-When enabled, a 4096-bit RSA keypair is generated for the certificate instead of an ECDSA P-384 keypair.
-Since an ECDSA P-384 keypair is the recommended default, this option is disabled.
+When enabled, a 4096-bit RSA key pair is generated for the certificate instead of an ECDSA P-384 key pair.
+Because an ECDSA P-384 key pair is the recommended default, this option is disabled.
 
 Alias: `--rsa`
 
-Specify a path to store the generated x509 certificate file.
+Specify a path to store the generated X.509 certificate file.
 
 Alias: `--ca-cert`
 
@@ -124,7 +124,7 @@ tcld generate-certificates end-entity-certificate --organization <value>
 
 #### --organizaation-unit
 
-Specify the name of the organization unit (optional).
+Optional: Specify the name of the organization unit.
 
 **Example**
 
@@ -134,8 +134,8 @@ tcld generate-certificates end-entity-certificate --organization-unit <value>
 
 #### --validity-period
 
-Specify the duration for which the certificate is valid for.
-Format values as d/h (e.g. 30d10h for a certificate lasting 30 days and 10 hours.)
+Specify the duration for which the certificate is valid.
+Format values as d/h (for example, `30d10h` for a certificate lasting 30 days and 10 hours).
 
 Alias: `-d`
 
@@ -147,7 +147,7 @@ tcld generate-certificates end-entity-certificate --validity-period <value>
 
 #### --ca-certificate-file
 
-Specify the path of the x509 CA certificate for the certificate authority.
+Specify the path of the X.509 CA certificate for the certificate authority.
 
 Alias: `--ca-cert`
 
@@ -171,7 +171,7 @@ tcld generate-certificates end-entity-certificate --ca-key-file <path>
 
 #### --certificate-file
 
-Specify a path where the generated x509 leaf certificate file will be stored.
+Specify a path where the generated X.509 leaf certificate file will be stored.
 
 Alias: `--cert`
 
