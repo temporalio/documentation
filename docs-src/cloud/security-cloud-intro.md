@@ -9,4 +9,10 @@ tags:
   - security
 ---
 
+:::info General platform security
+
+For information about the general security features of Temporal, see our [Platform security page](/security).
+
+:::
+
 The security model of [Temporal Cloud](/cloud) encompasses applications, data, and the Temporal Cloud platform itself.

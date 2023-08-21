@@ -28,11 +28,16 @@ This guide is a work in progress. Some sections may be incomplete. Information m
 
 :::info General company security
 
-For information about the general security habits of Temporal Technologies see our [company security page](/temporal-technologies-inc-security).
+For information about the general security habits of Temporal Technologies, see our [company security page](/temporal-technologies-inc-security).
 
 :::
 
-The Temporal Plaform is designed with security in mind, and there are many features that you can use to keep both the Platform itself and your user's data secure.
+:::info Cloud security
+
+For information about Temporal Cloud security features, see our <a class="tdlp" href="#">Cloud security page<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What kind of security does Temporal Cloud provide?</span><br /><br /><span class="tdlppd">The security model of Temporal Cloud encompasses applications, data, and the Temporal Cloud platform.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#">Learn more</a></span></span></a>
+:::
+
+The Temporal Platform is designed with security in mind, and there are many features that you can use to keep both the Platform itself and your user's data secure.
 
 A secured Temporal Server has its network communication encrypted and has authentication and authorization protocols set up for API calls made to it.
 Without these, your server could be accessed by unwanted entities.
