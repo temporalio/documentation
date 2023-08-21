@@ -53,7 +53,7 @@ tcld generate-certificates end-entity-certificate --validity-period <value>
 
 #### --ca-certificate-file
 
-Specify the path of the x509 CA certificate for the certificate authority.
+Specify the path of the X.509 CA certificate for the certificate authority.
 
 Alias: `--ca-cert`
 
