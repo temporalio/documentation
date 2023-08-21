@@ -72,7 +72,7 @@ Since an ECDSA P-384 keypair is the recommended default, this option is disabled
 
 Alias: `--rsa`
 
-Specify a path to store the generated x509 certificate file.
+Specify a path to store the generated X.509 certificate file.
 
 Alias: `--ca-cert`
 
