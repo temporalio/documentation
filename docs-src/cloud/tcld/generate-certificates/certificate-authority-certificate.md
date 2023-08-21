@@ -30,8 +30,8 @@ tcld generate-certificates certificate-authority-certificate --organization <val
 
 #### --validity-period
 
-Specify the duration for which the certificate is valid for.
-Format values as d/h (e.g. 30d10h for a certificate lasting 30 days and 10 hours.)
+Specify the duration for which the certificate is valid.
+Format values as d/h (for example, `30d10h` for a certificate lasting 30 days and 10 hours).
 
 Alias: `-d`
 
