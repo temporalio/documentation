@@ -21,8 +21,8 @@ The `tcld generate-certificates` commands generate certificate authority (CA) an
 
 Alias: `gen`
 
-- <a class="tdlp" href="#certificate-authority-certificate">tcld generate-certificates certificate-authority-certificate<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld generate-certificates certificate-authority-certificate</span><br /><br /><span class="tdlppd">Generate CA certificates using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#certificate-authority-certificate">Learn more</a></span></span></a>
-- <a class="tdlp" href="#end-entity-certificate">tcld generate-certificates end-entity-certificate<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld generate-certificates end-entity-certificate</span><br /><br /><span class="tdlppd">Generate end-entity (leaf) certificates with tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#end-entity-certificate">Learn more</a></span></span></a>
+- [tcld generate-certificates certificate-authority-certificate](#certificate-authority-certificate)
+- [tcld generate-certificates end-entity-certificate](#end-entity-certificate)
 
 ## tcld generate-certificates certificate-authority-certificate {#certificate-authority-certificate}
 

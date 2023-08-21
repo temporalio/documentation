@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday August 21 2023 15:36:32 PM -0500
+Last assembled: Monday August 21 2023 16:05:27 PM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -283,6 +283,10 @@ cloud/tcld/account/metrics/accepted-client-ca/list -> #list
 cloud/tcld/account/metrics/accepted-client-ca/set -> #set
 
 cloud/tcld/account/metrics/accepted-client-ca/remove -> #remove
+
+cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
+
+cloud/tcld/generate-certificates/end-entity-certificate -> #end-entity-certificate
 
 cloud/tcld/how-to-install-tcld -> #install-tcld
 
@@ -1037,9 +1041,5 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
-
-cloud/tcld/generate-certificates/end-entity-certificate -> #end-entity-certificate
 
 
