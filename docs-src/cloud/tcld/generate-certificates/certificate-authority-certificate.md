@@ -43,7 +43,7 @@ tcld generate-certificates certificate-authority-certificate --validity-period <
 
 #### --ca-certificate-file
 
-Specify a path where the generated x509 certificate file will be stored.
+Specify a path where the generated X.509 certificate file will be stored.
 
 Alias: `--ca-cert`
 
