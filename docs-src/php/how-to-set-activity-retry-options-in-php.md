@@ -2,6 +2,10 @@
 id: how-to-set-activity-retry-options-in-php
 title: How to set Activity Retry Options in PHP
 sidebar_label: Activity Retry Options
+description: Set Activity Retry Options with ActivityOptions.
+tags:
+ - activity
+ - retry options
 ---
 
 To set an Activity Retry, set `{@link RetryOptions}` on `{@link ActivityOptions}`.

@@ -4,27 +4,47 @@ title: temporal operator search-attribute remove
 sidebar_label: remove
 description: Removes custom search attribute metadata only (Elasticsearch index schema is not modified).
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - operator
+  - command-line-interface-cli
+  - search attribute
+  - search attribute remove
 ---
 
 The `temporal operator search-attribute remove` command removes custom [Search Attribute](/concepts/what-is-a-search-attribute) metadata.
-This command does not remove custom Search Attributes from Elasticsearch.
-The index schema is not modified.
+This command does not remove custom Search Attributes from Elasticsearch or change the index schema.
 
-Use the options listed below to change the command's behavior.
+Use the following options to change this command's behavior.
 
-- [--fields](/cli/cmd-options/fields)
+- [--address](/cli/cmd-options/address)
 
-- [--limit](/cli/cmd-options/limit)
+- [--codec-auth](/cli/cmd-options/codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
+
+- [--color](/cli/cmd-options/color)
+
+- [--context-timeout](/cli/cmd-options/context-timeout)
+
+- [--env](/cli/cmd-options/env)
+
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
 
 - [--name](/cli/cmd-options/name)
 
-- [--no-pager](/cli/cmd-options/no-pager)
+- [--namespace](/cli/cmd-options/namespace)
 
-- [--output](/cli/cmd-options/output)
+- [--tls](/cli/cmd-options/tls)
 
-- [--pager](/cli/cmd-options/pager)
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 
-- [--time-format](/cli/cmd-options/time-format)
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options/tls-server-name)
 
 - [--yes](/cli/cmd-options/yes)

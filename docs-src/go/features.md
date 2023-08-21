@@ -4,7 +4,10 @@ title: How to use Workflow and Activity features
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 sidebar_label: Features
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - introduction-doc-type
+  - feature-request
+  - go sdk
 ---
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
@@ -22,3 +25,4 @@ In this section you can find the following:
 - [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
 - [How to register Namespaces](#namespaces)
 - [How to use custom payload conversion](#custom-payload-conversion)
+- [How to develop with Updates](/go/updates)

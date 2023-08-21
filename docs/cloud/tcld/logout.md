@@ -4,7 +4,11 @@ title: tcld logout command reference
 sidebar_label: logout
 description: How to use Temporal Cloud's tcld logout command.
 toc_max_heading_level: 4
+keywords:
+- cli reference
+- tcld
 tags:
+- cli-reference
 - tcld
 ---
 
@@ -21,6 +25,6 @@ Alias: `lo`
 
 The following modifier controls the behavior of the command.
 
-##### `--disable-pop-up`
+#### --disable-pop-up
 
 Disables a browser pop-up if set to `true`. The default value is `false`.

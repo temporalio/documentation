@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday June 29 2023 00:17:59 AM -0400
+Last assembled: Friday August 18 2023 09:21:54 AM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
-88 guide configurations found.
+93 guide configurations found.
 
-1441 information nodes found.
+1519 information nodes found.
 
-1193 information nodes are attached to guides.
+1283 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -85,6 +85,8 @@ concepts/what-is-a-run-id -> /workflows#run-id
 concepts/what-is-a-task-queue -> /workers#task-queue
 
 concepts/what-is-a-state-transition -> /workflows#state-transition
+
+cloud/metrics-intro -> /cloud/metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui
 
 concepts/what-is-an-activity-execution -> /activities#activity-execution
 
@@ -269,6 +271,8 @@ cloud/tcld/account/metrics/enable -> #enable
 cloud/tcld/account/metrics/disable -> #disable
 
 cloud/tcld/account/metrics/accepted-client-ca/index -> #accepted-client-ca
+
+cloud/certificates-intro -> /cloud/certificates#certificate-requirements
 
 cloud/tcld/account/metrics/accepted-client-ca/add -> #add
 
@@ -464,12 +468,6 @@ python/heartbeat-timeout -> /dev-guide/python/features#heartbeat-timeout
 
 typescript/heartbeat-timeout -> /dev-guide/typescript/features#heartbeat-timeout
 
-concepts/what-is-a-reset -> /workflows#reset
-
-concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
-
-concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
-
 concepts/what-is-persistence -> #persistence
 
 concepts/what-is-a-history-shard -> #history-shard
@@ -480,6 +478,8 @@ java/namespaces -> /dev-guide/java/features#namespaces
 
 clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
 
+cloud/prometheus-grafana-setup -> /cloud/metrics#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
+
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
 go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
@@ -487,6 +487,8 @@ go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
 java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conversion
 
 concepts/what-is-a-retention-period -> /clusters#retention-period
+
+cloud/namespaces-intro -> #
 
 go/register-namespaces -> /dev-guide/go/features#register-namespace
 
@@ -686,21 +688,113 @@ python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
 
+cloud/users-account-level-roles -> /cloud/users#account-level-roles
+
+cloud/get-started-certificates -> #issue-ca-certificates
+
+cloud/get-started-namespace -> #create-a-namespace
+
+cloud/get-started-invite -> #invite-users
+
+cloud/get-started-connect -> #connect-to-temporal-cloud
+
+cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
+
+cloud/certificates-issue -> /cloud/certificates#issue-certificates
+
+cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
+
+cloud/users-invite -> /cloud/users#invite-users
+
 go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
 
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
 
-cloud-context/certificates-filters -> #manage-certificate-filters
+cloud/certificates-namespace -> #manage-certificates
 
-concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
+cloud/certificates-filters -> #manage-certificate-filters
+
+cloud/users-namespace-level-permissions -> /cloud/users#namespace-level-permissions
+
+cloud/support-create-ticket -> /cloud/support#support-ticket
+
+cloud/certificates-notifications -> #expiration-notifications
+
+cloud/namespaces-access -> #access-namespaces
+
+cloud/namespaces-manage -> #manage-namespaces
+
+cloud/namespaces-delete -> #delete-a-namespace
+
+concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
+
+concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
+
+concepts/what-is-a-cloud-namespace-id -> #temporal-cloud-namespace-id
+
+cloud/saml-azure-ad -> #configure-saml-with-azure-ad
+
+cloud/saml-okta -> #configure-saml-with-okta
+
+cloud/saml-finish -> #finish-saml-configuration
+
+cloud/users-update-roles -> #update-roles
+
+cloud/users-update-permissions -> #update-permissions
+
+cloud/users-delete -> #delete-users
+
+cloud/what-is-an-action -> /cloud/pricing#action
+
+concepts/what-is-a-reset -> /workflows#reset
+
+concepts/what-is-the-temporal-web-ui -> /web-ui#
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
-cli/cmd-options/fields -> /cli/cmd-options#fields
+cli/cmd-options/address -> /cli/cmd-options#address
+
+cli/cmd-options/codec-auth -> /cli/cmd-options#codec-auth
+
+cli/cmd-options/codec-endpoint -> /cli/cmd-options#codec-endpoint
+
+cli/cmd-options/color -> /cli/cmd-options#color
+
+cli/cmd-options/context-timeout -> /cli/cmd-options#context-timeout
+
+cli/cmd-options/env -> /cli/cmd-options#env
+
+cli/cmd-options/grpc-meta -> /cli/cmd-options#grpc-meta
 
 cli/cmd-options/identity -> /cli/cmd-options#identity
+
+cli/cmd-options/namespace -> /cli/cmd-options#namespace
+
+cli/cmd-options/result -> /cli/cmd-options#result
+
+cli/cmd-options/run-id -> /cli/cmd-options#run-id
+
+cli/cmd-options/tls -> /cli/cmd-options#tls
+
+cli/cmd-options/tls-ca-path -> /cli/cmd-options#tls-ca-path
+
+cli/cmd-options/tls-cert-path -> /cli/cmd-options#tls-cert-path
+
+cli/cmd-options/tls-disable-host-verification -> /cli/cmd-options#tls-disable-host-verification
+
+cli/cmd-options/tls-key-path -> /cli/cmd-options#tls-key-path
+
+cli/cmd-options/tls-server-name -> /cli/cmd-options#tls-server-name
+
+cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
+
+cli/cmd-options/detail -> /cli/cmd-options#detail
+
+cli/cmd-options/reason -> /cli/cmd-options#reason
+
+cli/cmd-options/fields -> /cli/cmd-options#fields
 
 cli/cmd-options/limit -> /cli/cmd-options#limit
 
@@ -710,21 +804,11 @@ cli/cmd-options/output -> /cli/cmd-options#output
 
 cli/cmd-options/pager -> /cli/cmd-options#pager
 
-cli/cmd-options/result -> /cli/cmd-options#result
-
-cli/cmd-options/run-id -> /cli/cmd-options#run-id
-
 cli/cmd-options/time-format -> /cli/cmd-options#time-format
-
-cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
-
-cli/cmd-options/detail -> /cli/cmd-options#detail
-
-cli/cmd-options/reason -> /cli/cmd-options#reason
 
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
-concepts/what-is-the-temporal-web-ui -> /web-ui#
+cli/workflow/list -> /cli/workflow#list
 
 cli/cmd-options/name -> /cli/cmd-options#name
 
@@ -759,6 +843,8 @@ cli/cmd-options/yes -> /cli/cmd-options#yes
 cli/cmd-options/namespace-id -> /cli/cmd-options#namespace-id
 
 cli/cmd-options/promote-global -> /cli/cmd-options#promote-global
+
+cli/cmd-options/verbose -> /cli/cmd-options#verbose
 
 cli/cmd-options/type -> /cli/cmd-options#type
 
@@ -818,8 +904,6 @@ concepts/what-is-standard-visibility -> /visibility#standard-visibility
 
 cli/cmd-options/unpause -> /cli/cmd-options#unpause
 
-cli/cmd-options/config -> /cli/cmd-options#config
-
 cli/cmd-options/db-filename -> /cli/cmd-options#db-filename
 
 cli/cmd-options/dynamic-config-value -> /cli/cmd-options#dynamic-config-value
@@ -834,8 +918,6 @@ cli/cmd-options/log-level -> /cli/cmd-options#log-level
 
 cli/cmd-options/metrics-port -> /cli/cmd-options#metrics-port
 
-cli/cmd-options/namespace -> /cli/cmd-options#namespace
-
 cli/cmd-options/port -> /cli/cmd-options#port
 
 cli/cmd-options/sqlite-pragma -> /cli/cmd-options#sqlite-pragma
@@ -849,6 +931,12 @@ cli/cmd-options/ui-ip -> /cli/cmd-options#ui-ip
 cli/cmd-options/ui-port -> /cli/cmd-options#ui-port
 
 cli/cmd-options/task-queue-type -> /cli/cmd-options#task-queue-type
+
+cli/cmd-options/max-sets -> /cli/cmd-options#max-sets
+
+cli/cmd-options/build-id -> /cli/cmd-options#build-id
+
+cli/cmd-options/reachability-type -> /cli/cmd-options#reachability-type
 
 cli/cmd-options/query -> /cli/cmd-options#query
 
@@ -880,8 +968,6 @@ cli/cmd-options/skip-current-open -> /cli/cmd-options#skip-current-open
 
 cli/cmd-options/follow -> /cli/cmd-options#follow
 
-cli/cmd-options/output-filename -> /cli/cmd-options#output-filename
-
 cli/cmd-options/concurrency -> /cli/cmd-options#concurrency
 
 cli/cmd-options/depth -> /cli/cmd-options#depth
@@ -890,13 +976,13 @@ cli/cmd-options/fold -> /cli/cmd-options#fold
 
 cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
+cli/cmd-options/first-execution-run-id -> /cli/cmd-options#first-execution-run-id
+
 typescript/testing -> /dev-guide/typescript/testing#replay
 
 typescript/observability -> /dev-guide/typescript/observability#tracing
 
 concepts/what-is-a-task-token -> /activities#task-token
-
-cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace
 
 clusters/how-to-install-temporal-cli -> #run-a-development-server
 
@@ -906,9 +992,15 @@ typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
+concepts/what-is-worker-versioning -> /workers#worker-versioning
+
 python/tracing -> /dev-guide/python/observability#tracing
 
 python/logging -> /dev-guide/python/observability#logging
+
+python/how-to-cancel-a-workflow-in-python -> #cancel-a-workflow-execution
+
+python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-execution
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
@@ -932,8 +1024,6 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
-concepts/what-is-worker-versioning -> /workers#worker-versioning
-
 go/testing -> /dev-guide/go/testing#replay
 
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
@@ -941,8 +1031,6 @@ go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 go/logging -> /dev-guide/go/observability#logging
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
-
-cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 

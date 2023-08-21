@@ -20,6 +20,18 @@
     {
       "type": "h2",
       "id": "cli/task-queue/list-partition"
+    },
+    {
+      "type": "h2",
+      "id": "cli/task-queue/get-build-ids"
+    },
+    {
+      "type": "h2",
+      "id": "cli/task-queue/get-build-id-reachability"
+    },
+    {
+      "type": "h2",
+      "id": "cli/task-queue/update-build-ids"
     }
   ]
 }

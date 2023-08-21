@@ -5,8 +5,8 @@ sidebar_label: remove_task
 description: removing a Task with given information
 tags:
   - tctl
-  - admin
-  - shard
+  - cli reference
+  - history shards
 ---
 
 The `tctl admin shard remove_task` command removes a Task from the shard.

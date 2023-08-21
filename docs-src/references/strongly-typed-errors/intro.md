@@ -1,5 +1,10 @@
 ---
 id: intro
+title: Strongly typed errors
+sidebar_label: Strongly typed errors
+description: Strongly typed errors allow you to define error types and catch them specifically.
+tags:
+ - errors
 ---
 
 This reference lists possible [Workflow Task](/concepts/what-is-a-workflow-task) errors and how to resolve them.

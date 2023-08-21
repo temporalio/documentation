@@ -4,7 +4,11 @@ title: temporal env get
 sidebar_label: get
 description: Prints environmental properties.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - environment
+  - env get
+  - command-line-interface-cli
 ---
 
 The `temporal env get` command prints the environmental properties for the environment in use.
@@ -17,16 +21,32 @@ Output can be narrowed down to a specific option.
 `temporal env get local.tls-key-path`
 `tls-key-path  /home/my-user/certs/cluster.key`
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
-- [--fields](/cli/cmd-options/fields)
+- [--address](/cli/cmd-options/address)
 
-- [--limit](/cli/cmd-options/limit)
+- [--codec-auth](/cli/cmd-options/codec-auth)
 
-- [--no-pager](/cli/cmd-options/no-pager)
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
 
-- [--output](/cli/cmd-options/output)
+- [--color](/cli/cmd-options/color)
 
-- [--pager](/cli/cmd-options/pager)
+- [--context-timeout](/cli/cmd-options/context-timeout)
 
-- [--time-format](/cli/cmd-options/time-format)
+- [--env](/cli/cmd-options/env)
+
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
+
+- [--namespace](/cli/cmd-options/namespace)
+
+- [--tls](/cli/cmd-options/tls)
+
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options/tls-server-name)

@@ -5,6 +5,7 @@ sidebar_label: accepted-client-ca
 description: How to manage the client CA certificates for a Namespace in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli reference
 ---
 
 The `tcld namespace accepted-client-ca` commands manage the client CA certificates of the specified [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud. The certificates are used to verify client connections.

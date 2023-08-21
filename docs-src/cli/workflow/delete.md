@@ -4,25 +4,51 @@ title: temporal workflow delete
 sidebar_label: delete
 description: Deletes a Workflow Execution.
 tags:
-    - cli
+  - cli reference
+  - temporal cli
+  - workflow
+  - command-line-interface-cli
+  - workflow delete
 ---
 
 The `temporal workflow delete` command deletes the specified [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
-- [--fields](/cli/cmd-options/fields)
+- [--address](/cli/cmd-options/address)
 
-- [--limit](/cli/cmd-options/limit)
+- [--codec-auth](/cli/cmd-options/codec-auth)
 
-- [--no-pager](/cli/cmd-options/no-pager)
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
 
-- [--output](/cli/cmd-options/output)
+- [--color](/cli/cmd-options/color)
 
-- [--pager](/cli/cmd-options/pager)
+- [--context-timeout](/cli/cmd-options/context-timeout)
+
+- [--env](/cli/cmd-options/env)
+
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
+
+- [--namespace](/cli/cmd-options/namespace)
+
+- [--query](/cli/cmd-options/query)
+
+- [--reason](/cli/cmd-options/reason)
 
 - [--run-id](/cli/cmd-options/run-id)
 
-- [--time-format](/cli/cmd-options/time-format)
+- [--tls](/cli/cmd-options/tls)
+
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options/tls-server-name)
 
 - [--workflow-id](/cli/cmd-options/workflow-id)
+
+- [--yes](/cli/cmd-options/yes)

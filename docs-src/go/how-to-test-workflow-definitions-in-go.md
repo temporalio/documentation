@@ -2,6 +2,14 @@
 id: how-to-test-workflow-definitions-in-go
 title: How to test Workflow Definitions in Go
 sidebar_label: Testing and debugging
+description: How to test Workflow Definitions in Go.
+tags:
+  - developer-guide-doc-type
+  - go sdk
+  - debugging
+  - how-to-doc-type
+  - testing
+  - workflows
 ---
 
 The Temporal Go SDK provides a test framework to facilitate testing Workflow implementations.

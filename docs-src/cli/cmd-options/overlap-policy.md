@@ -1,10 +1,15 @@
 ---
 id: overlap-policy
-title: temporal  overlap-policy
+title: temporal overlap-policy
 sidebar_label: overlap-policy
 description: Overlap policy.
-tags:
-    - cli
+tags: 
+    - cli reference
+    - temporal cli
+    - options-feature
+    - command-line-interface-cli
+    - overlap policy
 ---
 
-Overlap policy (options: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll).
+Overlap policy.
+Options: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll.

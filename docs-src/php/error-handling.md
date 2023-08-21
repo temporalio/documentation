@@ -2,6 +2,10 @@
 id: error-handling
 title: Error handling in PHP
 sidebar_label: Error handling
+description: Error handling in PHP
+tags:
+    - php
+    - error handling
 ---
 
 An Activity, or a Child Workflow, might fail, and you could handle errors differently based on the various error cases.

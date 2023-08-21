@@ -2,6 +2,10 @@
 id: how-to-set-activity-timeouts-in-php
 title: How to set Activity Timeouts in PHP
 sidebar_label: Activity Timeouts
+description: Set Activity Timeouts with ActivityOptions.
+tags: 
+    - activity
+    - timeout
 ---
 
 Because Activities are reentrant, only a single stub can be used for multiple Activity invocations.

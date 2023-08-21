@@ -862,8 +862,12 @@
       "destination": "/java/task-queues"
     },
     {
-      "source": "/java-testing-and-debugging",
-      "destination": "/java/testing-and-debugging"
+      "source": "/java-testing-and-debugging:path*",
+      "destination": "/java/testing:path*"
+    },
+    {
+      "source": "/java/testing-and-debugging:path*",
+      "destination": "/java/testing:path*"
     },
     {
       "source": "/java-sdk-tutorial-prerequisites",
@@ -1103,7 +1107,7 @@
     },
     {
       "source": "/server-security",
-      "destination": "/server/security"
+      "destination": "/security"
     },
     {
       "source": "/server-versions-and-dependencies",
@@ -1334,6 +1338,10 @@
       "destination": "/workflows#continue-as-new"
     },
     {
+      "source": "/concepts/what-is-a-cloud-namespace-name",
+      "destination": "/cloud/namespaces#temporal-cloud-namespace-name"
+    },
+    {
       "source": "/concepts/what-is-a-data-converter",
       "destination": "/security#data-converter"
     },
@@ -1516,10 +1524,6 @@
     {
       "source": "/concepts/what-is-a-workflow-task-timeout",
       "destination": "/workflows#workflow-task-timeout"
-    },
-    {
-      "source": "/concepts/what-is-a-cloud-namespace-name",
-      "destination": "/cloud#temporal-cloud-namespace-name"
     },
     {
       "source": "/concepts/what-is-a-workflow-type",
@@ -1774,8 +1778,20 @@
       "destination": "/cloud"
     },
     {
-      "source": "/kb/cloud/how-to-manage-certificates-in-temporal-cloud#ca-certificates",
-      "destination": "/cloud/how-to-manage-certificates-in-temporal-cloud#ca-certificates"
+      "source": "/cloud/account-setup/certificates:path*",
+      "destination": "/cloud/certificates:path*"
+    },
+    {
+      "source": "/cloud/account-setup/namespaces:path*",
+      "destination": "/cloud/namespaces:path*"
+    },
+    {
+      "source": "/cloud/account-setup/users:path*",
+      "destination": "/cloud/users:path*"
+    },
+    {
+      "source": "/kb/cloud/how-to-manage-certificates-in-temporal-cloud:path*",
+      "destination": "/cloud/certificates:path*"
     },
     {
       "source": "/server/production-deployment/#scaling-and-metrics",
@@ -1788,6 +1804,58 @@
     {
       "source": "/cloud/release-notes/:path*",
       "destination": "https://temporal.io/change-log/product-area/cloud"
+    },
+    {
+      "source": "/cloud/how-to-manage-namespaces-in-temporal-cloud:path*",
+      "destination": "/cloud/namespaces:path*"
+    },
+    {
+      "source": "/cloud/how-to-manage-certificates-in-temporal-cloud:path*",
+      "destination": "/cloud/certificates:path*"
+    },
+    {
+      "source": "/cloud/how-to-monitor-temporal-cloud-metrics",
+      "destination": "/cloud/metrics"
+    },
+    {
+      "source": "/cloud/introduction/security-cloud:path*",
+      "destination": "cloud/security:path*"
+    },
+    {
+      "source": "/cloud/introduction/operating-envelope:path*",
+      "destination": "cloud/operating-envelope:path*"
+    },
+    {
+      "source": "/cloud/introduction/pricing:path*",
+      "destination": "/cloud/pricing:path*"
+    },
+    {
+      "source": "/cloud/introduction/support:path*",
+      "destination": "/cloud/support:path*"
+    },
+    {
+      "source": "/cloud/how-to-create-a-ticket-for-temporal-support",
+      "destination": "/cloud/support#support-ticket"
+    },
+    {
+      "source": "/cloud/how-to-get-started-with-temporal-cloud:path*",
+      "destination": "/cloud/get-started:path*"
+    },
+    {
+      "source": "/cloud/how-to-manage-saml-with-temporal-cloud:path*",
+      "destination": "/cloud/saml:path*"
+    },
+    {
+      "source": "/cloud/how-to-manage-audit-logging:path*",
+      "destination": "/cloud/audit-logging:path*"
+    },
+    {
+      "source": "/kb/prometheus-grafana-setup-cloud",
+      "destination": "/cloud/metrics#prometheus-and-grafana-setup"
+    },
+    {
+      "source": "/kb/cloud-namespace-naming-considerations",
+      "destination": "/cloud/namespaces#best-practices"
     },
     {
       "source": "/typescript/versioning",
@@ -1856,6 +1924,10 @@
     {
       "source": "/archive-data",
       "destination": "/cluster-deployment-guide#archival"
+    },
+    {
+      "source": "/kb/non-determinism-issues-for-run-ids",
+      "destination": "/workflows#run-id"
     }
   ]
 }

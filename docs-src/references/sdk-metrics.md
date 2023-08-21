@@ -11,7 +11,7 @@ tags:
 
 The information on this page is relevant to [Temporal SDKs](/concepts/what-is-a-temporal-sdk).
 
-See [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) for metrics emitted by [Temporal Cloud](/concepts/what-is-temporal-cloud).
+See [Cloud metrics](/cloud/metrics-intro) for metrics emitted by [Temporal Cloud](/concepts/what-is-temporal-cloud).
 
 See [Cluster metrics](/references/cluster-metrics) for metrics emitted by the [OSS Cluster](/concepts/what-is-a-temporal-cluster).
 
@@ -30,7 +30,7 @@ All metrics are prefixed with `temporal_` before being exported to their configu
 (The prefix has been removed in the following reference.)
 Currently, some metrics are specific to certain SDKs.
 
-TypeScript, Python, .NET, and Ruby SDKs metrics are defined in the Core SDK.
+TypeScript, Python, and .NET SDKs metrics are defined in the Core SDK.
 
 PHP and Go metrics are defined in the Go SDK.
 

@@ -4,8 +4,10 @@ title: How to execute a Side Effect in Go
 sidebar_label: Side Effect
 description: Use the SideEffect API from the `go.temporal.io/sdk/workflow` package to execute a Side Effect directly in your Workflow.
 tags:
-  - developer-guide
-  - go
+  - go sdk
+  - developer-guide-doc-type
+  - side effects
+  - how-to-doc-type
 ---
 
 Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/concepts/what-is-a-side-effect) directly in your Workflow.

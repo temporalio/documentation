@@ -4,7 +4,10 @@ title: How to enable Worker Sessions
 sidebar_label: Enable Sessions
 description: Enable the Worker to use Sessions.
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - workers
+  - sessions
+  - go sdk
 ---
 
 Enable the Worker to use Sessions.

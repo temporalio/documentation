@@ -4,9 +4,11 @@ title: How to set WorkerOptions in Go
 sidebar_label: WorkerOptions
 description: Create an instance of `Options` from the `go.temporal.io/sdk/worker` package, set any of the optional fields, and pass the instance to the `New` call.
 tags:
-  - developer-guide
-  - options
-  - go
+  - developer-guide-doc-type
+  - worker options
+  - go sdk
+  - worker
+  - how-to-doc-type
 ---
 
 Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/worker#Options) from the `go.temporal.io/sdk/worker` package, set any of the optional fields, and pass the instance to the [`New`](https://pkg.go.dev/go.temporal.io/sdk/worker#New) call.
