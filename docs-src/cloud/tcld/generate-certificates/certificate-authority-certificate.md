@@ -67,8 +67,8 @@ tcld generate-certificates certificate-authority-certificate --ca-key-file <path
 
 #### --rsa-algorithm
 
-When enabled, a 4096-bit RSA keypair is generated for the certificate instead of an ECDSA P-384 keypair.
-Since an ECDSA P-384 keypair is the recommended default, this option is disabled.
+When enabled, a 4096-bit RSA key pair is generated for the certificate instead of an ECDSA P-384 key pair.
+Because an ECDSA P-384 key pair is the recommended default, this option is disabled.
 
 Alias: `--rsa`
 
