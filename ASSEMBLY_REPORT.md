@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday August 21 2023 11:03:32 AM -0600
+Last assembled: Monday August 21 2023 13:49:08 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -53,6 +53,8 @@ concepts/what-is-a-global-namespace -> /namespaces#global-namespace
 concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
+
+cloud/security-cloud-intro -> #
 
 references/server-options -> /references/server-options#withconfig
 
