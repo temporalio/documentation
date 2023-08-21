@@ -122,7 +122,7 @@ Alias: `--org`
 tcld generate-certificates end-entity-certificate --organization <value>
 ```
 
-#### --organizaation-unit
+#### --organization-unit
 
 Optional: Specify the name of the organization unit.
 
