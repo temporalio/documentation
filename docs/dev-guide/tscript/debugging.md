@@ -26,14 +26,14 @@ You can debug production Workflows using:
 
 - [Web UI](/web-ui)
 - [tctl](/tctl-v1)
-- <a class="tdlp" href="/dev-guide/typescript/testing#replay">Replay<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Testing</span><br /><br /><span class="tdlppd">The Testing section of the Temporal Application development guide describes the frameworks that facilitate Workflow and integration testing.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/testing#replay">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/observability#tracing">Tracing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Observability features</span><br /><br /><span class="tdlppd">The observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view which Workflow Executions are tracked by the Temporal Platform and the state of any specified Workflow Execution, either currently or at points of an execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/observability#tracing">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/observability#logging">Logging<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Observability features</span><br /><br /><span class="tdlppd">The observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view which Workflow Executions are tracked by the Temporal Platform and the state of any specified Workflow Execution, either currently or at points of an execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/observability#logging">Learn more</a></span></span></a>
+- [Replay](/dev-guide/typescript/testing#replay)
+- [Tracing](/dev-guide/typescript/observability#tracing)
+- [Logging](/dev-guide/typescript/observability#logging)
 
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/dev-guide/worker-performance).
 For information on setting up SDK metrics, see [Metrics](/dev-guide/typescript/observability#metrics) in the Observability section of the TypeScript SDK developer's guide.
 
-Debug Server performance with <a class="tdlp" href="/cloud/metrics#">Cloud metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to monitor Temporal Cloud metrics</span><br /><br /><span class="tdlppd">Configure and track performance metrics for Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/metrics#">Learn more</a></span></span></a> or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).
+Debug Server performance with [Cloud metrics](/cloud/metrics#) or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).
 
 ## How to troubleshoot common issues in the TypeScript SDK {#troubleshoot-common-issues}
 
@@ -98,7 +98,7 @@ For more information, see the [Register types](dev-guide/typescript/foundations#
 
 The TypeScript SDK's Worker bundles Workflows based on `workflowsPath` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
 
-If Webpack fails to create the bundle, the SDK will throw an error and emit webpack logs using the SDK's <a class="tdlp" href="/dev-guide/typescript/observability#logging">logger<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Observability features</span><br /><br /><span class="tdlppd">The observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view which Workflow Executions are tracked by the Temporal Platform and the state of any specified Workflow Execution, either currently or at points of an execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/observability#logging">Learn more</a></span></span></a>.
+If Webpack fails to create the bundle, the SDK will throw an error and emit webpack logs using the SDK's [logger](/dev-guide/typescript/observability#logging).
 
 If you do not see Webpack output in your terminal make sure that you have not disabled SDK logging (see reference to `Runtime.install()` in the link above).
 

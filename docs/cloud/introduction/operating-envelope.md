@@ -79,17 +79,17 @@ Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS):
 
 Furthermore, it is compatible with applications deployed in any cloud environment or data center.
 
-To reduce latency, we recommend that you create your <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in a region that is geographically close to where your <a class="tdlp" href="/workers#worker">Workers<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a> are hosted, but your Workers and <a class="tdlp" href="/temporal#temporal-client">Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client?</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> code don't need to be hosted on AWS.
+To reduce latency, we recommend that you create your [Namespace](/namespaces#) in a region that is geographically close to where your [Workers](/workers#worker) are hosted, but your Workers and [Client](/temporal#temporal-client) code don't need to be hosted on AWS.
 
 ## What kind of throughput can I get with Temporal Cloud? {#throughput}
 
-A Namespace has a default quota of 200 <a class="tdlp" href="/cloud/pricing#action">Actions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Action?</span><br /><br /><span class="tdlppd">An Action is the fundamental pricing unit in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/pricing#action">Learn more</a></span></span></a> per second with spikes up to 400 Actions per second.
+A Namespace has a default quota of 200 [Actions](/cloud/pricing#action) per second with spikes up to 400 Actions per second.
 However, Temporal Cloud can provide more than 150,000 Actions per second.
 
 If your Action rate exceeds your quota, Temporal Cloud throttles Actions until the rate matches your quota.
 Actions like Start or Signal Workflow Execution always receive higher priority than other Actions, even when throttled.
 
-To raise your quota, create a <a class="tdlp" href="/cloud/support#support-ticket">support ticket<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/support#support-ticket">Learn more</a></span></span></a>.
+To raise your quota, create a [support ticket](/cloud/support#support-ticket).
 
 ## What kind of latency can I expect from Temporal Cloud? {#latency}
 
