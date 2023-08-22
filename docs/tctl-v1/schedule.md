@@ -35,16 +35,16 @@ tctl is expected to be fully deprecated by Temporal Server version 1.22
 
 :::
 
-A <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule?</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a> is an experimental feature available in `tctl 1.17` and `tctl next`.
+A [Schedule](/workflows#schedule) is an experimental feature available in `tctl 1.17` and `tctl next`.
 
-- <a class="tdlp" href="#backfill">Backfill a Schedule using tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl schedule backfill</span><br /><br /><span class="tdlppd">How to backfill a Schedule using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#backfill">Learn more</a></span></span></a>
-- <a class="tdlp" href="#create">Create a Schedule using tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl schedule create</span><br /><br /><span class="tdlppd">How to create a Schedule using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#create">Learn more</a></span></span></a>
-- <a class="tdlp" href="#delete">Delete a Schedule using tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl schedule delete</span><br /><br /><span class="tdlppd">How to delete a Schedule using tctl</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#delete">Learn more</a></span></span></a>
-- <a class="tdlp" href="#describe">Describe a Schedule using tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl schedule describe</span><br /><br /><span class="tdlppd">How to describe a Schedule using tctl</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#describe">Learn more</a></span></span></a>
-- <a class="tdlp" href="#list">List Schedules using tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl schedule list</span><br /><br /><span class="tdlppd">How to list Schedules using tctl</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list">Learn more</a></span></span></a>
-- <a class="tdlp" href="#toggle">Toggle Pause on Schedule using tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl schedule toggle</span><br /><br /><span class="tdlppd">How to toggle (pause/unpause) a Schedule using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#toggle">Learn more</a></span></span></a>
-- <a class="tdlp" href="#trigger">Trigger an Action on a Schedule using tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl schedule trigger</span><br /><br /><span class="tdlppd">How to trigger a Schedule Action using tctl</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#trigger">Learn more</a></span></span></a>
-- <a class="tdlp" href="#update">Update a Schedule using tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl schedule update</span><br /><br /><span class="tdlppd">How to update a Schedule using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#update">Learn more</a></span></span></a>
+- [Backfill a Schedule using tctl](#backfill)
+- [Create a Schedule using tctl](#create)
+- [Delete a Schedule using tctl](#delete)
+- [Describe a Schedule using tctl](#describe)
+- [List Schedules using tctl](#list)
+- [Toggle Pause on Schedule using tctl](#toggle)
+- [Trigger an Action on a Schedule using tctl](#trigger)
+- [Update a Schedule using tctl](#update)
 
 ## backfill
 
@@ -58,7 +58,7 @@ tctl schedule backfill --sid 'your-schedule-id' \
   --end-time   '2022-05-31T23:59:59Z'
 ```
 
-Note that, similar to <a class="tdlp" href="#trigger">tctl schedule trigger<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl schedule trigger</span><br /><br /><span class="tdlppd">How to trigger a Schedule Action using tctl</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#trigger">Learn more</a></span></span></a> immediately, you probably want to override the Overlap Policy.
+Note that, similar to [tctl schedule trigger](#trigger) immediately, you probably want to override the Overlap Policy.
 Specifying `AllowAll` runs all the backfilled Workflows at once; `BufferAll` runs them sequentially.
 The other policies don't make much sense in this context.
 

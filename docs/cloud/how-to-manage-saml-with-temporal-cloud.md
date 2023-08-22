@@ -31,14 +31,14 @@ For more information, contact your account manager.
 
 ## Integrate SAML with your Temporal Cloud account
 
-1. Locate your <a class="tdlp" href="/cloud/namespaces#temporal-cloud-account-id">Temporal Cloud Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/namespaces#temporal-cloud-account-id">Learn more</a></span></span></a>.
-   One way to do so is to sign in to Temporal Cloud and find your <a class="tdlp" href="/cloud/namespaces#temporal-cloud-namespace-id">Namespace Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Id?</span><br /><br /><span class="tdlppd">A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/namespaces#temporal-cloud-namespace-id">Learn more</a></span></span></a>.
+1. Locate your [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id).
+   One way to do so is to sign in to Temporal Cloud and find your [Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
    The Account Id is the five or six characters following the period (.), such as `f45a2`.
    You will need the Account Id to construct your callback URL and your entity identifier.
 1. Configure SAML with your IdP by following one of these sets of instructions:
-   - <a class="tdlp" href="#configure-saml-with-azure-ad">Microsoft Azure Active Directory (Azure AD)<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to configure SAML with Azure AD</span><br /><br /><span class="tdlppd">To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#configure-saml-with-azure-ad">Learn more</a></span></span></a>
-   - <a class="tdlp" href="#configure-saml-with-okta">Okta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to configure SAML with Okta</span><br /><br /><span class="tdlppd">To use Okta as your SAML IdP, configure a new Okta application integration.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#configure-saml-with-okta">Learn more</a></span></span></a>
-1. <a class="tdlp" href="#finish-saml-configuration">Share your connection information with us and test your connection.<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to finish your SAML configuration</span><br /><br /><span class="tdlppd">To finish your SAML configuration, send us the sign-in URL, X.509 certificate, and IdP domains and then test your connection.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#finish-saml-configuration">Learn more</a></span></span></a>
+   - [Microsoft Azure Active Directory (Azure AD)](#configure-saml-with-azure-ad)
+   - [Okta](#configure-saml-with-okta)
+1. [Share your connection information with us and test your connection.](#finish-saml-configuration)
 
 ## How to configure SAML with Azure AD {#configure-saml-with-azure-ad}
 
@@ -90,7 +90,7 @@ To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
    - In the **SAML Certificates** section of the **SAML-based Sign-on** page, select the download link for **Certificate (Base64)**.
    - In the **Set up _APPLICATION_NAME_** section of the **SAML-based Sign-on** page, copy the value of **Login URL**.
 
-To finish setting up Azure AD as your SAML IdP, see <a class="tdlp" href="#finish-saml-configuration">Finish SAML configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to finish your SAML configuration</span><br /><br /><span class="tdlppd">To finish your SAML configuration, send us the sign-in URL, X.509 certificate, and IdP domains and then test your connection.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#finish-saml-configuration">Learn more</a></span></span></a>.
+To finish setting up Azure AD as your SAML IdP, see [Finish SAML configuration](#finish-saml-configuration).
 
 ## How to configure SAML with Okta {#configure-saml-with-okta}
 
@@ -137,12 +137,12 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
    - Copy the IdP settings.
    - Download the active certificate.
 
-To finish setting up Okta as your SAML IdP, see the next section, <a class="tdlp" href="#finish-saml-configuration">Finish SAML configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to finish your SAML configuration</span><br /><br /><span class="tdlppd">To finish your SAML configuration, send us the sign-in URL, X.509 certificate, and IdP domains and then test your connection.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#finish-saml-configuration">Learn more</a></span></span></a>.
+To finish setting up Okta as your SAML IdP, see the next section, [Finish SAML configuration](#finish-saml-configuration).
 
 ## How to finish your SAML configuration {#finish-saml-configuration}
 
 After you configure SAML with your IdP, we can finish the configuration on our side.
-<a class="tdlp" href="/cloud/support#support-ticket">Create a support ticket<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/support#support-ticket">Learn more</a></span></span></a> that includes the following information:
+[Create a support ticket](/cloud/support#support-ticket) that includes the following information:
 
 - The sign-in URL from your application
 - The X.509 SAML sign-in certificate
