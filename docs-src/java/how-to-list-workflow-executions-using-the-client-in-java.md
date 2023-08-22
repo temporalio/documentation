@@ -13,7 +13,12 @@ tags:
   - visibility
 ---
 
-The [listExecutions()]() method retrieves a list of [Workflow Executions](/concepts/what-is-a-workflow-execution) that match the [Search Attributes](/concepts/what-is-a-search-attribute) of the [List Filter](/concepts/what-is-a-list-filter) passed as an argument.
+The [listExecutions()]() method retrieves a stream of [Workflow Executions](/concepts/what-is-a-workflow-execution) that match the conditions provided in a [Query]().
+The stream is then collected into a list with `Collectors.toList()`, where the returned metadata can be filtered further into Sets.
+
+
+
+
 
 
 
