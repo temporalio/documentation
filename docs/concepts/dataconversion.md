@@ -84,7 +84,7 @@ For example:
   If any part of it is not serializable as JSON, <!--(for example, a Date—see JSON data types)--> an error is thrown.
 
 The default data converter cannot deserialize a list of Protobufs.
-<a class="tdlp" href="#custom-data-converter">Use a custom Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a custom Data Converter?</span><br /><br /><span class="tdlppd">A custom Data Converter extends the default Data Converter with custom logic for Payload conversion or Payload encryption.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#custom-data-converter">Learn more</a></span></span></a> for cases involving lists of Protobufs.
+[Use a custom Data Converter](#custom-data-converter) for cases involving lists of Protobufs.
 
 ## What is a custom Data Converter? {#custom-data-converter}
 
