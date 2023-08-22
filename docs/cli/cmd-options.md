@@ -360,7 +360,7 @@ Input file that specifies Workflow Executions to exclude from resetting.
 
 ## execution-timeout
 
-Timeout (in seconds) for a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>, including retries and `ContinueAsNew` tasks.
+Timeout (in seconds) for a [Workflow Execution](/workflows#workflow-execution), including retries and `ContinueAsNew` tasks.
 
 ## existing-compatible-build-id
 
@@ -560,7 +560,7 @@ Promote local Namespace to Global Namespace.
 ## query
 
 Provides a SQL-like Query of Search Attributes to return Workflow Executions to reset.
-For more information, refer to the <a class="tdlp" href="/cli/workflow#list">temporal workflow list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal workflow list</span><br /><br /><span class="tdlppd">List Workflow Executions based on a Query.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/workflow#list">Learn more</a></span></span></a> command.
+For more information, refer to the [temporal workflow list](/cli/workflow#list) command.
 
 ## raw
 

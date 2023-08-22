@@ -26,10 +26,10 @@ tags:
 
 A Namespace is a unit of isolation within the Temporal Platform.
 
-- <a class="tdlp" href="#create-a-namespace">Create a Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a Namespace in Temporal Cloud</span><br /><br /><span class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#create-a-namespace">Learn more</a></span></span></a>
-- <a class="tdlp" href="#access-namespaces">Access a Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to access a Namespace in Temporal Cloud</span><br /><br /><span class="tdlppd">You can access a Namespace in Temporal Cloud via gRPC and HTTPS endpoints.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#access-namespaces">Learn more</a></span></span></a>
-- <a class="tdlp" href="#manage-namespaces">Manage Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage Namespaces in Temporal Cloud</span><br /><br /><span class="tdlppd">To manage Namespaces in Temporal Cloud, use either Temporal Cloud UI or tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#manage-namespaces">Learn more</a></span></span></a>
-- <a class="tdlp" href="#delete-a-namespace">Delete a Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to delete a Namespace in Temporal Cloud</span><br /><br /><span class="tdlppd">To delete a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#delete-a-namespace">Learn more</a></span></span></a>
+- [Create a Namespace](#create-a-namespace)
+- [Access a Namespace](#access-namespaces)
+- [Manage Namespaces](#manage-namespaces)
+- [Delete a Namespace](#delete-a-namespace)
 
 ## What is a Cloud Namespace Name? {#temporal-cloud-namespace-name}
 
@@ -54,9 +54,9 @@ Temporal Technologies assigns each Account Id, which is an opaque code of five o
 A Cloud Namespace Id is a globally unique identifier for a [Namespace](/namespaces) in Temporal Cloud.
 A Namespace Id is formed by concatenating the following:
 
-1. A <a class="tdlp" href="#temporal-cloud-namespace-name">Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-cloud-namespace-name">Learn more</a></span></span></a>
+1. A [Namespace Name](#temporal-cloud-namespace-name)
 1. A period (.)
-1. The <a class="tdlp" href="#temporal-cloud-account-id">Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-cloud-account-id">Learn more</a></span></span></a> to which the Namespace belongs
+1. The [Account Id](#temporal-cloud-account-id) to which the Namespace belongs
 
 For example, for the Account Id `f45a2` and Namespace Name `accounting-production`, the Namespace Id is `accounting-production.f45a2`.
 
@@ -64,16 +64,16 @@ For example, for the Account Id `f45a2` and Namespace Name `accounting-productio
 
 :::info
 
-The user who creates a [Namespace](/namespaces) is automatically granted <a class="tdlp" href="/cloud/users#namespace-level-permissions">Namespace Admin<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the Namespace-level permissions for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Namespace-level permissions are Namespace Admin, Write, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/users#namespace-level-permissions">Learn more</a></span></span></a> permission for that Namespace.
+The user who creates a [Namespace](/namespaces) is automatically granted [Namespace Admin](/cloud/users#namespace-level-permissions) permission for that Namespace.
 
-To create a Namespace, a user must have the Developer or Global Admin account-level <a class="tdlp" href="/cloud/users#account-level-roles">Role<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the account-level Roles for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Account-level Roles are Global Admin, Developer, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/users#account-level-roles">Learn more</a></span></span></a>.
+To create a Namespace, a user must have the Developer or Global Admin account-level [Role](/cloud/users#account-level-roles).
 
 :::
 
 :::tip
 
 By default, each account has a quota of 10 Namespaces.
-If you want to increase this limit, open a <a class="tdlp" href="/cloud/support#support-ticket">support ticket<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/support#support-ticket">Learn more</a></span></span></a>.
+If you want to increase this limit, open a [support ticket](/cloud/support#support-ticket).
 
 :::
 
@@ -83,11 +83,11 @@ If you want to increase this limit, open a <a class="tdlp" href="/cloud/support#
 
 To create a Namespace in Temporal Cloud, gather the following information:
 
-- <a class="tdlp" href="#temporal-cloud-namespace-name">Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-cloud-namespace-name">Learn more</a></span></span></a> and region.
+- [Namespace Name](#temporal-cloud-namespace-name) and region.
 - [Retention Period](/clusters/#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution).
-- <a class="tdlp" href="/cloud/certificates#certificate-requirements">CA certificate<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/certificates#certificate-requirements">Learn more</a></span></span></a> for the Namespace.
+- [CA certificate](/cloud/certificates#certificate-requirements) for the Namespace.
 - [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/production-readiness/develop#securing-your-data).
-- <a class="tdlp" href="/cloud/users#namespace-level-permissions">Permissions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the Namespace-level permissions for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Namespace-level permissions are Namespace Admin, Write, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/users#namespace-level-permissions">Learn more</a></span></span></a> for each user.
+- [Permissions](/cloud/users#namespace-level-permissions) for each user.
 
 <!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
 
@@ -102,7 +102,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. In **Retention Period**, specify a value from 1 to 90 days.
    When choosing this value, consider your needs for Event History versus the cost of maintaining that Event History.
    Typically, a development Namespace has a short retention period and a production Namespace has a longer retention period.
-   (If you need to change this value later, contact <a class="tdlp" href="/cloud/support#support-ticket">Temporal Support<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/support#support-ticket">Learn more</a></span></span></a>.)
+   (If you need to change this value later, contact [Temporal Support](/cloud/support#support-ticket).)
 1. In **Certificate**, paste the CA certificate for this Namespace.
 1. Optional: In **Codec Server**, enter the URL and port number of your Codec Server endpoint.
    For details, see [Securing your data](/production-readiness/develop#securing-your-data).
@@ -112,7 +112,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 
 ### Create a Namespace using tcld
 
-See the <a class="tdlp" href="/cloud/tcld/namespace#create">tcld namespace create<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace create</span><br /><br /><span class="tdlppd">How to create information about a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/namespace#create">Learn more</a></span></span></a> command reference for details.
+See the [tcld namespace create](/cloud/tcld/namespace#create) command reference for details.
 
 ## What are some Namespace best practices? {#best-practices}
 
@@ -125,7 +125,7 @@ Customers should consider not only a Namespace naming convention but also how to
 Before considering an appropriate Namespace configuration, you should be aware of the following constraints:
 
 - Each Temporal account has a default limit of 10 Namespaces.
-  You can request an increase by <a class="tdlp" href="/cloud/support#support-ticket">creating a ticket for Temporal Support<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/support#support-ticket">Learn more</a></span></span></a>.
+  You can request an increase by [creating a ticket for Temporal Support](/cloud/support#support-ticket).
 - Cross-Namespace communications between [Workflows](/workflows) is not yet supported.
   For now, you can use the [SDK client](/temporal#temporal-client) from within an [Activity](/activities) as a workaround.
 - Each Namespace has a rate limit ("throttling").
@@ -136,11 +136,11 @@ Before considering an appropriate Namespace configuration, you should be aware o
   Access to Temporal by [Worker Processes](/workers#worker-process) is permitted at the Namespace level.
   Isolating applications or environments (development, test, staging, production) should take this into consideration.
 - A Namespace is an endpoint.
-  To access a Namespace from a Temporal Client requires mTLS authorization, which requires <a class="tdlp" href="/cloud/certificates#ca-certificates">CA certificates<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/certificates#ca-certificates">Learn more</a></span></span></a>.
+  To access a Namespace from a Temporal Client requires mTLS authorization, which requires [CA certificates](/cloud/certificates#ca-certificates).
 - [Workflow Id](/workflows#workflow-id) uniqueness is per Namespace.
 - [Task Queue](/workers#task-queue) names are unique per Namespace.
 - Closed Workflow retention is per Namespace.
-- RBAC <a class="tdlp" href="/cloud/users#namespace-level-permissions">permissions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the Namespace-level permissions for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Namespace-level permissions are Namespace Admin, Write, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/users#namespace-level-permissions">Learn more</a></span></span></a> are implemented at the Namespace level.
+- RBAC [permissions](/cloud/users#namespace-level-permissions) are implemented at the Namespace level.
 
 ### General guidance
 
@@ -203,7 +203,7 @@ Sample workflowId convention:
 
 <!--- How to access a Namespace in Temporal Cloud --->
 
-Each Namespace in Temporal Cloud has two unique endpoints, both of which include the <a class="tdlp" href="#temporal-cloud-namespace-id">Namespace Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Id?</span><br /><br /><span class="tdlppd">A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-cloud-namespace-id">Learn more</a></span></span></a>.
+Each Namespace in Temporal Cloud has two unique endpoints, both of which include the [Namespace Id](#temporal-cloud-namespace-id).
 
 - For programmatic access, a gRPC endpoint in the form `<NamespaceId>.tmprl.cloud`; for example, `accounting-production.f45a2.tmprl.cloud:7233`.
 - For accessing Temporal Web UI, an HTTPS endpoint in the form `https://cloud.temporal.io/namespaces/<namespaceId>`; for example, `https://cloud.temporal.io/namespaces/accounting-production.f45a2`.
@@ -227,10 +227,10 @@ On the **Edit** page, you can do the following:
 
 - Add a [custom Search Attribute](/visibility#custom-search-attributes).
 - [Manage CA certificates](/cloud/certificates).
-- <a class="tdlp" href="/cloud/certificates#manage-certificate-filters-using-temporal-cloud-ui">Manage certificate filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificate filters in Temporal Cloud</span><br /><br /><span class="tdlppd">To limit access to specific CA certificates, you can create certificate filters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/certificates#manage-certificate-filters-using-temporal-cloud-ui">Learn more</a></span></span></a>.
+- [Manage certificate filters](/cloud/certificates#manage-certificate-filters-using-temporal-cloud-ui).
 - Set [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) for all users on the Namespace.
   Each user on the Namespace has the option to [override this setting](/production-readiness/develop#web-ui) in their browser.
-- Manage <a class="tdlp" href="/cloud/users#namespace-level-permissions">Namespace-level permissions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the Namespace-level permissions for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Namespace-level permissions are Namespace Admin, Write, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/users#namespace-level-permissions">Learn more</a></span></span></a>.
+- Manage [Namespace-level permissions](/cloud/users#namespace-level-permissions).
 - Add users.
 
 To add a user to a Namespace, scroll to the bottom of the page and select **Add User**.
@@ -243,20 +243,20 @@ After you make changes, select **Save** in the top-right or bottom-left portion 
 
 To list Namespaces and get information about them, use the following [tcld](/cloud/tcld/) commands:
 
-- <a class="tdlp" href="/cloud/tcld/namespace#list">tcld namespace list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace list</span><br /><br /><span class="tdlppd">How to list all Namespaces in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/namespace#list">Learn more</a></span></span></a>
-- <a class="tdlp" href="/cloud/tcld/namespace#get">tcld namespace get<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace get</span><br /><br /><span class="tdlppd">How to get information about a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/namespace#get">Learn more</a></span></span></a>
+- [tcld namespace list](/cloud/tcld/namespace#list)
+- [tcld namespace get](/cloud/tcld/namespace#get)
 
-To manage certificates, use the <a class="tdlp" href="/cloud/tcld/namespace#accepted-client-ca">tcld namespace accepted-client-ca<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace accepted-client-ca</span><br /><br /><span class="tdlppd">How to manage the client CA certificates for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/namespace#accepted-client-ca">Learn more</a></span></span></a> commands.
-For more information, see <a class="tdlp" href="/cloud/certificates#">How to manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/certificates#">Learn more</a></span></span></a>.
+To manage certificates, use the [tcld namespace accepted-client-ca](/cloud/tcld/namespace#accepted-client-ca) commands.
+For more information, see [How to manage certificates in Temporal Cloud](/cloud/certificates#).
 
-To manage certificate filters, use the <a class="tdlp" href="/cloud/tcld/namespace#certificate-filters">tcld namespace certificate-filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace certificate-filters</span><br /><br /><span class="tdlppd">How to manage certificate filters for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/namespace#certificate-filters">Learn more</a></span></span></a> commands.
-For more information, see <a class="tdlp" href="/cloud/certificates#manage-certificate-filters">How to manage certificate filters in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/certificates#manage-certificate-filters">Learn more</a></span></span></a>.
+To manage certificate filters, use the [tcld namespace certificate-filters](/cloud/tcld/namespace#certificate-filters) commands.
+For more information, see [How to manage certificate filters in Temporal Cloud](/cloud/certificates#manage-certificate-filters).
 
 ## How to delete a Namespace in Temporal Cloud {#delete-a-namespace}
 
 :::info
 
-To delete a Namespace, a user must have Namespace Admin <a class="tdlp" href="/cloud/users#namespace-level-permissions">permission<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What are the Namespace-level permissions for users in Temporal Cloud?</span><br /><br /><span class="tdlppd">Namespace-level permissions are Namespace Admin, Write, and Read-Only.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/users#namespace-level-permissions">Learn more</a></span></span></a> for that Namespace.
+To delete a Namespace, a user must have Namespace Admin [permission](/cloud/users#namespace-level-permissions) for that Namespace.
 
 :::
 
