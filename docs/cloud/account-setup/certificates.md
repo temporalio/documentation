@@ -26,7 +26,7 @@ tags:
 
 Temporal Cloud access is secured by the mutual Transport Layer Security (mTLS) protocol, which requires a CA certificate from the user.
 
-A [Worker Process](/workers#worker-process) requires a CA certificate and private key to connect to Temporal Cloud.
+[Worker Processes](/workers#worker-process) require CA certificates and private keys to connect to Temporal Cloud.
 Temporal Cloud does not require an exchange of secrets; only the certificates produced by private keys are used for verification.
 
 :::caution Don't let your certificates expire
