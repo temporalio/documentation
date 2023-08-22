@@ -35,7 +35,7 @@ Any sufficiently complex distributed system contains an ad-hoc, informally-speci
 
 ## What is the Temporal Platform? {#temporal-platform}
 
-The Temporal Platform consists of a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> and <a class="tdlp" href="/workers#worker-process">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a>.
+The Temporal Platform consists of a [Temporal Cluster](/clusters#) and [Worker Processes](/workers#worker-process).
 Together these components create a runtime for Workflow Executions.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">The Temporal Platform</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-platform-simple.svg" alt="The Temporal Platform" height="740" width="1140" /></div></div>
@@ -63,28 +63,28 @@ A Temporal Workflow Execution is a Reentrant Process. A Reentrant Process is re
 - Recoverable: Ability of a process to continue execution after execution was suspended on a _failure_.
 - Reactive: Ability of a process to react to external events.
 
-Therefore, a Temporal Workflow Execution executes a <a class="tdlp" href="/workflows#workflow-definition">Temporal Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>, also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.
+Therefore, a Temporal Workflow Execution executes a [Temporal Workflow Definition](/workflows#workflow-definition), also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.
 
 ## What is a Temporal SDK? {#temporal-sdk}
 
 A Temporal SDK is a language-specific library that offers APIs to do the following:
 
-1. Construct and use a <a class="tdlp" href="#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client?</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-client">Learn more</a></span></span></a>
-2. Develop <a class="tdlp" href="/workflows#workflow-definition">Workflow Definitions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>
-3. Develop <a class="tdlp" href="/workers#worker-program">Worker Programs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Program?</span><br /><br /><span class="tdlppd">A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-program">Learn more</a></span></span></a>
+1. Construct and use a [Temporal Client](#temporal-client)
+2. Develop [Workflow Definitions](/workflows#workflow-definition)
+3. Develop [Worker Programs](/workers#worker-program)
 
 A Temporal SDK enables you to write your application code using the full power of the programming language, while the Temporal Platform handles the durability, reliability, and scalability of the application.
 
 Temporal currently offers the following SDKs:
 
-- <a class="tdlp" href="/dev-guide/go/foundations#install-a-temporal-sdk">Get started with the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install a Temporal SDK</span><br /><br /><span class="tdlppd">A Temporal SDK provides a framework for Temporal Application development.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/foundations#install-a-temporal-sdk">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/foundations#install-a-temporal-sdk">Get started with the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install a Temporal SDK</span><br /><br /><span class="tdlppd">A Temporal SDK provides a framework for Temporal Application development.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/foundations#install-a-temporal-sdk">Learn more</a></span></span></a>
+- [Get started with the Go SDK](/dev-guide/go/foundations#install-a-temporal-sdk)
+- [Get started with the Java SDK](/dev-guide/java/foundations#install-a-temporal-sdk)
 - [Get started with the PHP SDK](/dev-guide/php)
-- <a class="tdlp" href="/dev-guide/python/foundations#install-a-temporal-sdk">Get started with the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install a Temporal SDK</span><br /><br /><span class="tdlppd">A Temporal SDK provides a framework for Temporal Application development.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/foundations#install-a-temporal-sdk">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/foundations#install-a-temporal-sdk">How to use the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install a Temporal SDK</span><br /><br /><span class="tdlppd">A Temporal SDK provides a framework for Temporal Application development.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/foundations#install-a-temporal-sdk">Learn more</a></span></span></a>
+- [Get started with the Python SDK](/dev-guide/python/foundations#install-a-temporal-sdk)
+- [How to use the TypeScript SDK](/dev-guide/typescript/foundations#install-a-temporal-sdk)
 
 Each SDK emits metrics which can be ingested into monitoring platforms.
-See the <a class="tdlp" href="/references/sdk-metrics#">SDK metrics reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">SDK metrics</span><br /><br /><span class="tdlppd">The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/sdk-metrics#">Learn more</a></span></span></a> for a complete list.
+See the [SDK metrics reference](/references/sdk-metrics#) for a complete list.
 
 ### Auth
 
@@ -105,11 +105,10 @@ For more information, see the knowledge base article on [Python sandbox environm
 
 ### SDKs in development
 
-The following SDKs are in alpha/pre-alpha development stages, but are not yet supported in the Developer's guide:
+The following SDKs are in development and do not yet have developer's guides:
 
 - [.NET](https://github.com/temporalio/sdk-dotnet)
 - [Rust](https://github.com/temporalio/sdk-core)
-- [Ruby](https://github.com/temporalio/sdk-ruby)
 
 ### Third-party SDKs
 
@@ -121,7 +120,7 @@ The following third-party SDKs exist but are not supported in the [Developer's g
 
 ### What is a Temporal Client? {#temporal-client}
 
-A Temporal Client is available in each SDK and provides a set of APIs to communicate with a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
+A Temporal Client is available in each SDK and provides a set of APIs to communicate with a [Temporal Cluster](/clusters#).
 
 The most common operations that a Temporal Client enables you to perform are the following:
 

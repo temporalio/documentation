@@ -17,16 +17,36 @@ This information can be used to diagnose problems occurring in the [Temporal Ser
 
 `temporal operator cluster system`
 
-Use the options listed below to change this command's output.
+Use the following options to change this command's behavior.
+
+- [--address](/cli/cmd-options/address)
+
+- [--codec-auth](/cli/cmd-options/codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
+
+- [--color](/cli/cmd-options/color)
+
+- [--context-timeout](/cli/cmd-options/context-timeout)
+
+- [--env](/cli/cmd-options/env)
 
 - [--fields](/cli/cmd-options/fields)
 
-- [--limit](/cli/cmd-options/limit)
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
 
-- [--no-pager](/cli/cmd-options/no-pager)
+- [--namespace](/cli/cmd-options/namespace)
 
 - [--output](/cli/cmd-options/output)
 
-- [--pager](/cli/cmd-options/pager)
+- [--tls](/cli/cmd-options/tls)
 
-- [--time-format](/cli/cmd-options/time-format)
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options/tls-server-name)

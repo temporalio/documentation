@@ -12,4 +12,5 @@ tags:
   - archival
 ---
 
-Flag to set visibility archival state, valid values are "disabled" and "enabled".
+Visibility Archival state.
+Valid values: "disabled", "enabled".

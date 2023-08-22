@@ -9,7 +9,6 @@ tags:
     - options-feature
     - command-line-interface-cli
     - interval
-
 ---
 
-Interval duration, e.g. 90m, or 90m/13m to include phase offset.
+Interval duration, such as 90m, or 90m/13m to include phase offset.

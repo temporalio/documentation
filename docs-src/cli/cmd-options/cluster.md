@@ -2,7 +2,7 @@
 id: cluster
 title: temporal cluster
 sidebar_label: cluster
-description: Cluster name
+description: Identifies a Cluster.
 tags: 
     - cli reference
     - temporal cli

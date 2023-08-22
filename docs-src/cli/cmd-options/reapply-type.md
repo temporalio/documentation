@@ -12,4 +12,5 @@ tags:
     - event type
 ---
 
-Event types to reapply after the reset point: Signal, None.
+Event types to reapply after the reset point.
+Options: Signal, None.

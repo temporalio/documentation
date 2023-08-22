@@ -11,4 +11,4 @@ tags:
     - namespace
 ---
 
-Flag to indicate whether Namespace is a Global Namespace.
+Flag to indicate whether a Namespace is a Global Namespace.

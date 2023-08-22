@@ -9,7 +9,6 @@ tags:
     - options-feature
     - command-line-interface-cli
     - goroutine
-
 ---
 
 Number of goroutines to run in parallel.

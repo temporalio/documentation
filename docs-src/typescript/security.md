@@ -42,15 +42,14 @@ const client = new WorkflowClient({
 
 ## Encryption in transit with mTLS
 
-There are two classes in the SDK that connect to the Temporal server, the [Worker](https://typescript.temporal.io/api/classes/worker.Worker) and the client [Connection](https://typescript.temporal.io/api/classes/client.Connection/).
-When instantiating either of them, you may choose whether to connect securely or not.
+Two classes in the SDK connect to the Temporal Server: the [Worker](https://typescript.temporal.io/api/classes/worker.Worker) and the client [Connection](https://typescript.temporal.io/api/classes/client.Connection/).
+When instantiating either of them, you can choose whether to connect securely.
 
-- In order to connect to the server using TLS, set a _truthy_ value (`true` or [TLSConfig](https://typescript.temporal.io/api/interfaces/client.TLSConfig) for custom options) in the `tls` configuration option.
-- Use [`ServerOptions.tls`](https://typescript.temporal.io/api/interfaces/worker.ServerOptions#tls) when [creating](https://typescript.temporal.io/api/classes/worker.Worker/#create) a new Worker and
-  [`ConnectionOptions.tls`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions#tls) for the [`Connection`](https://typescript.temporal.io/api/classes/client.Connection) constructor.
+- To connect to the server using TLS, set a _truthy_ value (`true` or [TLSConfig](https://typescript.temporal.io/api/interfaces/client.TLSConfig) for custom options) in the `tls` configuration option.
+- Use [`ServerOptions.tls`](https://typescript.temporal.io/api/interfaces/worker.ServerOptions#tls) when [creating](https://typescript.temporal.io/api/classes/worker.Worker/#create) a new Worker and [`ConnectionOptions.tls`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions#tls) for the [`Connection`](https://typescript.temporal.io/api/classes/client.Connection) constructor.
 - The client connection also accepts [gRPC credentials](https://grpc.github.io/grpc/node/grpc.credentials.html) at [`ConnectionOptions.credentials`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions#tls) as long as `tls` is not also specified.
 
-A full example for Clients looks like this:
+A full example for a client Connection looks like this:
 
 ```js
 import { Connection, WorkflowClient } from '@temporalio/client';
@@ -105,6 +104,8 @@ run().catch((err) => {
   process.exit(1);
 });
 ```
+
+Make sure that the Worker uses `NativeConnection` and the client Connection uses `Connection`.
 
 If you are using mTLS, is completely up to you how to get the `clientCert` and `clientKey` pair into your code, whether it is reading from filesystem, secrets manager, or both.
 Just keep in mind that they are whitespace sensitive and some environment variable systems have been known to cause frustration because they modify whitespace.

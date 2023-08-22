@@ -18,20 +18,36 @@ The `temporal operator cluster upsert` command allows the user to add or update 
 Upserting can also be used to enable or disabled cross-cluster connection.
 `temporal operator cluster upsert --enable-connection=true`
 
-Use the options listed below to change the behavior of this command.
+Use the following options to change the behavior of this command.
+
+- [--address](/cli/cmd-options/address)
+
+- [--codec-auth](/cli/cmd-options/codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
+
+- [--color](/cli/cmd-options/color)
+
+- [--context-timeout](/cli/cmd-options/context-timeout)
 
 - [--enable-connection](/cli/cmd-options/enable-connection)
 
-- [--fields](/cli/cmd-options/fields)
+- [--env](/cli/cmd-options/env)
 
 - [--frontend-address](/cli/cmd-options/frontend-address)
 
-- [--limit](/cli/cmd-options/limit)
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
 
-- [--no-pager](/cli/cmd-options/no-pager)
+- [--namespace](/cli/cmd-options/namespace)
 
-- [--output](/cli/cmd-options/output)
+- [--tls](/cli/cmd-options/tls)
 
-- [--pager](/cli/cmd-options/pager)
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 
-- [--time-format](/cli/cmd-options/time-format)
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options/tls-server-name)

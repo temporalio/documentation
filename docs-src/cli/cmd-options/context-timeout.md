@@ -12,4 +12,4 @@ tags:
     - timeouts and heartbeats
 ---
 
-An optional timeout for the context of an RPC call (in seconds). (default: 5)
+An optional timeout for the context of an RPC call (in seconds).

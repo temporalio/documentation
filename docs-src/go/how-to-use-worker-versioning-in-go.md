@@ -4,8 +4,12 @@ title: How to use Worker Versioning in Go
 sidebar_label: Worker Versioning
 description: Version your Go Workers by using build ID–based versioning
 tags:
-  - go
-  - how-to
+  - go sdk
+  - developer-guide-doc-type
+  - how-to-doc-type
+  - workflows
+  - versioning
+  - determinism
 ---
 
 To use Worker Versioning in Go, you need to do the following:

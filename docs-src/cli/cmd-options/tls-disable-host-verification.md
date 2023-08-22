@@ -12,4 +12,4 @@ tags:
   - verification
 ---
 
-Disables TLS host name verification if already enabled.
+Disables TLS host name verification.
