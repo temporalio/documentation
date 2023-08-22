@@ -4,11 +4,10 @@ title: How to list Workflow Executions using the Client in Go
 sidebar_label: List Workflow Executions using the Client
 description: List Workflow Executions using the Client
 tags:
-  - developer-guide-doc-type
+  - how-to-doc-type
   - go sdk
   - temporal client
-  - developer-guide-doc-type
-  - workflow executions
+  - workflow execution
   - search attributes
   - list filter
   - visibility
