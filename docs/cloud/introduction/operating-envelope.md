@@ -110,9 +110,9 @@ As we continue working on improving latencies, these numbers will decrease over 
 
 Concurrent operations on the same Workflow Execution could lead to increased latency.
 
-## What are the Temporal Platform limits? {#upgrade-policy}
+## What are the Temporal Cloud default limits? {#temporal-cloud-default-limits}
 
-This section describes many of the default settings and limits that apply to associated parameters in Temporal Cloud.
+This section describes many of the default settings and limits that apply to Workflow Executions and do not pertain to the entire Temporal Cloud account or individual Namespaces in Temporal Cloud, unless otherwise specified.
 
 Some of these default limits are configurable by sending a [support ticket](/cloud/support#support-ticket) to our support team.
 
@@ -140,7 +140,8 @@ At the Namespace level, Temporal Cloud sets the following default limits:
 
 ### What is the Concurrent limit?
 
-If the concurrent pending count of certain Commands exceeds 2,000, they will fail. These commands include:
+If the concurrent pending count of certain Commands exceeds 2,000, they will fail.
+These commands include:
 
 - `ScheduleActivityTask`
 - `SignalExternalWorkflowExecution`
@@ -148,6 +149,10 @@ If the concurrent pending count of certain Commands exceeds 2,000, they will fai
 - `StartChildWorkflowExecution`
 
 This default limit is configurable by creating a [support ticket](/cloud/support#support-ticket).
+
+### What is the limit on the number of Signals received per Workflow Execution?
+
+The number of Signals received per Workflow Execution to 10,000.
 
 ### What are the default limits for users and Namespaces at the account level?
 
@@ -158,15 +163,12 @@ At the account level, Temporal Cloud sets the following default limits:
 
 ### What is the limit for Prometheus endpoint Retention Period?
 
-The Prometheus endpoint Retention Period is 1 month.
+The Prometheus endpoint Retention Period is 30 days.
 
-### What is the default retention period?
+### What is the default Retention Period in your Temporal Cloud Account?
 
-Temporal Cloud sets the default Retention Period to 30 days and is configurable in the Temporal Web UI.
-
-### What is the limit on the number of Signals received per Workflow Execution?
-
-The number of Signals received per Workflow Execution to 10,000.
+Temporal Cloud sets the default Retention Period to 30 days and is configurable in the Temporal Web UI per Namespace.
+You can set the Retention Period to a range of 1—90 days.
 
 ### What are the default limits for Custom Search Attributes?
 

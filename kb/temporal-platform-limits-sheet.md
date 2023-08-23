@@ -12,7 +12,7 @@ date: 2023-09-11T00:00:00Z
 
 This page will be removed in the near future.
 
-For the latest information on the Temporal Platform limits, see [Temporal Platform limits sheet](/cloud/operating-envelope#temporal-platform-limits-sheet).
+For the latest information on the Temporal Cloud limits, see [Temporal Clouds limits sheet](/cloud/operating-envelope#temporal-platform-limits-sheet).
 
 :::
 
@@ -25,7 +25,7 @@ Warnings are soft limits that produce a warning log on the server side.
 
 <!-- truncate -->
 
-:::caution
+:::note
 
 These limits apply specifically to each Workflow Execution and do not pertain to the entire Temporal Platform or individual Namespaces.
 
