@@ -14,6 +14,7 @@ Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS):
 | Area          | Code           | Region            |
 | ------------- | -------------- | ----------------- |
 | Asia Pacific  | ap-northeast-1 | Tokyo             |
+| Asia Pacific  | ap-south-1     | Mumbai            |
 | Asia Pacific  | ap-southeast-1 | Singapore         |
 | Asia Pacific  | ap-southeast-2 | Sydney            |
 | Europe        | eu-central-1   | Frankfurt         |

@@ -2,13 +2,13 @@
 
 Last assembled: Friday August 18 2023 14:03:48 PM -0500
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-93 guide configurations found.
+94 guide configurations found.
 
-1519 information nodes found.
+1522 information nodes found.
 
-1283 information nodes are attached to guides.
+1286 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -283,6 +283,10 @@ cloud/tcld/account/metrics/accepted-client-ca/list -> #list
 cloud/tcld/account/metrics/accepted-client-ca/set -> #set
 
 cloud/tcld/account/metrics/accepted-client-ca/remove -> #remove
+
+cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
+
+cloud/tcld/generate-certificates/end-entity-certificate -> #end-entity-certificate
 
 cloud/tcld/how-to-install-tcld -> #install-tcld
 
