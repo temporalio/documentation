@@ -100,6 +100,6 @@ In June 2023, latency measurements over a week period for starting and signaling
 - `SignalWorkflowExecution`: 53ms p90, 95ms p99
 - `SignalWithStartWorkflowExecution`: 87ms p90, 116ms p99
 
-As we continue working on improving latencies, these numbers will decrease over time
+As we continue working on improving latencies, these numbers will decrease over time.
 
 Concurrent operations on the same Workflow Execution could lead to increased latency.
