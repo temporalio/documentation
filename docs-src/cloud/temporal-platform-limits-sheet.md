@@ -27,7 +27,7 @@ Each gRPC message received has a limit of 4 MB.
 
 The `DefaultTransactionSizeLimit` is configured at 4 MB, representing the maximum allowable transaction size for persisting Event Histories.
 
-### What are the default limits at the Namespace level in Temporal Cloud?
+### What are the default limits at the Namespace level?
 
 At the Namespace level, Temporal Cloud sets the following default limits:
 
@@ -35,9 +35,9 @@ At the Namespace level, Temporal Cloud sets the following default limits:
 - Certificates: 32 KB payload or 16 certificates, whichever is smaller
 - Concurrent Task pollers: 2,000 (configurable; maximum of 100,000)
 
-### What is the Concurrent Action limit?
+### What is the Concurrent limit?
 
-If the concurrent running count of certain Action Commands exceeds 2,000, they will fail. These commands include:
+If the concurrent pending count of certain Commands exceeds 2,000, they will fail. These commands include:
 
 - `ScheduleActivityTask`
 - `SignalExternalWorkflowExecution`
@@ -46,7 +46,7 @@ If the concurrent running count of certain Action Commands exceeds 2,000, they w
 
 This default limit is configurable by creating a [support ticket](/cloud/support#support-ticket).
 
-### What are the default limits for users and Namespaces at the account level in Temporal Cloud?
+### What are the default limits for users and Namespaces at the account level?
 
 At the account level, Temporal Cloud sets the following default limits:
 
@@ -57,15 +57,15 @@ At the account level, Temporal Cloud sets the following default limits:
 
 The Prometheus endpoint Retention Period is 1 month.
 
-### What is the default retention period in Temporal Cloud?
+### What is the default retention period?
 
 Temporal Cloud sets the default Retention Period to 30 days and is configurable in the Temporal Web UI.
 
-### What is the limit on the number of Signals received per Workflow Execution in Temporal Cloud?
+### What is the limit on the number of Signals received per Workflow Execution?
 
 The number of Signals received per Workflow Execution to 10,000.
 
-### What are the default limits for Custom Search Attributes in Temporal Cloud?
+### What are the default limits for Custom Search Attributes?
 
 The default limits for Custom Search Attributes in Temporal Cloud (maximum per type) are:
 
@@ -76,7 +76,7 @@ The default limits for Custom Search Attributes in Temporal Cloud (maximum per t
 - `keyword`: 20
 - `text`: 5
 
-### Are there any limitations on List Filters in Temporal Cloud?
+### Are there any limitations on List Filters?
 
 Yes, the `ORDER BY` operator isn't supported in List Filters in Temporal Cloud.
 

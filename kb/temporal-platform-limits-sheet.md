@@ -49,8 +49,8 @@ These limits apply specifically to each Workflow Execution and do not pertain to
   - Temporal warns after 10,240 Events: `history size exceeds warn limit`.
   - Temporal errors after 51,200 Events: [history size exceeds error limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204).
   - This is configurable with [HistoryCountLimitError and HistoryCountLimitWarn](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
-- **Concurrent Action limit**
-  - We fail the following action Commands on Temporal Cloud if the concurrent running count exceeds 2,000:
+- **Concurrent limit**
+  - We fail the following action Commands on Temporal Cloud if the concurrent pending count exceeds 2,000:
     - `ScheduleActivityTask`
     - `SignalExternalWorkflowExecution`
     - `RequestCancelExternalWorkflowExecution`
@@ -60,6 +60,7 @@ These limits apply specifically to each Workflow Execution and do not pertain to
     - `limit.numPendingSignals.error`
     - `limit.numPendingCancelRequests.error`
     - `limit.numPendingChildExecutions.error`
+  - By default, [Batch jobs](/cli/batch) are limited to one job at a time.
 - [Custom Search Attributes limits](/visibility/#custom-search-attributes-limits)
 
 For details on dynamic configuration keys, see [Dynamic configuration reference](/references/dynamic-configuration).
