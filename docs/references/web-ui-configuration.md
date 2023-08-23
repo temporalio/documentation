@@ -49,7 +49,7 @@ publicPath: ""
 ## enableUi
 
 Enables the browser UI.
-This configuration can be set dynamically with the <a class="tdlp" href="/references/web-ui-environment-variables#temporaluienabled">TEMPORAL_UI_ENABLED<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Web UI environmental variables</span><br /><br /><span class="tdlppd">How to set  environmental variables for Temporal Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/web-ui-environment-variables#temporaluienabled">Learn more</a></span></span></a> environment variable.
+This configuration can be set dynamically with the [TEMPORAL_UI_ENABLED](/references/web-ui-environment-variables#temporaluienabled) environment variable.
 If disabled—that is, set to `false`—the UI server APIs remain available.
 
 ```yaml
@@ -67,7 +67,7 @@ cloudUi: false
 ## enableOpenApi
 
 Enables the UI Server's Open API reference documentation at `/openapi/`.
-This configuration can be set dynamically with the <a class="tdlp" href="/references/web-ui-environment-variables#temporalopenapienabled">TEMPORAL_OPEN_API_ENABLED<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Web UI environmental variables</span><br /><br /><span class="tdlppd">How to set  environmental variables for Temporal Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/web-ui-environment-variables#temporalopenapienabled">Learn more</a></span></span></a> environment variable.
+This configuration can be set dynamically with the [TEMPORAL_OPEN_API_ENABLED](/references/web-ui-environment-variables#temporalopenapienabled) environment variable.
 For example, if you are currently viewing the Web UI at `http://localhost:8080`, the page is available at [localhost:8080/openapi/](http://localhost:8080/openapi/).
 
 ```yaml
