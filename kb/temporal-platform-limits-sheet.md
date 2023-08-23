@@ -46,7 +46,7 @@ Warnings are soft limits that produce a warning log on the server side.
     - `limit.numPendingSignals.error`
     - `limit.numPendingCancelRequests.error`
     - `limit.numPendingChildExecutions.error`
-  - By default, [Batch jobs](/cli/batch) are limited to one at a time.
+  - By default, [Batch jobs](/cli/batch) are limited to one job at a time.
 - [Custom Search Attributes limits](/visibility/#custom-search-attributes-limits)
 
 For details on dynamic configuration keys, see [Dynamic configuration reference](/references/dynamic-configuration).
