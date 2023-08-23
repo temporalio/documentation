@@ -9,11 +9,15 @@ tags:
   - limits
 ---
 
+This section describes many of the default settings and limits that apply to associated parameters in Temporal Cloud.
+
+Some of these default limits are configurable by sending a [support ticket](/cloud/support#support-ticket) to our support team.
+
 ### What is the maximum length for identifiers?
 
 Identifiers such as Workflow Id, Workflow Type, and Task Queue names have a maximum length of 1000 characters in UTF-8 format.
 
-If needed, this default limit can be configured by initiating a [support ticket](https://chat.openai.com/cloud/support#support-ticket)
+This default limit is configurable by creating a [support ticket](/cloud/support#support-ticket).
 
 ### What is the gRPC limit for each message received?
 
