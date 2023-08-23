@@ -195,35 +195,37 @@ cors:
 
 ## tls
 
-Transport Layer Security (TLS) configuration.
+Transport Layer Security (TLS) configuration for the Temporal Server.
+Settings apply when TLS is enabled.
 
 ```yaml
 tls:
-  caFile:
-  certFile:
-  keyFile:
-  caData:
+  caFile: ../ca.cert
+  certFile: ../cluster.pem
+  keyFile: ../cluster.key
+  caData: 
   certData:
   keyData:
-  enableHostVerification: false
-  serverName:
+  enableHostVerification: true
+  serverName: tls-server
 ```
 
 ## auth
 
-Auth configuration.
+Configures authorization for the Temporal Server.
+Settings apply when Auth is enabled.
 
 ```yaml
 auth:
-  enabled: false
+  enabled: true
   providers:
-    - label: sso # for internal use; in future may expose as button text
+      label: sso # for internal use; in future may expose as button text
       type: oidc 
-      providerUrl: https://myorg.us.auth0.com/
+      providerUrl: ttps://accounts.google.com
       issuerUrl: 
-      clientId: xxxxxxxxxxxxxxxxxxxx
+      clientId: xxxxx-xxxx.apps.googleusercontent.com
       clientSecret: xxxxxxxxxxxxxxxxxxxx
-      callbackUrl: http://localhost:8080/auth/sso/callback
+      callbackUrl: https://xxxx.com:8080/auth/sso/callback
       scopes:
         - openid
         - profile
