@@ -29,3 +29,6 @@ For example:
 
 The default data converter cannot deserialize a list of Protobufs.
 [Use a custom Data Converter](/concepts/what-is-a-custom-data-converter) for cases involving lists of Protobufs.
+
+The default data converter serializes objects based on their root type, rather than nested types.
+Some SDKs' JSON serializers cannot process lists with Protobuf children objects without implementing a [custom Data Converter](/concepts/what-is-a-custom-data-converter).
