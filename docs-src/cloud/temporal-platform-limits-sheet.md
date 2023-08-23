@@ -11,19 +11,17 @@ tags:
 
 ### What is the maximum length for identifiers?
 
-The maximum length for identifiers, like Workflow Id, Workflow Type, and Task Queue names is 1000 characters.
+Identifiers such as Workflow Id, Workflow Type, and Task Queue names have a maximum length of 1000 characters in UTF-8 format.
 
-The character format is UTF-8.
-
-This default limit is configurable by creating a [support ticket](/cloud/support#support-ticket).
+If needed, this default limit can be configured by initiating a [support ticket](https://chat.openai.com/cloud/support#support-ticket)
 
 ### What is the gRPC limit for each message received?
 
-A 4 MB limit for each gRPC message received.
+Each gRPC message received has a limit of 4 MB.
 
 ### What is the maximum limit for an Event batch size?
 
-The `DefaultTransacationSizeLimit` is set to 4 MB and is the largest transaction size allowed for the persistence of Event Histories.
+The `DefaultTransactionSizeLimit` is configured at 4 MB, representing the maximum allowable transaction size for persisting Event Histories.
 
 ### What are the default limits at the Namespace level in Temporal Cloud?
 
@@ -35,7 +33,7 @@ At the Namespace level, Temporal Cloud sets the following default limits:
 
 ### What is the Concurrent Action limit?
 
-If the concurrent running count of certain action Commands exceeds 2,000, they will fail. These commands include:
+If the concurrent running count of certain Action Commands exceeds 2,000, they will fail. These commands include:
 
 - `ScheduleActivityTask`
 - `SignalExternalWorkflowExecution`
