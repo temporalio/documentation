@@ -88,7 +88,7 @@ Temporal offers two plugin interfaces for implementing API call authorization:
 The authorization and claim mapping logic is customizable, making it available to a variety of use cases and identity schemes.
 When these are provided the frontend invokes the implementation of these interfaces before executing the requested operation.
 
-See https://github.com/temporalio/samples-server/blob/main/extensibility/a`uthorizer for a sample implementation.
+See https://github.com/temporalio/samples-server/blob/main/extensibility/authorizer for a sample implementation.
 
 ![](/diagrams/frontend-authorization-order-of-operations.png)
 
