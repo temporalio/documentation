@@ -84,7 +84,7 @@ For example:
   If any part of it is not serializable as JSON, <!--(for example, a Date—see JSON data types)--> an error is thrown.
 
 The default Data Converter serializes objects based on their root type, rather than nested types.
-Some SDKs' JSON serializers cannot process lists with Protobuf children objects without implementing a [custom Data Converter](#custom-data-converter).
+The JSON serializers of some SDKs cannot process lists with Protobuf children objects without implementing a [custom Data Converter](#custom-data-converter).
 
 ## What is a custom Data Converter? {#custom-data-converter}
 
