@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday August 23 2023 14:04:05 PM -0700
+Last assembled: Thursday August 24 2023 15:03:13 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -311,6 +311,8 @@ cloud/tcld/namespace/certificate-filters/index -> #certificate-filters
 cloud/tcld/namespace/search-attributes/index -> #search-attributes
 
 cloud/tcld/namespace/retention/index -> #retention
+
+cloud/tcld/namespace/update-codec-server -> #update-codec-server
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
