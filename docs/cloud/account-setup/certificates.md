@@ -166,10 +166,10 @@ set NAMESPACE_NAME=your-namespace
 ```
 
 6. (optional) If you are using the Temporal Java SDK, you will need to convert the PKCS1 file format to PKCS8 file format.
-   Export the certificate and private key to a PKCS8 file:
+   Export the end-entity's private key to a PKCS8 file:
 
 ```command
-openssl pkcs8 -topk8 -inform PEM -outform PEM -in <infile.key> -out <outfile.key> -nocrypt
+openssl pkcs8 -topk8 -inform PEM -outform PEM -in <out/your-namespace.key> -out <out/your-namespace.pkcs8.key> -nocrypt
 ```
 
 You can now use the generated client certificate with Temporal Cloud.
