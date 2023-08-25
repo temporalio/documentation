@@ -124,6 +124,7 @@ Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** claus
 ### Partial string match
 
 The `=` operator works like **CONTAINS** to find Workflows with Search Attributes that contain a specific word.
+Partial string match can only be used to find `Text` Search Attributes.
 
 <!-- note: advanced vis features will be supported in SQL upon the release of v1.20.-->
 
