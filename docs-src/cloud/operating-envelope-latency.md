@@ -18,5 +18,5 @@ In June 2023, latency measurements over a week period for starting and signaling
 
 As we continue working on improving latencies, these numbers will decrease over time.
 
-The latency observed from the Temporal Client might be impacted by other system components, such as the Codec Server, egress proxy, and the network itself.
+The latency observed from the Temporal Client might be affected by other system components, such as the Codec Server, egress proxy, and the network itself.
 Concurrent operations on the same Workflow Execution could lead to increased latency.
