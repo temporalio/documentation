@@ -20,3 +20,4 @@ Alias: `n`
 - [tcld namespace certificate-filters](/cloud/tcld/namespace/certificate-filters/index)
 - [tcld namespace search-attributes](/cloud/tcld/namespace/search-attributes/index)
 - [tcld namespace retention](/cloud/tcld/namespace/retention/index)
+- [tcld namespace update-codec-server](/cloud/tcld/namespace/update-codec-server)

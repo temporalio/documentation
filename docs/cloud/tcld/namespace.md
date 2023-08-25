@@ -29,6 +29,7 @@ Alias: `n`
 - [tcld namespace certificate-filters](#certificate-filters)
 - [tcld namespace search-attributes](#search-attributes)
 - [tcld namespace retention](#retention)
+- [tcld namespace update-codec-server](#update-codec-server)
 
 ## create
 

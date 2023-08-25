@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday August 22 2023 12:37:12 PM +1000
+Last assembled: Friday August 25 2023 09:02:58 AM -0600
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
-93 guide configurations found.
+94 guide configurations found.
 
-1519 information nodes found.
+1522 information nodes found.
 
-1283 information nodes are attached to guides.
+1286 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -284,6 +284,10 @@ cloud/tcld/account/metrics/accepted-client-ca/set -> #set
 
 cloud/tcld/account/metrics/accepted-client-ca/remove -> #remove
 
+cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
+
+cloud/tcld/generate-certificates/end-entity-certificate -> #end-entity-certificate
+
 cloud/tcld/how-to-install-tcld -> #install-tcld
 
 cloud/tcld/login -> /cloud/tcld/login#
@@ -307,6 +311,8 @@ cloud/tcld/namespace/certificate-filters/index -> #certificate-filters
 cloud/tcld/namespace/search-attributes/index -> #search-attributes
 
 cloud/tcld/namespace/retention/index -> #retention
+
+cloud/tcld/namespace/update-codec-server -> #update-codec-server
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
