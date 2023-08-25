@@ -20,4 +20,3 @@ As we continue working on improving latencies, these numbers will decrease over 
 
 Be aware that the latency observed on the Temporal Client might be impacted by other system components, such as the codec server, egress proxy, and the network itself.
 Concurrent operations on the same Workflow Execution could lead to increased latency.
-
