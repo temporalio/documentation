@@ -93,13 +93,14 @@ To raise your quota, create a [support ticket](/cloud/support#support-ticket).
 
 ## What kind of latency can I expect from Temporal Cloud? {#latency}
 
-Temporal Cloud's latency SLO is 200ms per region for p99.
-In June 2023, latency measurements over a week period for starting and signaling Workflow Executions were:
+Temporal Cloud aims for a latency SLO of 200ms per region for p99.
+In June 2023, Temporal measured latency over a week-long period for starting and signaling Workflow Executions as follows:
 
-- `StartWorkflowExecution`: 90ms p90, 125ms p99
-- `SignalWorkflowExecution`: 53ms p90, 95ms p99
-- `SignalWithStartWorkflowExecution`: 87ms p90, 116ms p99
+- For `StartWorkflowExecution`: p90 latecy was 90ms, and p99 latency was 125ms.
+- For `SignalWorkflowExecution`: p90 latency was 53ms, and p99 latency was 95ms.
+- For `SignalWithStartWorkflowExecution`: p90 latency was 87ms, and p99 latency was 116ms.
 
-As Temporal continues working on improving latencies, these numbers will decrease over time.
-Other system components, such as the Codec Server, egress proxy, and the network itself, impact the latency observed from the Temporal Client.
-Concurrent operations on the same Workflow Execution could lead to increased latency.
+As Temporal continues working on improving latencies, these numbers will progressively decrease.
+
+Latency observed from the Temporal Client is influenced by other system components like the Codec Server, egress proxy, and the network itself.
+Increased latency might result from concurrent operations on the same Workflow Execution.
