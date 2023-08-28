@@ -11,9 +11,8 @@ tags:
 
 Workers based on the TypeScript SDK can be deployed and run as Docker containers.
 
-At this moment, we recommend using Node.js 18.
-(Node.js 20 has known issues.)
-Both `amd64` and `arm64` platforms are supported.
+We recommend an LTS Node.js release such as 18 or 20.
+Both `amd64` and `arm64` architectures are supported.
 A glibc-based image is required; musl-based images are _not_ supported (see below).
 
 The easiest way to deploy a TypeScript SDK Worker on Docker is to start with the `node:18-bullseye` image.
