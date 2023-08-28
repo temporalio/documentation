@@ -11,7 +11,7 @@ tags:
 :::note
 
 The release of Temporal Server v1.22 deprecates `tctl`.
-To correct errors in env and command names, refer to the [CLI release notes](https://github.com/temporalio/cli/releases).
+To correct errors in env and command names, refer to the [CLI release notes](https://github.com/temporalio/cli/releases/tag/v0.9.0).
 
 :::
 

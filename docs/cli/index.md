@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 :::note
 
 The release of Temporal Server v1.22 deprecates `tctl`.
-To correct errors in env and command names, refer to the [CLI release notes](https://github.com/temporalio/cli/releases).
+To correct errors in env and command names, refer to the [CLI release notes](https://github.com/temporalio/cli/releases/tag/v0.9.0).
 
 :::
 
@@ -76,7 +76,7 @@ temporal server start-dev
 
 This launches a server on `localhost:7233` and a web interface at <http://localhost:8233>.
 
-By default, data isn't persisted. 
+By default, data isn't persisted.
 If you want to save Workflows, use the `--db-filename` flag:
 
 ```bash
@@ -85,7 +85,7 @@ temporal server start-dev --db-filename temporal.db
 
 ## Interacting with the Server
 
-In another terminal, use the following commands to interact with the Server. 
+In another terminal, use the following commands to interact with the Server.
 The following command starts a Workflow:
 
 ```bash
@@ -289,7 +289,7 @@ temporal operator namespace create foo
 
 ### Enable or disable Temporal UI
 
-By default, the Temporal UI starts with Temporal CLI. 
+By default, the Temporal UI starts with Temporal CLI.
 Disable the UI with:
 
 ```bash
@@ -314,18 +314,18 @@ This setting makes created Search Attributes immediately available.
 Configure system environment with Temporal CLI environmental variables.
 Use the table below as reference:
 
-| Variable                                     | Definition                                                                        | Client Option                   |
-| -------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------- |
-| `TEMPORAL_CLI_ADDRESS`                       | Host and port (formatted as host:port) for the Temporal Frontend Service.         | --address                       |
-| `TEMPORAL_CLI_CODEC_AUTH`                    | Sets the authorization header for requests to Codec Server.                       | --codec-auth                    |
-| `TEMPORAL_CLI_CODEC_ENDPOINT`                | Endpoint for remote Codec Server.                                                 | --codec-endpoint                |
-| `TEMPORAL_CONTEXT_TIMEOUT`                   | Optional timeout for RPC call context (in seconds). Default: 5.                   | --context-timeout               |
-| `TEMPORAL_CLI_NAMESPACE`                     | Namespace in  Temporal Workflow. Default: "default".                              | --namespace                     |
-| `TEMPORAL_CLI_TLS_CA`                        | Path to server CA certificate.                                                    | --tls-ca-path                   |
-| `TEMPORAL_CLI_TLS_CERT`                      | Path to x509 certificate.                                                         | --tls-cert-path                 |
-| `TEMPORAL_CLI_TLS_DISABLE_HOST_VERIFICATION` | Disables TLS host name verification. Default: false.                              | --tls-disable-host-verification |
-| `TEMPORAL_CLI_TLS_KEY`                       | Path to private certificate key.                                                  | --tls-key-path                  |
-| `TEMPORAL_CLI_TLS_SERVER_NAME`               | Override for target TLS server name.                                              | --tls-server-name               |
+| Variable                                     | Definition                                                                | Client Option                   |
+| -------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------- |
+| `TEMPORAL_CLI_ADDRESS`                       | Host and port (formatted as host:port) for the Temporal Frontend Service. | --address                       |
+| `TEMPORAL_CLI_CODEC_AUTH`                    | Sets the authorization header for requests to Codec Server.               | --codec-auth                    |
+| `TEMPORAL_CLI_CODEC_ENDPOINT`                | Endpoint for remote Codec Server.                                         | --codec-endpoint                |
+| `TEMPORAL_CONTEXT_TIMEOUT`                   | Optional timeout for RPC call context (in seconds). Default: 5.           | --context-timeout               |
+| `TEMPORAL_CLI_NAMESPACE`                     | Namespace in Temporal Workflow. Default: "default".                       | --namespace                     |
+| `TEMPORAL_CLI_TLS_CA`                        | Path to server CA certificate.                                            | --tls-ca-path                   |
+| `TEMPORAL_CLI_TLS_CERT`                      | Path to x509 certificate.                                                 | --tls-cert-path                 |
+| `TEMPORAL_CLI_TLS_DISABLE_HOST_VERIFICATION` | Disables TLS host name verification. Default: false.                      | --tls-disable-host-verification |
+| `TEMPORAL_CLI_TLS_KEY`                       | Path to private certificate key.                                          | --tls-key-path                  |
+| `TEMPORAL_CLI_TLS_SERVER_NAME`               | Override for target TLS server name.                                      | --tls-server-name               |
 
 ## Auto-completion
 
