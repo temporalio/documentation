@@ -58,7 +58,7 @@ Follow these steps to manually install Temporal CLI:
 
 ## Starting the Temporal Server
 
-To start the Temporal Server and Web UI, run the following command:
+To start the Temporal Server, run the following command:
 
 ```bash
 temporal server start-dev
