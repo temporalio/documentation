@@ -302,7 +302,7 @@ This setting makes created Search Attributes immediately available.
 ## Environmental variables
 
 Configure system environment with Temporal CLI environmental variables.
-Use the table below as reference:
+The following table lists and describes the environment variables you can set for Temporal CLI.
 
 | Variable                                     | Definition                                                                | Client Option                   |
 | -------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------- |
