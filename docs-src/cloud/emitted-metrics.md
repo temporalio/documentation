@@ -22,7 +22,7 @@ Temporal tracks the following metrics for your various Namespaces.
 
 - `temporal_cloud_v0_poll_timeout_count`: When no tasks are available for a poller before timing out.
 
-- `temporal_cloud_v0_resource_exhausted_error_count`: gRPC requests received that were rate-limited by Temporal Cloud, aggregated by cause. 
+- `temporal_cloud_v0_resource_exhausted_error_count`: gRPC requests received that were rate-limited by Temporal Cloud, aggregated by cause.
 
 - `temporal_cloud_v0_schedule_action_success_count`: Successful execution of a Scheduled Workflow.
 
