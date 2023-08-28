@@ -101,6 +101,5 @@ In June 2023, latency measurements over a week period for starting and signaling
 - `SignalWithStartWorkflowExecution`: 87ms p90, 116ms p99
 
 As we continue working on improving latencies, these numbers will decrease over time.
-
-The latency observed from the Temporal Client might be affected by other system components, such as the Codec Server, egress proxy, and the network itself.
+Other system components, such as the Codec Server, egress proxy, and the network itself, impact the latency observed from the Temporal Client.
 Concurrent operations on the same Workflow Execution could lead to increased latency.
