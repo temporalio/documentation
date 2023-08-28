@@ -20,8 +20,8 @@ import TabItem from '@theme/TabItem';
 
 :::note
 
-The release of Temporal Server v1.22 deprecates `tctl`.
-To correct errors in env and command names, refer to the [CLI release notes](https://github.com/temporalio/cli/releases/tag/v0.9.0).
+When upgrading from `tctl` to CLI, make sure to update your environment variables and use updated commands.
+For details, see [CLI release notes](https://github.com/temporalio/cli/releases/tag/v0.9.0).
 
 :::
 
@@ -68,7 +68,7 @@ Follow these steps to manually install Temporal CLI:
 
 ## Starting the Temporal Server
 
-To start the Temporal Server and Web UI, run the following command:
+To start the Temporal Server, run the following command:
 
 ```bash
 temporal server start-dev
@@ -312,7 +312,7 @@ This setting makes created Search Attributes immediately available.
 ## Environmental variables
 
 Configure system environment with Temporal CLI environmental variables.
-Use the table below as reference:
+The following table lists and describes the environment variables you can set for Temporal CLI.
 
 | Variable                                     | Definition                                                                | Client Option                   |
 | -------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------- |
