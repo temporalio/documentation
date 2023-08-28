@@ -12,7 +12,6 @@ tags:
 
 The [Visibility](/concepts/what-is-visibility) List API requires you to provide a List Filter as an SQL-like string parameter.
 
-
 A List Filter includes [Search Attribute](/concepts/what-is-a-search-attribute) names, Search Attribute values, and [operators](#supported-operators) that allow it to retrieve a filtered list of Workflow Executions from the Visibility Store.
 
 List Filter [Search Attribute](/concepts/what-is-a-search-attribute) names are case sensitive.
@@ -54,7 +53,7 @@ If the Advanced List Filter API retrieves a substantial number of Workflow Execu
 
 Starting from Temporal Server v1.20 and later, you can employ the `CountWorkflow` API to efficiently count the number of [Workflow Executions](/concepts/what-is-a-workflow-execution).
 
-To paginate the results using the `ListWorkflow` API, use the page token to retrieve the next page. 
+To paginate the results using the `ListWorkflow` API, use the page token to retrieve the next page.
 Continue until the page token becomes `null`/`nil`.
 
 #### List Filter examples
