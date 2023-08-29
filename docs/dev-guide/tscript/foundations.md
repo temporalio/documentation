@@ -770,17 +770,24 @@ A Worker Entity contains a Workflow Worker and/or an Activity Worker, which make
 
 ## How to run a Worker on Docker in TypeScript {#run-a-worker-on-docker}
 
+:::note
+
+Before proceeding, we recommend referring to our [production sample](https://github.com/temporalio/samples-typescript/tree/main/production),
+which shows how to save the compiled workflow bundle to a file and avoid compilation overhead on worker startup.
+
+:::
+
 Workers based on the TypeScript SDK can be deployed and run as Docker containers.
 
 We recommend an LTS Node.js release such as 18 or 20.
 Both `amd64` and `arm64` architectures are supported.
 A glibc-based image is required; musl-based images are _not_ supported (see below).
 
-The easiest way to deploy a TypeScript SDK Worker on Docker is to start with the `node:18-bullseye` image.
+The easiest way to deploy a TypeScript SDK Worker on Docker is to start with the `node:20-bullseye` image.
 For example:
 
 ```dockerfile
-FROM node:18-bullseye
+FROM node:20-bullseye
 
 COPY . /app
 WORKDIR /app
@@ -791,7 +798,7 @@ RUN npm install --only=production \
 CMD ["build/worker.js"]
 ```
 
-For smaller images and/or more secure deployments, it is also possible to use `-slim` Docker image variants (like `node:18-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs:18`) with the following caveats.
+For smaller images and/or more secure deployments, it is also possible to use `-slim` Docker image variants (like `node:20-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs:20`) with the following caveats.
 
 ### Using `node:slim` images
 
@@ -804,7 +811,7 @@ For this reason, the `ca-certificates` package must be installed during the cons
 For example:
 
 ```dockerfile
-FROM node:18-bulleyes-slim
+FROM node:20-bulleyes-slim
 
 RUN apt-get update \
     && apt-get install -y ca-certificates \
@@ -832,7 +839,7 @@ For example:
 ```dockerfile
 # -- BUILD STEP --
 
-FROM node:18-bulleyes AS builder
+FROM node:20-bulleyes AS builder
 
 COPY . /app
 WORKDIR /app
@@ -842,7 +849,7 @@ RUN npm install --only=production \
 
 # -- RESULTING IMAGE --
 
-FROM gcr.io/distroless/nodejs:18
+FROM gcr.io/distroless/nodejs:20
 
 COPY --from=builder /app /app
 WORKDIR /app
