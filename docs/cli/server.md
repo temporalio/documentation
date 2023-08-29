@@ -31,7 +31,7 @@ Currently, `cli` server functionality extends to starting the Server.
 
 The `temporal server start-dev` command starts a local [Temporal Server](/clusters#temporal-server).
 You can access the Web UI at http://localhost:8233.
-The default Frontend Server gRPC port used as a target endpoint for client calls is 7233.
+The default Frontend Service gRPC port used as a target endpoint for client calls is 7233.
 
 Use the following options to change the behavior of this command.
 

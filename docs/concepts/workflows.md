@@ -594,7 +594,7 @@ Signal-With-Start is a Client method that takes the following arguments:
 
 - A Workflow Id
 - Workflow input
-- A <a class="tdlp" href="#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#signal">Learn more</a></span></span></a> name
+- A [Signal](#signal) name
 - Signal input
 
 If there is a running Workflow Execution with the given Workflow Id, it will be Signaled.
