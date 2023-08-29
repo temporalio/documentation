@@ -193,7 +193,7 @@ $ temporal workflow list --fields long -o json | jq '.[].type.name' | uniq -c
 
 To see the full range of Workflow-related commands, run `temporal workflow` or see the [Temporal CLI workflow command reference](/cli/workflow).
 
-For a full list of available commands, run `temporal` or visit [Available commands](#available-commands).
+For a full list of available commands, run `temporal` or see [Available commands](#available-commands).
 
 ## Environments
 
