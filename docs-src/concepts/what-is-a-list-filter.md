@@ -70,7 +70,7 @@ When you use the preceding example, you receive a list of Workflows fulfilling t
 - Workflow isn't in a running state.
 - Workflow either started after "2021-06-07T16:46:34.236-08:00" or closed after "2021-06-07T16:46:34-08:00".
 
-Additional examples of List Filters are provided below.
+The following are additional examples of List Filters.
 
 ```sql
 WorkflowId = '<workflow-id>'
