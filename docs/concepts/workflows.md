@@ -602,11 +602,11 @@ Otherwise, a new Workflow Execution is started and immediately sent the Signal.
 
 How to Signal-With-Start in:
 
-- [Go](/dev-guide/go/features#signal-with-start)
-- [Java](/dev-guide/java/features#signal-with-start)
-- [PHP](/dev-guide/php/features#signal-with-start)
-- [Python](/dev-guide/python/features#signal-with-start)
-- [TypeScript](/dev-guide/typescript/features#signal-with-start)
+- [How to Signal-With-Start in Go](/dev-guide/go/features#signal-with-start)
+- [How to Signal-With-Start in Java](/dev-guide/java/features#signal-with-start)
+- [How to Signal-With-Start in PHP](/dev-guide/php/features#signal-with-start)
+- [How to Signal-With-Start in Python](/dev-guide/python/features#signal-with-start)
+- [How to Signal-With-Start in TypeScript](/dev-guide/typescript/features#signal-with-start)
 
 ## What is a Query? {#query}
 
