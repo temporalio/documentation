@@ -12,7 +12,7 @@ tags:
 
 The [Visibility](/concepts/what-is-visibility) List API requires you to provide a List Filter as an SQL-like string parameter.
 
-A List Filter includes [Search Attribute](/concepts/what-is-a-search-attribute) names, Search Attribute values, and [operators](#supported-operators) that allow it to retrieve a filtered list of Workflow Executions from the Visibility Store.
+A List Filter includes [Search Attribute](/concepts/what-is-a-search-attribute) names, Search Attribute values, and [operators](#supported-operators) so that it can retrieve a filtered list of Workflow Executions from the Visibility Store.
 
 List Filter [Search Attribute](/concepts/what-is-a-search-attribute) names are case sensitive.
 A single [Namespace](/concepts/what-is-a-namespace) scopes each List Filter.
