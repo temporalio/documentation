@@ -43,7 +43,7 @@ Partial string matching applies only to locating Text Search Attributes.
 
 <!-- note: advanced vis features will be supported in SQL upon the release of v1.20.-->
 
-For instance, if you have a custom Search Attribute named `Description` of `Text` type with the value "The quick brown fox jumps over the lazy dog", a search for `Description='quick'` or `Description='fox'` will successfully return the Workflow.
+For example, if you have a custom Search Attribute named `Description` of `Text` type with the value "The quick brown fox jumps over the lazy dog", a search for `Description='quick'` or `Description='fox'` successfully returns the Workflow.
 However, searches for partial words like `Description='qui'` or `Description='laz'` won't return the Workflow.
 This limitation arises because [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
 
