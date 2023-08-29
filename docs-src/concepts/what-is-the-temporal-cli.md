@@ -172,7 +172,7 @@ $ temporal workflow list --fields long --output json
 ]
 ```
 
-Filter out Workflows based on Type with [jq](https://stedolan.github.io/jq/):
+Filter out Workflows based on Workflow Type with [jq](https://stedolan.github.io/jq/):
 
 ```bash
 $ temporal workflow list --fields long -o json | jq '.[].type.name'
