@@ -11,7 +11,7 @@ tags:
 
 This section describes many of the default settings and limits that apply to Workflow Executions and do not pertain to the entire Temporal Cloud account or individual Namespaces in Temporal Cloud, unless otherwise specified.
 
-Some of these default limits are configurable by sending a [support ticket](/cloud/support#support-ticket) to our support team.
+Some of these default limits are configurable by sending a [ticket](/cloud/support#support-ticket) to our support team.
 
 ### What is the maximum length for identifiers?
 
@@ -23,7 +23,7 @@ This default limit is configurable by creating a [support ticket](/cloud/support
 
 Each gRPC message received has a limit of 4 MB.
 
-### What is the maximum limit for an Event batch size?
+### What is the limit for History transaction size?
 
 The `DefaultTransactionSizeLimit` is configured at 4 MB, representing the maximum allowable transaction size for persisting Event Histories.
 
@@ -35,21 +35,22 @@ At the Namespace level, Temporal Cloud sets the following default limits:
 - Certificates: 32 KB payload or 16 certificates, whichever is smaller
 - Concurrent Task pollers: 2,000 (configurable; maximum of 100,000)
 
-### What is the Concurrent limit?
+### What are the concurrecy limits?
 
-If the concurrent pending count of certain Commands exceeds 2,000, they will fail.
-These commands include:
+If a Workflow Execution has 2,000 incomplete Activities, Signals, Child Workflows, or external Workflow Cancelation requests, additional Commands of that type will fail to be applied to that Workflow Execution:
 
 - `ScheduleActivityTask`
 - `SignalExternalWorkflowExecution`
-- `RequestCancelExternalWorkflowExecution`
 - `StartChildWorkflowExecution`
+- `RequestCancelExternalWorkflowExecution`
 
-This default limit is configurable by creating a [support ticket](/cloud/support#support-ticket).
+These default limits are configurable by creating a [support ticket](/cloud/support#support-ticket).
+
+[Batch jobs](/cli/batch) are limited to one job running at a time per Namespace.
 
 ### What is the limit on the number of Signals received per Workflow Execution?
 
-The number of Signals received per Workflow Execution to 10,000.
+10,000
 
 ### What are the default limits for users and Namespaces at the account level?
 
@@ -58,18 +59,18 @@ At the account level, Temporal Cloud sets the following default limits:
 - Users: 100
 - Namespaces: 10
 
-### What is the limit for Prometheus endpoint Retention Period?
+### How much data does the Prometheus endpoint retain?
 
-The Prometheus endpoint Retention Period is 30 days.
+The Prometheus endpoint retains 30 days of data.
 
 ### What is the default Retention Period in your Temporal Cloud Account?
 
-Temporal Cloud sets the default Retention Period to 30 days and is configurable in the Temporal Web UI per Namespace.
-You can set the Retention Period to a range of 1—90 days.
+Temporal Cloud sets the default [Retention Period](/clusters#retention-period) to 30 days, and it is configurable in the Temporal Web UI per Namespace.
+You can set the Retention Period to between 1 and 90 days.
 
-### What are the default limits for Custom Search Attributes?
+### What are the default maximum numbers of Custom Search Attributes?
 
-The default limits for Custom Search Attributes in Temporal Cloud (maximum per type) are:
+The default maximum number of [Custom Search Attributes](/visibility#custom-search-attributes) of each type in Temporal Cloud are:
 
 - `bool`: 20
 - `double`: 20
