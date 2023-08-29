@@ -8,68 +8,65 @@ tags:
   - cluster
 ---
 
-Use environmental variables to dynamically configure Temporal Clusters
-
-(something about them defined in env.go)
-
-(something to segue into the definitions)
+This reference defines key configuration variables listed as constants in the [Temporal Environment file](https://github.com/temporalio/temporal/blob/master/environment/env.go).
+These variables facilitate connections between the Temporal Cluster and various database systems.
 
 ## `Localhost`
 
-Stores the `localhost` IP address (127.0.0.1).
+Stores the `localhost` IP address "127.0.0.1".
 
 ## `CassandraSeeds`
 
-Stores Cassandra seed node information.
+Stores the seed node information for a Cassandra cluster.
 
 ## `CassandraPort`
 
-Stores the Cassandra port number provided to the Temporal Environment.
+Stores the port number used to connect to a Cassandra instance.
 
 ## `CassandraDefaultPort`
 
-Sets the default port (9042) for Cassandra.
+Sets the default port (9042) for Cassandra instances.
 
 ## `MySQLSeeds`
 
-Stores MySQL seed node information.
+Stores the seed node information for a MySQL cluster.
 
 ## `MySQLPort`
 
-Stores the MySQL port number provided to the Temporal Environment.
+Stores the port number used to connect to a MySQL instance.
 
 ## `MySQLDefaultPort`
 
-Sets the default port for MySQL.
+Sets the default port (3306) for MySQL instances.
 
 ## `ESSeeds`
 
-Stores ElasticSearch seed node information.
+Stores the seed node information for an ElasticSearch cluster.
 
 ## `ESPort`
 
-Stores the ElasticSearch port number provided to the Temporal Environment.
+Stores the port number used to connect to an ElasticSearch instance.
 
 ## `ESDefaultPort`
 
-Sets the default port for ElasticSearch.
+Sets the default port (9200) for ElasticSearch instances.
 
 ## `ESVersion`
 
-Sets the ElasticSearch version to run the Cluster on.
+Stores the version information for ElasticSearch.
 
 ## `ESDefaultVersion`
 
-Sets the default ElasticSearch version to run the Cluster on.
+Holds the default version (v7) for ElasticSearch use.
 
 ## `PostgresSeeds`
 
-Stores Postgres seed node information.
+Stores seed node information for a Postgres cluster.
 
 ## `PostgresPort`
 
-Stores the Postgres port number provided to the Temporal Environment
+Stores the port number uesed to connect to a Postgres instance.
 
 ## `PostgresDefaultPort`
 
-Sets the default port for Postgres.
+Sets the default port (5432) for Postgres instances.
