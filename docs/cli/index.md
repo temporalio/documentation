@@ -20,7 +20,7 @@ import TabItem from '@theme/TabItem';
 
 :::note
 
-When upgrading from `tctl` to CLI, make sure to update your environment variables and use updated commands.
+When upgrading from `tctl` to Temporal CLI, make sure to update your environment variables and use updated commands.
 For details, see [CLI release notes](https://github.com/temporalio/cli/releases/tag/v0.9.0).
 
 :::
@@ -74,10 +74,10 @@ To start the Temporal Server, run the following command:
 temporal server start-dev
 ```
 
-This launches a server on `localhost:7233` and a web interface at <http://localhost:8233>.
+The command launches a server on `localhost:7233` and a web interface at <http://localhost:8233>.
 
 By default, data isn't persisted.
-If you want to save Workflows, use the `--db-filename` flag:
+If you want to save Workflows, use the `--db-filename` option:
 
 ```bash
 temporal server start-dev --db-filename temporal.db
@@ -182,7 +182,7 @@ $ temporal workflow list --fields long --output json
 ]
 ```
 
-Filter out Workflows based on Type with [jq](https://stedolan.github.io/jq/):
+Filter out Workflows based on Workflow Type with [jq](https://stedolan.github.io/jq/):
 
 ```bash
 $ temporal workflow list --fields long -o json | jq '.[].type.name'
@@ -201,9 +201,9 @@ $ temporal workflow list --fields long -o json | jq '.[].type.name' | uniq -c
    2 "MyWorkflow"
 ```
 
-To see the full range of Workflow-related commands, run `temporal workflow` or visit [CLI ▶️ workflow](/cli/workflow).
+To see the full range of Workflow-related commands, run `temporal workflow` or see the [Temporal CLI workflow command reference](/cli/workflow).
 
-For a full list of available commands, run `temporal` or visit [Available commands](#available-commands).
+For a full list of available commands, run `temporal` or see [Available commands](#available-commands).
 
 ## Environments
 
@@ -341,21 +341,21 @@ Add the following code snippet to your `~/.zshrc` file:
 source <(temporal completion zsh)
 ```
 
-If you're running auto-completion from the terminal, run:
+If you're running auto-completion from the terminal, run the following command:
 
 ```sh
 echo 'source <(temporal completion zsh)' >> ~/.zshrc
 ```
 
-After setting the variable, run:
+After setting the variable, run the following command:
 
 `source ~/.zshrc`.
 
 ### Bash auto-completion
 
-Install []`bash-completion`](https://github.com/scop/bash-completion#installation) and add the software to your `~/.bash_profile`.
+Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to `~/.bash_profile`.
 
-To utilize aliases, add them to `~/.bash_profile` as needed.
+To use aliases, add them to `~/.bash_profile` as needed.
 
 ```bash
 alias t='temporal'
