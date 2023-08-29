@@ -26,11 +26,15 @@ Default: 127.0.0.1
 
 ## `CassandraDefaultPort`
 
+Sets the default port for a Cassandra environment.
+
 ## `MySQLSeeds`
 
 ## `MySQLPort`
 
 ## `MySQLDefaultPort`
+
+Sets the default port for a MySQL environment.
 
 ## `ESSeeds`
 
@@ -38,12 +42,20 @@ Default: 127.0.0.1
 
 ## `ESDefaultPort`
 
+Sets the default port for an ElasticSearch environment.
+
 ## `ESVersion`
 
+Sets the ElasticSearch version to run the Cluster on.
+
 ## `ESDefaultVersion`
+
+Sets the default ElasticSearch version to run the Cluster on.
 
 ## `PostgresSeeds`
 
 ## `PostgresPort`
 
 ## `PostgresDefaultPort`
+
+Sets the default port for a Postgres environment.
