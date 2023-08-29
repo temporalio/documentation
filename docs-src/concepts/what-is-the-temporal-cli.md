@@ -345,7 +345,7 @@ After setting the variable, run the following command:
 
 Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to `~/.bash_profile`.
 
-To utilize aliases, add them to `~/.bash_profile` as needed.
+To use aliases, add them to `~/.bash_profile` as needed.
 
 ```bash
 alias t='temporal'
