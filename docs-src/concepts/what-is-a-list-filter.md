@@ -49,7 +49,7 @@ This limitation arises because [Elasticsearch's tokenizer](https://www.elastic.c
 
 ### Efficient API usage
 
-If the Advanced List Filter API retrieves a substantial number of Workflow Executions (over 10,000), the response time might be longer.
+If the Advanced List Filter API retrieves a substantial number of Workflow Executions (more than 10,000), the response time might be longer.
 
 Starting from Temporal Server v1.20 and later, you can employ the `CountWorkflow` API to efficiently count the number of [Workflow Executions](/concepts/what-is-a-workflow-execution).
 
