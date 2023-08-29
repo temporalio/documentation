@@ -38,7 +38,7 @@ Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** claus
 
 ### Partial string match
 
-The `=` operator functions similarly to **CONTAINS**, helping to find Workflows with Search Attributes containing a specific word.
+The `=` operator works similarly to **CONTAINS**, helping to find Workflows with Search Attributes containing a specific word.
 Partial string matching applies only to locating Text Search Attributes.
 
 <!-- note: advanced vis features will be supported in SQL upon the release of v1.20.-->
@@ -51,7 +51,7 @@ This limitation arises because [Elasticsearch's tokenizer](https://www.elastic.c
 
 If the Advanced List Filter API retrieves a substantial number of Workflow Executions (more than 10,000), the response time might be longer.
 
-Starting from Temporal Server v1.20 and later, you can employ the `CountWorkflow` API to efficiently count the number of [Workflow Executions](/concepts/what-is-a-workflow-execution).
+Beginning with Temporal Server v1.20 you can employ the `CountWorkflow` API to efficiently count the number of [Workflow Executions](/concepts/what-is-a-workflow-execution).
 
 To paginate the results using the `ListWorkflow` API, use the page token to retrieve the next page.
 Continue until the page token becomes `null`/`nil`.

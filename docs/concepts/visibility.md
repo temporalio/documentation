@@ -98,7 +98,7 @@ For details on migrating your Visibility store databases, see [Dual Visibility](
 
 The [Visibility](/clusters#visibility) List API requires you to provide a List Filter as an SQL-like string parameter.
 
-A List Filter includes [Search Attribute](#search-attribute) names, Search Attribute values, and [operators](#supported-operators) that allow it to retrieve a filtered list of Workflow Executions from the Visibility Store.
+A List Filter includes [Search Attribute](#search-attribute) names, Search Attribute values, and [operators](#supported-operators) so that it can retrieve a filtered list of Workflow Executions from the Visibility Store.
 
 List Filter [Search Attribute](#search-attribute) names are case sensitive.
 A single [Namespace](/namespaces#) scopes each List Filter.
@@ -124,20 +124,20 @@ Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** claus
 
 ### Partial string match
 
-The `=` operator functions similarly to **CONTAINS**, helping to find Workflows with Search Attributes containing a specific word.
-Partial string matching only applies to locating Text Search Attributes.
+The `=` operator works similarly to **CONTAINS**, helping to find Workflows with Search Attributes containing a specific word.
+Partial string matching applies only to locating Text Search Attributes.
 
 <!-- note: advanced vis features will be supported in SQL upon the release of v1.20.-->
 
-For instance, if you have a custom Search Attribute named `Description` of `Text` type with the value "The quick brown fox jumps over the lazy dog", a search for `Description='quick'` or `Description='fox'` will successfully return the Workflow.
+For example, if you have a custom Search Attribute named `Description` of `Text` type with the value "The quick brown fox jumps over the lazy dog", a search for `Description='quick'` or `Description='fox'` successfully returns the Workflow.
 However, searches for partial words like `Description='qui'` or `Description='laz'` won't return the Workflow.
 This limitation arises because [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
 
 ### Efficient API usage
 
-If the Advanced List Filter API retrieves a substantial number of Workflow Executions (over 10,000), the response time might be longer.
+If the Advanced List Filter API retrieves a substantial number of Workflow Executions (more than 10,000), the response time might be longer.
 
-Starting from Temporal Server v1.20 and later, you can employ the `CountWorkflow` API to efficiently count the number of [Workflow Executions](/workflows#workflow-execution).
+Beginning with Temporal Server v1.20 you can employ the `CountWorkflow` API to efficiently count the number of [Workflow Executions](/workflows#workflow-execution).
 
 To paginate the results using the `ListWorkflow` API, use the page token to retrieve the next page.
 Continue until the page token becomes `null`/`nil`.
@@ -150,13 +150,13 @@ Here are examples of List Filters set with [`tctl`](/tctl-v1/workflow#list):
 WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00")
 ```
 
-When used, you will receive a list of Workflows fulfilling the following criteria:
+When you use the preceding example, you receive a list of Workflows fulfilling the following criteria:
 
 - Workflow Type is `main.YourWorkflowDefinition`.
 - Workflow isn't in a running state.
 - Workflow either started after "2021-06-07T16:46:34.236-08:00" or closed after "2021-06-07T16:46:34-08:00".
 
-Additional examples of List Filters are provided below.
+The following are additional examples of List Filters.
 
 ```sql
 WorkflowId = '<workflow-id>'
