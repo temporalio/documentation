@@ -10,7 +10,7 @@ tags:
 
 :::note
 
-When upgrading from `tctl` to CLI, make sure to update your environment variables and use updated commands.
+When upgrading from `tctl` to Temporal CLI, make sure to update your environment variables and use updated commands.
 For details, see [CLI release notes](https://github.com/temporalio/cli/releases/tag/v0.9.0).
 
 :::
