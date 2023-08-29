@@ -67,7 +67,7 @@ temporal server start-dev
 The command launches a server on `localhost:7233` and a web interface at <http://localhost:8233>.
 
 By default, data isn't persisted.
-If you want to save Workflows, use the `--db-filename` flag:
+If you want to save Workflows, use the `--db-filename` option:
 
 ```bash
 temporal server start-dev --db-filename temporal.db
