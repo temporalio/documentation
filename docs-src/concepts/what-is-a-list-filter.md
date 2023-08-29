@@ -64,7 +64,7 @@ Here are examples of List Filters set with [`tctl`](/tctl-v1/workflow/list):
 WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00")
 ```
 
-When used, you will receive a list of Workflows fulfilling the following criteria:
+When you use the preceding example, you receive a list of Workflows fulfilling the following criteria:
 
 - Workflow Type is `main.YourWorkflowDefinition`.
 - Workflow isn't in a running state.
