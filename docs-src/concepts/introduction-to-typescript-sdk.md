@@ -1,6 +1,6 @@
 ---
 id: introduction-to-typescript-sdk
-title: Introduction to the Temporal TypeScript SDK
+title: Introduction to the Temporal TypeScript SDK developer's guide
 description: The Temporal TypeScript SDK provides the benefits of both the Temporal programming model and the ease of writing in JavaScript or TypeScript.
 sidebar_label: TypeScript SDK
 tags:
