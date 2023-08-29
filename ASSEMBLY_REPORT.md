@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday August 17 2023 16:21:00 PM -0400
+Last assembled: Monday August 28 2023 10:22:29 AM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
-93 guide configurations found.
+94 guide configurations found.
 
-1520 information nodes found.
+1522 information nodes found.
 
-1284 information nodes are attached to guides.
+1286 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -53,6 +53,8 @@ concepts/what-is-a-global-namespace -> /namespaces#global-namespace
 concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
+
+cloud/security-cloud-intro -> #
 
 references/server-options -> /references/server-options#withconfig
 
@@ -282,6 +284,10 @@ cloud/tcld/account/metrics/accepted-client-ca/set -> #set
 
 cloud/tcld/account/metrics/accepted-client-ca/remove -> #remove
 
+cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
+
+cloud/tcld/generate-certificates/end-entity-certificate -> #end-entity-certificate
+
 cloud/tcld/how-to-install-tcld -> #install-tcld
 
 cloud/tcld/login -> /cloud/tcld/login#
@@ -305,6 +311,8 @@ cloud/tcld/namespace/certificate-filters/index -> #certificate-filters
 cloud/tcld/namespace/search-attributes/index -> #search-attributes
 
 cloud/tcld/namespace/retention/index -> #retention
+
+cloud/tcld/namespace/update-codec-server -> #update-codec-server
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 

@@ -23,41 +23,43 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Server commands allow you to start and manage the <a class="tdlp" href="/clusters#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#temporal-server">Learn more</a></span></span></a> from the command line.
+Server commands allow you to start and manage the [Temporal Server](/clusters#temporal-server) from the command line.
 
 Currently, `cli` server functionality extends to starting the Server.
 
 ## start-dev
 
-The `temporal server start-dev` command starts the Temporal Server on `localhost:7233`.
+The `temporal server start-dev` command starts a local [Temporal Server](/clusters#temporal-server).
+You can access the Web UI at http://localhost:8233.
+The default Frontend Server gRPC port used as a target endpoint for client calls is 7233.
 
-The results of any command run on the Server can be viewed at http://localhost:7233.
+Use the following options to change the behavior of this command.
 
-- <a class="tdlp" href="/cli/cmd-options#db-filename">--db-filename<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal db-filename</span><br /><br /><span class="tdlppd">File in which to persist Temporal state.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#db-filename">Learn more</a></span></span></a>
+- [--db-filename](/cli/cmd-options#db-filename)
 
-- <a class="tdlp" href="/cli/cmd-options#dynamic-config-value">--dynamic-config-value<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal dynamic-config-value</span><br /><br /><span class="tdlppd">Dynamic config value, formatted as KEY=JSON_VALUE.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#dynamic-config-value">Learn more</a></span></span></a>
+- [--dynamic-config-value](/cli/cmd-options#dynamic-config-value)
 
-- <a class="tdlp" href="/cli/cmd-options#headless">--headless<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal headless</span><br /><br /><span class="tdlppd">Disable the Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#headless">Learn more</a></span></span></a>
+- [--headless](/cli/cmd-options#headless)
 
-- <a class="tdlp" href="/cli/cmd-options#ip">--ip<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal ip</span><br /><br /><span class="tdlppd">IPv4 address to bind the frontend service to.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#ip">Learn more</a></span></span></a>
+- [--ip](/cli/cmd-options#ip)
 
-- <a class="tdlp" href="/cli/cmd-options#log-format">--log-format<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal log-format</span><br /><br /><span class="tdlppd">Set the log formatting.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#log-format">Learn more</a></span></span></a>
+- [--log-format](/cli/cmd-options#log-format)
 
-- <a class="tdlp" href="/cli/cmd-options#log-level">--log-level<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal log-level</span><br /><br /><span class="tdlppd">Set the log level.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#log-level">Learn more</a></span></span></a>
+- [--log-level](/cli/cmd-options#log-level)
 
-- <a class="tdlp" href="/cli/cmd-options#metrics-port">--metrics-port<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal metrics-port</span><br /><br /><span class="tdlppd">Port for /metrics</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#metrics-port">Learn more</a></span></span></a>
+- [--metrics-port](/cli/cmd-options#metrics-port)
 
-- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal namespace</span><br /><br /><span class="tdlppd">Identifies a Namespace in the Temporal Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
+- [--namespace](/cli/cmd-options#namespace)
 
-- <a class="tdlp" href="/cli/cmd-options#port">--port<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal port</span><br /><br /><span class="tdlppd">Port for the frontend gRPC service.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#port">Learn more</a></span></span></a>
+- [--port](/cli/cmd-options#port)
 
-- <a class="tdlp" href="/cli/cmd-options#sqlite-pragma">--sqlite-pragma<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal sqlite-pragma</span><br /><br /><span class="tdlppd">Specify sqlite pragma statements in pragma=value format.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#sqlite-pragma">Learn more</a></span></span></a>
+- [--sqlite-pragma](/cli/cmd-options#sqlite-pragma)
 
-- <a class="tdlp" href="/cli/cmd-options#ui-asset-path">--ui-asset-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal ui-asset-path</span><br /><br /><span class="tdlppd">UI Custom Assets path.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#ui-asset-path">Learn more</a></span></span></a>
+- [--ui-asset-path](/cli/cmd-options#ui-asset-path)
 
-- <a class="tdlp" href="/cli/cmd-options#ui-codec-endpoint">--ui-codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal ui-codec-endpoint</span><br /><br /><span class="tdlppd">UI Remote data converter HTTP endpoint.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#ui-codec-endpoint">Learn more</a></span></span></a>
+- [--ui-codec-endpoint](/cli/cmd-options#ui-codec-endpoint)
 
-- <a class="tdlp" href="/cli/cmd-options#ui-ip">--ui-ip<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal ui-ip</span><br /><br /><span class="tdlppd">IPv4 address to bind the Web UI to.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#ui-ip">Learn more</a></span></span></a>
+- [--ui-ip](/cli/cmd-options#ui-ip)
 
-- <a class="tdlp" href="/cli/cmd-options#ui-port">--ui-port<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal ui-port</span><br /><br /><span class="tdlppd">Port for the Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#ui-port">Learn more</a></span></span></a>
+- [--ui-port](/cli/cmd-options#ui-port)
 
