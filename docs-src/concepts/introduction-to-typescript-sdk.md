@@ -52,16 +52,16 @@ Further resources for learning how to use the SDK include the following:
 - [Building Reliable Distributed Systems in Node.js](https://temporal.io/blog/building-reliable-distributed-systems-in-node): An introduction to Temporal and its value through a sample web app, [temporal.menu](https://temporal.menu/).
 - The [TypeScript SDK](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb) YouTube playlist.
 - Tutorials
-  - [Build a subscription workflow with Temporal and TypeScript](https://learn.temporal.io/tutorials/typescript/subscriptions/).
-  - [Choose Your Own Adventure Bot walkthrough in TypeScript](https://learn.temporal.io/tutorials/typescript/chatbot/).
+  - [Build a subscription workflow with Temporal and TypeScript](https://learn.temporal.io/tutorials/typescript/subscriptions/)
+  - [Choose Your Own Adventure Bot walkthrough in TypeScript](https://learn.temporal.io/tutorials/typescript/chatbot/)
 - Blog posts
-  - [How Durable Execution Works](https://temporal.io/blog/building-reliable-distributed-systems-in-node-js-part-2).
-  - [Temporal for VS Code](https://temporal.io/blog/temporal-for-vs-code).
-  - [Using Temporal as a Node.js Task Queue](https://temporal.io/blog/using-temporal-as-a-node-task-queue).
-  - [Caching API Requests with Long-Lived Workflows](https://temporal.io/blog/caching-api-requests-with-long-lived-workflows).
-  - [REST APIs for every Temporal Workflow in one line of code](https://temporal.io/blog/temporal-rest).
-  - [1.0.0 release of the Temporal TypeScript SDK](https://temporal.io/blog/typescript-1-0-0).
-  - [How we use V8 isolates to enforce Workflow determinism](https://temporal.io/blog/intro-to-isolated-vm).
+  - [How Durable Execution Works](https://temporal.io/blog/building-reliable-distributed-systems-in-node-js-part-2)
+  - [Temporal for VS Code](https://temporal.io/blog/temporal-for-vs-code)
+  - [Using Temporal as a Node.js Task Queue](https://temporal.io/blog/using-temporal-as-a-node-task-queue)
+  - [Caching API Requests with Long-Lived Workflows](https://temporal.io/blog/caching-api-requests-with-long-lived-workflows)
+  - [REST APIs for every Temporal Workflow in one line of code](https://temporal.io/blog/temporal-rest)
+  - [1.0.0 release of the Temporal TypeScript SDK](https://temporal.io/blog/typescript-1-0-0)
+  - [How we use V8 isolates to enforce Workflow determinism](https://temporal.io/blog/intro-to-isolated-vm)
 
 ## How to contribute to the Temporal TypeScript SDK
 
