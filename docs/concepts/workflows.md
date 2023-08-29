@@ -588,6 +588,26 @@ If multiple deliveries of a Signal would be a problem for your Workflow, add ide
 
 [^1]: The Cluster usually deduplicates Signals, but does not guarantee deduplication: During shard migration, two Signal Events (and therefore two deliveries to the Workflow Execution) can be recorded for a single Signal because the deduping info is stored only in memory.
 
+### What is Signal-With-Start? {#signal-with-start}
+
+Signal-With-Start is a Client method that takes the following arguments:
+
+- A Workflow Id
+- Workflow input
+- A [Signal](#signal) name
+- Signal input
+
+If there is a running Workflow Execution with the given Workflow Id, it will be Signaled.
+Otherwise, a new Workflow Execution is started and immediately sent the Signal.
+
+How to Signal-With-Start in:
+
+- [How to Signal-With-Start in Go](/dev-guide/go/features#signal-with-start)
+- [How to Signal-With-Start in Java](/dev-guide/java/features#signal-with-start)
+- [How to Signal-With-Start in PHP](/dev-guide/php/features#signal-with-start)
+- [How to Signal-With-Start in Python](/dev-guide/python/features#signal-with-start)
+- [How to Signal-With-Start in TypeScript](/dev-guide/typescript/features#signal-with-start)
+
 ## What is a Query? {#query}
 
 A Query is a synchronous operation that is used to get the state of a [Workflow Execution](/workflows#workflow-execution).
