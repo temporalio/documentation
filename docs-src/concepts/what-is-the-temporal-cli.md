@@ -64,7 +64,7 @@ To start the Temporal Server, run the following command:
 temporal server start-dev
 ```
 
-This launches a server on `localhost:7233` and a web interface at <http://localhost:8233>.
+The command launches a server on `localhost:7233` and a web interface at <http://localhost:8233>.
 
 By default, data isn't persisted.
 If you want to save Workflows, use the `--db-filename` flag:
