@@ -15,7 +15,7 @@ This guide documents the concepts, features, and tools needed to create, test, a
 
 ## What Go programming skills and experiences are useful when using the Go SDK?
 
-The Temporal Platform enables developers to build a wide range of applications that serve a wide range of use cases. 
+The Temporal Platform enables developers to build a wide range of applications that serve a wide range of use cases.
 
 We recommend that developers possess at least a moderate level of experience in practicing the following skills to develop production-level Temporal Applications:
 
@@ -39,7 +39,7 @@ We recommend that developers possess at least a moderate level of experience in 
 
 - Goroutines
 - Channels
-- Concurrency patterns -  parallelism, producer-consumer, etc.
+- Concurrency patterns - parallelism, producer-consumer, etc.
 - Context handling
 - Defer and panic handling
 - Error handling
@@ -62,12 +62,17 @@ For very complex and large-scale use cases, having at least some experience with
 - Memory management
 
 #### Design patterns
+
 - Creational: Factory, Singleton, Object Pool, Builder, etc.
 - Stability: Bulkheads, Deadline, etc.
+
 #### Databases
+
 - Familiarity with SQL or NoSQL databases
 - CRUD operational concepts
+
 #### Distributed system architectures
+
 - **Event-driven architectures**: Understanding of how events can drive processes and how they fit into workflows.
 - **Stateful vs. stateless processes**: Knowledge about the advantages and pitfalls of both.
 - **Scalability**: Understanding the implications, of scaling services, on performance and reliability.
@@ -101,18 +106,18 @@ Further resources for learning how to use the Go SDK include the following:
 - [Temporal 101 with Go](https://learn.temporal.io/courses/temporal_101/go): our free introductory course.
 - The [Go SDK](https://www.youtube.com/watch?v=-KWutSkFda8&list=PLl9kRkvFJrlRYHYaTPnsvE46szyMIZLdk&pp=iAQB) YouTube playlist
 - Tutorials
-    - [Build an eCommerce App With Temporal and Go](https://learn.temporal.io/tutorials/go/ecommerce/)
-    - Build a Subscription App with Temporal and Go
+  - [Build an eCommerce App With Temporal and Go](https://learn.temporal.io/tutorials/go/ecommerce/)
+  - Build a Subscription App with Temporal and Go
 - Blog posts
-    - [Workflows as Actors: Is it really possible?](https://temporal.io/blog/workflows-as-actors-is-it-really-possible)
-    - [Actors and Workflows Part 2: Building a Customer Loyalty Program](https://temporal.io/blog/actors-and-workflows-part-2)
-    - [Saga Pattern Made Easy](https://temporal.io/blog/saga-pattern-made-easy)
-    - [Compensating Actions, Part of a Complete Breakfast with Sagas](https://temporal.io/blog/compensating-actions-part-of-a-complete-breakfast-with-sagas)
-    - [Failure Handling in Practice](https://temporal.io/blog/failure-handling-in-practice)
-    - [Tips and Tricks for Temporal Developer Productivity](https://temporal.io/blog/temporal-tips-tricks-1)
+  - [Workflows as Actors: Is it really possible?](https://temporal.io/blog/workflows-as-actors-is-it-really-possible)
+  - [Actors and Workflows Part 2: Building a Customer Loyalty Program](https://temporal.io/blog/actors-and-workflows-part-2)
+  - [Saga Pattern Made Easy](https://temporal.io/blog/saga-pattern-made-easy)
+  - [Compensating Actions, Part of a Complete Breakfast with Sagas](https://temporal.io/blog/compensating-actions-part-of-a-complete-breakfast-with-sagas)
+  - [Failure Handling in Practice](https://temporal.io/blog/failure-handling-in-practice)
+  - [Tips and Tricks for Temporal Developer Productivity](https://temporal.io/blog/temporal-tips-tricks-1)
 - [go-patterns](https://github.com/tmrts/go-patterns): a comprehensive list of design patterns that apply to Go as a whole.
 
 ## How to contribute to the Temporal Go SDK?
 
-We'd love your help in improving the Temporal Go SDK. 
+We'd love your help in improving the Temporal Go SDK.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-java/blob/master/CONTRIBUTING.md).
