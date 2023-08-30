@@ -2,7 +2,7 @@
 id: schedule
 title: tctl 1.17 schedule command reference
 sidebar_label: schedule
-description: How to use the tctl 1.17 schedule command
+description: Explore the tctl Schedule commands, which let you create, list, update, trigger, and delete Schedules for Workflows in a Temporal Cluster.
 toc_max_heading_level: 4
 keywords:
 - cli

@@ -2,7 +2,7 @@
 id: operator
 title: Temporal CLI operator command reference
 sidebar_label: operator
-description: How to use the Temporal CLI operator commands
+description: Efficiently use the Temporal CLI to manage operator actions on Namespaces, Search Attributes, and Temporal Clusters. Create, update, list, and remove resources.
 toc_max_heading_level: 4
 keywords:
 - cli reference

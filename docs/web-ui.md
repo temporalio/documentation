@@ -3,7 +3,7 @@ id: web-ui
 title: Temporal Web UI
 sidebar_label: Web UI
 sidebar_position: 9
-description: This guide is an overview of the Temporal Web UI.
+description: Explore the intuitive web user interface (Web UI) for Temporal. Seamlessly monitor and manage your Namespaces, Workflows, Schedules, and other settings.
 toc_max_heading_level: 4
 keywords:
 - term

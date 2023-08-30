@@ -2,7 +2,7 @@
 id: schedule
 title: Temporal CLI schedule command reference
 sidebar_label: schedule
-description: How to use the Temporal CLI schedule command
+description: Create, update, trigger, and delete Schedules in Temporal Workflows by using these commands and options in the Temporal CLI.
 toc_max_heading_level: 4
 keywords:
 - backfill
