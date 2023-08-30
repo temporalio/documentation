@@ -3,6 +3,7 @@ id: index
 title: Temporal Platform references
 sidebar_label: References
 sidebar_position: 10
+description: Consult the Temporal Platform references for details about configurations, Commands, Events, metrics, and APIs.
 ---
 
 - [SDK metrics reference](/references/sdk-metrics)
