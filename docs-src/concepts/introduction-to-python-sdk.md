@@ -18,6 +18,8 @@ The Python SDK and its contributors have crafted a developer experience that aim
 You can start working with the SDK with only Python knowledge.
 Temporal abstracts a lot of the complexity of distributed systems, but to unlock its full potential, having a broad base of knowledge will help you design more efficient and resilient systems.
 
+We recommend that developers possess at least a moderate level of experience in practicing the following skills to develop production-level Temporal Applications:
+
 ### Basic Knowledge
 
 - Python syntax and structure
@@ -44,6 +46,8 @@ Temporal abstracts a lot of the complexity of distributed systems, but to unlock
 - Classes and objects
 - Inheritance
 - Encapsulation
+
+For very complex and large-scale use cases, having at least some experience with a variation of the following could be helpful:
 
 ### Advanced Language Features
 
@@ -102,6 +106,18 @@ Code samples are integrated into this developer’s guide.
 You can find those code samples in the [temporalio/documentation-samples-python](https://github.com/temporalio/documentation-samples-python) repository on GitHub.
 
 Additional Python code samples are in the [temporalio/samples-python](https://github.com/temporalio/samples-python) repository on GitHub.
+
+## What are other resources for learning how to use the Python SDK?
+
+- [Temporal 101 with Python](https://learn.temporal.io/courses/temporal_101/python)
+- [Python tutorials](https://learn.temporal.io/tutorials/python/)
+  - [Build a data pipeline Workflow with Temporal and Python](https://learn.temporal.io/tutorials/python/data-pipelines/)
+  - [Build a subscription workflow with Temporal and Python](https://learn.temporal.io/tutorials/python/subscriptions/)
+- Blog posts
+  - [Temporal 101: Learn Temporal with Python](https://temporal.io/blog/temporal-101-learn-temporal-with-python)
+  - [Temporal Python 1.0.0 – A Durable, Distributed Asyncio Event Loop](https://temporal.io/blog/durable-distributed-asyncio-event-loop)
+  - [Python SDK: Your first Application](https://temporal.io/blog/python-sdk-your-first-application)
+
 
 ## What are the supported Python versions?
 
