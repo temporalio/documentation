@@ -14,15 +14,6 @@ Ever since, the SDK has been enabling JavaScript and TypeScript developers to bu
 
 This SDK and its contributors have crafted a developer experience that provides the benefits of both the Temporal programming model and the ease of writing in JavaScript or TypeScript.
 
-## What advantages does the TypeScript SDK offer compared to other Temporal SDKs?
-
-The TypeScript SDK has a fully [deterministic](/concepts/what-is-a-workflow-definition#deterministic-constraints) runtime, which is crucial when developing Temporal Applications.
-Non-deterministic APIs have been replaced or removed.
-Type safety is enhanced by typed Workflow and Activity handles.
-
-The SDK is based on V8 isolates and provides errors at build time.
-It offers asynchronous functions and a microtask scheduler, which can provide predictable execution of async code.
-
 ## What programming skills and experiences are useful when using the TypeScript SDK?
 
 You can start working with the SDK with only JavaScript knowledge.
