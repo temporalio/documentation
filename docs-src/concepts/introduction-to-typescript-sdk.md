@@ -21,7 +21,7 @@ Non-deterministic APIs have been replaced or removed.
 Type safety is enhanced by typed Workflow and Activity handles.
 
 The SDK is based on V8 isolates and provides errors at build time.
-It offers asynchronous founctions and a microtask scheduler, which can provide predictable execution of async code.
+It offers asynchronous functions and a microtask scheduler, which can provide predictable execution of async code.
 
 ## What programming skills and experiences are useful when using the TypeScript SDK?
 
