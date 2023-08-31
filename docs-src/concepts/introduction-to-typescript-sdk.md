@@ -9,29 +9,56 @@ tags:
 
 Welcome to the Temporal TypeScript SDK developer's guide!
 
-After almost two years of development, the Temporal TypeScript SDK was first released in June 2022.
-Ever since, the SDK has been enabling JavaScript and TypeScript developers to build Temporal Applications.
+After almost two years of development, the Temporal TypeScript SDK was first released on July 26, 2022.
+Ever since, the SDK has been enabling JavaScript and TypeScript developers to build [Temporal Applications](/concepts/what-is-a-temporal-application).
 
 This SDK and its contributors have crafted a developer experience that provides the benefits of both the Temporal programming model and the ease of writing in JavaScript or TypeScript.
 
-## What TypeScript programming skills and experiences are useful when using the TypeScript SDK?
+## What advantages does the TypeScript SDK offer compared to other Temporal SDKs?
+
+The TypeScript SDK has a fully [deterministic](/concepts/what-is-a-workflow-definition#deterministic-constraints) runtime, which is crucial when developing Temporal Applications.
+Non-deterministic APIs have been replaced or removed.
+Type safety is enhanced by typed Workflow and Activity handles.
+
+The SDK is based on V8 isolates and provides errors at build time.
+It offers asynchronous founctions and a microtask scheduler, which can provide predictable execution of async code.
+
+## What programming skills and experiences are useful when using the TypeScript SDK?
 
 You can start working with the SDK with only JavaScript knowledge.
 Temporal abstracts a lot of the complexity of distributed systems, but to unlock its full potential, having a broad base of knowledge will help you design more efficient and resilient systems.
 
 - Core JavaScript or TypeScript knowledge
-  - Required: Understanding of modern ECMAScript features (such as promises and async/await).
-  - Useful: Proficiency in TypeScript, including understanding type annotations, interfaces, and generics.
-  - Useful: Familiarity with Node.js because the SDK uses the Node.js runtime. 
+  - Required
+    - JavaScript syntax and structure, including variable declarations using `let`, `const`, and `var`.
+    - Basic data types, such as `number`, `string`, `boolean`, `null`, and `undefined`.
+    - Operators and control statements.
+    - Basic input/output (I/O).
+    - Familiarity with defining classes, constructors, properties, and methods.
+    - Knowledge of how to use `import` and `export` for module-based development, which is crucial for organizing larger Temporal applications.
+    - Familiarity with function declarations, arrow functions, and function types.
+    - Understanding of modern ECMAScript features such as promises and async/await.
+    - Knowledge of how to configure TypeScript projects using `tsconfig.json`, especially if you need to adjust settings specific to your Temporal project or integrate with other tools.
+  - Useful
+    - Proficiency in TypeScript, including understanding type annotations, interfaces, and generics.
+    - Familiarity with object-oriented programming concepts like inheritance, encapsulation, and polymorphism.
+    - Understanding of composite types like `Array<T>`, `Promise<T>`, and `{ [key: string]: T}`.
+    - Basic understanding of decorators.
+    - Familiarity with Node.js because the SDK uses the Node.js runtime. 
 - Tools
-  - Required: Package managers, such as npm, pnpm, or yarn.
-  - Useful: Source control systems (such as Git) and source control platforms (such as GitHub, GitLab, or Bitbucket).
-- Testing and production
-  - Useful: Unit testing, integration testing, debugging, and performance profiling tools.
-  - Useful: CI/CD practices and tools.
-- Distributed systems
-  - Useful: Event-driven architecture, eventual consistency, partitioning, and replication.
-  - Useful: Stateful versus stateless processes.
+  - Required
+    - Package managers, such as npm, pnpm, or yarn.
+    - An integrated development environment, such as Visual Studio Code (VS Code) or WebStorm, both of which also have built-in debuggers.
+  - Useful
+    - Testing tools, such as Jest or Mocha and Chai.
+    - Source control systems (such as Git) and source control platforms (such as GitHub, GitLab, or Bitbucket).
+- Other useful knowledge
+  - Testing and production
+    - Unit testing, integration testing, debugging, and performance profiling tools.
+    - CI/CD practices and tools.
+  - Distributed systems
+    - Event-driven architecture, eventual consistency, partitioning, and replication.
+    - Stateful versus stateless processes.
 
 ## Where is the Temporal TypeScript SDK API reference?
 
