@@ -2,7 +2,7 @@
 id: login
 title: tcld login command reference
 sidebar_label: login
-description: How to use Temporal Cloud's tcld login command.
+description: The Temporal Cloud CLI (tcld) login command logs in a user to Temporal Cloud.
 toc_max_heading_level: 4
 keywords:
 - cli-reference

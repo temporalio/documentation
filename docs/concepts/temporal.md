@@ -3,7 +3,7 @@ id: temporal
 title: What is Temporal?
 sidebar_label: Temporal
 sidebar_position: 1
-description: The Temporal Platform explained.
+description: Discover the Temporal Platform, a runtime for durable executions that consists of a Temporal Cluster and Worker Processes, plus SDKs in multiple languages.
 slug: /temporal
 toc_max_heading_level: 4
 keywords:
@@ -19,7 +19,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Temporal Platform explained.
+Discover the Temporal Platform, a runtime for durable executions that consists of a Temporal Cluster and Worker Processes, plus SDKs in multiple languages.
 
 Temporal is a scalable and reliable runtime for Reentrant Processes called [Temporal Workflow Executions](/workflows#workflow-execution).
 

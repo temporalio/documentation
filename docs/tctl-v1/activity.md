@@ -2,7 +2,7 @@
 id: activity
 title: tctl v1.17 activity command reference
 sidebar_label: activity
-description: How to use the tctl v1.17 activity command
+description: Explore the tctl Activity commands for efficient management of Activity Executions. Complete or fail Activity Executions in your Workflows.
 toc_max_heading_level: 4
 keywords:
 - cli

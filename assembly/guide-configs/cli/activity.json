@@ -4,7 +4,7 @@
   "id": "activity",
   "title": "Temporal CLI activity command reference",
   "sidebar_label": "activity",
-  "description": "How to use the Temporal CLI activity command",
+  "description": "Explore the Temporal CLI Activity commands for efficient management of Activities. Register, inspect, and interact with Activities in your Workflows.",
   "use_description": false,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
