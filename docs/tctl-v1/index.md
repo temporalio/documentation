@@ -1,9 +1,9 @@
 ---
 id: index
-title: The Temporal CLI (tctl) is a legacy command-line tool that you can use to interact with a Temporal Cluster.
+title: tctl v1.17 command reference
 sidebar_label: CLI (tctl)
 sidebar_position: 9
-description: How to use Temporal's tctl v1.17 developer tool
+description: The Temporal CLI (tctl) is a legacy command-line tool that you can use to interact with a Temporal Cluster.
 toc_max_heading_level: 4
 keywords:
 - cli
