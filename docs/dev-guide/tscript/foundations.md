@@ -789,16 +789,19 @@ For example:
 ```dockerfile
 FROM node:20-bullseye
 
+# For better cache utilization, copy package.json and lock file first and install the dependencies before copying the
+# rest of the application and building.
 COPY . /app
 WORKDIR /app
 
+# Alternatively, run npm ci, which installs only dependencies specified in the lock file and is generally faster.
 RUN npm install --only=production \
     && npm run build
 
-CMD ["build/worker.js"]
+CMD ["npm", "start"]
 ```
 
-For smaller images and/or more secure deployments, it is also possible to use `-slim` Docker image variants (like `node:20-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs:20`) with the following caveats.
+For smaller images and/or more secure deployments, it is also possible to use `-slim` Docker image variants (like `node:20-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs20-debian11`) with the following caveats.
 
 ### Using `node:slim` images
 
@@ -811,7 +814,7 @@ For this reason, the `ca-certificates` package must be installed during the cons
 For example:
 
 ```dockerfile
-FROM node:20-bulleyes-slim
+FROM node:20-bullseye-slim
 
 RUN apt-get update \
     && apt-get install -y ca-certificates \
@@ -839,7 +842,7 @@ For example:
 ```dockerfile
 # -- BUILD STEP --
 
-FROM node:20-bulleyes AS builder
+FROM node:20-bullseye AS builder
 
 COPY . /app
 WORKDIR /app
@@ -849,12 +852,12 @@ RUN npm install --only=production \
 
 # -- RESULTING IMAGE --
 
-FROM gcr.io/distroless/nodejs:20
+FROM gcr.io/distroless/nodejs20-debian11
 
 COPY --from=builder /app /app
 WORKDIR /app
 
-CMD ["build/worker.js"]
+CMD ["node", "build/worker.js"]
 ```
 
 ### Properly configure Node.js memory in Docker

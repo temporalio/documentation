@@ -1,16 +1,8 @@
 # Docs Assembly Workflow report
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-Last assembled: Thursday August 31 2023 09:33:39 AM -0700
-=======
-Last assembled: Monday August 28 2023 11:25:43 AM -0700
->>>>>>> 1724711b (Update TS docker build information)
-=======
-Last assembled: Tuesday August 29 2023 13:18:11 PM -0700
->>>>>>> 4736888d (Node 20 and bundling advice)
+Last assembled: Friday September 01 2023 07:12:06 AM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly
 
 94 guide configurations found.
 
