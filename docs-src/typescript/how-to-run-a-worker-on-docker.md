@@ -11,8 +11,7 @@ tags:
 
 :::note
 
-Before proceeding, we recommend referring to our [production sample](https://github.com/temporalio/samples-typescript/tree/main/production),
-which shows how to save the compiled workflow bundle to a file and avoid compilation overhead on worker startup.
+To improve worker startup time, we recommend preparing workflow bundles ahead-of-time. See our [productionsample](https://github.com/temporalio/samples-typescript/tree/main/production) for details.
 
 :::
 
