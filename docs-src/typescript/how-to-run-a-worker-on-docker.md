@@ -9,29 +9,37 @@ tags:
   - typescript
 ---
 
+:::note
+
+To improve worker startup time, we recommend preparing workflow bundles ahead-of-time. See our [productionsample](https://github.com/temporalio/samples-typescript/tree/main/production) for details.
+
+:::
+
 Workers based on the TypeScript SDK can be deployed and run as Docker containers.
 
-At this moment, we recommend using Node.js 18.
-(Node.js 20 has known issues.)
-Both `amd64` and `arm64` platforms are supported.
+We recommend an LTS Node.js release such as 18 or 20.
+Both `amd64` and `arm64` architectures are supported.
 A glibc-based image is required; musl-based images are _not_ supported (see below).
 
-The easiest way to deploy a TypeScript SDK Worker on Docker is to start with the `node:18-bullseye` image.
+The easiest way to deploy a TypeScript SDK Worker on Docker is to start with the `node:20-bullseye` image.
 For example:
 
 ```dockerfile
-FROM node:18-bullseye
+FROM node:20-bullseye
 
+# For better cache utilization, copy package.json and lock file first and install the dependencies before copying the
+# rest of the application and building.
 COPY . /app
 WORKDIR /app
 
+# Alternatively, run npm ci, which installs only dependencies specified in the lock file and is generally faster.
 RUN npm install --only=production \
     && npm run build
 
-CMD ["build/worker.js"]
+CMD ["npm", "start"]
 ```
 
-For smaller images and/or more secure deployments, it is also possible to use `-slim` Docker image variants (like `node:18-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs:18`) with the following caveats.
+For smaller images and/or more secure deployments, it is also possible to use `-slim` Docker image variants (like `node:20-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs20-debian11`) with the following caveats.
 
 ### Using `node:slim` images
 
@@ -44,7 +52,7 @@ For this reason, the `ca-certificates` package must be installed during the cons
 For example:
 
 ```dockerfile
-FROM node:18-bulleyes-slim
+FROM node:20-bullseye-slim
 
 RUN apt-get update \
     && apt-get install -y ca-certificates \
@@ -72,7 +80,7 @@ For example:
 ```dockerfile
 # -- BUILD STEP --
 
-FROM node:18-bulleyes AS builder
+FROM node:20-bullseye AS builder
 
 COPY . /app
 WORKDIR /app
@@ -82,12 +90,12 @@ RUN npm install --only=production \
 
 # -- RESULTING IMAGE --
 
-FROM gcr.io/distroless/nodejs:18
+FROM gcr.io/distroless/nodejs20-debian11
 
 COPY --from=builder /app /app
 WORKDIR /app
 
-CMD ["build/worker.js"]
+CMD ["node", "build/worker.js"]
 ```
 
 ### Properly configure Node.js memory in Docker
