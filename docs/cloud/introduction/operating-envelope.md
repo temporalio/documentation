@@ -61,7 +61,7 @@ For current system status and information about recent incidents, see [Temporal 
 
 ## Where is Temporal Cloud hosted and running? {#regions}
 
-Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS):
+Temporal Cloud currently runs in 11 regions in Amazon Web Services (AWS):
 
 | Area          | Code           | Region            |
 | ------------- | -------------- | ----------------- |
