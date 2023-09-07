@@ -61,9 +61,9 @@ For very complex and large-scale use cases, having at least some experience with
 
 - [Shielding from cancellation](https://docs.python.org/3/library/asyncio-task.html#shielding-from-cancellation)
 - Different Activity Types
-    - [Run in executor](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor)
-    - [ThreadPoolExecutor](https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor)
-    - [ProcessPoolExecutor](https://docs.python.org/3/library/concurrent.futures.html#processpoolexecutor)
+  - [Run in executor](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor)
+  - [ThreadPoolExecutor](https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor)
+  - [ProcessPoolExecutor](https://docs.python.org/3/library/concurrent.futures.html#processpoolexecutor)
 
 ### Testing and Debugging
 
@@ -86,10 +86,10 @@ For very complex and large-scale use cases, having at least some experience with
 
 - Software system design and architecture
 - Distributed systems and scalability
-    - Event-driven architectures
-    - Stateful vs stateless processes
-    - Scalability implications
-    - Fault tolerance
+  - Event-driven architectures
+  - Stateful vs stateless processes
+  - Scalability implications
+  - Fault tolerance
 
 ### Security
 
@@ -117,7 +117,6 @@ Additional Python code samples are in the [temporalio/samples-python](https://gi
   - [Temporal 101: Learn Temporal with Python](https://temporal.io/blog/temporal-101-learn-temporal-with-python)
   - [Temporal Python 1.0.0 – A Durable, Distributed Asyncio Event Loop](https://temporal.io/blog/durable-distributed-asyncio-event-loop)
   - [Python SDK: Your first Application](https://temporal.io/blog/python-sdk-your-first-application)
-
 
 ## What are the supported Python versions?
 
