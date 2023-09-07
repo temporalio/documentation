@@ -2,7 +2,7 @@
 id: index
 title: tcld command reference
 sidebar_label: CLI (tcld)
-description: How to use Temporal Cloud's tcld operational tool
+description: The Temporal Cloud CLI (tcld) is a command-line tool that you can use to interact with Temporal Cloud.
 toc_max_heading_level: 4
 keywords:
 - operation-guide

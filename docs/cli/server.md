@@ -2,7 +2,7 @@
 id: server
 title: Temporal CLI server command reference
 sidebar_label: server
-description: How to use the Temporal CLI server command
+description: Effectively manage the Temporal Server by using the Temporal command-line interface (CLI). Explore documentation about administration and configuration.
 toc_max_heading_level: 4
 keywords:
 - cli reference

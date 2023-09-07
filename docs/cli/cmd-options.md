@@ -2,7 +2,7 @@
 id: cmd-options
 title: Temporal CLI command options reference
 sidebar_label: cmd options
-description: How to use the Temporal CLI command options
+description: Explore the command-line options available in the Temporal CLI. Customize and configure various aspects of the CLI tool for seamless Workflow management.
 toc_max_heading_level: 4
 keywords:
 - actions

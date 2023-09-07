@@ -9,7 +9,7 @@ tags:
   - explanation
 ---
 
-Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS):
+Temporal Cloud currently runs in 11 regions in Amazon Web Services (AWS):
 
 | Area          | Code           | Region            |
 | ------------- | -------------- | ----------------- |

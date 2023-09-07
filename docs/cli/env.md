@@ -2,7 +2,7 @@
 id: env
 title: Temporal CLI env command reference
 sidebar_label: env
-description: How to use the Temporal CLI env command
+description: Discover the Temporal CLI environment configuration documentation. Set up and customize various aspects of your environment.
 toc_max_heading_level: 4
 keywords:
 - cli reference
