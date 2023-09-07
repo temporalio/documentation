@@ -111,7 +111,7 @@ As Temporal continues working on improving latencies, these numbers will progres
 Latency observed from the Temporal Client is influenced by other system components like the Codec Server, egress proxy, and the network itself.
 Increased latency might result from concurrent operations on the same Workflow Execution.
 
-## What are the Temporal Cloud default limits? {#temporal-cloud-default-limits}
+## What are the Temporal Cloud default limits? {#default-limits}
 
 This section describes many of the default settings and limits that apply to Workflow Executions and do not pertain to the entire Temporal Cloud account or individual Namespaces in Temporal Cloud, unless otherwise specified.
 

@@ -1,7 +1,7 @@
 ---
 slug: temporal-cloud-limits-sheet
 title: What are the Temporal Cloud default limits?
-sidebar_label: Temporal Cloud default limits
+sidebar_label: Default limits
 description: This section describes many of the default settings and limits that apply to Workflow Executions in Temporal Cloud.
 tags:
   - error
