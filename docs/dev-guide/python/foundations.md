@@ -9,12 +9,10 @@ keywords:
 - activity
 - activity definition
 - activity execution
-- api reference
 - cli
 - cli-feature
 - cluster
 - code sample
-- code samples
 - developer-guide
 - developer-guide-doc-type
 - guide-context
@@ -35,12 +33,10 @@ tags:
 - activity
 - activity-definition
 - activity-execution
-- api-reference
 - cli
 - cli-feature
 - cluster
 - code-sample
-- code-samples
 - developer-guide
 - developer-guide-doc-type
 - guide-context
@@ -69,7 +65,6 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 In this section you can find the following:
 
 - [Run a development Cluster](#run-a-development-server)
-- [Install your SDK](#install-a-temporal-sdk)
 - [Connect to a dev Cluster](#connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Develop a Workflow](#develop-workflows)
@@ -162,38 +157,6 @@ For a full list of options, run:
 ```bash
 temporal server start-dev --help
 ```
-
-## How to install a Temporal SDK {#install-a-temporal-sdk}
-
-A [Temporal SDK](/temporal#temporal-sdk) provides a framework for [Temporal Application](/temporal#temporal-application) development.
-
-An SDK provides you with the following:
-
-- A [Temporal Client](/temporal#temporal-client) to communicate with a [Temporal Cluster](/clusters#).
-- APIs to develop [Workflows](/workflows#).
-- APIs to create and manage [Worker Processes](/workers#worker).
-- APIs to author [Activities](/activities#activity-definition).
-
-[![Python 3.7+](https://img.shields.io/pypi/pyversions/temporalio.svg?style=for-the-badge)](https://pypi.org/project/temporalio)
-[![PyPI](https://img.shields.io/pypi/v/temporalio.svg?style=for-the-badge)](https://pypi.org/project/temporalio)
-
-To install the latest version of the Temporal Python package, run the following command.
-
-```bash
-pip install temporalio
-```
-
-### How to find the Python SDK API reference {#api-reference}
-
-The Temporal Python SDK API reference is published on [python.temporal.io](https://python.temporal.io/index.html).
-
-### Where are SDK-specific code examples? {#code-samples}
-
-You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio?q=samples-&type=all&language=&sort=).
-
-Additionally, several of the [Tutorials](https://learn.temporal.io) are backed by a fully executable template application.
-
-- [Python samples library](https://github.com/temporalio/samples-python)
 
 ## How to connect a Temporal Client to a Temporal Cluster {#connect-to-a-dev-cluster}
 

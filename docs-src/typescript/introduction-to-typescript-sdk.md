@@ -9,6 +9,12 @@ tags:
 
 Welcome to the Temporal TypeScript SDK developer's guide!
 
+:::success Temporal TypeScript SDK API reference
+
+https://typescript.temporal.io/
+
+:::
+
 After almost two years of development, the Temporal TypeScript SDK was first released on July 26, 2022.
 Ever since, the SDK has been enabling JavaScript and TypeScript developers to build [Temporal Applications](/concepts/what-is-a-temporal-application).
 
@@ -35,7 +41,7 @@ Temporal abstracts a lot of the complexity of distributed systems, but to unlock
     - Familiarity with object-oriented programming concepts like inheritance, encapsulation, and polymorphism.
     - Understanding of composite types like `Array<T>`, `Promise<T>`, and `{ [key: string]: T}`.
     - Basic understanding of decorators.
-    - Familiarity with Node.js because the SDK uses the Node.js runtime. 
+    - Familiarity with Node.js because the SDK uses the Node.js runtime.
 - Tools
   - Required
     - Package managers, such as npm, pnpm, or yarn.

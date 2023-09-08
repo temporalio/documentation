@@ -1,0 +1,19 @@
+{
+    "file_name": "introduction.md",
+    "id": "introduction",
+    "slug": "/dev-guide/java/introduction",
+    "file_dir": "dev-guide/javalang",
+    "title": "Introduction to the Temporal Java SDK",
+    "sidebar_label": "Introduction",
+    "sidebar_position": 1,
+    "description": "The Temporal Java SDK developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "java/introduction-to-java-sdk"
+        }
+    ]
+}

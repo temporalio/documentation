@@ -2,7 +2,7 @@
 id: foundations
 title: Go SDK developer's guide - Foundations
 sidebar_label: Foundations
-sidebar_position: 1
+sidebar_position: 2
 description: The Foundations section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/go/foundations
 toc_max_heading_level: 4
@@ -12,7 +12,6 @@ keywords:
 - activity execution
 - activity options
 - activity parameters
-- api
 - cli
 - cli-feature
 - client
@@ -20,7 +19,6 @@ keywords:
 - cluster
 - cluster-feature
 - code sample
-- code samples
 - deterministic
 - developer-guide-doc-type
 - go sdk
@@ -52,7 +50,6 @@ tags:
 - activity-execution
 - activity-options
 - activity-parameters
-- api
 - cli
 - cli-feature
 - client
@@ -60,7 +57,6 @@ tags:
 - cluster
 - cluster-feature
 - code-sample
-- code-samples
 - deterministic
 - developer-guide-doc-type
 - go-sdk
@@ -98,7 +94,6 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 In this section you can find the following:
 
 - [Run a development Cluster](#run-a-development-server)
-- [Install your SDK](#install-a-temporal-sdk)
 - [Connect to a dev Cluster](#connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Develop a Workflow](#develop-workflows)
@@ -191,53 +186,6 @@ For a full list of options, run:
 ```bash
 temporal server start-dev --help
 ```
-
-## How to install a Temporal SDK {#install-a-temporal-sdk}
-
-A [Temporal SDK](/temporal#temporal-sdk) provides a framework for [Temporal Application](/temporal#temporal-application) development.
-
-An SDK provides you with the following:
-
-- A [Temporal Client](/temporal#temporal-client) to communicate with a [Temporal Cluster](/clusters#).
-- APIs to develop [Workflows](/workflows#).
-- APIs to create and manage [Worker Processes](/workers#worker).
-- APIs to author [Activities](/activities#activity-definition).
-
-[![Build Status](https://badge.buildkite.com/ce6df3b1a8b375270261ae70fb2d2756af298fef3a0dac4d20.svg?theme=github&branch=master)](https://buildkite.com/temporal/temporal-go-client) [![Coverage Status](https://coveralls.io/repos/github/temporalio/temporal-go-sdk/badge.svg?branch=master)](https://coveralls.io/github/temporalio/temporal-go-sdk?branch=master) [![Go reference](https://pkg.go.dev/badge/go.temporal.io/sdk)](https://pkg.go.dev/go.temporal.io/sdk)
-
-Add the [Temporal Go SDK](https://github.com/temporalio/sdk-go) to your project:
-
-```bash
-go get go.temporal.io/sdk
-```
-
-Or clone the Go SDK repo to your preferred location:
-
-```bash
-git clone git@github.com:temporalio/sdk-go.git
-```
-
-### How to find the Go SDK API reference {#api-reference}
-
-The Temporal Go SDK API reference is published on [pkg.go.dev](https://pkg.go.dev/go.temporal.io/sdk).
-
-- Short link: [`t.mp/go-api`](https://t.mp/go-api)
-
-### Where are SDK-specific code examples? {#code-samples}
-
-You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio?q=samples-&type=all&language=&sort=).
-
-Additionally, several of the [Tutorials](https://learn.temporal.io) are backed by a fully executable template application.
-
-- [Go Samples repo](https://github.com/temporalio/samples-go#samples-directory)
-- [Background Check application](https://github.com/temporalio/background-checks): Provides a non-trivial Temporal Application implementation in conjunction with [application documentation](https://learn.temporal.io/examples/go/background-checks/).
-- [Hello world application template in Go](https://github.com/temporalio/hello-world-project-template-go): Provides a quick-start development app for users.
-  This sample works in conjunction with the ["Hello World!" from scratch tutorial in Go](https://learn.temporal.io/getting_started/go/hello_world_in_go/).
-- [Money transfer application template in Go](https://github.com/temporalio/money-transfer-project-template-go): Provides a quick-start development app for users.
-  It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Go](https://learn.temporal.io/getting_started/go/first_program_in_go/).
-- [Subscription-style Workflow Definition in Go](https://github.com/temporalio/subscription-workflow-project-template-go): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
-- [eCommerce application example in Go](https://github.com/temporalio/temporal-ecommerce): Showcases a per-user shopping cart–style Workflow Definition that includes an API for adding and removing items from the cart as well as a web UI.
-  This application sample works in conjunction with the [eCommerce in Go tutorial](https://temporal.io/blog/build-an-ecommerce-app-with-temporal-part-1).
 
 ## How to connect a Temporal Client to a Temporal Cluster {#connect-to-a-dev-cluster}
 

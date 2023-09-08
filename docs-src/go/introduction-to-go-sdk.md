@@ -9,6 +9,12 @@ tags:
 
 Welcome to the Temporal Go SDK developer’s guide!
 
+:::success Temporal Go SDK API reference
+
+https://pkg.go.dev/go.temporal.io/sdk
+
+:::
+
 Temporal Python SDK first released on September 29, 2020, and has been enabling Python developers to build Temporal Applications ever since.
 
 This guide documents the concepts, features, and tools needed to create, test, and execute Temporal applications in Go.

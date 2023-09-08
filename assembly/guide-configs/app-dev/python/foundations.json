@@ -20,26 +20,6 @@
     },
     {
       "type": "h2",
-      "id": "python/add-sdk"
-    },
-    {
-      "type": "p",
-      "id": "python/index"
-    },
-    {
-      "type": "h3",
-      "id": "python/api-reference-python"
-    },
-    {
-      "type": "h3",
-      "id": "python/code-samples"
-    },
-    {
-      "type": "p",
-      "id": "python/code-samples-python"
-    },
-    {
-      "type": "h2",
       "id": "python/connect-to-a-dev-cluster"
     },
     {
