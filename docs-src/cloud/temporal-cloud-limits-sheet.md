@@ -9,7 +9,7 @@ tags:
   - limits
 ---
 
-This section describes many of the default settings and limits that apply application operations in Temporal Cloud.
+This section describes many of the default settings and limits that apply to application operations in Temporal Cloud.
 
 Some of these default limits are configurable by sending a [ticket](/cloud/support#support-ticket) to our support team.
 
