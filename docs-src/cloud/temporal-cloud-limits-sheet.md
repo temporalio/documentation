@@ -22,7 +22,7 @@ This default limit is configurable by creating a [support ticket](/cloud/support
 ### What is the gRPC limit for each message received?
 
 Each gRPC message received has a limit of 4 MB.
-This limit applies to the entire Temporal platform at every endpoint.
+This limit applies to all gRPC endpoints across the Temporal Platform.
 
 ### What is the limit for History transaction size?
 
