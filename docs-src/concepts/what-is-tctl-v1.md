@@ -13,13 +13,13 @@ tags:
 The public preview of [Temporal CLI](/cli) is now available.
 We encourage you to begin using it and to provide feedback.
 
-After we release Temporal CLI v1, we will deprecate tctl v1.17.
+After we release Temporal CLI v1, we will deprecate tctl.
 
 :::
 
 :::note
 
-This documentation reflects tctl version 1.17
+This documentation reflects tctl version 1.17.
 
 :::
 
