@@ -113,7 +113,7 @@ Increased latency might result from concurrent operations on the same Workflow E
 
 ## What are the Temporal Cloud default limits? {#default-limits}
 
-This section describes many of the default settings and limits that apply application operations in Temporal Cloud.
+This section describes many of the default settings and limits that apply to application operations in Temporal Cloud.
 
 Some of these default limits are configurable by sending a [ticket](/cloud/support#support-ticket) to our support team.
 
@@ -126,7 +126,7 @@ This default limit is configurable by creating a [support ticket](/cloud/support
 ### What is the gRPC limit for each message received?
 
 Each gRPC message received has a limit of 4 MB.
-This limit applies to the entire Temporal platform at every endpoint.
+This limit applies to all gRPC endpoints across the Temporal Platform.
 
 ### What is the limit for History transaction size?
 
