@@ -30,6 +30,10 @@
     {
       "type": "h2",
       "id": "cloud/operating-envelope-latency"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/temporal-cloud-limits-sheet"
     }
   ]
 }
