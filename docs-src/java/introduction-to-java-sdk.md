@@ -1,7 +1,7 @@
 ---
 id: introduction-to-java-sdk
 title: Introduction to the Temporal Java SDK developer’s guide
-description: Welcome to Temporal Java SDK developer’s guide!
+description: The Java SDK provides access to the Temporal programming model using idiomatic Java programming paradigms.
 sidebar_label: Introduction
 tags:
   - dev guide
@@ -19,11 +19,7 @@ Short link: https://t.mp/java-api
 
 :::
 
-The open source [Temporal Java SDK](https://github.com/temporalio/sdk-java) alpha version first released on March 28, 2020 and has been enabling Java developers to build Temporal Applications ever since.
-
-The Temporal Java SDK developers guide documents the concepts, features, and tools that you’ll use to create, test, and execute Temporal applications in Java.
-
-The Java SDK and it contributors have crafted a developer experience that aims to combine and provide both the benefits of the Temporal programming model and idiomatic Java programming paradigms.
+The open source [Temporal Java SDK](https://github.com/temporalio/sdk-java) was released on March 28, 2020. The Temporal Java SDK developers guide documents the concepts, features, and tools that you’ll use to create, test, and execute Temporal applications in Java.
 
 ### Supported runtimes
 
@@ -59,9 +55,9 @@ compile group: 'io.temporal', name: 'temporal-sdk', version: 'N.N.N'
 
 **What Java programming skills and experiences should a developer have to succeed with the Java SDK?**
 
-The Temporal Platform enables developers to build a wide range of applications that serve a wide range of use cases.
+The Temporal Platform enables developers to build a wide range of applications that serve a variety of use cases.
 
-We recommend that developers are equipped with at least a moderate level of experience in practicing the following skills to develop production-level Temporal Applications:
+We recommend that developers are equipped with some of the following skills to develop production-level Temporal Applications:
 
 :::success Recommended
 
@@ -158,5 +154,7 @@ For complex and large-scale use cases, having at least some experience with a va
 ### Contribution
 
 **How to contribute to the Temporal Java SDK?**
+
+Like essentially all of Temporal, Temporal Java is MIT licensed, and open source contributions are very welcome. Join us in the #java-sdk channel in [Temporal Slack](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
 
 We'd love your help in improving the Temporal Java SDK. Please review our [contribution guidelines](https://github.com/temporalio/sdk-java/blob/master/CONTRIBUTING.md).
