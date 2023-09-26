@@ -158,4 +158,4 @@ For details on setting the Codec Server endpoint, see [Codec Server setup](/prod
 
 ### Labs Mode
 
-The Web UI provides a Labs mode for users to try out upcoming, production-ready UI features and improvements. Features will move in and out of Labs mode according to demand and feedback. Labs mode can be turned on or off at any time.
+The Web UI provides a Labs mode for users to try out upcoming, production-ready UI features and improvements. Features will move in and out of Labs mode according to demand and feedback. Labs mode can be turned on or off at any time in the left navigation bar via the Labs icon. 
