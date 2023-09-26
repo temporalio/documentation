@@ -20,6 +20,26 @@
       "id": "clusters/how-to-install-temporal-cli"
     },
     {
+      "type": "h2",
+      "id": "typescript/add-sdk"
+    },
+    {
+      "type": "p",
+      "id": "typescript/index"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/api-reference-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/code-samples"
+    },
+    {
+      "type": "p",
+      "id": "typescript/code-samples-typescript"
+    },
+    {
       "type": "h3",
       "id": "typescript/how-to-import-an-ecmascript-module"
     },

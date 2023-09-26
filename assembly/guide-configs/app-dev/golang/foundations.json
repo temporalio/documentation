@@ -21,6 +21,26 @@
     },
     {
       "type": "h2",
+      "id": "go/add-sdk"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-use-the-go-sdk"
+    },
+    {
+      "type": "h3",
+      "id": "go/api-reference-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/code-samples"
+    },
+    {
+      "type": "p",
+      "id": "go/code-samples-go"
+    },
+    {
+      "type": "h2",
       "id": "go/connect-to-a-dev-cluster"
     },
     {

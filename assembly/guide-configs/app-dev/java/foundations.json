@@ -21,6 +21,26 @@
     },
     {
       "type": "h2",
+      "id": "java/add-sdk"
+    },
+    {
+      "type": "p",
+      "id": "java/index"
+    },
+    {
+      "type": "h3",
+      "id": "java/api-reference-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/code-samples"
+    },
+    {
+      "type": "p",
+      "id": "java/code-samples-java"
+    },
+    {
+      "type": "h2",
       "id": "java/how-to-create-a-temporal-client-in-java"
     },
     {
