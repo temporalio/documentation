@@ -11,12 +11,11 @@ tags:
 
 **What are the major components of Temporal SDKs?**
 
-Temporal SDKs offer developers with the following:
+Temporal SDKs offer developers the following:
 
 - A Temporal Client to communicate with a Temporal Cluster
-- APIs to develop application code Workflows & Activities
+- APIs to develop application code (Workflows & Activities)
 - APIs to configure and run Workers
-- A common library for code that’s used across the Client, Worker, and Workflow
 
 ![Temporal SDK components create a runtime across your environment and a Temporal Cluster](/diagrams/temporal-sdk-components.svg)
 
@@ -24,7 +23,7 @@ Let’s break down each one.
 
 ### Temporal Client
 
-A Temporal Client acts as a bridge of communication between the systems outside of Temporal and your application.
+A Temporal Client acts as the bridge for communication between your applications and the Cluster.
 The Client performs key functions that facilitate the execution of, management of, and communication with Workflows.
 
 The following code is an example using the Go SDK.
@@ -47,13 +46,13 @@ import (
 )
 
 func main() {
-  // Temporal Client setup code
+	// Temporal Client setup code
 	c, err := client.NewClient(client.Options{})
 	if err != nil {
 		log.Fatalln("Unable to create client", err)
 	}
 	defer c.Close()
-  // Prepare Workflow option and parameters
+	// Prepare Workflow option and parameters
 	workflowOptions := client.StartWorkflowOptions{
 		ID:        "loan-application-1",
 		TaskQueue: "loan-application-task-queue",
@@ -61,7 +60,7 @@ func main() {
 	applicantDetails := ApplicantDetails{
 		// ...
 	}
-  // Start the Workflow
+	// Start the Workflow
 	workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "loan-application-workflow", applicantDetails)
 	if err != nil {
 		// ...
@@ -71,12 +70,12 @@ func main() {
 ```
 
 Developers can then use the Client as the main entry point for interacting with the application through Temporal.
-From here, developers can now start or Signal Workflows, query the Workflow state etc.
-We can see in the example above how the developer has used the provided start method to start the Workflow upon the running of the function.
+Using that Client, developers may for example start or Signal Workflows, Query a Workflow's state, etc.
+We can see in the example above how the developer has used `ExecuteWorkflow` API to start a Workflow.
 
 ### APIs to Develop Workflows
 
-Workflows are defined as code as either a function or an object method, depending on the language.
+Workflows are defined as code: either a function or an object method, depending on the language.
 
 For example, the following is a valid Temporal Workflow in Go:
 
@@ -115,7 +114,7 @@ func LoanApplication(ctx workflow.Context, input *LoanApplicationWorkflowInput) 
 }
 ```
 
-A Workflow executes Activities (other functions), handles and sends messages (Queries, Signals, Updates), and interacts with other Workflows.
+A Workflow executes Activities (other functions that interact with external systems), handles and sends messages (Queries, Signals, Updates), and interacts with other Workflows.
 
 This Workflow code, while executing, can be paused, resumed, and migrated across physical machines without losing state.
 
@@ -169,7 +168,7 @@ func LoanApplicationWorkflow(ctx workflow.Context, applicantName string, loanAmo
 
 The level of abstraction that APIs offer enables the developer to focus on business logic without having to worry about the intricacies of distributed computing such as retries, or having to explicitly maintain a state machine and the intermediate state for each step of the process.
 
-Additionally, the state of the Workflow is automatically persisted so if a failure does occur, it may resume right where it left off.
+Additionally, the state of the Workflow is automatically persisted so if a failure does occur, it resumes right where it left off.
 
 ### APIs to create and manage Worker Processes
 
@@ -251,7 +250,7 @@ func LoanApplicationWorkflow(ctx workflow.Context, applicantName string, loanAmo
     if err != nil {
         return "", err
     }
-		// ...
+	// ...
     return notificationResult, nil
 }
 

@@ -13,4 +13,4 @@ They offer a [Temporal Client](/dev-guide/major-components#temporal-client) to i
 
 SDKs are more than just a development tool, however.
 The SDK APIs enable developers to write code in a particular pattern that mirrors real world processes.
-And the SDK's internal implementation, working in collaboration with the Temporal Cluster, steps through that code, guaranteeing execution progression during application runtime.
+The SDK's internal implementation, working in collaboration with the Temporal Cluster, steps through that code, guaranteeing execution progression during application runtime.

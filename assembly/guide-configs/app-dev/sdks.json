@@ -6,7 +6,7 @@
     "title": "About Temporal SDKs",
     "sidebar_label": "About the SDKs",
     "sidebar_position": 1,
-    "description": "Explore the components that make up a Temporal SDK and how it works to create a durable execution.",
+    "description": "Explore the components that make up a Temporal SDK and how they work to create a durable execution.",
     "use_description": false,
     "toc_max_heading_level": 4,
     "add_tabs_support": false,

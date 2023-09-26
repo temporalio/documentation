@@ -3,7 +3,7 @@ id: sdks
 title: About Temporal SDKs
 sidebar_label: About the SDKs
 sidebar_position: 1
-description: Explore the components that make up a Temporal SDK and how it works to create a durable execution.
+description: Explore the components that make up a Temporal SDK and how they work to create a durable execution.
 slug: /dev-guide/sdks
 toc_max_heading_level: 4
 keywords:
@@ -35,7 +35,7 @@ They offer a [Temporal Client](#temporal-client) to interact with the [Temporal 
 
 SDKs are more than just a development tool, however.
 The SDK APIs enable developers to write code in a particular pattern that mirrors real world processes.
-And the SDK's internal implementation, working in collaboration with the Temporal Cluster, steps through that code, guaranteeing execution progression during application runtime.
+The SDK's internal implementation, working in collaboration with the Temporal Cluster, steps through that code, guaranteeing execution progression during application runtime.
 
 ## What is a Temporal Application? {#temporal-application}
 
@@ -84,7 +84,7 @@ The Workflow defines the overarching business logic, encompassing tasks such as 
 
 :::caution Do not copy and use code
 
-The following is sudo code, for tested samples see your langauge SDK's developer's guide.
+The following is psuedocode, for tested samples see your langauge SDK's developer's guide.
 
 :::
 
@@ -106,26 +106,26 @@ In the event of an Activity failure, the SDK automatically initiates retries acc
 
 :::caution Do not copy and use code
 
-The following is sudo code, for tested samples see your langauge SDK's developer's guide.
+The following is psuedocode, for tested samples see your langauge SDK's developer's guide.
 
 :::
 
 ```
 func LoanApplicationWorkflow {
 
-  options = {
-    MaxAttempts: 3,
-    StartToCloseTimeout: 30min,
-    HeartbeatTimeout: 10min,
-  }
+    options = {
+      MaxAttempts: 3,
+      StartToCloseTimeout: 30min,
+      HeartbeatTimeout: 10min,
+    }
 
-  sdk.ExecuteActivity(CreditCheck, options)
+    sdk.ExecuteActivity(CreditCheck, options)
 
-  sdk.ExecuteActivity(AutomatedApproval)
+    sdk.ExecuteActivity(AutomatedApproval)
 
-  sdk.ExecuteActivity(NotifyApplicant)
+    sdk.ExecuteActivity(NotifyApplicant)
 
-  // ...
+    // ...
 }
 ```
 
@@ -135,19 +135,18 @@ Another quality of the SDKs lies in their ability to replay Workflow Executions,
 
 <div class="tdiw"><div class="tditw"><p class="tdit">The SDKs Replay code execution to continue from the last step</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/replay-basic.svg" alt="The SDKs Replay code execution to continue from the last step" height="338" width="1401" /></div></div>
 
-We will delve into this idea more later, but for now, it signifies that the SDKs can automatically continue a process from the point of interruption, should a transient failure occur.
+We will delve into this idea more later, but for now, it signifies that the SDKs can automatically continue a process from the point of interruption, should a failure occur.
 This capability stems from the SDK's ability to persist each step the program takes.
 
 ## Temporal SDKs major components {#major-components}
 
 **What are the major components of Temporal SDKs?**
 
-Temporal SDKs offer developers with the following:
+Temporal SDKs offer developers the following:
 
 - A Temporal Client to communicate with a Temporal Cluster
-- APIs to develop application code Workflows & Activities
+- APIs to develop application code (Workflows & Activities)
 - APIs to configure and run Workers
-- A common library for code that’s used across the Client, Worker, and Workflow
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Temporal SDK components create a runtime across your environment and a Temporal Cluster</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-sdk-components.svg" alt="Temporal SDK components create a runtime across your environment and a Temporal Cluster" height="870" width="1246" /></div></div>
 
@@ -155,7 +154,7 @@ Let’s break down each one.
 
 ### Temporal Client
 
-A Temporal Client acts as a bridge of communication between the systems outside of Temporal and your application.
+A Temporal Client acts as the bridge for communication between your applications and the Cluster.
 The Client performs key functions that facilitate the execution of, management of, and communication with Workflows.
 
 The following code is an example using the Go SDK.
@@ -178,13 +177,13 @@ import (
 )
 
 func main() {
-  // Temporal Client setup code
+	// Temporal Client setup code
 	c, err := client.NewClient(client.Options{})
 	if err != nil {
 		log.Fatalln("Unable to create client", err)
 	}
 	defer c.Close()
-  // Prepare Workflow option and parameters
+	// Prepare Workflow option and parameters
 	workflowOptions := client.StartWorkflowOptions{
 		ID:        "loan-application-1",
 		TaskQueue: "loan-application-task-queue",
@@ -192,7 +191,7 @@ func main() {
 	applicantDetails := ApplicantDetails{
 		// ...
 	}
-  // Start the Workflow
+	// Start the Workflow
 	workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "loan-application-workflow", applicantDetails)
 	if err != nil {
 		// ...
@@ -202,12 +201,12 @@ func main() {
 ```
 
 Developers can then use the Client as the main entry point for interacting with the application through Temporal.
-From here, developers can now start or Signal Workflows, query the Workflow state etc.
-We can see in the example above how the developer has used the provided start method to start the Workflow upon the running of the function.
+Using that Client, developers may for example start or Signal Workflows, Query a Workflow's state, etc.
+We can see in the example above how the developer has used `ExecuteWorkflow` API to start a Workflow.
 
 ### APIs to Develop Workflows
 
-Workflows are defined as code as either a function or an object method, depending on the language.
+Workflows are defined as code: either a function or an object method, depending on the language.
 
 For example, the following is a valid Temporal Workflow in Go:
 
@@ -246,7 +245,7 @@ func LoanApplication(ctx workflow.Context, input *LoanApplicationWorkflowInput) 
 }
 ```
 
-A Workflow executes Activities (other functions), handles and sends messages (Queries, Signals, Updates), and interacts with other Workflows.
+A Workflow executes Activities (other functions that interact with external systems), handles and sends messages (Queries, Signals, Updates), and interacts with other Workflows.
 
 This Workflow code, while executing, can be paused, resumed, and migrated across physical machines without losing state.
 
@@ -300,7 +299,7 @@ func LoanApplicationWorkflow(ctx workflow.Context, applicantName string, loanAmo
 
 The level of abstraction that APIs offer enables the developer to focus on business logic without having to worry about the intricacies of distributed computing such as retries, or having to explicitly maintain a state machine and the intermediate state for each step of the process.
 
-Additionally, the state of the Workflow is automatically persisted so if a failure does occur, it may resume right where it left off.
+Additionally, the state of the Workflow is automatically persisted so if a failure does occur, it resumes right where it left off.
 
 ### APIs to create and manage Worker Processes
 
@@ -382,7 +381,7 @@ func LoanApplicationWorkflow(ctx workflow.Context, applicantName string, loanAmo
     if err != nil {
         return "", err
     }
-		// ...
+	// ...
     return notificationResult, nil
 }
 
@@ -399,7 +398,8 @@ func LoanCreditCheckActivity(ctx context.Context, loanAmount int) (string, error
 
 The Temporal Cluster functions more as a choreographer than a conductor. Rather than directly assigning tasks to Workers, the Cluster arranges the Tasks into a Task Queue while Workers poll the Task Queue. Developers may create a fleet of Workers and tune them so that a Task is picked up as soon as it is available. If a Worker goes down, Tasks can wait until the next Worker is available.
 
-A Workflow might request to execute an Activity, start a Timer, or start a Child Workflow, each of which translates into Commands, dispatched to the Temporal Cluster, at which point the Cluster translates the Commands into Events that become part of a Workflow Execution’s Event History.
+A Workflow might request to execute an Activity, start a Timer, or start a Child Workflow, each of which translates into a Command, dispatched to the Temporal Cluster.
+In addition to acting on these Commands, the Cluster documents that interaction by appending their corresponding Events into to the Workflow Execution's Event History.
 
 Take for instance the call to execute an Activity. When a Workflow invokes it, the Worker doesn’t immediately execute that Activity code. Instead, it generates a ScheduleActivityTask Command, dispatching it to the Cluster. In response, the Cluster queues up a new Activity Task. Only when a Worker finds itself free, it collects the task and begins executing the Activity code.
 

@@ -15,7 +15,8 @@ tags:
 
 The Temporal Cluster functions more as a choreographer than a conductor. Rather than directly assigning tasks to Workers, the Cluster arranges the Tasks into a Task Queue while Workers poll the Task Queue. Developers may create a fleet of Workers and tune them so that a Task is picked up as soon as it is available. If a Worker goes down, Tasks can wait until the next Worker is available.
 
-A Workflow might request to execute an Activity, start a Timer, or start a Child Workflow, each of which translates into Commands, dispatched to the Temporal Cluster, at which point the Cluster translates the Commands into Events that become part of a Workflow Execution’s Event History.
+A Workflow might request to execute an Activity, start a Timer, or start a Child Workflow, each of which translates into a Command, dispatched to the Temporal Cluster.
+In addition to acting on these Commands, the Cluster documents that interaction by appending their corresponding Events into to the Workflow Execution's Event History.
 
 Take for instance the call to execute an Activity. When a Workflow invokes it, the Worker doesn’t immediately execute that Activity code. Instead, it generates a ScheduleActivityTask Command, dispatching it to the Cluster. In response, the Cluster queues up a new Activity Task. Only when a Worker finds itself free, it collects the task and begins executing the Activity code.
 

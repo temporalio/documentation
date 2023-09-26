@@ -19,7 +19,7 @@ The Workflow defines the overarching business logic, encompassing tasks such as 
 
 :::caution Do not copy and use code
 
-The following is sudo code, for tested samples see your langauge SDK's developer's guide.
+The following is psuedocode, for tested samples see your langauge SDK's developer's guide.
 
 :::
 
@@ -41,26 +41,26 @@ In the event of an Activity failure, the SDK automatically initiates retries acc
 
 :::caution Do not copy and use code
 
-The following is sudo code, for tested samples see your langauge SDK's developer's guide.
+The following is psuedocode, for tested samples see your langauge SDK's developer's guide.
 
 :::
 
 ```
 func LoanApplicationWorkflow {
 
-  options = {
-    MaxAttempts: 3,
-    StartToCloseTimeout: 30min,
-    HeartbeatTimeout: 10min,
-  }
+    options = {
+      MaxAttempts: 3,
+      StartToCloseTimeout: 30min,
+      HeartbeatTimeout: 10min,
+    }
 
-  sdk.ExecuteActivity(CreditCheck, options)
+    sdk.ExecuteActivity(CreditCheck, options)
 
-  sdk.ExecuteActivity(AutomatedApproval)
+    sdk.ExecuteActivity(AutomatedApproval)
 
-  sdk.ExecuteActivity(NotifyApplicant)
+    sdk.ExecuteActivity(NotifyApplicant)
 
-  // ...
+    // ...
 }
 ```
 
@@ -70,5 +70,5 @@ Another quality of the SDKs lies in their ability to replay Workflow Executions,
 
 ![The SDKs Replay code execution to continue from the last step](/diagrams/replay-basic.svg)
 
-We will delve into this idea more later, but for now, it signifies that the SDKs can automatically continue a process from the point of interruption, should a transient failure occur.
+We will delve into this idea more later, but for now, it signifies that the SDKs can automatically continue a process from the point of interruption, should a failure occur.
 This capability stems from the SDK's ability to persist each step the program takes.
