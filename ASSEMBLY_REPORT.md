@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday September 20 2023 07:57:43 AM -0500
+Last assembled: Tuesday September 26 2023 10:27:43 AM -0600
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 94 guide configurations found.
 
