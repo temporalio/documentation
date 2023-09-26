@@ -2,7 +2,7 @@
 id: task-queue
 title: Temporal CLI task-queue command reference
 sidebar_label: task-queue
-description: How to use the Temporal CLI task-queue command
+description: Efficiently manage Task Queues with the Temporal CLI. Create, configure, and monitor Task Queues to optimize Workflow Execution and Task processing.
 toc_max_heading_level: 4
 keywords:
 - cli reference

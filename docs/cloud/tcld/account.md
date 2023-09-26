@@ -2,7 +2,7 @@
 id: account
 title: tcld account command reference
 sidebar_label: account
-description: How to use Temporal Cloud's tcld account command
+description: The Temporal Cloud CLI (tcld) account commands manage accounts in Temporal Cloud. Get information about an account and configure the metrics endpoint.
 toc_max_heading_level: 4
 keywords:
 - cli reference

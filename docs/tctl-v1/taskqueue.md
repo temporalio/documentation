@@ -2,7 +2,7 @@
 id: taskqueue
 title: tctl v1.17 taskqueue command reference
 sidebar_label: taskqueue
-description: How to use the tctl v1.17 taskqueue command
+description: Explore the tctl Task Queue commands, which describe Task Queues and list the partitions of a Task Queue in a Temporal Cluster.
 toc_max_heading_level: 4
 keywords:
 - cli

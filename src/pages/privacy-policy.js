@@ -10,7 +10,7 @@ function PrivacyPolicy() {
     <Layout
       title="Temporal Technologies, Inc. Privacy Policy"
       permalink="/privacy-policy"
-      description="General information about Temporal's documentation."
+      description="Read the Temporal privacy policy to understand how your personal information is collected, used, and protected when interacting with Temporal's website and services."
     >
       <main className="margin-vert--lg container">
         <h1 id="temporal-technologies-inc-privacy-policy">

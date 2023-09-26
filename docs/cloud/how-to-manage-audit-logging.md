@@ -3,7 +3,7 @@ id: audit-logging
 title: How to manage Audit Logging in Temporal Cloud
 sidebar_label: Audit Logging
 sidebar_position: 8
-description: Create, consume, and manage Audit Logs.
+description: Audit Logging provides forensic access information at the account, user, and Namespace level. Configure, consume, troubleshoot, and delete audit logs.
 slug: /cloud/audit-logging
 toc_max_heading_level: 4
 keywords:

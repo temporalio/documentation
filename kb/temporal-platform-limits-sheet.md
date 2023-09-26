@@ -5,8 +5,16 @@ tags:
   - error
   - warn
   - limits
-date: 2023-04-28T00:00:00Z
+date: 2023-09-11T00:00:00Z
 ---
+
+:::caution
+
+This page will be removed in the near future.
+
+For the latest information on the Temporal Cloud limits, see [Temporal Clouds limits sheet](/cloud/operating-envelope#temporal-platform-limits-sheet).
+
+:::
 
 Running into limits can cause unexpected failures.
 Knowing the limits of Temporal can prevent that.
@@ -16,6 +24,12 @@ Errors are hard limits that fail when reached.
 Warnings are soft limits that produce a warning log on the server side.
 
 <!-- truncate -->
+
+:::note
+
+These limits apply specifically to each Workflow Execution and do not pertain to the entire Temporal Platform or individual Namespaces.
+
+:::
 
 - **Identifiers**: By default, the maximum length for identifiers (such as Workflow Id, Workflow Type, and Task Queue name) is 1000 characters.
   - This is configurable with the `limit.maxIDLength` dynamic config variable, set to 255 in [this SQL example](https://github.com/temporalio/docker-compose/blob/93d382ef9133e4cde8ce311de5153cd0cc9fbd0c/dynamicconfig/development-sql.yaml#L1-L2).
@@ -35,8 +49,8 @@ Warnings are soft limits that produce a warning log on the server side.
   - Temporal warns after 10,240 Events: `history size exceeds warn limit`.
   - Temporal errors after 51,200 Events: [history size exceeds error limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204).
   - This is configurable with [HistoryCountLimitError and HistoryCountLimitWarn](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
-- **Concurrent Action limit**
-  - We fail the following action Commands on Temporal Cloud if the concurrent running count exceeds 2,000:
+- **Concurrent limit**
+  - We fail the following action Commands on Temporal Cloud if the concurrent pending count exceeds 2,000:
     - `ScheduleActivityTask`
     - `SignalExternalWorkflowExecution`
     - `RequestCancelExternalWorkflowExecution`
@@ -46,6 +60,7 @@ Warnings are soft limits that produce a warning log on the server side.
     - `limit.numPendingSignals.error`
     - `limit.numPendingCancelRequests.error`
     - `limit.numPendingChildExecutions.error`
+  - By default, [Batch jobs](/cli/batch) are limited to one job at a time.
 - [Custom Search Attributes limits](/visibility/#custom-search-attributes-limits)
 
 For details on dynamic configuration keys, see [Dynamic configuration reference](/references/dynamic-configuration).

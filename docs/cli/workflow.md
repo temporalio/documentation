@@ -2,7 +2,7 @@
 id: workflow
 title: Temporal CLI workflow command reference
 sidebar_label: workflow
-description: How to use the Temporal CLI workflow command
+description: Effectively manage Workflows with the Temporal CLI. Explore comprehensive documentation on commands and options for Workflow management and monitoring.
 toc_max_heading_level: 4
 keywords:
 - cancellation

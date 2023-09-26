@@ -2,7 +2,7 @@
 id: workflow
 title: tctl v1.17 workflow command reference
 sidebar_label: workflow
-description: How to use the tctl v1.17 workflow command
+description: Explore the wide range of tctl Workflow commands for efficient management of Workflow Executions in a Temporal Cluster.
 toc_max_heading_level: 4
 keywords:
 - cli
