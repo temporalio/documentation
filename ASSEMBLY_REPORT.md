@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday September 08 2023 12:49:10 PM -0600
+Last assembled: Tuesday September 26 2023 12:24:36 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
 103 guide configurations found.
 
-1524 information nodes found.
+1536 information nodes found.
 
-1281 information nodes are attached to guides.
+1301 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -532,9 +532,13 @@ concepts/what-is-a-temporal-client -> #temporal-client
 
 concepts/what-is-a-worker-program -> /workers#worker-program
 
-go/add-sdk -> /dev-guide/go/foundations#install-a-temporal-sdk
+go/introduction-to-go-sdk -> /dev-guide/go/introduction#
 
-typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+java/introduction-to-java-sdk -> /dev-guide/java/introduction#
+
+python/introduction-to-python-sdk -> /dev-guide/python/introduction#
+
+typescript/introduction-to-typescript-sdk -> /dev-guide/typescript/introduction#
 
 clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
 
@@ -982,7 +986,11 @@ cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
 cli/cmd-options/first-execution-run-id -> /cli/cmd-options#first-execution-run-id
 
-dev-guide/what-are-the-official-sdks -> #official-sdks
+dev-guide/major-components -> #temporal-client
+
+dev-guide/temporal-application -> #temporal-application
+
+dev-guide/official-sdks -> #official-sdks
 
 typescript/testing -> /dev-guide/typescript/testing#replay
 
@@ -1010,8 +1018,6 @@ python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
-python/introduction-to-python-sdk -> /dev-guide/python/introduction#
-
 php/handle-signal -> #handle-signal
 
 php/add-sdk -> #install-a-temporal-sdk
@@ -1032,8 +1038,6 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
-java/introduction-to-java-sdk -> /dev-guide/java/introduction#
-
 java/foundations -> /dev-guide/java/foundations#
 
 go/testing -> /dev-guide/go/testing#replay
@@ -1047,17 +1051,5 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-typescript/introduction-to-typescript-sdk -> /dev-guide/typescript/introduction#
-
-dev-guide/major-components -> #temporal-client
-
-go/introduction-to-go-sdk -> /dev-guide/go/introduction#
-
-dev-guide/what-is-a-temporal-sdk -> #official-sdks
-
-dev-guide/official-sdks -> #official-sdks
-
-dev-guide/temporal-application -> #temporal-application
 
 

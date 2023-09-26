@@ -13,6 +13,7 @@ keywords:
 - developer-guide-doc-type
 - go
 - guide-context
+- how-to
 - how-to-doc-type
 - sdk
 - typescript
@@ -24,6 +25,7 @@ tags:
 - developer-guide-doc-type
 - go
 - guide-context
+- how-to
 - how-to-doc-type
 - sdk
 - typescript
@@ -133,6 +135,55 @@ For a full list of options, run:
 ```bash
 temporal server start-dev --help
 ```
+
+## How to install a Temporal SDK {#install-a-temporal-sdk}
+
+A [Temporal SDK](/temporal#temporal-sdk) provides a framework for [Temporal Application](/temporal#temporal-application) development.
+
+An SDK provides you with the following:
+
+- A [Temporal Client](/temporal#temporal-client) to communicate with a [Temporal Cluster](/clusters#).
+- APIs to develop [Workflows](/workflows#).
+- APIs to create and manage [Worker Processes](/workers#worker).
+- APIs to author [Activities](/activities#activity-definition).
+
+[![NPM](https://img.shields.io/npm/v/temporalio.svg?style=for-the-badge)](https://www.npmjs.com/search?q=author%3Atemporal-sdk-team)
+
+This project requires Node.js 14.18 or later.
+
+**Create a project**
+
+```bash
+npx @temporalio/create@latest ./your-app
+```
+
+**Add to an existing project**
+
+```bash
+npm install @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity @temporalio/common
+```
+
+:::note
+
+The TypeScript SDK is designed with TypeScript-first developer experience in mind, but it works equally well with JavaScript.
+
+:::
+
+### How to find the TypeScript SDK API reference {#api-reference}
+
+The Temporal TypeScript SDK API reference is published to [typescript.temporal.io](https://typescript.temporal.io).
+
+### Where are SDK-specific code examples? {#code-samples}
+
+You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio?q=samples-&type=all&language=&sort=).
+
+Additionally, several of the [Tutorials](https://learn.temporal.io) are backed by a fully executable template application.
+
+Use the [TypeScript samples library](https://github.com/temporalio/samples-typescript) stored on GitHub to demonstrate various capabilities of Temporal.
+
+**Where can I find video demos?**
+
+[Temporal TypeScript YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb).
 
 ### How to import an ECMAScript module {#ecmascript-modules}
 

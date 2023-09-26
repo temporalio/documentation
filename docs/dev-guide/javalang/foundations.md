@@ -8,8 +8,10 @@ slug: /dev-guide/java/foundations
 toc_max_heading_level: 4
 keywords:
 - Java
+- api reference
 - cli
 - cli-feature
+- code samples
 - developer-guide
 - developer-guide-doc-type
 - guide-context
@@ -20,8 +22,10 @@ keywords:
 - workers
 tags:
 - java
+- api-reference
 - cli
 - cli-feature
+- code-samples
 - developer-guide
 - developer-guide-doc-type
 - guide-context
@@ -132,6 +136,61 @@ For a full list of options, run:
 ```bash
 temporal server start-dev --help
 ```
+
+## How to install a Temporal SDK {#install-a-temporal-sdk}
+
+A [Temporal SDK](/temporal#temporal-sdk) provides a framework for [Temporal Application](/temporal#temporal-application) development.
+
+An SDK provides you with the following:
+
+- A [Temporal Client](/temporal#temporal-client) to communicate with a [Temporal Cluster](/clusters#).
+- APIs to develop [Workflows](/workflows#).
+- APIs to create and manage [Worker Processes](/workers#worker).
+- APIs to author [Activities](/activities#activity-definition).
+
+[![Build status](https://badge.buildkite.com/663f6d1be81be6700c28c242b35905f20b68c4fda7b2c7c4e3.svg?branch=master)](https://buildkite.com/temporal/java-sdk-public)
+
+Add the [Temporal Java SDK](https://github.com/temporalio/sdk-java) to your project as a dependency:
+
+**[Apache Maven](https://maven.apache.org/)**:
+
+```maven
+<dependency>
+  <groupId>io.temporal</groupId>
+  <artifactId>temporal-sdk</artifactId>
+  <version>1.17.0</version>
+</dependency>
+```
+
+**[Gradle Groovy DSL](https://gradle.org/)**:
+
+```groovy
+implementation 'io.temporal:temporal-sdk:1.17.0'
+```
+
+**Other**:
+
+Additional scripts for each SDK version are available here: [https://search.maven.org/artifact/io.temporal/temporal-sdk](https://search.maven.org/artifact/io.temporal/temporal-sdk).
+Select an SDK version to see available scripts.
+
+### How to find the Java SDK API reference {#api-reference}
+
+The Temporal Java SDK API reference is published on [javadoc.io](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html).
+
+- Short link: [`t.mp/java-api`](https://t.mp/java-api)
+
+### Where are SDK-specific code examples? {#code-samples}
+
+You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio?q=samples-&type=all&language=&sort=).
+
+Additionally, several of the [Tutorials](https://learn.temporal.io) are backed by a fully executable template application.
+
+- [Java samples library](https://github.com/temporalio/samples-java)
+- [Hello world application template in Java](https://github.com/temporalio/hello-world-project-template-java): Provides a quick-start development app for users.
+  Works in conjunction with the ["Hello World!" from scratch tutorial in Java](https://learn.temporal.io/getting_started/java/hello_world_in_java/).
+- [Money transfer application template in Java](https://github.com/temporalio/money-transfer-project-template-java): Provides a quick-start development app for users.
+  It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Java](https://learn.temporal.io/getting_started/java/first_program_in_java/).
+- [Subscription-style Workflow Definition in Java](https://github.com/temporalio/subscription-workflow-project-template-java): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
 
 ## How to create a Temporal Client in Java {#connect-to-a-dev-cluster}
 
