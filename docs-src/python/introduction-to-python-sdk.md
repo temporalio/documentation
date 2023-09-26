@@ -1,7 +1,7 @@
 ---
 id: introduction-to-python-sdk
 title: Introduction to the Temporal Python SDK developer's guide
-description: The Temporal Python SDK provides the benefits of both the Temporal programming model and the ease of writing in Python.
+description: The Python SDK provides access to the Temporal programming model using idiomatic Python programming paradigms.
 sidebar_label: Python SDK
 tags:
   - guide-context
@@ -15,14 +15,12 @@ https://python.temporal.io/
 
 :::
 
-The open source Temporal Python SDK alpha version first released on March 18, 2022, and has been enabling Python developers to build Temporal Applications ever since.
-
-The Python SDK and its contributors have crafted a developer experience that aims to combine and provide both the benefits of the Temporal programming model and idiomatic Python programming paradigms.
+The open source Temporal Python SDK was released on March 18, 2022. The Python SDK provides access to the Temporal programming model using idiomatic Python programming paradigms.
 
 ### What Python programming skills and experiences are useful when using the Python SDK?
 
 You can start working with the SDK with only Python knowledge.
-Temporal abstracts a lot of the complexity of distributed systems, but to unlock its full potential, having a broad base of knowledge will help you design more efficient and resilient systems.
+Temporal abstracts much of the complexity of distributed systems, but to unlock its full potential, having a broad base of knowledge will help you design more efficient and resilient systems.
 
 We recommend that developers possess at least a moderate level of experience in practicing the following skills to develop production-level Temporal Applications:
 
@@ -30,13 +28,7 @@ We recommend that developers possess at least a moderate level of experience in 
 
 - Python syntax and structure
 - Data types
-  - Strings
-  - Integers
-  - Lists
-  - Dictionaries
-- Control Statements
-  - Loops
-  - Conditionals
+- Control Statements (Loops, Conditionals)
 - Functions
 - Decorators
 - [Data Classes](https://docs.python.org/3/library/dataclasses.html)
@@ -53,7 +45,7 @@ We recommend that developers possess at least a moderate level of experience in 
 - Inheritance
 - Encapsulation
 
-For very complex and large-scale use cases, having at least some experience with a variation of the following could be helpful:
+For complex and large-scale use cases, having some experience with the following could be helpful:
 
 #### Advanced Language Features
 
@@ -125,6 +117,8 @@ Additional Python code samples are in the [temporalio/samples-python](https://gi
 - Python 3.7+
 
 ### How to contribute to the Temporal Python SDK
+
+Like essentially all of Temporal, Temporal Python is MIT licensed, and open source contributions are very welcome. Join us in the #python-sdk channel in [Temporal Slack](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
 
 We'd love your help in improving the Temporal Python SDK.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-python#development).

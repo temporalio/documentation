@@ -1,7 +1,7 @@
 ---
 id: introduction-to-go-sdk
 title: Introduction to the Temporal Go SDK developer's guide
-description: The Temporal Go SDK provides the benefits of both the Temporal programming model and the ease of writing in Go.
+description: The Go SDK provides access to the Temporal programming model using idiomatic Go programming paradigms.
 sidebar_label: Go SDK
 tags:
   - guide-context
@@ -15,9 +15,7 @@ https://pkg.go.dev/go.temporal.io/sdk
 
 :::
 
-Temporal Python SDK first released on September 29, 2020, and has been enabling Python developers to build Temporal Applications ever since.
-
-This guide documents the concepts, features, and tools needed to create, test, and execute Temporal applications in Go.
+The open source Temporal Go SDK was released on September 29, 2020. This guide documents the concepts, features, and tools needed to create, test, and execute Temporal applications in Go.
 
 ## What Go programming skills and experiences are useful when using the Go SDK?
 
@@ -31,9 +29,7 @@ We recommend that developers possess at least a moderate level of experience in 
 - Data types
   - [structs](https://pkg.go.dev/go/types@go1.21.0#Struct)
 - Operators
-- Control statements
-  - for loops
-  - conditionals
+- Control statements (loops, conditionals)
 - Basic input/output
 
 ### Object-oriented programming
@@ -46,6 +42,7 @@ We recommend that developers possess at least a moderate level of experience in 
 - Goroutines
 - Channels
 - Concurrency patterns - parallelism, producer-consumer, etc.
+  - The Temporal Go SDK provides [deterministic wrappers](https://community.temporal.io/t/workflow-determinism/4027) for Go's concurrency primitives
 - Context handling
 - Defer and panic handling
 - Error handling
@@ -59,9 +56,9 @@ In addition, developers should also have a beginner to moderate level of experie
 
 Developers should have some experience using a version control system, such as Git.
 
-For very complex and large-scale use cases, having at least some experience with a variation of the following could be helpful:
+For complex and large-scale use cases, having some experience with the following could be helpful:
 
-#### Golang deep dive
+#### Advanced Language Features
 
 - Reflection
 - Generics
@@ -124,6 +121,8 @@ Further resources for learning how to use the Go SDK include the following:
 - [go-patterns](https://github.com/tmrts/go-patterns): a comprehensive list of design patterns that apply to Go as a whole.
 
 ## How to contribute to the Temporal Go SDK?
+
+Like essentially all of Temporal, Temporal Go is MIT licensed, and open source contributions are very welcome. Join us in the #go-sdk channel in [Temporal Slack](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
 
 We'd love your help in improving the Temporal Go SDK.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-java/blob/master/CONTRIBUTING.md).

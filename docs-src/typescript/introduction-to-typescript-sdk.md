@@ -1,7 +1,7 @@
 ---
 id: introduction-to-typescript-sdk
 title: Introduction to the Temporal TypeScript SDK developer's guide
-description: The Temporal TypeScript SDK provides the benefits of both the Temporal programming model and the ease of writing in JavaScript or TypeScript.
+description: The TypeScript SDK provides access to the Temporal programming model using idiomatic JavaScript and TypeScript programming paradigms.
 sidebar_label: TypeScript SDK
 tags:
   - guide-context
@@ -15,15 +15,12 @@ https://typescript.temporal.io/
 
 :::
 
-After almost two years of development, the Temporal TypeScript SDK was first released on July 26, 2022.
-Ever since, the SDK has been enabling JavaScript and TypeScript developers to build [Temporal Applications](/concepts/what-is-a-temporal-application).
-
-This SDK and its contributors have crafted a developer experience that provides the benefits of both the Temporal programming model and the ease of writing in JavaScript or TypeScript.
+The Temporal TypeScript SDK was released on July 26, 2022. The TypeScript SDK provides access to the Temporal programming model using idiomatic JavaScript and TypeScript programming paradigms.
 
 ## What programming skills and experiences are useful when using the TypeScript SDK?
 
-You can start working with the SDK with only JavaScript knowledge.
-Temporal abstracts a lot of the complexity of distributed systems, but to unlock its full potential, having a broad base of knowledge will help you design more efficient and resilient systems.
+You can start working with the SDK with only TypeScript knowledge.
+Temporal abstracts much of the complexity of distributed systems, but to unlock its full potential, having a broad base of knowledge will help you design more efficient and resilient systems.
 
 - Core JavaScript or TypeScript knowledge
   - Required
@@ -88,6 +85,8 @@ Further resources for learning how to use the SDK include the following:
   - [How we use V8 isolates to enforce Workflow determinism](https://temporal.io/blog/intro-to-isolated-vm)
 
 ## How to contribute to the Temporal TypeScript SDK
+
+Like essentially all of Temporal, Temporal TypeScript is MIT licensed, and open source contributions are very welcome. Join us in the #typescript-sdk channel in [Temporal Slack](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
 
 We'd love your help in improving the Temporal TypeScript SDK.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-typescript/blob/main/CONTRIBUTING.md).
