@@ -257,11 +257,11 @@ export async function fileProcessingWorkflow(maxAttempts = 5): Promise<void> {
       return;
     } catch (err) {
       if (attempt === maxAttempts) {
-        console.log(`Final attempt (${attempt}) failed, giving up`);
+        log.warn('Final attempt failed, giving up', { attempt });
         throw err;
       }
 
-      console.log(`Attempt ${attempt} failed, retrying on a new Worker`);
+      log.error('Attempt failed, retrying on a new Worker', { attempt });
     }
   }
 }
