@@ -17,9 +17,9 @@ https://typescript.temporal.io/
 
 The Temporal TypeScript SDK developer's guide is arranged in the following way:
 
-- [Introduction to the TypeScript SDK](/typescript/introduction-to-typescript-sdk)
+- [**Introduction to the TypeScript SDK**](/typescript/introduction-to-typescript-sdk)
 
-- [Foundations](/dev-guide/typescript/foundations): The minimum things required to build and run a simple Workflow with a single Activity.
+- [**Foundations**](/dev-guide/typescript/foundations): The minimum things required to build and run a simple Workflow with a single Activity.
 
   - [Run a development Cluster](/dev-guide/typescript/foundations#run-a-dev-cluster)
   - [Add an SDK to your project](/dev-guide/typescript/foundations#add-your-sdk)
@@ -30,7 +30,7 @@ The Temporal TypeScript SDK developer's guide is arranged in the following way:
   - [Run a Worker Process](/dev-guide/typescript/foundations#run-worker-processes)
   - [Start a Workflow Execution](/dev-guide/typescript/foundations#start-workflow-execution)
 
-- [Features](/dev-guide/typescript/features): All the general features available to a Temporal Application.
+- [**Features**](/dev-guide/typescript/features): All the general features available to a Temporal Application.
 
   - [Signals](/dev-guide/typescript/features#signals)
   - [Queries](/dev-guide/typescript/features#queries)
@@ -43,14 +43,14 @@ The Temporal TypeScript SDK developer's guide is arranged in the following way:
   - [Schedules](/dev-guide/typescript/features#schedule-a-workflow)
   - [Cron Jobs](/dev-guide/typescript/features#temporal-cron-jobs)
 
-- [Observability](/dev-guide/typescript/observability): Methods for observing a Temporal Application.
+- [**Observability**](/dev-guide/typescript/observability): Methods for observing a Temporal Application.
 
   - [Metrics](/dev-guide/typescript/observability#metrics)
   - [Tracing](/dev-guide/typescript/observability#tracing)
   - [Logging](/dev-guide/typescript/observability#logging)
   - [Visibility](/dev-guide/typescript/observability#visibility)
 
-- [Worker performance](/dev-guide/worker-performance)
+- [**Worker performance**](/dev-guide/worker-performance)
 
   - [Metrics](/dev-guide/worker-performance#metrics)
   - [Configuration](/dev-guide/worker-performance#configuration)

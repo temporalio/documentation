@@ -15,7 +15,7 @@ https://typescript.temporal.io/
 
 :::
 
-The Temporal TypeScript SDK was released on July 26, 2022. The TypeScript SDK provides access to the Temporal programming model using idiomatic JavaScript and TypeScript programming paradigms.
+The Temporal TypeScript SDK released on July 26, 2022. The TypeScript SDK provides access to the Temporal programming model using idiomatic JavaScript and TypeScript programming paradigms.
 
 ## What programming skills and experiences are useful when using the TypeScript SDK?
 
@@ -54,10 +54,6 @@ Temporal abstracts much of the complexity of distributed systems, but to unlock 
     - Event-driven architecture, eventual consistency, partitioning, and replication.
     - Stateful versus stateless processes.
 
-## Where is the Temporal TypeScript SDK API reference?
-
-For the complete API reference, see [typescript.temporal.io](https://typescript.temporal.io/).
-
 ## Where can I find code samples?
 
 Code samples are integrated into this developer’s guide.
@@ -86,7 +82,7 @@ Further resources for learning how to use the SDK include the following:
 
 ## How to contribute to the Temporal TypeScript SDK
 
-Like essentially all of Temporal, Temporal TypeScript is MIT licensed, and open source contributions are very welcome. Join us in the #typescript-sdk channel in [Temporal Slack](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
+The Temporal TypeScript SDK is MIT licensed, and open source contributions are welcome. Join us in the #typescript-sdk channel in [Temporal Slack](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
 
 We'd love your help in improving the Temporal TypeScript SDK.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-typescript/blob/main/CONTRIBUTING.md).

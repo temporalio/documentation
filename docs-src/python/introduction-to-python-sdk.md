@@ -15,7 +15,7 @@ https://python.temporal.io/
 
 :::
 
-The open source Temporal Python SDK was released on March 18, 2022. The Python SDK provides access to the Temporal programming model using idiomatic Python programming paradigms.
+The open source Temporal Python SDK released on March 18, 2022. The Python SDK provides access to the Temporal programming model using idiomatic Python programming paradigms.
 
 ### What Python programming skills and experiences are useful when using the Python SDK?
 
@@ -118,7 +118,7 @@ Additional Python code samples are in the [temporalio/samples-python](https://gi
 
 ### How to contribute to the Temporal Python SDK
 
-Like essentially all of Temporal, Temporal Python is MIT licensed, and open source contributions are very welcome. Join us in the #python-sdk channel in [Temporal Slack](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
+The Temporal Python SDK is MIT licensed, and open source contributions are welcome. Join us in the #python-sdk channel in [Temporal Slack](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
 
 We'd love your help in improving the Temporal Python SDK.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-python#development).
