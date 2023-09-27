@@ -8,18 +8,16 @@ tags:
   - temporal application
 ---
 
-A Temporal Application comprises a set of [Temporal Workflow Executions](/concepts/what-is-a-workflow-execution).
-Developers create Temporal Applications, or Workflows, by using an [official Temporal SDK](/dev-guide/official-sdks).
+A Temporal Application is the code you write, comprised of [Workflow Definitions](/concepts/what-is-a-workflow-definition), [Activity Definitions](/concepts/what-is-a-workflow-definition), code used to configure [Temporal Clients](/dev-guide/temporal-application#temporal-client), and code used to configure and start [Workers](/concepts/what-is-a-worker).
+Developers create Temporal Applications using an [official Temporal SDK](/dev-guide/official-sdks).
 
-Each Temporal Workflow Execution exclusively accesses its local state, runs concurrently with all other Workflow Executions, and communicates with other Workflow Executions and the environment via message passing.
+Consider that the Workflow Definition code can be executed repeatedly.
+The Temporal Platform can concurrently support millions to billions of Workflow Executions, each of which representing an invoked Workflow Definition.
 
-A Temporal Application can incorporate millions to billions of Workflow Executions. Workflow Executions are lightweight components, consuming few compute resources.
-If a Workflow Execution suspends, such as when in a waiting state, it consumes no compute resources.
-
-A Temporal Workflow Execution is both resumable and recoverable, and it can react to external events.
+Additionally, Temporal Workflow Execution is both resumable and recoverable, and it can react to external events.
 
 - Resumable: The ability of a process to resume execution after suspending on an _awaitable_.
 - Recoverable: The ability of a process to resume execution after suspending due to a _failure_.
 - Reactive: The ability of a process to respond to external events.
 
-Hence, a Temporal Workflow Execution executes a [Temporal Workflow Definition](/concepts/what-is-a-workflow-definition), also known as a Temporal Workflow Function or your application code, exactly once and to completion, regardless of whether your code runs for seconds or years and in the presence of arbitrary load and failures.
+Hence, a Temporal Application can run for seconds or years in the presence of arbitrary load and failures.

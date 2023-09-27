@@ -39,21 +39,19 @@ The SDK's internal implementation, working in collaboration with the Temporal Cl
 
 ## What is a Temporal Application? {#temporal-application}
 
-A Temporal Application comprises a set of [Temporal Workflow Executions](/workflows#workflow-execution).
-Developers create Temporal Applications, or Workflows, by using an [official Temporal SDK](#official-sdks).
+A Temporal Application is the code you write, comprised of [Workflow Definitions](/workflows#workflow-definition), [Activity Definitions](/workflows#workflow-definition), code used to configure [Temporal Clients](#temporal-client), and code used to configure and start [Workers](/workers#worker).
+Developers create Temporal Applications using an [official Temporal SDK](#official-sdks).
 
-Each Temporal Workflow Execution exclusively accesses its local state, runs concurrently with all other Workflow Executions, and communicates with other Workflow Executions and the environment via message passing.
+Consider that the Workflow Definition code can be executed repeatedly.
+The Temporal Platform can concurrently support millions to billions of Workflow Executions, each of which representing an invoked Workflow Definition.
 
-A Temporal Application can incorporate millions to billions of Workflow Executions. Workflow Executions are lightweight components, consuming few compute resources.
-If a Workflow Execution suspends, such as when in a waiting state, it consumes no compute resources.
-
-A Temporal Workflow Execution is both resumable and recoverable, and it can react to external events.
+Additionally, Temporal Workflow Execution is both resumable and recoverable, and it can react to external events.
 
 - Resumable: The ability of a process to resume execution after suspending on an _awaitable_.
 - Recoverable: The ability of a process to resume execution after suspending due to a _failure_.
 - Reactive: The ability of a process to respond to external events.
 
-Hence, a Temporal Workflow Execution executes a [Temporal Workflow Definition](/workflows#workflow-definition), also known as a Temporal Workflow Function or your application code, exactly once and to completion, regardless of whether your code runs for seconds or years and in the presence of arbitrary load and failures.
+Hence, a Temporal Application can run for seconds or years in the presence of arbitrary load and failures.
 
 ## Official SDKs {#official-sdks}
 
@@ -454,6 +452,10 @@ When the Worker has capacity, it picks up this Task, and begin executing code.
 
 Each step of the Task, Scheduled, Started, Completed gets recorded into the Event History.
 
+- Scheduled means that the Cluster has added a Task to the Task Queue.
+- Started means that the Worker has dequeued the Task.
+- Completed means that the Worker finished executing the Task by responding to the Cluster.
+
 When the call to invoke the Activity is evaluated, the Worker suspends executing the code and sends a Command to the Temporal Cluster to schedule an Activity Task.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Worker suspends code execution and sends a Command to the Cluster</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/how-sdk-works-3.svg" alt="Worker suspends code execution and sends a Command to the Cluster" height="661" width="1481" /></div></div>
@@ -472,7 +474,7 @@ The Cluster creates a new Workflow Task which the Worker picks up.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">The Worker picks up the new Task</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/how-sdk-works-1.svg" alt="The Worker picks up the new Task" height="661" width="1481" /></div></div>
 
-This is when the SDK Worker Replays the Workflow code, uses the Event History as guidance on what to expect. If the Replay encounters an Event that doesn’t match up with what is expected from the code, a non determinism error is thrown.
+This is when the SDK Worker Replays the Workflow code, uses the Event History as guidance on what to expect. If the Replay encounters an Event that doesn’t match up with what is expected from the code, a [non-determinism](/references/errors#non-deterministic-error) error gets thrown.
 
 If there is alignment, the Worker continues evaluating code.
 

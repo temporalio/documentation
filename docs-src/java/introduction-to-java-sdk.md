@@ -9,7 +9,7 @@ tags:
   - temporal sdk
 ---
 
-Welcome to Temporal Java SDK developer’s guide!
+Welcome to Temporal Java SDK developer’s guide.
 
 :::success Temporal Java SDK API reference
 
@@ -19,7 +19,8 @@ Short link: https://t.mp/java-api
 
 :::
 
-The open source [Temporal Java SDK](https://github.com/temporalio/sdk-java) was released on March 28, 2020. The Temporal Java SDK developers guide documents the concepts, features, and tools that you’ll use to create, test, and execute Temporal applications in Java.
+The open source [Temporal Java SDK](https://github.com/temporalio/sdk-java) released on March 28, 2020.
+The Temporal Java SDK developers guide documents the concepts, features, and tools that you’ll use to create, test, and execute Temporal applications in Java.
 
 ### Supported runtimes
 
@@ -122,6 +123,7 @@ For applications that process any amount of user data we recommend that develope
 :::
 
 :::caution Complex and large scale use cases
+
 **Large scale use cases**
 
 For complex and large-scale use cases, having at least some experience with a variation of the following could be helpful:

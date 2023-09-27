@@ -71,6 +71,10 @@ When the Worker has capacity, it picks up this Task, and begin executing code.
 
 Each step of the Task, Scheduled, Started, Completed gets recorded into the Event History.
 
+- Scheduled means that the Cluster has added a Task to the Task Queue.
+- Started means that the Worker has dequeued the Task.
+- Completed means that the Worker finished executing the Task by responding to the Cluster.
+
 When the call to invoke the Activity is evaluated, the Worker suspends executing the code and sends a Command to the Temporal Cluster to schedule an Activity Task.
 
 ![Worker suspends code execution and sends a Command to the Cluster](/diagrams/how-sdk-works-3.svg)
@@ -89,7 +93,7 @@ The Cluster creates a new Workflow Task which the Worker picks up.
 
 ![The Worker picks up the new Task](/diagrams/how-sdk-works-1.svg)
 
-This is when the SDK Worker Replays the Workflow code, uses the Event History as guidance on what to expect. If the Replay encounters an Event that doesn’t match up with what is expected from the code, a non determinism error is thrown.
+This is when the SDK Worker Replays the Workflow code, uses the Event History as guidance on what to expect. If the Replay encounters an Event that doesn’t match up with what is expected from the code, a [non-determinism](/references/strongly-typed-errors/non-deterministic-error) error gets thrown.
 
 If there is alignment, the Worker continues evaluating code.
 

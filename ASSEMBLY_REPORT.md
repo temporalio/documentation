@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday September 26 2023 15:16:01 PM -0600
+Last assembled: Tuesday September 26 2023 19:09:17 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -1051,5 +1051,7 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+references/strongly-typed-errors/non-deterministic-error -> /references/errors#non-deterministic-error
 
 
