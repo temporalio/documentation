@@ -107,11 +107,11 @@ Understanding SQL-like syntax and CRUD operational concepts can help utilize Tem
 
 **Security**
 
-For onboarding with Temporal Cloud or setting up a Self-Hosted Cluster, some understanding and experience with TLS, security certificates, and private keys is recommended.
+We recommend having some understanding and experience with TLS, security certificates, and private keys for onboarding with Temporal Cloud or setting up a Self-Hosted Cluster.
 
 **Privacy**
 
-For applications that handle user data, understanding and experience with PII and sensitive information encryption is advised.
+We advise having an understanding and experience with PII and sensitive information encryption for applications that handle user data.
 
 :::
 
