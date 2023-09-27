@@ -19,7 +19,7 @@ Short link: https://t.mp/java-api
 
 :::
 
-The open source [Temporal Java SDK](https://github.com/temporalio/sdk-java) released on March 28, 2020.
+The [Temporal Java SDK](https://github.com/temporalio/sdk-java) released on March 28, 2020.
 The Temporal Java SDK developers guide documents the concepts, features, and tools that you’ll use to create, test, and execute Temporal applications in Java.
 
 ### Supported runtimes
@@ -157,6 +157,7 @@ For complex and large-scale use cases, having at least some experience with a va
 
 **How to contribute to the Temporal Java SDK?**
 
-Like essentially all of Temporal, Temporal Java is MIT licensed, and open source contributions are very welcome. Join us in the #java-sdk channel in [Temporal Slack](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
+The Temporal Java SDK is MIT licensed, and contributions are welcome.
+Join us in the [Temporal #java-sdk Slack channel](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
 
 We'd love your help in improving the Temporal Java SDK. Please review our [contribution guidelines](https://github.com/temporalio/sdk-java/blob/master/CONTRIBUTING.md).

@@ -82,7 +82,8 @@ Further resources for learning how to use the SDK include the following:
 
 ## How to contribute to the Temporal TypeScript SDK
 
-The Temporal TypeScript SDK is MIT licensed, and open source contributions are welcome. Join us in the #typescript-sdk channel in [Temporal Slack](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
+The Temporal TypeScript SDK is MIT licensed, and contributions are welcome.
+Join us in the [Temporal #typescript-sdk Slack channel](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
 
 We'd love your help in improving the Temporal TypeScript SDK.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-typescript/blob/main/CONTRIBUTING.md).

@@ -8,7 +8,8 @@ tags:
   - temporal sdk
 ---
 
-Temporal SDKs (software development kits) are a collection of tools, libraries, and APIs that enable Temporal Application development.
+Temporal SDKs (software development kits) are an open source collection of tools, libraries, and APIs that enable Temporal Application development.
+
 They offer a [Temporal Client](/dev-guide/major-components#temporal-client) to interact with the [Temporal Cluster](/concepts/what-is-a-temporal-cluster), APIs to develop your [Temporal Application](/dev-guide/temporal-application), and APIs to run horizontally scalable [Workers](/concepts/what-is-a-worker).
 
 SDKs are more than just a development tool, however.

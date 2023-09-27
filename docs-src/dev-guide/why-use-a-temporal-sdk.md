@@ -26,13 +26,13 @@ The following is psuedocode, for tested samples see your langauge SDK's develope
 ```
 func LoanApplicationWorkflow {
 
-  sdk.ExecuteActivity(CreditCheck)
+    sdk.ExecuteActivity(CreditCheck)
 
-  sdk.ExecuteActivity(AutomatedApproval)
+    sdk.ExecuteActivity(AutomatedApproval)
 
-  sdk.ExecuteActivity(NotifyApplicant)
+    sdk.ExecuteActivity(NotifyApplicant)
 
-  // ...
+    // ...
 }
 ```
 
@@ -49,9 +49,9 @@ The following is psuedocode, for tested samples see your langauge SDK's develope
 func LoanApplicationWorkflow {
 
     options = {
-      MaxAttempts: 3,
-      StartToCloseTimeout: 30min,
-      HeartbeatTimeout: 10min,
+        MaxAttempts: 3,
+        StartToCloseTimeout: 30min,
+        HeartbeatTimeout: 10min,
     }
 
     sdk.ExecuteActivity(CreditCheck, options)

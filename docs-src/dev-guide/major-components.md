@@ -88,7 +88,7 @@ For tested code samples and best practices, use your preferred language SDK's de
 
 ```go
 func LoanApplication(ctx context.Context) (error) {
-	// ...
+    // ...
 	return nil
 }
 ```
@@ -236,15 +236,15 @@ func LoanApplicationWorkflow(ctx workflow.Context, applicantName string, loanAmo
     var creditCheckResult string
     // set a Retry Policy
     ao := workflow.ActivityOptions{
-		    ScheduleToCloseTimeout: time.Hour,
-		    HeartbeatTimeout:       time.Minute,
-		    RetryPolicy: &temporal.RetryPolicy{
-		        InitialInterval:    time.Second,
-		        BackoffCoefficient: 2,
-		        MaximumInterval:    time.Minute,
-		        MaximumAttempts:    5,
-		    },
-		}
+		ScheduleToCloseTimeout: time.Hour,
+		HeartbeatTimeout:       time.Minute,
+		RetryPolicy:            &temporal.RetryPolicy{
+			InitialInterval:    time.Second,
+			BackoffCoefficient: 2,
+			MaximumInterval:    time.Minute,
+			MaximumAttempts:    5,
+		},
+	}
     ctx = workflow.WithActivityOptions(ctx, ao)
     err = workflow.ExecuteActivity(ctx, LoanCreditCheckActivity, loanAmount).Get(ctx, &creditCheckResult)
     if err != nil {

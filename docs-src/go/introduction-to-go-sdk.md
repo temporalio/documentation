@@ -17,10 +17,10 @@ https://pkg.go.dev/go.temporal.io/sdk
 
 :::
 
-The open source Temporal Go SDK released on March 23, 2020.
+The Temporal Go SDK released on March 23, 2020.
 This guide documents the concepts, features, and tools needed to create, test, and execute Temporal applications in Go.
 
-The open source Temporal Go SDK enables developers to build, test, and execute Temporal applications in Go.
+The Temporal Go SDK enables developers to build, test, and execute Temporal applications in Go.
 
 ### Supported runtimes
 
@@ -108,7 +108,7 @@ We advise having an understanding and experience with PII and sensitive informat
 
 :::caution Complex and large-scale use cases
 
-**Large scale use cases:**
+**Large scale use cases**
 
 For intricate and vast use cases, having some experience with the following could be helpful:
 
@@ -139,7 +139,8 @@ For intricate and vast use cases, having some experience with the following coul
 
 ## How to contribute to the Temporal Go SDK? {#contribution}
 
-The Temporal Go SDK is MIT licensed, and open source contributions are very welcome. Join us in the [Temporal #go-sdk Slack channel](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
+The Temporal Go SDK is MIT licensed, and contributions are welcome.
+Join us in the [Temporal #go-sdk Slack channel](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
 
 We'd love your help in improving the Temporal Go SDK.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-java/blob/master/CONTRIBUTING.md).
