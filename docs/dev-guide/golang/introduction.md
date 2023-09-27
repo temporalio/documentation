@@ -133,26 +133,20 @@ For intricate and vast use cases, having some experience with the following coul
 
 :::
 
-## What are other resources for learning how to use the Go SDK?
+## Code samples and resources? {#additional-resources}
 
-Further resources for learning how to use the Go SDK include the following:
+**Where can I find code samples and other resources to learn to use the Go SDK?**
 
-- [Temporal 101 with Go](https://learn.temporal.io/courses/temporal_101/go): our free introductory course.
+- Continue reading this guide.
+- [Documentation samples repository](https://github.com/temporalio/documentation-samples-java)
+- [Go SDK samples repository](https://github.com/temporalio/samples-java)
+- [Temporal 101 with Go](https://learn.temporal.io/courses/temporal_101/go): free introductory course.
 - [Temporal 102 with Go](https://learn.temporal.io/courses/temporal_102/go): our free course that builds on Temporal 101.
 - The [Go SDK](https://www.youtube.com/watch?v=-KWutSkFda8&list=PLl9kRkvFJrlRYHYaTPnsvE46szyMIZLdk&pp=iAQB) YouTube playlist
 - Tutorials
   - [Build an eCommerce App With Temporal and Go](https://learn.temporal.io/tutorials/go/ecommerce/)
-  - Build a Subscription App with Temporal and Go
-- Blog posts
-  - [Workflows as Actors: Is it really possible?](https://temporal.io/blog/workflows-as-actors-is-it-really-possible)
-  - [Actors and Workflows Part 2: Building a Customer Loyalty Program](https://temporal.io/blog/actors-and-workflows-part-2)
-  - [Saga Pattern Made Easy](https://temporal.io/blog/saga-pattern-made-easy)
-  - [Compensating Actions, Part of a Complete Breakfast with Sagas](https://temporal.io/blog/compensating-actions-part-of-a-complete-breakfast-with-sagas)
-  - [Failure Handling in Practice](https://temporal.io/blog/failure-handling-in-practice)
-  - [Tips and Tricks for Temporal Developer Productivity](https://temporal.io/blog/temporal-tips-tricks-1)
-- [go-patterns](https://github.com/tmrts/go-patterns): a comprehensive list of design patterns that apply to Go as a whole.
 
-## How to contribute to the Temporal Go SDK?
+## How to contribute to the Temporal Go SDK? {#contribution}
 
 The Temporal Go SDK is MIT licensed, and open source contributions are very welcome. Join us in the [Temporal #go-sdk Slack channel](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
 

@@ -45,7 +45,7 @@ Developers create Temporal Applications using an [official Temporal SDK](#offici
 Consider that the Workflow Definition code can be executed repeatedly.
 The Temporal Platform can concurrently support millions to billions of Workflow Executions, each of which representing an invoked Workflow Definition.
 
-Additionally, Temporal Workflow Execution is both resumable and recoverable, and it can react to external events.
+Additionally, a Temporal Workflow Execution is both resumable and recoverable, and it can react to external events.
 
 - Resumable: The ability of a process to resume execution after suspending on an _awaitable_.
 - Recoverable: The ability of a process to resume execution after suspending due to a _failure_.

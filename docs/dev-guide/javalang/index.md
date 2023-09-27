@@ -28,9 +28,15 @@ Short link: https://t.mp/java-api
 
 The Temporal Java SDK developer's guide is arranged in the following way:
 
-- [Introduction to the Java SDK](/dev-guide/java/introduction#)
+- [**Introduction to the Java SDK**](/dev-guide/java/introduction#)
 
-- [Foundations](/dev-guide/java/foundations#): The minimum things required to build and run a simple Workflow with a single Activity.
+  - [Supported runtimes](/dev-guide/java/introduction#supported-runtimes)
+  - [Build configuration](/dev-guide/java/introduction#build-configuration)
+  - [Expected skills and experiences](/dev-guide/java/introduction#expected-skills-and-experiences)
+  - [Additional resources](/dev-guide/java/introduction#additional-resources)
+  - [Contribution](/dev-guide/java/introduction#contribution)
+
+- [**Foundations**](/dev-guide/java/foundations#): The minimum things required to build and run a simple Workflow with a single Activity.
 
   - [Run a development Cluster](/dev-guide/java/foundations#run-a-dev-cluster)
   - [Add an SDK to your project](/dev-guide/java/foundations#add-your-sdk)
@@ -41,7 +47,7 @@ The Temporal Java SDK developer's guide is arranged in the following way:
   - [Run a Worker Process](/dev-guide/java/foundations#run-worker-processes)
   - [Start a Workflow Execution](/dev-guide/java/foundations#start-workflow-execution)
 
-- [Features](/dev-guide/java/features): All the general features available to a Temporal Application.
+- [**Features**](/dev-guide/java/features): All the general features available to a Temporal Application.
 
   - [Signals](/dev-guide/java/features#signals)
   - [Queries](/dev-guide/java/features#queries)
@@ -53,14 +59,14 @@ The Temporal Java SDK developer's guide is arranged in the following way:
   - [Continue-As-New](/dev-guide/java/features#continue-as-new)
   - [Cron Jobs](/dev-guide/java/features#temporal-cron-jobs)
 
-- [Observability](/dev-guide/java/observability): Methods for observing a Temporal Application.
+- [**Observability**](/dev-guide/java/observability): Methods for observing a Temporal Application.
 
   - [Metrics](/dev-guide/java/observability#metrics)
   - [Tracing](/dev-guide/java/observability#tracing)
   - [Logging](/dev-guide/java/observability#logging)
   - [Visibility](/dev-guide/java/observability#visibility)
 
-- [Worker performance](/dev-guide/worker-performance)
+- [**Worker performance**](/dev-guide/worker-performance)
 
   - [Metrics](/dev-guide/worker-performance#metrics)
   - [Configuration](/dev-guide/worker-performance#configuration)

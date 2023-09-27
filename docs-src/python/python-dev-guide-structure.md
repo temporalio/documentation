@@ -17,9 +17,9 @@ https://python.temporal.io/
 
 The Temporal Python SDK developer's guide is arranged in the following way:
 
-- [Introduction to the Python SDK](/python/introduction-to-python-sdk)
+- [**Introduction to the Python SDK**](/python/introduction-to-python-sdk)
 
-- [Foundations](/dev-guide/python/foundations): The minimum things required to build and run a single Activity Workflow.
+- [**Foundations**](/dev-guide/python/foundations): The minimum things required to build and run a single Activity Workflow.
 
   - [Run a development Cluster](/dev-guide/python/foundations#run-a-dev-cluster)
   - [Add an SDK to your project](/dev-guide/python/foundations#add-your-sdk)
@@ -30,7 +30,7 @@ The Temporal Python SDK developer's guide is arranged in the following way:
   - [Run a Worker Process](/dev-guide/python/foundations#run-worker-processes)
   - [Start a Workflow Execution](/dev-guide/python/foundations#start-workflow-execution)
 
-- [Features](/dev-guide/python/features): All the general features available to a Temporal Application.
+- [**Features**](/dev-guide/python/features): All the general features available to a Temporal Application.
 
   - [Signals](/dev-guide/python/features#signals)
   - [Queries](/dev-guide/python/features#queries)
@@ -43,14 +43,14 @@ The Temporal Python SDK developer's guide is arranged in the following way:
   - [Schedules](/dev-guide/python/features#schedule-a-workflow)
   - [Cron Jobs](/dev-guide/python/features#temporal-cron-jobs)
 
-- [Observability](/dev-guide/python/observability): Methods for observing a Temporal Application.
+- [**Observability**](/dev-guide/python/observability): Methods for observing a Temporal Application.
 
   - [Metrics](/dev-guide/python/observability#metrics)
   - [Tracing](/dev-guide/python/observability#tracing)
   - [Logging](/dev-guide/python/observability#logging)
   - [Visibility](/dev-guide/python/observability#visibility)
 
-- [Worker performance](/dev-guide/worker-performance)
+- [**Worker performance**](/dev-guide/worker-performance)
 
   - [Metrics](/dev-guide/worker-performance#metrics)
   - [Configuration](/dev-guide/worker-performance#configuration)

@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday September 27 2023 08:19:52 AM -0600
+Last assembled: Wednesday September 27 2023 09:54:27 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -1053,5 +1053,7 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+go/foundations -> /dev-guide/go/foundations#
 
 

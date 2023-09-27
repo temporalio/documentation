@@ -142,7 +142,7 @@ For complex and large-scale use cases, having at least some experience with a va
 
 :::
 
-### Code samples and resources
+### Code samples and resources {#additional-resources}
 
 **Where can I find code samples and other resources to learn to use the Java SDK?**
 
@@ -153,7 +153,7 @@ For complex and large-scale use cases, having at least some experience with a va
 - Getting started with the Temporal Java SDK tutorials → https://learn.temporal.io/getting_started/java/
 - Temporal 101 course in Java → https://learn.temporal.io/courses/temporal_101/java
 
-### Contribution
+### Contribution {#contribution}
 
 **How to contribute to the Temporal Java SDK?**
 
