@@ -35,7 +35,6 @@ The following table compares the features available in each SDK.
 | High level list workflow API            | No  | No   | Yes        | Yes    | Yes  | No  |
 | Interceptors                            | Yes | Yes  | Yes        | Yes    | Yes  | No  |
 | Local Activities                        | Yes | Yes  | Yes        | Yes    | Yes  | Yes |
-| No                                      | No  | Yes  | No         | No     | No   | No  |
 | Operator service                        | Yes | Yes  | Yes        | Yes    | Yes  | No  |
 | Queries                                 | Yes | Yes  | Yes        | Yes    | Yes  | Yes |
 | Remote codec                            | Yes | Yes  | Yes        | Yes    | Yes  | No  |
