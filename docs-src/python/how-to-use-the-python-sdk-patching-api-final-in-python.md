@@ -32,8 +32,4 @@ class MyWorkflow:
             post_patch_activity,
             schedule_to_close_timeout=timedelta(minutes=5),
         )
-
-    @workflow.query
-    def result(self) -> str:
-        return self._result
 ```
