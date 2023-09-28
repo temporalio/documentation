@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday September 26 2023 09:34:10 AM -0600
+Last assembled: Thursday September 28 2023 10:07:23 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-95 guide configurations found.
+104 guide configurations found.
 
-1540 information nodes found.
+1553 information nodes found.
 
-1303 information nodes are attached to guides.
+1317 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -532,13 +532,13 @@ concepts/what-is-a-temporal-client -> #temporal-client
 
 concepts/what-is-a-worker-program -> /workers#worker-program
 
-go/add-sdk -> /dev-guide/go/foundations#install-a-temporal-sdk
+go/introduction-to-go-sdk -> /dev-guide/go/introduction#
 
-java/add-sdk -> /dev-guide/java/foundations#install-a-temporal-sdk
+java/introduction-to-java-sdk -> /dev-guide/java/introduction#
 
-python/add-sdk -> /dev-guide/python/foundations#install-a-temporal-sdk
+python/introduction-to-python-sdk -> /dev-guide/python/introduction#
 
-typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+typescript/introduction-to-typescript-sdk -> /dev-guide/typescript/introduction#
 
 clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
 
@@ -986,6 +986,14 @@ cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
 cli/cmd-options/first-execution-run-id -> /cli/cmd-options#first-execution-run-id
 
+dev-guide/major-components -> #temporal-client
+
+dev-guide/temporal-application -> #temporal-application
+
+dev-guide/official-sdks -> #official-sdks
+
+references/strongly-typed-errors/non-deterministic-error -> /references/errors#non-deterministic-error
+
 typescript/testing -> /dev-guide/typescript/testing#replay
 
 typescript/observability -> /dev-guide/typescript/observability#tracing
@@ -1032,6 +1040,8 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
+java/foundations -> /dev-guide/java/foundations#
+
 go/testing -> /dev-guide/go/testing#replay
 
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
@@ -1043,6 +1053,8 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+go/foundations -> /dev-guide/go/foundations#
 
 go/install-cli -> #install-cli
 
@@ -1056,8 +1068,8 @@ go/backgroundcheck-boilerplate-add-test-framework -> #test-framework
 
 cli/server/start-dev -> /cli/server#start-dev
 
-cli/workflow/start -> /cli/workflow#start
-
 cli/operator/namespace/create -> /cli/operator#create
+
+cli/workflow/start -> /cli/workflow#start
 
 

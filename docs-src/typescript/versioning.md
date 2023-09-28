@@ -7,7 +7,7 @@ tags:
   - guide-context
 ---
 
-Versioning (known as "patching" in TypeScript) lets you update Workflow Definitions without causing [non-deterministic behavior](/workflows#code-changes-can-cause-non-deterministic-behavior) in current long-running Workflows.
+Versioning (known as "patching" in TypeScript) lets you update Workflow Definitions without causing [non-deterministic behavior](/concepts/what-is-a-workflow-definition#non-deterministic-change) in current long-running Workflows.
 
 <!-- The following was ported from \docs-src\typescript\patching.md -->
 
