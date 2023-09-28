@@ -11,7 +11,7 @@ Welcome to Temporal Python SDK developer's guide!
 
 :::success Temporal Python SDK API reference
 
-https://python.temporal.io/
+[python.temporal.io](https://python.temporal.io/)
 
 :::
 
@@ -117,10 +117,12 @@ Additional Python code samples are in the [temporalio/samples-python](https://gi
 
 - Python 3.7+
 
-### How to contribute to the Temporal Python SDK
+## Where can I get help with using the Python SDK?
+
+- _#python-sdk_ channel in [Temporal Slack](https://t.mp/slack)
+- [Community Forum](https://community.temporal.io/tag/python-sdk)
+
+### How to contribute to the Python SDK
 
 The Temporal Python SDK is MIT licensed, and contributions are welcome.
-Join us in the #python-sdk channel in [Temporal Slack](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
-
-We'd love your help in improving the Temporal Python SDK.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-python#development).

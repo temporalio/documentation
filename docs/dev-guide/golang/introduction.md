@@ -22,7 +22,9 @@ Welcome to the Temporal Go SDK developer’s guide.
 
 :::success Temporal Go SDK API reference
 
-https://pkg.go.dev/go.temporal.io/sdk
+[pkg.go.dev/go.temporal.io/sdk](https://pkg.go.dev/go.temporal.io/sdk)
+
+Short link: [t.mp/go-api](https://t.mp/go-api)
 
 :::
 
@@ -133,23 +135,25 @@ For intricate and vast use cases, having some experience with the following coul
 
 :::
 
-## Code samples and resources? {#additional-resources}
+## Code samples and resources {#additional-resources}
 
 **Where can I find code samples and other resources to learn to use the Go SDK?**
 
 - Continue reading this guide.
-- [Documentation samples repository](https://github.com/temporalio/documentation-samples-java)
-- [Go SDK samples repository](https://github.com/temporalio/samples-java)
 - [Temporal 101 with Go](https://learn.temporal.io/courses/temporal_101/go): free introductory course.
 - [Temporal 102 with Go](https://learn.temporal.io/courses/temporal_102/go): our free course that builds on Temporal 101.
+- [Documentation samples repository](https://github.com/temporalio/documentation-samples-java)
+- [Go SDK samples repository](https://github.com/temporalio/samples-java)
 - The [Go SDK](https://www.youtube.com/watch?v=-KWutSkFda8&list=PLl9kRkvFJrlRYHYaTPnsvE46szyMIZLdk&pp=iAQB) YouTube playlist
 - Tutorials
   - [Build an eCommerce App With Temporal and Go](https://learn.temporal.io/tutorials/go/ecommerce/)
 
-## How to contribute to the Temporal Go SDK? {#contribution}
+**Where can I get help with using the Go SDK?**
+
+- _#go-sdk_ channel in [Slack](https://t.mp/slack)
+- [Community Forum](https://community.temporal.io/tag/go-sdk)
+
+## How to contribute to the Temporal Go SDK {#contribution}
 
 The Temporal Go SDK is MIT licensed, and contributions are welcome.
-Join us in the [Temporal #go-sdk Slack channel](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
-
-We'd love your help in improving the Temporal Go SDK.
-Please review our [contribution guidelines](https://github.com/temporalio/sdk-java/blob/master/CONTRIBUTING.md).
+Please review our [contribution guidelines](https://github.com/temporalio/sdk-go/blob/master/CONTRIBUTING.md).

@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday September 27 2023 09:23:29 AM -0700
+Last assembled: Thursday September 28 2023 19:04:41 PM -0400
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly
 
 103 guide configurations found.
 
@@ -1055,29 +1055,5 @@ go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
 
 go/foundations -> /dev-guide/go/foundations#
-
-go/add-sdk -> /dev-guide/go/foundations#install-a-temporal-sdk
-
-java/add-sdk -> /dev-guide/java/foundations#install-a-temporal-sdk
-
-python/add-sdk -> /dev-guide/python/foundations#install-a-temporal-sdk
-
-typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
-
-cloud/operating-envelope-intro -> /cloud/introduction/operating-envelope#
-
-cloud/pricing-intro -> /cloud/introduction/pricing#
-
-cloud/support-intro -> /cloud/introduction/support#
-
-cloud/users-intro -> /cloud/account-setup/users#
-
-cloud/saml-intro -> /cloud/how-to-manage-saml-with-temporal-cloud#
-
-cloud/what-is-audit-logging -> /cloud/how-to-manage-audit-logging#
-
-cli/cmd-options/config -> /cli/cmd-options#config
-
-cli/cmd-options/output-filename -> /cli/cmd-options#output-filename
 
 

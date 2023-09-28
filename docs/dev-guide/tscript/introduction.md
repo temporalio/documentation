@@ -18,7 +18,7 @@ Welcome to the Temporal TypeScript SDK developer's guide!
 
 :::success Temporal TypeScript SDK API reference
 
-https://typescript.temporal.io/
+[typescript.temporal.io](https://typescript.temporal.io/)
 
 :::
 
@@ -87,10 +87,12 @@ Further resources for learning how to use the SDK include the following:
   - [1.0.0 release of the Temporal TypeScript SDK](https://temporal.io/blog/typescript-1-0-0)
   - [How we use V8 isolates to enforce Workflow determinism](https://temporal.io/blog/intro-to-isolated-vm)
 
-## How to contribute to the Temporal TypeScript SDK
+## Where can I get help with using the TypeScript SDK?
+
+- _#typescript-sdk_ channel in [Slack](https://t.mp/slack)
+- [Community Forum](https://community.temporal.io/tag/typescript-sdk)
+
+## How to contribute to the TypeScript SDK
 
 The Temporal TypeScript SDK is MIT licensed, and contributions are welcome.
-Join us in the [Temporal #typescript-sdk Slack channel](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
-
-We'd love your help in improving the Temporal TypeScript SDK.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-typescript/blob/main/CONTRIBUTING.md).

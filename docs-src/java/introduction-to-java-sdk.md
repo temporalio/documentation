@@ -13,9 +13,9 @@ Welcome to Temporal Java SDK developer’s guide.
 
 :::success Temporal Java SDK API reference
 
-https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html
+[javadoc.io/doc/io.temporal/temporal-sdk](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html)
 
-Short link: https://t.mp/java-api
+Short link: [t.mp/java-api](https://t.mp/java-api)
 
 :::
 
@@ -29,8 +29,6 @@ The Temporal Java SDK developers guide documents the concepts, features, and too
 Developing applications with the Temporal Java SDK requires Java 1.8+.
 
 ### Build configuration
-
-[![Build status](https://badge.buildkite.com/663f6d1be81be6700c28c242b35905f20b68c4fda7b2c7c4e3.svg?branch=master)](https://buildkite.com/temporal/java-sdk-public) [![Coverage Status](https://coveralls.io/repos/github/temporalio/sdk-java/badge.svg?branch=master)](https://coveralls.io/github/temporalio/sdk-java?branch=master)
 
 **Where can I get a build configuration?**
 
@@ -147,17 +145,20 @@ For complex and large-scale use cases, having at least some experience with a va
 **Where can I find code samples and other resources to learn to use the Java SDK?**
 
 - Continue reading this guide.
-- Documentation samples repository → https://github.com/temporalio/documentation-samples-java
-- Java SDK samples repository → https://github.com/temporalio/samples-java
-- Temporal Java SDK Workshops → https://www.youtube.com/playlist?list=PLl9kRkvFJrlSNuTvL0dl3VE5GEe1HFtjf
-- Getting started with the Temporal Java SDK tutorials → https://learn.temporal.io/getting_started/java/
-- Temporal 101 course in Java → https://learn.temporal.io/courses/temporal_101/java
+- Temporal 101 course in Java → [t.mp/java-101](https://t.mp/java-101)
+- Documentation samples repository → [temporalio/documentation-samples-java](https://github.com/temporalio/documentation-samples-java)
+- Java SDK samples repository → [temporalio/samples-java](https://github.com/temporalio/samples-java)
+- Java SDK workshops → [youtube.com/playlist?list=PLl9kRkvFJrlSNuTvL0dl3VE5GEe1HFtjf](https://www.youtube.com/playlist?list=PLl9kRkvFJrlSNuTvL0dl3VE5GEe1HFtjf)
+- Java SDK tutorials → [learn.temporal.io/getting_started/java/](https://learn.temporal.io/getting_started/java/)
+
+**Where can I get help with using the Java SDK?**
+
+- _#java-sdk_ channel in [Slack](https://t.mp/slack)
+- [Community Forum](https://community.temporal.io/tag/java-sdk)
 
 ### Contribution {#contribution}
 
 **How to contribute to the Temporal Java SDK?**
 
 The Temporal Java SDK is MIT licensed, and contributions are welcome.
-Join us in the [Temporal #java-sdk Slack channel](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
-
-We'd love your help in improving the Temporal Java SDK. Please review our [contribution guidelines](https://github.com/temporalio/sdk-java/blob/master/CONTRIBUTING.md).
+Please review our [contribution guidelines](https://github.com/temporalio/sdk-java/blob/master/CONTRIBUTING.md).

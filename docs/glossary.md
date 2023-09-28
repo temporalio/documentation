@@ -362,7 +362,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
 #### [Sticky Execution](/workers#sticky-execution)
-A Sticky Execution is a when a Worker Entity caches the Workflow in memory and creates a dedicated Task Queue to listen on.
+A Sticky Execution is a when a Worker Entity caches the Workflow Execution Event History and creates a dedicated Task Queue to listen on.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
