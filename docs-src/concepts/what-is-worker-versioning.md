@@ -232,4 +232,4 @@ They receive tasks only from Task Queues that do not have any version sets defin
 
 To migrate from an unversioned Task Queue, add a new default Build ID to the Task Queue.
 From there, deploy Workers with the same Build ID.
-Open Workflows will continue to be processed by unversioned Workers; new Workflow Executions will be process by Workers with the new Build ID.
+Unversioned Workers will continue processing open Workflows, while Workers with the new Build ID will process new Workflow Executions.
