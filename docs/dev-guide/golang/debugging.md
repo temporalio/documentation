@@ -2,7 +2,7 @@
 id: debugging
 title: Go SDK developer's guide - Debugging
 sidebar_label: Debugging
-sidebar_position: 5
+sidebar_position: 6
 description: The Debugging section of the Temporal Go SDK Developer's guide covers the many ways to debug your application.
 slug: /dev-guide/go/debugging
 toc_max_heading_level: 4
