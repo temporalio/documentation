@@ -555,3 +555,7 @@ You can also use this API `GetWorkerTaskReachability` directly from within langu
 
 Unversioned Workers refer to Workers that have not opted into the Worker Versioning feature in their configuration.
 They receive tasks only from Task Queues that do not have any version sets defined on them, or that have open workflows that began executing before versions were added to the queue.
+
+To migrate from an unversioned Task Queue, add a new default Build ID to the Task Queue.
+From there, deploy Workers with the same Build ID.
+Unversioned Workers will continue processing open Workflows, while Workers with the new Build ID will process new Workflow Executions.

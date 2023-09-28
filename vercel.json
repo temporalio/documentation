@@ -903,15 +903,15 @@
     },
     {
       "source": "/php",
-      "destination": "/php/introduction"
+      "destination": "/dev-guide/php"
     },
     {
       "source": "/php-sdk-overview",
-      "destination": "/php/introduction"
+      "destination": "/dev-guide/php"
     },
     {
       "source": "/php-sdk-introduction",
-      "destination": "/php/introduction"
+      "destination": "/dev-guide/php"
     },
     {
       "source": "/php-activities",

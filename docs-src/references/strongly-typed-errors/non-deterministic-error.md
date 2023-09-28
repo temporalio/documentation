@@ -8,6 +8,6 @@ tags:
   - strongly-typed
 ---
 
-The [Workflow Task](/concepts/what-is-a-workflow-task) failed due to a [nondeterministic error](/workflows/#code-changes-can-cause-non-deterministic-behavior).
+The [Workflow Task](/concepts/what-is-a-workflow-task) failed due to a [nondeterministic error](/concepts/what-is-a-workflow-definition#non-deterministic-change).
 
 <!-- TODO: info -->
