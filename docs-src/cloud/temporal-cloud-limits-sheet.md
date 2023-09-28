@@ -88,7 +88,7 @@ For more information on limits on the number and size of custom Search Attribute
 When creating custom Search Attributes in Temporal Cloud, the attribute names must adhere to the following constraints:
 
 - Maximum characters: 64
-- Allowed characters: `^[a-zA-Z0-9.,:\-_ ()/\\]+$`.
+- Allowed characters: `[a-zA-Z0-9.,:-_\/ ]`.
 
 For more information on limits on the number and size of custom Search Attributes you can create, see [Custom Search Attributes limits](/visibility#custom-search-attributes).
 
