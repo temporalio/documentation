@@ -18,11 +18,11 @@ A Temporal SDK enables you to write your application code using the full power o
 
 Temporal currently offers the following SDKs:
 
-- [Get started with the Go SDK](/go/add-sdk)
-- [Get started with the Java SDK](/java/add-sdk)
+- [Get started with the Go SDK](/go/introduction-to-go-sdk)
+- [Get started with the Java SDK](/java/introduction-to-java-sdk)
 - [Get started with the PHP SDK](/dev-guide/php)
-- [Get started with the Python SDK](/python/add-sdk)
-- [How to use the TypeScript SDK](/typescript/add-sdk)
+- [Get started with the Python SDK](/python/introduction-to-python-sdk)
+- [How to use the TypeScript SDK](/typescript/introduction-to-typescript-sdk)
 
 Each SDK emits metrics which can be ingested into monitoring platforms.
 See the [SDK metrics reference](/references/sdk-metrics) for a complete list.
@@ -46,11 +46,10 @@ For more information, see the knowledge base article on [Python sandbox environm
 
 ### SDKs in development
 
-The following SDKs are in alpha/pre-alpha development stages, but are not yet supported in the Developer's guide:
+The following SDKs are in development and do not yet have developer's guides:
 
 - [.NET](https://github.com/temporalio/sdk-dotnet)
 - [Rust](https://github.com/temporalio/sdk-core)
-- [Ruby](https://github.com/temporalio/sdk-ruby)
 
 ### Third-party SDKs
 

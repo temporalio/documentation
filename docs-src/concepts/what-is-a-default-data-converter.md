@@ -26,3 +26,6 @@ For example:
 - If a value is an instance of a Protobuf message, it is encoded with [proto3 JSON](https://developers.google.com/protocol-buffers/docs/proto3#json).
 - If a value isn't null, binary, or a Protobuf, it is encoded as JSON.
   If any part of it is not serializable as JSON, <!--(for example, a Date—see JSON data types)--> an error is thrown.
+
+The default Data Converter serializes objects based on their root type, rather than nested types.
+The JSON serializers of some SDKs cannot process lists with Protobuf children objects without implementing a [custom Data Converter](/concepts/what-is-a-custom-data-converter).

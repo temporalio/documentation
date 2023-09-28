@@ -16,13 +16,13 @@ To cause a Workflow Execution to [Continue-As-New](/concepts/what-is-continue-as
 [continue-as-new/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/continue-as-new/src/workflows.ts)
 
 ```ts
-import { continueAsNew, sleep } from '@temporalio/workflow';
+import { continueAsNew, log, sleep } from '@temporalio/workflow';
 
 export async function loopingWorkflow(iteration = 0): Promise<void> {
   if (iteration === 10) {
     return;
   }
-  console.log('Running Workflow iteration:', iteration);
+  log.info('Running Workflow iteration', { iteration });
   await sleep(1000);
   // Must match the arguments expected by `loopingWorkflow`
   await continueAsNew<typeof loopingWorkflow>(iteration + 1);

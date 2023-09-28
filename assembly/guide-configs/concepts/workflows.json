@@ -3,7 +3,7 @@
   "id": "workflows",
   "slug": "/workflows",
   "file_dir": "concepts",
-  "title": "Workflows",
+  "title": "What is a Temporal Workflow?",
   "sidebar_label": "Workflows",
   "sidebar_position": 2,
   "description": "This guide provides a comprehensive overview of Temporal Workflows.",
@@ -78,6 +78,10 @@
     {
       "type": "h2",
       "id": "concepts/what-is-a-signal"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-signal-with-start"
     },
     {
       "type": "h2",

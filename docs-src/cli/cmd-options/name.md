@@ -10,7 +10,6 @@ tags:
     - command-line-interface-cli
     - frontend address
     - cluster
-
 ---
 
 Frontend address of the remote Cluster.

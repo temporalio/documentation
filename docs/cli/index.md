@@ -3,7 +3,7 @@ id: index
 title: Temporal CLI command reference
 sidebar_label: CLI (temporal)
 sidebar_position: 8
-description: How to use Temporal's CLI developer tool
+description: Discover the Temporal Command Line Interface (CLI) documentation. Navigate, configure, and utilize Temporal CLI effectively.
 toc_max_heading_level: 4
 keywords:
 - cli
@@ -18,7 +18,14 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Temporal CLI is a command-line tool that includes a distribution of a Temporal Cluster (<a class="tdlp" href="/clusters#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#temporal-server">Learn more</a></span></span></a>, persistence (SQLite), and the <a class="tdlp" href="/web-ui#">Temporal Web UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Web UI?</span><br /><br /><span class="tdlppd">The Temporal Web UI provides users with Workflow Execution state and metadata for debugging purposes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/web-ui#">Learn more</a></span></span></a>).
+:::note
+
+When upgrading from `tctl` to Temporal CLI, make sure to update your environment variables and use updated commands.
+For details, see [CLI release notes](https://github.com/temporalio/cli/releases/tag/v0.9.0).
+
+:::
+
+The command-line tool Temporal CLI includes a distribution of a Temporal Cluster, comprising the [Temporal Server](/clusters#temporal-server), SQLite persistence, and the [Temporal Web UI](/web-ui#).
 
 ### Available commands
 
@@ -35,13 +42,19 @@ The Temporal CLI is a command-line tool that includes a distribution of a Tempor
 
 ### cURL
 
+Run the following command to install Temporal CLI using cURL:
+
 `curl -sSf https://temporal.download/cli.sh | sh`
 
 ### Homebrew
 
+Run the following command to install Temporal CLI using Homebrew:
+
 `brew install temporal`
 
 ### Manual
+
+Follow these steps to manually install Temporal CLI:
 
 1. Download the version for your OS and architecture:
    - [Linux amd64](https://temporal.download/cli/archive/latest?platform=linux&arch=amd64)
@@ -51,22 +64,20 @@ The Temporal CLI is a command-line tool that includes a distribution of a Tempor
    - [Windows amd64](https://temporal.download/cli/archive/latest?platform=windows&arch=amd64)
    - [Windows arm64](https://temporal.download/cli/archive/latest?platform=windows&arch=arm64)
 2. Extract the downloaded archive.
-3. Add the `temporal` binary to your PATH. (`temporal.exe` for Windows)
+3. Add the `temporal` binary to your PATH (use `temporal.exe` for Windows).
 
 ## Starting the Temporal Server
 
-Run the following command to start the Temporal Server.
-This command also starts the Web UI.
+To start the Temporal Server, run the following command:
 
 ```bash
 temporal server start-dev
 ```
 
-At this point you should have a server running on `localhost:7233` and a web interface at <http://localhost:8233>.
+The command launches a server on `localhost:7233` and a web interface at <http://localhost:8233>.
 
-By default, it doesn’t persist your data—if you start a Workflow, Ctrl-C, and run the command again, your Workflow will be gone.
-
-If you'd like your Workflows to be saved, use the `--db-filename` flag:
+By default, data isn't persisted.
+If you want to save Workflows, use the `--db-filename` option:
 
 ```bash
 temporal server start-dev --db-filename temporal.db
@@ -74,7 +85,8 @@ temporal server start-dev --db-filename temporal.db
 
 ## Interacting with the Server
 
-In another terminal, you can run commands to interact with the Server. This command starts a Workflow:
+In another terminal, use the following commands to interact with the Server.
+The following command starts a Workflow:
 
 ```bash
 $ temporal workflow start \
@@ -92,7 +104,7 @@ Running execution:
   Args        [456]
 ```
 
-The shorthand options are:
+Shorthand options are available:
 
 ```bash
 temporal workflow start -t hello-world --type MyWorkflow -w 123 -i 456
@@ -147,7 +159,7 @@ $ temporal workflow describe --workflow-id 123
 }
 ```
 
-When listing, you can get more Workflow fields and output in JSON:
+For more detailed output in JSON format, use the following command:
 
 ```bash
 $ temporal workflow list --fields long --output json
@@ -170,7 +182,7 @@ $ temporal workflow list --fields long --output json
 ]
 ```
 
-Filter out just the type with [jq](https://stedolan.github.io/jq/):
+Filter out Workflows based on Workflow Type with [jq](https://stedolan.github.io/jq/):
 
 ```bash
 $ temporal workflow list --fields long -o json | jq '.[].type.name'
@@ -180,7 +192,7 @@ $ temporal workflow list --fields long -o json | jq '.[].type.name'
 "MyWorkflow"
 ```
 
-And count how many Workflows of each type you have:
+To count the number of Workflows, use the following command:
 
 ```bash
 $ temporal workflow list --fields long -o json | jq '.[].type.name' | uniq -c
@@ -189,18 +201,18 @@ $ temporal workflow list --fields long -o json | jq '.[].type.name' | uniq -c
    2 "MyWorkflow"
 ```
 
-To see what else you can do to Workflows, run `temporal workflow` or visit [CLI ▶️ workflow](/cli/workflow).
+To see the full range of Workflow-related commands, run `temporal workflow` or see the [Temporal CLI workflow command reference](/cli/workflow).
 
-To see the list of top-level commands, run `temporal` or visit [Available commands](#available-commands).
+For a full list of available commands, run `temporal` or see [Available commands](#available-commands).
 
 ## Environments
 
-So far, the CLI has been talking to the Server at the default address, `localhost:7233`. To talk to another Server, like a production namespace on Temporal Cloud:
+To communicate with a different Server, like a production Namespace on Temporal Cloud:
 
 1. Create an environment named `prod`.
 2. Pass `--env prod` to commands, like `temporal workflow list --env prod`.
 
-To create a new environment, start setting its properties:
+To create a new environment and set its properties:
 
 ```bash
 temporal env set prod.namespace production.f45a2
@@ -209,7 +221,7 @@ temporal env set prod.tls-cert-path /temporal/certs/prod.pem
 temporal env set prod.tls-key-path /temporal/certs/prod.key
 ```
 
-Check that you set them correctly:
+Check your settings:
 
 ```bash
 $ temporal env get prod
@@ -220,13 +232,13 @@ $ temporal env get prod
   tls-key-path   /temporal/certs/prod.key
 ```
 
-If they’re correct, then this shouldn’t log a connection error:
+Run a command to test the connection:
 
 ```bash
 $ temporal workflow list --env prod
 ```
 
-For the full list of properties you can set, see the below options:
+For a full list of properties, use `temporal env set -h`.
 
 ```bash
 $ temporal env set -h
@@ -252,15 +264,9 @@ OPTIONS:
    --color value  when to use color: auto, always, never. (default: "auto")
 ```
 
-For example, to set `--codec-endpoint`, you would do:
-
-```bash
-$ temporal env set prod.codec-endpoint localhost:3000
-```
-
 ## Server configuration
 
-Use the help flag to see a full list of CLI options:
+View the full list of CLI configuration options with the `--help` flag:
 
 ```bash
 temporal server start-dev --help
@@ -268,14 +274,14 @@ temporal server start-dev --help
 
 ### Namespace registration
 
-Namespaces are pre-registered at startup so they're available to use immediately.
-To customize the pre-registered namespaces, start the server with the following:
+Namespaces are pre-registered at startup for immediate use.
+Customize pre-registered Namespaces with the following command:
 
 ```bash
 temporal server start-dev --namespace foo --namespace bar
 ```
 
-You can also register Namespaces with the following command:
+Register Namespaces with `namespace create`:
 
 ```bash
 temporal operator namespace create foo
@@ -283,7 +289,8 @@ temporal operator namespace create foo
 
 ### Enable or disable Temporal UI
 
-By default, the Temporal UI is started with Temporal CLI. The UI can be disabled via a runtime flag:
+By default, the Temporal UI starts with Temporal CLI.
+Disable the UI with:
 
 ```bash
 temporal server start-dev --headless
@@ -291,41 +298,38 @@ temporal server start-dev --headless
 
 ### Dynamic configuration
 
-Advanced configuration of the Temporal CLI requires the use of a dynamic configuration file.
-This file is created outside the Temporal CLI; it is usually located with the service's config files.
+Advanced Temporal CLI configuration requires a dynamic configuration file.
 
-Dynamic configuration values can also be set via `--dynamic-config-value KEY=JSON_VALUE`.
-For example, to enable the Search Attribute cache (disabled by default), run the following:
+To set values on the command line, use `--dynamic-config-value KEY=JSON_VALUE`.
+For example, enable the Search Attribute cache:
 
 ```bash
 temporal server start-dev --dynamic-config-value system.forceSearchAttributesCacheRefreshOnRead=false
 ```
 
-This setting makes created Search Attributes immediately available for use.
+This setting makes created Search Attributes immediately available.
 
 ## Environmental variables
 
-The Temporal CLI hosts a set of Client Options that can be used to configure the system environment.
-Use the following table as a reference for the Temporal CLI environmental variables.
+Configure system environment with Temporal CLI environmental variables.
+The following table lists and describes the environment variables you can set for Temporal CLI.
 
-| Variable                                     | Definition                                                                        | Client Option                   |
-| -------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------- |
-| `TEMPORAL_CLI_ADDRESS`                       | The host and port (formatted as host:port) for the Temporal Frontend Service.     | --address                       |
-| `TEMPORAL_CLI_CODEC_AUTH`                    | Sets the authorization header on requests to the Codec Server.                    | --codec-auth                    |
-| `TEMPORAL_CLI_CODEC_ENDPOINT`                | Endpoint for a remote Codec Server.                                               | --codec-endpoint                |
-| `TEMPORAL_CONTEXT_TIMEOUT`                   | An optional timeout for the context of an RPC call (in seconds). Default value: 5 | --context-timeout               |
-| `TEMPORAL_CLI_NAMESPACE`                     | Identifies a Namespace in the Temporal Workflow. Default value: "default".        | --namespace                     |
-| `TEMPORAL_CLI_TLS_CA`                        | Path to server CA certificate.                                                    | --tls-ca-path                   |
-| `TEMPORAL_CLI_TLS_CERT`                      | Path to x509 certificate.                                                         | --tls-cert-path                 |
-| `TEMPORAL_CLI_TLS_DISABLE_HOST_VERIFICATION` | Disables TLS host name verification if already enabled. Default value: false.     | --tls-disable-host-verification |
-| `TEMPORAL_CLI_TLS_KEY`                       | Path to private certificate key.                                                  | --tls-key-path                  |
-| `TEMPORAL_CLI_TLS_SERVER_NAME`               | Provides an override for the target TLS server name.                              | --tls-server-name               |
+| Variable                                     | Definition                                                                | Client Option                   |
+| -------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------- |
+| `TEMPORAL_CLI_ADDRESS`                       | Host and port (formatted as host:port) for the Temporal Frontend Service. | --address                       |
+| `TEMPORAL_CLI_CODEC_AUTH`                    | Sets the authorization header for requests to Codec Server.               | --codec-auth                    |
+| `TEMPORAL_CLI_CODEC_ENDPOINT`                | Endpoint for remote Codec Server.                                         | --codec-endpoint                |
+| `TEMPORAL_CONTEXT_TIMEOUT`                   | Optional timeout for RPC call context (in seconds). Default: 5.           | --context-timeout               |
+| `TEMPORAL_CLI_NAMESPACE`                     | Namespace in Temporal Workflow. Default: "default".                       | --namespace                     |
+| `TEMPORAL_CLI_TLS_CA`                        | Path to server CA certificate.                                            | --tls-ca-path                   |
+| `TEMPORAL_CLI_TLS_CERT`                      | Path to x509 certificate.                                                 | --tls-cert-path                 |
+| `TEMPORAL_CLI_TLS_DISABLE_HOST_VERIFICATION` | Disables TLS host name verification. Default: false.                      | --tls-disable-host-verification |
+| `TEMPORAL_CLI_TLS_KEY`                       | Path to private certificate key.                                          | --tls-key-path                  |
+| `TEMPORAL_CLI_TLS_SERVER_NAME`               | Override for target TLS server name.                                      | --tls-server-name               |
 
 ## Auto-completion
 
-The Temporal CLI has the capability to auto-complete commands.
-
-Running `temporal completion SHELL` outputs the related completion SHELL code.
+Enable auto-completion using the following commands.
 
 ### zsh auto-completion
 
@@ -349,15 +353,9 @@ After setting the variable, run the following command:
 
 ### Bash auto-completion
 
-Bash auto-completion relies on `bash-completion`.
+Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to `~/.bash_profile`.
 
-Install the software with the steps provided in the [bash-completion README](https://github.com/scop/bash-completion#installation), or use your preferred package manager on your operating system.
-
-For more information, see [the Bash Completion page on Repology](https://repology.org/project/bash-completion/versions).
-
-### Aliases
-
-You can also add aliases to your `~/.bash_profile` such as:
+To use aliases, add them to `~/.bash_profile` as needed.
 
 ```bash
 alias t='temporal'

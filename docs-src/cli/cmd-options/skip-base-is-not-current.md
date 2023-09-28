@@ -12,4 +12,4 @@ tags:
     - workflow run
 ---
 
-Skip a Workflow Execution if the base Run is not the current Run.
+Skip a Workflow Execution if the base Workflow Run is not the current Workflow Run.

@@ -16,26 +16,42 @@ tags:
 The `temporal workflow stack` command queries a [Workflow Execution](/concepts/what-is-a-workflow-execution) with `--stack-trace` as the [Query](/concepts/what-is-a-query#stack-trace-query) type.
 Returning the stack trace of all the threads owned by a Workflow Execution can be great for troubleshooting in production.
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
-- [--fields](/cli/cmd-options/fields)
+- [--address](/cli/cmd-options/address)
+
+- [--codec-auth](/cli/cmd-options/codec-auth)
+
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
+
+- [--color](/cli/cmd-options/color)
+
+- [--context-timeout](/cli/cmd-options/context-timeout)
+
+- [--env](/cli/cmd-options/env)
+
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
 
 - [--input](/cli/cmd-options/input)
 
 - [--input-file](/cli/cmd-options/input-file)
 
-- [--limit](/cli/cmd-options/limit)
-
-- [--no-pager](/cli/cmd-options/no-pager)
-
-- [--output](/cli/cmd-options/output)
-
-- [--pager](/cli/cmd-options/pager)
+- [--namespace](/cli/cmd-options/namespace)
 
 - [--reject-condition](/cli/cmd-options/reject-condition)
 
 - [--run-id](/cli/cmd-options/run-id)
 
-- [--time-format](/cli/cmd-options/time-format)
+- [--tls](/cli/cmd-options/tls)
+
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options/tls-server-name)
 
 - [--workflow-id](/cli/cmd-options/workflow-id)

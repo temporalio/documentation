@@ -1,9 +1,10 @@
 ---
-id: how-to-manage-saml-with-temporal-cloud
+id: saml
 title: How to manage SAML authentication with Temporal Cloud
 sidebar_label: SAML
 sidebar_position: 7
 description: Integrate a SAML identity provider with your Temporal Cloud account.
+slug: /cloud/saml
 toc_max_heading_level: 4
 keywords:
 - how-to
@@ -30,8 +31,8 @@ For more information, contact your account manager.
 
 ## Integrate SAML with your Temporal Cloud account
 
-1. Locate your <a class="tdlp" href="/cloud/account-setup/namespaces#temporal-cloud-account-id">Temporal Cloud Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#temporal-cloud-account-id">Learn more</a></span></span></a>.
-   One way to do so is to sign in to Temporal Cloud and find your <a class="tdlp" href="/cloud/account-setup/namespaces#temporal-cloud-namespace-id">Namespace Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Id?</span><br /><br /><span class="tdlppd">A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#temporal-cloud-namespace-id">Learn more</a></span></span></a>.
+1. Locate your [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id).
+   One way to do so is to sign in to Temporal Cloud and find your [Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
    The Account Id is the five or six characters following the period (.), such as `f45a2`.
    You will need the Account Id to construct your callback URL and your entity identifier.
 1. Configure SAML with your IdP by following one of these sets of instructions:
@@ -141,7 +142,7 @@ To finish setting up Okta as your SAML IdP, see the next section, [Finish SAML c
 ## How to finish your SAML configuration {#finish-saml-configuration}
 
 After you configure SAML with your IdP, we can finish the configuration on our side.
-<a class="tdlp" href="/cloud/introduction/support#support-ticket">Create a support ticket<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/introduction/support#support-ticket">Learn more</a></span></span></a> that includes the following information:
+[Create a support ticket](/cloud/support#support-ticket) that includes the following information:
 
 - The sign-in URL from your application
 - The X.509 SAML sign-in certificate

@@ -3,7 +3,7 @@ import sizeOf from "image-size";
 import fs from "fs-extra";
 import path from "path";
 
-const docsLinkRegex = "\\[([a-zA-Z0-9-_#.&`',?\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)(#[a-zA-Z0-9-_.]+)?\\)";
+const docsLinkRegex = "\\[([a-zA-Z0-9-_#.&`',?*()\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)(#[a-zA-Z0-9-_.]+)?\\)";
 const linkRegex = RegExp(docsLinkRegex, "gm");
 const docsImageRegex = "!\\[([a-zA-Z0-9-_#.&\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)\\)";
 const imageRegex = RegExp(docsImageRegex, "gm");
@@ -119,8 +119,8 @@ function centeredImage(image, dimensions) {
   return `<div class="tdiw"><div class="tditw"><p class="tdit">${image[1]}</p></div><div class="tdiiw"><img class="img_ev3q" src="${image[2]}" alt="${image[1]}" height="${dimensions.height}" width="${dimensions.width}" /></div></div>`;
 }
 
-function linkPreview(newPath, linkText, nodeTitle, description) {
-  return `<a class="tdlp" href="${newPath}">${linkText}<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">${nodeTitle}</span><br /><br /><span class="tdlppd">${description}</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="${newPath}">Learn more</a></span></span></a>`;
+function linkPreview(newPath, linkText) {
+  return `[${linkText}](${newPath})`;
 }
 
 function getImageDimensions(imgPath) {
@@ -161,7 +161,7 @@ async function replaceLinks(line, match, link, current_guide_id) {
     newPath = `${localRef}`;
   }
   // convert to link preview
-  const html = linkPreview(newPath, match[1], link.node_title, link.node_description);
+  const html = linkPreview(newPath, match[1]);
   line = line.replaceAll(replaceable, html);
   pushToLinkMapping(link.node_id, newPath);
   return line;

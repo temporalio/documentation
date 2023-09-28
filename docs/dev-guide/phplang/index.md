@@ -3,8 +3,8 @@ id: index
 slug: /dev-guide/php
 title: Temporal PHP SDK developer's guide
 description: The Temporal Developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
-sidebar_label: PHP
-sidebar_position: 3
+sidebar_label: PHP SDK
+sidebar_position: 4
 ---
 
 This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.

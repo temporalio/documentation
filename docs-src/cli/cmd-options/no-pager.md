@@ -9,7 +9,6 @@ tags:
     - options-feature
     - command-line-interface-cli
     - pager
-
 ---
 
 Disables the interactive pager.

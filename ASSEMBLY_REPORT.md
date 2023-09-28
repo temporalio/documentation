@@ -4,11 +4,11 @@ Last assembled: Tuesday August 08 2023 08:21:04 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-93 guide configurations found.
+103 guide configurations found.
 
-1507 information nodes found.
+1537 information nodes found.
 
-1271 information nodes are attached to guides.
+1302 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -53,6 +53,8 @@ concepts/what-is-a-global-namespace -> /namespaces#global-namespace
 concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
+
+cloud/security-cloud-intro -> #
 
 references/server-options -> /references/server-options#withconfig
 
@@ -272,7 +274,7 @@ cloud/tcld/account/metrics/disable -> #disable
 
 cloud/tcld/account/metrics/accepted-client-ca/index -> #accepted-client-ca
 
-cloud/certificates-intro -> /cloud/account-setup/certificates#certificate-requirements
+cloud/certificates-intro -> /cloud/certificates#certificate-requirements
 
 cloud/tcld/account/metrics/accepted-client-ca/add -> #add
 
@@ -281,6 +283,10 @@ cloud/tcld/account/metrics/accepted-client-ca/list -> #list
 cloud/tcld/account/metrics/accepted-client-ca/set -> #set
 
 cloud/tcld/account/metrics/accepted-client-ca/remove -> #remove
+
+cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
+
+cloud/tcld/generate-certificates/end-entity-certificate -> #end-entity-certificate
 
 cloud/tcld/how-to-install-tcld -> #install-tcld
 
@@ -305,6 +311,8 @@ cloud/tcld/namespace/certificate-filters/index -> #certificate-filters
 cloud/tcld/namespace/search-attributes/index -> #search-attributes
 
 cloud/tcld/namespace/retention/index -> #retention
+
+cloud/tcld/namespace/update-codec-server -> #update-codec-server
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
@@ -524,13 +532,13 @@ concepts/what-is-a-temporal-client -> #temporal-client
 
 concepts/what-is-a-worker-program -> /workers#worker-program
 
-go/add-sdk -> /dev-guide/go/foundations#install-a-temporal-sdk
+go/introduction-to-go-sdk -> /dev-guide/go/introduction#
 
-java/add-sdk -> /dev-guide/java/foundations#install-a-temporal-sdk
+java/introduction-to-java-sdk -> /dev-guide/java/introduction#
 
-python/add-sdk -> /dev-guide/python/foundations#install-a-temporal-sdk
+python/introduction-to-python-sdk -> /dev-guide/python/introduction#
 
-typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+typescript/introduction-to-typescript-sdk -> /dev-guide/typescript/introduction#
 
 clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
 
@@ -688,21 +696,23 @@ python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
 
-cloud/operating-envelope-intro -> /cloud/introduction/operating-envelope#
+cloud/users-account-level-roles -> /cloud/users#account-level-roles
 
-cloud/pricing-intro -> /cloud/introduction/pricing#
+cloud/get-started-certificates -> #issue-ca-certificates
 
-cloud/support-intro -> /cloud/introduction/support#
+cloud/get-started-namespace -> #create-a-namespace
 
-cloud/users-intro -> /cloud/account-setup/users#
+cloud/get-started-invite -> #invite-users
 
-cloud/saml-intro -> /cloud/how-to-manage-saml-with-temporal-cloud#
+cloud/get-started-connect -> #connect-to-temporal-cloud
 
-cloud/what-is-audit-logging -> /cloud/how-to-manage-audit-logging#
+cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 
-cloud/namespaces-create -> /cloud/account-setup/namespaces#create-a-namespace
+cloud/certificates-issue -> /cloud/certificates#issue-certificates
 
-cloud/users-invite -> /cloud/account-setup/users#invite-users
+cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
+
+cloud/users-invite -> /cloud/users#invite-users
 
 go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
 
@@ -710,19 +720,33 @@ python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-tem
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
 
+cloud/certificates-namespace -> #manage-certificates
+
 cloud/certificates-filters -> #manage-certificate-filters
+
+cloud/users-namespace-level-permissions -> /cloud/users#namespace-level-permissions
+
+cloud/support-create-ticket -> /cloud/support#support-ticket
+
+cloud/certificates-notifications -> #expiration-notifications
+
+cloud/namespaces-access -> #access-namespaces
+
+cloud/namespaces-manage -> #manage-namespaces
+
+cloud/namespaces-delete -> #delete-a-namespace
 
 concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
 
-cloud/support-create-ticket -> /cloud/introduction/support#support-ticket
+concepts/what-is-a-cloud-namespace-id -> #temporal-cloud-namespace-id
 
-concepts/what-is-a-cloud-namespace-id -> /cloud/account-setup/namespaces#temporal-cloud-namespace-id
+cloud/saml-azure-ad -> #configure-saml-with-azure-ad
 
-cloud/users-account-level-roles -> #account-level-roles
+cloud/saml-okta -> #configure-saml-with-okta
 
-cloud/users-namespace-level-permissions -> #namespace-level-permissions
+cloud/saml-finish -> #finish-saml-configuration
 
 cloud/users-update-roles -> #update-roles
 
@@ -730,19 +754,55 @@ cloud/users-update-permissions -> #update-permissions
 
 cloud/users-delete -> #delete-users
 
-cloud/what-is-an-action -> /cloud/introduction/pricing#action
+cloud/what-is-an-action -> /cloud/pricing#action
 
 concepts/what-is-a-reset -> /workflows#reset
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
 
-cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate-requirements
-
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
-cli/cmd-options/fields -> /cli/cmd-options#fields
+cli/cmd-options/address -> /cli/cmd-options#address
+
+cli/cmd-options/codec-auth -> /cli/cmd-options#codec-auth
+
+cli/cmd-options/codec-endpoint -> /cli/cmd-options#codec-endpoint
+
+cli/cmd-options/color -> /cli/cmd-options#color
+
+cli/cmd-options/context-timeout -> /cli/cmd-options#context-timeout
+
+cli/cmd-options/env -> /cli/cmd-options#env
+
+cli/cmd-options/grpc-meta -> /cli/cmd-options#grpc-meta
 
 cli/cmd-options/identity -> /cli/cmd-options#identity
+
+cli/cmd-options/namespace -> /cli/cmd-options#namespace
+
+cli/cmd-options/result -> /cli/cmd-options#result
+
+cli/cmd-options/run-id -> /cli/cmd-options#run-id
+
+cli/cmd-options/tls -> /cli/cmd-options#tls
+
+cli/cmd-options/tls-ca-path -> /cli/cmd-options#tls-ca-path
+
+cli/cmd-options/tls-cert-path -> /cli/cmd-options#tls-cert-path
+
+cli/cmd-options/tls-disable-host-verification -> /cli/cmd-options#tls-disable-host-verification
+
+cli/cmd-options/tls-key-path -> /cli/cmd-options#tls-key-path
+
+cli/cmd-options/tls-server-name -> /cli/cmd-options#tls-server-name
+
+cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
+
+cli/cmd-options/detail -> /cli/cmd-options#detail
+
+cli/cmd-options/reason -> /cli/cmd-options#reason
+
+cli/cmd-options/fields -> /cli/cmd-options#fields
 
 cli/cmd-options/limit -> /cli/cmd-options#limit
 
@@ -752,17 +812,7 @@ cli/cmd-options/output -> /cli/cmd-options#output
 
 cli/cmd-options/pager -> /cli/cmd-options#pager
 
-cli/cmd-options/result -> /cli/cmd-options#result
-
-cli/cmd-options/run-id -> /cli/cmd-options#run-id
-
 cli/cmd-options/time-format -> /cli/cmd-options#time-format
-
-cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
-
-cli/cmd-options/detail -> /cli/cmd-options#detail
-
-cli/cmd-options/reason -> /cli/cmd-options#reason
 
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
@@ -801,6 +851,8 @@ cli/cmd-options/yes -> /cli/cmd-options#yes
 cli/cmd-options/namespace-id -> /cli/cmd-options#namespace-id
 
 cli/cmd-options/promote-global -> /cli/cmd-options#promote-global
+
+cli/cmd-options/verbose -> /cli/cmd-options#verbose
 
 cli/cmd-options/type -> /cli/cmd-options#type
 
@@ -860,8 +912,6 @@ concepts/what-is-standard-visibility -> /visibility#standard-visibility
 
 cli/cmd-options/unpause -> /cli/cmd-options#unpause
 
-cli/cmd-options/config -> /cli/cmd-options#config
-
 cli/cmd-options/db-filename -> /cli/cmd-options#db-filename
 
 cli/cmd-options/dynamic-config-value -> /cli/cmd-options#dynamic-config-value
@@ -876,8 +926,6 @@ cli/cmd-options/log-level -> /cli/cmd-options#log-level
 
 cli/cmd-options/metrics-port -> /cli/cmd-options#metrics-port
 
-cli/cmd-options/namespace -> /cli/cmd-options#namespace
-
 cli/cmd-options/port -> /cli/cmd-options#port
 
 cli/cmd-options/sqlite-pragma -> /cli/cmd-options#sqlite-pragma
@@ -891,6 +939,12 @@ cli/cmd-options/ui-ip -> /cli/cmd-options#ui-ip
 cli/cmd-options/ui-port -> /cli/cmd-options#ui-port
 
 cli/cmd-options/task-queue-type -> /cli/cmd-options#task-queue-type
+
+cli/cmd-options/max-sets -> /cli/cmd-options#max-sets
+
+cli/cmd-options/build-id -> /cli/cmd-options#build-id
+
+cli/cmd-options/reachability-type -> /cli/cmd-options#reachability-type
 
 cli/cmd-options/query -> /cli/cmd-options#query
 
@@ -922,8 +976,6 @@ cli/cmd-options/skip-current-open -> /cli/cmd-options#skip-current-open
 
 cli/cmd-options/follow -> /cli/cmd-options#follow
 
-cli/cmd-options/output-filename -> /cli/cmd-options#output-filename
-
 cli/cmd-options/concurrency -> /cli/cmd-options#concurrency
 
 cli/cmd-options/depth -> /cli/cmd-options#depth
@@ -931,6 +983,16 @@ cli/cmd-options/depth -> /cli/cmd-options#depth
 cli/cmd-options/fold -> /cli/cmd-options#fold
 
 cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
+
+cli/cmd-options/first-execution-run-id -> /cli/cmd-options#first-execution-run-id
+
+dev-guide/major-components -> #temporal-client
+
+dev-guide/temporal-application -> #temporal-application
+
+dev-guide/official-sdks -> #official-sdks
+
+references/strongly-typed-errors/non-deterministic-error -> /references/errors#non-deterministic-error
 
 typescript/testing -> /dev-guide/typescript/testing#replay
 
@@ -978,6 +1040,8 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
+java/foundations -> /dev-guide/java/foundations#
+
 go/testing -> /dev-guide/go/testing#replay
 
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
@@ -989,5 +1053,7 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+go/foundations -> /dev-guide/go/foundations#
 
 

@@ -12,11 +12,11 @@ tags:
 
 ---
 
-The `temporal server start-dev` command starts the Temporal Server on `localhost:7233`.
+The `temporal server start-dev` command starts a local [Temporal Server](/concepts/what-is-the-temporal-server).
+You can access the Web UI at http://localhost:8233.
+The default Frontend Service gRPC port used as a target endpoint for client calls is 7233.
 
-The results of any command run on the Server can be viewed at http://localhost:7233.
-
-- [--config](/cli/cmd-options/config)
+Use the following options to change the behavior of this command.
 
 - [--db-filename](/cli/cmd-options/db-filename)
 

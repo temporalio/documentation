@@ -12,4 +12,5 @@ tags:
     - task queue type
 ---
 
-Task Queue type [workflow|activity] (default: workflow).
+Task Queue type, which can be either workflow or activity.
+The default type is workflow.

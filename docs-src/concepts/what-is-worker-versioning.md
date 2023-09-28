@@ -11,6 +11,7 @@ ssdi:
   - Available in CLI version [0.10.0](https://github.com/temporalio/cli/releases/tag/v0.10.0)
   - Available in [Go SDK](/dev-guide/go/versioning#worker-versioning) version [1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
   - Available in [Java SDK](/dev-guide/java/versioning#worker-versioning) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+  - Available in [TypeScript SDK](/dev-guide/typescript/versioning#worker-versioning) version [1.8.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.8.0)
   - Available in [Python SDK](https://python.temporal.io/temporalio.worker.Worker.html) version [1.3.0](https://github.com/temporalio/sdk-python/releases/tag/1.3.0)
   - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Worker.TemporalWorkerOptions.html#Temporalio_Worker_TemporalWorkerOptions_UseWorkerVersioning) version [0.1.0-beta1](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta1)
   - Not yet available in Temporal Cloud
@@ -208,7 +209,7 @@ You can use the Temporal CLI to do this with the following command:
 temporal task-queue get-build-id-reachability
 ```
 
-The command determines, for each Task Queue, whether the Build ID in question is unreachable, only reachable by closed Workflows, or reachable by open and new Workfloww.
+The command determines, for each Task Queue, whether the Build ID in question is unreachable, only reachable by closed Workflows, or reachable by open and new Workflows.
 For example, this "2.0" Build ID is shown here by the CLI to be reachable by both new Workflows and some existing Workflows:
 
 ```command

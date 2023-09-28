@@ -14,20 +14,20 @@ tags:
 
 :::info SDK metrics
 
-The information on this page is relevant to <a class="tdlp" href="/temporal#temporal-sdk">Temporal SDKs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal SDK?</span><br /><br /><span class="tdlppd">A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-sdk">Learn more</a></span></span></a>.
+The information on this page is relevant to [Temporal SDKs](/temporal#temporal-sdk).
 
-See <a class="tdlp" href="/cloud/metrics#">Cloud metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to monitor Temporal Cloud metrics</span><br /><br /><span class="tdlppd">Configure and track performance metrics for Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/metrics#">Learn more</a></span></span></a> for metrics emitted by <a class="tdlp" href="/cloud/index#">Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Temporal Cloud?</span><br /><br /><span class="tdlppd">Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#">Learn more</a></span></span></a>.
+See [Cloud metrics](/cloud/metrics#) for metrics emitted by [Temporal Cloud](/cloud/index#).
 
-See <a class="tdlp" href="/references/cluster-metrics#">Cluster metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal OSS Cluster metrics reference</span><br /><br /><span class="tdlppd">The Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and set up alerts.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/cluster-metrics#">Learn more</a></span></span></a> for metrics emitted by the <a class="tdlp" href="/clusters#">OSS Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
+See [Cluster metrics](/references/cluster-metrics#) for metrics emitted by the [OSS Cluster](/clusters#).
 
 :::
 
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
 
-- <a class="tdlp" href="/dev-guide/go/observability#metrics">How to emit metrics using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to emit metrics</span><br /><br /><span class="tdlppd">Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/observability#metrics">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/observability#metrics">How to emit metrics using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to emit metrics</span><br /><br /><span class="tdlppd">Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/observability#metrics">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/observability#metrics">How to emit metrics using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to emit metrics</span><br /><br /><span class="tdlppd">Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/observability#metrics">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/observability#metrics">How to emit metrics using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to emit metrics</span><br /><br /><span class="tdlppd">Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/observability#metrics">Learn more</a></span></span></a>
+- [How to emit metrics using the Go SDK](/dev-guide/go/observability#metrics)
+- [How to emit metrics using the Java SDK](/dev-guide/java/observability#metrics)
+- [How to emit metrics using the Python SDK](/dev-guide/python/observability#metrics)
+- [How to emit metrics using the TypeScript SDK](/dev-guide/typescript/observability#metrics)
 
 - [How to tune Worker performance based on metrics](/dev-guide/worker-performance)
 
@@ -35,7 +35,7 @@ All metrics are prefixed with `temporal_` before being exported to their configu
 (The prefix has been removed in the following reference.)
 Currently, some metrics are specific to certain SDKs.
 
-TypeScript, Python, .NET, and Ruby SDKs metrics are defined in the Core SDK.
+TypeScript, Python, and .NET SDKs metrics are defined in the Core SDK.
 
 PHP and Go metrics are defined in the Go SDK.
 
@@ -143,7 +143,7 @@ An Activity Worker poll for an Activity Task timed out, and no Activity Task is 
 ### activity_schedule_to_start_latency
 
 The Schedule-To-Start time of an Activity Task in milliseconds.
-A <a class="tdlp" href="/activities#schedule-to-start-timeout">Schedule-To-Start Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule-To-Start Timeout?</span><br /><br /><span class="tdlppd">A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task Queue to when a Worker picks it up from the Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#schedule-to-start-timeout">Learn more</a></span></span></a> can be set when an Activity Execution is spawned.
+A [Schedule-To-Start Timeout](/activities#schedule-to-start-timeout) can be set when an Activity Execution is spawned.
 This metric is useful for ensuring Activity Tasks are being processed from the queue in a timely manner. Some SDKs may include
 the `activity_type` label, but the metric should not vary by type, as it does not influence the rate at which tasks are pulled
 from the queue.
@@ -202,7 +202,7 @@ Total latency of successfully finished Local Activity Executions (from schedule 
 
 ### local_activity_total
 
-Total number of <a class="tdlp" href="/activities#local-activity">Local Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Local Activity?</span><br /><br /><span class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#local-activity">Learn more</a></span></span></a>.
+Total number of [Local Activity Executions](/activities#local-activity).
 
 - Type: Counter
 - Available in: Go, Java

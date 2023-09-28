@@ -2,7 +2,7 @@
 id: request
 title: tcld request command reference
 sidebar_label: request
-description: How to use Temporal Cloud's tcld request command.
+description: The Temporal Cloud CLI (tcld) request commands manage asynchronous requests in Temporal Cloud.
 toc_max_heading_level: 4
 keywords:
 - cli reference
@@ -21,7 +21,7 @@ The `tcld request` commands manage asynchronous requests in Temporal Cloud.
 
 Alias: `r`
 
-- <a class="tdlp" href="#get">tcld request get<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld request get</span><br /><br /><span class="tdlppd">How to get the status of an asynchronous request in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#get">Learn more</a></span></span></a>
+- [tcld request get](#get)
 
 ## get
 

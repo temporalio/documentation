@@ -11,4 +11,4 @@ tags:
     - environment
 ---
 
-Name of the environment to read environmental variables from. (default: default)
+Name of the environment to read environmental variables from.

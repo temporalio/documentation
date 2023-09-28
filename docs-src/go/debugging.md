@@ -4,7 +4,12 @@ title: Debugging
 description: Testing provides a framework to facilitate Workflow and integration testing.
 sidebar_label: Debug
 tags:
-  - guide-context
+  - developer-guide-doc-type
+  - go sdk
+  - debugging
+  - introduction-doc-type
+  - testing
+  - workflow definition
 ---
 
 You can use a debugger tool provided by your favorite IDE to debug your Workflow Definitions prior to testing or executing them.

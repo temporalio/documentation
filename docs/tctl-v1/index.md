@@ -3,7 +3,7 @@ id: index
 title: tctl v1.17 command reference
 sidebar_label: CLI (tctl)
 sidebar_position: 9
-description: How to use Temporal's tctl v1.17 developer tool
+description: The Temporal CLI (tctl) is a legacy command-line tool that you can use to interact with a Temporal Cluster.
 toc_max_heading_level: 4
 keywords:
 - cli
@@ -22,28 +22,27 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-:::success Temporal CLI is now available!
+:::success Temporal CLI is now available
 
-The new [Temporal CLI](/cli) is available for use.
+The public preview of [Temporal CLI](/cli) is now available.
+We encourage you to begin using it and to provide feedback.
 
-tctl v1.17 can still be used with Temporal Server version 1.20 and is expected to be compatible with Temporal Server version 1.21.
-
-tctl is expected to be fully deprecated by Temporal Server version 1.22
+After we release Temporal CLI v1, we will deprecate tctl.
 
 :::
 
 :::note
 
-This documentation reflects tctl version 1.17
+This documentation reflects tctl version 1.17.
 
 :::
 
 The Temporal CLI (tctl) is a command-line tool that you can use to interact with a Temporal Cluster.
-It can perform <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> operations (such as register, update, and describe) and <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a> operations (such as start
+It can perform [Namespace](/namespaces#) operations (such as register, update, and describe) and [Workflow](/workflows#) operations (such as start
 Workflow, show Workflow History, and Signal Workflow).
 
-- <a class="tdlp" href="#install">How to install tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install tctl</span><br /><br /><span class="tdlppd">You can install tctl in four ways, described in this topic.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#install">Learn more</a></span></span></a>
-- <a class="tdlp" href="#environment-variables">Environment variables for tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Environment variables for tctl</span><br /><br /><span class="tdlppd">What are the environment variables for tctl?</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#environment-variables">Learn more</a></span></span></a>
+- [How to install tctl](#install)
+- [Environment variables for tctl](#environment-variables)
 
 ## tctl commands
 
@@ -83,13 +82,13 @@ To see help for [tctl](/tctl-v1) commands, enter the following commands.
 | Command             | Description                                                              |
 | ------------------- | ------------------------------------------------------------------------ |
 | `tctl -h`           | Display help for top-level commands and global options                   |
-| `tctl namespace -h` | Display help for <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> operations   |
-| `tctl workflow -h`  | Display help for <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a> operations     |
-| `tctl taskqueue -h` | Display help for <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a> operations |
+| `tctl namespace -h` | Display help for [Namespace](/namespaces#) operations   |
+| `tctl workflow -h`  | Display help for [Workflow](/workflows#) operations     |
+| `tctl taskqueue -h` | Display help for [Task Queue](/workers#task-queue) operations |
 
 ## Global modifiers
 
-You can supply the values for many of these modifiers by setting <a class="tdlp" href="#environment-variables">environment variables<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Environment variables for tctl</span><br /><br /><span class="tdlppd">What are the environment variables for tctl?</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#environment-variables">Learn more</a></span></span></a> instead of including the modifiers in a tctl command.
+You can supply the values for many of these modifiers by setting [environment variables](#environment-variables) instead of including the modifiers in a tctl command.
 
 ### --address
 

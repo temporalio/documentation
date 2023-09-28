@@ -13,18 +13,36 @@ tags:
 
 The `temporal task-queue list-partition` command displays the partitions of a [Task Queue](/concepts/what-is-a-task-queue), along with the matching node they are assigned to.
 
-Use the options listed below to change the command's behavior.
+Use the following options to change the command's behavior.
 
-- [--fields](/cli/cmd-options/fields)
+- [--address](/cli/cmd-options/address)
 
-- [--limit](/cli/cmd-options/limit)
+- [--codec-auth](/cli/cmd-options/codec-auth)
 
-- [--no-pager](/cli/cmd-options/no-pager)
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
+
+- [--color](/cli/cmd-options/color)
+
+- [--context-timeout](/cli/cmd-options/context-timeout)
+
+- [--env](/cli/cmd-options/env)
+
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
+
+- [--namespace](/cli/cmd-options/namespace)
 
 - [--output](/cli/cmd-options/output)
 
-- [--pager](/cli/cmd-options/pager)
-
 - [--task-queue](/cli/cmd-options/task-queue)
 
-- [--time-format](/cli/cmd-options/time-format)
+- [--tls](/cli/cmd-options/tls)
+
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
+
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
+
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
+
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
+
+- [--tls-server-name](/cli/cmd-options/tls-server-name)

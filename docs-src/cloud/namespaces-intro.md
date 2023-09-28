@@ -11,7 +11,7 @@ tags:
 
 A Namespace is a unit of isolation within the Temporal Platform.
 
-- [Create a Namespace](#create-a-namespace)
-- [Access a Namespace](#access-a-namespace)
-- [Manage Namespaces](#manage-namespaces)
-- [Delete a Namespace](#delete-a-namespace)
+- [Create a Namespace](/cloud/namespaces-create)
+- [Access a Namespace](/cloud/namespaces-access)
+- [Manage Namespaces](/cloud/namespaces-manage)
+- [Delete a Namespace](/cloud/namespaces-delete)

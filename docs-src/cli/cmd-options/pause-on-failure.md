@@ -12,4 +12,4 @@ tags:
     - schedule
 ---
 
-Pause schedule after any workflow failure.
+Pause schedule after any Workflow failure.
