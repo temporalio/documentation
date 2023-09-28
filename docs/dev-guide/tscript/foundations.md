@@ -5,7 +5,7 @@ sidebar_label: Foundations
 sidebar_position: 1
 description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/typescript/foundations
-toc_max_heading_level: 3
+toc_max_heading_level: 2
 keywords:
 - cli
 - cli-feature
@@ -42,7 +42,6 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 In this section you can find the following:
 
 - [Run a development Cluster](#run-a-development-server)
-- [Install your SDK](#install-a-temporal-sdk)
 - [Connect to a dev Cluster](#connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Develop a Workflow](#develop-workflows)
