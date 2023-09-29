@@ -439,7 +439,7 @@ First, add a version `1.0` to the Task Queue as the new default.
 Your version sets now look like this:
 
 | set 1 (default) |
-|-----------------|
+| --------------- |
 | 1.0 (default)   |
 
 All new Workflows started on the Task Queue have their first tasks assigned to version `1.0`.
@@ -454,7 +454,7 @@ Now, imagine you need change the Workflow for some reason.
 Add `2.0` to the sets as the new default:
 
 | set 1         | set 2 (default) |
-|---------------|-----------------|
+| ------------- | --------------- |
 | 1.0 (default) | 2.0 (default)   |
 
 All new Workflows started on the Task Queue have their first tasks assigned to version `2.0`.
@@ -467,7 +467,7 @@ So, you add `2.1` to the sets, marking it as compatible with `2.0`.
 Now your sets look like this:
 
 | set 1         | set 2 (default) |
-|---------------|-----------------|
+| ------------- | --------------- |
 | 1.0 (default) | 2.0             |
 |               | 2.1 (default)   |
 
@@ -478,7 +478,7 @@ Continue with your normal development cycle, adding a `3.0` version.
 Nothing new here:
 
 | set 1         | set 2         | set 3 (default) |
-|---------------|---------------|-----------------|
+| ------------- | ------------- | --------------- |
 | 1.0 (default) | 2.0           | 3.0 (default)   |
 |               | 2.1 (default) |                 |
 
@@ -488,7 +488,7 @@ You are okay with existing `3.0` Workflows running to completion, but you want n
 This operation is supported by performing an update targeting `2.1` (or `2.0`) and setting its set as the current default, which results in these sets:
 
 | set 1         | set 3         | set 2 (default) |
-|---------------|---------------|-----------------|
+| ------------- | ------------- | --------------- |
 | 1.0 (default) | 3.0 (default) | 2.0             |
 |               |               | 2.1 (default)   |
 
