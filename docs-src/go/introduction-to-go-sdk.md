@@ -24,7 +24,7 @@ This guide documents the concepts, features, and tools needed to create, test, a
 
 The Temporal Go SDK enables developers to build, test, and execute Temporal applications in Go.
 
-### Supported runtimes
+## Supported runtimes
 
 **What are the supported Go runtimes?**
 
@@ -32,7 +32,7 @@ The Temporal Go SDK supports Go 1.18+.
 
 Ensure you have the latest version of the Temporal Go SDK by checking [releases](https://github.com/temporalio/sdk-go/releases).
 
-### Add to project
+## Add to project
 
 ```shell
 go get go.temporal.io/sdk
@@ -47,7 +47,7 @@ import (
 )
 ```
 
-### Expected skills and experiences
+## Expected skills and experiences
 
 **What Go programming skills and experiences should a developer have to succeed with the Go SDK?**
 
@@ -143,6 +143,11 @@ For intricate and vast use cases, having some experience with the following coul
 
 - _#go-sdk_ channel in [Slack](https://t.mp/slack)
 - [Community Forum](https://community.temporal.io/tag/go-sdk)
+
+## How to follow updates to the Go SDK {#updates}
+
+- The [Temporal newsletter](https://t.mp/news) includes major SDK updates.
+- [GitHub Releases](https://github.com/temporalio/sdk-go/releases) has all SDK releases. It also has a feed that can be added to a feed reader or [converted to emails](https://blogtrottr.com/): `https://github.com/temporalio/sdk-go/releases.atom`.
 
 ## How to contribute to the Temporal Go SDK {#contribution}
 

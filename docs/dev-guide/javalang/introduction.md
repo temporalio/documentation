@@ -31,13 +31,13 @@ Short link: [t.mp/java-api](https://t.mp/java-api)
 The [Temporal Java SDK](https://github.com/temporalio/sdk-java) released on March 28, 2020.
 The Temporal Java SDK developers guide documents the concepts, features, and tools that you’ll use to create, test, and execute Temporal applications in Java.
 
-### Supported runtimes
+## Supported runtimes
 
 **What are the supported Java runtimes?**
 
 Developing applications with the Temporal Java SDK requires Java 1.8+.
 
-### Build configuration
+## Build configuration
 
 **Where can I get a build configuration?**
 
@@ -59,7 +59,7 @@ or to _`build.gradle`_:
 compile group: 'io.temporal', name: 'temporal-sdk', version: 'N.N.N'
 ```
 
-### Expected skills and experiences
+## Expected skills and experiences
 
 **What Java programming skills and experiences should a developer have to succeed with the Java SDK?**
 
@@ -149,7 +149,7 @@ For complex and large-scale use cases, having at least some experience with a va
 
 :::
 
-### Code samples and resources {#additional-resources}
+## Code samples and resources {#additional-resources}
 
 **Where can I find code samples and other resources to learn to use the Java SDK?**
 
@@ -165,9 +165,16 @@ For complex and large-scale use cases, having at least some experience with a va
 - _#java-sdk_ channel in [Slack](https://t.mp/slack)
 - [Community Forum](https://community.temporal.io/tag/java-sdk)
 
-### Contribution {#contribution}
+## Updates
 
-**How to contribute to the Temporal Java SDK?**
+**How to follow updates to the Java SDK**
+
+- The [Temporal newsletter](https://t.mp/news) includes major SDK updates.
+- [GitHub Releases](https://github.com/temporalio/sdk-java/releases) has all SDK releases. It also has a feed that can be added to a feed reader or [converted to emails](https://blogtrottr.com/): `https://github.com/temporalio/sdk-java/releases.atom`.
+
+## Contribution {#contribution}
+
+**How to contribute to the Temporal Java SDK**
 
 The Temporal Java SDK is MIT licensed, and contributions are welcome.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-java/blob/master/CONTRIBUTING.md).

@@ -85,6 +85,11 @@ Further resources for learning how to use the SDK include the following:
 - _#typescript-sdk_ channel in [Slack](https://t.mp/slack)
 - [Community Forum](https://community.temporal.io/tag/typescript-sdk)
 
+## How to follow updates to the TypeScript SDK
+
+- The [Temporal newsletter](https://t.mp/news) includes major SDK updates.
+- [GitHub Releases](https://github.com/temporalio/sdk-typescript/releases) has all SDK releases. It also has a feed that can be added to a feed reader or [converted to emails](https://blogtrottr.com/): `https://github.com/temporalio/sdk-typescript/releases.atom`.
+
 ## How to contribute to the TypeScript SDK
 
 The Temporal TypeScript SDK is MIT licensed, and contributions are welcome.

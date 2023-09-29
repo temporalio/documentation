@@ -129,6 +129,11 @@ Additional Python code samples are in the [temporalio/samples-python](https://gi
 - _#python-sdk_ channel in [Temporal Slack](https://t.mp/slack)
 - [Community Forum](https://community.temporal.io/tag/python-sdk)
 
+## How to follow updates to the Python SDK
+
+- The [Temporal newsletter](https://t.mp/news) includes major SDK updates.
+- [GitHub Releases](https://github.com/temporalio/sdk-python/releases) has all SDK releases. It also has a feed that can be added to a feed reader or [converted to emails](https://blogtrottr.com/): `https://github.com/temporalio/sdk-python/releases.atom`.
+
 ### How to contribute to the Python SDK
 
 The Temporal Python SDK is MIT licensed, and contributions are welcome.
