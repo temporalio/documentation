@@ -19,6 +19,8 @@ We can test Workflow code for the following conditions:
 - Error when checking for a result of a Workflow. Is there an error in getting the result returned by the Workflow.
 - Workflow return value. If the Workflow did return something other than an error, is it what you expected it to be?
 
+We can also perform a Workflow Replay test, and we'll provide detailed coverage of this topic in another section.
+
 :::copycode Copy this code!
 
 This code is synced from a working and tested example application.

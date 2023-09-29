@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday September 28 2023 10:07:23 AM -0600
+Last assembled: Friday September 29 2023 10:07:29 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -1063,6 +1063,8 @@ go/choose-dev-cluster -> #choose-dev-cluster
 go/project-structure -> #boilerplate-project
 
 go/backgroundcheck-boilerplate-run-a-dev-server-worker -> #dev-server-worker
+
+go/backgroundcheck-boilerplate-start-workflow -> #local-dev-server
 
 go/backgroundcheck-boilerplate-add-test-framework -> #test-framework
 

@@ -28,7 +28,7 @@ The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev
 The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
 
 A Go-based Workflow Definition can return either just an `error` or a `customValue, error` combination.
-Again, the best practice here is to use a `struct` type to hold all custom values.
+We get into the best practices around Workflow params and returns in the one of the next sections.
 
 In regards to code organization, we recommend organizing Workflow code together with other Workflow code.
 For example, in a small project like this, it is still a best practice to have a dedicated file for each Workflow.

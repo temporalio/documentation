@@ -8,7 +8,7 @@ tags:
   - go
 ---
 
-:::success Temporal Go SDK API reference
+:::info Temporal Go SDK API reference
 
 https://pkg.go.dev/go.temporal.io/sdk
 

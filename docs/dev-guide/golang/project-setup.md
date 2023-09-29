@@ -57,9 +57,12 @@ By the end of this section you will know how to construct a new Temporal Applica
 - [Boilerplate application code and file structure best practices](#boilerplate-project)
 - How to run your Worker
   - [Local dev server Worker](#dev-server-worker)
+  - Temporal Cloud Worker
+  - Self-hosted Worker
 - How to start your Workflow using the CLI
-- How to list Workflows using the CLI
-- How to view Workflows in the Web UI
+  - [Start on local dev server](#local-dev-server)
+  - [Start on Temporal Cloud](#temporal-cloud)
+  - [Start on Self-hosted](#self-hosted)
 - [How to add a testing framework and tests to your application](#test-framework)
 
 ## Install the Temporal CLI {#install-cli}
@@ -264,9 +267,7 @@ temporal_docker operator namespace create backgroundcheck_namespace
 
 **What is the minimum code I need to create a boilerplate Temporal Application?**
 
-Let’s start out with a single Activity Workflow and a Worker.
-
-Later, tests will be added.
+Let’s start out with a single Activity Workflow and a Worker and add a testing framework.
 
 ### Project structure
 
@@ -280,39 +281,39 @@ Often this happens respectively per use case, business process, or domain.
 
 For mono-repo style organizational techniques, consider a designated Workflow directory for each use case and place each Workflow in its own file, but also maintain a dedicated place for shared Activities.
 
-So, or example your project structure could look like this:
+For example your project structure could look like this:
 
 ```text
 /monorepo
-	/shared_activities
-		- payment.go
-    - send_email.go
-	/backgroundcheck
-		 /workflows
-			 - backgroundcheck.go
-     /activities
-		   - ssntrace.go
-     /worker
-       - main.go
-  /loanapplication
-     /workflows
-       - loanapplication.go
-     /activities
-       - creditcheck.go
-     /worker
-       - main.go
+    /shared_activities
+        | payment.go
+        | send_email.go
+    /backgroundcheck
+        /workflows
+            | backgroundcheck.go
+        /activities
+            | ssntrace.go
+        /worker
+            | main.go
+    /loanapplication
+        /workflows
+            | loanapplication.go
+        /activities
+            | creditcheck.go
+        /worker
+            | main.go
 ```
 
-For this section, your project will look like this:
+If you are following along with this guide, your project will look like this:
 
 ```text
 /backgroundcheck
-		 /workflows
-			 - backgroundcheck.go
-     /activities
-		   - ssntrace.go
-     /worker
-       - main.go
+    /workflows
+        | backgroundcheck.go
+    /activities
+        | ssntrace.go
+    /worker
+        | main.go
 ```
 
 ### Initialize Go project dependency framework
@@ -390,7 +391,7 @@ The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev
 The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
 
 A Go-based Workflow Definition can return either just an `error` or a `customValue, error` combination.
-Again, the best practice here is to use a `struct` type to hold all custom values.
+We get into the best practices around Workflow params and returns in the one of the next sections.
 
 In regards to code organization, we recommend organizing Workflow code together with other Workflow code.
 For example, in a small project like this, it is still a best practice to have a dedicated file for each Workflow.
@@ -544,7 +545,7 @@ You should now be at [http://localhost:8233/namespaces/backgroundcheck_namespace
 
 **How to start a Workflow with Temporal CLI when using Temporal Cloud.**
 
-### Self-hosted Cluster
+### Self-hosted
 
 **How to start a Workflow with the Temporal CLI when using a Self-hosted Cluster.**
 
@@ -631,6 +632,8 @@ We can test Workflow code for the following conditions:
 - Workflow returned an error. Did the Workflow function return an error?
 - Error when checking for a result of a Workflow. Is there an error in getting the result returned by the Workflow.
 - Workflow return value. If the Workflow did return something other than an error, is it what you expected it to be?
+
+We can also perform a Workflow Replay test, and we'll provide detailed coverage of this topic in another section.
 
 :::copycode Copy this code!
 

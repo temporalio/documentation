@@ -11,9 +11,7 @@ tags:
 
 **What is the minimum code I need to create a boilerplate Temporal Application?**
 
-Let’s start out with a single Activity Workflow and a Worker.
-
-Later, tests will be added.
+Let’s start out with a single Activity Workflow and a Worker and add a testing framework.
 
 ### Project structure
 
@@ -27,39 +25,39 @@ Often this happens respectively per use case, business process, or domain.
 
 For mono-repo style organizational techniques, consider a designated Workflow directory for each use case and place each Workflow in its own file, but also maintain a dedicated place for shared Activities.
 
-So, or example your project structure could look like this:
+For example your project structure could look like this:
 
 ```text
 /monorepo
-	/shared_activities
-		- payment.go
-    - send_email.go
-	/backgroundcheck
-		 /workflows
-			 - backgroundcheck.go
-     /activities
-		   - ssntrace.go
-     /worker
-       - main.go
-  /loanapplication
-     /workflows
-       - loanapplication.go
-     /activities
-       - creditcheck.go
-     /worker
-       - main.go
+    /shared_activities
+        | payment.go
+        | send_email.go
+    /backgroundcheck
+        /workflows
+            | backgroundcheck.go
+        /activities
+            | ssntrace.go
+        /worker
+            | main.go
+    /loanapplication
+        /workflows
+            | loanapplication.go
+        /activities
+            | creditcheck.go
+        /worker
+            | main.go
 ```
 
-For this section, your project will look like this:
+If you are following along with this guide, your project will look like this:
 
 ```text
 /backgroundcheck
-		 /workflows
-			 - backgroundcheck.go
-     /activities
-		   - ssntrace.go
-     /worker
-       - main.go
+    /workflows
+        | backgroundcheck.go
+    /activities
+        | ssntrace.go
+    /worker
+        | main.go
 ```
 
 ### Initialize Go project dependency framework

@@ -56,7 +56,7 @@ You should now be at [http://localhost:8233/namespaces/backgroundcheck_namespace
 
 **How to start a Workflow with Temporal CLI when using Temporal Cloud.**
 
-### Self-hosted Cluster
+### Self-hosted
 
 **How to start a Workflow with the Temporal CLI when using a Self-hosted Cluster.**
 

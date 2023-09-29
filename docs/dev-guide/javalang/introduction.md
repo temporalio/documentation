@@ -20,7 +20,7 @@ tags:
 
 Welcome to Temporal Java SDK developer’s guide.
 
-:::success Temporal Java SDK API reference
+:::info Temporal Java SDK API reference
 
 https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html
 
@@ -69,7 +69,7 @@ The Temporal Platform enables developers to build a wide range of applications t
 
 We recommend that developers are equipped with some of the following skills to develop production-level Temporal Applications:
 
-:::success Recommended
+:::tip Recommended
 
 **Core fundamentals:**
 
