@@ -10,7 +10,7 @@ tags:
   - explanation
 ---
 
-When signing up for Temporal Cloud, select a support plan—either Basic or Premium—and gain access to our support organization, which includes developer success engineers and solution architects. Our experts assist with a range of work streams, from Workflow design reviews to setting up observability, and from break/fix support to maintaining an agreed-upon set of SLAs.
+When signing up for Temporal Cloud, select a support plan—either Basic or Premium—and gain access to our support organization, which includes developer success engineers and solution architects. Our experts assist with a range of work streams, from Workflow design reviews to setting up observability, and from troubleshooting support to maintaining an agreed-upon set of SLAs.
 
 The Temporal Developer Success team brings a deep knowledge of how Temporal works and how you can optimize your deployment. This team is comprised of engineers who know Temporal inside and out, and continue to contribute to its development.
 
