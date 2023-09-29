@@ -380,9 +380,10 @@ You can achieve this by adding a new version to an existing set and defining it 
 Because the new version processes existing [Event Histories](/workflows/#event-history), it must adhere to the usual [deterministic constraints](/workflows/#deterministic-constraints), and you might need to use one of the [versioning APIs](/workflows/#workflow-versioning).
 
 Moreover, this feature lets you make incompatible changes to Activity Definitions in conjunction with incompatible changes to Workflow Definitions that use those Activities.
-This functionality works because any Activity that a Workflow schedules on the same Task Queue gets dispatched only to Workers compatible with the Workflow that scheduled it.
+This functionality works because any Activity that a Workflow schedules on the same Task Queue gets dispatched by default only to Workers compatible with the Workflow that scheduled it.
 If you want to change an Activity Definition's type signature while creating a new incompatible Build ID for a Worker, you can do so without worrying about the Activity failing to execute on some other Worker with an incompatible definition.
 The same principle applies to Child Workflows.
+For both Activities and Child Workflows, you can override the default behavior and run the Activity or Child Workflow on latest default version.
 
 :::tip
 
@@ -438,7 +439,7 @@ First, add a version `1.0` to the Task Queue as the new default.
 Your version sets now look like this:
 
 | set 1 (default) |
-| --------------- |
+|-----------------|
 | 1.0 (default)   |
 
 All new Workflows started on the Task Queue have their first tasks assigned to version `1.0`.
@@ -453,7 +454,7 @@ Now, imagine you need change the Workflow for some reason.
 Add `2.0` to the sets as the new default:
 
 | set 1         | set 2 (default) |
-| ------------- | --------------- |
+|---------------|-----------------|
 | 1.0 (default) | 2.0 (default)   |
 
 All new Workflows started on the Task Queue have their first tasks assigned to version `2.0`.
@@ -466,7 +467,7 @@ So, you add `2.1` to the sets, marking it as compatible with `2.0`.
 Now your sets look like this:
 
 | set 1         | set 2 (default) |
-| ------------- | --------------- |
+|---------------|-----------------|
 | 1.0 (default) | 2.0             |
 |               | 2.1 (default)   |
 
@@ -477,7 +478,7 @@ Continue with your normal development cycle, adding a `3.0` version.
 Nothing new here:
 
 | set 1         | set 2         | set 3 (default) |
-| ------------- | ------------- | --------------- |
+|---------------|---------------|-----------------|
 | 1.0 (default) | 2.0           | 3.0 (default)   |
 |               | 2.1 (default) |                 |
 
@@ -487,7 +488,7 @@ You are okay with existing `3.0` Workflows running to completion, but you want n
 This operation is supported by performing an update targeting `2.1` (or `2.0`) and setting its set as the current default, which results in these sets:
 
 | set 1         | set 3         | set 2 (default) |
-| ------------- | ------------- | --------------- |
+|---------------|---------------|-----------------|
 | 1.0 (default) | 3.0 (default) | 2.0             |
 |               |               | 2.1 (default)   |
 
