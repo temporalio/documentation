@@ -44,7 +44,7 @@
             "id": "go/backgroundcheck-boilerplate-activity-details"
         },
         {
-            "type": "h3",
+            "type": "h2",
             "id": "go/backgroundcheck-boilerplate-run-a-dev-server-worker"
         },
         {
