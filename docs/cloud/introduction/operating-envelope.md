@@ -70,7 +70,7 @@ For current system status and information about recent incidents, see [Temporal 
 Temporal Cloud currently runs in the following regions in Amazon Web Services (AWS):
 
 | Area          | Code           | Region            |
-|---------------|----------------|-------------------|
+| ------------- | -------------- | ----------------- |
 | Asia Pacific  | ap-northeast-1 | Tokyo             |
 | Asia Pacific  | ap-south-1     | Mumbai            |
 | Asia Pacific  | ap-southeast-1 | Singapore         |
