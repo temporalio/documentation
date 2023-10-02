@@ -58,10 +58,11 @@ By the end of this section you will know how to construct a new Temporal Applica
 - How to create a new Namespace in your development Cluster
   - [Local dev server](#local-dev-server)
   - [Temporal Cloud](#temporal-cloud)
+  - [Self-hosted](#self-hosted)
 - [Boilerplate application code and file structure best practices](#boilerplate-project)
 - How to run your Worker
   - [Local dev server Worker](#dev-server-worker)
-  - Temporal Cloud Worker
+  - [Temporal Cloud Worker](#cloud-worker)
   - Self-hosted Worker
 - How to start your Workflow using the CLI
   - [Start on local dev server](#local-dev-server)
@@ -271,7 +272,9 @@ temporal_docker operator namespace create backgroundcheck_namespace
 
 **What is the minimum code I need to create a boilerplate Temporal Application?**
 
-Let’s start out with a single Activity Workflow and a Worker and add a testing framework.
+Let’s start out with a single Activity Workflow and register those functions with a Worker.
+
+After we get the Worker running and have started a Workflow Execution, we will add a testing framework.
 
 ### Project structure
 
@@ -520,6 +523,7 @@ This code is synced from a working and tested example application.
 :::
 
 ```go
+// ...
 func main() {
 // ...
 	clientKeyPath := "./ca.key"

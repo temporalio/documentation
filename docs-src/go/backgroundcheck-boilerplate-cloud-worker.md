@@ -27,6 +27,7 @@ This code is synced from a working and tested example application.
 :::
 
 ```go
+// ...
 func main() {
 // ...
 	clientKeyPath := "./ca.key"
