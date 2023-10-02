@@ -44,8 +44,16 @@
             "id": "go/backgroundcheck-boilerplate-activity-details"
         },
         {
-            "type": "h2",
+            "type": "h3",
             "id": "go/backgroundcheck-boilerplate-run-a-dev-server-worker"
+        },
+        {
+            "type": "h3",
+            "id": "go/backgroundcheck-boilerplate-cloud-worker"
+        },
+        {
+            "type": "p",
+            "id": "go/backgroundcheck-boilerplate-cloud-worker-details"
         },
         {
             "type": "h2",

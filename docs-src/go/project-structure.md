@@ -11,7 +11,9 @@ tags:
 
 **What is the minimum code I need to create a boilerplate Temporal Application?**
 
-Let’s start out with a single Activity Workflow and a Worker and add a testing framework.
+Let’s start out with a single Activity Workflow and register those functions with a Worker.
+
+After we get the Worker running and have started a Workflow Execution, we will add a testing framework.
 
 ### Project structure
 

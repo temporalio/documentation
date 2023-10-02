@@ -53,7 +53,7 @@ func main() {
 	}
 	defer temporalClient.Close()
 	// Create a new Worker
-	yourWorker := worker.New(temporalClient, "backgroundcheck-boilerplate-task-queue", worker.Options{})
+	yourWorker := worker.New(temporalClient, "backgroundcheck-boilerplate-task-queue-local", worker.Options{})
 	// Register Workflows
 	yourWorker.RegisterWorkflow(backgroundcheck_boilerplate.BackgroundCheck)
 	// Register Acivities

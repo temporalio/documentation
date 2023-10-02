@@ -22,10 +22,11 @@ By the end of this section you will know how to construct a new Temporal Applica
 - How to create a new Namespace in your development Cluster
   - [Local dev server](/go/choose-dev-cluster#local-dev-server)
   - [Temporal Cloud](/go/choose-dev-cluster#temporal-cloud)
+  - [Self-hosted](/go/choose-dev-cluster#self-hosted)
 - [Boilerplate application code and file structure best practices](/go/project-structure)
 - How to run your Worker
   - [Local dev server Worker](/go/backgroundcheck-boilerplate-run-a-dev-server-worker)
-  - Temporal Cloud Worker
+  - [Temporal Cloud Worker](/go/backgroundcheck-boilerplate-cloud-worker)
   - Self-hosted Worker
 - How to start your Workflow using the CLI
   - [Start on local dev server](/go/backgroundcheck-boilerplate-start-workflow#local-dev-server)
