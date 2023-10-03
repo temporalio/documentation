@@ -17,19 +17,14 @@ By the end of this section you will know how to construct a new Temporal Applica
 
 :::
 
-- [How to download and install the Temporal CLI](/go/install-cli)
-- [Which development Cluster you should choose](/go/choose-dev-cluster)
-- How to create a new Namespace in your development Cluster
-  - [Local dev server](/go/choose-dev-cluster#local-dev-server)
-  - [Temporal Cloud](/go/choose-dev-cluster#temporal-cloud)
-  - [Self-hosted](/go/choose-dev-cluster#self-hosted)
-- [Boilerplate application code and file structure best practices](/go/project-structure)
-- How to run your Worker
-  - [Local dev server Worker](/go/backgroundcheck-boilerplate-run-a-dev-server-worker)
-  - [Temporal Cloud Worker](/go/backgroundcheck-boilerplate-cloud-worker)
-  - [Self-hosted Worker](/go/self-hosted-worker-docker-network)
-- How to start your Workflow using the CLI
-  - [Start on local dev server](/go/backgroundcheck-boilerplate-start-workflow#local-dev-server)
-  - [Start on Temporal Cloud](/go/backgroundcheck-boilerplate-start-workflow#temporal-cloud)
-  - [Start on Self-hosted](/go/backgroundcheck-boilerplate-start-workflow#self-hosted)
-- [How to add a testing framework and tests to your application](/go/backgroundcheck-boilerplate-add-test-framework)
+:::info Choose your development environment
+
+There are three ways to follow this guide:
+
+- Using a local dev server
+- Using Temporal Cloud
+- Using a Self-hosted environment such as Docker
+
+Read more about [Which development Cluster you should choose](/go/choose-dev-cluster) below.
+
+:::
