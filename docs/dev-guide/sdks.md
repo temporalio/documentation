@@ -489,6 +489,12 @@ And that’s how a Temporal Worker and Cluster work together.
 
 ## What are the differences in each SDK? {#sdk-comparison}
 
+The SDKs for Temporal are constructed as follows:
+
+- Go and PHP derive from the Go SDK.
+- Java derives from the Java SDK.
+- .Net, TypeScript, and Python derive from the Rust Core SDK.
+
 The following table compares the features available in each SDK.
 
 | Feature                                                                             | Go  | Java | TypeScript | Python | .Net | PHP |
@@ -576,16 +582,17 @@ Some key aspects of build ID dispatch:
 
 So in summary, build ID dispatch provides a mechanism to deploy new Worker code without disrupting existing Workflows on a task queue. It's a key feature for zero-downtime deployments in Temporal.
 
-## Built-in handler list query
+## Built-in handler list Query
 
-The built-in handler list query in Temporal allows retrieving the list of registered signal and query handlers for a Workflow.
+The built-in handler list Query in Temporal allows retrieving the list of registered Signal and Query handlers for a Workflow.
 
-When this query is sent to a workflow, the response contains a JSON serialized list of the following information about each handler:
+When this Query is sent to a Workflow, the response contains a JSON serialized list of the following information about each handler:
 
-- Handler type - "signal" or "query"
+- Handler type: either Signal or Query
 - Handler name
-- Workflow function that handles the signal/query
-- This can be useful for debugging or introspecting what signals and queries a Workflow currently supports.
+- Workflow function that handles the Signal or Query
+
+This can be useful for debugging or introspecting which Signal or Query a Workflow currently supports.
 
 ## Built-in Temporal CLI dev server runner
 
@@ -598,36 +605,17 @@ The bulk replayer enables efficient parallel replay of many Workflow histories f
 
 ## Cancellation
 
-Cancellation in Temporal SDKs refers to the ability to stop the execution of a workflow, activity, or other operation before it completes normally. Some key points:
+Cancellation in Temporal SDKs refers to the ability to stop the execution of a Workflow, Activity, or other operation before it completes normally.
 
-- Workflows and activities can be cancelled externally by the client or programmatically from within the Workflow code.
-- When a Workflow is cancelled, it can cascade the cancellation to Child Workflows, activities, timers, etc.
-- Activities receive cancellation as an exception or signal they can handle.
-- Cancellation propagates based on cancellation scopes which control what gets cancelled.
-- SDKs provide mechanisms to check for cancellation and gracefully handle it.
-- Workflow cancellation results in its run ending with the "Canceled" status.
-- Cancellation is useful for things like stopping redundant work, timeouts, operator intervention, etc.
-- Precise cancellation semantics depend on the specific SDK but generally follow the same concepts.
-
-So in summary, cancellation is a key mechanism in Temporal for stopping execution early and handling it properly at each level. The SDKs provide APIs and abstractions to enable robust cancellation handling in Workflows and activities.
+Each SDK provides APIs and abstractions to enable robust cancellation handling in Workflows and Activities.
 
 ## Child Workflows
 
 A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.
 
-Child Workflows in Temporal SDKs refer to Workflows that are started from within another Workflow. Some key points:
+Child Workflows in Temporal SDKs refer to Workflows that are started from within another Workflow.
 
-- A parent Workflow can start one or more Child Workflows using the SDK's Child Workflow APIs.
-- Child Workflows run independently with their own execution history.
-- The parent Workflow waits for and receives results back from Child Workflows.
-- Parent and Child Workflows communicate via return values and continue-as-new.
-- Child Workflows can further start their own Child Workflows, creating a hierarchy.
-- Child Workflows can be used to modularize and decouple complex Workflows.
-- Child Workflows can have different Task Queues or be hosted in external workers.
-- Parent Workflows control the lifecycle of Child Workflows like cancellation, timeouts, etc.
-- SDKs provide Child Workflow abstractions like Workflow stubs, options, etc.
-
-So in summary, Child Workflows allow composition and decomposition of Workflows in Temporal through parent-child relationships and hierarchical execution. The SDKs provide simple APIs to handle the complexity behind the scenes.
+Each SDK provides APIs and abstractions to handle the complexity behind the scenes.
 
 ## Continue as New
 
@@ -807,12 +795,35 @@ A Signal is an asynchronous request to a [Workflow Execution](/workflows#workflo
 
 ## Static analyzer
 
-...
+The [Temporal Workflow Check](https://github.com/temporalio/sdk-go/tree/master/contrib/tools/workflowcheck) is a tool that statically analyzes Temporal Workflow Definitions written in Go (i.e. functions with `workflow.Context`` as first argument) to check for non-deterministic code either directly in the function or in a function called by the Workflow.
+It is highly optimized to scan large codebases quickly.
+
+:::note
+This will not catch all cases of non-determinism such as global var mutation. This is just a helper and developers should still scrutinize Workflow code for other non-determinisms.
+:::
+
+TypeScript has support for a [VS Code extension](#vscode-extension-support).
 
 ## Timers
 
 A Workflow can set a durable timer for a fixed time period.
 In some SDKs, the function is called `sleep()`, and in others, it's called `timer()`.
+
+SDKs that use timer:
+
+- Go (`NewTimer`)
+- PHP
+- Python
+
+SDKs that use sleep:
+
+- Go
+- Java
+- TypeScript
+
+SDKs that use `Workflow.DelayAsync`:
+
+- .Net
 
 ## Unit testing
 
@@ -841,7 +852,8 @@ The Temporal Server uses the Build ID to determine which versions of a Workflow 
 
 ## VSCode extension support
 
-If you're using VS Code, you can use the [Temporal VS Code extension](https://marketplace.visualstudio.com/items?itemName=temporal-technologies.temporalio) to easily load Event Histories and set breakpoints on Events. For usage, see the [announcement post](https://temporal.io/blog/temporal-for-vs-code) or [demo video](https://www.youtube.com/watch?v=3IjQde9HMNY).
+If you're using VS Code, you can use the [Temporal VS Code extension](https://marketplace.visualstudio.com/items?itemName=temporal-technologies.temporalio) to easily load Event Histories and set breakpoints on Events.
+For usage, see the [announcement post](https://temporal.io/blog/temporal-for-vs-code) or [demo video](https://www.youtube.com/watch?v=3IjQde9HMNY).
 
 ## Worker-Specific Task Queues
 
