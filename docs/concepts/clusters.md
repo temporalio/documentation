@@ -28,18 +28,6 @@ A Temporal Cluster is the group of services, known as the [Temporal Server](#tem
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
 
-<!-- ### Visibility
-Commenting this out because it is out of place. Using the what is visibility concept topic in the guide instead.
-Also these details are covered in the Visibility store setup under cluster deployment.
-
-Temporal has built-in [Visibility](#visibility) features.
-To enhance this feature, Temporal supports an [integration with Elasticsearch](/cluster-deployment-guide#elasticsearch).
-
-- Elasticsearch v8 is supported from Temporal version 1.18.0 onwards
-- Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
-- Elasticsearch v6.8 is supported up to Temporal version 1.17.x
-- Elasticsearch v6.8 and v7.10 versions are explicitly supported with AWS Elasticsearch -->
-
 ## What is the Temporal Server? {#temporal-server}
 
 The Temporal Server consists of four independently scalable services:
@@ -284,7 +272,7 @@ Archival enables Workflow Execution data to persist as long as needed, while not
 
 This feature is helpful for compliance and debugging.
 
-Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
+Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters#versions-and-support).
 
 Archival is not supported when running Temporal through Docker and is disabled by default when installing the system manually and when deploying through [helm charts](https://github.com/temporalio/helm-charts/blob/master/templates/server-configmap.yaml) (but can be enabled in the [config](https://github.com/temporalio/temporal/blob/master/config/development.yaml)).
 

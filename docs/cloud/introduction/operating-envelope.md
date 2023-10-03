@@ -103,7 +103,7 @@ To raise your quota, create a [support ticket](/cloud/support#support-ticket).
 Temporal Cloud aims for a latency SLO of 200ms per region for p99.
 In June 2023, Temporal measured latency over a week-long period for starting and signaling Workflow Executions as follows:
 
-- For `StartWorkflowExecution`: p90 latecy was 90ms, and p99 latency was 125ms.
+- For `StartWorkflowExecution`: p90 latency was 90ms, and p99 latency was 125ms.
 - For `SignalWorkflowExecution`: p90 latency was 53ms, and p99 latency was 95ms.
 - For `SignalWithStartWorkflowExecution`: p90 latency was 87ms, and p99 latency was 116ms.
 

@@ -14,15 +14,3 @@ A Temporal Cluster is the group of services, known as the [Temporal Server](/con
 - [Cluster deployment guide](/cluster-deployment-guide)
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
-
-<!-- ### Visibility
-Commenting this out because it is out of place. Using the what is visibility concept topic in the guide instead.
-Also these details are covered in the Visibility store setup under cluster deployment.
-
-Temporal has built-in [Visibility](/concepts/what-is-visibility) features.
-To enhance this feature, Temporal supports an [integration with Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
-
-- Elasticsearch v8 is supported from Temporal version 1.18.0 onwards
-- Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
-- Elasticsearch v6.8 is supported up to Temporal version 1.17.x
-- Elasticsearch v6.8 and v7.10 versions are explicitly supported with AWS Elasticsearch -->

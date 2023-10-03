@@ -234,11 +234,11 @@ A Child Workflow Execution inherits the Task Queue name from its Parent Workflow
 
 ## What is a Sticky Execution? {#sticky-execution}
 
-A Sticky Execution is when a Worker Entity caches the Workflow Execution Event History and creates a dedicated Task Queue to listen on.
+A Sticky Execution is when a Worker Entity caches the Workflow in memory and creates a dedicated Task Queue to listen on.
 
 A Sticky Execution occurs after a Worker Entity completes the first Workflow Task in the chain of Workflow Tasks for the Workflow Execution.
 
-The Worker Entity caches the Workflow Execution Event History and begins polling the dedicated Task Queue for Workflow Tasks that contain updates, rather than the entire Event History.
+The Worker Entity caches the Workflow in memory and begins polling the dedicated Task Queue for Workflow Tasks that contain updates, rather than the entire Event History.
 
 If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Cluster will resume Scheduling Workflow Tasks on the original Task Queue.
 Another Worker Entity can then resume the Workflow Execution, and can set up its own Sticky Execution for future Workflow Tasks.
@@ -335,6 +335,7 @@ It also includes features like concurrent session limitations and Worker failure
 - Available in CLI version [0.10.0](https://github.com/temporalio/cli/releases/tag/v0.10.0)
 - Available in [Go SDK](/dev-guide/go/versioning#worker-versioning) version [1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
 - Available in [Java SDK](/dev-guide/java/versioning#worker-versioning) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+- Available in [TypeScript SDK](/dev-guide/typescript/versioning#worker-versioning) version [1.8.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.8.0)
 - Available in [Python SDK](https://python.temporal.io/temporalio.worker.Worker.html) version [1.3.0](https://github.com/temporalio/sdk-python/releases/tag/1.3.0)
 - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Worker.TemporalWorkerOptions.html#Temporalio_Worker_TemporalWorkerOptions_UseWorkerVersioning) version [0.1.0-beta1](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta1)
 - Not yet available in Temporal Cloud
@@ -554,3 +555,7 @@ You can also use this API `GetWorkerTaskReachability` directly from within langu
 
 Unversioned Workers refer to Workers that have not opted into the Worker Versioning feature in their configuration.
 They receive tasks only from Task Queues that do not have any version sets defined on them, or that have open workflows that began executing before versions were added to the queue.
+
+To migrate from an unversioned Task Queue, add a new default Build ID to the Task Queue.
+From there, deploy Workers with the same Build ID.
+Unversioned Workers will continue processing open Workflows, while Workers with the new Build ID will process new Workflow Executions.
