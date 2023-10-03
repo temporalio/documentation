@@ -10,9 +10,6 @@ tags:
 
 A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/concepts/what-is-a-worker-entity) poll for [Tasks](/concepts/what-is-a-task).
 
-Task Queues do not have any ordering guarantees.
-It is possible to have a Task that stays in a Task Queue for a period of time, if there is a backlog that wasn't drained for that time.
-
 There are two types of Task Queues, Activity Task Queues and Workflow Task Queues.
 
 ![Task Queue component](/diagrams/task-queue.svg)
@@ -86,3 +83,22 @@ A Child Workflow Execution inherits the Task Queue name from its Parent Workflow
 - [How to start a Child Workflow Execution using the PHP SDK](/php/child-workflows)
 - [How to start a Child Workflow Execution using the Python SDK](/python/child-workflows)
 - [How to start a Child Workflow Execution using the TypeScript SDK](/typescript/child-workflows)
+
+#### Task ordering
+
+Task Queues can be scaled by adding partitions.
+The [default](/references/dynamic-configuration#service-level-rps-limits) number of partitions is 4.
+
+Task Queues with multiple partitions do not have any ordering guarantees.
+Once there is a backlog of Tasks that have been written to disk, Tasks that can be dispatched immediately (“sync matches”) are delivered before tasks from the backlog (“async matches”).
+This approach optimizes throughput.
+
+Task Queues with a single partition are almost always (with rare edge case exceptions) first-in, first-out.
+However, using a single partition limits you to low- and medium-throughput use cases.
+
+:::note
+
+This section is on the ordering of individual Tasks, and does not apply to the ordering of Workflow Executions, Activity Executions, or [Events](/workflows#event) in a single Workflow Execution.
+The order of Events in a Workflow Execution is guaranteed to remain constant once they have been written to that Workflow Execution's [History](/workflows#event-history).
+
+:::
