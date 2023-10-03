@@ -107,9 +107,9 @@ Use your Temporal CLI alias to run the `temporal workflow start` command and sta
 
 ```shell
 temporal_docker workflow start \
- --task-queue backgroundcheck-boilerplate-task-queue
- --type BackgroundCheck
- --input '"555-55-5555"'
+ --task-queue backgroundcheck-boilerplate-task-queue-self-hosted \
+ --type BackgroundCheck \
+ --input '"555-55-5555"' \
  --namespace backgroundcheck_namespace
 ```
 
@@ -119,7 +119,8 @@ Using your Temporal CLI alias, run the `temporal workflow list` command.
 This command lists the Workflows Executions within the Namespace:
 
 ```shell
-temporal_docker workflow list --namespace backgroundcheck_namespace
+temporal_docker workflow list \
+ --namespace backgroundcheck_namespace
 ```
 
 #### View in the Web UI

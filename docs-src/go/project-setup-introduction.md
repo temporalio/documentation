@@ -27,7 +27,7 @@ By the end of this section you will know how to construct a new Temporal Applica
 - How to run your Worker
   - [Local dev server Worker](/go/backgroundcheck-boilerplate-run-a-dev-server-worker)
   - [Temporal Cloud Worker](/go/backgroundcheck-boilerplate-cloud-worker)
-  - Self-hosted Worker
+  - [Self-hosted Worker](/go/self-hosted-worker-docker-network)
 - How to start your Workflow using the CLI
   - [Start on local dev server](/go/backgroundcheck-boilerplate-start-workflow#local-dev-server)
   - [Start on Temporal Cloud](/go/backgroundcheck-boilerplate-start-workflow#temporal-cloud)

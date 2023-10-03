@@ -56,6 +56,18 @@
             "id": "go/backgroundcheck-boilerplate-cloud-worker-details"
         },
         {
+            "type": "h3",
+            "id": "go/self-hosted-worker-docker-network"
+        },
+        {
+            "type": "h4",
+            "id": "go/backgroundcheck-boilerplate-self-hosted-worker"
+        },
+        {
+            "type": "h4",
+            "id": "go/self-hosted-worker-dockerfile"
+        },
+        {
             "type": "h2",
             "id": "go/backgroundcheck-boilerplate-start-workflow"
         },

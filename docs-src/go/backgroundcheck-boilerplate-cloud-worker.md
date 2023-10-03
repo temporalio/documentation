@@ -27,9 +27,28 @@ This code is synced from a working and tested example application.
 :::
 
 ```go
-// ...
+package main
+
+import (
+	"crypto/tls"
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+
+	"documentation-samples-go/backgroundcheck_boilerplate"
+)
+
+
 func main() {
-// ...
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalln("Unable to load environment variables from file", err)
+	}
+	// Get the key and cert from your env or local machine
 	clientKeyPath := "./ca.key"
 	clientCertPath := "./ca.pem"
 	// Use the crypto/tls package to create a cert object
@@ -51,6 +70,20 @@ func main() {
 			TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
 		},
 	})
-// ...
+	if err != nil {
+		log.Fatalln("Unable to connect to Temporal Cloud.", err)
+	}
+	defer temporalClient.Close()
+	// Create a new Worker
+	yourWorker := worker.New(temporalClient, "backgroundcheck-boilerplate-task-queue-cloud", worker.Options{})
+	// Register Workflows
+	yourWorker.RegisterWorkflow(backgroundcheck_boilerplate.BackgroundCheck)
+	// Register Acivities
+	yourWorker.RegisterActivity(backgroundcheck_boilerplate.SSNTraceActivity)
+	// Start the the Worker Process
+	err = yourWorker.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start the Worker Process", err)
+	}
 }
 ```
