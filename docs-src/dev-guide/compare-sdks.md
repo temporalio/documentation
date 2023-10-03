@@ -49,6 +49,7 @@ The following table compares the features available in each SDK.
 | [Signals](#signals)                                                                 | Yes | Yes  | Yes        | Yes    | Yes  | Yes |
 | [Static analyzer](#static-analyzer)                                                 | Yes | No   | No         | No     | No   | No  |
 | [Timers](#timers)                                                                   | Yes | Yes  | Yes        | Yes    | Yes  | Yes |
+| [Type safety](#type-safety)                                                         | Yes | Yes  | Yes        | Yes    | Yes  | Yes |
 | [Unit testing](#unit-testing)                                                       | Yes | Yes  | Yes        | Yes    | Yes  | Yes |
 | [Upsert memo](#upsert-memo)                                                         | Yes | No   | No         | No     | Yes  | No  |
 | [Versioning / Patching](#versioning--patching)                                      | Yes | Yes  | Yes        | Yes    | Yes  | Yes |
@@ -340,6 +341,10 @@ SDKs that use sleep:
 SDKs that use `Workflow.DelayAsync`:
 
 - .Net
+
+## Type safety
+
+Type safety refers to the ability to catch type errors at compile time.
 
 ## Unit testing
 
