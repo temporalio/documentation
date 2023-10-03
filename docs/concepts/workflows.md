@@ -995,7 +995,7 @@ If you're using Standard Visibility, they are visible, though there's no need to
 :::note
 
 We recommend using [Schedules](#schedule) instead of Cron Jobs.
-Schedules offer enhanced flexibility for configuration and enable you to pause or stop Scheduled Workflows.
+Schedules were built to provide a better developer experience, including more configuration options and the ability to update or pause running Schedules.
 
 :::
 
