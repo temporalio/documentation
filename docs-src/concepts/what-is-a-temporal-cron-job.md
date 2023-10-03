@@ -8,6 +8,13 @@ tags:
   - explanation
 ---
 
+:::note
+
+We recommend using [Schedules](/concepts/what-is-a-schedule) instead of Cron Jobs.
+Schedules were built to provide a better developer experience, including more configuration options and the ability to update or pause running Schedules.
+
+:::
+
 A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
 - [How to set a Cron Schedule using the Go SDK](/go/cron-jobs)
