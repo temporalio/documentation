@@ -93,7 +93,7 @@ Task Queues with multiple partitions do not have any ordering guarantees.
 Once there is a backlog of Tasks that have been written to disk, Tasks that can be dispatched immediately (“sync matches”) are delivered before tasks from the backlog (“async matches”).
 This approach optimizes throughput.
 
-Task Queues with a single partition are almost always (with rare edge case exceptions) first-in, first-out.
+Task Queues with a single partition are almost always first-in, first-out, with rare edge case exceptions.
 However, using a single partition limits you to low- and medium-throughput use cases.
 
 :::note
