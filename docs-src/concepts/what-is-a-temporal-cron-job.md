@@ -11,7 +11,7 @@ tags:
 :::note
 
 We recommend using [Schedules](/concepts/what-is-a-schedule) instead of Cron Jobs.
-Schedules offer enhanced flexibility for configuration and enable you to pause or stop Scheduled Workflows.
+Schedules were built to provide a better developer experience, including more configuration options and the ability to update or pause running Schedules.
 
 :::
 
