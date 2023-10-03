@@ -105,11 +105,11 @@
     },
     {
       "type": "h2",
-      "id": "concepts/what-is-a-temporal-cron-job"
+      "id": "concepts/what-is-a-schedule"
     },
     {
       "type": "h2",
-      "id": "concepts/what-is-a-schedule"
+      "id": "concepts/what-is-a-temporal-cron-job"
     },
     {
       "type": "h2",
