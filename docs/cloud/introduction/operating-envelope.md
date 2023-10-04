@@ -188,6 +188,15 @@ The default maximum number of [Custom Search Attributes](/visibility#custom-sear
 
 For more information on limits on the number and size of custom Search Attributes you can create, see [Custom Search Attributes limits](/visibility#custom-search-attributes).
 
+### What are constraints for Custom Search Attribute in Temporal Cloud?
+
+When creating custom Search Attributes in Temporal Cloud, the attribute names must adhere to the following constraints:
+
+- Maximum characters: 64
+- Allowed characters: `[a-zA-Z0-9.,:-_\/ ]`.
+
+For more information on limits on the number and size of custom Search Attributes you can create, see [Custom Search Attributes limits](/visibility#custom-search-attributes).
+
 ### Are there any limitations on List Filters?
 
 Yes, the `ORDER BY` operator isn't supported in List Filters in Temporal Cloud.
