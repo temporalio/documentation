@@ -89,7 +89,7 @@ For Cloud certificate requirements and details check out the [Cloud certificate 
 
 :::
 
-### Self-hosted
+### Self-hosted Temporal Cluster
 
 We recommend using a Self-Hosted environment if you are starting something new and need to scale with production-level features, but don’t yet need or want to pay for Temporal Cloud.
 

@@ -34,6 +34,8 @@ For example your project structure could look like this:
     /shared_activities
         | payment.go
         | send_email.go
+    /shared_tests
+        | tests.go
     /backgroundcheck
         /workflows
             | backgroundcheck.go
@@ -41,6 +43,8 @@ For example your project structure could look like this:
             | ssntrace.go
         /worker
             | main.go
+        /tests
+            | tests.go
     /loanapplication
         /workflows
             | loanapplication.go
@@ -48,6 +52,8 @@ For example your project structure could look like this:
             | creditcheck.go
         /worker
             | main.go
+        /tests
+            | tests.go
 ```
 
 If you are following along with this guide, your project will look like this:
@@ -60,6 +66,8 @@ If you are following along with this guide, your project will look like this:
         | ssntrace.go
     /worker
         | main.go
+    /tests
+        | tests.go
 ```
 
 ### Initialize Go project dependency framework

@@ -24,13 +24,13 @@ The follow structure applies to the Temporal Go SDK developer's guide:
   - [Additional resources for learning the Go SDK](/go/introduction-to-go-sdk#additional-resources)
   - [Contribution](/go/introduction-to-go-sdk#contribution)
 
-- [**Project setup**]
+- [**Project setup**](/go/go-dev-guide-structure)
   - [How to download and install the Temporal CLI](/go/install-cli)
   - [Which development Cluster you should choose](/go/choose-dev-cluster)
   - How to create a new Namespace in your development Cluster
     - [Local dev server](/go/choose-dev-cluster#local-dev-server)
     - [Temporal Cloud](/go/choose-dev-cluster#temporal-cloud)
-    - [Self-hosted](/go/choose-dev-cluster#self-hosted)
+    - [Self-hosted Temporal Cluster](/go/choose-dev-cluster#self-hosted-temporal-cluster)
   - [Boilerplate application code and file structure best practices](/go/project-structure)
   - How to run your Worker
     - [Local dev server Worker](/go/backgroundcheck-boilerplate-run-a-dev-server-worker)

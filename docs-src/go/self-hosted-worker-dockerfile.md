@@ -27,6 +27,13 @@ RUN go build -o bin ./self_hosted/main_dacx.go
 ENTRYPOINT ["/app/bin"]
 ```
 
+:::info
+
+Make sure the Golang builder version matches the one used by the Go SDK.
+Different versions of the Go SDK may use different versions of Golang.
+
+:::
+
 Then build the Docker image using the following command:
 
 ```shell

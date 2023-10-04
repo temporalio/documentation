@@ -37,7 +37,8 @@ import (
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/worker"
 
-	"documentation-samples-go/backgroundcheck_boilerplate"
+	"documentation-samples-go/backgroundcheck_boilerplate/activities"
+	"documentation-samples-go/backgroundcheck_boilerplate/workflows"
 )
 
 
@@ -55,9 +56,9 @@ func main() {
 	// Create a new Worker
 	yourWorker := worker.New(temporalClient, "backgroundcheck-boilerplate-task-queue-local", worker.Options{})
 	// Register Workflows
-	yourWorker.RegisterWorkflow(backgroundcheck_boilerplate.BackgroundCheck)
+	yourWorker.RegisterWorkflow(workflows.BackgroundCheck)
 	// Register Acivities
-	yourWorker.RegisterActivity(backgroundcheck_boilerplate.SSNTraceActivity)
+	yourWorker.RegisterActivity(activities.SSNTraceActivity)
 	// Start the the Worker Process
 	err = yourWorker.Run(worker.InterruptCh())
 	if err != nil {
