@@ -372,7 +372,7 @@ public interface MediaProcessingWorkflow extends Retryable {
 }
 ```
 
-Now if we have two running Workflows, one that implements the `FileProcessingWorkflow` interface and another that implements the `MediaProcessingWorkflow` interface, we can Signal to both using their common interface and knowing their workflowIds, for example:
+Now if we have two running Workflows, one that implements the `FileProcessingWorkflow` interface and another that implements the `MediaProcessingWorkflow` interface, we can Signal to both using their common interface and knowing their WorkflowIds, for example:
 
 ```java
 Retryable r1 = client.newWorkflowStub(Retryable.class, firstWorkflowId);
@@ -400,7 +400,7 @@ public interface Workflow1 extends BaseWorkflow {}
 public interface Workflow2 extends BaseWorkflow {}
 ```
 
-If we attempt to register implementations of Workflow1 and Workflow2 with a Worker will fail.
+Any attempt to register both implementations with the Worker will fail.
 Let's say that we have:
 
 ```java

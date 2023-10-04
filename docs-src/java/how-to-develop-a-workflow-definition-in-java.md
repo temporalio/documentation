@@ -30,7 +30,7 @@ However, when using dynamic Workflows, do not specify a `@WorkflowMethod`, and i
 The `@WorkflowMethod` identifies the method that is the starting point of the Workflow Execution.
 The Workflow Execution completes when this method completes.
 
-You can create [interface inheritance hierarchies](/java/interface-heirarchies) to reuse components across other Workflow interfaces.
+You can create [interface inheritance hierarchies](/java/interface-hierarchies) to reuse components across other Workflow interfaces.
 The interface inheritance approach does not apply to `@WorkflowMethod` annotations.
 
 A Workflow implementation implements a Workflow interface.

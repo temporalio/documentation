@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday October 03 2023 12:28:10 PM -0600
+Last assembled: Wednesday October 04 2023 09:30:32 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -1034,6 +1034,8 @@ java/how-to-handle-a-signal-in-a-workflow-in-java -> #handle-signals
 
 java/how-to-create-a-temporal-client-in-java -> /dev-guide/java/foundations#connect-to-a-dev-cluster
 
+java/interface-hierarchies -> #interface-inheritance
+
 java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-execution-result
 
 java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-with-start
@@ -1055,7 +1057,5 @@ go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
 
 go/foundations -> /dev-guide/go/foundations#
-
-java/interface-heirarchies -> #interface-inheritance
 
 
