@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday September 28 2023 10:58:13 AM -0700
+Last assembled: Wednesday October 04 2023 10:56:22 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -1033,6 +1033,8 @@ java/logging -> /dev-guide/java/observability#logging
 java/how-to-handle-a-signal-in-a-workflow-in-java -> #handle-signals
 
 java/how-to-create-a-temporal-client-in-java -> /dev-guide/java/foundations#connect-to-a-dev-cluster
+
+java/interface-hierarchies -> #interface-inheritance
 
 java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-execution-result
 
