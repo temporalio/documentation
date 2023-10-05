@@ -18,10 +18,11 @@ This parameter is optional for an Activity Definition, though it is recommended,
 An Activity Definition can support as many other custom parameters as needed.
 However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/your_activity_definition_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/your_activity_definition_dacx.go) in the context of the rest of the application code.
 
 :::
 

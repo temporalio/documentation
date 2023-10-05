@@ -18,10 +18,11 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 Each Temporal SDK has a testing suite that can be used in conjunction with a typical language specific testing framework.
 In the Temporal Go SDK, the `testsuite` package (https://pkg.go.dev/go.temporal.io/sdk/testsuite) provides a test environment in which the Workflow and Activity code may be run for test purposes.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go) in the context of the rest of the application code.
 
 :::
 

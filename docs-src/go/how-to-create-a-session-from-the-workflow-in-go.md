@@ -36,10 +36,11 @@ It is safe to call `CompleteSession()` on a failed Session, meaning that you can
 If the Worker goes down between Activities, any scheduled Activities meant for the Session Worker are canceled.
 If not, you get a `workflow.ErrSessionFailed` error when the next call of `workflow.ExecuteActivity()` is made from that Workflow.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/sessions/workflow_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/sessions/workflow_dacx.go) in the context of the rest of the application code.
 
 :::
 

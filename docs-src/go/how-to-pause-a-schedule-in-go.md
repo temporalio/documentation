@@ -22,10 +22,11 @@ Pausing can be enabled by setting `State.Paused` to `true`, or by using `Pause()
 Unpausing a Schedule allows the Workflow to execute as planned.
 To unpause a Schedule, use `Unpause()` on `ScheduleHandle`.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/pause/main_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/pause/main_dacx.go) in the context of the rest of the application code.
 
 :::
 

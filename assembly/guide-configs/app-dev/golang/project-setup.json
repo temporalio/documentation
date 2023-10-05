@@ -48,6 +48,10 @@
             "id": "go/backgroundcheck-boilerplate-run-a-dev-server-worker"
         },
         {
+            "type": "p",
+            "id": "go/auto-restart-worker-tip"
+        },
+        {
             "type": "h3",
             "id": "go/backgroundcheck-boilerplate-cloud-worker"
         },

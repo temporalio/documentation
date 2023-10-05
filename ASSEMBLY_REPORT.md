@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday October 04 2023 09:23:04 AM -0600
+Last assembled: Wednesday October 04 2023 18:24:27 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
 104 guide configurations found.
 
-1563 information nodes found.
+1565 information nodes found.
 
-1328 information nodes are attached to guides.
+1329 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1054,6 +1054,8 @@ go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
 
+go/go-dev-guide-structure -> #
+
 go/install-cli -> /dev-guide/go/project-setup#install-cli
 
 go/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
@@ -1077,7 +1079,5 @@ cli/server/start-dev -> /cli/server#start-dev
 cli/operator/namespace/create -> /cli/operator#create
 
 cli/workflow/start -> /cli/workflow#start
-
-go/go-dev-guide-structure -> #
 
 

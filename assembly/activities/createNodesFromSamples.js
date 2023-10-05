@@ -184,10 +184,11 @@ export async function createNodesFromSamples(config) {
   }
 
   function genSourceLinkHTML(link) {
-    return `:::copycode Copy this code!
+    return `:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](${link})
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](${link}) in the context of the rest of the application code. 
 
 :::`;
   }

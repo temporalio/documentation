@@ -19,10 +19,11 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
         The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
         The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/your_workflow_definition_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code.
 
 :::
 

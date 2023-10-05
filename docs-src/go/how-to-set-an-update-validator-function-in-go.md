@@ -25,10 +25,11 @@ The Validator function, unlike the Update Handler, can not change the state of t
 
 The platform treats a panic in the Validator function as a rejection of the Update."
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourupdate/your_updatable_workflow_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourupdate/your_updatable_workflow_dacx.go) in the context of the rest of the application code.
 
 :::
 

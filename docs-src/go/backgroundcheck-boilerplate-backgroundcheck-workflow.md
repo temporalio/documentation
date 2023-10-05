@@ -16,10 +16,11 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 In the Temporal Go SDK programming model, a [Workflow Definition](/concepts/what-is-a-workflow-definition) is an exportable function.
 The `BackgroundCheck` function below is an example of a basic Workflow Definition.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/workflows/backgroundcheck_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/workflows/backgroundcheck_dacx.go) in the context of the rest of the application code.
 
 :::
 

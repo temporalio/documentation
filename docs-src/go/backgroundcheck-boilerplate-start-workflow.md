@@ -76,6 +76,31 @@ temporal workflow start \
 
 Make sure that the certificate path, private key path, namespace, and address argument values match your project.
 
+:::info Use env variables
+
+Use environment variables as a way to quickly switch between a local dev server and Temporal Cloud, for example.
+
+```shell
+# set Cloud env variables
+temporal env set cloud.namespace <namespace>.<account-id>
+temporal env set cloud.address <namespace>.<account-id>.tmprl.cloud:<port>
+temporal env set cloud.tls-cert-path ca.pem
+temporal env set cloud.tls-key-path ca.key
+# set local env variables
+temporal env set local.namespace <namespace>
+```
+
+In this way, you can just provide a single `--env` command option when using the CLI rather than specifying each connection option in every command.
+
+```shell
+temporal workflow start \
+ # ...
+ --env cloud \
+ # ...
+```
+
+:::
+
 #### List Workflows
 
 Run the `temporal workflow list` command, and make sure to specify the certificate and private key arugments.

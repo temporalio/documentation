@@ -15,10 +15,11 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/your_activity_definition_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/your_activity_definition_dacx.go) in the context of the rest of the application code.
 
 :::
 

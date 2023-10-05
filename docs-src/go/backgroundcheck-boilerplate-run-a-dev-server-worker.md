@@ -21,10 +21,11 @@ To run a Worker Process with a local development server, define the following st
 
 In regards to organization, we recommend keeping Worker code separate from Workflow and Activity code.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/dev_server_worker/main_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/dev_server_worker/main_dacx.go) in the context of the rest of the application code.
 
 :::
 

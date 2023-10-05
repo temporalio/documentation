@@ -404,10 +404,11 @@ When sending and receiving the Update, use the Update name as an identifier.
 The name does not link to the data type(s) sent with the Update.
 Ensure that every Workflow listening to the same Update name can handle the same Update arguments.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourupdate/your_updatable_workflow_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourupdate/your_updatable_workflow_dacx.go) in the context of the rest of the application code.
 
 :::
 
@@ -439,10 +440,11 @@ WorkflowPanicPolicy is set in the Worker Options.
 
 Update handlers, unlike Query handlers, can change Workflow state.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourupdate/your_updatable_workflow_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourupdate/your_updatable_workflow_dacx.go) in the context of the rest of the application code.
 
 :::
 
@@ -478,10 +480,11 @@ The Validator function, unlike the Update Handler, can not change the state of t
 
 The platform treats a panic in the Validator function as a rejection of the Update."
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourupdate/your_updatable_workflow_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourupdate/your_updatable_workflow_dacx.go) in the context of the rest of the application code.
 
 :::
 
@@ -531,10 +534,11 @@ Invoke the UpdateWorkflow() method on an instance of the [Go SDK Temporal Client
 You must provide the Workflow Id, but specifying a Run Id is optional.
 If you supply only the Workflow Id (and provide an empty string as the Run Id param), the currently running Workflow Execution receives the Update.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourupdate/update/main_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourupdate/update/main_dacx.go) in the context of the rest of the application code.
 
 :::
 
@@ -1032,10 +1036,11 @@ The user generates a unique Schedule ID for each new Schedule.
 To create a Schedule in Go, use `Create()` on the [Client](/temporal#temporal-client).
 Schedules must be initialized with a Schedule ID, [Spec](/workflows#spec), and [Action](/workflows#action) in `client.ScheduleOptions{}`.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/create/main_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/create/main_dacx.go) in the context of the rest of the application code.
 
 :::
 
@@ -1070,10 +1075,11 @@ This is useful for executing a missed or delayed Action, or for testing the Work
 To backfill a Schedule in Go, use `Backfill()` on `ScheduleHandle`.
 Specify the start and end times to execute the Workflow, along with the overlap policy.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/backfill/main_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/backfill/main_dacx.go) in the context of the rest of the application code.
 
 :::
 
@@ -1112,10 +1118,11 @@ Deletion does not affect any Workflows started by the Schedule.
 
 To delete a Schedule, use `Delete()` on the `ScheduleHandle`.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/delete/main_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/delete/main_dacx.go) in the context of the rest of the application code.
 
 :::
 
@@ -1142,10 +1149,11 @@ This can include details about the Schedule Spec (such as Intervals), CronExpres
 
 To describe a Schedule, use `Describe()` on the ScheduleHandle.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/describe/main_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/describe/main_dacx.go) in the context of the rest of the application code.
 
 :::
 
@@ -1165,10 +1173,11 @@ The `List` action returns all available Schedules and their respective Schedule 
 
 To return information on all Schedules, use `ScheduleClient.List()`.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/list/main_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/list/main_dacx.go) in the context of the rest of the application code.
 
 :::
 
@@ -1198,10 +1207,11 @@ Pausing can be enabled by setting `State.Paused` to `true`, or by using `Pause()
 Unpausing a Schedule allows the Workflow to execute as planned.
 To unpause a Schedule, use `Unpause()` on `ScheduleHandle`.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/pause/main_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/pause/main_dacx.go) in the context of the rest of the application code.
 
 :::
 
@@ -1227,10 +1237,11 @@ By default, `trigger` is subject to the Overlap Policy.
 
 To trigger a Scheduled Workflow Execution, use `trigger()` on `ScheduleHandle`.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/trigger/main_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/trigger/main_dacx.go) in the context of the rest of the application code.
 
 :::
 
@@ -1256,10 +1267,11 @@ These changes can be made to Workflow Actions, Action parameters, Memos, and the
 
 Use `Update()` on the ScheduleHandle to modify a Schedule.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/update/main_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/update/main_dacx.go) in the context of the rest of the application code.
 
 :::
 
@@ -1595,10 +1607,11 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 Set `EnableSessionWorker` to `true` in the Worker options.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/sessions/worker/main_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/sessions/worker/main_dacx.go) in the context of the rest of the application code.
 
 :::
 
@@ -1632,10 +1645,11 @@ By default, this field is set to a very large value, so there's no need to manua
 If a Worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed.
 If the session can't be created within `CreationTimeout`, `CreateSession()` returns an error .
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/sessions/worker/main_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/sessions/worker/main_dacx.go) in the context of the rest of the application code.
 
 :::
 
@@ -1682,10 +1696,11 @@ It is safe to call `CompleteSession()` on a failed Session, meaning that you can
 If the Worker goes down between Activities, any scheduled Activities meant for the Session Worker are canceled.
 If not, you get a `workflow.ErrSessionFailed` error when the next call of `workflow.ExecuteActivity()` is made from that Workflow.
 
-:::copycode Copy this code!
+:::copycode Sample application code
 
-This code is synced from a working and tested example application.
-[View source](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/sessions/workflow_dacx.go)
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/sessions/workflow_dacx.go) in the context of the rest of the application code.
 
 :::
 
