@@ -6,9 +6,9 @@ Assembly Workflow Id: docs-full-assembly
 
 103 guide configurations found.
 
-1537 information nodes found.
+1544 information nodes found.
 
-1302 information nodes are attached to guides.
+1309 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1033,6 +1033,8 @@ java/logging -> /dev-guide/java/observability#logging
 java/how-to-handle-a-signal-in-a-workflow-in-java -> #handle-signals
 
 java/how-to-create-a-temporal-client-in-java -> /dev-guide/java/foundations#connect-to-a-dev-cluster
+
+java/interface-hierarchies -> #interface-inheritance
 
 java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-execution-result
 
