@@ -48,9 +48,15 @@ Run the following command to install Temporal CLI using cURL:
 
 ### Homebrew
 
-Run the following command to install Temporal CLI using Homebrew:
+Run the following command to install Temporal CLI using Homebrew on macOS:
 
 `brew install temporal`
+
+### Scoop
+
+Run the following command to install Temporal CLI using Scoop on Windows:
+
+`scoop install temporal-cli`
 
 ### Manual
 
