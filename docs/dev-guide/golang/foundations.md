@@ -1915,7 +1915,7 @@ if err != nil {
 
 #### WorkflowExecutionTimeout
 
-Create an instance of StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `WorkflowExecutionTimeout` field, and pass the instance to the `ExecuteWorkflow` call.
+Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `WorkflowExecutionTimeout` field, and pass the instance to the `ExecuteWorkflow` call.
 
 - Type: `time.Duration`
 - Default: Unlimited
