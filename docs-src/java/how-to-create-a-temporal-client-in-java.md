@@ -60,7 +60,7 @@ The following example shows how to create a `WorkflowClient` instance called "cl
 WorkflowClient client = WorkflowClient.newInstance(
                 service,
                 WorkflowClientOptions.newBuilder()
-                        .setNamespace(“Abc”)
+                        .setNamespace(“your-namespace”)
                     .build());
 ```
 
