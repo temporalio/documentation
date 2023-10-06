@@ -62,7 +62,7 @@ The following steps describe how to set up Observability on Temporal Cloud to ge
 6. Copy the HTTP API endpoint that is generated (it is shown in the UI).
 
 This endpoint should be configured as a data source for Temporal Cloud metrics in Grafana.
-See [Data sources configuration for Temporal Cloud and SDK metrics in Grafana](#data-sources-configuration-for-temporal-cloud-andssdk-metrics-in-grafana) for details.
+See [Data sources configuration for Temporal Cloud and SDK metrics in Grafana](#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana) for details.
 
 ### SDK metrics setup
 
