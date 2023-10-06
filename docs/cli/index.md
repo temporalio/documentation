@@ -100,7 +100,15 @@ curl -sSf https://temporal.download/cli.sh | sh
 
 **How to install the Temporal CLI on Windows?**
 
-Follow these instructions to install the Temporal CLI on Windows:
+Choose one of the following methods to install the Temporal CLI on Windows:
+
+- Install the Temporal CLI with Scoop
+
+Run the following command to install Temporal CLI using Scoop on Windows:
+
+```shell
+scoop install temporal-cli
+```
 
 - Install the Temporal CLI from CDN.
 
@@ -117,7 +125,7 @@ Follow these instructions to install the Temporal CLI on Windows:
 
 To start the Temporal Server, run the following command:
 
-```bash
+```shell
 temporal server start-dev
 ```
 
@@ -126,7 +134,7 @@ The command launches a server on `localhost:7233` and a web interface at <http:/
 By default, data isn't persisted.
 If you want to save Workflows, use the `--db-filename` option:
 
-```bash
+```shell
 temporal server start-dev --db-filename temporal.db
 ```
 
@@ -135,7 +143,7 @@ temporal server start-dev --db-filename temporal.db
 In another terminal, use the following commands to interact with the Server.
 The following command starts a Workflow:
 
-```bash
+```shell
 $ temporal workflow start \
   --task-queue hello-world \
   --type MyWorkflow \
@@ -153,13 +161,13 @@ Running execution:
 
 Shorthand options are available:
 
-```bash
+```shell
 temporal workflow start -t hello-world --type MyWorkflow -w 123 -i 456
 ```
 
 You can also list and describe Workflows:
 
-```bash
+```shell
 $ temporal workflow list
 
   Status   WorkflowId     Name       StartTime
@@ -208,7 +216,7 @@ $ temporal workflow describe --workflow-id 123
 
 For more detailed output in JSON format, use the following command:
 
-```bash
+```shell
 $ temporal workflow list --fields long --output json
 
 [
@@ -231,7 +239,7 @@ $ temporal workflow list --fields long --output json
 
 Filter out Workflows based on Workflow Type with [jq](https://stedolan.github.io/jq/):
 
-```bash
+```shell
 $ temporal workflow list --fields long -o json | jq '.[].type.name'
 
 "OtherWorkflow"
@@ -241,7 +249,7 @@ $ temporal workflow list --fields long -o json | jq '.[].type.name'
 
 To count the number of Workflows, use the following command:
 
-```bash
+```shell
 $ temporal workflow list --fields long -o json | jq '.[].type.name' | uniq -c
 
    1 "OtherWorkflow"
@@ -261,7 +269,7 @@ To communicate with a different Server, like a production Namespace on Temporal 
 
 To create a new environment and set its properties:
 
-```bash
+```shell
 temporal env set prod.namespace production.f45a2
 temporal env set prod.address production.f45a2.tmprl.cloud:7233
 temporal env set prod.tls-cert-path /temporal/certs/prod.pem
@@ -270,7 +278,7 @@ temporal env set prod.tls-key-path /temporal/certs/prod.key
 
 Check your settings:
 
-```bash
+```shell
 $ temporal env get prod
 
   address        production.f45a2.tmprl.cloud:7233
@@ -281,13 +289,13 @@ $ temporal env get prod
 
 Run a command to test the connection:
 
-```bash
+```shell
 $ temporal workflow list --env prod
 ```
 
 For a full list of properties, use `temporal env set -h`.
 
-```bash
+```shell
 $ temporal env set -h
 
 OPTIONS:
@@ -315,7 +323,7 @@ OPTIONS:
 
 View the full list of CLI configuration options with the `--help` flag:
 
-```bash
+```shell
 temporal server start-dev --help
 ```
 
@@ -324,13 +332,13 @@ temporal server start-dev --help
 Namespaces are pre-registered at startup for immediate use.
 Customize pre-registered Namespaces with the following command:
 
-```bash
+```shell
 temporal server start-dev --namespace foo --namespace bar
 ```
 
 Register Namespaces with `namespace create`:
 
-```bash
+```shell
 temporal operator namespace create foo
 ```
 
@@ -339,7 +347,7 @@ temporal operator namespace create foo
 By default, the Temporal UI starts with Temporal CLI.
 Disable the UI with:
 
-```bash
+```shell
 temporal server start-dev --headless
 ```
 

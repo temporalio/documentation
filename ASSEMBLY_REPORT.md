@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday October 04 2023 18:24:27 PM -0600
+Last assembled: Friday October 06 2023 09:53:42 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -8,7 +8,7 @@ Assembly Workflow Id: docs-full-assembly-flossypurse
 
 1565 information nodes found.
 
-1329 information nodes are attached to guides.
+1330 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1033,6 +1033,8 @@ java/logging -> /dev-guide/java/observability#logging
 java/how-to-handle-a-signal-in-a-workflow-in-java -> #handle-signals
 
 java/how-to-create-a-temporal-client-in-java -> /dev-guide/java/foundations#connect-to-a-dev-cluster
+
+java/interface-hierarchies -> #interface-inheritance
 
 java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-execution-result
 
