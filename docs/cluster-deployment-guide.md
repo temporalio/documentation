@@ -1147,8 +1147,32 @@ If a database schema upgrade is required, it will be called out directly in the 
 Some releases require changes to the schema, and some do not.
 We ensure that any consecutive versions are compatible in terms of database schema upgrades, features, and system behavior; however there is no guarantee that there is compatibility between _any_ two non-consecutive versions.
 
+### Key considerations
+
+When upgrading the Temporal Server, there are two key considerations to keep in mind:
+
+1. **Sequential Upgrades**: Temporal Server should be upgraded sequentially.
+That is, if you're on version \(v1.n.x\), your next upgrade should be to \(v1.n+1.x\) or the closest available subsequent version.
+This sequence should be repeated until your desired version is reached.
+
+2. **Data Compatibility**: During an upgrade, the Temporal Server either updates or restructures the existing version data to match the data format of the newer version.
+Temporal Server ensures backward compatibility only between two successive minor versions.
+Consequently, skipping versions during an upgrade may lead to older data formats becoming unreadable.
+If the previous data format cannot be interpreted and converted to the newer format, the upgrade process will be unsuccessful.
+
+### Step-by-Step Upgrade Procedure:
+
+Upgrading the Temporal Server requires a methodical approach to ensure data integrity, compatibility, and seamless transition between versions.
+The following documentation outlines the step-by-step process to successfully upgrade your Temporal Server.
+
 When upgrading your Temporal Server version, ensure that you upgrade sequentially.
-For example, when upgrading from v1.n.x, always upgrade to v1.n+1.x (or the next available version) and so on until you get to the required version.
+
+1. **Upgrade Database Schema**: Before initiating the Temporal Server upgrade, use one of the recommended upgrade tools to update your database schema.
+This ensures it is aligned with the version of Temporal Server you aim to upgrade to.
+2. **Upgrade Temporal Server**: Once the database schema is updated, proceed to upgrade the Temporal Server deployment to the next sequential version.
+3. **Iterative Upgrades** (optional): Continue this process (steps 1 and 2) iteratively until you reach the desired Temporal Server version.
+
+By adhering to the above guidelines and following the step-by-step procedure, you can ensure a smooth and successful upgrade of your Temporal Server.
 
 The Temporal Server upgrade updates or rewrites the old version data with the format introduced in the newer version.
 Because Temporal Server guarantees backward compatibility between two consecutive minor versions, and because older versions of the code are eventually removed from the code base, skipping versions when upgrading might cause older formats to become unrecognizable.
@@ -1157,7 +1181,7 @@ If the old format of the data can't be read to be rewritten to the new format, t
 Check the [Temporal Server releases](https://github.com/temporalio/temporal/releases) and follow these releases in order.
 You can skip patch versions; use the latest patch of a minor version when upgrading.
 
-Also be aware that each upgrade requires the History Service to load all Shards and update the Shard metadata, so allow approximately 10 minutes on each version for these processes to complete before upgrading to the next version.
+Also, be aware that each upgrade requires the History Service to load all Shards and update the Shard metadata, so allow approximately 10 minutes on each version for these processes to complete before upgrading to the next version.
 
 Use one of the upgrade tools to upgrade your database schema to be compatible with the Temporal Server version being upgraded to.
 
