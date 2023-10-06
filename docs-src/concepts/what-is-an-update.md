@@ -49,3 +49,17 @@ An Update has four phases.
 4. **Completion.** The Update handler can return a result or a language-appropriate error/exception to indicate its completion.
    The Platform sends the Update outcome back to the original invoking entity as an Update response.
    A [WorkflowExecutionUpdateCompletedEvent](/references/events#workflowexecutionupdatecompletedevent) Event in the Workflow Execution Event History denotes the completion of an Update.
+
+:::note
+
+Workflow Updates are disabled by default.
+
+To enable `UpdateWorkflowExecution` API, set [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/e96b529a72dd75635f06d9eca0682897f77bc104/common/dynamicconfig/constants.go#L267) dynamic config value to `true`.
+
+For example:
+
+```command
+temporal server start-dev --dynamic-config-value frontend.enableUpdateWorkflowExecution=true
+```
+
+:::

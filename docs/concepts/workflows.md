@@ -702,6 +702,20 @@ An Update has four phases.
    The Platform sends the Update outcome back to the original invoking entity as an Update response.
    A [WorkflowExecutionUpdateCompletedEvent](/references/events#workflowexecutionupdatecompletedevent) Event in the Workflow Execution Event History denotes the completion of an Update.
 
+:::note
+
+Workflow Updates are disabled by default.
+
+To enable `UpdateWorkflowExecution` API, set [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/e96b529a72dd75635f06d9eca0682897f77bc104/common/dynamicconfig/constants.go#L267) dynamic config value to `true`.
+
+For example:
+
+```command
+temporal server start-dev --dynamic-config-value frontend.enableUpdateWorkflowExecution=true
+```
+
+:::
+
 ## What is a Side Effect? {#side-effect}
 
 A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.
