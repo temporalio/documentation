@@ -21,9 +21,9 @@ Before accepting the invitation, the user must be logged in to Google using the 
 The user must then click **Accept Invite** in the message.
 Attempting to log in to Temporal Cloud without first accepting the invite doesn't work.
 
+**Important:** Do _not_ create a Gmail account when creating a Google Account.
 :::info
 
-**Important:** Do _not_ create a Gmail account when creating a Google Account.
 
 To invite users, a user must have the Global Admin account-level [Role](/cloud/users-account-level-roles).
 
