@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday October 06 2023 15:05:56 PM -0500
+Last assembled: Friday October 06 2023 14:11:32 PM -0700
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 103 guide configurations found.
 
-1544 information nodes found.
+1550 information nodes found.
 
-1309 information nodes are attached to guides.
+1314 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
