@@ -24,7 +24,6 @@ Attempting to log in to Temporal Cloud without first accepting the invite doesn'
 **Important:** Do _not_ create a Gmail account when creating a Google Account.
 :::info
 
-
 To invite users, a user must have the Global Admin account-level [Role](/cloud/users-account-level-roles).
 
 :::
