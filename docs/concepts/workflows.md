@@ -585,7 +585,7 @@ A Signal must include a destination (Namespace and Workflow Id) and name.
 It can include a list of arguments.
 
 Signal handlers are Workflow functions that listen for Signals by the Signal name.
-Signals are delivered in the order they are received by the Cluster.
+Signals are delivered in the order they are received by the Cluster and written to History.
 If multiple deliveries of a Signal would be a problem for your Workflow, add idempotency logic to your Signal handler that checks for duplicates.
 
 [^1]: The Cluster usually deduplicates Signals, but does not guarantee deduplication: During shard migration, two Signal Events (and therefore two deliveries to the Workflow Execution) can be recorded for a single Signal because the deduping info is stored only in memory.
@@ -1070,7 +1070,7 @@ You can also pass any of the [predefined schedules](https://pkg.go.dev/github.co
 
 ```
 | Schedules              | Description                                | Equivalent To |
-| ---------------------- | ------------------------------------------ | ------------- |
+|------------------------|--------------------------------------------|---------------|
 | @yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *     |
 | @monthly               | Run once a month, midnight, first of month | 0 0 1 * *     |
 | @weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0     |
