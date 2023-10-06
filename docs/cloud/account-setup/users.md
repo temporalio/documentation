@@ -41,6 +41,8 @@ tags:
 Access to Temporal Cloud can be authorized via Google OAuth single sign-on or SAML, depending on your account setup.
 
 If you are using Google OAuth for single sign-on and an email address is not associated with a Google Account, the user must follow the instructions in the [Use an existing email address](https://support.google.com/accounts/answer/27441?hl=en#existingemail) section of [Create a Google Account](https://support.google.com/accounts/answer/27441).
+
+**Important:** Do _not_ create a Gmail account when creating a Google Account.
 :::
 
 When you create a user in Temporal Cloud, the prospective user receives an email invitation.
@@ -48,7 +50,6 @@ Before accepting the invitation, the user must be logged in to Google using the 
 The user must then click **Accept Invite** in the message.
 Attempting to log in to Temporal Cloud without first accepting the invite doesn't work.
 
-**Important:** Do _not_ create a Gmail account when creating a Google Account.
 :::info
 
 To invite users, a user must have the Global Admin account-level [Role](#account-level-roles).
