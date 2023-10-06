@@ -42,6 +42,7 @@ docs/concepts/temporal.md linguist-generated=true
 docs/concepts/visibility.md linguist-generated=true
 docs/concepts/workflows.md linguist-generated=true
 docs/concepts/workers.md linguist-generated=true
+docs/concepts/dataconversion.md linguist-generated=true
 docs/dev-guide/golang/debugging.md linguist-generated=true
 docs/dev-guide/golang/features.md linguist-generated=true
 docs/dev-guide/golang/foundations.md linguist-generated=true
