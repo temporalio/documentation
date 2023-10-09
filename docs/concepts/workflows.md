@@ -585,7 +585,7 @@ A Signal must include a destination (Namespace and Workflow Id) and name.
 It can include a list of arguments.
 
 Signal handlers are Workflow functions that listen for Signals by the Signal name.
-Signals are delivered in the order they are received by the Cluster.
+Signals are delivered in the order they are received by the Cluster and written to History.
 If multiple deliveries of a Signal would be a problem for your Workflow, add idempotency logic to your Signal handler that checks for duplicates.
 
 [^1]: The Cluster usually deduplicates Signals, but does not guarantee deduplication: During shard migration, two Signal Events (and therefore two deliveries to the Workflow Execution) can be recorded for a single Signal because the deduping info is stored only in memory.
@@ -954,8 +954,8 @@ The following options are available:
 
 The Temporal Cluster might be down or unavailable at the time when a Schedule should take an Action.
 When it comes back up, the Catchup Window controls which missed Actions should be taken at that point.
-The default is one minute, which means that the Schedule attempts to take any Actions that wouldn't be more than one minute late.
-An outage that lasts longer than the Catchup Window could lead to missed Actions.
+The default is one year, meaning Actions will be taken unless over one year late.
+If your Actions are more time-sensitive, you can set the Catchup Window to a smaller value (minimum ten seconds), accepting that an outage longer than the window could lead to missed Actions.
 (But you can always [Backfill](#backfill).)
 
 #### Pause-on-failure

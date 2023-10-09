@@ -10,4 +10,4 @@ tags:
 ---
 
 We have an active [community Slack](https://temporalio.slack.com) and an active [community Discourse forum](https://community.temporal.io/) where you can post questions and ask for help.
-We also offer a ticketing system for Temporal Cloud customers.
+We also offer a ticketing system for Temporal Cloud customers, who can choose between _Basic_ and _Premium_ [support options](https://temporal.io/pricing).
