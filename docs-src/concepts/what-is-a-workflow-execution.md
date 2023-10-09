@@ -83,18 +83,20 @@ Awaitables are provided when using APIs for the following:
 
 ### Status
 
-A Workflow Execution can be either Open or Closed.
+A Workflow Execution can be either _Open_ or _Closed_.
 
 ![Workflow Execution statuses](/diagrams/workflow-execution-statuses.svg)
 
-**Open**
+#### Open
+
+An _Open_ status means that the Workflow Execution is able to make progress.
 
 - Running: The only Open status for a Workflow Execution.
   When the Workflow Execution is Running, it is either actively progressing or is waiting on something.
 
-**Closed**
+#### Closed
 
-A Closed status means that the Workflow Execution cannot make further progress because of one of the following reasons:
+A _Closed_ status means that the Workflow Execution cannot make further progress because of one of the following reasons:
 
 - Cancelled: The Workflow Execution successfully handled a cancellation request.
 - Completed: The Workflow Execution has completed successfully.
