@@ -12,3 +12,16 @@ Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
 These are unnamed entities that are invoked if no other statically defined entity with the given name exists.
 
 Dynamic Entities provide flexibility to handle cases where the names of Workflows, Activities, Signals, or Queries are not known at run time.
+
+:::warning
+
+Dynamic Entities should be used judiciously as a fallback mechanism rather than the primary approach.
+Overusing them can lead to maintainability and debugging issues down the line.
+
+Instead, Workflows, Activities, Signals and Queries should be defined statically whenever possible, with clear names that indicate their purpose.
+Use static definitions as the primary way of structuring your Workflows.
+
+Reserve Dynamic Entities for cases where the entity names are not known at compile time and need to be looked up dynamically at runtime.
+They are meant to handle edge cases and act as a catch-all, not as the main way of invoking logic.
+
+:::
