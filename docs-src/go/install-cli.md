@@ -10,7 +10,7 @@ tags:
 
 **How to download and install the Temporal CLI?**
 
-The Temporal CLI is available on the MacOs, Windows, and Linux.
+The Temporal CLI is available on MacOs, Windows, and Linux.
 
 ### MacOS
 

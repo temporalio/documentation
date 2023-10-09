@@ -1,7 +1,7 @@
 ---
 id: auto-restart-worker-tip
 title: Automatically restart Worker Process during development
-description: Developer tip, is to use the gow package to automatically restart the Worker Process.
+description: Developer tip - Use the gow package to automatically restart the Worker Process.
 sidebar_label: Auto restart Worker
 tags:
   - worker

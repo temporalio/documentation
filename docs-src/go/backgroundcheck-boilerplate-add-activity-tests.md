@@ -37,7 +37,7 @@ func (s *UnitTestSuite) Test_SSNTraceActivity() {
 	future, err := env.ExecuteActivity(activities.SSNTraceActivity, ssn)
 	// Check there was no error on the call to execute the Activity
 	s.NoError(err)
-	// Check  that there was no error returned from the Activity
+	// Check that there was no error returned from the Activity
 	var result string
 	s.NoError(future.Get(&result))
 	// Check for the expected return value.

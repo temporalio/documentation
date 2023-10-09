@@ -16,9 +16,9 @@ The source code for the Temporal Server (the orchestrating component of the Temp
 
 However, for most developers we recommend starting by choosing one of the following:
 
-- Local development server
-- Temporal Cloud
-- Self-hosted
+- [Local development server](#local-dev-server)
+- [Temporal Cloud](#temporal-cloud)
+- [Self-hosted](#self-hosted-temporal-cluster)
 
 :::info Temporal does not directly run your code
 

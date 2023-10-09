@@ -65,9 +65,9 @@ By the end of this section you will know how to construct a new Temporal Applica
 
 There are three ways to follow this guide:
 
-- Use a local dev server
-- Use Temporal Cloud
-- Use a Self-hosted environment such as Docker
+- [Use a local dev server](#local-dev-server)
+- [Use Temporal Cloud](#temporal-cloud)
+- [Use a Self-hosted environment such as Docker](#self-hosted-temporal-cluster)
 
 Read more about [Which development Cluster you should choose](#choose-dev-cluster) below.
 
@@ -77,7 +77,7 @@ Read more about [Which development Cluster you should choose](#choose-dev-cluste
 
 **How to download and install the Temporal CLI?**
 
-The Temporal CLI is available on the MacOs, Windows, and Linux.
+The Temporal CLI is available on MacOs, Windows, and Linux.
 
 ### MacOS
 
@@ -158,9 +158,9 @@ The source code for the Temporal Server (the orchestrating component of the Temp
 
 However, for most developers we recommend starting by choosing one of the following:
 
-- Local development server
-- Temporal Cloud
-- Self-hosted
+- [Local development server](#local-dev-server)
+- [Temporal Cloud](#temporal-cloud)
+- [Self-hosted](#self-hosted-temporal-cluster)
 
 :::info Temporal does not directly run your code
 
@@ -994,7 +994,7 @@ We can test Workflow code for the following conditions:
 
 - Workflow status. For example, did the Workflow reach a completed status?
 - Workflow returned an error. Did the Workflow function return an error?
-- Error when checking for a result of a Workflow. Is there an error in getting the result returned by the Workflow.
+- Error when checking for a result of a Workflow. Is there an error in getting the result returned by the Workflow?
 - Workflow return value. If the Workflow did return something other than an error, is it what you expected it to be?
 
 We can also perform a Workflow Replay test, and we'll provide detailed coverage of this topic in another section.
@@ -1076,7 +1076,7 @@ func (s *UnitTestSuite) Test_SSNTraceActivity() {
 	future, err := env.ExecuteActivity(activities.SSNTraceActivity, ssn)
 	// Check there was no error on the call to execute the Activity
 	s.NoError(err)
-	// Check  that there was no error returned from the Activity
+	// Check that there was no error returned from the Activity
 	var result string
 	s.NoError(future.Get(&result))
 	// Check for the expected return value.
