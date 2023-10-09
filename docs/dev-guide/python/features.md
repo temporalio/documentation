@@ -427,7 +427,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 A Dynamic Signal in Temporal is a Signal that is invoked dynamically at runtime if no other Signal with the same name is registered.
 A Signal can be made dynamic by adding `dynamic=True` to the `@signal.defn` decorator.
 
-The Signal function must then accept a single argument of type `Sequence[temporalio.common.RawValue]`.
+The Signal Handler must then accept a single argument of type `Sequence[temporalio.common.RawValue]`.
 The [payload_converter()](https://python.temporal.io/temporalio.workflow.html#payload_converter) function is used to convert a `RawValue` object to the desired type.
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/dynamic-ent/dynamic_entities/your_dynamic_signal_dacx.py">View source code</a>
@@ -450,7 +450,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 A Dynamic Query in Temporal is a Query that is invoked dynamically at runtime if no other Query with the same name is registered.
 A Query can be made dynamic by adding `dynamic=True` to the `@query.defn` decorator.
 
-The Query function must then accept a single argument of type `Sequence[temporalio.common.RawValue]`.
+The Query Handler must then accept a single argument of type `Sequence[temporalio.common.RawValue]`.
 The [payload_converter()](https://python.temporal.io/temporalio.workflow.html#payload_converter) function is used to convert a `RawValue` object to the desired type.
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/dynamic-ent/dynamic_entities/your_dynamic_query_dacx.py">View source code</a>
