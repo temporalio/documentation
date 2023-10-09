@@ -1,0 +1,19 @@
+{
+    "file_name": "feature-comparison.md",
+    "id": "feature-comparison",
+    "slug": "/dev-guide/sdks",
+    "file_dir": "dev-guide",
+    "title": "Temporal SDKs - Feature comparison",
+    "sidebar_label": "Feature comparison",
+    "sidebar_position": 1,
+    "description": "Check out the slight differences among the Temporal SDKs.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "dev-guide/compare-sdks"
+        }
+    ]
+}

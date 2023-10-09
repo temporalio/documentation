@@ -34,10 +34,6 @@
         {
             "type": "h2",
             "id": "dev-guide/sdk-and-cluster-relationship"
-        },
-        {
-            "type": "h2",
-            "id": "dev-guide/compare-sdks"
         }
     ]
 }
