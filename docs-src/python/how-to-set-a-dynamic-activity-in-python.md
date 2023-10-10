@@ -22,6 +22,7 @@ The [payload_converter()](https://python.temporal.io/temporalio.activity.html#pa
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/dynamic-ent/dynamic_entities/your_dynamic_activity_dacx.py">View source code</a>
 
 ```python
+
 # ...
 @activity.defn(dynamic=True)
 async def dynamic_greeting(args: Sequence[RawValue]) -> str:
@@ -30,20 +31,14 @@ async def dynamic_greeting(args: Sequence[RawValue]) -> str:
         f"{arg1.greeting}, {arg1.name}!\nActivity Type: {activity.info().activity_type}"
     )
 # ...
-async def main():
-    client = await Client.connect("localhost:7233")
-
-    async with Worker(
-        client,
-        task_queue="dynamic-activity-task-queue",
-        workflows=[GreetingWorkflow],
-        activities=[dynamic_greeting],
-    ):
-        result = await client.execute_workflow(
-            GreetingWorkflow.run,
-            "Dynamic Activity argument",
-            id="hello-dynamic-activity-id",
-            task_queue="dynamic-activity-task-queue",
+@workflow.defn
+class GreetingWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            "unregistered_activity",
+            YourDataClass("Hello", name),
+            start_to_close_timeout=timedelta(seconds=10),
         )
-        print(f"Result: {result}")
 ```
+

@@ -22,6 +22,7 @@ The [payload_converter()](https://python.temporal.io/temporalio.workflow.html#pa
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/dynamic-ent/dynamic_entities/your_dynamic_workflow_dacx.py">View source code</a>
 
 ```python
+
 # ...
 @workflow.defn(dynamic=True)
 class DynamicWorkflow:
@@ -33,21 +34,5 @@ class DynamicWorkflow:
             YourDataClass("Hello", name),
             start_to_close_timeout=timedelta(seconds=10),
         )
-# ...
-async def main():
-    client = await Client.connect("localhost:7233")
-    async with Worker(
-        client,
-        task_queue="dynamic-workflow-task-queue",
-        workflows=[DynamicWorkflow],
-        activities=[default_greeting],
-    ):
-
-        result = await client.execute_workflow(
-            "UnregisteredWorkflowType",
-            "Dynamic Workflow argument",
-            id="hello-dynamic-workflow-id",
-            task_queue="dynamic-workflow-task-queue",
-        )
-        print(f"Result: {result}")
 ```
+
