@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-:::success Sign up for Temporal Cloud!
+:::tip Sign up for Temporal Cloud!
 
 To request a Temporal Cloud account, complete the [request form](https://pages.temporal.io/cloud-request-access).
 

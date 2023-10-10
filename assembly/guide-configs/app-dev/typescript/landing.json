@@ -5,7 +5,7 @@
     "file_dir": "dev-guide/tscript",
     "title": "Temporal TypeScript SDK developer's guide",
     "sidebar_label": "TypeScript SDK",
-    "sidebar_position": 6,
+    "sidebar_position": 7,
     "description": "The Temporal TypeScript SDK developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.",
     "use_description": false,
     "toc_max_heading_level": 4,

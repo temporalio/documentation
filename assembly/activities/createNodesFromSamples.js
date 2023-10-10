@@ -57,13 +57,15 @@ export async function createNodesFromSamples(config) {
       for (const narLine of node.narrative_lines) {
         writeStr = `${writeStr}${narLine}\n`;
       }
-      writeStr = `${writeStr}\n`;
-      writeStr = `${writeStr}${genSourceLinkHTML(sourceURL)}\n\n`;
-      writeStr = `${writeStr}${codeBlocks}${node.metadata.lang}\n\n`;
-      for (const codeLine of node.code_lines) {
-        writeStr = `${writeStr}${codeLine}\n`;
+      if (node.code_lines.length > 0) {
+        writeStr = `${writeStr}\n`;
+        writeStr = `${writeStr}${genSourceLinkHTML(sourceURL)}\n\n`;
+        writeStr = `${writeStr}${codeBlocks}${node.metadata.lang}\n\n`;
+        for (const codeLine of node.code_lines) {
+          writeStr = `${writeStr}${codeLine}\n`;
+        }
+        writeStr = `${writeStr}${codeBlocks}\n\n`;
       }
-      writeStr = `${writeStr}${codeBlocks}\n\n`;
       const nodeWritePath = path.join(
         config.root_dir,
         config.docs_src,
@@ -182,6 +184,12 @@ export async function createNodesFromSamples(config) {
   }
 
   function genSourceLinkHTML(link) {
-    return `<a class="dacx-source-link" href="${link}">View source code</a>`;
+    return `:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](${link}) in the context of the rest of the application code. 
+
+:::`;
   }
 }

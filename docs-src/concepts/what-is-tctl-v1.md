@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-:::success Temporal CLI is now available
+:::info Temporal CLI is now available
 
 The public preview of [Temporal CLI](/cli) is now available.
 We encourage you to begin using it and to provide feedback.

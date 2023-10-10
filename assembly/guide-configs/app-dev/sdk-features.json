@@ -1,0 +1,19 @@
+{
+    "file_name": "sdk-features.md",
+    "id": "sdk-features",
+    "slug": "/dev-guide/sdk-features",
+    "file_dir": "dev-guide",
+    "title": "Temporal SDK features",
+    "sidebar_label": "SDK features",
+    "sidebar_position": 2,
+    "description": "Review the features available in each SDK.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "dev-guide/compare-sdks"
+        }
+    ]
+}

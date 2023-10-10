@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday October 09 2023 13:45:52 PM -0600
+Last assembled: Tuesday October 10 2023 10:14:47 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-104 guide configurations found.
+105 guide configurations found.
 
-1538 information nodes found.
+1566 information nodes found.
 
-1303 information nodes are attached to guides.
+1331 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1034,6 +1034,8 @@ java/how-to-handle-a-signal-in-a-workflow-in-java -> #handle-signals
 
 java/how-to-create-a-temporal-client-in-java -> /dev-guide/java/foundations#connect-to-a-dev-cluster
 
+java/interface-hierarchies -> #interface-inheritance
+
 java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-execution-result
 
 java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-with-start
@@ -1054,6 +1056,30 @@ go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
 
+go/go-dev-guide-structure -> #
+
+go/install-cli -> /dev-guide/go/project-setup#install-cli
+
+go/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
+
+go/project-structure -> /dev-guide/go/project-setup#boilerplate-project
+
+go/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
+
+go/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/go/project-setup#cloud-worker
+
+go/self-hosted-worker-docker-network -> /dev-guide/go/project-setup#dockerfile
+
+go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#local-dev-server
+
+go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
+
 go/foundations -> /dev-guide/go/foundations#
+
+cli/server/start-dev -> /cli/server#start-dev
+
+cli/operator/namespace/create -> /cli/operator#create
+
+cli/workflow/start -> /cli/workflow#start
 
 

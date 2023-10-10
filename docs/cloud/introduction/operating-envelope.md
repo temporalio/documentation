@@ -103,7 +103,7 @@ To raise your quota, create a [support ticket](/cloud/support#support-ticket).
 Temporal Cloud aims for a latency SLO of 200ms per region for p99.
 In June 2023, Temporal measured latency over a week-long period for starting and signaling Workflow Executions as follows:
 
-- For `StartWorkflowExecution`: p90 latecy was 90ms, and p99 latency was 125ms.
+- For `StartWorkflowExecution`: p90 latency was 90ms, and p99 latency was 125ms.
 - For `SignalWorkflowExecution`: p90 latency was 53ms, and p99 latency was 95ms.
 - For `SignalWithStartWorkflowExecution`: p90 latency was 87ms, and p99 latency was 116ms.
 
@@ -185,6 +185,15 @@ The default maximum number of [Custom Search Attributes](/visibility#custom-sear
 - `int`: 20
 - `keyword`: 20
 - `text`: 5
+
+For more information on limits on the number and size of custom Search Attributes you can create, see [Custom Search Attributes limits](/visibility#custom-search-attributes).
+
+### What are constraints for Custom Search Attribute in Temporal Cloud?
+
+When creating custom Search Attributes in Temporal Cloud, the attribute names must adhere to the following constraints:
+
+- Maximum characters: 64
+- Allowed characters: `[a-zA-Z0-9.,:-_\/ ]`.
 
 For more information on limits on the number and size of custom Search Attributes you can create, see [Custom Search Attributes limits](/visibility#custom-search-attributes).
 

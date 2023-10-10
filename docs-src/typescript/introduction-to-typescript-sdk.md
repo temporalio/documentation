@@ -9,7 +9,7 @@ tags:
 
 Welcome to the Temporal TypeScript SDK developer's guide!
 
-:::success Temporal TypeScript SDK API reference
+:::info Temporal TypeScript SDK API reference
 
 [typescript.temporal.io](https://typescript.temporal.io/)
 
@@ -17,7 +17,7 @@ Welcome to the Temporal TypeScript SDK developer's guide!
 
 The Temporal TypeScript SDK released on July 26, 2022. The TypeScript SDK provides access to the Temporal programming model using idiomatic JavaScript and TypeScript programming paradigms.
 
-## What programming skills and experiences are useful when using the TypeScript SDK?
+## What programming skills and experiences are useful when using the TypeScript SDK? {#skills}
 
 You can start working with the SDK with only TypeScript knowledge.
 Temporal abstracts much of the complexity of distributed systems, but to unlock its full potential, having a broad base of knowledge will help you design more efficient and resilient systems.
@@ -54,14 +54,14 @@ Temporal abstracts much of the complexity of distributed systems, but to unlock 
     - Event-driven architecture, eventual consistency, partitioning, and replication.
     - Stateful versus stateless processes.
 
-## Where can I find code samples?
+## Where can I find code samples? {#samples}
 
 Code samples are integrated into this developer’s guide.
 You can find those code samples in the [temporalio/documentation-samples-typescript](https://github.com/temporalio/documentation-samples-typescript) repository on GitHub.
 
 Additional TypeScript code samples are in the [temporalio/samples-typescript](https://github.com/temporalio/samples-typescript) repository.
 
-## What are other resources for learning how to use the TypeScript SDK?
+## What are other resources for learning how to use the TypeScript SDK? {#resources}
 
 Further resources for learning how to use the SDK include the following:
 
@@ -80,17 +80,17 @@ Further resources for learning how to use the SDK include the following:
   - [1.0.0 release of the Temporal TypeScript SDK](https://temporal.io/blog/typescript-1-0-0)
   - [How we use V8 isolates to enforce Workflow determinism](https://temporal.io/blog/intro-to-isolated-vm)
 
-## Where can I get help with using the TypeScript SDK?
+## Where can I get help with using the TypeScript SDK? {#help}
 
 - _#typescript-sdk_ channel in [Slack](https://t.mp/slack)
 - [Community Forum](https://community.temporal.io/tag/typescript-sdk)
 
-## How to follow updates to the TypeScript SDK
+## How to follow updates to the TypeScript SDK {#updates}
 
 - The [Temporal newsletter](https://t.mp/news) includes major SDK updates.
 - [GitHub Releases](https://github.com/temporalio/sdk-typescript/releases) has all SDK releases. It also has a feed that can be added to a feed reader or [converted to emails](https://blogtrottr.com/): `https://github.com/temporalio/sdk-typescript/releases.atom`.
 
-## How to contribute to the TypeScript SDK
+## How to contribute to the TypeScript SDK {#contribute}
 
 The Temporal TypeScript SDK is MIT licensed, and contributions are welcome.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-typescript/blob/main/CONTRIBUTING.md).

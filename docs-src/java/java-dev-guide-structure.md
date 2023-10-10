@@ -9,7 +9,7 @@ tags:
   - guide structure
 ---
 
-:::success Temporal Java SDK API reference
+:::info Temporal Java SDK API reference
 
 https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html
 
