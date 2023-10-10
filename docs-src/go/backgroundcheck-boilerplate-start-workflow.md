@@ -80,6 +80,8 @@ Make sure that the certificate path, private key path, Namespace, and address ar
 
 Use environment variables as a way to quickly switch between a local dev server and Temporal Cloud, for example.
 
+You can customize the environment names to be anything you want.
+
 ```shell
 # set Cloud env variables
 temporal env set cloud.namespace <namespace>.<account-id>
