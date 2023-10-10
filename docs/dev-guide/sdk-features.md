@@ -37,10 +37,10 @@ We encourage you to reach out in Slack or our Community forum if further clarifi
 
 All SDKs support the fundamental ability to define functions as either Workflows or Activities.
 
-| Feature                                                 | Go                                                    | Java | TypeScript | Python | .Net | PHP |
-| ------------------------------------------------------- | ----------------------------------------------------- | ---- | ---------- | ------ | ---- | --- |
-| [Workflow Definitions](/workflows#workflow-definition)  | [Yes](/go/how-to-develop-a-workflow-definition-in-go) | Yes  | Yes        | Yes    | Yes  | Yes |
-| [Activity Definitions](/activities#activity-definition) | Yes                                                   | Yes  | Yes        | Yes    | Yes  | Yes |
+| Feature                                                 | Go                                                 | Java | TypeScript | Python | .Net | PHP |
+| ------------------------------------------------------- | -------------------------------------------------- | ---- | ---------- | ------ | ---- | --- |
+| [Workflow Definitions](/workflows#workflow-definition)  | [Yes](/dev-guide/go/foundations#develop-workflows) | Yes  | Yes        | Yes    | Yes  | Yes |
+| [Activity Definitions](/activities#activity-definition) | Yes                                                | Yes  | Yes        | Yes    | Yes  | Yes |
 
 A Workflow Definition is essentially Workflow code, which orchestrates the execution of Activities, persisting the results.
 [Learn more](/workflows#workflow-definition) in the concepts.
