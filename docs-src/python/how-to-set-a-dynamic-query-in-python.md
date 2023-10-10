@@ -21,10 +21,8 @@ The [payload_converter()](https://python.temporal.io/temporalio.workflow.html#pa
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/dynamic-ent/dynamic_entities/your_dynamic_query_dacx.py">View source code</a>
 
 ```python
-
 # ...
     @workflow.query(dynamic=True)
-    def dynamic_query(self, name: str, args: Sequence[RawValue]) -> str:
+    def dynamic_query(self, input: str, args: Sequence[RawValue]) -> str:
         return self._greeting
 ```
-
