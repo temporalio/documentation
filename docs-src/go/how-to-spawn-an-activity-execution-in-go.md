@@ -37,7 +37,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 	// Use a nil struct pointer to call Activities that are part of a struct.
 	var a *YourActivityObject
 	// Execute the Activity and wait for the result.
-	var activityResult *YourActivityResultObject
+	var activityResult YourActivityResultObject
 	err := workflow.ExecuteActivity(ctx, a.YourActivityDefinition, activityParam).Get(ctx, &activityResult)
 	if err != nil {
 		return nil, err
