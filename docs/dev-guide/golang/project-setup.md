@@ -154,7 +154,7 @@ Follow these instructions to install the Temporal CLI on Windows:
 
 We recommend choosing a development environment based on your requirements.
 
-The source code for the Temporal Server (the orchestrating component of the Temporal Cluster) has an MIT open source license. So, in theory, anyone can take the Temporal Server code and run their Temporal Platform in any number of creative ways.
+The source code for the Temporal Server (the orchestrating component of the Temporal Cluster) is licensed under the MIT open source license. So, in theory, anyone can take the Temporal Server code and run their Temporal Platform in any number of creative ways.
 
 However, for most developers we recommend starting by choosing one of the following:
 
@@ -202,8 +202,8 @@ For more command details and options, see the [CLI reference](/cli/server#start-
 **How to create a new Namespace on the development server**
 
 The development server does automatically create a default Namespace (named "default") when it starts up.
-However, we will create a custom one for our application.
-Since this is something we recommend at a production level, we recommend practicing it with the development server.
+However, you will create a custom one for our application.
+Since this is something recommended at a production level, it's recommend practicing it with the development server.
 
 Use the `temporal operator namespace create` command using the Temporal CLI to create a new Namespace on the development server.
 
@@ -217,7 +217,7 @@ For command details and options, see the [CLI reference](/cli/operator#create).
 
 **When to use Temporal Cloud**
 
-If you do not have a Temporal Cloud Account, you can request one using the link on the [get started](https://docs.temporal.io/cloud/get-started) page.
+If you do not have a Temporal Cloud Account, you can request one using the link on the [Get started with Temporal Cloud](https://docs.temporal.io/cloud/get-started) guide.
 
 We recommend starting off with Temporal Cloud if you already have a production use case, or need to move a scalable proof of concept into production.
 
@@ -227,10 +227,10 @@ To create a Namespace in Temporal Cloud, follow the instructions in [How to crea
 
 :::info Safely store your certificate and private key
 
-Store your certificate and private key you generated for your Namespace as files or environment variables in your project.
-You will need access to your certificate and key to run your Workers and start Workflows.
+Store certificates and private keys generated for your Namespace as files or environment variables in your project.
+You need access to your certificate and key to run your Workers and start Workflows.
 
-For certificate requirements and details, check out [How to manage certificates in Temporal Cloud](/cloud/certificates#).
+For more information on certificate requirements, see [How to manage certificates in Temporal Cloud](/cloud/certificates#).
 
 :::
 
@@ -254,12 +254,12 @@ Then, clone the [temporalio/docker-compose](https://github.com/temporalio/docker
 
 Change directory into the root of the project.
 
-Run the `docker-compose up` command.
+Run the `docker compose up` command.
 
 ```shell
 git clone https://github.com/temporalio/docker-compose.git
 cd  docker-compose
-docker-compose up
+docker compose up
 ```
 
 Create a command alias for the Temporal CLI:
@@ -268,7 +268,7 @@ Create a command alias for the Temporal CLI:
 alias temporal_docker="docker exec temporal-admin-tools temporal"
 ```
 
-Create a new Namespace.
+Create a Namespace.
 
 ```shell
 temporal_docker operator namespace create backgroundcheck_namespace
