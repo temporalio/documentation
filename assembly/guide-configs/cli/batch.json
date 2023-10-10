@@ -4,7 +4,7 @@
   "id": "batch",
   "title": "Temporal CLI batch command reference",
   "sidebar_label": "batch",
-  "description": "How to use the Temporal CLI batch command",
+  "description": "Efficiently execute batch operations with the Temporal CLI. Automate and manage bulk operations seamlessly.",
   "use_description": false,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,

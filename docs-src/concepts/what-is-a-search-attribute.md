@@ -110,7 +110,7 @@ Custom Search Attributes must be one of the following types:
 - Double
 - Int
 - Keyword
-- KeywordList
+- KeywordList (not supported on Temporal Cloud)
 - Text
 
 Note:
@@ -142,7 +142,7 @@ The following table lists the maximum number of custom Search Attributes you can
 | Double                |             3             |             3              |             3              |       20       |
 | Int                   |             3             |             3              |             3              |       20       |
 | Keyword               |            10             |             10             |             10             |       20       |
-| KeywordList           |             3             |             3              |             3              |       20       |
+| KeywordList           |             3             |             3              |             3              | Not supported  |
 | Text                  |             3             |             3              |             3              |       5        |
 
 Temporal does not impose a limit on the number of custom Search Attributes you can create with Elasticsearch. However, [Elasticsearch sets a default mapping limit](https://www.elastic.co/guide/en/elasticsearch/reference/8.6/mapping-settings-limit.html) that may apply.
@@ -167,6 +167,8 @@ Default total maximum number of Search Attribute **keys** per Temporal Cluster i
 <!-- temp keeping for reference
 This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
 -->
+
+For Temporal Cloud specific configurations, see the [Default limits](/cloud/operating-envelope#what-are-the-default-maximum-numbers-of-custom-search-attributes) sheet.
 
 ### Usage
 

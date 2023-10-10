@@ -22,6 +22,8 @@ Temporal tracks the following metrics for your various Namespaces.
 
 - `temporal_cloud_v0_poll_timeout_count`: When no tasks are available for a poller before timing out.
 
+- `temporal_cloud_v0_resource_exhausted_error_count`: gRPC requests received that were rate-limited by Temporal Cloud, aggregated by cause.
+
 - `temporal_cloud_v0_schedule_action_success_count`: Successful execution of a Scheduled Workflow.
 
 - `temporal_cloud_v0_schedule_buffer_overruns_count`: When average schedule run length is greater than average schedule interval while a `buffer_all` overlap policy is configured.
@@ -34,7 +36,7 @@ Temporal tracks the following metrics for your various Namespaces.
 
 - `temporal_cloud_v0_service_latency_count`: Count of latency observations for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
 
-- temporal_cloud_v0_service_latency_sum - Sum of latency observation time for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
+- `temporal_cloud_v0_service_latency_sum` - Sum of latency observation time for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
 
 - `temporal_cloud_v0_state_transition_count`: Count of state transitions for each Namespace.
 

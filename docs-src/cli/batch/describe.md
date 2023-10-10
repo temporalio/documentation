@@ -16,7 +16,7 @@ The `temporal batch describe` command shows the progress of an ongoing Batch job
 
 Pass a valid Job ID to return a Batch Job's information.
 
-`temporal batch describe --jobid=MyJobId`
+`temporal batch describe --job-id=MyJobId`
 
 Use the following options to change the behavior of this command.
 

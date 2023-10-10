@@ -90,14 +90,12 @@ Use the injected logger from an Activity
 
 <!--SNIPSTART typescript-activity-use-injected-logger -->
 
-[instrumentation/src/activities/index.ts](https://github.com/temporalio/samples-typescript/blob/master/instrumentation/src/activities/index.ts)
+[custom-logger/src/activities/index.ts](https://github.com/temporalio/samples-typescript/blob/master/custom-logger/src/activities/index.ts)
 
 ```ts
-import { getContext } from './interceptors';
-
 export async function greet(name: string): Promise<string> {
-  const { logger } = getContext();
-  logger.info('Log from activity', { name });
+  const { log } = Context.current();
+  log.info('Log from activity', { name });
   return `Hello, ${name}!`;
 }
 ```

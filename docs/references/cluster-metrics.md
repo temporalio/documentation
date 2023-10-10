@@ -14,11 +14,11 @@ tags:
 
 :::info OSS Cluster metrics
 
-The information on this page is relevant to open source <a class="tdlp" href="/clusters#">Temporal Cluster deployments<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
+The information on this page is relevant to open source [Temporal Cluster deployments](/clusters#).
 
-See <a class="tdlp" href="/cloud/metrics#">Cloud metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to monitor Temporal Cloud metrics</span><br /><br /><span class="tdlppd">Configure and track performance metrics for Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/metrics#">Learn more</a></span></span></a> for metrics emitted by <a class="tdlp" href="/cloud/index#">Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Temporal Cloud?</span><br /><br /><span class="tdlppd">Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#">Learn more</a></span></span></a>.
+See [Cloud metrics](/cloud/metrics#) for metrics emitted by [Temporal Cloud](/cloud/index#).
 
-See <a class="tdlp" href="/references/sdk-metrics#">SDK metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">SDK metrics</span><br /><br /><span class="tdlppd">The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/sdk-metrics#">Learn more</a></span></span></a> for metrics emitted by the <a class="tdlp" href="/temporal#temporal-sdk">SDKs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal SDK?</span><br /><br /><span class="tdlppd">A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-sdk">Learn more</a></span></span></a>.
+See [SDK metrics](/references/sdk-metrics#) for metrics emitted by the [SDKs](/temporal#temporal-sdk).
 
 :::
 
@@ -26,7 +26,7 @@ A Temporal Cluster emits a range of metrics to help operators get visibility int
 
 All metrics emitted by the Cluster are listed in [defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go).
 
-For details on setting up metrics in your Cluster configuration, see <a class="tdlp" href="/references/configuration#global">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#global">Learn more</a></span></span></a>.
+For details on setting up metrics in your Cluster configuration, see [Temporal Cluster](/references/configuration#global).
 
 The [dashboards repository](https://github.com/temporalio/dashboards) contains community-driven Grafana dashboard templates that can be used as a starting point for monitoring the Temporal Cluster and SDK metrics.
 You can use these templates as references to build your own dashboards.

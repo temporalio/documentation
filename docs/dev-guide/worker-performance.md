@@ -1,7 +1,7 @@
 ---
 id: worker-performance
 title: Developer's guide - Worker performance
-description: Guide into Workers Tuning
+description: Optimize Worker performance by monitoring metrics and tuning Task Queue processing and Workflow caches.
 sidebar_label: Worker performance
 tags:
   - operation-guide

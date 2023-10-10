@@ -255,11 +255,11 @@ _Required_ - The name of the data store definition that should be used by the Te
 
 ### visibilityStore
 
-_Required_ - The name of the primary data store definition that should be used to set up <a class="tdlp" href="/clusters#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#visibility">Learn more</a></span></span></a> on the Temporal Cluster.
+_Required_ - The name of the primary data store definition that should be used to set up [Visibility](/clusters#visibility) on the Temporal Cluster.
 
 ### secondaryVisibilityStore
 
-_Optional_ - The name of the secondary data store definition that should be used to set up <a class="tdlp" href="/visibility#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Dual Visibility?</span><br /><br /><span class="tdlppd">Dual Visibility is a feature that lets you set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#dual-visibility">Learn more</a></span></span></a> on the Temporal Cluster.
+_Optional_ - The name of the secondary data store definition that should be used to set up [Dual Visibility](/visibility#dual-visibility) on the Temporal Cluster.
 
 ### datastores
 
@@ -324,7 +324,7 @@ The `log` section is optional and contains the following possible values:
 
 ## clusterMetadata
 
-`clusterMetadata` contains the local cluster information. The information is used in <a class="tdlp" href="/clusters#multi-cluster-replication">Multi-Cluster Replication<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Multi-Cluster Replication?</span><br /><br /><span class="tdlppd">Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#multi-cluster-replication">Learn more</a></span></span></a>.
+`clusterMetadata` contains the local cluster information. The information is used in [Multi-Cluster Replication](/clusters#multi-cluster-replication).
 
 An example `clusterMetadata` section:
 
@@ -411,7 +411,7 @@ Use `dns:///` prefix to enable round-robin between IP address for DNS name.
 
 _Optional_
 
-Archival is an optional configuration needed to set up the <a class="tdlp" href="/clusters#archival">Archival store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Archival?</span><br /><br /><span class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#archival">Learn more</a></span></span></a>.
+Archival is an optional configuration needed to set up the [Archival store](/clusters#archival).
 It can be enabled on `history` and `visibility` data.
 
 The following list describes supported values for each configuration on the `history` and `visibility` data.
@@ -534,7 +534,7 @@ dcRedirectionPolicy:
 
 _Optional_
 
-Configuration for setting up file-based <a class="tdlp" href="/clusters#dynamicconfiguration">dynamic configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Cluster configuration?</span><br /><br /><span class="tdlppd">Cluster Configuration is the setup and configuration details of your Temporal Cluster, defined using YAML.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#dynamicconfiguration">Learn more</a></span></span></a> client for the Cluster.
+Configuration for setting up file-based [dynamic configuration](/clusters#dynamicconfiguration) client for the Cluster.
 
 This setting is required if specifying dynamic configuration. Supported configuration values are as follows:
 

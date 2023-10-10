@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday August 18 2023 09:21:54 AM -0700
+Last assembled: Monday October 09 2023 08:14:19 AM -0600
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
-93 guide configurations found.
+103 guide configurations found.
 
-1519 information nodes found.
+1544 information nodes found.
 
-1283 information nodes are attached to guides.
+1309 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -53,6 +53,8 @@ concepts/what-is-a-global-namespace -> /namespaces#global-namespace
 concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
+
+cloud/security-cloud-intro -> #
 
 references/server-options -> /references/server-options#withconfig
 
@@ -282,6 +284,10 @@ cloud/tcld/account/metrics/accepted-client-ca/set -> #set
 
 cloud/tcld/account/metrics/accepted-client-ca/remove -> #remove
 
+cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
+
+cloud/tcld/generate-certificates/end-entity-certificate -> #end-entity-certificate
+
 cloud/tcld/how-to-install-tcld -> #install-tcld
 
 cloud/tcld/login -> /cloud/tcld/login#
@@ -305,6 +311,8 @@ cloud/tcld/namespace/certificate-filters/index -> #certificate-filters
 cloud/tcld/namespace/search-attributes/index -> #search-attributes
 
 cloud/tcld/namespace/retention/index -> #retention
+
+cloud/tcld/namespace/update-codec-server -> #update-codec-server
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
@@ -524,13 +532,13 @@ concepts/what-is-a-temporal-client -> #temporal-client
 
 concepts/what-is-a-worker-program -> /workers#worker-program
 
-go/add-sdk -> /dev-guide/go/foundations#install-a-temporal-sdk
+go/introduction-to-go-sdk -> /dev-guide/go/introduction#
 
-java/add-sdk -> /dev-guide/java/foundations#install-a-temporal-sdk
+java/introduction-to-java-sdk -> /dev-guide/java/introduction#
 
-python/add-sdk -> /dev-guide/python/foundations#install-a-temporal-sdk
+python/introduction-to-python-sdk -> /dev-guide/python/introduction#
 
-typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+typescript/introduction-to-typescript-sdk -> /dev-guide/typescript/introduction#
 
 clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
 
@@ -978,6 +986,14 @@ cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
 cli/cmd-options/first-execution-run-id -> /cli/cmd-options#first-execution-run-id
 
+dev-guide/major-components -> #temporal-client
+
+dev-guide/temporal-application -> #temporal-application
+
+dev-guide/official-sdks -> #official-sdks
+
+references/strongly-typed-errors/non-deterministic-error -> /references/errors#non-deterministic-error
+
 typescript/testing -> /dev-guide/typescript/testing#replay
 
 typescript/observability -> /dev-guide/typescript/observability#tracing
@@ -1018,11 +1034,15 @@ java/how-to-handle-a-signal-in-a-workflow-in-java -> #handle-signals
 
 java/how-to-create-a-temporal-client-in-java -> /dev-guide/java/foundations#connect-to-a-dev-cluster
 
+java/interface-hierarchies -> #interface-inheritance
+
 java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-execution-result
 
 java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-with-start
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
+
+java/foundations -> /dev-guide/java/foundations#
 
 go/testing -> /dev-guide/go/testing#replay
 
@@ -1035,5 +1055,7 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+go/foundations -> /dev-guide/go/foundations#
 
 

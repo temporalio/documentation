@@ -2,7 +2,7 @@
 id: activity
 title: Temporal CLI activity command reference
 sidebar_label: activity
-description: How to use the Temporal CLI activity command
+description: Explore the Temporal CLI Activity commands for efficient management of Activities. Register, inspect, and interact with Activities in your Workflows.
 toc_max_heading_level: 4
 keywords:
 - activity
@@ -29,104 +29,104 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Activity commands operate on <a class="tdlp" href="/activities#activity-execution">Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>.
+Activity commands operate on [Activity Executions](/activities#activity-execution).
 
 Activity commands follow this syntax:
 `temporal activity [command] [command options]`
 
 ## complete
 
-The `temporal activity complete` command completes an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>.
+The `temporal activity complete` command completes an [Activity Execution](/activities#activity-execution).
 Along with completing the Activity, the result given upon return can be set as well.
 
 `temporal activity complete --activity-id=MyActivity --result=ActivityComplete`
 
 Use the following options to change the behavior of this command.
 
-- <a class="tdlp" href="/cli/cmd-options#activity-id">--activity-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal activity-id</span><br /><br /><span class="tdlppd">Identifies the Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#activity-id">Learn more</a></span></span></a>
+- [--activity-id](/cli/cmd-options#activity-id)
 
-- <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal address</span><br /><br /><span class="tdlppd">The host and port for the Temporal Frontend Service.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
+- [--address](/cli/cmd-options#address)
 
-- <a class="tdlp" href="/cli/cmd-options#codec-auth">--codec-auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal codec-auth</span><br /><br /><span class="tdlppd">Sets the authorization header on requests to the Codec Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-auth">Learn more</a></span></span></a>
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- <a class="tdlp" href="/cli/cmd-options#codec-endpoint">--codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal codec-endpoint</span><br /><br /><span class="tdlppd">Endpoint for a remote Codec Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-endpoint">Learn more</a></span></span></a>
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
 
-- <a class="tdlp" href="/cli/cmd-options#color">--color<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal color</span><br /><br /><span class="tdlppd">Color options for the CLI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#color">Learn more</a></span></span></a>
+- [--color](/cli/cmd-options#color)
 
-- <a class="tdlp" href="/cli/cmd-options#context-timeout">--context-timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal context-timeout</span><br /><br /><span class="tdlppd">An optional timeout for the context of an RPC call.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#context-timeout">Learn more</a></span></span></a>
+- [--context-timeout](/cli/cmd-options#context-timeout)
 
-- <a class="tdlp" href="/cli/cmd-options#env">--env<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal env</span><br /><br /><span class="tdlppd">Name of the environment to read environmental variables from.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#env">Learn more</a></span></span></a>
+- [--env](/cli/cmd-options#env)
 
-- <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal grpc-meta</span><br /><br /><span class="tdlppd">Contains gRPC metadata to send with requests.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
-- <a class="tdlp" href="/cli/cmd-options#identity">--identity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal identity</span><br /><br /><span class="tdlppd">Specify operator's identity.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#identity">Learn more</a></span></span></a>
+- [--identity](/cli/cmd-options#identity)
 
-- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal namespace</span><br /><br /><span class="tdlppd">Identifies a Namespace in the Temporal Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
+- [--namespace](/cli/cmd-options#namespace)
 
-- <a class="tdlp" href="/cli/cmd-options#result">--result<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal result</span><br /><br /><span class="tdlppd">Set the result value of Activity completion.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#result">Learn more</a></span></span></a>
+- [--result](/cli/cmd-options#result)
 
-- <a class="tdlp" href="/cli/cmd-options#run-id">--run-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal run-id</span><br /><br /><span class="tdlppd">Identifies the current Workflow Run.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#run-id">Learn more</a></span></span></a>
+- [--run-id](/cli/cmd-options#run-id)
 
-- <a class="tdlp" href="/cli/cmd-options#tls">--tls<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls</span><br /><br /><span class="tdlppd">Enable TLS encryption without additional options such as mTLS or client certificates</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls">Learn more</a></span></span></a>
+- [--tls](/cli/cmd-options#tls)
 
-- <a class="tdlp" href="/cli/cmd-options#tls-ca-path">--tls-ca-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls-ca-path</span><br /><br /><span class="tdlppd">Path to server CA certificate.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-ca-path">Learn more</a></span></span></a>
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
 
-- <a class="tdlp" href="/cli/cmd-options#tls-cert-path">--tls-cert-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls-cert-path</span><br /><br /><span class="tdlppd">Path to x509 certificate.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-cert-path">Learn more</a></span></span></a>
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
 
-- <a class="tdlp" href="/cli/cmd-options#tls-disable-host-verification">--tls-disable-host-verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls-disable-host-verification</span><br /><br /><span class="tdlppd">Disables TLS host name verification if already enabled.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-disable-host-verification">Learn more</a></span></span></a>
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
 
-- <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls-key-path</span><br /><br /><span class="tdlppd">Path to private certificate key.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
 
-- <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls-server-name</span><br /><br /><span class="tdlppd">Overrides the target TLS server name.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
-- <a class="tdlp" href="/cli/cmd-options#workflow-id">--workflow-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal workflow-id</span><br /><br /><span class="tdlppd">Workflow Id</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#workflow-id">Learn more</a></span></span></a>
+- [--workflow-id](/cli/cmd-options#workflow-id)
 
 ## fail
 
-The `temporal activity fail` command fails an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>.
-The Activity must already be running on a valid <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a>.
+The `temporal activity fail` command fails an [Activity Execution](/activities#activity-execution).
+The Activity must already be running on a valid [Workflow](/workflows#).
 
 `temporal fail --workflow-id=meaningful-business-id --activity-id=MyActivity`
 
 Use the following options to change the behavior of this command.
 
-- <a class="tdlp" href="/cli/cmd-options#activity-id">--activity-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal activity-id</span><br /><br /><span class="tdlppd">Identifies the Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#activity-id">Learn more</a></span></span></a>
+- [--activity-id](/cli/cmd-options#activity-id)
 
-- <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal address</span><br /><br /><span class="tdlppd">The host and port for the Temporal Frontend Service.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
+- [--address](/cli/cmd-options#address)
 
-- <a class="tdlp" href="/cli/cmd-options#codec-auth">--codec-auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal codec-auth</span><br /><br /><span class="tdlppd">Sets the authorization header on requests to the Codec Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-auth">Learn more</a></span></span></a>
+- [--codec-auth](/cli/cmd-options#codec-auth)
 
-- <a class="tdlp" href="/cli/cmd-options#codec-endpoint">--codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal codec-endpoint</span><br /><br /><span class="tdlppd">Endpoint for a remote Codec Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-endpoint">Learn more</a></span></span></a>
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
 
-- <a class="tdlp" href="/cli/cmd-options#color">--color<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal color</span><br /><br /><span class="tdlppd">Color options for the CLI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#color">Learn more</a></span></span></a>
+- [--color](/cli/cmd-options#color)
 
-- <a class="tdlp" href="/cli/cmd-options#context-timeout">--context-timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal context-timeout</span><br /><br /><span class="tdlppd">An optional timeout for the context of an RPC call.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#context-timeout">Learn more</a></span></span></a>
+- [--context-timeout](/cli/cmd-options#context-timeout)
 
-- <a class="tdlp" href="/cli/cmd-options#detail">--detail<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal detail</span><br /><br /><span class="tdlppd">Reason to fail the Activity.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#detail">Learn more</a></span></span></a>
+- [--detail](/cli/cmd-options#detail)
 
-- <a class="tdlp" href="/cli/cmd-options#env">--env<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal env</span><br /><br /><span class="tdlppd">Name of the environment to read environmental variables from.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#env">Learn more</a></span></span></a>
+- [--env](/cli/cmd-options#env)
 
-- <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal grpc-meta</span><br /><br /><span class="tdlppd">Contains gRPC metadata to send with requests.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
-- <a class="tdlp" href="/cli/cmd-options#identity">--identity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal identity</span><br /><br /><span class="tdlppd">Specify operator's identity.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#identity">Learn more</a></span></span></a>
+- [--identity](/cli/cmd-options#identity)
 
-- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal namespace</span><br /><br /><span class="tdlppd">Identifies a Namespace in the Temporal Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
+- [--namespace](/cli/cmd-options#namespace)
 
-- <a class="tdlp" href="/cli/cmd-options#reason">--reason<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal reason</span><br /><br /><span class="tdlppd">Reason for the operation</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#reason">Learn more</a></span></span></a>
+- [--reason](/cli/cmd-options#reason)
 
-- <a class="tdlp" href="/cli/cmd-options#run-id">--run-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal run-id</span><br /><br /><span class="tdlppd">Identifies the current Workflow Run.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#run-id">Learn more</a></span></span></a>
+- [--run-id](/cli/cmd-options#run-id)
 
-- <a class="tdlp" href="/cli/cmd-options#tls">--tls<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls</span><br /><br /><span class="tdlppd">Enable TLS encryption without additional options such as mTLS or client certificates</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls">Learn more</a></span></span></a>
+- [--tls](/cli/cmd-options#tls)
 
-- <a class="tdlp" href="/cli/cmd-options#tls-ca-path">--tls-ca-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls-ca-path</span><br /><br /><span class="tdlppd">Path to server CA certificate.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-ca-path">Learn more</a></span></span></a>
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
 
-- <a class="tdlp" href="/cli/cmd-options#tls-cert-path">--tls-cert-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls-cert-path</span><br /><br /><span class="tdlppd">Path to x509 certificate.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-cert-path">Learn more</a></span></span></a>
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
 
-- <a class="tdlp" href="/cli/cmd-options#tls-disable-host-verification">--tls-disable-host-verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls-disable-host-verification</span><br /><br /><span class="tdlppd">Disables TLS host name verification if already enabled.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-disable-host-verification">Learn more</a></span></span></a>
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
 
-- <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls-key-path</span><br /><br /><span class="tdlppd">Path to private certificate key.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
 
-- <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal tls-server-name</span><br /><br /><span class="tdlppd">Overrides the target TLS server name.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
 
-- <a class="tdlp" href="/cli/cmd-options#workflow-id">--workflow-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal workflow-id</span><br /><br /><span class="tdlppd">Workflow Id</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#workflow-id">Learn more</a></span></span></a>
+- [--workflow-id](/cli/cmd-options#workflow-id)
 

@@ -359,7 +359,8 @@ Example configuration:
   "use_description": false, // uses the description as the first sentence in the generated doc
   "toc_max_heading_level": 4, // sets the maximum toc level for the generated doc
   "add_tabs_support": true, // adds mdx imports to generated doc to support tabs
-  "sections": [ // array of sections
+  "sections": [
+    // array of sections
     {
       "type": "p", // section type - p sections use the previous heading as an anchor
       "id": "go/foundations" // this is the directory + doc id within docs-src
@@ -575,7 +576,6 @@ For example:
       "id": "how-to-develop-a-workflow-in-go" // this is the id of the info node
     }
     // ...
-  ]
   ]
 }
 ```

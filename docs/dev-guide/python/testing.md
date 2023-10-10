@@ -2,7 +2,7 @@
 id: testing
 title: Python SDK developer's guide - Testing
 sidebar_label: Testing
-sidebar_position: 4
+sidebar_position: 5
 description: The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 toc_max_heading_level: 4
 keywords:
@@ -192,7 +192,7 @@ For information about assert statements in Python, see [`assert`](https://docs.p
 Replay recreates the exact state of a Workflow Execution.
 You can replay a Workflow from the beginning of its Event History.
 
-Replay succeeds only if the <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a> is compatible with the provided history from a deterministic point of view.
+Replay succeeds only if the [Workflow Definition](/workflows#workflow-definition) is compatible with the provided history from a deterministic point of view.
 
 When you test changes to your Workflow Definitions, we recommend doing the following as part of your CI checks:
 

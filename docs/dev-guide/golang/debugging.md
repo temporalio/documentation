@@ -2,7 +2,7 @@
 id: debugging
 title: Go SDK developer's guide - Debugging
 sidebar_label: Debugging
-sidebar_position: 5
+sidebar_position: 6
 description: The Debugging section of the Temporal Go SDK Developer's guide covers the many ways to debug your application.
 slug: /dev-guide/go/debugging
 toc_max_heading_level: 4
@@ -61,14 +61,14 @@ You can debug production Workflows using:
 
 - [Web UI](/web-ui)
 - [tctl](/tctl-v1)
-- <a class="tdlp" href="/dev-guide/go/testing#replay">Replay<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Testing</span><br /><br /><span class="tdlppd">The Testing section of the Temporal Application development guide describes the frameworks that facilitate Workflow and integration testing.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/testing#replay">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/go/observability#tracing-and-context-propogation">Tracing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Tracing and Context Propagation</span><br /><br /><span class="tdlppd">Explains how the Go SDK supports tracing and custom context propogation.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/observability#tracing-and-context-propogation">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/go/observability#logging">Logging<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to log from a Workflow</span><br /><br /><span class="tdlppd">Send logs and errors to a logging service, so that when things go wrong, you can see what happened.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/observability#logging">Learn more</a></span></span></a>
+- [Replay](/dev-guide/go/testing#replay)
+- [Tracing](/dev-guide/go/observability#tracing-and-context-propogation)
+- [Logging](/dev-guide/go/observability#logging)
 
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/dev-guide/worker-performance).
-For more information, see <a class="tdlp" href="/dev-guide/go/observability#metrics">Metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to emit metrics</span><br /><br /><span class="tdlppd">Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/observability#metrics">Learn more</a></span></span></a> for setting up SDK metrics.
+For more information, see [Metrics](/dev-guide/go/observability#metrics) for setting up SDK metrics.
 
-Debug Server performance with <a class="tdlp" href="/cloud/metrics#">Cloud metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to monitor Temporal Cloud metrics</span><br /><br /><span class="tdlppd">Configure and track performance metrics for Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/metrics#">Learn more</a></span></span></a> or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).
+Debug Server performance with [Cloud metrics](/cloud/metrics#) or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).
 
 ## How to test Workflow Definitions in Go {#testing-and-debugging}
 
@@ -319,7 +319,7 @@ func (s *UnitTestSuite) Test_ProgressWorkflow() {
 
 :::note
 
-`RegisterDelayedCallback` can also be used to send <a class="tdlp" href="/workflows#signal">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#signal">Learn more</a></span></span></a>.
+`RegisterDelayedCallback` can also be used to send [Signals](/workflows#signal).
 When using "Signal-With-Start", set the delay to `0`.
 :::
 

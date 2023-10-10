@@ -37,18 +37,18 @@ import TabItem from '@theme/TabItem';
 
 This guide provides a comprehensive overview of Temporal Workflows.
 
-In day-to-day conversations, the term _Workflow_ frequently denotes either a <a class="tdlp" href="#workflow-type">Workflow Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Type?</span><br /><br /><span class="tdlppd">A Workflow Type is a name that maps to a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-type">Learn more</a></span></span></a>, a <a class="tdlp" href="#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-definition">Learn more</a></span></span></a>, or a [Workflow Execution](/workflows#workflow-execution).
+In day-to-day conversations, the term _Workflow_ frequently denotes either a [Workflow Type](#workflow-type), a [Workflow Definition](#workflow-definition), or a [Workflow Execution](/workflows#workflow-execution).
 Temporal documentation aims to be explicit and differentiate between them.
 
 ## What is a Workflow Definition? {#workflow-definition}
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
-- <a class="tdlp" href="/dev-guide/go/foundations#develop-workflows">How to develop a Workflow Definition using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a basic Workflow</span><br /><br /><span class="tdlppd">Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/foundations#develop-workflows">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/foundations#develop-workflows">How to develop a Workflow Definition using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Workflow Definition in Java</span><br /><br /><span class="tdlppd">In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/foundations#develop-workflows">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/foundations#develop-workflows">How to develop a Workflow Definition using the PHP SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a basic Workflow</span><br /><br /><span class="tdlppd">Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/foundations#develop-workflows">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/foundations#develop-workflows">How to develop a Workflow Definition using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a basic Workflow</span><br /><br /><span class="tdlppd">Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/foundations#develop-workflows">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/foundations#develop-workflows">How to develop a Workflow Definition using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a basic Workflow</span><br /><br /><span class="tdlppd">Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/foundations#develop-workflows">Learn more</a></span></span></a>
+- [How to develop a Workflow Definition using the Go SDK](/dev-guide/go/foundations#develop-workflows)
+- [How to develop a Workflow Definition using the Java SDK](/dev-guide/java/foundations#develop-workflows)
+- [How to develop a Workflow Definition using the PHP SDK](/dev-guide/php/foundations#develop-workflows)
+- [How to develop a Workflow Definition using the Python SDK](/dev-guide/python/foundations#develop-workflows)
+- [How to develop a Workflow Definition using the TypeScript SDK](/dev-guide/typescript/foundations#develop-workflows)
 
 A Workflow Definition is often also referred to as a Workflow Function.
 In Temporal's documentation, a Workflow Definition refers to the source for the instance of a Workflow Execution, while a Workflow Function refers to the source for the instance of a Workflow Function Execution.
@@ -62,8 +62,8 @@ We strongly recommend that you write a Workflow Definition in a language that ha
 A critical aspect of developing Workflow Definitions is ensuring they exhibit certain deterministic traits – that is, making sure that the same Commands are emitted in the same sequence, whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
 
 The execution semantics of a Workflow Execution include the re-execution of a Workflow Function, which is called a [Replay](#replays).
-The use of Workflow APIs in the function is what generates <a class="tdlp" href="#command">Commands<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Command?</span><br /><br /><span class="tdlppd">A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#command">Learn more</a></span></span></a>.
-Commands tell the Cluster which Events to create and add to the Workflow Execution's Event History.
+The use of Workflow APIs in the function is what generates [Commands](#command).
+Commands tell the Cluster which Events to create and add to the Workflow Execution's [Event History](#event-history).
 When a Workflow Function executes, the Commands that are emitted are compared with the existing Event History.
 If a corresponding Event already exists within the Event History that maps to the generation of that Command in the same sequence, and some specific metadata of that Command matches with some specific metadata of the Event, then the Function Execution progresses.
 
@@ -142,9 +142,9 @@ The Workflow Versioning feature enables the creation of logical branching inside
 This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
 It is important to note that a practical way to handle different versions of Workflow Definitions, without using the versioning API, is to run the different versions on separate Task Queues.
 
-- <a class="tdlp" href="/dev-guide/go/versioning#">How to version Workflow Definitions in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Versioning</span><br /><br /><span class="tdlppd">Version Workflows in Go</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/versioning#">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/versioning#">How to version Workflow Definitions in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to version Workflows in Java</span><br /><br /><span class="tdlppd">Properly version your Workflows to avoid non-deterministic errors.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/versioning#">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/versioning#">How to version Workflow Definitions in TypeScript<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Versioning</span><br /><br /><span class="tdlppd">Versioning lets you update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/versioning#">Learn more</a></span></span></a>
+- [How to version Workflow Definitions in Go](/dev-guide/go/versioning#)
+- [How to version Workflow Definitions in Java](/dev-guide/java/versioning#)
+- [How to version Workflow Definitions in TypeScript](/dev-guide/typescript/versioning#)
 
 ### Handling unreliable Worker Processes
 
@@ -167,17 +167,17 @@ A Workflow Type is a name that maps to a Workflow Definition.
 ## What is a Workflow Execution? {#workflow-execution}
 
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
-It is the main unit of execution of a <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Application?</span><br /><br /><span class="tdlppd">A Temporal Application is a set of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-application">Learn more</a></span></span></a>.
+It is the main unit of execution of a [Temporal Application](/temporal#temporal-application).
 
 - [How to start a Workflow Execution using tctl](/tctl-v1/workflow#start)
-- <a class="tdlp" href="/dev-guide/go/foundations#start-workflow-execution">How to start a Workflow Execution using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/foundations#start-workflow-execution">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/foundations#start-workflow-execution">How to start a Workflow Execution using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to spawn a Workflow Execution in Java</span><br /><br /><span class="tdlppd">Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/foundations#start-workflow-execution">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/foundations#start-workflow-execution">How to start a Workflow Execution using the PHP SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/foundations#start-workflow-execution">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/foundations#start-workflow-execution">How to start a Workflow Execution using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/foundations#start-workflow-execution">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/foundations#start-workflow-execution">How to start a Workflow Execution using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/foundations#start-workflow-execution">Learn more</a></span></span></a>
+- [How to start a Workflow Execution using the Go SDK](/dev-guide/go/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using the Java SDK](/dev-guide/java/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using the PHP SDK](/dev-guide/php/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using the Python SDK](/dev-guide/python/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using the TypeScript SDK](/dev-guide/typescript/foundations#start-workflow-execution)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
-It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through <a class="tdlp" href="#signal">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#signal">Learn more</a></span></span></a> and the environment through <a class="tdlp" href="/activities#">Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity?</span><br /><br /><span class="tdlppd">In day-to-day conversation, the term "Activity" denotes an Activity Type, Activity Definition, or Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#">Learn more</a></span></span></a>.
+It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](#signal) and the environment through [Activities](/activities#).
 While a single Workflow Execution has limits on size and throughput, a Temporal Application can consist of millions to billions of Workflow Executions.
 
 **Durability**
@@ -197,36 +197,36 @@ The Temporal Platform ensures the state of the Workflow Execution persists in th
 
 Scalability is responsiveness in the presence of load.
 
-A single Workflow Execution is limited in size and throughput but is scalable because it can <a class="tdlp" href="#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#continue-as-new">Learn more</a></span></span></a> in response to load.
-A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> and <a class="tdlp" href="/workers#worker-process">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a>.
+A single Workflow Execution is limited in size and throughput but is scalable because it can [Continue-As-New](#continue-as-new) in response to load.
+A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the [Temporal Cluster](/clusters#) and [Worker Processes](/workers#worker-process).
 
 ### Replays
 
 A Replay is the method by which a Workflow Execution resumes making progress. During a Replay the Commands that are generated are checked against an existing Event History. Replays are necessary and often happen to give the effect that Workflow Executions are resumable, reliable, and durable.
 
-For more information, see <a class="tdlp" href="#deterministic-constraints">Deterministic constraints<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#deterministic-constraints">Learn more</a></span></span></a>.
+For more information, see [Deterministic constraints](#deterministic-constraints).
 
 If a failure occurs, the Workflow Execution picks up where the last recorded event occurred in the Event History.
 
-- <a class="tdlp" href="/dev-guide/go/testing#replay">How to use Replay APIs using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to Replay a Workflow Execution</span><br /><br /><span class="tdlppd">Replay recreates the exact state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/testing#replay">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/testing#replay">How to use Replay APIs using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to Replay a Workflow Execution</span><br /><br /><span class="tdlppd">Replay recreates the exact state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/testing#replay">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/testing#replay">How to use Replay APIs using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to Replay a Workflow Execution</span><br /><br /><span class="tdlppd">Replay recreates the exact state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/testing#replay">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/testing#replay">How to use Replay APIs using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to Replay a Workflow Execution</span><br /><br /><span class="tdlppd">Replay recreates the exact state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/testing#replay">Learn more</a></span></span></a>
+- [How to use Replay APIs using the Go SDK](/dev-guide/go/testing#replay)
+- [How to use Replay APIs using the Java SDK](/dev-guide/java/testing#replay)
+- [How to use Replay APIs using the Python SDK](/dev-guide/python/testing#replay)
+- [How to use Replay APIs using the TypeScript SDK](/dev-guide/typescript/testing#replay)
 
 ### Commands and awaitables
 
 A Workflow Execution does two things:
 
-1. Issue <a class="tdlp" href="#command">Commands<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Command?</span><br /><br /><span class="tdlppd">A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#command">Learn more</a></span></span></a>.
+1. Issue [Commands](#command).
 2. Wait on an Awaitables (often called Futures).
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Command generation and waiting</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/workflow-execution-progession-simple.svg" alt="Command generation and waiting" height="440" width="1126" /></div></div>
 
-Commands are issued and Awaitables are provided by the use of Workflow APIs in the <a class="tdlp" href="#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-definition">Learn more</a></span></span></a>.
+Commands are issued and Awaitables are provided by the use of Workflow APIs in the [Workflow Definition](#workflow-definition).
 
 Commands are generated whenever the Workflow Function is executed.
 The Worker Process supervises the Command generation and makes sure that it maps to the current Event History.
-(For more information, see <a class="tdlp" href="#deterministic-constraints">Deterministic constraints<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#deterministic-constraints">Learn more</a></span></span></a>.)
+(For more information, see [Deterministic constraints](#deterministic-constraints).)
 The Worker Process batches the Commands and then suspends progress to send the Commands to the Cluster whenever the Workflow Function reaches a place where it can no longer progress without a result from an Awaitable.
 
 A Workflow Execution may only ever block progress on an Awaitable that is provided through a Temporal SDK API.
@@ -234,29 +234,31 @@ Awaitables are provided when using APIs for the following:
 
 - Awaiting: Progress can block using explicit "Await" APIs.
 - Requesting cancellation of another Workflow Execution: Progress can block on confirmation that the other Workflow Execution is cancelled.
-- Sending a <a class="tdlp" href="#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#signal">Learn more</a></span></span></a>: Progress can block on confirmation that the Signal sent.
-- Spawning a <a class="tdlp" href="#child-workflow">Child Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Child Workflow Execution?</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#child-workflow">Learn more</a></span></span></a>: Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
-- Spawning an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>: Progress can block on the result of the Activity Execution.
+- Sending a [Signal](#signal): Progress can block on confirmation that the Signal sent.
+- Spawning a [Child Workflow Execution](#child-workflow): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
+- Spawning an [Activity Execution](/activities#activity-execution): Progress can block on the result of the Activity Execution.
 - Starting a Timer: Progress can block until the Timer fires.
 
 ### Status
 
-A Workflow Execution can be either Open or Closed.
+A Workflow Execution can be either _Open_ or _Closed_.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Workflow Execution statuses</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/workflow-execution-statuses.svg" alt="Workflow Execution statuses" height="524" width="1240" /></div></div>
 
-**Open**
+#### Open
+
+An _Open_ status means that the Workflow Execution is able to make progress.
 
 - Running: The only Open status for a Workflow Execution.
   When the Workflow Execution is Running, it is either actively progressing or is waiting on something.
 
-**Closed**
+#### Closed
 
-A Closed status means that the Workflow Execution cannot make further progress because of one of the following reasons:
+A _Closed_ status means that the Workflow Execution cannot make further progress because of one of the following reasons:
 
 - Cancelled: The Workflow Execution successfully handled a cancellation request.
 - Completed: The Workflow Execution has completed successfully.
-- Continued-As-New: The Workflow Execution <a class="tdlp" href="#continue-as-new">Continued-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#continue-as-new">Learn more</a></span></span></a>.
+- Continued-As-New: The Workflow Execution [Continued-As-New](#continue-as-new).
 - Failed: The Workflow Execution returned an error and failed.
 - Terminated: The Workflow Execution was terminated.
 - Timed Out: The Workflow Execution reached a timeout limit.
@@ -267,18 +269,18 @@ A Workflow Execution Chain is a sequence of Workflow Executions that share the s
 Each link in the Chain is often called a Workflow Run.
 Each Workflow Run in the sequence is connected by one of the following:
 
-- <a class="tdlp" href="#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#continue-as-new">Learn more</a></span></span></a>
-- <a class="tdlp" href="/retry-policies#">Retries<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a>
-- <a class="tdlp" href="#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-cron-job">Learn more</a></span></span></a>
+- [Continue-As-New](#continue-as-new)
+- [Retries](/retry-policies#)
+- [Temporal Cron Job](#temporal-cron-job)
 
-A Workflow Execution is uniquely identified by its <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a>, <a class="tdlp" href="#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-id">Learn more</a></span></span></a>, and <a class="tdlp" href="#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Run Id?</span><br /><br /><span class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-id">Learn more</a></span></span></a>.
+A Workflow Execution is uniquely identified by its [Namespace](/namespaces#), [Workflow Id](#workflow-id), and [Run Id](#run-id).
 
-The <a class="tdlp" href="#workflow-execution-timeout">Workflow Execution Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution Timeout?</span><br /><br /><span class="tdlppd">A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-execution-timeout">Learn more</a></span></span></a> applies to a Workflow Execution Chain.
-The <a class="tdlp" href="#workflow-run-timeout">Workflow Run Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Run Timeout?</span><br /><br /><span class="tdlppd">This is the maximum amount of time that a single Workflow Run is restricted to.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-run-timeout">Learn more</a></span></span></a> applies to a single Workflow Execution (Workflow Run).
+The [Workflow Execution Timeout](#workflow-execution-timeout) applies to a Workflow Execution Chain.
+The [Workflow Run Timeout](#workflow-run-timeout) applies to a single Workflow Execution (Workflow Run).
 
 ### Event loop
 
-A Workflow Execution is made up of a sequence of <a class="tdlp" href="#event">Events<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event?</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event">Learn more</a></span></span></a> called an <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a>.
+A Workflow Execution is made up of a sequence of [Events](#event) called an [Event History](#event-history).
 Events are created by the Temporal Cluster in response to either Commands or actions requested by a Temporal Client (such as a request to spawn a Workflow Execution).
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Workflow Execution</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/workflow-execution-swim-lane-01.svg" alt="Workflow Execution" height="1246" width="1180" /></div></div>
@@ -297,7 +299,7 @@ If the Event History exceeds 50Ki (51,200) Events, the Workflow Execution is ter
 To prevent _runaway_ Workflow Executions, you can use the Workflow Execution Timeout, the Workflow Run Timeout, or both.
 A Workflow Execution Timeout can be used to limit the duration of Workflow Execution Chain, and a Workflow Run Timeout can be used to limit the duration an individual Workflow Execution (Run).
 
-You can use the <a class="tdlp" href="#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#continue-as-new">Learn more</a></span></span></a> feature to close the current Workflow Execution and create a new Workflow Execution in a single atomic operation.
+You can use the [Continue-As-New](#continue-as-new) feature to close the current Workflow Execution and create a new Workflow Execution in a single atomic operation.
 The Workflow Execution spawned from Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
 For example, it may be reasonable to use Continue-As-New once per day for a long-running Workflow Execution that is generating a large Event History.
 
@@ -318,9 +320,9 @@ By default, Temporal fails Workflow Task Executions that would cause the Workflo
 
 ### What is a Command? {#command}
 
-A Command is a requested action issued by a <a class="tdlp" href="/workers#worker">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a> to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> after a <a class="tdlp" href="/workers#workflow-task-execution">Workflow Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task Execution?</span><br /><br /><span class="tdlppd">A Workflow Task Execution occurs when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task-execution">Learn more</a></span></span></a> completes.
+A Command is a requested action issued by a [Worker](/workers#worker) to the [Temporal Cluster](/clusters#) after a [Workflow Task Execution](/workers#workflow-task-execution) completes.
 
-The action that the Cluster takes is recorded in the [Workflow Execution's](/workflows#workflow-execution) <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a> as an <a class="tdlp" href="#event">Event<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event?</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event">Learn more</a></span></span></a>.
+The action that the Cluster takes is recorded in the [Workflow Execution's](/workflows#workflow-execution) [Event History](#event-history) as an [Event](#event).
 The Workflow Execution can await on some of the Events that come as a result from some of the Commands.
 
 Commands are generated by the use of Workflow APIs in your code. During a Workflow Task Execution there may be several Commands that are generated.
@@ -329,39 +331,39 @@ There will always be [WorkflowTaskStarted](/references/events/#workflowtaskstart
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Commands are generated by the use of Workflow APIs in your code</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/commands.svg" alt="Commands are generated by the use of Workflow APIs in your code" height="1480" width="1314" /></div></div>
 
-Commands are described in the <a class="tdlp" href="/references/commands#">Command reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Commands reference</span><br /><br /><span class="tdlppd">A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/commands#">Learn more</a></span></span></a> and are defined in the [Temporal gRPC API](https://github.com/temporalio/api/blob/master/temporal/api/command/v1/message.proto).
+Commands are described in the [Command reference](/references/commands#) and are defined in the [Temporal gRPC API](https://github.com/temporalio/api/blob/master/temporal/api/command/v1/message.proto).
 
 ### What is an Event? {#event}
 
 Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution. Each Event corresponds to an `enum` that is defined in the [Server API](https://github.com/temporalio/api/blob/master/temporal/api/enums/v1/event_type.proto).
 
-All Events are recorded in the <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a>.
+All Events are recorded in the [Event History](#event-history).
 
-A list of all possible Events that could appear in a Workflow Execution Event History is provided in the <a class="tdlp" href="/references/events#">Event reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#">Learn more</a></span></span></a>.
+A list of all possible Events that could appear in a Workflow Execution Event History is provided in the [Event reference](/references/events#).
 
 #### Activity Events
 
 Seven Activity-related Events are added to Event History at various points in an Activity Execution:
 
-- After a <a class="tdlp" href="/workers#activity-task-execution">Workflow Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task-execution">Learn more</a></span></span></a> reaches a line of code that starts/executes an Activity, the Worker sends the Activity Type and arguments to the Temporal Cluster, and the Cluster adds an <a class="tdlp" href="/references/events#activitytaskscheduled">ActivityTaskScheduled<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskscheduled">Learn more</a></span></span></a> Event to Event History.
+- After a [Workflow Task Execution](/workers#activity-task-execution) reaches a line of code that starts/executes an Activity, the Worker sends the Activity Type and arguments to the Temporal Cluster, and the Cluster adds an [ActivityTaskScheduled](/references/events#activitytaskscheduled) Event to Event History.
 - When `ActivityTaskScheduled` is added to History, the Cluster adds a corresponding Activity Task to the Task Queue.
 - A Worker polling that Task Queue picks up the Activity Task and runs the Activity function or method.
-- If the Activity function returns, the Worker reports completion to the Cluster, and the Cluster adds <a class="tdlp" href="/references/events#activitytaskstarted">ActivityTaskStarted<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskstarted">Learn more</a></span></span></a> and <a class="tdlp" href="/references/events#activitytaskcompleted">ActivityTaskCompleted<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskcompleted">Learn more</a></span></span></a> to Event History.
-- If the Activity function throws a [non-retryable Failure](/kb/failures#non-retryable), the Cluster adds <a class="tdlp" href="/references/events#activitytaskstarted">ActivityTaskStarted<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskstarted">Learn more</a></span></span></a> and <a class="tdlp" href="/references/events#activitytaskfailed">ActivityTaskFailed<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskfailed">Learn more</a></span></span></a> to Event History.
-- If the Activity function throws an error or retryable Failure, the Cluster schedules an Activity Task retry to be added to the Task Queue (unless you’ve reached the Maximum Attempts value of the [Retry Policy](/retry-policies), in which case the Cluster adds <a class="tdlp" href="/references/events#activitytaskstarted">ActivityTaskStarted<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskstarted">Learn more</a></span></span></a> and <a class="tdlp" href="/references/events#activitytaskfailed">ActivityTaskFailed<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskfailed">Learn more</a></span></span></a> to Event History).
+- If the Activity function returns, the Worker reports completion to the Cluster, and the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskCompleted](/references/events#activitytaskcompleted) to Event History.
+- If the Activity function throws a [non-retryable Failure](/kb/failures#non-retryable), the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to Event History.
+- If the Activity function throws an error or retryable Failure, the Cluster schedules an Activity Task retry to be added to the Task Queue (unless you’ve reached the Maximum Attempts value of the [Retry Policy](/retry-policies), in which case the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to Event History).
 - If the Activity’s [Start-to-Close Timeout](/activities#start-to-close-timeout) passes before the Activity function returns or throws, the Cluster schedules a retry.
-- If the Activity’s [Schedule-to-Close Timeout](/activities#schedule-to-close-timeout) passes before Activity Execution is complete, or if [Schedule-to-Start Timeout](/activities#schedule-to-start-timeout) passes before a Worker gets the Activity Task, the Cluster writes <a class="tdlp" href="/references/events#activitytasktimedout">ActivityTaskTimedOut<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytasktimedout">Learn more</a></span></span></a> to Event History.
-- If the Activity is [canceled](/activities#cancellation), the Cluster writes <a class="tdlp" href="/references/events#activitytaskcancelrequested">ActivityTaskCancelRequested<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskcancelrequested">Learn more</a></span></span></a> to Event History, and if the Activity accepts cancellation, the Cluster writes <a class="tdlp" href="/references/events#activitytaskcanceled">ActivityTaskCanceled<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskcanceled">Learn more</a></span></span></a>.
+- If the Activity’s [Schedule-to-Close Timeout](/activities#schedule-to-close-timeout) passes before Activity Execution is complete, or if [Schedule-to-Start Timeout](/activities#schedule-to-start-timeout) passes before a Worker gets the Activity Task, the Cluster writes [ActivityTaskTimedOut](/references/events#activitytasktimedout) to Event History.
+- If the Activity is [canceled](/activities#cancellation), the Cluster writes [ActivityTaskCancelRequested](/references/events#activitytaskcancelrequested) to Event History, and if the Activity accepts cancellation, the Cluster writes [ActivityTaskCanceled](/references/events#activitytaskcanceled).
 
 :::note
 
-While the Activity is running and retrying, <a class="tdlp" href="/references/events#activitytaskscheduled">ActivityTaskScheduled<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskscheduled">Learn more</a></span></span></a> is the only Activity-related Event in History: <a class="tdlp" href="/references/events#activitytaskstarted">ActivityTaskStarted<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskstarted">Learn more</a></span></span></a> is written along with a terminal Event like <a class="tdlp" href="/references/events#activitytaskcompleted">ActivityTaskCompleted<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskcompleted">Learn more</a></span></span></a> or <a class="tdlp" href="/references/events#activitytaskfailed">ActivityTaskFailed<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskfailed">Learn more</a></span></span></a>.
+While the Activity is running and retrying, [ActivityTaskScheduled](/references/events#activitytaskscheduled) is the only Activity-related Event in History: [ActivityTaskStarted](/references/events#activitytaskstarted) is written along with a terminal Event like [ActivityTaskCompleted](/references/events#activitytaskcompleted) or [ActivityTaskFailed](/references/events#activitytaskfailed).
 
 :::
 
 ### What is an Event History? {#event-history}
 
-An append-only log of <a class="tdlp" href="#event">Events<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event?</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event">Learn more</a></span></span></a> for your application.
+An append-only log of [Events](#event) for your application.
 
 - Event History is durably persisted by the Temporal service, enabling seamless recovery of your application state from crashes or failures.
 - It also serves as an audit log for debugging.
@@ -377,7 +379,7 @@ If the Event History exceeds 50Ki (51,200) Events, the Workflow Execution is ter
 
 Continue-As-New is a mechanism by which the latest relevant state is passed to a new Workflow Execution, with a fresh Event History.
 
-As a precautionary measure, the Temporal Platform limits the total <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a> to 51,200 Events or 50 MB, and will warn you after 10,240 Events or 10 MB.
+As a precautionary measure, the Temporal Platform limits the total [Event History](#event-history) to 51,200 Events or 50 MB, and will warn you after 10,240 Events or 10 MB.
 To prevent a Workflow Execution Event History from exceeding this limit and failing, use Continue-As-New to start a new Workflow Execution with a fresh Event History.
 
 All values passed to a Workflow Execution through parameters or returned through a result value are recorded into the Event History.
@@ -392,13 +394,13 @@ The Continue-As-New feature enables developers to complete the current Workflow 
 
 The new Workflow Execution has the same Workflow Id, but a different Run Id, and has its own Event History.
 
-In the case of <a class="tdlp" href="#temporal-cron-job">Temporal Cron Jobs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-cron-job">Learn more</a></span></span></a>, Continue-As-New is actually used internally for the same effect.
+In the case of [Temporal Cron Jobs](#temporal-cron-job), Continue-As-New is actually used internally for the same effect.
 
-- <a class="tdlp" href="/dev-guide/go/features#continue-as-new">How to Continue-As-New using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to Continue-As-New</span><br /><br /><span class="tdlppd">Continue-As-New enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#continue-as-new">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/features#continue-as-new">How to Continue-As-New using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to Continue-As-New</span><br /><br /><span class="tdlppd">Continue-As-New enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#continue-as-new">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/features#continue-as-new">How to Continue-As-New using the PHP SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to Continue-As-New</span><br /><br /><span class="tdlppd">Continue-As-New enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/features#continue-as-new">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/features#continue-as-new">How to Continue-As-New using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to Continue-As-New</span><br /><br /><span class="tdlppd">Continue-As-New enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/features#continue-as-new">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/features#continue-as-new">How to Continue-As-New using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to Continue-As-New</span><br /><br /><span class="tdlppd">Continue-As-New enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/features#continue-as-new">Learn more</a></span></span></a>
+- [How to Continue-As-New using the Go SDK](/dev-guide/go/features#continue-as-new)
+- [How to Continue-As-New using the Java SDK](/dev-guide/java/features#continue-as-new)
+- [How to Continue-As-New using the PHP SDK](/dev-guide/php/features#continue-as-new)
+- [How to Continue-As-New using the Python SDK](/dev-guide/python/features#continue-as-new)
+- [How to Continue-As-New using the TypeScript SDK](/dev-guide/typescript/features#continue-as-new)
 
 ### What is a Reset? {#reset}
 
@@ -408,9 +410,9 @@ A Reset terminates a [Workflow Execution](/workflows#workflow-execution), remove
 
 A Run Id is a globally unique, platform-level identifier for a [Workflow Execution](/workflows#workflow-execution).
 
-The current Run Id is mutable and can change during a <a class="tdlp" href="/retry-policies#">Workflow Retry<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a>. You shouldn't rely on storing the current Run Id, or using it for any logical choices, because a Workflow Retry changes the Run Id and can lead to non-determinism issues.
+The current Run Id is mutable and can change during a [Workflow Retry](/retry-policies#). You shouldn't rely on storing the current Run Id, or using it for any logical choices, because a Workflow Retry changes the Run Id and can lead to non-determinism issues.
 
-Temporal guarantees that only one Workflow Execution with a given <a class="tdlp" href="#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-id">Learn more</a></span></span></a> can be in an Open state at any given time.
+Temporal guarantees that only one Workflow Execution with a given [Workflow Id](#workflow-id) can be in an Open state at any given time.
 But when a Workflow Execution reaches a Closed state, it is possible to have another Workflow Execution in an Open state with the same Workflow Id.
 For example, a Temporal Cron Job is a chain of Workflow Executions that all have the same Workflow Id.
 Each Workflow Execution within the chain is considered a _Run_.
@@ -419,7 +421,7 @@ A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow I
 
 #### Which operations lead to non-determinism issues?
 
-An operation like `ContinueAsNew`, `Retry`, `Cron`, and `Reset` creates a <a class="tdlp" href="#workflow-execution-chain">Workflow Execution Chain<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-execution-chain">Learn more</a></span></span></a> as identified by the [`first_execution_run_id`](https://github.com/temporalio/api/blob/master/temporal/api/history/v1/message.proto).
+An operation like `ContinueAsNew`, `Retry`, `Cron`, and `Reset` creates a [Workflow Execution Chain](#workflow-execution-chain) as identified by the [`first_execution_run_id`](https://github.com/temporalio/api/blob/master/temporal/api/history/v1/message.proto).
 
 Each operation creates a new Workflow Execution inside a chain run and saves its information as `first_execution_run_id`.
 Thus, the Run Id is updated during each operation on a Workflow Execution.
@@ -447,14 +449,14 @@ For more information, see the following link.
 
 A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](/workflows#workflow-execution) that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
 
-- <a class="tdlp" href="/dev-guide/go/foundations#workflow-id">How to set a Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set a custom Workflow Id in Go</span><br /><br /><span class="tdlppd">Create an instance of `StartWorkflowOptions` from the `go.temporal.io/sdk/client` package, set the `ID` field, and pass the instance to the `ExecuteWorkflow` call.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/foundations#workflow-id">Learn more</a></span></span></a>
+- [How to set a Workflow Id](/dev-guide/go/foundations#workflow-id)
 
 A Workflow Id is meant to be a business-process identifier such as customer identifier or order identifier.
 
-A <a class="tdlp" href="#workflow-id-reuse-policy">Workflow Id Reuse Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id Reuse Policy?</span><br /><br /><span class="tdlppd">A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-id-reuse-policy">Learn more</a></span></span></a> can be used to manage whether a Workflow Id can be re-used.
-The Temporal Platform guarantees uniqueness of the Workflow Id within a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> based on the Workflow Id Reuse Policy.
+A [Workflow Id Reuse Policy](#workflow-id-reuse-policy) can be used to manage whether a Workflow Id can be re-used.
+The Temporal Platform guarantees uniqueness of the Workflow Id within a [Namespace](/namespaces#) based on the Workflow Id Reuse Policy.
 
-A Workflow Execution can be uniquely identified across all Namespaces by its <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a>, Workflow Id, and <a class="tdlp" href="#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Run Id?</span><br /><br /><span class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-id">Learn more</a></span></span></a>.
+A Workflow Execution can be uniquely identified across all Namespaces by its [Namespace](/namespaces#), Workflow Id, and [Run Id](#run-id).
 
 #### What is a Workflow Id Reuse Policy? {#workflow-id-reuse-policy}
 
@@ -492,45 +494,45 @@ If there is an attempt to spawn a Workflow Execution with a Workflow Id Reuse Po
 
 A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
-- <a class="tdlp" href="/dev-guide/go/features#workflow-timeouts">How to set a Workflow Execution Timeout using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#workflow-timeouts">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/features#workflow-timeouts">How to set a Workflow Execution Timeout using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#workflow-timeouts">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/features#workflow-timeouts">How to set a Workflow Execution Timeout using the PHP SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/features#workflow-timeouts">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/features#workflow-timeouts">How to set a Workflow Execution Timeout using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/features#workflow-timeouts">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/features#workflow-timeouts">How to set a Workflow Execution Timeout using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/features#workflow-timeouts">Learn more</a></span></span></a>
+- [How to set a Workflow Execution Timeout using the Go SDK](/dev-guide/go/features#workflow-timeouts)
+- [How to set a Workflow Execution Timeout using the Java SDK](/dev-guide/java/features#workflow-timeouts)
+- [How to set a Workflow Execution Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
+- [How to set a Workflow Execution Timeout using the Python SDK](/dev-guide/python/features#workflow-timeouts)
+- [How to set a Workflow Execution Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Workflow Execution Timeout period</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/workflow-execution-timeout.svg" alt="Workflow Execution Timeout period" height="1886" width="1880" /></div></div>
 
 **The default value is ∞ (infinite).**
 If this timeout is reached, the Workflow Execution changes to a Timed Out status.
-This timeout is different from the <a class="tdlp" href="#workflow-run-timeout">Workflow Run Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Run Timeout?</span><br /><br /><span class="tdlppd">This is the maximum amount of time that a single Workflow Run is restricted to.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-run-timeout">Learn more</a></span></span></a>.
-This timeout is most commonly used for stopping the execution of a <a class="tdlp" href="#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-cron-job">Learn more</a></span></span></a> after a certain amount of time has passed.
+This timeout is different from the [Workflow Run Timeout](#workflow-run-timeout).
+This timeout is most commonly used for stopping the execution of a [Temporal Cron Job](#temporal-cron-job) after a certain amount of time has passed.
 
 ### What is a Workflow Run Timeout? {#workflow-run-timeout}
 
 A Workflow Run Timeout is the maximum amount of time that a single Workflow Run is restricted to.
 
-- <a class="tdlp" href="/dev-guide/go/features#workflow-timeouts">How to set a Workflow Run Timeout using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#workflow-timeouts">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/features#workflow-timeouts">How to set a Workflow Run Timeout using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#workflow-timeouts">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/features#workflow-timeouts">How to set a Workflow Run Timeout using the PHP SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/features#workflow-timeouts">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/features#workflow-timeouts">How to set a Workflow Run Timeout using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/features#workflow-timeouts">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/features#workflow-timeouts">How to set a Workflow Run Timeout using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/features#workflow-timeouts">Learn more</a></span></span></a>
+- [How to set a Workflow Run Timeout using the Go SDK](/dev-guide/go/features#workflow-timeouts)
+- [How to set a Workflow Run Timeout using the Java SDK](/dev-guide/java/features#workflow-timeouts)
+- [How to set a Workflow Run Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
+- [How to set a Workflow Run Timeout using the Python SDK](/dev-guide/python/features#workflow-timeouts)
+- [How to set a Workflow Run Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Workflow Run Timeout period</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/workflow-run-timeout.svg" alt="Workflow Run Timeout period" height="1047" width="1220" /></div></div>
 
-**The default is set to the same value as the <a class="tdlp" href="#workflow-execution-timeout">Workflow Execution Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution Timeout?</span><br /><br /><span class="tdlppd">A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-execution-timeout">Learn more</a></span></span></a>.**
-This timeout is most commonly used to limit the execution time of a single <a class="tdlp" href="#temporal-cron-job">Temporal Cron Job Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-cron-job">Learn more</a></span></span></a>.
+**The default is set to the same value as the [Workflow Execution Timeout](#workflow-execution-timeout).**
+This timeout is most commonly used to limit the execution time of a single [Temporal Cron Job Execution](#temporal-cron-job).
 
 If the Workflow Run Timeout is reached, the Workflow Execution is Terminated.
 
 ### What is a Workflow Task Timeout? {#workflow-task-timeout}
 
-A Workflow Task Timeout is the maximum amount of time allowed for a <a class="tdlp" href="/workers#worker">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a> to execute a <a class="tdlp" href="/workers#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task">Learn more</a></span></span></a> after the Worker has pulled that Workflow Task from the <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>.
+A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/workers#worker) to execute a [Workflow Task](/workers#workflow-task) after the Worker has pulled that Workflow Task from the [Task Queue](/workers#task-queue).
 
-- <a class="tdlp" href="/dev-guide/go/features#workflow-timeouts">How to set a Workflow Task Timeout using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#workflow-timeouts">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/features#workflow-timeouts">How to set a Workflow Task Timeout using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#workflow-timeouts">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/features#workflow-timeouts">How to set a Workflow Task Timeout using the PHP SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/features#workflow-timeouts">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/features#workflow-timeouts">How to set a Workflow Task Timeout using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/features#workflow-timeouts">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/features#workflow-timeouts">How to set a Workflow Task Timeout using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/features#workflow-timeouts">Learn more</a></span></span></a>
+- [How to set a Workflow Task Timeout using the Go SDK](/dev-guide/go/features#workflow-timeouts)
+- [How to set a Workflow Task Timeout using the Java SDK](/dev-guide/java/features#workflow-timeouts)
+- [How to set a Workflow Task Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
+- [How to set a Workflow Task Timeout using the Python SDK](/dev-guide/python/features#workflow-timeouts)
+- [How to set a Workflow Task Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Workflow Task Timeout period</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/workflow-task-timeout.svg" alt="Workflow Task Timeout period" height="1047" width="1220" /></div></div>
 
@@ -565,11 +567,11 @@ Memos shouldn't store data that's critical to the execution of a Workflow, for s
 A Signal is an asynchronous request to a [Workflow Execution](/workflows#workflow-execution).
 
 - [How to send a Signal using tctl](/tctl-v1/workflow#signal)
-- <a class="tdlp" href="/dev-guide/go/features#signals">How to develop, send, and handle Signals in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Signals</span><br /><br /><span class="tdlppd">A Signal is a message sent to a running Workflow Execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#signals">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/features#signals">How to develop, send, and handle Signals in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Signals</span><br /><br /><span class="tdlppd">A Signal is a message sent to a running Workflow Execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#signals">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/features#signals">How to develop, send, and handle Signals in PHP<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Signals</span><br /><br /><span class="tdlppd">A Signal is a message sent to a running Workflow Execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/features#signals">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/features#signals">How to develop, send, and handle Signals in Python<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Signals</span><br /><br /><span class="tdlppd">A Signal is a message sent to a running Workflow Execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/features#signals">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/features#signals">How to develop, send, and handle Signals in TypeScript<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Signals</span><br /><br /><span class="tdlppd">A Signal is a message sent to a running Workflow Execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/features#signals">Learn more</a></span></span></a>
+- [How to develop, send, and handle Signals in Go](/dev-guide/go/features#signals)
+- [How to develop, send, and handle Signals in Java](/dev-guide/java/features#signals)
+- [How to develop, send, and handle Signals in PHP](/dev-guide/php/features#signals)
+- [How to develop, send, and handle Signals in Python](/dev-guide/python/features#signals)
+- [How to develop, send, and handle Signals in TypeScript](/dev-guide/typescript/features#signals)
 
 A Signal delivers data to a running Workflow Execution.
 It cannot return data to the caller; to do so, use a [Query](#queries) instead.
@@ -583,10 +585,30 @@ A Signal must include a destination (Namespace and Workflow Id) and name.
 It can include a list of arguments.
 
 Signal handlers are Workflow functions that listen for Signals by the Signal name.
-Signals are delivered in the order they are received by the Cluster.
+Signals are delivered in the order they are received by the Cluster and written to History.
 If multiple deliveries of a Signal would be a problem for your Workflow, add idempotency logic to your Signal handler that checks for duplicates.
 
 [^1]: The Cluster usually deduplicates Signals, but does not guarantee deduplication: During shard migration, two Signal Events (and therefore two deliveries to the Workflow Execution) can be recorded for a single Signal because the deduping info is stored only in memory.
+
+### What is Signal-With-Start? {#signal-with-start}
+
+Signal-With-Start is a Client method that takes the following arguments:
+
+- A Workflow Id
+- Workflow input
+- A [Signal](#signal) name
+- Signal input
+
+If there is a running Workflow Execution with the given Workflow Id, it will be Signaled.
+Otherwise, a new Workflow Execution is started and immediately sent the Signal.
+
+How to Signal-With-Start in:
+
+- [How to Signal-With-Start in Go](/dev-guide/go/features#signal-with-start)
+- [How to Signal-With-Start in Java](/dev-guide/java/features#signal-with-start)
+- [How to Signal-With-Start in PHP](/dev-guide/php/features#signal-with-start)
+- [How to Signal-With-Start in Python](/dev-guide/python/features#signal-with-start)
+- [How to Signal-With-Start in TypeScript](/dev-guide/typescript/features#signal-with-start)
 
 ## What is a Query? {#query}
 
@@ -596,11 +618,11 @@ You can use Queries to expose the internal Workflow Execution state to the exter
 Queries are available for running or completed Workflows Executions only if the Worker is up and listening on the Task Queue.
 
 - [How to send a Query using tctl](/tctl-v1/workflow#query)
-- <a class="tdlp" href="/dev-guide/go/features#queries">How to send and handle Queries with the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Queries</span><br /><br /><span class="tdlppd">A Query is a synchronous operation that is used to get the state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#queries">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/features#queries">How to send and handle Queries with the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Queries</span><br /><br /><span class="tdlppd">A Query is a synchronous operation that is used to get the state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#queries">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/features#queries">How to send and handle Queries with the PHP SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Queries</span><br /><br /><span class="tdlppd">A Query is a synchronous operation that is used to get the state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/features#queries">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/features#queries">How to send and handle Queries with the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Queries</span><br /><br /><span class="tdlppd">A Query is a synchronous operation that is used to get the state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/features#queries">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/features#queries">How to send and handle Queries with the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Queries</span><br /><br /><span class="tdlppd">A Query is a synchronous operation that is used to get the state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/features#queries">Learn more</a></span></span></a>
+- [How to send and handle Queries with the Go SDK](/dev-guide/go/features#queries)
+- [How to send and handle Queries with the Java SDK](/dev-guide/java/features#queries)
+- [How to send and handle Queries with the PHP SDK](/dev-guide/php/features#queries)
+- [How to send and handle Queries with the Python SDK](/dev-guide/python/features#queries)
+- [How to send and handle Queries with the TypeScript SDK](/dev-guide/typescript/features#queries)
 
 Queries are sent from a Temporal Client to a Workflow Execution.
 The API call is synchronous.
@@ -643,12 +665,18 @@ Stack Trace Queries are available only for running Workflow Executions.
 
 :::
 
-An Update is a request to and a response from a Temporal Client to a <a class="tdlp" href="#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-execution">Learn more</a></span></span></a>.
+An Update is a request to and a response from a Temporal Client to a [Workflow Execution](#workflow-execution).
 
-- <a class="tdlp" href="/dev-guide/go/features#updates">How to develop, send, and handle Updates in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Updates</span><br /><br /><span class="tdlppd">An Update is an operation that can mutate the state of a Workflow Execution and return a response.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#updates">Learn more</a></span></span></a>
+- [How to develop, send, and handle Updates in Go](/dev-guide/go/features#updates)
+
+You can think of an Update as a synchronous, blocking call that could replace both a Signal and a Query. An update is:
+
+- A Signal with a response
+- A Query that can change state
+- The logical model of a Signal with the overhead and latency of a Query
 
 The Workflow must have a function to handle the Update.
-Unlike a <a class="tdlp" href="#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#signal">Learn more</a></span></span></a> handler, the Update handler function can mutate the state of the Workflow while also returning a value to the caller.
+Unlike a [Signal](#signal) handler, the Update handler function can return a value to the caller.
 The Update handler listens for Updates by the Update's name.
 
 When there is the potential for multiple Updates to cause a duplication problem, Temporal recommends adding idempotency logic to your Update handler that checks for duplicates.
@@ -660,19 +688,19 @@ An Update has four phases.
    See the [Temporal Platform limits sheet](/kb/temporal-platform-limits-sheet) for more details.
    When this phase is complete, the Platform changes the status of the Update to **Admitted**.
    At this stage, the Platform hasn't yet persisted the Update to the Workflow Execution's Event History or sent it to a Worker.
-1. **Validation.** An optional developer provided function that performs request validation.
-   This validation code, similar to a <a class="tdlp" href="#query">Query<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Query?</span><br /><br /><span class="tdlppd">A Query is a synchronous operation that is used to report the state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#query">Learn more</a></span></span></a> handler, can observe but not change the Workflow state.
+2. **Validation.** An optional developer provided function that performs request validation.
+   This validation code, similar to a [Query](#query) handler, can observe but not change the Workflow state.
    This means that the validation of an Update request may depend on the Workflow state at runtime.
    If an Update request doesn't pass validation at this stage, the system rejects the request and doesn't record anything in the Workflow Event History to indicate that the Update ever happened.
    The Update processing doesn't proceed to later phases.
    When the Update completes the validation stage, the Platform changes its state to **Accepted**.
-   A <a class="tdlp" href="/references/events#workflowexecutionupdateacceptedevent">WorkflowExecutionUpdateAcceptedEvent<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#workflowexecutionupdateacceptedevent">Learn more</a></span></span></a> Event in the Workflow Execution [Event History](#event-history) denotes the acceptance of an Update.
-1. **Execution.** Accepted Update requests move to the execution phase.
+   A [WorkflowExecutionUpdateAcceptedEvent](/references/events#workflowexecutionupdateacceptedevent) Event in the Workflow Execution [Event History](#event-history) denotes the acceptance of an Update.
+3. **Execution.** Accepted Update requests move to the execution phase.
    In this phase, the Worker delivers the request to the Update handler.
-   Like every bit of code in a Workflow, Update handlers must be <a class="tdlp" href="#deterministic-constraints">deterministic<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#deterministic-constraints">Learn more</a></span></span></a>.
-1. **Completion.** The Update handler can return a result or a language-appropriate error/exception to indicate its completion.
+   Like every bit of code in a Workflow, Update handlers must be [deterministic](#deterministic-constraints).
+4. **Completion.** The Update handler can return a result or a language-appropriate error/exception to indicate its completion.
    The Platform sends the Update outcome back to the original invoking entity as an Update response.
-   A <a class="tdlp" href="/references/events#workflowexecutionupdatecompletedevent">WorkflowExecutionUpdateCompletedEvent<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#workflowexecutionupdatecompletedevent">Learn more</a></span></span></a> Event in the Workflow Execution Event History denotes the completion of an Update.
+   A [WorkflowExecutionUpdateCompletedEvent](/references/events#workflowexecutionupdatecompletedevent) Event in the Workflow Execution Event History denotes the completion of an Update.
 
 ## What is a Side Effect? {#side-effect}
 
@@ -687,11 +715,11 @@ If there is any chance that the code provided to the Side Effect could fail, use
 
 A Child Workflow Execution is a [Workflow Execution](/workflows#workflow-execution) that is spawned from within another Workflow.
 
-- <a class="tdlp" href="/dev-guide/go/features#child-workflows">How to start a Child Workflow Execution using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Child Workflow Execution</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#child-workflows">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/features#child-workflows">How to start a Child Workflow Execution using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Child Workflow Execution</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#child-workflows">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/features#child-workflows">How to start a Child Workflow Execution using the PHP SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Child Workflow Execution</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/features#child-workflows">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/features#child-workflows">How to start a Child Workflow Execution using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Child Workflow Execution</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/features#child-workflows">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/features#child-workflows">How to start a Child Workflow Execution using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Child Workflow Execution</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/features#child-workflows">Learn more</a></span></span></a>
+- [How to start a Child Workflow Execution using the Go SDK](/dev-guide/go/features#child-workflows)
+- [How to start a Child Workflow Execution using the Java SDK](/dev-guide/java/features#child-workflows)
+- [How to start a Child Workflow Execution using the PHP SDK](/dev-guide/php/features#child-workflows)
+- [How to start a Child Workflow Execution using the Python SDK](/dev-guide/python/features#child-workflows)
+- [How to start a Child Workflow Execution using the TypeScript SDK](/dev-guide/typescript/features#child-workflows)
 
 A Workflow Execution can be both a Parent and a Child Workflow Execution because any Workflow can spawn another Workflow.
 
@@ -699,7 +727,7 @@ A Workflow Execution can be both a Parent and a Child Workflow Execution because
 
 A Parent Workflow Execution must await on the Child Workflow Execution to spawn.
 The Parent can optionally await on the result of the Child Workflow Execution.
-Consider the Child's <a class="tdlp" href="#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Parent Close Policy?</span><br /><br /><span class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#parent-close-policy">Learn more</a></span></span></a> if the Parent does not await on the result of the Child, which includes any use of Continue-As-New by the Parent.
+Consider the Child's [Parent Close Policy](#parent-close-policy) if the Parent does not await on the result of the Child, which includes any use of Continue-As-New by the Parent.
 
 When a Parent Workflow Execution reaches a Closed status, the Cluster propagates Cancellation Requests or Terminations to Child Workflow Executions depending on the Child's Parent Close Policy.
 
@@ -711,13 +739,13 @@ If a Child Workflow Execution uses Continue-As-New, from the Parent Workflow Exe
 
 **Consider Workflow Execution Event History size limits.**
 
-An individual Workflow Execution has an <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a> size limit, which imposes a couple of considerations for using Child Workflows.
+An individual Workflow Execution has an [Event History](#event-history) size limit, which imposes a couple of considerations for using Child Workflows.
 
 On one hand, because Child Workflow Executions have their own Event Histories, they are often used to partition large workloads into smaller chunks.
-For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 <a class="tdlp" href="/activities#activity-execution">Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>.
+For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 [Activity Executions](/activities#activity-execution).
 But a Parent Workflow Execution can spawn 1,000 Child Workflow Executions that each spawn 1,000 Activity Executions to achieve a total of 1,000,000 Activity Executions.
 
-However, because a Parent Workflow Execution Event History contains <a class="tdlp" href="#event">Events<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event?</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event">Learn more</a></span></span></a> that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1,000 Child Workflow Executions.
+However, because a Parent Workflow Execution Event History contains [Events](#event) that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1,000 Child Workflow Executions.
 
 In general, however, Child Workflow Executions result in more overall Events recorded in Event Histories than Activities.
 Because each entry in an Event History is a _cost_ in terms of compute resources, this could become a factor in very large workloads.
@@ -725,9 +753,9 @@ Therefore, we recommend starting with a single Workflow implementation that uses
 
 **Consider each Child Workflow Execution as a separate service.**
 
-Because a Child Workflow Execution can be processed by a completely separate set of <a class="tdlp" href="/workers#worker">Workers<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a> than the Parent Workflow Execution, it can act as an entirely separate service.
+Because a Child Workflow Execution can be processed by a completely separate set of [Workers](/workers#worker) than the Parent Workflow Execution, it can act as an entirely separate service.
 However, this also means that a Parent Workflow Execution and a Child Workflow Execution do not share any local state.
-As all Workflow Executions, they can communicate only via asynchronous <a class="tdlp" href="#signal">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#signal">Learn more</a></span></span></a>.
+As all Workflow Executions, they can communicate only via asynchronous [Signals](#signal).
 
 **Consider that a single Child Workflow Execution can represent a single resource.**
 
@@ -741,7 +769,7 @@ Here are some important differences:
 
 - A Child Workflow has access to all Workflow APIs but is subject to the same [deterministic constraints](/workflows#deterministic-constraints) as other Workflows.
   An Activity has the inverse pros and cons—no access to Workflow APIs but no Workflow constraints.
-- A Child Workflow Execution can continue on if its Parent is canceled with a <a class="tdlp" href="#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Parent Close Policy?</span><br /><br /><span class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#parent-close-policy">Learn more</a></span></span></a> of `ABANDON`.
+- A Child Workflow Execution can continue on if its Parent is canceled with a [Parent Close Policy](#parent-close-policy) of `ABANDON`.
   An Activity Execution is _always_ canceled when its Workflow Execution is canceled.
   (It can react to a cancellation Signal for cleanup.)
   The decision is roughly analogous to spawning a child process in a terminal to do work versus doing work in the same process.
@@ -755,13 +783,13 @@ Our advice: **When in doubt, use an Activity.**
 
 ### What is a Parent Close Policy? {#parent-close-policy}
 
-A Parent Close Policy determines what happens to a <a class="tdlp" href="#child-workflow">Child Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Child Workflow Execution?</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#child-workflow">Learn more</a></span></span></a> if its Parent changes to a Closed status (Completed, Failed, or Timed out).
+A Parent Close Policy determines what happens to a [Child Workflow Execution](#child-workflow) if its Parent changes to a Closed status (Completed, Failed, or Timed out).
 
-- <a class="tdlp" href="/dev-guide/go/features#parent-close-policy">How to set a Parent Close Policy using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set a Parent Close Policy</span><br /><br /><span class="tdlppd">A Parent Close Policy determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#parent-close-policy">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/features#parent-close-policy">How to set a Parent Close Policy using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set a Parent Close Policy</span><br /><br /><span class="tdlppd">A Parent Close Policy determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#parent-close-policy">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/features#parent-close-policy">How to set a Parent Close Policy using the PHP SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set a Parent Close Policy</span><br /><br /><span class="tdlppd">A Parent Close Policy determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/features#parent-close-policy">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/features#parent-close-policy">How to set a Parent Close Policy using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set a Parent Close Policy</span><br /><br /><span class="tdlppd">A Parent Close Policy determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/features#parent-close-policy">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/features#parent-close-policy">How to set a Parent Close Policy using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set a Parent Close Policy</span><br /><br /><span class="tdlppd">A Parent Close Policy determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/features#parent-close-policy">Learn more</a></span></span></a>
+- [How to set a Parent Close Policy using the Go SDK](/dev-guide/go/features#parent-close-policy)
+- [How to set a Parent Close Policy using the Java SDK](/dev-guide/java/features#parent-close-policy)
+- [How to set a Parent Close Policy using the PHP SDK](/dev-guide/php/features#parent-close-policy)
+- [How to set a Parent Close Policy using the Python SDK](/dev-guide/python/features#parent-close-policy)
+- [How to set a Parent Close Policy using the TypeScript SDK](/dev-guide/typescript/features#parent-close-policy)
 
 There are three possible values:
 
@@ -778,113 +806,6 @@ This policy applies only to Child Workflow Executions and has no effect otherwis
 
 You can set policies per child, which means you can opt out of propagating terminates / cancels on a per-child basis.
 This is useful for starting Child Workflows asynchronously (see [relevant issue here](https://community.temporal.io/t/best-way-to-create-an-async-child-workflow/114) or the corresponding SDK docs).
-
-## What is a Temporal Cron Job? {#temporal-cron-job}
-
-A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
-
-- <a class="tdlp" href="/dev-guide/go/features#temporal-cron-jobs">How to set a Cron Schedule using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Cron Jobs</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#temporal-cron-jobs">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/features#cron-schedule">How to set a Cron Schedule using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set a Cron Schedule in Java</span><br /><br /><span class="tdlppd">Set the Cron Schedule with the `WorkflowStub` instance in the Client code using [`WorkflowOptions.Builder.setCronSchedule`</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#cron-schedule">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/features#temporal-cron-jobs">How to set a Cron Schedule using the PHP SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Cron Jobs</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/features#temporal-cron-jobs">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/features#temporal-cron-jobs">How to set a Cron Schedule using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Cron Jobs</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/features#temporal-cron-jobs">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/features#temporal-cron-jobs">How to set a Cron Schedule using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Cron Jobs</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/features#temporal-cron-jobs">Learn more</a></span></span></a>
-
-<div class="tdiw"><div class="tditw"><p class="tdit">Temporal Cron Job timeline</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-cron-job.svg" alt="Temporal Cron Job timeline" height="1113" width="1782" /></div></div>
-
-A Temporal Cron Job is similar to a classic unix cron job.
-Just as a unix cron job accepts a command and a schedule on which to execute that command, a Cron Schedule can be provided with the call to spawn a Workflow Execution.
-If a Cron Schedule is provided, the Temporal Server will spawn an execution for the associated Workflow Type per the schedule.
-
-Each Workflow Execution within the series is considered a Run.
-
-- Each Run receives the same input parameters as the initial Run.
-- Each Run inherits the same Workflow Options as the initial Run.
-
-The Temporal Server spawns the first Workflow Execution in the chain of Runs immediately.
-However, it calculates and applies a backoff (`firstWorkflowTaskBackoff`) so that the first Workflow Task of the Workflow Execution does not get placed into a Task Queue until the scheduled time.
-After each Run Completes, Fails, or reaches the <a class="tdlp" href="#workflow-run-timeout">Workflow Run Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Run Timeout?</span><br /><br /><span class="tdlppd">This is the maximum amount of time that a single Workflow Run is restricted to.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-run-timeout">Learn more</a></span></span></a>, the same thing happens: the next run will be created immediately with a new `firstWorkflowTaskBackoff` that is calculated based on the current Server time and the defined Cron Schedule.
-
-The Temporal Server spawns the next Run only after the current Run has Completed, Failed, or has reached the Workflow Run Timeout.
-This means that, if a Retry Policy has also been provided, and a Run Fails or reaches the Workflow Run Timeout, the Run will first be retried per the Retry Policy until the Run Completes or the Retry Policy has been exhausted.
-If the next Run, per the Cron Schedule, is due to spawn while the current Run is still Open (including retries), the Server automatically starts the new Run after the current Run completes successfully.
-The start time for this new Run and the Cron definitions are used to calculate the `firstWorkflowTaskBackoff` that is applied to the new Run.
-
-A <a class="tdlp" href="#workflow-execution-timeout">Workflow Execution Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution Timeout?</span><br /><br /><span class="tdlppd">A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-execution-timeout">Learn more</a></span></span></a> is used to limit how long a Workflow can be executing (have an Open status), including retries and any usage of Continue As New.
-The Cron Schedule runs until the Workflow Execution Timeout is reached or you terminate the Workflow.
-
-<div class="tdiw"><div class="tditw"><p class="tdit">Temporal Cron Job Run Failure with a Retry Policy</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-cron-job-failure-with-retry.svg" alt="Temporal Cron Job Run Failure with a Retry Policy" height="1203" width="1782" /></div></div>
-
-### Cron Schedules
-
-Cron Schedules are interpreted in UTC time by default.
-
-The Cron Schedule is provided as a string and must follow one of two specifications:
-
-**Classic specification**
-
-This is what the "classic" specification looks like:
-
-```
-┌───────────── minute (0 - 59)
-│ ┌───────────── hour (0 - 23)
-│ │ ┌───────────── day of the month (1 - 31)
-│ │ │ ┌───────────── month (1 - 12)
-│ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
-│ │ │ │ │
-│ │ │ │ │
-* * * * *
-```
-
-For example, `15 8 * * *` causes a Workflow Execution to spawn daily at 8:15 AM UTC.
-Use the [crontab guru site](https://crontab.guru/) to test your cron expressions.
-
-### `robfig` predefined schedules and intervals
-
-You can also pass any of the [predefined schedules](https://pkg.go.dev/github.com/robfig/cron/v3#hdr-Predefined_schedules) or [intervals](https://pkg.go.dev/github.com/robfig/cron/v3#hdr-Intervals) described in the [`robfig/cron` documentation](https://pkg.go.dev/github.com/robfig/cron/v3).
-
-```
-| Schedules              | Description                                | Equivalent To |
-| ---------------------- | ------------------------------------------ | ------------- |
-| @yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *     |
-| @monthly               | Run once a month, midnight, first of month | 0 0 1 * *     |
-| @weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0     |
-| @daily (or @midnight)  | Run once a day, midnight                   | 0 0 * * *     |
-| @hourly                | Run once an hour, beginning of hour        | 0 * * * *     |
-```
-
-For example, "@weekly" causes a Workflow Execution to spawn once a week at midnight between Saturday and Sunday.
-
-Intervals just take a string that can be accepted by [time.ParseDuration](http://golang.org/pkg/time/#ParseDuration).
-
-```
-@every <duration>
-```
-
-### Time zones
-
-_This feature only applies in Temporal 1.15 and up_
-
-You can change the time zone that a Cron Schedule is interpreted in by prefixing the specification with `CRON_TZ=America/New_York` (or your [desired time zone from tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)). `CRON_TZ=America/New_York 15 8 * * *` therefore spawns a Workflow Execution every day at 8:15 AM New York time, subject to caveats listed below.
-
-Consider that using time zones in production introduces a surprising amount of complexity and failure modes!
-**If at all possible, we recommend specifying Cron Schedules in UTC (the default)**.
-
-If you need to use time zones, here are a few edge cases to keep in mind:
-
-- **Beware Daylight Saving Time**: If a Temporal Cron Job is scheduled around the time when daylight saving time (DST) begins or ends (for example, `30 2 * * *`), **it might run zero, one, or two times in a day**! The Cron library that we use does not do any special handling of DST transitions. Avoid schedules that include times that fall within DST transition periods.
-  - For example, in the US, DST begins at 2 AM. When you "fall back," the clock goes `1:59 … 1:00 … 1:01 … 1:59 … 2:00 … 2:01 AM` and any Cron jobs that fall in that 1 AM hour are fired again. The inverse happens when clocks "spring forward" for DST, and Cron jobs that fall in the 2 AM hour are skipped.
-  - In other time zones like Chile and Iran, DST "spring forward" is at midnight. 11:59 PM is followed by 1 AM, which means `00:00:00` never happens.
-- **Self Hosting note**: If you manage your own Temporal Cluster, you are responsible for ensuring that it has access to current `tzdata` files. The official Docker images are built with [tzdata](https://docs.w3cub.com/go/time/tzdata/index) installed (provided by Alpine Linux), but ultimately you should be aware of how tzdata is deployed and updated in your infrastructure.
-- **Updating Temporal**: If you use the official Docker images, note that an upgrade of the Temporal Cluster may include an update to the tzdata files, which may change the meaning of your Cron Schedule. You should be aware of upcoming changes to the definitions of the time zones you use, particularly around daylight saving time start/end dates.
-- **Absolute Time Fixed at Start**: The absolute start time of the next Run is computed and stored in the database when the previous Run completes, and is not recomputed. This means that if you have a Cron Schedule that runs very infrequently, and the definition of the time zone changes between one Run and the next, the Run might happen at the wrong time. For example, `CRON_TZ=America/Los_Angeles 0 12 11 11 *` means "noon in Los Angeles on November 11" (normally not in DST). If at some point the government makes any changes (for example, move the end of DST one week later, or stay on permanent DST year-round), the meaning of that specification changes. In that first year, the Run happens at the wrong time, because it was computed using the older definition.
-
-### How to stop a Temporal Cron Job
-
-A Temporal Cron Job does not stop spawning Runs until it has been Terminated or until the <a class="tdlp" href="#workflow-execution-timeout">Workflow Execution Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution Timeout?</span><br /><br /><span class="tdlppd">A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-execution-timeout">Learn more</a></span></span></a> is reached.
-
-A Cancellation Request affects only the current Run.
-
-Use the Workflow Id in any requests to Cancel or Terminate.
 
 ## What is a Schedule? {#schedule}
 
@@ -903,7 +824,7 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 :::
 
 A Schedule contains instructions for starting a [Workflow Execution](/workflows#workflow-execution) at specific times.
-Schedules provide a more flexible and user-friendly approach than <a class="tdlp" href="#temporal-cron-job">Temporal Cron Jobs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-cron-job">Learn more</a></span></span></a>.
+Schedules provide a more flexible and user-friendly approach than [Temporal Cron Jobs](#temporal-cron-job).
 
 - [How to enable Schedules](#limitations)
 - [How to operate Schedules using tctl](/tctl-v1/schedule#)
@@ -918,7 +839,7 @@ The Action of a Schedule is where the Workflow Execution properties are establis
 Workflow Executions started by a Schedule have the following additional properties:
 
 - The Action's timestamp is appended to the Workflow Id.
-- The `TemporalScheduledStartTime` <a class="tdlp" href="/visibility#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> is added to the Workflow Execution.
+- The `TemporalScheduledStartTime` [Search Attribute](/visibility#search-attribute) is added to the Workflow Execution.
   The value is the Action's timestamp.
 - The `TemporalScheduledById` Search Attribute is added to the Workflow Execution.
   The value is the Schedule Id.
@@ -1033,8 +954,8 @@ The following options are available:
 
 The Temporal Cluster might be down or unavailable at the time when a Schedule should take an Action.
 When it comes back up, the Catchup Window controls which missed Actions should be taken at that point.
-The default is one minute, which means that the Schedule attempts to take any Actions that wouldn't be more than one minute late.
-An outage that lasts longer than the Catchup Window could lead to missed Actions.
+The default is one year, meaning Actions will be taken unless over one year late.
+If your Actions are more time-sensitive, you can set the Catchup Window to a smaller value (minimum ten seconds), accepting that an outage longer than the window could lead to missed Actions.
 (But you can always [Backfill](#backfill).)
 
 #### Pause-on-failure
@@ -1077,11 +998,125 @@ Internally, a Schedule is implemented as a Workflow.
 If you're using Advanced Visibility (Elasticsearch), these Workflow Executions are hidden from normal views.
 If you're using Standard Visibility, they are visible, though there's no need to interact with them directly.
 
+## What is a Temporal Cron Job? {#temporal-cron-job}
+
+:::note
+
+We recommend using [Schedules](#schedule) instead of Cron Jobs.
+Schedules were built to provide a better developer experience, including more configuration options and the ability to update or pause running Schedules.
+
+:::
+
+A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
+
+- [How to set a Cron Schedule using the Go SDK](/dev-guide/go/features#temporal-cron-jobs)
+- [How to set a Cron Schedule using the Java SDK](/dev-guide/java/features#cron-schedule)
+- [How to set a Cron Schedule using the PHP SDK](/dev-guide/php/features#temporal-cron-jobs)
+- [How to set a Cron Schedule using the Python SDK](/dev-guide/python/features#temporal-cron-jobs)
+- [How to set a Cron Schedule using the TypeScript SDK](/dev-guide/typescript/features#temporal-cron-jobs)
+
+<div class="tdiw"><div class="tditw"><p class="tdit">Temporal Cron Job timeline</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-cron-job.svg" alt="Temporal Cron Job timeline" height="1113" width="1782" /></div></div>
+
+A Temporal Cron Job is similar to a classic unix cron job.
+Just as a unix cron job accepts a command and a schedule on which to execute that command, a Cron Schedule can be provided with the call to spawn a Workflow Execution.
+If a Cron Schedule is provided, the Temporal Server will spawn an execution for the associated Workflow Type per the schedule.
+
+Each Workflow Execution within the series is considered a Run.
+
+- Each Run receives the same input parameters as the initial Run.
+- Each Run inherits the same Workflow Options as the initial Run.
+
+The Temporal Server spawns the first Workflow Execution in the chain of Runs immediately.
+However, it calculates and applies a backoff (`firstWorkflowTaskBackoff`) so that the first Workflow Task of the Workflow Execution does not get placed into a Task Queue until the scheduled time.
+After each Run Completes, Fails, or reaches the [Workflow Run Timeout](#workflow-run-timeout), the same thing happens: the next run will be created immediately with a new `firstWorkflowTaskBackoff` that is calculated based on the current Server time and the defined Cron Schedule.
+
+The Temporal Server spawns the next Run only after the current Run has Completed, Failed, or has reached the Workflow Run Timeout.
+This means that, if a Retry Policy has also been provided, and a Run Fails or reaches the Workflow Run Timeout, the Run will first be retried per the Retry Policy until the Run Completes or the Retry Policy has been exhausted.
+If the next Run, per the Cron Schedule, is due to spawn while the current Run is still Open (including retries), the Server automatically starts the new Run after the current Run completes successfully.
+The start time for this new Run and the Cron definitions are used to calculate the `firstWorkflowTaskBackoff` that is applied to the new Run.
+
+A [Workflow Execution Timeout](#workflow-execution-timeout) is used to limit how long a Workflow can be executing (have an Open status), including retries and any usage of Continue As New.
+The Cron Schedule runs until the Workflow Execution Timeout is reached or you terminate the Workflow.
+
+<div class="tdiw"><div class="tditw"><p class="tdit">Temporal Cron Job Run Failure with a Retry Policy</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-cron-job-failure-with-retry.svg" alt="Temporal Cron Job Run Failure with a Retry Policy" height="1203" width="1782" /></div></div>
+
+### Cron Schedules
+
+Cron Schedules are interpreted in UTC time by default.
+
+The Cron Schedule is provided as a string and must follow one of two specifications:
+
+**Classic specification**
+
+This is what the "classic" specification looks like:
+
+```
+┌───────────── minute (0 - 59)
+│ ┌───────────── hour (0 - 23)
+│ │ ┌───────────── day of the month (1 - 31)
+│ │ │ ┌───────────── month (1 - 12)
+│ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
+│ │ │ │ │
+│ │ │ │ │
+* * * * *
+```
+
+For example, `15 8 * * *` causes a Workflow Execution to spawn daily at 8:15 AM UTC.
+Use the [crontab guru site](https://crontab.guru/) to test your cron expressions.
+
+### `robfig` predefined schedules and intervals
+
+You can also pass any of the [predefined schedules](https://pkg.go.dev/github.com/robfig/cron/v3#hdr-Predefined_schedules) or [intervals](https://pkg.go.dev/github.com/robfig/cron/v3#hdr-Intervals) described in the [`robfig/cron` documentation](https://pkg.go.dev/github.com/robfig/cron/v3).
+
+```
+| Schedules              | Description                                | Equivalent To |
+| ---------------------- | ------------------------------------------ | ------------- |
+| @yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *     |
+| @monthly               | Run once a month, midnight, first of month | 0 0 1 * *     |
+| @weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0     |
+| @daily (or @midnight)  | Run once a day, midnight                   | 0 0 * * *     |
+| @hourly                | Run once an hour, beginning of hour        | 0 * * * *     |
+```
+
+For example, "@weekly" causes a Workflow Execution to spawn once a week at midnight between Saturday and Sunday.
+
+Intervals just take a string that can be accepted by [time.ParseDuration](http://golang.org/pkg/time/#ParseDuration).
+
+```
+@every <duration>
+```
+
+### Time zones
+
+_This feature only applies in Temporal 1.15 and up_
+
+You can change the time zone that a Cron Schedule is interpreted in by prefixing the specification with `CRON_TZ=America/New_York` (or your [desired time zone from tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)). `CRON_TZ=America/New_York 15 8 * * *` therefore spawns a Workflow Execution every day at 8:15 AM New York time, subject to caveats listed below.
+
+Consider that using time zones in production introduces a surprising amount of complexity and failure modes!
+**If at all possible, we recommend specifying Cron Schedules in UTC (the default)**.
+
+If you need to use time zones, here are a few edge cases to keep in mind:
+
+- **Beware Daylight Saving Time**: If a Temporal Cron Job is scheduled around the time when daylight saving time (DST) begins or ends (for example, `30 2 * * *`), **it might run zero, one, or two times in a day**! The Cron library that we use does not do any special handling of DST transitions. Avoid schedules that include times that fall within DST transition periods.
+  - For example, in the US, DST begins at 2 AM. When you "fall back," the clock goes `1:59 … 1:00 … 1:01 … 1:59 … 2:00 … 2:01 AM` and any Cron jobs that fall in that 1 AM hour are fired again. The inverse happens when clocks "spring forward" for DST, and Cron jobs that fall in the 2 AM hour are skipped.
+  - In other time zones like Chile and Iran, DST "spring forward" is at midnight. 11:59 PM is followed by 1 AM, which means `00:00:00` never happens.
+- **Self Hosting note**: If you manage your own Temporal Cluster, you are responsible for ensuring that it has access to current `tzdata` files. The official Docker images are built with [tzdata](https://docs.w3cub.com/go/time/tzdata/index) installed (provided by Alpine Linux), but ultimately you should be aware of how tzdata is deployed and updated in your infrastructure.
+- **Updating Temporal**: If you use the official Docker images, note that an upgrade of the Temporal Cluster may include an update to the tzdata files, which may change the meaning of your Cron Schedule. You should be aware of upcoming changes to the definitions of the time zones you use, particularly around daylight saving time start/end dates.
+- **Absolute Time Fixed at Start**: The absolute start time of the next Run is computed and stored in the database when the previous Run completes, and is not recomputed. This means that if you have a Cron Schedule that runs very infrequently, and the definition of the time zone changes between one Run and the next, the Run might happen at the wrong time. For example, `CRON_TZ=America/Los_Angeles 0 12 11 11 *` means "noon in Los Angeles on November 11" (normally not in DST). If at some point the government makes any changes (for example, move the end of DST one week later, or stay on permanent DST year-round), the meaning of that specification changes. In that first year, the Run happens at the wrong time, because it was computed using the older definition.
+
+### How to stop a Temporal Cron Job
+
+A Temporal Cron Job does not stop spawning Runs until it has been Terminated or until the [Workflow Execution Timeout](#workflow-execution-timeout) is reached.
+
+A Cancellation Request affects only the current Run.
+
+Use the Workflow Id in any requests to Cancel or Terminate.
+
 ## What is a State Transition? {#state-transition}
 
-A State Transition is a unit of progress made by a <a class="tdlp" href="#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-execution">Learn more</a></span></span></a>.
+A State Transition is a unit of progress made by a [Workflow Execution](#workflow-execution).
 Each State Transition is recorded in a persistence store.
 
-Some operations, such as <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeats<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></span></span></a>, require only one State Transition each.
+Some operations, such as [Activity Heartbeats](/activities#activity-heartbeat), require only one State Transition each.
 Most operations require multiple State Transitions.
-For example, a simple Workflow with two sequential <a class="tdlp" href="/workers#activity-task">Activity Tasks<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task">Learn more</a></span></span></a> (and no retries) produces 11 State Transitions: two for Workflow start, four for each Activity, and one for Workflow completion.
+For example, a simple Workflow with two sequential [Activity Tasks](/workers#activity-task) (and no retries) produces 11 State Transitions: two for Workflow start, four for each Activity, and one for Workflow completion.
