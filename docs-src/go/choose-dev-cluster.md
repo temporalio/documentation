@@ -57,13 +57,13 @@ For more command details and options, see the [CLI reference](/cli/server/start-
 
 #### Create a custom Namespace
 
-**How to create a new Namespace on the development server**
+**How to create a Namespace on the development server**
 
 The development server does automatically create a default Namespace (named "default") when it starts up.
 However, you will create a custom one for our application.
 Since this is something recommended at a production level, it's recommend practicing it with the development server.
 
-Use the `temporal operator namespace create` command using the Temporal CLI to create a new Namespace on the development server.
+Use the `temporal operator namespace create` command using the Temporal CLI to create a Namespace on the development server.
 
 ```bash
 temporal operator namespace create backgroundcheck_namespace

@@ -27,7 +27,7 @@ The follow structure applies to the Temporal Go SDK developer's guide:
 - [**Project setup**](/go/go-dev-guide-structure)
   - [How to download and install the Temporal CLI](/go/install-cli)
   - [Which development Cluster you should choose](/go/choose-dev-cluster)
-  - How to create a new Namespace in your development Cluster
+  - How to create a Namespace in your development Cluster
     - [Local dev server](/go/choose-dev-cluster#local-dev-server)
     - [Temporal Cloud](/go/choose-dev-cluster#temporal-cloud)
     - [Self-hosted Temporal Cluster](/go/choose-dev-cluster#self-hosted-temporal-cluster)

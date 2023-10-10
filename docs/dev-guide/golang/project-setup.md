@@ -51,7 +51,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This section covers how to use a terminal, a code editor, and a development Cluster to create a new Namespace, write a single Activity Workflow, run a Worker that talks to your development Cluster, run a Workflow using the CLI, add a testing framework, and view Workflows in the Web UI.
+This section covers how to use a terminal, a code editor, and a development Cluster to create a Namespace, write a single Activity Workflow, run a Worker that talks to your development Cluster, run a Workflow using the CLI, add a testing framework, and view Workflows in the Web UI.
 
 :::competency Construct a new Temporal Application project
 
@@ -199,13 +199,13 @@ For more command details and options, see the [CLI reference](/cli/server#start-
 
 #### Create a custom Namespace
 
-**How to create a new Namespace on the development server**
+**How to create a Namespace on the development server**
 
 The development server does automatically create a default Namespace (named "default") when it starts up.
 However, you will create a custom one for our application.
 Since this is something recommended at a production level, it's recommend practicing it with the development server.
 
-Use the `temporal operator namespace create` command using the Temporal CLI to create a new Namespace on the development server.
+Use the `temporal operator namespace create` command using the Temporal CLI to create a Namespace on the development server.
 
 ```bash
 temporal operator namespace create backgroundcheck_namespace

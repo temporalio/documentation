@@ -9,7 +9,7 @@ tags:
   - project setup
 ---
 
-This section covers how to use a terminal, a code editor, and a development Cluster to create a new Namespace, write a single Activity Workflow, run a Worker that talks to your development Cluster, run a Workflow using the CLI, add a testing framework, and view Workflows in the Web UI.
+This section covers how to use a terminal, a code editor, and a development Cluster to create a Namespace, write a single Activity Workflow, run a Worker that talks to your development Cluster, run a Workflow using the CLI, add a testing framework, and view Workflows in the Web UI.
 
 :::competency Construct a new Temporal Application project
 
