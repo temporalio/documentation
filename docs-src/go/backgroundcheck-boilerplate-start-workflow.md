@@ -31,8 +31,8 @@ temporal workflow start \
 
 For more details, see the [temporal workflow start](/cli/workflow/start) command API reference.
 
-After starting the Workflow, we can now see it in the Temporal Platform.
-We can use the Temporal CLI, or the Temporal Web UI to monitor the Workflow's progress.
+After you start the Workflow, you can see it in the Temporal Platform.
+Use the Temporal CLI or the Temporal Web UI to monitor the Workflow's progress.
 
 #### List Workflows
 

@@ -1,7 +1,7 @@
 ---
 id: self-hosted-worker-docker-network
 title: Run a Self-hosted Worker
-description: Build a Docker Image of the Worker and deploy it on your network.
+description: Build a Docker image of the Worker and deploy it on your network.
 sidebar_label: Dockerfile
 tags:
   - docker
@@ -10,7 +10,7 @@ tags:
   - worker
 ---
 
-To deploy a Self-hosted Worker to your Docker environment you will need to configure your Worker with the appropriate IP address and port.
+To deploy a self-hosted Worker to your Docker environment, you need to configure your Worker with the appropriate IP address and port.
 
 #### Confirm network
 
@@ -30,7 +30,7 @@ services:
   # ...
 ```
 
-If you are using a different or customized docker compose file, you can see the available networks using:
+If you are using a different or customized docker compose file, you can see the available networks by using the following command:
 
 ```shell
 docker network ls

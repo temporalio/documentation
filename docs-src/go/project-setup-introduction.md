@@ -25,8 +25,8 @@ There are three ways to follow this guide:
 
 - [Use a local dev server](/go/choose-dev-cluster#local-dev-server)
 - [Use Temporal Cloud](/go/choose-dev-cluster#temporal-cloud)
-- [Use a Self-hosted environment such as Docker](/go/choose-dev-cluster#self-hosted-temporal-cluster)
+- [Use a self-hosted environment such as Docker](/go/choose-dev-cluster#self-hosted-temporal-cluster)
 
-Read more about [Which development Cluster you should choose](/go/choose-dev-cluster) below.
+Read more in the [Choose a development Cluster](/go/choose-dev-cluster) section on this page.
 
 :::

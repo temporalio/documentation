@@ -57,7 +57,7 @@ For more command details and options, see the [CLI reference](/cli/server/start-
 
 #### Create a custom Namespace
 
-**How to create a new Namespace on the development server?**
+**How to create a new Namespace on the development server**
 
 The development server does automatically create a default Namespace (named "default") when it starts up.
 However, we will create a custom one for our application.
@@ -73,37 +73,37 @@ For command details and options, see the [CLI reference](/cli/operator/namespace
 
 ### Temporal Cloud
 
-**When to use Temporal Cloud?**
+**When to use Temporal Cloud**
 
-If you do not have a Temporal Cloud Account, you can request one using the link on the [getting started page](https://docs.temporal.io/cloud/get-started).
+If you do not have a Temporal Cloud Account, you can request one using the link on the [get started](https://docs.temporal.io/cloud/get-started) page.
 
 We recommend starting off with Temporal Cloud if you already have a production use case, or need to move a scalable proof of concept into production.
 
-In other words, Temporal Cloud is perfect if you are ready to run at scale and don’t want the overhead of managing your own Self-hosted Cluster.
+In other words, Temporal Cloud is perfect if you are ready to run at scale and don’t want the overhead of managing your own self-hosted Cluster.
 
-Follow the [Create a new Temporal Cloud Namespace guide](/cloud/namespaces-create) to create a new Namespace in Temporal Cloud.
+To create a Namespace in Temporal Cloud, follow the instructions in [How to create a Namespace](/cloud/namespaces-create).
 
 :::info Safely store your certificate and private key
 
-Store your certificate and private key you generated for your Namespace as files or env variables in your project.
-You will need access to your cert and key to run your Workers and start Workflows.
+Store your certificate and private key you generated for your Namespace as files or environment variables in your project.
+You will need access to your certificate and key to run your Workers and start Workflows.
 
-For Cloud certificate requirements and details check out the [Cloud certificate management guide](/cloud/certificates-intro).
+For certificate requirements and details, check out [How to manage certificates in Temporal Cloud](/cloud/certificates-intro).
 
 :::
 
 ### Self-hosted Temporal Cluster
 
-We recommend using a Self-Hosted environment if you are starting something new and need to scale with production-level features, but don’t yet need or want to pay for Temporal Cloud.
+We recommend using a self-hosted environment if you are starting something new and need to scale with production-level features, but don’t yet need or want to pay for Temporal Cloud.
 
-For example, running a Self-Hosted Cluster enables you to try different databases, view Cluster metrics, use custom [Search Attributes](/concepts/what-is-a-search-attribute), and even play with the [Archival](/concepts/what-is-archival) feature.
+For example, running a self-hosted Cluster lets you try different databases, view Cluster metrics, use custom [Search Attributes](/concepts/what-is-a-search-attribute), and even play with the [Archival](/concepts/what-is-archival) feature.
 
-It's completely possible to run a production level Self-hosted Cluster.
-However, for the purposes of this guide, we show how to use a Self-hosted environment that runs completely out of Docker.
-We acknowledge that it takes a fair amount of experience to elevate from a Self-hosted environment in Docker to something that can run at an enterprise production scale.
-The Self-hosted information in this guide should help you make more informed decisions.
+It's completely possible to run a production level self-hosted Cluster.
+However, for the purposes of this guide, we show how to use a self-hosted environment that runs completely out of Docker.
+We acknowledge that it takes a fair amount of experience to elevate from a self-hosted environment in Docker to something that can run at an enterprise production scale.
+The self-hosted information in this guide should help you make more informed decisions.
 
-To follow along with Self-hosted parts of this guide, install the following:
+To follow along with self-hosted parts of this guide, install the following:
 
 - [Docker](https://docs.docker.com/engine/install)
 - [Docker Compose](https://docs.docker.com/compose/install).
