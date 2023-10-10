@@ -314,7 +314,7 @@ For an example of setting up the SQLite schema, see [Temporalite](https://github
 :::tip Support, stability, and dependency info
 - Support for Cassandra as a Visibility database is deprecated beginning with Temporal Server v1.21. For updates, check the [Temporal Server release notes](https://github.com/temporalio/temporal/releases).
 - We recommend migrating from Cassandra to any of the other supported databases for Visibility.
-  For information on migrating from Cassandra to any of the supported databases, see [Migrating Visibility database](/cluster-deployment-guide#migrating-visibility-database).
+
 :::
 
 You can set Cassandra as your [Visibility store](/clusters#visibility).
