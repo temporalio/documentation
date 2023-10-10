@@ -10,14 +10,14 @@ tags:
   - temporal cli
 ---
 
-**How to start the Workflow using the CLI?**
+**How to start a Workflow using the CLI**
 
-You can use the Temporal CLI to start a Workflow whether you are using a local development server, Temporal Cloud, or are in a Self-hosted environment.
-However, you need to provide additional options to the command when operating with the Temporal Cloud or Self-hosted environments.
+You can use the Temporal CLI to start a Workflow whether you are using a local development server, Temporal Cloud, or are in a self-hosted environment.
+However, you need to provide additional options to the command when operating with the Temporal Cloud or self-hosted environments.
 
 ### Local dev Server
 
-**How to start a Workflow with the Temporal CLI while using the local development server.**
+**How to start a Workflow with the Temporal CLI while using the local development server**
 
 Use the Temporal CLI `temporal workflow start` command to start your Workflow.
 
@@ -29,7 +29,7 @@ temporal workflow start \
  --namespace backgroundcheck_namespace
 ```
 
-See the [temporal workflow start](/cli/workflow/start) command API reference for more details.
+For more details, see the [temporal workflow start](/cli/workflow/start) command API reference.
 
 After starting the Workflow, we can now see it in the Temporal Platform.
 We can use the Temporal CLI, or the Temporal Web UI to monitor the Workflow's progress.
@@ -45,21 +45,21 @@ temporal workflow list \
 
 #### View in Web UI
 
-We can also use the Web UI to see the Workflows associated with the Namespace.
+You can also use the Web UI to see the Workflows associated with the Namespace.
 
-The local development server starts up the Web UI at [http://localhost:8233](http://localhost:8233).
+The local development server starts the Web UI at [http://localhost:8233](http://localhost:8233).
 
-When you visit for the first time, the Web UI direct you to [http://localhost:8233/namespaces/default/workflows](http://localhost:8233/namespaces/default/workflows).
+When you visit for the first time, the Web UI directs you to [http://localhost:8233/namespaces/default/workflows](http://localhost:8233/namespaces/default/workflows).
 
 Use the Namespace dropdown to select the project Namespace you created earlier.
 
 ![Web UI Namespace selection](/img/web-ui-namespace-selection.png)
 
-You should now be at [http://localhost:8233/namespaces/backgroundcheck_namespace/workflows](http://localhost:8233/namespaces/backgroundcheck_namespace/workflows)
+You should now be at [http://localhost:8233/namespaces/backgroundcheck_namespace/workflows](http://localhost:8233/namespaces/backgroundcheck_namespace/workflows).
 
 ### Temporal Cloud
 
-**How to start a Workflow with Temporal CLI when using Temporal Cloud.**
+**How to start a Workflow with Temporal CLI when using Temporal Cloud**
 
 Run the `temporal workflow start` command, and make sure to specify the certificate and private key arguments.
 
@@ -74,9 +74,9 @@ temporal workflow start \
  --address <namespace>.<account-id>.tmprl.cloud:<port>
 ```
 
-Make sure that the certificate path, private key path, namespace, and address argument values match your project.
+Make sure that the certificate path, private key path, Namespace, and address argument values match your project.
 
-:::info Use env variables
+:::info Use environment variables
 
 Use environment variables as a way to quickly switch between a local dev server and Temporal Cloud, for example.
 
@@ -103,7 +103,7 @@ temporal workflow start \
 
 #### List Workflows
 
-Run the `temporal workflow list` command, and make sure to specify the certificate and private key arugments.
+Run the `temporal workflow list` command, and make sure to specify the certificate and private key arguments.
 
 ```shell
 temporal workflow list \
@@ -126,7 +126,7 @@ https://cloud.temporal.io/namespaces/<namespace>.<account-id>/workflows
 
 ### Self-hosted
 
-**How to start a Workflow with the Temporal CLI when using a Self-hosted Cluster.**
+**How to start a Workflow with the Temporal CLI when using a Self-hosted Cluster**
 
 Use your Temporal CLI alias to run the `temporal workflow start` command and start your Workflow.
 
@@ -150,8 +150,8 @@ temporal_docker workflow list \
 
 #### View in the Web UI
 
-When you visit for the first time, the Web UI direct you to [http://localhost:8233/namespaces/default/workflows](http://localhost:8080/namespaces/default/workflows).
+When you visit for the first time, the Web UI directs you to [http://localhost:8233/namespaces/default/workflows](http://localhost:8080/namespaces/default/workflows).
 
 Use the Namespace dropdown to select the project Namespace you created earlier.
 
-You should now be at [http://localhost:8080/namespaces/backgroundcheck_namespace/workflows](http://localhost:8080/namespaces/backgroundcheck_namespace/workflows)
+You should now be at [http://localhost:8080/namespaces/backgroundcheck_namespace/workflows](http://localhost:8080/namespaces/backgroundcheck_namespace/workflows).

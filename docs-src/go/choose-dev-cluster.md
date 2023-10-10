@@ -22,7 +22,9 @@ However, for most developers we recommend starting by choosing one of the follow
 
 :::info Temporal does not directly run your code
 
-Keep in mind that in every scenario, the “Temporal Platform” does not host and run your Workers (application code). It is up to you, the developer, to host your Application code. The Temporal Platform ensures that properly written code durably executes in the face of platform level failures.
+Keep in mind that in every scenario, the “Temporal Platform” does not host and run your Workers (application code).
+It is up to you, the developer, to host your application code.
+The Temporal Platform ensures that properly written code durably executes in the face of platform-level failures.
 
 :::
 
@@ -30,15 +32,16 @@ Keep in mind that in every scenario, the “Temporal Platform” does not host a
 
 **When to use a local development server?**
 
-We recommend using the local development server if you are new to Temporal, or want to start something from scratch and don’t have a Self-hosted environment ready or want to pay for a Temporal Cloud Account.
+We recommend using the local development server if you are new to Temporal, or want to start something from scratch and don’t have a self-hosted environment ready or want to pay for a Temporal Cloud account.
 
-The Temporal CLI comes bundled with a development server and it provides a fast way to start running Temporal Applications.
+The Temporal CLI comes bundled with a development server and provides a fast way to start running Temporal Applications.
 
-However, the local development server does not emit any metrics, and if you are eager to to set up Cluster level metrics for performance tuning, we recommend using a Self-hosted Cluster or Temporal Cloud.
+However, the local development server does not emit any metrics.
+If you are eager to to set up Cluster-level metrics for performance tuning, we recommend using a self-hosted Cluster or Temporal Cloud.
 
 #### Start the dev server
 
-**How to start a local development server?**
+**How to start a local development server**
 
 If you have successfully installed the Temporal CLI, open a new terminal and run the following command:
 
@@ -46,9 +49,9 @@ If you have successfully installed the Temporal CLI, open a new terminal and run
 temporal server start-dev
 ```
 
-This command automatically starts up the Temporal Web UI, creates a default Namespace, and creates an in-memory database.
+This command automatically starts the Temporal Web UI, creates a default Namespace, and creates an in-memory database.
 
-The Temporal Web UI serves to [`http://localhost:8233`](http://localhost:8233/).
+The Temporal Web UI serves to [http://localhost:8233](http://localhost:8233/).
 
 For more command details and options, see the [CLI reference](/cli/server/start-dev)
 
