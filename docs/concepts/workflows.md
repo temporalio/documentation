@@ -676,7 +676,7 @@ You can think of an Update as a synchronous, blocking call that could replace bo
 - The logical model of a Signal with the overhead and latency of a Query
 
 The Workflow must have a function to handle the Update.
-Unlike a [Signal](#signal) handler, the Update handler function can mutate the state of the Workflow while also returning a value to the caller.
+Unlike a [Signal](#signal) handler, the Update handler function can return a value to the caller.
 The Update handler listens for Updates by the Update's name.
 
 When there is the potential for multiple Updates to cause a duplication problem, Temporal recommends adding idempotency logic to your Update handler that checks for duplicates.
