@@ -70,6 +70,7 @@ The following databases are supported as Visibility stores:
 - [SQLite](#sqlite) v3.31.0 and later for advanced Visibility capabilities.
 - [Cassandra](#cassandra).
   Support for Cassandra as a Visibility database is deprecated beginning with Temporal Server v1.21.
+  For information on migrating from Cassandra to any of the supported databases, see [Migrating Visibility database](/cluster-deployment-guide#migrating-visibility-database).
 - [Elasticsearch](#elasticsearch) supported versions.
   We recommend operating a Temporal Cluster with Elasticsearch as your Visibility store for any use case that spawns more than a few Workflow Executions.
 
