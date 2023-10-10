@@ -34,8 +34,8 @@ curl -sSf https://temporal.download/cli.sh | sh
 
 1. Select the platform and architecture needed.
 
-  - Download for Darwin amd64: https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64
-  - Download for Darwin arm64: https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64
+- Download for Darwin amd64: https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64
+- Download for Darwin arm64: https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64
 
 2. Extract the downloaded archive.
 
@@ -57,8 +57,8 @@ curl -sSf https://temporal.download/cli.sh | sh
 
 1. Select the platform and architecture needed.
 
-  - Download for Linux amd64: https://temporal.download/cli/archive/latest?platform=linux&arch=amd64
-  - Download for Linux arm64: https://temporal.download/cli/archive/latest?platform=linux&arch=arm64
+- Download for Linux amd64: https://temporal.download/cli/archive/latest?platform=linux&arch=amd64
+- Download for Linux arm64: https://temporal.download/cli/archive/latest?platform=linux&arch=arm64
 
 2. Extract the downloaded archive.
 
@@ -74,8 +74,8 @@ Follow these instructions to install the Temporal CLI on Windows:
 
 1. Select the platform and architecture needed and download the binary.
 
-  - Download for Windows amd64: https://temporal.download/cli/archive/latest?platform=windows&arch=amd64
-  - Download for Windows arm64: https://temporal.download/cli/archive/latest?platform=windows&arch=arm64
+- Download for Windows amd64: https://temporal.download/cli/archive/latest?platform=windows&arch=amd64
+- Download for Windows arm64: https://temporal.download/cli/archive/latest?platform=windows&arch=arm64
 
 2. Extract the downloaded archive.
 
