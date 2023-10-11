@@ -2,18 +2,19 @@
 id: operating-envelope-regions
 title: Where is Temporal Cloud hosted and running?
 sidebar_label: Regions
-description: Temporal Cloud currently runs in 10 regions in AWS.
+description: Temporal Cloud currently runs in multiple regions in AWS.
 tags:
   - operations
   - temporal cloud
   - explanation
 ---
 
-Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS):
+Temporal Cloud currently runs in the following regions in Amazon Web Services (AWS):
 
 | Area          | Code           | Region            |
 | ------------- | -------------- | ----------------- |
 | Asia Pacific  | ap-northeast-1 | Tokyo             |
+| Asia Pacific  | ap-south-1     | Mumbai            |
 | Asia Pacific  | ap-southeast-1 | Singapore         |
 | Asia Pacific  | ap-southeast-2 | Sydney            |
 | Europe        | eu-central-1   | Frankfurt         |
@@ -23,6 +24,7 @@ Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS):
 | North America | us-east-1      | Northern Virginia |
 | North America | us-east-2      | Ohio              |
 | North America | us-west-2      | Oregon            |
+| South America | sa-east-1      | São Paulo         |
 
 Furthermore, it is compatible with applications deployed in any cloud environment or data center.
 

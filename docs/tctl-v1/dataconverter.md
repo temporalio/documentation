@@ -2,7 +2,7 @@
 id: dataconverter
 title: tctl v1.17 data-converter command reference
 sidebar_label: dataconverter
-description: How to use the tctl v1.17 dataconverter command
+description: Explore the tctl Data Converter commands, which enable custom Data Converter operations on a Temporal Cluster.
 toc_max_heading_level: 4
 keywords:
 - cli
@@ -25,7 +25,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-:::success Temporal CLI is now available!
+:::info Temporal CLI is now available!
 
 The new [Temporal CLI](/cli) is available for use.
 
@@ -35,13 +35,13 @@ tctl is expected to be fully deprecated by Temporal Server version 1.22
 
 :::
 
-The `tctl dataconverter` command enables custom <a class="tdlp" href="/dataconversion#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a> operations.
+The `tctl dataconverter` command enables custom [Data Converter](/dataconversion#) operations.
 
-- <a class="tdlp" href="#web">tctl dataconverter web<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl dataconverter web</span><br /><br /><span class="tdlppd">How to specify the WebSocket URL of a custom Data Converter using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#web">Learn more</a></span></span></a>
+- [tctl dataconverter web](#web)
 
 ## web
 
-The `tctl dataconverter web` command specifies the WebSocket URL of a custom <a class="tdlp" href="/dataconversion#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a> to use with Temporal Web.
+The `tctl dataconverter web` command specifies the WebSocket URL of a custom [Data Converter](/dataconversion#) to use with Temporal Web.
 
 `tctl dataconverter web --web_ui_url <url>`
 
@@ -49,7 +49,7 @@ The following modifiers control the behavior of the command.
 
 ### --port
 
-Specify a port for the WebSocket URL of a custom <a class="tdlp" href="/dataconversion#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>.
+Specify a port for the WebSocket URL of a custom [Data Converter](/dataconversion#).
 The default value is 0.
 
 **Example**
@@ -62,7 +62,7 @@ tctl dataconverter web --web_ui_url <url> --port <value>
 
 _Required modifier_
 
-Specify the WebSocket URL of a custom <a class="tdlp" href="/dataconversion#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>.
+Specify the WebSocket URL of a custom [Data Converter](/dataconversion#).
 
 **Example**
 

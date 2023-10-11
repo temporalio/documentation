@@ -54,13 +54,13 @@ module.exports = {
         autoCollapseCategories: true,
       },
     },
-    announcementBar: {
-      id: "replay_announcement",
-      content: 'Get your tickets for <a href="https://temporal.io/replay">Replay 2023</a>!',
-      backgroundColor: "#141414",
-      textColor: "#ffffff",
-      isCloseable: true,
-    },
+    // announcementBar: {
+    //   id: "replay_announcement",
+    //   content: 'Get your tickets for <a href="https://temporal.io/replay">Replay 2023</a>!',
+    //   backgroundColor: "#141414",
+    //   textColor: "#ffffff",
+    //   isCloseable: true,
+    // },
     navbar: {
       hideOnScroll: false,
       logo: {
@@ -139,7 +139,7 @@ module.exports = {
             },
             {
               label: "Meetups",
-              href: "https://lu.ma/temporal",
+              href: "https://temporal.io/community#events",
             },
             {
               label: "Workshops",
@@ -234,6 +234,10 @@ module.exports = {
           includeCurrentVersion: true, // excludeNextVersionDocs is now deprecated
           // // below remark plugin disabled until we can figure out why it is not transpiling to ESNext properly - swyx
           // // original PR https://github.com/temporalio/documentation/pull/496/files
+          admonitions: {
+            tag: ":::",
+            keywords: ["note", "tip", "info", "caution", "danger", "competency", "copycode"],
+          },
           remarkPlugins: [
             [
               () =>

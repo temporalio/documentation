@@ -4,7 +4,7 @@
   "id": "cluster",
   "title": "tctl v1.17 cluster command reference",
   "sidebar_label": "cluster",
-  "description": "How to use the tctl v1.17 cluster command",
+  "description": "Explore the tctl Cluster commands, which can get all Search Attributes and check the health of the Frontend Service.",
   "use_description": false,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,

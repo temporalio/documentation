@@ -2,7 +2,7 @@
 id: version
 title: tcld version command reference
 sidebar_label: version
-description: How to use Temporal Cloud's tcld version command.
+description: The Temporal Cloud CLI (tcld) version command get version information about tcld.
 toc_max_heading_level: 4
 keywords:
 - cli reference

@@ -2,7 +2,7 @@
 id: logout
 title: tcld logout command reference
 sidebar_label: logout
-description: How to use Temporal Cloud's tcld logout command.
+description: The Temporal Cloud CLI (tcld) logout command logs a user out of Temporal Cloud.
 toc_max_heading_level: 4
 keywords:
 - cli reference

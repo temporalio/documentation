@@ -35,11 +35,11 @@ This guide provides a comprehensive overview of Temporal Visibility.
 
 The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Cluster.
 
-The [Visibility store](/cluster-deployment-guide#visibility-store) in your Temporal Cluster stores persisted Workflow Execution Event History data and is set up as a part of your <a class="tdlp" href="/clusters#persistence">Persistence store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#persistence">Learn more</a></span></span></a> to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
+The [Visibility store](/cluster-deployment-guide#visibility-store) in your Temporal Cluster stores persisted Workflow Execution Event History data and is set up as a part of your [Persistence store](/clusters#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
 
 - [How to set up a Visibility store](/cluster-deployment-guide#visibility-store)
 
-With Temporal Server v1.21, you can set up <a class="tdlp" href="#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Dual Visibility?</span><br /><br /><span class="tdlppd">Dual Visibility is a feature that lets you set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#dual-visibility">Learn more</a></span></span></a> to migrate your Visibility store from one database to another.
+With Temporal Server v1.21, you can set up [Dual Visibility](#dual-visibility) to migrate your Visibility store from one database to another.
 
 <!-- A Visibility store can be configured to provide [atandard Visibility](/visibility#standard-visibility) and [advanced Visibility](/visibility#advanced-visibility) features.
 
@@ -58,10 +58,10 @@ For updates, check [Supported databases](/cluster-deployment-guide#supported-dat
 
 ## What is advanced Visibility? {#advanced-visibility}
 
-Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a> through a custom SQL-like <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a>.
+Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of [Workflow Executions](/workflows#workflow-execution) through a custom SQL-like [List Filter](#list-filter).
 
 - In Temporal Cluster version 1.20 and later, advanced Visibility is available on SQL databases like MySQL (version 8.0.17 and later) and PostgreSQL (version 12 and later), in addition to support for Elasticsearch.
-- For Temporal Server versions 1.19.1 and earlier, you must <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">integrate with ElasticSearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a> to use advanced Visibility.
+- For Temporal Server versions 1.19.1 and earlier, you must [integrate with ElasticSearch](/cluster-deployment-guide#elasticsearch) to use advanced Visibility.
   Elasticsearch takes on the Visibility request load, relieving potential performance issues.
   We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
 - On Temporal Cloud, [advanced Visibility is enabled by default for all users](/cloud/get-started#invite-users).
@@ -92,21 +92,22 @@ With Dual Visibility, you can read from only one Visibility store at a time, but
 When migrating from one Visibility store database to another, set up the database you want to migrate to as your secondary Visibility store.
 
 You can plan your migration using specific dynamic configuration keys that help you transition your read and write operations from the primary to the secondary Visibility store.
-For details on migrating your Visibility store databases, see <a class="tdlp" href="/cluster-deployment-guide#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Dual Visibility</span><br /><br /><span class="tdlppd">To enable Dual Visibility, set up a secondary Visibility store with your primary Visibility, and configure your Temporal Cluster to enable read and/or write operations on the secondary Visibility store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#dual-visibility">Learn more</a></span></span></a>.
+For details on migrating your Visibility store databases, see [Dual Visibility](/cluster-deployment-guide#dual-visibility).
 
 ## What is a List Filter? {#list-filter}
 
-A List Filter is the SQL-like string that is provided as the parameter to a <a class="tdlp" href="/clusters#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#visibility">Learn more</a></span></span></a> List API.
+The [Visibility](/clusters#visibility) List API requires you to provide a List Filter as an SQL-like string parameter.
 
-A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#search-attribute">Learn more</a></span></span></a> names, Search Attribute values, and [operators](#supported-operators) to pull a filtered list of Workflow Executions from the Visibility store.
+A List Filter includes [Search Attribute](#search-attribute) names, Search Attribute values, and [operators](#supported-operators) so that it can retrieve a filtered list of Workflow Executions from the Visibility Store.
 
-List Filter <a class="tdlp" href="#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#search-attribute">Learn more</a></span></span></a> names are case sensitive, and each List Filter is scoped by a single <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a>.
+List Filter [Search Attribute](#search-attribute) names are case sensitive.
+A single [Namespace](/namespaces#) scopes each List Filter.
 
-A List Filter that uses a time range has a resolution of 1 ns on <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">Elasticsearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a> and 1 µs for <a class="tdlp" href="/cluster-deployment-guide#visibility-store">SQL databases<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#visibility-store">Learn more</a></span></span></a>.
+A List Filter using a time range provides a resolution of 1 ns on [Elasticsearch](/cluster-deployment-guide#elasticsearch) and 1 µs for [SQL databases](/cluster-deployment-guide#visibility-store).
 
 ### Supported operators
 
-A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#search-attribute">Learn more</a></span></span></a> names, Search Attribute values, and the following supported operators:
+List Filters support the following operators:
 
 - **=, !=, >, >=, <, <=**
 - **AND, OR, ()**
@@ -165,27 +166,28 @@ It does not match `order-~~`.
 
 ### Efficient API usage
 
-An Advanced List Filter API may take longer to respond if it is retrieving a large number of Workflow Executions (over 10,000).
+If the Advanced List Filter API retrieves a substantial number of Workflow Executions (more than 10,000), the response time might be longer.
 
-With Temporal Server v1.20 and later, you can use the `CountWorkflow` API to efficiently count the number of <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>.
+Beginning with Temporal Server v1.20, you can employ the `CountWorkflow` API to efficiently count the number of [Workflow Executions](/workflows#workflow-execution).
 
-Paginate the results with the `ListWorkflow` API by using the page token to retrieve the next page; continue until the page token is `null`/`nil`.
+To paginate the results using the `ListWorkflow` API, use the page token to retrieve the next page.
+Continue until the page token becomes `null`/`nil`.
 
 #### List Filter examples
 
-The following is a List Filter set with <a class="tdlp" href="/tctl-v1/workflow#list"> `tctl`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl workflow list</span><br /><br /><span class="tdlppd">How to list open or closed Workflow Executions using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tctl-v1/workflow#list">Learn more</a></span></span></a>:
+Here are examples of List Filters set with [`tctl`](/tctl-v1/workflow#list):
 
 ```
 WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00")
 ```
 
-When used, a list of Workflows that meet the following conditions are returned:
+When you use the preceding example, you receive a list of Workflows fulfilling the following criteria:
 
-- The Workflow Type is set to `main.YourWorkflowDefinition`.
-- The Workflow isn't running.
-- The Workflow either started after "2021-06-07T16:46:34.236-08:00" or closed after "2021-06-07T16:46:34-08:00".
+- Workflow Type is `main.YourWorkflowDefinition`.
+- Workflow isn't in a running state.
+- Workflow either started after "2021-06-07T16:46:34.236-08:00" or closed after "2021-06-07T16:46:34-08:00".
 
-More List Filter examples have been provided below.
+The following are additional examples of List Filters.
 
 ```sql
 WorkflowId = '<workflow-id>'
@@ -237,7 +239,7 @@ order by CustomIntField asc
 
 ## What is a Search Attribute? {#search-attribute}
 
-A Search Attribute is an indexed field used in a <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a> to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
+A Search Attribute is an indexed field used in a [List Filter](#list-filter) to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
 
 Each Search Attribute is a key-value pair metadata object included in a Workflow Execution's Visibility information.
 This information is available in the Visibility store.
@@ -251,7 +253,7 @@ Search Attribute values are not encrypted because the Temporal Server must be ab
 Temporal provides some [default Search Attributes](#default-search-attributes), such as `ExecutionStatus`, the current state of your Workflow Executions.
 You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store and assign values when starting a Workflow Execution or in Workflow code.
 
-When using <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></span></span></a> or a <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#temporal-cron-job">Learn more</a></span></span></a>, Search Attribute keys are carried over to the new Workflow Run by default.
+When using [Continue-As-New](/workflows#continue-as-new) or a [Temporal Cron Job](/workflows#temporal-cron-job), Search Attribute keys are carried over to the new Workflow Run by default.
 Search Attribute values are only available for as long as the Workflow is.
 
 Search Attributes are most effective for search purposes or tasks requiring collection-based result sets.
@@ -313,14 +315,14 @@ You can use the default Search Attributes in a List Filter, such as in the Tempo
 
 ### Custom Search Attributes
 
-You can <a class="tdlp" href="/cluster-deployment-guide#create-custom-search-attributes">create custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create custom Search Attributes</span><br /><br /><span class="tdlppd">Add custom Search Attributes to your Visibility store using `tctl` for self-hosted Temporal Cluster, and `tcld` for Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#create-custom-search-attributes">Learn more</a></span></span></a> with unique key names that are relevant to your business needs.
+You can [create custom Search Attributes](/cluster-deployment-guide#create-custom-search-attributes) with unique key names that are relevant to your business needs.
 
 Use custom Search Attributes in a List Filter, such as in the Temporal Web UI or with the `tctl workflow list` commands, under the following conditions:
 
 - Without advanced Visibility, you cannot use a custom Search Attribute in your List Filter.
 - With advanced Visibility, you can create multiple custom Search Attributes and use them in combinations with List Filters to get a list of specific Workflow Executions.
   For example: `tctl workflow list -q "WorkflowType = 'main.YourWorkflowDefinition' and YourCustomSA = 'YourCustomSAValue' and (StartTime > '2022-06-07T16:46:34.236-08:00' or CloseTime < '2022-06-08T16:46:34-08:00')"`
-  - With Temporal Server v1.19 and earlier, you must <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">integrate Elasticsearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a> to use custom Search Attributes with List Filters.
+  - With Temporal Server v1.19 and earlier, you must [integrate Elasticsearch](/cluster-deployment-guide#elasticsearch) to use custom Search Attributes with List Filters.
   - With Temporal Server v1.20 and later, custom Search Attribute capabilities are available on MySQL (v8.0.17 or later), PostgreSQL (v12 and later), and SQLite (v3.31.0 and later), in addition to Elasticsearch.
 
 If you use Elasticsearch as your Visibility store, your custom Search Attributes apply globally and can be used across Namespaces.
@@ -337,7 +339,7 @@ Custom Search Attributes must be one of the following types:
 - Double
 - Int
 - Keyword
-- KeywordList
+- KeywordList (not supported on Temporal Cloud)
 - Text
 
 Note:
@@ -369,7 +371,7 @@ The following table lists the maximum number of custom Search Attributes you can
 | Double                |             3             |             3              |             3              |       20       |
 | Int                   |             3             |             3              |             3              |       20       |
 | Keyword               |            10             |             10             |             10             |       20       |
-| KeywordList           |             3             |             3              |             3              |       20       |
+| KeywordList           |             3             |             3              |             3              | Not supported  |
 | Text                  |             3             |             3              |             3              |       5        |
 
 Temporal does not impose a limit on the number of custom Search Attributes you can create with Elasticsearch. However, [Elasticsearch sets a default mapping limit](https://www.elastic.co/guide/en/elasticsearch/reference/8.6/mapping-settings-limit.html) that may apply.
@@ -395,13 +397,15 @@ Default total maximum number of Search Attribute **keys** per Temporal Cluster i
 This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
 -->
 
+For Temporal Cloud specific configurations, see the [Default limits](/cloud/operating-envelope#what-are-the-default-maximum-numbers-of-custom-search-attributes) sheet.
+
 ### Usage
 
 Search Attributes available in your Visibility store can be used with Workflow Executions for that Cluster.
-To actually have results from the use of a <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a>, Search Attributes must be added to a Workflow Execution as metadata.
+To actually have results from the use of a [List Filter](#list-filter), Search Attributes must be added to a Workflow Execution as metadata.
 
-- To create custom Search Attributes in your Visibility store, see <a class="tdlp" href="/cluster-deployment-guide#create-custom-search-attributes">Create custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create custom Search Attributes</span><br /><br /><span class="tdlppd">Add custom Search Attributes to your Visibility store using `tctl` for self-hosted Temporal Cluster, and `tcld` for Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#create-custom-search-attributes">Learn more</a></span></span></a>.
-- To remove a custom Search Attribute from the Visbility store, see <a class="tdlp" href="/cluster-deployment-guide#remove-custom-search-attributes">Remove custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to remove custom Search Attributes</span><br /><br /><span class="tdlppd">Remove custom Search Attributes from your self-hosted Temporal Cluster Visibility store using `tctl`.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#remove-custom-search-attributes">Learn more</a></span></span></a>.
+- To create custom Search Attributes in your Visibility store, see [Create custom Search Attributes](/cluster-deployment-guide#create-custom-search-attributes).
+- To remove a custom Search Attribute from the Visbility store, see [Remove custom Search Attributes](/cluster-deployment-guide#remove-custom-search-attributes).
   Removing custom Search Attributes is not supported on Temporal Cloud.
 - To rename a custom Search Attribute on Temporal Cloud, see [`tcld namespace search-attributes rename`](/cloud/tcld/namespace#rename).
 
@@ -411,11 +415,11 @@ With Workflows you can do the following:
 - Update the value set for a Search Attribute from within the Workflow code
 - Remove the value set for a Search Attribute from within the Workflow code
 
-- <a class="tdlp" href="/dev-guide/go/observability#visibility">How to manage Search Attributes using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Visibility APIs</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/observability#visibility">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/observability#visibility">How to manage Search Attributes using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Visibility APIs</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/observability#visibility">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/observability#visibility">How to manage Search Attributes using the PHP SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Visibility APIs</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/observability#visibility">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/observability#visibility">How to manage Search Attributes using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Visibility APIs</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/observability#visibility">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/observability#visibility">How to manage Search Attributes using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Visibility APIs</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/observability#visibility">Learn more</a></span></span></a>
+- [How to manage Search Attributes using the Go SDK](/dev-guide/go/observability#visibility)
+- [How to manage Search Attributes using the Java SDK](/dev-guide/java/observability#visibility)
+- [How to manage Search Attributes using the PHP SDK](/dev-guide/php/observability#visibility)
+- [How to manage Search Attributes using the Python SDK](/dev-guide/python/observability#visibility)
+- [How to manage Search Attributes using the TypeScript SDK](/dev-guide/typescript/observability#visibility)
 
 - To get a list of Search Attributes using `tctl`, see [How to view Search Attributes using tctl](/tctl-v1/cluster#get-search-attributes).
 

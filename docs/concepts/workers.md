@@ -25,30 +25,30 @@ There is a tight coupling between Temporal Task Queues and Worker Processes.
 
 ## What is a Worker? {#worker}
 
-In day-to-day conversations, the term Worker is used to denote either a <a class="tdlp" href="#worker-program">Worker Program<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Program?</span><br /><br /><span class="tdlppd">A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#worker-program">Learn more</a></span></span></a>, a <a class="tdlp" href="#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#worker-process">Learn more</a></span></span></a>, or a <a class="tdlp" href="#worker-entity">Worker Entity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Entity?</span><br /><br /><span class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#worker-entity">Learn more</a></span></span></a>.
+In day-to-day conversations, the term Worker is used to denote either a [Worker Program](#worker-program), a [Worker Process](#worker-process), or a [Worker Entity](#worker-entity).
 Temporal documentation aims to be explicit and differentiate between them.
 
 ## What is a Task? {#task}
 
-A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/workflows#workflow-execution) or <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>.
+A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/workflows#workflow-execution) or [Activity Execution](/activities#activity-execution).
 
 There are two types of Tasks:
 
-- <a class="tdlp" href="#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-task">Learn more</a></span></span></a>
-- <a class="tdlp" href="#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-task">Learn more</a></span></span></a>
+- [Activity Task](#activity-task)
+- [Workflow Task](#workflow-task)
 
 ## What is a Worker Program? {#worker-program}
 
 A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.
 
-- <a class="tdlp" href="/dev-guide/go/foundations#develop-worker">How to run a development Worker using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker in Go</span><br /><br /><span class="tdlppd">Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/foundations#develop-worker">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/foundations#run-a-dev-worker">How to run a development Worker using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker Program in Java</span><br /><br /><span class="tdlppd">Use the `newWorker` method on an instance of a `WorkerFactory` to create a new Worker in Java.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/foundations#run-a-dev-worker">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/foundations#run-a-dev-worker">How to run a development Worker using the PHP SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/foundations#run-a-dev-worker">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/foundations#run-a-dev-worker">How to run a development Worker using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/foundations#run-a-dev-worker">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/foundations#run-a-dev-worker">How to run a development Worker using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/foundations#run-a-dev-worker">Learn more</a></span></span></a>
+- [How to run a development Worker using the Go SDK](/dev-guide/go/foundations#develop-worker)
+- [How to run a development Worker using the Java SDK](/dev-guide/java/foundations#run-a-dev-worker)
+- [How to run a development Worker using the PHP SDK](/dev-guide/php/foundations#run-a-dev-worker)
+- [How to run a development Worker using the Python SDK](/dev-guide/python/foundations#run-a-dev-worker)
+- [How to run a development Worker using the TypeScript SDK](/dev-guide/typescript/foundations#run-a-dev-worker)
 
-- <a class="tdlp" href="/dev-guide/go/foundations#run-a-temporal-cloud-worker">How to run a Temporal Cloud Worker using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run a Temporal Cloud Worker</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/foundations#run-a-temporal-cloud-worker">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/foundations#run-a-temporal-cloud-worker">How to run a Temporal Cloud Worker using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run a Temporal Cloud Worker</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/foundations#run-a-temporal-cloud-worker">Learn more</a></span></span></a>
+- [How to run a Temporal Cloud Worker using the Go SDK](/dev-guide/go/foundations#run-a-temporal-cloud-worker)
+- [How to run a Temporal Cloud Worker using the TypeScript SDK](/dev-guide/typescript/foundations#run-a-temporal-cloud-worker)
 
 ## What is a Worker Entity? {#worker-entity}
 
@@ -74,7 +74,7 @@ Therefore, a single Worker can handle millions of open Workflow Executions, assu
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Component diagram of a Worker Process and the Temporal Server</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/worker-and-server-component.svg" alt="Component diagram of a Worker Process and the Temporal Server" height="422" width="1200" /></div></div>
 
-A Worker Process is responsible for polling a <a class="tdlp" href="#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#task-queue">Learn more</a></span></span></a>, dequeueing a <a class="tdlp" href="#task">Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task?</span><br /><br /><span class="tdlppd">A Task is the context needed to make progress with a specific Workflow Execution or Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#task">Learn more</a></span></span></a>, executing your code in response to a Task, and responding to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> with the results.
+A Worker Process is responsible for polling a [Task Queue](#task-queue), dequeueing a [Task](#task), executing your code in response to a Task, and responding to the [Temporal Cluster](/clusters#) with the results.
 
 More formally, a Worker Process is any process that implements the Task Queue Protocol and the Task Execution Protocol.
 
@@ -84,12 +84,12 @@ More formally, a Worker Process is any process that implements the Task Queue Pr
   An Activity Worker Process can listen on an arbitrary number of Activity Task Queues and can execute an arbitrary number of Activity Tasks.
 
 **Worker Processes are external to a Temporal Cluster.**
-Temporal Application developers are responsible for developing <a class="tdlp" href="#worker-program">Worker Programs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Program?</span><br /><br /><span class="tdlppd">A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#worker-program">Learn more</a></span></span></a> and operating Worker Processes.
-Said another way, the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> (including the Temporal Cloud) doesn't execute any of your code (Workflow and Activity Definitions) on Temporal Cluster machines. The Cluster is solely responsible for orchestrating <a class="tdlp" href="/workflows#state-transition">State Transitions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a State Transition?</span><br /><br /><span class="tdlppd">A State Transition is a unit of progress by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#state-transition">Learn more</a></span></span></a> and providing Tasks to the next available <a class="tdlp" href="#worker-entity">Worker Entity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Entity?</span><br /><br /><span class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#worker-entity">Learn more</a></span></span></a>.
+Temporal Application developers are responsible for developing [Worker Programs](#worker-program) and operating Worker Processes.
+Said another way, the [Temporal Cluster](/clusters#) (including the Temporal Cloud) doesn't execute any of your code (Workflow and Activity Definitions) on Temporal Cluster machines. The Cluster is solely responsible for orchestrating [State Transitions](/workflows#state-transition) and providing Tasks to the next available [Worker Entity](#worker-entity).
 
 While data transferred in Event Histories is [secured by mTLS](/security/#encryption-of-network-traffic), by default, it is still readable at rest in the Temporal Cluster.
 
-To solve this, Temporal SDKs offer a <a class="tdlp" href="/dataconversion#">Data Converter API<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a> that you can use to customize the serialization of data going out of and coming back in to a Worker Entity, with the net effect of guaranteeing that the Temporal Cluster cannot read sensitive business data.
+To solve this, Temporal SDKs offer a [Data Converter API](/dataconversion#) that you can use to customize the serialization of data going out of and coming back in to a Worker Entity, with the net effect of guaranteeing that the Temporal Cluster cannot read sensitive business data.
 
 In many of our tutorials, we show you how to run both a Temporal Cluster and one Worker on the same machine for local development.
 However, a production-grade Temporal Application typically has a _fleet_ of Worker Processes, all running on hosts external to the Temporal Cluster.
@@ -117,29 +117,29 @@ However, these internal workers are not visible to the developer.
 A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.
 
 - Every time a new external event that might affect a Workflow state is recorded, a Workflow Task that contains the event is added to a Task Queue and then picked up by a Workflow Worker.
-- After the new event is handled, the Workflow Task is completed with a list of <a class="tdlp" href="/workflows#command">Commands<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Command?</span><br /><br /><span class="tdlppd">A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#command">Learn more</a></span></span></a>.
+- After the new event is handled, the Workflow Task is completed with a list of [Commands](/workflows#command).
 - Handling of a Workflow Task is usually very fast and is not related to the duration of operations that the Workflow invokes.
 
 ## What is a Workflow Task Execution? {#workflow-task-execution}
 
-A Workflow Task Execution occurs when a <a class="tdlp" href="#worker-entity">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Entity?</span><br /><br /><span class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#worker-entity">Learn more</a></span></span></a> picks up a <a class="tdlp" href="#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-task">Learn more</a></span></span></a> and uses it to make progress on the execution of a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a> (also known as a Workflow function).
+A Workflow Task Execution occurs when a [Worker](#worker-entity) picks up a [Workflow Task](#workflow-task) and uses it to make progress on the execution of a [Workflow Definition](/workflows#workflow-definition) (also known as a Workflow function).
 
 ## What is an Activity Task? {#activity-task}
 
-An Activity Task contains the context needed to proceed with an <a class="tdlp" href="#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-task-execution">Learn more</a></span></span></a>.
+An Activity Task contains the context needed to proceed with an [Activity Task Execution](#activity-task-execution).
 Activity Tasks largely represent the Activity Task Scheduled Event, which contains the data needed to execute an Activity Function.
 
 If Heartbeat data is being passed, an Activity Task will also contain the latest Heartbeat details.
 
 ## What is an Activity Task Execution? {#activity-task-execution}
 
-An Activity Task Execution occurs when a <a class="tdlp" href="#worker-entity">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Entity?</span><br /><br /><span class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#worker-entity">Learn more</a></span></span></a> uses the context provided from the <a class="tdlp" href="#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-task">Learn more</a></span></span></a> and executes the <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a> (also known as the Activity Function).
+An Activity Task Execution occurs when a [Worker](#worker-entity) uses the context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/activities#activity-definition) (also known as the Activity Function).
 
-The <a class="tdlp" href="/references/events#activitytaskscheduled">ActivityTaskScheduled Event<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskscheduled">Learn more</a></span></span></a> corresponds to when the Temporal Cluster puts the Activity Task into the Task Queue.
+The [ActivityTaskScheduled Event](/references/events#activitytaskscheduled) corresponds to when the Temporal Cluster puts the Activity Task into the Task Queue.
 
-The <a class="tdlp" href="/references/events#activitytaskstarted">ActivityTaskStarted Event<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskstarted">Learn more</a></span></span></a> corresponds to when the Worker picks up the Activity Task from the Task Queue.
+The [ActivityTaskStarted Event](/references/events#activitytaskstarted) corresponds to when the Worker picks up the Activity Task from the Task Queue.
 
-Either <a class="tdlp" href="/references/events#activitytaskcompleted">ActivityTaskCompleted<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskcompleted">Learn more</a></span></span></a> or one of the other Closed Activity Task Events corresponds to when the Worker has yielded back to the Temporal Cluster.
+Either [ActivityTaskCompleted](/references/events#activitytaskcompleted) or one of the other Closed Activity Task Events corresponds to when the Worker has yielded back to the Temporal Cluster.
 
 The API to schedule an Activity Execution provides an "effectively once" experience, even though there may be several Activity Task Executions that take place to successfully complete an Activity.
 
@@ -153,10 +153,7 @@ Once an Activity Task finishes execution, the Worker responds to the Cluster wit
 
 ## What is a Task Queue? {#task-queue}
 
-A Task Queue is a lightweight, dynamically allocated queue that one or more <a class="tdlp" href="#worker-entity">Worker Entities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Entity?</span><br /><br /><span class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#worker-entity">Learn more</a></span></span></a> poll for <a class="tdlp" href="#task">Tasks<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task?</span><br /><br /><span class="tdlppd">A Task is the context needed to make progress with a specific Workflow Execution or Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#task">Learn more</a></span></span></a>.
-
-Task Queues do not have any ordering guarantees.
-It is possible to have a Task that stays in a Task Queue for a period of time, if there is a backlog that wasn't drained for that time.
+A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](#worker-entity) poll for [Tasks](#task).
 
 There are two types of Task Queues, Activity Task Queues and Workflow Task Queues.
 
@@ -172,7 +169,7 @@ This implementation offers several benefits:
 
 - A Worker Process polls for a message only when it has spare capacity, avoiding overloading itself.
 - In effect, Task Queues enable load balancing across many Worker Processes.
-- Task Queues enable what we call <a class="tdlp" href="#task-routing">Task Routing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Task Routing?</span><br /><br /><span class="tdlppd">Task Routing is when a Task Queue is paired with one or more Worker Processes, primarily for Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#task-routing">Learn more</a></span></span></a>, which is the routing of specific Tasks to specific Worker Processes or even a specific process.
+- Task Queues enable what we call [Task Routing](#task-routing), which is the routing of specific Tasks to specific Worker Processes or even a specific process.
 - Task Queues support server-side throttling, which enables you to limit the Task dispatching rate to the pool of Worker Processes while still supporting Task dispatching at higher rates when spikes happen.
 - When all Worker Processes are down, messages simply persist in a Task Queue, waiting for the Worker Processes to recover.
 - Worker Processes do not need to advertise themselves through DNS or any other network discovery mechanism.
@@ -188,22 +185,22 @@ There are four places where the name of the Task Queue can be set by the develop
 1. A Task Queue must be set when spawning a Workflow Execution:
 
 - [How to start a Workflow Execution using tctl](/tctl-v1/workflow#start)
-- <a class="tdlp" href="/dev-guide/go/foundations#start-workflow-execution">How to start a Workflow Execution using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/foundations#start-workflow-execution">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/foundations#start-workflow-execution">How to start a Workflow Execution using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to spawn a Workflow Execution in Java</span><br /><br /><span class="tdlppd">Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/foundations#start-workflow-execution">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/foundations#start-workflow-execution">How to start a Workflow Execution using the PHP SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/foundations#start-workflow-execution">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/foundations#start-workflow-execution">How to start a Workflow Execution using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/foundations#start-workflow-execution">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/foundations#start-workflow-execution">How to start a Workflow Execution using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/foundations#start-workflow-execution">Learn more</a></span></span></a>
+- [How to start a Workflow Execution using the Go SDK](/dev-guide/go/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using the Java SDK](/dev-guide/java/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using the PHP SDK](/dev-guide/php/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using the Python SDK](/dev-guide/python/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using the TypeScript SDK](/dev-guide/typescript/foundations#start-workflow-execution)
 
 2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
 
-- <a class="tdlp" href="/dev-guide/go/foundations#develop-worker">How to run a development Worker using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker in Go</span><br /><br /><span class="tdlppd">Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/foundations#develop-worker">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/foundations#run-a-dev-worker">How to run a development Worker using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker Program in Java</span><br /><br /><span class="tdlppd">Use the `newWorker` method on an instance of a `WorkerFactory` to create a new Worker in Java.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/foundations#run-a-dev-worker">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/foundations#run-a-dev-worker">How to run a development Worker using the PHP SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/foundations#run-a-dev-worker">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/foundations#run-a-dev-worker">How to run a development Worker using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/foundations#run-a-dev-worker">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/foundations#run-a-dev-worker">How to run a development Worker using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/foundations#run-a-dev-worker">Learn more</a></span></span></a>
+- [How to run a development Worker using the Go SDK](/dev-guide/go/foundations#develop-worker)
+- [How to run a development Worker using the Java SDK](/dev-guide/java/foundations#run-a-dev-worker)
+- [How to run a development Worker using the PHP SDK](/dev-guide/php/foundations#run-a-dev-worker)
+- [How to run a development Worker using the Python SDK](/dev-guide/python/foundations#run-a-dev-worker)
+- [How to run a development Worker using the TypeScript SDK](/dev-guide/typescript/foundations#run-a-dev-worker)
 
-- <a class="tdlp" href="/dev-guide/go/foundations#run-a-temporal-cloud-worker">How to run a Temporal Cloud Worker using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run a Temporal Cloud Worker</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/foundations#run-a-temporal-cloud-worker">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/foundations#run-a-temporal-cloud-worker">How to run a Temporal Cloud Worker using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run a Temporal Cloud Worker</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/foundations#run-a-temporal-cloud-worker">Learn more</a></span></span></a>
+- [How to run a Temporal Cloud Worker using the Go SDK](/dev-guide/go/foundations#run-a-temporal-cloud-worker)
+- [How to run a Temporal Cloud Worker using the TypeScript SDK](/dev-guide/typescript/foundations#run-a-temporal-cloud-worker)
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -215,35 +212,54 @@ However, the failure of the Task will not cause the associated Workflow Executio
 This is optional.
 An Activity Execution inherits the Task Queue name from its Workflow Execution if one is not provided.
 
-- <a class="tdlp" href="/dev-guide/go/foundations#activity-execution">How to start an Activity Execution using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start an Activity Execution</span><br /><br /><span class="tdlppd">Calls to spawn Activity Executions are written within a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/foundations#activity-execution">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/foundations#activity-execution">How to start an Activity Execution using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start an Activity Execution</span><br /><br /><span class="tdlppd">Calls to spawn Activity Executions are written within a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/foundations#activity-execution">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/foundations#activity-execution">How to start an Activity Execution using the PHP SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start an Activity Execution</span><br /><br /><span class="tdlppd">Calls to spawn Activity Executions are written within a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/foundations#activity-execution">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/foundations#activity-execution">How to start an Activity Execution using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start an Activity Execution</span><br /><br /><span class="tdlppd">Calls to spawn Activity Executions are written within a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/foundations#activity-execution">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/foundations#activity-execution">How to start an Activity Execution using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start an Activity Execution</span><br /><br /><span class="tdlppd">Calls to spawn Activity Executions are written within a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/foundations#activity-execution">Learn more</a></span></span></a>
+- [How to start an Activity Execution using the Go SDK](/dev-guide/go/foundations#activity-execution)
+- [How to start an Activity Execution using the Java SDK](/dev-guide/java/foundations#activity-execution)
+- [How to start an Activity Execution using the PHP SDK](/dev-guide/php/foundations#activity-execution)
+- [How to start an Activity Execution using the Python SDK](/dev-guide/python/foundations#activity-execution)
+- [How to start an Activity Execution using the TypeScript SDK](/dev-guide/typescript/foundations#activity-execution)
 
 4. A Task Queue name can be provided when spawning a Child Workflow Execution:
 
 This is optional.
 A Child Workflow Execution inherits the Task Queue name from its Parent Workflow Execution if one is not provided.
 
-- <a class="tdlp" href="/dev-guide/go/features#child-workflows">How to start a Child Workflow Execution using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Child Workflow Execution</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#child-workflows">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/java/features#child-workflows">How to start a Child Workflow Execution using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Child Workflow Execution</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#child-workflows">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/php/features#child-workflows">How to start a Child Workflow Execution using the PHP SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Child Workflow Execution</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/php/features#child-workflows">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/python/features#child-workflows">How to start a Child Workflow Execution using the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Child Workflow Execution</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/python/features#child-workflows">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/typescript/features#child-workflows">How to start a Child Workflow Execution using the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Child Workflow Execution</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/features#child-workflows">Learn more</a></span></span></a>
+- [How to start a Child Workflow Execution using the Go SDK](/dev-guide/go/features#child-workflows)
+- [How to start a Child Workflow Execution using the Java SDK](/dev-guide/java/features#child-workflows)
+- [How to start a Child Workflow Execution using the PHP SDK](/dev-guide/php/features#child-workflows)
+- [How to start a Child Workflow Execution using the Python SDK](/dev-guide/python/features#child-workflows)
+- [How to start a Child Workflow Execution using the TypeScript SDK](/dev-guide/typescript/features#child-workflows)
+
+#### Task ordering
+
+Task Queues can be scaled by adding partitions.
+The [default](/references/dynamic-configuration#service-level-rps-limits) number of partitions is 4.
+
+Task Queues with multiple partitions do not have any ordering guarantees.
+Once there is a backlog of Tasks that have been written to disk, Tasks that can be dispatched immediately (“sync matches”) are delivered before tasks from the backlog (“async matches”).
+This approach optimizes throughput.
+
+Task Queues with a single partition are almost always first-in, first-out, with rare edge case exceptions.
+However, using a single partition limits you to low- and medium-throughput use cases.
+
+:::note
+
+This section is on the ordering of individual Tasks, and does not apply to the ordering of Workflow Executions, Activity Executions, or [Events](/workflows#event) in a single Workflow Execution.
+The order of Events in a Workflow Execution is guaranteed to remain constant once they have been written to that Workflow Execution's [History](/workflows#event-history).
+
+:::
 
 ## What is a Sticky Execution? {#sticky-execution}
 
-A Sticky Execution is when a Worker Entity caches the Workflow Execution Event History and creates a dedicated Task Queue to listen on.
+A Sticky Execution is when a Worker Entity caches the Workflow in memory and creates a dedicated Task Queue to listen on.
 
 A Sticky Execution occurs after a Worker Entity completes the first Workflow Task in the chain of Workflow Tasks for the Workflow Execution.
 
-The Worker Entity caches the Workflow Execution Event History and begins polling the dedicated Task Queue for Workflow Tasks that contain updates, rather than the entire Event History.
+The Worker Entity caches the Workflow in memory and begins polling the dedicated Task Queue for Workflow Tasks that contain updates, rather than the entire Event History.
 
 If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Cluster will resume Scheduling Workflow Tasks on the original Task Queue.
 Another Worker Entity can then resume the Workflow Execution, and can set up its own Sticky Execution for future Workflow Tasks.
 
-- <a class="tdlp" href="/dev-guide/go/foundations#stickyscheduletostarttimeout">How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set WorkerOptions in Go</span><br /><br /><span class="tdlppd">Create an instance of `Options` from the `go.temporal.io/sdk/worker` package, set any of the optional fields, and pass the instance to the `New` call.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/foundations#stickyscheduletostarttimeout">Learn more</a></span></span></a>
+- [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](/dev-guide/go/foundations#stickyscheduletostarttimeout)
 
 Sticky Executions are the default behavior of the Temporal Platform.
 
@@ -255,7 +271,7 @@ This could also mean employing multiple Task Queues, each one paired with a Work
 
 Task Routing has many applicable use cases.
 
-Some SDKs provide a <a class="tdlp" href="#worker-session">Session API<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Session?</span><br /><br /><span class="tdlppd">A Worker Session is a feature provided by some SDKs that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#worker-session">Learn more</a></span></span></a> that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
+Some SDKs provide a [Session API](#worker-session) that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 It also includes features like concurrent session limitations and worker failure detection.
 
 ### Flow control
@@ -322,10 +338,10 @@ If you have a new backward-incompatible Activity Definition, start by using a di
 
 ### What is a Worker Session? {#worker-session}
 
-A Worker Session is a feature provided by some SDKs that provides a straightforward API for <a class="tdlp" href="#task-routing">Task Routing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Task Routing?</span><br /><br /><span class="tdlppd">Task Routing is when a Task Queue is paired with one or more Worker Processes, primarily for Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#task-routing">Learn more</a></span></span></a> to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
+A Worker Session is a feature provided by some SDKs that provides a straightforward API for [Task Routing](#task-routing) to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 It also includes features like concurrent session limitations and Worker failure detection.
 
-- <a class="tdlp" href="/dev-guide/go/features#worker-sessions">How to use Worker Sessions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Worker Session APIs</span><br /><br /><span class="tdlppd">To use Worker Sessions for Activity Executions the Worker must be enabled to use Sessions for the Workflows and Activities it is registered with.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#worker-sessions">Learn more</a></span></span></a>
+- [How to use Worker Sessions](/dev-guide/go/features#worker-sessions)
 
 ## What is Worker Versioning? {#worker-versioning}
 
@@ -335,6 +351,7 @@ It also includes features like concurrent session limitations and Worker failure
 - Available in CLI version [0.10.0](https://github.com/temporalio/cli/releases/tag/v0.10.0)
 - Available in [Go SDK](/dev-guide/go/versioning#worker-versioning) version [1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
 - Available in [Java SDK](/dev-guide/java/versioning#worker-versioning) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+- Available in [TypeScript SDK](/dev-guide/typescript/versioning#worker-versioning) version [1.8.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.8.0)
 - Available in [Python SDK](https://python.temporal.io/temporalio.worker.Worker.html) version [1.3.0](https://github.com/temporalio/sdk-python/releases/tag/1.3.0)
 - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Worker.TemporalWorkerOptions.html#Temporalio_Worker_TemporalWorkerOptions_UseWorkerVersioning) version [0.1.0-beta1](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta1)
 - Not yet available in Temporal Cloud
@@ -533,7 +550,7 @@ You can use the Temporal CLI to do this with the following command:
 temporal task-queue get-build-id-reachability
 ```
 
-The command determines, for each Task Queue, whether the Build ID in question is unreachable, only reachable by closed Workflows, or reachable by open and new Workfloww.
+The command determines, for each Task Queue, whether the Build ID in question is unreachable, only reachable by closed Workflows, or reachable by open and new Workflows.
 For example, this "2.0" Build ID is shown here by the CLI to be reachable by both new Workflows and some existing Workflows:
 
 ```command
@@ -554,3 +571,7 @@ You can also use this API `GetWorkerTaskReachability` directly from within langu
 
 Unversioned Workers refer to Workers that have not opted into the Worker Versioning feature in their configuration.
 They receive tasks only from Task Queues that do not have any version sets defined on them, or that have open workflows that began executing before versions were added to the queue.
+
+To migrate from an unversioned Task Queue, add a new default Build ID to the Task Queue.
+From there, deploy Workers with the same Build ID.
+Unversioned Workers will continue processing open Workflows, while Workers with the new Build ID will process new Workflow Executions.

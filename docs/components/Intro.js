@@ -373,8 +373,7 @@ function Explained() {
         <ul className="landing-card-list">{displayLinks(appDevGuideLinks.listTwo)}</ul>
         <p className="landing-card-p mt-4 mb-0">
           For our .NET SDK, see the <a href="https://github.com/temporalio/sdk-dotnet#readme">README</a> and{" "}
-          <a href="https://dotnet.temporal.io/">API reference</a>.<br />
-          For our Ruby SDK, see the <a href="https://github.com/temporalio/sdk-ruby#readme">README</a>.
+          <a href="https://dotnet.temporal.io/">API reference</a>.
         </p>
       </div>
       <div className="landing-card-section">
@@ -466,7 +465,7 @@ function SDKs() {
           <ul className="flex flex-col space-y-2">
             {/* <ul className="grid grid-cols-2 gap-6 xl:gap-8"> */}
             <li className="">
-              <Link className="flex items-center space-x-5" to={useBaseUrl("/php/introduction")}>
+              <Link className="flex items-center space-x-5" to={useBaseUrl("/dev-guide/php")}>
                 <div className="flex items-center space-x-3 hover:underline">
                   <img className="h-8 w-8 transition hover:scale-110 code-logo" src="/img/php.svg" alt="PHP logo" />
                   <p className="font-normal">PHP</p>{" "}

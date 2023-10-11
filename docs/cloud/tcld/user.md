@@ -2,7 +2,7 @@
 id: user
 title: tcld user command reference
 sidebar_label: user
-description: How to use Temporal Cloud's tcld user command
+description: The Temporal Cloud CLI (tcld) lets you manage users in Temporal Cloud. Invite, list, and delete users and set account-level Roles and Namespace-level permissions.
 toc_max_heading_level: 4
 keywords:
 - cli reference
@@ -21,13 +21,13 @@ The `tcld user` commands manage users in Temporal Cloud.
 
 Alias: `u`
 
-- <a class="tdlp" href="#delete">tcld user delete<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user delete</span><br /><br /><span class="tdlppd">How to delete users in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#delete">Learn more</a></span></span></a>
-- <a class="tdlp" href="#get">tcld user get<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user get</span><br /><br /><span class="tdlppd">How to get user information in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#get">Learn more</a></span></span></a>
-- <a class="tdlp" href="#invite">tcld user invite<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user invite</span><br /><br /><span class="tdlppd">How to invite users to join Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#invite">Learn more</a></span></span></a>
-- <a class="tdlp" href="#list">tcld user list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user list</span><br /><br /><span class="tdlppd">How to list users in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list">Learn more</a></span></span></a>
-- <a class="tdlp" href="#resend-invite">tcld user resend-invite<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user resend-invite</span><br /><br /><span class="tdlppd">How to resend an invitation to a user in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#resend-invite">Learn more</a></span></span></a>
-- <a class="tdlp" href="#set-account-role">tcld user set-account-role<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user set-account-role</span><br /><br /><span class="tdlppd">How to set an account-level Role for a user in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#set-account-role">Learn more</a></span></span></a>
-- <a class="tdlp" href="#set-namespace-permissions">tcld user set-namespace-permissions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user set-namespace-permissions</span><br /><br /><span class="tdlppd">How to set Namespace-level permissions for a user in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#set-namespace-permissions">Learn more</a></span></span></a>
+- [tcld user delete](#delete)
+- [tcld user get](#get)
+- [tcld user invite](#invite)
+- [tcld user list](#list)
+- [tcld user resend-invite](#resend-invite)
+- [tcld user set-account-role](#set-account-role)
+- [tcld user set-namespace-permissions](#set-namespace-permissions)
 
 ## delete
 
