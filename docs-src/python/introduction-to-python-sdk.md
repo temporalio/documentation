@@ -9,7 +9,7 @@ tags:
 
 Welcome to Temporal Python SDK developer's guide!
 
-:::success Temporal Python SDK API reference
+:::info Temporal Python SDK API reference
 
 [python.temporal.io](https://python.temporal.io/)
 

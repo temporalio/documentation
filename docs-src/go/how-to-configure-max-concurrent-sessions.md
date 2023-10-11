@@ -19,7 +19,13 @@ By default, this field is set to a very large value, so there's no need to manua
 If a Worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed.
 If the session can't be created within `CreationTimeout`, `CreateSession()` returns an error .
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/sessions/worker/main_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/sessions/worker/main_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 func main() {

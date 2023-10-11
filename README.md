@@ -142,6 +142,8 @@ Find the source node in the `docs-src` directory.
 Make your changes in the *source files* named in the configuration file.
 For instance, if you find a typo under "What is a Task?" (located in the Workers section of the Temporal docs website), open [docs/concepts/what-is-a-task.md](https://github.com/temporalio/documentation/blob/main/docs/concepts/what-is-a-task.md) and make the edit directly there.
 
+Since the next set of steps requires a local Temporal Cluster, make sure that you have one running before you continue. We recommend executing the `temporal server start-dev` command to start a local cluster if you don't already have one running. If the cluster is not running, then the `./worker.js` command below will fail with a "Connection refused" error.
+
 Open a new terminal. In the `assembly` directory, start the Worker.
 
 ```bash
