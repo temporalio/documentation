@@ -2,7 +2,7 @@
 id: foundations
 title: TypeScript SDK developer's guide - Foundations
 sidebar_label: Foundations
-sidebar_position: 1
+sidebar_position: 2
 description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/typescript/foundations
 toc_max_heading_level: 2
@@ -221,7 +221,7 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 
 :::
 
-When you are running a Cluster locally (such as [Temporalite](/kb/all-the-ways-to-run-a-cluster#temporalite)), the number of connection options you must provide is minimal.
+When you are running a Cluster locally (such as the [Temporal CLI](/kb/all-the-ways-to-run-a-cluster#temporal-cli)), the number of connection options you must provide is minimal.
 Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](/kb/all-the-ways-to-run-a-cluster#docker-compose) serve (`127.0.0.1:7233`).
 
 Creating a [Connection](https://typescript.temporal.io/api/classes/client.Connection) connects to the Temporal Cluster, and you can pass the `Connection` instance when creating the [Client](https://typescript.temporal.io/api/classes/client.Client#connection).

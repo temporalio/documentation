@@ -124,14 +124,45 @@ Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** claus
 
 ### Partial string match
 
-The `=` operator works similarly to **CONTAINS**, helping to find Workflows with Search Attributes containing a specific word.
-Partial string matching applies only to locating Text Search Attributes.
+There are different options for partial string matching when the type of the Search Attribute is [Text](#text) versus [Keyword](#keyword).
 
-<!-- note: advanced vis features will be supported in SQL upon the release of v1.20.-->
+#### Text
 
-For example, if you have a custom Search Attribute named `Description` of `Text` type with the value "The quick brown fox jumps over the lazy dog", a search for `Description='quick'` or `Description='fox'` successfully returns the Workflow.
-However, searches for partial words like `Description='qui'` or `Description='laz'` won't return the Workflow.
-This limitation arises because [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
+Search Attributes of type `Text` are [broken up into words](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) that match with the `=` operator.
+
+For example, if you have a custom `Text` Search Attribute named `Description` with either of the following values—
+
+```
+my-business-id-foobar
+my business id foobar
+```
+
+—then the following List Filter matches—
+
+```
+Description = 'foobar'
+```
+
+—but a partial word does not:
+
+```
+// Doesn't match
+Description = 'foo'
+```
+
+#### Keyword
+
+For Search Attributes of type `Keyword` like `WorkflowId`, the only kind of partial string matching that works is using BETWEEN for suffixes.
+
+`WorkflowId BETWEEN "order-" AND "order-~"` matches WorkflowIds that have characters after `order-` with ASCII values lower than `~` (126, the highest-value printable character), such as the following:
+
+```
+order-
+order-1234
+order-abracadabra
+```
+
+It does not match `order-~~`.
 
 ### Efficient API usage
 
@@ -365,6 +396,8 @@ Default total maximum number of Search Attribute **keys** per Temporal Cluster i
 <!-- temp keeping for reference
 This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
 -->
+
+For Temporal Cloud specific configurations, see the [Default limits](/cloud/operating-envelope#what-are-the-default-maximum-numbers-of-custom-search-attributes) sheet.
 
 ### Usage
 

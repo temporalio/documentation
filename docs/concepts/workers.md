@@ -155,9 +155,6 @@ Once an Activity Task finishes execution, the Worker responds to the Cluster wit
 
 A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](#worker-entity) poll for [Tasks](#task).
 
-Task Queues do not have any ordering guarantees.
-It is possible to have a Task that stays in a Task Queue for a period of time, if there is a backlog that wasn't drained for that time.
-
 There are two types of Task Queues, Activity Task Queues and Workflow Task Queues.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Task Queue component</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/task-queue.svg" alt="Task Queue component" height="500" width="952" /></div></div>
@@ -232,13 +229,32 @@ A Child Workflow Execution inherits the Task Queue name from its Parent Workflow
 - [How to start a Child Workflow Execution using the Python SDK](/dev-guide/python/features#child-workflows)
 - [How to start a Child Workflow Execution using the TypeScript SDK](/dev-guide/typescript/features#child-workflows)
 
+#### Task ordering
+
+Task Queues can be scaled by adding partitions.
+The [default](/references/dynamic-configuration#service-level-rps-limits) number of partitions is 4.
+
+Task Queues with multiple partitions do not have any ordering guarantees.
+Once there is a backlog of Tasks that have been written to disk, Tasks that can be dispatched immediately (“sync matches”) are delivered before tasks from the backlog (“async matches”).
+This approach optimizes throughput.
+
+Task Queues with a single partition are almost always first-in, first-out, with rare edge case exceptions.
+However, using a single partition limits you to low- and medium-throughput use cases.
+
+:::note
+
+This section is on the ordering of individual Tasks, and does not apply to the ordering of Workflow Executions, Activity Executions, or [Events](/workflows#event) in a single Workflow Execution.
+The order of Events in a Workflow Execution is guaranteed to remain constant once they have been written to that Workflow Execution's [History](/workflows#event-history).
+
+:::
+
 ## What is a Sticky Execution? {#sticky-execution}
 
-A Sticky Execution is when a Worker Entity caches the Workflow Execution Event History and creates a dedicated Task Queue to listen on.
+A Sticky Execution is when a Worker Entity caches the Workflow in memory and creates a dedicated Task Queue to listen on.
 
 A Sticky Execution occurs after a Worker Entity completes the first Workflow Task in the chain of Workflow Tasks for the Workflow Execution.
 
-The Worker Entity caches the Workflow Execution Event History and begins polling the dedicated Task Queue for Workflow Tasks that contain updates, rather than the entire Event History.
+The Worker Entity caches the Workflow in memory and begins polling the dedicated Task Queue for Workflow Tasks that contain updates, rather than the entire Event History.
 
 If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Cluster will resume Scheduling Workflow Tasks on the original Task Queue.
 Another Worker Entity can then resume the Workflow Execution, and can set up its own Sticky Execution for future Workflow Tasks.
@@ -555,3 +571,7 @@ You can also use this API `GetWorkerTaskReachability` directly from within langu
 
 Unversioned Workers refer to Workers that have not opted into the Worker Versioning feature in their configuration.
 They receive tasks only from Task Queues that do not have any version sets defined on them, or that have open workflows that began executing before versions were added to the queue.
+
+To migrate from an unversioned Task Queue, add a new default Build ID to the Task Queue.
+From there, deploy Workers with the same Build ID.
+Unversioned Workers will continue processing open Workflows, while Workers with the new Build ID will process new Workflow Executions.

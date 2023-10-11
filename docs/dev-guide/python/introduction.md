@@ -16,16 +16,16 @@ tags:
 
 Welcome to Temporal Python SDK developer's guide!
 
-:::success Temporal Python SDK API reference
+:::info Temporal Python SDK API reference
 
-https://python.temporal.io/
+[python.temporal.io](https://python.temporal.io/)
 
 :::
 
 The Temporal Python SDK released on March 18, 2022.
 The Python SDK provides access to the Temporal programming model using idiomatic Python programming paradigms.
 
-### What Python programming skills and experiences are useful when using the Python SDK?
+### What Python programming skills and experiences are useful when using the Python SDK? {#skills}
 
 You can start working with the SDK with only Python knowledge.
 Temporal abstracts much of the complexity of distributed systems, but to unlock its full potential, having a broad base of knowledge will help you design more efficient and resilient systems.
@@ -102,14 +102,14 @@ For complex and large-scale use cases, having some experience with the following
 - Handling PII and sensitive information
 - Encryption and secure coding practices
 
-### Where can I find code samples?
+### Where can I find code samples? {#samples}
 
 Code samples are integrated into this developer’s guide.
 You can find those code samples in the [temporalio/documentation-samples-python](https://github.com/temporalio/documentation-samples-python) repository on GitHub.
 
 Additional Python code samples are in the [temporalio/samples-python](https://github.com/temporalio/samples-python) repository on GitHub.
 
-### What are other resources for learning how to use the Python SDK?
+### What are other resources for learning how to use the Python SDK? {#resources}
 
 - [Temporal 101 with Python](https://learn.temporal.io/courses/temporal_101/python)
 - [Python tutorials](https://learn.temporal.io/tutorials/python/)
@@ -120,14 +120,21 @@ Additional Python code samples are in the [temporalio/samples-python](https://gi
   - [Temporal Python 1.0.0 – A Durable, Distributed Asyncio Event Loop](https://temporal.io/blog/durable-distributed-asyncio-event-loop)
   - [Python SDK: Your first Application](https://temporal.io/blog/python-sdk-your-first-application)
 
-### What are the supported Python versions?
+### What are the supported Python versions? {#python-versions}
 
 - Python 3.7+
 
-### How to contribute to the Temporal Python SDK
+## Where can I get help with using the Python SDK? {#help}
+
+- _#python-sdk_ channel in [Temporal Slack](https://t.mp/slack)
+- [Community Forum](https://community.temporal.io/tag/python-sdk)
+
+## How to follow updates to the Python SDK {#updates}
+
+- The [Temporal newsletter](https://t.mp/news) includes major SDK updates.
+- [GitHub Releases](https://github.com/temporalio/sdk-python/releases) has all SDK releases. It also has a feed that can be added to a feed reader or [converted to emails](https://blogtrottr.com/): `https://github.com/temporalio/sdk-python/releases.atom`.
+
+### How to contribute to the Python SDK {#contribute}
 
 The Temporal Python SDK is MIT licensed, and contributions are welcome.
-Join us in the #python-sdk channel in [Temporal Slack](https://t.mp/slack) or ask questions in the [Community Forum](https://community.temporal.io/)
-
-We'd love your help in improving the Temporal Python SDK.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-python#development).

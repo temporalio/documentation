@@ -1,0 +1,99 @@
+{
+    "file_name": "project-setup.md",
+    "id": "project-setup",
+    "slug": "/dev-guide/go/project-setup",
+    "file_dir": "dev-guide/golang",
+    "title": "Go SDK developer's guide - Project setup",
+    "sidebar_label": "Project setup",
+    "sidebar_position": 2,
+    "description": "The project setup section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go—that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "go/project-setup-introduction"
+        },
+        {
+            "type": "h2",
+            "id": "go/install-cli"
+        },
+        {
+            "type": "h2",
+            "id": "go/choose-dev-cluster"
+        },
+        {
+            "type": "h2",
+            "id": "go/project-structure"
+        },
+        {
+            "type": "h3",
+            "id": "go/backgroundcheck-boilerplate-backgroundcheck-workflow"
+        },
+        {
+            "type": "p",
+            "id": "go/backgroundcheck-boilerplate-workflow-details"
+        },
+        {
+            "type": "h3",
+            "id": "go/backgroundcheck-boilerplate-ssntrace-activity"
+        },
+        {
+            "type": "p",
+            "id": "go/backgroundcheck-boilerplate-activity-details"
+        },
+        {
+            "type": "h3",
+            "id": "go/backgroundcheck-boilerplate-run-a-dev-server-worker"
+        },
+        {
+            "type": "p",
+            "id": "go/auto-restart-worker-tip"
+        },
+        {
+            "type": "h3",
+            "id": "go/backgroundcheck-boilerplate-cloud-worker"
+        },
+        {
+            "type": "p",
+            "id": "go/backgroundcheck-boilerplate-cloud-worker-details"
+        },
+        {
+            "type": "h3",
+            "id": "go/self-hosted-worker-docker-network"
+        },
+        {
+            "type": "h4",
+            "id": "go/backgroundcheck-boilerplate-self-hosted-worker"
+        },
+        {
+            "type": "h4",
+            "id": "go/self-hosted-worker-dockerfile"
+        },
+        {
+            "type": "h2",
+            "id": "go/backgroundcheck-boilerplate-start-workflow"
+        },
+        {
+            "type": "h2",
+            "id": "go/backgroundcheck-boilerplate-add-test-framework"
+        },
+        {
+            "type": "p",
+            "id": "go/backgroundcheck-boilerplate-add-test-framework-details"
+        },
+        {
+            "type": "h3",
+            "id": "go/backgroundcheck-boilerplate-add-workflow-tests"
+        },
+        {
+            "type": "p",
+            "id": "go/backgroundcheck-boilerplate-add-workflow-test-details"
+        },
+        {
+            "type": "h3",
+            "id": "go/backgroundcheck-boilerplate-add-activity-tests"
+        }
+    ]
+}

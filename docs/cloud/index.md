@@ -19,7 +19,7 @@ tags:
 
 Temporal Cloud is offered in units of isolation known as [Namespaces](/namespaces). You can provision and use one or more Cloud Namespaces. A typical use case is to use separate Namespaces as development, testing, integration, staging, and production environments for an application.
 
-:::success Sign up for Temporal Cloud!
+:::tip Sign up for Temporal Cloud!
 
 To request a Temporal Cloud account, complete the [request form](https://pages.temporal.io/cloud-request-access).
 
