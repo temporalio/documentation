@@ -9,7 +9,7 @@ tags:
   - guide structure
 ---
 
-:::success Temporal Python SDK API reference
+:::info Temporal Python SDK API reference
 
 https://python.temporal.io/
 

@@ -29,7 +29,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-:::success Temporal CLI is now available!
+:::info Temporal CLI is now available!
 
 The new [Temporal CLI](/cli) is available for use.
 

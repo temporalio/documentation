@@ -4,13 +4,13 @@ title: Temporal CLI is now available
 sidebar_label: CLI (temporal)
 description: Temporal CLI is now available for use.
 tags:
-    - cli
-    - temporal cli
-    - temporal
-    - temporal server
+  - cli
+  - temporal cli
+  - temporal
+  - temporal server
 ---
 
-:::success Temporal CLI is now available!
+:::info Temporal CLI is now available!
 
 The new [Temporal CLI](/cli) is available for use.
 

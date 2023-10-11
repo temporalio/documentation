@@ -305,18 +305,23 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 
 ### Limits
 
-Each pending Activity generates a metadata entry in the Workflow's mutable state.
-Too many entries create a large mutable state, which causes unstable persistence.
+There is no limit to the number of concurrent Workflow Executions.
 
-To protect the system, Temporal enforces a maximum number (2,000 by default) of pending Activities, Child Workflows, Signals, or Cancellation requests per Workflow.
+However, there is a limit to the length and size of a Workflow Execution's Event History (by default, [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) and [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380)).
+
+There is also a limit to the number of certain types of incomplete operations.
+
+Each in-progress Activity generates a metadata entry in the Workflow Execution's mutable state.
+Too many entries in a single Workflow Execution's mutable state causes unstable persistence.
+To protect the system, Temporal enforces a maximum number of incomplete Activities, Child Workflows, Signals, or Cancellation requests per Workflow Execution (by default, 2,000 for each type of operation).
+Once the limit is reached for a type of operation, if the Workflow Execution attempts to start another operation of that type (by producing a `ScheduleActivityTask`, `StartChildWorkflowExecution`, `SignalExternalWorkflowExecution`, or `RequestCancelExternalWorkflowExecution` Command), it will be unable to (the Workflow Task Execution will fail and get retried).
+
 These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/master/service/history/configs/config.go):
 
 - `NumPendingActivitiesLimit`
 - `NumPendingChildExecutionsLimit`
 - `NumPendingSignalsLimit`
 - `NumPendingCancelRequestsLimit`
-
-By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass any of these limits (by producing enough `ScheduleActivityTask`, `StartChildWorkflowExecution`, `SignalExternalWorkflowExecution`, or `RequestCancelExternalWorkflowExecution` Commands to exceed a limit).
 
 ### What is a Command? {#command}
 
@@ -585,7 +590,7 @@ A Signal must include a destination (Namespace and Workflow Id) and name.
 It can include a list of arguments.
 
 Signal handlers are Workflow functions that listen for Signals by the Signal name.
-Signals are delivered in the order they are received by the Cluster.
+Signals are delivered in the order they are received by the Cluster and written to History.
 If multiple deliveries of a Signal would be a problem for your Workflow, add idempotency logic to your Signal handler that checks for duplicates.
 
 [^1]: The Cluster usually deduplicates Signals, but does not guarantee deduplication: During shard migration, two Signal Events (and therefore two deliveries to the Workflow Execution) can be recorded for a single Signal because the deduping info is stored only in memory.
@@ -676,7 +681,7 @@ You can think of an Update as a synchronous, blocking call that could replace bo
 - The logical model of a Signal with the overhead and latency of a Query
 
 The Workflow must have a function to handle the Update.
-Unlike a [Signal](#signal) handler, the Update handler function can mutate the state of the Workflow while also returning a value to the caller.
+Unlike a [Signal](#signal) handler, the Update handler function can return a value to the caller.
 The Update handler listens for Updates by the Update's name.
 
 When there is the potential for multiple Updates to cause a duplication problem, Temporal recommends adding idempotency logic to your Update handler that checks for duplicates.
@@ -954,8 +959,8 @@ The following options are available:
 
 The Temporal Cluster might be down or unavailable at the time when a Schedule should take an Action.
 When it comes back up, the Catchup Window controls which missed Actions should be taken at that point.
-The default is one minute, which means that the Schedule attempts to take any Actions that wouldn't be more than one minute late.
-An outage that lasts longer than the Catchup Window could lead to missed Actions.
+The default is one year, meaning Actions will be taken unless over one year late.
+If your Actions are more time-sensitive, you can set the Catchup Window to a smaller value (minimum ten seconds), accepting that an outage longer than the window could lead to missed Actions.
 (But you can always [Backfill](#backfill).)
 
 #### Pause-on-failure
