@@ -20,8 +20,7 @@ However, if you can't find what you are looking for there, we recommend checking
 
 An Activity is a manifestation of a particular Task in the business logic.
 
-Activities are defined as methods of a plain PHP interface annotated with `#[ActivityInterface]` (you can use PHP 8 attributes
-in PHP7 as well).
+Activities are defined as methods of a plain PHP interface annotated with the `#[ActivityInterface]` attribute.
 
 Each method defines a single Activity type.
 A single Workflow can use more than one Activity interface and call more that one Activity method from the same interface.
@@ -49,9 +48,9 @@ interface FileProcessingActivities
 We recommend to use a single value type argument for Activity methods.
 In this way, adding new arguments as fields to the value type is a backwards-compatible change.
 
-An optional `#[ActivityMethod]` annotation can be used to override a default Activity name.
+An optional `#[ActivityMethod]` attribute can be used to override a default Activity name.
 
-Option `prefix` of `ActivityInterface` annotation will allow you to define your own prefix for all activity names (by
+Option `prefix` of `ActivityInterface` attribute will allow you to define your own prefix for all activity names (by
 default it's empty).
 
 ```php
