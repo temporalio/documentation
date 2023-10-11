@@ -61,7 +61,7 @@ If your Payload is _not_ encoded, we recommend passing the unencoded data to the
 Examples for implementing encryption:
 
 - [Go sample](https://github.com/temporalio/samples-go/tree/main/encryption)
-- [Java sample](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/encryptedpayloads)
+- [Java sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads)
 - [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
 - [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)
 
@@ -183,7 +183,7 @@ The Payload Codec does byte-to-byte conversion and must be set with a Data Conve
 
 Define custom encryption/compression logic in your `encode` method and decryption/decompression logic in your `decode` method.
 
-The following example from the [Java encryption sample](https://github.com/temporalio/samples-java/blob/main/src/main/java/io/temporal/samples/encryptedpayloads/CryptCodec.java) shows how to implement encryption and decryption logic on your payloads in your `encode` and `decode` methods.
+The following example from the [Java encryption sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads/CryptCodec.java) shows how to implement encryption and decryption logic on your payloads in your `encode` and `decode` methods.
 
 ```java
 class YourCustomPayloadCodec implements PayloadCodec {
@@ -303,7 +303,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 
 For example implementations, see the following samples:
 
-- [Encrypted Payloads](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/encryptedpayloads)
+- [Encrypted Payloads](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads)
 - [Remote Data Encoder and Codec Server](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)
 
 </TabItem>
@@ -438,10 +438,7 @@ Use the access tokens to validate access and then return decoded payloads from t
 You can enable this by selecting **Pass access token** in your Codec Server endpoint interface where you add your endpoint.
 Enabling this option in the Temporal Cloud UI adds an authorization header to each request sent to the Codec Server endpoint that you set.
 
-In your Codec Server implementation, verify the signature on this access token (in your authorization header) against the JWKS endpoint provided to you.
-
-<!--Update: the JWKS link is provided in the UI onboarding content for now.
-Is this process defined? when a customer signs up for temporal cloud, do we provide them with the JWKS as part of the onboarding process? also the JWKS endpoint is rate-limited - something we should call out when providing the link to users.-->
+In your Codec Server implementation, verify the signature on this access token (in your authorization header) against [our JWKS endpoint](https://login.tmprl.cloud/.well-known/jwks.json).
 
 <!-- Commenting this for now.-->
 <!--If you want to unpack the claims in your token to add additional checks on whether the user has valid access to the Namespace and payloads they are trying to access, you can implement it using Auth0 SDKs, middleware, or one of the third-party libraries at JWT.io.-->

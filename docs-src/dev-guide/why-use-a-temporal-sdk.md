@@ -36,7 +36,7 @@ func LoanApplicationWorkflow {
 }
 ```
 
-For instance, Temporal SDKs provide libraries for Workflow and Activities incorporate built-in support for handling failures, timeouts, and retries.
+For instance, Temporal SDKs have built-in support for handling failures, timeouts, and retries.
 In the event of an Activity failure, the SDK automatically initiates retries according to configurable policies established by the developer within the SDK. This streamlined process simplifies the integration of fault-tolerance mechanisms into applications.
 
 :::caution Do not copy and use code
