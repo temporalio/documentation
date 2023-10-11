@@ -147,6 +147,10 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 
 There is no limit to the number of concurrent Workflow Executions.
 
+However, there is a limit to the length and size of a Workflow Execution's Event History (by default, [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) and [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380)).
+
+There is also a limit to the number of certain types of incomplete operations.
+
 Each in-progress Activity generates a metadata entry in the Workflow Execution's mutable state.
 Too many entries in a single Workflow Execution's mutable state causes unstable persistence.
 To protect the system, Temporal enforces a maximum number of incomplete Activities, Child Workflows, Signals, or Cancellation requests per Workflow Execution (by default, 2,000 for each type of operation).
