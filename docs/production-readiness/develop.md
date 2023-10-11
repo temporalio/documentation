@@ -61,7 +61,7 @@ If your Payload is _not_ encoded, we recommend passing the unencoded data to the
 Examples for implementing encryption:
 
 - [Go sample](https://github.com/temporalio/samples-go/tree/main/encryption)
-- [Java sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/)
+- [Java sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads)
 - [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
 - [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)
 
