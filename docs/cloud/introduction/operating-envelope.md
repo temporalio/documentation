@@ -131,11 +131,11 @@ This limit applies to all gRPC endpoints across the Temporal Platform.
 
 ### What is the limit for History transaction size?
 
-The `DefaultTransactionSizeLimit` is configured at 4 MB, representing the maximum allowable transaction size for persisting Event Histories.
+The `DefaultTransactionSizeLimit` is configured at 4 MB, representing the maximum allowable transaction size for persisting Event Histories. This is not currently configurable.
 
-### What are the default limits at the Namespace level?
+### What are the limits at the Namespace level?
 
-At the Namespace level, Temporal Cloud sets the following default limits:
+At the Namespace level, Temporal Cloud sets the following limits:
 
 - Actions per second: 200 (with spikes to 400)
 - Certificates: 32 KB payload or 16 certificates, whichever is smaller
@@ -156,7 +156,7 @@ These default limits are configurable by creating a [support ticket](/cloud/supp
 
 ### What is the limit on the number of Signals received per Workflow Execution?
 
-10,000 Signals per Workflow Execution is the default limit and is set on the Namespace level.
+10,000 Signals per Workflow Execution is the limit, tied to the Namespace level.
 
 ### What are the default limits for users and Namespaces at the account level?
 
@@ -164,6 +164,8 @@ At the account level, Temporal Cloud sets the following default limits:
 
 - Users: 100
 - Namespaces: 10
+
+These default limits are configurable by creating a [support ticket](/cloud/support#support-ticket).
 
 ### How much data does the Prometheus endpoint retain?
 
