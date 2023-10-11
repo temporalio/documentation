@@ -2,7 +2,7 @@
 id: admin
 title: tctl v1.17 admin command reference
 sidebar_label: admin
-description: How to use the tctl v1.17 admin command
+description: Explore the wide range of tctl admin commands that let you run admin operations on a Temporal Cluster.
 toc_max_heading_level: 4
 keywords:
 - cli
@@ -29,7 +29,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-:::success Temporal CLI is now available!
+:::info Temporal CLI is now available!
 
 The new [Temporal CLI](/cli) is available for use.
 

@@ -2,7 +2,7 @@
 id: dataconverter
 title: tctl v1.17 data-converter command reference
 sidebar_label: dataconverter
-description: How to use the tctl v1.17 dataconverter command
+description: Explore the tctl Data Converter commands, which enable custom Data Converter operations on a Temporal Cluster.
 toc_max_heading_level: 4
 keywords:
 - cli
@@ -25,7 +25,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-:::success Temporal CLI is now available!
+:::info Temporal CLI is now available!
 
 The new [Temporal CLI](/cli) is available for use.
 

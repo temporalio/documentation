@@ -2,7 +2,7 @@
 id: user
 title: tcld user command reference
 sidebar_label: user
-description: How to use Temporal Cloud's tcld user command
+description: The Temporal Cloud CLI (tcld) lets you manage users in Temporal Cloud. Invite, list, and delete users and set account-level Roles and Namespace-level permissions.
 toc_max_heading_level: 4
 keywords:
 - cli reference

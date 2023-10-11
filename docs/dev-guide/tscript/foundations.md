@@ -2,10 +2,10 @@
 id: foundations
 title: TypeScript SDK developer's guide - Foundations
 sidebar_label: Foundations
-sidebar_position: 1
+sidebar_position: 2
 description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/typescript/foundations
-toc_max_heading_level: 3
+toc_max_heading_level: 2
 keywords:
 - cli
 - cli-feature
@@ -42,7 +42,6 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 In this section you can find the following:
 
 - [Run a development Cluster](#run-a-development-server)
-- [Install your SDK](#install-a-temporal-sdk)
 - [Connect to a dev Cluster](#connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Develop a Workflow](#develop-workflows)
@@ -222,7 +221,7 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 
 :::
 
-When you are running a Cluster locally (such as [Temporalite](/kb/all-the-ways-to-run-a-cluster#temporalite)), the number of connection options you must provide is minimal.
+When you are running a Cluster locally (such as the [Temporal CLI](/kb/all-the-ways-to-run-a-cluster#temporal-cli)), the number of connection options you must provide is minimal.
 Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](/kb/all-the-ways-to-run-a-cluster#docker-compose) serve (`127.0.0.1:7233`).
 
 Creating a [Connection](https://typescript.temporal.io/api/classes/client.Connection) connects to the Temporal Cluster, and you can pass the `Connection` instance when creating the [Client](https://typescript.temporal.io/api/classes/client.Client#connection).
@@ -770,29 +769,37 @@ A Worker Entity contains a Workflow Worker and/or an Activity Worker, which make
 
 ## How to run a Worker on Docker in TypeScript {#run-a-worker-on-docker}
 
+:::note
+
+To improve worker startup time, we recommend preparing workflow bundles ahead-of-time. See our [productionsample](https://github.com/temporalio/samples-typescript/tree/main/production) for details.
+
+:::
+
 Workers based on the TypeScript SDK can be deployed and run as Docker containers.
 
-At this moment, we recommend using Node.js 18.
-(Node.js 20 has known issues.)
-Both `amd64` and `arm64` platforms are supported.
+We recommend an LTS Node.js release such as 18 or 20.
+Both `amd64` and `arm64` architectures are supported.
 A glibc-based image is required; musl-based images are _not_ supported (see below).
 
-The easiest way to deploy a TypeScript SDK Worker on Docker is to start with the `node:18-bullseye` image.
+The easiest way to deploy a TypeScript SDK Worker on Docker is to start with the `node:20-bullseye` image.
 For example:
 
 ```dockerfile
-FROM node:18-bullseye
+FROM node:20-bullseye
 
+# For better cache utilization, copy package.json and lock file first and install the dependencies before copying the
+# rest of the application and building.
 COPY . /app
 WORKDIR /app
 
+# Alternatively, run npm ci, which installs only dependencies specified in the lock file and is generally faster.
 RUN npm install --only=production \
     && npm run build
 
-CMD ["build/worker.js"]
+CMD ["npm", "start"]
 ```
 
-For smaller images and/or more secure deployments, it is also possible to use `-slim` Docker image variants (like `node:18-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs:18`) with the following caveats.
+For smaller images and/or more secure deployments, it is also possible to use `-slim` Docker image variants (like `node:20-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs20-debian11`) with the following caveats.
 
 ### Using `node:slim` images
 
@@ -805,7 +812,7 @@ For this reason, the `ca-certificates` package must be installed during the cons
 For example:
 
 ```dockerfile
-FROM node:18-bulleyes-slim
+FROM node:20-bullseye-slim
 
 RUN apt-get update \
     && apt-get install -y ca-certificates \
@@ -833,7 +840,7 @@ For example:
 ```dockerfile
 # -- BUILD STEP --
 
-FROM node:18-bulleyes AS builder
+FROM node:20-bullseye AS builder
 
 COPY . /app
 WORKDIR /app
@@ -843,12 +850,12 @@ RUN npm install --only=production \
 
 # -- RESULTING IMAGE --
 
-FROM gcr.io/distroless/nodejs:18
+FROM gcr.io/distroless/nodejs20-debian11
 
 COPY --from=builder /app /app
 WORKDIR /app
 
-CMD ["build/worker.js"]
+CMD ["node", "build/worker.js"]
 ```
 
 ### Properly configure Node.js memory in Docker

@@ -3,7 +3,7 @@ id: web-ui
 title: Temporal Web UI
 sidebar_label: Web UI
 sidebar_position: 9
-description: This guide is an overview of the Temporal Web UI.
+description: Explore the intuitive web user interface (Web UI) for Temporal. Seamlessly monitor and manage your Namespaces, Workflows, Schedules, and other settings.
 toc_max_heading_level: 4
 keywords:
 - term
@@ -155,4 +155,11 @@ For details, see [Securing your data](/production-readiness/develop#securing-you
 The UI supports both a [Codec Server endpoint](/production-readiness/develop#web-ui) and the `tctl` plugin port.
 
 For details on setting the Codec Server endpoint, see [Codec Server setup](/production-readiness/develop#codec-server-setup).
+
+### Labs mode
+
+The Web UI provides a "labs" mode for users to try out upcoming, production-ready UI features and improvements.
+When off, users will experience the current UI.
+Features will move in and out of labs mode according to demand and feedback.
+Labs mode can be turned on or off at any time in the left navigation bar via the Labs icon.
 

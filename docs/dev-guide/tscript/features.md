@@ -2,10 +2,10 @@
 id: features
 title: TypeScript SDK developer's guide - Features
 sidebar_label: Features
-sidebar_position: 2
+sidebar_position: 3
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 slug: /dev-guide/typescript/features
-toc_max_heading_level: 4
+toc_max_heading_level: 3
 keywords:
 - activity retry policy
 - developer-guide
@@ -154,6 +154,7 @@ const client = new Client();
 
 await client.workflow.signalWithStart(yourWorkflow, {
   workflowId: 'workflow-id-123',
+  taskQueue: 'my-taskqueue',
   args: [{ foo: 1 }],
   signal: joinSignal,
   signalArgs: [{ userId: 'user-1', groupId: 'group-1' }],
@@ -260,13 +261,13 @@ export async function unblockOrCancel(): Promise<void> {
   let isBlocked = true;
   wf.setHandler(unblockSignal, () => void (isBlocked = false));
   wf.setHandler(isBlockedQuery, () => isBlocked);
-  console.log('Blocked');
+  wf.log.info('Blocked');
   try {
     await wf.condition(() => !isBlocked);
-    console.log('Unblocked');
+    wf.log.info('Unblocked');
   } catch (err) {
     if (err instanceof wf.CancelledFailure) {
-      console.log('Cancelled');
+      wf.log.info('Cancelled');
     }
     throw err;
   }
@@ -795,13 +796,13 @@ To cause a Workflow Execution to [Continue-As-New](/workflows#continue-as-new), 
 [continue-as-new/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/continue-as-new/src/workflows.ts)
 
 ```ts
-import { continueAsNew, sleep } from '@temporalio/workflow';
+import { continueAsNew, log, sleep } from '@temporalio/workflow';
 
 export async function loopingWorkflow(iteration = 0): Promise<void> {
   if (iteration === 10) {
     return;
   }
-  console.log('Running Workflow iteration:', iteration);
+  log.info('Running Workflow iteration', { iteration });
   await sleep(1000);
   // Must match the arguments expected by `loopingWorkflow`
   await continueAsNew<typeof loopingWorkflow>(iteration + 1);
@@ -1168,7 +1169,7 @@ interface PayloadConverter {
 
 Some example implementations are in the SDK itself:
 
-- [common/src/converter/payload-converters.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/common/src/converter/payload-converters.ts)
+- [common/src/converter/payload-converter.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/common/src/converter/payload-converter.ts)
 - [common/src/converter/protobuf-payload-converters.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/common/src/converter/protobuf-payload-converters.ts)
 
 The sample project [samples-typescript/ejson](https://github.com/temporalio/samples-typescript/tree/main/ejson) creates an EJSON custom `PayloadConverter`.

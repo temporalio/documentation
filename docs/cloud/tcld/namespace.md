@@ -2,7 +2,7 @@
 id: namespace
 title: tcld namespace command reference
 sidebar_label: namespace
-description: How to use Temporal Cloud's tcld namespace command
+description: The Temporal Cloud CLI (tcld) Namespace commands let you create, configure, update, list, and delete Namespaces, certificates, Certificate Filters, and Search Attributes in Temporal Cloud.
 toc_max_heading_level: 4
 keywords:
 - cli reference

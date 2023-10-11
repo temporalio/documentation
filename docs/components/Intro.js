@@ -465,7 +465,7 @@ function SDKs() {
           <ul className="flex flex-col space-y-2">
             {/* <ul className="grid grid-cols-2 gap-6 xl:gap-8"> */}
             <li className="">
-              <Link className="flex items-center space-x-5" to={useBaseUrl("/php/introduction")}>
+              <Link className="flex items-center space-x-5" to={useBaseUrl("/dev-guide/php")}>
                 <div className="flex items-center space-x-3 hover:underline">
                   <img className="h-8 w-8 transition hover:scale-110 code-logo" src="/img/php.svg" alt="PHP logo" />
                   <p className="font-normal">PHP</p>{" "}

@@ -2,7 +2,7 @@
 id: batch
 title: tctl v1.17 batch command reference
 sidebar_label: batch
-description: How to use the tctl v1.17 batch command
+description: Explore the tctl batch commands, which let you affect multiple existing Workflow Executions with a single command to a Temporal Cluster.
 toc_max_heading_level: 4
 keywords:
 - cli
@@ -25,7 +25,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-:::success Temporal CLI is now available!
+:::info Temporal CLI is now available!
 
 The new [Temporal CLI](/cli) is available for use.
 

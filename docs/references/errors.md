@@ -82,7 +82,7 @@ This error either indicates the possibility of unset attributes for [RequestCanc
 Update the [Temporal SDK](/temporal/#temporal-sdk) to the most recent release.
 Reset any unset attributes before retrying the [Workflow Task](/workers#workflow-task).
 
-If you continue to see this error, review your code for [nondeterministic causes](/workflows/#code-changes-can-cause-non-deterministic-behavior).
+If you continue to see this error, review your code for [nondeterministic causes](/workflows#non-deterministic-change).
 
 ## Bad Request Cancel External Workflow Execution Attributes {#bad-request-cancel-external-workflow-execution}
 
@@ -192,7 +192,7 @@ A retry will be scheduled if the error is recoverable.
 
 ## Non-Deterministic Error {#non-deterministic-error}
 
-The [Workflow Task](/workers#workflow-task) failed due to a [nondeterministic error](/workflows/#code-changes-can-cause-non-deterministic-behavior).
+The [Workflow Task](/workers#workflow-task) failed due to a [nondeterministic error](/workflows#non-deterministic-change).
 
 <!-- TODO: info -->
 

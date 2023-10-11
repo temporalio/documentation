@@ -96,17 +96,18 @@ For details on migrating your Visibility store databases, see [Dual Visibility](
 
 ## What is a List Filter? {#list-filter}
 
-A List Filter is the SQL-like string that is provided as the parameter to a [Visibility](/clusters#visibility) List API.
+The [Visibility](/clusters#visibility) List API requires you to provide a List Filter as an SQL-like string parameter.
 
-A List Filter contains [Search Attribute](#search-attribute) names, Search Attribute values, and [operators](#supported-operators) to pull a filtered list of Workflow Executions from the Visibility store.
+A List Filter includes [Search Attribute](#search-attribute) names, Search Attribute values, and [operators](#supported-operators) so that it can retrieve a filtered list of Workflow Executions from the Visibility Store.
 
-List Filter [Search Attribute](#search-attribute) names are case sensitive, and each List Filter is scoped by a single [Namespace](/namespaces#).
+List Filter [Search Attribute](#search-attribute) names are case sensitive.
+A single [Namespace](/namespaces#) scopes each List Filter.
 
-A List Filter that uses a time range has a resolution of 1 ns on [Elasticsearch](/cluster-deployment-guide#elasticsearch) and 1 µs for [SQL databases](/cluster-deployment-guide#visibility-store).
+A List Filter using a time range provides a resolution of 1 ns on [Elasticsearch](/cluster-deployment-guide#elasticsearch) and 1 µs for [SQL databases](/cluster-deployment-guide#visibility-store).
 
 ### Supported operators
 
-A List Filter contains [Search Attribute](#search-attribute) names, Search Attribute values, and the following supported operators:
+List Filters support the following operators:
 
 - **=, !=, >, >=, <, <=**
 - **AND, OR, ()**
@@ -123,37 +124,70 @@ Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** claus
 
 ### Partial string match
 
-The `=` operator works like **CONTAINS** to find Workflows with Search Attributes that contain a specific word.
+There are different options for partial string matching when the type of the Search Attribute is [Text](#text) versus [Keyword](#keyword).
 
-<!-- note: advanced vis features will be supported in SQL upon the release of v1.20.-->
+#### Text
 
-For example, if you have a custom Search Attribute named `Description` of `Text` type with the value of "The quick brown fox jumps over the lazy dog", searching for `Description='quick'` or `Description='fox'` will successfully return the Workflow.
-However, partial word searches such as `Description='qui'` or `Description='laz'` will not return the Workflow.
-This is because [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
+Search Attributes of type `Text` are [broken up into words](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) that match with the `=` operator.
+
+For example, if you have a custom `Text` Search Attribute named `Description` with either of the following values—
+
+```
+my-business-id-foobar
+my business id foobar
+```
+
+—then the following List Filter matches—
+
+```
+Description = 'foobar'
+```
+
+—but a partial word does not:
+
+```
+// Doesn't match
+Description = 'foo'
+```
+
+#### Keyword
+
+For Search Attributes of type `Keyword` like `WorkflowId`, the only kind of partial string matching that works is using BETWEEN for suffixes.
+
+`WorkflowId BETWEEN "order-" AND "order-~"` matches WorkflowIds that have characters after `order-` with ASCII values lower than `~` (126, the highest-value printable character), such as the following:
+
+```
+order-
+order-1234
+order-abracadabra
+```
+
+It does not match `order-~~`.
 
 ### Efficient API usage
 
-An Advanced List Filter API may take longer to respond if it is retrieving a large number of Workflow Executions (over 10,000).
+If the Advanced List Filter API retrieves a substantial number of Workflow Executions (more than 10,000), the response time might be longer.
 
-With Temporal Server v1.20 and later, you can use the `CountWorkflow` API to efficiently count the number of [Workflow Executions](/workflows#workflow-execution).
+Beginning with Temporal Server v1.20, you can employ the `CountWorkflow` API to efficiently count the number of [Workflow Executions](/workflows#workflow-execution).
 
-Paginate the results with the `ListWorkflow` API by using the page token to retrieve the next page; continue until the page token is `null`/`nil`.
+To paginate the results using the `ListWorkflow` API, use the page token to retrieve the next page.
+Continue until the page token becomes `null`/`nil`.
 
 #### List Filter examples
 
-The following is a List Filter set with [`tctl`](/tctl-v1/workflow#list):
+Here are examples of List Filters set with [`tctl`](/tctl-v1/workflow#list):
 
 ```
 WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00")
 ```
 
-When used, a list of Workflows that meet the following conditions are returned:
+When you use the preceding example, you receive a list of Workflows fulfilling the following criteria:
 
-- The Workflow Type is set to `main.YourWorkflowDefinition`.
-- The Workflow isn't running.
-- The Workflow either started after "2021-06-07T16:46:34.236-08:00" or closed after "2021-06-07T16:46:34-08:00".
+- Workflow Type is `main.YourWorkflowDefinition`.
+- Workflow isn't in a running state.
+- Workflow either started after "2021-06-07T16:46:34.236-08:00" or closed after "2021-06-07T16:46:34-08:00".
 
-More List Filter examples have been provided below.
+The following are additional examples of List Filters.
 
 ```sql
 WorkflowId = '<workflow-id>'
@@ -305,7 +339,7 @@ Custom Search Attributes must be one of the following types:
 - Double
 - Int
 - Keyword
-- KeywordList
+- KeywordList (not supported on Temporal Cloud)
 - Text
 
 Note:
@@ -337,7 +371,7 @@ The following table lists the maximum number of custom Search Attributes you can
 | Double                |             3             |             3              |             3              |       20       |
 | Int                   |             3             |             3              |             3              |       20       |
 | Keyword               |            10             |             10             |             10             |       20       |
-| KeywordList           |             3             |             3              |             3              |       20       |
+| KeywordList           |             3             |             3              |             3              | Not supported  |
 | Text                  |             3             |             3              |             3              |       5        |
 
 Temporal does not impose a limit on the number of custom Search Attributes you can create with Elasticsearch. However, [Elasticsearch sets a default mapping limit](https://www.elastic.co/guide/en/elasticsearch/reference/8.6/mapping-settings-limit.html) that may apply.
@@ -362,6 +396,8 @@ Default total maximum number of Search Attribute **keys** per Temporal Cluster i
 <!-- temp keeping for reference
 This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
 -->
+
+For Temporal Cloud specific configurations, see the [Default limits](/cloud/operating-envelope#what-are-the-default-maximum-numbers-of-custom-search-attributes) sheet.
 
 ### Usage
 

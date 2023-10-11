@@ -2,7 +2,7 @@
 id: activity
 title: Temporal CLI activity command reference
 sidebar_label: activity
-description: How to use the Temporal CLI activity command
+description: Explore the Temporal CLI Activity commands for efficient management of Activities. Register, inspect, and interact with Activities in your Workflows.
 toc_max_heading_level: 4
 keywords:
 - activity

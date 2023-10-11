@@ -2,7 +2,7 @@
 id: cluster
 title: tctl v1.17 cluster command reference
 sidebar_label: cluster
-description: How to use the tctl v1.17 cluster command
+description: Explore the tctl Cluster commands, which can get all Search Attributes and check the health of the Frontend Service.
 toc_max_heading_level: 4
 keywords:
 - cli
@@ -25,7 +25,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-:::success Temporal CLI is now available!
+:::info Temporal CLI is now available!
 
 The new [Temporal CLI](/cli) is available for use.
 

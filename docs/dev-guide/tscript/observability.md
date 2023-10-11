@@ -2,8 +2,8 @@
 id: observability
 title: TypeScript SDK developer's guide - Observability
 sidebar_label: Observability
-sidebar_position: 3
-description: The Observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view what Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
+sidebar_position: 4
+description: Improve observability in your TypeScript-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
 slug: /dev-guide/typescript/observability
 toc_max_heading_level: 3
 keywords:
@@ -208,14 +208,12 @@ Use the injected logger from an Activity
 
 <!--SNIPSTART typescript-activity-use-injected-logger -->
 
-[instrumentation/src/activities/index.ts](https://github.com/temporalio/samples-typescript/blob/master/instrumentation/src/activities/index.ts)
+[custom-logger/src/activities/index.ts](https://github.com/temporalio/samples-typescript/blob/master/custom-logger/src/activities/index.ts)
 
 ```ts
-import { getContext } from './interceptors';
-
 export async function greet(name: string): Promise<string> {
-  const { logger } = getContext();
-  logger.info('Log from activity', { name });
+  const { log } = Context.current();
+  log.info('Log from activity', { name });
   return `Hello, ${name}!`;
 }
 ```
@@ -258,7 +256,7 @@ Explicitly declaring a sink's interface is optional but is useful for ensuring t
 [sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/workflows.ts)
 
 ```ts
-import { LoggerSinks, proxySinks, Sinks } from '@temporalio/workflow';
+import { log, proxySinks, Sinks } from '@temporalio/workflow';
 
 export interface AlertSinks extends Sinks {
   alerter: {
@@ -266,7 +264,7 @@ export interface AlertSinks extends Sinks {
   };
 }
 
-export type MySinks = AlertSinks & LoggerSinks;
+export type MySinks = AlertSinks;
 ```
 
 <!--SNIPEND-->
@@ -282,18 +280,19 @@ Implement and inject the Sink function into a Worker
 [sinks/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/worker.ts)
 
 ```ts
-import { defaultSinks, InjectedSinks, Worker } from '@temporalio/worker';
+import { InjectedSinks, Worker } from '@temporalio/worker';
 import { MySinks } from './workflows';
 
 async function main() {
   const sinks: InjectedSinks<MySinks> = {
-    ...defaultSinks(),
     alerter: {
       alert: {
         fn(workflowInfo, message) {
-          console.log(`sending SMS alert!
-workflow: ${workflowInfo.runId}
-message: ${message}`);
+          console.log('sending SMS alert!', {
+            workflowId: workflowInfo.workflowId,
+            workflowRunId: workflowInfo.runId,
+            message,
+          });
         },
         callDuringReplay: false, // The default
       },
@@ -326,10 +325,10 @@ main().catch((err) => {
 [sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/workflows.ts)
 
 ```ts
-const { alerter, defaultWorkerLogger } = proxySinks<MySinks>();
+const { alerter } = proxySinks<MySinks>();
 
 export async function sinkWorkflow(): Promise<string> {
-  defaultWorkerLogger.info('default logger: Workflow Execution started', {});
+  log.info('Workflow Execution started');
   alerter.alert('alerter: Workflow Execution started');
   return 'Hello, Temporal!';
 }
