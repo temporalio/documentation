@@ -202,7 +202,7 @@ This section provides a higher-level view of the change proposal process, partic
 
 **Before proceeding, make sure [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) and [Node.js](https://nodejs.org/en/download/) are installed. Make sure you install the latest version of Node.js (later than 18.0.0).**
 
-On a Mac, use the command `brew install node@16`.
+On a Mac, use the command `brew install node@18`.
 
 In the root directory of the repository, run `yarn` to install the packages needed to generate the `build` output. This includes the Docusaurus framework.
 
@@ -322,6 +322,7 @@ In a separate terminal, run the Worker in the `/assembly` folder.
 
 ```bash
 cd assembly
+yarn install
 ./worker.js
 ```
 
