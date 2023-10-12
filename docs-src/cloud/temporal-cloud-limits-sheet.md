@@ -11,13 +11,13 @@ tags:
 
 This section describes many of the default settings and limits that apply to application operations in Temporal Cloud.
 
-Some of these default limits are configurable by sending a [ticket](/cloud/support#support-ticket) to our support team.
+Some of these default limits are configurable by sending a [ticket](/cloud/support-create-ticket) to our support team.
 
 ### What is the maximum length for identifiers?
 
 Identifiers such as Workflow Id, Workflow Type, and Task Queue names have a maximum length of 1,000 characters in UTF-8 format.
 
-This default limit is configurable by creating a [support ticket](/cloud/support#support-ticket).
+This default limit is configurable by creating a [support ticket](/cloud/support-create-ticket).
 
 ### What is the gRPC limit for each message received?
 
@@ -26,11 +26,11 @@ This limit applies to all gRPC endpoints across the Temporal Platform.
 
 ### What is the limit for History transaction size?
 
-The `DefaultTransactionSizeLimit` is configured at 4 MB, representing the maximum allowable transaction size for persisting Event Histories.
+The `DefaultTransactionSizeLimit` is configured at 4 MB, representing the maximum allowable transaction size for persisting Event Histories. This is not currently configurable.
 
-### What are the default limits at the Namespace level?
+### What are the limits at the Namespace level?
 
-At the Namespace level, Temporal Cloud sets the following default limits:
+At the Namespace level, Temporal Cloud sets the following limits:
 
 - Actions per second: 200 (with spikes to 400)
 - Certificates: 32 KB payload or 16 certificates, whichever is smaller
@@ -45,20 +45,20 @@ If a Workflow Execution has 2,000 incomplete Activities, Signals, Child Workflow
 - `StartChildWorkflowExecution`
 - `RequestCancelExternalWorkflowExecution`
 
-These default limits are configurable by creating a [support ticket](/cloud/support#support-ticket).
+These default limits are configurable by creating a [support ticket](/cloud/support-create-ticket).
 
 [Batch jobs](/cli/batch) are limited to one job running at a time per Namespace.
 
 ### What is the limit on the number of Signals received per Workflow Execution?
 
-10,000 Signals per Workflow Execution is the default limit and is set on the Namespace level.
+10,000 Signals per Workflow Execution is the limit, tied to the Namespace level.
 
 ### What are the default limits for users and Namespaces at the account level?
 
 At the account level, Temporal Cloud sets the following default limits:
 
-- Users: 300 across all Namespaces. To increase this number, open a [support ticket](/cloud/support#support-ticket).
-- Namespaces: 10. This can be incrementally increased up to 100. To further extend the limit beyond 100, open a [support ticket](/cloud/support#support-ticket).
+- Users: 300 across all Namespaces. To increase this number, open a [support ticket](/cloud/support-create-ticket).
+- Namespaces: 10. This can be incrementally increased up to 100. To further extend the limit beyond 100, open a [support ticket](/cloud/support-create-ticket).
 
 ### How much data does the Prometheus endpoint retain?
 
@@ -67,12 +67,12 @@ This limit is set on the account level.
 
 ### What is the default Retention Period in your Temporal Cloud Account?
 
-Temporal Cloud sets the default [Retention Period](/clusters#retention-period) to 30 days, and it is configurable in the Temporal Web UI per Namespace.
+Temporal Cloud sets the default [Retention Period](/cloud/support-create-ticket) to 30 days, and it is configurable in the Temporal Web UI per Namespace.
 You can set the Retention Period between 1 and 90 days.
 
 ### What are the default maximum numbers of Custom Search Attributes?
 
-The default maximum number of [Custom Search Attributes](/visibility#custom-search-attributes) of each type in Temporal Cloud, you can create per Namespace, are:
+The default maximum number of [Custom Search Attributes](/cloud/support-create-ticket) of each type in Temporal Cloud, you can create per Namespace, are:
 
 - `bool`: 20
 - `double`: 20
