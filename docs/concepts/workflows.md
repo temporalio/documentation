@@ -579,7 +579,7 @@ A Signal is an asynchronous request to a [Workflow Execution](/workflows#workflo
 - [How to develop, send, and handle Signals in TypeScript](/dev-guide/typescript/features#signals)
 
 A Signal delivers data to a running Workflow Execution.
-It cannot return data to the caller; to do so, use a [Query](#queries) instead.
+It cannot return data to the caller; to do so, use a [Query](#query) instead.
 The Workflow code that handles a Signal can mutate Workflow state.
 A Signal can be sent from a Temporal Client or a Workflow.
 When a Signal is sent, it is received by the Cluster and recorded as an Event to the Workflow Execution [Event History](#event-history).
