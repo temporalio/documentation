@@ -376,7 +376,7 @@ from datetime import timedelta
 from temporalio import workflow
 
 with workflow.unsafe.imports_passed_through():
-    from activities import ssn_trace_activity
+    from activities.ssntraceactivity_dacx import ssn_trace_activity
 # ...
 @workflow.defn
 class BackgroundCheck:
@@ -488,8 +488,8 @@ import asyncio
 from temporalio.client import Client
 from temporalio.worker import Worker
 
-from activities import ssn_trace_activity
-from workflows import BackgroundCheck
+from activities.ssntraceactivity_dacx import ssn_trace_activity
+from workflows.backgroundcheck_dacx import BackgroundCheck
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -530,8 +530,8 @@ import os
 from temporalio.client import Client, TLSConfig
 from temporalio.worker import Worker
 
-from activities import ssn_trace_activity
-from workflows import BackgroundCheck
+from activities.ssntraceactivity_dacx import ssn_trace_activity
+from workflows.backgroundcheck_dacx import BackgroundCheck
 # ...
 async def main():
 
@@ -659,27 +659,15 @@ import os
 from temporalio.client import Client, TLSConfig
 from temporalio.worker import Worker
 
-from activities import ssn_trace_activity
-from workflows import BackgroundCheck
+from activities.ssntraceactivity_dacx import ssn_trace_activity
+from workflows.backgroundcheck_dacx import BackgroundCheck
 
 
 
 async def main():
-
-    with open(os.getenv("TEMPORAL_MTLS_TLS_CERT"), "rb") as f:
-        client_cert = f.read()
-
-    with open(os.getenv("TEMPORAL_MTLS_TLS_KEY"), "rb") as f:
-        client_key = f.read()
-
     client = await Client.connect(
-        os.getenv("TEMPORAL_HOST_URL"),
-        namespace=os.getenv("TEMPORAL_NAMESPACE"),
-        tls=TLSConfig(
-            client_cert=client_cert,
-            client_private_key=client_key,
-        ),
-    )
+        "172.18.0.4:7233"
+    )  # The IP address of the Temporal Server on your network.
 
     worker = Worker(
         client,
@@ -688,10 +676,6 @@ async def main():
         activities=[ssn_trace_activity],
     )
     await worker.run()
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
 ```
 
 #### Build and deploy Docker image {#dockerfile}
@@ -940,8 +924,8 @@ import pytest
 from temporalio.testing import WorkflowEnvironment
 from temporalio.worker import Worker
 
-from activities import ssn_trace_activity
-from workflows import BackgroundCheck
+from activities.ssntraceactivity_dacx import ssn_trace_activity
+from workflows.backgroundcheck_dacx import BackgroundCheck
 # ...
 @pytest.mark.asyncio
 async def test_execute_workflow():
@@ -982,7 +966,7 @@ Visit the source repository to [view the source code](https://github.com/tempora
 ```python
 import pytest
 from temporalio.testing import ActivityEnvironment
-from activities import ssn_trace_activity
+from activities.ssntraceactivity_dacx import ssn_trace_activity
 # ...
 @pytest.mark.asyncio
 async def test_ssn_trace_activity() -> str:

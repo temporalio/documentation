@@ -34,8 +34,8 @@ import os
 from temporalio.client import Client, TLSConfig
 from temporalio.worker import Worker
 
-from activities import ssn_trace_activity
-from workflows import BackgroundCheck
+from activities.ssntraceactivity_dacx import ssn_trace_activity
+from workflows.backgroundcheck_dacx import BackgroundCheck
 # ...
 async def main():
 

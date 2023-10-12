@@ -30,7 +30,7 @@ from datetime import timedelta
 from temporalio import workflow
 
 with workflow.unsafe.imports_passed_through():
-    from activities import ssn_trace_activity
+    from activities.ssntraceactivity_dacx import ssn_trace_activity
 # ...
 @workflow.defn
 class BackgroundCheck:

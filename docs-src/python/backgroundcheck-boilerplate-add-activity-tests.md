@@ -28,7 +28,7 @@ Visit the source repository to [view the source code](https://github.com/tempora
 ```python
 import pytest
 from temporalio.testing import ActivityEnvironment
-from activities import ssn_trace_activity
+from activities.ssntraceactivity_dacx import ssn_trace_activity
 # ...
 @pytest.mark.asyncio
 async def test_ssn_trace_activity() -> str:
