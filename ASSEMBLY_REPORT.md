@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday October 11 2023 10:00:58 AM -0700
+Last assembled: Thursday October 12 2023 10:34:00 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-104 guide configurations found.
+105 guide configurations found.
 
-1565 information nodes found.
+1583 information nodes found.
 
-1330 information nodes are attached to guides.
+1349 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1020,6 +1020,14 @@ python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
+python/choose-dev-cluster -> #local-dev-server
+
+cli/server/start-dev -> /cli/server#start-dev
+
+cli/operator/namespace/create -> /cli/operator#create
+
+cli/workflow/start -> /cli/workflow#start
+
 php/handle-signal -> #handle-signal
 
 php/add-sdk -> #install-a-temporal-sdk
@@ -1064,22 +1072,16 @@ go/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
 
 go/project-structure -> /dev-guide/go/project-setup#boilerplate-project
 
-go/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
+go/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/python/project-setup#dev-server-worker
 
-go/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/go/project-setup#cloud-worker
+go/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/python/project-setup#cloud-worker
 
-go/self-hosted-worker-docker-network -> /dev-guide/go/project-setup#dockerfile
+go/self-hosted-worker-docker-network -> /dev-guide/python/project-setup#dockerfile
 
-go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#local-dev-server
+go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#local-dev-server
 
-go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
+go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
-
-cli/server/start-dev -> /cli/server#start-dev
-
-cli/operator/namespace/create -> /cli/operator#create
-
-cli/workflow/start -> /cli/workflow#start
 
 
