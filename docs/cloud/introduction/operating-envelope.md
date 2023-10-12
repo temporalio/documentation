@@ -162,10 +162,8 @@ These default limits are configurable by creating a [support ticket](/cloud/supp
 
 At the account level, Temporal Cloud sets the following default limits:
 
-- Users: 100
-- Namespaces: 10
-
-These default limits are configurable by creating a [support ticket](/cloud/support#support-ticket).
+- Users: 300 across all Namespaces. To increase this number, open a [support ticket](/cloud/support#support-ticket).
+- Namespaces: 10. This can be incrementally increased up to 100. To further extend the limit beyond 100, open a [support ticket](/cloud/support#support-ticket).
 
 ### How much data does the Prometheus endpoint retain?
 
@@ -174,12 +172,12 @@ This limit is set on the account level.
 
 ### What is the default Retention Period in your Temporal Cloud Account?
 
-Temporal Cloud sets the default [Retention Period](/clusters#retention-period) to 30 days, and it is configurable in the Temporal Web UI per Namespace.
+Temporal Cloud sets the default [Retention Period](/cloud/support#support-ticket) to 30 days, and it is configurable in the Temporal Web UI per Namespace.
 You can set the Retention Period between 1 and 90 days.
 
 ### What are the default maximum numbers of Custom Search Attributes?
 
-The default maximum number of [Custom Search Attributes](/visibility#custom-search-attributes) of each type in Temporal Cloud, you can create per Namespace, are:
+The default maximum number of [Custom Search Attributes](/cloud/support#support-ticket) of each type in Temporal Cloud, you can create per Namespace, are:
 
 - `bool`: 20
 - `double`: 20
