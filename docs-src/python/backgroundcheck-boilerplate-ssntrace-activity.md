@@ -13,8 +13,8 @@ tags:
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-python/blob/bgc/backgroundcheck_boilerplate/activities/ssntraceactivity_dacx.py. -->
 
 In the Temporal Python SDK programming model, an Activity is an function.
-
 You can use asynchronous, synchronous multithreaded, and synchronous multiprocess/other.
+
 Below is an example of an Activity defined as a function.
 
 :::copycode Sample application code

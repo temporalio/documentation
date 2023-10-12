@@ -360,7 +360,7 @@ After activation, any Python command you run will use the virtual environment's 
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-python/blob/bgc/backgroundcheck_boilerplate/workflows/backgroundcheck_dacx.py. -->
 
 In the Temporal Python SDK programming model, a Workflow Definition is defined as a class.
-The BackgroundCheck class below is an example of a basic Workflow Definition.
+The `BackgroundCheck class` below is an example of a basic Workflow Definition.
 
 :::copycode Sample application code
 
@@ -398,17 +398,16 @@ Use the `@workflow.run` to mark the entry point method to be invoked. This must 
 
 Run methods have positional parameters.
 
-To spawn an [Activity Execution](notion://www.notion.so/activities#activity-execution), call `execute_activity()` inside your Workflow Definition.
+By default Workflows are run in a sandbox to help avoid non-deterministic code.
+If a call that is known to be non-deterministic is performed, an exception will be thrown in the workflow which will "fail the task" which means the workflow will not progress until fixed.
+Import your Activity code into the Workflow Definition using the `with [workflow.unsafe.imports_passed_through()](https://python.temporal.io/temporalio.workflow.unsafe.html#imports_passed_through)` context manager.
 
+To spawn an [Activity Execution](https://python.temporal.io/temporalio.workflow.html#execute_activity), call `execute_activity()` inside your Workflow Definition.
 This API is available from the `workflow` module from the `temporalio` package.
-
 The `execute_activity` API call requires either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
 In this example, pass in the Activity name, `ssn_trace_activity` and an argument, `ssn`.
 We get into the best practices around Workflow params and returns in the one of the next sections.
-
-In regards to code organization, we recommend organizing Workflow code together with other Workflow code.
-For example, in a small project like this, it is still a best practice to have a dedicated file for each Workflow.
 
 ### Boilerplate Activity code {#activity-code}
 
@@ -416,8 +415,8 @@ For example, in a small project like this, it is still a best practice to have a
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-python/blob/bgc/backgroundcheck_boilerplate/activities/ssntraceactivity_dacx.py. -->
 
 In the Temporal Python SDK programming model, an Activity is an function.
-
 You can use asynchronous, synchronous multithreaded, and synchronous multiprocess/other.
+
 Below is an example of an Activity defined as a function.
 
 :::copycode Sample application code
@@ -570,7 +569,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 When specifying the Temporal Cloud Namespace, make sure to append the Account Id as it appears in the url of the Cloud UI.
 Consider the following Namespace url: https://cloud.temporal.io/namespaces/backgroundcheck-app.1a23b/workflows, if your Namespace is "backgroundcheck-app" and your Account Id is "1a23b", then you would specify your Namespace as "backgroundcheck-app.1a23b".
 
-The Temporal Cloud gRPC connection address includes your [Namesapce](notion://www.notion.so/namespaces#) and a port number: `<Namespace>.<AccountId>.tmprl.cloud:<port>`.
+The Temporal Cloud gRPC connection address includes your [Namesapce](https://python.temporal.io/temporalio.client.Client.html#namespace) and a port number: `<Namespace>.<AccountId>.tmprl.cloud:<port>`.
 For example: `https://backgroundcheck-app.1a23b.tmprl.cloud:1234`.
 There is an option to copy the grPC endpoint address from the Temporal Cloud UI.
 

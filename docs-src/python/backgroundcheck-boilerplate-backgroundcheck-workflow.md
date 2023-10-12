@@ -14,7 +14,7 @@ tags:
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-python/blob/bgc/backgroundcheck_boilerplate/workflows/backgroundcheck_dacx.py. -->
 
 In the Temporal Python SDK programming model, a Workflow Definition is defined as a class.
-The BackgroundCheck class below is an example of a basic Workflow Definition.
+The `BackgroundCheck class` below is an example of a basic Workflow Definition.
 
 :::copycode Sample application code
 
