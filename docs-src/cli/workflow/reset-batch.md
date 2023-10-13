@@ -20,8 +20,8 @@ The input file must have a [Workflow ID](/concepts/what-is-a-workflow-id) on eac
 
 `temporal workflow reset-batch --input-file=MyInput --input-separator="\t"`
 
-Workflow Executions can also be found by [Query](/concepts/what-is-a-query).
-`temporal workflow reset-batch --query=MyQuery
+Workflow Executions can also be queried by a [List Filter](/visibility#list-filter).
+`temporal workflow reset-batch --query=MyListFilter`
 
 Use the following options to change reset behavior.
 

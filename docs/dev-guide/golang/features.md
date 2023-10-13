@@ -408,7 +408,11 @@ Ensure that every Workflow listening to the same Update name can handle the same
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourupdate/your_updatable_workflow_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -444,7 +448,11 @@ Update handlers, unlike Query handlers, can change Workflow state.
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourupdate/your_updatable_workflow_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -484,7 +492,11 @@ The platform treats a panic in the Validator function as a rejection of the Upda
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourupdate/your_updatable_workflow_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -538,7 +550,11 @@ If you supply only the Workflow Id (and provide an empty string as the Run Id pa
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourupdate/update/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/update/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -1040,7 +1056,11 @@ Schedules must be initialized with a Schedule ID, [Spec](/workflows#spec), and [
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/create/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/create/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -1079,7 +1099,11 @@ Specify the start and end times to execute the Workflow, along with the overlap 
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/backfill/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/backfill/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -1122,7 +1146,11 @@ To delete a Schedule, use `Delete()` on the `ScheduleHandle`.
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/delete/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/delete/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -1153,7 +1181,11 @@ To describe a Schedule, use `Describe()` on the ScheduleHandle.
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/describe/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/describe/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -1177,7 +1209,11 @@ To return information on all Schedules, use `ScheduleClient.List()`.
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/list/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/list/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -1211,7 +1247,11 @@ To unpause a Schedule, use `Unpause()` on `ScheduleHandle`.
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/pause/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/pause/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -1241,7 +1281,11 @@ To trigger a Scheduled Workflow Execution, use `trigger()` on `ScheduleHandle`.
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/trigger/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/trigger/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -1271,7 +1315,11 @@ Use `Update()` on the ScheduleHandle to modify a Schedule.
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/update/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/update/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -1611,7 +1659,11 @@ Set `EnableSessionWorker` to `true` in the Worker options.
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/sessions/worker/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/sessions/worker/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -1649,7 +1701,11 @@ If the session can't be created within `CreationTimeout`, `CreateSession()` retu
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/sessions/worker/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/sessions/worker/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -1700,7 +1756,11 @@ If not, you get a `workflow.ErrSessionFailed` error when the next call of `workf
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/sessions/workflow_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/sessions/workflow_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 

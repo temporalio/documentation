@@ -10,7 +10,11 @@ tags:
 
 :::competency Assess how a Temporal SDK fits into your development project
 
+<<<<<<< HEAD
 The information on this page aids in promoting a developer's ability to assess how a Temporal SDK fits into their development project.
+=======
+The information on this page helps a developer assess how a Temporal SDK fits into their development project.
+>>>>>>> main
 
 :::
 

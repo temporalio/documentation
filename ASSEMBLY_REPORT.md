@@ -1,5 +1,6 @@
 # Docs Assembly Workflow report
 
+<<<<<<< HEAD
 Last assembled: Friday October 13 2023 09:36:47 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
@@ -9,6 +10,17 @@ Assembly Workflow Id: docs-full-assembly-rachfop-123
 1566 information nodes found.
 
 1331 information nodes are attached to guides.
+=======
+Last assembled: Thursday October 12 2023 14:35:47 PM -0700
+
+Assembly Workflow Id: docs-full-assembly
+
+104 guide configurations found.
+
+1565 information nodes found.
+
+1330 information nodes are attached to guides.
+>>>>>>> main
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1082,6 +1094,9 @@ cli/operator/namespace/create -> /cli/operator#create
 
 cli/workflow/start -> /cli/workflow#start
 
+<<<<<<< HEAD
 typescript/registering-types -> /dev-guide/typescript/foundations#register-types
 
+=======
+>>>>>>> main
 

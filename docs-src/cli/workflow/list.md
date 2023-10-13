@@ -11,10 +11,10 @@ tags:
   - workflow list
 ---
 
-The `temporal workflow list` command provides a list of [Workflow Executions](/concepts/what-is-a-workflow-execution) that meet the criteria of a given [Query](/concepts/what-is-a-query).
+The `temporal workflow list` command provides a list of [Workflow Executions](/concepts/what-is-a-workflow-execution) that meet the criteria of a given [List Filter](/visibility#list-filter).
 By default, this command returns a list of up to 10 closed Workflow Executions.
 
-`temporal workflow list --query=MyQuery`
+`temporal workflow list --query=MyListFilter`
 
 The command can also return a list of archived Workflow Executions.
 

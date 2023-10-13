@@ -9,7 +9,11 @@ tags:
   - project setup
 ---
 
+<<<<<<< HEAD
 This section covers how to use a terminal, a code editor, and a development Cluster to create a new Namespace, write a single Activity Workflow, run a Worker that talks to your development Cluster, run a Workflow using the CLI, add a testing framework, and view Workflows in the Web UI.
+=======
+This section covers how to use a terminal, a code editor, and a development Cluster to create a Namespace, write a single Activity Workflow, run a Worker that talks to your development Cluster, run a Workflow using the CLI, add a testing framework, and view Workflows in the Web UI.
+>>>>>>> main
 
 :::competency Construct a new Temporal Application project
 
@@ -25,8 +29,14 @@ There are three ways to follow this guide:
 
 - [Use a local dev server](/go/choose-dev-cluster#local-dev-server)
 - [Use Temporal Cloud](/go/choose-dev-cluster#temporal-cloud)
+<<<<<<< HEAD
 - [Use a Self-hosted environment such as Docker](/go/choose-dev-cluster#self-hosted-temporal-cluster)
 
 Read more about [Which development Cluster you should choose](/go/choose-dev-cluster) below.
+=======
+- [Use a self-hosted environment such as Docker](/go/choose-dev-cluster#self-hosted-temporal-cluster)
+
+Read more in the [Choose a development Cluster](/go/choose-dev-cluster) section on this page.
+>>>>>>> main
 
 :::

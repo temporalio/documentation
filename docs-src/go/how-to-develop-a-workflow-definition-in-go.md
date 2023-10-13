@@ -19,7 +19,11 @@ Below is an example of a basic Workflow Definition.
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 

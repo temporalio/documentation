@@ -3,7 +3,11 @@ id: project-setup
 title: Go SDK developer's guide - Project setup
 sidebar_label: Project setup
 sidebar_position: 2
+<<<<<<< HEAD
 description: The project setup section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+=======
+description: The project setup section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+>>>>>>> main
 slug: /dev-guide/go/project-setup
 toc_max_heading_level: 4
 keywords:
@@ -51,7 +55,11 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+<<<<<<< HEAD
 This section covers how to use a terminal, a code editor, and a development Cluster to create a new Namespace, write a single Activity Workflow, run a Worker that talks to your development Cluster, run a Workflow using the CLI, add a testing framework, and view Workflows in the Web UI.
+=======
+This section covers how to use a terminal, a code editor, and a development Cluster to create a Namespace, write a single Activity Workflow, run a Worker that talks to your development Cluster, run a Workflow using the CLI, add a testing framework, and view Workflows in the Web UI.
+>>>>>>> main
 
 :::competency Construct a new Temporal Application project
 
@@ -67,14 +75,21 @@ There are three ways to follow this guide:
 
 - [Use a local dev server](#local-dev-server)
 - [Use Temporal Cloud](#temporal-cloud)
+<<<<<<< HEAD
 - [Use a Self-hosted environment such as Docker](#self-hosted-temporal-cluster)
 
 Read more about [Which development Cluster you should choose](#choose-dev-cluster) below.
+=======
+- [Use a self-hosted environment such as Docker](#self-hosted-temporal-cluster)
+
+Read more in the [Choose a development Cluster](#choose-dev-cluster) section on this page.
+>>>>>>> main
 
 :::
 
 ## Install the Temporal CLI {#install-cli}
 
+<<<<<<< HEAD
 **How to download and install the Temporal CLI?**
 
 The Temporal CLI is available on MacOs, Windows, and Linux.
@@ -86,6 +101,19 @@ The Temporal CLI is available on MacOs, Windows, and Linux.
 Choose one of the following install methods to install the Temporal CLI on MacOS:
 
 **Install the Temporal CLI with Homebrew.**
+=======
+**How to download and install the Temporal CLI**
+
+The Temporal CLI is available on MacOS, Windows, and Linux.
+
+### MacOS
+
+**How to install the Temporal CLI on Mac OS**
+
+Choose one of the following install methods to install the Temporal CLI on MacOS:
+
+**Install the Temporal CLI with Homebrew**
+>>>>>>> main
 
 ```bash
 brew install temporal
@@ -97,12 +125,21 @@ brew install temporal
 curl -sSf https://temporal.download/cli.sh | sh
 ```
 
+<<<<<<< HEAD
 **Install the Temporal CLI from CDN.**
 
 1. Select the platform and architecture needed.
 
 - Download for Darwin amd64 → https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64
 - Download for Darwin arm64 → https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64
+=======
+**Install the Temporal CLI from CDN**
+
+1. Select the platform and architecture needed.
+
+- Download for Darwin amd64: https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64
+- Download for Darwin arm64: https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64
+>>>>>>> main
 
 2. Extract the downloaded archive.
 
@@ -110,22 +147,39 @@ curl -sSf https://temporal.download/cli.sh | sh
 
 ### Linux
 
+<<<<<<< HEAD
 **How to install the Temporal CLI on Linux?**
 
 Choose one of the following install methods to install the Temporal CLI on Linux:
 
 **Install the Temporal CLI with cURL.**
+=======
+**How to install the Temporal CLI on Linux**
+
+Choose one of the following install methods to install the Temporal CLI on Linux:
+
+**Install the Temporal CLI with cURL**
+>>>>>>> main
 
 ```bash
 curl -sSf https://temporal.download/cli.sh | sh
 ```
 
+<<<<<<< HEAD
 **Install the Temporal CLI from CDN.**
 
 1. Select the platform and architecture needed.
 
 - Download for Linux amd64 → https://temporal.download/cli/archive/latest?platform=linux&arch=amd64
 - Download for Linux arm64 → https://temporal.download/cli/archive/latest?platform=linux&arch=arm64
+=======
+**Install the Temporal CLI from CDN**
+
+1. Select the platform and architecture needed.
+
+- Download for Linux amd64: https://temporal.download/cli/archive/latest?platform=linux&arch=amd64
+- Download for Linux arm64: https://temporal.download/cli/archive/latest?platform=linux&arch=arm64
+>>>>>>> main
 
 2. Extract the downloaded archive.
 
@@ -133,6 +187,7 @@ curl -sSf https://temporal.download/cli.sh | sh
 
 ### Windows
 
+<<<<<<< HEAD
 **How to install the Temporal CLI on Windows?**
 
 Follow these instructions to install the Temporal CLI on Windows:
@@ -143,6 +198,18 @@ Follow these instructions to install the Temporal CLI on Windows:
 
 - Download for Windows amd64 → https://temporal.download/cli/archive/latest?platform=windows&arch=amd64
 - Download for Windows arm64 → https://temporal.download/cli/archive/latest?platform=windows&arch=arm64
+=======
+**How to install the Temporal CLI on Windows**
+
+Follow these instructions to install the Temporal CLI on Windows:
+
+**Install the Temporal CLI from CDN**
+
+1. Select the platform and architecture needed and download the binary.
+
+- Download for Windows amd64: https://temporal.download/cli/archive/latest?platform=windows&arch=amd64
+- Download for Windows arm64: https://temporal.download/cli/archive/latest?platform=windows&arch=arm64
+>>>>>>> main
 
 2. Extract the downloaded archive.
 
@@ -154,17 +221,31 @@ Follow these instructions to install the Temporal CLI on Windows:
 
 We recommend choosing a development environment based on your requirements.
 
+<<<<<<< HEAD
 The source code for the Temporal Server (the orchestrating component of the Temporal Cluster) has an MIT open source license. So, in theory, anyone can take the Temporal Server code and run their Temporal Platform in any number of creative ways.
+=======
+The source code for the Temporal Server (the orchestrating component of the Temporal Cluster) is licensed under the MIT open source license. So, in theory, anyone can take the Temporal Server code and run their Temporal Platform in any number of creative ways.
+>>>>>>> main
 
 However, for most developers we recommend starting by choosing one of the following:
 
 - [Local development server](#local-dev-server)
 - [Temporal Cloud](#temporal-cloud)
+<<<<<<< HEAD
 - [Self-hosted](#self-hosted-temporal-cluster)
 
 :::info Temporal does not directly run your code
 
 Keep in mind that in every scenario, the “Temporal Platform” does not host and run your Workers (application code). It is up to you, the developer, to host your Application code. The Temporal Platform ensures that properly written code durably executes in the face of platform level failures.
+=======
+- [Self-hosted Temporal Cluster](#self-hosted-temporal-cluster)
+
+:::info Temporal does not directly run your code
+
+Keep in mind that in every scenario, the “Temporal Platform” does not host and run your Workers (application code).
+It is up to you, the developer, to host your application code.
+The Temporal Platform ensures that properly written code durably executes in the face of platform-level failures.
+>>>>>>> main
 
 :::
 
@@ -172,6 +253,7 @@ Keep in mind that in every scenario, the “Temporal Platform” does not host a
 
 **When to use a local development server?**
 
+<<<<<<< HEAD
 We recommend using the local development server if you are new to Temporal, or want to start something from scratch and don’t have a Self-hosted environment ready or want to pay for a Temporal Cloud Account.
 
 The Temporal CLI comes bundled with a development server and it provides a fast way to start running Temporal Applications.
@@ -181,6 +263,18 @@ However, the local development server does not emit any metrics, and if you are 
 #### Start the dev server
 
 **How to start a local development server?**
+=======
+We recommend using the local development server if you are new to Temporal, or want to start something from scratch and don’t have a self-hosted environment ready or want to pay for a Temporal Cloud account.
+
+The Temporal CLI comes bundled with a development server and provides a fast way to start running Temporal Applications.
+
+However, the local development server does not emit any metrics.
+If you are eager to to set up Cluster-level metrics for performance tuning, we recommend using a self-hosted Cluster or Temporal Cloud.
+
+#### Start the dev server
+
+**How to start a local development server**
+>>>>>>> main
 
 If you have successfully installed the Temporal CLI, open a new terminal and run the following command:
 
@@ -188,14 +282,21 @@ If you have successfully installed the Temporal CLI, open a new terminal and run
 temporal server start-dev
 ```
 
+<<<<<<< HEAD
 This command automatically starts up the Temporal Web UI, creates a default Namespace, and creates an in-memory database.
 
 The Temporal Web UI serves to [`http://localhost:8233`](http://localhost:8233/).
+=======
+This command automatically starts the Temporal Web UI, creates a default Namespace, and creates an in-memory database.
+
+The Temporal Web UI serves to [http://localhost:8233](http://localhost:8233/).
+>>>>>>> main
 
 For more command details and options, see the [CLI reference](/cli/server#start-dev)
 
 #### Create a custom Namespace
 
+<<<<<<< HEAD
 **How to create a new Namespace on the development server?**
 
 The development server does automatically create a default Namespace (named "default") when it starts up.
@@ -203,6 +304,15 @@ However, we will create a custom one for our application.
 Since this is something we recommend at a production level, we recommend practicing it with the development server.
 
 Use the `temporal operator namespace create` command using the Temporal CLI to create a new Namespace on the development server.
+=======
+**How to create a Namespace on the development server**
+
+The development server does automatically create a default Namespace (named "default") when it starts up.
+However, you will create a custom one for our application.
+Since this is something recommended at a production level, it's recommend practicing it with the development server.
+
+Use the `temporal operator namespace create` command using the Temporal CLI to create a Namespace on the development server.
+>>>>>>> main
 
 ```bash
 temporal operator namespace create backgroundcheck_namespace
@@ -212,6 +322,7 @@ For command details and options, see the [CLI reference](/cli/operator#create).
 
 ### Temporal Cloud
 
+<<<<<<< HEAD
 **When to use Temporal Cloud?**
 
 If you do not have a Temporal Cloud Account, you can request one using the link on the [getting started page](https://docs.temporal.io/cloud/get-started).
@@ -228,11 +339,30 @@ Store your certificate and private key you generated for your Namespace as files
 You will need access to your cert and key to run your Workers and start Workflows.
 
 For Cloud certificate requirements and details check out the [Cloud certificate management guide](/cloud/certificates#).
+=======
+**When to use Temporal Cloud**
+
+If you do not have a Temporal Cloud Account, you can request one using the link on the [Get started with Temporal Cloud](https://docs.temporal.io/cloud/get-started) guide.
+
+We recommend starting off with Temporal Cloud if you already have a production use case, or need to move a scalable proof of concept into production.
+
+In other words, Temporal Cloud is perfect if you are ready to run at scale and don’t want the overhead of managing your own self-hosted Cluster.
+
+To create a Namespace in Temporal Cloud, follow the instructions in [How to create a Namespace](/cloud/namespaces#create-a-namespace).
+
+:::info Safely store your certificate and private key
+
+Store certificates and private keys generated for your Namespace as files or environment variables in your project.
+You need access to your certificate and key to run your Workers and start Workflows.
+
+For more information on certificate requirements, see [How to manage certificates in Temporal Cloud](/cloud/certificates#).
+>>>>>>> main
 
 :::
 
 ### Self-hosted Temporal Cluster
 
+<<<<<<< HEAD
 We recommend using a Self-Hosted environment if you are starting something new and need to scale with production-level features, but don’t yet need or want to pay for Temporal Cloud.
 
 For example, running a Self-Hosted Cluster enables you to try different databases, view Cluster metrics, use custom [Search Attributes](/visibility#search-attribute), and even play with the [Archival](/clusters#archival) feature.
@@ -243,6 +373,18 @@ We acknowledge that it takes a fair amount of experience to elevate from a Self-
 The Self-hosted information in this guide should help you make more informed decisions.
 
 To follow along with Self-hosted parts of this guide, install the following:
+=======
+We recommend using a self-hosted environment if you are starting something new and need to scale with production-level features, but don’t yet need or want to pay for Temporal Cloud.
+
+For example, running a self-hosted Cluster lets you try different databases, view Cluster metrics, use custom [Search Attributes](/visibility#search-attribute), and even play with the [Archival](/clusters#archival) feature.
+
+It's completely possible to run a production level self-hosted Cluster.
+However, for the purposes of this guide, we show how to use a self-hosted environment that runs completely out of Docker.
+We acknowledge that it takes a fair amount of experience to elevate from a self-hosted environment in Docker to something that can run at an enterprise production scale.
+The self-hosted information in this guide should help you make more informed decisions.
+
+To follow along with self-hosted parts of this guide, install the following:
+>>>>>>> main
 
 - [Docker](https://docs.docker.com/engine/install)
 - [Docker Compose](https://docs.docker.com/compose/install).
@@ -251,12 +393,20 @@ Then, clone the [temporalio/docker-compose](https://github.com/temporalio/docker
 
 Change directory into the root of the project.
 
+<<<<<<< HEAD
 Run the `docker-compose up` command.
+=======
+Run the `docker compose up` command.
+>>>>>>> main
 
 ```shell
 git clone https://github.com/temporalio/docker-compose.git
 cd  docker-compose
+<<<<<<< HEAD
 docker-compose up
+=======
+docker compose up
+>>>>>>> main
 ```
 
 Create a command alias for the Temporal CLI:
@@ -265,7 +415,11 @@ Create a command alias for the Temporal CLI:
 alias temporal_docker="docker exec temporal-admin-tools temporal"
 ```
 
+<<<<<<< HEAD
 Create a new Namespace.
+=======
+Create a Namespace.
+>>>>>>> main
 
 ```shell
 temporal_docker operator namespace create backgroundcheck_namespace
@@ -275,7 +429,11 @@ temporal_docker operator namespace create backgroundcheck_namespace
 
 **What is the minimum code I need to create a boilerplate Temporal Application?**
 
+<<<<<<< HEAD
 Let’s start out with a single Activity Workflow and register those functions with a Worker.
+=======
+Let’s start with a single Activity Workflow and register those functions with a Worker.
+>>>>>>> main
 
 After we get the Worker running and have started a Workflow Execution, we will add a testing framework.
 
@@ -289,9 +447,15 @@ However, there are some general ways to think about organizing code.
 The best practice is to group Workflows together, Activities together, and separate your Worker process into a standalone file.
 Often this happens respectively per use case, business process, or domain.
 
+<<<<<<< HEAD
 For mono-repo style organizational techniques, consider a designated Workflow directory for each use case and place each Workflow in its own file, but also maintain a dedicated place for shared Activities.
 
 For example your project structure could look like this:
+=======
+For monorepo-style organizational techniques, consider a designated Workflow directory for each use case and place each Workflow in its own file, but also maintain a dedicated place for shared Activities.
+
+For example, your project structure could look like this:
+>>>>>>> main
 
 ```text
 /monorepo
@@ -336,7 +500,11 @@ If you are following along with this guide, your project will look like this:
 
 ### Initialize Go project dependency framework
 
+<<<<<<< HEAD
 If you have created a similar project structure as noted above, run `go mod init` to create a new go module for this project.
+=======
+If you have created a similar project structure as noted earlier, run `go mod init` to create a new Go module for this project.
+>>>>>>> main
 
 ```bash
 mkdir backgroundcheck
@@ -344,12 +512,20 @@ cd backgroundcheck
 go mod init
 ```
 
+<<<<<<< HEAD
 Module name will be something like `<repo>/backgroundcheck` .
+=======
+The module name will be something like `<repo>/backgroundcheck` .
+>>>>>>> main
 
 ### Boilerplate Workflow code {#workflow-code}
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
+<<<<<<< HEAD
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/workflows/backgroundcheck_dacx.go. -->
+=======
+THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/workflows/backgroundcheck_dacx.go. -->
+>>>>>>> main
 
 In the Temporal Go SDK programming model, a [Workflow Definition](/workflows#workflow-definition) is an exportable function.
 The `BackgroundCheck` function below is an example of a basic Workflow Definition.
@@ -358,7 +534,11 @@ The `BackgroundCheck` function below is an example of a basic Workflow Definitio
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/workflows/backgroundcheck_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/workflows/backgroundcheck_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -394,7 +574,11 @@ func BackgroundCheck(ctx workflow.Context, param string) (string, error) {
 ```
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
+<<<<<<< HEAD
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/workflows/backgroundcheck_dacx.go. -->
+=======
+THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/workflows/backgroundcheck_dacx.go. -->
+>>>>>>> main
 
 The first parameter of a Go-based Workflow Definition must be of the [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context) type.
 It is used by the Temporal Go SDK to pass around Workflow Execution context, and virtually all the Go SDK APIs that are callable from the Workflow require it.
@@ -420,7 +604,11 @@ For example, in a small project like this, it is still a best practice to have a
 ### Boilerplate Activity code {#activity-code}
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
+<<<<<<< HEAD
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/activities/ssntraceactivity_dacx.go. -->
+=======
+THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/activities/ssntraceactivity_dacx.go. -->
+>>>>>>> main
 
 In the Temporal Go SDK programming model, an Activity is an exportable function or a `struct` method.
 Below is an example of an Activity defined as a function.
@@ -429,7 +617,11 @@ Below is an example of an Activity defined as a function.
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/activities/ssntraceactivity_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/activities/ssntraceactivity_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -451,7 +643,11 @@ func SSNTraceActivity(ctx context.Context, param string) (*string, error) {
 ```
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
+<<<<<<< HEAD
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/activities/ssntraceactivity_dacx.go. -->
+=======
+THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/activities/ssntraceactivity_dacx.go. -->
+>>>>>>> main
 
 The first parameter of an Activity Definition is `context.Context`.
 This parameter is optional for an Activity Definition, though it is recommended, especially if the Activity is expected to use other Go SDK APIs.
@@ -463,7 +659,11 @@ For example, parameters can’t be channels, functions, variadic, or unsafe poin
 ### Run a dev server Worker {#dev-server-worker}
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
+<<<<<<< HEAD
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/dev_server_worker/main_dacx.go. -->
+=======
+THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/dev_server_worker/main_dacx.go. -->
+>>>>>>> main
 
 To run a Worker Process with a local development server, define the following steps in code:
 
@@ -478,7 +678,11 @@ In regards to organization, we recommend keeping Worker code separate from Workf
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/dev_server_worker/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/dev_server_worker/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -535,7 +739,11 @@ gow worker/main.go # automatically restarts when the project files change
 ### Run a Temporal Cloud Worker {#cloud-worker}
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
+<<<<<<< HEAD
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/cloud_worker/main_dacx.go. -->
+=======
+THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/cloud_worker/main_dacx.go. -->
+>>>>>>> main
 
 A Temporal Cloud Worker requires that you specify the following in the Client connection options:
 
@@ -547,7 +755,11 @@ A Temporal Cloud Worker requires that you specify the following in the Client co
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/cloud_worker/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/cloud_worker/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -615,7 +827,11 @@ func main() {
 ```
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
+<<<<<<< HEAD
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/cloud_worker/main_dacx.go. -->
+=======
+THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/cloud_worker/main_dacx.go. -->
+>>>>>>> main
 
 When specifying the Temporal Cloud Namespace, make sure to append the Account Id as it appears in the url of the Cloud UI.
 Consider the following Namespace url: https://cloud.temporal.io/namespaces/backgroundcheck-app.1a23b/workflows, if your Namespace is "backgroundcheck-app" and your Account Id is "1a23b", then you would specify your Namespace as "backgroundcheck-app.1a23b".
@@ -628,7 +844,11 @@ There is an option to copy the grPC endpoint address from the Temporal Cloud UI.
 
 ### Run a Self-hosted Worker {#dockerfile}
 
+<<<<<<< HEAD
 To deploy a Self-hosted Worker to your Docker environment you will need to configure your Worker with the appropriate IP address and port.
+=======
+To deploy a self-hosted Worker to your Docker environment, you need to configure your Worker with the appropriate IP address and port.
+>>>>>>> main
 
 #### Confirm network
 
@@ -648,7 +868,11 @@ services:
   # ...
 ```
 
+<<<<<<< HEAD
 If you are using a different or customized docker compose file, you can see the available networks using:
+=======
+If you are using a different or customized docker compose file, you can see the available networks by using the following command:
+>>>>>>> main
 
 ```shell
 docker network ls
@@ -693,7 +917,11 @@ Copy the IP address part.
 #### Customize Client options {#self-hosted-client-options}
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
+<<<<<<< HEAD
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/self_hosted_worker/main_dacx.go. -->
+=======
+THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/self_hosted_worker/main_dacx.go. -->
+>>>>>>> main
 
 Set IP address, port, and Namespace in the Temporal Client options.
 
@@ -701,7 +929,11 @@ Set IP address, port, and Namespace in the Temporal Client options.
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/self_hosted_worker/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/self_hosted_worker/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -785,6 +1017,7 @@ docker run --network temporal-network backgroundcheck-worker-image:latest
 
 ## Start Workflow using the CLI {#start-workflow}
 
+<<<<<<< HEAD
 **How to start the Workflow using the CLI?**
 
 You can use the Temporal CLI to start a Workflow whether you are using a local development server, Temporal Cloud, or are in a Self-hosted environment.
@@ -793,6 +1026,16 @@ However, you need to provide additional options to the command when operating wi
 ### Local dev Server
 
 **How to start a Workflow with the Temporal CLI while using the local development server.**
+=======
+**How to start a Workflow using the CLI**
+
+You can use the Temporal CLI to start a Workflow whether you are using a local development server, Temporal Cloud, or are in a self-hosted environment.
+However, you need to provide additional options to the command when operating with the Temporal Cloud or self-hosted environments.
+
+### Local dev Server
+
+**How to start a Workflow with the Temporal CLI while using the local development server**
+>>>>>>> main
 
 Use the Temporal CLI `temporal workflow start` command to start your Workflow.
 
@@ -804,10 +1047,17 @@ temporal workflow start \
  --namespace backgroundcheck_namespace
 ```
 
+<<<<<<< HEAD
 See the [temporal workflow start](/cli/workflow#start) command API reference for more details.
 
 After starting the Workflow, we can now see it in the Temporal Platform.
 We can use the Temporal CLI, or the Temporal Web UI to monitor the Workflow's progress.
+=======
+For more details, see the [temporal workflow start](/cli/workflow#start) command API reference.
+
+After you start the Workflow, you can see it in the Temporal Platform.
+Use the Temporal CLI or the Temporal Web UI to monitor the Workflow's progress.
+>>>>>>> main
 
 #### List Workflows
 
@@ -820,21 +1070,37 @@ temporal workflow list \
 
 #### View in Web UI
 
+<<<<<<< HEAD
 We can also use the Web UI to see the Workflows associated with the Namespace.
 
 The local development server starts up the Web UI at [http://localhost:8233](http://localhost:8233).
 
 When you visit for the first time, the Web UI direct you to [http://localhost:8233/namespaces/default/workflows](http://localhost:8233/namespaces/default/workflows).
+=======
+You can also use the Web UI to see the Workflows associated with the Namespace.
+
+The local development server starts the Web UI at [http://localhost:8233](http://localhost:8233).
+
+When you visit for the first time, the Web UI directs you to [http://localhost:8233/namespaces/default/workflows](http://localhost:8233/namespaces/default/workflows).
+>>>>>>> main
 
 Use the Namespace dropdown to select the project Namespace you created earlier.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Web UI Namespace selection</p></div><div class="tdiiw"><img class="img_ev3q" src="/img/web-ui-namespace-selection.png" alt="Web UI Namespace selection" height="1402" width="3004" /></div></div>
 
+<<<<<<< HEAD
 You should now be at [http://localhost:8233/namespaces/backgroundcheck_namespace/workflows](http://localhost:8233/namespaces/backgroundcheck_namespace/workflows)
 
 ### Temporal Cloud
 
 **How to start a Workflow with Temporal CLI when using Temporal Cloud.**
+=======
+You should now be at [http://localhost:8233/namespaces/backgroundcheck_namespace/workflows](http://localhost:8233/namespaces/backgroundcheck_namespace/workflows).
+
+### Temporal Cloud
+
+**How to start a Workflow with Temporal CLI when using Temporal Cloud**
+>>>>>>> main
 
 Run the `temporal workflow start` command, and make sure to specify the certificate and private key arguments.
 
@@ -849,12 +1115,23 @@ temporal workflow start \
  --address <namespace>.<account-id>.tmprl.cloud:<port>
 ```
 
+<<<<<<< HEAD
 Make sure that the certificate path, private key path, namespace, and address argument values match your project.
 
 :::info Use env variables
 
 Use environment variables as a way to quickly switch between a local dev server and Temporal Cloud, for example.
 
+=======
+Make sure that the certificate path, private key path, Namespace, and address argument values match your project.
+
+:::info Use environment variables
+
+Use environment variables as a way to quickly switch between a local dev server and Temporal Cloud, for example.
+
+You can customize the environment names to be anything you want.
+
+>>>>>>> main
 ```shell
 # set Cloud env variables
 temporal env set cloud.namespace <namespace>.<account-id>
@@ -878,7 +1155,11 @@ temporal workflow start \
 
 #### List Workflows
 
+<<<<<<< HEAD
 Run the `temporal workflow list` command, and make sure to specify the certificate and private key arugments.
+=======
+Run the `temporal workflow list` command, and make sure to specify the certificate and private key arguments.
+>>>>>>> main
 
 ```shell
 temporal workflow list \
@@ -901,7 +1182,11 @@ https://cloud.temporal.io/namespaces/<namespace>.<account-id>/workflows
 
 ### Self-hosted
 
+<<<<<<< HEAD
 **How to start a Workflow with the Temporal CLI when using a Self-hosted Cluster.**
+=======
+**How to start a Workflow with the Temporal CLI when using a Self-hosted Cluster**
+>>>>>>> main
 
 Use your Temporal CLI alias to run the `temporal workflow start` command and start your Workflow.
 
@@ -925,16 +1210,28 @@ temporal_docker workflow list \
 
 #### View in the Web UI
 
+<<<<<<< HEAD
 When you visit for the first time, the Web UI direct you to [http://localhost:8233/namespaces/default/workflows](http://localhost:8080/namespaces/default/workflows).
 
 Use the Namespace dropdown to select the project Namespace you created earlier.
 
 You should now be at [http://localhost:8080/namespaces/backgroundcheck_namespace/workflows](http://localhost:8080/namespaces/backgroundcheck_namespace/workflows)
+=======
+When you visit for the first time, the Web UI directs you to [http://localhost:8233/namespaces/default/workflows](http://localhost:8080/namespaces/default/workflows).
+
+Use the Namespace dropdown to select the project Namespace you created earlier.
+
+You should now be at [http://localhost:8080/namespaces/backgroundcheck_namespace/workflows](http://localhost:8080/namespaces/backgroundcheck_namespace/workflows).
+>>>>>>> main
 
 ## Add a testing framework {#test-framework}
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
+<<<<<<< HEAD
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go. -->
+=======
+THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go. -->
+>>>>>>> main
 
 **How to add a Testing Framework and Tests for the Workflow and Activity.**
 
@@ -945,7 +1242,11 @@ In the Temporal Go SDK, the `testsuite` package (https://pkg.go.dev/go.temporal.
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -980,7 +1281,11 @@ func Test_BackgroundCheckApplication(t *testing.T) {
 ```
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
+<<<<<<< HEAD
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go. -->
+=======
+THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go. -->
+>>>>>>> main
 
 In this example, we use a custom struct that absorbs both the testing functionality from testify (https://pkg.go.dev/github.com/stretchr/testify/suite) via `suite.Suite` and the testing functionality from the Temporal test framework via `testsuite.WorkflowTestSuite`.
 Next we create a regular test function recognized by the `go test` command, and pass an instance of the struct to `suite.Run`.
@@ -988,7 +1293,11 @@ Next we create a regular test function recognized by the `go test` command, an
 ### Add Workflow function tests {#test-workflow-code}
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
+<<<<<<< HEAD
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go. -->
+=======
+THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go. -->
+>>>>>>> main
 
 We can test Workflow code for the following conditions:
 
@@ -1003,7 +1312,11 @@ We can also perform a Workflow Replay test, and we'll provide detailed coverage 
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -1034,7 +1347,11 @@ func (s *UnitTestSuite) Test_BackgroundCheckWorkflow() {
 ```
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
+<<<<<<< HEAD
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go. -->
+=======
+THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go. -->
+>>>>>>> main
 
 Calling `env.ExecuteWorkflow(...)` executes the Workflow logic and any invoked Activities inside the test process.
 The first parameter of `env.ExecuteWorkflow(...)` contains a reference to Workflow function and any parameters that the Workflow needs.
@@ -1049,7 +1366,11 @@ If our Workflow returned a value, we could have retrieved that value via a call 
 ### Add Activity function tests {#test-activity-code}
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
+<<<<<<< HEAD
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go. -->
+=======
+THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go. -->
+>>>>>>> main
 
 We can test Activity code for the following conditions:
 
@@ -1061,7 +1382,11 @@ We can test Activity code for the following conditions:
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 

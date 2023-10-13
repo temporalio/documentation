@@ -11,7 +11,11 @@ tags:
 
 **What is the minimum code I need to create a boilerplate Temporal Application?**
 
+<<<<<<< HEAD
 Let’s start out with a single Activity Workflow and register those functions with a Worker.
+=======
+Let’s start with a single Activity Workflow and register those functions with a Worker.
+>>>>>>> main
 
 After we get the Worker running and have started a Workflow Execution, we will add a testing framework.
 
@@ -25,9 +29,15 @@ However, there are some general ways to think about organizing code.
 The best practice is to group Workflows together, Activities together, and separate your Worker process into a standalone file.
 Often this happens respectively per use case, business process, or domain.
 
+<<<<<<< HEAD
 For mono-repo style organizational techniques, consider a designated Workflow directory for each use case and place each Workflow in its own file, but also maintain a dedicated place for shared Activities.
 
 For example your project structure could look like this:
+=======
+For monorepo-style organizational techniques, consider a designated Workflow directory for each use case and place each Workflow in its own file, but also maintain a dedicated place for shared Activities.
+
+For example, your project structure could look like this:
+>>>>>>> main
 
 ```text
 /monorepo
@@ -72,7 +82,11 @@ If you are following along with this guide, your project will look like this:
 
 ### Initialize Go project dependency framework
 
+<<<<<<< HEAD
 If you have created a similar project structure as noted above, run `go mod init` to create a new go module for this project.
+=======
+If you have created a similar project structure as noted earlier, run `go mod init` to create a new Go module for this project.
+>>>>>>> main
 
 ```bash
 mkdir backgroundcheck
@@ -80,4 +94,8 @@ cd backgroundcheck
 go mod init
 ```
 
+<<<<<<< HEAD
 Module name will be something like `<repo>/backgroundcheck` .
+=======
+The module name will be something like `<repo>/backgroundcheck` .
+>>>>>>> main

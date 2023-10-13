@@ -272,7 +272,11 @@ If you don't set a custom Namespace name in the Namespace field, the client conn
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/gateway/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/gateway/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -336,7 +340,11 @@ For more information about configuring TLS to secure inter- and intra-network co
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/cloud/client/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/cloud/client/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -398,7 +406,11 @@ Below is an example of a basic Workflow Definition.
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -446,7 +458,11 @@ All Workflow Definition parameters must be serializable and can't be channels, f
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -492,7 +508,11 @@ Returning a non-nil `error` from a Workflow indicates that an error was encounte
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -540,7 +560,11 @@ To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` 
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/worker/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -622,7 +646,11 @@ Because this is such a common need, the rest of this guide shows Activities writ
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/your_activity_definition_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -685,7 +713,11 @@ However, all parameters must be serializable (parameters can’t be channels, fu
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/your_activity_definition_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -718,7 +750,11 @@ You may wish to use a `struct` type to hold all custom values, just keep in mind
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/your_activity_definition_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -754,7 +790,11 @@ To customize the Activity Type, set the `Name` parameter with `RegisterOptions` 
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/worker/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -805,7 +845,11 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -1145,7 +1189,11 @@ gow run worker/main.go # automatically reloads when file changes
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/yourapp/worker/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 
@@ -1660,7 +1708,11 @@ For more information about configuring TLS to secure inter- and intra-network co
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
+<<<<<<< HEAD
 Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/cloud/worker/main_dacx.go) in the context of the rest of the application code.
+=======
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/cloud/worker/main_dacx.go) in the context of the rest of the application code.
+>>>>>>> main
 
 :::
 

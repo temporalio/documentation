@@ -21,16 +21,28 @@ Short link: [t.mp/go-api](https://t.mp/go-api)
 
 :::competency Recommend a Temporal SDK
 
+<<<<<<< HEAD
 The information on this page aids in promoting a developer's ability to recommend a Temporal SDK based on your project's needs.
 
 :::
 
 The [Temporal Go SDK](https://github.com/temporalio/sdk-go) released on March 23, 2020 and enables developers to build, test, and execute Temporal applications in Go.
+=======
+The information on this page helps a developer recommend a Temporal SDK based on project needs.
+
+:::
+
+The [Temporal Go SDK](https://github.com/temporalio/sdk-go) released on March 23, 2020, and enables developers to build, test, and execute Temporal applications in Go.
+>>>>>>> main
 This guide documents the concepts, features, and tools that developers encounter on their journey.
 
 It contextualizes Temporal Application development through a specific set of use cases.
 For example, we work within the Background Check use case for the first several sections.
+<<<<<<< HEAD
 And, it relies on a set of sample applications specifically tailored to meet the needs of this guide.
+=======
+And it relies on a set of sample applications specifically tailored to meet the needs of this guide.
+>>>>>>> main
 You can expect to see several applications in use to capture the iterative steps, provide a means to showcase best practices, and teach core concepts.
 
 ## Supported runtimes
