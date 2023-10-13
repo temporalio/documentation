@@ -11,7 +11,7 @@ tags:
 
 The information on this page is relevant to open source [Temporal Cluster deployments](/concepts/what-is-a-temporal-cluster).
 
-See [Cloud metrics](/cloud/metrics-intro) for metrics emitted by [Temporal Cloud](/concepts/what-is-temporal-cloud).
+See [Cloud metrics](/cloud/metrics-intro) for metrics emitted by [Temporal Cloud](/cloud/).
 
 See [SDK metrics](/references/sdk-metrics) for metrics emitted by the [SDKs](/concepts/what-is-a-temporal-sdk).
 
