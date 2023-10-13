@@ -378,8 +378,8 @@
       "destination": "/dev-guide/go/versioning:path*"
     },
     {
-      "source": "/change-log",
-      "destination": "/changelog"
+      "source": "/changelog",
+      "destination": "https://temporal.io/change-log"
     },
     {
       "source": "/blog/how-datadog-ensures-database-reliability-with-temporal",
