@@ -20,7 +20,7 @@ In other words, when developing with the Go SDK, for example, a developer should
 However, due to the nature of each language, and how they're implemented, each SDK is slightly unique.
 
 Additionally, it's not always the case that a feature and its accessory capability releases across all the SDKs at the same time.
-Or in the case of older SDKs, a feature or API might have been released, but through developer feedback, it was realized that it was unnecessary to include in newer SDKs.
+For example, a feature or an API is released in one SDK, but through developer feedback, it is unnecessary to include in other SDKs.
 
 The following table lists features of the Temporal SDKs.
 This list is meant to provide context and clarification around the SDK feature sets.
@@ -39,41 +39,9 @@ A Workflow Definition is essentially Workflow code, which orchestrates the execu
 [Learn more](/workflows#workflow-definition) in the concepts.
 
 An Activity Definition is a normal function or method that defines a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email message.
-[Learn more](/activities#activity-definition) in the concepts
+For more information, see [Activity Definition](/activities#activity-definition) in the concept page.
 
-| Feature                                       | Go  | Java | TypeScript | Python | .Net | PHP |
-| --------------------------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
-| [Enhanced stack trace](#enhanced-stack-trace) | No  | No   | Yes        | No     | No   | No  |
-| [gRPC interceptors](#grpc-interceptors)       | Yes | Yes  | Yes        | No     | No   | No  |
-| [Health service](#health-service)             | Yes | Yes  | Yes        | Yes    | Yes  | No  |
-| [Heartbeats](#heartbeats)                     | Yes | Yes  | Yes        | Yes    | Yes  | Yes |
-| [Interceptors](#interceptors)                 | Yes | Yes  | Yes        | Yes    | Yes  | No  |
 
-| [Queries](#queries) | Yes | Yes | Yes | Yes | Yes | Yes |
-| [Remote codec](#remote-codec) | Yes | Yes | Yes | Yes | Yes | No |
-| [Replayer](#replayer) | Yes | Yes | Yes | Yes | Yes | No |
-| [Retries](#retries) | Yes | Yes | Yes | Yes | Yes | Yes |
-| [SAGA](#saga) | No | Yes | No | No | No | Yes |
-| [Sandbox](#sandbox) | No | No | Yes | Yes | No | No |
-| [SDK Metrics](#sdk-metrics) | Yes | Yes | Yes | Yes | Yes | No |
-| [Search Attributes](#search-attributes) | Yes | Yes | Yes | Yes | Yes | Yes |
-| [Sessions](#sessions) | Yes | No | No | No | No | No |
-| [Worker-Specific Task Queues](#worker-specific-task-queues) | Yes | Yes | Yes | Yes | Yes | Yes |
-
-| [Signal/Cancel External Workflow](#signalcancel-external-workflow) | Yes | Yes | Yes | Yes | Yes | Yes |
-| [Static analyzer](#static-analyzer) | Yes | No | No | No | No | No |
-| [Timers](#timers) | Yes | Yes | Yes | Yes | Yes | Yes |
-| [Type safety](#type-safety) | Yes | Yes | Yes | Yes | Yes | Yes |
-| [Unit testing](#unit-testing) | Yes | Yes | Yes | Yes | Yes | Yes |
-| [Upsert memo](#upsert-memo) | Yes | No | No | No | Yes | No |
-| [VSCode extension support](#vscode-extension-support) | No | No | Yes | No | No | No |
-
-<!--
-| [Failure encoding](#failure-encoding)     | Yes | Yes | Yes | Yes | Yes | No  |
-| [Operator service](#operator-service)     | Yes | Yes  | Yes        | Yes    | Yes  | No  |
-| [High level list Workflow API](#high-level-list-workflow-api)                       | No  | No   | Yes        | Yes    | Yes  | No  |
-| [Separate codec concept](#separate-codec-concept)                                   | Yes | Yes  | Yes        | Yes    | Yes  | No  |
--->
 
 ## Auth (SSL/mTLS)
 
@@ -82,15 +50,16 @@ An Activity Definition is a normal function or method that defines a single, wel
 | [Auth (SSL/mTLS)](#auth-ssltls) | Yes | Yes  | Yes        | Yes    | Yes  | Yes |
 
 Temporal SDKs support authenticating and authorizing client API calls to the Temporal server using SSL and mTLS.
-SSL (Secure Sockets Layer) and its successor TLS (Transport Layer Security) allow encrypted communication between the SDK client and the Temporal server over a network. mTLS (mutual TLS) is a variant where both client and server authenticate each other by verifying the provided certificates.
+SSL (Secure Sockets Layer) and its successor TLS (Transport Layer Security) allow encrypted communication between the SDK client and the Temporal server over a network.
+mTLS (mutual TLS) is a variant where both client and server authenticate each other by verifying the provided certificates.
 This ensures secure identification and access control for API calls made from the SDK clients.
 Configuring SSL or mTLS authentication provides network encryption and protects against man-in-the-middle attacks when communicating with the Temporal server.
 
 ## Built-in handler list Query
 
-| Feature                                                     | Go | Java | TypeScript | Python | .Net | PHP |
-| ----------------------------------------------------------- | -- | ---- | ---------- | ------ | ---- | --- |
-| [Built-in handler list query](#built-in-handler-list-query) | No | No   | No         | No     | No   | No  |
+| Feature                                                     | Go  | Java | TypeScript | Python | .Net | PHP |
+| ----------------------------------------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
+| [Built-in handler list query](#built-in-handler-list-query) | No  | No   | No         | No     | No   | No  |
 
 The built-in handler list Query in Temporal allows retrieving the list of registered Signal and Query handlers for a Workflow.
 
@@ -157,34 +126,59 @@ Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
 
 These are unnamed entities that are invoked if no other statically defined entity with the given name exists.
 
-| Feature                                   | Go | Java | TypeScript | Python | .Net | PHP |
-| ----------------------------------------- | -- | ---- | ---------- | ------ | ---- | --- |
-| [Dynamic Activities](#dynamic-activities) | No | Yes  | No         | Yes    | Yes  | No  |
-| [Dynamic Queries](#dynamic-queries)       | No | Yes  | No         | Yes    | Yes  | No  |
-| [Dynamic Signals](#dynamic-signals)       | No | Yes  | Yes        | Yes    | Yes  | No  |
-| [Dynamic Workflows](#dynamic-workflows)   | No | Yes  | Yes        | Yes    | Yes  | No  |
+| Feature                                   | Go  | Java | TypeScript | Python | .Net | PHP |
+| ----------------------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
+| [Dynamic Activities](#dynamic-activities) | No  | Yes  | No         | Yes    | Yes  | No  |
+| [Dynamic Queries](#dynamic-queries)       | No  | Yes  | No         | Yes    | Yes  | No  |
+| [Dynamic Signals](#dynamic-signals)       | No  | Yes  | Yes        | Yes    | Yes  | No  |
+| [Dynamic Workflows](#dynamic-workflows)   | No  | Yes  | Yes        | Yes    | Yes  | No  |
 
 Dynamic Entities should be used judiciously as a fallback mechanism rather than the primary approach.
 Overusing them can lead to maintainability and debugging issues down the line.
 
 ## Enhanced stack trace
 
-Enhanced stack trace in Temporal is a feature that allows you to capture and view detailed information about the execution of a Workflow [1].
-It provides a stack trace of all the threads owned by the Workflow execution, which can be useful for troubleshooting issues in production [3].
-The `__stack_trace` query is a predefined query available in many SDKs that returns the stack trace [3].
-You can use the `tctl Workflow stack` command to query the stack trace of a Workflow execution [5]. This feature is especially helpful for identifying errors and blocks in a Workflow definition [5].
+| Feature                                       | Go  | Java | TypeScript | Python | .Net | PHP |
+| --------------------------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
+| [Enhanced stack trace](#enhanced-stack-trace) | No  | No   | Yes        | No     | No   | No  |
+
+Enhanced stack trace in Temporal is a feature that allows you to capture and view detailed information about the execution of a Workflow.
+It provides a stack trace of all the threads owned by the Workflow execution, which can be useful for troubleshooting issues in production.
+The `__stack_trace` query is a predefined query available in many SDKs that returns the stack trace.
+You can use the `tctl Workflow stack` command to query the stack trace of a Workflow execution.
+This feature is especially helpful for identifying errors and blocks in a Workflow definition.
 
 ## gRPC interceptors
 
-gRPC interceptors serve as a powerful tool provided by gRPC, enabling developers to intercept and modify both incoming RPC requests and outgoing RPC responses. This mechanism can be instrumental in scenarios such as dynamic adjustments to target hosts or tweaking parameters like TLS configurations. However, for those utilizing the Temporal SDKs powered by the Rust core, which includes the TypeScript, Python, and .Net SDKs.
+| Feature                                 | Go  | Java | TypeScript | Python | .Net | PHP |
+| --------------------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
+| [gRPC interceptors](#grpc-interceptors) | Yes | Yes  | Yes        | No     | No   | No  |
 
-Currently, features like gRPC interceptors aren't implemented directly in the Rust core. This limitation extends to other scenarios like the rotation of client TLS certificates. Although technically feasible, the current workaround involves recreating the client to reflect changes.
+gRPC interceptors serve as a powerful tool provided by gRPC, enabling developers to intercept and modify both incoming RPC requests and outgoing RPC responses.
+This mechanism can be instrumental in scenarios such as dynamic adjustments to target hosts or tweaking parameters like TLS configurations.
+However, for those utilizing the Temporal SDKs powered by the Rust core, which includes the TypeScript, Python, and .Net SDKs.
+
+Currently, features like gRPC interceptors aren't implemented directly in the Rust core.
+This limitation extends to other scenarios like the rotation of client TLS certificates.
+Although technically feasible, the current workaround involves recreating the client to reflect changes.
 
 ## Health service
 
-A health service in the context of Temporal is a component responsible for checking the health of the frontend service [1]. It ensures the proper functioning of the cluster by returning a list of cluster metrics [1]. The health checks for the Temporal cluster can be set up using TCP or gRPC on port 7233 [5]. The matching service is responsible for hosting user-facing Task Queues [3], while the history service persists Workflow execution state [4]. The Worker service performs background processing for replication queue and system Workflows [2].
+| Feature                           | Go  | Java | TypeScript | Python | .Net | PHP |
+| --------------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
+| [Health service](#health-service) | Yes | Yes  | Yes        | Yes    | Yes  | No  |
+
+A health service in the context of Temporal is a component responsible for checking the health of the frontend service [1].
+It ensures the proper functioning of the cluster by returning a list of cluster metrics [1].
+The health checks for the Temporal cluster can be set up using TCP or gRPC on port 7233 [5].
+The matching service is responsible for hosting user-facing Task Queues [3], while the history service persists Workflow execution state [4].
+The Worker service performs background processing for replication queue and system Workflows [2].
 
 ## Heartbeats
+
+| Feature                   | Go  | Java | TypeScript | Python | .Net | PHP |
+| ------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
+| [Heartbeats](#heartbeats) | Yes | Yes  | Yes        | Yes    | Yes  | Yes |
 
 A Heartbeat is a mechanism used in the Temporal Platform to ensure the progress and timely execution of Activities.
 It involves periodic pings from the Activity Worker to the Temporal Cluster.
@@ -194,6 +188,10 @@ By Heartbeating within a specified interval lower than the Heartbeat Timeout, Ac
 Heartbeats help prevent Activity Timeouts and enable efficient retries.
 
 ## Interceptors
+
+| Feature                       | Go  | Java | TypeScript | Python | .Net | PHP |
+| ----------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
+| [Interceptors](#interceptors) | Yes | Yes  | Yes        | Yes    | Yes  | No  |
 
 Interceptors are a mechanism for modifying inbound and outbound SDK calls.
 Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities.
@@ -233,7 +231,8 @@ Queries are available for running or completed Workflows Executions only if the 
 
 An Workflow Update is a request to and a response from a Temporal Client to a Workflow Execution.
 
-The Workflow must have a function to handle the Update. Unlike a Signal handler, the Update handler function can mutate the state of the Workflow while also returning a value to the caller.
+The Workflow must have a function to handle the Update.
+Unlike a Signal handler, the Update handler function can mutate the state of the Workflow while also returning a value to the caller.
 The Update handler listens for Updates by the Update's name.
 
 When there is the potential for multiple Updates to cause a duplication problem, Temporal recommends adding idempotency logic to your Update handler that checks for duplicates.
@@ -257,7 +256,9 @@ The authorization header can be set on requests to the codec server.
 | --------------------- | --- | ---- | ---------- | ------ | ---- | --- |
 | [Replayer](#replayer) | Yes | Yes  | Yes        | Yes    | Yes  | No  |
 
-A Replay is the method by which a Workflow Execution resumes making progress. During a Replay the Commands that are generated are checked against an existing Event History. Replays are necessary and often happen to give the effect that Workflow Executions are resumable, reliable, and durable.
+A Replay is the method by which a Workflow Execution resumes making progress.
+During a Replay the Commands that are generated are checked against an existing Event History.
+Replays are necessary and often happen to give the effect that Workflow Executions are resumable, reliable, and durable.
 
 For more information, see [Deterministic constraints](#deterministic-constraints).
 
@@ -273,25 +274,28 @@ A Retry Policy is a collection of attributes that instructs the Temporal Server 
 
 ## SAGA
 
-| Feature       | Go | Java | TypeScript | Python | .Net | PHP |
-| ------------- | -- | ---- | ---------- | ------ | ---- | --- |
-| [SAGA](#saga) | No | Yes  | No         | No     | No   | Yes |
+| Feature       | Go  | Java | TypeScript | Python | .Net | PHP |
+| ------------- | --- | ---- | ---------- | ------ | ---- | --- |
+| [SAGA](#saga) | No  | Yes  | No         | No     | No   | Yes |
 
 The saga pattern is a design approach for distributed systems where a task extends across machine or microservice boundaries.
 For these tasks, it's crucial to ensure the complete execution of all steps, as partial execution can lead to undesirable outcomes.
 
-Compensating actions, often referred to as compensating transactions, simulate the atomic execution of operations that are distributed across multiple databases in distributed systems. If any of these distributed operations fail, its effects are reversed using a compensating action. These compensating actions are integral to the broader saga pattern.
+Compensating actions, often referred to as compensating transactions, simulate the atomic execution of operations that are distributed across multiple databases in distributed systems.
+If any of these distributed operations fail, its effects are reversed using a compensating action.
+These compensating actions are integral to the broader saga pattern.
 
-Temporal provides a dedicated Saga library, making it easier to handle these distributed tasks. You can register functions as compensations, and Temporal manages their execution:
+Temporal provides a dedicated Saga library, making it easier to handle these distributed tasks.
+You can register functions as compensations, and Temporal manages their execution:
 [Java SDK Documentation](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.0.0/io/temporal/workflow/Saga.html)
 
 For those using other SDKs, you can implement functions like `addCompensation` and `compensate` to achieve similar behavior.
 
 ## Sandbox
 
-| Feature             | Go | Java | TypeScript | Python | .Net | PHP |
-| ------------------- | -- | ---- | ---------- | ------ | ---- | --- |
-| [Sandbox](#sandbox) | No | No   | Yes        | Yes    | No   | No  |
+| Feature             | Go  | Java | TypeScript | Python | .Net | PHP |
+| ------------------- | --- | ---- | ---------- | ------ | ---- | --- |
+| [Sandbox](#sandbox) | No  | No   | Yes        | Yes    | No   | No  |
 
 Some SDKs support running Workflows inside a sandbox environment.
 
@@ -300,7 +304,9 @@ The Temporal Workflow Sandbox for Python is not completely isolated, and some li
 
 <!-- V8 Isolates TypeScript -->
 
-By default, Workflows run in a sandbox environment. If a Workflow Execution performs a non-deterministic event, an exception is thrown, which results in failing the Workflow Task. The Workflow will not progress until the code is fixed.
+By default, Workflows run in a sandbox environment.
+If a Workflow Execution performs a non-deterministic event, an exception is thrown, which results in failing the Workflow Task.
+The Workflow will not progress until the code is fixed.
 
 ## Scheduling features
 
@@ -343,7 +349,8 @@ A Search Attribute is an indexed field used in a [List Filter](/visibility#list-
 | --------------------- | --- | ---- | ---------- | ------ | ---- | --- |
 | [Sessions](#sessions) | Yes | No   | No         | No     | No   | No  |
 
-The Go SDK provides a support for [Worker Session](dev-guide/go/features#enable-sessions). This makes task routing seamless by ensuring that Activity Tasks are dispatched to the same Worker without having to handle the intricacies of Task Queue naming.
+The Go SDK provides a support for [Worker Session](dev-guide/go/features#enable-sessions).
+This makes task routing seamless by ensuring that Activity Tasks are dispatched to the same Worker without having to handle the intricacies of Task Queue naming.
 This abstraction simplifies scenarios where consistency or state is pivotal.
 
 While Go provides built-in support, other SDKs like TypeScript and Python don't have a native concept of Sessions.
@@ -357,31 +364,48 @@ While this serves as a demonstration, real-world applications might involve dedi
 
 ## Signal/Cancel External Workflow
 
+Signal/Cancel External Workflow refers to the process of externally requesting the cancellation of a Workflow.
+
 | Feature                                                            | Go  | Java | TypeScript | Python | .Net | PHP |
 | ------------------------------------------------------------------ | --- | ---- | ---------- | ------ | ---- | --- |
 | [Signal/Cancel External Workflow](#signalcancel-external-workflow) | Yes | Yes  | Yes        | Yes    | Yes  | Yes |
 
-Signal/Cancel External Workflow refers to the process of externally requesting the cancellation of a Workflow.
 Cancellation is an external request to a Workflow from outside, typically through the Client.
 In Temporal, canceling a workflow itself doesn't make sense as cancellation is an external action.
 Instead of using self-cancellation, you should request cancellation through the Client.
-Temporal Workflows can wait for external signals or events before proceeding with execution.
+
+Temporal Workflows can wait for external Signals or events before proceeding with execution.
 External Signals can be used to trigger the rerun of a Workflow after a specified period, including the time spent waiting for the Signal.
+
+<!-- https://temporaltechnologies.slack.com/archives/C01FG4BRQVB/p1697069944495119 -->
+In Python, the Cancellation and Signalling is done on the [handle of a Workflow](https://github.com/temporalio/sdk-python#external-workflows).
 
 ## Static analyzer
 
-| Feature                             | Go  | Java | TypeScript | Python | .Net | PHP |
-| ----------------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
-| [Static analyzer](#static-analyzer) | Yes | No   | No         | No     | No   | No  |
+Static analyzers are tools that perform static analysis of code to find potential bugs.
+In the case of Temporal, static analyzers are used to find non-deterministic code in Workflow Definitions.
 
-The [Temporal Workflow Check](https://github.com/temporalio/sdk-go/tree/master/contrib/tools/workflowcheck) is a tool that statically analyzes Temporal Workflow Definitions written in Go (i.e. functions with `workflow.Context`` as first argument) to check for non-deterministic code either directly in the function or in a function called by the Workflow.
+| Feature                                               | Go  | Java | TypeScript | Python | .Net | PHP |
+| ----------------------------------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
+| [Workflowcheck](#workflowcheck)                       | Yes | No   | No         | No     | No   | No  |
+| [VSCode extension support](#vscode-extension-support) | No  | No   | Yes        | No     | No   | No  |
+
+### Workflowcheck
+
+The [Temporal Workflow Check](https://github.com/temporalio/sdk-go/tree/master/contrib/tools/workflowcheck) is a tool that statically analyzes Temporal Workflow Definitions written in Go (for example, functions with `workflow.Context` as its first argument) to check for non-deterministic code either directly in the function or in a function called by the Workflow.
+
 It is highly optimized to scan large codebases quickly.
 
 :::note
-This will not catch all cases of non-determinism such as global var mutation. This is just a helper and developers should still scrutinize Workflow code for other non-determinisms.
+This will not catch all cases of non-determinism such as global var mutation.
+This is just a helper and developers should still scrutinize Workflow code for other non-determinisms.
 :::
 
-TypeScript has support for a [VS Code extension](#vscode-extension-support).
+### VSCode extension support
+
+If you're using VS Code, you can use the [Temporal VS Code extension](https://marketplace.visualstudio.com/items?itemName=temporal-technologies.temporalio) to easily load Event Histories and set breakpoints on Events.
+
+For more information, see the [announcement post](https://temporal.io/blog/temporal-for-vs-code) or [demo video](https://www.youtube.com/watch?v=3IjQde9HMNY).
 
 ## Timers
 
@@ -389,7 +413,7 @@ TypeScript has support for a [VS Code extension](#vscode-extension-support).
 | ----------------- | --- | ---- | ---------- | ------ | ---- | --- |
 | [Timers](#timers) | Yes | Yes  | Yes        | Yes    | Yes  | Yes |
 
-A Workflow can set a durable timer for a fixed time period.
+A Workflow can set a durable timer for a fixed time.
 In some SDKs, the function is called `sleep()`, and in others, it's called `timer()`.
 
 SDKs that use timer:
@@ -454,17 +478,21 @@ Versioning refers to the ability to update a Workflow Definition without breakin
 
 ### Build ID based dispatch
 
-Build ID dispatch is a feature in Temporal that allows running different versions of Workflow and Activity code on the same task queue. It works by associating a build ID (typically a version number or git commit hash) with each deployment of Worker code.
-When a Workflow task is dispatched, Temporal will look at the build ID of the Workflow and send the task to a Worker with a compatible build ID. This allows seamless deployment of new code versions without Workflow tasks getting stuck.
+Build ID dispatch is a feature in Temporal that allows running different versions of Workflow and Activity code on the same task queue.
+It works by associating a build ID (typically a version number or git commit hash) with each deployment of Worker code.
+When a Workflow task is dispatched, Temporal will look at the build ID of the Workflow and send the task to a Worker with a compatible build ID.
+This allows seamless deployment of new code versions without Workflow tasks getting stuck.
 Some key aspects of build ID dispatch:
 
 - Workers advertise their build ID to Temporal when polling for tasks.
-- Task Queues maintain sets of compatible build IDs. New IDs can be added to existing compatible sets.
+- Task Queues maintain sets of compatible build IDs.
+New IDs can be added to existing compatible sets.
 - When dispatching a Workflow task, Temporal matches the Workflow's build ID to a compatible Worker build ID.
 - Build IDs allow different versions of code to run side by side on the same task queue.
 - Promoting a new build ID to the default set directs new Workflows to start on that code version.
 
-So in summary, build ID dispatch provides a mechanism to deploy new Worker code without disrupting existing Workflows on a task queue. It's a key feature for zero-downtime deployments in Temporal.
+So in summary, build ID dispatch provides a mechanism to deploy new Worker code without disrupting existing Workflows on a Task Queue.
+It's a key feature for zero-downtime deployments in Temporal.
 
 ### Patching APIs
 
@@ -475,15 +503,6 @@ Worker Versioning simplifies the process of deploying changes to [Workflow Defin
 It does this by letting you define sets of versions that are compatible with each other, and then assigning a Build ID to the code that defines a Worker.
 The Temporal Server uses the Build ID to determine which versions of a Workflow Definition a Worker can process.
 -->
-
-## VSCode extension support
-
-| Feature                                               | Go | Java | TypeScript | Python | .Net | PHP |
-| ----------------------------------------------------- | -- | ---- | ---------- | ------ | ---- | --- |
-| [VSCode extension support](#vscode-extension-support) | No | No   | Yes        | No     | No   | No  |
-
-If you're using VS Code, you can use the [Temporal VS Code extension](https://marketplace.visualstudio.com/items?itemName=temporal-technologies.temporalio) to easily load Event Histories and set breakpoints on Events.
-For usage, see the [announcement post](https://temporal.io/blog/temporal-for-vs-code) or [demo video](https://www.youtube.com/watch?v=3IjQde9HMNY).
 
 ## Worker-Specific Task Queues
 
@@ -517,18 +536,22 @@ A Side Effect and Local Activity are mechanisms to execute operations within the
 
 A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.
 It offers a balance between the simplicity of a [Side Effect](#side-effects) and the robustness of a regular Activity.
-Local Activities avoid network calls and are faster than regular Activities. However, they provide less isolation than regular Activities since they share the same process as the Workflow Execution.
+Local Activities avoid network calls and are faster than regular Activities.
+However, they provide less isolation than regular Activities since they share the same process as the Workflow Execution.
 
 ### Side Effect
 
-A **Side Effect** is a unique operation that, once executed, does not re-execute upon replay. Instead, it returns the recorded result from its initial execution. This characteristic is crucial when designing Workflows to ensure determinism.
+A **Side Effect** is a unique operation that, once executed, does not re-execute upon replay.
+Instead, it returns the recorded result from its initial execution.
+This characteristic is crucial when designing Workflows to ensure determinism.
 
 :::note 💡
 
-Never implement a Side Effect that has a possibility of failing. If a Side Effect fails, there's a risk it could execute more than once, leading to non-deterministic behavior.
+Never implement a Side Effect that has a possibility of failing.
+If a Side Effect fails, there's a risk it could execute more than once, leading to non-deterministic behavior.
 
 :::
 
 If there's any potential that the code you're considering for a Side Effect might fail or encounter errors, opt for an **Activity** instead.
 
-For SDKs that do not support Side Effects, or if you're looking for a lightweight alternative, consider using a [Local Activity](/activities#local-activity).
+For SDKs that don't support Side Effects, or if you're looking for a lightweight alternative, consider using a [Local Activity](/activities#local-activity).

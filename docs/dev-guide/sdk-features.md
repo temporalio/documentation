@@ -27,7 +27,7 @@ In other words, when developing with the Go SDK, for example, a developer should
 However, due to the nature of each language, and how they're implemented, each SDK is slightly unique.
 
 Additionally, it's not always the case that a feature and its accessory capability releases across all the SDKs at the same time.
-Or in the case of older SDKs, a feature or API might have been released, but through developer feedback, it was realized that it was unnecessary to include in newer SDKs.
+For example, a feature or an API is released in one SDK, but through developer feedback, it is unnecessary to include in other SDKs.
 
 The following table lists features of the Temporal SDKs.
 This list is meant to provide context and clarification around the SDK feature sets.
@@ -176,6 +176,10 @@ Overusing them can lead to maintainability and debugging issues down the line.
 
 ## Enhanced stack trace
 
+| Feature                                       | Go | Java | TypeScript | Python | .Net | PHP |
+| --------------------------------------------- | -- | ---- | ---------- | ------ | ---- | --- |
+| [Enhanced stack trace](#enhanced-stack-trace) | No | No   | Yes        | No     | No   | No  |
+
 Enhanced stack trace in Temporal is a feature that allows you to capture and view detailed information about the execution of a Workflow [1].
 It provides a stack trace of all the threads owned by the Workflow execution, which can be useful for troubleshooting issues in production [3].
 The `__stack_trace` query is a predefined query available in many SDKs that returns the stack trace [3].
@@ -183,15 +187,27 @@ You can use the `tctl Workflow stack` command to query the stack trace of a Work
 
 ## gRPC interceptors
 
+| Feature                                 | Go  | Java | TypeScript | Python | .Net | PHP |
+| --------------------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
+| [gRPC interceptors](#grpc-interceptors) | Yes | Yes  | Yes        | No     | No   | No  |
+
 gRPC interceptors serve as a powerful tool provided by gRPC, enabling developers to intercept and modify both incoming RPC requests and outgoing RPC responses. This mechanism can be instrumental in scenarios such as dynamic adjustments to target hosts or tweaking parameters like TLS configurations. However, for those utilizing the Temporal SDKs powered by the Rust core, which includes the TypeScript, Python, and .Net SDKs.
 
 Currently, features like gRPC interceptors aren't implemented directly in the Rust core. This limitation extends to other scenarios like the rotation of client TLS certificates. Although technically feasible, the current workaround involves recreating the client to reflect changes.
 
 ## Health service
 
+| Feature                           | Go  | Java | TypeScript | Python | .Net | PHP |
+| --------------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
+| [Health service](#health-service) | Yes | Yes  | Yes        | Yes    | Yes  | No  |
+
 A health service in the context of Temporal is a component responsible for checking the health of the frontend service [1]. It ensures the proper functioning of the cluster by returning a list of cluster metrics [1]. The health checks for the Temporal cluster can be set up using TCP or gRPC on port 7233 [5]. The matching service is responsible for hosting user-facing Task Queues [3], while the history service persists Workflow execution state [4]. The Worker service performs background processing for replication queue and system Workflows [2].
 
 ## Heartbeats
+
+| Feature                   | Go  | Java | TypeScript | Python | .Net | PHP |
+| ------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
+| [Heartbeats](#heartbeats) | Yes | Yes  | Yes        | Yes    | Yes  | Yes |
 
 A Heartbeat is a mechanism used in the Temporal Platform to ensure the progress and timely execution of Activities.
 It involves periodic pings from the Activity Worker to the Temporal Cluster.
@@ -201,6 +217,10 @@ By Heartbeating within a specified interval lower than the Heartbeat Timeout, Ac
 Heartbeats help prevent Activity Timeouts and enable efficient retries.
 
 ## Interceptors
+
+| Feature                       | Go  | Java | TypeScript | Python | .Net | PHP |
+| ----------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
+| [Interceptors](#interceptors) | Yes | Yes  | Yes        | Yes    | Yes  | No  |
 
 Interceptors are a mechanism for modifying inbound and outbound SDK calls.
 Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities.
@@ -364,31 +384,46 @@ While this serves as a demonstration, real-world applications might involve dedi
 
 ## Signal/Cancel External Workflow
 
+Signal/Cancel External Workflow refers to the process of externally requesting the cancellation of a Workflow.
+
 | Feature                                                            | Go  | Java | TypeScript | Python | .Net | PHP |
 | ------------------------------------------------------------------ | --- | ---- | ---------- | ------ | ---- | --- |
 | [Signal/Cancel External Workflow](#signalcancel-external-workflow) | Yes | Yes  | Yes        | Yes    | Yes  | Yes |
 
-Signal/Cancel External Workflow refers to the process of externally requesting the cancellation of a Workflow.
 Cancellation is an external request to a Workflow from outside, typically through the Client.
 In Temporal, canceling a workflow itself doesn't make sense as cancellation is an external action.
 Instead of using self-cancellation, you should request cancellation through the Client.
-Temporal Workflows can wait for external signals or events before proceeding with execution.
+
+Temporal Workflows can wait for external Signals or events before proceeding with execution.
 External Signals can be used to trigger the rerun of a Workflow after a specified period, including the time spent waiting for the Signal.
+
+In Python, the Cancellation and Signalling is done on the [handle of a Workflow](https://github.com/temporalio/sdk-python#external-workflows).
 
 ## Static analyzer
 
-| Feature                             | Go  | Java | TypeScript | Python | .Net | PHP |
-| ----------------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
-| [Static analyzer](#static-analyzer) | Yes | No   | No         | No     | No   | No  |
+Static analyzers are tools that perform static analysis of code to find potential bugs.
+In the case of Temporal, static analyzers are used to find non-deterministic code in Workflow Definitions.
 
-The [Temporal Workflow Check](https://github.com/temporalio/sdk-go/tree/master/contrib/tools/workflowcheck) is a tool that statically analyzes Temporal Workflow Definitions written in Go (i.e. functions with `workflow.Context`` as first argument) to check for non-deterministic code either directly in the function or in a function called by the Workflow.
+| Feature                                               | Go  | Java | TypeScript | Python | .Net | PHP |
+| ----------------------------------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
+| [Workflowcheck](#workflowcheck)                       | Yes | No   | No         | No     | No   | No  |
+| [VSCode extension support](#vscode-extension-support) | No  | No   | Yes        | No     | No   | No  |
+
+### Workflowcheck
+
+The [Temporal Workflow Check](https://github.com/temporalio/sdk-go/tree/master/contrib/tools/workflowcheck) is a tool that statically analyzes Temporal Workflow Definitions written in Go (for example, functions with `workflow.Context` as its first argument) to check for non-deterministic code either directly in the function or in a function called by the Workflow.
+
 It is highly optimized to scan large codebases quickly.
 
 :::note
 This will not catch all cases of non-determinism such as global var mutation. This is just a helper and developers should still scrutinize Workflow code for other non-determinisms.
 :::
 
-TypeScript has support for a [VS Code extension](#vscode-extension-support).
+### VSCode extension support
+
+If you're using VS Code, you can use the [Temporal VS Code extension](https://marketplace.visualstudio.com/items?itemName=temporal-technologies.temporalio) to easily load Event Histories and set breakpoints on Events.
+
+For more information, see the [announcement post](https://temporal.io/blog/temporal-for-vs-code) or [demo video](https://www.youtube.com/watch?v=3IjQde9HMNY).
 
 ## Timers
 
@@ -482,15 +517,6 @@ Worker Versioning simplifies the process of deploying changes to [Workflow Defin
 It does this by letting you define sets of versions that are compatible with each other, and then assigning a Build ID to the code that defines a Worker.
 The Temporal Server uses the Build ID to determine which versions of a Workflow Definition a Worker can process.
 -->
-
-## VSCode extension support
-
-| Feature                                               | Go | Java | TypeScript | Python | .Net | PHP |
-| ----------------------------------------------------- | -- | ---- | ---------- | ------ | ---- | --- |
-| [VSCode extension support](#vscode-extension-support) | No | No   | Yes        | No     | No   | No  |
-
-If you're using VS Code, you can use the [Temporal VS Code extension](https://marketplace.visualstudio.com/items?itemName=temporal-technologies.temporalio) to easily load Event Histories and set breakpoints on Events.
-For usage, see the [announcement post](https://temporal.io/blog/temporal-for-vs-code) or [demo video](https://www.youtube.com/watch?v=3IjQde9HMNY).
 
 ## Worker-Specific Task Queues
 
