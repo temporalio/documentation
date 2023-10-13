@@ -6,6 +6,10 @@
   },
   "redirects": [
     {
+      "source": "/leadership",
+      "destination": "https://temporal.io/about"
+    },
+    {
       "source": "/docs/:path*",
       "destination": "/:path*"
     },
