@@ -42,6 +42,10 @@
     {
       "type": "p",
       "id": "php/how-to-skip-time-set-up-in-php"
+    },
+    {
+      "type": "h2",
+      "id": "php/replays"
     }
   ]
 }
