@@ -19,12 +19,13 @@ A new [Workflow Task](/concepts/what-is-a-workflow-task) will be scheduled, and 
 
 `temporal workflow cancel --workflow-id=meaningful-business-id`
 
-In addition to Workflow IDs, Workflows can also be [Signaled](/concepts/what-is-a-signal) by a [Query](/concepts/what-is-a-query).
-`temporal workflow cancel --query=MyQuery`
+In addition to Workflow IDs, Workflows can also be cancelled by a [List Filter](/visibility#list-filter).
+`temporal workflow cancel --query=MyListFilter`
 
 Use the following options to change the behavior of this command.
 
 - [--fields](/cli/cmd-options/fields)
+
 - [--address](/cli/cmd-options/address)
 
 - [--codec-auth](/cli/cmd-options/codec-auth)
