@@ -16,7 +16,7 @@ tags:
 
 The information on this page is relevant to open source [Temporal Cluster deployments](/clusters#).
 
-See [Cloud metrics](/cloud/metrics#) for metrics emitted by [Temporal Cloud](/cloud/index#).
+See [Cloud metrics](/cloud/metrics#) for metrics emitted by [Temporal Cloud](/cloud/).
 
 See [SDK metrics](/references/sdk-metrics#) for metrics emitted by the [SDKs](/temporal#temporal-sdk).
 

@@ -41,8 +41,6 @@ A Workflow Definition is essentially Workflow code, which orchestrates the execu
 An Activity Definition is a normal function or method that defines a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email message.
 For more information, see [Activity Definition](/activities#activity-definition) in the concept page.
 
-
-
 ## Auth (SSL/mTLS)
 
 | Feature                         | Go  | Java | TypeScript | Python | .Net | PHP |
@@ -57,9 +55,9 @@ Configuring SSL or mTLS authentication provides network encryption and protects 
 
 ## Built-in handler list Query
 
-| Feature                                                     | Go  | Java | TypeScript | Python | .Net | PHP |
-| ----------------------------------------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
-| [Built-in handler list query](#built-in-handler-list-query) | No  | No   | No         | No     | No   | No  |
+| Feature                                                     | Go | Java | TypeScript | Python | .Net | PHP |
+| ----------------------------------------------------------- | -- | ---- | ---------- | ------ | ---- | --- |
+| [Built-in handler list query](#built-in-handler-list-query) | No | No   | No         | No     | No   | No  |
 
 The built-in handler list Query in Temporal allows retrieving the list of registered Signal and Query handlers for a Workflow.
 
@@ -126,21 +124,21 @@ Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
 
 These are unnamed entities that are invoked if no other statically defined entity with the given name exists.
 
-| Feature                                   | Go  | Java | TypeScript | Python | .Net | PHP |
-| ----------------------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
-| [Dynamic Activities](#dynamic-activities) | No  | Yes  | No         | Yes    | Yes  | No  |
-| [Dynamic Queries](#dynamic-queries)       | No  | Yes  | No         | Yes    | Yes  | No  |
-| [Dynamic Signals](#dynamic-signals)       | No  | Yes  | Yes        | Yes    | Yes  | No  |
-| [Dynamic Workflows](#dynamic-workflows)   | No  | Yes  | Yes        | Yes    | Yes  | No  |
+| Feature                                   | Go | Java | TypeScript | Python | .Net | PHP |
+| ----------------------------------------- | -- | ---- | ---------- | ------ | ---- | --- |
+| [Dynamic Activities](#dynamic-activities) | No | Yes  | No         | Yes    | Yes  | No  |
+| [Dynamic Queries](#dynamic-queries)       | No | Yes  | No         | Yes    | Yes  | No  |
+| [Dynamic Signals](#dynamic-signals)       | No | Yes  | Yes        | Yes    | Yes  | No  |
+| [Dynamic Workflows](#dynamic-workflows)   | No | Yes  | Yes        | Yes    | Yes  | No  |
 
 Dynamic Entities should be used judiciously as a fallback mechanism rather than the primary approach.
 Overusing them can lead to maintainability and debugging issues down the line.
 
 ## Enhanced stack trace
 
-| Feature                                       | Go  | Java | TypeScript | Python | .Net | PHP |
-| --------------------------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
-| [Enhanced stack trace](#enhanced-stack-trace) | No  | No   | Yes        | No     | No   | No  |
+| Feature                                       | Go | Java | TypeScript | Python | .Net | PHP |
+| --------------------------------------------- | -- | ---- | ---------- | ------ | ---- | --- |
+| [Enhanced stack trace](#enhanced-stack-trace) | No | No   | Yes        | No     | No   | No  |
 
 Enhanced stack trace in Temporal is a feature that allows you to capture and view detailed information about the execution of a Workflow.
 It provides a stack trace of all the threads owned by the Workflow execution, which can be useful for troubleshooting issues in production.
@@ -274,9 +272,9 @@ A Retry Policy is a collection of attributes that instructs the Temporal Server 
 
 ## SAGA
 
-| Feature       | Go  | Java | TypeScript | Python | .Net | PHP |
-| ------------- | --- | ---- | ---------- | ------ | ---- | --- |
-| [SAGA](#saga) | No  | Yes  | No         | No     | No   | Yes |
+| Feature       | Go | Java | TypeScript | Python | .Net | PHP |
+| ------------- | -- | ---- | ---------- | ------ | ---- | --- |
+| [SAGA](#saga) | No | Yes  | No         | No     | No   | Yes |
 
 The saga pattern is a design approach for distributed systems where a task extends across machine or microservice boundaries.
 For these tasks, it's crucial to ensure the complete execution of all steps, as partial execution can lead to undesirable outcomes.
@@ -293,9 +291,9 @@ For those using other SDKs, you can implement functions like `addCompensation` a
 
 ## Sandbox
 
-| Feature             | Go  | Java | TypeScript | Python | .Net | PHP |
-| ------------------- | --- | ---- | ---------- | ------ | ---- | --- |
-| [Sandbox](#sandbox) | No  | No   | Yes        | Yes    | No   | No  |
+| Feature             | Go | Java | TypeScript | Python | .Net | PHP |
+| ------------------- | -- | ---- | ---------- | ------ | ---- | --- |
+| [Sandbox](#sandbox) | No | No   | Yes        | Yes    | No   | No  |
 
 Some SDKs support running Workflows inside a sandbox environment.
 
@@ -345,11 +343,12 @@ A Search Attribute is an indexed field used in a [List Filter](/visibility#list-
 
 ## Sessions
 
+The Go SDK provides a support for Worker Session.
+
 | Feature               | Go  | Java | TypeScript | Python | .Net | PHP |
 | --------------------- | --- | ---- | ---------- | ------ | ---- | --- |
 | [Sessions](#sessions) | Yes | No   | No         | No     | No   | No  |
 
-The Go SDK provides a support for [Worker Session](dev-guide/go/features#enable-sessions).
 This makes task routing seamless by ensuring that Activity Tasks are dispatched to the same Worker without having to handle the intricacies of Task Queue naming.
 This abstraction simplifies scenarios where consistency or state is pivotal.
 
@@ -378,6 +377,7 @@ Temporal Workflows can wait for external Signals or events before proceeding wit
 External Signals can be used to trigger the rerun of a Workflow after a specified period, including the time spent waiting for the Signal.
 
 <!-- https://temporaltechnologies.slack.com/archives/C01FG4BRQVB/p1697069944495119 -->
+
 In Python, the Cancellation and Signalling is done on the [handle of a Workflow](https://github.com/temporalio/sdk-python#external-workflows).
 
 ## Static analyzer
@@ -486,7 +486,7 @@ Some key aspects of build ID dispatch:
 
 - Workers advertise their build ID to Temporal when polling for tasks.
 - Task Queues maintain sets of compatible build IDs.
-New IDs can be added to existing compatible sets.
+  New IDs can be added to existing compatible sets.
 - When dispatching a Workflow task, Temporal matches the Workflow's build ID to a compatible Worker build ID.
 - Build IDs allow different versions of code to run side by side on the same task queue.
 - Promoting a new build ID to the default set directs new Workflows to start on that code version.

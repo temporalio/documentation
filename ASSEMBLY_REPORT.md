@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday October 11 2023 09:49:22 AM -0700
+Last assembled: Friday October 13 2023 09:36:47 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -1081,5 +1081,7 @@ cli/server/start-dev -> /cli/server#start-dev
 cli/operator/namespace/create -> /cli/operator#create
 
 cli/workflow/start -> /cli/workflow#start
+
+typescript/registering-types -> /dev-guide/typescript/foundations#register-types
 
 

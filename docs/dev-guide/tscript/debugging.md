@@ -92,7 +92,7 @@ When you pass a `workflowsPath`, our Webpack config expects to find `node_module
 
 Temporal Workflow Bundles need to [export a set of methods that fit the compiled `worker-interface.ts` from `@temporalio/workflow`](https://github.com/temporalio/sdk-typescript/blob/eaa2d205c9bc5ff4a3b17c0b34f2dcf6b1e0264a/packages/worker/src/workflow/bundler.ts#L81) as an entry point.
 We do offer a `bundleWorkflowCode` method to assist you with this, though it uses our Webpack settings.
-For more information, see the [Register types](dev-guide/typescript/foundations#register-types) section.
+For more information, see the [Register types](/dev-guide/typescript/foundations#register-types) section.
 
 ### Webpack errors
 

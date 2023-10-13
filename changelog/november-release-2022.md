@@ -28,8 +28,9 @@ We also added the following functionality to the documentation site:
   This means you can search for tutorials on the docs site or core concepts from the learn site.
 
 - Link previews.
-  On hover, and when available, local site links provide a preview of the destination content.
-  For example, hover over this link: <a class="tdlp" href="#signal">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#signal">Learn more</a></p></div></a>.
+  ~~On hover, and when available, local site links provide a preview of the destination content.
+  For example, hover over this link: Signals.~~
+  This feature is no longer available.
 
 - Build commands for contributors.
   We changed a few of the steps in building the full docs site.
