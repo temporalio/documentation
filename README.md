@@ -12,7 +12,6 @@ Welcome to Temporal's documentation repository!
   - [/docs-src information nodes](#docs-src-information-nodes)
   - [/docs generated files for Docusaurus](#docs-generated-files-for-docusaurus)
   - [/assembly Assembly Workflow](#assembly-assembly-workflow)
-  - [/changelog Docs site changelog](#changelog-docs-site-changelog)
   - [Snipsync code synchronization tooling](#snipsync-code-synchronization-tooling)
 - [How to get approval to create a pull request](#how-to-get-approval-to-create-a-pull-request)
 - [How to fix a typo](#how-to-fix-a-typo)
@@ -100,12 +99,6 @@ See [How to run the Assembly Workflow](#how-to-run-the-assembly-workflow) for mo
 
 Beyond creating generated files, the Assembly Workflow can generate information nodes for documentation code-sample repositories.
 For more information, see [How to use DACX](#how-to-use-dacx).
-
-### `/changelog` Docs site changelog
-
-This directory contains logs of major changes to the documentation.
-
-The information at [docs.temporal.io](http://docs.temporal.io) changes frequently, but bigger and more notable changes are captured in the changelog.
 
 ### Snipsync code synchronization tooling
 
