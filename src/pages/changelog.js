@@ -5,7 +5,7 @@ function ChangelogRedirect() {
         window.location.href = "https://temporal.io/change-log";
     }, []);
 
-    return null;  // Return null since we don't need any actual rendering here.
+    return null;
 }
 
 export default ChangelogRedirect;
