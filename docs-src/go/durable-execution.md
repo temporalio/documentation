@@ -15,8 +15,7 @@ For more information about Durable Execution, refer to our [blog about Building 
 
 In this section you can find the following:
 
-- [Retrieve Workflow Event History](/go/retrieve-event-history)
-- [Add a Replayer test](/go/add-a-replayer-test)
+- [How to retrieve Workflow Event History](/go/retrieve-event-history)
+- [How to replay a Workflow Execution](/go/how-to-replay-a-workflow-execution-in-go)
 - [Understand durability through Replays](/go/durability-through-replays)
-- [Add a Timer to your Workflow](/go/add-a-timer-to-workflow)
-- [Developing for Determinism](/go/developing-for-determinism)
+- [Workflow Timers and Determinism](/go/workflow-timers-and-determinism)
