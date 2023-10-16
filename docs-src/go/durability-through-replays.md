@@ -7,8 +7,8 @@ tags:
   - go sdk
   - developer-guide-doc-type
   - event history
-  - 
-  -
+  - replay
+  - durable execution
 ---
 
 If a regular function in Go crashes during execution, all of its state is lost. It can't be resumed, only restarted. From the developer's perspective, a Temporal Workflow resumes its execution at the point where the crash occurred, with all previous state intact, and continues on from there. Since you've already seen and run several Workflows, you might wonder how it's able to achieve this, since there's no obvious checkpointing or state management in the code.
@@ -68,3 +68,11 @@ Events may also contain additional attributes that vary based on the Event Type.
 Events related to Activity execution follow a similar pattern. For  example, the `ActivityTaskScheduled` Event contains the Activity Type  and input parameters, while the `ActivityTaskCompleted` Event contains the result of that execution.
 
 As you will see during the upcoming demonstration, Events related to Task scheduling will contain information about execution Timeouts and Retry Policies.
+
+Certain Events in the history are a direct result of a particular Command issued by a Worker. For example, the `ScheduleActivityTask` Command results in an `ActivityTaskScheduled` Event, while the `StartTimer` Command results in a `TimerStarted` Event.
+
+During Workflow Replay, the Worker uses this information to recover the state of the previous execution.
+
+For example, if the `ScheduleActivityTask` Command has a corresponding `ActivityTaskScheduled` Event in the history, and this is followed by `ActivityTaskStarted` and `ActivityTaskCompleted` Events for that same Activity Type, it's clear that this Activity already ran successfully. In this case, the Worker does not issue the Command to the cluster requesting a new execution of the Activity. Instead, it assigns the result of the previous Activity Execution, which is stored in the Event History.
+
+(can pull a bit more from https://github.com/temporalio/edu-102-go-content/blob/main/understanding-workflow-determinism/why-determinism-required.md if absolutely necessary)
