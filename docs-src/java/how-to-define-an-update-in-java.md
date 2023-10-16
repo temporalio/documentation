@@ -1,6 +1,6 @@
 ---
 id: how-to-define-an-update-in-java
-title: How to define Updates in Java
+title: How to define Updates
 sidebar_label: Define Update
 description: Define a Update method with `@UpdateMethod` annotation in the Workflow interface.
 tags:

@@ -441,7 +441,7 @@ For example, the following Client code calls a Query method `queryGreeting()` de
 
 An [Update](/workflows#update) is an operation that can mutate the state of a Workflow Execution and return a response.
 
-### How to define Updates in Java {#define-update}
+### How to define Updates {#define-update}
 
 A Update handler has a name, arguments, response, and an optional validator.
 
@@ -455,11 +455,14 @@ The `@UpdateMethod` annotation indicates that the method is used to handle and r
    String myUpdate(String signalName);
 ```
 
-### How to handle Updates in an Workflow in Java {#handle-updates}
+### How to handle Updates in an Workflow {#handle-updates}
 
 Workflows listen for Update by the update's name.
 
-Use the `@UpdateMethod` annotation to handle Updates in the Workflow interface. The handler method can accept multiple serializable input parameters, but we recommend using only a single parameter. The function can return a serializable value or `void`. If any exception is throw while handling an update that exception may fail the workflow task or the update depending on the type of the exception and `WorkflowImplementationOptions.setFailWorkflowExceptionTypes`
+Use the `@UpdateMethod` annotation to handle Updates in the Workflow interface.
+The handler method can accept multiple serializable input parameters, but it's recommend using only a single parameter.
+The function can return a serializable value or `void`.
+If any exception is throw while handling an update that exception may fail the Workflow task or the update depending on the type of the exception and `WorkflowImplementationOptions.setFailWorkflowExceptionTypes`
 
 ```java
 @WorkflowInterface
@@ -476,7 +479,7 @@ public interface FileProcessingWorkflow {
 Update handlers, unlike Query handlers, can change Workflow state.
 
 The Updates type defaults to the name of the method.
-To overwrite this default naming and assign a custom Signal type, use the `@UpdateMethod` annotation with the `name` parameter.
+To overwrite this default naming and assign a custom Update type, use the `@UpdateMethod` annotation with the `name` parameter.
 
 ```java
 @WorkflowInterface
@@ -492,7 +495,8 @@ public interface FileProcessingWorkflow {
 
 **Dynamic Update Handler**
 
-You can also implement Update handlers dynamically. This is useful for library-level code and implementation of DSLs.
+You can also implement Update handlers dynamically.
+This is useful for library-level code and implementation of DSLs.
 
 ```java
 TODO
@@ -502,14 +506,15 @@ Workflow.registerListener(
 ```
 
 When registered, any Updates sent to the Workflow without a defined handler will be delivered to the `DynamicUpdateHandler`.
-Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
+You can only register one `Workflow.registerListener(Object)` per Workflow Execution.
 `DynamicUpdateHandler` can be implemented in both regular and dynamic Workflow implementations.
 
-#### How to validate an Update in a Workflow in Java {#validate-an-update}
+#### How to validate an Update in a Workflow {#validate-an-update}
 
-Validate certain aspects of the data sent to the Workflow using an Update validator method.
-For instance, a counter Workflow might never want to accept a non-positive number. Use the `@UpdateValidatorMethod` annotation and set `updateName`
-to the name of your Update handler. Your Update Validator should accept the same input parameters as your Update Handler and return `void`.
+Validate certain aspects of the data sent to the Workflow using an Update Validator method.
+For instance, a counter Workflow might never want to accept a non-positive number.
+Use the `@UpdateValidatorMethod` annotation and set `updateName` to the name of your Update handler.
+Your Update Validator should accept the same input parameters as your Update Handler and return `void`.
 
 ```java
 @WorkflowInterface
@@ -525,11 +530,11 @@ public interface GreetingWorkflow {
 }
 ```
 
-### How to send a Update from a Client in Java {#send-update-from-client}
+### How to send a Update from a Client {#send-update-from-client}
 
 To send a Update to a Workflow Execution from a Client, call the Update method, annotated with `@UpdateMethod` in the Workflow interface, from the Client code.
 
-In the following Client code example, we start the Workflow `getGreetings` and call the Update method `addGreeting` that is handled in the Workflow.
+In the following Client code example, start the Workflow `getGreetings` and call the Update method `addGreeting` that is handled in the Workflow.
 
 ```java
 WorkflowOptions workflowOptions =

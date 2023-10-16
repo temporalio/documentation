@@ -1,6 +1,6 @@
 ---
 id: how-to-handle-an-update-in-a-workflow-in-java
-title: How to handle Updates in an Workflow in Java
+title: How to handle Updates in an Workflow
 sidebar_label: Handle Updates
 description: Use the @UpdateMethod annotation to handle Signals within the Workflow interface.
 tags:
@@ -10,7 +10,10 @@ tags:
 
 Workflows listen for Update by the update's name.
 
-Use the `@UpdateMethod` annotation to handle Updates in the Workflow interface. The handler method can accept multiple serializable input parameters, but we recommend using only a single parameter. The function can return a serializable value or `void`. If any exception is throw while handling an update that exception may fail the workflow task or the update depending on the type of the exception and `WorkflowImplementationOptions.setFailWorkflowExceptionTypes`
+Use the `@UpdateMethod` annotation to handle Updates in the Workflow interface.
+The handler method can accept multiple serializable input parameters, but it's recommend using only a single parameter.
+The function can return a serializable value or `void`.
+If any exception is throw while handling an update that exception may fail the Workflow task or the update depending on the type of the exception and `WorkflowImplementationOptions.setFailWorkflowExceptionTypes`
 
 ```java
 @WorkflowInterface
@@ -43,7 +46,8 @@ public interface FileProcessingWorkflow {
 
 **Dynamic Update Handler**
 
-You can also implement Update handlers dynamically. This is useful for library-level code and implementation of DSLs.
+You can also implement Update handlers dynamically.
+This is useful for library-level code and implementation of DSLs.
 
 ```java
 TODO
@@ -53,5 +57,5 @@ Workflow.registerListener(
 ```
 
 When registered, any Updates sent to the Workflow without a defined handler will be delivered to the `DynamicUpdateHandler`.
-Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
+You can only register one `Workflow.registerListener(Object)` per Workflow Execution.
 `DynamicUpdateHandler` can be implemented in both regular and dynamic Workflow implementations.

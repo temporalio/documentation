@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Sunday October 15 2023 17:08:33 PM -0700
+Last assembled: Monday October 16 2023 11:14:02 AM -0700
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 104 guide configurations found.
 
@@ -1056,8 +1056,6 @@ go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
 
-go/foundations -> /dev-guide/go/foundations#
-
 go/go-dev-guide-structure -> #
 
 go/install-cli -> /dev-guide/go/project-setup#install-cli
@@ -1075,6 +1073,8 @@ go/self-hosted-worker-docker-network -> /dev-guide/go/project-setup#dockerfile
 go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#local-dev-server
 
 go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
+
+go/foundations -> /dev-guide/go/foundations#
 
 cli/server/start-dev -> /cli/server#start-dev
 
