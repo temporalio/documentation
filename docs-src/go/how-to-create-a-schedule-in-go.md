@@ -23,7 +23,7 @@ Schedules must be initialized with a Schedule ID, [Spec](/concepts/what-is-a-sch
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/schedule/create/main_dacx.go) in the context of the rest of the application code.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/create/main_dacx.go) in the context of the rest of the application code.
 
 :::
 

@@ -40,7 +40,7 @@ If not, you get a `workflow.ErrSessionFailed` error when the next call of `workf
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/backgroundcheckboilerplate/sessions/workflow_dacx.go) in the context of the rest of the application code.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/sessions/workflow_dacx.go) in the context of the rest of the application code.
 
 :::
 

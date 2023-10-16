@@ -30,13 +30,13 @@ The command-line tool Temporal CLI includes a distribution of a Temporal Cluster
 
 ## Installation
 
-**How to download and install the Temporal CLI?**
+**How to download and install the Temporal CLI**
 
-The Temporal CLI is available on the MacOs, Windows, and Linux.
+The Temporal CLI is available on MacOS, Windows, and Linux.
 
 ### MacOS
 
-**How to install the Temporal CLI on Mac OS?**
+**How to install the Temporal CLI on Mac OS**
 
 Choose one of the following install methods to install the Temporal CLI on MacOS:
 
@@ -56,8 +56,8 @@ curl -sSf https://temporal.download/cli.sh | sh
 
   1. Select the platform and architecture needed.
 
-  - Download for Darwin amd64 → https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64
-  - Download for Darwin arm64 → https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64
+  - Download for Darwin amd64: https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64
+  - Download for Darwin arm64: https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64
 
   2. Extract the downloaded archive.
 
@@ -65,7 +65,7 @@ curl -sSf https://temporal.download/cli.sh | sh
 
 ### Linux
 
-**How to install the Temporal CLI on Linux?**
+**How to install the Temporal CLI on Linux**
 
 Choose one of the following install methods to install the Temporal CLI on Linux:
 
@@ -79,8 +79,8 @@ curl -sSf https://temporal.download/cli.sh | sh
 
   1. Select the platform and architecture needed.
 
-  - Download for Linux amd64 → https://temporal.download/cli/archive/latest?platform=linux&arch=amd64
-  - Download for Linux arm64 → https://temporal.download/cli/archive/latest?platform=linux&arch=arm64
+  - Download for Linux amd64: https://temporal.download/cli/archive/latest?platform=linux&arch=amd64
+  - Download for Linux arm64: https://temporal.download/cli/archive/latest?platform=linux&arch=arm64
 
   2. Extract the downloaded archive.
 
@@ -88,7 +88,7 @@ curl -sSf https://temporal.download/cli.sh | sh
 
 ### Windows
 
-**How to install the Temporal CLI on Windows?**
+**How to install the Temporal CLI on Windows**
 
 Choose one of the following methods to install the Temporal CLI on Windows:
 
@@ -104,8 +104,8 @@ scoop install temporal-cli
 
   1. Select the platform and architecture needed and download the binary.
 
-  - Download for Windows amd64 → https://temporal.download/cli/archive/latest?platform=windows&arch=amd64
-  - Download for Windows arm64 → https://temporal.download/cli/archive/latest?platform=windows&arch=arm64
+  - Download for Windows amd64: https://temporal.download/cli/archive/latest?platform=windows&arch=amd64
+  - Download for Windows arm64: https://temporal.download/cli/archive/latest?platform=windows&arch=arm64
 
   2. Extract the downloaded archive.
 
@@ -335,7 +335,7 @@ temporal operator namespace create foo
 ### Enable or disable Temporal UI
 
 By default, the Temporal UI starts with Temporal CLI.
-Disable the UI with:
+To disable the UI, use the `--headless` modifier:
 
 ```shell
 temporal server start-dev --headless
