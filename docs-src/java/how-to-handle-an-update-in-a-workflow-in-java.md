@@ -27,7 +27,7 @@ public interface FileProcessingWorkflow {
 Update handlers, unlike Query handlers, can change Workflow state.
 
 The Updates type defaults to the name of the method.
-To overwrite this default naming and assign a custom Signal type, use the `@UpdateMethod` annotation with the `name` parameter.
+To overwrite this default naming and assign a custom Update type, use the `@UpdateMethod` annotation with the `name` parameter.
 
 ```java
 @WorkflowInterface
