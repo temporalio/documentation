@@ -344,7 +344,7 @@ Schedules provide a more flexible and user-friendly approach than [Temporal Cron
 | --------------------------- | --- | ---- | ---------- | ------ | ---- | --- |
 | [SDK Metrics](#sdk-metrics) | Yes | Yes  | Yes        | Yes    | Yes  | No  |
 
-SDK Metrics track various aspects of worker performance, such as task queue, namespace, poller type, worker type, activity type, workflow type, and operation.
+SDK Metrics track various aspects of Worker performance, such as Task Queue, Namespace, poller type, Worker type, Activity type, Workflow type, and operation.
 
 For more information on metrics see, [Temporal SDK metrics reference](/references/sdk-metrics#).
 
