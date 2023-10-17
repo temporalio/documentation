@@ -151,8 +151,8 @@ For intricate and vast use cases, having some experience with the following coul
 - Continue reading this guide.
 - [Temporal 101 with Go](https://learn.temporal.io/courses/temporal_101/go): free introductory course.
 - [Temporal 102 with Go](https://learn.temporal.io/courses/temporal_102/go): our free course that builds on Temporal 101.
-- [Documentation samples repository](https://github.com/temporalio/documentation-samples-java)
-- [Go SDK samples repository](https://github.com/temporalio/samples-java)
+- [Documentation samples repository](https://github.com/temporalio/documentation-samples-go)
+- [Go SDK samples repository](https://github.com/temporalio/samples-go)
 - The [Go SDK](https://www.youtube.com/watch?v=-KWutSkFda8&list=PLl9kRkvFJrlRYHYaTPnsvE46szyMIZLdk&pp=iAQB) YouTube playlist
 - Tutorials
   - [Build an eCommerce App With Temporal and Go](https://learn.temporal.io/tutorials/go/ecommerce/)
