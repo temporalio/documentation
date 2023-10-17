@@ -22,7 +22,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-:::success Temporal CLI is now available
+:::info Temporal CLI is now available
 
 The public preview of [Temporal CLI](/cli) is now available.
 We encourage you to begin using it and to provide feedback.
@@ -69,10 +69,6 @@ You can install [tctl](/tctl-v1) in the following ways.
   - On macOS or Windows: `docker run --rm -it --entrypoint tctl --env TEMPORAL_CLI_ADDRESS=host.docker.internal:7233 temporalio/admin-tools:1.14.0`
   - If your Temporal Server is running on a remote host, change the value of `TEMPORAL_CLI_ADDRESS`.
   - To simplify command lines, create a `tctl` alias.
-- Build it locally:
-  1. Clone the [Temporal Server repo](https://github.com/temporalio/temporal).
-  1. Run `make tctl`.
-  1. Copy the `tctl` executable to any directory that appears in the `PATH` environment variable; for example, `/usr/bin/`.
 - Install the latest version of the tctl in your `GOPATH`: `go install github.com/temporalio/tctl/cmd/tctl@latest`
 
 **Note:** To use [tctl](/tctl-v1), you must have a Temporal Server running.

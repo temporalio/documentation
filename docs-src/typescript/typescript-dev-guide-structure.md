@@ -9,7 +9,7 @@ tags:
   - guide structure
 ---
 
-:::success Temporal TypeScript SDK API reference
+:::info Temporal TypeScript SDK API reference
 
 https://typescript.temporal.io/
 

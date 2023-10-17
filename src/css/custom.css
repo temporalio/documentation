@@ -30,6 +30,9 @@ html[data-theme="dark"] {
   --ifm-preview-text: #f9fafb;
   --ifm-link-color: #f9fafb;
   --ifm-link-hover-color: var(--ifm-color-primary);
+  --alert--competency-background: #00474a;
+  --alert--copycode-background: #29005e;
+  --alert--info-background: #353536;
   /* --ifm-menu-color-active: var(--ifm-color-primary-lighter);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
   --ifm-toc-link-color: #ffffff;
@@ -55,6 +58,9 @@ html[data-theme="light"] {
   --ifm-link-color: #111827;
   --ifm-link-hover-color: var(--ifm-color-primary);
   --ifm-preview-text: #141414;
+  --alert--competency-background: #a8fcff;
+  --alert--copycode-background: #e0cdfa;
+  --alert--info-background: #ebeded;
   /* --ifm-menu-color-active: var(--ifm-color-primary);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary);
   --ifm-toc-link-color: var(--ifm-color-primary-dark);
@@ -83,6 +89,18 @@ a:hover {
   border-radius: 3px !important;
   border-width: 1px;
   border-style: solid;
+}
+
+.alert--competency {
+  background-color: var(--alert--competency-background);
+}
+
+.alert--copycode {
+  background-color: var(--alert--copycode-background);
+}
+
+.alert--info {
+  background-color: var(--alert--info-background);
 }
 
 /* If we scope things with .tailwindcss we can attach to the tailwind styles on only the intro page */
@@ -819,4 +837,8 @@ a.tdlp:hover .tdlpc {
   font-weight: 300;
   font-size: 0.8em;
   text-decoration: none;
+}
+
+code {
+  vertical-align: baseline;
 }
