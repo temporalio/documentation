@@ -34,6 +34,8 @@ Use the `temporal workflow show` command again to retrieve the Workflow Event Hi
 temporal workflow show --workflow-id your-workflow-id --output json  > your_workflow_history.json
 ```
 
+A mismatch between the Commands that the Worker expected, based on the Event History, and those created, based on actually executing the code, results in a non-deterministic error. This error means that the Worker cannot accurately restore the state of the Workflow Execution. Since the Workflow Definition produced a different sequence of Commands during replay than it did prior to the crash, the Worker is unable to restore the previous state, so the use of random numbers in the Workflow code has resulted in a non-deterministic error.
+
 ### Examples of Changes That May Lead to Non-Deterministic Errors
 
 * Adding or removing an Activity
