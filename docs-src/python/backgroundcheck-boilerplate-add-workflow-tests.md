@@ -14,9 +14,9 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 This is a unit test written in Python using the pytest library.
 
-The test checks the `execute_workflow` method of the `BackgroundCheck` workflow.
+The test checks the `execute_workflow` method of the `BackgroundCheck` Workflow.
 
-The test creates a new `WorkflowEnvironment` and a `Worker` with a task queue and the `BackgroundCheck` workflow and `ssn_trace_activity` activity.
+The test creates a new `WorkflowEnvironment` and a `Worker` with a Task Queue and the `BackgroundCheck` Workflow and `ssn_trace_activity` activity.
 
 Then, it executes the `BackgroundCheck.run` method with a social security number and a unique ID, and asserts that the result is equal to "pass".
 

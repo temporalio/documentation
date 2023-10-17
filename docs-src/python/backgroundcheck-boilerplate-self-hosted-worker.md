@@ -24,9 +24,8 @@ Visit the source repository to [view the source code](https://github.com/tempora
 
 ```python
 import asyncio
-import os
 
-from temporalio.client import Client, TLSConfig
+from temporalio.client import Client
 from temporalio.worker import Worker
 
 from activities.ssntraceactivity_dacx import ssn_trace_activity
@@ -36,8 +35,8 @@ from workflows.backgroundcheck_dacx import BackgroundCheck
 
 async def main():
     client = await Client.connect(
-        "172.18.0.4:7233"
-    )  # The IP address of the Temporal Server on your network.
+        "172.18.0.4:7233"  # The IP address of the Temporal Server on your network.
+    )
 
     worker = Worker(
         client,
@@ -46,4 +45,7 @@ async def main():
         activities=[ssn_trace_activity],
     )
     await worker.run()
+
+
+if __name__ == "__main__":
 ```

@@ -36,7 +36,9 @@ from temporalio.worker import Worker
 
 from activities.ssntraceactivity_dacx import ssn_trace_activity
 from workflows.backgroundcheck_dacx import BackgroundCheck
-# ...
+
+
+
 async def main():
 
     with open(os.getenv("TEMPORAL_MTLS_TLS_CERT"), "rb") as f:
@@ -64,5 +66,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
 ```

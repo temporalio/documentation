@@ -16,9 +16,9 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 The `BackgroundCheck` Workflow code checks the following conditions:
 
 1. It receives a social security number and a unique ID as input parameters.
-2. It starts a new activity `ssn_trace_activity` with the input SSN.
-3. It waits for the activity to complete and returns the result.
-4. If the activity returns "pass", it logs a message indicating that the background check passed.
-5. If the activity returns "fail", it raises an exception indicating that the background check failed.
+2. It starts a new Activity `ssn_trace_activity` with the input SSN.
+3. It waits for the Activity to complete and returns the result.
+4. If the Activity returns "pass", it logs a message indicating that the background check passed.
+5. If the Activity returns "fail", it raises an exception indicating that the background check failed.
 
 We can also perform a Workflow Replay test, and we'll provide detailed coverage of this topic in another section.

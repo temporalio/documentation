@@ -37,7 +37,9 @@ from temporalio.worker import Worker
 
 from activities.ssntraceactivity_dacx import ssn_trace_activity
 from workflows.backgroundcheck_dacx import BackgroundCheck
-# ...
+
+
+
 async def main():
     client = await Client.connect("localhost:7233")
 
@@ -49,4 +51,7 @@ async def main():
     )
 
     await worker.run()
+
+
+if __name__ == "__main__":
 ```

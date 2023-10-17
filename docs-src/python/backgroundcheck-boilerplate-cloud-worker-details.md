@@ -16,4 +16,4 @@ Consider the following Namespace url: https://cloud.temporal.io/namespaces/backg
 
 The Temporal Cloud gRPC connection address includes your [Namesapce](https://python.temporal.io/temporalio.client.Client.html#namespace) and a port number: `<Namespace>.<AccountId>.tmprl.cloud:<port>`.
 For example: `https://backgroundcheck-app.1a23b.tmprl.cloud:1234`.
-There is an option to copy the grPC endpoint address from the Temporal Cloud UI.
+There is an option to copy the gRPC endpoint address from the Temporal Cloud UI.
