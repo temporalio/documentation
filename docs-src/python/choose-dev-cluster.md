@@ -49,7 +49,7 @@ If you have successfully installed the Temporal CLI, open a new terminal and run
 temporal server start-dev --db-filename temporal.db
 ```
 
-This command automatically starts the Temporal Web UI, creates a default Namespace, and creates a persistance database.
+This command automatically starts the Temporal Web UI, creates a default Namespace, and creates a persistence database.
 
 The Temporal Web UI serves to [http://localhost:8233](http://localhost:8233/).
 
