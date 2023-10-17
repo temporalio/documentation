@@ -300,6 +300,18 @@ Run `yarn format`.
 
 If you don't run this command locally before posting a pull request, a GitHub action runs the formatting.
 
+### How to find broken links
+
+[hyperlink] is a command-line tool to find broken links.
+
+In a terminal, run:
+
+```bash
+yarn link-checker
+```
+
+This command will start the hyperlink checker.
+
 ### How to run the Assembly Workflow
 
 Make sure you have a Namespace set up and ready to use.
