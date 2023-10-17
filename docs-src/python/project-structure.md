@@ -50,7 +50,6 @@ For example, your project structure could look like this:
             | main.py
     /tests
        | pytest.ini
-       | __init__.py
 	   | workflow_tests.py
        | activity_tests.py
 ```
@@ -67,7 +66,6 @@ If you are following along with this guide, your project will look like this:
         | main.py
     /tests
        | pytest.ini
-       | __init__.py
 	   | workflow_tests.py
        | activity_tests.py
 ```
@@ -75,6 +73,8 @@ If you are following along with this guide, your project will look like this:
 ### Initialize Python project dependency framework
 
 In Python, you’d typically use `pip` and `virtualenv` or `venv` for dependency management and environment isolation.
+
+For more information, see [Creating Virtual Environments](https://packaging.python.org/en/latest/tutorials/installing-packages/#creating-virtual-environments).
 
 Set up a virtual environment for the project and initialize it using `pip`.
 

@@ -188,10 +188,10 @@ If you are eager to to set up Cluster-level metrics for performance tuning, we r
 If you have successfully installed the Temporal CLI, open a new terminal and run the following command:
 
 ```bash
-temporal server start-dev
+temporal server start-dev --db-filename temporal.db
 ```
 
-This command automatically starts the Temporal Web UI, creates a default Namespace, and creates an in-memory database.
+This command automatically starts the Temporal Web UI, creates a default Namespace, and creates a persistance database.
 
 The Temporal Web UI serves to [http://localhost:8233](http://localhost:8233/).
 
@@ -317,7 +317,6 @@ For example, your project structure could look like this:
             | main.py
     /tests
        | pytest.ini
-       | __init__.py
 	   | workflow_tests.py
        | activity_tests.py
 ```
@@ -334,7 +333,6 @@ If you are following along with this guide, your project will look like this:
         | main.py
     /tests
        | pytest.ini
-       | __init__.py
 	   | workflow_tests.py
        | activity_tests.py
 ```
@@ -342,6 +340,8 @@ If you are following along with this guide, your project will look like this:
 ### Initialize Python project dependency framework
 
 In Python, you’d typically use `pip` and `virtualenv` or `venv` for dependency management and environment isolation.
+
+For more information, see [Creating Virtual Environments](https://packaging.python.org/en/latest/tutorials/installing-packages/#creating-virtual-environments).
 
 Set up a virtual environment for the project and initialize it using `pip`.
 
