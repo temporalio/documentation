@@ -18,17 +18,16 @@ You can also watch [Deployment Leads to Non-Deterministic Error](https://www.you
 
 ### Examples of Changes That May Lead to Non-Deterministic Errors
 
-* Adding or removing an Activity
-* Switching the Activity Type used in a call to `ExecuteActivity`
-* Adding or removing a Timer
-* Altering the execution order of Activities or Timers relative to one another
+- Adding or removing an Activity
+- Switching the Activity Type used in a call to `ExecuteActivity`
+- Adding or removing a Timer
+- Altering the execution order of Activities or Timers relative to one another
 
 ### Examples of Changes That Do Not Lead to Non-Deterministic Errors
 
-* Modifying statements in a Workflow Definition, such as logging statements, 
-  that do not affect the Commands generated during Workflow Execution
-* Changing attributes in a `ActivityOptions` or `RetryPolicy`
-* Modifying code inside of an Activity Definition
+- Modifying statements in a Workflow Definition, such as logging statements, that do not affect the Commands generated during Workflow Execution
+- Changing attributes in a `ActivityOptions` or `RetryPolicy`
+- Modifying code inside of an Activity Definition
 
 ### Common Sources of Non-Determinism
 
