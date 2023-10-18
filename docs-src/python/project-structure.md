@@ -83,6 +83,8 @@ mkdir background_check
 cd background_check
 python -m venv venv
 source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+pip install temporalio
 ```
 
-After activation, any Python command you run will use the virtual environment's isolated Python interpreter and libraries. Remember to always activate the virtual environment when working on this project.
+After activation, any Python command you run will use the virtual environment's isolated Python interpreter and libraries.
+Remember to always activate the virtual environment when working on this project.
