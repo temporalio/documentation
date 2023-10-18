@@ -20,3 +20,54 @@ When you test changes to your Workflow Definitions, we recommend doing the follo
 4. Fail CI if any error is encountered during replay.
 
 The following are examples of fetching and replaying Event Histories:
+
+To replay Workflow Executions, use the `\Temporal\Testing\Replay\WorkflowReplayer` class.
+
+In the following example, Event Histories are fetching from the Temporal, and then replayed.
+If the Workflow is non-deterministic, a `NonDeterministicWorkflowException` will be thrown.
+Note that this requires [Advanced Visibility](/concepts/what-is-advanced-visibility) to be enabled.
+
+```php
+/**
+ * We assume you already have a WorkflowClient and WorkflowReplayer in scope.
+ * @var \Temporal\Client\WorkflowClientInterface $workflowClient
+ * @var \Temporal\Testing\Replay\WorkflowReplayer $replayer
+ */
+
+// Find all workflow executions of type "MyWorkflow" and task queue "MyTaskQueue".
+$executions = $workflowClient->listWorkflowExecutions(
+    "WorkflowType='MyWorkflow' AND TaskQueue='MyTaskQueue'"
+);
+
+// Replay each workflow execution.
+foreach ($executions as $executionInfo) {
+    try {
+        $replayer->replayFromServer(
+            workflowType: $executionInfo->type->name,
+            execution: $executionInfo->execution,
+        );
+    } catch (\Temporal\Testing\Replay\Exception\ReplayerException $e) {
+        // Handle a replay error.
+    }
+}
+```
+
+In the next example, an Event History is loaded from a JSON file, and the maximum number of replayed Events is limited to 42.
+
+```php
+$replayer->replayFromJSON(
+    workflowType: 'MyWorkflow',
+    path: 'history.json',
+    lastEventId: 42,  // optional
+);
+```
+
+You can download a Workflow History using PHP, and then replay it from a memorized History object:
+
+```php
+$history = $this->workflowClient->getWorkflowHistory(
+    execution: $run->getExecution(),
+)->getHistory();
+
+(new WorkflowReplayer())->replayHistory($history);
+```

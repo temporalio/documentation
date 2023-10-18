@@ -6,9 +6,9 @@ Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 104 guide configurations found.
 
-1565 information nodes found.
+1570 information nodes found.
 
-1330 information nodes are attached to guides.
+1336 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -53,8 +53,6 @@ concepts/what-is-a-global-namespace -> /namespaces#global-namespace
 concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
-
-cloud/security-cloud-intro -> #
 
 references/server-options -> /references/server-options#withconfig
 
@@ -1081,5 +1079,7 @@ cli/server/start-dev -> /cli/server#start-dev
 cli/operator/namespace/create -> /cli/operator#create
 
 cli/workflow/start -> /cli/workflow#start
+
+cloud/security-cloud-intro -> #
 
 
