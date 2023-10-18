@@ -2,7 +2,7 @@
 id: how-to-create-custom-search-attribute-keys
 title: How to create custom Search Attributes
 sidebar_label: Create custom Search Attributes
-description: Add custom Search Attributes to your Visibility store using `temporal` for self-hosted Temporal Cluster, and `tcld` for Temporal Cloud.
+description: Add custom Search Attributes to your Visibility store using the Temporal CLI for a self-hosted Temporal Cluster, and tcld for Temporal Cloud.
 tags:
   - operation-guide
   - filtered-lists
