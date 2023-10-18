@@ -72,12 +72,16 @@ If you are following along with this guide, your project will look like this:
 
 ### Initialize Go project dependency framework
 
-If you have created a similar project structure as noted earlier, run `go mod init` to create a new Go module for this project.
+If you have created a similar project structure as noted earlier, run `go mod init` to create a new Go module for this project. The module name will be something like `<your_name>/backgroundcheck`:
 
-```bash
+```shell
 mkdir backgroundcheck
 cd backgroundcheck
-go mod init
+go mod init github.com/your_name/backgroundcheck
 ```
 
-The module name will be something like `<repo>/backgroundcheck` .
+Then, use `go get` to install the Temporal Go SDK:
+
+```shell
+go get go.temporal.io/sdk
+```

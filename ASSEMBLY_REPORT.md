@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday October 18 2023 08:59:00 AM -0700
+Last assembled: Wednesday October 18 2023 09:34:22 AM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -1079,5 +1079,7 @@ cli/server/start-dev -> /cli/server#start-dev
 cli/operator/namespace/create -> /cli/operator#create
 
 cli/workflow/start -> /cli/workflow#start
+
+cloud/security-cloud-intro -> #
 
 
