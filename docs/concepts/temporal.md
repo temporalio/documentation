@@ -81,7 +81,7 @@ Temporal currently offers the following SDKs:
 - [Get started with the Java SDK](/dev-guide/java/introduction#)
 - [Get started with the PHP SDK](/dev-guide/php)
 - [Get started with the Python SDK](/dev-guide/python/introduction#)
-- [How to use the TypeScript SDK](/dev-guide/typescript/introduction#)
+- [Get started with the TypeScript SDK](/dev-guide/typescript/introduction#)
 
 Each SDK emits metrics which can be ingested into monitoring platforms.
 See the [SDK metrics reference](/references/sdk-metrics#) for a complete list.
