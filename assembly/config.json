@@ -38,8 +38,7 @@
         },
         {
             "org": "temporalio",
-            "name": "documentation-samples-python",
-            "ref": "bgc"
+            "name": "documentation-samples-python"
         }
     ]
 }
