@@ -47,7 +47,7 @@ If you visit the Temporal [Web UI](http://localhost:8233/), you should see an en
 
 You can learn more about working with the Web UI in our [Web UI documentation](https://docs.temporal.io/web-ui), or watch a [Web UI demo](https://www.youtube.com/watch?v=yS-XB2Wghxs) from our [Temporal 101](https://learn.temporal.io/courses/temporal_101/go) course. In the next section, you'll retrieve the Workflow Event History from the CLI.
 
-## Retrieving Event History via CLI
+### Retrieving Event History via CLI
 
 Workflow Event History can be retrieved from the Web UI, by [using the Temporal SDK](https://docs.temporal.io/dev-guide/go/foundations#get-workflow-results) as part of your application, or programmatically via `temporal` CLI commands. This guide provides an example of using the CLI.
 
