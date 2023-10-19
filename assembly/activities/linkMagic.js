@@ -148,15 +148,6 @@ async function replaceLinks(line, match, link, current_guide_id) {
   const html = linkPreview(newPath, match[1]);
   line = line.replaceAll(replaceable, html);
   pushToLinkMapping(link.node_id, newPath);
-  if (match[2] == "/cloud/security-cloud-intro") {
-    console.log("------------");
-    console.log(`${link.file_dir}/${link.guide_id}`);
-    console.log(current_guide_id);
-    console.log(line);
-    console.log(match);
-    console.log(link);
-    console.log(newPath);
-  }
   return line;
 }
 
