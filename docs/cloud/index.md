@@ -26,7 +26,7 @@ To request a Temporal Cloud account, complete the [request form](https://pages.t
 :::
 
 - [Introduction to Temporal Cloud](/cloud/introduction)
-  - [Security](/cloud/security)
+  - [Security](/cloud/security#)
   - [Operating envelope](/cloud/operating-envelope)
   - [Pricing](/cloud/pricing)
   - [Support](/cloud/support)
