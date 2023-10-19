@@ -20,7 +20,7 @@ such as JUnit.
 To start using the Java SDK test framework, you need to add [`io.temporal:temporal-testing`](https://search.maven.org/artifact/io.temporal/temporal-testing)
 as a dependency to your project:
 
-**[Apache Maven](https://maven.apache.org/)**:
+**[Apache Maven](https://maven.apache.org/):**
 
 ```maven
 <dependency>
@@ -31,7 +31,7 @@ as a dependency to your project:
 </dependency>
 ```
 
-**[Gradle Groovy DSL](https://gradle.org/)**:
+**[Gradle Groovy DSL](https://gradle.org/):**
 
 ```groovy
 testImplementation ("io.temporal:temporal-testing:1.17.0")
