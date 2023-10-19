@@ -25,7 +25,7 @@ tags:
 Temporal Cloud includes the support, services and training needed to onboard you successfully, design and deploy your application efficiently and scale.
 Our team has extensive knowledge of the Temporal project, and a broad set of skills to help you succeed with any project.
 
-Temporal Cloud provides support for break/fix issues, and services to help with onboarding, design/code reviews for your application and pre-production optimization.
+Temporal Cloud provides support for break/fix issues, and services to help with onboarding, design/code reviews for your application, and pre-production optimization.
 
 :::note
 
@@ -37,12 +37,12 @@ The content of this page applies to Temporal Cloud customers only.
 
 We offer four services to Temporal Cloud customers. For access to any of these services, please [create a support ticket](/cloud/support) or contact your dedicated account manager.
 
-- **Technical onboarding**: Every Temporal Cloud customer is offered a dedicated onboarding session led by a Developer Success Engineer.
+- **Technical onboarding:** Every Temporal Cloud customer is offered a dedicated onboarding session led by a Developer Success Engineer.
   This session covers basic setup and Namespace planning and provides an overview of metrics and observability, an overview of development resources, and information you will need in preparation for your go-live.
-- **Design and code reviews**: Our team works with you to review your Workflow design and code to avoid potential issues and optimize your workload to run on Temporal Cloud.
+- **Design and code reviews:** Our team works with you to review your Workflow design and code to avoid potential issues and optimize your workload to run on Temporal Cloud.
   These sessions also focus on the optimization of your Workflow Actions and reduce your costs; they also reveal likely trade offs.
-- **Pre-production optimization**: We offer a dedicated session covering everything from identifying and troubleshooting the most common issues to observability setup, critical metrics to watch, and application design assistance.
-- **Load tests**: Our Developer Success team walks through the basics of scaling Workers and metrics.
+- **Pre-production optimization:** We offer a dedicated session covering everything from identifying and troubleshooting the most common issues to observability setup, critical metrics to watch, and application design assistance.
+- **Load tests:** Our Developer Success team walks through the basics of scaling Workers and metrics.
   We also watch as tests are performed to ensure you have appropriate capacity to complete those tests.
 
 ## What is the Temporal Cloud support guarantee? {#support}
@@ -51,12 +51,12 @@ Temporal endeavors to ensure you are successful with Temporal Cloud. We offer ex
 Temporal Cloud customers get break/fix support with an agreed-upon set of SLAs for prioritized issues.
 We use a ticketing system for entering, tracking, and closing these issues.
 
-If an issue occurs, the team also provides support through a dedicated Slack channel, forums and a knowledge base.
+If an issue occurs, the team also provides support through a dedicated Slack channel, forums, and a knowledge base.
 We offer two levels of support defined by their availability and SLAs in the following table.
 
 |                    | Basic Support                                                                                  | Premium Support                                                                           |
 | ------------------ | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| **Availability**   | P0: 24x7<br />P1-3: 0500–1700<br />Mon–Fri (GMT-9)                                             | P0: 24x7<br />P1-3: 0500–1700<br />Mon–Fri (GMT-9)                                        |
+| **Availability**   | P0: 24×7<br />P1–3: 0500–1700<br />Mon–Fri (GMT-9)                                             | P0: 24×7<br />P1–3: 0500–1700<br />Mon–Fri (GMT-9)                                        |
 | **Response times** | P0: 1 business hour<br />P1: 4 business hours<br />P2: 1 business day<br />P3: 2 business days | P0: 30 minutes<br />P1: 1 business hour<br />P2: 4 business hours<br />P3: 1 business day |
 
 For pricing details of these two levels of support, please visit our [pricing page](/cloud/pricing).
