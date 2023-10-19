@@ -15,10 +15,10 @@ We use a ticketing system for entering, tracking, and closing these issues.
 If an issue occurs, the team also provides support through a dedicated Slack channel, forums and a knowledge base.
 We offer two levels of support defined by their availability and SLAs in the following table.
 
-|                    | Basic Support                                                                                   | Premium Support                                                                           |
-| ------------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| **Availability**   | P0: 24x7<br />P1-3: 0500–1700<br />Mon–Fri (GMT-9)                                              | P0: 24x7<br />P1-3: 0500–1700<br />Mon–Fri (GMT-9)                                        |
-| **Response times** | P0: 1 business hour<br />P1: 4 business hours<br />P2: 1 business days<br />P3: 2 business days | P0: 30 minutes<br />P1: 1 business hour<br />P2: 4 business hours<br />P3: 1 business day |
+|                    | Basic Support                                                                                  | Premium Support                                                                           |
+| ------------------ | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| **Availability**   | P0: 24x7<br />P1-3: 0500–1700<br />Mon–Fri (GMT-9)                                             | P0: 24x7<br />P1-3: 0500–1700<br />Mon–Fri (GMT-9)                                        |
+| **Response times** | P0: 1 business hour<br />P1: 4 business hours<br />P2: 1 business day<br />P3: 2 business days | P0: 30 minutes<br />P1: 1 business hour<br />P2: 4 business hours<br />P3: 1 business day |
 
 For pricing details of these two levels of support, please visit our [pricing page](/cloud/pricing).
 
