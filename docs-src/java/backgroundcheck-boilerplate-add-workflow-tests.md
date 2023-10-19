@@ -18,16 +18,17 @@ to allow for testing Workflows. There are two ways to test Workflows; the first
 is to test the Workflow code without invoking the real Activities by mocking
 the Workflow's Activities and the second is to test the Workflow and its Activities
 in their entirety. This section will focus on the first scenario while a following
-section will cover the later. 
+section will cover the later.
 
-Testing your Workflows without invoking your Activities can be useful for testing 
-Workflow specific logic without having to worry about the Activity invocation 
-producing a side-effect or having any Activity downstream dependency, such as a 
+Testing your Workflows without invoking your Activities can be useful for testing
+Workflow specific logic without having to worry about the Activity invocation
+producing a side-effect or having any Activity downstream dependency, such as a
 microservice, be available during the duration of your testing.
 
 As for the actual testing code, testing Workflows is similar to testing non-Temporal java code.
 
 Some examples of things an Workflow can be tested for are:
+
 - Exceptions thrown when invoking the Workflow Execution.
 - Exceptions thrown when checking for the result of the Workflow Execution.
 - Workflow return values. Check to ensure the return value is expected.
@@ -38,12 +39,11 @@ We can also perform a Workflow Replay test, and we'll provide detailed coverage 
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/test/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateWorkflowTest.java) in the context of the rest of the application code. 
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/test/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateWorkflowTest.java) in the context of the rest of the application code.
 
 :::
 
 ```java
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -93,4 +93,3 @@ public class BackgroundCheckBoilerplateWorkflowTest {
   }
 }
 ```
-

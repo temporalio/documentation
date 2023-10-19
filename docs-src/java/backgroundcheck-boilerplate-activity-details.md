@@ -13,5 +13,5 @@ tags:
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-java/blob/backgroundcheck-boilerplate/backgroundcheck/src/main/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateActivitiesImpl.java. -->
 
 Activity Definitions support the passing of parameters.
-All Workflow Definition parameters must be serializable (using the Jackson JSON 
+All Workflow Definition parameters must be serializable (using the Jackson JSON
 Payload Converter).

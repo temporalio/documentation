@@ -109,11 +109,11 @@ Maven as your dependency management tool, ensure that the `compiler.source`
 and `compiler.target` properties in your `pom.xml` are set to at least `1.8`.
 
 ```xml
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-  </properties>
+<properties>
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  <maven.compiler.source>1.8</maven.compiler.source>
+  <maven.compiler.target>1.8</maven.compiler.target>
+</properties>
 ```
 
 Next, including the following dependencies in the `dependencies` section of your

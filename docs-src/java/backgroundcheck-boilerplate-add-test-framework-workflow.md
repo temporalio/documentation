@@ -16,25 +16,25 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 **How to add a Testing Framework and Tests for Workflows.**
 
 We can test Workflow code for the following conditions:
+
 - Workflow status. For example, did the Workflow reach a completed status?
 - Workflow threw an exception. Did the Workflow function return an error?
 - Error when checking for a result of a Workflow. Is there an error in getting the result returned by the Workflow?
 - Workflow return value. If the Workflow did return something other than an error, is it what you expected it to be?
 
 We can also perform a Workflow Replay test, and we'll provide detailed coverage of this topic in another section.
-     This creates an environment and registers the Workflow to a Worker for testing.
-     If you would rather set this up yourself, look into TestWorkflowEnvironment
+This creates an environment and registers the Workflow to a Worker for testing.
+If you would rather set this up yourself, look into TestWorkflowEnvironment
 
 :::copycode Sample application code
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-java/blob/backgroundcheck-boilerplate/backgroundcheck/src/test/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateWorkflowTest.java) in the context of the rest of the application code. 
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-java/blob/backgroundcheck-boilerplate/backgroundcheck/src/test/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateWorkflowTest.java) in the context of the rest of the application code.
 
 :::
 
 ```java
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -53,4 +53,3 @@ public class BackgroundCheckBoilerplateWorkflowTest {
       .newBuilder().setWorkflowTypes(BackgroundCheckBoilerplateWorkflowImpl.class)
       .setDoNotStart(true).build();
 ```
-
