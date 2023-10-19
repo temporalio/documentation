@@ -1,10 +1,11 @@
 ---
-slug: troubleshoot-last-connection-error
+id: last-connection-error-troubleshooting
 title: Troubleshoot the "failed reaching server" error
+sidebar_label: Failed reaching server error
+description: Failed reaching server errors can result from expired certificates. This guide provides troubleshooting solutions.
 tags:
   - cloud
   - namespaces
-date: 2023-06-05T00:00:00Z
 ---
 
 The message `Failed reaching server: last connection error` can often result from an expired TLS certificate or during the Server startup process, in which the Client requests reach the Server before the roles are fully initialized.
@@ -14,8 +15,6 @@ This troubleshooting guide shows you how to do the following:
 - Verify the certification expiration date
 - Renew the certification
 - Update the server configuration
-
-<!-- truncate -->
 
 ### Verify TLS certification expiration date
 
@@ -83,7 +82,7 @@ After you update the TLS certification in the server configuration, retry your c
 Don't let your certificates expire.
 Add reminders to your calendar to issue new CA certificates well before the expiration dates of the existing ones.
 
-## Additional resources
+### Additional resources
 
 The preceding steps should help you troubleshoot the `failed reaching server: last connection error` error caused by an expired TLS certificate.
 

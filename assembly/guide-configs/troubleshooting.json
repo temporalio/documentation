@@ -1,0 +1,29 @@
+{
+  "file_name": "troubleshooting.md",
+  "id": "troubleshooting",
+  "file_dir": "/",
+  "title": "Error Handling and Troubleshooting",
+  "sidebar_label": "Troubleshooting",
+  "sidebar_position": 10,
+  "description": "This guide contains error handling and troubleshooting solutuions for Temporal edge cases.",
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "troubleshooting/intro"
+    },
+    {
+      "type": "h2",
+      "id": "troubleshooting/failures"
+    },
+    {
+      "type": "h2",
+      "id": "troubleshooting/last-connection-error-troubleshooting"
+    },
+    {
+      "type": "h2",
+      "id": "troubleshooting/deadline-exceeded-troubleshooting"
+    }
+  ]
+}

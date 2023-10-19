@@ -95,7 +95,7 @@ Non-Retryable Errors = []
 
 - **Description**: Specifies errors that shouldn't be retried.
   - **Default is none.**
-  - Errors are matched against the `type` field of the [Application Failure](/kb/failures#application-failure).
+  - Errors are matched against the `type` field of the [Application Failure](/troubleshooting/failures#application-failure).
   - If one of those errors occurs, a retry does not occur.
 - **Use case**: If you know of errors that should not trigger a retry, you can specify that, if they occur, the execution is not retried.
 

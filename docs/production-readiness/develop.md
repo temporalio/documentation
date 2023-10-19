@@ -33,7 +33,7 @@ For example, if you have sensitive information passed in the following objects t
 - Headers (verify if applicable to your SDK)
 - [Query](/workflows#query) inputs and results
 - Results of [Local Activities](/activities#local-activity) and [Side Effects](/workflows#side-effect)
-- [Application errors and failures](/kb/failures)
+- [Application errors and failures](/troubleshooting#failures)
 
   Failure messages and stack traces are not encoded as codec-capable Payloads by default; you must explicitly enable encoding these common attributes on failures. For more details, see [Failure Converter](/dataconversion#failure-converter).
 

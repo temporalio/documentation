@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday October 19 2023 13:54:51 PM -0700
+Last assembled: Thursday October 19 2023 15:28:59 PM -0700
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly
 
-104 guide configurations found.
+105 guide configurations found.
 
-1573 information nodes found.
+1577 information nodes found.
 
-1339 information nodes are attached to guides.
+1343 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -54,8 +54,6 @@ concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
 
-cloud/security-cloud-intro -> #
-
 references/server-options -> /references/server-options#withconfig
 
 concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
@@ -69,6 +67,10 @@ concepts/what-is-a-payload-codec -> /dataconversion#payload-codec
 concepts/what-is-a-codec-server -> /dataconversion#codec-server
 
 concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
+
+references/cluster-metrics -> /references/cluster-metrics#
+
+references/web-ui-environment-variables -> /references/web-ui-environment-variables#
 
 concepts/what-is-the-temporal-cli -> /cli/index#
 
@@ -384,8 +386,6 @@ concepts/what-is-an-activity-task-execution -> /workers#activity-task-execution
 
 concepts/what-is-an-update -> /workflows#update
 
-references/cluster-metrics -> /references/cluster-metrics#
-
 go/metrics -> /dev-guide/go/observability#metrics
 
 java/metrics -> /dev-guide/java/observability#metrics
@@ -397,8 +397,6 @@ typescript/metrics -> /dev-guide/typescript/observability#metrics
 concepts/what-is-a-schedule-to-start-timeout -> /activities#schedule-to-start-timeout
 
 concepts/what-is-a-local-activity -> /activities#local-activity
-
-references/web-ui-environment-variables -> /references/web-ui-environment-variables#temporaluienabled
 
 concepts/what-is-a-frontend-service -> /clusters#frontend-service
 
@@ -539,6 +537,8 @@ java/introduction-to-java-sdk -> /dev-guide/java/introduction#
 python/introduction-to-python-sdk -> /dev-guide/python/introduction#
 
 typescript/introduction-to-typescript-sdk -> /dev-guide/typescript/introduction#
+
+troubleshooting/failures -> /troubleshooting#failures
 
 clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
 
