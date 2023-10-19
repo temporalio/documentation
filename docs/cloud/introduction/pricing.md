@@ -167,7 +167,7 @@ You can pay this bill with a credit card, ACH, wire transfer, or Temporal Credit
 **Can I purchase Temporal Cloud through my Amazon, Azure, or Google Cloud Platform marketplace?**
 
 You can purchase Temporal Cloud credits in the AWS Marketplace.
-Please contact our team at sales@temporal.io to learn more about our private offer on the AWS Marketplace.
+To learn more about our private offer on the AWS Marketplace, contact our team at sales@temporal.io.
 
 **Do you offer any discounts for startups?**
 
