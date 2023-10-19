@@ -307,7 +307,7 @@ If you don't run this command locally before posting a pull request, a GitHub ac
 In a terminal, run:
 
 ```bash
-yarn link-checker
+yarn check-links
 ```
 
 This command will start the hyperlink checker.
