@@ -12,7 +12,7 @@
     "format": "dprint fmt",
     "gen": "snipsync && ./assemble.js && dprint fmt && docusaurus build",
     "gen-cloud": "snipsync && ./assemble.js --cloud && dprint fmt && docusaurus build",
-    "link-checker": "hyperlink build/  --sources docs-src/ --check-anchors",
+    "check-links": "hyperlink build/  --sources docs-src/ --check-anchors",
     "lint": "vale docs-src/**/*.md",
     "lint:go": "vale docs-src/go/*.md",
     "lint:java": "vale docs-src/java/*.md",

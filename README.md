@@ -302,7 +302,7 @@ If you don't run this command locally before posting a pull request, a GitHub ac
 
 ### How to find broken links
 
-[hyperlink] is a command-line tool to find broken links.
+[hyperlink](https://www.npmjs.com/package/hyperlink) is a command-line tool to find broken links.
 
 In a terminal, run:
 
