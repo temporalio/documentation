@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday October 19 2023 08:46:59 AM -0600
+Last assembled: Thursday October 19 2023 09:34:18 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -53,6 +53,8 @@ concepts/what-is-a-global-namespace -> /namespaces#global-namespace
 concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
+
+cloud/security-cloud-intro -> /cloud/security#
 
 references/server-options -> /references/server-options#withconfig
 
@@ -350,7 +352,7 @@ cloud/tcld/user/set-account-role -> #set-account-role
 
 cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
 
-concepts/what-is-temporal-cloud -> /cloud/index#
+concepts/what-is-temporal-cloud -> /cloud#
 
 references/sdk-metrics -> /references/sdk-metrics#
 
@@ -492,7 +494,7 @@ java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conver
 
 concepts/what-is-a-retention-period -> /clusters#retention-period
 
-cloud/namespaces-intro -> #
+cloud/namespaces-intro -> /cloud/namespaces#
 
 go/register-namespaces -> /dev-guide/go/features#register-namespace
 
@@ -1079,7 +1081,5 @@ cli/server/start-dev -> /cli/server#start-dev
 cli/operator/namespace/create -> /cli/operator#create
 
 cli/workflow/start -> /cli/workflow#start
-
-cloud/security-cloud-intro -> #
 
 
