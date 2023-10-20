@@ -9,5 +9,13 @@ tags:
   - introduction
 ---
 
-We have an active [community Slack](https://temporalio.slack.com) and an active [community Discourse forum](https://community.temporal.io/) where you can post questions and ask for help.
-We also offer a ticketing system for Temporal Cloud customers, who can choose between _Basic_ and _Premium_ [support options](https://temporal.io/pricing).
+Temporal Cloud includes the support, services and training needed to onboard you successfully, design and deploy your application efficiently and scale.
+Our team has extensive knowledge of the Temporal project, and a broad set of skills to help you succeed with any project.
+
+Temporal Cloud provides support for break/fix issues and services to help with onboarding, design/code reviews for your application, and pre-production optimization.
+
+:::note
+
+The content of this page applies to Temporal Cloud customers only.
+
+:::

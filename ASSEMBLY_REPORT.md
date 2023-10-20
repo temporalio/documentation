@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday October 20 2023 11:08:14 AM -0600
+Last assembled: Friday October 20 2023 11:19:31 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
 104 guide configurations found.
 
-1572 information nodes found.
+1575 information nodes found.
 
-1339 information nodes are attached to guides.
+1342 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -608,11 +608,21 @@ python/developing-workflows -> /dev-guide/python/foundations#develop-workflows
 
 typescript/developing-workflows -> /dev-guide/typescript/foundations#develop-workflows
 
+go/patching -> /dev-guide/go/versioning#patching
+
+java/patching -> /dev-guide/java/versioning#patching
+
+typescript/patching -> /dev-guide/typescript/versioning#patching
+
 python/how-to-use-the-python-sdk-patching-api-in-python -> /dev-guide/python/versioning#python-sdk-patching-api
 
 go/how-to-use-worker-versioning-in-go -> /dev-guide/go/versioning#worker-versioning
 
 java/how-to-use-worker-versioning-in-java -> /dev-guide/java/versioning#worker-versioning
+
+python/how-to-use-worker-versioning-in-python -> /dev-guide/python/versioning#worker-versioning
+
+typescript/how-to-use-worker-versioning-in-typescript -> /dev-guide/typescript/versioning#worker-versioning
 
 concepts/what-is-a-temporal-application -> /temporal#temporal-application
 
@@ -671,6 +681,8 @@ python/queries -> /dev-guide/python/features#queries
 typescript/queries -> /dev-guide/typescript/features#queries
 
 go/updates -> /dev-guide/go/features#updates
+
+java/updates -> /dev-guide/java/features#updates
 
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
 
@@ -1006,8 +1018,6 @@ typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
-java/patching -> #patching
-
 concepts/what-is-worker-versioning -> /workers#worker-versioning
 
 python/tracing -> /dev-guide/python/observability#tracing
@@ -1081,13 +1091,5 @@ cli/server/start-dev -> /cli/server#start-dev
 cli/operator/namespace/create -> /cli/operator#create
 
 cli/workflow/start -> /cli/workflow#start
-
-go/patching -> /dev-guide/go/versioning#patching
-
-typescript/patching -> /dev-guide/typescript/versioning#patching
-
-python/how-to-use-worker-versioning-in-python -> /dev-guide/python/versioning#worker-versioning
-
-typescript/how-to-use-worker-versioning-in-typescript -> /dev-guide/typescript/versioning#worker-versioning
 
 

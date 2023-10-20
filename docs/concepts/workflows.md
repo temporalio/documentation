@@ -691,6 +691,7 @@ Stack Trace Queries are available only for running Workflow Executions.
 An Update is a request to and a response from a Temporal Client to a [Workflow Execution](#workflow-execution).
 
 - [How to develop, send, and handle Updates in Go](/dev-guide/go/features#updates)
+- [How to develop, send, and handle Updates in Java](/dev-guide/java/features#updates)
 
 You can think of an Update as a synchronous, blocking call that could replace both a Signal and a Query. An update is:
 
