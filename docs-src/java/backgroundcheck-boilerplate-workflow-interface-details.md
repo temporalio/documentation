@@ -1,6 +1,6 @@
 ---
 id: backgroundcheck-boilerplate-workflow-interface-details
-title: BackgroundCheckBoilerplate Workflow Interface Details
+title: Boilerplate Workflow Interface Details
 sidebar_label: Workflow code
 description: In the Temporal Java SDK, a Workflow Definition is an interface and its implementation.
 tags:

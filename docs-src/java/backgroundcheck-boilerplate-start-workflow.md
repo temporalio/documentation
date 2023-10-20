@@ -10,14 +10,14 @@ tags:
   - temporal cli
 ---
 
-**How to start a Workflow using the CLI**
+## Start a Workflow using the CLI
 
 You can use the Temporal CLI to start a Workflow whether you are using a local development server, Temporal Cloud, or are in a self-hosted environment.
 However, you need to provide additional options to the command when operating with the Temporal Cloud or self-hosted environments.
 
 ### Local dev Server
 
-**How to start a Workflow with the Temporal CLI while using the local development server**
+#### Starting the Workflow with Temporal CLI
 
 Use the Temporal CLI `temporal workflow start` command to start your Workflow.
 
@@ -59,7 +59,7 @@ You should now be at [http://localhost:8233/namespaces/backgroundcheck_namespace
 
 ### Temporal Cloud
 
-**How to start a Workflow with Temporal CLI when using Temporal Cloud**
+#### Starting the Workflow with Temporal CLI
 
 Run the `temporal workflow start` command, and make sure to specify the certificate and private key arguments.
 
@@ -128,7 +128,7 @@ https://cloud.temporal.io/namespaces/<namespace>.<account-id>/workflows
 
 ### Self-hosted
 
-**How to start a Workflow with the Temporal CLI when using a Self-hosted Cluster**
+#### Starting the Workflow with Temporal CLI
 
 Use your Temporal CLI alias to run the `temporal workflow start` command and start your Workflow.
 

@@ -1,6 +1,6 @@
 ---
 id: backgroundcheck-boilerplate-workflow-details
-title: BackgroundCheckBoilerplate Workflow Implementation
+title: Boilerplate Workflow Implementation
 sidebar_label: Workflow code
 description: In the Temporal Java SDK, a Workflow Definition is an interface and its implementation.
 tags:
@@ -18,21 +18,21 @@ Workflow Interface.
 To have a Workflow call Activities, you'll instantiate an object representing
 those Activities. There are various options that can be passed in during creation
 time, but Temporal requires that you set _either_ `StartToCloseTimeout` or `ScheduleToCloseTimeout`
-when creating your Activities stub. You can read more about these options [in our documentation](/concepts/activities#start-to-close-timeout)
+when creating your Activities stub. You can read more about these options [in our documentation](/activities#start-to-close-timeout)
 
 As with regular Java methods, Workflow Methods support the passing of parameters.
-However, all Workflow Definition parameters must be serializable (using the Jackson JSON
+However, all Workflow Definition parameters must be serializable (using the Jackson JSON 
 Payload Converter).
 
-To request the execution of an Activity, also referred to as an [Activity Execution](/concepts/what-is-an-activity-execution),
+To request the execution of an Activity, also referred to as an [Activity Execution](/concepts/what-is-an-activity-execution), 
 call the Activity Method from within the Workflow Method. Use the `activities`
-object that was created in the Workflow Definition to call the Activity Method
-along with the any parameters that need to be passed.
+object that was created in the Workflow Definition to call the Activity Method 
+along with the any parameters that need to be passed. 
 
-A Java-based Workflow Definition can return any serializable output, or raise an
+A Java-based Workflow Definition can return any serializable output, or raise an 
 exception if one was encountered.
-We get into the best practices around Workflow parameters, return values, and
+We get into the best practices around Workflow parameters, return values, and 
 exceptions in the one of the next sections.
 
 In regards to code organization, we recommend organizing Workflow code the same
-way you'd organize your standard Java code.
+way you'd organize your standard Java code. 

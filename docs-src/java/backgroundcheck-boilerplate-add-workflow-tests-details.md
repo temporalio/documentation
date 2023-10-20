@@ -13,15 +13,15 @@ tags:
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/test/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateWorkflowTest.java. -->
 
 As for the code, first you register your Workflow with the `TestWorkflowExtension`.
-This extension allows you to pass in a `TestWorklowEnvironment`, `Worker`, and
-an instance of your Workflow into your tests. To test your Workflow using mocked
-activities you then create a mocked object of your Activity class to be used for
-testing. Then you mock the Activity method, in this case `ssNTraceAcvitity`, so
-that when when a specific value is passed to the Activity it returns a specific result.
+This extension allows you to pass in a `TestWorklowEnvironment`, `Worker`, and 
+an instance of your Workflow into your tests. To test your Workflow using mocked 
+activities you then create a mocked  object of your Activity class to be used for 
+testing. Then you mock the Activity method, in this case `ssNTraceAcvitity`, so 
+that when when a specific value is passed to the Activity it returns a specific result. 
 Then the mocked object is used to register the mocked Activities with the Worker
-being used in the test environment. Then you start the test environment, invoke
-your Workflow as usual, passing in the specific value for your Activity so that
-the Activity returns the result you are expecting. Then you assert that the
+being used in the test environment. Then you start the test environment, invoke 
+your Workflow as usual, passing in the specific value for your Activity so that 
+the Activity returns the result you are expecting. Then you assert that the 
 results are what you expected.
 
 Doiong this allows you to test the Workflow code without having to worry

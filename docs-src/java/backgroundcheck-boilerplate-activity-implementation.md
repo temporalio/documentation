@@ -1,6 +1,6 @@
 ---
 id: backgroundcheck-boilerplate-activity-implementation
-title: BackgroundCheckBoilerplate Activity Implementation
+title: Boilerplate Activity Implementation
 sidebar_label: Activity code
 description: In the Temporal Java SDK, an Activity Definition is an interface and its implementation.
 tags:
@@ -19,11 +19,13 @@ Now that you've defined your Activity Interface you can define its implementatio
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateActivitiesImpl.java) in the context of the rest of the application code.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateActivitiesImpl.java) in the context of the rest of the application code. 
 
 :::
 
 ```java
+
+
 public class BackgroundCheckBoilerplateActivitiesImpl implements BackgroundCheckBoilerplateActivities{
 
   @Override
@@ -39,3 +41,4 @@ public class BackgroundCheckBoilerplateActivitiesImpl implements BackgroundCheck
 
 }
 ```
+

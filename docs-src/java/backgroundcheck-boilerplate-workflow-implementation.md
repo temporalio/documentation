@@ -1,6 +1,6 @@
 ---
 id: backgroundcheck-boilerplate-workflow-implementation
-title: BackgroundCheckBoilerplate Workflow Implementation
+title: Boilerplate Workflow Implementation
 sidebar_label: Workflow code
 description: In the Temporal Java SDK, a Workflow Definition is an interface and its implementation.
 tags:
@@ -19,11 +19,12 @@ Now that you've defined your Workflow Interface you can define its implementatio
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateWorkflowImpl.java) in the context of the rest of the application code.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateWorkflowImpl.java) in the context of the rest of the application code. 
 
 :::
 
 ```java
+
 import io.temporal.activity.ActivityOptions;
 import io.temporal.workflow.Workflow;
 
@@ -50,3 +51,4 @@ public class BackgroundCheckBoilerplateWorkflowImpl implements BackgroundCheckBo
 
 }
 ```
+

@@ -1,7 +1,7 @@
 ---
 id: backgroundcheck-boilerplate-workflow-definition
-title: BackgroundCheckBoilerplate Workflow Definition
-sidebar_label: BackgroundCheckBoilerplate Workflow Definition
+title: Boilerplate Workflow Code
+sidebar_label: Boilerplate Workflow Code
 description: Learn how the Temporal Java SDK implements Workflows
 tags:
   - java sdk

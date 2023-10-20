@@ -23,11 +23,12 @@ A Temporal Cloud Worker requires that you specify the following in the Client co
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/workers/CloudWorker.java) in the context of the rest of the application code.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/workers/CloudWorker.java) in the context of the rest of the application code. 
 
 :::
 
 ```java
+
 package backgroundcheckboilerplate.workers;
 
 import java.io.FileInputStream;
@@ -100,3 +101,4 @@ public class CloudWorker {
   }
 }
 ```
+

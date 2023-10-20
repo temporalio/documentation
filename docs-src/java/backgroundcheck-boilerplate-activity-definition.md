@@ -1,7 +1,7 @@
 ---
 id: backgroundcheck-boilerplate-activity-definition
-title: BackgroundCheckBoilerplate Activity Definition
-sidebar_label: BackgroundCheckBoilerplate Activity Definition
+title: Boilerplate Activity Code
+sidebar_label: Boilerplate Activity Code
 description: Learn how the Temporal Java SDK implements Activity
 tags:
   - java sdk

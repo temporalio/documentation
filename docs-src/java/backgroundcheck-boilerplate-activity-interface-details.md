@@ -1,6 +1,6 @@
 ---
 id: backgroundcheck-boilerplate-activity-interface-details
-title: BackgroundCheckBoilerplate Activity Interface Details
+title: Boilerplate Activity Interface Details
 sidebar_label: Activity code
 description: In the Temporal Java SDK, an Activity Definition is an interface and its implementation.
 tags:
