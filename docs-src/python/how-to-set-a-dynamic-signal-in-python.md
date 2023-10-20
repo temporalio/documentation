@@ -23,6 +23,6 @@ The [payload_converter()](https://python.temporal.io/temporalio.workflow.html#pa
 ```python
 # ...
     @workflow.signal(dynamic=True)
-    async def dynamic_signal(self, input: str, args: Sequence[RawValue]) -> None:
+    async def dynamic_signal(self, name: str, args: Sequence[RawValue]) -> None:
         await self._pending_greetings.put(input)
 ```
