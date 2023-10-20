@@ -54,8 +54,6 @@ concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
 
-cloud/security-cloud-intro -> #
-
 references/server-options -> /references/server-options#withconfig
 
 concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
@@ -1081,5 +1079,9 @@ cli/server/start-dev -> /cli/server#start-dev
 cli/operator/namespace/create -> /cli/operator#create
 
 cli/workflow/start -> /cli/workflow#start
+
+java/updates -> /dev-guide/java/features#updates
+
+cloud/security-cloud-intro -> #
 
 
