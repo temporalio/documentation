@@ -16,13 +16,13 @@ You define your Activity Implementation by defining a class that `implements` th
 Activity Interface.
 
 As with regular Java methods, Activity Methods support the passing of parameters.
-However, all Activity parameters must be serializable (using the Jackson JSON 
+However, all Activity parameters must be serializable (using the Jackson JSON
 Payload Converter).
 
-A Java-based Activity Definition can return any serializable output, or raise an 
+A Java-based Activity Definition can return any serializable output, or raise an
 exception if one was encountered.
-We get into the best practices around Activity parameters, return values, and 
+We get into the best practices around Activity parameters, return values, and
 exceptions in the one of the next sections.
 
 In regards to code organization, we recommend organizing Activity code the same
-way you'd organize your standard Java code. 
+way you'd organize your standard Java code.

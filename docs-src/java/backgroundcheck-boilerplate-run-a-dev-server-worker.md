@@ -13,6 +13,7 @@ tags:
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/workers/DevServerWorker.java. -->
 
 To run a Worker Process with a local development server, define the following steps in code:
+
 - Generate the gRPC stubs necessary to configure a connection to a Temporal Cluster running on localhost using the 'default' namespace
 - Initialize a Temporal Client (`WorkflowClient`), passing in the gRPC stubs.
 - Initialize a WorkerFactory, passing in the Temporal Client (`WorkflowClient`)
@@ -26,12 +27,11 @@ Temporal recommends keeping Worker code separate from Workflow and Activity code
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/workers/DevServerWorker.java) in the context of the rest of the application code. 
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/workers/DevServerWorker.java) in the context of the rest of the application code.
 
 :::
 
 ```java
-
 import backgroundcheckboilerplate.BackgroundCheckBoilerplateActivitiesImpl;
 import backgroundcheckboilerplate.BackgroundCheckBoilerplateWorkflowImpl;
 import io.temporal.client.WorkflowClient;
@@ -66,4 +66,3 @@ public class DevServerWorker {
   }
 }
 ```
-

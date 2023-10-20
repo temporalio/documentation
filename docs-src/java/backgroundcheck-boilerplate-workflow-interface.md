@@ -19,12 +19,11 @@ The `BackgroundCheckBoilerplateWorkflow` interface below is an example of a the 
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateWorkflow.java) in the context of the rest of the application code. 
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateWorkflow.java) in the context of the rest of the application code.
 
 :::
 
 ```java
-
 import io.temporal.workflow.WorkflowInterface;
 import io.temporal.workflow.WorkflowMethod;
 
@@ -38,6 +37,4 @@ public interface BackgroundCheckBoilerplateWorkflow {
   public String backgroundCheck(String name);
 
 }
-
 ```
-
