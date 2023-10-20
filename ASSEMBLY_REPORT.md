@@ -1082,4 +1082,8 @@ cli/operator/namespace/create -> /cli/operator#create
 
 cli/workflow/start -> /cli/workflow#start
 
+java/updates -> /dev-guide/java/features#updates
+
+cloud/security-cloud-intro -> #
+
 
