@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday October 20 2023 09:14:18 AM -0700
+Last assembled: Friday October 20 2023 10:08:48 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -1081,5 +1081,7 @@ cli/operator/namespace/create -> /cli/operator#create
 cli/workflow/start -> /cli/workflow#start
 
 java/updates -> /dev-guide/java/features#updates
+
+cloud/security-cloud-intro -> #
 
 
