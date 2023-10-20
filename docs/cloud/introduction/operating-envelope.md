@@ -141,7 +141,7 @@ At the Namespace level, Temporal Cloud sets the following limits:
 - Certificates: 32 KB payload or 16 certificates, whichever is smaller
 - Concurrent Task pollers: 2,000 (configurable; maximum of 100,000)
 
-### What are the concurrecy limits?
+### What are the concurrency limits?
 
 If a Workflow Execution has 2,000 incomplete Activities, Signals, Child Workflows, or external Workflow Cancellation requests, additional Commands of that type will fail to be applied to that Workflow Execution:
 
