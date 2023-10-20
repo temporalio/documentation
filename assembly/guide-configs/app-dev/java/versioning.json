@@ -13,7 +13,11 @@
     "sections": [
         {
             "type": "p",
-            "id": "java/versioning"
+            "id": "java/versioning-intro"
+        },
+        {
+            "type": "h2",
+            "id": "java/patching"
         },
         {
             "type": "h2",

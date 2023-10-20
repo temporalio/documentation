@@ -136,15 +136,33 @@ When those APIs are used, the results are stored as part of the Event History, w
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
 
-### Workflow Versioning {#workflow-versioning}
+### Versioning Workflow code {#workflow-versioning}
 
-The Workflow Versioning feature enables the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
+The Temporal Platform requires that Workflow code (Workflow Definitions) be deterministic in nature.
+This requirement means that developers should consider how they plan to handle changes to Workflow code over time.
+
+A versioning strategy is even more important if your Workflow Executions live long enough that a Worker must be able to execute multiple versions of the same Workflow Type.
+
+Apart from the ability to create new Task Queues for Workflow Types with the same name, the Temporal Platform provides Workflow Patching APIs and Worker Build Id based versioning features.
+
+#### Patching
+
+The Patching feature enables the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
 This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
-It is important to note that a practical way to handle different versions of Workflow Definitions, without using the versioning API, is to run the different versions on separate Task Queues.
 
-- [How to version Workflow Definitions in Go](/dev-guide/go/versioning#)
-- [How to version Workflow Definitions in Java](/dev-guide/java/versioning#)
-- [How to version Workflow Definitions in TypeScript](/dev-guide/typescript/versioning#)
+- [How to patch Workflow code in Go](/dev-guide/go/versioning#patching)
+- [How to patch Workflow code in Java](/dev-guide/java/versioning#patching)
+- [How to patch Workflow code in TypeScript](/dev-guide/typescript/versioning#patching)
+- [How to patch Workflow code in Python](/dev-guide/python/versioning#python-sdk-patching-api)
+
+#### Worker Build Ids
+
+Temporal Worker Build Id based versioning enables the developer to define sets of versions that are compatible with each other, and then assign a Build Id to the code that defines a Worker.
+
+- [How to version Workers in Go](/dev-guide/go/versioning#worker-versioning)
+- [How to version Workers in Java](/dev-guide/java/versioning#worker-versioning)
+- [How to version Workers in Python](/dev-guide/python/versioning#worker-versioning)
+- [How to version Workers in TypeScript](/dev-guide/typescript/versioning#worker-versioning)
 
 ### Handling unreliable Worker Processes
 
