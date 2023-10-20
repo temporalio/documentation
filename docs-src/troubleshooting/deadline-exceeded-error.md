@@ -1,5 +1,5 @@
 ---
-id: deadline-exceeded-troubleshooting
+id: deadline-exceeded-error
 title: Troubleshoot deadline-exceeded error
 sidebar_label: Deadline-exceeded error
 description: Deadline exceeded errors occur as a result of Temporal frontend requests failing. This guide provides troubleshooting solutions.

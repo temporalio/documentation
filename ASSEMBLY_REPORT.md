@@ -1,10 +1,10 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday October 19 2023 15:28:59 PM -0700
+Last assembled: Friday October 20 2023 10:47:06 AM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
-105 guide configurations found.
+108 guide configurations found.
 
 1577 information nodes found.
 
@@ -68,10 +68,6 @@ concepts/what-is-a-codec-server -> /dataconversion#codec-server
 
 concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
 
-references/cluster-metrics -> /references/cluster-metrics#
-
-references/web-ui-environment-variables -> /references/web-ui-environment-variables#
-
 concepts/what-is-the-temporal-cli -> /cli/index#
 
 references/web-ui-configuration -> /references/web-ui-configuration#
@@ -91,6 +87,10 @@ concepts/what-is-a-task-queue -> /workers#task-queue
 concepts/what-is-a-state-transition -> /workflows#state-transition
 
 cloud/metrics-intro -> /cloud/metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui
+
+references/cluster-metrics -> /references/cluster-metrics#
+
+references/web-ui-environment-variables -> /references/web-ui-environment-variables#
 
 concepts/what-is-an-activity-execution -> /activities#activity-execution
 
@@ -402,6 +402,8 @@ concepts/what-is-a-frontend-service -> /clusters#frontend-service
 
 concepts/what-is-a-side-effect -> /workflows#side-effect
 
+references/failures -> /references/failures#
+
 concepts/what-is-a-failure-converter -> /dataconversion#failure-converter
 
 concepts/what-is-a-payload -> /dataconversion#payload
@@ -537,8 +539,6 @@ java/introduction-to-java-sdk -> /dev-guide/java/introduction#
 python/introduction-to-python-sdk -> /dev-guide/python/introduction#
 
 typescript/introduction-to-typescript-sdk -> /dev-guide/typescript/introduction#
-
-troubleshooting/failures -> /troubleshooting#failures
 
 clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
 

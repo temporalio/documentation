@@ -175,7 +175,7 @@ A Failure Converter converts error objects to proto Failures and back.
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Failures](/troubleshooting#failures)
+#### [Failures](/references/failures#)
 A Failure is Temporal's representation of various types of errors that occur in the system.
 
 _Tags: [failure](/tags/failure), [explanation](/tags/explanation), [term](/tags/term)_
