@@ -70,6 +70,7 @@ The following databases are supported as Visibility stores:
 - [SQLite](#sqlite) v3.31.0 and later for advanced Visibility capabilities.
 - [Cassandra](#cassandra).
   Support for Cassandra as a Visibility database is deprecated beginning with Temporal Server v1.21.
+  For information on migrating from Cassandra to any of the supported databases, see [Migrating Visibility database](/cluster-deployment-guide#migrating-visibility-database).
 - [Elasticsearch](#elasticsearch) supported versions.
   We recommend operating a Temporal Cluster with Elasticsearch as your Visibility store for any use case that spawns more than a few Workflow Executions.
 
@@ -813,14 +814,14 @@ For example, to add a custom Search Attributes "CustomSA" to your Temporal Cloud
 
 If you're self-hosting your Temporal Cluster, verify whether your [Visibility database](#supported-databases) version supports advanced Visibility features.
 
-To create custom Search Attributes in your self-hosted Temporal Cluster Visibility store, use `tctl search-attribute create` with `--name` and `--type` modifiers.
+To create custom Search Attributes in your self-hosted Temporal Cluster Visibility store, use `temporal operator search-attribute create` with `--name` and `--type` command options.
 
 For example, to create a Search Attribute called `CustomSA` of type `Keyword`, run the following command:
 
-`tctl search-attribute create --name CustomSA --type Keyword`
+`temporal operator search-attribute create --name CustomSA --type Keyword`
 
 Note that if you use a SQL database with advanced Visibility capabilities, you are required to specify a Namespace when creating a custom Search Attribute.
-For example: `tctl --ns yournamespace search-attribute create --name CustomSA --type Keyword`
+For example: `temporal operator search-attribute create --name CustomSA --type Keyword --namespace yournamespace`
 
 You can also create multiple custom Search Attributes when you set up your Visibility store.
 
@@ -912,7 +913,7 @@ Take the following steps to set up Archival:
 
 Temporal directly supports several providers:
 
-- **Local file system**: The [filestore archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) is used to archive data in the file system of whatever host the Temporal server is running on. This provider is used mainly for local installations and testing and should not be relied on for production environments.
+- **Local file system**: The [filestore archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) is used to archive data in the file system of whatever host the Temporal server is running on. In the case of [temporal helm-charts](https://github.com/temporalio/helm-charts), the archive data is stored in the `history` pod. APIs do not function with the filestore archive. This provider is used mainly for local installations and testing and should not be relied on for production environments.
 - **Google Cloud**: The [gcloud archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud) is used to connect and archive data with [Google Cloud](https://cloud.google.com/storage).
 - **S3**: The [s3store archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store) is used to connect and archive data with [S3](https://aws.amazon.com/s3).
 - **Custom**: If you want to use a provider that is not currently supported, you can [create your own archiver](#custom-archiver) to support it.

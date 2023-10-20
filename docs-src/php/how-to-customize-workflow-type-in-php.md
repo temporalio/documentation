@@ -9,7 +9,7 @@ tags:
   - php
 ---
 
-To customize a Workflow Type, use the `WorkflowMethod` annotation to specify the name of Workflow.
+To customize a Workflow Type, use the `WorkflowMethod` attribute to specify the name of Workflow.
 
 ```php
 #[WorkflowMethod(name)]

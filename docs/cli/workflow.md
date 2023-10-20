@@ -85,12 +85,13 @@ A new [Workflow Task](/workers#workflow-task) will be scheduled, and the Workflo
 
 `temporal workflow cancel --workflow-id=meaningful-business-id`
 
-In addition to Workflow IDs, Workflows can also be [Signaled](/workflows#signal) by a [Query](/workflows#query).
-`temporal workflow cancel --query=MyQuery`
+In addition to Workflow IDs, Workflows can also be cancelled by a [List Filter](/visibility#list-filter).
+`temporal workflow cancel --query=MyListFilter`
 
 Use the following options to change the behavior of this command.
 
 - [--fields](/cli/cmd-options#fields)
+
 - [--address](/cli/cmd-options#address)
 
 - [--codec-auth](/cli/cmd-options#codec-auth)
@@ -343,10 +344,10 @@ Use the following command options to change how the Workflow Execution behaves d
 
 ## list
 
-The `temporal workflow list` command provides a list of [Workflow Executions](/workflows#workflow-execution) that meet the criteria of a given [Query](/workflows#query).
+The `temporal workflow list` command provides a list of [Workflow Executions](/workflows#workflow-execution) that meet the criteria of a given [List Filter](/visibility#list-filter).
 By default, this command returns a list of up to 10 closed Workflow Executions.
 
-`temporal workflow list --query=MyQuery`
+`temporal workflow list --query=MyListFilter`
 
 The command can also return a list of archived Workflow Executions.
 
@@ -512,8 +513,8 @@ The input file must have a [Workflow ID](/workflows#workflow-id) on each line.
 
 `temporal workflow reset-batch --input-file=MyInput --input-separator="\t"`
 
-Workflow Executions can also be found by [Query](/workflows#query).
-`temporal workflow reset-batch --query=MyQuery
+Workflow Executions can also be queried by a [List Filter](/visibility#list-filter).
+`temporal workflow reset-batch --query=MyListFilter`
 
 Use the following options to change reset behavior.
 

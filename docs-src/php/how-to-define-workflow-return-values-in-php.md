@@ -8,10 +8,10 @@ tags:
 ---
 
 A Workflow method returns a Generator.
-To properly typecast the Workflow's return value in the client code, use the `#[ReturnType()]` annotation.
+To properly typecast the Workflow's return value in the client code, use the `#[ReturnType()]` attribute.
 
 ```php
-#[YourWorkflowInterface]
+#[WorkflowInterface]
 interface FileProcessingWorkflow {
 
     #[WorkflowMethod]
