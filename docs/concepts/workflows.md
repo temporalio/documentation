@@ -147,7 +147,7 @@ Apart from the ability to create new Task Queues for Workflow Types with the sam
 
 #### Patching
 
-The Patching feature enables the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
+Patching APIs enable the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
 This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
 
 - [How to patch Workflow code in Go](/dev-guide/go/versioning#patching)
@@ -157,7 +157,7 @@ This feature is useful for Workflow Definition logic needs to be updated, but th
 
 #### Worker Build Ids
 
-Temporal Worker Build Id based versioning enables the developer to define sets of versions that are compatible with each other, and then assign a Build Id to the code that defines a Worker.
+Temporal [Worker Build Id based versioning](/workers#worker-versioning) enables the developer to define sets of versions that are compatible with each other, and then assign a Build Id to the code that defines a Worker.
 
 - [How to version Workers in Go](/dev-guide/go/versioning#worker-versioning)
 - [How to version Workers in Java](/dev-guide/java/versioning#worker-versioning)

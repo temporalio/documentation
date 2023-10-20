@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday October 20 2023 11:19:31 AM -0600
+Last assembled: Friday October 20 2023 15:21:07 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -616,6 +616,8 @@ typescript/patching -> /dev-guide/typescript/versioning#patching
 
 python/how-to-use-the-python-sdk-patching-api-in-python -> /dev-guide/python/versioning#python-sdk-patching-api
 
+concepts/what-is-worker-versioning -> /workers#worker-versioning
+
 go/how-to-use-worker-versioning-in-go -> /dev-guide/go/versioning#worker-versioning
 
 java/how-to-use-worker-versioning-in-java -> /dev-guide/java/versioning#worker-versioning
@@ -1017,8 +1019,6 @@ typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
-
-concepts/what-is-worker-versioning -> /workers#worker-versioning
 
 python/tracing -> /dev-guide/python/observability#tracing
 
