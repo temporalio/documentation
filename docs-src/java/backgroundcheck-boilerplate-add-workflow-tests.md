@@ -75,7 +75,7 @@ public class BackgroundCheckBoilerplateWorkflowTest {
 
     // Specify what value should be returned when a specific Activity is invoked.
     // Your Activity must have the same method name here as it would within your Workflow
-    when(mockedActivities.ssnTraceActivity("Angela")).thenReturn("pass");
+    when(mockedActivities.ssnTraceActivity("555-55-5555")).thenReturn("pass");
 
     // Register the Workflow's Activities with the Worker provided by the Extension
     worker.registerActivitiesImplementations(mockedActivities);
@@ -86,7 +86,7 @@ public class BackgroundCheckBoilerplateWorkflowTest {
     // Request execution of the backgroundCheck Workflow
     // This will execute your Workflow, calling the Mocked Activities in place
     // of your actual implementation of the Activities.
-    String pass_output = workflow.backgroundCheck("Angela");
+    String pass_output = workflow.backgroundCheck("555-55-5555");
   
     assertEquals("pass", pass_output);
   

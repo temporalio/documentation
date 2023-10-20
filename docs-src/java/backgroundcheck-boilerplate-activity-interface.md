@@ -33,7 +33,7 @@ import io.temporal.activity.ActivityInterface;
 public interface BackgroundCheckBoilerplateActivities {
 
   // ssnTraceActivity is your custom Activity Definition
-  public String ssnTraceActivity(String name);
+  public String ssnTraceActivity(String socialSecurityNumber);
 
 }
 ```

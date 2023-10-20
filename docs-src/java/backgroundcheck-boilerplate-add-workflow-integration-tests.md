@@ -70,7 +70,7 @@ public class BackgroundCheckBoilerplateWorkflowIntegrationTest {
     // Request execution of the backgroundCheck Workflow
     // This will execute your entire Workflow, along with every Activity the
     // Workflow calls
-    String output = workflow.backgroundCheck("Mason");
+    String output = workflow.backgroundCheck("555-22-3333");
 
     // Check for the expected return value
     assertEquals("pass", output);

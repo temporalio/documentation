@@ -43,8 +43,8 @@ public class BackgroundCheckBoilerplateWorkflowImpl implements BackgroundCheckBo
       Workflow.newActivityStub(BackgroundCheckBoilerplateActivities.class, options);
 
   @Override
-  public String backgroundCheck(String name) {
-    String ssnTraceResult = activities.ssnTraceActivity(name);
+  public String backgroundCheck(String socialSecurityNumber) {
+    String ssnTraceResult = activities.ssnTraceActivity(socialSecurityNumber);
     return ssnTraceResult;
   }
 

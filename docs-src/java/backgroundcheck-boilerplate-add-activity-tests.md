@@ -53,10 +53,10 @@ public class BackgroundCheckBoilerplateActivitiesTest {
   // Test the Activity in isolation from the Workflow
   @Test
   public void testSsnTraceActivity(BackgroundCheckBoilerplateActivities activities) {
-    String name = "Patrick";
+    String socialSecurityNumber = "111-22-3333";
 
     // Run the Activity in the test environment
-    String result = activities.ssnTraceActivity(name);
+    String result = activities.ssnTraceActivity(socialSecurityNumber);
 
     // Check for the expected return value
     assertEquals("pass", result);

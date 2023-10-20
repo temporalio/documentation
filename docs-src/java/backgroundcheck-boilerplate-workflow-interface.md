@@ -34,7 +34,7 @@ public interface BackgroundCheckBoilerplateWorkflow {
 
   // The Workflow Method within the interface must be annotated with @WorkflowMethod
   @WorkflowMethod
-  public String backgroundCheck(String name);
+  public String backgroundCheck(String socialSecurityNumber);
 
 }
 ```
