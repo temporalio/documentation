@@ -96,7 +96,7 @@
             "id": "java/self-hosted-worker-dockerfile"
         },
         {
-            "type": "p",
+            "type": "h2",
             "id": "java/backgroundcheck-boilerplate-start-workflow"
         },
         {

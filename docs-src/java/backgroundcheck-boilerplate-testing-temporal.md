@@ -1,10 +1,11 @@
 ---
 id: backgroundcheck-boilerplate-testing-temporal
-title: Testing Activities and Workflows.
+title: Add a testing framework
 description: Testing provides a framework to facilitate Workflow and integration testing.
-sidebar_label: Test frameworks
+sidebar_label: Test framework
 tags:
-  - guide-context
+  - java
+  - test framework
 ---
 
 The Temporal Java SDK provides a test framework to facilitate Workflow unit and integration testing.

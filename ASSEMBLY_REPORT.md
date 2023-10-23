@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday October 23 2023 10:07:19 AM -0600
+Last assembled: Monday October 23 2023 11:19:18 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -1044,9 +1044,19 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
-java/foundations -> /dev-guide/java/foundations#
+java/project-setup-introduction -> /dev-guide/java/project-setup#
 
-java/choose-dev-cluster -> #local-dev-server
+java/install-cli -> /dev-guide/java/project-setup#install-cli
+
+java/choose-dev-cluster -> /dev-guide/java/project-setup#choose-dev-cluster
+
+java/project-structure -> /dev-guide/java/project-setup#boilerplate-project
+
+java/backgroundcheck-boilerplate-start-workflow -> /dev-guide/java/project-setup#start-workflow
+
+java/backgroundcheck-boilerplate-testing-temporal -> /dev-guide/java/project-setup#test-framework
+
+java/foundations -> /dev-guide/java/foundations#
 
 cli/server/start-dev -> /cli/server#start-dev
 

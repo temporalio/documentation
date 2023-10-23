@@ -10,8 +10,6 @@ tags:
   - temporal cli
 ---
 
-## Start a Workflow using the CLI
-
 You can use the Temporal CLI to start a Workflow whether you are using a local development server, Temporal Cloud, or are in a self-hosted environment.
 However, you need to provide additional options to the command when operating with the Temporal Cloud or self-hosted environments.
 

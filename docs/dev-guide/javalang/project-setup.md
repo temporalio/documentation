@@ -14,8 +14,8 @@ keywords:
 - developer guide
 - docker
 - go sdk
-- guide-context
 - introduction
+- java
 - java sdk
 - project setup
 - self-hosted
@@ -34,8 +34,8 @@ tags:
 - developer-guide
 - docker
 - go-sdk
-- guide-context
 - introduction
+- java
 - java-sdk
 - project-setup
 - self-hosted
@@ -971,7 +971,7 @@ Now run the Worker on the same network as the Temporal Cluster containers using 
 docker run --network temporal-network backgroundcheck-worker-image:latest
 ```
 
-## Start a Workflow using the CLI
+## Start Workflow using the CLI {#start-workflow}
 
 You can use the Temporal CLI to start a Workflow whether you are using a local development server, Temporal Cloud, or are in a self-hosted environment.
 However, you need to provide additional options to the command when operating with the Temporal Cloud or self-hosted environments.
@@ -1119,7 +1119,7 @@ Use the Namespace dropdown to select the project Namespace you created earlier.
 
 You should now be at [http://localhost:8080/namespaces/backgroundcheck_namespace/workflows](http://localhost:8080/namespaces/backgroundcheck_namespace/workflows).
 
-## Testing Activities and Workflows. {#test-frameworks}
+## Add a testing framework {#test-framework}
 
 The Temporal Java SDK provides a test framework to facilitate Workflow unit and integration testing.
 The test framework provides the `TestWorkflowEnvironment` and `TestActivityEnvironment` classes which includes an in-memory implementation
