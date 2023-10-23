@@ -15,7 +15,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 Use the `connect()` method on the Client class to create and connect to a Temporal Client to the Temporal Cluster.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 # ...

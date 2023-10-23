@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday October 23 2023 11:21:22 AM -0600
+Last assembled: Monday October 23 2023 12:48:40 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-109 guide configurations found.
+110 guide configurations found.
 
-1611 information nodes found.
+1631 information nodes found.
 
-1372 information nodes are attached to guides.
+1391 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1024,6 +1024,24 @@ python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
+python/python-dev-guide-structure -> #
+
+python/install-cli -> /dev-guide/python/project-setup#install-cli
+
+python/choose-dev-cluster -> /dev-guide/python/project-setup#choose-dev-cluster
+
+python/project-structure -> /dev-guide/python/project-setup#boilerplate-project
+
+python/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#start-workflow
+
+python/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
+
+cli/server/start-dev -> /cli/server#start-dev
+
+cli/operator/namespace/create -> /cli/operator#create
+
+cli/workflow/start -> /cli/workflow#start
+
 php/handle-signal -> #handle-signal
 
 php/add-sdk -> #install-a-temporal-sdk
@@ -1059,12 +1077,6 @@ java/backgroundcheck-boilerplate-start-workflow -> /dev-guide/java/project-setup
 java/backgroundcheck-boilerplate-testing-temporal -> /dev-guide/java/project-setup#test-framework
 
 java/foundations -> /dev-guide/java/foundations#
-
-cli/server/start-dev -> /cli/server#start-dev
-
-cli/operator/namespace/create -> /cli/operator#create
-
-cli/workflow/start -> /cli/workflow#start
 
 go/testing -> /dev-guide/go/testing#replay
 

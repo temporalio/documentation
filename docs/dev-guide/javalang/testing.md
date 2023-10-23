@@ -24,12 +24,12 @@ The Testing section of the Temporal Application development guide describes the 
 
 In the context of Temporal, you can create these types of automated tests:
 
-- **End-to-end**: Running a Temporal Server and Worker with all its Workflows and Activities; starting and interacting with Workflows from a Client.
-- **Integration**: Anything between end-to-end and unit testing.
+- **End-to-end:** Running a Temporal Server and Worker with all its Workflows and Activities; starting and interacting with Workflows from a Client.
+- **Integration:** Anything between end-to-end and unit testing.
   - Running Activities with mocked Context and other SDK imports (and usually network requests).
   - Running Workers with mock Activities, and using a Client to start Workflows.
   - Running Workflows with mocked SDK imports.
-- **Unit**: Running a piece of Workflow or Activity code (a function or method) and mocking any code it calls.
+- **Unit:** Running a piece of Workflow or Activity code (a function or method) and mocking any code it calls.
 
 We generally recommend writing the majority of your tests as integration tests.
 
@@ -50,7 +50,7 @@ such as JUnit.
 To start using the Java SDK test framework, you need to add [`io.temporal:temporal-testing`](https://search.maven.org/artifact/io.temporal/temporal-testing)
 as a dependency to your project:
 
-**[Apache Maven](https://maven.apache.org/)**:
+**[Apache Maven](https://maven.apache.org/):**
 
 ```maven
 <dependency>
@@ -61,7 +61,7 @@ as a dependency to your project:
 </dependency>
 ```
 
-**[Gradle Groovy DSL](https://gradle.org/)**:
+**[Gradle Groovy DSL](https://gradle.org/):**
 
 ```groovy
 testImplementation ("io.temporal:temporal-testing:1.17.0")
