@@ -11,7 +11,7 @@ tags:
   - determinism
 ---
 
-The Temporal Platform requires that Workflow code is [deterministic](/concepts/what-is-a-workflow-definition#deterministic-constraints) in nature.
+The Temporal Platform requires that Workflow code is [deterministic](/concepts/what-is-a-workflow-definition#deterministic-constraints).
 Because of that requirement, the Temporal Go SDK offers two dedicated versioning features.
 
 - [Workflow Patching APIs](/go/patching)

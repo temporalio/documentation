@@ -109,21 +109,21 @@ This requirement means that developers should consider how they plan to handle c
 
 A versioning strategy is even more important if your Workflow Executions live long enough that a Worker must be able to execute multiple versions of the same Workflow Type.
 
-Apart from the ability to create new Task Queues for Workflow Types with the same name, the Temporal Platform provides Workflow Patching APIs and Worker Build Id based versioning features.
+Apart from the ability to create new Task Queues for Workflow Types with the same name, the Temporal Platform provides Workflow Patching APIs and Worker Build Id–based versioning features.
 
 #### Patching
 
-Patching APIs enable the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
-This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
+Patching APIs enable the creation of logical branching inside a Workflow Definition based on a developer-specified version identifier.
+This feature is useful for Workflow Definition logic that needs to be updated but still has running Workflow Executions that depend on it.
 
 - [How to patch Workflow code in Go](/go/patching)
 - [How to patch Workflow code in Java](/java/patching)
-- [How to patch Workflow code in TypeScript](/typescript/patching)
 - [How to patch Workflow code in Python](/python/how-to-use-the-python-sdk-patching-api-in-python)
+- [How to patch Workflow code in TypeScript](/typescript/patching)
 
 #### Worker Build Ids
 
-Temporal [Worker Build Id based versioning](/concepts/what-is-worker-versioning) enables the developer to define sets of versions that are compatible with each other, and then assign a Build Id to the code that defines a Worker.
+Temporal [Worker Build Id–based versioning](/concepts/what-is-worker-versioning) lets you define sets of versions that are compatible with each other, and then assign a Build Id to the code that defines a Worker.
 
 - [How to version Workers in Go](/go/how-to-use-worker-versioning-in-go)
 - [How to version Workers in Java](/java/how-to-use-worker-versioning-in-java)
