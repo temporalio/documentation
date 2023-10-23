@@ -40,6 +40,10 @@
         {
             "org": "temporalio",
             "name": "documentation-samples-python"
+        },
+        {
+            "org": "temporalio",
+            "name": "documentation-samples-java"
         }
     ]
 }
