@@ -1,16 +1,18 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday October 23 2023 09:06:15 AM -0600
+Last assembled: Monday October 23 2023 12:01:32 PM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly
 
-104 guide configurations found.
+106 guide configurations found.
 
-1573 information nodes found.
+1575 information nodes found.
 
-1339 information nodes are attached to guides.
+1341 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
+
+references/server-options -> /references/server-options#
 
 concepts/what-is-visibility -> /clusters#visibility
 
@@ -55,8 +57,6 @@ concepts/what-is-the-temporal-server -> /clusters#temporal-server
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
 
 cloud/security-cloud-intro -> /cloud/security#
-
-references/server-options -> /references/server-options#withconfig
 
 concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
 
@@ -494,11 +494,13 @@ java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conver
 
 concepts/what-is-a-retention-period -> /clusters#retention-period
 
-cloud/namespaces-intro -> /cloud/namespaces#
+cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
 
 go/register-namespaces -> /dev-guide/go/features#register-namespace
 
 java/register-namespaces -> /dev-guide/java/features#register-namespace
+
+cloud/namespaces-intro -> /cloud/namespaces#
 
 go/manage-namespaces -> /dev-guide/go/features#manage-namespaces
 
@@ -711,8 +713,6 @@ cloud/get-started-connect -> #connect-to-temporal-cloud
 cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 
 cloud/certificates-issue -> /cloud/certificates#issue-certificates
-
-cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
 
 cloud/users-invite -> /cloud/users#invite-users
 

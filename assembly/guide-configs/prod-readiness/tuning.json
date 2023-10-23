@@ -1,0 +1,17 @@
+{
+    "file_name": "tuning.md",
+    "id": "tuning",
+    "file_dir": "/production-readiness",
+    "title": "Temporal Server Tuning",
+    "sidebar_label": "Tuning",
+    "description": "This section provides a guide to tuning a Temporal server.",
+    "use_description": true,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+      {
+        "type": "h2",
+        "id": "prod-readiness-context/platform-defaults"
+      }
+    ]
+  }

@@ -23,7 +23,6 @@ This guide provides a comprehensive overview of Temporal Clusters.
 
 A Temporal Cluster is the group of services, known as the [Temporal Server](#temporal-server), combined with [Persistence](#persistence) and [Visibility](#visibility) stores, that together act as a component of the Temporal Platform.
 
-- [How to quickly install a Temporal Cluster for testing and development](/kb/all-the-ways-to-run-a-cluster)
 - [Cluster deployment guide](/cluster-deployment-guide)
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
@@ -408,7 +407,7 @@ You can then set up your observability platform (such as Grafana) to use Prometh
 For details on self-hosted Cluster metrics and setup, see the following:
 
 - [Temporal Cluster OSS metrics reference](/references/cluster-metrics#)
-- [Set up Prometheus and Grafana to view SDK and self-hosted Cluster metrics](/kb/prometheus-grafana-setup)
+- [Set up Prometheus and Grafana to view SDK and self-hosted Cluster metrics](/production-readiness/monitoring#prometheus-and-grafana-setup)
 
 ## What is Multi-Cluster Replication? {#multi-cluster-replication}
 
