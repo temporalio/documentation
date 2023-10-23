@@ -46,7 +46,7 @@ In this section you can find the following:
 - [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
 - [How to register Namespaces](#namespaces)
 - [How to use custom payload conversion](#custom-payload-conversion)
-- [How to develop Updates](#updates)
+- [How to develop with Updates](#updates)
 
 ## How to develop with Signals {#signals}
 
@@ -499,7 +499,6 @@ You can also implement Update handlers dynamically.
 This is useful for library-level code and implementation of DSLs.
 
 ```java
-TODO
 Workflow.registerListener(
   (DynamicUpdateHandler)
       (updateName, encodedArgs) -> encodedArgs.get(0, String.class));

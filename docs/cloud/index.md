@@ -4,6 +4,7 @@ title: Temporal Cloud documentation
 sidebar_label: Temporal Cloud
 sidebar_position: 3
 description: Temporal Cloud documentation, including explanations and usage.
+slug: /cloud
 toc_max_heading_level: 4
 keywords:
 - explanation
@@ -26,7 +27,7 @@ To request a Temporal Cloud account, complete the [request form](https://pages.t
 :::
 
 - [Introduction to Temporal Cloud](/cloud/introduction)
-  - [Security](/cloud/security)
+  - [Security](/cloud/security#)
   - [Operating envelope](/cloud/operating-envelope)
   - [Pricing](/cloud/pricing)
   - [Support](/cloud/support)
