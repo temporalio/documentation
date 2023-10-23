@@ -1,0 +1,18 @@
+{
+  "file_name": "troubleshooting.md",
+  "id": "troubleshooting",
+  "file_dir": "troubleshooting",
+  "title": "Error Handling and Troubleshooting",
+  "sidebar_label": "Troubleshooting",
+  "sidebar_position": 10,
+  "description": "This guide contains error handling and troubleshooting solutuions for Temporal edge cases.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "troubleshooting/intro"
+    }
+  ]
+}

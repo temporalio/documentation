@@ -4,11 +4,11 @@ Last assembled: Monday October 23 2023 12:01:32 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
-106 guide configurations found.
+108 guide configurations found.
 
-1575 information nodes found.
+1577 information nodes found.
 
-1341 information nodes are attached to guides.
+1343 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -89,6 +89,10 @@ concepts/what-is-a-task-queue -> /workers#task-queue
 concepts/what-is-a-state-transition -> /workflows#state-transition
 
 cloud/metrics-intro -> /cloud/metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui
+
+references/cluster-metrics -> /references/cluster-metrics#
+
+references/web-ui-environment-variables -> /references/web-ui-environment-variables#
 
 concepts/what-is-an-activity-execution -> /activities#activity-execution
 
@@ -384,8 +388,6 @@ concepts/what-is-an-activity-task-execution -> /workers#activity-task-execution
 
 concepts/what-is-an-update -> /workflows#update
 
-references/cluster-metrics -> /references/cluster-metrics#
-
 go/metrics -> /dev-guide/go/observability#metrics
 
 java/metrics -> /dev-guide/java/observability#metrics
@@ -398,11 +400,11 @@ concepts/what-is-a-schedule-to-start-timeout -> /activities#schedule-to-start-ti
 
 concepts/what-is-a-local-activity -> /activities#local-activity
 
-references/web-ui-environment-variables -> /references/web-ui-environment-variables#temporaluienabled
-
 concepts/what-is-a-frontend-service -> /clusters#frontend-service
 
 concepts/what-is-a-side-effect -> /workflows#side-effect
+
+references/failures -> /references/failures#
 
 concepts/what-is-a-failure-converter -> /dataconversion#failure-converter
 
