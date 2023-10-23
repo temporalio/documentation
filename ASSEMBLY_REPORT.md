@@ -1,12 +1,12 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday October 23 2023 10:50:30 AM -0700
+Last assembled: Monday October 23 2023 12:12:32 PM -0600
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 109 guide configurations found.
 
-1595 information nodes found.
+1597 information nodes found.
 
 1362 information nodes are attached to guides.
 
@@ -1024,7 +1024,17 @@ python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
-python/choose-dev-cluster -> #local-dev-server
+python/python-dev-guide-structure -> #
+
+python/install-cli -> /dev-guide/python/project-setup#install-cli
+
+python/choose-dev-cluster -> /dev-guide/python/project-setup#choose-dev-cluster
+
+python/project-structure -> /dev-guide/python/project-setup#boilerplate-project
+
+python/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#start-workflow
+
+python/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
 
 cli/server/start-dev -> /cli/server#start-dev
 
@@ -1080,20 +1090,12 @@ go/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-
 
 go/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/go/project-setup#cloud-worker
 
-go/self-hosted-worker-docker-network -> /dev-guide/python/project-setup#dockerfile
+go/self-hosted-worker-docker-network -> /dev-guide/go/project-setup#dockerfile
 
-go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#local-dev-server
+go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#local-dev-server
 
 go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
-
-python/python-dev-guide-structure -> #
-
-python/install-cli -> /dev-guide/python/project-setup#install-cli
-
-python/project-structure -> /dev-guide/python/project-setup#boilerplate-project
-
-python/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
 
 

@@ -57,7 +57,7 @@
         },
         {
             "type": "h3",
-            "id": "go/self-hosted-worker-docker-network"
+            "id": "python/self-hosted-worker-docker-network"
         },
         {
             "type": "h4",
@@ -69,7 +69,7 @@
         },
         {
             "type": "h2",
-            "id": "go/backgroundcheck-boilerplate-start-workflow"
+            "id": "python/backgroundcheck-boilerplate-start-workflow"
         },
         {
             "type": "h2",
