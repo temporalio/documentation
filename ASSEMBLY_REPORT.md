@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday October 20 2023 10:08:48 AM -0700
+Last assembled: Monday October 23 2023 09:06:15 AM -0600
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 104 guide configurations found.
 
@@ -54,6 +54,8 @@ concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
 
+cloud/security-cloud-intro -> /cloud/security#
+
 references/server-options -> /references/server-options#withconfig
 
 concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
@@ -68,7 +70,7 @@ concepts/what-is-a-codec-server -> /dataconversion#codec-server
 
 concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
 
-concepts/what-is-the-temporal-cli -> /cli/index#
+concepts/what-is-the-temporal-cli -> /cli#
 
 references/web-ui-configuration -> /references/web-ui-configuration#
 
@@ -350,7 +352,7 @@ cloud/tcld/user/set-account-role -> #set-account-role
 
 cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
 
-concepts/what-is-temporal-cloud -> /cloud/index#
+concepts/what-is-temporal-cloud -> /cloud#
 
 references/sdk-metrics -> /references/sdk-metrics#
 
@@ -492,7 +494,7 @@ java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conver
 
 concepts/what-is-a-retention-period -> /clusters#retention-period
 
-cloud/namespaces-intro -> #
+cloud/namespaces-intro -> /cloud/namespaces#
 
 go/register-namespaces -> /dev-guide/go/features#register-namespace
 
@@ -671,6 +673,8 @@ python/queries -> /dev-guide/python/features#queries
 typescript/queries -> /dev-guide/typescript/features#queries
 
 go/updates -> /dev-guide/go/features#updates
+
+java/updates -> /dev-guide/java/features#updates
 
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
 
@@ -1079,9 +1083,5 @@ cli/server/start-dev -> /cli/server#start-dev
 cli/operator/namespace/create -> /cli/operator#create
 
 cli/workflow/start -> /cli/workflow#start
-
-java/updates -> /dev-guide/java/features#updates
-
-cloud/security-cloud-intro -> #
 
 
