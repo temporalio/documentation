@@ -27,10 +27,10 @@ const client = new WorkflowClient({ connection, namespace: 'foo.bar' });
 [The Hello World mTLS sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
 When signing up to Temporal Cloud, you should receive a Namespace, a Server address, and a Client certificate and key. Use the following environment variables to set up the sample:
 
-- **TEMPORAL_ADDRESS**: looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)
-- **TEMPORAL_NAMESPACE**: looks like `foo.bar`
-- **TEMPORAL_CLIENT_CERT_PATH**: `/tls/ca.pem` (file contents start with -----BEGIN CERTIFICATE-----)
-- **TEMPORAL_CLIENT_KEY_PATH**: `/tls/ca.key` (file contents start with -----BEGIN PRIVATE KEY-----)
+- **TEMPORAL_ADDRESS:** looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)
+- **TEMPORAL_NAMESPACE:** looks like `foo.bar`
+- **TEMPORAL_CLIENT_CERT_PATH:** `/tls/ca.pem` (file contents start with -----BEGIN CERTIFICATE-----)
+- **TEMPORAL_CLIENT_KEY_PATH:** `/tls/ca.key` (file contents start with -----BEGIN PRIVATE KEY-----)
 
 You can leave the remaining variables, like `TEMPORAL_SERVER_NAME_OVERRIDE` and `TEMPORAL_SERVER_ROOT_CA_CERT_PATH`, blank.
 If needed, you can customize `TEMPORAL_TASK_QUEUE`; the following example defaults to `hello-world-mtls`.
