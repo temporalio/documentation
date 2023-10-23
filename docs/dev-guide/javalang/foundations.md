@@ -47,7 +47,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 In this section you can find the following:
 
-- [Run a development Cluster](#run-a-development-server)
+- [Run a development Cluster](/dev-guide/typescript/foundations#run-a-development-server)
 - [Connect to a dev Cluster](#connect-to-a-dev-cluster)
 - [Develop a Workflow](#develop-workflows)
 - [Develop an Activity](#develop-activities)

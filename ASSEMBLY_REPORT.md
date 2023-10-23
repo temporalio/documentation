@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday October 23 2023 09:50:39 AM -0600
+Last assembled: Monday October 23 2023 10:02:31 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
 105 guide configurations found.
 
-1604 information nodes found.
+1607 information nodes found.
 
-1365 information nodes are attached to guides.
+1368 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -54,7 +54,7 @@ concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
 
-cloud/security-cloud-intro -> #
+cloud/security-cloud-intro -> /cloud/security#
 
 references/server-options -> /references/server-options#withconfig
 
@@ -70,7 +70,7 @@ concepts/what-is-a-codec-server -> /dataconversion#codec-server
 
 concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
 
-concepts/what-is-the-temporal-cli -> /cli/index#
+concepts/what-is-the-temporal-cli -> /cli#
 
 references/web-ui-configuration -> /references/web-ui-configuration#
 
@@ -352,7 +352,7 @@ cloud/tcld/user/set-account-role -> #set-account-role
 
 cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
 
-concepts/what-is-temporal-cloud -> /cloud/index#
+concepts/what-is-temporal-cloud -> /cloud#
 
 references/sdk-metrics -> /references/sdk-metrics#
 
@@ -494,11 +494,13 @@ java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conver
 
 concepts/what-is-a-retention-period -> /clusters#retention-period
 
-cloud/namespaces-intro -> #
+cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
 
 go/register-namespaces -> /dev-guide/go/features#register-namespace
 
 java/register-namespaces -> /dev-guide/java/features#register-namespace
+
+cloud/namespaces-intro -> /cloud/namespaces#
 
 go/manage-namespaces -> /dev-guide/go/features#manage-namespaces
 
@@ -674,6 +676,8 @@ typescript/queries -> /dev-guide/typescript/features#queries
 
 go/updates -> /dev-guide/go/features#updates
 
+java/updates -> /dev-guide/java/features#updates
+
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
 
 go/parent-close-policy -> /dev-guide/go/features#parent-close-policy
@@ -709,8 +713,6 @@ cloud/get-started-connect -> #connect-to-temporal-cloud
 cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 
 cloud/certificates-issue -> /cloud/certificates#issue-certificates
-
-cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
 
 cloud/users-invite -> /cloud/users#invite-users
 
