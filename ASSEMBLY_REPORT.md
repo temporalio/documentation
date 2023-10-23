@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday October 23 2023 12:43:12 PM -0600
+Last assembled: Monday October 23 2023 12:48:40 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-109 guide configurations found.
+110 guide configurations found.
 
-1597 information nodes found.
+1631 information nodes found.
 
-1362 information nodes are attached to guides.
+1391 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1063,6 +1063,18 @@ java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-executi
 java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-with-start
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
+
+java/project-setup-introduction -> /dev-guide/java/project-setup#
+
+java/install-cli -> /dev-guide/java/project-setup#install-cli
+
+java/choose-dev-cluster -> /dev-guide/java/project-setup#choose-dev-cluster
+
+java/project-structure -> /dev-guide/java/project-setup#boilerplate-project
+
+java/backgroundcheck-boilerplate-start-workflow -> /dev-guide/java/project-setup#start-workflow
+
+java/backgroundcheck-boilerplate-testing-temporal -> /dev-guide/java/project-setup#test-framework
 
 java/foundations -> /dev-guide/java/foundations#
 
