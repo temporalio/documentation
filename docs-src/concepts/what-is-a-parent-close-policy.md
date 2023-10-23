@@ -19,8 +19,8 @@ A Parent Close Policy determines what happens to a [Child Workflow Execution](/c
 
 There are three possible values:
 
-- **Abandon**: the Child Workflow Execution is not affected.
-- **Request Cancel**: a Cancellation request is sent to the Child Workflow Execution.
+- **Abandon:** the Child Workflow Execution is not affected.
+- **Request Cancel:** a Cancellation request is sent to the Child Workflow Execution.
 - **Terminate** (default): the Child Workflow Execution is forcefully Terminated.
 
 [`ParentClosePolicy`](https://github.com/temporalio/api/blob/c1f04d0856a3ba2995e92717607f83536b5a44f5/temporal/api/enums/v1/workflow.proto#L44) proto definition.

@@ -31,7 +31,7 @@ When using Temporal, this means the following things:
 - Standard Protobuf types are used for [time](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#timestamp) and [duration](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.Duration).
 - The persistence layer uses Protobuf blobs for much of the data stored in both MySQL and Cassandra. Cadence used Thrift blobs for in MySQL data.
 
-2. **Entities names are different**:
+2. **Entities names are different:**
 
 | Cadence         | Temporal       |
 | --------------- | -------------- |
