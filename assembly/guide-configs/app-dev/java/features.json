@@ -189,6 +189,42 @@
     },
     {
       "type": "h2",
+      "id": "java/schedules"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-create-a-schedule-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-backfill-a-schedule-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-delete-a-schedule-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-describe-a-schedule-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-list-a-schedule-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-pause-a-schedule-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-trigger-a-schedule-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-update-a-schedule-in-java"
+    },
+    {
+      "type": "h2",
       "id": "java/how-to-set-a-cron-schedule-in-java"
     },
     {
