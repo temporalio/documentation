@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday October 20 2023 16:20:00 PM -0600
+Last assembled: Monday October 23 2023 08:58:02 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -70,7 +70,7 @@ concepts/what-is-a-codec-server -> /dataconversion#codec-server
 
 concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
 
-concepts/what-is-the-temporal-cli -> /cli/index#
+concepts/what-is-the-temporal-cli -> /cli#
 
 references/web-ui-configuration -> /references/web-ui-configuration#
 

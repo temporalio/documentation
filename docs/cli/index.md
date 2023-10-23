@@ -4,6 +4,7 @@ title: Temporal CLI command reference
 sidebar_label: CLI (temporal)
 sidebar_position: 8
 description: Discover the Temporal Command Line Interface (CLI) documentation. Navigate, configure, and utilize Temporal CLI effectively.
+slug: /cli
 toc_max_heading_level: 4
 keywords:
 - cli
