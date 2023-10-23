@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday October 23 2023 11:59:51 AM -0600
+Last assembled: Monday October 23 2023 13:33:11 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-108 guide configurations found.
+110 guide configurations found.
 
-1585 information nodes found.
+1639 information nodes found.
 
-1352 information nodes are attached to guides.
+1400 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1024,6 +1024,24 @@ python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
+python/python-dev-guide-structure -> #
+
+python/install-cli -> /dev-guide/python/project-setup#install-cli
+
+python/choose-dev-cluster -> /dev-guide/python/project-setup#choose-dev-cluster
+
+python/project-structure -> /dev-guide/python/project-setup#boilerplate-project
+
+python/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#start-workflow
+
+python/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
+
+cli/server/start-dev -> /cli/server#start-dev
+
+cli/operator/namespace/create -> /cli/operator#create
+
+cli/workflow/start -> /cli/workflow#start
+
 php/handle-signal -> #handle-signal
 
 php/add-sdk -> #install-a-temporal-sdk
@@ -1045,6 +1063,18 @@ java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-executi
 java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-with-start
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
+
+java/project-setup-introduction -> /dev-guide/java/project-setup#
+
+java/install-cli -> /dev-guide/java/project-setup#install-cli
+
+java/choose-dev-cluster -> /dev-guide/java/project-setup#choose-dev-cluster
+
+java/project-structure -> /dev-guide/java/project-setup#boilerplate-project
+
+java/backgroundcheck-boilerplate-start-workflow -> /dev-guide/java/project-setup#start-workflow
+
+java/backgroundcheck-boilerplate-testing-temporal -> /dev-guide/java/project-setup#test-framework
 
 java/foundations -> /dev-guide/java/foundations#
 
@@ -1079,11 +1109,5 @@ go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#loc
 go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
-
-cli/server/start-dev -> /cli/server#start-dev
-
-cli/operator/namespace/create -> /cli/operator#create
-
-cli/workflow/start -> /cli/workflow#start
 
 

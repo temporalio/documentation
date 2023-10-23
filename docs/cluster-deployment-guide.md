@@ -899,9 +899,9 @@ These constraints do not apply if you use Elasticsearch.
 
 [Archival](/clusters#archival) consists of the following elements:
 
-- **Configuration**: Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
-- **Provider**: Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
-- **URI**: Specifies which provider should be used. The system uses the URI schema and path to make the determination.
+- **Configuration:** Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
+- **Provider:** Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
+- **URI:** Specifies which provider should be used. The system uses the URI schema and path to make the determination.
 
 Take the following steps to set up Archival:
 
@@ -913,10 +913,10 @@ Take the following steps to set up Archival:
 
 Temporal directly supports several providers:
 
-- **Local file system**: The [filestore archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) is used to archive data in the file system of whatever host the Temporal server is running on. In the case of [temporal helm-charts](https://github.com/temporalio/helm-charts), the archive data is stored in the `history` pod. APIs do not function with the filestore archive. This provider is used mainly for local installations and testing and should not be relied on for production environments.
-- **Google Cloud**: The [gcloud archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud) is used to connect and archive data with [Google Cloud](https://cloud.google.com/storage).
-- **S3**: The [s3store archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store) is used to connect and archive data with [S3](https://aws.amazon.com/s3).
-- **Custom**: If you want to use a provider that is not currently supported, you can [create your own archiver](#custom-archiver) to support it.
+- **Local file system:** The [filestore archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) is used to archive data in the file system of whatever host the Temporal server is running on. In the case of [temporal helm-charts](https://github.com/temporalio/helm-charts), the archive data is stored in the `history` pod. APIs do not function with the filestore archive. This provider is used mainly for local installations and testing and should not be relied on for production environments.
+- **Google Cloud:** The [gcloud archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud) is used to connect and archive data with [Google Cloud](https://cloud.google.com/storage).
+- **S3:** The [s3store archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store) is used to connect and archive data with [S3](https://aws.amazon.com/s3).
+- **Custom:** If you want to use a provider that is not currently supported, you can [create your own archiver](#custom-archiver) to support it.
 
 Make sure that you save the provider's storage location URI in a place where you can reference it later, because it is passed as a parameter when you [create a Namespace](#namespace-creation).
 
@@ -1152,11 +1152,11 @@ We ensure that any consecutive versions are compatible in terms of database sche
 
 When upgrading the Temporal Server, there are two key considerations to keep in mind:
 
-1. **Sequential Upgrades**: Temporal Server should be upgraded sequentially.
+1. **Sequential Upgrades:** Temporal Server should be upgraded sequentially.
    That is, if you're on version \(v1.n.x\), your next upgrade should be to \(v1.n+1.x\) or the closest available subsequent version.
    This sequence should be repeated until your desired version is reached.
 
-2. **Data Compatibility**: During an upgrade, the Temporal Server either updates or restructures the existing version data to match the data format of the newer version.
+2. **Data Compatibility:** During an upgrade, the Temporal Server either updates or restructures the existing version data to match the data format of the newer version.
    Temporal Server ensures backward compatibility only between two successive minor versions.
    Consequently, skipping versions during an upgrade may lead to older data formats becoming unreadable.
    If the previous data format cannot be interpreted and converted to the newer format, the upgrade process will be unsuccessful.
@@ -1168,9 +1168,9 @@ The following documentation outlines the step-by-step process to successfully up
 
 When upgrading your Temporal Server version, ensure that you upgrade sequentially.
 
-1. **Upgrade Database Schema**: Before initiating the Temporal Server upgrade, use one of the recommended upgrade tools to update your database schema.
+1. **Upgrade Database Schema:** Before initiating the Temporal Server upgrade, use one of the recommended upgrade tools to update your database schema.
    This ensures it is aligned with the version of Temporal Server you aim to upgrade to.
-2. **Upgrade Temporal Server**: Once the database schema is updated, proceed to upgrade the Temporal Server deployment to the next sequential version.
+2. **Upgrade Temporal Server:** Once the database schema is updated, proceed to upgrade the Temporal Server deployment to the next sequential version.
 3. **Iterative Upgrades** (optional): Continue this process (steps 1 and 2) iteratively until you reach the desired Temporal Server version.
 
 By adhering to the above guidelines and following the step-by-step procedure, you can ensure a smooth and successful upgrade of your Temporal Server.
