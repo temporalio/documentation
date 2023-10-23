@@ -41,14 +41,7 @@
     "kb/*.md",
     "vercel.json"
   ],
-  "excludes": [
-    "**/node_modules",
-    "**/*-lock.json",
-    "blogs/**",
-    ".docusaurus/",
-    ".github",
-    "/build"
-  ],
+  "excludes": ["**/node_modules", "**/*-lock.json", "blogs/**", ".docusaurus/", ".github", "/build"],
   "incremental": true,
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.69.5.wasm",

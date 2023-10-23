@@ -81,6 +81,26 @@
     },
     {
       "type": "h2",
+      "id": "java/updates"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-define-an-update-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-handle-an-update-in-a-workflow-in-java"
+    },
+    {
+      "type": "h4",
+      "id": "java/how-to-validate-an-update-in-a-workflow-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-send-an-update-from-a-client-in-java"
+    },
+    {
+      "type": "h2",
       "id": "java/workflow-timeouts"
     },
     {

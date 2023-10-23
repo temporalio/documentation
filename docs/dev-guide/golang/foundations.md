@@ -2,7 +2,7 @@
 id: foundations
 title: Go SDK developer's guide - Foundations
 sidebar_label: Foundations
-sidebar_position: 2
+sidebar_position: 3
 description: The Foundations section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/go/foundations
 toc_max_heading_level: 4
@@ -97,7 +97,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 In this section you can find the following:
 
-- [Run a development Cluster](#run-a-development-server)
+- [Run a development Cluster](/dev-guide/typescript/foundations#run-a-development-server)
 - [Connect to a dev Cluster](#connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Develop a Workflow](#develop-workflows)
@@ -268,7 +268,13 @@ If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal
 
 If you don't set a custom Namespace name in the Namespace field, the client connects to the default Namespace.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/gateway/main_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/gateway/main_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 package main
@@ -326,7 +332,13 @@ For more information about managing and generating client certificates for Tempo
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/cloud/client/main_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/cloud/client/main_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 package main
@@ -382,7 +394,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 In the Temporal Go SDK programming model, a [Workflow Definition](/workflows#workflow-definition) is an exportable function.
 Below is an example of a basic Workflow Definition.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 package yourapp
@@ -424,7 +442,13 @@ However, the best practice is to pass a single parameter that is of a `struct` t
 
 All Workflow Definition parameters must be serializable and can't be channels, functions, variadic, or unsafe pointers.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 package yourapp
@@ -464,7 +488,13 @@ However, it's not possible to receive both a custom value and an error in the ca
 The caller will receive either one or the other.
 Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be terminated, and any custom return values will be ignored by the system.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 package yourapp
@@ -506,7 +536,13 @@ In Go, by default, the Workflow Type name is the same as the function name.
 
 To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a [Worker](#develop-worker).
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 package main
@@ -565,11 +601,6 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 - `workflow.Context` This is a replacement for `context.Context`.
   See [Tracing](/dev-guide/go/observability#tracing) for more information about context propagation.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
-
-```go
-```
-
 ## How to develop an Activity Definition in Go {#activity-definition}
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
@@ -587,7 +618,13 @@ Activities written as struct methods can use shared struct variables, such as:
 
 Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 package yourapp
@@ -644,7 +681,13 @@ This parameter is optional for an Activity Definition, though it is recommended,
 An Activity Definition can support as many other custom parameters as needed.
 However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 // YourActivityParam is the struct passed to your Activity.
@@ -671,7 +714,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 // YourActivityResultObject is the struct returned from your Activity.
@@ -701,7 +750,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 func main() {
@@ -746,7 +801,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
         The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
         The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
@@ -1080,7 +1141,13 @@ gow run worker/main.go # automatically reloads when file changes
 
 :::
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 package main
@@ -1589,7 +1656,13 @@ For more information about managing and generating client certificates for Tempo
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/cloud/worker/main_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/cloud/worker/main_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 package main

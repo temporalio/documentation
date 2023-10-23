@@ -131,17 +131,17 @@ This limit applies to all gRPC endpoints across the Temporal Platform.
 
 ### What is the limit for History transaction size?
 
-The `DefaultTransactionSizeLimit` is configured at 4 MB, representing the maximum allowable transaction size for persisting Event Histories.
+The `DefaultTransactionSizeLimit` is configured at 4 MB, representing the maximum allowable transaction size for persisting Event Histories. This is not currently configurable.
 
-### What are the default limits at the Namespace level?
+### What are the limits at the Namespace level?
 
-At the Namespace level, Temporal Cloud sets the following default limits:
+At the Namespace level, Temporal Cloud sets the following limits:
 
 - Actions per second: 200 (with spikes to 400)
 - Certificates: 32 KB payload or 16 certificates, whichever is smaller
 - Concurrent Task pollers: 2,000 (configurable; maximum of 100,000)
 
-### What are the concurrecy limits?
+### What are the concurrency limits?
 
 If a Workflow Execution has 2,000 incomplete Activities, Signals, Child Workflows, or external Workflow Cancellation requests, additional Commands of that type will fail to be applied to that Workflow Execution:
 
@@ -156,14 +156,14 @@ These default limits are configurable by creating a [support ticket](/cloud/supp
 
 ### What is the limit on the number of Signals received per Workflow Execution?
 
-10,000 Signals per Workflow Execution is the default limit and is set on the Namespace level.
+10,000 Signals per Workflow Execution is the limit, tied to the Namespace level.
 
 ### What are the default limits for users and Namespaces at the account level?
 
 At the account level, Temporal Cloud sets the following default limits:
 
-- Users: 100
-- Namespaces: 10
+- Users: 300 across all Namespaces. To increase this number, open a [support ticket](/cloud/support#support-ticket).
+- Namespaces: 10. This can be incrementally increased up to 100. To further extend the limit beyond 100, open a [support ticket](/cloud/support#support-ticket).
 
 ### How much data does the Prometheus endpoint retain?
 
@@ -172,12 +172,12 @@ This limit is set on the account level.
 
 ### What is the default Retention Period in your Temporal Cloud Account?
 
-Temporal Cloud sets the default [Retention Period](/clusters#retention-period) to 30 days, and it is configurable in the Temporal Web UI per Namespace.
+Temporal Cloud sets the default [Retention Period](/cloud/support#support-ticket) to 30 days, and it is configurable in the Temporal Web UI per Namespace.
 You can set the Retention Period between 1 and 90 days.
 
 ### What are the default maximum numbers of Custom Search Attributes?
 
-The default maximum number of [Custom Search Attributes](/visibility#custom-search-attributes) of each type in Temporal Cloud, you can create per Namespace, are:
+The default maximum number of [Custom Search Attributes](/cloud/support#support-ticket) of each type in Temporal Cloud, you can create per Namespace, are:
 
 - `bool`: 20
 - `double`: 20

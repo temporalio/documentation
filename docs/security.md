@@ -34,7 +34,7 @@ For information about the general security habits of Temporal Technologies, see 
 
 :::info Cloud security
 
-For information about Temporal Cloud security features, see our [Cloud security page](#)
+For information about Temporal Cloud security features, see our [Cloud security page](/cloud/security#)
 :::
 
 The Temporal Platform is designed with security in mind, and there are many features that you can use to keep both the Platform itself and your user's data secure.

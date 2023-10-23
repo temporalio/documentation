@@ -305,18 +305,23 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 
 ### Limits
 
-Each pending Activity generates a metadata entry in the Workflow's mutable state.
-Too many entries create a large mutable state, which causes unstable persistence.
+There is no limit to the number of concurrent Workflow Executions.
 
-To protect the system, Temporal enforces a maximum number (2,000 by default) of pending Activities, Child Workflows, Signals, or Cancellation requests per Workflow.
+However, there is a limit to the length and size of a Workflow Execution's Event History (by default, [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) and [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380)).
+
+There is also a limit to the number of certain types of incomplete operations.
+
+Each in-progress Activity generates a metadata entry in the Workflow Execution's mutable state.
+Too many entries in a single Workflow Execution's mutable state causes unstable persistence.
+To protect the system, Temporal enforces a maximum number of incomplete Activities, Child Workflows, Signals, or Cancellation requests per Workflow Execution (by default, 2,000 for each type of operation).
+Once the limit is reached for a type of operation, if the Workflow Execution attempts to start another operation of that type (by producing a `ScheduleActivityTask`, `StartChildWorkflowExecution`, `SignalExternalWorkflowExecution`, or `RequestCancelExternalWorkflowExecution` Command), it will be unable to (the Workflow Task Execution will fail and get retried).
+
 These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/master/service/history/configs/config.go):
 
 - `NumPendingActivitiesLimit`
 - `NumPendingChildExecutionsLimit`
 - `NumPendingSignalsLimit`
 - `NumPendingCancelRequestsLimit`
-
-By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass any of these limits (by producing enough `ScheduleActivityTask`, `StartChildWorkflowExecution`, `SignalExternalWorkflowExecution`, or `RequestCancelExternalWorkflowExecution` Commands to exceed a limit).
 
 ### What is a Command? {#command}
 
@@ -349,7 +354,7 @@ Seven Activity-related Events are added to Event History at various points in an
 - When `ActivityTaskScheduled` is added to History, the Cluster adds a corresponding Activity Task to the Task Queue.
 - A Worker polling that Task Queue picks up the Activity Task and runs the Activity function or method.
 - If the Activity function returns, the Worker reports completion to the Cluster, and the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskCompleted](/references/events#activitytaskcompleted) to Event History.
-- If the Activity function throws a [non-retryable Failure](/kb/failures#non-retryable), the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to Event History.
+- If the Activity function throws a [non-retryable Failure](/references/failures#non-retryable), the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to Event History.
 - If the Activity function throws an error or retryable Failure, the Cluster schedules an Activity Task retry to be added to the Task Queue (unless you’ve reached the Maximum Attempts value of the [Retry Policy](/retry-policies), in which case the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to Event History).
 - If the Activity’s [Start-to-Close Timeout](/activities#start-to-close-timeout) passes before the Activity function returns or throws, the Cluster schedules a retry.
 - If the Activity’s [Schedule-to-Close Timeout](/activities#schedule-to-close-timeout) passes before Activity Execution is complete, or if [Schedule-to-Start Timeout](/activities#schedule-to-start-timeout) passes before a Worker gets the Activity Task, the Cluster writes [ActivityTaskTimedOut](/references/events#activitytasktimedout) to Event History.
@@ -574,7 +579,7 @@ A Signal is an asynchronous request to a [Workflow Execution](/workflows#workflo
 - [How to develop, send, and handle Signals in TypeScript](/dev-guide/typescript/features#signals)
 
 A Signal delivers data to a running Workflow Execution.
-It cannot return data to the caller; to do so, use a [Query](#queries) instead.
+It cannot return data to the caller; to do so, use a [Query](#query) instead.
 The Workflow code that handles a Signal can mutate Workflow state.
 A Signal can be sent from a Temporal Client or a Workflow.
 When a Signal is sent, it is received by the Cluster and recorded as an Event to the Workflow Execution [Event History](#event-history).
@@ -668,6 +673,7 @@ Stack Trace Queries are available only for running Workflow Executions.
 An Update is a request to and a response from a Temporal Client to a [Workflow Execution](#workflow-execution).
 
 - [How to develop, send, and handle Updates in Go](/dev-guide/go/features#updates)
+- [How to develop, send, and handle Updates in Java](/dev-guide/java/features#updates)
 
 You can think of an Update as a synchronous, blocking call that could replace both a Signal and a Query. An update is:
 

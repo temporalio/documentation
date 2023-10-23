@@ -18,7 +18,13 @@ If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal
 
 If you don't set a custom Namespace name in the Namespace field, the client connects to the default Namespace.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/gateway/main_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/gateway/main_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 package main
