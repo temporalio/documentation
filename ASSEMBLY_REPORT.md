@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday October 16 2023 11:14:02 AM -0700
+Last assembled: Monday October 23 2023 09:50:39 AM -0600
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
-104 guide configurations found.
+105 guide configurations found.
 
-1570 information nodes found.
+1604 information nodes found.
 
-1335 information nodes are attached to guides.
+1365 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1044,6 +1044,14 @@ java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-resu
 
 java/foundations -> /dev-guide/java/foundations#
 
+java/choose-dev-cluster -> #local-dev-server
+
+cli/server/start-dev -> /cli/server#start-dev
+
+cli/operator/namespace/create -> /cli/operator#create
+
+cli/workflow/start -> /cli/workflow#start
+
 go/testing -> /dev-guide/go/testing#replay
 
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
@@ -1075,11 +1083,5 @@ go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#loc
 go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
-
-cli/server/start-dev -> /cli/server#start-dev
-
-cli/operator/namespace/create -> /cli/operator#create
-
-cli/workflow/start -> /cli/workflow#start
 
 
