@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday October 06 2023 10:31:39 AM -0700
+Last assembled: Monday October 23 2023 08:54:48 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -1056,6 +1056,30 @@ go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
 
+go/go-dev-guide-structure -> #
+
+go/install-cli -> /dev-guide/go/project-setup#install-cli
+
+go/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
+
+go/project-structure -> /dev-guide/go/project-setup#boilerplate-project
+
+go/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
+
+go/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/go/project-setup#cloud-worker
+
+go/self-hosted-worker-docker-network -> /dev-guide/go/project-setup#dockerfile
+
+go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#local-dev-server
+
+go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
+
 go/foundations -> /dev-guide/go/foundations#
+
+cli/server/start-dev -> /cli/server#start-dev
+
+cli/operator/namespace/create -> /cli/operator#create
+
+cli/workflow/start -> /cli/workflow#start
 
 
