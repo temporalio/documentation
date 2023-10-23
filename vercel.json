@@ -1934,6 +1934,18 @@
       "destination": "/workflows#run-id"
     },
     {
+      "source": "/kb/troubleshoot-last-connection-error",
+      "destination": "/troubleshooting/last-connection-error"
+    },
+    {
+      "source": "/kb/deadline-exceeded-troubleshooting",
+      "destination": "/troubleshooting/deadline-exceeded-error"
+    },
+    {
+      "source": "/kb/failures",
+      "destination": "/references/failures"
+    },
+    {
       "source": "/kb/temporal-platform-limits-sheet",
       "destination": "/production-readiness/tuning#platform-defaults"
     },
