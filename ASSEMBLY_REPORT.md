@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday October 23 2023 13:33:11 PM -0600
+Last assembled: Monday October 23 2023 14:49:10 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
 110 guide configurations found.
 
-1639 information nodes found.
+1641 information nodes found.
 
-1400 information nodes are attached to guides.
+1403 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -614,11 +614,21 @@ python/developing-workflows -> /dev-guide/python/foundations#develop-workflows
 
 typescript/developing-workflows -> /dev-guide/typescript/foundations#develop-workflows
 
-go/versioning -> /dev-guide/go/versioning#
+go/patching -> /dev-guide/go/versioning#patching
 
-java/versioning -> /dev-guide/java/versioning#
+java/patching -> /dev-guide/java/versioning#patching
 
-typescript/versioning -> /dev-guide/typescript/versioning#
+python/how-to-use-the-python-sdk-patching-api-in-python -> /dev-guide/python/versioning#python-sdk-patching-api
+
+typescript/patching -> /dev-guide/typescript/versioning#patching
+
+go/how-to-use-worker-versioning-in-go -> /dev-guide/go/versioning#worker-versioning
+
+java/how-to-use-worker-versioning-in-java -> /dev-guide/java/versioning#worker-versioning
+
+python/how-to-use-worker-versioning-in-python -> /dev-guide/python/versioning#worker-versioning
+
+typescript/how-to-use-worker-versioning-in-typescript -> /dev-guide/typescript/versioning#worker-versioning
 
 concepts/what-is-a-temporal-application -> /temporal#temporal-application
 
