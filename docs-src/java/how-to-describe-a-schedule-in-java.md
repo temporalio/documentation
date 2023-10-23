@@ -2,7 +2,7 @@
 id: how-to-describe-a-schedule-in-java
 title: How to describe a Schedule in Java
 sidebar_label: Describe Schedule
-description: To describe a Schedule in Java, use `describe()` on `ScheduleHandle`.
+description: To describe a Schedule in Java, use describe() on ScheduleHandle.
 tags:
   - java
   - developer-guide

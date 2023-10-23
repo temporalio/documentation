@@ -2,7 +2,7 @@
 id: how-to-trigger-a-schedule-in-java
 title: How to trigger a Schedule in Java
 sidebar_label: Trigger Schedule
-description: To trigger a Schedule in Java, use `trigger()` on `ScheduleHandle`.
+description: To trigger a Schedule in Java, use trigger() on ScheduleHandle.
 tags:
   - java
   - developer-guide

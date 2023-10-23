@@ -2,7 +2,7 @@
 id: how-to-backfill-a-schedule-in-java
 title: How to backfill a Schedule in Java
 sidebar_label: Backfill Schedule
-description: To backfill a Schedule in Java, use `backfill()` on `ScheduleHandle`.
+description: To backfill a Schedule in Java, use backfill() on ScheduleHandle.
 tags:
   - java
   - developer-guide

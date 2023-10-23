@@ -2,7 +2,7 @@
 id: how-to-pause-a-schedule-in-java
 title: How to pause a Schedule in Java
 sidebar_label: Pause Schedule
-description: To pause a Schedule in Java, use `pause()` on `ScheduleHandle`.
+description: To pause a Schedule in Java, use pause() on ScheduleHandle.
 tags:
   - java
   - developer-guide

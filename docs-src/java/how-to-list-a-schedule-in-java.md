@@ -2,7 +2,7 @@
 id: how-to-list-a-schedule-in-java
 title: How to describe a Schedule in Java
 sidebar_label: Describe Schedule
-description: To list all Schedules in Java, use `ScheduleClient.List()`.
+description: To list all Schedules in Java, use ScheduleClient.List().
 tags:
   - java
   - developer-guide

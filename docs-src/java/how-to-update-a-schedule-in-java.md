@@ -2,7 +2,7 @@
 id: how-to-update-a-schedule-in-java
 title: How to update a Schedule in Java
 sidebar_label: Update Schedule
-description: To update a Schedule in Java, use `update()` on the `ScheduleHandle`.
+description: To update a Schedule in Java, use update() on the ScheduleHandle.
 tags:
   - java
   - developer-guide

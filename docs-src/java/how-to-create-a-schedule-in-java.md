@@ -2,7 +2,7 @@
 id: how-to-create-a-schedule-in-java
 title: How to create a Schedule in Java
 sidebar_label: Create Schedule
-description: To create a Schedule in Java, use `createSchedule()` on the Client.
+description: To create a Schedule in Java, use createSchedule() on the Client.
 tags:
   - java
   - developer-guide

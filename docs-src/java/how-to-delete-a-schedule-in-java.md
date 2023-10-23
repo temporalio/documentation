@@ -2,7 +2,7 @@
 id: how-to-delete-a-schedule-in-java
 title: How to delete a Schedule in Java
 sidebar_label: Delete Schedule
-description: To delete a Schedule in Java, use `delete()` on `ScheduleHandle`.
+description: To delete a Schedule in Java, use delete() on ScheduleHandle.
 tags:
   - java
   - developer-guide
