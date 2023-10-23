@@ -88,7 +88,7 @@
             "id": "java/self-hosted-worker-docker-network"
         },
         {
-            "type": "h5",
+            "type": "p",
             "id": "java/backgroundcheck-boilerplate-self-hosted-worker"
         },
         {
@@ -127,6 +127,5 @@
             "type": "p",
             "id": "java/backgroundcheck-boilerplate-add-workflow-integration-tests-details"
         }
-
     ]
 }
