@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday October 18 2023 11:25:43 AM -0700
+Last assembled: Monday October 23 2023 10:50:30 AM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-105 guide configurations found.
+109 guide configurations found.
 
-1583 information nodes found.
+1595 information nodes found.
 
-1349 information nodes are attached to guides.
+1362 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -496,11 +496,13 @@ java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conver
 
 concepts/what-is-a-retention-period -> /clusters#retention-period
 
-cloud/namespaces-intro -> /cloud/namespaces#
+cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
 
 go/register-namespaces -> /dev-guide/go/features#register-namespace
 
 java/register-namespaces -> /dev-guide/java/features#register-namespace
+
+cloud/namespaces-intro -> /cloud/namespaces#
 
 go/manage-namespaces -> /dev-guide/go/features#manage-namespaces
 
@@ -713,8 +715,6 @@ cloud/get-started-connect -> #connect-to-temporal-cloud
 cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 
 cloud/certificates-issue -> /cloud/certificates#issue-certificates
-
-cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
 
 cloud/users-invite -> /cloud/users#invite-users
 
@@ -1024,6 +1024,14 @@ python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
+python/choose-dev-cluster -> #local-dev-server
+
+cli/server/start-dev -> /cli/server#start-dev
+
+cli/operator/namespace/create -> /cli/operator#create
+
+cli/workflow/start -> /cli/workflow#start
+
 php/handle-signal -> #handle-signal
 
 php/add-sdk -> #install-a-temporal-sdk
@@ -1072,20 +1080,20 @@ go/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-
 
 go/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/go/project-setup#cloud-worker
 
-go/self-hosted-worker-docker-network -> /dev-guide/go/project-setup#dockerfile
+go/self-hosted-worker-docker-network -> /dev-guide/python/project-setup#dockerfile
 
-go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#local-dev-server
+go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#local-dev-server
 
 go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
 
-cli/server/start-dev -> /cli/server#start-dev
+python/python-dev-guide-structure -> #
 
-cli/operator/namespace/create -> /cli/operator#create
+python/install-cli -> /dev-guide/python/project-setup#install-cli
 
-cli/workflow/start -> /cli/workflow#start
+python/project-structure -> /dev-guide/python/project-setup#boilerplate-project
 
-python/choose-dev-cluster -> #local-dev-server
+python/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
 
 

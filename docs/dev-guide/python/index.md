@@ -28,6 +28,18 @@ The Temporal Python SDK developer's guide is arranged in the following way:
 
 - [**Introduction to the Python SDK**](/dev-guide/python/introduction#)
 
+  - [Expected skills and experiences](/dev-guide/python/introduction#skills)
+  - [Code samples](/dev-guide/python/introduction#samples)
+  - [Additional resources](/dev-guide/python/introduction#resources)
+  - [Contribute](/dev-guide/python/introduction#contribute)
+
+- [**Project setup**](#)
+  - [How to download and install the Temporal CLI](/dev-guide/python/project-setup#install-cli)
+  - [Which development Cluster you should choose](/dev-guide/python/project-setup#choose-dev-cluster)
+  - [Boilerplate application code and file structure best practices](/dev-guide/python/project-setup#boilerplate-project)
+  - [How to start your Workflow using the CLI](/python/start-workflow)
+  - [How to add a testing framework and tests to your application](/dev-guide/python/project-setup#test-framework)
+
 - [**Foundations**](/dev-guide/python/foundations): The minimum things required to build and run a single Activity Workflow.
 
   - [Run a development Cluster](/dev-guide/python/foundations#run-a-dev-cluster)
