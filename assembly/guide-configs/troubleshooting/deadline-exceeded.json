@@ -1,0 +1,16 @@
+{
+  "file_name": "deadline-exceeded-error.md",
+  "id": "deadline-exceeded-error",
+  "file_dir": "troubleshooting",
+  "title": "Troubleshoot deadline-exceeded error",
+  "sidebar_label": "Deadline-exceeded error",
+  "description": "Deadline exceeded errors occur as a result of Temporal frontend requests failing. This guide provides troubleshooting solutions.",
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "troubleshooting/deadline-exceeded-error"
+    }
+  ]
+}
