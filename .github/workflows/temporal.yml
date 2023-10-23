@@ -1,0 +1,60 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+  build-docs:
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    env:
+      TEMPORAL_CLIENT_CERT: ${{ secrets.TEMPORAL_CLIENT_CERT }}
+      TEMPORAL_CLIENT_KEY: ${{ secrets.TEMPORAL_CLIENT_KEY }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      # Install dependencies in root
+      - name: Install Root Dependencies
+        run: yarn
+
+      # Install dependencies in assembly directory
+      - name: Install Assembly Dependencies
+        run: |
+          cd assembly
+          yarn
+
+      # Create Certs Directory and Write Key and PEM
+      - name: Create Certs Dir
+        run: node assembly/create-certs-dir.mjs
+        env:
+          TEMPORAL_ADDRESS: docs-assembly.a2dd6.tmprl.cloud
+          TEMPORAL_NAMESPACE: docs-assembly.a2dd6
+          TEMPORAL_TLS_CERT: ./assembly/secure/docs-assembly.pem
+          TEMPORAL_TLS_KEY: ./assembly/secure/docs-assembly.key
+
+      # Start the worker in the background.
+      # Adding `&` at the end to run it in the background.
+      - name: Start Worker
+        run: node ./assembly/worker.js --cloud &
+
+      # Run the assemble script
+      - name: Assemble and Build Documentation
+        run: |
+          ./assemble.js --cloud
+          dprint fmt
+          docusaurus build
+      - name: Commit changes
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Assemble and Build Documentation
