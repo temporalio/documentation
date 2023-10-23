@@ -15,7 +15,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 To send a Signal-With-Start in Python, use the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) method and pass the `start_signal` argument with the name of your Signal.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/signal_your_workflow/signal_with_start_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/signal_your_workflow/signal_with_start_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 from temporalio.client import Client

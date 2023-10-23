@@ -123,7 +123,7 @@ This feature is useful for Workflow Definition logic that needs to be updated bu
 
 #### Worker Build Ids
 
-Temporal [Worker Build Id–based versioning](/concepts/what-is-worker-versioning) lets you define sets of versions that are compatible with each other, and then assign a Build Id to the code that defines a Worker.
+Temporal [Worker Build Id-based versioning](/concepts/what-is-worker-versioning) lets you define sets of versions that are compatible with each other, and then assign a Build Id to the code that defines a Worker.
 
 - [How to version Workers in Go](/go/how-to-use-worker-versioning-in-go)
 - [How to version Workers in Java](/java/how-to-use-worker-versioning-in-java)

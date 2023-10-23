@@ -2,7 +2,7 @@
 id: features
 title: Java SDK developer's guide - Features
 sidebar_label: Features
-sidebar_position: 3
+sidebar_position: 4
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 slug: /dev-guide/java/features
 toc_max_heading_level: 4
@@ -557,8 +557,8 @@ Each Workflow timeout controls the maximum duration of a different aspect of a W
 Workflow timeouts are set when [starting the Workflow Execution](#workflow-timeouts).
 
 - **[Workflow Execution Timeout](/workflows#workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
-- **[Workflow Run Timeout](/workflows#workflow-run-timeout)**: restricts the maximum amount of time that a single Workflow Run can last.
-- **[Workflow Task Timeout](/workflows#workflow-task-timeout)**: restricts the maximum amount of time that a Worker can execute a Workflow Task.
+- **[Workflow Run Timeout](/workflows#workflow-run-timeout):** restricts the maximum amount of time that a single Workflow Run can last.
+- **[Workflow Task Timeout](/workflows#workflow-task-timeout):** restricts the maximum amount of time that a Worker can execute a Workflow Task.
 
 Create an instance of [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) in the Client code and set your timeout.
 
@@ -615,9 +615,9 @@ Each Activity timeout controls the maximum duration of a different aspect of an 
 
 The following timeouts are available in the Activity Options.
 
-- **[Schedule-To-Close Timeout](/activities#schedule-to-close-timeout)**: is the maximum amount of time allowed for the overall [Activity Execution](/activities#activity-execution).
-- **[Start-To-Close Timeout](/activities#start-to-close-timeout)**: is the maximum time allowed for a single [Activity Task Execution](/workers#activity-task-execution).
-- **[Schedule-To-Start Timeout](/activities#schedule-to-start-timeout)**: is the maximum amount of time that is allowed from when an [Activity Task](/workers#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.
+- **[Schedule-To-Close Timeout](/activities#schedule-to-close-timeout):** is the maximum amount of time allowed for the overall [Activity Execution](/activities#activity-execution).
+- **[Start-To-Close Timeout](/activities#start-to-close-timeout):** is the maximum time allowed for a single [Activity Task Execution](/workers#activity-task-execution).
+- **[Schedule-To-Start Timeout](/activities#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/workers#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.
 
 An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
 
@@ -1080,6 +1080,134 @@ To set a Timer in Java, use [`sleep()`](https://www.javadoc.io/doc/io.temporal/t
 
 ```java
 sleep(5);
+```
+
+## How to Schedule a Workflow {#schedule-a-workflow}
+
+Scheduling Workflows is a crucial aspect of any automation process, especially when dealing with time-sensitive tasks. By scheduling a Workflow, you can automate repetitive tasks, reduce the need for manual intervention, and ensure timely execution of your business processes
+
+Use any of the following action to help Schedule a Workflow Execution and take control over your automation process.
+
+### How to create a Schedule in Java {#create-schedule}
+
+The create action enables you to create a new Schedule. When you create a new Schedule, a unique Schedule ID is generated, which you can use to reference the Schedule in other Schedule commands.
+
+To create a Scheduled Workflow Execution in Java, use the `createSchedule()` method on the `ScheduleClient`. Schedules must be initialized with a Schedule ID,
+
+```java
+Schedule schedule =
+    Schedule.newBuilder()
+        .setAction(
+            ScheduleActionStartWorkflow.newBuilder()
+                .setWorkflowType(HelloSchedules.GreetingWorkflow.class)
+                .setArguments("World")
+                .setOptions(
+                    WorkflowOptions.newBuilder()
+                        .setWorkflowId("WorkflowId")
+                        .setTaskQueue("TaskQueue")
+                        .build())
+                .build())
+        .setSpec(ScheduleSpec.newBuilder().build())
+        .build();
+
+// Create a schedule on the server
+ScheduleHandle handle =
+    scheduleClient.createSchedule("ScheduleId", schedule, ScheduleOptions.newBuilder().build());
+```
+
+### How to backfill a Schedule in Java {#backfill-schedule}
+
+The backfill action executes Actions ahead of their specified time range. This command is useful when you need to execute a missed or delayed Action, or when you want to test the Workflow before its scheduled time.
+
+To Backfill a Scheduled Workflow Execution in Java, use the `backfill()` method on the `ScheduleHandle`.
+
+```java
+ScheduleHandle handle = client.getHandle("schedule-id")
+
+Instant now = Instant.now();
+handle.backfill(
+    Arrays.asList(
+        new ScheduleBackfill(now.minusMillis(5500), now.minusMillis(2500)),
+        new ScheduleBackfill(now.minusMillis(2500), now)));
+```
+
+### How to delete a Schedule in Java {#delete-schedule}
+
+The delete action enables you to delete a Schedule. When you delete a Schedule, it does not affect any Workflows that were started by the Schedule.
+
+To delete a Scheduled Workflow Execution in Java, use the `delete()` method on the `Schedule Handle`.
+
+```java
+ScheduleHandle handle = client.getHandle("schedule-id")
+handle.delete();
+```
+
+### How to describe a Schedule in Java {#describe-schedule}
+
+The describe action shows the current Schedule configuration, including information about past, current, and future Workflow Runs. This command is helpful when you want to get a detailed view of the Schedule and its associated Workflow Runs.
+
+To describe a Scheduled Workflow Execution in Java, use the `describe()` method on the `ScheduleHandle`.
+
+```java
+ScheduleHandle handle = client.getHandle("schedule-id")
+ScheduleDescription description = handle.describe();
+```
+
+### How to describe a Schedule in Java {#describe-schedule}
+
+The list action lists all the available Schedules. This command is useful when you want to view a list of all the Schedules and their respective Schedule IDs.
+
+To list all schedules, use the `listSchedules()` asynchronous method on the `ScheduleClient`.
+If a schedule is added or deleted, it may not be available in the list immediately.
+
+```java
+Stream<ScheduleListDescription> scheduleStream = client.listSchedules();
+```
+
+### How to pause a Schedule in Java {#pause-schedule}
+
+The pause action enables you to pause and unpause a Schedule. When you pause a Schedule, all the future Workflow Runs associated with the Schedule are temporarily stopped. This command is useful when you want to temporarily halt a Workflow due to maintenance or any other reason.
+
+To pause a Scheduled Workflow Execution in Java, use the `pause()` method on the `ScheduleHandle`.
+You can pass a `note` to the `pause()` method to provide a reason for pausing the schedule.
+
+```java
+ScheduleHandle handle = client.getHandle("schedule-id")
+handle.pause("Pausing the schedule for now");
+```
+
+### How to trigger a Schedule in Java {#trigger-schedule}
+
+The trigger action triggers an immediate action with a given Schedule. By default, this action is subject to the Overlap Policy of the Schedule. This command is helpful when you want to execute a Workflow outside of its scheduled time.
+
+To trigger a Scheduled Workflow Execution in Java, use the `trigger()` method on the `ScheduleHandle`.
+
+```java
+ScheduleHandle handle = client.getHandle("schedule-id")
+handle.trigger();
+```
+
+### How to update a Schedule in Java {#update-schedule}
+
+The update action enables you to update an existing Schedule. This command is useful when you need to modify the Schedule's configuration, such as changing the start time, end time, or interval.
+
+Create a function that takes `ScheduleUpdateInput` and returns `ScheduleUpdate`.
+To update a Schedule, use a callback to build the update from the description.
+The following example updates the Schedule to set a limited number of actions.
+
+```java
+ScheduleHandle handle = client.getHandle("schedule-id")
+handle.update(
+    (ScheduleUpdateInput input) -> {
+      Schedule.Builder builder = Schedule.newBuilder(input.getDescription().getSchedule());
+      // Make the schedule paused to demonstrate how to unpause a schedule
+      builder.setState(
+          ScheduleState.newBuilder()
+              .setLimitedAction(true)
+              .setRemainingActions(10)
+              .build());
+      return new ScheduleUpdate(builder.build());
+    });
 ```
 
 ## How to set a Cron Schedule in Java {#cron-schedule}

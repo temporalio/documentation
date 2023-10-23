@@ -97,7 +97,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 In this section you can find the following:
 
-- [Run a development Cluster](#run-a-development-server)
+- [Run a development Cluster](/dev-guide/typescript/foundations#run-a-development-server)
 - [Connect to a dev Cluster](#connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Develop a Workflow](#develop-workflows)
@@ -825,7 +825,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 	// Use a nil struct pointer to call Activities that are part of a struct.
 	var a *YourActivityObject
 	// Execute the Activity and wait for the result.
-	var activityResult *YourActivityResultObject
+	var activityResult YourActivityResultObject
 	err := workflow.ExecuteActivity(ctx, a.YourActivityDefinition, activityParam).Get(ctx, &activityResult)
 	if err != nil {
 		return nil, err
