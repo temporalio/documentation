@@ -17,7 +17,7 @@ export async function createNodesFromSamples(config) {
     for (const file of repoPaths.repo_files) {
       const ext = path.extname(file.name);
       let lang = ext.slice(1);
-      if (isDACX(file.name) && isSupportedExtension(ext)) {
+      if (isDACX(file.name, config, file) && isSupportedExtension(ext)) {
         const sourceURL = parseURL(repoPaths.source_url, file);
         if (ext === ".py") {
           lang = "python";
@@ -162,18 +162,35 @@ export async function createNodesFromSamples(config) {
         return true;
       case ".py":
         return true;
+      case ".java":
+          return true;  
       default:
         return false;
     }
   }
-  function isDACX(str) {
-    str.toLowerCase();
+  function isDACX(str, config, file) {
+    str = str.toLowerCase(); // Remember to assign the result back to str
     if (str.includes("_dacx")) {
       return true;
-    } else {
+    } else if (isSupportedExtension(path.extname(str))){
+      console.log(JSON.stringify(file));
+      const readPath = path.join(config.root_dir, config.temp_write_dir, file.directory, file.name);
+      try {
+        const fileContent = fs.readFileSync(readPath, 'utf-8');
+        const firstLine = fileContent.split('\n')[0]; // Get the first line of the file
+        if (firstLine.includes("dacx")) {
+          return true;
+        }
+      } catch (err) {
+        console.error("File failed to load:", err);
+      }
+    }
+    else{
       return false;
     }
+    
   }
+  
 
   function parseURL(repoPath, file) {
     const parts = file.directory.split("/");

@@ -16,7 +16,13 @@ Activity parameters are the function parameters of the function decorated with `
 These can be any data type Temporal can convert, including dataclasses when properly type-annotated.
 Technically this can be multiple parameters, but Temporal strongly encourages a single dataclass parameter containing all input fields.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 from temporalio import activity

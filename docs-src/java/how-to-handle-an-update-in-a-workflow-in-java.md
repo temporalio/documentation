@@ -50,7 +50,6 @@ You can also implement Update handlers dynamically.
 This is useful for library-level code and implementation of DSLs.
 
 ```java
-TODO
 Workflow.registerListener(
   (DynamicUpdateHandler)
       (updateName, encodedArgs) -> encodedArgs.get(0, String.class));

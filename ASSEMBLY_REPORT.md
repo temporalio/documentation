@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday October 18 2023 13:26:09 PM -0700
+Last assembled: Monday October 23 2023 14:49:10 PM -0600
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
-104 guide configurations found.
+110 guide configurations found.
 
-1570 information nodes found.
+1641 information nodes found.
 
-1336 information nodes are attached to guides.
+1403 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -54,6 +54,8 @@ concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
 
+cloud/security-cloud-intro -> /cloud/security#
+
 references/server-options -> /references/server-options#withconfig
 
 concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
@@ -68,7 +70,7 @@ concepts/what-is-a-codec-server -> /dataconversion#codec-server
 
 concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
 
-concepts/what-is-the-temporal-cli -> /cli/index#
+concepts/what-is-the-temporal-cli -> /cli#
 
 references/web-ui-configuration -> /references/web-ui-configuration#
 
@@ -87,6 +89,10 @@ concepts/what-is-a-task-queue -> /workers#task-queue
 concepts/what-is-a-state-transition -> /workflows#state-transition
 
 cloud/metrics-intro -> /cloud/metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui
+
+references/cluster-metrics -> /references/cluster-metrics#
+
+references/web-ui-environment-variables -> /references/web-ui-environment-variables#
 
 concepts/what-is-an-activity-execution -> /activities#activity-execution
 
@@ -350,7 +356,7 @@ cloud/tcld/user/set-account-role -> #set-account-role
 
 cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
 
-concepts/what-is-temporal-cloud -> /cloud/index#
+concepts/what-is-temporal-cloud -> /cloud#
 
 references/sdk-metrics -> /references/sdk-metrics#
 
@@ -382,8 +388,6 @@ concepts/what-is-an-activity-task-execution -> /workers#activity-task-execution
 
 concepts/what-is-an-update -> /workflows#update
 
-references/cluster-metrics -> /references/cluster-metrics#
-
 go/metrics -> /dev-guide/go/observability#metrics
 
 java/metrics -> /dev-guide/java/observability#metrics
@@ -396,11 +400,11 @@ concepts/what-is-a-schedule-to-start-timeout -> /activities#schedule-to-start-ti
 
 concepts/what-is-a-local-activity -> /activities#local-activity
 
-references/web-ui-environment-variables -> /references/web-ui-environment-variables#temporaluienabled
-
 concepts/what-is-a-frontend-service -> /clusters#frontend-service
 
 concepts/what-is-a-side-effect -> /workflows#side-effect
+
+references/failures -> /references/failures#
 
 concepts/what-is-a-failure-converter -> /dataconversion#failure-converter
 
@@ -492,11 +496,13 @@ java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conver
 
 concepts/what-is-a-retention-period -> /clusters#retention-period
 
-cloud/namespaces-intro -> #
+cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
 
 go/register-namespaces -> /dev-guide/go/features#register-namespace
 
 java/register-namespaces -> /dev-guide/java/features#register-namespace
+
+cloud/namespaces-intro -> /cloud/namespaces#
 
 go/manage-namespaces -> /dev-guide/go/features#manage-namespaces
 
@@ -608,11 +614,21 @@ python/developing-workflows -> /dev-guide/python/foundations#develop-workflows
 
 typescript/developing-workflows -> /dev-guide/typescript/foundations#develop-workflows
 
-go/versioning -> /dev-guide/go/versioning#
+go/patching -> /dev-guide/go/versioning#patching
 
-java/versioning -> /dev-guide/java/versioning#
+java/patching -> /dev-guide/java/versioning#patching
 
-typescript/versioning -> /dev-guide/typescript/versioning#
+python/how-to-use-the-python-sdk-patching-api-in-python -> /dev-guide/python/versioning#python-sdk-patching-api
+
+typescript/patching -> /dev-guide/typescript/versioning#patching
+
+go/how-to-use-worker-versioning-in-go -> /dev-guide/go/versioning#worker-versioning
+
+java/how-to-use-worker-versioning-in-java -> /dev-guide/java/versioning#worker-versioning
+
+python/how-to-use-worker-versioning-in-python -> /dev-guide/python/versioning#worker-versioning
+
+typescript/how-to-use-worker-versioning-in-typescript -> /dev-guide/typescript/versioning#worker-versioning
 
 concepts/what-is-a-temporal-application -> /temporal#temporal-application
 
@@ -672,6 +688,8 @@ typescript/queries -> /dev-guide/typescript/features#queries
 
 go/updates -> /dev-guide/go/features#updates
 
+java/updates -> /dev-guide/java/features#updates
+
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
 
 go/parent-close-policy -> /dev-guide/go/features#parent-close-policy
@@ -707,8 +725,6 @@ cloud/get-started-connect -> #connect-to-temporal-cloud
 cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 
 cloud/certificates-issue -> /cloud/certificates#issue-certificates
-
-cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
 
 cloud/users-invite -> /cloud/users#invite-users
 
@@ -1018,6 +1034,24 @@ python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
+python/python-dev-guide-structure -> #
+
+python/install-cli -> /dev-guide/python/project-setup#install-cli
+
+python/choose-dev-cluster -> /dev-guide/python/project-setup#choose-dev-cluster
+
+python/project-structure -> /dev-guide/python/project-setup#boilerplate-project
+
+python/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#start-workflow
+
+python/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
+
+cli/server/start-dev -> /cli/server#start-dev
+
+cli/operator/namespace/create -> /cli/operator#create
+
+cli/workflow/start -> /cli/workflow#start
+
 php/handle-signal -> #handle-signal
 
 php/add-sdk -> #install-a-temporal-sdk
@@ -1039,6 +1073,18 @@ java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-executi
 java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-with-start
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
+
+java/project-setup-introduction -> /dev-guide/java/project-setup#
+
+java/install-cli -> /dev-guide/java/project-setup#install-cli
+
+java/choose-dev-cluster -> /dev-guide/java/project-setup#choose-dev-cluster
+
+java/project-structure -> /dev-guide/java/project-setup#boilerplate-project
+
+java/backgroundcheck-boilerplate-start-workflow -> /dev-guide/java/project-setup#start-workflow
+
+java/backgroundcheck-boilerplate-testing-temporal -> /dev-guide/java/project-setup#test-framework
 
 java/foundations -> /dev-guide/java/foundations#
 
@@ -1073,13 +1119,5 @@ go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#loc
 go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
-
-cli/server/start-dev -> /cli/server#start-dev
-
-cli/operator/namespace/create -> /cli/operator#create
-
-cli/workflow/start -> /cli/workflow#start
-
-cloud/security-cloud-intro -> #
 
 
