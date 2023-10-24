@@ -29,7 +29,7 @@ It supports persistence to disk and in-memory mode through SQLite.
 
 **Install the Temporal CLI**
 
-Choose one of the following install methods to install the Temporal CLI.
+To install the Temporal CLI, choose one of the following procedures.
 
 <Tabs>
 <TabItem value="macOS" label="macOS">
