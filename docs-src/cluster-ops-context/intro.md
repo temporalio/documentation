@@ -156,7 +156,8 @@ docker run
 
 For more details, see the [Docker source file](https://github.com/temporalio/temporal/tree/master/docker).
 
-Each Temporal Server release also ships a `Server with Auto Setup` Docker image that includes an [`auto-setup.sh` script](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) we recommend using for initial schema setup of each supported database.
+Each Temporal Server release also ships a `Server with Auto Setup` Docker image that includes an [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script.
+We recommend using this script for initial schema setup of each supported database.
 You should familiarize yourself with [what auto-setup does](https://temporal.io/blog/auto-setup), because you will likely replace every part of the script to customize it for your own infrastructure and tooling choices.
 
 ### Gitpod
