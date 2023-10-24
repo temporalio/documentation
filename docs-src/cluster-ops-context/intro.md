@@ -177,7 +177,7 @@ This approach is often used for ephemeral purposes, such as learning and demos.
 
 [Temporal Helm charts](https://github.com/temporalio/helm-charts) enables you to get a Cluster running on [Kubernetes](https://kubernetes.io/) by deploying the Temporal Server services to individual pods and connecting them to your existing database and Elasticsearch instances.
 
-The template in the temporalio/helm-charts repo is your starting point, but you can and adjust it to fit your infrastructure needs.
+The template in the `temporalio/helm-charts` repo is your starting point, but you can adjust it to fit your infrastructure needs.
 
 Keep in mind that the configuration can become very complex if you try to scale services or run many Workflows concurrently.
 
