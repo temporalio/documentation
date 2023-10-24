@@ -136,7 +136,7 @@ The Temporal Server is a standalone Go application that can be [imported](/refer
 The main reason you might want to do this is to pass in custom plugins or any other customizations through the [Server Options](/references/server-options).
 Then you can build and run a binary that contains your customizations.
 
-Doing this requires [Go v1.18+](https://github.com/temporalio/temporal/blob/master/CONTRIBUTING.md).
+Doing this requires Go v1.19 or later, as specified in the Temporal Server [Build prerequisites](https://github.com/temporalio/temporal/blob/main/CONTRIBUTING.md#build-prerequisites).
 
 ### Temporal Server as a binary
 
