@@ -1,6 +1,6 @@
 ---
 id: platform-defaults
-title: Temporal Platform Defaults
+title: Temporal Platform defaults
 sidebar_label: Platform Defaults
 description: This page details many of the defaults coded into the Temporal Platform that can produce errors and warnings.
 tags:
