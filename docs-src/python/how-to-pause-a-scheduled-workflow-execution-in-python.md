@@ -16,7 +16,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 To pause a Scheduled Workflow Execution in Python, use the [pause()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#pause) asynchronous method on the Schedule Handle.
 You can pass a `note` to the `pause()` method to provide a reason for pausing the schedule.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/pause_schedule_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/pause_schedule_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 # ...
