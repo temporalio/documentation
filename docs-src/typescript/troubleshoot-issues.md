@@ -267,7 +267,7 @@ Querying a Workflow Execution whose query handler causes an error can result in 
 Some troubleshooting actions you can take:
 
 - Verify the connection from your Worker to the Temporal Server is working and doesn't have unusually high latency.
-- If you are running Temporal Server yourself, check your [server metrics](/kb/legacy-oss-prod-deploy/#scaling-and-metrics) to ensure it's not overloaded.
+- If you are running Temporal Server yourself, check your [server metrics](/production-readiness/tuning#scaling-and-metrics) to ensure it's not overloaded.
 - If what's timing out is a query, check the logs of your Workers to see if they are having issues handling the query.
 
 If none of the preceding actions help you discover why timeouts are occurring, please try to produce a minimal repro and we'll be glad to help.

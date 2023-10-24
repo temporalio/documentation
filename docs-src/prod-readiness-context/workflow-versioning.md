@@ -1,18 +1,15 @@
 ---
-slug: how-to-productionize-workflows
-title: An opinionated guide to productionizing Workflows
+id: workflow-versioning
+title: Workflow Versioning
+sidebar_label: Workflow Versioning
+description: Some techniques you can employ to ensure that your Workflows can be productionized and iterated upon.
 tags:
   - production-readiness
   - how-to
-date: 2023-03-31T00:00:00Z
+  - versioning
 ---
 
-You've learned about [Temporal](/temporal), checked out our samples, written a few [Workflows](/workflows), and now you're ready to productionize.
-In this article, we outline some techniques you can employ to ensure that your Workflows are ready for the future.
-
-<!-- truncate -->
-
-## Future-proofing your Payloads
+### Future-proofing your Payloads
 
 One of the easiest things you can do to future-proof your Workflows is to ensure that the inputs and outputs of your Workflows and [Activities](/activities) are ready for changes.
 The first step is to use one object, struct, or similar for each input and output.
@@ -39,7 +36,7 @@ We recommend doing this for all your Workflows and Activities in production.
 You can go even farther by defining your inputs and outputs using [Protocol Buffers (protobuf)](https://protobuf.dev/) or another interface definition language (IDL).
 We support protobuf with built-in converters.
 
-## Dealing with very long-lived or very event-heavy Workflows
+### Dealing with very long-lived or very event-heavy Workflows
 
 If you know that your Workflow will live for a very long time or generates a large volume of [Events](/workflows#event), you need to deal with the Event [limits](/workflows#limits) and [Continue-As-New](/workflows#continue-as-new) at some point.
 
@@ -66,7 +63,7 @@ The newly started Workflow then unpacks the state in the input and can "resume" 
 A huge benefit of this approach is that you avoid making patches to running Workflows.
 Instead, tell them all to continue onto a new [Task Queue](/workers#task-queue) with [Workers](/workers) that have the updated Workflow code.
 
-## When and how to make changes to your Workflow code
+### When and how to make changes to your Workflow code
 
 When you have an understanding of the importance of writing deterministic Workflow code, you might find yourself grappling with the best way to make changes to that code.
 

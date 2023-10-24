@@ -41,13 +41,12 @@ However, the right way for you depends entirely on your use case and where you p
 
 ### Temporal CLI
 
-Temporal CLI is a tool for interacting with Temporal from the command line and a distribution of Temporal server and web
-UI that runs as a single process with zero runtime dependencies. It supports persistence to disk and in-memory mode
-through SQLite.
+Temporal CLI is a tool for interacting with Temporal from the command line and a distribution of Temporal server and Web UI that runs as a single process with zero runtime dependencies.
+It supports persistence to disk and in-memory mode through SQLite.
 
 **Install the Temporal CLI**
 
-Choose one of the following install methods to install the Temporal CLI.
+To install the Temporal CLI, choose one of the following procedures.
 
 <Tabs>
 <TabItem value="macOS" label="macOS">
@@ -154,7 +153,7 @@ The Temporal Server is a standalone Go application that can be [imported](/refer
 The main reason you might want to do this is to pass in custom plugins or any other customizations through the [Server Options](/references/server-options#).
 Then you can build and run a binary that contains your customizations.
 
-Doing this requires [Go v1.18+](https://github.com/temporalio/temporal/blob/master/CONTRIBUTING.md).
+Doing this requires Go v1.19 or later, as specified in the Temporal Server [Build prerequisites](https://github.com/temporalio/temporal/blob/main/CONTRIBUTING.md#build-prerequisites).
 
 ### Temporal Server as a binary
 
@@ -174,7 +173,8 @@ docker run
 
 For more details, see the [Docker source file](https://github.com/temporalio/temporal/tree/master/docker).
 
-Each Temporal Server release also ships a `Server with Auto Setup` Docker image that includes an [`auto-setup.sh` script](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) we recommend using for initial schema setup of each supported database.
+Each Temporal Server release also ships a `Server with Auto Setup` Docker image that includes an [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script.
+We recommend using this script for initial schema setup of each supported database.
 You should familiarize yourself with [what auto-setup does](https://temporal.io/blog/auto-setup), because you will likely replace every part of the script to customize it for your own infrastructure and tooling choices.
 
 ### Gitpod
@@ -194,7 +194,7 @@ This approach is often used for ephemeral purposes, such as learning and demos.
 
 [Temporal Helm charts](https://github.com/temporalio/helm-charts) enables you to get a Cluster running on [Kubernetes](https://kubernetes.io/) by deploying the Temporal Server services to individual pods and connecting them to your existing database and Elasticsearch instances.
 
-The template in the temporalio/helm-charts repo is your starting point, but you can and adjust it to fit your infrastructure needs.
+The template in the `temporalio/helm-charts` repo is your starting point, but you can adjust it to fit your infrastructure needs.
 
 Keep in mind that the configuration can become very complex if you try to scale services or run many Workflows concurrently.
 
