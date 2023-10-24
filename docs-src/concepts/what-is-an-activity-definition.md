@@ -32,7 +32,7 @@ In the context of Temporal, Activities should be designed to be safely executed 
 
 :::info
 
-By design, completed Activities will not re-execute as part of a [Workflow Replay](/workflows#replays). However, Activites won’t record to the [Event History](https://docs.temporal.io/retry-policies#event-history) until they return or produce an error. If an Activity fails to report to the server at all, it will be retried. Designing for idempotence, especially if you have a [Global Namespace](namespaces#global-namespace), will improve reusability and reliability.
+By design, completed Activities will not re-execute as part of a [Workflow Replay](/workflows#replays). However, Activites won’t record to the [Event History](/retry-policies#event-history) until they return or produce an error. If an Activity fails to report to the server at all, it will be retried. Designing for idempotence, especially if you have a [Global Namespace](/namespaces#global-namespace), will improve reusability and reliability.
 
 :::
 
