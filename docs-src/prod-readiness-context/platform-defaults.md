@@ -11,7 +11,7 @@ tags:
 
 :::caution
 
-For the latest information on the Temporal Cloud limits, see [Temporal Cloud limits sheet](/cloud/operating-envelope#default-limits).
+For the latest information on the Temporal Cloud default limits, see [What are the Temporal Cloud default limits?](/cloud/operating-envelope#default-limits)
 
 :::
 
