@@ -10,7 +10,7 @@ tags:
 
 An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 
-- [How to develop an Activity Definition using the Go SDK](/go/how-to-develop-an-activity-definition-in-go)
+- [How to develop an Activity Definition using the Go SDK](/go/generated/how-to-develop-an-activity-definition-in-go)
 - [How to develop an Activity Definition using the Java SDK](/java/developing-activities)
 - [How to develop an Activity Definition using the PHP SDK](/php/developing-activities)
 - [How to develop an Activity Definition using the Python SDK](/python/developing-activities)

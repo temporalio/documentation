@@ -1,12 +1,12 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday October 23 2023 17:58:14 PM -0600
+Last assembled: Tuesday October 24 2023 16:34:36 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
 111 guide configurations found.
 
-1646 information nodes found.
+1647 information nodes found.
 
 1408 information nodes are attached to guides.
 
@@ -420,7 +420,7 @@ concepts/what-is-an-activity-definition -> #activity-definition
 
 concepts/what-is-an-activity-heartbeat -> #activity-heartbeat
 
-go/how-to-develop-an-activity-definition-in-go -> /dev-guide/go/foundations#activity-definition
+go/generated/how-to-develop-an-activity-definition-in-go -> /dev-guide/go/foundations#activity-definition
 
 java/developing-activities -> /dev-guide/java/foundations#develop-activities
 
@@ -536,7 +536,7 @@ concepts/what-is-a-temporal-client -> #temporal-client
 
 concepts/what-is-a-worker-program -> /workers#worker-program
 
-go/introduction-to-go-sdk -> /dev-guide/go/introduction#
+go/chapter-introduction/introduction-to-go-sdk -> /dev-guide/go/introduction#
 
 java/introduction-to-java-sdk -> /dev-guide/java/introduction#
 
@@ -561,8 +561,6 @@ python/visibility -> /dev-guide/python/observability#visibility
 typescript/visibility -> /dev-guide/typescript/observability#visibility
 
 concepts/what-is-a-worker-entity -> #worker-entity
-
-go/how-to-develop-a-worker-in-go -> /dev-guide/go/foundations#develop-worker
 
 java/how-to-develop-a-worker-program-in-java -> /dev-guide/java/foundations#run-a-dev-worker
 
@@ -1094,36 +1092,38 @@ go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 
 go/logging -> /dev-guide/go/observability#logging
 
-go/how-to-replay-a-workflow-execution-in-go -> #workflowreplayer
-
-go/durability-through-replays -> #durability-through-replays
-
-go/workflow-determinism -> #workflow-determinism
-
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
-go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
-
-go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-go/go-dev-guide-structure -> #
-
-go/install-cli -> /dev-guide/go/project-setup#install-cli
-
-go/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
-
-go/project-structure -> /dev-guide/go/project-setup#boilerplate-project
-
-go/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
-
-go/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/go/project-setup#cloud-worker
-
-go/self-hosted-worker-docker-network -> /dev-guide/go/project-setup#dockerfile
-
-go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#local-dev-server
-
-go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
-
 go/foundations -> /dev-guide/go/foundations#
+
+go/generated/how-to-develop-a-worker-in-go -> /dev-guide/go/foundations#develop-worker
+
+go/chapter-project-setup/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
+
+go/generated/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/go/project-setup#cloud-worker
+
+go/chapter-project-setup/project-structure -> /dev-guide/go/project-setup#boilerplate-project
+
+go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
+
+go/chapter-project-setup/self-hosted-worker-docker-network -> /dev-guide/go/project-setup#dockerfile
+
+go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#local-dev-server
+
+go/chapter-durable-execution/how-to-replay-a-workflow-execution-in-go -> #workflowreplayer
+
+go/chapter-durable-execution/durability-through-replays -> #durability-through-replays
+
+go/chapter-durable-execution/workflow-determinism -> #workflow-determinism
+
+go/generated/how-to-customize-workflow-type-in-go -> #customize-workflow-type
+
+go/generated/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+go/landing-page/go-dev-guide-structure -> #
+
+go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
+
+go/generated/how-to-test-workflow-event-history-in-go -> #testing-workflow-event-history
 
 

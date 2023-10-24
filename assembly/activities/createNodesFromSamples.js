@@ -70,6 +70,7 @@ export async function createNodesFromSamples(config) {
         config.root_dir,
         config.docs_src,
         `${node.metadata.lang}`,
+        "generated",
         `${node.metadata.id}.md`
       );
       await fs.writeFile(nodeWritePath, writeStr);
@@ -163,7 +164,7 @@ export async function createNodesFromSamples(config) {
       case ".py":
         return true;
       case ".java":
-          return true;  
+        return true;
       default:
         return false;
     }
@@ -172,25 +173,22 @@ export async function createNodesFromSamples(config) {
     str = str.toLowerCase(); // Remember to assign the result back to str
     if (str.includes("_dacx")) {
       return true;
-    } else if (isSupportedExtension(path.extname(str))){
+    } else if (isSupportedExtension(path.extname(str))) {
       console.log(JSON.stringify(file));
       const readPath = path.join(config.root_dir, config.temp_write_dir, file.directory, file.name);
       try {
-        const fileContent = fs.readFileSync(readPath, 'utf-8');
-        const firstLine = fileContent.split('\n')[0]; // Get the first line of the file
+        const fileContent = fs.readFileSync(readPath, "utf-8");
+        const firstLine = fileContent.split("\n")[0]; // Get the first line of the file
         if (firstLine.includes("dacx")) {
           return true;
         }
       } catch (err) {
         console.error("File failed to load:", err);
       }
-    }
-    else{
+    } else {
       return false;
     }
-    
   }
-  
 
   function parseURL(repoPath, file) {
     const parts = file.directory.split("/");

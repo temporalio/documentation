@@ -23,10 +23,10 @@ By the end of this section you will know how to construct a new Temporal Applica
 
 There are three ways to follow this guide:
 
-- [Use a local dev server](/go/choose-dev-cluster#local-dev-server)
-- [Use Temporal Cloud](/go/choose-dev-cluster#temporal-cloud)
-- [Use a self-hosted environment such as Docker](/go/choose-dev-cluster#self-hosted-temporal-cluster)
+- [Use a local dev server](/go/chapter-project-setup/choose-dev-cluster#local-dev-server)
+- [Use Temporal Cloud](/go/chapter-project-setup/choose-dev-cluster#temporal-cloud)
+- [Use a self-hosted environment such as Docker](/go/chapter-project-setup/choose-dev-cluster#self-hosted-temporal-cluster)
 
-Read more in the [Choose a development Cluster](/go/choose-dev-cluster) section on this page.
+Read more in the [Choose a development Cluster](/go/chapter-project-setup/choose-dev-cluster) section on this page.
 
 :::

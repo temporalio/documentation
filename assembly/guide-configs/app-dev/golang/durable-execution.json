@@ -13,23 +13,23 @@
   "sections": [
     {
       "type": "p",
-      "id": "go/durable-execution"
+      "id": "go/chapter-durable-execution/durable-execution"
     },
     {
       "type": "h2",
-      "id": "go/how-to-replay-a-workflow-execution-in-go"
-    },
-    {
-      "type": "p",
-      "id": "go/how-to-test-workflow-event-history-in-go"
+      "id": "go/chapter-durable-execution/how-to-replay-a-workflow-execution-in-go"
     },
     {
       "type": "h2",
-      "id": "go/durability-through-replays"
+      "id": "go/generated/how-to-test-workflow-event-history-in-go"
     },
     {
       "type": "h2",
-      "id": "go/workflow-determinism"
+      "id": "go/chapter-durable-execution/durability-through-replays"
+    },
+    {
+      "type": "h2",
+      "id": "go/chapter-durable-execution/workflow-determinism"
     }
   ]
 }

@@ -15,8 +15,9 @@ For more information about Durable Execution, refer to our [blog about Building 
 
 In this section you can find the following:
 
-- [How to retrieve Workflow Event History](/go/retrieve-event-history)
-- [How to replay a Workflow Execution in Go](/go/how-to-replay-a-workflow-execution-in-go)
-- [How to test Workflow Event History in Go](/go/how-to-test-workflow-event-history-in-go)
-- [Understand durability through Replays](/go/durability-through-replays)
-- [Workflow Determinism](/go/workflow-determinism)
+<!-- - [How to retrieve Workflow Event History](/go/chapter-durable-execution/retrieve-event-history) -->
+
+- [How to replay a Workflow Execution in Go](/go/chapter-durable-execution/how-to-replay-a-workflow-execution-in-go)
+- [How to test Workflow Event History in Go](/go/generated/how-to-test-workflow-event-history-in-go)
+- [Understand durability through Replays](/go/chapter-durable-execution/durability-through-replays)
+- [Workflow Determinism](/go/chapter-durable-execution/workflow-determinism)
