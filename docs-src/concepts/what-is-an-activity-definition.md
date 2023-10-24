@@ -30,6 +30,12 @@ Temporal recommends that Activities be idempotent.
 Idempotent means that performing an operation multiple times has the same result as performing it once.
 In the context of Temporal, Activities should be designed to be safely executed multiple times without causing unexpected or undesired side effects.
 
+:::info
+
+By design, completed Activities will not re-execute as part of a [Workflow Replay](/workflows#replays). However, Activites won’t record to the [Event History](https://docs.temporal.io/retry-policies#event-history) until they return or produce an error. If an Activity fails to report to the server at all, it will be retried. Designing for idempotence, especially if you have a [Global Namespace](namespaces#global-namespace), will improve reusability and reliability.
+
+:::
+
 An Activity is idempotent if multiple [Activity Task Executions](/concepts/what-is-an-activity-task-execution) do not change the state of the system beyond the first Activity Task Execution.
 
 We recommend using idempotency keys for critical side effects.
