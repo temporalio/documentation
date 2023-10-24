@@ -4,7 +4,7 @@
   "file_dir": "/production-readiness",
   "title": "Temporal Server Monitoring",
   "sidebar_label": "Monitoring",
-  "description": "This section provides guides to monitoring a Temporal server.",
+  "description": "This section provides guides to monitoring a Temporal Server.",
   "use_description": true,
   "toc_max_heading_level": 4,
   "add_tabs_support": false,
