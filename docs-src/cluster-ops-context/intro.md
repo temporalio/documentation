@@ -24,9 +24,8 @@ However, the right way for you depends entirely on your use case and where you p
 
 ### Temporal CLI
 
-Temporal CLI is a tool for interacting with Temporal from the command line and a distribution of Temporal server and web
-UI that runs as a single process with zero runtime dependencies. It supports persistence to disk and in-memory mode
-through SQLite.
+Temporal CLI is a tool for interacting with Temporal from the command line and a distribution of Temporal server and Web UI that runs as a single process with zero runtime dependencies.
+It supports persistence to disk and in-memory mode through SQLite.
 
 **Install the Temporal CLI**
 
