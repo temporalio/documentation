@@ -5,7 +5,7 @@
   "file_dir": "dev-guide/golang",
   "title": "Go SDK developer's guide - Durable Execution",
   "sidebar_label": "Durable Execution",
-  "sidebar_position": 9,
+  "sidebar_position": 3,
   "description": "The Durable Execution section of the Temporal Developer's guide covers advanced beginner concepts for working with Temporal, including testing your code, reviewing workflow event history, adding timers, and understanding determinism. Developing for durable execution is a core aspect of Temporal.",
   "use_description": false,
   "toc_max_heading_level": 4,
@@ -17,19 +17,19 @@
     },
     {
       "type": "h2",
-      "id": "/go/how-to-replay-a-workflow-execution-in-go"
+      "id": "go/how-to-replay-a-workflow-execution-in-go"
     },
     {
       "type": "p",
-      "id": "/go/how-to-test-workflow-event-history-in-go"
+      "id": "go/how-to-test-workflow-event-history-in-go"
     },
     {
       "type": "h2",
-      "id": "/go/durability-through-replays"
+      "id": "go/durability-through-replays"
     },
     {
       "type": "h2",
-      "id": "/go/workflow-timers-and-determinism"
+      "id": "go/workflow-determinism"
     }
   ]
 }

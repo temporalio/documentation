@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday October 23 2023 14:49:10 PM -0600
+Last assembled: Monday October 23 2023 17:58:14 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-110 guide configurations found.
+111 guide configurations found.
 
-1641 information nodes found.
+1646 information nodes found.
 
-1403 information nodes are attached to guides.
+1408 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -622,6 +622,8 @@ python/how-to-use-the-python-sdk-patching-api-in-python -> /dev-guide/python/ver
 
 typescript/patching -> /dev-guide/typescript/versioning#patching
 
+concepts/what-is-worker-versioning -> /workers#worker-versioning
+
 go/how-to-use-worker-versioning-in-go -> /dev-guide/go/versioning#worker-versioning
 
 java/how-to-use-worker-versioning-in-java -> /dev-guide/java/versioning#worker-versioning
@@ -1022,8 +1024,6 @@ typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
-concepts/what-is-worker-versioning -> /workers#worker-versioning
-
 python/tracing -> /dev-guide/python/observability#tracing
 
 python/logging -> /dev-guide/python/observability#logging
@@ -1093,6 +1093,12 @@ go/testing -> /dev-guide/go/testing#replay
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 
 go/logging -> /dev-guide/go/observability#logging
+
+go/how-to-replay-a-workflow-execution-in-go -> #workflowreplayer
+
+go/durability-through-replays -> #durability-through-replays
+
+go/workflow-determinism -> #workflow-determinism
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 

@@ -83,15 +83,15 @@ temporal workflow show --workflow-id your-workflow-id --output json  > your_work
 This Workflow output contains a `WorkflowTaskFailed` event, which will fail the `TestReplayWorkflowHistoryFromFile()` test:
 
 ```output
-    {
-      "eventId": "4",
-      "eventTime": "2023-10-16T22:02:33.225671800Z",
-      "eventType": "WorkflowTaskFailed",
-      "taskId": "1048672",
-      "workflowTaskFailedEventAttributes": {
-        "scheduledEventId": "2",
-        "startedEventId": "3",
-        "cause": "WorkflowWorkerUnhandledFailure",
+{
+  "eventId": "4",
+  "eventTime": "2023-10-16T22:02:33.225671800Z",
+  "eventType": "WorkflowTaskFailed",
+  "taskId": "1048672",
+  "workflowTaskFailedEventAttributes": {
+    "scheduledEventId": "2",
+    "startedEventId": "3",
+    "cause": "WorkflowWorkerUnhandledFailure",
 ```
 
 Testing for Non-Determinism errors can help improve your Temporal Workflows. You can also watch [Using Workflow Reset to Recover from a Bad Deployment](https://www.youtube.com/embed/wKnGbukEppI?rel=0&iv_load_policy=3&modestbranding=1&showsearch=0&showinfo=0&wmode=transparent) from our [Temporal 102](https://learn.temporal.io/courses/temporal_102/go) course.

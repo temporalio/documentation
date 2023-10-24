@@ -89,7 +89,7 @@ You can also use `temporal workflow count --query 'ExecutionStatus="Running"'` t
 
 :::
 
-For a complete list of events that can be produced by the Temporal Cluster, refer to the [Event Reference](https://docs.temporal.io/references/events). In the next section, you'll add a Replayer test, so you can understand Replay logging. 
+For a complete list of events that can be produced by the Temporal Cluster, refer to the [Event Reference](https://docs.temporal.io/references/events). In the next section, you'll add a Replayer test, so you can understand Replay logging.
 
 :::caution
 

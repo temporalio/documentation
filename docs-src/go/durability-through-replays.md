@@ -16,10 +16,11 @@ If a regular function in Go crashes during execution, all of its state is lost. 
 [History Replay](https://docs.temporal.io/dev-guide/go/testing#replay), sometimes also called Workflow Replay, is the mechanism that Temporal uses to reconstruct the state of a Workflow Execution.
 
 Temporal Workflow Execution works like so:
+
 - The client application starts a Workflow Execution by calling the Temporal client SDK API like client.start_workflow() and passing the Workflow function to execute.
-- This sends a command to the Temporal server to start the Workflow Execution. The server persists the Workflow state and sends back the WorkflowExecution handle. 
-- The client passes this WorkflowExecution to a Worker process to run it. 
-- The Worker loads the Workflow function definition and starts executing it step-by-step like a normal function. 
+- This sends a command to the Temporal server to start the Workflow Execution. The server persists the Workflow state and sends back the WorkflowExecution handle.
+- The client passes this WorkflowExecution to a Worker process to run it.
+- The Worker loads the Workflow function definition and starts executing it step-by-step like a normal function.
 - When the code hits an await on an async activity or signal, the Worker generates a Task based on that and returns execution back to the event loop.
 - The Worker keeps polling the Temporal server for Tasks for that WorkflowExecution. When a Task is available, it executes the corresponding Activity function or Signal callback.
 - Once the awaited Activity or Signal completes, the Workflow code resumes from where it left off and continues execution.
@@ -36,6 +37,7 @@ For example, if the `ScheduleActivityTask` Command has a corresponding `Activity
 To further understand this concept, you can watch [How Temporal Provides Durable Execution](https://www.youtube.com/embed/5eNqspaNoxo?rel=0&iv_load_policy=3&modestbranding=1&showse) from our [Temporal 102](https://learn.temporal.io/courses/temporal_102/go) course.
 
 The example application from this section generates eight different types of events:
+
 - `WorkflowExecutionStarted`
 - `WorkflowTaskScheduled`
 - `WorkflowTaskStarted`
@@ -49,6 +51,6 @@ For example, a `ScheduleActivityTask` command in SDK code generates an `Activity
 
 Each logged Event defines one or more attributes used to store information specific to that Event, such as the error associated with a failed Activity or the duration of a Timer. Every Event has at least three attributes in common. The first is the Event ID, which uniquely identifies this Event within the History and also its position within the history. The second is the Event time, which is a timestamp representing when the Event occurred. The third is the Event Type, which specifies what kind of Event it is.
 
-Events may also contain additional attributes that vary based on the Event Type. For example, the WorkflowExecutionStarted Event contains the Workflow Type and the data provided as input to at the start of execution. The `WorkflowExecutionCompleted` Event contains the result of that execution, while failed Workflows will end with a `WorkflowExecutionFailed` Event that contains the error returned by that execution. 
+Events may also contain additional attributes that vary based on the Event Type. For example, the WorkflowExecutionStarted Event contains the Workflow Type and the data provided as input to at the start of execution. The `WorkflowExecutionCompleted` Event contains the result of that execution, while failed Workflows will end with a `WorkflowExecutionFailed` Event that contains the error returned by that execution.
 
 For a complete list of events that can be produced by the Temporal Cluster, refer to the [Event Reference](https://docs.temporal.io/references/events). You can also watch [How Workflow Code Maps to Commands](https://www.youtube.com/embed/sjrZJEfe7NE?rel=0&iv_load_policy=3&modestbranding=1&showsearch=0&showinfo=0&wmode=transparent) and [How Commands Map to Events](https://www.youtube.com/embed/EcGcu-Q9sRw?rel=0&iv_load_policy=3&modestbranding=1&showsearch=0&showinfo=0&wmode=transparent) from our [Temporal 102](https://learn.temporal.io/courses/temporal_102/go) course, or refer to refer to [Let's Visualize a Workflow](https://temporal.io/blog/lets-visualize-a-workflow) on the Temporal blog.
