@@ -42,7 +42,7 @@ For other Activity-related Events, see [Activity Events](/workflows#activity-eve
 
 An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/workers#activity-task-execution).
 
-- [How to develop an Activity Definition using the Go SDK](/dev-guide/go/foundations#activity-definition)
+- [How to develop an Activity Definition using the Go SDK](/go/how-to-develop-an-activity-definition-in-go)
 - [How to develop an Activity Definition using the Java SDK](/dev-guide/java/foundations#develop-activities)
 - [How to develop an Activity Definition using the PHP SDK](/dev-guide/php/foundations#develop-activities)
 - [How to develop an Activity Definition using the Python SDK](/dev-guide/python/foundations#develop-activities)

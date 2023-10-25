@@ -41,7 +41,7 @@ There are two types of Tasks:
 
 A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.
 
-- [How to run a development Worker using the Go SDK](/dev-guide/go/foundations#develop-worker)
+- [How to run a development Worker using the Go SDK](/go/how-to-develop-a-worker-in-go)
 - [How to run a development Worker using the Java SDK](/dev-guide/java/foundations#run-a-dev-worker)
 - [How to run a development Worker using the PHP SDK](/dev-guide/php/foundations#run-a-dev-worker)
 - [How to run a development Worker using the Python SDK](/dev-guide/python/foundations#run-a-dev-worker)
@@ -193,7 +193,7 @@ There are four places where the name of the Task Queue can be set by the develop
 
 2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
 
-- [How to run a development Worker using the Go SDK](/dev-guide/go/foundations#develop-worker)
+- [How to run a development Worker using the Go SDK](/go/how-to-develop-a-worker-in-go)
 - [How to run a development Worker using the Java SDK](/dev-guide/java/foundations#run-a-dev-worker)
 - [How to run a development Worker using the PHP SDK](/dev-guide/php/foundations#run-a-dev-worker)
 - [How to run a development Worker using the Python SDK](/dev-guide/python/foundations#run-a-dev-worker)

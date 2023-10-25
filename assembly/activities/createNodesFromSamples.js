@@ -66,13 +66,19 @@ export async function createNodesFromSamples(config) {
         }
         writeStr = `${writeStr}${codeBlocks}\n\n`;
       }
-      const nodeWritePath = path.join(
+      const nodeWriteDirectory = path.join(
         config.root_dir,
         config.docs_src,
         `${node.metadata.lang}`,
+        'generated'
+    ); 
+
+    const nodeWritePath = path.join(
+        nodeWriteDirectory,
         `${node.metadata.id}.md`
-      );
-      await fs.writeFile(nodeWritePath, writeStr);
+    );
+
+    await fs.writeFile(nodeWritePath, writeStr);
     }
   }
 
@@ -163,7 +169,7 @@ export async function createNodesFromSamples(config) {
       case ".py":
         return true;
       case ".java":
-          return true;  
+          return true;
       default:
         return false;
     }
@@ -188,9 +194,7 @@ export async function createNodesFromSamples(config) {
     else{
       return false;
     }
-    
   }
-  
 
   function parseURL(repoPath, file) {
     const parts = file.directory.split("/");
@@ -205,7 +209,7 @@ export async function createNodesFromSamples(config) {
 
 The following code sample comes from a working and tested sample application.
 The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](${link}) in the context of the rest of the application code. 
+Visit the source repository to [view the source code](${link}) in the context of the rest of the application code.
 
 :::`;
   }

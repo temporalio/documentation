@@ -123,14 +123,22 @@ async function replaceLinks(line, match, link, current_guide_id) {
   let newPath;
   let localRef;
   let replaceable = match[0];
+  
   // define what needs to be replaced
   if (match[3] === undefined) {
     localRef = `#${link.local_ref}`;
   } else {
     localRef = match[3];
   }
-  // define the new path
 
+  // Check if the link is inside the 'generated' folder
+  const segments = link.node_id.split('/');
+  if (segments.length > 2 && segments[1] === 'generated') {
+    link.file_dir = `${segments[0]}/generated`;
+    link.guide_id = segments.slice(2).join('/');
+  }
+
+  // define the new path
   if (`${link.file_dir}/${link.guide_id}` != current_guide_id) {
     if (link.slug == "none") {
       if (link.file_dir != "/") {
@@ -144,12 +152,14 @@ async function replaceLinks(line, match, link, current_guide_id) {
   } else {
     newPath = `${localRef}`;
   }
+
   // convert to link preview
   const html = linkPreview(newPath, match[1]);
   line = line.replaceAll(replaceable, html);
   pushToLinkMapping(link.node_id, newPath);
   return line;
 }
+
 
 function pushToLinkMapping(nodeId, newPath) {
   if (!alreadyThere(nodeId)) {

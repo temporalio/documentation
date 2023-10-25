@@ -8,12 +8,19 @@ export async function genSourceObjects(config) {
   const filePaths = [];
   for (const dirName of config.content_source_dirs) {
     const readDir = path.join(config.root_dir, dirName);
+
+    // Check in the main directory
     for await (const entry of readdirp(readDir)) {
-      // can add more ignores here
-      // example:
-      // if (!entry.fullPath.includes("learning-paths"))
       if (path.extname(entry.fullPath) == ".md") {
         filePaths.push(entry);
+      }
+    }
+
+    // Check inside the 'generated' folder
+    const generatedDir = path.join(readDir, 'generated');
+    for await (const generatedEntry of readdirp(generatedDir)) {
+      if (path.extname(generatedEntry.fullPath) == ".md") {
+        filePaths.push(generatedEntry);
       }
     }
   }

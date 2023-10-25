@@ -59,11 +59,37 @@ async function matchLangTabs(langtabs, infoNodes) {
 }
 
 async function matchNode(id, infoNodes) {
-  const match = infoNodes.find((node) => {
+  let match = infoNodes.find((node) => {
     return node.id === id;
   });
-  if (match == undefined) {
+
+  // Diagnostic: Print nodes when no match is found
+  if (match === undefined) {
+    console.log(`No match found for id: ${id}. Trying 'generated' folder.`);
+  }
+
+  // If no match, check for the ID in the 'generated' folder nested inside language-specific folder
+  if (match === undefined) {
+    const segments = id.split('/');
+    if (segments.length > 1) {
+      const generatedId = `${segments[0]}/generated/${segments.slice(1).join('/')}`;
+      match = infoNodes.find((node) => {
+        return node.id === generatedId;
+      });
+
+      // Diagnostic: Print info when searching within 'generated' folder
+      if (match) {
+        console.log(`Match found in 'generated' folder for id: ${generatedId}`);
+      } else {
+        console.log(`No match found in 'generated' folder for id: ${generatedId}`);
+      }
+    }
+  }
+
+  if (match === undefined) {
     throw `Can't find a matching node for ${id}`;
   }
   return match;
 }
+
+

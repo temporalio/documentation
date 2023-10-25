@@ -101,9 +101,9 @@ In this section you can find the following:
 - [Connect to a dev Cluster](#connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Develop a Workflow](#develop-workflows)
-- [Develop an Activity](#activity-definition)
+- [Develop an Activity](/go/how-to-develop-an-activity-definition-in-go)
 - [Start an Activity Execution](#activity-execution)
-- [Run a dev Worker](#develop-worker)
+- [Run a dev Worker](/go/how-to-develop-a-worker-in-go)
 - [Run a Temporal Cloud Worker](#run-a-temporal-cloud-worker)
 - [Start a Workflow Execution](#start-workflow-execution)
 
@@ -534,7 +534,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 In Go, by default, the Workflow Type name is the same as the function name.
 
-To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a [Worker](#develop-worker).
+To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a [Worker](/go/how-to-develop-a-worker-in-go).
 
 :::copycode Sample application code
 
@@ -1475,7 +1475,7 @@ This method of passing dependencies between Activity Task Executions is not reco
 
 Instead, we recommend using a struct with fields that contain dependencies and develop Activity Definitions as struct methods and then pass all the dependencies on the structure initialization.
 
-- [How to develop an Activity Definition using the Go SDK](#activity-definition)
+- [How to develop an Activity Definition using the Go SDK](/go/how-to-develop-an-activity-definition-in-go)
 
 :::
 
@@ -1720,7 +1720,7 @@ The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in
 
 **Registering Activity `structs`**
 
-Per [Activity Definition](#activity-definition) best practices, you might have an Activity struct that has multiple methods and fields.
+Per [Activity Definition](/go/how-to-develop-an-activity-definition-in-go) best practices, you might have an Activity struct that has multiple methods and fields.
 When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
 
 **Registering multiple Types**
@@ -1749,7 +1749,7 @@ Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/
 
 #### Name
 
-See [How to customize a Workflow Type in Go](#customize-workflow-type)
+See [How to customize a Workflow Type in Go](/go/how-to-customize-workflow-type-in-go)
 
 #### DisableAlreadyRegisteredCheck
 
@@ -1783,7 +1783,7 @@ Options for registering an Activity
 
 #### Name
 
-See [How to customize Activity Type in Go](#customize-activity-type).
+See [How to customize Activity Type in Go](/go/how-to-customize-activity-type-in-go).
 
 #### DisableAlreadyRegisteredCheck
 

@@ -41,14 +41,14 @@ The follow structure applies to the Temporal Go SDK developer's guide:
     - [Self-hosted Temporal Cluster](/dev-guide/go/project-setup#self-hosted-temporal-cluster)
   - [Boilerplate application code and file structure best practices](/dev-guide/go/project-setup#boilerplate-project)
   - How to run your Worker
-    - [Local dev server Worker](/dev-guide/go/project-setup#dev-server-worker)
-    - [Temporal Cloud Worker](/dev-guide/go/project-setup#cloud-worker)
+    - [Local dev server Worker](/go/backgroundcheck-boilerplate-run-a-dev-server-worker)
+    - [Temporal Cloud Worker](/go/backgroundcheck-boilerplate-cloud-worker)
     - [Self-hosted Worker](/dev-guide/go/project-setup#dockerfile)
   - How to start your Workflow using the CLI
     - [Start on local dev server](/dev-guide/go/project-setup#local-dev-server)
     - [Start on Temporal Cloud](/dev-guide/go/project-setup#temporal-cloud)
     - [Start on Self-hosted](/dev-guide/go/project-setup#self-hosted)
-  - [How to add a testing framework and tests to your application](/dev-guide/go/project-setup#test-framework)
+  - [How to add a testing framework and tests to your application](/go/backgroundcheck-boilerplate-add-test-framework)
 
 2. [**Foundations**](/dev-guide/go/foundations#): The minimum things required to build and run a simple Workflow with a single Activity.
 

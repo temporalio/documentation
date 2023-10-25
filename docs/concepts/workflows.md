@@ -152,7 +152,7 @@ This feature is useful for Workflow Definition logic that needs to be updated bu
 
 - [How to patch Workflow code in Go](/dev-guide/go/versioning#patching)
 - [How to patch Workflow code in Java](/dev-guide/java/versioning#patching)
-- [How to patch Workflow code in Python](/dev-guide/python/versioning#python-sdk-patching-api)
+- [How to patch Workflow code in Python](/python/how-to-use-the-python-sdk-patching-api-in-python)
 - [How to patch Workflow code in TypeScript](/dev-guide/typescript/versioning#patching)
 
 #### Worker Build Ids
