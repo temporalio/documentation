@@ -56,7 +56,6 @@ The unit of measurement for metrics can vary based on which SDK they are being r
 This includes SDKs like TypeScript, Python, and .NET which are defined in the Core SDK.
 
 **Java and Go SDKs:** Metrics of the type Histogram are measured in _seconds_.
-Java SDK also reports metrics in seconds and suffixes units accordingly.
 
 :::
 
