@@ -257,6 +257,7 @@ Most SDKs provide example Codec Server implementation samples, listed here:
 
 - [Go](https://github.com/temporalio/samples-go/tree/main/codec-server)
 - [Java](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)
+- [.NET](https://github.com/temporalio/samples-dotnet/tree/main/src/Encryption)
 - [Python](https://github.com/temporalio/samples-python/blob/main/encryption/codec_server.py)
 - [TypeScript](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/codec-server.ts)
 
@@ -389,10 +390,7 @@ Use the access tokens to validate access and then return decoded payloads from t
 You can enable this by selecting **Pass access token** in your Codec Server endpoint interface where you add your endpoint.
 Enabling this option in the Temporal Cloud UI adds an authorization header to each request sent to the Codec Server endpoint that you set.
 
-In your Codec Server implementation, verify the signature on this access token (in your authorization header) against the JWKS endpoint provided to you.
-
-<!--Update: the JWKS link is provided in the UI onboarding content for now.
-Is this process defined? when a customer signs up for temporal cloud, do we provide them with the JWKS as part of the onboarding process? also the JWKS endpoint is rate-limited - something we should call out when providing the link to users.-->
+In your Codec Server implementation, verify the signature on this access token (in your authorization header) against [our JWKS endpoint](https://login.tmprl.cloud/.well-known/jwks.json).
 
 <!-- Commenting this for now.-->
 <!--If you want to unpack the claims in your token to add additional checks on whether the user has valid access to the Namespace and payloads they are trying to access, you can implement it using Auth0 SDKs, middleware, or one of the third-party libraries at JWT.io.-->

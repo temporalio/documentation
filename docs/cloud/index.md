@@ -4,6 +4,7 @@ title: Temporal Cloud documentation
 sidebar_label: Temporal Cloud
 sidebar_position: 3
 description: Temporal Cloud documentation, including explanations and usage.
+slug: /cloud
 toc_max_heading_level: 4
 keywords:
 - explanation
@@ -19,14 +20,14 @@ tags:
 
 Temporal Cloud is offered in units of isolation known as [Namespaces](/namespaces). You can provision and use one or more Cloud Namespaces. A typical use case is to use separate Namespaces as development, testing, integration, staging, and production environments for an application.
 
-:::success Sign up for Temporal Cloud!
+:::tip Sign up for Temporal Cloud!
 
 To request a Temporal Cloud account, complete the [request form](https://pages.temporal.io/cloud-request-access).
 
 :::
 
 - [Introduction to Temporal Cloud](/cloud/introduction)
-  - [Security](/cloud/security)
+  - [Security](/cloud/security#)
   - [Operating envelope](/cloud/operating-envelope)
   - [Pricing](/cloud/pricing)
   - [Support](/cloud/support)

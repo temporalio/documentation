@@ -18,7 +18,13 @@ This can include details about the Schedule Spec (such as Intervals), CronExpres
 
 To describe a Schedule, use `Describe()` on the ScheduleHandle.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/describe/main_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/describe/main_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 func main() {

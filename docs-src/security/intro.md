@@ -36,8 +36,8 @@ However users may also choose to design their own security architecture with rev
 
 The https://github.com/temporalio/samples-server repo offers two examples, which are further explained below:
 
-- **TLS**: how to configure Transport Layer Security (TLS) to secure network communication with and within a Temporal cluster.
-- **Authorizer**: how to inject a low-level authorizer component that can control access to all API calls.
+- **TLS:** how to configure Transport Layer Security (TLS) to secure network communication with and within a Temporal cluster.
+- **Authorizer:** how to inject a low-level authorizer component that can control access to all API calls.
 
 ### Encryption in transit with mTLS
 

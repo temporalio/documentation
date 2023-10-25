@@ -70,6 +70,7 @@ The following databases are supported as Visibility stores:
 - [SQLite](#sqlite) v3.31.0 and later for advanced Visibility capabilities.
 - [Cassandra](#cassandra).
   Support for Cassandra as a Visibility database is deprecated beginning with Temporal Server v1.21.
+  For information on migrating from Cassandra to any of the supported databases, see [Migrating Visibility database](/cluster-deployment-guide#migrating-visibility-database).
 - [Elasticsearch](#elasticsearch) supported versions.
   We recommend operating a Temporal Cluster with Elasticsearch as your Visibility store for any use case that spawns more than a few Workflow Executions.
 
@@ -813,14 +814,14 @@ For example, to add a custom Search Attributes "CustomSA" to your Temporal Cloud
 
 If you're self-hosting your Temporal Cluster, verify whether your [Visibility database](#supported-databases) version supports advanced Visibility features.
 
-To create custom Search Attributes in your self-hosted Temporal Cluster Visibility store, use `tctl search-attribute create` with `--name` and `--type` modifiers.
+To create custom Search Attributes in your self-hosted Temporal Cluster Visibility store, use `temporal operator search-attribute create` with `--name` and `--type` command options.
 
 For example, to create a Search Attribute called `CustomSA` of type `Keyword`, run the following command:
 
-`tctl search-attribute create --name CustomSA --type Keyword`
+`temporal operator search-attribute create --name CustomSA --type Keyword`
 
 Note that if you use a SQL database with advanced Visibility capabilities, you are required to specify a Namespace when creating a custom Search Attribute.
-For example: `tctl --ns yournamespace search-attribute create --name CustomSA --type Keyword`
+For example: `temporal operator search-attribute create --name CustomSA --type Keyword --namespace yournamespace`
 
 You can also create multiple custom Search Attributes when you set up your Visibility store.
 
@@ -898,9 +899,9 @@ These constraints do not apply if you use Elasticsearch.
 
 [Archival](/clusters#archival) consists of the following elements:
 
-- **Configuration**: Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
-- **Provider**: Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
-- **URI**: Specifies which provider should be used. The system uses the URI schema and path to make the determination.
+- **Configuration:** Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
+- **Provider:** Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
+- **URI:** Specifies which provider should be used. The system uses the URI schema and path to make the determination.
 
 Take the following steps to set up Archival:
 
@@ -912,10 +913,10 @@ Take the following steps to set up Archival:
 
 Temporal directly supports several providers:
 
-- **Local file system**: The [filestore archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) is used to archive data in the file system of whatever host the Temporal server is running on. This provider is used mainly for local installations and testing and should not be relied on for production environments.
-- **Google Cloud**: The [gcloud archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud) is used to connect and archive data with [Google Cloud](https://cloud.google.com/storage).
-- **S3**: The [s3store archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store) is used to connect and archive data with [S3](https://aws.amazon.com/s3).
-- **Custom**: If you want to use a provider that is not currently supported, you can [create your own archiver](#custom-archiver) to support it.
+- **Local file system:** The [filestore archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) is used to archive data in the file system of whatever host the Temporal server is running on. In the case of [temporal helm-charts](https://github.com/temporalio/helm-charts), the archive data is stored in the `history` pod. APIs do not function with the filestore archive. This provider is used mainly for local installations and testing and should not be relied on for production environments.
+- **Google Cloud:** The [gcloud archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud) is used to connect and archive data with [Google Cloud](https://cloud.google.com/storage).
+- **S3:** The [s3store archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store) is used to connect and archive data with [S3](https://aws.amazon.com/s3).
+- **Custom:** If you want to use a provider that is not currently supported, you can [create your own archiver](#custom-archiver) to support it.
 
 Make sure that you save the provider's storage location URI in a place where you can reference it later, because it is passed as a parameter when you [create a Namespace](#namespace-creation).
 
@@ -1147,8 +1148,32 @@ If a database schema upgrade is required, it will be called out directly in the 
 Some releases require changes to the schema, and some do not.
 We ensure that any consecutive versions are compatible in terms of database schema upgrades, features, and system behavior; however there is no guarantee that there is compatibility between _any_ two non-consecutive versions.
 
+### Key considerations
+
+When upgrading the Temporal Server, there are two key considerations to keep in mind:
+
+1. **Sequential Upgrades:** Temporal Server should be upgraded sequentially.
+   That is, if you're on version \(v1.n.x\), your next upgrade should be to \(v1.n+1.x\) or the closest available subsequent version.
+   This sequence should be repeated until your desired version is reached.
+
+2. **Data Compatibility:** During an upgrade, the Temporal Server either updates or restructures the existing version data to match the data format of the newer version.
+   Temporal Server ensures backward compatibility only between two successive minor versions.
+   Consequently, skipping versions during an upgrade may lead to older data formats becoming unreadable.
+   If the previous data format cannot be interpreted and converted to the newer format, the upgrade process will be unsuccessful.
+
+### Step-by-Step Upgrade Procedure:
+
+Upgrading the Temporal Server requires a methodical approach to ensure data integrity, compatibility, and seamless transition between versions.
+The following documentation outlines the step-by-step process to successfully upgrade your Temporal Server.
+
 When upgrading your Temporal Server version, ensure that you upgrade sequentially.
-For example, when upgrading from v1.n.x, always upgrade to v1.n+1.x (or the next available version) and so on until you get to the required version.
+
+1. **Upgrade Database Schema:** Before initiating the Temporal Server upgrade, use one of the recommended upgrade tools to update your database schema.
+   This ensures it is aligned with the version of Temporal Server you aim to upgrade to.
+2. **Upgrade Temporal Server:** Once the database schema is updated, proceed to upgrade the Temporal Server deployment to the next sequential version.
+3. **Iterative Upgrades** (optional): Continue this process (steps 1 and 2) iteratively until you reach the desired Temporal Server version.
+
+By adhering to the above guidelines and following the step-by-step procedure, you can ensure a smooth and successful upgrade of your Temporal Server.
 
 The Temporal Server upgrade updates or rewrites the old version data with the format introduced in the newer version.
 Because Temporal Server guarantees backward compatibility between two consecutive minor versions, and because older versions of the code are eventually removed from the code base, skipping versions when upgrading might cause older formats to become unrecognizable.
@@ -1157,7 +1182,7 @@ If the old format of the data can't be read to be rewritten to the new format, t
 Check the [Temporal Server releases](https://github.com/temporalio/temporal/releases) and follow these releases in order.
 You can skip patch versions; use the latest patch of a minor version when upgrading.
 
-Also be aware that each upgrade requires the History Service to load all Shards and update the Shard metadata, so allow approximately 10 minutes on each version for these processes to complete before upgrading to the next version.
+Also, be aware that each upgrade requires the History Service to load all Shards and update the Shard metadata, so allow approximately 10 minutes on each version for these processes to complete before upgrading to the next version.
 
 Use one of the upgrade tools to upgrade your database schema to be compatible with the Temporal Server version being upgraded to.
 

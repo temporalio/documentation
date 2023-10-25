@@ -178,5 +178,8 @@ async function writeGuide(config, guideCfg) {
   } else {
     writePath = path.join(config.root_dir, config.content_write_dir, guideCfg.file_name);
   }
+  await fs.mkdir(path.dirname(writePath), { recursive: true }).catch((err) => {
+    console.error(err);
+  });
   await fs.writeFile(writePath, guideCfg.markdown_content);
 }

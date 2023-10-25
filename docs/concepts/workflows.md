@@ -63,7 +63,7 @@ A critical aspect of developing Workflow Definitions is ensuring they exhibit ce
 
 The execution semantics of a Workflow Execution include the re-execution of a Workflow Function, which is called a [Replay](#replays).
 The use of Workflow APIs in the function is what generates [Commands](#command).
-Commands tell the Cluster which Events to create and add to the Workflow Execution's Event History.
+Commands tell the Cluster which Events to create and add to the Workflow Execution's [Event History](#event-history).
 When a Workflow Function executes, the Commands that are emitted are compared with the existing Event History.
 If a corresponding Event already exists within the Event History that maps to the generation of that Command in the same sequence, and some specific metadata of that Command matches with some specific metadata of the Event, then the Function Execution progresses.
 
@@ -136,15 +136,33 @@ When those APIs are used, the results are stored as part of the Event History, w
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
 
-### Workflow Versioning {#workflow-versioning}
+### Versioning Workflow code {#workflow-versioning}
 
-The Workflow Versioning feature enables the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
-This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
-It is important to note that a practical way to handle different versions of Workflow Definitions, without using the versioning API, is to run the different versions on separate Task Queues.
+The Temporal Platform requires that Workflow code (Workflow Definitions) be deterministic in nature.
+This requirement means that developers should consider how they plan to handle changes to Workflow code over time.
 
-- [How to version Workflow Definitions in Go](/dev-guide/go/versioning#)
-- [How to version Workflow Definitions in Java](/dev-guide/java/versioning#)
-- [How to version Workflow Definitions in TypeScript](/dev-guide/typescript/versioning#)
+A versioning strategy is even more important if your Workflow Executions live long enough that a Worker must be able to execute multiple versions of the same Workflow Type.
+
+Apart from the ability to create new Task Queues for Workflow Types with the same name, the Temporal Platform provides Workflow Patching APIs and Worker Build Id–based versioning features.
+
+#### Patching
+
+Patching APIs enable the creation of logical branching inside a Workflow Definition based on a developer-specified version identifier.
+This feature is useful for Workflow Definition logic that needs to be updated but still has running Workflow Executions that depend on it.
+
+- [How to patch Workflow code in Go](/dev-guide/go/versioning#patching)
+- [How to patch Workflow code in Java](/dev-guide/java/versioning#patching)
+- [How to patch Workflow code in Python](/dev-guide/python/versioning#python-sdk-patching-api)
+- [How to patch Workflow code in TypeScript](/dev-guide/typescript/versioning#patching)
+
+#### Worker Build Ids
+
+Temporal [Worker Build Id-based versioning](/workers#worker-versioning) lets you define sets of versions that are compatible with each other, and then assign a Build Id to the code that defines a Worker.
+
+- [How to version Workers in Go](/dev-guide/go/versioning#worker-versioning)
+- [How to version Workers in Java](/dev-guide/java/versioning#worker-versioning)
+- [How to version Workers in Python](/dev-guide/python/versioning#worker-versioning)
+- [How to version Workers in TypeScript](/dev-guide/typescript/versioning#worker-versioning)
 
 ### Handling unreliable Worker Processes
 
@@ -241,18 +259,20 @@ Awaitables are provided when using APIs for the following:
 
 ### Status
 
-A Workflow Execution can be either Open or Closed.
+A Workflow Execution can be either _Open_ or _Closed_.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Workflow Execution statuses</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/workflow-execution-statuses.svg" alt="Workflow Execution statuses" height="524" width="1240" /></div></div>
 
-**Open**
+#### Open
+
+An _Open_ status means that the Workflow Execution is able to make progress.
 
 - Running: The only Open status for a Workflow Execution.
   When the Workflow Execution is Running, it is either actively progressing or is waiting on something.
 
-**Closed**
+#### Closed
 
-A Closed status means that the Workflow Execution cannot make further progress because of one of the following reasons:
+A _Closed_ status means that the Workflow Execution cannot make further progress because of one of the following reasons:
 
 - Cancelled: The Workflow Execution successfully handled a cancellation request.
 - Completed: The Workflow Execution has completed successfully.
@@ -303,18 +323,23 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 
 ### Limits
 
-Each pending Activity generates a metadata entry in the Workflow's mutable state.
-Too many entries create a large mutable state, which causes unstable persistence.
+There is no limit to the number of concurrent Workflow Executions.
 
-To protect the system, Temporal enforces a maximum number (2,000 by default) of pending Activities, Child Workflows, Signals, or Cancellation requests per Workflow.
+However, there is a limit to the length and size of a Workflow Execution's Event History (by default, [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) and [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380)).
+
+There is also a limit to the number of certain types of incomplete operations.
+
+Each in-progress Activity generates a metadata entry in the Workflow Execution's mutable state.
+Too many entries in a single Workflow Execution's mutable state causes unstable persistence.
+To protect the system, Temporal enforces a maximum number of incomplete Activities, Child Workflows, Signals, or Cancellation requests per Workflow Execution (by default, 2,000 for each type of operation).
+Once the limit is reached for a type of operation, if the Workflow Execution attempts to start another operation of that type (by producing a `ScheduleActivityTask`, `StartChildWorkflowExecution`, `SignalExternalWorkflowExecution`, or `RequestCancelExternalWorkflowExecution` Command), it will be unable to (the Workflow Task Execution will fail and get retried).
+
 These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/master/service/history/configs/config.go):
 
 - `NumPendingActivitiesLimit`
 - `NumPendingChildExecutionsLimit`
 - `NumPendingSignalsLimit`
 - `NumPendingCancelRequestsLimit`
-
-By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass any of these limits (by producing enough `ScheduleActivityTask`, `StartChildWorkflowExecution`, `SignalExternalWorkflowExecution`, or `RequestCancelExternalWorkflowExecution` Commands to exceed a limit).
 
 ### What is a Command? {#command}
 
@@ -347,7 +372,7 @@ Seven Activity-related Events are added to Event History at various points in an
 - When `ActivityTaskScheduled` is added to History, the Cluster adds a corresponding Activity Task to the Task Queue.
 - A Worker polling that Task Queue picks up the Activity Task and runs the Activity function or method.
 - If the Activity function returns, the Worker reports completion to the Cluster, and the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskCompleted](/references/events#activitytaskcompleted) to Event History.
-- If the Activity function throws a [non-retryable Failure](/kb/failures#non-retryable), the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to Event History.
+- If the Activity function throws a [non-retryable Failure](/references/failures#non-retryable), the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to Event History.
 - If the Activity function throws an error or retryable Failure, the Cluster schedules an Activity Task retry to be added to the Task Queue (unless you’ve reached the Maximum Attempts value of the [Retry Policy](/retry-policies), in which case the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to Event History).
 - If the Activity’s [Start-to-Close Timeout](/activities#start-to-close-timeout) passes before the Activity function returns or throws, the Cluster schedules a retry.
 - If the Activity’s [Schedule-to-Close Timeout](/activities#schedule-to-close-timeout) passes before Activity Execution is complete, or if [Schedule-to-Start Timeout](/activities#schedule-to-start-timeout) passes before a Worker gets the Activity Task, the Cluster writes [ActivityTaskTimedOut](/references/events#activitytasktimedout) to Event History.
@@ -474,14 +499,14 @@ To return the `Workflow execution already started` error, set `WorkflowExecution
 
 The Workflow Id Reuse Policy can have one of the following values:
 
-- **Allow Duplicate**: The Workflow Execution is allowed to exist regardless of the Closed status of a previous Workflow Execution with the same Workflow Id.
+- **Allow Duplicate:** The Workflow Execution is allowed to exist regardless of the Closed status of a previous Workflow Execution with the same Workflow Id.
   **This is the default policy, if one is not specified.**
   Use this when it is OK to have a Workflow Execution with the same Workflow Id as a previous, but now Closed, Workflow Execution.
-- **Allow Duplicate Failed Only**: The Workflow Execution is allowed to exist only if a previous Workflow Execution with the same Workflow Id does not have a Completed status.
+- **Allow Duplicate Failed Only:** The Workflow Execution is allowed to exist only if a previous Workflow Execution with the same Workflow Id does not have a Completed status.
   Use this policy when there is a need to re-execute a Failed, Timed Out, Terminated or Cancelled Workflow Execution and guarantee that the Completed Workflow Execution will not be re-executed.
-- **Reject Duplicate**: The Workflow Execution cannot exist if a previous Workflow Execution has the same Workflow Id, regardless of the Closed status.
+- **Reject Duplicate:** The Workflow Execution cannot exist if a previous Workflow Execution has the same Workflow Id, regardless of the Closed status.
   Use this when there can only be one Workflow Execution per Workflow Id within a Namespace for the given retention period.
-- **Terminate if Running**: Specifies that if a Workflow Execution with the same Workflow Id is already running, it should be terminated and a new Workflow Execution with the same Workflow Id should be started. This policy allows for only one Workflow Execution with a specific Workflow Id to be running at any given time.
+- **Terminate if Running:** Specifies that if a Workflow Execution with the same Workflow Id is already running, it should be terminated and a new Workflow Execution with the same Workflow Id should be started. This policy allows for only one Workflow Execution with a specific Workflow Id to be running at any given time.
 
 A Workflow Id Reuse Policy applies only if a Closed Workflow Execution with the same Workflow Id exists within the Retention Period of the associated Namespace.
 For example, if the Namespace's retention period is 30 days, a Workflow Id Reuse Policy can only compare the Workflow Id of the spawning Workflow Execution against the Closed Workflow Executions for the last 30 days.
@@ -572,7 +597,7 @@ A Signal is an asynchronous request to a [Workflow Execution](/workflows#workflo
 - [How to develop, send, and handle Signals in TypeScript](/dev-guide/typescript/features#signals)
 
 A Signal delivers data to a running Workflow Execution.
-It cannot return data to the caller; to do so, use a [Query](#queries) instead.
+It cannot return data to the caller; to do so, use a [Query](#query) instead.
 The Workflow code that handles a Signal can mutate Workflow state.
 A Signal can be sent from a Temporal Client or a Workflow.
 When a Signal is sent, it is received by the Cluster and recorded as an Event to the Workflow Execution [Event History](#event-history).
@@ -583,7 +608,7 @@ A Signal must include a destination (Namespace and Workflow Id) and name.
 It can include a list of arguments.
 
 Signal handlers are Workflow functions that listen for Signals by the Signal name.
-Signals are delivered in the order they are received by the Cluster.
+Signals are delivered in the order they are received by the Cluster and written to History.
 If multiple deliveries of a Signal would be a problem for your Workflow, add idempotency logic to your Signal handler that checks for duplicates.
 
 [^1]: The Cluster usually deduplicates Signals, but does not guarantee deduplication: During shard migration, two Signal Events (and therefore two deliveries to the Workflow Execution) can be recorded for a single Signal because the deduping info is stored only in memory.
@@ -666,9 +691,16 @@ Stack Trace Queries are available only for running Workflow Executions.
 An Update is a request to and a response from a Temporal Client to a [Workflow Execution](#workflow-execution).
 
 - [How to develop, send, and handle Updates in Go](/dev-guide/go/features#updates)
+- [How to develop, send, and handle Updates in Java](/dev-guide/java/features#updates)
+
+You can think of an Update as a synchronous, blocking call that could replace both a Signal and a Query. An update is:
+
+- A Signal with a response
+- A Query that can change state
+- The logical model of a Signal with the overhead and latency of a Query
 
 The Workflow must have a function to handle the Update.
-Unlike a [Signal](#signal) handler, the Update handler function can mutate the state of the Workflow while also returning a value to the caller.
+Unlike a [Signal](#signal) handler, the Update handler function can return a value to the caller.
 The Update handler listens for Updates by the Update's name.
 
 When there is the potential for multiple Updates to cause a duplication problem, Temporal recommends adding idempotency logic to your Update handler that checks for duplicates.
@@ -680,17 +712,17 @@ An Update has four phases.
    See the [Temporal Platform limits sheet](/kb/temporal-platform-limits-sheet) for more details.
    When this phase is complete, the Platform changes the status of the Update to **Admitted**.
    At this stage, the Platform hasn't yet persisted the Update to the Workflow Execution's Event History or sent it to a Worker.
-1. **Validation.** An optional developer provided function that performs request validation.
+2. **Validation.** An optional developer provided function that performs request validation.
    This validation code, similar to a [Query](#query) handler, can observe but not change the Workflow state.
    This means that the validation of an Update request may depend on the Workflow state at runtime.
    If an Update request doesn't pass validation at this stage, the system rejects the request and doesn't record anything in the Workflow Event History to indicate that the Update ever happened.
    The Update processing doesn't proceed to later phases.
    When the Update completes the validation stage, the Platform changes its state to **Accepted**.
    A [WorkflowExecutionUpdateAcceptedEvent](/references/events#workflowexecutionupdateacceptedevent) Event in the Workflow Execution [Event History](#event-history) denotes the acceptance of an Update.
-1. **Execution.** Accepted Update requests move to the execution phase.
+3. **Execution.** Accepted Update requests move to the execution phase.
    In this phase, the Worker delivers the request to the Update handler.
    Like every bit of code in a Workflow, Update handlers must be [deterministic](#deterministic-constraints).
-1. **Completion.** The Update handler can return a result or a language-appropriate error/exception to indicate its completion.
+4. **Completion.** The Update handler can return a result or a language-appropriate error/exception to indicate its completion.
    The Platform sends the Update outcome back to the original invoking entity as an Update response.
    A [WorkflowExecutionUpdateCompletedEvent](/references/events#workflowexecutionupdatecompletedevent) Event in the Workflow Execution Event History denotes the completion of an Update.
 
@@ -785,8 +817,8 @@ A Parent Close Policy determines what happens to a [Child Workflow Execution](#c
 
 There are three possible values:
 
-- **Abandon**: the Child Workflow Execution is not affected.
-- **Request Cancel**: a Cancellation request is sent to the Child Workflow Execution.
+- **Abandon:** the Child Workflow Execution is not affected.
+- **Request Cancel:** a Cancellation request is sent to the Child Workflow Execution.
 - **Terminate** (default): the Child Workflow Execution is forcefully Terminated.
 
 [`ParentClosePolicy`](https://github.com/temporalio/api/blob/c1f04d0856a3ba2995e92717607f83536b5a44f5/temporal/api/enums/v1/workflow.proto#L44) proto definition.
@@ -798,113 +830,6 @@ This policy applies only to Child Workflow Executions and has no effect otherwis
 
 You can set policies per child, which means you can opt out of propagating terminates / cancels on a per-child basis.
 This is useful for starting Child Workflows asynchronously (see [relevant issue here](https://community.temporal.io/t/best-way-to-create-an-async-child-workflow/114) or the corresponding SDK docs).
-
-## What is a Temporal Cron Job? {#temporal-cron-job}
-
-A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
-
-- [How to set a Cron Schedule using the Go SDK](/dev-guide/go/features#temporal-cron-jobs)
-- [How to set a Cron Schedule using the Java SDK](/dev-guide/java/features#cron-schedule)
-- [How to set a Cron Schedule using the PHP SDK](/dev-guide/php/features#temporal-cron-jobs)
-- [How to set a Cron Schedule using the Python SDK](/dev-guide/python/features#temporal-cron-jobs)
-- [How to set a Cron Schedule using the TypeScript SDK](/dev-guide/typescript/features#temporal-cron-jobs)
-
-<div class="tdiw"><div class="tditw"><p class="tdit">Temporal Cron Job timeline</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-cron-job.svg" alt="Temporal Cron Job timeline" height="1113" width="1782" /></div></div>
-
-A Temporal Cron Job is similar to a classic unix cron job.
-Just as a unix cron job accepts a command and a schedule on which to execute that command, a Cron Schedule can be provided with the call to spawn a Workflow Execution.
-If a Cron Schedule is provided, the Temporal Server will spawn an execution for the associated Workflow Type per the schedule.
-
-Each Workflow Execution within the series is considered a Run.
-
-- Each Run receives the same input parameters as the initial Run.
-- Each Run inherits the same Workflow Options as the initial Run.
-
-The Temporal Server spawns the first Workflow Execution in the chain of Runs immediately.
-However, it calculates and applies a backoff (`firstWorkflowTaskBackoff`) so that the first Workflow Task of the Workflow Execution does not get placed into a Task Queue until the scheduled time.
-After each Run Completes, Fails, or reaches the [Workflow Run Timeout](#workflow-run-timeout), the same thing happens: the next run will be created immediately with a new `firstWorkflowTaskBackoff` that is calculated based on the current Server time and the defined Cron Schedule.
-
-The Temporal Server spawns the next Run only after the current Run has Completed, Failed, or has reached the Workflow Run Timeout.
-This means that, if a Retry Policy has also been provided, and a Run Fails or reaches the Workflow Run Timeout, the Run will first be retried per the Retry Policy until the Run Completes or the Retry Policy has been exhausted.
-If the next Run, per the Cron Schedule, is due to spawn while the current Run is still Open (including retries), the Server automatically starts the new Run after the current Run completes successfully.
-The start time for this new Run and the Cron definitions are used to calculate the `firstWorkflowTaskBackoff` that is applied to the new Run.
-
-A [Workflow Execution Timeout](#workflow-execution-timeout) is used to limit how long a Workflow can be executing (have an Open status), including retries and any usage of Continue As New.
-The Cron Schedule runs until the Workflow Execution Timeout is reached or you terminate the Workflow.
-
-<div class="tdiw"><div class="tditw"><p class="tdit">Temporal Cron Job Run Failure with a Retry Policy</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-cron-job-failure-with-retry.svg" alt="Temporal Cron Job Run Failure with a Retry Policy" height="1203" width="1782" /></div></div>
-
-### Cron Schedules
-
-Cron Schedules are interpreted in UTC time by default.
-
-The Cron Schedule is provided as a string and must follow one of two specifications:
-
-**Classic specification**
-
-This is what the "classic" specification looks like:
-
-```
-┌───────────── minute (0 - 59)
-│ ┌───────────── hour (0 - 23)
-│ │ ┌───────────── day of the month (1 - 31)
-│ │ │ ┌───────────── month (1 - 12)
-│ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
-│ │ │ │ │
-│ │ │ │ │
-* * * * *
-```
-
-For example, `15 8 * * *` causes a Workflow Execution to spawn daily at 8:15 AM UTC.
-Use the [crontab guru site](https://crontab.guru/) to test your cron expressions.
-
-### `robfig` predefined schedules and intervals
-
-You can also pass any of the [predefined schedules](https://pkg.go.dev/github.com/robfig/cron/v3#hdr-Predefined_schedules) or [intervals](https://pkg.go.dev/github.com/robfig/cron/v3#hdr-Intervals) described in the [`robfig/cron` documentation](https://pkg.go.dev/github.com/robfig/cron/v3).
-
-```
-| Schedules              | Description                                | Equivalent To |
-| ---------------------- | ------------------------------------------ | ------------- |
-| @yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *     |
-| @monthly               | Run once a month, midnight, first of month | 0 0 1 * *     |
-| @weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0     |
-| @daily (or @midnight)  | Run once a day, midnight                   | 0 0 * * *     |
-| @hourly                | Run once an hour, beginning of hour        | 0 * * * *     |
-```
-
-For example, "@weekly" causes a Workflow Execution to spawn once a week at midnight between Saturday and Sunday.
-
-Intervals just take a string that can be accepted by [time.ParseDuration](http://golang.org/pkg/time/#ParseDuration).
-
-```
-@every <duration>
-```
-
-### Time zones
-
-_This feature only applies in Temporal 1.15 and up_
-
-You can change the time zone that a Cron Schedule is interpreted in by prefixing the specification with `CRON_TZ=America/New_York` (or your [desired time zone from tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)). `CRON_TZ=America/New_York 15 8 * * *` therefore spawns a Workflow Execution every day at 8:15 AM New York time, subject to caveats listed below.
-
-Consider that using time zones in production introduces a surprising amount of complexity and failure modes!
-**If at all possible, we recommend specifying Cron Schedules in UTC (the default)**.
-
-If you need to use time zones, here are a few edge cases to keep in mind:
-
-- **Beware Daylight Saving Time**: If a Temporal Cron Job is scheduled around the time when daylight saving time (DST) begins or ends (for example, `30 2 * * *`), **it might run zero, one, or two times in a day**! The Cron library that we use does not do any special handling of DST transitions. Avoid schedules that include times that fall within DST transition periods.
-  - For example, in the US, DST begins at 2 AM. When you "fall back," the clock goes `1:59 … 1:00 … 1:01 … 1:59 … 2:00 … 2:01 AM` and any Cron jobs that fall in that 1 AM hour are fired again. The inverse happens when clocks "spring forward" for DST, and Cron jobs that fall in the 2 AM hour are skipped.
-  - In other time zones like Chile and Iran, DST "spring forward" is at midnight. 11:59 PM is followed by 1 AM, which means `00:00:00` never happens.
-- **Self Hosting note**: If you manage your own Temporal Cluster, you are responsible for ensuring that it has access to current `tzdata` files. The official Docker images are built with [tzdata](https://docs.w3cub.com/go/time/tzdata/index) installed (provided by Alpine Linux), but ultimately you should be aware of how tzdata is deployed and updated in your infrastructure.
-- **Updating Temporal**: If you use the official Docker images, note that an upgrade of the Temporal Cluster may include an update to the tzdata files, which may change the meaning of your Cron Schedule. You should be aware of upcoming changes to the definitions of the time zones you use, particularly around daylight saving time start/end dates.
-- **Absolute Time Fixed at Start**: The absolute start time of the next Run is computed and stored in the database when the previous Run completes, and is not recomputed. This means that if you have a Cron Schedule that runs very infrequently, and the definition of the time zone changes between one Run and the next, the Run might happen at the wrong time. For example, `CRON_TZ=America/Los_Angeles 0 12 11 11 *` means "noon in Los Angeles on November 11" (normally not in DST). If at some point the government makes any changes (for example, move the end of DST one week later, or stay on permanent DST year-round), the meaning of that specification changes. In that first year, the Run happens at the wrong time, because it was computed using the older definition.
-
-### How to stop a Temporal Cron Job
-
-A Temporal Cron Job does not stop spawning Runs until it has been Terminated or until the [Workflow Execution Timeout](#workflow-execution-timeout) is reached.
-
-A Cancellation Request affects only the current Run.
-
-Use the Workflow Id in any requests to Cancel or Terminate.
 
 ## What is a Schedule? {#schedule}
 
@@ -1053,8 +978,8 @@ The following options are available:
 
 The Temporal Cluster might be down or unavailable at the time when a Schedule should take an Action.
 When it comes back up, the Catchup Window controls which missed Actions should be taken at that point.
-The default is one minute, which means that the Schedule attempts to take any Actions that wouldn't be more than one minute late.
-An outage that lasts longer than the Catchup Window could lead to missed Actions.
+The default is one year, meaning Actions will be taken unless over one year late.
+If your Actions are more time-sensitive, you can set the Catchup Window to a smaller value (minimum ten seconds), accepting that an outage longer than the window could lead to missed Actions.
 (But you can always [Backfill](#backfill).)
 
 #### Pause-on-failure
@@ -1096,6 +1021,120 @@ A Workflow started by a Schedule can obtain the details of the failure of the mo
 Internally, a Schedule is implemented as a Workflow.
 If you're using Advanced Visibility (Elasticsearch), these Workflow Executions are hidden from normal views.
 If you're using Standard Visibility, they are visible, though there's no need to interact with them directly.
+
+## What is a Temporal Cron Job? {#temporal-cron-job}
+
+:::note
+
+We recommend using [Schedules](#schedule) instead of Cron Jobs.
+Schedules were built to provide a better developer experience, including more configuration options and the ability to update or pause running Schedules.
+
+:::
+
+A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
+
+- [How to set a Cron Schedule using the Go SDK](/dev-guide/go/features#temporal-cron-jobs)
+- [How to set a Cron Schedule using the Java SDK](/dev-guide/java/features#cron-schedule)
+- [How to set a Cron Schedule using the PHP SDK](/dev-guide/php/features#temporal-cron-jobs)
+- [How to set a Cron Schedule using the Python SDK](/dev-guide/python/features#temporal-cron-jobs)
+- [How to set a Cron Schedule using the TypeScript SDK](/dev-guide/typescript/features#temporal-cron-jobs)
+
+<div class="tdiw"><div class="tditw"><p class="tdit">Temporal Cron Job timeline</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-cron-job.svg" alt="Temporal Cron Job timeline" height="1113" width="1782" /></div></div>
+
+A Temporal Cron Job is similar to a classic unix cron job.
+Just as a unix cron job accepts a command and a schedule on which to execute that command, a Cron Schedule can be provided with the call to spawn a Workflow Execution.
+If a Cron Schedule is provided, the Temporal Server will spawn an execution for the associated Workflow Type per the schedule.
+
+Each Workflow Execution within the series is considered a Run.
+
+- Each Run receives the same input parameters as the initial Run.
+- Each Run inherits the same Workflow Options as the initial Run.
+
+The Temporal Server spawns the first Workflow Execution in the chain of Runs immediately.
+However, it calculates and applies a backoff (`firstWorkflowTaskBackoff`) so that the first Workflow Task of the Workflow Execution does not get placed into a Task Queue until the scheduled time.
+After each Run Completes, Fails, or reaches the [Workflow Run Timeout](#workflow-run-timeout), the same thing happens: the next run will be created immediately with a new `firstWorkflowTaskBackoff` that is calculated based on the current Server time and the defined Cron Schedule.
+
+The Temporal Server spawns the next Run only after the current Run has Completed, Failed, or has reached the Workflow Run Timeout.
+This means that, if a Retry Policy has also been provided, and a Run Fails or reaches the Workflow Run Timeout, the Run will first be retried per the Retry Policy until the Run Completes or the Retry Policy has been exhausted.
+If the next Run, per the Cron Schedule, is due to spawn while the current Run is still Open (including retries), the Server automatically starts the new Run after the current Run completes successfully.
+The start time for this new Run and the Cron definitions are used to calculate the `firstWorkflowTaskBackoff` that is applied to the new Run.
+
+A [Workflow Execution Timeout](#workflow-execution-timeout) is used to limit how long a Workflow can be executing (have an Open status), including retries and any usage of Continue As New.
+The Cron Schedule runs until the Workflow Execution Timeout is reached or you terminate the Workflow.
+
+<div class="tdiw"><div class="tditw"><p class="tdit">Temporal Cron Job Run Failure with a Retry Policy</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-cron-job-failure-with-retry.svg" alt="Temporal Cron Job Run Failure with a Retry Policy" height="1203" width="1782" /></div></div>
+
+### Cron Schedules
+
+Cron Schedules are interpreted in UTC time by default.
+
+The Cron Schedule is provided as a string and must follow one of two specifications:
+
+**Classic specification**
+
+This is what the "classic" specification looks like:
+
+```
+┌───────────── minute (0 - 59)
+│ ┌───────────── hour (0 - 23)
+│ │ ┌───────────── day of the month (1 - 31)
+│ │ │ ┌───────────── month (1 - 12)
+│ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
+│ │ │ │ │
+│ │ │ │ │
+* * * * *
+```
+
+For example, `15 8 * * *` causes a Workflow Execution to spawn daily at 8:15 AM UTC.
+Use the [crontab guru site](https://crontab.guru/) to test your cron expressions.
+
+### `robfig` predefined schedules and intervals
+
+You can also pass any of the [predefined schedules](https://pkg.go.dev/github.com/robfig/cron/v3#hdr-Predefined_schedules) or [intervals](https://pkg.go.dev/github.com/robfig/cron/v3#hdr-Intervals) described in the [`robfig/cron` documentation](https://pkg.go.dev/github.com/robfig/cron/v3).
+
+```
+| Schedules              | Description                                | Equivalent To |
+| ---------------------- | ------------------------------------------ | ------------- |
+| @yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *     |
+| @monthly               | Run once a month, midnight, first of month | 0 0 1 * *     |
+| @weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0     |
+| @daily (or @midnight)  | Run once a day, midnight                   | 0 0 * * *     |
+| @hourly                | Run once an hour, beginning of hour        | 0 * * * *     |
+```
+
+For example, "@weekly" causes a Workflow Execution to spawn once a week at midnight between Saturday and Sunday.
+
+Intervals just take a string that can be accepted by [time.ParseDuration](http://golang.org/pkg/time/#ParseDuration).
+
+```
+@every <duration>
+```
+
+### Time zones
+
+_This feature only applies in Temporal 1.15 and up_
+
+You can change the time zone that a Cron Schedule is interpreted in by prefixing the specification with `CRON_TZ=America/New_York` (or your [desired time zone from tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)). `CRON_TZ=America/New_York 15 8 * * *` therefore spawns a Workflow Execution every day at 8:15 AM New York time, subject to caveats listed below.
+
+Consider that using time zones in production introduces a surprising amount of complexity and failure modes!
+**If at all possible, we recommend specifying Cron Schedules in UTC (the default)**.
+
+If you need to use time zones, here are a few edge cases to keep in mind:
+
+- **Beware Daylight Saving Time:** If a Temporal Cron Job is scheduled around the time when daylight saving time (DST) begins or ends (for example, `30 2 * * *`), **it might run zero, one, or two times in a day**! The Cron library that we use does not do any special handling of DST transitions. Avoid schedules that include times that fall within DST transition periods.
+  - For example, in the US, DST begins at 2 AM. When you "fall back," the clock goes `1:59 … 1:00 … 1:01 … 1:59 … 2:00 … 2:01 AM` and any Cron jobs that fall in that 1 AM hour are fired again. The inverse happens when clocks "spring forward" for DST, and Cron jobs that fall in the 2 AM hour are skipped.
+  - In other time zones like Chile and Iran, DST "spring forward" is at midnight. 11:59 PM is followed by 1 AM, which means `00:00:00` never happens.
+- **Self Hosting note:** If you manage your own Temporal Cluster, you are responsible for ensuring that it has access to current `tzdata` files. The official Docker images are built with [tzdata](https://docs.w3cub.com/go/time/tzdata/index) installed (provided by Alpine Linux), but ultimately you should be aware of how tzdata is deployed and updated in your infrastructure.
+- **Updating Temporal:** If you use the official Docker images, note that an upgrade of the Temporal Cluster may include an update to the tzdata files, which may change the meaning of your Cron Schedule. You should be aware of upcoming changes to the definitions of the time zones you use, particularly around daylight saving time start/end dates.
+- **Absolute Time Fixed at Start:** The absolute start time of the next Run is computed and stored in the database when the previous Run completes, and is not recomputed. This means that if you have a Cron Schedule that runs very infrequently, and the definition of the time zone changes between one Run and the next, the Run might happen at the wrong time. For example, `CRON_TZ=America/Los_Angeles 0 12 11 11 *` means "noon in Los Angeles on November 11" (normally not in DST). If at some point the government makes any changes (for example, move the end of DST one week later, or stay on permanent DST year-round), the meaning of that specification changes. In that first year, the Run happens at the wrong time, because it was computed using the older definition.
+
+### How to stop a Temporal Cron Job
+
+A Temporal Cron Job does not stop spawning Runs until it has been Terminated or until the [Workflow Execution Timeout](#workflow-execution-timeout) is reached.
+
+A Cancellation Request affects only the current Run.
+
+Use the Workflow Id in any requests to Cancel or Terminate.
 
 ## What is a State Transition? {#state-transition}
 

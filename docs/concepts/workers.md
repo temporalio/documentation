@@ -155,9 +155,6 @@ Once an Activity Task finishes execution, the Worker responds to the Cluster wit
 
 A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](#worker-entity) poll for [Tasks](#task).
 
-Task Queues do not have any ordering guarantees.
-It is possible to have a Task that stays in a Task Queue for a period of time, if there is a backlog that wasn't drained for that time.
-
 There are two types of Task Queues, Activity Task Queues and Workflow Task Queues.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Task Queue component</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/task-queue.svg" alt="Task Queue component" height="500" width="952" /></div></div>
@@ -232,6 +229,25 @@ A Child Workflow Execution inherits the Task Queue name from its Parent Workflow
 - [How to start a Child Workflow Execution using the Python SDK](/dev-guide/python/features#child-workflows)
 - [How to start a Child Workflow Execution using the TypeScript SDK](/dev-guide/typescript/features#child-workflows)
 
+#### Task ordering
+
+Task Queues can be scaled by adding partitions.
+The [default](/references/dynamic-configuration#service-level-rps-limits) number of partitions is 4.
+
+Task Queues with multiple partitions do not have any ordering guarantees.
+Once there is a backlog of Tasks that have been written to disk, Tasks that can be dispatched immediately (“sync matches”) are delivered before tasks from the backlog (“async matches”).
+This approach optimizes throughput.
+
+Task Queues with a single partition are almost always first-in, first-out, with rare edge case exceptions.
+However, using a single partition limits you to low- and medium-throughput use cases.
+
+:::note
+
+This section is on the ordering of individual Tasks, and does not apply to the ordering of Workflow Executions, Activity Executions, or [Events](/workflows#event) in a single Workflow Execution.
+The order of Events in a Workflow Execution is guaranteed to remain constant once they have been written to that Workflow Execution's [History](/workflows#event-history).
+
+:::
+
 ## What is a Sticky Execution? {#sticky-execution}
 
 A Sticky Execution is when a Worker Entity caches the Workflow in memory and creates a dedicated Task Queue to listen on.
@@ -294,8 +310,8 @@ You would need to develop your Temporal Application to route Tasks to specific W
 
 Code samples:
 
-- [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing)
-- [Java file processing example](https://github.com/temporalio/samples-java/tree/master/src/main/java/io/temporal/samples/fileprocessing)
+- [Go file processing example](https://github.com/temporalio/samples-go/tree/main/fileprocessing)
+- [Java file processing example](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/fileprocessing)
 - [PHP file processing example](https://github.com/temporalio/samples-php/tree/master/app/src/FileProcessing)
 
 #### Route Activity Tasks to a specific process

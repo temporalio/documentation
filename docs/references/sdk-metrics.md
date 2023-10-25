@@ -16,7 +16,7 @@ tags:
 
 The information on this page is relevant to [Temporal SDKs](/temporal#temporal-sdk).
 
-See [Cloud metrics](/cloud/metrics#) for metrics emitted by [Temporal Cloud](/cloud/index#).
+See [Cloud metrics](/cloud/metrics#) for metrics emitted by [Temporal Cloud](/cloud#).
 
 See [Cluster metrics](/references/cluster-metrics#) for metrics emitted by the [OSS Cluster](/clusters#).
 
@@ -142,7 +142,7 @@ An Activity Worker poll for an Activity Task timed out, and no Activity Task is 
 
 ### activity_schedule_to_start_latency
 
-The Schedule-To-Start time of an Activity Task in milliseconds.
+The Schedule-To-Start time of an Activity Task in seconds.
 A [Schedule-To-Start Timeout](/activities#schedule-to-start-timeout) can be set when an Activity Execution is spawned.
 This metric is useful for ensuring Activity Tasks are being processed from the queue in a timely manner. Some SDKs may include
 the `activity_type` label, but the metric should not vary by type, as it does not influence the rate at which tasks are pulled

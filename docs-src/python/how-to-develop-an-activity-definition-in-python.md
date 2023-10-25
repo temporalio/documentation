@@ -15,7 +15,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 You can develop an Activity Definition by using the `@activity.defn` decorator.
 Register the function as an Activity with a custom name through a decorator argument, for example `@activity.defn(name="your_activity")`.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 from temporalio import activity

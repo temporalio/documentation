@@ -175,6 +175,12 @@ A Failure Converter converts error objects to proto Failures and back.
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
+#### [Failures](/references/failures#)
+A Failure is Temporal's representation of various types of errors that occur in the system.
+
+_Tags: [failure](/tags/failure), [explanation](/tags/explanation), [term](/tags/term)_
+
+
 #### [Frontend Service](/clusters#frontend-service)
 The Frontend Service is a stateless gateway service that exposes a strongly typed Proto API. The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
 
@@ -362,7 +368,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
 #### [Sticky Execution](/workers#sticky-execution)
-A Sticky Execution is a when a Worker Entity caches the Workflow in memory and creates a dedicated Task Queue to listen on.
+A Sticky Execution is a when a Worker Entity caches the Workflow Execution Event History and creates a dedicated Task Queue to listen on.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
