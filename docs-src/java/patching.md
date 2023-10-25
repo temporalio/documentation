@@ -1,28 +1,17 @@
 ---
-id: versioning
-title: How to version Workflows in Java
-sidebar_label: Versioning
-description: Properly version your Workflows to avoid non-deterministic errors.
+id: patching
+title: How to patch Workflows in Java
+sidebar_label: Patching
+description: Use Patching APIs to update Workflow code in Java
 tags:
   - java
-  - workflow-versions
+  - workflow code
+  - versioning
+  - patching
 ---
 
-As outlined in the _Workflow Implementation Constraints_ section, Workflow code has to be deterministic by taking the same
-code path when replaying history events. Any Workflow code change that affects the order in which commands are generated breaks
-this assumption. The solution that allows updating code of already running Workflows is to keep both the old and new code.
-When replaying, use the code version that the events were generated with and when executing a new code path, always take the
-new code.
-
-## Introduction to Versioning
-
-Because we design for potentially long-running Workflows at scale, versioning with Temporal works differently than with other workflow systems.
-We explain more in this optional 30-minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY).
-
-## Java Versioning API
-
-Use the `Workflow.getVersion` function to return a version of the code that should be executed and then use the returned
-value to pick a correct branch. Let's look at an example.
+Use the `Workflow.getVersion` function to return a version of the code that should be executed and then use the returned value to pick a correct branch.
+Let's look at an example.
 
 ```java
 public void processFile(Arguments args) {

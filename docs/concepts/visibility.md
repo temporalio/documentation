@@ -53,6 +53,8 @@ Open Workflow Executions can be filtered by a time constraint and either a Workf
 
 Closed Workflow Executions can be filtered by a time constraint and either a Workflow Type, Workflow Id, Run Id, or Execution Status (Completed, Failed, Timed Out, Terminated, Canceled, or Continued-As-New).
 
+[Search Attributes](https://docs.temporal.io/visibility#search-attribute) are not supported with Standard Visibility.
+
 Support for standard Visibility is deprecated beginning with Temporal Server v1.21.
 For updates, check [Supported databases](/cluster-deployment-guide#supported-databases).
 
@@ -75,8 +77,8 @@ For example, if you have Cassandra configured as your Visibility database, you c
 
 A Dual Visibility setup requires two Visibility store configurations:
 
-- **Primary Visibility**: The primary Visibility store where Visibility data is written to and read from by default. The primary Visibility store is set with the `visibilityStore` configuration key in your Temporal Cluster.
-- **Secondary Visibility**: A secondary storage for your Visibility data. The secondary Visibility store is set with the `secondaryVisibilityStore` configuration key in your Temporal Cluster.
+- **Primary Visibility:** The primary Visibility store where Visibility data is written to and read from by default. The primary Visibility store is set with the `visibilityStore` configuration key in your Temporal Cluster.
+- **Secondary Visibility:** A secondary storage for your Visibility data. The secondary Visibility store is set with the `secondaryVisibilityStore` configuration key in your Temporal Cluster.
 
 For configuration details, see [Dual Visibility setup](/cluster-deployment-guide#dual-visibility).
 

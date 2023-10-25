@@ -2,7 +2,7 @@
 id: foundations
 title: Java SDK developer's guide - Foundations
 sidebar_label: Foundations
-sidebar_position: 2
+sidebar_position: 3
 description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/java/foundations
 toc_max_heading_level: 4
@@ -47,7 +47,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 In this section you can find the following:
 
-- [Run a development Cluster](#run-a-development-server)
+- [Run a development Cluster](/dev-guide/typescript/foundations#run-a-development-server)
 - [Connect to a dev Cluster](#connect-to-a-dev-cluster)
 - [Develop a Workflow](#develop-workflows)
 - [Develop an Activity](#develop-activities)
@@ -154,7 +154,7 @@ An SDK provides you with the following:
 
 Add the [Temporal Java SDK](https://github.com/temporalio/sdk-java) to your project as a dependency:
 
-**[Apache Maven](https://maven.apache.org/)**:
+**[Apache Maven](https://maven.apache.org/):**
 
 ```maven
 <dependency>
@@ -164,13 +164,13 @@ Add the [Temporal Java SDK](https://github.com/temporalio/sdk-java) to your proj
 </dependency>
 ```
 
-**[Gradle Groovy DSL](https://gradle.org/)**:
+**[Gradle Groovy DSL](https://gradle.org/):**
 
 ```groovy
 implementation 'io.temporal:temporal-sdk:1.17.0'
 ```
 
-**Other**:
+**Other:**
 
 Additional scripts for each SDK version are available here: [https://search.maven.org/artifact/io.temporal/temporal-sdk](https://search.maven.org/artifact/io.temporal/temporal-sdk).
 Select an SDK version to see available scripts.

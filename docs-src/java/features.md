@@ -22,3 +22,4 @@ In this section you can find the following:
 - [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
 - [How to register Namespaces](#namespaces)
 - [How to use custom payload conversion](#custom-payload-conversion)
+- [How to develop with Updates](#updates)

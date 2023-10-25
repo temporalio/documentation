@@ -12,7 +12,6 @@ Welcome to Temporal's documentation repository!
   - [/docs-src information nodes](#docs-src-information-nodes)
   - [/docs generated files for Docusaurus](#docs-generated-files-for-docusaurus)
   - [/assembly Assembly Workflow](#assembly-assembly-workflow)
-  - [/changelog Docs site changelog](#changelog-docs-site-changelog)
   - [Snipsync code synchronization tooling](#snipsync-code-synchronization-tooling)
 - [How to get approval to create a pull request](#how-to-get-approval-to-create-a-pull-request)
 - [How to fix a typo](#how-to-fix-a-typo)
@@ -100,12 +99,6 @@ See [How to run the Assembly Workflow](#how-to-run-the-assembly-workflow) for mo
 
 Beyond creating generated files, the Assembly Workflow can generate information nodes for documentation code-sample repositories.
 For more information, see [How to use DACX](#how-to-use-dacx).
-
-### `/changelog` Docs site changelog
-
-This directory contains logs of major changes to the documentation.
-
-The information at [docs.temporal.io](http://docs.temporal.io) changes frequently, but bigger and more notable changes are captured in the changelog.
 
 ### Snipsync code synchronization tooling
 
@@ -202,7 +195,7 @@ This section provides a higher-level view of the change proposal process, partic
 
 **Before proceeding, make sure [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) and [Node.js](https://nodejs.org/en/download/) are installed. Make sure you install the latest version of Node.js (later than 18.0.0).**
 
-On a Mac, use the command `brew install node@16`.
+On a Mac, use the command `brew install node@18`.
 
 In the root directory of the repository, run `yarn` to install the packages needed to generate the `build` output. This includes the Docusaurus framework.
 
@@ -307,6 +300,18 @@ Run `yarn format`.
 
 If you don't run this command locally before posting a pull request, a GitHub action runs the formatting.
 
+### How to find broken links
+
+[hyperlink](https://www.npmjs.com/package/hyperlink) is a command-line tool to find broken links.
+
+In a terminal, run:
+
+```bash
+yarn check-links
+```
+
+This command will start the hyperlink checker.
+
 ### How to run the Assembly Workflow
 
 Make sure you have a Namespace set up and ready to use.
@@ -322,6 +327,7 @@ In a separate terminal, run the Worker in the `/assembly` folder.
 
 ```bash
 cd assembly
+yarn install
 ./worker.js
 ```
 

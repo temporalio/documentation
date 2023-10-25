@@ -1,11 +1,11 @@
 ---
-slug: deadline-exceeded-troubleshooting
+id: deadline-exceeded-error
 title: Troubleshoot deadline-exceeded error
+sidebar_label: Deadline-exceeded error
+description: Deadline exceeded errors occur as a result of Temporal frontend requests failing. This guide provides troubleshooting solutions.
 tags:
   - troubleshooting
   - error
-
-date: 2023-05-22T00:00:00Z
 ---
 
 All requests made to the [Temporal Cluster](/clusters) by the Client or Worker are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
@@ -13,8 +13,6 @@ Sometimes, when these frontend requests can't be completed, you'll see this part
 Network interruptions, timeouts, server overload, and Query errors are some of the causes of this error.
 
 The following sections discuss the nature of this error and how to troubleshoot it.
-
-<!-- truncate -->
 
 ### Check system clocks
 
@@ -80,7 +78,7 @@ Check your [Client and Worker configuration](/references/configuration) files fo
 Invalid targets also cause `connection refused` errors alongside `deadline exceeded`.
 Check that the Client connects after updating your files.
 
-## Advanced troubleshooting
+### Advanced troubleshooting
 
 In addition to the steps listed in the previous sections, check the areas mentioned in each of the following scenarios.
 
