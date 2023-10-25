@@ -1,7 +1,7 @@
 ---
 id: what-is-a-delay-start-workflow-execution
 title: What is a Start Delay?
-description: Start Delay determines the amount of time to wait before initiating a Workflow Execution. If the Workflow receives a Signal during the delay, it dispatches a Workflow Task and the remaining delay is bypassed. Note that Start Delay is incompatible with cron_schedule and is still in the experimental phase.
+description: Start Delay determines the amount of time to wait before initiating a Workflow Execution. If the Workflow receives a Signal-With-Start during the delay, it dispatches a Workflow Task and the remaining delay is bypassed.
 sidebar_label: Delay Workflow Execution
 tags:
     - term
