@@ -145,6 +145,12 @@ The default Data Converter is used by the Temporal SDK to convert objects into b
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
+#### [Delay Workflow Execution](/workflows#delay-workflow-execution)
+Start Delay determines the amount of time to wait before initiating a Workflow Execution. If the Workflow receives a Signal during the delay, it dispatches a Workflow Task and the remaining delay is bypassed. Note that Start Delay is incompatible with cron_schedule and is still in the experimental phase.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation), [delay-workflow](/tags/delay-workflow)_
+
+
 #### [Dual Visibility](/visibility#dual-visibility)
 Dual Visibility is a feature that lets you set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.
 

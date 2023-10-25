@@ -10,6 +10,7 @@ keywords:
 - child-workflow
 - child-workflow-executions
 - continue-as-new
+- delay-workflow
 - explanation
 - queries
 - resets
@@ -21,6 +22,7 @@ tags:
 - child-workflow
 - child-workflow-executions
 - continue-as-new
+- delay-workflow
 - explanation
 - queries
 - resets
@@ -1135,6 +1137,25 @@ A Temporal Cron Job does not stop spawning Runs until it has been Terminated or 
 A Cancellation Request affects only the current Run.
 
 Use the Workflow Id in any requests to Cancel or Terminate.
+
+## What is a Start Delay? {#delay-workflow-execution}
+
+Start Delay determines the amount of time to wait before initiating a Workflow Execution.
+
+:::note
+
+You can set either a Delay Start Workflow Execution or a [Schedule](#schedule), but not both.
+
+This Workflow Option is considered experimental and may change in future releases.
+
+:::
+
+This is useful if you have a Workflow you want to schedule out in the future, but only want it to execute once.
+
+If the Workflow receives a Signal-With-Start during the delay, it dispatches a Workflow Task and the remaining delay is bypassed.
+If the Workflow receives a Signal during the delay that is not a Signal-With-Start, it is ignored and the Workflow continues to be delayed until the delay expires or a Signal-With-Start is received.
+
+You can delay the dispatch of the initial Workflow Execution by setting this option in the Workflow Options field of the SDK of your choice.
 
 ## What is a State Transition? {#state-transition}
 
