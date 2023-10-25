@@ -13,7 +13,11 @@
   "sections": [
     {
       "type": "p",
-      "id": "go/chapter-durable-execution/durable-execution"
+      "id": "go/chapter-durable-execution/durable-execution-intro"
+    },
+    {
+      "type": "h2",
+      "id": "go/chapter-durable-execution/retrieve-event-history"
     },
     {
       "type": "h2",

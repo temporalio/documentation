@@ -1,15 +1,22 @@
 ---
 id: retrieve-event-history
-title: How to retrieve Workflow Event History
-description: Every Workflow Execution has an Event History associated with it, which represents the single source of truth for what transpired during that execution. This section deals with retrieving Event Histories from your Temporal Cluster.
-sidebar_label: Retrieving Event History
+title: How to retrieve a Workflow Execution's Event History
+description: Learn how to retrieve your Workflow Execution's Event History
+sidebar_label: Retrieve Event History
 tags:
   - go sdk
   - developer-guide-doc-type
   - event history
 ---
 
-Every Workflow Execution has an Event History associated with it, which represents the single source of truth for what transpired during that execution. Since the Temporal Cluster maintains this history, appending new Events based on requests from Clients and Workers, this history represents the Temporal Cluster's perspective about what happened during Workflow Execution.
+Use the Temporal CLI's `temporal workflow show` command to save your Workflow Execution's Event History to a local file:
+
+```shell
+temporal workflow show --workflow-id your-workflow-id --output json  > your_workflow_history.json
+```
+
+Every Workflow Execution has an Event History associated with it, which represents the single source of truth for what transpired during that execution.
+Since the Temporal Cluster maintains this history, appending new Events based on requests from Clients and Workers, this history represents the Temporal Cluster's perspective about what happened during Workflow Execution.
 
 Event Histories are persisted to the database used by the Temporal Cluster, so they're durable, and will even survive a crash of the Temporal Cluster itself. History information enables developers to investigate Workflow Executions. Although the Event History is stored in the cluster's database, you can access the history of a Workflow Execution from code that uses a Temporal SDK, from Temporal's command-line tool, or from the Web UI.
 
