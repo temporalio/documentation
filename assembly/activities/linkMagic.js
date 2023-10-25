@@ -38,41 +38,24 @@ async function replaceWithLocalRefs(guideConfig, fullIndex) {
           langtab.node.markdown_content = await parseAndReplace(
             langtab.node.markdown_content,
             fullIndex,
-            guideConfig.id
+            `${guideConfig.file_dir}/${guideConfig.id}`
           );
         }
         updatedLangTabs.push(langtab);
       }
       section.langtabs = updatedLangTabs;
     } else {
-      section.node.markdown_content = await parseAndReplace(section.node.markdown_content, fullIndex, guideConfig.id);
+      section.node.markdown_content = await parseAndReplace(
+        section.node.markdown_content,
+        fullIndex,
+        `${guideConfig.file_dir}/${guideConfig.id}`
+      );
     }
     updatedSections.push(section);
     guideConfig.sections = updatedSections;
   }
   return guideConfig;
 }
-
-// async function genRefString(node) {
-//   const parts = node.id.split("/");
-//   const id = parts[1];
-//   let refString = `---
-// id: ${id}
-// title: ${node.title}
-// description: ${node.description}
-// sidebar_label: ${node.label}\n`;
-
-//   if (node.tags != undefined) {
-//     refString = `${refString}tags:\n`;
-//     for (const tag of node.tags) {
-//       refString = `${refString} - ${tag}\n`;
-//     }
-//   }
-//   refString = `${refString}---\n\n`;
-//   refString = `${refString}<!-- This file is generated. Do not edit it directly. -->\n\n`;
-//   refString = `${refString}${node.markdown_content}`;
-//   return refString;
-// }
 
 async function parseAndReplace(raw_content, link_index, current_guide_id) {
   const lines = raw_content.toString().split("\n");
@@ -147,7 +130,8 @@ async function replaceLinks(line, match, link, current_guide_id) {
     localRef = match[3];
   }
   // define the new path
-  if (link.guide_id != current_guide_id) {
+
+  if (`${link.file_dir}/${link.guide_id}` != current_guide_id) {
     if (link.slug == "none") {
       if (link.file_dir != "/") {
         newPath = `/${link.file_dir}/${link.guide_id}${localRef}`;

@@ -2,7 +2,7 @@
 id: versioning
 title: Python SDK developer's guide - Versioning
 sidebar_label: Versioning
-sidebar_position: 7
+sidebar_position: 8
 description: The Versioning section of the Temporal Developer's guide covers how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 slug: /dev-guide/python/versioning
 toc_max_heading_level: 4
