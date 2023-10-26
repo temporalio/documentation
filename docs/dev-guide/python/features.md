@@ -368,7 +368,7 @@ These are unnamed handlers that are invoked if no other statically defined handl
 
 Dynamic Handlers provide flexibility to handle cases where the names of Workflows, Activities, Signals, or Queries aren't known at run time.
 
-:::warning
+:::caution
 
 Dynamic Handlers should be used judiciously as a fallback mechanism rather than the primary approach.
 Overusing them can lead to maintainability and debugging issues down the line.
