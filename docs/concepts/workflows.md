@@ -726,6 +726,26 @@ An Update has four phases.
    The Platform sends the Update outcome back to the original invoking entity as an Update response.
    A [WorkflowExecutionUpdateCompletedEvent](/references/events#workflowexecutionupdatecompletedevent) Event in the Workflow Execution Event History denotes the completion of an Update.
 
+## What is a Dynamic Handler? {#dynamic-handler}
+
+Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
+These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
+
+Dynamic Handlers provide flexibility to handle cases where the names of Workflows, Activities, Signals, or Queries aren't known at run time.
+
+:::caution
+
+Dynamic Handlers should be used judiciously as a fallback mechanism rather than the primary approach.
+Overusing them can lead to maintainability and debugging issues down the line.
+
+Instead, Workflows, Activities, Signals and Queries should be defined statically whenever possible, with clear names that indicate their purpose.
+Use static definitions as the primary way of structuring your Workflows.
+
+Reserve Dynamic Handlers for cases where the handler names are not known at compile time and need to be looked up dynamically at runtime.
+They are meant to handle edge cases and act as a catch-all, not as the main way of invoking logic.
+
+:::
+
 ## What is a Side Effect? {#side-effect}
 
 A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.
