@@ -383,6 +383,35 @@ The following table lists and describes the environment variables you can set fo
 | `TEMPORAL_TLS_KEY`                       | Path to private certificate key.                                          | --tls-key-path                  |
 | `TEMPORAL_TLS_SERVER_NAME`               | Override for target TLS server name.                                      | --tls-server-name               |
 
+## Proxy support
+
+Temporal CLI provides support for users who are operating behind a proxy.
+This feature ensures seamless communication even in network-restricted environments.
+
+#### Setting up proxy support
+
+If you are behind a proxy, you'll need to instruct the Temporal CLI to route its requests via that proxy.
+You can achieve this by setting the `HTTPS_PROXY` environment variable.
+
+```command
+export HTTPS_PROXY=<host>:<port>
+```
+
+Replace `<host>` with the proxy's hostname or IP address, and `<port>` with the proxy's port number.
+
+Once set, you can run the Temporal CLI commands as you normally would.
+
+:::note
+
+Temporal CLI uses the gRPC library which natively supports HTTP CONNECT proxies. The gRPC library checks for the `HTTPS_PROXY` (and its case-insensitive variants) environment variable to determine if it should route requests through a proxy.
+
+:::
+
+In addition to `HTTPS_PROXY`, gRPC also respects the `NO_PROXY` environment variable.
+This can be useful if there are specific addresses or domains you wish to exclude from proxying.
+
+For more information, see [Proxy](https://github.com/grpc/grpc-go/blob/master/Documentation/proxy.md) in the gRPC documentation.
+
 ## Auto-completion
 
 Enable auto-completion using the following commands.
