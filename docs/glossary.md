@@ -151,8 +151,8 @@ Dual Visibility is a feature that lets you set a secondary Visibility store in y
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_
 
 
-#### [Dynamic Entities](/dev-guide/python/features#dynamic-entities)
-Dynamic Entities are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named Entity matches the call from the Server at runtime.
+#### [Dynamic Handlers](/dev-guide/python/features#dynamic-handlers)
+Dynamic Handlers are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named Entity matches the call from the Server at runtime.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
