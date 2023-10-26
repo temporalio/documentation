@@ -152,7 +152,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/t
 
 
 #### [Dynamic Handlers](/dev-guide/python/features#dynamic-handlers)
-Dynamic Handlers are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named Entity matches the call from the Server at runtime.
+Dynamic Handlers are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named handler matches the call from the Server at runtime.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
