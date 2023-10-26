@@ -692,7 +692,7 @@ export async function OneClickBuy(itemId: string) {
 
 </details>
 
-:::warning `condition` Antipatterns
+::: caution `condition` Antipatterns
 
 - No time based condition functions are allowed in your function as this is very error prone.
   Use the optional `timeout` arg or a `sleep` timer.
@@ -762,7 +762,7 @@ export async function yourWorkflow(userId: string) {
 
 You can invert this to create a Reminder pattern where the promise resolves IF no Signal is received.
 
-:::warning Antipattern: Racing sleep.then
+::: caution Antipattern: Racing sleep.then
 
 Be careful when racing a chained `sleep`. This may cause bugs because the chained `.then` will still continue to execute.
 
