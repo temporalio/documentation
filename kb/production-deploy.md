@@ -58,7 +58,7 @@ At minimum, the `development.yaml` file needs to have the [`global`](/references
 
 The [Server configuration reference](/references/configuration) has a more complete list of possible parameters.
 
-::: caution Before you deploy: Reminder on shard count
+:::caution Before you deploy: Reminder on shard count
 
 A huge part of production deploy is understanding current and future scale - the **number of shards can't be changed after the cluster is in use** so this decision needs to be upfront. Shard count determines scaling to improve concurrency if you start getting lots of lock contention.
 The default `numHistoryShards` is 4; deployments at scale can go up to 500-2000 shards.
@@ -188,7 +188,7 @@ Temporal Web's tracing capabilities mainly track activity execution within a Tem
 
 ## Further things to consider
 
-::: caution
+:::caution
 
 This document is still being written, and we would welcome your questions and contributions.
 
