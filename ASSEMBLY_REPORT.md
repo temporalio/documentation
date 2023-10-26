@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday October 25 2023 16:17:15 PM -0700
+Last assembled: Thursday October 26 2023 12:56:28 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 110 guide configurations found.
 
-1641 information nodes found.
+1646 information nodes found.
 
-1403 information nodes are attached to guides.
+1408 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -420,6 +420,8 @@ concepts/what-is-an-activity-definition -> #activity-definition
 
 concepts/what-is-an-activity-heartbeat -> #activity-heartbeat
 
+go/how-to-develop-an-activity-definition-in-go -> /dev-guide/go/foundations#activity-definition
+
 java/developing-activities -> /dev-guide/java/foundations#develop-activities
 
 php/developing-activities -> /dev-guide/php/foundations#develop-activities
@@ -560,6 +562,8 @@ typescript/visibility -> /dev-guide/typescript/observability#visibility
 
 concepts/what-is-a-worker-entity -> #worker-entity
 
+go/how-to-develop-a-worker-in-go -> /dev-guide/go/foundations#develop-worker
+
 java/how-to-develop-a-worker-program-in-java -> /dev-guide/java/foundations#run-a-dev-worker
 
 php/run-a-dev-worker -> /dev-guide/php/foundations#run-a-dev-worker
@@ -613,6 +617,8 @@ typescript/developing-workflows -> /dev-guide/typescript/foundations#develop-wor
 go/patching -> /dev-guide/go/versioning#patching
 
 java/patching -> /dev-guide/java/versioning#patching
+
+python/how-to-use-the-python-sdk-patching-api-in-python -> /dev-guide/python/versioning#python-sdk-patching-api
 
 typescript/patching -> /dev-guide/typescript/versioning#patching
 
@@ -1038,6 +1044,8 @@ python/project-structure -> /dev-guide/python/project-setup#boilerplate-project
 
 python/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#start-workflow
 
+python/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
+
 cli/server/start-dev -> /cli/server#start-dev
 
 cli/operator/namespace/create -> /cli/operator#create
@@ -1088,6 +1096,10 @@ go/logging -> /dev-guide/go/observability#logging
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
+go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
+
+go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
 go/go-dev-guide-structure -> #
 
 go/install-cli -> /dev-guide/go/project-setup#install-cli
@@ -1096,28 +1108,16 @@ go/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
 
 go/project-structure -> /dev-guide/go/project-setup#boilerplate-project
 
-go/self-hosted-worker-docker-network -> /dev-guide/go/project-setup#dockerfile
-
-go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#local-dev-server
-
-go/foundations -> /dev-guide/go/foundations#
-
-go/how-to-develop-an-activity-definition-in-go -> /dev-guide/go/foundations#activity-definition
-
-go/how-to-develop-a-worker-in-go -> /dev-guide/go/foundations#develop-worker
-
-python/how-to-use-the-python-sdk-patching-api-in-python -> /dev-guide/python/versioning#python-sdk-patching-api
-
-python/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
-
-go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
-
-go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
 go/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
 
 go/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/go/project-setup#cloud-worker
 
+go/self-hosted-worker-docker-network -> /dev-guide/go/project-setup#dockerfile
+
+go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#local-dev-server
+
 go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
+
+go/foundations -> /dev-guide/go/foundations#
 
 
