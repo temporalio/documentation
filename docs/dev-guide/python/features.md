@@ -32,6 +32,7 @@ keywords:
 - signal
 - signal with start
 - sleep
+- term
 - timeout
 - timer
 - timers
@@ -63,6 +64,7 @@ tags:
 - signal
 - signal-with-start
 - sleep
+- term
 - timeout
 - timer
 - timers
@@ -359,7 +361,7 @@ Visit the source repository to [view the source code](https://github.com/tempora
     result = await handle.query(GreetingWorkflow.greeting)
 ```
 
-## What are Dynamic Handlers? {#dynamic-handler}
+## What is a Dynamic Handler? {#dynamic-handler}
 
 Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
 These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
