@@ -33,22 +33,12 @@ The follow structure applies to the Temporal Go SDK developer's guide:
   - [Contribution](/dev-guide/go/introduction#contribution)
 
 - [**Project setup**](#)
-  - [How to download and install the Temporal CLI](#)
-  - [Which development Cluster you should choose](/dev-guide/go/project-setup#choose-dev-cluster)
-  - How to create a Namespace in your development Cluster
-    - [Local dev server](/dev-guide/go/project-setup#local-dev-server)
-    - [Temporal Cloud](/dev-guide/go/project-setup#temporal-cloud)
-    - [Self-hosted Temporal Cluster](/dev-guide/go/project-setup#self-hosted-temporal-cluster)
-  - [Boilerplate application code and file structure best practices](/dev-guide/go/project-setup#boilerplate-project)
-  - How to run your Worker
-    - [Local dev server Worker](/dev-guide/go/project-setup#dev-server-worker)
-    - [Temporal Cloud Worker](/dev-guide/go/project-setup#cloud-worker)
-    - [Self-hosted Worker](/dev-guide/go/project-setup#dockerfile)
-  - How to start your Workflow using the CLI
-    - [Start on local dev server](/dev-guide/go/project-setup#local-dev-server)
-    - [Start on Temporal Cloud](/dev-guide/go/project-setup#temporal-cloud)
-    - [Start on Self-hosted](/dev-guide/go/project-setup#self-hosted)
-  - [How to add a testing framework and tests to your application](/dev-guide/go/project-setup#test-framework)
+  - [Download and install the Temporal CLI](#)
+  - [Choose a development Cluster and create a Namespace](/dev-guide/go/project-setup#choose-dev-cluster)
+  - [Add boilerplate application code](/dev-guide/go/project-setup#boilerplate-project)
+  - [Run a Worker](/dev-guide/go/project-setup#dev-server-worker)
+  - [Start your Workflow using the CLI](/dev-guide/go/project-setup#start-workflow)
+  - [Add a testing framework and tests to your application](/dev-guide/go/project-setup#test-framework)
 
 2. [**Foundations**](/dev-guide/go/foundations#): The minimum things required to build and run a simple Workflow with a single Activity.
 

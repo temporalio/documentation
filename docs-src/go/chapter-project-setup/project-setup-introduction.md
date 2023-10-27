@@ -9,17 +9,27 @@ tags:
   - project setup
 ---
 
-This section covers how to use a terminal, a code editor, and a development Cluster to create a Namespace, write a single Activity Workflow, run a Worker that talks to your development Cluster, run a Workflow using the CLI, add a testing framework, and view Workflows in the Web UI.
+The first step to creating a new Temporal Application is to set up your development environment.
+This chapter walks through the steps to do that using the Go SDK.
 
 :::competency Construct a new Temporal Application project
 
-This section of the Temporal Go SDK developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application using Go.
+This chapter of the Temporal Go SDK developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application using Go.
 
 By the end of this section you will know how to construct a new Temporal Application project.
 
+Learning objectives:
+
+- Describe the tools available and recommended to develop Workflows.
+- Describe the code that actually forms a Temporal application.
+- Implement an appropriate testing framework.
+
+Much of the information in this chapter is also covered in the [Temporal 101 course](https://learn.temporal.io/courses/temporal_101/)
+
 :::
 
-:::info Choose your development environment
+This chapter introduces the [Background Check use case](https://learn.temporal.io/examples/go/background-checks/#what-is-the-real-life-use-case) and a sample application as a means to contextualize the information.
+Future developer guide chapters build on this use case and sample application.
 
 There are three ways to follow this guide:
 
@@ -27,6 +37,16 @@ There are three ways to follow this guide:
 - [Use Temporal Cloud](/go/chapter-project-setup/choose-dev-cluster#temporal-cloud)
 - [Use a self-hosted environment such as Docker](/go/chapter-project-setup/choose-dev-cluster#self-hosted-temporal-cluster)
 
-Read more in the [Choose a development Cluster](/go/chapter-project-setup/choose-dev-cluster) section on this page.
+Read more in the [Choose a development Cluster](/go/chapter-project-setup/choose-dev-cluster) section.
 
-:::
+In this chapter you will do the following:
+
+1. Download the Temporal CLI.
+2. Choose your development Cluster.
+3. Create a Namespace on your development Cluster.
+4. Copy boilerplate code into your IDE.
+5. Run your the Worker.
+6. Start the Workflow using the CLI.
+7. Explore the Web UI to view the status of the Workflow and confirm polling Workers.
+8. Add a testing framework and unit tests to the application
+9. Run the application unit tests

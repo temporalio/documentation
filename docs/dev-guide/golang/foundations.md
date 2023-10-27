@@ -534,7 +534,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 In Go, by default, the Workflow Type name is the same as the function name.
 
-To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a [Worker](#develop-worker).
+To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
 
 :::copycode Sample application code
 

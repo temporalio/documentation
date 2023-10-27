@@ -25,22 +25,12 @@ The follow structure applies to the Temporal Go SDK developer's guide:
   - [Contribution](/go/chapter-introduction/introduction-to-go-sdk#contribution)
 
 - [**Project setup**](/go/landing-page/go-dev-guide-structure)
-  - [How to download and install the Temporal CLI](/go/landing-page/go-dev-guide-structure)
-  - [Which development Cluster you should choose](/go/chapter-project-setup/choose-dev-cluster)
-  - How to create a Namespace in your development Cluster
-    - [Local dev server](/go/chapter-project-setup/choose-dev-cluster#local-dev-server)
-    - [Temporal Cloud](/go/chapter-project-setup/choose-dev-cluster#temporal-cloud)
-    - [Self-hosted Temporal Cluster](/go/chapter-project-setup/choose-dev-cluster#self-hosted-temporal-cluster)
-  - [Boilerplate application code and file structure best practices](/go/chapter-project-setup/project-structure)
-  - How to run your Worker
-    - [Local dev server Worker](/go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker)
-    - [Temporal Cloud Worker](/go/generated/backgroundcheck-boilerplate-cloud-worker)
-    - [Self-hosted Worker](/go/chapter-project-setup/self-hosted-worker-docker-network)
-  - How to start your Workflow using the CLI
-    - [Start on local dev server](/go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow#local-dev-server)
-    - [Start on Temporal Cloud](/go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow#temporal-cloud)
-    - [Start on Self-hosted](/go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow#self-hosted)
-  - [How to add a testing framework and tests to your application](/go/generated/backgroundcheck-boilerplate-add-test-framework)
+  - [Download and install the Temporal CLI](/go/landing-page/go-dev-guide-structure)
+  - [Choose a development Cluster and create a Namespace](/go/chapter-project-setup/choose-dev-cluster)
+  - [Add boilerplate application code](/go/chapter-project-setup/project-structure)
+  - [Run a Worker](/go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker)
+  - [Start your Workflow using the CLI](/go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow)
+  - [Add a testing framework and tests to your application](/go/generated/backgroundcheck-boilerplate-add-test-framework)
 
 2. [**Foundations**](/go/foundations): The minimum things required to build and run a simple Workflow with a single Activity.
 

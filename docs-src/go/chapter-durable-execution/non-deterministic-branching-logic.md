@@ -1,33 +1,17 @@
 ---
-id: workflow-determinism
-title: Workflow Determinism
-description: It is not possible to catch or handle non-deterministic errors in your Workflow code, so the best approach is to avoid them in the first place. Temporal helps avoid non-deterministic errors by wrapping some Go language primitives.
-sidebar_label: Workflow Determinism
+id: non-deterministic-branching-logic
+title: Non-deterministic branching logic
+description: History Replay, sometimes also called Workflow Replay, is the mechanism that Temporal uses to reconstruct the state of a Workflow Execution. Temporal provides Durable Execution via this Replay Functionality.
+sidebar_label: Durability through Replays
 tags:
   - go sdk
   - developer-guide-doc-type
   - event history
-  - determinism
+  - replay
+  - durable execution
 ---
 
-A critical aspect of developing Workflow Definitions is ensuring they exhibit certain deterministic traits – that is, making sure that the same Commands are emitted in the same sequence, whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
-
-A mismatch between the Commands that the Worker expected, based on the Event History, and those created, based on actually executing the code, results in a non-deterministic error. This error means that the Worker cannot accurately restore the state of the Workflow Execution. Since the Workflow Definition produced a different sequence of Commands during replay than it did prior to the crash, the Worker is unable to restore the previous state, so the use of random numbers in the Workflow code has resulted in a non-deterministic error.
-
-You can also watch [Deployment Leads to Non-Deterministic Error](https://www.youtube.com/embed/8DkMdaUu0vQ?rel=0&iv_load_policy=3&modestbranding=1&showse) from our [Temporal 102](https://learn.temporal.io/courses/temporal_102/go) course, or refer to the [Deterministic constraints](https://docs.temporal.io/workflows#deterministic-constraints) documentation.
-
-### Examples of Changes That May Lead to Non-Deterministic Errors
-
-- Adding or removing an Activity
-- Switching the Activity Type used in a call to `ExecuteActivity`
-- Adding or removing a Timer
-- Altering the execution order of Activities or Timers relative to one another
-
-### Examples of Changes That Do Not Lead to Non-Deterministic Errors
-
-- Modifying statements in a Workflow Definition, such as logging statements, that do not affect the Commands generated during Workflow Execution
-- Changing attributes in a `ActivityOptions` or `RetryPolicy`
-- Modifying code inside of an Activity Definition
+Also referred to as "intrinsic non-determinism", writing bad branching logic in Workflow code prevents the Workflow code from executing to completion because the Workflow can have a different code path than the one expected from the Event History.
 
 ### Common Sources of Non-Determinism
 
@@ -54,7 +38,7 @@ import (
 ...
 
 	ctx = workflow.WithActivityOptions(ctx, activityOptions)
-	time.Sleep(time.Duration(rand.Intn(10)) * time.Second)  
+	time.Sleep(time.Duration(rand.Intn(10)) * time.Second)
 	activityParam := YourActivityParam{
 		ActivityParamX: param.WorkflowParamX,
 		ActivityParamY: param.WorkflowParamY,

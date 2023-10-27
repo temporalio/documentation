@@ -23,11 +23,27 @@ Use the Temporal CLI `temporal workflow start` command to start your Workflow.
 
 ```shell
 temporal workflow start \
- --task-queue backgroundcheck-boilerplate-task-queue \
+ --task-queue backgroundcheck-boilerplate-task-queue-local \
  --type BackgroundCheck \
  --input '"555-55-5555"' \
- --namespace backgroundcheck_namespace
+ --namespace backgroundcheck_namespace \
+ --workflow-id backgroundcheck_workflow
 ```
+
+**Parameters breakdown**
+
+- `--task-queue`: The name of the Task Queue for all the Workflow Execution's Tasks.
+  Unless otherwise specified, Activity Executions use the Workflow Execution's Task Queue name by default.
+- `--type`: This is the Workflow Type name.
+  By default, this is the function name.
+  In the Go SDK, this name can be customized when [registering the Worklow with the Workflow](/go/generated/how-to-customize-workflow-type-in-go).
+- `--input`: This must be a valid JSON object that can be unmarshaled into the parameter(s) that the Workflow function accepts.
+  Read more about how the Temporal Platform handles your application data in the [Data conversion](/concepts/what-is-a-data-converter) guide.
+- `--namespace`: This is the Namespace that you want to run your Temporal Application in.
+- `--workflow-id`: A [Workflow Id](/concepts/what-is-a-workflow-id) is a custom identifier provided by you.
+  The Temporal Platform generates one if one isn't provided.
+  However, we highly recommend supplying your own Workflow Id with your own naming convention.
+  A [Workflow Id Reuse Policy](/concepts/what-is-a-workflow-id-reuse-policy) enables fine controls over whether Workflow Ids can be reused in the Platform within the Retention Period.
 
 For more details, see the [temporal workflow start](/cli/workflow/start) command API reference.
 
@@ -57,6 +73,17 @@ Use the Namespace dropdown to select the project Namespace you created earlier.
 
 You should now be at [http://localhost:8233/namespaces/backgroundcheck_namespace/workflows](http://localhost:8233/namespaces/backgroundcheck_namespace/workflows).
 
+#### Confirm polling Worker
+
+If you ever want to confirm that a Worker is polling on the Task Queue that the Workflow started on, you can visit the Workflow Execution's details page and click on the Task Queue name.
+
+![Click on the Task Queue name to view polling Workers](/img/click-task-queue-name.png)
+
+This will direct you to a page where you can view the Workers polling that Task Queue.
+If there are none, the application won't run.
+
+![Confirm Workers polling Task Queue](/img/confirm-workers-polling-task-queue.png)
+
 ### Temporal Cloud
 
 **How to start a Workflow with Temporal CLI when using Temporal Cloud**
@@ -67,18 +94,19 @@ Run the `temporal workflow start` command, and make sure to specify the certific
 temporal workflow start \
  --task-queue backgroundcheck-boilerplate-task-queue-cloud \
  --type BackgroundCheck \
- --tls-cert-path ca.pem \
- --tls-key-path ca.key \
  --input '"555-55-5555"' \
  --namespace <namespace>.<account-id> \
- --address <namespace>.<account-id>.tmprl.cloud:<port>
+ --workflow-id backgroundcheck_workflow \
+ --address <namespace>.<account-id>.tmprl.cloud:<port> \
+ --tls-cert-path ca.pem \
+ --tls-key-path ca.key
 ```
 
 Make sure that the certificate path, private key path, Namespace, and address argument values match your project.
 
 :::info Use environment variables
 
-Use environment variables as a way to quickly switch between a local dev server and Temporal Cloud, for example.
+Use [environment variables](/concepts/what-is-the-temporal-cli#environment-variables) as a way to quickly switch between a local dev server and Temporal Cloud, for example.
 
 You can customize the environment names to be anything you want.
 
@@ -137,7 +165,8 @@ temporal_docker workflow start \
  --task-queue backgroundcheck-boilerplate-task-queue-self-hosted \
  --type BackgroundCheck \
  --input '"555-55-5555"' \
- --namespace backgroundcheck_namespace
+ --namespace backgroundcheck_namespace \
+ --workflow-id backgroundcheck_workflow
 ```
 
 #### List Workflows

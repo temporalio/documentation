@@ -51,17 +51,27 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This section covers how to use a terminal, a code editor, and a development Cluster to create a Namespace, write a single Activity Workflow, run a Worker that talks to your development Cluster, run a Workflow using the CLI, add a testing framework, and view Workflows in the Web UI.
+The first step to creating a new Temporal Application is to set up your development environment.
+This chapter walks through the steps to do that using the Go SDK.
 
 :::competency Construct a new Temporal Application project
 
-This section of the Temporal Go SDK developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application using Go.
+This chapter of the Temporal Go SDK developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application using Go.
 
 By the end of this section you will know how to construct a new Temporal Application project.
 
+Learning objectives:
+
+- Describe the tools available and recommended to develop Workflows.
+- Describe the code that actually forms a Temporal application.
+- Implement an appropriate testing framework.
+
+Much of the information in this chapter is also covered in the [Temporal 101 course](https://learn.temporal.io/courses/temporal_101/)
+
 :::
 
-:::info Choose your development environment
+This chapter introduces the [Background Check use case](https://learn.temporal.io/examples/go/background-checks/#what-is-the-real-life-use-case) and a sample application as a means to contextualize the information.
+Future developer guide chapters build on this use case and sample application.
 
 There are three ways to follow this guide:
 
@@ -69,9 +79,19 @@ There are three ways to follow this guide:
 - [Use Temporal Cloud](#temporal-cloud)
 - [Use a self-hosted environment such as Docker](#self-hosted-temporal-cluster)
 
-Read more in the [Choose a development Cluster](#choose-dev-cluster) section on this page.
+Read more in the [Choose a development Cluster](#choose-dev-cluster) section.
 
-:::
+In this chapter you will do the following:
+
+1. Download the Temporal CLI.
+2. Choose your development Cluster.
+3. Create a Namespace on your development Cluster.
+4. Copy boilerplate code into your IDE.
+5. Run your the Worker.
+6. Start the Workflow using the CLI.
+7. Explore the Web UI to view the status of the Workflow and confirm polling Workers.
+8. Add a testing framework and unit tests to the application
+9. Run the application unit tests
 
 ## Install the Temporal CLI {#install-cli}
 
@@ -805,11 +825,27 @@ Use the Temporal CLI `temporal workflow start` command to start your Workflow.
 
 ```shell
 temporal workflow start \
- --task-queue backgroundcheck-boilerplate-task-queue \
+ --task-queue backgroundcheck-boilerplate-task-queue-local \
  --type BackgroundCheck \
  --input '"555-55-5555"' \
- --namespace backgroundcheck_namespace
+ --namespace backgroundcheck_namespace \
+ --workflow-id backgroundcheck_workflow
 ```
+
+**Parameters breakdown**
+
+- `--task-queue`: The name of the Task Queue for all the Workflow Execution's Tasks.
+  Unless otherwise specified, Activity Executions use the Workflow Execution's Task Queue name by default.
+- `--type`: This is the Workflow Type name.
+  By default, this is the function name.
+  In the Go SDK, this name can be customized when [registering the Worklow with the Workflow](/dev-guide/go/foundations#customize-workflow-type).
+- `--input`: This must be a valid JSON object that can be unmarshaled into the parameter(s) that the Workflow function accepts.
+  Read more about how the Temporal Platform handles your application data in the [Data conversion](/dataconversion#) guide.
+- `--namespace`: This is the Namespace that you want to run your Temporal Application in.
+- `--workflow-id`: A [Workflow Id](/workflows#workflow-id) is a custom identifier provided by you.
+  The Temporal Platform generates one if one isn't provided.
+  However, we highly recommend supplying your own Workflow Id with your own naming convention.
+  A [Workflow Id Reuse Policy](/workflows#workflow-id-reuse-policy) enables fine controls over whether Workflow Ids can be reused in the Platform within the Retention Period.
 
 For more details, see the [temporal workflow start](/cli/workflow#start) command API reference.
 
@@ -839,6 +875,17 @@ Use the Namespace dropdown to select the project Namespace you created earlier.
 
 You should now be at [http://localhost:8233/namespaces/backgroundcheck_namespace/workflows](http://localhost:8233/namespaces/backgroundcheck_namespace/workflows).
 
+#### Confirm polling Worker
+
+If you ever want to confirm that a Worker is polling on the Task Queue that the Workflow started on, you can visit the Workflow Execution's details page and click on the Task Queue name.
+
+<div class="tdiw"><div class="tditw"><p class="tdit">Click on the Task Queue name to view polling Workers</p></div><div class="tdiiw"><img class="img_ev3q" src="/img/click-task-queue-name.png" alt="Click on the Task Queue name to view polling Workers" height="782" width="2596" /></div></div>
+
+This will direct you to a page where you can view the Workers polling that Task Queue.
+If there are none, the application won't run.
+
+<div class="tdiw"><div class="tditw"><p class="tdit">Confirm Workers polling Task Queue</p></div><div class="tdiiw"><img class="img_ev3q" src="/img/confirm-workers-polling-task-queue.png" alt="Confirm Workers polling Task Queue" height="692" width="2606" /></div></div>
+
 ### Temporal Cloud
 
 **How to start a Workflow with Temporal CLI when using Temporal Cloud**
@@ -849,18 +896,19 @@ Run the `temporal workflow start` command, and make sure to specify the certific
 temporal workflow start \
  --task-queue backgroundcheck-boilerplate-task-queue-cloud \
  --type BackgroundCheck \
- --tls-cert-path ca.pem \
- --tls-key-path ca.key \
  --input '"555-55-5555"' \
  --namespace <namespace>.<account-id> \
- --address <namespace>.<account-id>.tmprl.cloud:<port>
+ --workflow-id backgroundcheck_workflow \
+ --address <namespace>.<account-id>.tmprl.cloud:<port> \
+ --tls-cert-path ca.pem \
+ --tls-key-path ca.key
 ```
 
 Make sure that the certificate path, private key path, Namespace, and address argument values match your project.
 
 :::info Use environment variables
 
-Use environment variables as a way to quickly switch between a local dev server and Temporal Cloud, for example.
+Use [environment variables](/cli#environment-variables) as a way to quickly switch between a local dev server and Temporal Cloud, for example.
 
 You can customize the environment names to be anything you want.
 
@@ -919,7 +967,8 @@ temporal_docker workflow start \
  --task-queue backgroundcheck-boilerplate-task-queue-self-hosted \
  --type BackgroundCheck \
  --input '"555-55-5555"' \
- --namespace backgroundcheck_namespace
+ --namespace backgroundcheck_namespace \
+ --workflow-id backgroundcheck_workflow
 ```
 
 #### List Workflows
