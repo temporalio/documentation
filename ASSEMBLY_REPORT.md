@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday October 27 2023 12:31:49 PM -0600
+Last assembled: Friday October 27 2023 15:32:23 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
 111 guide configurations found.
 
-1648 information nodes found.
+1650 information nodes found.
 
-1409 information nodes are attached to guides.
+1411 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1100,6 +1100,10 @@ dev-guide/why-use-a-temporal-sdk -> /dev-guide/sdks#replays
 
 go/chapter-project-setup/project-setup-introduction -> /dev-guide/go/project-setup#
 
+go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#start-workflow
+
+go/chapter-durable-execution/retrieve-event-history -> #retrieve-event-history
+
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 go/generated/how-to-customize-workflow-type-in-go -> #customize-workflow-type
@@ -1113,8 +1117,6 @@ go/chapter-project-setup/choose-dev-cluster -> /dev-guide/go/project-setup#choos
 go/chapter-project-setup/project-structure -> /dev-guide/go/project-setup#boilerplate-project
 
 go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
-
-go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#start-workflow
 
 go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 

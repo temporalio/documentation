@@ -52,23 +52,19 @@ Result:
 The preceding output shows eleven Events in the Event History ordered in a particular sequence.
 All Events are created by the Temporal Server in response to either a request coming from a Temporal Client, or a [Command](/concepts/what-is-a-command) coming from the Worker.
 
+Let's take a closer look:
+
+- `WorkflowExecutionStarted`: This Event is created in response to the request to start the Workflow Execution.
+- `WorkflowTaskScheduled`: This Event indicates a Workflow Task is in the Task Queue.
+- `WorkflowTaskStarted`: This Event indicates that a Worker successfully polled the Task and started evaluating Workflow code.
+- `3. WorkflowTaskCompleted`: This Event indicates that the Worker suspended execution and made as much progress that it could.
+- `ActivityTaskScheduled`: This Event indicates that the ExecuteActivity API was called and the Worker sent the [`ScheduleActivityTask`](/references/commands#scheduleactivitytask) Command to the Server.
+- `ActivityTaskStarted`: This Event indicates that the Worker successfully polled the Activity Task and started evaluating Activity code.
+- `ActivityTaskCompleted`: This Event indicates that the Worker completed evauation of the Activity code and returned any results to the Server.
+  In response, the Server schedules another Workflow Task to finish evaluating the Workflow code resulting in the remaining Events, `WorkflowTaskScheduled`.`WorkflowTaskStarted`, `WorkflowTaskCompleted`, `WorkflowExecutionCompleted`.
+
 :::info Event reference
 
-The [Event reference](/references/events) serves as a source of truth for all possible Events in the Workflow Execution Event History.
+The [Event reference](/references/events) serves as a source of truth for all possible Events in the Workflow Execution's Event History and the data that is stored in them.
 
 :::
-
-Let's change the Workflow code to see how this affects the Event History.
-
-### Examples of Changes That May Lead to Non-Deterministic Errors
-
-- Adding or removing an Activity
-- Switching the Activity Type used in a call to `ExecuteActivity`
-- Adding or removing a Timer
-- Altering the execution order of Activities or Timers relative to one another
-
-### Examples of Changes That Do Not Lead to Non-Deterministic Errors
-
-- Modifying statements in a Workflow Definition, such as logging statements, that do not affect the Commands generated during Workflow Execution
-- Changing attributes in a `ActivityOptions` or `RetryPolicy`
-- Modifying code inside of an Activity Definition

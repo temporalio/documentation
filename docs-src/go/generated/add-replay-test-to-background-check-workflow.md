@@ -13,7 +13,7 @@ tags:
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_replay/tests/backgroundcheck_test.go. -->
 
 Add the Replay test to the set of application tests.
-The Replayer is available from the Worker package in the SDK.
+The Replayer is available from the `go.temporal.io/sdk/worker` package in the SDK.
 Register the Workflow Definition and then specify an existing Event History to compare to.
 
 Run the tests in the test directory (`go test`).
