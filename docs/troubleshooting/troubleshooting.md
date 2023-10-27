@@ -6,12 +6,10 @@ sidebar_position: 10
 description: This guide contains error handling and troubleshooting solutuions for Temporal edge cases.
 toc_max_heading_level: 4
 keywords:
-- error handling
-- guide-context
+- error
 - troubleshooting
 tags:
-- error-handling
-- guide-context
+- error
 - troubleshooting
 ---
 
@@ -24,6 +22,6 @@ This guide provides troubleshooting solutions for potential Temporal errors and 
 
 Learn more about the following topics:
 
-- [Troubleshoot deadline-exceeded error](/troubleshooting/deadline-exceeded-error#) - Deadline exceeded error occurs when a Workflow takes longer than the Workflow Execution timeout.
-- [Troubleshoot the failed reaching server error](/troubleshooting/last-connection-error#) - The failed reaching server error occurs when the Temporal Client cannot connect to the Temporal Server.
+- [Deadline-exceeded error](/troubleshooting/deadline-exceeded-error#) - Deadline exceeded errors occur as a result of Temporal frontend requests failing.
+- [Failed reaching server error](/troubleshooting/last-connection-error#) - Failed reaching server errors can result from expired certificates.
 

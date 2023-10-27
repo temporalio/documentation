@@ -19,13 +19,14 @@ export async function fullAssembly(params) {
 
   if (params.samples) {
     await activities.getSamplesRepos(config);
-
     await activities.createNodesFromSamples(config);
   }
 
   if (params.cli) {
     await activities.genCLI(config);
   }
+
+  await activities.generateTroubleShootingDocs(config)
 
   await activities.genSourceObjects(config);
 

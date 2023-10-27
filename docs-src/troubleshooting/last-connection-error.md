@@ -2,7 +2,7 @@
 id: last-connection-error
 title: Troubleshoot the "failed reaching server" error
 sidebar_label: Failed reaching server error
-description: Failed reaching server errors can result from expired certificates. This guide provides troubleshooting solutions.
+description: Failed reaching server errors can result from expired certificates.
 tags:
   - cloud
   - namespaces
