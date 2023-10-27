@@ -25,6 +25,7 @@ The Temporal Cloud CLI (tcld) is a command-line tool that you can use to interac
 ### tcld commands
 
 - [tcld account](/cloud/tcld/account)
+- [tcld feature](/cloud/tcld/feature)
 - [tcld generate-certificates](/cloud/tcld/generate-certificates)
 - [tcld login](/cloud/tcld/login#)
 - [tcld logout](/cloud/tcld/logout#)

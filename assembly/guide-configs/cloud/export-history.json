@@ -1,0 +1,35 @@
+{
+    "file_name": "how-to-export-workflow-event-histories.md",
+    "id": "export",
+    "slug": "/cloud/export",
+    "file_dir": "cloud",
+    "title": "How to export Workflow Histories",
+    "sidebar_label": "Export",
+    "sidebar_position": 9,
+    "description": "Workflow History export allows users to export Closed Workflow Histories to a users Cloud Storage Sink.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cloud/what-is-workflow-history-export"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/what-integrations-are-supported-by-export"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/prerequisites-to-exporting-workflow-history"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/how-to-setup-export"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/how-to-monitor-export-progress"
+        }
+    ]
+}
