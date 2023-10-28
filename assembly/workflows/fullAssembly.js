@@ -33,6 +33,8 @@ export async function fullAssembly(params) {
 
   await activities.genLinkIndexes(config);
 
+  await activities.devGuideToc(config);
+
   await activities.linkMagic(config);
 
   await activities.genMarkdownGuides(config);

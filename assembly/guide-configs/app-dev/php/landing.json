@@ -1,0 +1,19 @@
+{
+    "file_name": "index.md",
+    "id": "index",
+    "slug": "/dev-guide/php",
+    "file_dir": "dev-guide/php",
+    "title": "Temporal PHP SDK developer's guide",
+    "sidebar_label": "PHP SDK",
+    "sidebar_position": 3,
+    "description": "The Temporal PHP SDK developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "php/php-dev-guide-structure"
+        }
+    ]
+}
