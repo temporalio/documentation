@@ -9,13 +9,13 @@ tags:
   - php
 ---
 
-An optional `#[ActivityMethod]` annotation can be used to override a default Activity name.
+An optional `#[ActivityMethod]` attribute can be used to override a default Activity name.
 
-You can define your own prefix for all Activity names by adding the `prefix` option to the `YourActivityInterface` annotation.
+You can define your own prefix for all Activity names by adding the `prefix` option to the `ActivityInterface` attribute.
 (The default prefix is empty.)
 
 ```php
-#[YourActivityInterface("file_activities.")]
+#[ActivityInterface("file_activities.")]
 interface FileProcessingActivities
 {
     public function upload(string $bucketName, string $localName, string $targetName);
@@ -29,4 +29,4 @@ interface FileProcessingActivities
 }
 ```
 
-The `#[YourActivityInterface("file_activities.")]` is an annotation that tells the PHP SDK to generate a class to implement the `FileProcessingActivities` interface. The functions define Activities that are used in the Workflow.
+The `#[ActivityInterface("file_activities.")]` is an attribute that tells the PHP SDK to generate a class to implement the `FileProcessingActivities` interface. The functions define Activities that are used in the Workflow.

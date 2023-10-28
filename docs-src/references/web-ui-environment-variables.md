@@ -49,7 +49,7 @@ The port used by the Temporal WebUI Server and the HTTP API.
 
 This variable is needed for `TEMPORAL_OPENAPI_ENABLED` and all auth-related settings to work properly.
 
-## `TEMPORAL_PUBLIC_PATH`
+## `TEMPORAL_UI_PUBLIC_PATH`
 
 Stores a value such as "" or "/custom-path" that allows the UI to be served from a subpath.
 

@@ -59,7 +59,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 In this section you can find the following:
 
-- [Run a development Cluster](#run-a-development-server)
+- [Run a development Cluster](/dev-guide/typescript/foundations#run-a-development-server)
 - [Install your SDK](#install-a-temporal-sdk)
 - [Connect to a dev Cluster](#connect-to-a-dev-cluster)
 - [Develop a Workflow](#develop-workflows)
@@ -326,10 +326,10 @@ Returning results, returning errors, or throwing exceptions is fairly idiomatic 
 However, Temporal APIs that must be used to get the result of a Workflow Execution will only ever receive one of either the result or the error.
 
 A Workflow method returns a Generator.
-To properly typecast the Workflow's return value in the client code, use the `#[ReturnType()]` annotation.
+To properly typecast the Workflow's return value in the client code, use the `#[ReturnType()]` attribute.
 
 ```php
-#[YourWorkflowInterface]
+#[WorkflowInterface]
 interface FileProcessingWorkflow {
 
     #[WorkflowMethod]
@@ -344,7 +344,7 @@ Workflows have a Type that are referred to as the Workflow name.
 
 The following examples demonstrate how to set a custom name for your Workflow Type.
 
-To customize a Workflow Type, use the `WorkflowMethod` annotation to specify the name of Workflow.
+To customize a Workflow Type, use the `WorkflowMethod` attribute to specify the name of Workflow.
 
 ```php
 #[WorkflowMethod(name)]
@@ -408,13 +408,12 @@ An Activity is a normal function or method execution that's intended to execute 
 An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Cluster.
 For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
 
-Activities are defined as methods of a plain PHP interface annotated with `#[YourActivityInterface]`.
-(You can also use PHP 8 attributes in PHP 7.)
+Activities are defined as methods of a plain PHP interface annotated with `#[ActivityInterface]`.
 
 Following is an example of an interface that defines four Activities:
 
 ```php
-#[YourActivityInterface]
+#[ActivityInterface]
 // Defining an interface for the activities.
 interface FileProcessingActivities
 {
@@ -489,13 +488,13 @@ class GreetingActivity implements GreetingActivityInterface
 Activities have a Type that are referred to as the Activity name.
 The following examples demonstrate how to set a custom name for your Activity Type.
 
-An optional `#[ActivityMethod]` annotation can be used to override a default Activity name.
+An optional `#[ActivityMethod]` attribute can be used to override a default Activity name.
 
-You can define your own prefix for all Activity names by adding the `prefix` option to the `YourActivityInterface` annotation.
+You can define your own prefix for all Activity names by adding the `prefix` option to the `ActivityInterface` attribute.
 (The default prefix is empty.)
 
 ```php
-#[YourActivityInterface("file_activities.")]
+#[ActivityInterface("file_activities.")]
 interface FileProcessingActivities
 {
     public function upload(string $bucketName, string $localName, string $targetName);
@@ -509,7 +508,7 @@ interface FileProcessingActivities
 }
 ```
 
-The `#[YourActivityInterface("file_activities.")]` is an annotation that tells the PHP SDK to generate a class to implement the `FileProcessingActivities` interface. The functions define Activities that are used in the Workflow.
+The `#[ActivityInterface("file_activities.")]` is an attribute that tells the PHP SDK to generate a class to implement the `FileProcessingActivities` interface. The functions define Activities that are used in the Workflow.
 
 ## How to start an Activity Execution {#activity-execution}
 

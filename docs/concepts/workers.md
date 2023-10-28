@@ -310,8 +310,8 @@ You would need to develop your Temporal Application to route Tasks to specific W
 
 Code samples:
 
-- [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing)
-- [Java file processing example](https://github.com/temporalio/samples-java/tree/master/src/main/java/io/temporal/samples/fileprocessing)
+- [Go file processing example](https://github.com/temporalio/samples-go/tree/main/fileprocessing)
+- [Java file processing example](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/fileprocessing)
 - [PHP file processing example](https://github.com/temporalio/samples-php/tree/master/app/src/FileProcessing)
 
 #### Route Activity Tasks to a specific process
@@ -396,9 +396,10 @@ You can achieve this by adding a new version to an existing set and defining it 
 Because the new version processes existing [Event Histories](/workflows/#event-history), it must adhere to the usual [deterministic constraints](/workflows/#deterministic-constraints), and you might need to use one of the [versioning APIs](/workflows/#workflow-versioning).
 
 Moreover, this feature lets you make incompatible changes to Activity Definitions in conjunction with incompatible changes to Workflow Definitions that use those Activities.
-This functionality works because any Activity that a Workflow schedules on the same Task Queue gets dispatched only to Workers compatible with the Workflow that scheduled it.
+This functionality works because any Activity that a Workflow schedules on the same Task Queue gets dispatched by default only to Workers compatible with the Workflow that scheduled it.
 If you want to change an Activity Definition's type signature while creating a new incompatible Build ID for a Worker, you can do so without worrying about the Activity failing to execute on some other Worker with an incompatible definition.
 The same principle applies to Child Workflows.
+For both Activities and Child Workflows, you can override the default behavior and run the Activity or Child Workflow on latest default version.
 
 :::tip
 

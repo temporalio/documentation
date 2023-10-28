@@ -2,6 +2,7 @@
   "file_name": "index.md",
   "file_dir": "cli",
   "id": "index",
+  "slug": "/cli",
   "title": "Temporal CLI command reference",
   "sidebar_label": "CLI (temporal)",
   "sidebar_position": 8,
