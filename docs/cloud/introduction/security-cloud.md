@@ -106,3 +106,4 @@ Access grants are reviewed quarterly.
 
 Temporal Technologies is SOC 2 Type 2 certified and compliant with GDPR.
 Compliance audits are available by request through our [Contact](https://pages.temporal.io/contact-us) page.
+

@@ -40,3 +40,4 @@ You can debug and tune Worker performance with metrics and the [Worker performan
 For more information, see [Observability ▶️ Metrics](/dev-guide/java/observability#metrics) for setting up SDK metrics.
 
 Debug Server performance with [Cloud metrics](/cloud/metrics#) or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).
+

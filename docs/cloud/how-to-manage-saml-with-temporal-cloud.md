@@ -155,3 +155,4 @@ When you receive confirmation from us that we have finished configuration, log i
 This time, though, enter your email address in **Enterprise identity** and select **Continue**.
 Do not select **Continue with Google** or **Continue with Microsoft**.
 You will be redirected to the authentication page of your IdP.
+

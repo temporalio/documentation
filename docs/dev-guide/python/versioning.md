@@ -345,3 +345,4 @@ class MyWorkflow:
             schedule_to_close_timeout=timedelta(minutes=5),
         )
 ```
+

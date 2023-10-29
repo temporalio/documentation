@@ -178,3 +178,4 @@ For complex and large-scale use cases, having at least some experience with a va
 
 The Temporal Java SDK is MIT licensed, and contributions are welcome.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-java/blob/master/CONTRIBUTING.md).
+

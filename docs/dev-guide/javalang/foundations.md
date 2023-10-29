@@ -1915,3 +1915,4 @@ public String cronWorkflow() {
 Note that this works even if one of the Cron schedule runs failed.
 The next schedule will still get the last successful result if it ever successfully completed at least once.
 For example, for a daily cron Workflow, if the run succeeds on the first day and fails on the second day, then the third day run will get the result from first day's run using these APIs.
+

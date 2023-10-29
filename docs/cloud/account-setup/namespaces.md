@@ -280,3 +280,4 @@ To delete a Namespace, a user must have Namespace Admin [permission](/cloud/user
 ### Delete a Namespace using tcld
 
 See the [tcld namespace delete](/cloud/tcld/namespace#delete) command reference for details.
+

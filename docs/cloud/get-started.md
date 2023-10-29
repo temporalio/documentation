@@ -75,3 +75,4 @@ The primary difference is the requirement to provide client certificates and pri
 
 - [Run a Temporal Cloud Worker in Go](/dev-guide/go/foundations#run-a-temporal-cloud-worker)
 - [Run a Temporal Cloud Worker in TypeScript](/dev-guide/typescript/foundations#run-a-temporal-cloud-worker)
+

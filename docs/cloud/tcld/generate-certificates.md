@@ -192,3 +192,4 @@ Alias: `--key`
 ```bash
 tcld generate-certificates end-entity-certificate --key-file <path>
 ```
+

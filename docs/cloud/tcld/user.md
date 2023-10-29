@@ -341,3 +341,4 @@ Each value must be in the format of `namespace=permission-type`.
 Available namespace permissions: `Admin` | `Write` | `Read`.
 
 Alias: `-p`
+

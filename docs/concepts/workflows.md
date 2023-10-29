@@ -681,7 +681,6 @@ Stack Trace Queries are available only for running Workflow Executions.
 ## What is an Update? {#update}
 
 :::tip Support, stability, and dependency info
-
 - Released in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
 - Available in the [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.23.1/client#Client.UpdateWorkflowWithOptions) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
 - Available in the [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
@@ -834,7 +833,6 @@ This is useful for starting Child Workflows asynchronously (see [relevant issue 
 ## What is a Schedule? {#schedule}
 
 :::tip Support, stability, and dependency info
-
 - Introduced in Temporal Server version 1.17.0
 - Available in Temporal CLI (and tctl v1.17)
 - Available in Temporal Cloud in Public Preview
@@ -1144,3 +1142,4 @@ Each State Transition is recorded in a persistence store.
 Some operations, such as [Activity Heartbeats](/activities#activity-heartbeat), require only one State Transition each.
 Most operations require multiple State Transitions.
 For example, a simple Workflow with two sequential [Activity Tasks](/workers#activity-task) (and no retries) produces 11 State Transitions: two for Workflow start, four for each Activity, and one for Workflow completion.
+

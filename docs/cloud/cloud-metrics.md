@@ -448,3 +448,4 @@ To import a dashboard in Grafana, do the following.
 2. You can either copy and paste the JSON from [Temporal Cloud](https://github.com/temporalio/dashboards/tree/master/cloud) and [Temporal SDKs](https://github.com/temporalio/dashboards/tree/master/sdk) sample dashboards, or import the JSON files into Grafana.
    If you import a dashboard from the repositories, ensure that you update dashboard data sources (`"uid": "${datasource}"`) in the JSON to the names you configured in the [Data sources configuration](#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana) section.
 3. Save the dashboard and review the metrics data in the graphs.
+
