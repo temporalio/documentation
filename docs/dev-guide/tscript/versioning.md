@@ -355,4 +355,3 @@ const { echo } = proxyActivities<typeof activities>({
 });
 // ...
 ```
-

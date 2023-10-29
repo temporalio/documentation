@@ -223,4 +223,3 @@ When you no longer need Audit Logging, you can delete the Audit Log sink.
 1. At the bottom of the **Audit Logging** page, choose **Delete**.
 
 After you confirm the deletion, the Audit Log Sink is removed from your account and logs stop flowing to your Kinesis stream.
-

@@ -171,4 +171,3 @@ For intricate and vast use cases, having some experience with the following coul
 
 The Temporal Go SDK is MIT licensed, and contributions are welcome.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-go/blob/master/CONTRIBUTING.md).
-

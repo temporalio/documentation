@@ -81,4 +81,3 @@ brew install temporalio/brew/tcld
    ```bash
    tcld version
    ```
-

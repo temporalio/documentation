@@ -1095,4 +1095,3 @@ Alias: `--ic`
 ```bash
 tcld namespace update-codec-server --namespace <namespace_id> --endpoint <https_url> --include-credentials true
 ```
-

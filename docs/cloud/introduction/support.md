@@ -97,4 +97,3 @@ Temporal offers developer resources and a variety of hands-on tutorials to get y
 - [Courses](https://learn.temporal.io/courses): Learn and apply Temporal concepts in our free, self-paced, hands-on courses.
 - [Tutorials](https://learn.temporal.io/tutorials): Apply Temporal concepts to build real-world applications with these hands-on tutorials.
 - [Example applications](https://learn.temporal.io/examples): Explore example applications that use Temporal and gain a clearer understanding of how Temporal concepts work in a complex application.
-

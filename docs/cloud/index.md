@@ -40,4 +40,3 @@ To request a Temporal Cloud account, complete the [request form](https://pages.t
 - [SAML](/cloud/saml)
 - [Audit logging](/cloud/audit-logging)
 - [tcld (Temporal Cloud command-line interface)](/cloud/tcld)
-

@@ -174,4 +174,3 @@ To learn more about our private offer on the AWS Marketplace, contact our team a
 Yes.
 If you're part of a startup that has raised $30 million or less in funding and is not a current Temporal Cloud customer, you can apply for free Temporal Cloud credits.
 To learn more and apply, see [Temporal Cloud for Startups](https://temporal.io/startup).
-

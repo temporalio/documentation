@@ -362,4 +362,3 @@ To set or clear certificate filters, use the following [tcld](/cloud/tcld) comma
 - [tcld namespace certificate-filters clear](/cloud/tcld/namespace#clear)
 
 To view the current certificate filters, use the [tcld namespace certificate-filters export](/cloud/tcld/namespace#export) command.
-

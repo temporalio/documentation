@@ -26,4 +26,3 @@ Alias: `l`
 `tcld login`
 
 The command has no modifiers.
-

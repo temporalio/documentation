@@ -138,4 +138,3 @@ Additional Python code samples are in the [temporalio/samples-python](https://gi
 
 The Temporal Python SDK is MIT licensed, and contributions are welcome.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-python#development).
-

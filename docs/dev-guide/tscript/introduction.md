@@ -101,4 +101,3 @@ Further resources for learning how to use the SDK include the following:
 
 The Temporal TypeScript SDK is MIT licensed, and contributions are welcome.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-typescript/blob/main/CONTRIBUTING.md).
-

@@ -492,4 +492,3 @@ The result of the Workflow can now be retrieved using a Temporal Client.
 <div class="tdiw"><div class="tditw"><p class="tdit">The Temporal Client can now access the result of the Workflow</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/how-sdk-works-4.svg" alt="The Temporal Client can now access the result of the Workflow" height="901" width="1721" /></div></div>
 
 And that’s how a Temporal Worker and Cluster work together.
-
