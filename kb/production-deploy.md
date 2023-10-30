@@ -58,7 +58,7 @@ At minimum, the `development.yaml` file needs to have the [`global`](/references
 
 The [Server configuration reference](/references/configuration) has a more complete list of possible parameters.
 
-:::warning Before you deploy: Reminder on shard count
+:::caution Before you deploy: Reminder on shard count
 
 A huge part of production deploy is understanding current and future scale - the **number of shards can't be changed after the cluster is in use** so this decision needs to be upfront. Shard count determines scaling to improve concurrency if you start getting lots of lock contention.
 The default `numHistoryShards` is 4; deployments at scale can go up to 500-2000 shards.
@@ -84,12 +84,12 @@ All metrics emitted by the server are [listed in Temporal's source](https://gith
 There are also equivalent metrics that you can configure from the client side.
 At a high level, you will want to track these 3 categories of metrics:
 
-- **Service metrics**: For each request made by the service handler we emit `service_requests`, `service_errors`, and `service_latency` metrics with `type`, `operation`, and `namespace` tags.
+- **Service metrics:** For each request made by the service handler we emit `service_requests`, `service_errors`, and `service_latency` metrics with `type`, `operation`, and `namespace` tags.
   This gives you basic visibility into service usage and allows you to look at request rates across services, namespaces and even operations.
-- **Persistence metrics**: The Server emits `persistence_requests`, `persistence_errors` and `persistence_latency` metrics for each persistence operation.
+- **Persistence metrics:** The Server emits `persistence_requests`, `persistence_errors` and `persistence_latency` metrics for each persistence operation.
   These metrics include the `operation` tag such that you can get the request rates, error rates or latencies per operation.
   These are super useful in identifying issues caused by the database.
-- **Workflow Execution stats**: The Server also emits counters for when Workflow Executions are complete.
+- **Workflow Execution stats:** The Server also emits counters for when Workflow Executions are complete.
   These are useful in getting overall stats about Workflow Execution completions.
   Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate` and `workflow_cancel` counters for each type of Workflow Execution completion.
   These include the `namespace` tag.
@@ -188,7 +188,7 @@ Temporal Web's tracing capabilities mainly track activity execution within a Tem
 
 ## Further things to consider
 
-:::warning
+:::caution
 
 This document is still being written, and we would welcome your questions and contributions.
 

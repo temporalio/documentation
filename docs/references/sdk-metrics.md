@@ -16,7 +16,7 @@ tags:
 
 The information on this page is relevant to [Temporal SDKs](/temporal#temporal-sdk).
 
-See [Cloud metrics](/cloud/metrics#) for metrics emitted by [Temporal Cloud](/cloud/index#).
+See [Cloud metrics](/cloud/metrics#) for metrics emitted by [Temporal Cloud](/cloud#).
 
 See [Cluster metrics](/references/cluster-metrics#) for metrics emitted by the [OSS Cluster](/clusters#).
 
@@ -47,6 +47,17 @@ Metrics are defined in the following locations.
 - [Java SDK Worker metrics](https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/worker/MetricsType.java)
 - [Java SDK Client metrics](https://github.com/temporalio/sdk-java/blob/master/temporal-serviceclient/src/main/java/io/temporal/serviceclient/MetricsType.java)
 - [Go SDK Worker and Client metrics](https://github.com/temporalio/sdk-go/blob/c32b04729cc7691f80c16f80eed7f323ee5ce24f/internal/common/metrics/constants.go)
+
+:::note Metric units across SDKs
+
+The unit of measurement for metrics can vary based on which SDK they are being reported from:
+
+**Core-based SDKs:** Metrics of the type Histogram are measured in _milliseconds_.
+This includes SDKs like TypeScript, Python, and .NET which are defined in the Core SDK.
+
+**Java and Go SDKs:** Metrics of the type Histogram are measured in _seconds_.
+
+:::
 
 Each metric may have some combination of the following keys attached to them:
 

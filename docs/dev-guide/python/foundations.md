@@ -2,7 +2,7 @@
 id: foundations
 title: Python SDK developer's guide - Foundations
 sidebar_label: Foundations
-sidebar_position: 2
+sidebar_position: 3
 description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 toc_max_heading_level: 4
 keywords:
@@ -68,7 +68,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 In this section you can find the following:
 
-- [Run a development Cluster](#run-a-development-server)
+- [Run a development Cluster](/dev-guide/typescript/foundations#run-a-development-server)
 - [Connect to a dev Cluster](#connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Develop a Workflow](#develop-workflows)
@@ -220,7 +220,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 Use the `connect()` method on the Client class to create and connect to a Temporal Client to the Temporal Cluster.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 # ...
@@ -260,7 +266,13 @@ Use the `connect()` method on the Client class to create and connect to a Tempor
 Then specify the [TLSConfig](https://python.temporal.io/temporalio.service.TLSConfig.html) arguments to connect to a Temporal Cluster with TLS enabled.
 The `client_cert` must be combined with `client_private_key` to authenticate the Client.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/connect_cloud_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/connect_cloud_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 from temporalio.client import Client, TLSConfig
@@ -296,7 +308,13 @@ Specify the `@workflow.defn` decorator on the Workflow class to identify a Workf
 
 Use the `@workflow.run` to mark the entry point method to be invoked. This must be set on one asynchronous method defined on the same class as `@workflow.defn`. Run methods have positional parameters.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 from temporalio import workflow
@@ -326,7 +344,13 @@ Workflow parameters are the method parameters of the singular method decorated w
 These can be any data type Temporal can convert, including [`dataclasses`](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
 Technically this can be multiple parameters, but Temporal strongly encourages a single `dataclass` parameter containing all input fields.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_dataobject_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_dataobject_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 from dataclasses import dataclass
@@ -351,7 +375,13 @@ To return a value of the Workflow, use `return` to return an object.
 
 To return the results of a Workflow Execution, use either `start_workflow()` or `execute_workflow()` asynchronous methods.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 from temporalio import workflow
@@ -379,7 +409,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 You can customize the Workflow name with a custom name in the decorator argument. For example, `@workflow.defn(name="your-workflow-name")`. If the name parameter is not specified, the Workflow name defaults to the function name.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 from temporalio import workflow
@@ -421,7 +457,7 @@ An Activity can interact with world outside the Temporal Platform or use a Tempo
 For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
 
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
-THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-python/blob/sync-update/your_app/your_activities_dacx.py. -->
+THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py. -->
 
 You can develop an Activity Definition by using the `@activity.defn` decorator.
 Register the function as an Activity with a custom name through a decorator argument, for example `@activity.defn(name="your_activity")`.
@@ -444,7 +480,13 @@ If you must use a blocking library, consider using a synchronous Activity instea
 
 :::
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/sync-update/your_app/your_activities_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 from temporalio import activity
@@ -479,7 +521,13 @@ Activity parameters are the function parameters of the function decorated with `
 These can be any data type Temporal can convert, including dataclasses when properly type-annotated.
 Technically this can be multiple parameters, but Temporal strongly encourages a single dataclass parameter containing all input fields.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 from temporalio import activity
@@ -505,7 +553,13 @@ An Activity Execution can return inputs and other Activity values.
 
 The following example defines an Activity that takes a string as input and returns a string.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 # ...
@@ -525,7 +579,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 You can customize the Activity name with a custom name in the decorator argument. For example, `@activity.defn(name="your-activity")`.
 If the name parameter is not specified, the Activity name defaults to the function name.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 # ...
@@ -562,7 +622,13 @@ In most cases, use `execute_activity()` unless advanced task capabilities are ne
 
 A single argument to the Activity is positional. Multiple arguments are not supported in the type-safe form of `start_activity()` or `execute_activity()` and must be supplied by the `args` keyword argument.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 from temporalio import workflow
@@ -596,7 +662,13 @@ Available timeouts are:
 - schedule_to_start_timeout
 - start_to_close_timeout
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/activity_timeouts_retires/your_workflows_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/activity_timeouts_retires/your_workflows_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 # ...
@@ -624,7 +696,13 @@ You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
 `execute_activity()` is a shortcut for `await start_activity()`. An asynchronous `execute_activity()` helper is provided which takes the same arguments as `start_activity()` and `await`s on the result. `execute_activity()` should be used in most cases unless advanced task capabilities are needed.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 from temporalio import workflow
@@ -663,7 +741,13 @@ To develop a Worker, use the `Worker()` constructor and add your Client, Task Qu
 The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
 When a Worker is created, it accepts a list of Workflows in the workflows parameter, a list of Activities in the activities parameter, or both.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_worker_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_worker_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 from temporalio.client import Client
@@ -697,7 +781,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 When a `Worker` is created, it accepts a list of Workflows in the `workflows` parameter, a list of Activities in the `activities` parameter, or both.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_worker_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_worker_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 # ...
@@ -733,7 +823,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 To start a Workflow Execution in Python, use either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods in the Client.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 # ...
@@ -765,7 +861,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 To set a Task Queue in Python, specify the `task_queue` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 # ...
@@ -799,7 +901,13 @@ To set a Workflow Id in Python, specify the `id` argument when executing a Workf
 
 The `id` argument should be a unique identifier for the Workflow Execution.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 # ...
@@ -841,7 +949,13 @@ To get a handle for an existing Workflow by its Id, you can use [`get_workflow_h
 Then use [`describe()`](https://python.temporal.io/temporalio.client.workflowhandle#describe) to get the current status of the Workflow.
 If the Workflow does not exist, this call fails.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/get_workflow_results_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/get_workflow_results_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 # ...

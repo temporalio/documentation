@@ -10,7 +10,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 To send a Query to a Workflow Execution from Client code, use the `query()` method on the Workflow handle.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/query_your_workflow/query_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/query_your_workflow/query_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 # ...

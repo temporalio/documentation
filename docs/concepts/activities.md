@@ -62,6 +62,12 @@ Temporal recommends that Activities be idempotent.
 Idempotent means that performing an operation multiple times has the same result as performing it once.
 In the context of Temporal, Activities should be designed to be safely executed multiple times without causing unexpected or undesired side effects.
 
+:::info
+
+By design, completed Activities will not re-execute as part of a [Workflow Replay](/workflows#replays). However, Activities won’t record to the [Event History](/retry-policies#event-history) until they return or produce an error. If an Activity fails to report to the server at all, it will be retried. Designing for idempotence, especially if you have a [Global Namespace](/namespaces#global-namespace), will improve reusability and reliability.
+
+:::
+
 An Activity is idempotent if multiple [Activity Task Executions](/workers#activity-task-execution) do not change the state of the system beyond the first Activity Task Execution.
 
 We recommend using idempotency keys for critical side effects.
@@ -130,7 +136,7 @@ Activities can only receive Cancellation if they emit Heartbeats or in Core-base
 An Activity may receive Cancellation if:
 
 - The Activity was requested to be Cancelled. This can often cascade from Workflow Cancellation, but not always—SDKs have ways to stop Cancellation from cascading. <!-- TODO link to workflow cancellation -->
-- The Activity was considered failed by the Server because any of the Activity timeouts have triggered (for example, the Server didn't receive a heartbeat within the Activity's Heartbeat timeout). The [Cancelled Failure](/kb/failures#cancelled-failure) that the Activity receives will have `message: 'TIMED_OUT'`.
+- The Activity was considered failed by the Server because any of the Activity timeouts have triggered (for example, the Server didn't receive a heartbeat within the Activity's Heartbeat timeout). The [Cancelled Failure](/references/failures#cancelled-failure) that the Activity receives will have `message: 'TIMED_OUT'`.
 - The Workflow Run reached a [Closed state](/workflows#status), in which case the Cancelled Failure will have `message: 'NOT_FOUND'`.
 - In some SDKs:
   - The Worker is shutting down.

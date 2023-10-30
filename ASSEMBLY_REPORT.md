@@ -4,7 +4,7 @@ Last assembled: Monday October 30 2023 13:33:01 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-104 guide configurations found.
+110 guide configurations found.
 
 1571 information nodes found.
 
@@ -1137,13 +1137,4 @@ go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#loc
 go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
-
-go/versioning -> /dev-guide/go/versioning#
-
-java/versioning -> /dev-guide/java/versioning#
-
-typescript/versioning -> /dev-guide/typescript/versioning#
-
-cli/cmd-options/rps -> /cli/cmd-options#rps
-
 
