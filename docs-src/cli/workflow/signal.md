@@ -43,6 +43,8 @@ Use the following options to change the command's behavior.
 
 - [--reason](/cli/cmd-options/reason)
 
+- [--rps](/cli/cmd-options/rps)
+
 - [--run-id](/cli/cmd-options/run-id)
 
 - [--tls](/cli/cmd-options/tls)

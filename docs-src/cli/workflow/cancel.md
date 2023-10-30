@@ -48,6 +48,8 @@ Use the following options to change the behavior of this command.
 
 - [--run-id](/cli/cmd-options/run-id)
 
+- [--rps](/cli/cmd-options/rps)
+
 - [--tls](/cli/cmd-options/tls)
 
 - [--tls-ca-path](/cli/cmd-options/tls-ca-path)

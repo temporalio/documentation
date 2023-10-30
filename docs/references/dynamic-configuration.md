@@ -155,6 +155,8 @@ Exceeding these limits results in `ResourceExhaustedError`.
 | `matching.rps`                         | Int  | Rate limit (requests/second) for requests accepted by each Matching Service host.                                                                                                                                                                    | 1200          |
 | `matching.numTaskqueueReadPartitions`  | Int  | Number of read partitions for a Task Queue. Must be set with `matching.numTaskqueueWritePartitions`.                                                                                                                                                 | 4             |
 | `matching.numTaskqueueWritePartitions` | Int  | Number of write partitions for a Task Queue.                                                                                                                                                                                                         | 4             |
+| Worker                                 |      |                                                                                                                                                                                                                                                      |               |
+| `worker.batcherRPS`                    | Int  | Rate limit for batch operations.                                                                                                                                                                                                                     |               |
 
 ### QPS limits for Persistence store
 
