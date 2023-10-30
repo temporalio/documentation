@@ -12,6 +12,7 @@ keywords:
 - operations
 - temporal cloud
 - term
+- verify
 - workflow history export
 tags:
 - explanation
@@ -19,6 +20,7 @@ tags:
 - operations
 - temporal-cloud
 - term
+- verify
 - workflow-history-export
 ---
 
@@ -47,20 +49,22 @@ Before configuring the Export Sink, please complete the following steps in AWS:
 2. The AWS Account ID that owns the S3 bucket.
 3. (optional) The KMS ARN associated with the S3 bucket.
 
-## How to setup Workflow History Export {#setup-workflow-history-export}
+## How to configure Workflow History Export {#configure-workflow-history-export}
 
-You can use either the Temporal Cloud UI or tcld to setup Workflow History Export.
+You can use either use the Temporal Cloud UI or tcld to configure the Workflow History Export.
 
-## Using Temporal Cloud UI
+### Using Temporal Cloud UI
 
-The following steps guide you through setting up Workflow History Export using the Temporal Cloud UI.
+The following steps guides you through setting up Workflow History Export using the Temporal Cloud UI.
 
 The Temporal Cloud UI provides two ways for configuring Workflow History Export:
 
 - [Automated setup](#automated-setup) (recommended): The Cloud UI launches the AWS CloudFormation Console to create a stack, with write permission to the S3 bucket.
-- [Manual setup](#manual-setup): The Cloud UI provides an AWS CloudFormation template for user’s to use to manually configure an AWS CloudFormation stack.
+- [Manual setup](#manual-setup): The Cloud UI provides an CloudFormation template for user’s to use to manually configure an CloudFormation stack.
 
-### Automated setup
+#### Automated setup
+
+The automated setup creates an CloudFormation stack with write permission to the S3 bucket.
 
 1. Open the Temporal Cloud UI and navigate to the Namespace you want to configure.
 2. Select **Configure** from the **Export** card.
@@ -68,21 +72,23 @@ The Temporal Cloud UI provides two ways for configuring Workflow History Export:
    1. Name: A name for the export sink.
    2. AWS S3 Bucket Name: the name of an the configured AWS S3 bucket to send Closed Workflow Histories to.
    3. AWS Account ID: The AWS account ID.
-   4. Role Name: The name of the AWS IAM role to use for the AWS CloudFormation stack that has write permission to the S3 bucket.
+   4. Role Name: The name of the AWS IAM role to use for the CloudFormation stack that has write permission to the S3 bucket.
    5. KMS ARN: (optional) The ARN of the AWS KMS key to use for encryption of the exported Workflow History.
-4. You will be taken to the AWS CloudFormation Console to create the stack with pre-populated information.
+4. You will be taken to the CloudFormation Console to create the stack with pre-populated information.
    1. Review the information and then select **Create stack**.
 
-### Manual setup
+#### Manual setup
+
+The manual setup provides an CloudFormation template to manually configure an CloudFormation stack.
 
 1. Open the Temporal Cloud UI and navigate to the Namespace you want to configure.
 2. Select **Configure** from the **Export** card.
 3. Select **Manual** from **Access method**.
-   1. Enter the Template URL into your web browser to download your copy of the AWS CloudFormation template.
-   2. Configure the AWS CloudFormation template for your export sink.
-   3. Follow the steps in the [AWS documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-using-console-create-stack-template.html) by uploading the template to the AWS CloudFormation console.
+   1. Enter the Template URL into your web browser to download your copy of the CloudFormation template.
+   2. Configure the CloudFormation template for your export sink.
+   3. Follow the steps in the [AWS documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-using-console-create-stack-template.html) by uploading the template to the CloudFormation console.
 
-## Using tcld
+### Using tcld
 
 :::note Enable the Export feature
 
@@ -103,7 +109,7 @@ Run the `tcld namespace export create` command and provide the following informa
 
 - `--namespace` : The Namespace to configure export for.
 - `--sink-name`: The name of the export sink.
-- `--role-arn`: The ARN of the AWS IAM role to use for the AWS CloudFormation stack that has write permission to the S3 bucket.
+- `--role-arn`: The ARN of the AWS IAM role to use for the CloudFormation stack that has write permission to the S3 bucket.
 - `s3-bucket-name`: The name of the AWS S3 bucket.
 
 For example:
@@ -173,3 +179,10 @@ Once you've finalized the setup, here's how to monitor the export progress:
 
 For optimal results, make it a habit to frequently review the S3 bucket for any new exported files and consistently refer to the UI insights.
 This dual check ensures you remain abreast of the export progress and any potential issues.
+
+## How to verify Workflow History Export {#verify-workflow-history-export-configuration}
+
+From the Export configuration page, select **Verify**.
+This action checks if Temporal can successfully write a test file to the sink.
+
+If everything is configured correctly, you will see a `Success` status indicating Temporal has written to your sink.

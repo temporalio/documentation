@@ -25,11 +25,15 @@
         },
         {
             "type": "h2",
-            "id": "cloud/how-to-setup-export"
+            "id": "cloud/how-to-configure-export"
         },
         {
             "type": "h2",
             "id": "cloud/how-to-monitor-export-progress"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/how-to-verify-export"
         }
     ]
 }
