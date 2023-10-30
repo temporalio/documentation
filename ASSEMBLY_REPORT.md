@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday October 27 2023 13:01:10 PM -0700
+Last assembled: Monday October 30 2023 12:44:27 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -310,6 +310,8 @@ cloud/tcld/namespace/create -> #create
 
 cloud/tcld/namespace/delete -> #delete
 
+cloud/tcld/namespace/export/index -> #export
+
 cloud/tcld/namespace/get -> #get
 
 cloud/tcld/namespace/list -> #list
@@ -323,6 +325,16 @@ cloud/tcld/namespace/search-attributes/index -> #search-attributes
 cloud/tcld/namespace/retention/index -> #retention
 
 cloud/tcld/namespace/update-codec-server -> #update-codec-server
+
+cloud/tcld/namespace/export/create -> #create
+
+cloud/tcld/namespace/export/get -> #get
+
+cloud/tcld/namespace/export/delete -> #delete
+
+cloud/tcld/namespace/export/list -> #list
+
+cloud/tcld/namespace/export/update -> #update
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
@@ -1125,17 +1137,5 @@ go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#loc
 go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
-
-cloud/tcld/namespace/export/index -> #export
-
-cloud/tcld/namespace/export/create -> #create
-
-cloud/tcld/namespace/export/get -> #get
-
-cloud/tcld/namespace/export/delete -> #delete
-
-cloud/tcld/namespace/export/list -> #list
-
-cloud/tcld/namespace/export/update -> #update
 
 
