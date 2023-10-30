@@ -706,9 +706,9 @@ An Update has four phases.
 
 Workflow Updates are disabled by default.
 
-To enable `UpdateWorkflowExecution` API, set [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config value to `true`.
+To enable `UpdateWorkflowExecution` API, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config value to `true`.
 
-For example:
+For example, to enable Workflow Updates with the Temporal CLI, pass the value when executing the `temporal` command:
 
 ```command
 temporal server start-dev --dynamic-config-value frontend.enableUpdateWorkflowExecution=true
