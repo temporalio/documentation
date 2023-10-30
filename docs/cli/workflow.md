@@ -114,6 +114,8 @@ Use the following options to change the behavior of this command.
 
 - [--run-id](/cli/cmd-options#run-id)
 
+- [--rps](/cli/cmd-options#rps)
+
 - [--tls](/cli/cmd-options#tls)
 
 - [--tls-ca-path](/cli/cmd-options#tls-ca-path)
@@ -192,6 +194,8 @@ Use the following options to change the command's behavior.
 - [--query](/cli/cmd-options#query)
 
 - [--reason](/cli/cmd-options#reason)
+
+- [--rps](/cli/cmd-options#rps)
 
 - [--run-id](/cli/cmd-options#run-id)
 
@@ -656,6 +660,8 @@ Use the following options to change the command's behavior.
 
 - [--reason](/cli/cmd-options#reason)
 
+- [--rps](/cli/cmd-options#rps)
+
 - [--run-id](/cli/cmd-options#run-id)
 
 - [--tls](/cli/cmd-options#tls)
@@ -827,6 +833,8 @@ Use the following options to change termination behavior.
 - [--query](/cli/cmd-options#query)
 
 - [--reason](/cli/cmd-options#reason)
+
+- [--rps](/cli/cmd-options#rps)
 
 - [--run-id](/cli/cmd-options#run-id)
 
