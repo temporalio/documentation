@@ -321,9 +321,12 @@ module.exports = {
       defer: true,
     },
     {
-      src: "/scripts/set-tab-language.js",
+      src: "https://widget.kapa.ai/kapa-widget.bundle.js",
+      "data-website-id": "91a88508-9cdc-441f-b1df-37aa9329e6bc",
+      "data-project-name": "Temporal",
+      "data-project-color": "#000000",
+      "data-project-logo": "https://avatars.githubusercontent.com/u/56493103?s=280&v=4",
       async: true,
-      defer: true,
     },
   ],
   plugins: [
