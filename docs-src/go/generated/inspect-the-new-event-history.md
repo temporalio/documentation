@@ -39,14 +39,14 @@ The basic thing to remember is that if the API call causes a [Command](/referenc
 
 This becomes a critical aspect of Workflow development when there are running Workflows that have not yet completed and rely on earlier versions of the code.
 
-The following are a few practical examples of non-deterministic changes:
+Practially, that means non-deterministic changes include but are not limited to the following:
 
 - Adding or removing an Activity
 - Switching the Activity Type used in a call to `ExecuteActivity`
 - Adding or removing a Timer
 - Altering the execution order of Activities or Timers relative to one another
 
-The following are a few practical examples of changes that do not lead to non-deterministic errors
+The following are a few examples of changes that do not lead to non-deterministic errors:
 
 - Modifying non-Command generating statements in a Workflow Definition, such as logging statements.
 - Changing attributes in the `ActivityOptions`.

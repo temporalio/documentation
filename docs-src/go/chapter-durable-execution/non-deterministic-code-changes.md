@@ -11,15 +11,15 @@ tags:
   - durable execution
 ---
 
-The most important thing to remember from this section is to have an application versioning plan whenever you are developing and maintaining a Temporal Application that will eventually deploy to a production environment.
+The most important thing to take away from the section is to make sure you have an application versioning plan whenever you are developing and maintaining a Temporal Application that will eventually deploy to a production environment.
 
-We cover versioning APIs and versioning strategies in other parts of the dev guide, this chapter is dedicated to explaining the fundamentals so that you understand why and how to approach those strategies.
+We cover versioning APIs and versioning strategies in other parts of the developer's guide, this chapter set the stage to understand why and how to approach those strategies.
 
 <!--TODO ^ update with links to those places -->
 
 ### The Event History
 
-Let's inspect the Event History of one the recent backgroundcheck Workflows using the `temporal workflow show` command:
+Let's inspect the Event History of a recent Background Check Workflow using the `temporal workflow show` command:
 
 ```shell
 temporal workflow show \
@@ -60,7 +60,7 @@ Let's take a closer look:
 - `3. WorkflowTaskCompleted`: This Event indicates that the Worker suspended execution and made as much progress that it could.
 - `ActivityTaskScheduled`: This Event indicates that the ExecuteActivity API was called and the Worker sent the [`ScheduleActivityTask`](/references/commands#scheduleactivitytask) Command to the Server.
 - `ActivityTaskStarted`: This Event indicates that the Worker successfully polled the Activity Task and started evaluating Activity code.
-- `ActivityTaskCompleted`: This Event indicates that the Worker completed evauation of the Activity code and returned any results to the Server.
+- `ActivityTaskCompleted`: This Event indicates that the Worker completed evaluation of the Activity code and returned any results to the Server.
   In response, the Server schedules another Workflow Task to finish evaluating the Workflow code resulting in the remaining Events, `WorkflowTaskScheduled`.`WorkflowTaskStarted`, `WorkflowTaskCompleted`, `WorkflowExecutionCompleted`.
 
 :::info Event reference

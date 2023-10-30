@@ -43,28 +43,6 @@ Use the `--run-id` option as well to get the Event History of an earlier Workflo
 
 :::
 
-If you don't specify an output file, the CLI provides an overview of the Workflow Execution's History, that would look something like this:
-
-```shell
-Progress:
-  ID          Time                     Type
-   1  2023-10-25T20:28:03Z  WorkflowExecutionStarted
-   2  2023-10-25T20:28:03Z  WorkflowTaskScheduled
-   3  2023-10-25T20:28:03Z  WorkflowTaskStarted
-   4  2023-10-25T20:28:03Z  WorkflowTaskCompleted
-   5  2023-10-25T20:28:03Z  ActivityTaskScheduled
-   6  2023-10-25T20:28:03Z  ActivityTaskStarted
-   7  2023-10-25T20:28:03Z  ActivityTaskCompleted
-   8  2023-10-25T20:28:03Z  WorkflowTaskScheduled
-   9  2023-10-25T20:28:03Z  WorkflowTaskStarted
-  10  2023-10-25T20:28:03Z  WorkflowTaskCompleted
-  11  2023-10-25T20:28:03Z  WorkflowExecutionCompleted
-
-Result:
-  Status: COMPLETED
-  Output: ["pass"]
-```
-
 **Temporal Cloud**
 
 For Temporal Cloud, remember to either provide the paths to your certificate and private keys as command options, or set those paths as environment variables:

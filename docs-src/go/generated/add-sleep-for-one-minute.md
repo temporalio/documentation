@@ -44,7 +44,7 @@ func BackgroundCheck(ctx workflow.Context, param string) (string, error) {
 	// highlight-start
 	// Sleep for 1 minute
 	workflow.GetLogger(ctx).Info("Sleeping for 1 minute...")
-	err := workflow.Sleep(ctx, 1*time.Minute)
+	err := workflow.Sleep(ctx, 60*time.Second)
 	if err != nil {
 		return "", err
 	}
@@ -58,7 +58,6 @@ func BackgroundCheck(ctx workflow.Context, param string) (string, error) {
 	ctx = workflow.WithActivityOptions(ctx, activityOptions)
 	// Execute the Activity synchronously (wait for the result before proceeding)
 	var ssnTraceResult string
-	// highlight-next-line
 	err = workflow.ExecuteActivity(ctx, activities.SSNTraceActivity, param).Get(ctx, &ssnTraceResult)
 	if err != nil {
 		return "", err

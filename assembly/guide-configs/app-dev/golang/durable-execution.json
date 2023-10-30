@@ -41,7 +41,11 @@
     },
     {
       "type": "h2",
-      "id": "go/chapter-durable-execution/non-deterministic-branching-logic"
+      "id": "go/generated/backgroundcheck-replay-intrinsic-non-determinism"
+    },
+    {
+      "type": "p",
+      "id": "go/generated/backgroundcheck-replay-inspecting-the-non-deterministic-error"
     }
   ]
 }
