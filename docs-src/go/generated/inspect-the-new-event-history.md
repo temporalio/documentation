@@ -37,7 +37,7 @@ And if you were to remove the Sleep call from the code, there wouldn't be a comp
 This is to highlight that only certain code changes within Workflow code is non-deterministic.
 The basic thing to remember is that if the API call causes a [Command](/references/commands) that causes Events, then it is a non-deterministic change.
 
-This becomes a critical aspect of Workflow development when there are running Workflows that have not yet completed and rely on earlier versions of the code.
+This is a critical aspect of Workflow development when there are running Workflows that have not yet completed and rely on earlier versions of the code.
 
 Practially, that means non-deterministic changes include but are not limited to the following:
 
