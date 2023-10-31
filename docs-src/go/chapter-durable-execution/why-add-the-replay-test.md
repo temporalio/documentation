@@ -14,7 +14,7 @@ The Replay test is important because it verifies whether the current Workflow co
 
 A failed Replay test typically indicates that the Workflow code exhibits non-deterministic behavior.
 In other words, for a specific input, the Workflow code can follow different code paths during each execution, resulting in distinct sequences of Events.
-The Temporal Platform's ability to ensure durable execution depends on the SDK's capability to re-execute code and return to the most recent state of the code's execution.
+The Temporal Platform's ability to ensure durable execution depends on the SDK's capability to re-execute code and return to the most recent state of the Workflow Function execution.
 
 The Replay test executes the same steps as the SDK and verifies compatibility.
 
