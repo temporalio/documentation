@@ -24,7 +24,7 @@ Learning objectives:
 - Recognize non-deterministic Workflow code
 - Explain how Workflow code execution progresses
 
-The information in this chapter is also available in the [Temporal 102 course](https://learn.temporal.io/courses/temporal_102/)
+The information in this chapter is also available in the [Temporal 102 course](https://learn.temporal.io/courses/temporal_102/).
 
 :::
 
