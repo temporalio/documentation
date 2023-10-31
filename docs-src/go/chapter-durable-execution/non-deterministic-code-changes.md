@@ -13,7 +13,7 @@ tags:
 
 The most important thing to take away from the section is to make sure you have an application versioning plan whenever you are developing and maintaining a Temporal Application that will eventually deploy to a production environment.
 
-We cover versioning APIs and versioning strategies in other parts of the developer's guide, this chapter set the stage to understand why and how to approach those strategies.
+We cover versioning APIs and versioning strategies in other parts of the developer's guide, this chapter sets the stage to understand why and how to approach those strategies.
 
 <!--TODO ^ update with links to those places -->
 
