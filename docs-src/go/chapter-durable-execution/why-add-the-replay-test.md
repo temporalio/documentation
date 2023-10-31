@@ -22,4 +22,4 @@ Workflow code becomes non-deterministic primarily through two main avenues.
 
 1. **Code changes:** When you change your Workflow code and deploy those changes while there are still active Workflow Executions relying on older code versions.
 
-2. **Intrinsic non-deterministic logic:** This occurs when Workflow state or branching logic within the Workflow gets determined by factors beyond the SDK's control."
+2. **Intrinsic non-deterministic logic:** This occurs when Workflow state or branching logic within the Workflow gets determined by factors beyond the SDK's control.
