@@ -39,7 +39,7 @@ func GetWorkflowHistory(ctx context.Context, client client.Client, id, runID str
 }
 ```
 
-This history can then be used to _replay_.
+This Event History can then be used to _replay_.
 For example, the following code creates a `WorkflowReplayer` and register the `YourWorkflow` Workflow function.
 Then it calls the `ReplayWorkflowHistory` to _replay_ the Event History and return an error code.
 
