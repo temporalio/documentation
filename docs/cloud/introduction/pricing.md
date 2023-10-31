@@ -100,16 +100,16 @@ The following operations result in Actions.
 
 **Local Activities**
 
-- Local Activities associated with one Workflow Task will count as one Action. 
-- Each additional Workflow Task heartbeat after counts as an additional Action. 
+- Local Activities associated with one Workflow Task will count as one Action.
+- Each additional Workflow Task heartbeat after counts as an additional Action.
 - Local Activities retried following a Workflow Task heartbeat will count as one Action.
 
 **Schedules**
 
 - Each execution of a [Schedule](/workflows#schedule) will count as three Actions:
-    - Start schedule
-    - Start loop workflow
-    - Workflow started
+  - Start schedule
+  - Start loop workflow
+  - Workflow started
 
 [Reach out to our team](https://pages.temporal.io/contact-us) to get more information or to help size your number of Actions.
 
@@ -192,4 +192,3 @@ To learn more about our private offer on the AWS Marketplace, contact our team a
 Yes.
 If you're part of a startup that has raised $30 million or less in funding and is not a current Temporal Cloud customer, you can apply for free Temporal Cloud credits.
 To learn more and apply, see [Temporal Cloud for Startups](https://temporal.io/startup).
-
