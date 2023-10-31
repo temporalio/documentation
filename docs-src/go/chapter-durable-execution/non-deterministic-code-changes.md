@@ -19,7 +19,7 @@ We cover versioning APIs and versioning strategies in other parts of the develop
 
 ### The Event History
 
-Let's inspect the Event History of a recent Background Check Workflow using the `temporal workflow show` command:
+Inspect the Event History of a recent Background Check Workflow using the `temporal workflow show` command:
 
 ```shell
 temporal workflow show \
