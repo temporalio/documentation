@@ -49,7 +49,7 @@ The following operations result in Actions.
   Includes sending a [Signal](/concepts/what-is-a-signal) from a client or from within a Workflow to another Workflow.
 - **Query received.** [Queries](/concepts/what-is-a-query) aren't recorded in Event History.
   An operation such as viewing the stack trace in the Temporal Cloud UI results in a Query.
-- **Workflow Update** [Workflow Updates](/concepts/what-is-an-update). 
+- **Workflow Update** [Workflow Updates](/concepts/what-is-an-update).
 - **Version marker recorded.**
   Occurs when a Workflow calls `get-version` or `patch`.
 - **Side Effect recorded.**
@@ -74,17 +74,16 @@ The following operations result in Actions.
 
 **Local Activities**
 
-- Local Activities associated with one Workflow Task will count as one action. 
-- Each additional Workflow Task heartbeat after counts as an additional action. 
+- Local Activities associated with one Workflow Task will count as one action.
+- Each additional Workflow Task heartbeat after counts as an additional action.
 - Local Activities retried following a Workflow Task heartbeat will count as one action.
 
 **Schedules**
 
 The schedules capability allows you to "schedule" a Workflow to start at a particular time. Each execution of a Schedule will accrue three actions:
+
 - Start Schedule
 - Start loop Workflow
 - Workflow started
-
-
 
 [Reach out to our team](https://pages.temporal.io/contact-us) to get more information or to help size your number of Actions.
