@@ -86,7 +86,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/t
 
 
 #### [Authorizer Plugin](/security#authorizer-plugin)
-undefined
+The `Authorizer` plugin contains a single `Authorize` method, which is invoked for each incoming API call. `Authorize` receives information about the API call, along with the role and permission claims of the caller.
 
 _Tags: [term](/tags/term)_
 
@@ -149,6 +149,12 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 Dual Visibility is a feature that lets you set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_
+
+
+#### [Dynamic Handlers](/dev-guide/python/features#dynamic-handlers)
+Dynamic Handlers are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named handler matches the call from the Server at runtime.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
 #### [Event](/workflows#event)

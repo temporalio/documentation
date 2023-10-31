@@ -971,7 +971,7 @@ export async function yourWorkflow(userId: string) {
 
 You can invert this to create a reminder pattern where the promise resolves _if_ no Signal is received.
 
-:::warning Antipattern: Racing sleep.then
+:::caution Antipattern: Racing sleep.then
 
 Be careful when racing a chained `sleep`.
 This might cause bugs because the chained `.then` will still continue to execute.
