@@ -55,7 +55,7 @@ The following operations result in Actions.
 - **Side Effect recorded.**
   For a mutable [Side Effect](/concepts/what-is-a-side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
-- NEW: Workflow Update. [[Workflow Updates](/concepts/what-is-an-update)] is a  primitive that combines a Signal and Query together for a single Action.
+- NEW: Workflow Update. [[Workflow Updates](/concepts/what-is-an-update)] is a primitive that combines a Signal and Query together for a single Action.
 
 **Child Workflows**
 

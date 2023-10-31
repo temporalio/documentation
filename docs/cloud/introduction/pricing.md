@@ -81,7 +81,7 @@ The following operations result in Actions.
 - **Side Effect recorded.**
   For a mutable [Side Effect](/workflows#side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
-- NEW: Workflow Update. [[Workflow Updates](/workflows#update)] is a  primitive that combines a Signal and Query together for a single Action.
+- NEW: Workflow Update. [[Workflow Updates](/workflows#update)] is a primitive that combines a Signal and Query together for a single Action.
 
 **Child Workflows**
 
@@ -186,4 +186,3 @@ To learn more about our private offer on the AWS Marketplace, contact our team a
 Yes.
 If you're part of a startup that has raised $30 million or less in funding and is not a current Temporal Cloud customer, you can apply for free Temporal Cloud credits.
 To learn more and apply, see [Temporal Cloud for Startups](https://temporal.io/startup).
-
