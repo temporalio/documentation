@@ -55,7 +55,7 @@ The following operations result in Actions.
 - **Side Effect recorded.**
   For a mutable [Side Effect](/concepts/what-is-a-side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
-- NEW: Workflow Update. [[Workflow Updates](/concepts/what-is-an-update)] is a primitive that combines a Signal and Query together for a single Action.
+- **NEW: Workflow Update.** [[Workflow Updates](/concepts/what-is-an-update)] is a primitive that combines a Signal and Query together for a single Action.
 
 **Child Workflows**
 
@@ -75,7 +75,7 @@ The following operations result in Actions.
 
 **Schedules**
 
-- [Schedules](/concepts/what-is-a-schedule) is a new capability that allows you to "schedule" a Workflow to start at a particular time. Each execution of a Schedule will accrue three actions:
+- [Schedules](/concepts/what-is-a-schedule) allows you to "schedule" a Workflow to start at a particular time. Each execution of a Schedule will accrue three actions:
 - **Schedule Start**. Will account for two actions
 - **Workflow started**. One action to start the target workflow
 
