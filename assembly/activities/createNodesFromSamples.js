@@ -1,5 +1,6 @@
 import fs from "fs-extra";
 import path from "path";
+import { v4 as uuidv4 } from "uuid";
 import rangeParser from "parse-numeric-range";
 import graymatter from "gray-matter";
 
@@ -199,12 +200,7 @@ export async function createNodesFromSamples(config) {
   }
 
   function genSourceLinkHTML(link) {
-    return `:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](${link}) in the context of the rest of the application code. 
-
-:::`;
+    const id = uuidv4();
+    return `<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-${id}" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-${id}" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="${link}">view the source code</a> in the context of the rest of the application code.</div></div>`;
   }
 }

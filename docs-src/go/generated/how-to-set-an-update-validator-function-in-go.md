@@ -25,13 +25,7 @@ The Validator function, unlike the Update Handler, can not change the state of t
 
 The platform treats a panic in the Validator function as a rejection of the Update."
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/yourupdate/your_updatable_workflow_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-e8b1765f-c991-4576-926f-448dc40cc11d" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-e8b1765f-c991-4576-926f-448dc40cc11d" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/yourupdate/your_updatable_workflow_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 // UpdatableWorkflowWithValidator is a Workflow Definition.

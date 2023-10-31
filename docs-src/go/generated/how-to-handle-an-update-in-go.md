@@ -23,13 +23,7 @@ WorkflowPanicPolicy is set in the Worker Options.
 
 Update handlers, unlike Query handlers, can change Workflow state.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/yourupdate/your_updatable_workflow_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-5e8a1b4c-98cf-41fd-9040-d6b60daa11b8" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-5e8a1b4c-98cf-41fd-9040-d6b60daa11b8" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/yourupdate/your_updatable_workflow_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 // ...

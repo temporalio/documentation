@@ -18,13 +18,7 @@ We can test Activity code for the following conditions:
 - Error when checking for the result of the Activity Execution.
 - Activity return values. Check to ensure the return value is expected.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-ef041c81-ec1c-425d-9130-3b9ef21fa9de" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-ef041c81-ec1c-425d-9130-3b9ef21fa9de" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 // Test_SSNTraceActivity tests the SSNTraceActivity function

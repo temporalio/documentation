@@ -19,13 +19,7 @@ The Temporal SDK offers both a `workflow.StartTimer()` API, and a `workflow.Slee
 
 Use the `workflow.GetLogger` API to log from Workflows to avoid seeing repeated logs from the Replay of the Workflow code.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_replay/workflows/backgroundcheck.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-b9508ebe-eebf-4d4a-b89a-e8e6eef0fbae" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-b9508ebe-eebf-4d4a-b89a-e8e6eef0fbae" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_replay/workflows/backgroundcheck.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 package workflows

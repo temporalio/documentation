@@ -152,13 +152,7 @@ Register the Workflow Definition and then specify an existing Event History to c
 Run the tests in the test directory (`go test`).
 If the Workflow Definition and the Event History are incompatible then the test fails.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_replay/tests/backgroundcheck_test.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-11d063aa-5a7c-456f-acab-35f2b1c66f16" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-11d063aa-5a7c-456f-acab-35f2b1c66f16" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_replay/tests/backgroundcheck_test.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 // TestReplayWorkflowHistoryFromFile tests for Event History compatability.
@@ -259,13 +253,7 @@ The Temporal SDK offers both a `workflow.StartTimer()` API, and a `workflow.Slee
 
 Use the `workflow.GetLogger` API to log from Workflows to avoid seeing repeated logs from the Replay of the Workflow code.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_replay/workflows/backgroundcheck.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-b9508ebe-eebf-4d4a-b89a-e8e6eef0fbae" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-b9508ebe-eebf-4d4a-b89a-e8e6eef0fbae" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_replay/workflows/backgroundcheck.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 package workflows
@@ -381,13 +369,7 @@ The following are some common operations that **can't** be done inside of a Wokf
 
 One way to produce a non-deterministic error is to sleep for a random amount of time inside the Workflow.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_replay/workflows/backgroundcheck_non_deterministic_code.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-d4240887-f8a7-4e70-b108-70f00f1bfbcf" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-d4240887-f8a7-4e70-b108-70f00f1bfbcf" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_replay/workflows/backgroundcheck_non_deterministic_code.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 package workflows

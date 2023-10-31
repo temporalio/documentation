@@ -18,13 +18,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 Each Temporal SDK has a testing suite that can be used in conjunction with a typical language specific testing framework.
 In the Temporal Go SDK, the `testsuite` package (https://pkg.go.dev/go.temporal.io/sdk/testsuite) provides a test environment in which the Workflow and Activity code may be run for test purposes.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-98cffc36-e20c-48c9-810a-8bf3746e5f53" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-98cffc36-e20c-48c9-810a-8bf3746e5f53" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 package backgroundcheck_boilerplate

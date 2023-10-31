@@ -21,13 +21,7 @@ We can test Workflow code for the following conditions:
 
 We can also perform a Workflow Replay test, and we'll provide detailed coverage of this topic in another section.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-8a7221e5-8be4-4484-b87a-39c7aadea88c" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-8a7221e5-8be4-4484-b87a-39c7aadea88c" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 const ssn string = "555-55-5555"

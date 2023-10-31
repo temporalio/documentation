@@ -19,13 +19,7 @@ Register the Workflow Definition and then specify an existing Event History to c
 Run the tests in the test directory (`go test`).
 If the Workflow Definition and the Event History are incompatible then the test fails.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_replay/tests/backgroundcheck_test.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-11d063aa-5a7c-456f-acab-35f2b1c66f16" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-11d063aa-5a7c-456f-acab-35f2b1c66f16" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_replay/tests/backgroundcheck_test.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 // TestReplayWorkflowHistoryFromFile tests for Event History compatability.
