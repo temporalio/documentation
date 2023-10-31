@@ -12,7 +12,7 @@ tags:
 There are a few ways to view and download a Workflow Execution's [Event History](/concepts/what-is-an-event-history).
 We recommend starting off by using either the Temporal CLI or the Web UI to access it.
 
-### Via Temporal CLI
+### Using the Temporal CLI
 
 Use the Temporal CLI's `temporal workflow show` command to save your Workflow Execution's Event History to a local file.
 Run the command from the `/tests` directory so that the file saves alongside the other testing files.
