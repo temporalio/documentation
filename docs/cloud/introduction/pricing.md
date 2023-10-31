@@ -75,11 +75,16 @@ The following operations result in Actions.
   Includes sending a [Signal](/workflows#signal) from a client or from within a Workflow to another Workflow.
 - **Query received.** [Queries](/workflows#query) aren't recorded in Event History.
   An operation such as viewing the stack trace in the Temporal Cloud UI results in a Query.
+- **Workflow Update** [Workflow Updates](/workflows#update). 
 - **Version marker recorded.**
   Occurs when a Workflow calls `get-version` or `patch`.
 - **Side Effect recorded.**
   For a mutable [Side Effect](/workflows#side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
+
+**Child Workflows**
+
+- The parent Workflow spawning a Child Workflow results in one action and the execution of the Child Workflow results in one action.
 
 **Activities**
 
@@ -92,6 +97,21 @@ The following operations result in Actions.
   Temporal SDKs throttle [Activity Heartbeats](/activities#activity-heartbeat).
   The default throttle is 80% of the [Heartbeat Timeout](/activities#heartbeat-timeout).
   Heartbeats don't apply to Local Activities.
+
+**Local Activities**
+
+- Local Activities associated with one Workflow Task will count as one action. 
+- Each additional Workflow Task heartbeat after counts as an additional action. 
+- Local Activities retried following a Workflow Task heartbeat will count as one action.
+
+**Schedules**
+
+The schedules capability allows you to "schedule" a Workflow to start at a particular time. Each execution of a Schedule will accrue three actions:
+- Start Schedule
+- Start loop Workflow
+- Workflow started
+
+
 
 [Reach out to our team](https://pages.temporal.io/contact-us) to get more information or to help size your number of Actions.
 
@@ -174,3 +194,4 @@ To learn more about our private offer on the AWS Marketplace, contact our team a
 Yes.
 If you're part of a startup that has raised $30 million or less in funding and is not a current Temporal Cloud customer, you can apply for free Temporal Cloud credits.
 To learn more and apply, see [Temporal Cloud for Startups](https://temporal.io/startup).
+
