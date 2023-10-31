@@ -1,6 +1,5 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday October 26 2023 14:53:10 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
