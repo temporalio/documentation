@@ -75,7 +75,7 @@ The following operations result in Actions.
   Includes sending a [Signal](/workflows#signal) from a client or from within a Workflow to another Workflow.
 - **Query received.** [Queries](/workflows#query) aren't recorded in Event History.
   An operation such as viewing the stack trace in the Temporal Cloud UI results in a Query.
-- **Workflow Update** [Workflow Updates](/workflows#update). 
+- **Workflow Update** [Workflow Updates](/workflows#update) count as one Action.
 - **Version marker recorded.**
   Occurs when a Workflow calls `get-version` or `patch`.
 - **Side Effect recorded.**
@@ -84,7 +84,7 @@ The following operations result in Actions.
 
 **Child Workflows**
 
-- The parent Workflow spawning a Child Workflow results in one action and the execution of the Child Workflow results in one action.
+- The parent Workflow spawning a Child Workflow results in one action and the execution of the Child Workflow results in one Action.
 
 **Activities**
 
@@ -100,18 +100,16 @@ The following operations result in Actions.
 
 **Local Activities**
 
-- Local Activities associated with one Workflow Task will count as one action. 
-- Each additional Workflow Task heartbeat after counts as an additional action. 
-- Local Activities retried following a Workflow Task heartbeat will count as one action.
+- Local Activities associated with one Workflow Task will count as one Action. 
+- Each additional Workflow Task heartbeat after counts as an additional Action. 
+- Local Activities retried following a Workflow Task heartbeat will count as one Action.
 
 **Schedules**
 
-The schedules capability allows you to "schedule" a Workflow to start at a particular time. Each execution of a Schedule will accrue three actions:
-- Start Schedule
-- Start loop Workflow
-- Workflow started
-
-
+- Each execution of a [Schedule](/workflows#schedule) will count as three Actions:
+    - Start schedule
+    - Start loop workflow
+    - Workflow started
 
 [Reach out to our team](https://pages.temporal.io/contact-us) to get more information or to help size your number of Actions.
 
