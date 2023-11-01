@@ -42,20 +42,22 @@ You can enable Workflow History Export per Namespace in Temporal Cloud.
 
 ### Prerequisites {#prerequisites}
 
-Before configuring the Export Sink, please complete the following steps in AWS:
+Before configuring the Export Sink, ensure you have the following:
 
-1. The AWS S3 bucket name to be used for exporting the Workflow History.
+1. An AWS Account with write permission to an S3 bucket.
+2. An AWS S3 bucket.
    1. The S3 bucket must reside in the same region as your Namespace.
-2. The AWS Account ID that owns the S3 bucket.
-3. (optional) The KMS ARN associated with the S3 bucket.
+3. (optional) A KMS ARN associated with the S3 bucket.
 
-## How to configure Workflow History Export {#configure-workflow-history-export}
+## How to configure Workflow History Export {#configure}
 
-You can use either use the Temporal Cloud UI or tcld to configure the Workflow History Export.
+You can use either use the [Temporal Cloud UI](#using-temporal-cloud-ui) or [tcld](#using-tcld) to configure the Workflow History Export.
 
 ### Using Temporal Cloud UI
 
 The following steps guides you through setting up Workflow History Export using the Temporal Cloud UI.
+
+![](../../static/img/export-sink-ui.png)
 
 The Temporal Cloud UI provides two ways for configuring Workflow History Export:
 
@@ -152,7 +154,9 @@ The following is an example of the output:
 }
 ```
 
-## How to monitor Workflow History Export progress {#monitor-export-progress}
+## Monitor export progress {#monitor}
+
+**How to monitor the History exportation progress?**
 
 Once you've finalized the setup, here's how to monitor the export progress:
 
@@ -180,7 +184,9 @@ Once you've finalized the setup, here's how to monitor the export progress:
 For optimal results, make it a habit to frequently review the S3 bucket for any new exported files and consistently refer to the UI insights.
 This dual check ensures you remain abreast of the export progress and any potential issues.
 
-## How to verify Workflow History Export {#verify-workflow-history-export-configuration}
+## Verify export setup {#verify}
+
+**How to verify that the Export feature is set up correctly?**
 
 From the Export configuration page, select **Verify**.
 This action checks if Temporal can successfully write a test file to the sink.

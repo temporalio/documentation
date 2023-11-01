@@ -2,7 +2,7 @@
 id: how-to-verify-export
 title: Verify export setup
 sidebar_label: Verify
-description:
+description: Select Verify from the Export Configuration page.
 tags:
   - temporal cloud
   - how-to
