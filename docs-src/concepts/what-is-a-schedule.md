@@ -183,6 +183,16 @@ And not C, even though C completed after A, because the result for D is captured
 
 Failures and timeouts do not affect the last completion result.
 
+:::note
+
+When a Schedule triggers a Workflow that completes successfully and yields a result, this result from the initial Schedule execution can be accessed by the subsequent scheduled execution through the `LastCompletionResult`.
+
+It's important to be aware that if, during the second run, the Workflow employs the [Continue-As-New](/concepts/what-is-continue-as-new) function, the `LastCompletionResult` won't be accessible for this new Workflow iteration.
+
+It is important to note that the [status](/concepts/what-is-a-workflow-execution#status) of the second run is marked as `Continued-As-New`, and not as `Completed`.
+
+:::
+
 ### Last failure
 
 A Workflow started by a Schedule can obtain the details of the failure of the most recent run that ended at the time when the Workflow in question was started. Unlike last completion result, a _successful_ run _does_ reset the last failure.
