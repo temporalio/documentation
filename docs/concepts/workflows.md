@@ -323,9 +323,13 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 
 ### Limits
 
-There is no limit to the number of concurrent Workflow Executions.
+There is no limit to the number of concurrent Workflow Executions, albeit you must abide by the Workflow Execution's Event History limit.
 
-However, there is a limit to the length and size of a Workflow Execution's Event History (by default, [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) and [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380)).
+:::caution
+
+As a precautionary measure, the Workflow Execution's Event History is limited to [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) or [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380) and will warn you after 10,240 Events or 10 MB.
+
+:::
 
 There is also a limit to the number of certain types of incomplete operations.
 
@@ -402,7 +406,12 @@ If the Event History exceeds 50Ki (51,200) Events, the Workflow Execution is ter
 
 Continue-As-New is a mechanism by which the latest relevant state is passed to a new Workflow Execution, with a fresh Event History.
 
-As a precautionary measure, the Temporal Platform limits the total [Event History](#event-history) to 51,200 Events or 50 MB, and will warn you after 10,240 Events or 10 MB.
+:::caution
+
+As a precautionary measure, the Workflow Execution's Event History is limited to [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) or [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380) and will warn you after 10,240 Events or 10 MB.
+
+:::
+
 To prevent a Workflow Execution Event History from exceeding this limit and failing, use Continue-As-New to start a new Workflow Execution with a fresh Event History.
 
 All values passed to a Workflow Execution through parameters or returned through a result value are recorded into the Event History.
@@ -725,6 +734,20 @@ An Update has four phases.
 4. **Completion.** The Update handler can return a result or a language-appropriate error/exception to indicate its completion.
    The Platform sends the Update outcome back to the original invoking entity as an Update response.
    A [WorkflowExecutionUpdateCompletedEvent](/references/events#workflowexecutionupdatecompletedevent) Event in the Workflow Execution Event History denotes the completion of an Update.
+
+:::note
+
+Workflow Updates are disabled by default.
+
+To enable `UpdateWorkflowExecution` API, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config value to `true`.
+
+For example, to enable Workflow Updates with the Temporal CLI, pass the value when executing the `temporal` command:
+
+```command
+temporal server start-dev --dynamic-config-value frontend.enableUpdateWorkflowExecution=true
+```
+
+:::
 
 ## What is a Side Effect? {#side-effect}
 
