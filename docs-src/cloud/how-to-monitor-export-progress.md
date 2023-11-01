@@ -1,13 +1,15 @@
 ---
 id: how-to-monitor-export-progress
-title: How to monitor Workflow History Export progress
-sidebar_label: Monitor Export progress
+title: Monitor export progress
+sidebar_label: Monitor
 description: Track of the progress of your Workflow History Exports in Temporal Cloud.
 tags:
   - temporal cloud
   - workflow history export
   - how-to
 ---
+
+**How to monitor the History exportation progress?**
 
 Once you've finalized the setup, here's how to monitor the export progress:
 

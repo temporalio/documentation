@@ -1,13 +1,15 @@
 ---
 id: how-to-verify-export
-title: How to verify Workflow History Export
-sidebar_label: Verify Workflow History Export configuration
+title: Verify export setup
+sidebar_label: Verify
 description:
 tags:
   - temporal cloud
   - how-to
   - verify
 ---
+
+**How to verify that the Export feature is set up correctly?**
 
 From the Export configuration page, select **Verify**.
 This action checks if Temporal can successfully write a test file to the sink.
