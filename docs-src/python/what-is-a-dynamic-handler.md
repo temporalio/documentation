@@ -18,7 +18,7 @@ Dynamic Handlers provide flexibility to handle cases where the names of Workflow
 Dynamic Handlers should be used judiciously as a fallback mechanism rather than the primary approach.
 Overusing them can lead to maintainability and debugging issues down the line.
 
-Instead, Workflows, Activities, Signals and Queries should be defined statically whenever possible, with clear names that indicate their purpose.
+Instead, Workflows, Activities, Signals, and Queries should be defined statically whenever possible, with clear names that indicate their purpose.
 Use static definitions as the primary way of structuring your Workflows.
 
 Reserve Dynamic Handlers for cases where the handler names are not known at compile time and need to be looked up dynamically at runtime.

@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday October 27 2023 11:20:45 AM -0700
+Last assembled: Wednesday November 01 2023 11:24:55 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -288,6 +288,12 @@ cloud/tcld/account/metrics/accepted-client-ca/set -> #set
 
 cloud/tcld/account/metrics/accepted-client-ca/remove -> #remove
 
+cloud/tcld/feature/get -> #get
+
+cloud/tcld/feature/toggle-apikey -> #toggle-apikey
+
+cloud/tcld/feature/toggle-export -> #toggle-export
+
 cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
 
 cloud/tcld/generate-certificates/end-entity-certificate -> #end-entity-certificate
@@ -304,6 +310,8 @@ cloud/tcld/namespace/create -> #create
 
 cloud/tcld/namespace/delete -> #delete
 
+cloud/tcld/namespace/export/index -> #export
+
 cloud/tcld/namespace/get -> #get
 
 cloud/tcld/namespace/list -> #list
@@ -317,6 +325,16 @@ cloud/tcld/namespace/search-attributes/index -> #search-attributes
 cloud/tcld/namespace/retention/index -> #retention
 
 cloud/tcld/namespace/update-codec-server -> #update-codec-server
+
+cloud/tcld/namespace/export/create -> #create
+
+cloud/tcld/namespace/export/get -> #get
+
+cloud/tcld/namespace/export/delete -> #delete
+
+cloud/tcld/namespace/export/list -> #list
+
+cloud/tcld/namespace/export/update -> #update
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
