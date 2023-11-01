@@ -6,6 +6,10 @@
   },
   "redirects": [
     {
+      "source": "/leadership",
+      "destination": "https://temporal.io/about"
+    },
+    {
       "source": "/docs/:path*",
       "destination": "/:path*"
     },
@@ -378,8 +382,8 @@
       "destination": "/dev-guide/go/versioning:path*"
     },
     {
-      "source": "/change-log",
-      "destination": "/changelog"
+      "source": "/changelog",
+      "destination": "https://temporal.io/change-log"
     },
     {
       "source": "/blog/how-datadog-ensures-database-reliability-with-temporal",
@@ -1928,6 +1932,18 @@
     {
       "source": "/kb/non-determinism-issues-for-run-ids",
       "destination": "/workflows#run-id"
+    },
+    {
+      "source": "/kb/troubleshoot-last-connection-error",
+      "destination": "/troubleshooting/last-connection-error"
+    },
+    {
+      "source": "/kb/deadline-exceeded-troubleshooting",
+      "destination": "/troubleshooting/deadline-exceeded-error"
+    },
+    {
+      "source": "/kb/failures",
+      "destination": "/references/failures"
     }
   ]
 }

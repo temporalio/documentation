@@ -16,6 +16,7 @@ tags:
 An Update is a request to and a response from a Temporal Client to a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 - [How to develop, send, and handle Updates in Go](/go/updates)
+- [How to develop, send, and handle Updates in Java](/java/updates)
 
 You can think of an Update as a synchronous, blocking call that could replace both a Signal and a Query. An update is:
 
@@ -24,7 +25,7 @@ You can think of an Update as a synchronous, blocking call that could replace bo
 - The logical model of a Signal with the overhead and latency of a Query
 
 The Workflow must have a function to handle the Update.
-Unlike a [Signal](/concepts/what-is-a-signal) handler, the Update handler function can mutate the state of the Workflow while also returning a value to the caller.
+Unlike a [Signal](/concepts/what-is-a-signal) handler, the Update handler function can return a value to the caller.
 The Update handler listens for Updates by the Update's name.
 
 When there is the potential for multiple Updates to cause a duplication problem, Temporal recommends adding idempotency logic to your Update handler that checks for duplicates.

@@ -9,7 +9,7 @@ tags:
   - guide structure
 ---
 
-:::success Temporal Java SDK API reference
+:::info Temporal Java SDK API reference
 
 https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html
 
@@ -26,6 +26,14 @@ The Temporal Java SDK developer's guide is arranged in the following way:
   - [Expected skills and experiences](/java/introduction-to-java-sdk#expected-skills-and-experiences)
   - [Additional resources](/java/introduction-to-java-sdk#additional-resources)
   - [Contribution](/java/introduction-to-java-sdk#contribution)
+
+- [**Set up a new project**](/java/project-setup-introduction)
+
+  - [Install the Temporal CLI](/java/install-cli)
+  - [Choose a development Cluster](/java/choose-dev-cluster)
+  - [Boilerplate application code](/java/project-structure)
+  - [Start a Workflow using the CLI](/java/backgroundcheck-boilerplate-start-workflow)
+  - [Add a testing framework](/java/backgroundcheck-boilerplate-testing-temporal)
 
 - [**Foundations**](/java/foundations): The minimum things required to build and run a simple Workflow with a single Activity.
 

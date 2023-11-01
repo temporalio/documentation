@@ -19,7 +19,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
         The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
         The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go) in the context of the rest of the application code.
+
+:::
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
@@ -37,7 +43,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 	// Use a nil struct pointer to call Activities that are part of a struct.
 	var a *YourActivityObject
 	// Execute the Activity and wait for the result.
-	var activityResult *YourActivityResultObject
+	var activityResult YourActivityResultObject
 	err := workflow.ExecuteActivity(ctx, a.YourActivityDefinition, activityParam).Get(ctx, &activityResult)
 	if err != nil {
 		return nil, err

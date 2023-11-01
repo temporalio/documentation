@@ -7,15 +7,15 @@ tags:
   - explanation
 ---
 
-:::success Sign up for Temporal Cloud!
+:::tip Sign up for Temporal Cloud!
 
 To request a Temporal Cloud account, complete the [request form](https://pages.temporal.io/cloud-request-access).
 
 :::
 
 - [Introduction to Temporal Cloud](/cloud/introduction)
-  - [Security](/cloud/security)
-  - [Operating envelope](/cloud/operating-envelope)
+  - [Security](/cloud/security-cloud-intro)
+  - [Operating envelope](/cloud/operating-envelope) (availability, region support, throughput, latency, and limits)
   - [Pricing](/cloud/pricing)
   - [Support](/cloud/support)
 - [Get started with Temporal Cloud](/cloud/get-started)

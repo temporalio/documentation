@@ -89,12 +89,6 @@ module.exports = {
           position: "left",
         },
         {
-          label: "Docs changelog",
-          to: "/changelog",
-          activeBasePath: "changelog",
-          position: "left",
-        },
-        {
           label: "Learn Temporal",
           href: "https://learn.temporal.io",
           right: "left",
@@ -234,6 +228,10 @@ module.exports = {
           includeCurrentVersion: true, // excludeNextVersionDocs is now deprecated
           // // below remark plugin disabled until we can figure out why it is not transpiling to ESNext properly - swyx
           // // original PR https://github.com/temporalio/documentation/pull/496/files
+          admonitions: {
+            tag: ":::",
+            keywords: ["note", "tip", "info", "caution", "danger", "competency", "copycode"],
+          },
           remarkPlugins: [
             [
               () =>
@@ -323,9 +321,12 @@ module.exports = {
       defer: true,
     },
     {
-      src: "/scripts/set-tab-language.js",
+      src: "https://widget.kapa.ai/kapa-widget.bundle.js",
+      "data-website-id": "91a88508-9cdc-441f-b1df-37aa9329e6bc",
+      "data-project-name": "Temporal",
+      "data-project-color": "#000000",
+      "data-project-logo": "https://avatars.githubusercontent.com/u/56493103?s=280&v=4",
       async: true,
-      defer: true,
     },
   ],
   plugins: [
@@ -339,34 +340,6 @@ module.exports = {
         },
       };
     },
-    [
-      "@docusaurus/plugin-content-blog",
-      {
-        /**
-         * Required for any multi-instance plugin
-         */
-        id: "changelog",
-        /**
-         * URL route for the blog section of your site.
-         * *DO NOT* include a trailing slash.
-         */
-        routeBasePath: "changelog",
-        /**
-         * Path to data on filesystem relative to site dir.
-         */
-        blogTitle: "Temporal documentation changelog",
-        blogSidebarTitle: "Docs changelog",
-        path: "changelog",
-        routeBasePath: "changelog",
-        blogSidebarCount: "ALL",
-        blogDescription: "A log of changes to this site's content.",
-        showReadingTime: false, // Show estimated reading time for the blog post.
-        feedOptions: {
-          type: "all",
-          copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
-        },
-      },
-    ],
     [
       "@docusaurus/plugin-content-blog",
       {

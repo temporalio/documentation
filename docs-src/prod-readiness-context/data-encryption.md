@@ -19,7 +19,7 @@ For example, if you have sensitive information passed in the following objects t
 - Headers (verify if applicable to your SDK)
 - [Query](/concepts/what-is-a-query) inputs and results
 - Results of [Local Activities](/concepts/what-is-a-local-activity) and [Side Effects](/concepts/what-is-a-side-effect)
-- [Application errors and failures](/kb/failures)
+- [Application errors and failures](/references/failures)
 
   Failure messages and stack traces are not encoded as codec-capable Payloads by default; you must explicitly enable encoding these common attributes on failures. For more details, see [Failure Converter](/concepts/what-is-a-failure-converter).
 
@@ -47,7 +47,7 @@ If your Payload is _not_ encoded, we recommend passing the unencoded data to the
 Examples for implementing encryption:
 
 - [Go sample](https://github.com/temporalio/samples-go/tree/main/encryption)
-- [Java sample](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/encryptedpayloads)
+- [Java sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads)
 - [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
 - [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)
 

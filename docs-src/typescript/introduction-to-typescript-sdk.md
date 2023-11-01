@@ -9,7 +9,7 @@ tags:
 
 Welcome to the Temporal TypeScript SDK developer's guide!
 
-:::success Temporal TypeScript SDK API reference
+:::info Temporal TypeScript SDK API reference
 
 [typescript.temporal.io](https://typescript.temporal.io/)
 

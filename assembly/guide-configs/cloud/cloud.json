@@ -2,6 +2,7 @@
   "file_name": "index.md",
   "id": "index",
   "file_dir": "cloud",
+  "slug": "/cloud",
   "title": "Temporal Cloud documentation",
   "sidebar_label": "Temporal Cloud",
   "sidebar_position": 3,

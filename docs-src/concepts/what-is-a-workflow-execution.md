@@ -147,15 +147,24 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 
 ### Limits
 
-Each pending Activity generates a metadata entry in the Workflow's mutable state.
-Too many entries create a large mutable state, which causes unstable persistence.
+There is no limit to the number of concurrent Workflow Executions, albeit you must abide by the Workflow Execution's Event History limit.
 
-To protect the system, Temporal enforces a maximum number (2,000 by default) of pending Activities, Child Workflows, Signals, or Cancellation requests per Workflow.
+:::caution
+
+As a precautionary measure, the Workflow Execution's Event History is limited to [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) or [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380) and will warn you after 10,240 Events or 10 MB.
+
+:::
+
+There is also a limit to the number of certain types of incomplete operations.
+
+Each in-progress Activity generates a metadata entry in the Workflow Execution's mutable state.
+Too many entries in a single Workflow Execution's mutable state causes unstable persistence.
+To protect the system, Temporal enforces a maximum number of incomplete Activities, Child Workflows, Signals, or Cancellation requests per Workflow Execution (by default, 2,000 for each type of operation).
+Once the limit is reached for a type of operation, if the Workflow Execution attempts to start another operation of that type (by producing a `ScheduleActivityTask`, `StartChildWorkflowExecution`, `SignalExternalWorkflowExecution`, or `RequestCancelExternalWorkflowExecution` Command), it will be unable to (the Workflow Task Execution will fail and get retried).
+
 These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/master/service/history/configs/config.go):
 
 - `NumPendingActivitiesLimit`
 - `NumPendingChildExecutionsLimit`
 - `NumPendingSignalsLimit`
 - `NumPendingCancelRequestsLimit`
-
-By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass any of these limits (by producing enough `ScheduleActivityTask`, `StartChildWorkflowExecution`, `SignalExternalWorkflowExecution`, or `RequestCancelExternalWorkflowExecution` Commands to exceed a limit).
