@@ -75,7 +75,7 @@ The following operations result in Actions.
 
 **Schedules**
 
-- [Schedules](/concepts/what-is-a-schedule) allows you to "schedule" a Workflow to start at a particular time. Each execution of a Schedule will accrue three actions:
+[Schedules](/concepts/what-is-a-schedule) allows you to "schedule" a Workflow to start at a particular time. Each execution of a Schedule will accrue three actions:
 - **Schedule Start**. Will account for two actions
 - **Workflow started**. One action to start the target workflow
 

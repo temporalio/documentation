@@ -101,7 +101,7 @@ The following operations result in Actions.
 
 **Schedules**
 
-- [Schedules](/workflows#schedule) allows you to "schedule" a Workflow to start at a particular time. Each execution of a Schedule will accrue three actions:
+[Schedules](/workflows#schedule) allows you to "schedule" a Workflow to start at a particular time. Each execution of a Schedule will accrue three actions:
 - **Schedule Start**. Will account for two actions
 - **Workflow started**. One action to start the target workflow
 
@@ -186,3 +186,4 @@ To learn more about our private offer on the AWS Marketplace, contact our team a
 Yes.
 If you're part of a startup that has raised $30 million or less in funding and is not a current Temporal Cloud customer, you can apply for free Temporal Cloud credits.
 To learn more and apply, see [Temporal Cloud for Startups](https://temporal.io/startup).
+
