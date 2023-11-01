@@ -75,7 +75,6 @@ The following operations result in Actions.
   Includes sending a [Signal](/workflows#signal) from a client or from within a Workflow to another Workflow.
 - **Query received.** [Queries](/workflows#query) aren't recorded in Event History.
   An operation such as viewing the stack trace in the Temporal Cloud UI results in a Query.
-- **Workflow Update.** [Workflow Updates](/workflows#update) count as one Action.
 - **Version marker recorded.**
   Occurs when a Workflow calls `get-version` or `patch`.
 - **Side Effect recorded.**
@@ -187,3 +186,4 @@ To learn more about our private offer on the AWS Marketplace, contact our team a
 Yes.
 If you're part of a startup that has raised $30 million or less in funding and is not a current Temporal Cloud customer, you can apply for free Temporal Cloud credits.
 To learn more and apply, see [Temporal Cloud for Startups](https://temporal.io/startup).
+
