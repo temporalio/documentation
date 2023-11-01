@@ -1,5 +1,6 @@
 # Docs Assembly Workflow report
 
+Last assembled: Wednesday November 01 2023 14:12:56 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -53,7 +54,7 @@ concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
 
-cloud/security-cloud-intro -> /cloud/security#
+cloud/security-cloud-intro -> /cloud/security-model#
 
 references/server-options -> /references/server-options#withconfig
 
@@ -1118,11 +1119,5 @@ go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#loc
 go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
-
-cli/server/start-dev -> /cli/server#start-dev
-
-cli/operator/namespace/create -> /cli/operator#create
-
-cli/workflow/start -> /cli/workflow#start
 
 
