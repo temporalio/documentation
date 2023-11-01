@@ -75,23 +75,36 @@ The following operations result in Actions.
   Includes sending a [Signal](/workflows#signal) from a client or from within a Workflow to another Workflow.
 - **Query received.** [Queries](/workflows#query) aren't recorded in Event History.
   An operation such as viewing the stack trace in the Temporal Cloud UI results in a Query.
+- **Workflow Update.** [Workflow Updates](/workflows#update) count as one Action.
 - **Version marker recorded.**
   Occurs when a Workflow calls `get-version` or `patch`.
 - **Side Effect recorded.**
   For a mutable [Side Effect](/workflows#side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
+- **NEW: Workflow Update.** [[Workflow Updates](/workflows#update)] is a primitive that combines a Signal and Query together for a single Action.
+
+**Child Workflows**
+
+- The parent Workflow spawning a Child Workflow results in one Action.
+- Execution of the Child Workflow results in one Action.
 
 **Activities**
 
 - **Activity started or retried.**
   Occurs each time an Activity is started or retried.
-- **Local Activity started.**
-  Occurs each time a [Local Activity](/activities#local-activity) is started.
+- **Local Activity started.** Each [Local Activity](/activities#local-activity) associated with one Workflow Task will count as one Action. (Note: Each additional Workflow Task heartbeat after counts as an additional Action. Also, Local Activities retried following a Workflow Task heartbeat will count as one Action.
 - **Activity Heartbeat recorded.**
   A Heartbeat call from Activity code counts as an Action only if it reaches the [Temporal Server](/clusters#temporal-server).
   Temporal SDKs throttle [Activity Heartbeats](/activities#activity-heartbeat).
   The default throttle is 80% of the [Heartbeat Timeout](/activities#heartbeat-timeout).
   Heartbeats don't apply to Local Activities.
+
+**Schedules**
+
+[Schedules](/workflows#schedule) allows you to "schedule" a Workflow to start at a particular time. Each execution of a Schedule will accrue three actions:
+
+- **Schedule Start**. Will account for two actions
+- **Workflow started**. One action to start the target workflow
 
 [Reach out to our team](https://pages.temporal.io/contact-us) to get more information or to help size your number of Actions.
 
