@@ -59,6 +59,10 @@ async function getTerms(config, sourceNodes) {
 async function genGlossString(terms) {
   let glossStr = `${glossFrontmatter}\n\n`;
   for (const term of terms) {
+    // If term.description is undefined, log the term's label.
+    if (typeof term.description === 'undefined' || term.description === null) {
+      console.log(`🚨🚨Term without a label: ${term.label} has undefined description.🚨🚨`);
+    }
     glossStr = `${glossStr}#### ${term.markdown_link}\n${term.description}\n\n${genTagString(term.tags)}\n`;
   }
   return glossStr;
