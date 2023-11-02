@@ -234,7 +234,7 @@ function CloudCard({ links }) {
           <h1>Get started with Cloud</h1>
           <p>Run Temporal today, without hassle, and with peace of mind.</p>
           <p>
-            <button className="cloud-button"><Link to="https://temporal.io/cloud">Learn more about Temporal Cloud</Link></button>
+            <Link to="https://temporal.io/cloud"><button className="cloud-button">Learn more about Temporal Cloud</button></Link>
           </p>
           <p>Existing users can <Link to="https://cloud.temporal.io">log in here
           </Link>
@@ -284,7 +284,7 @@ const slides = [
   { title: 'Activities', description: 'Activities have the failure-prone parts of your code and are automatically retried upon failure.', content1: 'Activities are functions or methods that you can use to run code that is non-deterministic or prone to failure, such as accessing a database, network service, or file system. Activities are called from Workflow code, and they are automatically retried if they fail. Once the Activity succeeds, the Workflow code will continue executing.', giphy: 'kaDAIEecq0YuI' },
   { title: 'Workers', description: 'Workers run Workflow and Activity code reliably and consistently. You can increase the scalability and availability of your application by running additional Workers. ', content1: `One thing that people new to Temporal find surprising is that the Temporal Cluster does not execute your code.`, content2: `You deploy your code to containers or machines that are separate from the Temporal Cluster. Using the Worker API provided by the Temporal SDK, you will run one or more Worker processes that will execute your Workflow and Activity code based on tasks managed by the Temporal Cluster.`, content3: `The Cluster gives the Workers tasks like “Start running Workflow A,” and the Workers run the corresponding Workflow function or method.`, giphy: 'DhstvI3zZ598Nb1rFf' },
   {
-    title: 'Temporal CLI', description: 'Communicate directly with the Temporal Cluster by entering commands in the terminal.', content1: `The Temporal CLI runs a development version of the Cluster. Interact with the Cluster (start Workflows, list them, get their status, and more):`, content2: `  From the command line using the temporal command. From code, using an SDK Client. From your browser, using the Web UI`, giphy: 'GA2dwDU7owOS4'
+    title: 'Temporal CLI', description: 'Communicate directly with the Temporal Cluster by entering commands in the terminal.', content1: `The Temporal CLI runs a development version of the Cluster. Interact with the Cluster - start Workflows, list them, get their status, and more.`, content2: `  From the command line using the temporal command. From code, using an SDK Client. From your browser, using the Web UI.`, giphy: 'GA2dwDU7owOS4'
   },
 ]
 function SlideCarousel({ activeSlide }) {
