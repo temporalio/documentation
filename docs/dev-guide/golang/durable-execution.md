@@ -55,7 +55,7 @@ Learning objectives:
 - Recognize non-deterministic Workflow code
 - Explain how Workflow code execution progresses
 
-The information in this chapter is also available in the [Temporal 102 course](https://learn.temporal.io/courses/temporal_102/)
+The information in this chapter is also available in the [Temporal 102 course](https://learn.temporal.io/courses/temporal_102/).
 
 :::
 
@@ -73,7 +73,7 @@ This chapter walks through the following sequence:
 There are a few ways to view and download a Workflow Execution's [Event History](/workflows#event-history).
 We recommend starting off by using either the Temporal CLI or the Web UI to access it.
 
-### Via Temporal CLI
+### Using the Temporal CLI
 
 Use the Temporal CLI's `temporal workflow show` command to save your Workflow Execution's Event History to a local file.
 Run the command from the `/tests` directory so that the file saves alongside the other testing files.
@@ -88,7 +88,7 @@ Run the command from the `/tests` directory so that the file saves alongside the
 
 **Local dev server**
 
-If you have been following along with the earlier chapters of this guide, your Workflow Id might be something like "backgroundcheck_workflow".
+If you have been following along with the earlier chapters of this guide, your Workflow Id might be something like `backgroundcheck_workflow`.
 
 ```shell
 temporal workflow show \
@@ -119,7 +119,7 @@ temporal workflow show \
 
 **Self-hosted Temporal Cluster**
 
-For Self-hosted environments, you might be using the Temporal CLI command alias:
+For self-hosted environments, you might be using the Temporal CLI command alias:
 
 ```shell
 temporal_docker workflow show \
@@ -146,7 +146,7 @@ From the Workflow details page you can copy the Event History from the JSON tab 
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-go/blob/port_replay_test_dacx/backgroundcheck_replay/tests/backgroundcheck_test.go. -->
 
 Add the Replay test to the set of application tests.
-The Replayer is available from the `go.temporal.io/sdk/worker` package in the SDK.
+The Replayer is available from the `go.temporal.io/sdk/worker` package in the Go SDK library.
 Register the Workflow Definition and then specify an existing Event History to compare to.
 
 Run the tests in the test directory (`go test`).
@@ -171,27 +171,27 @@ The Replay test is important because it verifies whether the current Workflow co
 
 A failed Replay test typically indicates that the Workflow code exhibits non-deterministic behavior.
 In other words, for a specific input, the Workflow code can follow different code paths during each execution, resulting in distinct sequences of Events.
-The Temporal Platform's ability to ensure durable execution depends on the SDK's capability to re-execute code and return to the most recent state of the code's execution.
+The Temporal Platform's ability to ensure durable execution depends on the SDK's capability to re-execute code and return to the most recent state of the Workflow Function execution.
 
 The Replay test executes the same steps as the SDK and verifies compatibility.
 
-Workflow code becomes non-deterministic primarily through two main avenues.
+Workflow code becomes non-deterministic primarily through two main avenues:
 
 1. **Code changes:** When you change your Workflow code and deploy those changes while there are still active Workflow Executions relying on older code versions.
 
-2. **Intrinsic non-deterministic logic:** This occurs when Workflow state or branching logic within the Workflow gets determined by factors beyond the SDK's control."
+2. **Intrinsic non-deterministic logic:** This occurs when Workflow state or branching logic within the Workflow gets determined by factors beyond the SDK's control.
 
 ## Non-deterministic code changes {#durability-through-replays}
 
 The most important thing to take away from the section is to make sure you have an application versioning plan whenever you are developing and maintaining a Temporal Application that will eventually deploy to a production environment.
 
-We cover versioning APIs and versioning strategies in other parts of the developer's guide, this chapter set the stage to understand why and how to approach those strategies.
+We cover versioning APIs and versioning strategies in other parts of the developer's guide, this chapter sets the stage to understand why and how to approach those strategies.
 
 <!--TODO ^ update with links to those places -->
 
 ### The Event History
 
-Let's inspect the Event History of a recent Background Check Workflow using the `temporal workflow show` command:
+Inspect the Event History of a recent Background Check Workflow using the `temporal workflow show` command:
 
 ```shell
 temporal workflow show \
@@ -229,7 +229,7 @@ Let's take a closer look:
 - `WorkflowExecutionStarted`: This Event is created in response to the request to start the Workflow Execution.
 - `WorkflowTaskScheduled`: This Event indicates a Workflow Task is in the Task Queue.
 - `WorkflowTaskStarted`: This Event indicates that a Worker successfully polled the Task and started evaluating Workflow code.
-- `3. WorkflowTaskCompleted`: This Event indicates that the Worker suspended execution and made as much progress that it could.
+- `WorkflowTaskCompleted`: This Event indicates that the Worker suspended execution and made as much progress that it could.
 - `ActivityTaskScheduled`: This Event indicates that the ExecuteActivity API was called and the Worker sent the [`ScheduleActivityTask`](/references/commands#scheduleactivitytask) Command to the Server.
 - `ActivityTaskStarted`: This Event indicates that the Worker successfully polled the Activity Task and started evaluating Activity code.
 - `ActivityTaskCompleted`: This Event indicates that the Worker completed evaluation of the Activity code and returned any results to the Server.
@@ -325,7 +325,7 @@ And if you were to remove the Sleep call from the code, there wouldn't be a comp
 This is to highlight that only certain code changes within Workflow code is non-deterministic.
 The basic thing to remember is that if the API call causes a [Command](/references/commands#) that causes Events, then it is a non-deterministic change.
 
-This becomes a critical aspect of Workflow development when there are running Workflows that have not yet completed and rely on earlier versions of the code.
+This is a critical aspect of Workflow development when there are running Workflows that have not yet completed and rely on earlier versions of the code.
 
 Practially, that means non-deterministic changes include but are not limited to the following:
 

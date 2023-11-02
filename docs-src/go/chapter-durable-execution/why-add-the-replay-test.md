@@ -18,7 +18,7 @@ The Temporal Platform's ability to ensure durable execution depends on the SDK's
 
 The Replay test executes the same steps as the SDK and verifies compatibility.
 
-Workflow code becomes non-deterministic primarily through two main avenues.
+Workflow code becomes non-deterministic primarily through two main avenues:
 
 1. **Code changes:** When you change your Workflow code and deploy those changes while there are still active Workflow Executions relying on older code versions.
 

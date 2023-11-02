@@ -27,7 +27,7 @@ Run the command from the `/tests` directory so that the file saves alongside the
 
 **Local dev server**
 
-If you have been following along with the earlier chapters of this guide, your Workflow Id might be something like "backgroundcheck_workflow".
+If you have been following along with the earlier chapters of this guide, your Workflow Id might be something like `backgroundcheck_workflow`.
 
 ```shell
 temporal workflow show \
@@ -58,7 +58,7 @@ temporal workflow show \
 
 **Self-hosted Temporal Cluster**
 
-For Self-hosted environments, you might be using the Temporal CLI command alias:
+For self-hosted environments, you might be using the Temporal CLI command alias:
 
 ```shell
 temporal_docker workflow show \
