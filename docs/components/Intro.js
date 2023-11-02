@@ -288,9 +288,11 @@ function CloudCard({ links }) {
 function ResourceCard({ title, author, role, link }) {
   return (
     <div className="main-card resource-card">
-      <a href={link} className="">
-        <h3>{title}</h3>
-      </a>
+      <div>
+        <a href={link}>
+          <h3>{title}</h3>
+        </a>
+      </div>
       <div className="flex items-center gap-2">
         <div className="resource-img" />
         <div className="author">
@@ -389,8 +391,8 @@ function Explained() {
         </div>
       </div>
 
-      <div className="flex items-start gap-2">
-        <div className="w-third">
+      <div className="deployment">
+        <div className="references">
           <SimpleCard title="References" links={references} />
         </div>
         <Card title="Self-hosted deployment guide" links={selfHostedDeploymentGuide} />
@@ -398,7 +400,7 @@ function Explained() {
 
       <div className="my-20 text-center">
         <h1>Helpful resources</h1>
-        <div className="flex items-center gap-6">
+        <div className="grid md:grid-cols-3">
           <ResourceCard title="Introduction to Temporal Workflows" author="Dominik Tornow" role="Principle Engineer" link="https://temporal.io/blog/dominik-workflow-part-1" />
           <ResourceCard title="Failure Handling in Practice" author="Fitz" role="Developer Advocate" link="https://temporal.io/blog/failure-handling-in-practice" />
           <ResourceCard title="Time-Travel Debugging Production Code" author="Loren Sands-Ramshaw" role="Developer Relations Engineer" link="https://temporal.io/blog/time-travel-debugging-production-code" />
@@ -407,7 +409,7 @@ function Explained() {
 
       <div className="my-20 text-center">
         <h1>Join our Community</h1>
-        <div className="flex gap-6">
+        <div className="grid md:grid-cols-3">
           <CommunityCard title="Join us in Slack and say hi!" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut quam id nisl malesuada scelerisque. " link={{
             path: "https://temporal.io/slack",
             name: "Launch Slack",

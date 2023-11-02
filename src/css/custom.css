@@ -153,6 +153,11 @@ main.p-6,
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.tailwindcss .grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+
 .tailwindcss .gap-6 {
   gap: 1.5rem;
 }
@@ -341,6 +346,11 @@ main.max-w-screen-lg {
 @media (min-width: 768px) {
   .tailwindcss .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1rem;
+  }
+
+  .tailwindcss .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     column-gap: 1rem;
   }
 
@@ -744,10 +754,8 @@ h1 {
 
 .resource-card {
   display: flex;
-  flex-grow: 1;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
 }
 
 .resource-img {
@@ -802,7 +810,26 @@ h1 {
 .core-concepts-info {
   float: left;
   width: 540px;
-  min-width: 540px;
+}
+
+.deployment {
+  display: block;
+  gap: 1rem;
+}
+
+.references {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .deployment {
+    display: flex;
+  }
+
+  .references {
+    width: 220px;
+    min-width: 220px;
+  }
 }
 
 .core-concepts-info h1 {
