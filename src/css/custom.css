@@ -822,6 +822,10 @@ h1 {
 }
 
 @media (min-width: 768px) {
+  .core-concepts-info {
+    min-width: 540px;
+  }
+
   .deployment {
     display: flex;
   }
@@ -874,11 +878,6 @@ h1 {
   height: 360px;
   width: 240px;
   min-width: 240px;
-}
-
-.slide:hover {
-  border-radius: 10px;
-  border: 2px solid var(--indigos-indigo-600, #4F46E5);
 }
 
 .slide-dots {

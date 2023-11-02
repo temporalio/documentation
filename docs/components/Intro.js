@@ -327,10 +327,17 @@ const slides = [
     title: 'Temporal CLI', description: 'Communicate directly with the Temporal Cluster by entering commands in the terminal.', content1: `The Temporal CLI runs a development version of the Cluster. Interact with the Cluster (start Workflows, list them, get their status, and more):`, content2: `  From the command line using the temporal command. From code, using an SDK Client. From your browser, using the Web UI`, giphy: 'GA2dwDU7owOS4'
   },
 ]
-function SlideCarousel({ handleMouseOver }) {
-  return slides.map((link, index) => {
-    return (<Slide link={link.giphy} key={link.giphy} handleMouseOver={() => handleMouseOver(index)} />)
-  })
+function SlideCarousel({ activeSlide }) {
+  const link = slides[activeSlide]
+  return (<Slide link={link.giphy} key={link.giphy} />)
+}
+
+function Slide({ link }) {
+  return (
+    <div className="slide">
+      <iframe src={`https://giphy.com/embed/${link}`} width="100%" height="100%" allowFullScreen></iframe>
+    </div>
+  )
 }
 
 function SlideDots({ activeSlide, handleMouseOver }) {
@@ -349,13 +356,6 @@ function SlideInfo({ activeSlide }) {
       <p>{slide.content1}</p>
       <p>{slide?.content2}</p>
       <p>{slide?.content3}</p>
-    </div>
-  )
-}
-function Slide({ link, handleMouseOver }) {
-  return (
-    <div className="slide" onMouseOver={handleMouseOver}>
-      <iframe src={`https://giphy.com/embed/${link}`} width="100%" height="100%" allowFullScreen></iframe>
     </div>
   )
 }
@@ -387,7 +387,7 @@ function Explained() {
         </div>
         <SlideInfo activeSlide={activeSlide} />
         <div className="core-concepts-slide">
-          <SlideCarousel handleMouseOver={handleSlideChange} />
+          <SlideCarousel activeSlide={activeSlide} />
         </div>
       </div>
 
