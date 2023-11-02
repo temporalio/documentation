@@ -11,7 +11,12 @@ tags:
 
 Continue-As-New is a mechanism by which the latest relevant state is passed to a new Workflow Execution, with a fresh Event History.
 
-As a precautionary measure, the Temporal Platform limits the total [Event History](/concepts/what-is-an-event-history) to 51,200 Events or 50 MB, and will warn you after 10,240 Events or 10 MB.
+:::caution
+
+As a precautionary measure, the Workflow Execution's Event History is limited to [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) or [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380) and will warn you after 10,240 Events or 10 MB.
+
+:::
+
 To prevent a Workflow Execution Event History from exceeding this limit and failing, use Continue-As-New to start a new Workflow Execution with a fresh Event History.
 
 All values passed to a Workflow Execution through parameters or returned through a result value are recorded into the Event History.

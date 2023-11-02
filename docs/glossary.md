@@ -86,7 +86,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/t
 
 
 #### [Authorizer Plugin](/security#authorizer-plugin)
-undefined
+The `Authorizer` plugin contains a single `Authorize` method, which is invoked for each incoming API call. `Authorize` receives information about the API call, along with the role and permission claims of the caller.
 
 _Tags: [term](/tags/term)_
 
