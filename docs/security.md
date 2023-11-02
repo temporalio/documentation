@@ -332,12 +332,12 @@ Content is planned but not yet available.
 
 Each Temporal SDK provides a [Data Converter](/dataconversion#) that can be customized with a custom [Payload Codec](/dataconversion#payload-codec) to encode and secure your data.
 
-For details on what data can be encoded, how to secure it, and what to consider when using encryption, see [Data encryption](/production-readiness/develop#securing-your-data).
+For details on what data can be encoded, how to secure it, and what to consider when using encryption, see [Data encryption](/self-hosted-guide/data-encryption#securing-your-data).
 
 #### Codec Server
 
 You can use a [Codec Server](/dataconversion#codec-server) with your custom Payload Codec to decode the data you see on your Web UI and CLI locally through remote endpoints.
 However, ensure that you consider all security implications of [remote data encoding](/dataconversion#remote-data-encoding) before using a Codec Server.
 
-For details on how to set up a Codec Server, see [Codec Server setup](/production-readiness/develop#codec-server-setup).
+For details on how to set up a Codec Server, see [Codec Server setup](/self-hosted/how-to-setup-codec-server#codec-server-setup).
 

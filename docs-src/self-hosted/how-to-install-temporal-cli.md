@@ -12,7 +12,7 @@ tags:
 This section describes how to install the [Temporal CLI](/cli) and run a development Cluster.
 The local development Cluster comes packaged with the [Temporal Web UI](/web-ui).
 
-For information on deploying and running a production Cluster, see the [Cluster deployment guide](/cluster-deployment-guide), or sign up for [Temporal Cloud](/cloud) and let us run your production Cluster for you.
+For information on deploying and running a self-hosted production Cluster, see the [Self-hosted guide](/self-hosted/guide-structure), or sign up for [Temporal Cloud](/cloud) and let us run your production Cluster for you.
 
 Temporal CLI is a tool for interacting with a Temporal Cluster from the command line and it includes a distribution of the Temporal Server and Web UI.
 This local development Cluster runs as a single process with zero runtime dependencies and it supports persistence to disk and in-memory mode through SQLite.

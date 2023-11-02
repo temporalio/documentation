@@ -19,7 +19,7 @@ With Dual Visibility, you can read from only one Visibility store at a time, but
 
 Set the secondary store with the `secondaryVisibilityStore` configuration key in your Persistence configuration, and then define the secondary Visibility store configuration under `datastores`.
 
-You can configure any of the [supported databases](/cluster-deployment-guide#supported-databases) as your secondary store.
+You can configure any of the [supported databases](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) as your secondary store.
 
 Examples:
 
@@ -67,10 +67,10 @@ persistence:
 
 The database schema and setup for a secondary store depends on the database you plan to use.
 
-- [MySQL](/cluster-deployment-guide#mysql)
-- [PostgresSQL](/cluster-deployment-guide#postgresql)
-- [SQLite](/cluster-deployment-guide#sqlite)
-- [Elasticsearch](/cluster-deployment-guide#elasticsearch)
+- [MySQL](/self-hosted/how-to-set-up-mysql-visibility-store)
+- [PostgresSQL](/self-hosted/how-to-set-up-postgresql-visibility-store)
+- [SQLite](/self-hosted/how-to-set-up-sqlite-visibility-store)
+- [Elasticsearch](/self-hosted/how-to-integrate-elasticsearch-into-a-temporal-cluster)
 
 For the Cassandra and MySQL configuration in the previous example, an example setup script would be as follows.
 
@@ -165,7 +165,7 @@ setup_es_index() {
     curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${SETTINGS_URL}" -H "Content-Type: application/json" --data-binary "@${SETTINGS_FILE}" --write-out "\n"
     curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${TEMPLATE_URL}" -H 'Content-Type: application/json' --data-binary "@${SCHEMA_FILE}" --write-out "\n"
     curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${INDEX_URL}" --write-out "\n"
-    
+
     # Checks for and sets up Elasticsearch as a secondary Visibility store
     if [[ ! -z "${ES_SEC_VIS_INDEX}" ]]; then
       SEC_INDEX_URL="${ES_SERVER}/${ES_SEC_VIS_INDEX}"
@@ -182,14 +182,14 @@ For example, to enable write operations to both primary and secondary stores, bu
 
 ```yaml
 system.secondaryVisibilityWritingMode:
- - value: "dual"
-   constraints: {}
+  - value: "dual"
+    constraints: {}
 system.enableReadFromSecondaryVisibility:
- - value: false
-   constraints: {}
+  - value: false
+    constraints: {}
 ```
 
 For details on the configuration options, see:
 
 - [Secondary Visibility dynamic configuration reference](/references/dynamic-configuration#secondary-visibility-settings)
-- [Migrating Visibility databases](/cluster-deployment-guide#migrating-visibility-database)
+- [Migrating Visibility databases](self-hosted/how-to-migrate-visibility-database)

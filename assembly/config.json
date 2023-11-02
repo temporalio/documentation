@@ -1,9 +1,6 @@
 {
     "content_source_dirs": [
-        "docs-src/cloud-context",
         "docs-src/cloud",
-        "docs-src/cluster-ops-context",
-        "docs-src/clusters",
         "docs-src/concepts",
         "docs-src/dev-guide",
         "docs-src/prod-readiness-context",
@@ -16,6 +13,7 @@
         "docs-src/typescript",
         "docs-src/references",
         "docs-src/tctl-v1",
+        "docs-src/self-hosted",
         "docs-src/cli"
     ],
     "content_write_dir": "docs",

@@ -1,15 +1,21 @@
 ---
-id: develop
+id: data-encryption
 title: Temporal production readiness - Develop
 sidebar_label: Develop
 description: This guide explains what you need to develop to use Temporal in your production environment.
 toc_max_heading_level: 4
 keywords:
+- Java
+- developer-guide
+- go
 - guide-context
 - how-to
 - production-readiness
 - security
 tags:
+- java
+- developer-guide
+- go
 - guide-context
 - how-to
 - production-readiness
@@ -70,12 +76,7 @@ Examples for implementing compression:
 - [Go sample](https://pkg.go.dev/go.temporal.io/sdk/converter#ZlibCodecOptions)
 - [Java sample](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/payload/codec/ZlibPayloadCodec.html)
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
+### How to use a custom Payload Codec in Go {#custom-payload-codec}
 
 **Create a custom Payload Codec**
 
@@ -172,8 +173,7 @@ For reference, see the following samples:
 - [Codec server](https://github.com/temporalio/samples-go/tree/main/codec-server)
 - [Encryption](https://github.com/temporalio/samples-go/tree/main/encryption)
 
-</TabItem>
-<TabItem value="java">
+### How to use a custom Payload Codec in Java {#custom-payload-codec}
 
 **Create a custom Payload Codec**
 
@@ -305,24 +305,6 @@ For example implementations, see the following samples:
 
 - [Encrypted Payloads](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads)
 - [Remote Data Encoder and Codec Server](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-</TabItem>
-</Tabs>
 
 ## Codec Server setup {#codec-server-setup}
 

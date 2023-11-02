@@ -11,11 +11,11 @@ ssdi:
   - Supported beginning with Temporal Server v1.21.
 ---
 
-To migrate your Visibility database, [set up a secondary Visibility store](/cluster-deployment-guide#set-up-secondary-visibility-store) to enable [Dual Visibility](/concepts/what-is-dual-visibility), and update the dynamic configuration in your Cluster to update the read and write operations for the Visibility store.
+To migrate your Visibility database, [set up a secondary Visibility store](/self-hosted/how-to-set-up-dual-visibility) to enable [Dual Visibility](/concepts/what-is-dual-visibility), and update the dynamic configuration in your Cluster to update the read and write operations for the Visibility store.
 
 Dual Visibility setup is optional but useful in gradually migrating your Visibility data to another database.
 
-Before you begin, verify [supported databases and versions](/cluster-deployment-guide#supported-databases) for a Visibility store.
+Before you begin, verify [supported databases and versions](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) for a Visibility store.
 
 The following steps describe how to migrate your Visibility database.
 
@@ -26,27 +26,27 @@ After you make any changes to your [Cluster configuration](/concepts/what-is-clu
 1. In your Cluster configuration, [add a secondary Visibility store](/references/configuration#secondaryvisibilitystore) to your Visibility setup under the Persistence configuration.
 
    Example: To migrate from Cassandra to Elasticsearch, add Elasticsearch as your secondary database and set it up.
-   For details, see [secondary Visibility database schema and setup](/cluster-deployment-guide#set-up-secondary-visibility-store).
+   For details, see [secondary Visibility database schema and setup](/self-hosted/how-to-set-up-dual-visibility).
 
    ```yaml
    persistence:
    visibilityStore: cass-visibility
    secondaryVisibilityStore: es-visibility
    datastores:
-       cass-visibility:
-       cassandra:
-           hosts: "127.0.0.1"
-           keyspace: "temporal_visibility"
-       es-visibility:
-       elasticsearch:
-           version: "v7"
-           logLevel: "error"
-           url:
-           scheme: "http"
-           host: "127.0.0.1:9200"
-           indices:
-           visibility: temporal_visibility_v1_dev
-           closeIdleConnectionsInterval: 15s
+     cass-visibility:
+     cassandra:
+       hosts: "127.0.0.1"
+       keyspace: "temporal_visibility"
+     es-visibility:
+     elasticsearch:
+       version: "v7"
+       logLevel: "error"
+       url:
+       scheme: "http"
+       host: "127.0.0.1:9200"
+       indices:
+       visibility: temporal_visibility_v1_dev
+       closeIdleConnectionsInterval: 15s
    ```
 
 1. Update the [dynamic configuration](/clusters#dynamic-configuration) keys on your self-hosted Temporal Cluster to enable write operations to the secondary store and disable read operations.
@@ -78,7 +78,7 @@ Example:
 
 - To manage closed Workflow Executions data, run in dual mode until the Namespace [Retention Period](/clusters#retention-period) is reached.
   After the Retention Period, Workflow Execution data is removed from the Persistence and Visibility stores.
-  If you want to keep the closed Workflow Executions data after the set Retention Period, you must set up [Archival](/cluster-deployment-guide#archival).
+  If you want to keep the closed Workflow Executions data after the set Retention Period, you must set up [Archival](/self-hosted/archival).
 - To manage data for all open Workflow Executions, run in dual mode until all the Workflow Executions started before enabling Dual Visibility mode are closed.
   After the Workflow Executions are closed, verify the Retention Period and set up Archival if you need to keep the data beyond the Retention Period.
 
@@ -110,14 +110,14 @@ When you are ready to deprecate your primary store, follow these steps.
    persistence:
    visibilityStore: es-visibility
    datastores:
-       es-visibility:
-       elasticsearch:
-           version: "v7"
-           logLevel: "error"
-           url:
-           scheme: "http"
-           host: "127.0.0.1:9200"
-           indices:
-           visibility: temporal_visibility_v1_dev
-           closeIdleConnectionsInterval: 15s
+     es-visibility:
+     elasticsearch:
+       version: "v7"
+       logLevel: "error"
+       url:
+       scheme: "http"
+       host: "127.0.0.1:9200"
+       indices:
+       visibility: temporal_visibility_v1_dev
+       closeIdleConnectionsInterval: 15s
    ```

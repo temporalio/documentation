@@ -324,7 +324,7 @@ The `log` section is optional and contains the following possible values:
 
 ## clusterMetadata
 
-`clusterMetadata` contains the local cluster information. The information is used in [Multi-Cluster Replication](/clusters#multi-cluster-replication).
+`clusterMetadata` contains the local cluster information. The information is used in [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication#).
 
 An example `clusterMetadata` section:
 
@@ -411,7 +411,7 @@ Use `dns:///` prefix to enable round-robin between IP address for DNS name.
 
 _Optional_
 
-Archival is an optional configuration needed to set up the [Archival store](/clusters#archival).
+Archival is an optional configuration needed to set up the [Archival store](/self-hosted-guide/archival#).
 It can be enabled on `history` and `visibility` data.
 
 The following list describes supported values for each configuration on the `history` and `visibility` data.
@@ -472,7 +472,7 @@ Example:
         state: "disabled"
   ```
 
-For more details on Archival setup, see [Set up Archival](/cluster-deployment-guide#set-up-archival).
+For more details on Archival setup, see [Set up Archival](/self-hosted-guide/archival#set-up-archival).
 
 ## namespaceDefaults
 
@@ -483,7 +483,7 @@ Sets default Archival configuration for each Namespace using `namespaceDefaults`
 - `state`: Default state of the Archival for the Namespace. Supported values are `enabled` or `disabled`.
 - `URI`: Default URI for the Namespace.
 
-For more details on setting Namespace defaults on Archival, see [Namespace creation in Archival setup](/cluster-deployment-guide#namespace-creation)
+For more details on setting Namespace defaults on Archival, see [Namespace creation in Archival setup](/self-hosted-guide/archival#namespace-creation)
 
 Example:
 

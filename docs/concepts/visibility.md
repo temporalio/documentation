@@ -29,21 +29,21 @@ This guide provides a comprehensive overview of Temporal Visibility.
 
 - For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
 - For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
-- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports advanced Visibility features](/cluster-deployment-guide#supported-databases). Visibility configuration in Temporal Cluster is updated and Dual Visibility is enabled. For details, see [Visibility store setup](/cluster-deployment-guide#visibility-store).
+- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports advanced Visibility features](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases). Visibility configuration in Temporal Cluster is updated and Dual Visibility is enabled. For details, see [Visibility store setup](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster).
 
 :::
 
 The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Cluster.
 
-The [Visibility store](/cluster-deployment-guide#visibility-store) in your Temporal Cluster stores persisted Workflow Execution Event History data and is set up as a part of your [Persistence store](/clusters#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
+The [Visibility store](/self-hosted-guide/visibility#) in your Temporal Cluster stores persisted Workflow Execution Event History data and is set up as a part of your [Persistence store](/clusters#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
 
-- [How to set up a Visibility store](/cluster-deployment-guide#visibility-store)
+- [How to set up a Visibility store](/self-hosted-guide/visibility#)
 
 With Temporal Server v1.21, you can set up [Dual Visibility](#dual-visibility) to migrate your Visibility store from one database to another.
 
 <!-- A Visibility store can be configured to provide [atandard Visibility](/visibility#standard-visibility) and [advanced Visibility](/visibility#advanced-visibility) features.
 
-Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/cluster-deployment-guide#supported-databases) for updates. -->
+Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted-guide/visibility#supported-databases) for updates. -->
 
 ## What is standard Visibility? {#standard-visibility}
 
@@ -56,14 +56,14 @@ Closed Workflow Executions can be filtered by a time constraint and either a Wor
 [Search Attributes](https://docs.temporal.io/visibility#search-attribute) are not supported with Standard Visibility.
 
 Support for standard Visibility is deprecated beginning with Temporal Server v1.21.
-For updates, check [Supported databases](/cluster-deployment-guide#supported-databases).
+For updates, check [Supported databases](/self-hosted-guide/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases).
 
 ## What is advanced Visibility? {#advanced-visibility}
 
 Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of [Workflow Executions](/workflows#workflow-execution) through a custom SQL-like [List Filter](#list-filter).
 
 - In Temporal Cluster version 1.20 and later, advanced Visibility is available on SQL databases like MySQL (version 8.0.17 and later) and PostgreSQL (version 12 and later), in addition to support for Elasticsearch.
-- For Temporal Server versions 1.19.1 and earlier, you must [integrate with ElasticSearch](/cluster-deployment-guide#elasticsearch) to use advanced Visibility.
+- For Temporal Server versions 1.19.1 and earlier, you must [integrate with ElasticSearch](/self-hosted-guide/visibility#elasticsearch) to use advanced Visibility.
   Elasticsearch takes on the Visibility request load, relieving potential performance issues.
   We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
 - On Temporal Cloud, [advanced Visibility is enabled by default for all users](/cloud/get-started#invite-users).
@@ -71,7 +71,7 @@ Visibility, within the Temporal Platform, is the subsystem and APIs that enable 
 ## What is Dual Visibility? {#dual-visibility}
 
 Dual Visibility is a feature that lets you set a secondary Visibility store in addition to a primary store in your Temporal Cluster.
-Setting up Dual Visibility is optional and can be used to [migrate your Visibility database](/cluster-deployment-guide#migrating-visibility-database) or create a backup Visibility store.
+Setting up Dual Visibility is optional and can be used to [migrate your Visibility database](/self-hosted-guide/visibility#migrating-visibility-database) or create a backup Visibility store.
 
 For example, if you have Cassandra configured as your Visibility database, you can set up a supported SQL database as your secondary Visibility store and gradually migrate your data to the secondary store before deprecating your primary one.
 
@@ -80,7 +80,7 @@ A Dual Visibility setup requires two Visibility store configurations:
 - **Primary Visibility**: The primary Visibility store where Visibility data is written to and read from by default. The primary Visibility store is set with the `visibilityStore` configuration key in your Temporal Cluster.
 - **Secondary Visibility**: A secondary storage for your Visibility data. The secondary Visibility store is set with the `secondaryVisibilityStore` configuration key in your Temporal Cluster.
 
-For configuration details, see [Dual Visibility setup](/cluster-deployment-guide#dual-visibility).
+For configuration details, see [Dual Visibility setup](/self-hosted-guide/how-to-set-up-dual-visibility).
 
 The following combinations are allowed in a Dual Visibility setting.
 
@@ -94,7 +94,7 @@ With Dual Visibility, you can read from only one Visibility store at a time, but
 When migrating from one Visibility store database to another, set up the database you want to migrate to as your secondary Visibility store.
 
 You can plan your migration using specific dynamic configuration keys that help you transition your read and write operations from the primary to the secondary Visibility store.
-For details on migrating your Visibility store databases, see [Dual Visibility](/cluster-deployment-guide#dual-visibility).
+For details on migrating your Visibility store databases, see [Dual Visibility](/self-hosted-guide/visibility#dual-visibility).
 
 ## What is a List Filter? {#list-filter}
 
@@ -105,7 +105,7 @@ A List Filter includes [Search Attribute](#search-attribute) names, Search Attri
 List Filter [Search Attribute](#search-attribute) names are case sensitive.
 A single [Namespace](/namespaces#) scopes each List Filter.
 
-A List Filter using a time range provides a resolution of 1 ns on [Elasticsearch](/cluster-deployment-guide#elasticsearch) and 1 µs for [SQL databases](/cluster-deployment-guide#visibility-store).
+A List Filter using a time range provides a resolution of 1 ns on [Elasticsearch](/self-hosted-guide/visibility#elasticsearch) and 1 µs for [SQL databases](/self-hosted-guide/visibility#).
 
 ### Supported operators
 
@@ -317,18 +317,18 @@ You can use the default Search Attributes in a List Filter, such as in the Tempo
 
 ### Custom Search Attributes
 
-You can [create custom Search Attributes](/cluster-deployment-guide#create-custom-search-attributes) with unique key names that are relevant to your business needs.
+You can [create custom Search Attributes](/self-hosted-guide/visibility#create-custom-search-attributes) with unique key names that are relevant to your business needs.
 
 Use custom Search Attributes in a List Filter, such as in the Temporal Web UI or with the `tctl workflow list` commands, under the following conditions:
 
 - Without advanced Visibility, you cannot use a custom Search Attribute in your List Filter.
 - With advanced Visibility, you can create multiple custom Search Attributes and use them in combinations with List Filters to get a list of specific Workflow Executions.
   For example: `tctl workflow list -q "WorkflowType = 'main.YourWorkflowDefinition' and YourCustomSA = 'YourCustomSAValue' and (StartTime > '2022-06-07T16:46:34.236-08:00' or CloseTime < '2022-06-08T16:46:34-08:00')"`
-  - With Temporal Server v1.19 and earlier, you must [integrate Elasticsearch](/cluster-deployment-guide#elasticsearch) to use custom Search Attributes with List Filters.
+  - With Temporal Server v1.19 and earlier, you must [integrate Elasticsearch](/self-hosted-guide/visibility#elasticsearch) to use custom Search Attributes with List Filters.
   - With Temporal Server v1.20 and later, custom Search Attribute capabilities are available on MySQL (v8.0.17 or later), PostgreSQL (v12 and later), and SQLite (v3.31.0 and later), in addition to Elasticsearch.
 
 If you use Elasticsearch as your Visibility store, your custom Search Attributes apply globally and can be used across Namespaces.
-However, if using any of the [supported SQL databases](/cluster-deployment-guide#visibility-store) with Temporal Server v1.20 and later, your custom Search Attributes are associated with a specific Namespace and can be used for Workflow Executions in that Namespace.
+However, if using any of the [supported SQL databases](/self-hosted-guide/visibility#) with Temporal Server v1.20 and later, your custom Search Attributes are associated with a specific Namespace and can be used for Workflow Executions in that Namespace.
 
 See [custom Search Attributes limits](#custom-search-attributes-limits) for limits on the number and size of custom Search Attributes you can create.
 
@@ -406,8 +406,8 @@ For Temporal Cloud specific configurations, see the [Default limits](/cloud/oper
 Search Attributes available in your Visibility store can be used with Workflow Executions for that Cluster.
 To actually have results from the use of a [List Filter](#list-filter), Search Attributes must be added to a Workflow Execution as metadata.
 
-- To create custom Search Attributes in your Visibility store, see [Create custom Search Attributes](/cluster-deployment-guide#create-custom-search-attributes).
-- To remove a custom Search Attribute from the Visbility store, see [Remove custom Search Attributes](/cluster-deployment-guide#remove-custom-search-attributes).
+- To create custom Search Attributes in your Visibility store, see [Create custom Search Attributes](/self-hosted-guide/visibility#create-custom-search-attributes).
+- To remove a custom Search Attribute from the Visbility store, see [Remove custom Search Attributes](/self-hosted-guide/visibility#remove-custom-search-attributes).
   Removing custom Search Attributes is not supported on Temporal Cloud.
 - To rename a custom Search Attribute on Temporal Cloud, see [`tcld namespace search-attributes rename`](/cloud/tcld/namespace#rename).
 

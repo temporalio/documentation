@@ -228,19 +228,19 @@ const clusterGuide = {
   listOne: [
     {
       book: true,
-      path: "/cluster-deployment-guide/#advanced-visibility",
+      path: "/self-hosted-guide/visibility",
       name: "Visibility",
     },
     {
       book: true,
-      path: "/cluster-deployment-guide/#archival",
+      path: "/self-hosted-guide/archival",
       name: "Archival",
     },
   ],
   listTwo: [
     {
       book: true,
-      path: "/cluster-deployment-guide/#multi-cluster-replication",
+      path: "/self-hosted-guide/multi-cluster-replication",
       name: "Multi-Cluster Replication",
     },
   ],
@@ -377,7 +377,7 @@ function Explained() {
         </p>
       </div>
       <div className="landing-card-section">
-        <a className="header-link" href="/cluster-deployment-guide">
+        <a className="header-link" href="/self-hosted-guide">
           <h2 className="h2-landing">Cluster deployment guide</h2>
         </a>
         <p className="landing-card-p">Temporal Cluster deployment information and how-to guides.</p>

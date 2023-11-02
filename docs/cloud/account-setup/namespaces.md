@@ -91,9 +91,9 @@ If you want to increase this limit, open a [support ticket](/cloud/support#suppo
 To create a Namespace in Temporal Cloud, gather the following information:
 
 - [Namespace Name](#temporal-cloud-namespace-name) and region.
-- [Retention Period](/clusters/#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution).
+- [Retention Period](/clusters#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution).
 - [CA certificate](/cloud/certificates#certificate-requirements) for the Namespace.
-- [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/production-readiness/develop#securing-your-data).
+- [Codec Server endpoint](/self-hosted-guide/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/self-hosted-guide/data-encryption#securing-your-data).
 - [Permissions](/cloud/users#namespace-level-permissions) for each user.
 
 <!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
@@ -112,7 +112,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
    (If you need to change this value later, contact [Temporal Support](/cloud/support#support-ticket).)
 1. In **Certificate**, paste the CA certificate for this Namespace.
 1. Optional: In **Codec Server**, enter the URL and port number of your Codec Server endpoint.
-   For details, see [Securing your data](/production-readiness/develop#securing-your-data).
+   For details, see [Securing your data](/self-hosted-guide/data-encryption#securing-your-data).
 1. Click **Create Namespace**.
 
 <!--- How to create a Namespace in Temporal Cloud using tcld --->
@@ -235,8 +235,8 @@ On the **Edit** page, you can do the following:
 - Add a [custom Search Attribute](/visibility#custom-search-attributes).
 - [Manage CA certificates](/cloud/certificates).
 - [Manage certificate filters](/cloud/certificates#manage-certificate-filters-using-temporal-cloud-ui).
-- Set [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) for all users on the Namespace.
-  Each user on the Namespace has the option to [override this setting](/production-readiness/develop#web-ui) in their browser.
+- Set [Codec Server endpoint](/self-hosted-guide/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli) for all users on the Namespace.
+  Each user on the Namespace has the option to [override this setting](/self-hosted-guide/data-encryption#web-ui) in their browser.
 - Manage [Namespace-level permissions](/cloud/users#namespace-level-permissions).
 - Add users.
 

@@ -1,0 +1,18 @@
+{
+    "file_name": "health-checks.md",
+    "id": "health-checks",
+    "file_dir": "self-hosted-guide",
+    "title": "Health checking a Self-hosted Cluster",
+    "sidebar_label": "Health checks",
+    "sidebar_position": 6,
+    "description": "Learn health checking best practices.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "h2",
+            "id": "self-hosted/how-to-set-up-health-checks"
+        }
+    ]
+}

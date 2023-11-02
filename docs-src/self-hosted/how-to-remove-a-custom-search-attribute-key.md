@@ -24,7 +24,7 @@ To check whether the Search Attribute was removed, run `tctl search-attribute li
 If you're on Temporal Server v1.20 and later, specify the Namespace from which you removed the Search Attribute.
 For example, `tctl  --ns yournamespace search-attribute list`.
 
-Note that if you use [SQL databases](/clusters/how-to-set-up-visibility-in-a-temporal-cluster) with Temporal Server v1.20 and later, a new custom Search Attribute is mapped to a database field name in the Visibility store `custom_search_attributes` table.
+Note that if you use [SQL databases](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster) with Temporal Server v1.20 and later, a new custom Search Attribute is mapped to a database field name in the Visibility store `custom_search_attributes` table.
 Removing this custom Search Attribute removes the mapping with the database field name but does not remove the data.
 If you remove a custom Search Attribute and add a new one, the new custom Search Attribute might be mapped to the database field of the one that was recently removed.
 This might cause unexpected results when you use the List API to retrieve results using the new custom Search Attribute.

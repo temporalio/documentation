@@ -155,7 +155,7 @@ tctl namespace register --global_namespace <boolean>
 
 ### --history_archival_state
 
-Set the state of [Archival](/clusters#archival).
+Set the state of [Archival](/self-hosted-guide/archival#).
 Valid values are `disabled` and `enabled`.
 
 **Example**
@@ -166,7 +166,7 @@ tctl namespace register --history_archival_state <value>
 
 ### --history_uri
 
-Specify the URI for [Archival](/clusters#archival).
+Specify the URI for [Archival](/self-hosted-guide/archival#).
 The URI cannot be changed after Archival is first enabled.
 
 **Example**
@@ -209,7 +209,7 @@ tctl namespace register --retention <value>
 
 ### --visibility_archival_state
 
-Set the visibility state for [Archival](/clusters#archival).
+Set the visibility state for [Archival](/self-hosted-guide/archival#).
 Valid values are `disabled` and `enabled`.
 
 **Example**
@@ -220,7 +220,7 @@ tctl namespace register --visibility_archival_state <value>
 
 ### --visibility_uri
 
-Specify the visibility URI for [Archival](/clusters#archival).
+Specify the visibility URI for [Archival](/self-hosted-guide/archival#).
 The URI cannot be changed after Archival is first enabled.
 
 **Example**
@@ -286,7 +286,7 @@ tctl namespace update --description <value>
 
 ### --history_archival_state
 
-Set the state of [Archival](/clusters#archival).
+Set the state of [Archival](/self-hosted-guide/archival#).
 Valid values are `disabled` and `enabled`.
 
 **Example**
@@ -297,7 +297,7 @@ tctl namespace update --history_archival_state <value>
 
 ### --history_uri
 
-Specify the URI for URI for [Archival](/clusters#archival).
+Specify the URI for URI for [Archival](/self-hosted-guide/archival#).
 The URI cannot be changed after Archival is first enabled.
 
 **Example**
@@ -360,7 +360,7 @@ tctl namespace update --retention <value>
 
 ### --visibility_archival_state
 
-Set the visibility state for [Archival](/clusters#archival).
+Set the visibility state for [Archival](/self-hosted-guide/archival#).
 Valid values are `disabled` and `enabled`.
 
 **Example**
@@ -371,7 +371,7 @@ tctl namespace update --visibility_archival_state <value>
 
 ### --visibility_uri
 
-Specify the visibility URI for [Archival](/clusters#archival).
+Specify the visibility URI for [Archival](/self-hosted-guide/archival#).
 The URI cannot be changed after Archival is first enabled.
 
 **Example**

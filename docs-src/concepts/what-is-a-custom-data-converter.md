@@ -37,4 +37,4 @@ For details on how to implement custom Payload Converters in your SDK, see Custo
 - [How to implement custom Payload convesion in Go](/go/custom-payload-conversion)
 - [How to implement custom Payload conversion in Java](/java/custom-payload-conversion)
 
-For details on how to implement custom encryption and compression in your SDK, see [Data Encryption](/production-readiness/develop#securing-your-data).
+For details on how to implement custom encryption and compression in your SDK, see [Data Encryption](/self-hosted/data-encryption).

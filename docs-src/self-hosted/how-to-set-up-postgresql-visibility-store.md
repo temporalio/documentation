@@ -14,7 +14,7 @@ ssdi:
 ---
 
 You can set PostgreSQL as your [Visibility store](/concepts/what-is-visibility).
-Verify [supported versions](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) before you proceed.
+Verify [supported versions](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) before you proceed.
 
 If using PostgreSQL v12 or later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attributes) that you create must be associated with a Namespace in that Cluster.
 
@@ -48,7 +48,7 @@ persistence:
 ```
 
 To enable advanced Visibility features on your PostgreSQL Visibility store, upgrade to PostgreSQL v12 or later with Temporal Server v1.20 or later.
-See [Upgrade Server](/clusters/how-to-upgrade-the-temporal-server-version) for details on how to upgrade your Temporal Server and database schemas.
+See [Upgrade Server](/self-hosted/how-to-upgrade-the-temporal-server-version) for details on how to upgrade your Temporal Server and database schemas.
 
 **Database schema and setup**
 

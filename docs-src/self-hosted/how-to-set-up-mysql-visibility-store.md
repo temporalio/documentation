@@ -14,7 +14,7 @@ ssdi:
 ---
 
 You can set MySQL as your [Visibility store](/concepts/what-is-visibility).
-Verify [supported versions](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) before you proceed.
+Verify [supported versions](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) before you proceed.
 
 If using MySQL v8.0.17 or later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attributes) that you create must be associated with a Namespace in that Cluster.
 
@@ -50,7 +50,7 @@ persistence:
 For details on the configuration parameters and values, see [Cluster configuration](/references/configuration#sql).
 
 To enable advanced Visibility features on your MySQL Visibility store, upgrade to MySQL v8.0.17 or later with Temporal Server v1.20 or later.
-See [Upgrade Server](/clusters/how-to-upgrade-the-temporal-server-version) on how to upgrade your Temporal Server and database schemas.
+See [Upgrade Server](/self-hosted/how-to-upgrade-the-temporal-server-version) on how to upgrade your Temporal Server and database schemas.
 
 For example configuration templates, see [MySQL Visibility store configuration](https://github.com/temporalio/temporal/blob/master/config/development-mysql.yaml).
 

@@ -108,7 +108,7 @@ You can easily run a Temporal Cluster in [Docker](https://docs.docker.com/engine
 If you have Docker and Docker Compose installed, all you need to do is clone the [temporalio/docker-compose](https://github.com/temporalio/docker-compose) repo and run the `docker compose up` command from its root.
 
 The `temporalio/docker-compose` repo comes loaded with a variety of configuration templates that enable you to try all three databases that the Temporal Platform supports (PostgreSQL, MySQL, Cassandra).
-It also enables you to try [Advanced Visibility](/visibility/#advanced-visibility) using [Search Attributes](/visibility/#search-attribute), emit metrics, and even play with the [Archival](/clusters/#archival) feature.
+It also enables you to try [Advanced Visibility](/concepts/what-is-advanced-visibility) using [Search Attributes](/concepts/what-is-a-search-attribute), emit metrics, and even play with the [Archival](/concepts/what-is-archival) feature.
 The Docker images in this repo are produced using the Temporal Server [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script.
 This script defaults to creating images that run all the Temporal Server services in a single process.
 You can use this script as a starting point for producing your own images.

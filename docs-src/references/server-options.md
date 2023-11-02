@@ -10,7 +10,7 @@ tags:
 
 You can run the [Temporal Server](/concepts/what-is-the-temporal-server) as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.
 
-The Temporal Server services can be [run in various ways](/cluster-deployment-guide).
+The Temporal Server services can be run in various ways.
 We recommend this approach for a limited number of situations.
 
 ```go

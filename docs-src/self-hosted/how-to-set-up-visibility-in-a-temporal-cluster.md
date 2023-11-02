@@ -23,8 +23,8 @@ Note that if you use MySQL, PostgreSQL, or SQLite as your Visibility store, Temp
 
 To enable advanced Visibility on your SQL databases, ensure that you do the following:
 
-- [Upgrade your Temporal Server](/clusters/how-to-upgrade-the-temporal-server-version) to version 1.20 or later.
-- [Update your database schemas](/clusters/how-to-upgrade-the-temporal-server-version#upgrade-mysql-or-postgresql-schema) for MySQL to version 8.0.17 (or later), PostgreSQL to version 12 (or later), or SQLite to v3.31.0 (or later).
+- [Upgrade your Temporal Server](/self-hosted/how-to-upgrade-the-temporal-server-version) to version 1.20 or later.
+- [Update your database schemas](/self-hosted/how-to-upgrade-the-temporal-server-version#upgrade-mysql-or-postgresql-schema) for MySQL to version 8.0.17 (or later), PostgreSQL to version 12 (or later), or SQLite to v3.31.0 (or later).
 
 Beginning with Temporal Server v1.21, you can set up a secondary Visibility store in your Temporal Cluster to enable [Dual Visibility](/concepts/what-is-dual-visibility).
 This is useful for migrating your Visibility store database.
@@ -33,17 +33,17 @@ This is useful for migrating your Visibility store database.
 
 The following databases are supported as Visibility stores:
 
-- [MySQL](/clusters/how-to-set-up-mysql-visibility-store) v5.7 and later.
+- [MySQL](/self-hosted/how-to-set-up-mysql-visibility-store) v5.7 and later.
   Use v8.0.17 (or later) with Temporal Server v1.20 or later for advanced Visibility capabilities.
   Because standard Visibility is deprecated beginning with Temporal Server v1.21, support for older versions of MySQL will be dropped.
-- [PostgreSQL](/clusters/how-to-set-up-postgresql-visibility-store) v9.6 and later.
+- [PostgreSQL](/self-hosted/how-to-set-up-postgresql-visibility-store) v9.6 and later.
   Use v12 (or later) with Temporal Server v1.20 or later for advanced Visibility capabilities.
   Because standard Visibility is deprecated beginning with Temporal Server v1.21, support for older versions of PostgreSQL will be dropped.
-- [SQLite](/clusters/how-to-set-up-sqlite-visibility-store) v3.31.0 and later for advanced Visibility capabilities.
-- [Cassandra](/clusters/how-to-set-up-cassandra-visibility-store).
+- [SQLite](/self-hosted/how-to-set-up-sqlite-visibility-store) v3.31.0 and later for advanced Visibility capabilities.
+- [Cassandra](/self-hosted/how-to-set-up-cassandra-visibility-store).
   Support for Cassandra as a Visibility database is deprecated beginning with Temporal Server v1.21.
-  For information on migrating from Cassandra to any of the supported databases, see [Migrating Visibility database](/cluster-deployment-guide#migrating-visibility-database).
-- [Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster) supported versions.
+  For information on migrating from Cassandra to any of the supported databases, see [Migrating Visibility database](/self-hosted/how-to-migrate-visibility-database).
+- [Elasticsearch](/self-hosted/how-to-integrate-elasticsearch-into-a-temporal-cluster) supported versions.
   We recommend operating a Temporal Cluster with Elasticsearch as your Visibility store for any use case that spawns more than a few Workflow Executions.
 
 You can use any combination of the supported databases for your Persistence and Visibility stores.

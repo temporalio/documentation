@@ -34,7 +34,7 @@ Each section includes an example on how you can do this in your local docker-com
 If you implement the examples, ensure that your local docker-compose is set up, install your SDK, and have a sample application to work with.
 (To get started, you can clone the SDK samples repositories.)
 
-- See [Docker Compose](/cluster-deployment-guide#docker--docker-compose) for details on how to set up your local Temporal docker-compose.
+- See [Docker Compose](https://github.com/temporalio/docker-compose) for details on how to set up your local Temporal docker-compose.
 - See the [Dev guide](/dev-guide) for details on how to install your SDK and get started with samples.
 
 To set up Prometheus and Grafana:

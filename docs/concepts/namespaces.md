@@ -36,7 +36,7 @@ Namespaces are created on the Temporal Cluster, and provide a range of controls 
   For example, when a Workflow Execution is spawned, it does so within a specific Namespace.
 - **Uniqueness**: Temporal guarantees a unique Workflow Id within a Namespace.
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.
-- **Namespace Configuration**: Various configuration options like the [Retention Period](/clusters#retention-period) and the [Archival](/clusters#archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl-v1/namespace).
+- **Namespace Configuration**: Various configuration options like the [Retention Period](/clusters#retention-period) and the [Archival](/self-hosted-guide/archival#) destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl-v1/namespace).
 
 ### Registration
 
@@ -113,7 +113,7 @@ If you do not set a Namespace, all Workflow Executions started using the Client 
 
 ## What is a Global Namespace? {#global-namespace}
 
-A Global Namespace is a [Namespace](#) that exists across Clusters when [Multi-Cluster Replication](/clusters#multi-cluster-replication) is set up.
+A Global Namespace is a [Namespace](#) that exists across Clusters when [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication#) is set up.
 
 - [How to register a Global Namespace](/tctl-v1/namespace#register)
 - [How to change the active Cluster for a Global Namespace](/tctl-v1/namespace#update)
@@ -128,7 +128,7 @@ A Global Namespace has a failover version.
 Because a failover can be triggered from any Cluster, the failover version prevents certain conflicts from occurring if a failover is mistakenly triggered simultaneously on two Clusters.
 
 Only the active Cluster dispatches [Tasks](/workers#task); however, certain conflicts are possible.
-Unlike regular Namespaces, which provide at-most-once semantics for an Activity Execution, Global Namespaces can support only at-least-once semantics (see [Conflict resolution](/clusters#conflict-resolution)).
+Unlike regular Namespaces, which provide at-most-once semantics for an Activity Execution, Global Namespaces can support only at-least-once semantics (see [Conflict resolution](/self-hosted-guide/multi-cluster-replication#conflict-resolution)).
 Worker Processes on the standby Clusters are idle until a failover occurs and their Cluster becomes active.
 
 Temporal Application API calls made to a non-active Cluster are rejected with a **NamespaceNotActiveError** which contains the name of the current active Cluster.

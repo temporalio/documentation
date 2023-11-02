@@ -1,0 +1,58 @@
+{
+    "file_name": "visibility.md",
+    "id": "visibility",
+    "file_dir": "self-hosted-guide",
+    "title": "Self-hosted Visibility feature setup",
+    "sidebar_label": "Visibility",
+    "sidebar_position": 4,
+    "description": "Learn how to set up the Temporal self-hosted Cluster Visibility feature.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "self-hosted/how-to-set-up-visibility-in-a-temporal-cluster"
+        },
+        {
+            "type": "h2",
+            "id": "self-hosted/how-to-set-up-mysql-visibility-store"
+        },
+        {
+            "type": "h2",
+            "id": "self-hosted/how-to-set-up-postgresql-visibility-store"
+        },
+        {
+            "type": "h2",
+            "id": "self-hosted/how-to-set-up-sqlite-visibility-store"
+        },
+        {
+            "type": "h2",
+            "id": "self-hosted/how-to-set-up-cassandra-visibility-store"
+        },
+        {
+            "type": "h2",
+            "id": "self-hosted/how-to-integrate-elasticsearch-into-a-temporal-cluster"
+        },
+        {
+            "type": "h2",
+            "id": "self-hosted/how-to-set-up-dual-visibility"
+        },
+        {
+            "type": "h2",
+            "id": "self-hosted/how-to-migrate-visibility-database"
+        },
+        {
+            "type": "h2",
+            "id": "self-hosted/manage-custom-search-attributes"
+        },
+        {
+            "type": "h3",
+            "id": "self-hosted/how-to-create-custom-search-attribute-keys"
+        },
+        {
+            "type": "h3",
+            "id": "self-hosted/how-to-remove-a-custom-search-attribute-key"
+        }
+    ]
+}

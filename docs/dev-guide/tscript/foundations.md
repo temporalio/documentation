@@ -41,7 +41,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 In this section you can find the following:
 
-- [Run a development Cluster](#run-a-development-server)
+- [Run a development Cluster](/typescript/how-to-install-temporal-cli)
 - [Connect to a dev Cluster](#connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Develop a Workflow](#develop-workflows)
@@ -57,7 +57,7 @@ In this section you can find the following:
 This section describes how to install the [Temporal CLI](/cli) and run a development Cluster.
 The local development Cluster comes packaged with the [Temporal Web UI](/web-ui).
 
-For information on deploying and running a production Cluster, see the [Cluster deployment guide](/cluster-deployment-guide), or sign up for [Temporal Cloud](/cloud) and let us run your production Cluster for you.
+For information on deploying and running a self-hosted production Cluster, see the [Self-hosted guide](/self-hosted-guide#), or sign up for [Temporal Cloud](/cloud) and let us run your production Cluster for you.
 
 Temporal CLI is a tool for interacting with a Temporal Cluster from the command line and it includes a distribution of the Temporal Server and Web UI.
 This local development Cluster runs as a single process with zero runtime dependencies and it supports persistence to disk and in-memory mode through SQLite.
@@ -222,7 +222,7 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 :::
 
 When you are running a Cluster locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
-Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](/cluster-deployment-guide#docker--docker-compose) serve (`127.0.0.1:7233`).
+Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
 
 Creating a [Connection](https://typescript.temporal.io/api/classes/client.Connection) connects to the Temporal Cluster, and you can pass the `Connection` instance when creating the [Client](https://typescript.temporal.io/api/classes/client.Client#connection).
 

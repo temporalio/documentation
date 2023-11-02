@@ -67,7 +67,7 @@ An Activity Type is the mapping of a name to an Activity Definition.
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Archival](/clusters#archival)
+#### [Archival](/self-hosted-guide/archival#)
 Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -235,7 +235,7 @@ A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Multi-Cluster Replication](/clusters#multi-cluster-replication)
+#### [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication#)
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_

@@ -21,7 +21,7 @@ For example, to add a custom Search Attributes "CustomSA" to your Temporal Cloud
 
 **On self-hosted Temporal Cluster**
 
-If you're self-hosting your Temporal Cluster, verify whether your [Visibility database](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) version supports advanced Visibility features.
+If you're self-hosting your Temporal Cluster, verify whether your [Visibility database](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) version supports advanced Visibility features.
 
 To create custom Search Attributes in your self-hosted Temporal Cluster Visibility store, use `temporal operator search-attribute create` with `--name` and `--type` command options.
 

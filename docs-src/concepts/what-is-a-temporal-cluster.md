@@ -10,6 +10,6 @@ tags:
 
 A Temporal Cluster is the group of services, known as the [Temporal Server](/concepts/what-is-the-temporal-server), combined with [Persistence](/concepts/what-is-persistence) and [Visibility](/concepts/what-is-visibility) stores, that together act as a component of the Temporal Platform.
 
-- [Cluster deployment guide](/cluster-deployment-guide)
+- [Cluster deployment guide](/self-hosted/guide-structure)
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
