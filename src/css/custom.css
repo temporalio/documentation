@@ -868,7 +868,6 @@ h1 {
 }
 
 .core-concepts-slide {
-  overflow: scroll;
   width: 100%;
   display: flex;
   gap: 1rem;

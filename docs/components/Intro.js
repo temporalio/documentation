@@ -5,36 +5,28 @@ import { SdkLogos } from "./SdkLogos";
 
 const coreConcepts = [
   {
-    path: "/temporal",
-    name: "Temporal",
+    path: "https://learn.temporal.io/getting_started#set-up-your-development-environment",
+    name: "Set up your development environment",
   },
   {
-    path: "/workflows",
-    name: "Workflows",
+    path: "https://learn.temporal.io/getting_started/#run-your-first-program",
+    name: "Run your first program",
   },
   {
-    path: "/activities",
-    name: "Activities",
+    path: "https://learn.temporal.io/getting_started/#run-your-first-program",
+    name: "Build an application from scratch",
   },
   {
-    path: "/retry-policies",
-    name: "Retry Policies",
+    path: "https://learn.temporal.io/courses/temporal_101/",
+    name: "Temporal 101 with Go, Java, TypeScript, Python",
   },
   {
-    path: "/clusters",
-    name: "Clusters",
+    path: "https://learn.temporal.io/courses/temporal_102/",
+    name: "Temporal 102 with Go",
   },
   {
-    path: "/workers",
-    name: "Workers",
-  },
-  {
-    path: "/visibility",
-    name: "Visibility",
-  },
-  {
-    path: "/namespaces",
-    name: "Namespaces",
+    path: "https://learn.temporal.io/courses/intro_to_temporal_cloud/",
+    name: "Introduction to Temporal Cloud",
   },
 ];
 
@@ -373,8 +365,8 @@ function Explained() {
       <p className="main-subhead">Temporal Platform explanation and usage information.</p>
       <div className="mb-8">{SdkLogos()}</div>
       <div className="grid md:grid-cols-2">
-        <Card title="Get Started with Temporal" content="New to Temporal? Start your journey here by setting up your development environment, running an existing Temporal app, and then building your first app from scratch using our SDKs." links={coreConcepts} />
-        <Card title="Start building your next app" links={appDevGuideLinks} />
+        <SimpleCard title="Get Started with Temporal" content="New to Temporal? Start your journey here by setting up your development environment, running an existing Temporal app, and then building your first app from scratch using our SDKs." links={coreConcepts} />
+        <SimpleCard title="Start building your next app" links={appDevGuideLinks} />
       </div>
       <CloudCard links={cloudInfo} />
       <div className="grid md:grid-cols-2">
