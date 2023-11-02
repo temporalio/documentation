@@ -126,5 +126,4 @@ When using the Continue-As-New, specify the versioning intent:
    err := workflow.NewContinueAsNewError(ctx, "WorkflowName")
    ```
 
-
 If you're migrating Workflows between incompatible Worker Build IDs and you want your continued Workflows to start using the Task Queue's latest default version, utilize the `WithWorkflowVersioningIntent` as shown above before calling `NewContinueAsNewError`.
