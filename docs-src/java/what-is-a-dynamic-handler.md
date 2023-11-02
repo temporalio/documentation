@@ -9,19 +9,6 @@ tags:
 ---
 
 Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
-
-:::note
-
-Currently, the Temporal SDKs that support Dyanmic Handlers are:
-
-- [Java](/java/what-is-a-dynamic-handler)
-- [Python](/python/what-is-a-dynamic-handler)
-- .NET
-
-The Go SDK supports Dynamic Signals through the [GetUnhandledSignalNames](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetUnhandledSignalNames) function.
-
-:::
-
 These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
 
 Dynamic Handlers provide flexibility to handle cases where the names of Workflows, Activities, Signals, or Queries aren't known at run time.

@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday November 01 2023 11:24:55 AM -0700
+Last assembled: Thursday November 02 2023 11:14:31 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 110 guide configurations found.
 
-1647 information nodes found.
+1652 information nodes found.
 
-1409 information nodes are attached to guides.
+1414 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -288,12 +288,6 @@ cloud/tcld/account/metrics/accepted-client-ca/set -> #set
 
 cloud/tcld/account/metrics/accepted-client-ca/remove -> #remove
 
-cloud/tcld/feature/get -> #get
-
-cloud/tcld/feature/toggle-apikey -> #toggle-apikey
-
-cloud/tcld/feature/toggle-export -> #toggle-export
-
 cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
 
 cloud/tcld/generate-certificates/end-entity-certificate -> #end-entity-certificate
@@ -310,8 +304,6 @@ cloud/tcld/namespace/create -> #create
 
 cloud/tcld/namespace/delete -> #delete
 
-cloud/tcld/namespace/export/index -> #export
-
 cloud/tcld/namespace/get -> #get
 
 cloud/tcld/namespace/list -> #list
@@ -325,16 +317,6 @@ cloud/tcld/namespace/search-attributes/index -> #search-attributes
 cloud/tcld/namespace/retention/index -> #retention
 
 cloud/tcld/namespace/update-codec-server -> #update-codec-server
-
-cloud/tcld/namespace/export/create -> #create
-
-cloud/tcld/namespace/export/get -> #get
-
-cloud/tcld/namespace/export/delete -> #delete
-
-cloud/tcld/namespace/export/list -> #list
-
-cloud/tcld/namespace/export/update -> #update
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
@@ -1137,5 +1119,9 @@ go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#loc
 go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
+
+java/what-is-a-dynamic-handler -> /dev-guide/java/features#dynamic-handler
+
+python/what-is-a-dynamic-handler -> /dev-guide/python/features#dynamic-handler
 
 
