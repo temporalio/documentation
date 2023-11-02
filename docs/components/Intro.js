@@ -308,14 +308,28 @@ function SlideDots({ activeSlide, handleClick }) {
 
 function SlideInfo({ activeSlide }) {
   const slide = slides[activeSlide]
+
+  const renderTextWithHighlight = (text) => {
+    const wordToCheck = 'temporal';
+    const highlightClass = 'highlight';
+    const parts = text.split(new RegExp(`(${wordToCheck})`, 'gi'));
+    return parts.map((part, index) =>
+      part === wordToCheck ? (
+        <span key={index} className={highlightClass}>{part}</span>
+      ) : (
+        <span key={index}>{part}</span>
+      )
+    );
+  };
+
   return (
     <div className="core-concepts-info">
       <h3 className="core-concepts-title">Introducing our core concepts</h3>
       <h1>{slide.title}</h1>
       <h3 className="core-concepts-description">{slide.description}</h3>
-      <p>{slide.content1}</p>
-      <p>{slide?.content2}</p>
-      <p>{slide?.content3}</p>
+      <p>{renderTextWithHighlight(slide.content1 || '')}</p>
+      <p>{renderTextWithHighlight(slide?.content2 || '')}</p>
+      <p>{renderTextWithHighlight(slide?.content3 || '')}</p>
     </div>
   )
 }

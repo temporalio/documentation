@@ -809,6 +809,13 @@ h1 {
   text-decoration: none;
 }
 
+.highlight {
+  padding: .05rem .20rem;
+  background-color: var(--color-indigo, #444CE7);
+  color: white;
+  border-radius: .20rem;
+}
+
 .core-concepts-info {
   float: left;
   width: 540px;
