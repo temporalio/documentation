@@ -170,10 +170,4 @@ can cause sporadic and difficult to diagnose bugs. For this reason, we recommend
 using asynchronous Activities _only_ when you are certain that your Activities
 are async safe and don't make blocking calls.
 
-If you experience bugs that you think may be a result of an unsafe call being made
-in an asynchronous Activity, convert it to a synchronous Activity and see if the\
-issue resolves.
-
-The remainder of this course will demonstrate asynchronous Activities. If
-you would like to complete Exercise 3 using Synchronous Activities, you can
-switch branches in the `edu-101-python-code` repository to the [`sync` branch](https://github.com/temporalio/edu-101-python-code/tree/sync).
+If you experience bugs that you think may be a result of an unsafe call being made in an asynchronous Activity, convert it to a synchronous Activity and see if the issue resolves.
