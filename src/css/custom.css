@@ -706,10 +706,10 @@ h1 {
 /* Leadership page css */
 
 .main-subhead {
-  font-size: 24px;
-  position: relative;
-  top: -1.05%;
-  height: 0;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
 }
 
 .main-card {
