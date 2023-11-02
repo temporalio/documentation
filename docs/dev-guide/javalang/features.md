@@ -9,19 +9,31 @@ toc_max_heading_level: 4
 keywords:
 - Java
 - developer-guide
+- dynamic activity
+- dynamic query
+- dynamic workflow
+- explanation
 - guide-context
 - how-to
 - java
+- java sdk
 - sleep
+- term
 - timers
 - workers
 tags:
 - java
 - developer-guide
+- dynamic-activity
+- dynamic-query
+- dynamic-workflow
+- explanation
 - guide-context
 - how-to
 - java
+- java-sdk
 - sleep
+- term
 - timers
 - workers
 ---
@@ -160,21 +172,6 @@ public class HelloWorldImpl implements HelloWorld {
 ```
 
 This Workflow completes when the Signal updates the greeting to `Bye`.
-
-**Dynamic Signal Handler**
-You can also implement Signal handlers dynamically. This is useful for library-level code and implementation of DSLs.
-
-Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
-
-```java
-Workflow.registerListener(
-  (DynamicSignalHandler)
-      (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
-```
-
-When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
-Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
-`DynamicSignalHandler` can be implemented in both regular and dynamic Workflow implementations.
 
 ### How to send a Signal from a Temporal Client {#send-signal-from-client}
 
@@ -397,21 +394,6 @@ The following example is the Workflow implementation with the Query method defin
   }
 ```
 
-**Dynamic Query Handler**
-You can also implement Query handlers dynamically. This is useful for library-level code and implementation of DSLs.
-
-Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicQueryListener` in the Workflow implementation code.
-
-```java
-Workflow.registerListener(
-  (DynamicQueryHandler)
-      (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
-```
-
-When registered, any Queries sent to the Workflow without a defined handler will be delivered to the `DynamicQueryHandler`.
-Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
-`DynamicQueryHandler` can be implemented in both regular and dynamic Workflow implementations.
-
 ### How to send a Query {#send-query}
 
 Queries are sent from a Temporal Client.
@@ -436,6 +418,102 @@ For example, the following Client code calls a Query method `queryGreeting()` de
     // Query the Workflow to get the current value of greeting and print it.
     System.out.println(workflow.queryGreeting());
 ```
+
+## What is a Dynamic Handler? {#dynamic-handler}
+
+Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
+These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
+
+Dynamic Handlers provide flexibility to handle cases where the names of Workflows, Activities, Signals, or Queries aren't known at run time.
+
+:::caution
+
+Dynamic Handlers should be used judiciously as a fallback mechanism rather than the primary approach.
+Overusing them can lead to maintainability and debugging issues down the line.
+
+Instead, Workflows, Activities, Signals, and Queries should be defined statically whenever possible, with clear names that indicate their purpose.
+Use static definitions as the primary way of structuring your Workflows.
+
+Reserve Dynamic Handlers for cases where the handler names are not known at compile time and need to be looked up dynamically at runtime.
+They are meant to handle edge cases and act as a catch-all, not as the main way of invoking logic.
+
+:::
+
+### How to set a Dynamic Workflow {#set-a-dynamic-workflow}
+
+Use [`DynamicWorkflow`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html) to implement Workflow Types dynamically.
+Register a Workflow implementation type that extends `DynamicWorkflow` to implement any Workflow Type that is not explicitly registered with the Worker.
+
+The dynamic Workflow interface is implemented with the `execute` method. This method takes in `EncodedValues` that are inputs to the Workflow Execution.
+These inputs can be specified by the Client when invoking the Workflow Execution.
+
+```java
+public class MyDynamicWorkflow implements DynamicWorkflow {
+   @Override
+    public Object execute(EncodedValues args) {
+    }
+}
+```
+
+### How to set a Dynamic Activity {#set-a-dynamic-activity}
+
+To handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
+
+Use `DynamicActivity` to implement any number of Activity types dynamically.
+When an Activity implementation that extends `DynamicActivity` is registered, it is called for any Activity type invocation that doesn't have an explicitly registered handler.
+
+The dynamic Activity interface is implemented with the `execute` method, as shown in the following example.
+
+```java
+// Dynamic Activity implementation
+ public static class DynamicGreetingActivityImpl implements DynamicActivity {
+   @Override
+   public Object execute(EncodedValues args) {
+     String activityType = Activity.getExecutionContext().getInfo().getActivityType();
+     return activityType
+         + ": "
+         + args.get(0, String.class)
+         + " "
+         + args.get(1, String.class)
+         + " from: "
+         + args.get(2, String.class);
+   }
+ }
+```
+
+Use `Activity.getExecutionContext()` to get information about the Activity type that should be implemented dynamically.
+
+### How to set a Dynamic Signal {#set-a-dynamic-query}
+
+You can also implement Signal handlers dynamically. This is useful for library-level code and implementation of DSLs.
+
+Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
+
+```java
+Workflow.registerListener(
+  (DynamicSignalHandler)
+      (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+```
+
+When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
+Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
+`DynamicSignalHandler` can be implemented in both regular and dynamic Workflow implementations.
+
+### How to set a Dynamic Query {#set-a-dynamic-query}
+
+You can also implement Query handlers dynamically. This is useful for library-level code and implementation of DSLs.
+
+Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicQueryListener` in the Workflow implementation code.
+
+```java
+Workflow.registerListener(
+  (DynamicQueryHandler)
+      (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+```
+
+When registered, any Queries sent to the Workflow without a defined handler will be delivered to the `DynamicQueryHandler`.
+Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
+`DynamicQueryHandler` can be implemented in both regular and dynamic Workflow implementations.
 
 ## How to develop with Updates {#updates}
 
