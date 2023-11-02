@@ -332,9 +332,9 @@ function Slide({ link }) {
   )
 }
 
-function SlideDots({ activeSlide, handleMouseOver }) {
+function SlideDots({ activeSlide, handleClick }) {
   return slides.map((link, index) => {
-    return (<div key={index} className={`slide-dot ${activeSlide === index ? 'slide-dot-active' : ''}`} onMouseOver={() => handleMouseOver(index)} />)
+    return (<div key={index} className={`slide-dot ${activeSlide === index ? 'slide-dot-active' : ''}`} onClick={() => handleClick(index)} />)
   })
 }
 
@@ -375,7 +375,7 @@ function Explained() {
       </div>
       <div className="my-20 flex gap-6 core-concepts">
         <div className="slide-dots">
-          <SlideDots activeSlide={activeSlide} handleMouseOver={handleSlideChange} />
+          <SlideDots activeSlide={activeSlide} handleClick={handleSlideChange} />
         </div>
         <SlideInfo activeSlide={activeSlide} />
         <div className="core-concepts-slide">
