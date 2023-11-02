@@ -15,19 +15,7 @@ const coreConcepts = [
   {
     path: "https://learn.temporal.io/getting_started/#run-your-first-program",
     name: "Build an application from scratch",
-  },
-  {
-    path: "https://learn.temporal.io/courses/temporal_101/",
-    name: "Temporal 101 with Go, Java, TypeScript, Python",
-  },
-  {
-    path: "https://learn.temporal.io/courses/temporal_102/",
-    name: "Temporal 102 with Go",
-  },
-  {
-    path: "https://learn.temporal.io/courses/intro_to_temporal_cloud/",
-    name: "Introduction to Temporal Cloud",
-  },
+  }
 ];
 
 const appDevGuideLinks = [
@@ -36,40 +24,20 @@ const appDevGuideLinks = [
     name: "Go dev guide",
   },
   {
-    path: "https://pkg.go.dev/go.temporal.io/sdk",
-    name: "Go SDK API reference",
-  },
-  {
     path: "/dev-guide/java",
     name: "Java dev guide",
-  },
-  {
-    path: "https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html",
-    name: "Java SDK API reference",
   },
   {
     path: "/dev-guide/python",
     name: "Python dev guide",
   },
   {
-    path: "https://python.temporal.io",
-    name: "Python SDK API reference",
-  },
-  {
     path: "/dev-guide/typescript",
     name: "TypeScript dev guide",
   },
   {
-    path: "https://typescript.temporal.io/",
-    name: "TypeScript SDK API reference",
-  },
-  {
     path: "https://github.com/temporalio/sdk-dotnet#readme",
     name: ".NET SDK readme",
-  },
-  {
-    path: "https://dotnet.temporal.io/",
-    name: ".NET SDK API reference",
   },
   {
     path: "/dev-guide/php",
@@ -129,10 +97,6 @@ const cloudInfo = [
 
 const devTools = [
   {
-    path: "/tctl-v1",
-    name: "tctl v1.17",
-  },
-  {
     path: "/cli",
     name: `Temporal CLI`,
   },
@@ -140,6 +104,10 @@ const devTools = [
     path: "/web-ui",
     name: `Web UI`,
   },
+  {
+    path: "/tctl-v1",
+    name: "tctl v1.17",
+  }
 ]
 
 const references = [
