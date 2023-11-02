@@ -1,17 +1,16 @@
 ---
-slug: python-sandbox-environment
+id: python-sandbox-environment
 title: Python sandbox environment
+description: The Temporal Python SDK enables you to run Workflow code in a sandbox environment to help prevent non-determinism errors in your application.
+sidebar_label: Sandbox environment
 tags:
-  - kb-article
-date: 2023-01-08T00:00:00Z
+  - python
+  - dev guide
+  - sandbox environment
 ---
-
-![Python sandbox](static/img/../../../static/img/python-sandbox.svg)
 
 The Temporal Python SDK enables you to run Workflow code in a sandbox environment to help prevent non-determinism errors in your application.
 The Temporal Workflow Sandbox for Python is not completely isolated, and some libraries can internally mutate state, which can result in breaking determinism.
-
-<!-- truncate -->
 
 ## Benefits
 

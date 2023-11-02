@@ -42,7 +42,7 @@ By default, Workflows run in a sandbox environment.
 If a Workflow Execution performs a non-deterministic event, an exception is thrown, which results in failing the Workflow Task.
 The Workflow will not progress until the code is fixed.
 
-For more information, see the knowledge base article on [Python sandbox environments](/kb/python-sandbox-environment).
+For more information, see the knowledge base article on [Python sandbox environments](/python/python-sandbox-environment).
 
 ### SDKs in development
 

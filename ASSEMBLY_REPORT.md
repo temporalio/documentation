@@ -1,13 +1,14 @@
 # Docs Assembly Workflow report
 
+Last assembled: Thursday November 02 2023 09:35:42 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-110 guide configurations found.
+113 guide configurations found.
 
-1646 information nodes found.
+1649 information nodes found.
 
-1407 information nodes are attached to guides.
+1410 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -542,6 +543,8 @@ java/introduction-to-java-sdk -> /dev-guide/java/introduction#
 python/introduction-to-python-sdk -> /dev-guide/python/introduction#
 
 typescript/introduction-to-typescript-sdk -> /dev-guide/typescript/introduction#
+
+python/python-sandbox-environment -> /dev-guide/python/sandbox#sandbox-environment
 
 clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
 
@@ -1119,10 +1122,6 @@ go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup
 
 go/foundations -> /dev-guide/go/foundations#
 
-cli/server/start-dev -> /cli/server#start-dev
-
-cli/operator/namespace/create -> /cli/operator#create
-
-cli/workflow/start -> /cli/workflow#start
+python/async-vs-sync -> /dev-guide/python/async-vs-sync#asynchronous-vs.-synchronous
 
 
