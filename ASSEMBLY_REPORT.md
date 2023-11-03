@@ -1,10 +1,6 @@
 # Docs Assembly Workflow report
 
-<<<<<<< HEAD
-Last assembled: Friday November 03 2023 10:00:00 AM -0700
-=======
-Last assembled: Thursday November 02 2023 11:20:23 AM -0700
->>>>>>> main
+Last assembled: Friday November 03 2023 11:13:40 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -1124,11 +1120,8 @@ go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup
 
 go/foundations -> /dev-guide/go/foundations#
 
-<<<<<<< HEAD
-=======
 java/what-is-a-dynamic-handler -> /dev-guide/java/features#dynamic-handler
 
 python/what-is-a-dynamic-handler -> /dev-guide/python/features#dynamic-handler
 
->>>>>>> main
 
