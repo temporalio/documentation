@@ -13,7 +13,11 @@
   "sections": [
     {
       "type": "p",
-      "id": "typescript/versioning"
+      "id": "typescript/versioning-intro"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/patching"
     },
     {
       "type": "h2",

@@ -164,10 +164,6 @@
       "id": "typescript/run-a-dev-worker"
     },
     {
-      "type": "p",
-      "id": "typescript/run-a-dev-worker"
-    },
-    {
       "type": "h2",
       "id": "typescript/how-to-run-a-worker-on-docker"
     },

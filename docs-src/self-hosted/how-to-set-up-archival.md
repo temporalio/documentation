@@ -9,9 +9,9 @@ tags:
 
 [Archival](/concepts/what-is-archival) consists of the following elements:
 
-- **Configuration**: Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
-- **Provider**: Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
-- **URI**: Specifies which provider should be used. The system uses the URI schema and path to make the determination.
+- **Configuration:** Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
+- **Provider:** Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
+- **URI:** Specifies which provider should be used. The system uses the URI schema and path to make the determination.
 
 Take the following steps to set up Archival:
 

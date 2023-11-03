@@ -36,6 +36,14 @@ The Temporal Java SDK developer's guide is arranged in the following way:
   - [Additional resources](/dev-guide/java/introduction#additional-resources)
   - [Contribution](/dev-guide/java/introduction#contribution)
 
+- [**Set up a new project**](/dev-guide/java/project-setup#)
+
+  - [Install the Temporal CLI](/dev-guide/java/project-setup#install-cli)
+  - [Choose a development Cluster](/dev-guide/java/project-setup#choose-dev-cluster)
+  - [Boilerplate application code](/dev-guide/java/project-setup#boilerplate-project)
+  - [Start a Workflow using the CLI](/dev-guide/java/project-setup#start-workflow)
+  - [Add a testing framework](/dev-guide/java/project-setup#test-framework)
+
 - [**Foundations**](/dev-guide/java/foundations#): The minimum things required to build and run a simple Workflow with a single Activity.
 
   - [Run a development Cluster](/dev-guide/java/foundations#run-a-dev-cluster)

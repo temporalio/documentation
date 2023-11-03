@@ -5,7 +5,7 @@
   "id": "features",
   "title": "Java SDK developer's guide - Features",
   "sidebar_label": "Features",
-  "sidebar_position": 3,
+  "sidebar_position": 4,
   "description": "The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.",
   "use_description": false,
   "toc_max_heading_level": 4,
@@ -78,6 +78,26 @@
     {
       "type": "p",
       "id": "java/how-to-send-a-query-to-a-workflow-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/what-is-a-dynamic-handler"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-set-a-dynamic-workflow-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-set-a-dynamic-activity-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-set-a-dynamic-signal-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-set-a-dynamic-query-in-java"
     },
     {
       "type": "h2",
@@ -186,6 +206,42 @@
     {
       "type": "p",
       "id": "java/how-to-set-timers-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/schedules"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-create-a-schedule-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-backfill-a-schedule-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-delete-a-schedule-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-describe-a-schedule-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-list-a-schedule-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-pause-a-schedule-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-trigger-a-schedule-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-update-a-schedule-in-java"
     },
     {
       "type": "h2",

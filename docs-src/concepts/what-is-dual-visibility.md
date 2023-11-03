@@ -17,8 +17,8 @@ For example, if you have Cassandra configured as your Visibility database, you c
 
 A Dual Visibility setup requires two Visibility store configurations:
 
-- **Primary Visibility**: The primary Visibility store where Visibility data is written to and read from by default. The primary Visibility store is set with the `visibilityStore` configuration key in your Temporal Cluster.
-- **Secondary Visibility**: A secondary storage for your Visibility data. The secondary Visibility store is set with the `secondaryVisibilityStore` configuration key in your Temporal Cluster.
+- **Primary Visibility:** The primary Visibility store where Visibility data is written to and read from by default. The primary Visibility store is set with the `visibilityStore` configuration key in your Temporal Cluster.
+- **Secondary Visibility:** A secondary storage for your Visibility data. The secondary Visibility store is set with the `secondaryVisibilityStore` configuration key in your Temporal Cluster.
 
 For configuration details, see [Dual Visibility setup](/self-hosted-guide/how-to-set-up-dual-visibility).
 

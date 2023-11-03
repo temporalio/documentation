@@ -4,7 +4,7 @@
   "id": "features",
   "title": "Python SDK developer's guide - Features",
   "sidebar_label": "Features",
-  "sidebar_position": 3,
+  "sidebar_position": 4,
   "description": "The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.",
   "use_description": false,
   "toc_max_heading_level": 4,
@@ -77,6 +77,26 @@
     {
       "type": "p",
       "id": "python/how-to-send-a-query-to-a-workflow-execution-in-python"
+    },
+    {
+      "type": "h2",
+      "id": "python/what-is-a-dynamic-handler"
+    },
+    {
+      "type": "h3",
+      "id": "python/how-to-set-a-dynamic-workflow-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/how-to-set-a-dynamic-activity-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/how-to-set-a-dynamic-signal-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/how-to-set-a-dynamic-query-in-python"
     },
     {
       "type": "h2",

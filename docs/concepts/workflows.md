@@ -136,15 +136,33 @@ When those APIs are used, the results are stored as part of the Event History, w
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
 
-### Workflow Versioning {#workflow-versioning}
+### Versioning Workflow code {#workflow-versioning}
 
-The Workflow Versioning feature enables the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
-This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
-It is important to note that a practical way to handle different versions of Workflow Definitions, without using the versioning API, is to run the different versions on separate Task Queues.
+The Temporal Platform requires that Workflow code (Workflow Definitions) be deterministic in nature.
+This requirement means that developers should consider how they plan to handle changes to Workflow code over time.
 
-- [How to version Workflow Definitions in Go](/dev-guide/go/versioning#)
-- [How to version Workflow Definitions in Java](/dev-guide/java/versioning#)
-- [How to version Workflow Definitions in TypeScript](/dev-guide/typescript/versioning#)
+A versioning strategy is even more important if your Workflow Executions live long enough that a Worker must be able to execute multiple versions of the same Workflow Type.
+
+Apart from the ability to create new Task Queues for Workflow Types with the same name, the Temporal Platform provides Workflow Patching APIs and Worker Build Id–based versioning features.
+
+#### Patching
+
+Patching APIs enable the creation of logical branching inside a Workflow Definition based on a developer-specified version identifier.
+This feature is useful for Workflow Definition logic that needs to be updated but still has running Workflow Executions that depend on it.
+
+- [How to patch Workflow code in Go](/dev-guide/go/versioning#patching)
+- [How to patch Workflow code in Java](/dev-guide/java/versioning#patching)
+- [How to patch Workflow code in Python](/dev-guide/python/versioning#python-sdk-patching-api)
+- [How to patch Workflow code in TypeScript](/dev-guide/typescript/versioning#patching)
+
+#### Worker Build Ids
+
+Temporal [Worker Build Id-based versioning](/workers#worker-versioning) lets you define sets of versions that are compatible with each other, and then assign a Build Id to the code that defines a Worker.
+
+- [How to version Workers in Go](/dev-guide/go/versioning#worker-versioning)
+- [How to version Workers in Java](/dev-guide/java/versioning#worker-versioning)
+- [How to version Workers in Python](/dev-guide/python/versioning#worker-versioning)
+- [How to version Workers in TypeScript](/dev-guide/typescript/versioning#worker-versioning)
 
 ### Handling unreliable Worker Processes
 
@@ -305,9 +323,13 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 
 ### Limits
 
-There is no limit to the number of concurrent Workflow Executions.
+There is no limit to the number of concurrent Workflow Executions, albeit you must abide by the Workflow Execution's Event History limit.
 
-However, there is a limit to the length and size of a Workflow Execution's Event History (by default, [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) and [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380)).
+:::caution
+
+As a precautionary measure, the Workflow Execution's Event History is limited to [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) or [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380) and will warn you after 10,240 Events or 10 MB.
+
+:::
 
 There is also a limit to the number of certain types of incomplete operations.
 
@@ -384,7 +406,12 @@ If the Event History exceeds 50Ki (51,200) Events, the Workflow Execution is ter
 
 Continue-As-New is a mechanism by which the latest relevant state is passed to a new Workflow Execution, with a fresh Event History.
 
-As a precautionary measure, the Temporal Platform limits the total [Event History](#event-history) to 51,200 Events or 50 MB, and will warn you after 10,240 Events or 10 MB.
+:::caution
+
+As a precautionary measure, the Workflow Execution's Event History is limited to [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) or [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380) and will warn you after 10,240 Events or 10 MB.
+
+:::
+
 To prevent a Workflow Execution Event History from exceeding this limit and failing, use Continue-As-New to start a new Workflow Execution with a fresh Event History.
 
 All values passed to a Workflow Execution through parameters or returned through a result value are recorded into the Event History.
@@ -481,14 +508,14 @@ To return the `Workflow execution already started` error, set `WorkflowExecution
 
 The Workflow Id Reuse Policy can have one of the following values:
 
-- **Allow Duplicate**: The Workflow Execution is allowed to exist regardless of the Closed status of a previous Workflow Execution with the same Workflow Id.
+- **Allow Duplicate:** The Workflow Execution is allowed to exist regardless of the Closed status of a previous Workflow Execution with the same Workflow Id.
   **This is the default policy, if one is not specified.**
   Use this when it is OK to have a Workflow Execution with the same Workflow Id as a previous, but now Closed, Workflow Execution.
-- **Allow Duplicate Failed Only**: The Workflow Execution is allowed to exist only if a previous Workflow Execution with the same Workflow Id does not have a Completed status.
+- **Allow Duplicate Failed Only:** The Workflow Execution is allowed to exist only if a previous Workflow Execution with the same Workflow Id does not have a Completed status.
   Use this policy when there is a need to re-execute a Failed, Timed Out, Terminated or Cancelled Workflow Execution and guarantee that the Completed Workflow Execution will not be re-executed.
-- **Reject Duplicate**: The Workflow Execution cannot exist if a previous Workflow Execution has the same Workflow Id, regardless of the Closed status.
+- **Reject Duplicate:** The Workflow Execution cannot exist if a previous Workflow Execution has the same Workflow Id, regardless of the Closed status.
   Use this when there can only be one Workflow Execution per Workflow Id within a Namespace for the given retention period.
-- **Terminate if Running**: Specifies that if a Workflow Execution with the same Workflow Id is already running, it should be terminated and a new Workflow Execution with the same Workflow Id should be started. This policy allows for only one Workflow Execution with a specific Workflow Id to be running at any given time.
+- **Terminate if Running:** Specifies that if a Workflow Execution with the same Workflow Id is already running, it should be terminated and a new Workflow Execution with the same Workflow Id should be started. This policy allows for only one Workflow Execution with a specific Workflow Id to be running at any given time.
 
 A Workflow Id Reuse Policy applies only if a Closed Workflow Execution with the same Workflow Id exists within the Retention Period of the associated Namespace.
 For example, if the Namespace's retention period is 30 days, a Workflow Id Reuse Policy can only compare the Workflow Id of the spawning Workflow Execution against the Closed Workflow Executions for the last 30 days.
@@ -708,6 +735,53 @@ An Update has four phases.
    The Platform sends the Update outcome back to the original invoking entity as an Update response.
    A [WorkflowExecutionUpdateCompletedEvent](/references/events#workflowexecutionupdatecompletedevent) Event in the Workflow Execution Event History denotes the completion of an Update.
 
+:::note
+
+Workflow Updates are disabled by default.
+
+To enable `UpdateWorkflowExecution` API, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config value to `true`.
+
+For example, to enable Workflow Updates with the Temporal CLI, pass the value when executing the `temporal` command:
+
+```command
+temporal server start-dev --dynamic-config-value frontend.enableUpdateWorkflowExecution=true
+```
+
+:::
+
+## What is a Dynamic Handler? {#dynamic-handler}
+
+Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
+
+:::note
+
+Currently, the Temporal SDKs that support Dyanmic Handlers are:
+
+- [Java](/dev-guide/java/features#dynamic-handler)
+- [Python](/dev-guide/python/features#dynamic-handler)
+- .NET
+
+The Go SDK supports Dynamic Signals through the [GetUnhandledSignalNames](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetUnhandledSignalNames) function.
+
+:::
+
+These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
+
+Dynamic Handlers provide flexibility to handle cases where the names of Workflows, Activities, Signals, or Queries aren't known at run time.
+
+:::caution
+
+Dynamic Handlers should be used judiciously as a fallback mechanism rather than the primary approach.
+Overusing them can lead to maintainability and debugging issues down the line.
+
+Instead, Workflows, Activities, Signals, and Queries should be defined statically whenever possible, with clear names that indicate their purpose.
+Use static definitions as the primary way of structuring your Workflows.
+
+Reserve Dynamic Handlers for cases where the handler names are not known at compile time and need to be looked up dynamically at runtime.
+They are meant to handle edge cases and act as a catch-all, not as the main way of invoking logic.
+
+:::
+
 ## What is a Side Effect? {#side-effect}
 
 A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.
@@ -799,8 +873,8 @@ A Parent Close Policy determines what happens to a [Child Workflow Execution](#c
 
 There are three possible values:
 
-- **Abandon**: the Child Workflow Execution is not affected.
-- **Request Cancel**: a Cancellation request is sent to the Child Workflow Execution.
+- **Abandon:** the Child Workflow Execution is not affected.
+- **Request Cancel:** a Cancellation request is sent to the Child Workflow Execution.
 - **Terminate** (default): the Child Workflow Execution is forcefully Terminated.
 
 [`ParentClosePolicy`](https://github.com/temporalio/api/blob/c1f04d0856a3ba2995e92717607f83536b5a44f5/temporal/api/enums/v1/workflow.proto#L44) proto definition.
@@ -1103,12 +1177,12 @@ Consider that using time zones in production introduces a surprising amount of c
 
 If you need to use time zones, here are a few edge cases to keep in mind:
 
-- **Beware Daylight Saving Time**: If a Temporal Cron Job is scheduled around the time when daylight saving time (DST) begins or ends (for example, `30 2 * * *`), **it might run zero, one, or two times in a day**! The Cron library that we use does not do any special handling of DST transitions. Avoid schedules that include times that fall within DST transition periods.
+- **Beware Daylight Saving Time:** If a Temporal Cron Job is scheduled around the time when daylight saving time (DST) begins or ends (for example, `30 2 * * *`), **it might run zero, one, or two times in a day**! The Cron library that we use does not do any special handling of DST transitions. Avoid schedules that include times that fall within DST transition periods.
   - For example, in the US, DST begins at 2 AM. When you "fall back," the clock goes `1:59 … 1:00 … 1:01 … 1:59 … 2:00 … 2:01 AM` and any Cron jobs that fall in that 1 AM hour are fired again. The inverse happens when clocks "spring forward" for DST, and Cron jobs that fall in the 2 AM hour are skipped.
   - In other time zones like Chile and Iran, DST "spring forward" is at midnight. 11:59 PM is followed by 1 AM, which means `00:00:00` never happens.
-- **Self Hosting note**: If you manage your own Temporal Cluster, you are responsible for ensuring that it has access to current `tzdata` files. The official Docker images are built with [tzdata](https://docs.w3cub.com/go/time/tzdata/index) installed (provided by Alpine Linux), but ultimately you should be aware of how tzdata is deployed and updated in your infrastructure.
-- **Updating Temporal**: If you use the official Docker images, note that an upgrade of the Temporal Cluster may include an update to the tzdata files, which may change the meaning of your Cron Schedule. You should be aware of upcoming changes to the definitions of the time zones you use, particularly around daylight saving time start/end dates.
-- **Absolute Time Fixed at Start**: The absolute start time of the next Run is computed and stored in the database when the previous Run completes, and is not recomputed. This means that if you have a Cron Schedule that runs very infrequently, and the definition of the time zone changes between one Run and the next, the Run might happen at the wrong time. For example, `CRON_TZ=America/Los_Angeles 0 12 11 11 *` means "noon in Los Angeles on November 11" (normally not in DST). If at some point the government makes any changes (for example, move the end of DST one week later, or stay on permanent DST year-round), the meaning of that specification changes. In that first year, the Run happens at the wrong time, because it was computed using the older definition.
+- **Self Hosting note:** If you manage your own Temporal Cluster, you are responsible for ensuring that it has access to current `tzdata` files. The official Docker images are built with [tzdata](https://docs.w3cub.com/go/time/tzdata/index) installed (provided by Alpine Linux), but ultimately you should be aware of how tzdata is deployed and updated in your infrastructure.
+- **Updating Temporal:** If you use the official Docker images, note that an upgrade of the Temporal Cluster may include an update to the tzdata files, which may change the meaning of your Cron Schedule. You should be aware of upcoming changes to the definitions of the time zones you use, particularly around daylight saving time start/end dates.
+- **Absolute Time Fixed at Start:** The absolute start time of the next Run is computed and stored in the database when the previous Run completes, and is not recomputed. This means that if you have a Cron Schedule that runs very infrequently, and the definition of the time zone changes between one Run and the next, the Run might happen at the wrong time. For example, `CRON_TZ=America/Los_Angeles 0 12 11 11 *` means "noon in Los Angeles on November 11" (normally not in DST). If at some point the government makes any changes (for example, move the end of DST one week later, or stay on permanent DST year-round), the meaning of that specification changes. In that first year, the Run happens at the wrong time, because it was computed using the older definition.
 
 ### How to stop a Temporal Cron Job
 

@@ -873,3 +873,561 @@ If you remove a custom Search Attribute and add a new one, the new custom Search
 This might cause unexpected results when you use the List API to retrieve results using the new custom Search Attribute.
 These constraints do not apply if you use Elasticsearch.
 
+<<<<<<< HEAD:docs/self-hosted-guide/visibility.md
+=======
+## How to use Archival {#archival}
+
+[Archival](/clusters#archival) is a feature that automatically backs up Workflow Execution Event Histories and Visibility data from Temporal Cluster persistence to a custom blob store.
+
+### How to set up Archival {#set-up-archival}
+
+[Archival](/clusters#archival) consists of the following elements:
+
+- **Configuration:** Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
+- **Provider:** Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
+- **URI:** Specifies which provider should be used. The system uses the URI schema and path to make the determination.
+
+Take the following steps to set up Archival:
+
+1. [Set up the provider](#providers) of your choice.
+2. [Configure Archival](#configuration).
+3. [Create a Namespace](#namespace-creation) that uses a valid URI and has Archival enabled.
+
+#### Providers
+
+Temporal directly supports several providers:
+
+- **Local file system:** The [filestore archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) is used to archive data in the file system of whatever host the Temporal server is running on. In the case of [temporal helm-charts](https://github.com/temporalio/helm-charts), the archive data is stored in the `history` pod. APIs do not function with the filestore archive. This provider is used mainly for local installations and testing and should not be relied on for production environments.
+- **Google Cloud:** The [gcloud archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud) is used to connect and archive data with [Google Cloud](https://cloud.google.com/storage).
+- **S3:** The [s3store archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store) is used to connect and archive data with [S3](https://aws.amazon.com/s3).
+- **Custom:** If you want to use a provider that is not currently supported, you can [create your own archiver](#custom-archiver) to support it.
+
+Make sure that you save the provider's storage location URI in a place where you can reference it later, because it is passed as a parameter when you [create a Namespace](#namespace-creation).
+
+#### Configuration
+
+Archival configuration is defined in the [`config/development.yaml`](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L93) file.
+Let's look at an example configuration:
+
+```yaml
+# Cluster level Archival config
+archival:
+  # Event History configuration
+  history:
+    # Archival is enabled at the cluster level
+    state: "enabled"
+    enableRead: true
+    # Namespaces can use either the local filestore provider or the Google Cloud provider
+    provider:
+      filestore:
+        fileMode: "0666"
+        dirMode: "0766"
+      gstorage:
+        credentialsPath: "/tmp/gcloud/keyfile.json"
+
+# Default values for a Namespace if none are provided at creation
+namespaceDefaults:
+  # Archival defaults
+  archival:
+    # Event History defaults
+    history:
+      state: "enabled"
+      # New Namespaces will default to the local provider
+      URI: "file:///tmp/temporal_archival/development"
+```
+
+You can disable Archival by setting `archival.history.state` and `namespaceDefaults.archival.history.state` to `"disabled"`.
+
+Example:
+
+```yaml
+archival:
+  history:
+    state: "disabled"
+
+namespaceDefaults:
+  archival:
+    history:
+      state: "disabled"
+```
+
+The following table showcases acceptable values for each configuration and what purpose they serve.
+
+| Config                                         | Acceptable values                                                                  | Description                                                                                                                  |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `archival.history.state`                       | `enabled`, `disabled`                                                              | Must be `enabled` to use the Archival feature with any Namespace in the cluster.                                             |
+| `archival.history.enableRead`                  | `true`, `false`                                                                    | Must be `true` to read from the archived Event History.                                                                      |
+| `archival.history.provider`                    | Sub provider configs are `filestore`, `gstorage`, `s3`, or `your_custom_provider`. | Default config specifies `filestore`.                                                                                        |
+| `archival.history.provider.filestore.fileMode` | File permission string                                                             | File permissions of the archived files. We recommend using the default value of `"0666"` to avoid read/write issues.         |
+| `archival.history.provider.filestore.dirMode`  | File permission string                                                             | Directory permissions of the archive directory. We recommend using the default value of `"0766"` to avoid read/write issues. |
+| `namespaceDefaults.archival.history.state`     | `enabled`, `disabled`                                                              | Default state of the Archival feature whenever a new Namespace is created without specifying the Archival state.             |
+| `namespaceDefaults.archival.history.URI`       | Valid URI                                                                          | Must be a URI of the file store location and match a schema that correlates to a provider.                                   |
+
+Additional resources: [Cluster configuration reference](/references/configuration#).
+
+#### Namespace creation
+
+Although Archival is configured at the cluster level, it operates independently within each Namespace.
+If an Archival URI is not specified when a Namespace is created, the Namespace uses the value of `defaultNamespace.archival.history.URI` from the `config/development.yaml` file.
+The Archival URI cannot be changed after the Namespace is created.
+Each Namespace supports only a single Archival URI, but each Namespace can use a different URI.
+A Namespace can safely switch Archival between `enabled` and `disabled` states as long as Archival is enabled at the cluster level.
+
+Archival is supported in [Global Namespaces](/namespaces#global-namespace) (Namespaces that span multiple clusters).
+When Archival is running in a Global Namespace, it first runs on the active cluster; later it runs on the standby cluster. Before archiving, a history check is done to see what has been previously archived.
+
+#### Test setup
+
+To test Archival locally, start by running a Temporal server:
+
+```bash
+./temporal-server start
+```
+
+Then register a new Namespace with Archival enabled.
+
+```bash
+./tctl --ns samples-namespace namespace register --gd false --history_archival_state enabled --retention 3
+```
+
+:::note
+
+If the retention period isn't set, it defaults to two days.
+The minimum retention period is one day.
+The maximum retention period is 30 days.
+
+Setting the retention period to 0 results in the error _A valid retention period is not set on request_.
+
+:::
+
+Next, run a sample Workflow such as the [helloworld temporal sample](https://github.com/temporalio/temporal-go-samples/tree/master/helloworld).
+
+When execution is finished, Archival occurs.
+
+#### Retrieve archives
+
+You can retrieve archived Event Histories by copying the `workflowId` and `runId` of the completed Workflow from the log output and running the following command:
+
+```bash
+./tctl --ns samples-namespace wf show --wid <workflowId> --rid <runId>
+```
+
+### How to create a custom Archiver {#custom-archiver}
+
+To archive data with a given provider, using the [Archival](/clusters#archival) feature, Temporal must have a corresponding Archiver component installed.
+The platform does not limit you to the existing providers.
+To use a provider that is not currently supported, you can create your own Archiver.
+
+#### Create a new package
+
+The first step is to create a new package for your implementation in [/common/archiver](https://github.com/temporalio/temporal/tree/master/common/archiver).
+Create a directory in the archiver folder and arrange the structure to look like the following:
+
+```
+temporal/common/archiver
+  - filestore/                      -- Filestore implementation
+  - provider/
+      - provider.go                 -- Provider of archiver instances
+  - yourImplementation/
+      - historyArchiver.go          -- HistoryArchiver implementation
+      - historyArchiver_test.go     -- Unit tests for HistoryArchiver
+      - visibilityArchiver.go       -- VisibilityArchiver implementations
+      - visibilityArchiver_test.go  -- Unit tests for VisibilityArchiver
+```
+
+#### Archiver interfaces
+
+Next, define objects that implement the [HistoryArchiver](https://github.com/temporalio/temporal/blob/master/common/archiver/interface.go#L80) and the [VisibilityArchiver](https://github.com/temporalio/temporal/blob/master/common/archiver/interface.go#L121) interfaces.
+
+The objects should live in `historyArchiver.go` and `visibilityArchiver.go`, respectively.
+
+#### Update provider
+
+Update the `GetHistoryArchiver` and `GetVisibilityArchiver` methods of the `archiverProvider` object in the [/common/archiver/provider/provider.go](https://github.com/temporalio/temporal/blob/master/common/archiver/provider/provider.go) file so that it knows how to create an instance of your archiver.
+
+#### Add configs
+
+Add configs for your archiver to the `config/development.yaml` file and then modify the [HistoryArchiverProvider](https://github.com/temporalio/temporal/blob/master/common/config/config.go#L376) and [VisibilityArchiverProvider](https://github.com/temporalio/temporal/blob/master/common/config/config.go#L393) structs in `/common/common/config.go` accordingly.
+
+#### Custom archiver FAQ
+
+**If my custom Archive method can automatically be retried by the caller, how can I record and access progress between retries?**
+
+Handle this situation by using `ArchiverOptions`.
+Here is an example:
+
+```go
+func(a * Archiver) Archive(ctx context.Context, URI string, request * ArchiveRequest, opts...ArchiveOption) error {
+    featureCatalog: = GetFeatureCatalog(opts...) // this function is defined in options.go
+    var progress progress
+    // Check if the feature for recording progress is enabled.
+    if featureCatalog.ProgressManager != nil {
+        if err: = featureCatalog.ProgressManager.LoadProgress(ctx, & prevProgress);
+        err != nil {
+            // log some error message and return error if needed.
+        }
+    }
+
+    // Your archiver implementation...
+
+    // Record current progress
+    if featureCatalog.ProgressManager != nil {
+        if err: = featureCatalog.ProgressManager.RecordProgress(ctx, progress);
+        err != nil {
+            // log some error message and return error if needed.
+        }
+    }
+}
+```
+
+**If my `Archive` method encounters an error that is non-retryable, how do I indicate to the caller that it should not retry?**
+
+```go
+func(a * Archiver) Archive(ctx context.Context, URI string, request * ArchiveRequest, opts...ArchiveOption) error {
+    featureCatalog: = GetFeatureCatalog(opts...) // this function is defined in options.go
+
+    err: = youArchiverImpl()
+
+    if nonRetryableErr(err) {
+        if featureCatalog.NonRetryableError != nil {
+            return featureCatalog.NonRetryableError() // when the caller gets this error type back it will not retry anymore.
+        }
+    }
+}
+```
+
+**How does my history archiver implementation read history?**
+
+The archiver package provides a utility called [HistoryIterator](https://github.com/temporalio/temporal/blob/master/common/archiver/historyIterator.go) which is a wrapper of [ExecutionManager](https://github.com/temporalio/temporal/blob/master/common/persistence/dataInterfaces.go#L1014).
+`HistoryIterator` is more simple than the `HistoryManager`, which is available in the BootstrapContainer, so archiver implementations can choose to use it when reading Workflow histories.
+See the [historyIterator.go](https://github.com/temporalio/temporal/blob/master/common/archiver/historyIterator.go) file for more details.
+Use the [filestore historyArchiver implementation](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) as an example.
+
+**Should my archiver define its own error types?**
+
+Each archiver is free to define and return its own errors.
+However, many common errors that exist between archivers are already defined in [common/archiver/constants.go](https://github.com/temporalio/temporal/blob/master/common/archiver/constants.go).
+
+**Is there a generic query syntax for the visibility archiver?**
+
+Currently, no.
+But this is something we plan to do in the future.
+As for now, try to make your syntax similar to the one used by our advanced list Workflow API.
+
+- [s3store](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store#visibility-query-syntax)
+- [gcloud](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud#visibility-query-syntax)
+
+## How to upgrade the Temporal Server version {#upgrade-server}
+
+If a newer version of the [Temporal Server](/clusters#temporal-server) is available, a notification appears in the Temporal Web UI.
+
+:::info
+
+If you are using a version that is older than 1.0.0, reach out to us at [community.temporal.io](http://community.temporal.io) to ask how to upgrade.
+
+:::
+
+First check to see if an upgrade to the database schema is required for the version you wish to upgrade to.
+If a database schema upgrade is required, it will be called out directly in the [release notes](https://github.com/temporalio/temporal/releases).
+Some releases require changes to the schema, and some do not.
+We ensure that any consecutive versions are compatible in terms of database schema upgrades, features, and system behavior; however there is no guarantee that there is compatibility between _any_ two non-consecutive versions.
+
+### Key considerations
+
+When upgrading the Temporal Server, there are two key considerations to keep in mind:
+
+1. **Sequential Upgrades:** Temporal Server should be upgraded sequentially.
+   That is, if you're on version \(v1.n.x\), your next upgrade should be to \(v1.n+1.x\) or the closest available subsequent version.
+   This sequence should be repeated until your desired version is reached.
+
+2. **Data Compatibility:** During an upgrade, the Temporal Server either updates or restructures the existing version data to match the data format of the newer version.
+   Temporal Server ensures backward compatibility only between two successive minor versions.
+   Consequently, skipping versions during an upgrade may lead to older data formats becoming unreadable.
+   If the previous data format cannot be interpreted and converted to the newer format, the upgrade process will be unsuccessful.
+
+### Step-by-Step Upgrade Procedure:
+
+Upgrading the Temporal Server requires a methodical approach to ensure data integrity, compatibility, and seamless transition between versions.
+The following documentation outlines the step-by-step process to successfully upgrade your Temporal Server.
+
+When upgrading your Temporal Server version, ensure that you upgrade sequentially.
+
+1. **Upgrade Database Schema:** Before initiating the Temporal Server upgrade, use one of the recommended upgrade tools to update your database schema.
+   This ensures it is aligned with the version of Temporal Server you aim to upgrade to.
+2. **Upgrade Temporal Server:** Once the database schema is updated, proceed to upgrade the Temporal Server deployment to the next sequential version.
+3. **Iterative Upgrades** (optional): Continue this process (steps 1 and 2) iteratively until you reach the desired Temporal Server version.
+
+By adhering to the above guidelines and following the step-by-step procedure, you can ensure a smooth and successful upgrade of your Temporal Server.
+
+The Temporal Server upgrade updates or rewrites the old version data with the format introduced in the newer version.
+Because Temporal Server guarantees backward compatibility between two consecutive minor versions, and because older versions of the code are eventually removed from the code base, skipping versions when upgrading might cause older formats to become unrecognizable.
+If the old format of the data can't be read to be rewritten to the new format, the upgrades fail.
+
+Check the [Temporal Server releases](https://github.com/temporalio/temporal/releases) and follow these releases in order.
+You can skip patch versions; use the latest patch of a minor version when upgrading.
+
+Also, be aware that each upgrade requires the History Service to load all Shards and update the Shard metadata, so allow approximately 10 minutes on each version for these processes to complete before upgrading to the next version.
+
+Use one of the upgrade tools to upgrade your database schema to be compatible with the Temporal Server version being upgraded to.
+
+If you are using a schema tools version prior to Temporal Server v1.8.0, we strongly recommend _never_ using the "dryrun" (`-y`, or `--dryrun`) options in any of your schema update commands.
+Using this option might lead to potential loss of data, as when using it will create a new database and drop your
+existing one.
+This flag was removed in the 1.8.0 release.
+
+### Upgrade Cassandra schema
+
+If you are using Cassandra for your Cluster's persistence, use the `temporal-cassandra-tool` to upgrade both the default Persistence and Visibility schemas.
+
+**Example default schema upgrade:**
+
+```bash
+temporal_v1.2.1 $ temporal-cassandra-tool \
+   --tls \
+   --tls-ca-file <...> \
+   --user <cassandra-user> \
+   --password <cassandra-password> \
+   --endpoint <cassandra.example.com> \
+   --keyspace temporal \
+   --timeout 120 \
+   update \
+   --schema-dir ./schema/cassandra/temporal/versioned
+```
+
+**Example visibility schema upgrade:**
+
+```bash
+temporal_v1.2.1 $ temporal-cassandra-tool \
+   --tls \
+   --tls-ca-file <...> \
+   --user <cassandra-user> \
+   --password <cassandra-password> \
+   --endpoint <cassandra.example.com> \
+   --keyspace temporal_visibility \
+   --timeout 120 \
+   update \
+   --schema-dir ./schema/cassandra/visibility/versioned
+```
+
+### Upgrade PostgreSQL or MySQL schema
+
+If you are using MySQL or PostgreSQL use the `temporal-sql-tool`, which works similarly to the `temporal-cassandra-tool`.
+
+Refer to this [Makefile](https://github.com/temporalio/temporal/blob/v1.4.1/Makefile#L367-L383) for context.
+
+#### PostgreSQL
+
+**Example default schema upgrade:**
+
+```bash
+./temporal-sql-tool \
+	--tls \
+	--tls-enable-host-verification \
+	--tls-cert-file <path to your client cert> \
+	--tls-key-file <path to your client key> \
+	--tls-ca-file <path to your CA> \
+	--ep localhost -p 5432 -u temporal -pw temporal --pl postgres --db temporal update-schema -d ./schema/postgresql/v96/temporal/versioned
+```
+
+**Example visibility schema upgrade:**
+
+```bash
+./temporal-sql-tool \
+	--tls \
+	--tls-enable-host-verification \
+	--tls-cert-file <path to your client cert> \
+	--tls-key-file <path to your client key> \
+	--tls-ca-file <path to your CA> \
+	--ep localhost -p 5432 -u temporal -pw temporal --pl postgres --db temporal_visibility update-schema -d ./schema/postgresql/v96/visibility/versioned
+```
+
+If you're upgrading PostgreSQL to v12 or later to enable advanced Visibility features with Temporal Server v1.20, upgrade your PostgreSQL version first, and then run `temporal-sql-tool` with the `postgres12` plugin, as shown in the following example:
+
+```bash
+./temporal-sql-tool \
+	--tls \
+	--tls-enable-host-verification \
+	--tls-cert-file <path to your client cert> \
+	--tls-key-file <path to your client key> \
+	--tls-ca-file <path to your CA> \
+	--ep localhost -p 5432 -u temporal -pw temporal --pl postgres12 --db temporal_visibility update-schema -d ./schema/postgresql/v12/visibility/versioned
+```
+
+#### MySQL
+
+**Example default schema upgrade:**
+
+```bash
+./temporal-sql-tool \
+	--tls \
+	--tls-enable-host-verification \
+	--tls-cert-file <path to your client cert> \
+	--tls-key-file <path to your client key> \
+	--tls-ca-file <path to your CA> \
+	--ep localhost -p 3036 -u root -pw root --pl mysql --db temporal update-schema -d ./schema/mysql/v57/temporal/versioned/
+```
+
+**Example visibility schema upgrade:**
+
+```bash
+./temporal-sql-tool \
+	--tls \
+	--tls-enable-host-verification \
+	--tls-cert-file <path to your client cert> \
+	--tls-key-file <path to your client key> \
+	--tls-ca-file <path to your CA> \
+	--ep localhost -p 3036 -u root -pw root --pl mysql --db temporal_visibility update-schema -d ./schema/mysql/v57/visibility/versioned/
+```
+
+If you're upgrading MySQL to v8.0.17 or later to enable advanced Visibility features with Temporal Server v1.20, upgrade your MySQL version first, and then run `temporal-sql-tool` with the `mysql8` plugin, as shown in the following example:
+
+```bash
+./temporal-sql-tool \
+	--tls \
+	--tls-enable-host-verification \
+	--tls-cert-file <path to your client cert> \
+	--tls-key-file <path to your client key> \
+	--tls-ca-file <path to your CA> \
+	--ep localhost -p 5432 -u temporal -pw temporal --pl mysql8 --db temporal_visibility update-schema -d ./schema/mysql/v8/visibility/versioned.
+```
+
+### Roll-out technique
+
+We recommend preparing a staging Cluster and then do the following to verify the upgrade is successful:
+
+1. Create some simulation load on the staging cluster.
+2. Upgrade the database schema in the staging cluster.
+3. Wait and observe for a few minutes to verify that there is no unstable behavior from both the server and the simulation load logic.
+4. Upgrade the server.
+5. Now do the same to the live environment cluster.
+
+## How to set up health checks for a Temporal Cluster {#health-checks}
+
+The [Frontend Service](/clusters#frontend-service) supports TCP or [gRPC](https://github.com/grpc/grpc/blob/875066b61e3b57af4bb1d6e36aabe95a4f6ba4f7/src/proto/grpc/health/v1/health.proto#L45) health checks on port 7233.
+
+If you use [Nomad](https://www.nomadproject.io/) to manage your containers, the [check stanza](https://developer.hashicorp.com/nomad/docs/job-specification/check) would look like this for TCP:
+
+```
+service {
+  check {
+    type     = "tcp"
+    port     = 7233
+    interval = "10s"
+    timeout  = "2s"
+  }
+```
+
+or like this for gRPC (requires Consul ≥ `1.0.5`):
+
+```
+service {
+  check {
+    type         = "grpc"
+    port         = 7233
+    interval     = "10s"
+    timeout      = "2s"
+  }
+```
+
+## How to set up Multi-Cluster Replication {#set-up-multi-cluster-replication}
+
+The [Multi-Cluster Replication](/clusters#multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
+
+1. `enableGlobalNamespace` must be set to `true`.
+2. `failoverVersionIncrement` has to be equal across connected Clusters.
+3. `initialFailoverVersion` in each Cluster has to assign a different value.
+   No equal value is allowed across connected Clusters.
+
+After the above conditions are satisfied, you can start to configure a multi-cluster setup.
+
+#### Set up Multi-Cluster Replication prior to v1.14
+
+You can set this up with [`clusterMetadata` configuration](/references/configuration#clustermetadata); however, this is meant to be only a conceptual guide rather than a detailed tutorial.
+Please reach out to us if you need to set this up.
+
+For example:
+
+```yaml
+# cluster A
+clusterMetadata:
+  enableGlobalNamespace: false
+  failoverVersionIncrement: 100
+  masterClusterName: "clusterA"
+  currentClusterName: "clusterA"
+  clusterInformation:
+    clusterA:
+      enabled: true
+      initialFailoverVersion: 1
+      rpcAddress: "127.0.0.1:7233"
+    clusterB:
+      enabled: true
+      initialFailoverVersion: 2
+      rpcAddress: "127.0.0.1:8233"
+
+# cluster B
+clusterMetadata:
+  enableGlobalNamespace: false
+  failoverVersionIncrement: 100
+  masterClusterName: "clusterA"
+  currentClusterName: "clusterB"
+  clusterInformation:
+    clusterA:
+      enabled: true
+      initialFailoverVersion: 1
+      rpcAddress: "127.0.0.1:7233"
+    clusterB:
+      enabled: true
+      initialFailoverVersion: 2
+      rpcAddress: "127.0.0.1:8233"
+```
+
+#### Set up Multi-Cluster Replication in v1.14 and later
+
+You still need to set up local cluster [`clusterMetadata` configuration](/references/configuration#clustermetadata)
+
+For example:
+
+```yaml
+# cluster A
+clusterMetadata:
+  enableGlobalNamespace: false
+  failoverVersionIncrement: 100
+  masterClusterName: "clusterA"
+  currentClusterName: "clusterA"
+  clusterInformation:
+    clusterA:
+      enabled: true
+      initialFailoverVersion: 1
+      rpcAddress: "127.0.0.1:7233"
+
+# cluster B
+clusterMetadata:
+  enableGlobalNamespace: false
+  failoverVersionIncrement: 100
+  masterClusterName: "clusterB"
+  currentClusterName: "clusterB"
+  clusterInformation:
+    clusterB:
+      enabled: true
+      initialFailoverVersion: 2
+      rpcAddress: "127.0.0.1:8233"
+```
+
+Then you can use the `tctl admin` tool to add cluster connections. All operations should be executed in both Clusters.
+
+```shell
+# Add cluster B connection into cluster A
+tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233"
+# Add cluster A connection into cluster B
+tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233"
+
+# Disable connections
+tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233" --enable_connection false
+tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233" --enable_connection false
+
+# Delete connections
+tctl -address 127.0.0.1:7233 admin cluster remove-remote-cluster --cluster "clusterB"
+tctl -address 127.0.0.1:8233 admin cluster remove-remote-cluster --cluster "clusterA"
+```
+
+>>>>>>> upstream/main:docs/cluster-deployment-guide.md

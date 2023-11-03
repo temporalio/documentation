@@ -49,8 +49,8 @@ However users may also choose to design their own security architecture with rev
 
 The https://github.com/temporalio/samples-server repo offers two examples, which are further explained below:
 
-- **TLS**: how to configure Transport Layer Security (TLS) to secure network communication with and within a Temporal cluster.
-- **Authorizer**: how to inject a low-level authorizer component that can control access to all API calls.
+- **TLS:** how to configure Transport Layer Security (TLS) to secure network communication with and within a Temporal cluster.
+- **Authorizer:** how to inject a low-level authorizer component that can control access to all API calls.
 
 ### Encryption in transit with mTLS
 
@@ -249,7 +249,7 @@ The following arguments must be passed to `Authorizer`:
 - `DecisionDeny`: the requested API call is not invoked and an error is returned to the caller.
 - `DecisionAllow`: the requested API call is invoked.
 
-:::warning
+:::caution
 
 `Authorizer` allows all API calls pass by default. Disable the `nopAuthority` authorizer and configure your own to prevent this behavior.
 

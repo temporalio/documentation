@@ -1,5 +1,6 @@
 # Docs Assembly Workflow report
 
+<<<<<<< HEAD
 Last assembled: Thursday November 02 2023 16:00:55 PM -0600
 
 Assembly Workflow Id: docs-full-assembly
@@ -9,6 +10,17 @@ Assembly Workflow Id: docs-full-assembly
 1582 information nodes found.
 
 1346 information nodes are attached to guides.
+=======
+Last assembled: Thursday November 02 2023 11:20:23 AM -0700
+
+Assembly Workflow Id: docs-full-assembly-rachfop-123
+
+110 guide configurations found.
+
+1652 information nodes found.
+
+1413 information nodes are attached to guides.
+>>>>>>> upstream/main
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -622,11 +634,23 @@ python/developing-workflows -> /dev-guide/python/foundations#develop-workflows
 
 typescript/developing-workflows -> /dev-guide/typescript/foundations#develop-workflows
 
-go/versioning -> /dev-guide/go/versioning#
+go/patching -> /dev-guide/go/versioning#patching
 
-java/versioning -> /dev-guide/java/versioning#
+java/patching -> /dev-guide/java/versioning#patching
 
-typescript/versioning -> /dev-guide/typescript/versioning#
+python/how-to-use-the-python-sdk-patching-api-in-python -> /dev-guide/python/versioning#python-sdk-patching-api
+
+typescript/patching -> /dev-guide/typescript/versioning#patching
+
+concepts/what-is-worker-versioning -> /workers#worker-versioning
+
+go/how-to-use-worker-versioning-in-go -> /dev-guide/go/versioning#worker-versioning
+
+java/how-to-use-worker-versioning-in-java -> /dev-guide/java/versioning#worker-versioning
+
+python/how-to-use-worker-versioning-in-python -> /dev-guide/python/versioning#worker-versioning
+
+typescript/how-to-use-worker-versioning-in-typescript -> /dev-guide/typescript/versioning#worker-versioning
 
 concepts/what-is-a-temporal-application -> /temporal#temporal-application
 
@@ -1018,8 +1042,6 @@ typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
-concepts/what-is-worker-versioning -> /workers#worker-versioning
-
 python/tracing -> /dev-guide/python/observability#tracing
 
 python/logging -> /dev-guide/python/observability#logging
@@ -1031,6 +1053,24 @@ python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-
 self-hosted/how-to-install-temporal-cli -> /dev-guide/typescript/foundations#run-a-development-server
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
+
+python/python-dev-guide-structure -> #
+
+python/install-cli -> /dev-guide/python/project-setup#install-cli
+
+python/choose-dev-cluster -> /dev-guide/python/project-setup#choose-dev-cluster
+
+python/project-structure -> /dev-guide/python/project-setup#boilerplate-project
+
+python/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#start-workflow
+
+python/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
+
+cli/server/start-dev -> /cli/server#start-dev
+
+cli/operator/namespace/create -> /cli/operator#create
+
+cli/workflow/start -> /cli/workflow#start
 
 php/handle-signal -> #handle-signal
 
@@ -1053,6 +1093,18 @@ java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-executi
 java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-with-start
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
+
+java/project-setup-introduction -> /dev-guide/java/project-setup#
+
+java/install-cli -> /dev-guide/java/project-setup#install-cli
+
+java/choose-dev-cluster -> /dev-guide/java/project-setup#choose-dev-cluster
+
+java/project-structure -> /dev-guide/java/project-setup#boilerplate-project
+
+java/backgroundcheck-boilerplate-start-workflow -> /dev-guide/java/project-setup#start-workflow
+
+java/backgroundcheck-boilerplate-testing-temporal -> /dev-guide/java/project-setup#test-framework
 
 java/foundations -> /dev-guide/java/foundations#
 
@@ -1088,10 +1140,8 @@ go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup
 
 go/foundations -> /dev-guide/go/foundations#
 
-cli/server/start-dev -> /cli/server#start-dev
+java/what-is-a-dynamic-handler -> /dev-guide/java/features#dynamic-handler
 
-cli/operator/namespace/create -> /cli/operator#create
-
-cli/workflow/start -> /cli/workflow#start
+python/what-is-a-dynamic-handler -> /dev-guide/python/features#dynamic-handler
 
 

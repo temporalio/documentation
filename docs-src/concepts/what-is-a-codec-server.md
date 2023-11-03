@@ -24,6 +24,7 @@ Most SDKs provide example Codec Server implementation samples, listed here:
 
 - [Go](https://github.com/temporalio/samples-go/tree/main/codec-server)
 - [Java](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)
+- [.NET](https://github.com/temporalio/samples-dotnet/tree/main/src/Encryption)
 - [Python](https://github.com/temporalio/samples-python/blob/main/encryption/codec_server.py)
 - [TypeScript](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/codec-server.ts)
 

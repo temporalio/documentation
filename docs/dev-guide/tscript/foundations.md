@@ -754,19 +754,6 @@ For more information, see the [Worker tuning guide](/dev-guide/worker-performanc
 
 A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
 
-The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
-
-- Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
-- Each Worker Entity must also associate itself with exactly one [Task Queue](/workers#task-queue).
-- Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
-
-A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
-
-Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
-For more information, see the [Worker tuning guide](/dev-guide/worker-performance).
-
-A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
-
 ## How to run a Worker on Docker in TypeScript {#run-a-worker-on-docker}
 
 :::note

@@ -13,7 +13,11 @@
     "sections": [
         {
             "type": "p",
-            "id": "go/versioning"
+            "id": "go/versioning-intro"
+        },
+        {
+            "type": "h2",
+            "id": "go/patching"
         },
         {
             "type": "h2",

@@ -2,7 +2,7 @@
 id: foundations
 title: Java SDK developer's guide - Foundations
 sidebar_label: Foundations
-sidebar_position: 2
+sidebar_position: 3
 description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/java/foundations
 toc_max_heading_level: 4
@@ -154,7 +154,7 @@ An SDK provides you with the following:
 
 Add the [Temporal Java SDK](https://github.com/temporalio/sdk-java) to your project as a dependency:
 
-**[Apache Maven](https://maven.apache.org/)**:
+**[Apache Maven](https://maven.apache.org/):**
 
 ```maven
 <dependency>
@@ -164,13 +164,13 @@ Add the [Temporal Java SDK](https://github.com/temporalio/sdk-java) to your proj
 </dependency>
 ```
 
-**[Gradle Groovy DSL](https://gradle.org/)**:
+**[Gradle Groovy DSL](https://gradle.org/):**
 
 ```groovy
 implementation 'io.temporal:temporal-sdk:1.17.0'
 ```
 
-**Other**:
+**Other:**
 
 Additional scripts for each SDK version are available here: [https://search.maven.org/artifact/io.temporal/temporal-sdk](https://search.maven.org/artifact/io.temporal/temporal-sdk).
 Select an SDK version to see available scripts.
@@ -316,20 +316,6 @@ To call Activities in your Workflow, call the Activity implementation.
 Use `ExternalWorkflowStub` to start or send Signals from within a Workflow to other running Workflow Executions.
 
 You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition.
-
-Use [`DynamicWorkflow`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html) to implement Workflow Types dynamically.
-Register a Workflow implementation type that extends `DynamicWorkflow` to implement any Workflow Type that is not explicitly registered with the Worker.
-
-The dynamic Workflow interface is implemented with the `execute` method. This method takes in `EncodedValues` that are inputs to the Workflow Execution.
-These inputs can be specified by the Client when invoking the Workflow Execution.
-
-```java
-public class MyDynamicWorkflow implements DynamicWorkflow {
-   @Override
-    public Object execute(EncodedValues args) {
-    }
-}
-```
 
 ### Workflow interface inheritance {#interface-inheritance}
 
@@ -562,30 +548,6 @@ An Activity implementation is a Java class that implements an Activity annotated
     }
   }
 ```
-
-Use `DynamicActivity` to implement any number of Activity types dynamically.
-When an Activity implementation that extends `DynamicActivity` is registered, it is called for any Activity type invocation that doesn't have an explicitly registered handler.
-
-The dynamic Activity interface is implemented with the `execute` method, as shown in the following example.
-
-```java
-// Dynamic Activity implementation
- public static class DynamicGreetingActivityImpl implements DynamicActivity {
-   @Override
-   public Object execute(EncodedValues args) {
-     String activityType = Activity.getExecutionContext().getInfo().getActivityType();
-     return activityType
-         + ": "
-         + args.get(0, String.class)
-         + " "
-         + args.get(1, String.class)
-         + " from: "
-         + args.get(2, String.class);
-   }
- }
-```
-
-Use `Activity.getExecutionContext()` to get information about the Activity type that should be implemented dynamically.
 
 ### How to develop Activity Parameters {#activity-parameters}
 
