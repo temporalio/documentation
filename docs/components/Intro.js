@@ -268,7 +268,6 @@ function CommunityCard({ title, content, link }) {
   return (
     <div className="main-card community-card">
       <h3>{title}</h3>
-      <p>{content}</p>
       <Link to={useBaseUrl(link.path)} className="hover:underline font-normal">
         {link.name}
       </Link>
@@ -391,15 +390,15 @@ function Explained() {
       <div className="my-20 text-center">
         <h1>Join our Community</h1>
         <div className="grid md:grid-cols-3">
-          <CommunityCard title="Join us in Slack and say hi!" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut quam id nisl malesuada scelerisque. " link={{
+          <CommunityCard title="Join us in Slack and say hi!" link={{
             path: "https://temporal.io/slack",
             name: "Launch Slack",
           }} />
-          <CommunityCard title="Got a Question? Check out the forum" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut quam id nisl malesuada scelerisque." link={{
+          <CommunityCard title="Got a Question? Check out the forum" link={{
             path: "https://community.temporal.io/",
             name: "Go to the community forum",
           }} />
-          <CommunityCard title="Find an upcoming event near you" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut quam id nisl malesuada scelerisque." link={{
+          <CommunityCard title="Find an upcoming event near you" link={{
             path: "https://temporal.io/community",
             name: "Check out upcoming events",
           }} />
