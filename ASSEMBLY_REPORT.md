@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday November 01 2023 14:27:08 PM -0700
+Last assembled: Friday November 03 2023 10:00:00 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -54,7 +54,7 @@ concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
 
-cloud/security-cloud-intro -> /cloud/security-model#
+cloud/security-cloud-intro -> /cloud/security#
 
 references/server-options -> /references/server-options#withconfig
 

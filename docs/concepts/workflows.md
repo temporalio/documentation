@@ -1037,11 +1037,11 @@ Failures and timeouts do not affect the last completion result.
 
 :::note
 
-When a Schedule triggers a Workflow that completes successfully and yields a result, this result from the initial Schedule execution can be accessed by the subsequent scheduled execution through the `LastCompletionResult`.
+When a Schedule triggers a Workflow that completes successfully and yields a result, the result from the initial Schedule execution can be accessed by the subsequent scheduled execution through `LastCompletionResult`.
 
-It's important to be aware that if, during the second run, the Workflow employs the [Continue-As-New](#continue-as-new) function, the `LastCompletionResult` won't be accessible for this new Workflow iteration.
+Be aware that if, during the subsequent run, the Workflow employs the [Continue-As-New](#continue-as-new) feature, `LastCompletionResult` won't be accessible for this new Workflow iteration.
 
-It is important to note that the [status](#status) of the second run is marked as `Continued-As-New`, and not as `Completed`.
+It is important to note that the [status](#status) of the subsequent run is marked as `Continued-As-New` and not as `Completed`.
 
 :::
 
