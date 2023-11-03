@@ -448,7 +448,7 @@ h4 {
 h1 {
   font-size: 1.6rem;
   font-weight: 300;
-  letter-spacing: -2px;
+  letter-spacing: -1px;
 }
 
 @media only screen and (min-width: 1280px) {
@@ -723,6 +723,7 @@ h1 {
 }
 
 .main-card {
+  position: relative;
   width: 100%;
   border-radius: 20px;
   border: 2px solid var(--ifm-link-color);
@@ -730,11 +731,12 @@ h1 {
   padding: 32px;
   margin: 12px 0;
   text-align: left;
+  z-index: 10;
 }
 
 .main-card h1 {
   font-family: Aeonik;
-  font-size: 32px;
+  font-size: 24px;
   font-style: normal;
   font-weight: 400;
   line-height: 110%;
@@ -760,9 +762,9 @@ h1 {
 
 .resource-img {
   border-radius: 9999px;
-  width: 32px;
-  min-width: 32px;
-  height: 32px;
+  width: 2.5rem;
+  min-width: 2.5rem;
+  height: 2.5rem;
   background: linear-gradient(255deg, #444CE7 0%, #B664FF 100%);
 }
 
@@ -816,33 +818,46 @@ h1 {
   border-radius: .20rem;
 }
 
-.core-concepts-info {
-  float: left;
-  width: 540px;
+
+.core-concepts {
+  background-image: url("/img/stars_bg.png");
+  color: white;
+  position: absolute;
+  right: 0;
+  left: 300px;
+  height: 920px;
+  margin-top: -80px;
+  padding: 200px 0 0 150px;
+  z-index: 1;
 }
 
 .deployment {
+  margin-top: 760px;
   display: block;
   gap: 1rem;
 }
 
 .references {
   width: 100%;
+  z-index: 10;
 }
 
-@media (min-width: 768px) {
-  .core-concepts-info {
-    min-width: 540px;
-  }
+.core-concepts-info {
+  display: flex;
+  gap: 24px;
+  width: 680px;
+}
 
-  .deployment {
-    display: flex;
-  }
-
-  .references {
-    width: 220px;
-    min-width: 220px;
-  }
+.arrow {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  color: #A5A9F5;
+  cursor: pointer;
+  line-height: 4rem;
+  font-size: 3rem;
 }
 
 .core-concepts-info h1 {
@@ -856,24 +871,31 @@ h1 {
 
 .core-concepts-title {
   font-family: Noto Sans Mono;
-  color: var(--color-indigo, #444CE7);
-  font-size: 18px;
+  font-size: 16px;
   font-style: normal;
-  font-weight: 400;
-  line-height: 110%;
-  letter-spacing: 2px;
+  font-weight: 500;
+  line-height: 170%;
+  /* 27.2px */
+  letter-spacing: 0.8px;
   text-transform: uppercase;
+  background: var(--purp-indigo, linear-gradient(316deg, #444CE7 2.29%, #B664FF 100%));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .core-concepts-description {
   font-family: Noto Sans Mono;
-  color: var(--color-indigo, #444CE7);
+  color: #C7D7FE;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%;
-  padding: 8px 0;
+  padding: 12px 0;
   border-bottom: 2px solid var(--color-indigo, #444CE7);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
 }
 
 .core-concepts-slide {
@@ -882,23 +904,15 @@ h1 {
   gap: 1rem;
 }
 
-.slide {
-  height: 360px;
-  width: 240px;
-  min-width: 240px;
-}
-
 .slide-dots {
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  height: 240px;
-  margin-top: 50px;
+  flex-direction: row;
+  gap: 16px;
 }
 
 .slide-dot {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   opacity: 0.6;
   border: 2px solid var(--indigos-indigo-600, #4F46E5);
   border-radius: 9999px;
@@ -908,6 +922,62 @@ h1 {
 .slide-dot-active {
   opacity: 1;
   background-color: var(--indigos-indigo-600, #4F46E5);
+}
+
+@media (max-width: 1240px) {
+  .core-concepts-info {
+    width: 580px;
+  }
+}
+
+@media (max-width: 996px) {
+  .core-concepts {
+    left: 0px;
+    padding: 160px 0 0 50px;
+  }
+}
+
+@media (max-width: 639px) {
+  .core-concepts {
+    left: 0px;
+    padding: 120px 0 0 40px;
+  }
+
+  .core-concepts-info {
+    width: 340px;
+    gap: 4px;
+  }
+
+  .arrow {
+    font-size: 2rem;
+  }
+
+  .core-concepts-info h1 {
+    font-size: 32px;
+  }
+
+  .core-concepts-description {
+    font-family: Noto Sans Mono;
+    color: #C7D7FE;
+    font-size: 12px;
+  }
+
+  .core-concepts-info p {
+    font-size: 14px;
+  }
+}
+
+
+
+@media (min-width: 768px) {
+  .deployment {
+    display: flex;
+  }
+
+  .references {
+    width: 220px;
+    min-width: 220px;
+  }
 }
 
 .leadership-container {

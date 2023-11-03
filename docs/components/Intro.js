@@ -245,7 +245,7 @@ function CloudCard({ links }) {
   )
 }
 
-function ResourceCard({ title, author, role, link }) {
+function ResourceCard({ title, author, role, link, img }) {
   return (
     <div className="main-card resource-card">
       <div>
@@ -254,7 +254,7 @@ function ResourceCard({ title, author, role, link }) {
         </a>
       </div>
       <div className="flex items-center gap-2">
-        <div className="resource-img" />
+        <img className="resource-img" src={img} alt={author} />
         <div className="author">
           <p><strong>{author}</strong></p>
           <p>{role}</p>
@@ -287,18 +287,6 @@ const slides = [
     title: 'Temporal CLI', description: 'Communicate directly with the Temporal Cluster by entering commands in the terminal.', content1: `The Temporal CLI runs a development version of the Cluster. Interact with the Cluster - start Workflows, list them, get their status, and more.`, content2: `  From the command line using the temporal command. From code, using an SDK Client. From your browser, using the Web UI.`, giphy: 'GA2dwDU7owOS4'
   },
 ]
-function SlideCarousel({ activeSlide }) {
-  const link = slides[activeSlide]
-  return (<Slide link={link.giphy} key={link.giphy} />)
-}
-
-function Slide({ link }) {
-  return (
-    <div className="slide">
-      <iframe src={`https://giphy.com/embed/${link}`} width="100%" height="100%" allowFullScreen></iframe>
-    </div>
-  )
-}
 
 function SlideDots({ activeSlide, handleClick }) {
   return slides.map((link, index) => {
@@ -306,7 +294,7 @@ function SlideDots({ activeSlide, handleClick }) {
   })
 }
 
-function SlideInfo({ activeSlide }) {
+function SlideInfo({ activeSlide, handleClick }) {
   const slide = slides[activeSlide]
 
   const renderTextWithHighlight = (text) => {
@@ -322,14 +310,33 @@ function SlideInfo({ activeSlide }) {
     );
   };
 
+  const onPrevious = () => {
+    if (activeSlide > 0) {
+      handleClick(activeSlide - 1)
+    }
+  }
+
+  const onNext = () => {
+    if (activeSlide < slides.length - 1) {
+      handleClick(activeSlide + 1)
+    }
+  }
+
   return (
     <div className="core-concepts-info">
-      <h3 className="core-concepts-title">Introducing our core concepts</h3>
-      <h1>{slide.title}</h1>
-      <h3 className="core-concepts-description">{slide.description}</h3>
-      <p>{renderTextWithHighlight(slide.content1 || '')}</p>
-      <p>{renderTextWithHighlight(slide?.content2 || '')}</p>
-      <p>{renderTextWithHighlight(slide?.content3 || '')}</p>
+      <button onClick={onPrevious} className="arrow left-arrow">{`<`}</button>
+      <div>
+        <h3 className="core-concepts-title">Introducing our core concepts</h3>
+        <h1>{slide.title}</h1>
+        <h3 className="core-concepts-description"><img src="/img/info.svg" />{slide.description}</h3>
+        <p>{renderTextWithHighlight(slide.content1 || '')}</p>
+        <p>{renderTextWithHighlight(slide?.content2 || '')}</p>
+        <p>{renderTextWithHighlight(slide?.content3 || '')}</p>
+        <div className="slide-dots">
+          <SlideDots activeSlide={activeSlide} handleClick={handleClick} />
+        </div>
+      </div>
+      <button onClick={onNext} className="arrow right-arrow">{`>`}</button>
     </div>
   )
 }
@@ -355,14 +362,10 @@ function Explained() {
         <SimpleCard title="Production readiness" content="Temporal Cluster deployment information and how-to guides." links={clusterGuide} />
         <SimpleCard title="Dev tools" content="Use Temporal’s CLI or Web UI to manage and monitor your Workflows." links={devTools} />
       </div>
-      <div className="my-20 flex gap-6 core-concepts">
-        <div className="slide-dots">
-          <SlideDots activeSlide={activeSlide} handleClick={handleSlideChange} />
-        </div>
-        <SlideInfo activeSlide={activeSlide} />
-        <div className="core-concepts-slide">
-          <SlideCarousel activeSlide={activeSlide} />
-        </div>
+
+
+      <div className="core-concepts">
+        <SlideInfo activeSlide={activeSlide} handleClick={handleSlideChange} />
       </div>
 
       <div className="deployment">
@@ -375,9 +378,9 @@ function Explained() {
       <div className="my-20 text-center">
         <h1>Helpful resources</h1>
         <div className="grid md:grid-cols-3">
-          <ResourceCard title="Introduction to Temporal Workflows" author="Dominik Tornow" role="Principle Engineer" link="https://temporal.io/blog/dominik-workflow-part-1" />
-          <ResourceCard title="Failure Handling in Practice" author="Fitz" role="Developer Advocate" link="https://temporal.io/blog/failure-handling-in-practice" />
-          <ResourceCard title="Time-Travel Debugging Production Code" author="Loren Sands-Ramshaw" role="Developer Relations Engineer" link="https://temporal.io/blog/time-travel-debugging-production-code" />
+          <ResourceCard title="Introduction to Temporal Workflows" author="Dominik Tornow" role="Principle Engineer" link="https://temporal.io/blog/dominik-workflow-part-1" img="https://images.ctfassets.net/0uuz8ydxyd9p/bSjHrfjo6yDNCRUHw46gU/ab4899b711ecf09bf165ea7a1615b0a8/dominik-tornow.png" />
+          <ResourceCard title="Failure Handling in Practice" author="Fitz" role="Developer Advocate" link="https://temporal.io/blog/failure-handling-in-practice" img="https://images.ctfassets.net/0uuz8ydxyd9p/5rtdEzcJFPLV5Ce29uPyFb/951227c4a68cb13b1bd03c8856b1f740/fitzface_shadowed_blue-2.jpg" />
+          <ResourceCard title="Time-Travel Debugging Production Code" author="Loren Sands-Ramshaw" role="Developer Relations Engineer" link="https://temporal.io/blog/time-travel-debugging-production-code" img="https://images.ctfassets.net/0uuz8ydxyd9p/3koq3MoNG4lPucMRTSkEUW/40ba102fafaba8524b8826b345ee55cd/loren-ivy-512-square.png" />
         </div>
       </div>
 
