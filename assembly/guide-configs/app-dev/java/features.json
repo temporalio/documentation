@@ -81,6 +81,26 @@
     },
     {
       "type": "h2",
+      "id": "java/what-is-a-dynamic-handler"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-set-a-dynamic-workflow-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-set-a-dynamic-activity-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-set-a-dynamic-signal-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-set-a-dynamic-query-in-java"
+    },
+    {
+      "type": "h2",
       "id": "java/updates"
     },
     {
