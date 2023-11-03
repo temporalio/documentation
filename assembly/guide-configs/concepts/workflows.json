@@ -93,6 +93,10 @@
     },
     {
       "type": "h2",
+      "id": "concepts/what-is-a-dynamic-handler"
+    },
+    {
+      "type": "h2",
       "id": "concepts/what-is-a-side-effect"
     },
     {
