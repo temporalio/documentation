@@ -731,7 +731,7 @@ h1 {
   padding: 32px;
   margin: 12px 0;
   text-align: left;
-  z-index: 10;
+  z-index: 2;
 }
 
 .main-card h1 {
@@ -967,8 +967,6 @@ h1 {
   }
 }
 
-
-
 @media (min-width: 768px) {
   .deployment {
     display: flex;
@@ -1150,4 +1148,8 @@ a.tdlp:hover .tdlpc {
 
 code {
   vertical-align: baseline;
+}
+
+#kapa-widget-container button {
+  z-index: 10;
 }
