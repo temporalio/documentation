@@ -805,11 +805,14 @@ h1 {
   background: linear-gradient(255deg, #444CE7 0%, #B664FF 100%);
   cursor: pointer;
   border: 0px;
+  color: var(--White, #FFF);
 }
 
+a,
+a:link,
+a:visited,
 .cloud-button {
-  color: var(--White, #FFF);
-  text-decoration: none !important;
+  text-decoration: none;
 }
 
 .highlight {
