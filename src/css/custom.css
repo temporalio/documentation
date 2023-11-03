@@ -804,11 +804,12 @@ h1 {
   border-radius: 8px;
   background: linear-gradient(255deg, #444CE7 0%, #B664FF 100%);
   cursor: pointer;
+  border: 0px;
 }
 
 .cloud-button {
   color: var(--White, #FFF);
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 .highlight {
@@ -818,21 +819,19 @@ h1 {
   border-radius: .20rem;
 }
 
-
 .core-concepts {
   background-image: url("/img/stars_bg.png");
   color: white;
   position: absolute;
   right: 0;
   left: 300px;
-  height: 920px;
-  margin-top: -80px;
-  padding: 200px 0 0 150px;
+  height: 680px;
+  padding: 80px;
   z-index: 1;
 }
 
 .deployment {
-  margin-top: 760px;
+  margin-top: 700px;
   display: block;
   gap: 1rem;
 }
@@ -849,15 +848,15 @@ h1 {
 }
 
 .arrow {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   background-color: transparent;
   border: none;
   color: #A5A9F5;
   cursor: pointer;
-  line-height: 4rem;
   font-size: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 50px;
 }
 
 .core-concepts-info h1 {
@@ -868,14 +867,12 @@ h1 {
   line-height: 110%;
 }
 
-
 .core-concepts-title {
   font-family: Noto Sans Mono;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
   line-height: 170%;
-  /* 27.2px */
   letter-spacing: 0.8px;
   text-transform: uppercase;
   background: var(--purp-indigo, linear-gradient(316deg, #444CE7 2.29%, #B664FF 100%));
@@ -894,7 +891,7 @@ h1 {
   padding: 12px 0;
   border-bottom: 2px solid var(--color-indigo, #444CE7);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: .5rem;
 }
 
@@ -933,14 +930,14 @@ h1 {
 @media (max-width: 996px) {
   .core-concepts {
     left: 0px;
-    padding: 160px 0 0 50px;
+    padding: 60px;
   }
 }
 
 @media (max-width: 639px) {
   .core-concepts {
     left: 0px;
-    padding: 120px 0 0 40px;
+    padding: 40px;
   }
 
   .core-concepts-info {
@@ -948,22 +945,30 @@ h1 {
     gap: 4px;
   }
 
-  .arrow {
-    font-size: 2rem;
-  }
-
   .core-concepts-info h1 {
     font-size: 32px;
   }
 
+
+  .core-concepts-title {
+    font-size: 12px;
+    line-height: 100%;
+  }
+
   .core-concepts-description {
-    font-family: Noto Sans Mono;
-    color: #C7D7FE;
     font-size: 12px;
   }
 
   .core-concepts-info p {
     font-size: 14px;
+  }
+
+  .arrow p {
+    font-size: 2rem;
+  }
+
+  .arrow {
+    padding-top: 28px;
   }
 }
 

@@ -313,18 +313,22 @@ function SlideInfo({ activeSlide, handleClick }) {
   const onPrevious = () => {
     if (activeSlide > 0) {
       handleClick(activeSlide - 1)
+    } else {
+      handleClick(slides.length - 1)
     }
   }
 
   const onNext = () => {
     if (activeSlide < slides.length - 1) {
       handleClick(activeSlide + 1)
+    } else {
+      handleClick(0)
     }
   }
 
   return (
     <div className="core-concepts-info">
-      <button onClick={onPrevious} className="arrow left-arrow">{`<`}</button>
+      <button onClick={onPrevious} className="arrow left-arrow"><p>{`<`}</p></button>
       <div>
         <h3 className="core-concepts-title">Introducing our core concepts</h3>
         <h1>{slide.title}</h1>
@@ -336,7 +340,7 @@ function SlideInfo({ activeSlide, handleClick }) {
           <SlideDots activeSlide={activeSlide} handleClick={handleClick} />
         </div>
       </div>
-      <button onClick={onNext} className="arrow right-arrow">{`>`}</button>
+      <button onClick={onNext} className="arrow right-arrow"><p>{`>`}</p></button>
     </div>
   )
 }
