@@ -328,7 +328,7 @@ function SlideInfo({ activeSlide, handleClick }) {
 
   return (
     <div className="core-concepts-info">
-      <button onClick={onPrevious} className="arrow left-arrow"><p>{`<`}</p></button>
+      <button onClick={onPrevious} className="arrow left-arrow"><img src="/img/left-chevron.png" alt="previous" /></button>
       <div>
         <h3 className="core-concepts-title">Introducing our core concepts</h3>
         <h1>{slide.title}</h1>
@@ -340,7 +340,7 @@ function SlideInfo({ activeSlide, handleClick }) {
           <SlideDots activeSlide={activeSlide} handleClick={handleClick} />
         </div>
       </div>
-      <button onClick={onNext} className="arrow right-arrow"><p>{`>`}</p></button>
+      <button onClick={onNext} className="arrow right-arrow"><img src="/img/right-chevron.png" alt="next" /></button>
     </div>
   )
 }
