@@ -113,7 +113,7 @@ const devTools = [
 const references = [
   {
     path: "/references/events",
-    name: "Events reference",
+    name: "Events",
   },
   {
     path: "/references/commands",
@@ -125,7 +125,7 @@ const references = [
   },
   {
     path: "/references/configuration",
-    name: `Cluster configuration reference`,
+    name: `Self-hosted Cluster config`,
   },
   {
     path: "/references/errors",
@@ -357,8 +357,8 @@ function Explained() {
       <p className="main-subhead">Temporal Platform explanation and usage information.</p>
       <div className="mb-8">{SdkLogos()}</div>
       <div className="grid md:grid-cols-2">
-        <SimpleCard title="Get Started with Temporal" content="New to Temporal? Start your journey here by setting up your development environment, running an existing Temporal app, and then building your first app from scratch using our SDKs." links={coreConcepts} />
-        <SimpleCard title="Start building your next app" links={appDevGuideLinks} />
+        <SimpleCard title="Get Started with Temporal" content="New to Temporal? Follow our introductory tutorials and courses to get a feel for the developer experience and the value of the Temporal Platform." links={coreConcepts} />
+        <SimpleCard title="Start building your next app" content="Have a use case? Jump in to the developer guides to start building your next backend application with Temporal." links={appDevGuideLinks} />
       </div>
       <CloudCard links={cloudInfo} />
       <div className="grid md:grid-cols-2">
