@@ -357,7 +357,7 @@ function Explained() {
       <p className="main-subhead">Temporal Platform explanation and usage information.</p>
       <div className="mb-8">{SdkLogos()}</div>
       <div className="grid md:grid-cols-2">
-        <SimpleCard title="Get Started with Temporal" content="New to Temporal? Follow our introductory tutorials and courses to get a feel for the developer experience and the value of the Temporal Platform." links={coreConcepts} />
+        <SimpleCard title="Get started with Temporal" content="New to Temporal? Follow our introductory tutorials and courses to get a feel for the developer experience and the value of the Temporal Platform." links={coreConcepts} />
         <SimpleCard title="Start building your next app" content="Have a use case? Jump in to the developer guides to start building your next backend application with Temporal." links={appDevGuideLinks} />
       </div>
       <CloudCard links={cloudInfo} />
