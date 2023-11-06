@@ -23,8 +23,6 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Discover the Temporal Platform, a runtime for durable executions that consists of a Temporal Cluster and Worker Processes, plus SDKs in multiple languages.
-
 Temporal is a scalable and reliable runtime for durable function executions called [Temporal Workflow Executions](/workflows#workflow-execution).
 
 Said another way, it's a platform that guarantees the [Durable Execution](#durable-execution) of your application code.
