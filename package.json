@@ -27,6 +27,7 @@
     "snipsync": "snipsync",
     "swizzle": "docusaurus swizzle",
     "worker": "cd assembly && yarn worker && cd ..",
+    "cloud-worker": "cd assembly && ./worker.js --cloud && cd ..",
     "write-heading-ids": "docusaurus write-heading-ids",
     "write-translations": "docusaurus write-translations"
   },
