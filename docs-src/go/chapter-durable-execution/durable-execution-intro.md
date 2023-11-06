@@ -14,7 +14,7 @@ This chapter introduces the development patterns which enable that.
 
 :::competency Develop for a Durable Execution
 
-This chapter of the Temporal Go SDK developer's guide introduces best practices to developing deterministic Workflows that can be Replayed, enabling a Durable Execution.
+This chapter of the Temporal Go SDK developer's guide introduces best practices to developing deterministic Workflows that can be Replayed, enabling a [Durable Execution](/concepts/what-is-durable-execution).
 
 By the end of this section you will know basic best practices for Workflow Definition development.
 

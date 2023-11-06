@@ -7,10 +7,14 @@ description: Discover the Temporal Platform, a runtime for durable executions th
 slug: /temporal
 toc_max_heading_level: 4
 keywords:
+- durable execution
 - explanation
+- temporal
 - term
 tags:
+- durable-execution
 - explanation
+- temporal
 - term
 ---
 
@@ -21,30 +25,41 @@ import TabItem from '@theme/TabItem';
 
 Discover the Temporal Platform, a runtime for durable executions that consists of a Temporal Cluster and Worker Processes, plus SDKs in multiple languages.
 
-Temporal is a scalable and reliable runtime for Reentrant Processes called [Temporal Workflow Executions](/workflows#workflow-execution).
+Temporal is a scalable and reliable runtime for durable function executions called [Temporal Workflow Executions](/workflows#workflow-execution).
 
-<!-- TODO content more appropriate for blog
-:::note [Temporal's tenth rule](https://en.wikipedia.org/wiki/Greenspun%27s_tenth_rule)
+Said another way, it's a platform that guarantees the [Durable Execution](#durable-execution) of your application code.
 
-Any sufficiently complex distributed system contains an ad-hoc, informally-specified, bug-ridden, slow implementation of half of temporal.io.
-
-:::
--->
+It enables you to develop as if failures don't even exist.
+Your application will run reliably even if it encounters problems, such as network outages or server crashes, which would be catastrophic for a typical application.
+The Temporal Platform handles these types of problems, allowing you to focus on the business logic, instead of writing application code to detect and recover from failures.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">The Temporal System</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-system-simple.svg" alt="The Temporal System" height="740" width="1140" /></div></div>
+
+## Durable Execution {#durable-execution}
+
+Durable Execution in the context of Temporal refers to the ability of a Workflow Execution to maintain its state and progress even in the face of failures, crashes, or server outages.
+This is achieved through Temporal's use of an [Event History](/workflows#event-history), which records the state of a Workflow Execution at each step.
+If a failure occurs, the Workflow Execution can resume from the last recorded event, ensuring that progress isn't lost.
+This durability is a key feature of Temporal Workflow Executions, making them reliable and resilient.
+It enables application code to execute effectively once and to completion, regardless of whether it takes seconds or years.
 
 ## What is the Temporal Platform? {#temporal-platform}
 
 The Temporal Platform consists of a [Temporal Cluster](/clusters#) and [Worker Processes](/workers#worker-process).
 Together these components create a runtime for Workflow Executions.
 
+The Temporal Platform consists of a supervising software typically called a [Temporal Cluster](/clusters#) and application code bundled as Worker Processes.
+Together these components create a runtime for your application.
+
 <div class="tdiw"><div class="tditw"><p class="tdit">The Temporal Platform</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-platform-simple.svg" alt="The Temporal Platform" height="740" width="1140" /></div></div>
 
-The Temporal Cluster is open source and can be operated by you.
-The Temporal Cloud is a set of Clusters operated by us.
+A Temporal Cluster consists of the Temporal Server and a database.
 
-Worker Processes are hosted by you and execute your code.
-They communicate with a Temporal Cluster via gRPC.
+Our software as a server (SaaS) offering, Temporal Cloud, offers an alternative to hosting a Temporal Cluster yourself.
+
+Worker Processes are hosted and operated by you and execute your code. Workers run using one of our SDKs.
+
+<div class="tdiw"><div class="tditw"><p class="tdit">Basic component topology of the Temporal Platform</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-platform-component-topology.svg" alt="Basic component topology of the Temporal Platform" height="1121" width="1241" /></div></div>
 
 ## What is a Temporal Application? {#temporal-application}
 

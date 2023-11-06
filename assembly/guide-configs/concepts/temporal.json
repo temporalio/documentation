@@ -17,6 +17,10 @@
     },
     {
       "type": "h2",
+      "id": "concepts/what-is-durable-execution"
+    },
+    {
+      "type": "h2",
       "id": "concepts/what-is-the-temporal-platform"
     },
     {

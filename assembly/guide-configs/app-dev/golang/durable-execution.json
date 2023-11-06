@@ -29,6 +29,14 @@
     },
     {
       "type": "h2",
+      "id": "go/generated/backgroundcheck-replay-intrinsic-non-determinism"
+    },
+    {
+      "type": "p",
+      "id": "go/generated/backgroundcheck-replay-inspecting-the-non-deterministic-error"
+    },
+    {
+      "type": "h2",
       "id": "go/chapter-durable-execution/non-deterministic-code-changes"
     },
     {
@@ -38,14 +46,6 @@
     {
       "type": "h3",
       "id": "go/generated/inspect-the-new-event-history"
-    },
-    {
-      "type": "h2",
-      "id": "go/generated/backgroundcheck-replay-intrinsic-non-determinism"
-    },
-    {
-      "type": "p",
-      "id": "go/generated/backgroundcheck-replay-inspecting-the-non-deterministic-error"
     }
   ]
 }
