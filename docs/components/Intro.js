@@ -235,7 +235,7 @@ function CloudCard({ links }) {
           <ul className="landing-card-list">{displayLinks(links)}</ul>
         </div>
         <div>
-          <h1>Get started with Cloud</h1>
+          <h1>Is Temporal Cloud right for you?</h1>
           <p>Run Temporal today, without hassle, and with peace of mind.</p>
           <p>
             <Link to="https://temporal.io/cloud"><button className="cloud-button">Learn more about Temporal Cloud</button></Link>
