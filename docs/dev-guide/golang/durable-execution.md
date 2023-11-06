@@ -309,7 +309,7 @@ Progress:
 
 The most important thing to take away from the section is to make sure you have an application versioning plan whenever you are developing and maintaining a Temporal Application that will eventually deploy to a production environment.
 
-We cover versioning APIs and versioning strategies in other parts of the developer's guide, this chapter sets the stage to understand why and how to approach those strategies.
+Versioning APIs and versioning strategies are covered in other parts of the developer's guide, this chapter sets the stage to understand why and how to approach those strategies.
 
 <!--TODO ^ update with links to those places -->
 
@@ -323,7 +323,7 @@ temporal workflow show \
  --namespace backgroundcheck_namespace
 ```
 
-You will see output similar to this:
+You should see output similar to this:
 
 ```shell
 Progress:
