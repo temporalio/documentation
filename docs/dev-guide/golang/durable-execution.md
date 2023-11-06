@@ -18,6 +18,7 @@ keywords:
 - replay test
 - replayer
 - sleep
+- static analysis
 - testing
 - tests
 - timer
@@ -33,6 +34,7 @@ tags:
 - replay-test
 - replayer
 - sleep
+- static-analysis
 - testing
 - tests
 - timer
@@ -304,6 +306,16 @@ Progress:
                                                         Identity:47041@flossypurse-macbook-pro.local@, ForkEventVersion:0,
                                                         BinaryChecksum:48fa2bc5191e2e60e3f72a7a78d0e721}
 ```
+
+### Static analysis tools {#static-analysis}
+
+Non-deterministic code can be hard to catch while developing Workflows.
+The Go SDK doesn't have a restricted runtime to identify and prevent the use of `time.Sleep` or a new goroutine.
+Calling those, or any other invalid construct can lead to ugly non-determinism errors.
+
+To help catch these issues early and during development, use the [`workflowcheck` static analysis tool](https://github.com/temporalio/sdk-go/tree/master/contrib/tools/workflowcheck).
+It attempts to find all invalid code called from inside a Workflow Definition.
+See the [`workflowcheck` README](https://github.com/temporalio/sdk-go/blob/master/contrib/tools/workflowcheck/README.md) for details on how to use it.
 
 ## Non-deterministic code changes {#durability-through-replays}
 

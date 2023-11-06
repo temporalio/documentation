@@ -36,6 +36,10 @@
       "id": "go/generated/backgroundcheck-replay-inspecting-the-non-deterministic-error"
     },
     {
+      "type": "h3",
+      "id": "go/chapter-durable-execution/static-analysis"
+    },
+    {
       "type": "h2",
       "id": "go/chapter-durable-execution/non-deterministic-code-changes"
     },
