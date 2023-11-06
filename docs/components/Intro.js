@@ -18,7 +18,7 @@ const coreConcepts = [
   },
   {
     path: "https://learn.temporal.io/courses/",
-    name: "Enroll in a course",
+    name: "Enroll in a free course",
   },
 ];
 
