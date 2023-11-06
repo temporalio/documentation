@@ -13,7 +13,7 @@ tags:
 
 Also referred to as "intrinsic non-determinism", writing bad branching logic in Workflow code prevents the Workflow code from executing to completion because the Workflow can have a different code path than the one expected from the Event History.
 
-### Common Sources of Non-Determinism
+### Common sources of non-determinism
 
 - Using Random numbers
 - Accessing / Mutating External Systems or State (do this in Activities, not Workflows)
