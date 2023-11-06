@@ -15,7 +15,11 @@ const coreConcepts = [
   {
     path: "https://learn.temporal.io/getting_started/#run-your-first-program",
     name: "Build an application from scratch",
-  }
+  },
+  {
+    path: "https://learn.temporal.io/courses/",
+    name: "Enroll in a course",
+   }
 ];
 
 const appDevGuideLinks = [
