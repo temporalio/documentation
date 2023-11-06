@@ -26,8 +26,8 @@ The information on this page helps a developer recommend a Temporal SDK based on
 :::
 
 The [Temporal Go SDK](https://github.com/temporalio/sdk-go) released on March 23, 2020, and enables developers to build, test, and execute Temporal applications in Go.
-This guide documents the concepts, features, and tools that developers encounter on their journey.
 
+This guide documents the concepts, features, and tools that developers encounter on their journey.
 It contextualizes Temporal Application development through a specific set of use cases.
 For example, we work within the Background Check use case for the first several sections.
 And it relies on a set of sample applications specifically tailored to meet the needs of this guide.
