@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday November 06 2023 11:14:41 AM -0700
+Last assembled: Monday November 06 2023 11:32:58 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
 111 guide configurations found.
 
-1658 information nodes found.
+1664 information nodes found.
 
-1418 information nodes are attached to guides.
+1423 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -693,6 +693,10 @@ typescript/queries -> /dev-guide/typescript/features#queries
 go/updates -> /dev-guide/go/features#updates
 
 java/updates -> /dev-guide/java/features#updates
+
+java/what-is-a-dynamic-handler -> /dev-guide/java/features#dynamic-handler
+
+python/what-is-a-dynamic-handler -> /dev-guide/python/features#dynamic-handler
 
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
 
