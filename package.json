@@ -6,7 +6,7 @@
   "scripts": {
     "assemble": "npm-run-all --serial assemble-local format",
     "assemble-local": "npm-run-all --parallel -r worker assemble-cmd",
-    "assemble-cloud": "npm-run-all --parallel -r worker assemble-cloud-cmd",
+    "assemble-cloud": "npm-run-all --parallel -r cloud-worker assemble-cloud-cmd",
     "assemble-cmd": "./assemble.js",
     "assemble-cloud-cmd": "./assemble.js --cloud",
     "build": "docusaurus build",
