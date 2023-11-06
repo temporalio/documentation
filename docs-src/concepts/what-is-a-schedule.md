@@ -9,7 +9,7 @@ tags:
 ssdi:
   - Introduced in Temporal Server version 1.17.0
   - Available in Temporal CLI (and tctl v1.17)
-  - Available in Temporal Cloud in Public Preview
+  - Available in Temporal Cloud
   - Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) version [1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
   - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
   - Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow) version [1.1.0](https://github.com/temporalio/sdk-python/releases/tag/1.1.0)
