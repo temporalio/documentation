@@ -16,13 +16,13 @@ tags:
 
 Features
 
+## Provides Durable Execution
+
 ## Popular language SDKs
 
-## Durable Execution
+## Multi-tenancy
 
-## Multi-tenant
+## Security
 
-## Secure
-
-## Private
+## Privacy
 
