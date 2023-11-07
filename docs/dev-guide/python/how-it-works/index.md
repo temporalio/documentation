@@ -19,5 +19,5 @@ Each SDK in Temporal is meticulously crafted to cater to that language's specifi
 
 As you delve deeper, you'll uncover the distinctive attributes and operational intricacies that set the Python SDK apart, providing you with a comprehensive understanding to harness its full potential.
 
-- [Asynchronous vs. Synchronous Activity implementations](/dev-guide/python/async-vs-sync#asynchronous-vs.-synchronous)
-- [Python sandbox environment](/dev-guide/python/sandbox#sandbox-environment)
+- [Asynchronous vs. Synchronous Activity implementations](/dev-guide/python/async-vs-sync#)
+- [Python sandbox environment](/dev-guide/python/sandbox#)
