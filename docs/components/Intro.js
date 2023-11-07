@@ -409,7 +409,7 @@ function Explained() {
         />
         <SimpleCard
           title="Start building your next app"
-          content="Have a use case? Jump in to the developer guides to start building your next backend application with Temporal."
+          content="Have a use case? Jump into the developer guides to start building your next backend application with Temporal."
           links={appDevGuideLinks}
         />
       </div>
