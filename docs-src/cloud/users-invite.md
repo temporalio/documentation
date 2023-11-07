@@ -11,11 +11,14 @@ tags:
 ---
 
 :::caution
-Access to Temporal Cloud can be authorized via Google OAuth single sign-on or SAML, depending on your account setup.
+Access to Temporal Cloud can be authorized via Google OAuth single sign-on, Microsoft single sign-on, or SAML, depending on your setup.
 
 If you are using Google OAuth for single sign-on and an email address is not associated with a Google Account, the user must follow the instructions in the [Use an existing email address](https://support.google.com/accounts/answer/27441?hl=en#existingemail) section of [Create a Google Account](https://support.google.com/accounts/answer/27441).
 
 **Important:** Do _not_ create a Gmail account when creating a Google Account.
+
+If your organization uses Google Workspace or Microsoft Azure AD, and your IT administrator has enabled controls over single sign-on permissions, then you will need to work with your IT administrator to allow logins to Temporal Cloud.
+
 :::
 
 When you create a user in Temporal Cloud, the prospective user receives an email invitation.
