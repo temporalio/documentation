@@ -1,14 +1,12 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday November 01 2023 14:12:56 PM -0700
-
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 110 guide configurations found.
 
-1646 information nodes found.
+1657 information nodes found.
 
-1407 information nodes are attached to guides.
+1413 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -691,6 +689,10 @@ typescript/queries -> /dev-guide/typescript/features#queries
 go/updates -> /dev-guide/go/features#updates
 
 java/updates -> /dev-guide/java/features#updates
+
+java/what-is-a-dynamic-handler -> /dev-guide/java/features#dynamic-handler
+
+python/what-is-a-dynamic-handler -> /dev-guide/python/features#dynamic-handler
 
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
 
