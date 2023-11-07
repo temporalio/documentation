@@ -1,12 +1,12 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday November 02 2023 11:20:23 AM -0700
+Last assembled: Tuesday November 07 2023 08:44:52 AM -0800
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 110 guide configurations found.
 
-1652 information nodes found.
+1657 information nodes found.
 
 1413 information nodes are attached to guides.
 
@@ -692,6 +692,10 @@ go/updates -> /dev-guide/go/features#updates
 
 java/updates -> /dev-guide/java/features#updates
 
+java/what-is-a-dynamic-handler -> /dev-guide/java/features#dynamic-handler
+
+python/what-is-a-dynamic-handler -> /dev-guide/python/features#dynamic-handler
+
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
 
 go/parent-close-policy -> /dev-guide/go/features#parent-close-policy
@@ -1119,9 +1123,5 @@ go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#loc
 go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
-
-java/what-is-a-dynamic-handler -> /dev-guide/java/features#dynamic-handler
-
-python/what-is-a-dynamic-handler -> /dev-guide/python/features#dynamic-handler
 
 
