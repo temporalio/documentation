@@ -45,7 +45,8 @@ async def main():
 
     worker = Worker(
         client,
-        task_queue="background-check-boilerplate-task-queue",
+        namespace="backgroundcheck_namespace",
+        task_queue="backgroundcheck-boilerplate-task-queue",
         workflows=[BackgroundCheck],
         activities=[ssn_trace_activity],
     )
