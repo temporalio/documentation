@@ -10,8 +10,8 @@ tags:
 
 Archival is a feature that automatically backs up [Event Histories](/concepts/what-is-an-event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
 
-- [How to create a custom Archiver](/clusters/how-to-create-a-custom-archiver)
-- [How to set up Archival](/clusters/how-to-set-up-archival)
+- [How to create a custom Archiver](/self-hosted/how-to-create-a-custom-archiver)
+- [How to set up Archival](/self-hosted/how-to-set-up-archival)
 
 Workflow Execution Event Histories are backed up after the [Retention Period](/concepts/what-is-a-namespace#retention-period) is reached.
 Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.

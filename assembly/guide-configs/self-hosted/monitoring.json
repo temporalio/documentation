@@ -1,0 +1,18 @@
+{
+  "file_name": "monitoring.md",
+  "id": "monitoring",
+  "file_dir": "self-hosted-guide",
+  "title": "Monitor Temporal Platform metrics",
+  "sidebar_label": "Monitor metrics",
+  "sidebar_position": 6,
+  "description": "Learn how to monitor metrics emitted from the a self-hosted Temporal Platform.",
+  "use_description": true,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "self-hosted/prometheus-grafana-setup"
+    }
+  ]
+}

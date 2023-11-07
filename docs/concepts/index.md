@@ -3,7 +3,7 @@ id: index
 title: Temporal concepts
 description: The following concepts have specific definitions within the context of the Temporal Platform.
 sidebar_label: Concepts
-sidebar_position: 2
+sidebar_position: 6
 tags:
   - introduction
 ---
@@ -26,4 +26,4 @@ For the complete list of defined terms, see the [Glossary](/glossary).
 
 Information on how to implement the developer-facing features is available in the [Developer's guide](/dev-guide).
 
-Information on how to set up and operate a Temporal Cluster is available in the [Cluster deployment guide](/cluster-deployment-guide).
+Information on how to set up and operate a Temporal Cluster is available in the [Cluster deployment guide](/self-hosted-guide).

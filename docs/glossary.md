@@ -67,7 +67,7 @@ An Activity Type is the mapping of a name to an Activity Definition.
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Archival](/clusters#archival)
+#### [Archival](/self-hosted-guide/archival#)
 Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -85,7 +85,7 @@ Audit Logging is a feature that provides forensic access information for account
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/tags/temporal-cloud), [operations](/tags/operations)_
 
 
-#### [Authorizer Plugin](/security#authorizer-plugin)
+#### [Authorizer Plugin](/self-hosted-guide/security#authorizer-plugin)
 The `Authorizer` plugin contains a single `Authorize` method, which is invoked for each incoming API call. `Authorize` receives information about the API call, along with the role and permission claims of the caller.
 
 _Tags: [term](/tags/term)_
@@ -97,7 +97,7 @@ A Child Workflow Execution is a Workflow Execution that is spawned from within a
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [child-workflow](/tags/child-workflow)_
 
 
-#### [Claim Mapper](/security#claim-mapper)
+#### [Claim Mapper](/self-hosted-guide/security#claim-mapper)
 The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).
 
 _Tags: [term](/tags/term)_
@@ -253,7 +253,7 @@ A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Multi-Cluster Replication](/clusters#multi-cluster-replication)
+#### [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication#)
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_

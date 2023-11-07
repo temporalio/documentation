@@ -1,0 +1,22 @@
+{
+    "file_name": "multi-cluster-replication.md",
+    "id": "multi-cluster-replication",
+    "file_dir": "self-hosted-guide",
+    "title": "Self-hosted Multi-Cluster Replication",
+    "sidebar_label": "Multi-Cluster Replication",
+    "sidebar_position": 4,
+    "description": "Learn how to setup Multi-Cluster Replication.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "concepts/what-is-multi-cluster-replication"
+        },
+        {
+            "type": "h2",
+            "id": "self-hosted/how-to-set-up-multi-cluster-replication"
+        }
+    ]
+}

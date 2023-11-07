@@ -29,4 +29,4 @@ You can debug production Workflows using:
 
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/dev-guide/worker-performance).
 
-Debug Server performance with [Cloud metrics](/cloud/metrics#) or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).
+Debug Server performance with [Cloud metrics](/cloud/metrics#) or [self-hosted Server metrics](//self-hosted-guide/checklist#scaling-and-metrics).

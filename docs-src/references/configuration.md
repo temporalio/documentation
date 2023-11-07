@@ -468,7 +468,7 @@ Example:
         state: "disabled"
   ```
 
-For more details on Archival setup, see [Set up Archival](/cluster-deployment-guide#set-up-archival).
+For more details on Archival setup, see [Set up Archival](/self-hosted/how-to-set-up-archival).
 
 ## namespaceDefaults
 
@@ -479,7 +479,7 @@ Sets default Archival configuration for each Namespace using `namespaceDefaults`
 - `state`: Default state of the Archival for the Namespace. Supported values are `enabled` or `disabled`.
 - `URI`: Default URI for the Namespace.
 
-For more details on setting Namespace defaults on Archival, see [Namespace creation in Archival setup](/cluster-deployment-guide#namespace-creation)
+For more details on setting Namespace defaults on Archival, see [Namespace creation in Archival setup](/self-hosted/how-to-set-up-archival#namespace-creation)
 
 Example:
 

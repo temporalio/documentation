@@ -11,7 +11,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 In this section you can find the following:
 
-- [Run a development Cluster](/clusters/how-to-install-temporal-cli)
+- [Run a development Cluster](/java/install-cli)
 - [Connect to a dev Cluster](/java/how-to-create-a-temporal-client-in-java)
 - [Develop a Workflow](/java/how-to-develop-a-workflow-definition-in-java)
 - [Develop an Activity](/java/developing-activities)

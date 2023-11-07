@@ -1,0 +1,29 @@
+{
+  "file_name": "data-encryption.md",
+  "id": "data-encryption",
+  "file_dir": "self-hosted-guide",
+  "title": "Temporal production readiness - Develop",
+  "sidebar_label": "Data encryption",
+  "description": "This guide explains what you need to develop to use Temporal in your production environment.",
+  "use_description": true,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "h2",
+      "id": "self-hosted/data-encryption"
+    },
+    {
+      "type": "h3",
+      "id": "go/how-to-use-a-custom-payload-codec-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-use-a-custom-payload-codec-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "self-hosted/how-to-set-up-codec-server"
+    }
+  ]
+}
