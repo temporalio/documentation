@@ -52,7 +52,7 @@ concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
 
-cloud/security-cloud-intro -> /cloud/security#
+cloud/security-cloud-intro -> /cloud/security-model#
 
 references/server-options -> /references/server-options#withconfig
 

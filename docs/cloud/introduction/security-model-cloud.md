@@ -1,10 +1,10 @@
 ---
-id: security
+id: security-model
 title: What kind of security does Temporal Cloud provide?
-sidebar_label: Security
+sidebar_label: Security model
 sidebar_position: 1
 description: The security model of Temporal Cloud encompasses applications, data, and the Temporal Cloud platform.
-slug: /cloud/security
+slug: /cloud/security-model
 toc_max_heading_level: 4
 keywords:
 - introduction
