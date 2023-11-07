@@ -1,7 +1,7 @@
 ---
 id: index
-title: Temporal Cloud documentation
-sidebar_label: Temporal Cloud
+title: SaaS infra to supervise your durable applications
+sidebar_label: Temporal Cloud guide
 sidebar_position: 3
 description: Temporal Cloud documentation, including explanations and usage.
 slug: /cloud

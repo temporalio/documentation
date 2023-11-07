@@ -268,7 +268,7 @@ When you apply custom encoding with encryption or compression on your Workflow d
 To see decoded data when using the CLI or Web UI to perform some operations on a Workflow Execution, configure the Codec Server endpoint in the Web UI and CLI.
 When you configure the Codec Server endpoints, the CLI and Web UI send the encoded data to the Codec Server, and display the decoded data received from the Codec Server.
 
-For details on creating your Codec Server, see [Codec Server Setup](/self-hosted/how-to-setup-codec-server#codec-server-setup).
+For details on creating your Codec Server, see [Codec Server Setup](/self-hosted-guide/data-encryption#codec-server-setup).
 
 After you start your Codec Server, [configure your Codec Server endpoints](/self-hosted-guide/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli).
 

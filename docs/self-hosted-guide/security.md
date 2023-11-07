@@ -2,15 +2,21 @@
 id: security
 title: Temporal Platform security features
 sidebar_label: Security
-sidebar_position: 6
+sidebar_position: 7
 description: This guide is an overview of the Temporal Platform security features.
 toc_max_heading_level: 4
 keywords:
+- auth
+- developer-guide
 - guide-context
+- java
 - security
 - term
 tags:
+- auth
+- developer-guide
 - guide-context
+- java
 - security
 - term
 ---
@@ -267,19 +273,7 @@ a := authorization.NewDefaultAuthorizer()
 
 When authentication is enabled, you can authorize API calls made to the Frontend Service.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Content is planned but not yet available.
-
-</TabItem>
-<TabItem value="java">
-
-The Temporal Server [expects](/security/#authentication) an `authorization` gRPC header with an authorization token to be passed with API calls if [requests authorization](/security/#authorization) is configured.
+The Temporal Server [expects](#authentication) an `authorization` gRPC header with an authorization token to be passed with API calls if [requests authorization](#authorization) is configured.
 
 Authorization Tokens may be provided to the Temporal Java SDK by implementing a `io.temporal.authorization.AuthorizationTokenSupplier` interface.
 The implementation should be used to create `io.temporal.authorization.AuthorizationGrpcMetadataProvider` that may be configured on ServiceStub gRPC interceptors list.
@@ -289,7 +283,7 @@ The implementation is called for each SDK gRPC request and may supply dynamic to
 **JWT**
 
 One of the token types that may be passed this way are JWT tokens.
-Temporal Server provides a [default implementation of JWT authentication](/security/#default-jwt-claimmapper).
+Temporal Server provides a [default implementation of JWT authentication](#default-jwt-claimmapper).
 
 **Example**
 
@@ -310,24 +304,6 @@ Related read:
 
 - [How to secure a Temporal Cluster](/security)
 
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-</TabItem>
-</Tabs>
-
 ## Data Converter {#data-converter}
 
 Each Temporal SDK provides a [Data Converter](/dataconversion#) that can be customized with a custom [Payload Codec](/dataconversion#payload-codec) to encode and secure your data.
@@ -339,5 +315,5 @@ For details on what data can be encoded, how to secure it, and what to consider 
 You can use a [Codec Server](/dataconversion#codec-server) with your custom Payload Codec to decode the data you see on your Web UI and CLI locally through remote endpoints.
 However, ensure that you consider all security implications of [remote data encoding](/dataconversion#remote-data-encoding) before using a Codec Server.
 
-For details on how to set up a Codec Server, see [Codec Server setup](/self-hosted/how-to-setup-codec-server#codec-server-setup).
+For details on how to set up a Codec Server, see [Codec Server setup](/self-hosted-guide/data-encryption#codec-server-setup).
 

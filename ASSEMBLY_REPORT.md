@@ -1,46 +1,20 @@
 # Docs Assembly Workflow report
 
-<<<<<<< HEAD
-Last assembled: Thursday November 02 2023 16:00:55 PM -0600
+Last assembled: Tuesday November 07 2023 08:52:43 AM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
-117 guide configurations found.
+124 guide configurations found.
 
-1582 information nodes found.
+1663 information nodes found.
 
-1346 information nodes are attached to guides.
-=======
-Last assembled: Thursday November 02 2023 11:20:23 AM -0700
-
-Assembly Workflow Id: docs-full-assembly-rachfop-123
-
-110 guide configurations found.
-
-1652 information nodes found.
-
-1413 information nodes are attached to guides.
->>>>>>> upstream/main
+1420 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
 cloud/security-cloud-intro -> /cloud/security#
 
-references/server-options -> /references/server-options#withconfig
-
-concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
-
-concepts/what-is-a-claimmapper-plugin -> #claim-mapper
-
-concepts/what-is-a-data-converter -> /dataconversion#
-
-concepts/what-is-a-payload-codec -> /dataconversion#payload-codec
-
-self-hosted/data-encryption -> /self-hosted-guide/data-encryption#securing-your-data
-
-concepts/what-is-a-codec-server -> /dataconversion#codec-server
-
-concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
+self-hosted/security-intro -> /self-hosted-guide/security#
 
 concepts/what-is-the-temporal-cli -> /cli#
 
@@ -69,6 +43,10 @@ references/configuration -> /references/configuration#
 concepts/what-is-archival -> /self-hosted-guide/archival#
 
 self-hosted/archival -> /self-hosted-guide/archival#archival
+
+self-hosted/data-encryption -> /self-hosted-guide/data-encryption#securing-your-data
+
+self-hosted/how-to-set-up-codec-server -> /self-hosted-guide/data-encryption#web-ui
 
 concepts/what-is-a-frontend-service -> /clusters#frontend-service
 
@@ -163,6 +141,8 @@ tctl-v1/workflow/list -> /tctl-v1/workflow#list
 tctl-v1/workflow/run -> /tctl-v1/workflow#run
 
 tctl-v1/workflow/start -> /tctl-v1/workflow#start
+
+concepts/what-is-a-data-converter -> /dataconversion#
 
 tctl-v1/dataconverter/web -> #web
 
@@ -364,15 +344,25 @@ concepts/what-is-a-failure-converter -> /dataconversion#failure-converter
 
 concepts/what-is-a-payload -> /dataconversion#payload
 
+concepts/what-is-a-payload-codec -> /dataconversion#payload-codec
+
 concepts/what-is-a-custom-data-converter -> /dataconversion#custom-data-converter
 
 concepts/what-is-a-payload-converter -> /dataconversion#payload-converter
 
-self-hosted/how-to-set-up-codec-server -> #codec-server-setup
+concepts/what-is-a-codec-server -> /dataconversion#codec-server
+
+concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
 
 references/dynamic-configuration -> /references/dynamic-configuration#
 
+references/server-options -> /references/server-options#
+
 concepts/what-is-multi-cluster-replication -> #
+
+concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
+
+concepts/what-is-a-claimmapper-plugin -> #claim-mapper
 
 concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
@@ -394,7 +384,7 @@ self-hosted/how-to-migrate-visibility-database -> #migrating-visibility-database
 
 self-hosted/how-to-integrate-elasticsearch-into-a-temporal-cluster -> #elasticsearch
 
-self-hosted/how-to-set-up-visibility-in-a-temporal-cluster -> #supported-databases
+self-hosted/how-to-set-up-visibility-in-a-temporal-cluster -> #
 
 self-hosted/how-to-set-up-dual-visibility -> #dual-visibility
 
@@ -417,6 +407,8 @@ concepts/what-is-an-activity -> /activities#
 concepts/what-is-an-activity-task -> /workers#activity-task
 
 concepts/what-is-a-retry-policy -> /retry-policies#
+
+self-hosted/platform-defaults -> /self-hosted-guide/defaults#
 
 concepts/what-is-a-workflow-execution-timeout -> /workflows#workflow-execution-timeout
 
@@ -509,6 +501,8 @@ go/namespaces -> /dev-guide/go/features#namespaces
 java/namespaces -> /dev-guide/java/features#namespaces
 
 cloud/prometheus-grafana-setup -> /cloud/metrics#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
+
+self-hosted/prometheus-grafana-setup -> /self-hosted-guide/monitoring#prometheus-and-grafana-setup
 
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
@@ -711,6 +705,10 @@ typescript/queries -> /dev-guide/typescript/features#queries
 go/updates -> /dev-guide/go/features#updates
 
 java/updates -> /dev-guide/java/features#updates
+
+java/what-is-a-dynamic-handler -> /dev-guide/java/features#dynamic-handler
+
+python/what-is-a-dynamic-handler -> /dev-guide/python/features#dynamic-handler
 
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
 
@@ -1034,7 +1032,11 @@ typescript/testing -> /dev-guide/typescript/testing#replay
 
 typescript/observability -> /dev-guide/typescript/observability#tracing
 
+self-hosted/scaling-and-metrics -> //self-hosted-guide/checklist#scaling-and-metrics
+
 concepts/what-is-a-task-token -> /activities#task-token
+
+self-hosted/how-to-install-temporal-cli -> #run-a-development-server
 
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
@@ -1049,8 +1051,6 @@ python/logging -> /dev-guide/python/observability#logging
 python/how-to-cancel-a-workflow-in-python -> #cancel-a-workflow-execution
 
 python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-execution
-
-self-hosted/how-to-install-temporal-cli -> /dev-guide/typescript/foundations#run-a-development-server
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
@@ -1086,6 +1086,8 @@ java/how-to-handle-a-signal-in-a-workflow-in-java -> #handle-signals
 
 java/how-to-create-a-temporal-client-in-java -> /dev-guide/java/foundations#connect-to-a-dev-cluster
 
+java/install-cli -> /dev-guide/java/project-setup#install-cli
+
 java/interface-hierarchies -> #interface-inheritance
 
 java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-execution-result
@@ -1095,8 +1097,6 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
 java/project-setup-introduction -> /dev-guide/java/project-setup#
-
-java/install-cli -> /dev-guide/java/project-setup#install-cli
 
 java/choose-dev-cluster -> /dev-guide/java/project-setup#choose-dev-cluster
 
@@ -1114,6 +1114,8 @@ go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 
 go/logging -> /dev-guide/go/observability#logging
 
+go/install-cli -> /dev-guide/go/project-setup#install-cli
+
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
@@ -1121,8 +1123,6 @@ go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
 
 go/go-dev-guide-structure -> #
-
-go/install-cli -> /dev-guide/go/project-setup#install-cli
 
 go/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
 
@@ -1139,9 +1139,5 @@ go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#loc
 go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
-
-java/what-is-a-dynamic-handler -> /dev-guide/java/features#dynamic-handler
-
-python/what-is-a-dynamic-handler -> /dev-guide/python/features#dynamic-handler
 
 

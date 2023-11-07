@@ -19,7 +19,7 @@ With Dual Visibility, you can read from only one Visibility store at a time, but
 
 Set the secondary store with the `secondaryVisibilityStore` configuration key in your Persistence configuration, and then define the secondary Visibility store configuration under `datastores`.
 
-You can configure any of the [supported databases](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) as your secondary store.
+You can configure any of the [supported databases](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster) as your secondary store.
 
 Examples:
 
@@ -192,4 +192,4 @@ system.enableReadFromSecondaryVisibility:
 For details on the configuration options, see:
 
 - [Secondary Visibility dynamic configuration reference](/references/dynamic-configuration#secondary-visibility-settings)
-- [Migrating Visibility databases](self-hosted/how-to-migrate-visibility-database)
+- [Migrating Visibility databases](/self-hosted/how-to-migrate-visibility-database)

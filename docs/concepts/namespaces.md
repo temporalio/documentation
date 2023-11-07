@@ -36,11 +36,7 @@ Namespaces are created on the Temporal Cluster, and provide a range of controls 
   For example, when a Workflow Execution is spawned, it does so within a specific Namespace.
 - **Uniqueness:** Temporal guarantees a unique Workflow Id within a Namespace.
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.
-<<<<<<< HEAD
-- **Namespace Configuration**: Various configuration options like the [Retention Period](/clusters#retention-period) and the [Archival](/self-hosted-guide/archival#) destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl-v1/namespace).
-=======
-- **Namespace Configuration:** Various configuration options like the [Retention Period](/clusters#retention-period) and the [Archival](/clusters#archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl-v1/namespace).
->>>>>>> upstream/main
+- **Namespace Configuration:** Various configuration options like the [Retention Period](/clusters#retention-period) and the [Archival](/self-hosted-guide/archival#) destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl-v1/namespace).
 
 ### Registration
 
@@ -74,7 +70,7 @@ Note that registering a Namespace takes up to 15 seconds to complete. Ensure tha
 
 ### Manage Namespaces
 
-Use a custom [Authorizer](/security#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
+Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#) or [tcld commands](/cloud/tcld/namespace/) to manage Namespaces.
 

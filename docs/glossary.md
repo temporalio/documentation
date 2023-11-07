@@ -85,7 +85,7 @@ Audit Logging is a feature that provides forensic access information for account
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/tags/temporal-cloud), [operations](/tags/operations)_
 
 
-#### [Authorizer Plugin](/security#authorizer-plugin)
+#### [Authorizer Plugin](/self-hosted-guide/security#authorizer-plugin)
 The `Authorizer` plugin contains a single `Authorize` method, which is invoked for each incoming API call. `Authorize` receives information about the API call, along with the role and permission claims of the caller.
 
 _Tags: [term](/tags/term)_
@@ -97,7 +97,7 @@ A Child Workflow Execution is a Workflow Execution that is spawned from within a
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [child-workflow](/tags/child-workflow)_
 
 
-#### [Claim Mapper](/security#claim-mapper)
+#### [Claim Mapper](/self-hosted-guide/security#claim-mapper)
 The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).
 
 _Tags: [term](/tags/term)_

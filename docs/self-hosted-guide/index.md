@@ -1,6 +1,6 @@
 ---
 id: index
-title: Temporal Self-hosted Cluster deployment guide
+title: Open source self-hosted infrastructure for durable applications
 sidebar_label: Self-hosted guide
 sidebar_position: 5
 description: This guide provides a comprehensive overview to deploy and operate a Temporal Cluster in a live environment.

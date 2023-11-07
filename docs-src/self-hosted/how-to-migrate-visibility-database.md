@@ -15,7 +15,7 @@ To migrate your Visibility database, [set up a secondary Visibility store](/self
 
 Dual Visibility setup is optional but useful in gradually migrating your Visibility data to another database.
 
-Before you begin, verify [supported databases and versions](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) for a Visibility store.
+Before you begin, verify [supported databases and versions](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster) for a Visibility store.
 
 The following steps describe how to migrate your Visibility database.
 

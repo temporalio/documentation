@@ -53,6 +53,10 @@
     },
     {
       "type": "h2",
+      "id": "concepts/what-is-archival"
+    },
+    {
+      "type": "h2",
       "id": "concepts/what-is-cluster-configuration"
     },
     {
@@ -62,6 +66,10 @@
     {
       "type": "h3",
       "id": "concepts/what-is-cluster-obervability"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-multi-cluster-replication"
     }
   ]
 }

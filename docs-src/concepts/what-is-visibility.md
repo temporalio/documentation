@@ -8,7 +8,7 @@ tags:
 ssdi:
   - For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
   - For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
-  - In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports advanced Visibility features](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases). Visibility configuration in Temporal Cluster is updated and Dual Visibility is enabled. For details, see [Visibility store setup](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster).
+  - In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports Advanced Visibility features](/self-hosted-guide/visibility). Visibility configuration in Temporal Cluster is updated and Dual Visibility is enabled. For details, see [Visibility store setup](/self-hosted-guide/visibility).
 ---
 
 The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Cluster.
@@ -21,4 +21,4 @@ With Temporal Server v1.21, you can set up [Dual Visibility](/concepts/what-is-d
 
 <!-- A Visibility store can be configured to provide [atandard Visibility](/visibility#standard-visibility) and [advanced Visibility](/visibility#advanced-visibility) features.
 
-Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) for updates. -->
+Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster) for updates. -->

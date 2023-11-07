@@ -11,7 +11,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 In this section you can find the following:
 
-- [Run a development Cluster](/typescript/how-to-install-temporal-cli)
+- [Run a development Cluster](/self-hosted/how-to-install-temporal-cli)
 - [Connect to a dev Cluster](/typescript/connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](/typescript/connect-to-temporal-cloud)
 - [Develop a Workflow](/typescript/developing-workflows)

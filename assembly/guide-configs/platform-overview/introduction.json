@@ -1,0 +1,18 @@
+{
+    "file_name": "introduction.md",
+    "id": "introduction",
+    "file_dir": "/platform-overview",
+    "slug": "/introduction",
+    "title": "Introduction to the Temporal Platform",
+    "sidebar_label": "Introduction",
+    "sidebar_position": 1,
+    "description": "Get an overview of the Temporal Platform.",
+    "toc_max_heading_level": 4,
+    "add_tabs_support": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "platform-overview/introduction"
+        }
+    ]
+}

@@ -3,7 +3,7 @@
   "id": "data-encryption",
   "file_dir": "self-hosted-guide",
   "title": "Temporal production readiness - Develop",
-  "sidebar_label": "Develop",
+  "sidebar_label": "Data encryption",
   "description": "This guide explains what you need to develop to use Temporal in your production environment.",
   "use_description": true,
   "toc_max_heading_level": 4,

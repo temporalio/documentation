@@ -154,7 +154,7 @@ The Web UI can use a [Codec Server](/dataconversion#codec-server) with a custom 
 For details, see [Securing your data](/self-hosted-guide/data-encryption#securing-your-data).
 The UI supports both a [Codec Server endpoint](/self-hosted-guide/data-encryption#web-ui) and the `tctl` plugin port.
 
-For details on setting the Codec Server endpoint, see [Codec Server setup](/self-hosted/how-to-setup-codec-server#codec-server-setup).
+For details on setting the Codec Server endpoint, see [Codec Server setup](/self-hosted-guide/data-encryption#codec-server-setup).
 
 ### Labs mode
 

@@ -79,7 +79,7 @@ s := temporal.NewServer(
 
 ### WithAuthorizer
 
-Sets a low level [authorization mechanism](/security#authorizer-plugin) that determines whether to allow or deny inbound API calls.
+Sets a low level [authorization mechanism](/self-hosted-guide/security#authorizer-plugin) that determines whether to allow or deny inbound API calls.
 
 ```go
 s := temporal.NewServer(
@@ -100,7 +100,7 @@ s := temporal.NewServer(
 
 ### WithClaimMapper
 
-Configures a [mechanism to map roles](/security/#claimmapper-plugin-interface) to `Claims` for authorization.
+Configures a [mechanism to map roles](/self-hosted-guide/security#claimmapper-plugin-interface) to `Claims` for authorization.
 
 ```go
 s := temporal.NewServer(

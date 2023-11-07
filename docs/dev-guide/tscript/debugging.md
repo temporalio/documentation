@@ -33,7 +33,7 @@ You can debug production Workflows using:
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/dev-guide/worker-performance).
 For information on setting up SDK metrics, see [Metrics](/dev-guide/typescript/observability#metrics) in the Observability section of the TypeScript SDK developer's guide.
 
-Debug Server performance with [Cloud metrics](/cloud/metrics#) or [self-hosted Server metrics](/production-readiness/tuning#scaling-and-metrics).
+Debug Server performance with [Cloud metrics](/cloud/metrics#) or [self-hosted Server metrics](//self-hosted-guide/checklist#scaling-and-metrics).
 
 ## How to troubleshoot common issues in the TypeScript SDK {#troubleshoot-common-issues}
 
@@ -297,7 +297,7 @@ Querying a Workflow Execution whose query handler causes an error can result in 
 Some troubleshooting actions you can take:
 
 - Verify the connection from your Worker to the Temporal Server is working and doesn't have unusually high latency.
-- If you are running Temporal Server yourself, check your [server metrics](/production-readiness/tuning#scaling-and-metrics) to ensure it's not overloaded.
+- If you are running Temporal Server yourself, check your [server metrics](//self-hosted-guide/checklist#scaling-and-metrics) to ensure it's not overloaded.
 - If what's timing out is a query, check the logs of your Workers to see if they are having issues handling the query.
 
 If none of the preceding actions help you discover why timeouts are occurring, please try to produce a minimal repro and we'll be glad to help.

@@ -14,7 +14,7 @@ ssdi:
 ---
 
 You can set PostgreSQL as your [Visibility store](/concepts/what-is-visibility).
-Verify [supported versions](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) before you proceed.
+Verify [supported versions](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster) before you proceed.
 
 If using PostgreSQL v12 or later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attributes) that you create must be associated with a Namespace in that Cluster.
 

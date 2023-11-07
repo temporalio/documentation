@@ -9,7 +9,7 @@ tags:
   - auth
 ---
 
-The Temporal Server [expects](/security/#authentication) an `authorization` gRPC header with an authorization token to be passed with API calls if [requests authorization](/security/#authorization) is configured.
+The Temporal Server [expects](/self-hosted/security-intro#authentication) an `authorization` gRPC header with an authorization token to be passed with API calls if [requests authorization](/self-hosted/security-intro#authorization) is configured.
 
 Authorization Tokens may be provided to the Temporal Java SDK by implementing a `io.temporal.authorization.AuthorizationTokenSupplier` interface.
 The implementation should be used to create `io.temporal.authorization.AuthorizationGrpcMetadataProvider` that may be configured on ServiceStub gRPC interceptors list.
@@ -19,7 +19,7 @@ The implementation is called for each SDK gRPC request and may supply dynamic to
 **JWT**
 
 One of the token types that may be passed this way are JWT tokens.
-Temporal Server provides a [default implementation of JWT authentication](/security/#default-jwt-claimmapper).
+Temporal Server provides a [default implementation of JWT authentication](/concepts/what-is-a-claimmapper-plugin#default-jwt-claimmapper).
 
 **Example**
 

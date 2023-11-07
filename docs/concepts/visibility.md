@@ -29,7 +29,7 @@ This guide provides a comprehensive overview of Temporal Visibility.
 
 - For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
 - For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
-- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports advanced Visibility features](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases). Visibility configuration in Temporal Cluster is updated and Dual Visibility is enabled. For details, see [Visibility store setup](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster).
+- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports Advanced Visibility features](/self-hosted-guide/visibility). Visibility configuration in Temporal Cluster is updated and Dual Visibility is enabled. For details, see [Visibility store setup](/self-hosted-guide/visibility).
 
 :::
 
@@ -43,7 +43,7 @@ With Temporal Server v1.21, you can set up [Dual Visibility](#dual-visibility) t
 
 <!-- A Visibility store can be configured to provide [atandard Visibility](/visibility#standard-visibility) and [advanced Visibility](/visibility#advanced-visibility) features.
 
-Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted-guide/visibility#supported-databases) for updates. -->
+Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted-guide/visibility#) for updates. -->
 
 ## What is standard Visibility? {#standard-visibility}
 
@@ -56,7 +56,7 @@ Closed Workflow Executions can be filtered by a time constraint and either a Wor
 [Search Attributes](https://docs.temporal.io/visibility#search-attribute) are not supported with Standard Visibility.
 
 Support for standard Visibility is deprecated beginning with Temporal Server v1.21.
-For updates, check [Supported databases](/self-hosted-guide/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases).
+For updates, check [Supported databases](/self-hosted-guide/visibility#).
 
 ## What is advanced Visibility? {#advanced-visibility}
 
@@ -80,7 +80,7 @@ A Dual Visibility setup requires two Visibility store configurations:
 - **Primary Visibility:** The primary Visibility store where Visibility data is written to and read from by default. The primary Visibility store is set with the `visibilityStore` configuration key in your Temporal Cluster.
 - **Secondary Visibility:** A secondary storage for your Visibility data. The secondary Visibility store is set with the `secondaryVisibilityStore` configuration key in your Temporal Cluster.
 
-For configuration details, see [Dual Visibility setup](/self-hosted-guide/how-to-set-up-dual-visibility).
+For configuration details, see [Dual Visibility setup](/self-hosted-guide/visibility#dual-visibility).
 
 The following combinations are allowed in a Dual Visibility setting.
 

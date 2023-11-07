@@ -1,5 +1,5 @@
 ---
-id: intro
+id: security-intro
 title: Temporal Platform security overview
 description: The security guide provides a comprehensive overview of the security related features and how to implement them.
 tags:
