@@ -40,7 +40,6 @@ from workflows.backgroundcheck_dacx import BackgroundCheck
 
 
 async def main():
-
     with open(os.getenv("TEMPORAL_MTLS_TLS_CERT"), "rb") as f:
         client_cert = f.read()
 
@@ -58,7 +57,7 @@ async def main():
 
     worker = Worker(
         client,
-        task_queue="background-check-boilerplate-task-queue",
+        task_queue="backgroundcheck-boilerplate-task-queue",
         workflows=[BackgroundCheck],
         activities=[ssn_trace_activity],
     )
