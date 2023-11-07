@@ -422,7 +422,7 @@ function Explained() {
         />
         <SimpleCard
           title="Dev tools"
-          content="Use Temporal’s CLI or Web UI to manage and monitor your Workflows."
+          content="Use the Temporal CLI or Web UI to manage and monitor your Workflows."
           links={devTools}
         />
       </div>
