@@ -1144,3 +1144,22 @@ Visit the source repository to [view the source code](https://github.com/tempora
     )
     print(f"Results: {result}")
 ```
+
+## How to use Start Delay {#start-delay}
+
+Use the `start_delay` to schedule a Workflow Execution at a specific one-time future point rather than on a recurring schedule.
+
+Use the `start_delay` option in either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods in the Client.
+
+```python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity,
+            YourParams("Hello", name),
+            start_to_close_timeout=timedelta(seconds=10),
+            start_delay=timedelta(hours=1, minutes=20, seconds=30)
+        )
+```

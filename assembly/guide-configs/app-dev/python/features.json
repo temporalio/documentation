@@ -261,6 +261,10 @@
     {
       "type": "p",
       "id": "python/how-to-set-a-cron-schedule-in-python"
+    },
+    {
+      "type": "h2",
+      "id": "python/how-to-start-delay"
     }
   ]
 }

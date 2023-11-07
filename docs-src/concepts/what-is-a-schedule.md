@@ -192,3 +192,5 @@ A Workflow started by a Schedule can obtain the details of the failure of the mo
 Internally, a Schedule is implemented as a Workflow.
 If you're using Advanced Visibility (Elasticsearch), these Workflow Executions are hidden from normal views.
 If you're using Standard Visibility, they are visible, though there's no need to interact with them directly.
+
+For triggering a Workflow Execution at a specific one-time future point rather than on a recurring schedule, the [Start Delay](/concepts/what-is-a-delay-start-workflow-execution) option should be used instead of a Schedule.

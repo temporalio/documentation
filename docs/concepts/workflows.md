@@ -1024,6 +1024,8 @@ Internally, a Schedule is implemented as a Workflow.
 If you're using Advanced Visibility (Elasticsearch), these Workflow Executions are hidden from normal views.
 If you're using Standard Visibility, they are visible, though there's no need to interact with them directly.
 
+For triggering a Workflow Execution at a specific one-time future point rather than on a recurring schedule, the [Start Delay](#delay-workflow-execution) option should be used instead of a Schedule.
+
 ## What is a Temporal Cron Job? {#temporal-cron-job}
 
 :::note
