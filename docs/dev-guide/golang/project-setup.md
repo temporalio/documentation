@@ -1,6 +1,6 @@
 ---
 id: project-setup
-title: Go SDK developer's guide - Project setup
+title: Go SDK dev guide - Set up a Temporal Application project
 sidebar_label: Project setup
 sidebar_position: 2
 description: The project setup section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go—that is, all the relevant steps to start a Workflow Execution that executes an Activity.

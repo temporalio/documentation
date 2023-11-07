@@ -1,6 +1,6 @@
 ---
 id: durable-execution
-title: Go SDK developer's guide - Durable Execution
+title: Go SDK dev guide - Develop code that durably executes
 sidebar_label: Develop for durability
 sidebar_position: 3
 description: The Durable Execution section of the Temporal Developer's guide covers advanced beginner concepts for working with Temporal, including testing your code, reviewing workflow event history, adding timers, and understanding determinism. Developing for durable execution is a core aspect of Temporal.
@@ -67,8 +67,8 @@ This chapter walks through the following sequence:
 
 - Retrieve a Workflow Execution's Event History
 - Add a Replay test to your application
-- Non-deterministic code changes
 - Intrinsic non-deterministic logic
+- Non-deterministic code changes
 
 ## Retrieve a Workflow Execution's Event History {#retrieve-event-history}
 

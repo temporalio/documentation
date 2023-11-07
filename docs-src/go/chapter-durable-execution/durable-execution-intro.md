@@ -34,5 +34,5 @@ This chapter walks through the following sequence:
 
 - Retrieve a Workflow Execution's Event History
 - Add a Replay test to your application
-- Non-deterministic code changes
 - Intrinsic non-deterministic logic
+- Non-deterministic code changes
