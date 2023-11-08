@@ -1,16 +1,20 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday November 07 2023 09:39:42 AM -0700
+Last assembled: Wednesday November 08 2023 11:00:32 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-124 guide configurations found.
+120 guide configurations found.
 
-1663 information nodes found.
+1659 information nodes found.
 
-1420 information nodes are attached to guides.
+1416 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
+
+cloud/security-cloud-intro -> /cloud/security#
+
+self-hosted/security-intro -> /self-hosted-guide/security#
 
 concepts/what-is-the-temporal-cli -> /cli#
 
@@ -356,13 +360,9 @@ references/server-options -> /references/server-options#
 
 concepts/what-is-multi-cluster-replication -> #
 
-cloud/security-cloud-intro -> /cloud/security#
-
 concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
 
 concepts/what-is-a-claimmapper-plugin -> #claim-mapper
-
-self-hosted/security-intro -> #authentication
 
 concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
