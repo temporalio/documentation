@@ -1152,7 +1152,7 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 
 Start Delay determines the amount of time to wait before initiating a Workflow Execution.
 
-:::note
+:::note Experimental feature
 Start Delay Workflow Execution is incompatible with both [Schedules](#schedule) and [Cron Jobs](#temporal-cron-job).
 
 This Workflow Option is considered experimental and may change in future releases.

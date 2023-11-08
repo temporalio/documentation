@@ -15,7 +15,7 @@ ssdi:
 
 Start Delay determines the amount of time to wait before initiating a Workflow Execution.
 
-:::note
+:::note Experimental feature
 Start Delay Workflow Execution is incompatible with both [Schedules](/concepts/what-is-a-schedule) and [Cron Jobs](/concepts/what-is-a-temporal-cron-job).
 
 This Workflow Option is considered experimental and may change in future releases.

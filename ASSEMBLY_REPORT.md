@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday November 08 2023 11:37:20 AM -0800
+Last assembled: Wednesday November 08 2023 12:00:25 PM -0800
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -1121,5 +1121,45 @@ go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#loc
 go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
+
+go/generated/how-to-develop-an-activity-definition-in-go -> /dev-guide/go/foundations#activity-definition
+
+concepts/what-is-durable-execution -> #durable-execution
+
+go/chapter-introduction/introduction-to-go-sdk -> /dev-guide/go/introduction#
+
+go/generated/how-to-develop-a-worker-in-go -> /dev-guide/go/foundations#develop-worker
+
+java/what-is-a-dynamic-handler -> /dev-guide/java/features#dynamic-handler
+
+python/what-is-a-dynamic-handler -> /dev-guide/python/features#dynamic-handler
+
+go/chapter-durable-execution/durable-execution-intro -> /dev-guide/go/durable-execution#
+
+dev-guide/why-use-a-temporal-sdk -> /dev-guide/sdks#replays
+
+go/chapter-project-setup/project-setup-introduction -> /dev-guide/go/project-setup#
+
+go/generated/backgroundcheck-replay-intrinsic-non-determinism -> #intrinsic-non-deterministic-logic
+
+go/chapter-durable-execution/non-deterministic-code-changes -> #durability-through-replays
+
+go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#start-workflow
+
+go/chapter-durable-execution/retrieve-event-history -> #retrieve-event-history
+
+go/generated/how-to-customize-workflow-type-in-go -> #customize-workflow-type
+
+go/generated/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+go/landing-page/go-dev-guide-structure -> #
+
+go/chapter-project-setup/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
+
+go/chapter-project-setup/project-structure -> /dev-guide/go/project-setup#boilerplate-project
+
+go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
+
+go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 
