@@ -1,6 +1,6 @@
 ---
 id: project-setup
-title: Go SDK developer's guide - Project setup
+title: Go SDK dev guide - Set up a Temporal Application project
 sidebar_label: Project setup
 sidebar_position: 2
 description: The project setup section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
@@ -51,17 +51,27 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This section covers how to use a terminal, a code editor, and a development Cluster to create a Namespace, write a single Activity Workflow, run a Worker that talks to your development Cluster, run a Workflow using the CLI, add a testing framework, and view Workflows in the Web UI.
+The first step to creating a new Temporal Application is to set up your development environment.
+This chapter walks through the steps to do that using the Go SDK.
 
 :::competency Construct a new Temporal Application project
 
-This section of the Temporal Go SDK developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application using Go.
+This chapter of the Temporal Go SDK developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application using Go.
 
 By the end of this section you will know how to construct a new Temporal Application project.
 
+Learning objectives:
+
+- Describe the tools available and recommended to develop Workflows.
+- Describe the code that actually forms a Temporal application.
+- Implement an appropriate testing framework.
+
+Much of the information in this chapter is also covered in the [Temporal 101 course](https://learn.temporal.io/courses/temporal_101/)
+
 :::
 
-:::info Choose your development environment
+This chapter introduces the [Background Check use case](https://learn.temporal.io/examples/go/background-checks/#what-is-the-real-life-use-case) and a sample application as a means to contextualize the information.
+Future developer guide chapters build on this use case and sample application.
 
 There are three ways to follow this guide:
 
@@ -69,9 +79,19 @@ There are three ways to follow this guide:
 - [Use Temporal Cloud](#temporal-cloud)
 - [Use a self-hosted environment such as Docker](#self-hosted-temporal-cluster)
 
-Read more in the [Choose a development Cluster](#choose-dev-cluster) section on this page.
+Read more in the [Choose a development Cluster](#choose-dev-cluster) section.
 
-:::
+In this chapter you will do the following:
+
+1. Download the Temporal CLI.
+2. Choose your development Cluster.
+3. Create a Namespace on your development Cluster.
+4. Copy boilerplate code into your IDE.
+5. Run your the Worker.
+6. Start the Workflow using the CLI.
+7. Explore the Web UI to view the status of the Workflow and confirm polling Workers.
+8. Add a testing framework and unit tests to the application
+9. Run the application unit tests
 
 ## Install the Temporal CLI {#install-cli}
 
@@ -361,13 +381,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 In the Temporal Go SDK programming model, a [Workflow Definition](/workflows#workflow-definition) is an exportable function.
 The `BackgroundCheck` function below is an example of a basic Workflow Definition.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/workflows/backgroundcheck_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-0cb3463c-d698-4d08-8ec4-de1f2e065f9e" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-0cb3463c-d698-4d08-8ec4-de1f2e065f9e" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/workflows/backgroundcheck_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 package workflows
@@ -432,13 +446,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 In the Temporal Go SDK programming model, an Activity is an exportable function or a `struct` method.
 Below is an example of an Activity defined as a function.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/activities/ssntraceactivity_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-a1dcd898-8747-42d7-bcb9-a63638135abd" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-a1dcd898-8747-42d7-bcb9-a63638135abd" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/activities/ssntraceactivity_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 package activities
@@ -481,13 +489,7 @@ To run a Worker Process with a local development server, define the following st
 
 In regards to organization, we recommend keeping Worker code separate from Workflow and Activity code.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/dev_server_worker/main_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-e3b68acb-c670-4d6f-a892-b4eab1048269" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-e3b68acb-c670-4d6f-a892-b4eab1048269" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/dev_server_worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 package main
@@ -550,13 +552,7 @@ A Temporal Cloud Worker requires that you specify the following in the Client co
 - Temporal Cloud Address
 - Certificate and private key associated with the Namespace
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/cloud_worker/main_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-d3efbca6-424d-4b89-9f6f-ada8ffa476b5" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-d3efbca6-424d-4b89-9f6f-ada8ffa476b5" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/cloud_worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 package main
@@ -704,13 +700,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 Set IP address, port, and Namespace in the Temporal Client options.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/self_hosted_worker/main_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-42daed45-1430-4298-84d0-e4efb149352f" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-42daed45-1430-4298-84d0-e4efb149352f" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/self_hosted_worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 package main
@@ -805,11 +795,27 @@ Use the Temporal CLI `temporal workflow start` command to start your Workflow.
 
 ```shell
 temporal workflow start \
- --task-queue backgroundcheck-boilerplate-task-queue \
+ --task-queue backgroundcheck-boilerplate-task-queue-local \
  --type BackgroundCheck \
  --input '"555-55-5555"' \
- --namespace backgroundcheck_namespace
+ --namespace backgroundcheck_namespace \
+ --workflow-id backgroundcheck_workflow
 ```
+
+**Parameters breakdown**
+
+- `--task-queue`: The name of the Task Queue for all the Workflow Execution's Tasks.
+  Unless otherwise specified, Activity Executions use the Workflow Execution's Task Queue name by default.
+- `--type`: This is the Workflow Type name.
+  By default, this is the function name.
+  In the Go SDK, this name can be customized when [registering the Worklow with the Workflow](/dev-guide/go/foundations#customize-workflow-type).
+- `--input`: This must be a valid JSON object that can be unmarshaled into the parameter(s) that the Workflow function accepts.
+  Read more about how the Temporal Platform handles your application data in the [Data conversion](/dataconversion#) guide.
+- `--namespace`: This is the Namespace that you want to run your Temporal Application in.
+- `--workflow-id`: A [Workflow Id](/workflows#workflow-id) is a custom identifier provided by you.
+  The Temporal Platform generates one if one isn't provided.
+  However, we highly recommend supplying your own Workflow Id with your own naming convention.
+  A [Workflow Id Reuse Policy](/workflows#workflow-id-reuse-policy) enables fine controls over whether Workflow Ids can be reused in the Platform within the Retention Period.
 
 For more details, see the [temporal workflow start](/cli/workflow#start) command API reference.
 
@@ -839,6 +845,17 @@ Use the Namespace dropdown to select the project Namespace you created earlier.
 
 You should now be at [http://localhost:8233/namespaces/backgroundcheck_namespace/workflows](http://localhost:8233/namespaces/backgroundcheck_namespace/workflows).
 
+#### Confirm polling Worker
+
+If you ever want to confirm that a Worker is polling on the Task Queue that the Workflow started on, you can visit the Workflow Execution's details page and click on the Task Queue name.
+
+<div class="tdiw"><div class="tditw"><p class="tdit">Click on the Task Queue name to view polling Workers</p></div><div class="tdiiw"><img class="img_ev3q" src="/img/click-task-queue-name.png" alt="Click on the Task Queue name to view polling Workers" height="782" width="2596" /></div></div>
+
+This will direct you to a page where you can view the Workers polling that Task Queue.
+If there are none, the application won't run.
+
+<div class="tdiw"><div class="tditw"><p class="tdit">Confirm Workers polling Task Queue</p></div><div class="tdiiw"><img class="img_ev3q" src="/img/confirm-workers-polling-task-queue.png" alt="Confirm Workers polling Task Queue" height="692" width="2606" /></div></div>
+
 ### Temporal Cloud
 
 **How to start a Workflow with Temporal CLI when using Temporal Cloud**
@@ -849,18 +866,19 @@ Run the `temporal workflow start` command, and make sure to specify the certific
 temporal workflow start \
  --task-queue backgroundcheck-boilerplate-task-queue-cloud \
  --type BackgroundCheck \
- --tls-cert-path ca.pem \
- --tls-key-path ca.key \
  --input '"555-55-5555"' \
  --namespace <namespace>.<account-id> \
- --address <namespace>.<account-id>.tmprl.cloud:<port>
+ --workflow-id backgroundcheck_workflow \
+ --address <namespace>.<account-id>.tmprl.cloud:<port> \
+ --tls-cert-path ca.pem \
+ --tls-key-path ca.key
 ```
 
 Make sure that the certificate path, private key path, Namespace, and address argument values match your project.
 
 :::info Use environment variables
 
-Use environment variables as a way to quickly switch between a local dev server and Temporal Cloud, for example.
+Use [environment variables](/cli#environment-variables) as a way to quickly switch between a local dev server and Temporal Cloud, for example.
 
 You can customize the environment names to be anything you want.
 
@@ -919,7 +937,8 @@ temporal_docker workflow start \
  --task-queue backgroundcheck-boilerplate-task-queue-self-hosted \
  --type BackgroundCheck \
  --input '"555-55-5555"' \
- --namespace backgroundcheck_namespace
+ --namespace backgroundcheck_namespace \
+ --workflow-id backgroundcheck_workflow
 ```
 
 #### List Workflows
@@ -950,13 +969,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 Each Temporal SDK has a testing suite that can be used in conjunction with a typical language specific testing framework.
 In the Temporal Go SDK, the `testsuite` package (https://pkg.go.dev/go.temporal.io/sdk/testsuite) provides a test environment in which the Workflow and Activity code may be run for test purposes.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-ab46da2b-82ef-4be7-aab9-34e1ecca4ec1" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-ab46da2b-82ef-4be7-aab9-34e1ecca4ec1" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 package backgroundcheck_boilerplate
@@ -1008,13 +1021,7 @@ We can test Workflow code for the following conditions:
 
 We can also perform a Workflow Replay test, and we'll provide detailed coverage of this topic in another section.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-457b3d3b-aa25-4ed0-8010-c7a7519aa40f" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-457b3d3b-aa25-4ed0-8010-c7a7519aa40f" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 const ssn string = "555-55-5555"
@@ -1066,13 +1073,7 @@ We can test Activity code for the following conditions:
 - Error when checking for the result of the Activity Execution.
 - Activity return values. Check to ensure the return value is expected.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-1eb1d98e-95cf-40e0-aeac-29eed9df85ff" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-1eb1d98e-95cf-40e0-aeac-29eed9df85ff" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 // Test_SSNTraceActivity tests the SSNTraceActivity function

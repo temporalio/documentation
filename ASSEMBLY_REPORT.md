@@ -1,14 +1,13 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday November 08 2023 11:13:53 AM -0800
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
-110 guide configurations found.
+111 guide configurations found.
 
-1646 information nodes found.
+1665 information nodes found.
 
-1407 information nodes are attached to guides.
+1424 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1123,41 +1122,5 @@ go/generated/how-to-customize-activity-type-in-go -> #customize-activity-type
 go/landing-page/go-dev-guide-structure -> #
 
 go/chapter-project-setup/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
-
-go/chapter-project-setup/project-structure -> /dev-guide/go/project-setup#boilerplate-project
-
-go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
-
-go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
-
-go/foundations -> /dev-guide/go/foundations#
-
-go/how-to-develop-an-activity-definition-in-go -> /dev-guide/go/foundations#activity-definition
-
-go/introduction-to-go-sdk -> /dev-guide/go/introduction#
-
-go/how-to-develop-a-worker-in-go -> /dev-guide/go/foundations#develop-worker
-
-go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
-
-go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-go/go-dev-guide-structure -> #
-
-go/install-cli -> /dev-guide/go/project-setup#install-cli
-
-go/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
-
-go/project-structure -> /dev-guide/go/project-setup#boilerplate-project
-
-go/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
-
-go/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/go/project-setup#cloud-worker
-
-go/self-hosted-worker-docker-network -> /dev-guide/go/project-setup#dockerfile
-
-go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#local-dev-server
-
-go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 

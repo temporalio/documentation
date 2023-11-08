@@ -18,7 +18,7 @@ A Temporal SDK enables you to write your application code using the full power o
 
 Temporal currently offers the following SDKs:
 
-- [Get started with the Go SDK](/go/introduction-to-go-sdk)
+- [Get started with the Go SDK](/go/chapter-introduction/introduction-to-go-sdk)
 - [Get started with the Java SDK](/java/introduction-to-java-sdk)
 - [Get started with the PHP SDK](/dev-guide/php)
 - [Get started with the Python SDK](/python/introduction-to-python-sdk)

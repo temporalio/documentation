@@ -13,7 +13,7 @@ tags:
 
 Each Temporal SDK targets a specific programming language.
 
-- [Go SDK developer's guide](/go/introduction-to-go-sdk)
+- [Go SDK developer's guide](/go/chapter-introduction/introduction-to-go-sdk)
 - [Java SDK developer's guide](/java/introduction-to-java-sdk)
 - [PHP SDK developer's guide](/dev-guide/php)
 - [Python SDK developer's guide](/python/introduction-to-python-sdk)
