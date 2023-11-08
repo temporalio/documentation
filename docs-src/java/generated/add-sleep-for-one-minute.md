@@ -22,7 +22,6 @@ Use the `Workflow.getLogger` API to log from Workflows to suppress repeated logs
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-ac8b0da7-f565-4880-b555-de15715662bb" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-ac8b0da7-f565-4880-b555-de15715662bb" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/durable-execution/backgroundcheck-replay/src/main/java/backgroundcheckreplay/BackgroundCheckReplayWorkflowImpl.java">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```java
-
 package backgroundcheckreplay;
 
 import io.temporal.activity.ActivityOptions;
@@ -65,4 +64,3 @@ public class BackgroundCheckReplayWorkflowImpl implements BackgroundCheckReplayW
 
 }
 ```
-

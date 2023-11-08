@@ -34,7 +34,6 @@ One way to produce a non-deterministic error is to use a random number to determ
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-1038fae6-0942-471f-9b47-0b2accb3d3fd" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-1038fae6-0942-471f-9b47-0b2accb3d3fd" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/durable-execution/backgroundcheck-replay/src/main/java/backgroundcheckreplay/BackgroundCheckReplayNonDeterministicWorkflowImpl.java">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```java
-
 import io.temporal.activity.ActivityOptions;
 import io.temporal.workflow.Workflow;
 import org.slf4j.Logger;
@@ -76,4 +75,3 @@ public class BackgroundCheckReplayNonDeterministicWorkflowImpl implements Backgr
 
 }
 ```
-

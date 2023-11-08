@@ -18,16 +18,17 @@ to allow for testing Workflows. There are two ways to test Workflows; the first
 is to test the Workflow code without invoking the real Activities by mocking
 the Workflow's Activities and the second is to test the Workflow and its Activities
 in their entirety. This section will focus on the first scenario while a following
-section will cover the later. 
+section will cover the later.
 
-Testing your Workflows without invoking your Activities can be useful for testing 
-Workflow specific logic without having to worry about the Activity invocation 
-producing a side-effect or having any Activity downstream dependency, such as a 
+Testing your Workflows without invoking your Activities can be useful for testing
+Workflow specific logic without having to worry about the Activity invocation
+producing a side-effect or having any Activity downstream dependency, such as a
 microservice, be available during the duration of your testing.
 
 As for the actual testing code, testing Workflows is similar to testing non-Temporal java code.
 
 Some examples of things an Workflow can be tested for are:
+
 - Exceptions thrown when invoking the Workflow Execution.
 - Exceptions thrown when checking for the result of the Workflow Execution.
 - Workflow return values. Check to ensure the return value is expected.
@@ -37,7 +38,6 @@ We can also perform a Workflow Replay test, and we'll provide detailed coverage 
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-e42bb69b-8e8d-4fe9-8ee7-bfd483f9065e" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-e42bb69b-8e8d-4fe9-8ee7-bfd483f9065e" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/durable-execution/backgroundcheck/src/test/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateWorkflowTest.java">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```java
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -87,4 +87,3 @@ public class BackgroundCheckBoilerplateWorkflowTest {
   }
 }
 ```
-

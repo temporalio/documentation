@@ -22,7 +22,6 @@ A Temporal Cloud Worker requires that you specify the following in the Client co
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-a67dbe85-2dbe-442a-8e17-9d99f87e10dc" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-a67dbe85-2dbe-442a-8e17-9d99f87e10dc" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/durable-execution/backgroundcheck/src/main/java/backgroundcheckboilerplate/workers/CloudWorker.java">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```java
-
 package backgroundcheckboilerplate.workers;
 
 import java.io.FileInputStream;
@@ -95,4 +94,3 @@ public class CloudWorker {
   }
 }
 ```
-

@@ -18,6 +18,7 @@ to allow for testing Activities outside the scope of a Workflow. Testing
 Activities is similar to testing non-Temporal java code.
 
 Some examples of things an Activity can be tested for are:
+
 - Exceptions thrown when invoking the Activity Execution.
 - Exceptions thrown when checking for the result of the Activity Execution.
 - Activity return values. Check to ensure the return value is expected.
@@ -27,7 +28,6 @@ This example asserts that the expected value was returned by the invocation of t
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-ea55475f-7ee1-42a8-bf00-73eab64ca689" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-ea55475f-7ee1-42a8-bf00-73eab64ca689" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/durable-execution/backgroundcheck/src/test/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateActivitiesTest.java">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```java
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -58,4 +58,3 @@ public class BackgroundCheckBoilerplateActivitiesTest {
 
 }
 ```
-
