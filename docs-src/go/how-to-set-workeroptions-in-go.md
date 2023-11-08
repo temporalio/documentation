@@ -286,7 +286,7 @@ This method of passing dependencies between Activity Task Executions is not reco
 
 Instead, we recommend using a struct with fields that contain dependencies and develop Activity Definitions as struct methods and then pass all the dependencies on the structure initialization.
 
-- [How to develop an Activity Definition using the Go SDK](/go/how-to-develop-an-activity-definition-in-go)
+- [How to develop an Activity Definition using the Go SDK](/go/generated/how-to-develop-an-activity-definition-in-go)
 
 :::
 

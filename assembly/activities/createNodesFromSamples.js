@@ -1,5 +1,6 @@
 import fs from "fs-extra";
 import path from "path";
+import { v4 as uuidv4 } from "uuid";
 import rangeParser from "parse-numeric-range";
 import graymatter from "gray-matter";
 
@@ -70,6 +71,7 @@ export async function createNodesFromSamples(config) {
         config.root_dir,
         config.docs_src,
         `${node.metadata.lang}`,
+        "generated",
         `${node.metadata.id}.md`
       );
       await fs.writeFile(nodeWritePath, writeStr);
@@ -163,7 +165,7 @@ export async function createNodesFromSamples(config) {
       case ".py":
         return true;
       case ".java":
-          return true;  
+        return true;
       default:
         return false;
     }
@@ -172,25 +174,22 @@ export async function createNodesFromSamples(config) {
     str = str.toLowerCase(); // Remember to assign the result back to str
     if (str.includes("_dacx")) {
       return true;
-    } else if (isSupportedExtension(path.extname(str))){
+    } else if (isSupportedExtension(path.extname(str))) {
       console.log(JSON.stringify(file));
       const readPath = path.join(config.root_dir, config.temp_write_dir, file.directory, file.name);
       try {
-        const fileContent = fs.readFileSync(readPath, 'utf-8');
-        const firstLine = fileContent.split('\n')[0]; // Get the first line of the file
+        const fileContent = fs.readFileSync(readPath, "utf-8");
+        const firstLine = fileContent.split("\n")[0]; // Get the first line of the file
         if (firstLine.includes("dacx")) {
           return true;
         }
       } catch (err) {
         console.error("File failed to load:", err);
       }
-    }
-    else{
+    } else {
       return false;
     }
-    
   }
-  
 
   function parseURL(repoPath, file) {
     const parts = file.directory.split("/");
@@ -201,12 +200,7 @@ export async function createNodesFromSamples(config) {
   }
 
   function genSourceLinkHTML(link) {
-    return `:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](${link}) in the context of the rest of the application code. 
-
-:::`;
+    const id = uuidv4();
+    return `<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-${id}" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-${id}" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="${link}">view the source code</a> in the context of the rest of the application code.</div></div>`;
   }
 }
