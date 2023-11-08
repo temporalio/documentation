@@ -18,6 +18,16 @@ A Namespace (regardless of account) cannot interact with other Namespaces.
 Each Namespace is available through a secure gRPC (mTLS) endpoint and an HTTPS (TLS) endpoint.
 You can make these endpoints more secure by routing all communication through AWS PrivateLink.
 
+:::note
+
+If you are interested in leveraging AWS PrivateLink in your Namespaces, [create a support ticket](/cloud/support#support-ticket) that includes the following information:
+
+- AWS Region: The Region in which your connection will go through.
+- AWS Account Id: The account which contains the permissions to enable AWS PrivateLink.
+- Temporal Cloud Namespace names: The name of the Namespaces you want to enable AWS PrivateLink with.
+
+:::
+
 Temporal Cloud is a multi-tenant service.
 Namespaces in the same environment are logically segregated.
 Namespaces do not share data processing or data storage across regional boundaries.
