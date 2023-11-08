@@ -1,5 +1,6 @@
 # Docs Assembly Workflow report
 
+Last assembled: Wednesday November 08 2023 12:18:48 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -53,7 +54,7 @@ concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
 
-cloud/security-cloud-intro -> /cloud/security-model#
+cloud/security-cloud-intro -> /cloud/security#
 
 references/server-options -> /references/server-options#withconfig
 
@@ -1122,5 +1123,13 @@ go/generated/how-to-customize-activity-type-in-go -> #customize-activity-type
 go/landing-page/go-dev-guide-structure -> #
 
 go/chapter-project-setup/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
+
+go/chapter-project-setup/project-structure -> /dev-guide/go/project-setup#boilerplate-project
+
+go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
+
+go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
+
+go/foundations -> /dev-guide/go/foundations#
 
 
