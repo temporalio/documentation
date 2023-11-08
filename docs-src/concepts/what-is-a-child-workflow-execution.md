@@ -28,7 +28,7 @@ Consider the Child's [Parent Close Policy](/concepts/what-is-a-parent-close-poli
 :::note
 
 Child Workflows do not carry over when the Parent uses [Continue-As-New](/concepts/what-is-continue-as-new).
-This implies that if a Parent Workflow Execution utilizes Continue-As-New, any ongoing Child Workflow Executions will not be retained in the new continued instance of the Parent.
+This means that if a Parent Workflow Execution utilizes Continue-As-New, any ongoing Child Workflow Executions will not be retained in the new continued instance of the Parent.
 
 :::
 
