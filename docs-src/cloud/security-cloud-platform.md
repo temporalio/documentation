@@ -1,12 +1,14 @@
 ---
 id: security-cloud-platform
-title: What the security model for the Temporal Cloud platform?
-sidebar_label: Temporal Cloud platform
+title: The platform
+sidebar_label: The platform
 description: The Temporal Cloud platform provides a range of security measures.
 tags:
   - temporal cloud
   - security
 ---
+
+**What is the security model for the Temporal Cloud platform?**
 
 ### Namespace isolation
 
