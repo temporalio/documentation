@@ -22,7 +22,7 @@ Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/
 
 #### Name
 
-See [How to customize a Workflow Type in Go](/go/how-to-customize-workflow-type-in-go)
+See [How to customize a Workflow Type in Go](/go/generated/how-to-customize-workflow-type-in-go)
 
 #### DisableAlreadyRegisteredCheck
 

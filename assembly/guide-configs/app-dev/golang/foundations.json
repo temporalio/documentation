@@ -5,7 +5,7 @@
   "file_dir": "dev-guide/golang",
   "title": "Go SDK developer's guide - Foundations",
   "sidebar_label": "Foundations",
-  "sidebar_position": 3,
+  "sidebar_position": 4,
   "description": "The Foundations section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go – that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
   "use_description": false,
   "toc_max_heading_level": 4,
@@ -45,7 +45,7 @@
     },
     {
       "type": "p",
-      "id": "go/how-to-connect-to-a-development-cluster-in-go"
+      "id": "go/generated/how-to-connect-to-a-development-cluster-in-go"
     },
     {
       "type": "h2",
@@ -53,7 +53,7 @@
     },
     {
       "type": "p",
-      "id": "go/how-to-connect-to-temporal-cloud-in-go"
+      "id": "go/generated/how-to-connect-to-temporal-cloud-in-go"
     },
     {
       "type": "h2",
@@ -61,7 +61,7 @@
     },
     {
       "type": "p",
-      "id": "go/how-to-develop-a-workflow-definition-in-go"
+      "id": "go/generated/how-to-develop-a-workflow-definition-in-go"
     },
     {
       "type": "h3",
@@ -69,7 +69,7 @@
     },
     {
       "type": "p",
-      "id": "go/how-to-define-workflow-parameters-in-go"
+      "id": "go/generated/how-to-define-workflow-parameters-in-go"
     },
     {
       "type": "h3",
@@ -77,11 +77,11 @@
     },
     {
       "type": "p",
-      "id": "go/how-to-define-workflow-return-values-in-go"
+      "id": "go/generated/how-to-define-workflow-return-values-in-go"
     },
     {
       "type": "h3",
-      "id": "go/how-to-customize-workflow-type-in-go"
+      "id": "go/generated/how-to-customize-workflow-type-in-go"
     },
     {
       "type": "h3",
@@ -89,11 +89,11 @@
     },
     {
       "type": "p",
-      "id": "go/how-to-handle-workflow-logic-requirements-in-go"
+      "id": "go/generated/how-to-handle-workflow-logic-requirements-in-go"
     },
     {
       "type": "h2",
-      "id": "go/how-to-develop-an-activity-definition-in-go"
+      "id": "go/generated/how-to-develop-an-activity-definition-in-go"
     },
     {
       "type": "h3",
@@ -101,7 +101,7 @@
     },
     {
       "type": "p",
-      "id": "go/how-to-define-activity-parameters-in-go"
+      "id": "go/generated/how-to-define-activity-parameters-in-go"
     },
     {
       "type": "h3",
@@ -109,11 +109,11 @@
     },
     {
       "type": "p",
-      "id": "go/how-to-define-activity-return-values-in-go"
+      "id": "go/generated/how-to-define-activity-return-values-in-go"
     },
     {
       "type": "h3",
-      "id": "go/how-to-customize-activity-type-in-go"
+      "id": "go/generated/how-to-customize-activity-type-in-go"
     },
     {
       "type": "h2",
@@ -121,7 +121,7 @@
     },
     {
       "type": "p",
-      "id": "go/how-to-spawn-an-activity-execution-in-go"
+      "id": "go/generated/how-to-spawn-an-activity-execution-in-go"
     },
     {
       "type": "h3",
@@ -145,7 +145,7 @@
     },
     {
       "type": "h2",
-      "id": "go/how-to-develop-a-worker-in-go"
+      "id": "go/generated/how-to-develop-a-worker-in-go"
     },
     {
       "type": "h3",
@@ -157,7 +157,7 @@
     },
     {
       "type": "p",
-      "id": "go/how-to-run-a-temporal-cloud-worker-in-go"
+      "id": "go/generated/how-to-run-a-temporal-cloud-worker-in-go"
     },
     {
       "type": "h3",

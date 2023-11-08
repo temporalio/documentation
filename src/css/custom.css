@@ -842,3 +842,68 @@ a.tdlp:hover .tdlpc {
 code {
   vertical-align: baseline;
 }
+
+/* When the screen width is greater than or equal to 1024px (common desktop size), the element is shown */
+
+.copycode-notice-container {
+  background-color: #141414;
+  border: 1px solid #fff;
+  color: #efefef;
+  margin-bottom: 3px;
+  padding: 0;
+  border-radius: 6px;
+}
+.copycode-notice {
+  display: flex;
+  justify-content: left;
+  padding: 7px;
+  vertical-align: center;
+  align-items: center;
+  font-family: monospace;
+  font-size: 1.2em;
+}
+
+.copycode-notice img {
+  height: 28px !important;
+}
+
+img[data-style="copycode-icon"] {
+  margin-right: 15px;
+  margin-left: 15px;
+}
+
+img[data-style="chevron-icon"] {
+  margin-left: 15px;
+  cursor: pointer;
+  transition: transform 1s;
+}
+
+img[data-style="chevron-icon"]:hover {
+  animation: bounce 0.5s;
+}
+
+.copycode-info {
+  position: relative;
+  padding: 15px; /* Some padding for the content inside the modal */
+  display: none;
+}
+
+.copycode-info a {
+  color: #ffffff !important;
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
+}

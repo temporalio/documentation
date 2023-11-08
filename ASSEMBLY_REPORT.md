@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday November 08 2023 15:52:43 PM -0700
+Last assembled: Wednesday November 08 2023 16:48:43 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-120 guide configurations found.
+121 guide configurations found.
 
-1662 information nodes found.
+1675 information nodes found.
 
-1419 information nodes are attached to guides.
+1430 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -436,7 +436,7 @@ concepts/what-is-an-activity-definition -> #activity-definition
 
 concepts/what-is-an-activity-heartbeat -> #activity-heartbeat
 
-go/how-to-develop-an-activity-definition-in-go -> /dev-guide/go/foundations#activity-definition
+go/generated/how-to-develop-an-activity-definition-in-go -> /dev-guide/go/foundations#activity-definition
 
 java/developing-activities -> /dev-guide/java/foundations#develop-activities
 
@@ -548,13 +548,15 @@ python/workflow-retries -> /dev-guide/python/features#workflow-retries
 
 typescript/workflow-retries -> /dev-guide/typescript/features#workflow-retries
 
+concepts/what-is-durable-execution -> #durable-execution
+
 concepts/what-is-a-worker-process -> /workers#worker-process
 
 concepts/what-is-a-temporal-client -> #temporal-client
 
 concepts/what-is-a-worker-program -> /workers#worker-program
 
-go/introduction-to-go-sdk -> /dev-guide/go/introduction#
+go/chapter-introduction/introduction-to-go-sdk -> /dev-guide/go/introduction#
 
 java/introduction-to-java-sdk -> /dev-guide/java/introduction#
 
@@ -578,7 +580,7 @@ typescript/visibility -> /dev-guide/typescript/observability#visibility
 
 concepts/what-is-a-worker-entity -> #worker-entity
 
-go/how-to-develop-a-worker-in-go -> /dev-guide/go/foundations#develop-worker
+go/generated/how-to-develop-a-worker-in-go -> /dev-guide/go/foundations#develop-worker
 
 java/how-to-develop-a-worker-program-in-java -> /dev-guide/java/foundations#run-a-dev-worker
 
@@ -1032,6 +1034,8 @@ dev-guide/temporal-application -> #temporal-application
 
 dev-guide/official-sdks -> #official-sdks
 
+go/chapter-durable-execution/durable-execution-intro -> /dev-guide/go/durable-execution#
+
 references/strongly-typed-errors/non-deterministic-error -> /references/errors#non-deterministic-error
 
 typescript/testing -> /dev-guide/typescript/testing#replay
@@ -1120,29 +1124,33 @@ go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 
 go/logging -> /dev-guide/go/observability#logging
 
-go/install-cli -> /dev-guide/go/project-setup#install-cli
+dev-guide/why-use-a-temporal-sdk -> /dev-guide/sdks#replays
+
+go/chapter-project-setup/project-setup-introduction -> /dev-guide/go/project-setup#
+
+go/generated/backgroundcheck-replay-intrinsic-non-determinism -> #intrinsic-non-deterministic-logic
+
+go/chapter-durable-execution/non-deterministic-code-changes -> #durability-through-replays
+
+go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#start-workflow
+
+go/chapter-durable-execution/retrieve-event-history -> #retrieve-event-history
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
-go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
+go/generated/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
-go/how-to-customize-activity-type-in-go -> #customize-activity-type
+go/generated/how-to-customize-activity-type-in-go -> #customize-activity-type
 
-go/go-dev-guide-structure -> #
+go/landing-page/go-dev-guide-structure -> #
 
-go/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
+go/chapter-project-setup/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
 
-go/project-structure -> /dev-guide/go/project-setup#boilerplate-project
+go/chapter-project-setup/project-structure -> /dev-guide/go/project-setup#boilerplate-project
 
-go/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
+go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
 
-go/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/go/project-setup#cloud-worker
-
-go/self-hosted-worker-docker-network -> /dev-guide/go/project-setup#dockerfile
-
-go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#local-dev-server
-
-go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
+go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
 

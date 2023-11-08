@@ -2,7 +2,7 @@
 id: features
 title: Go SDK developer's guide - Features
 sidebar_label: Features
-sidebar_position: 4
+sidebar_position: 5
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 slug: /dev-guide/go/features
 toc_max_heading_level: 4
@@ -404,13 +404,7 @@ When sending and receiving the Update, use the Update name as an identifier.
 The name does not link to the data type(s) sent with the Update.
 Ensure that every Workflow listening to the same Update name can handle the same Update arguments.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-42e88805-c2fd-46d6-b347-552c67e0e83e" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-42e88805-c2fd-46d6-b347-552c67e0e83e" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 // YourUpdateName holds a string value used to correlate Updates.
@@ -440,13 +434,7 @@ WorkflowPanicPolicy is set in the Worker Options.
 
 Update handlers, unlike Query handlers, can change Workflow state.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-052a9fc2-0471-4f77-b78c-646cc4501c3a" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-052a9fc2-0471-4f77-b78c-646cc4501c3a" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 // ...
@@ -480,13 +468,7 @@ The Validator function, unlike the Update Handler, can not change the state of t
 
 The platform treats a panic in the Validator function as a rejection of the Update."
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-0ce564d6-8db2-481c-a028-633b3ce0756b" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-0ce564d6-8db2-481c-a028-633b3ce0756b" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 // UpdatableWorkflowWithValidator is a Workflow Definition.
@@ -534,13 +516,7 @@ Invoke the UpdateWorkflow() method on an instance of the [Go SDK Temporal Client
 You must provide the Workflow Id, but specifying a Run Id is optional.
 If you supply only the Workflow Id (and provide an empty string as the Run Id param), the currently running Workflow Execution receives the Update.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/update/main_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-fe11a563-4776-4854-bdee-0f8c155ca123" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-fe11a563-4776-4854-bdee-0f8c155ca123" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/update/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 func main() {
@@ -1036,13 +1012,7 @@ The user generates a unique Schedule ID for each new Schedule.
 To create a Schedule in Go, use `Create()` on the [Client](/temporal#temporal-client).
 Schedules must be initialized with a Schedule ID, [Spec](/workflows#spec), and [Action](/workflows#action) in `client.ScheduleOptions{}`.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/create/main_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-5e56dbdd-7e18-4ee8-8c4a-d30dc6ecef8c" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-5e56dbdd-7e18-4ee8-8c4a-d30dc6ecef8c" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/create/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 func main() {
@@ -1075,13 +1045,7 @@ This is useful for executing a missed or delayed Action, or for testing the Work
 To backfill a Schedule in Go, use `Backfill()` on `ScheduleHandle`.
 Specify the start and end times to execute the Workflow, along with the overlap policy.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/backfill/main_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-05e0c1de-bb5a-4a4d-a9aa-94b96569c5e4" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-05e0c1de-bb5a-4a4d-a9aa-94b96569c5e4" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/backfill/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 func main() {
@@ -1118,13 +1082,7 @@ Deletion does not affect any Workflows started by the Schedule.
 
 To delete a Schedule, use `Delete()` on the `ScheduleHandle`.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/delete/main_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-260a74c5-5137-4ce2-9a18-59eeed31f475" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-260a74c5-5137-4ce2-9a18-59eeed31f475" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/delete/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 func main() {
@@ -1149,13 +1107,7 @@ This can include details about the Schedule Spec (such as Intervals), CronExpres
 
 To describe a Schedule, use `Describe()` on the ScheduleHandle.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/describe/main_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-a945ce96-964e-4b51-bfe1-cb21301c6d23" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-a945ce96-964e-4b51-bfe1-cb21301c6d23" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/describe/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 func main() {
@@ -1173,13 +1125,7 @@ The `List` action returns all available Schedules and their respective Schedule 
 
 To return information on all Schedules, use `ScheduleClient.List()`.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/list/main_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-bee48168-74b4-4a64-8078-ceae764c059b" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-bee48168-74b4-4a64-8078-ceae764c059b" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/list/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 func main() {
@@ -1207,13 +1153,7 @@ Pausing can be enabled by setting `State.Paused` to `true`, or by using `Pause()
 Unpausing a Schedule allows the Workflow to execute as planned.
 To unpause a Schedule, use `Unpause()` on `ScheduleHandle`.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/pause/main_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-2fff461e-aff4-42ad-91dc-ad95a3400df8" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-2fff461e-aff4-42ad-91dc-ad95a3400df8" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/pause/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 func main() {
@@ -1237,13 +1177,7 @@ By default, `trigger` is subject to the Overlap Policy.
 
 To trigger a Scheduled Workflow Execution, use `trigger()` on `ScheduleHandle`.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/trigger/main_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-978178fb-d7d1-49ae-ad58-926758ab42d1" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-978178fb-d7d1-49ae-ad58-926758ab42d1" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/trigger/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 func main() {
@@ -1267,13 +1201,7 @@ These changes can be made to Workflow Actions, Action parameters, Memos, and the
 
 Use `Update()` on the ScheduleHandle to modify a Schedule.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/schedule/update/main_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-285bac85-ec9a-4812-be2e-d73d621c7921" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-285bac85-ec9a-4812-be2e-d73d621c7921" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/update/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 func main() {
@@ -1607,13 +1535,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 Set `EnableSessionWorker` to `true` in the Worker options.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/sessions/worker/main_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-371ffbb1-4d83-4cac-b38b-db0884d5aa5a" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-371ffbb1-4d83-4cac-b38b-db0884d5aa5a" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/sessions/worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 // ...
@@ -1645,13 +1567,7 @@ By default, this field is set to a very large value, so there's no need to manua
 If a Worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed.
 If the session can't be created within `CreationTimeout`, `CreateSession()` returns an error .
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/sessions/worker/main_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-5a1a281c-d100-4281-aa20-94e69e81f009" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-5a1a281c-d100-4281-aa20-94e69e81f009" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/sessions/worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 func main() {
@@ -1696,13 +1612,7 @@ It is safe to call `CompleteSession()` on a failed Session, meaning that you can
 If the Worker goes down between Activities, any scheduled Activities meant for the Session Worker are canceled.
 If not, you get a `workflow.ErrSessionFailed` error when the next call of `workflow.ExecuteActivity()` is made from that Workflow.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-go/blob/main/sessions/workflow_dacx.go) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-5b9a299d-d325-4593-b760-8fd14203c523" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-5b9a299d-d325-4593-b760-8fd14203c523" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/sessions/workflow_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 package sessions
