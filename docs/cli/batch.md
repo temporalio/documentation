@@ -34,9 +34,46 @@ The List Filter identifies the Workflow Executions in the Batch Job; the Batch t
 
 There are three types of Batch Jobs:
 
-- Signal: sends a [Signal](/workflows#signal) to the Workflow Executions specified by the List Filter.
 - Cancel: cancels the Workflow Executions specified by the List Filter.
+- Signal: sends a [Signal](/workflows#signal) to the Workflow Executions specified by the List Filter.
 - Terminate: terminates the Workflow Executions specified by the List Filter.
+
+Batch operations can affect multiple Workflows simultaneously.
+Depending on your needs, you might want to send Signals to running Workflows, Cancel them, or even Terminate them entirely.
+Below, are examples on these commands using Temporal's CLI for each type of Batch operation.
+
+Using these commands will directly impact the Workflows you target, so it's important to use them judiciously.
+
+**What Are the CLI Commands for Batch operations in Temporal Workflows?**
+
+You can use the `--query` flag to filter the Workflow Executions to be affected by the Batch Job.
+
+To Cancel a Workflow
+
+```command
+temporal workflow cancel \
+  --query 'ExecutionStatus = "Running" AND WorkflowType="YourWorkflow"' \
+  --reason "Testing"
+```
+
+To Signal a Workflow:
+
+```command
+temporal workflow signal \
+  --workflow-id MyWorkflowId \
+  --name MySignal \
+  --input '{"Input": "As-JSON"}' \
+  --query 'ExecutionStatus = "Running" AND WorkflowType="YourWorkflow"' \
+  --reason "Testing"
+```
+
+To Terminate a Workflow:
+
+```command
+temporal workflow terminate \
+  --query 'ExecutionStatus = "Running" AND WorkflowType="YourWorkflow"' \
+  --reason "Testing"
+```
 
 A successfully started Batch job will return a Job ID.
 Use this Job ID to execute other actions on the Batch job.
