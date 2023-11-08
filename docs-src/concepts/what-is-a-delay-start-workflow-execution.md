@@ -7,6 +7,10 @@ tags:
     - term
     - explanation
     - delay-workflow
+ssdi:
+  - Introduced in the [Temporal Go SDK 1.25.0](https://github.com/temporalio/sdk-go/releases/tag/v1.25.0)
+  - Introduced in the [Temporal Java SDK 1.25.0](https://github.com/temporalio/sdk-java/releases/tag/v1.22.1)
+  - Introduced in the [Temporal Python SDK 1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
 ---
 
 Start Delay determines the amount of time to wait before initiating a Workflow Execution.
