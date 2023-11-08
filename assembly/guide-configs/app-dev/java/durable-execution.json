@@ -1,0 +1,55 @@
+{
+  "file_name": "durable-execution.md",
+  "id": "durable-execution",
+  "slug": "/dev-guide/java/durable-execution",
+  "file_dir": "dev-guide/javalang",
+  "title": "Java SDK dev guide - Develop code that durably executes",
+  "sidebar_label": "Develop for durability",
+  "sidebar_position": 3,
+  "description": "The Durable Execution section of the Temporal Developer's guide covers advanced beginner concepts for working with Temporal, including testing your code, reviewing workflow event history, adding timers, and understanding determinism. Developing for durable execution is a core aspect of Temporal.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "java/chapter-durable-execution/durable-execution-intro"
+    },
+    {
+      "type": "h2",
+      "id": "java/chapter-durable-execution/retrieve-event-history"
+    },
+    {
+      "type": "h2",
+      "id": "java/generated/add-replay-test-to-background-check-workflow"
+    },
+    {
+      "type": "h3",
+      "id": "java/chapter-durable-execution/why-add-the-replay-test"
+    },
+    {
+      "type": "h2",
+      "id": "java/generated/backgroundcheck-replay-intrinsic-non-determinism"
+    },
+    {
+      "type": "h2",
+      "id": "java/chapter-durable-execution/workflow-reset"
+    },
+    {
+      "type": "p",
+      "id": "java/generated/backgroundcheck-replay-inspecting-the-non-deterministic-error"
+    },
+    {
+      "type": "h2",
+      "id": "java/chapter-durable-execution/non-deterministic-code-changes"
+    },
+    {
+      "type": "h3",
+      "id": "java/generated/add-sleep-for-one-minute"
+    },
+    {
+      "type": "h3",
+      "id": "java/generated/inspect-the-new-event-history"
+    }
+  ]
+}
