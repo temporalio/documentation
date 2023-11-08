@@ -893,7 +893,7 @@ This is useful for starting Child Workflows asynchronously (see [relevant issue 
 
 - Introduced in Temporal Server version 1.17.0
 - Available in Temporal CLI (and tctl v1.17)
-- Available in Temporal Cloud in Public Preview
+- Available in Temporal Cloud
 - Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) version [1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
 - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
 - Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow) version [1.1.0](https://github.com/temporalio/sdk-python/releases/tag/1.1.0)
@@ -1067,6 +1067,16 @@ Not B, even though B started more recently, because A completed later.
 And not C, even though C completed after A, because the result for D is captured when D is started, not when it's queried.
 
 Failures and timeouts do not affect the last completion result.
+
+:::note
+
+When a Schedule triggers a Workflow that completes successfully and yields a result, the result from the initial Schedule execution can be accessed by the subsequent scheduled execution through `LastCompletionResult`.
+
+Be aware that if, during the subsequent run, the Workflow employs the [Continue-As-New](#continue-as-new) feature, `LastCompletionResult` won't be accessible for this new Workflow iteration.
+
+It is important to note that the [status](#status) of the subsequent run is marked as `Continued-As-New` and not as `Completed`.
+
+:::
 
 ### Last failure
 
