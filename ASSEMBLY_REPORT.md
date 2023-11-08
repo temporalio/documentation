@@ -1,6 +1,5 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday November 08 2023 09:05:41 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -1123,13 +1122,5 @@ go/generated/how-to-customize-activity-type-in-go -> #customize-activity-type
 go/landing-page/go-dev-guide-structure -> #
 
 go/chapter-project-setup/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
-
-go/chapter-project-setup/project-structure -> /dev-guide/go/project-setup#boilerplate-project
-
-go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
-
-go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
-
-go/foundations -> /dev-guide/go/foundations#
 
 
