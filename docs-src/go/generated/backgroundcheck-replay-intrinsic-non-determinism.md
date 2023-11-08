@@ -14,7 +14,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 Referred to as "intrinsic non-determinism" this kind of "bad" Workflow code can prevent the Workflow code from completing because the Workflow can take a different code path than the one expected from the Event History.
 
-The following are some common operations that **can't** be done inside of a Wokflow Definition:
+The following are some common operations that **can't** be done inside of a Workflow Definition:
 
 - Generate and rely on random numbers (Use Activites instead).
 - Accessing / mutating external systems or state.
@@ -34,9 +34,9 @@ The following are some common operations that **can't** be done inside of a Wokf
   You can also use a Side Effect or an Activity to process the map instead.
 - Storing or evaluating the run Id.
 
-One way to produce a non-deterministic error is to sleep for a random amount of time inside the Workflow.
+One way to produce a non-deterministic error is to use a random number to determine whether to sleep inside the Workflow.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-4bcc3ccd-28f2-4650-aa28-f895fb37cb51" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-4bcc3ccd-28f2-4650-aa28-f895fb37cb51" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_replay/workflows/backgroundcheck_non_deterministic_code.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-949a27c5-8cc9-438c-94ba-cf619e0c64e5" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-949a27c5-8cc9-438c-94ba-cf619e0c64e5" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_replay/workflows/backgroundcheck_non_deterministic_code.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 package workflows
@@ -60,7 +60,13 @@ func BackgroundCheckNonDeterministic(ctx workflow.Context, param string) (string
 	var ssnTraceResult string
 	// highlight-start
 	// CAUTION, the following code is an anti-pattern showing what NOT to do
-	time.Sleep(time.Duration(rand.Intn(10)) * time.Second)
+	num := rand.Intn(100)
+	if num > 50 {
+		err := workflow.Sleep(ctx, 10*time.Second)
+		if err != nil {
+			return "", err
+		}
+	}
 	// highlight-end
 	err := workflow.ExecuteActivity(ctx, activities.SSNTraceActivity, param).Get(ctx, &ssnTraceResult)
 	if err != nil {

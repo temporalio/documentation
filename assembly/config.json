@@ -36,6 +36,14 @@
         {
             "org": "temporalio",
             "name": "documentation-samples-go"
+        },
+        {
+            "org": "temporalio",
+            "name": "documentation-samples-python"
+        },
+        {
+            "org": "temporalio",
+            "name": "documentation-samples-java"
         }
     ]
 }
