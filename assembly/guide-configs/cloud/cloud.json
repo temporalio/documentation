@@ -3,7 +3,7 @@
   "id": "index",
   "file_dir": "cloud",
   "slug": "/cloud",
-  "title": "SaaS infra to supervise your durable applications",
+  "title": "Temporal Cloud guide",
   "sidebar_label": "Temporal Cloud guide",
   "sidebar_position": 3,
   "description": "Temporal Cloud documentation, including explanations and usage.",

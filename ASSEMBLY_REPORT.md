@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday November 08 2023 11:00:32 AM -0700
+Last assembled: Wednesday November 08 2023 15:52:43 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
 120 guide configurations found.
 
-1659 information nodes found.
+1662 information nodes found.
 
-1416 information nodes are attached to guides.
+1419 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -355,6 +355,8 @@ concepts/what-is-a-codec-server -> /dataconversion#codec-server
 concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
 
 references/dynamic-configuration -> /references/dynamic-configuration#
+
+cli/start-dev-server -> /cli#start-dev-server
 
 references/server-options -> /references/server-options#
 
@@ -731,6 +733,10 @@ php/cron-jobs -> /dev-guide/php/features#temporal-cron-jobs
 python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
+
+dev-guide/temporal-sdk -> /dev-guide/sdks#
+
+self-hosted/intro -> /self-hosted-guide/introduction#
 
 cloud/users-account-level-roles -> /cloud/users#account-level-roles
 

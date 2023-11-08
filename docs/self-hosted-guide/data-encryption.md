@@ -2,6 +2,7 @@
 id: data-encryption
 title: Temporal production readiness - Develop
 sidebar_label: Data encryption
+sidebar_position: 7
 description: This guide explains what you need to develop to use Temporal in your production environment.
 toc_max_heading_level: 4
 keywords:

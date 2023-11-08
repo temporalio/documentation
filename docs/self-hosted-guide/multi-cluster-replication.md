@@ -2,7 +2,7 @@
 id: multi-cluster-replication
 title: Self-hosted Multi-Cluster Replication
 sidebar_label: Multi-Cluster Replication
-sidebar_position: 4
+sidebar_position: 10
 description: Learn how to setup Multi-Cluster Replication.
 toc_max_heading_level: 4
 keywords:

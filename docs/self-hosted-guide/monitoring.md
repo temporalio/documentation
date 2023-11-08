@@ -2,7 +2,7 @@
 id: monitoring
 title: Monitor Temporal Platform metrics
 sidebar_label: Monitor metrics
-sidebar_position: 6
+sidebar_position: 4
 description: Learn how to monitor metrics emitted from the a self-hosted Temporal Platform.
 toc_max_heading_level: 4
 keywords:

@@ -2,7 +2,7 @@
 id: upgrade-server
 title: Upgrade the Temporal Server
 sidebar_label: Upgrade server
-sidebar_position: 5
+sidebar_position: 8
 description: Learn how to keep your Temporal Server up to date.
 toc_max_heading_level: 4
 keywords:

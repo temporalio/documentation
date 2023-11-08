@@ -2,7 +2,7 @@
 id: checklist
 title: Temporal Platform's production readiness checklist
 sidebar_label: Prod checklist
-sidebar_position: 5
+sidebar_position: 3
 description: Discover all the production level steps you can take to ensure a smooth deployment.
 toc_max_heading_level: 4
 keywords:

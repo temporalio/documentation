@@ -2,6 +2,7 @@
 id: defaults
 title: Self-hosted Temporal Cluster defaults
 sidebar_label: Defaults
+sidebar_position: 2
 description: Learn about the default limits for self-hosted Temporal Clusters.
 toc_max_heading_level: 4
 keywords:

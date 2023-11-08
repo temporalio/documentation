@@ -4,7 +4,7 @@
     "file_dir": "self-hosted-guide",
     "title": "Health checking a Self-hosted Cluster",
     "sidebar_label": "Health checks",
-    "sidebar_position": 6,
+    "sidebar_position": 5,
     "description": "Learn health checking best practices.",
     "use_description": false,
     "toc_max_heading_level": 4,

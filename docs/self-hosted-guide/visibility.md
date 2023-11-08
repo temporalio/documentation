@@ -2,7 +2,7 @@
 id: visibility
 title: Self-hosted Visibility feature setup
 sidebar_label: Visibility
-sidebar_position: 4
+sidebar_position: 6
 description: Learn how to set up the Temporal self-hosted Cluster Visibility feature.
 toc_max_heading_level: 4
 keywords:

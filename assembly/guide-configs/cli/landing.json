@@ -14,6 +14,18 @@
     {
       "type": "p",
       "id": "concepts/what-is-the-temporal-cli"
+    },
+    {
+      "type": "h2",
+      "id": "cli/installation"
+    },
+    {
+      "type": "h2",
+      "id": "cli/start-dev-server"
+    },
+    {
+      "type": "h2",
+      "id": "cli/common-operations"
     }
   ]
 }

@@ -2,7 +2,7 @@
 id: archival
 title: Self-hosted Archival setup
 sidebar_label: Archival
-sidebar_position: 3
+sidebar_position: 9
 description: Learn how to setup the self-hosted Cluster Archival feature.
 toc_max_heading_level: 4
 keywords:
