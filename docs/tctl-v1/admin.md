@@ -29,13 +29,13 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-:::info Temporal CLI is now available!
 
-The new [Temporal CLI](/cli) is available for use.
+:::info Temporal CLI is now available
 
-tctl v1.17 can still be used with Temporal Server version 1.20 and is expected to be compatible with Temporal Server version 1.21.
+The public preview of [Temporal CLI](/cli) is now available.
+We encourage you to begin using it and to provide feedback.
 
-tctl is expected to be fully deprecated by Temporal Server version 1.22
+After we release Temporal CLI v1, we will deprecate tctl.
 
 :::
 
