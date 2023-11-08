@@ -25,7 +25,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Temporal CLI, evolving from its precursor [tctl](/concepts/what-is-temporal-cli), serves as a command-line interface that provides developers with direct access to a Temporal Cluster.
+The Temporal CLI, evolving from its precursor [tctl](#), serves as a command-line interface that provides developers with direct access to a Temporal Cluster.
 It's a powerful tool for managing, monitoring, and debugging Temporal Applications.
 With the Temporal CLI, developers can start Workflows, Signal or cancel them, and Query Workflow state, directly from their terminal.
 This interface also facilitates administrative tasks such as Namespace management.
