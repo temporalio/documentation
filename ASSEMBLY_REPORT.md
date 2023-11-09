@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday November 08 2023 16:54:27 PM -0700
+Last assembled: Wednesday November 08 2023 17:00:23 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-121 guide configurations found.
+124 guide configurations found.
 
-1675 information nodes found.
+1678 information nodes found.
 
-1430 information nodes are attached to guides.
+1433 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -564,6 +564,8 @@ python/introduction-to-python-sdk -> /dev-guide/python/introduction#
 
 typescript/introduction-to-typescript-sdk -> /dev-guide/typescript/introduction#
 
+python/python-sandbox-environment -> /dev-guide/python/sandbox#
+
 self-hosted/how-to-create-custom-search-attribute-keys -> /self-hosted-guide/visibility#create-custom-search-attributes
 
 self-hosted/how-to-remove-a-custom-search-attribute-key -> /self-hosted-guide/visibility#remove-custom-search-attributes
@@ -1064,6 +1066,8 @@ python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
+python/async-vs-sync -> /dev-guide/python/async-vs-sync#
+
 python/python-dev-guide-structure -> #
 
 python/install-cli -> /dev-guide/python/project-setup#install-cli
@@ -1136,6 +1140,8 @@ go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guid
 
 go/chapter-durable-execution/retrieve-event-history -> #retrieve-event-history
 
+go/chapter-project-setup/install-cli -> /dev-guide/go/project-setup#install-cli
+
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 go/generated/how-to-customize-workflow-type-in-go -> #customize-workflow-type
@@ -1153,7 +1159,5 @@ go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/g
 go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
-
-go/chapter-project-setup/install-cli -> /dev-guide/go/project-setup#install-cli
 
 

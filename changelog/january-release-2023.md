@@ -17,7 +17,7 @@ Since our last change log in November 2022, we published the following content:
   This reference lists possible Workflow Task errors, a subset of a type of Temporal Platform failure.
   Each of the errors corresponds with a `WorkflowTaskFailedCause`, which appears in Events under the `workflow_task_failed_event_attributes` field.
 
-- [How the Python SDK uses a sandbox](/kb/python-sandbox-environment).
+- [How the Python SDK uses a sandbox](/python/python-sandbox-environment).
   The Temporal Python SDK enables you to run Workflow code in a sandbox environment to help prevent non-determinism errors in your application.
   The Temporal Workflow Sandbox for Python is not completely isolated, and some libraries can internally mutate state, which can result in breaking determinism.
 

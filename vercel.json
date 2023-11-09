@@ -1947,15 +1947,19 @@
     },
     {
       "source": "/kb/temporal-platform-limits-sheet",
-      "destination": "/production-readiness/tuning#platform-defaults"
+      "destination": "/self-hosted-guide/defaults"
     },
     {
       "source": "/kb/all-the-ways-to-run-a-cluster",
-      "destination": "/cluster-deployment-guide"
+      "destination": "/self-hosted-guide"
     },
     {
       "source": "/kb/prometheus-grafana-setup",
-      "destination": "/production-readiness/monitoring#prometheus-and-grafana-setup"
+      "destination": "/self-hosted-guide/monitoring"
+    },
+    {
+      "source": "/kb/python-sandbox-environment",
+      "destination": "/python/python-sandbox-environment"
     }
   ]
 }
