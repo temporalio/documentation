@@ -33,7 +33,7 @@ If you have been following along with the earlier chapters of this guide, your W
 temporal workflow show \
  --workflow-id backgroundcheck_workflow \
  --namespace backgroundcheck_namespace \
- --output json > backgroundcheck_workflow_event_history.json
+ --output json > backgroundcheck_workflow_history.json
 ```
 
 :::info Workflow Id returns the most recent Workflow Execution
