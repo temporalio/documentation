@@ -12,7 +12,7 @@
     "sections": [
         {
             "type": "p",
-            "id": "concepts/what-is-multi-cluster-replication"
+            "id": "self-hosted/what-is-multi-cluster-replication"
         },
         {
             "type": "h2",

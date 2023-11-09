@@ -113,7 +113,7 @@ If you do not set a Namespace, all Workflow Executions started using the Client 
 
 ## What is a Global Namespace? {#global-namespace}
 
-A Global Namespace is a [Namespace](#) that exists across Clusters when [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication#) is set up.
+A Global Namespace is a [Namespace](#) that exists across Clusters when [Multi-Cluster Replication](/clusters#multi-cluster-replication) is set up.
 
 - [How to register a Global Namespace](/tctl-v1/namespace#register)
 - [How to change the active Cluster for a Global Namespace](/tctl-v1/namespace#update)
@@ -128,7 +128,7 @@ A Global Namespace has a failover version.
 Because a failover can be triggered from any Cluster, the failover version prevents certain conflicts from occurring if a failover is mistakenly triggered simultaneously on two Clusters.
 
 Only the active Cluster dispatches [Tasks](/workers#task); however, certain conflicts are possible.
-Unlike regular Namespaces, which provide at-most-once semantics for an Activity Execution, Global Namespaces can support only at-least-once semantics (see [Conflict resolution](/self-hosted-guide/multi-cluster-replication#conflict-resolution)).
+Unlike regular Namespaces, which provide at-most-once semantics for an Activity Execution, Global Namespaces can support only at-least-once semantics (see [Conflict resolution](/clusters#conflict-resolution)).
 Worker Processes on the standby Clusters are idle until a failover occurs and their Cluster becomes active.
 
 Temporal Application API calls made to a non-active Cluster are rejected with a **NamespaceNotActiveError** which contains the name of the current active Cluster.

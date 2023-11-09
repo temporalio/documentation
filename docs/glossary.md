@@ -73,6 +73,12 @@ Archival is a feature that automatically backs up Event Histories from Temporal 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
+#### [Archival](/self-hosted/what-is-archival)
+Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
 #### [Asynchronous Activity Completion](/activities#asynchronous-activity-completion)
 Asynchronous Activity Completion occurs when an external system provides the final result of a computation, started by an Activity, to the Temporal System.
 
@@ -249,6 +255,12 @@ _Tags: [term](/tags/term)_
 
 #### [Memo](/workflows#memo)
 A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is returned when you describe or list Workflow Executions.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
+#### [Multi-Cluster Replication](/clusters#multi-cluster-replication)
+Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 

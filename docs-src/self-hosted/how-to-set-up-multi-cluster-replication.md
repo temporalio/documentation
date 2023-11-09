@@ -8,7 +8,7 @@ tags:
   - cluster
 ---
 
-The [Multi-Cluster Replication](/concepts/what-is-multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
+The [Multi-Cluster Replication](/conceptswhat-is-multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
 
 1. `enableGlobalNamespace` must be set to `true`.
 2. `failoverVersionIncrement` has to be equal across connected Clusters.
