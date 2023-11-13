@@ -11,6 +11,7 @@ tags:
   - go sdk
 ssdi:
   - This feature is currently available only in the Go SDK.
+  - For other SDKs, use Worker-specific Task Queues. See samples in [TypeScript](https://github.com/temporalio/samples-typescript/tree/main/worker-specific-task-queues), [Python](https://github.com/temporalio/samples-python/tree/main/worker_specific_task_queues), [.NET](https://github.com/temporalio/samples-dotnet/tree/main/src/WorkerSpecificTaskQueues), and [Java](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/fileprocessing).
 ---
 
 A Worker Session is a feature that provides a straightforward API for [Task Routing](/concepts/what-is-task-routing) to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
