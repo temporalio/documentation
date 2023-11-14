@@ -49,7 +49,9 @@ Before configuring the Export Sink, ensure you have the following:
    1. The S3 bucket must reside in the same region as your Namespace.
 3. (optional) A KMS ARN associated with the S3 bucket.
 
-## How to configure Workflow History Export {#configure}
+## Configure Workflow History Export {#configure}
+
+**How to configure Workflow History Export?**
 
 You can use either use the [Temporal Cloud UI](#using-temporal-cloud-ui) or [tcld](#using-tcld) to configure the Workflow History Export.
 
@@ -67,6 +69,7 @@ The Temporal Cloud UI provides two ways for configuring Workflow History Export:
 #### Automated setup
 
 The automated setup creates an CloudFormation stack with write permission to the S3 bucket.
+[Verify the export setup](#verify) before saving the configuration.
 
 1. Open the Temporal Cloud UI and navigate to the Namespace you want to configure.
 2. Select **Configure** from the **Export** card.
@@ -147,7 +150,7 @@ Once you've finalized the setup, here's how to monitor the export progress:
 
 1. **Export Job Execution**:
    - **Schedule**: The Export job is scheduled to run on an hourly basis, starting at 10 minutes past each hour.
-     This ensures that the history data of Closed Workflows is exported to your designated S3 bucket approximately 60 minutes post Workflow closure.
+     This ensures that the history data of Closed Workflows is exported to your designated S3 bucket approximately 60 minutes post Workflow closure. This delay can be configured.
    - **Duration**: The time taken for the export process can vary based on the amount of data, so it may not be instantaneous.
      Be patient and check the S3 bucket after the scheduled time.
 2. **Checking the S3 Bucket**:

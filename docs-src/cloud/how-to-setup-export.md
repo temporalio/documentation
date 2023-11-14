@@ -27,6 +27,7 @@ The Temporal Cloud UI provides two ways for configuring Workflow History Export:
 #### Automated setup
 
 The automated setup creates an CloudFormation stack with write permission to the S3 bucket.
+[Verify the export setup](/cloud/how-to-verify-export) before saving the configuration.
 
 1. Open the Temporal Cloud UI and navigate to the Namespace you want to configure.
 2. Select **Configure** from the **Export** card.

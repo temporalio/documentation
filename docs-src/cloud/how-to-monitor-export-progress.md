@@ -15,7 +15,7 @@ Once you've finalized the setup, here's how to monitor the export progress:
 
 1. **Export Job Execution**:
    - **Schedule**: The Export job is scheduled to run on an hourly basis, starting at 10 minutes past each hour.
-     This ensures that the history data of Closed Workflows is exported to your designated S3 bucket approximately 60 minutes post Workflow closure.
+     This ensures that the history data of Closed Workflows is exported to your designated S3 bucket approximately 60 minutes post Workflow closure. This delay can be configured.
    - **Duration**: The time taken for the export process can vary based on the amount of data, so it may not be instantaneous.
      Be patient and check the S3 bucket after the scheduled time.
 2. **Checking the S3 Bucket**:

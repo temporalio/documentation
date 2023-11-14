@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday November 14 2023 08:50:57 AM -0800
+Last assembled: Tuesday November 14 2023 10:49:37 AM -0800
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -1135,5 +1135,7 @@ go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#loc
 go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
+
+cloud/how-to-verify-export -> #verify
 
 

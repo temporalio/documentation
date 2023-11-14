@@ -80,7 +80,7 @@ $ curl --cert client.pem --key client-key.pem "https://<account-id>.tmprl.cloud/
           "__rollup__": "true",
           "operation": "WorkflowContext",
           "temporal_account": "your-account",
-          "temporal_namespace": "yournamespace.your-account",
+          "temporal_namespace": "your-namespace.your-account-is",
           "temporal_service_type": "history"
         },
         "value": [
