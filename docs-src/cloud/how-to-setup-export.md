@@ -58,7 +58,7 @@ Run the `tcld namespace export create` command and provide the following informa
 - `--namespace` : The Namespace to configure export for.
 - `--sink-name`: The name of the export sink.
 - `--role-arn`: The ARN of the AWS IAM role to use for the CloudFormation stack that has write permission to the S3 bucket.
-- `s3-bucket-name`: The name of the AWS S3 bucket.
+- `--s3-bucket-name`: The name of the AWS S3 bucket.
 
 For example:
 
