@@ -20,10 +20,6 @@
         {
             "type": "h2",
             "id": "cloud/tcld/feature/toggle-apikey"
-        },
-        {
-            "type": "h2",
-            "id": "cloud/tcld/feature/toggle-export"
         }
     ]
 }

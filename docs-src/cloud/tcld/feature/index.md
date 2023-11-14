@@ -14,4 +14,3 @@ Alias: `f`
 
 - [tcld feature get](/cloud/tcld/feature/get)
 - [tcld feature toggle-apikey](/cloud/tcld/feature/toggle-apikey)
-- [tcld feature toggle-export](/cloud/tcld/feature/toggle-export)
