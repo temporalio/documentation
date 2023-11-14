@@ -36,7 +36,7 @@ Namespaces are created on the Temporal Cluster, and provide a range of controls 
   For example, when a Workflow Execution is spawned, it does so within a specific Namespace.
 - **Uniqueness:** Temporal guarantees a unique Workflow Id within a Namespace.
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.
-- **Namespace Configuration:** Various configuration options like the [Retention Period](/clusters#retention-period) and the [Archival](/self-hosted-guide/archival#) destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl-v1/namespace).
+- **Namespace Configuration:** Various configuration options like the [Retention Period](/clusters#retention-period) and the [Archival](/clusters#archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl-v1/namespace).
 
 ### Registration
 

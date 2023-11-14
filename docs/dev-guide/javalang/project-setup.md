@@ -240,7 +240,7 @@ For more information on certificate requirements, see [How to manage certificate
 
 We recommend using a self-hosted environment if you are starting something new and need to scale with production-level features, but don’t yet need or want to pay for Temporal Cloud.
 
-For example, running a self-hosted Cluster lets you try different databases, view Cluster metrics, use custom [Search Attributes](/visibility#search-attribute), and even play with the [Archival](/self-hosted-guide/archival#) feature.
+For example, running a self-hosted Cluster lets you try different databases, view Cluster metrics, use custom [Search Attributes](/visibility#search-attribute), and even play with the [Archival](/clusters#archival) feature.
 
 It's completely possible to run a production level self-hosted Cluster.
 However, for the purposes of this guide, we show how to use a self-hosted environment that runs completely out of Docker.

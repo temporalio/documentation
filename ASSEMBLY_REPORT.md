@@ -1,12 +1,12 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday November 09 2023 09:26:05 AM -0700
+Last assembled: Thursday November 09 2023 11:14:46 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-124 guide configurations found.
+123 guide configurations found.
 
-1680 information nodes found.
+1679 information nodes found.
 
 1433 information nodes are attached to guides.
 
@@ -1159,5 +1159,11 @@ go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/g
 go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
+
+self-hosted/what-is-multi-cluster-replication -> #
+
+self-hosted/what-is-archival -> /self-hosted-guide/archival#
+
+self-hosted/prod-checklist -> //self-hosted-guide/checklist#
 
 

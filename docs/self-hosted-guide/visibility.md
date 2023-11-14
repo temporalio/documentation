@@ -724,7 +724,7 @@ Example:
 
 - To manage closed Workflow Executions data, run in dual mode until the Namespace [Retention Period](/clusters#retention-period) is reached.
   After the Retention Period, Workflow Execution data is removed from the Persistence and Visibility stores.
-  If you want to keep the closed Workflow Executions data after the set Retention Period, you must set up [Archival](/self-hosted-guide/archival#archival).
+  If you want to keep the closed Workflow Executions data after the set Retention Period, you must set up [Archival](/self-hosted-guide/archival#).
 - To manage data for all open Workflow Executions, run in dual mode until all the Workflow Executions started before enabling Dual Visibility mode are closed.
   After the Workflow Executions are closed, verify the Retention Period and set up Archival if you need to keep the data beyond the Retention Period.
 

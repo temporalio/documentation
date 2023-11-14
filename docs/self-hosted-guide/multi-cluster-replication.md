@@ -419,7 +419,7 @@ Task processing logic will verify both the Event Id and version of the Task agai
 
 ## How to set up Multi-Cluster Replication {#set-up-multi-cluster-replication}
 
-The [Multi-Cluster Replication](/conceptswhat-is-multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
+The [Multi-Cluster Replication](#) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
 
 1. `enableGlobalNamespace` must be set to `true`.
 2. `failoverVersionIncrement` has to be equal across connected Clusters.

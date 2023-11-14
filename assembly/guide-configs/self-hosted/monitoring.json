@@ -3,16 +3,20 @@
   "id": "monitoring",
   "file_dir": "self-hosted-guide",
   "title": "Monitor Temporal Platform metrics",
-  "sidebar_label": "Monitor metrics",
+  "sidebar_label": "Monitoring",
   "sidebar_position": 4,
-  "description": "Learn how to monitor metrics emitted from the a self-hosted Temporal Platform.",
-  "use_description": true,
+  "description": "Learn how to monitor metrics and health check a self-hosted Temporal Platform.",
+  "use_description": "false",
   "toc_max_heading_level": 4,
   "add_tabs_support": false,
   "sections": [
     {
       "type": "p",
       "id": "self-hosted/prometheus-grafana-setup"
+    },
+    {
+      "type": "h2",
+      "id": "self-hosted/how-to-set-up-health-checks"
     }
   ]
 }

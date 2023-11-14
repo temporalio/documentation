@@ -142,9 +142,9 @@ Displays the following information:
 
 ### Archive
 
-On self-hosted Temporal Clusters, Archive shows [Archived](/self-hosted-guide/archival#) data of your Workflow Executions on the Namespace.
+On self-hosted Temporal Clusters, Archive shows [Archived](/clusters#archival) data of your Workflow Executions on the Namespace.
 
-To see data in your self-hosted Temporal Cluster, you must have [Archival set up and configured](/self-hosted-guide/archival#archival).
+To see data in your self-hosted Temporal Cluster, you must have [Archival set up and configured](/self-hosted-guide/archival#).
 
 For information and details on the Archive feature in Temporal Cloud, contact your Temporal representative.
 

@@ -11,6 +11,10 @@
     "add_tabs_support": false,
     "sections": [
         {
+            "type": "p",
+            "id": "self-hosted/prod-checklist"
+        },
+        {
             "type": "h2",
             "id": "self-hosted/scaling-and-metrics"
         },

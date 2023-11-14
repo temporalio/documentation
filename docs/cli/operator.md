@@ -504,7 +504,7 @@ Namespaces can be assigned a different active [Cluster](/clusters#).
 Namespaces can also be promoted to global Namespaces.
 `temporal operator namespace --promote-global=true`
 
-Any [Archives](/self-hosted-guide/archival#) that were previously enabled or disabled can be changed through this command.
+Any [Archives](/clusters#archival) that were previously enabled or disabled can be changed through this command.
 However, URI values for archival states cannot be changed after the states are enabled.
 `temporal operator namespace update --history-archival-state="enabled" --visibility-archival-state="disabled"`
 

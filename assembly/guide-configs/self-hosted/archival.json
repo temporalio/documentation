@@ -12,11 +12,7 @@
     "sections": [
         {
             "type": "p",
-            "id": "concepts/what-is-archival"
-        },
-        {
-            "type": "h2",
-            "id": "self-hosted/archival"
+            "id": "self-hosted/what-is-archival"
         },
         {
             "type": "h3",

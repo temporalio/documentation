@@ -7,12 +7,10 @@ description: Learn how to setup the self-hosted Cluster Archival feature.
 toc_max_heading_level: 4
 keywords:
 - explanation
-- guide-context
 - how-to
 - term
 tags:
 - explanation
-- guide-context
 - how-to
 - term
 ---
@@ -35,13 +33,9 @@ Temporal's Archival feature is considered **experimental** and not subject to no
 
 Archival is not supported when running Temporal through Docker and is disabled by default when installing the system manually and when deploying through [helm charts](https://github.com/temporalio/helm-charts/blob/master/templates/server-configmap.yaml) (but can be enabled in the [config](https://github.com/temporalio/temporal/blob/master/config/development.yaml)).
 
-## How to use Archival {#archival}
-
-[Archival](#) is a feature that automatically backs up Workflow Execution Event Histories and Visibility data from Temporal Cluster persistence to a custom blob store.
-
 ### How to set up Archival {#set-up-archival}
 
-[Archival](#) consists of the following elements:
+[Archival](/clusters#archival) consists of the following elements:
 
 - **Configuration:** Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
 - **Provider:** Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
@@ -174,7 +168,7 @@ You can retrieve archived Event Histories by copying the `workflowId` and `runId
 
 ### How to create a custom Archiver {#custom-archiver}
 
-To archive data with a given provider, using the [Archival](#) feature, Temporal must have a corresponding Archiver component installed.
+To archive data with a given provider, using the [Archival](/clusters#archival) feature, Temporal must have a corresponding Archiver component installed.
 The platform does not limit you to the existing providers.
 To use a provider that is not currently supported, you can create your own Archiver.
 

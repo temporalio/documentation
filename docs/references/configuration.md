@@ -411,7 +411,7 @@ Use `dns:///` prefix to enable round-robin between IP address for DNS name.
 
 _Optional_
 
-Archival is an optional configuration needed to set up the [Archival store](/self-hosted-guide/archival#).
+Archival is an optional configuration needed to set up the [Archival store](/clusters#archival).
 It can be enabled on `history` and `visibility` data.
 
 The following list describes supported values for each configuration on the `history` and `visibility` data.

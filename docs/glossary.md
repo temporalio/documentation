@@ -67,13 +67,13 @@ An Activity Type is the mapping of a name to an Activity Definition.
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Archival](/self-hosted-guide/archival#)
+#### [Archival](/clusters#archival)
 Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Archival](/self-hosted/what-is-archival)
+#### [Archival](/self-hosted-guide/archival#)
 Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_

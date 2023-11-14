@@ -137,7 +137,7 @@ Displays the following information:
 
 On self-hosted Temporal Clusters, Archive shows [Archived](/concepts/what-is-archival) data of your Workflow Executions on the Namespace.
 
-To see data in your self-hosted Temporal Cluster, you must have [Archival set up and configured](/self-hosted/archival).
+To see data in your self-hosted Temporal Cluster, you must have [Archival set up and configured](/self-hosted/what-is-archival).
 
 For information and details on the Archive feature in Temporal Cloud, contact your Temporal representative.
 
