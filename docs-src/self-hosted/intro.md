@@ -13,16 +13,38 @@ tags:
 Welcome to the self-hosted Temporal Cluster guide.
 This guide shows you how to self-host open source infrastructure software that supervises your durable applications.
 
-:::tip Sign up for Temporal Cloud!
+:::info Sign up for Temporal Cloud!
 
-Instead of self-hosting, you can host with [Temporal Cloud](/cloud).
+Instead of self-hosting, you can use [Temporal Cloud](/cloud).
 
 :::
 
-If you are just getting started with Temporal, you might only need a [development server](/cli/start-dev-server) available through the [Temporal CLI](/concepts/what-is-the-temporal-cli).
+:::info Getting started with Temporal?
 
-There are many ways to deploy a [Temporal Cluster](/clusters).
-However, the right way for you depends entirely on your use case and where you plan to run it.
+If you are just getting started with Temporal, we recommend our [introductory tutorials and courses](https://learn.temporal.io)
+
+:::
+
+:::info Buidling an app?
+
+If you are building a new Temporal Application, you might only need a [development server](/cli/start-dev-server) available through the [Temporal CLI](/concepts/what-is-the-temporal-cli).
+Check out the [dev guide](/dev-guide) for application development best practices.
+
+:::
+
+There are many ways to self-host a [Temporal Cluster](/clusters).
+The right way for you depends entirely on your use case and where you plan to run it.
+
+### Minimum requirements
+
+The Temporal Server depends on a database.
+
+Supported databases include the following:
+
+- [Cassandra](/self-hosted/how-to-set-up-cassandra-visibility-store)
+- [MySQL](self-hosted/how-to-set-up-mysql-visibility-store)
+- [PostgreSQL](/self-hosted/how-to-set-up-postgresql-visibility-store)
+- SQLite is supported with the [development server](/cli/start-dev-server)
 
 ### Docker & Docker Compose
 
@@ -52,7 +74,7 @@ Local [Temporal Clients](/temporal/#temporal-client) and [Workers](/workers) can
 
 To try other configurations (different dependencies and databases), or to try a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
 
-### Import the Server package
+### Importing the Server package
 
 The Temporal Server is a standalone Go application that can be [imported](/references/server-options) into another project.
 
@@ -83,32 +105,12 @@ Each Temporal Server release also ships a `Server with Auto Setup` Docker image 
 We recommend using this script for initial schema setup of each supported database.
 You should familiarize yourself with [what auto-setup does](https://temporal.io/blog/auto-setup), because you will likely replace every part of the script to customize it for your own infrastructure and tooling choices.
 
-### Gitpod
-
-You can run a Temporal Cluster, run Worker processes, and develop Temporal Applications in your browser using [Gitpod](https://www.gitpod.io/).
-
-One-click deployments are available for the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo and the [temporalio/samples-typescript](https://github.com/temporalio/samples-typescript) repo.
-This approach runs a Cluster using a Temporal Server Docker image, starts a Worker Process, and starts one of the application's sample Workflows.
-
-A one-click deployment can take up to a full minute to get fully up and running.
-When it is running, you can customize the application samples.
-This approach does not offer features such as Advanced Visibility or Archival.
-
-This approach is often used for ephemeral purposes, such as learning and demos.
-
 ### Helm charts
+
+We do maintain a Helm chart you can use as a reference, but you are responsible for customizing it to your needs.
 
 [Temporal Helm charts](https://github.com/temporalio/helm-charts) enables you to get a Cluster running on [Kubernetes](https://kubernetes.io/) by deploying the Temporal Server services to individual pods and connecting them to your existing database and Elasticsearch instances.
 
 The template in the `temporalio/helm-charts` repo is your starting point, but you can adjust it to fit your infrastructure needs.
 
 Keep in mind that the configuration can become very complex if you try to scale services or run many Workflows concurrently.
-
-### Render
-
-Our [temporalio/docker-compose](https://github.com/temporalio/docker-compose) experience has been translated to Render's Blueprint format for an alternative cloud connection.
-[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our Docker Compose to Render by using the Auto-Setup Docker image.
-
-The benefit to this approach is a one-click deployment.
-
-This approach is often used for ephemeral purposes, such as learning and demos.

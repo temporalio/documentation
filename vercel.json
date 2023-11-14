@@ -54,6 +54,10 @@
       "destination": "/workers:path*"
     },
     {
+      "source": "/cluster-deployment-guide:path*",
+      "destination": "/self-hosted-guide"
+    },
+    {
       "source": "/application-development-guide",
       "destination": "/dev-guide"
     },
@@ -1011,11 +1015,11 @@
     },
     {
       "source": "/clusters/how-to-set-up-archival",
-      "destination": "/cluster-deployment-guide#archival"
+      "destination": "/self-hosted-guide/archival"
     },
     {
       "source": "/clusters/how-to-create-a-custom-archiver",
-      "destination": "/cluster-deployment-guide#archival"
+      "destination": "/self-hosted-guide/archival"
     },
     {
       "source": "/server-configuration",
@@ -1043,7 +1047,7 @@
     },
     {
       "source": "/clusters/how-to-set-up-multi-cluster-replication",
-      "destination": "/cluster-deployment-guide#set-up-multi-cluster-replication"
+      "destination": "/self-hosted-guide/multi-cluster-replication"
     },
     {
       "source": "/server-options",
@@ -1099,15 +1103,15 @@
     },
     {
       "source": "/content/how-to-integrate-elasticsearch-into-a-temporal-cluster",
-      "destination": "/cluster-deployment-guide#elasticsearch"
+      "destination": "/self-hosted-guide/visibility"
     },
     {
       "source": "/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster",
-      "destination": "/cluster-deployment-guide#elasticsearch"
+      "destination": "/self-hosted-guide/visibility"
     },
     {
       "source": "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster",
-      "destination": "/cluster-deployment-guide#elasticsearch"
+      "destination": "/self-hosted-guide/visibility"
     },
     {
       "source": "/server-security",

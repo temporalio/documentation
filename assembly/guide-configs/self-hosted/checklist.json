@@ -1,6 +1,6 @@
 {
     "file_name": "checklist.md",
-    "id": "checklist",
+    "id": "production-checklist",
     "file_dir": "/self-hosted-guide",
     "title": "Temporal Platform's production readiness checklist",
     "sidebar_label": "Prod checklist",

@@ -26,12 +26,6 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-:::info Work in progress
-
-This guide is a work in progress. Some sections may be incomplete. Information may change at any time.
-
-:::
-
 :::info General company security
 
 For information about the general security habits of Temporal Technologies, see our [company security page](/temporal-technologies-inc-security).

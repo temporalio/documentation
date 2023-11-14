@@ -18,7 +18,7 @@ Welcome to the self-hosted Temporal Cluster guide.
 
 - [Introduction](/self-hosted-guide/introduction#)
 - [Defaults](/self-hosted-guide/defaults#)
-- [Production checklist](//self-hosted-guide/checklist#)
+- [Production checklist](//self-hosted-guide/production-checklist#)
 - [Security](/self-hosted-guide/security#)
 - [Monitoring](/self-hosted-guide/monitoring#)
 - [Visibility](/self-hosted-guide/visibility#)

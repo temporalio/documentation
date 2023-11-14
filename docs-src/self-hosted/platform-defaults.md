@@ -9,9 +9,9 @@ tags:
   - self-hosting
 ---
 
-:::caution
+:::info Looking for Temporal Cloud defaults?
 
-For the latest information on the Temporal Cloud default limits, see [What are the Temporal Cloud default limits?](/cloud/operating-envelope#default-limits)
+See the [Temporal Cloud defaults and limits page](/cloud/temporal-cloud-limits-sheet)
 
 :::
 
@@ -19,9 +19,9 @@ This page details many of the defaults coded into the Temporal Platform that can
 Errors are hard limits that fail when reached.
 Warnings are soft limits that produce a warning log on the server side.
 
-:::note
+:::info
 
-These limits apply specifically to each Workflow Execution and do not pertain to the entire Temporal Platform or individual Namespaces.
+These limits might apply specifically to each Workflow Execution and do not pertain to the entire Temporal Platform or individual Namespaces.
 
 :::
 

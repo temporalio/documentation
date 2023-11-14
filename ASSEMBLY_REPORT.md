@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday November 09 2023 11:14:46 AM -0700
+Last assembled: Tuesday November 14 2023 13:53:06 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -1165,5 +1165,7 @@ self-hosted/what-is-multi-cluster-replication -> #
 self-hosted/what-is-archival -> /self-hosted-guide/archival#
 
 self-hosted/prod-checklist -> //self-hosted-guide/checklist#
+
+cloud/temporal-cloud-limits-sheet -> /cloud/operating-envelope#default-limits
 
 

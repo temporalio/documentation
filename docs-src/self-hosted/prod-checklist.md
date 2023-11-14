@@ -8,20 +8,4 @@ tags:
   - checklist
 ---
 
-System requirements
-
-Choose History Shard count
-
-Set up your database
-
-Set up Namespace
-
-Encrypt application data
-
-Application versioning strategy
-
-Emit and monitor metrics
-
-Scale and tune Workers
-
-Export Event histories
+Consider the following when running a production level Temporal Cluster.
