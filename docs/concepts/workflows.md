@@ -749,6 +749,39 @@ temporal server start-dev --dynamic-config-value frontend.enableUpdateWorkflowEx
 
 :::
 
+## What is a Dynamic Handler? {#dynamic-handler}
+
+Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
+
+:::note
+
+Currently, the Temporal SDKs that support Dyanmic Handlers are:
+
+- [Java](/dev-guide/java/features#dynamic-handler)
+- [Python](/dev-guide/python/features#dynamic-handler)
+- .NET
+
+The Go SDK supports Dynamic Signals through the [GetUnhandledSignalNames](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetUnhandledSignalNames) function.
+
+:::
+
+These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
+
+Dynamic Handlers provide flexibility to handle cases where the names of Workflows, Activities, Signals, or Queries aren't known at run time.
+
+:::caution
+
+Dynamic Handlers should be used judiciously as a fallback mechanism rather than the primary approach.
+Overusing them can lead to maintainability and debugging issues down the line.
+
+Instead, Workflows, Activities, Signals, and Queries should be defined statically whenever possible, with clear names that indicate their purpose.
+Use static definitions as the primary way of structuring your Workflows.
+
+Reserve Dynamic Handlers for cases where the handler names are not known at compile time and need to be looked up dynamically at runtime.
+They are meant to handle edge cases and act as a catch-all, not as the main way of invoking logic.
+
+:::
+
 ## What is a Side Effect? {#side-effect}
 
 A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.
@@ -775,6 +808,13 @@ A Workflow Execution can be both a Parent and a Child Workflow Execution because
 A Parent Workflow Execution must await on the Child Workflow Execution to spawn.
 The Parent can optionally await on the result of the Child Workflow Execution.
 Consider the Child's [Parent Close Policy](#parent-close-policy) if the Parent does not await on the result of the Child, which includes any use of Continue-As-New by the Parent.
+
+:::note
+
+Child Workflows do not carry over when the Parent uses [Continue-As-New](#continue-as-new).
+This means that if a Parent Workflow Execution utilizes Continue-As-New, any ongoing Child Workflow Executions will not be retained in the new continued instance of the Parent.
+
+:::
 
 When a Parent Workflow Execution reaches a Closed status, the Cluster propagates Cancellation Requests or Terminations to Child Workflow Executions depending on the Child's Parent Close Policy.
 
@@ -860,7 +900,7 @@ This is useful for starting Child Workflows asynchronously (see [relevant issue 
 
 - Introduced in Temporal Server version 1.17.0
 - Available in Temporal CLI (and tctl v1.17)
-- Available in Temporal Cloud in Public Preview
+- Available in Temporal Cloud
 - Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) version [1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
 - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
 - Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow) version [1.1.0](https://github.com/temporalio/sdk-python/releases/tag/1.1.0)
@@ -1034,6 +1074,16 @@ Not B, even though B started more recently, because A completed later.
 And not C, even though C completed after A, because the result for D is captured when D is started, not when it's queried.
 
 Failures and timeouts do not affect the last completion result.
+
+:::note
+
+When a Schedule triggers a Workflow that completes successfully and yields a result, the result from the initial Schedule execution can be accessed by the subsequent scheduled execution through `LastCompletionResult`.
+
+Be aware that if, during the subsequent run, the Workflow employs the [Continue-As-New](#continue-as-new) feature, `LastCompletionResult` won't be accessible for this new Workflow iteration.
+
+It is important to note that the [status](#status) of the subsequent run is marked as `Continued-As-New` and not as `Completed`.
+
+:::
 
 ### Last failure
 

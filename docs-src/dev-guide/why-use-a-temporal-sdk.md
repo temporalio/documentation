@@ -72,3 +72,5 @@ Another quality of the SDKs lies in their ability to replay Workflow Executions,
 
 We will delve into this idea more later, but for now, it signifies that the SDKs can automatically continue a process from the point of interruption, should a failure occur.
 This capability stems from the SDK's ability to persist each step the program takes.
+
+- [Developing for Durable Execution using the Go SDK](/go/chapter-durable-execution/durable-execution-intro)
