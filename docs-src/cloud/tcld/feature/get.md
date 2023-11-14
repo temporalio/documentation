@@ -25,7 +25,7 @@ The following is an example output:
 ```json
 [
   {
-    "Name": "enable-export",
+    "Name": "enable-apikey",
     "Value": true
   }
 ]

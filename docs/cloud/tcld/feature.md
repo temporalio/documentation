@@ -23,7 +23,6 @@ Alias: `f`
 
 - [tcld feature get](#get)
 - [tcld feature toggle-apikey](#toggle-apikey)
-- [tcld feature toggle-export](#toggle-export)
 
 ## get
 
@@ -44,7 +43,7 @@ The following is an example output:
 ```json
 [
   {
-    "Name": "enable-export",
+    "Name": "enable-apikey",
     "Value": true
   }
 ]
@@ -68,24 +67,4 @@ The following is an example output:
 
 ```json
 Feature flag enable-apikey is now true
-```
-
-## toggle-export
-
-The `tcld feature toggle-export` command turns on or off the `export` feature in Temporal Cloud.
-
-Alias: `te`
-
-`tcld feature toggle-export`
-
-The command has no modifiers.
-
-**Example**
-
-`tcld feature toggle-export`
-
-The following is an example output:
-
-```json
-Feature flag enable-export is now true
 ```

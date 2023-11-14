@@ -92,21 +92,6 @@ The manual setup provides an CloudFormation template to manually configure an Cl
 
 ### Using tcld
 
-:::note Enable the Export feature
-
-Workflow History Export is behind a feature flag.
-You must toggle on this feature to enable it for tcld.
-
-Run the following command to enable the export feature in tcld.
-
-```command
-tcld feature toggle-export
-```
-
-For more information, see the [Feature flag documentation](/cloud/tcld/feature).
-
-:::
-
 Run the `tcld namespace export create` command and provide the following information.
 
 - `--namespace` : The Namespace to configure export for.
