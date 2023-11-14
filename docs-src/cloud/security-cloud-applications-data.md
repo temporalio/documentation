@@ -1,12 +1,14 @@
 ---
 id: security-cloud-applications-data
-title: What is the security model for applications and data in Temporal Cloud?
+title: Application and data
 sidebar_label: Applications and data
 description: Temporal Cloud does not manage your applications or Workers. You can use Data Converter to encrypt and decrypt your data.
 tags:
   - temporal cloud
   - security
 ---
+
+**What is the security model for applications and data in Temporal Cloud?**
 
 ### Code execution boundaries
 

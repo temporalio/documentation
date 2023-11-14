@@ -115,3 +115,16 @@ var yourActivityResult YourActivityResultType
 err := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 // ...
 ```
+
+#### Specifying versions for Continue-As-New
+
+When using the Continue-As-New feature, use the `WithWorkflowVersioningIntent` context modifier.
+
+The function `WithWorkflowVersioningIntent` sets `VersioningIntentDefault` before constructing a `ContinueAsNewError` object with `NewContinueAsNewError`:
+
+```go
+ctx = workflow.WithWorkflowVersioningIntent(ctx, temporal.VersioningIntentDefault)
+err := workflow.NewContinueAsNewError(ctx, "WorkflowName")
+```
+
+If you're migrating Workflows between incompatible Worker Build IDs and you want your continued Workflows to start using the Task Queue's latest default version, use `WithWorkflowVersioningIntent` as shown earlier before calling `NewContinueAsNewError`.

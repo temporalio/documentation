@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 The public preview of [Temporal CLI](/cli) is now available.
 We encourage you to begin using it and to provide feedback.
 
-After we release Temporal CLI v1, we will deprecate tctl.
+After the release of Temporal CLI v1.0, tctl will deprecate.
 
 :::
 

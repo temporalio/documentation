@@ -2,7 +2,7 @@
 id: versioning
 title: Go SDK developer's guide - Versioning
 sidebar_label: Versioning
-sidebar_position: 8
+sidebar_position: 9
 description: The Versioning section of the Temporal Developer's guide covers how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 slug: /dev-guide/go/versioning
 toc_max_heading_level: 4
@@ -284,3 +284,16 @@ var yourActivityResult YourActivityResultType
 err := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 // ...
 ```
+
+#### Specifying versions for Continue-As-New
+
+When using the Continue-As-New feature, use the `WithWorkflowVersioningIntent` context modifier.
+
+The function `WithWorkflowVersioningIntent` sets `VersioningIntentDefault` before constructing a `ContinueAsNewError` object with `NewContinueAsNewError`:
+
+```go
+ctx = workflow.WithWorkflowVersioningIntent(ctx, temporal.VersioningIntentDefault)
+err := workflow.NewContinueAsNewError(ctx, "WorkflowName")
+```
+
+If you're migrating Workflows between incompatible Worker Build IDs and you want your continued Workflows to start using the Task Queue's latest default version, use `WithWorkflowVersioningIntent` as shown earlier before calling `NewContinueAsNewError`.
