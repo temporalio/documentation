@@ -805,9 +805,9 @@ h1 {
   color: var(--White, #fff);
 }
 
-a,
-a:link,
-a:visited,
+.temporal-documentation-landing a,
+.temporal-documentation-landing a:link,
+.temporal-documentation-landing a:visited,
 .cloud-button {
   text-decoration: none;
 }

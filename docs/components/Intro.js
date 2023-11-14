@@ -499,7 +499,7 @@ function Explained() {
 
 export const Intro = () => {
   return (
-    <section className="mt-1 mb-14 tailwindcss">
+    <section className="mt-1 mb-14 tailwindcss temporal-documentation-landing">
       <div className="main-grid grid grid-cols-1 gap-6 lg:gap-8">
         <Explained />
       </div>
