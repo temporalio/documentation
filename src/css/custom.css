@@ -837,9 +837,8 @@ a:visited,
   gap: 1rem;
 }
 
-.references {
-  width: 100%;
-  z-index: 10;
+.second-row-container {
+  gap: 1rem;
 }
 
 .core-concepts-info {
@@ -984,37 +983,19 @@ a:visited,
   .deployment {
     display: flex;
   }
-
-  .references {
-    width: 220px;
-    min-width: 220px;
+  .second-row-container {
+    display: flex;
   }
-}
 
-.leadership-container {
-  max-width: 800px;
-  margin: auto;
-  padding: 15px;
-  text-align: center;
-}
+  .troubleshooting {
+    width: 300px;
+    min-width: 300px;
+  }
 
-.leadership-name {
-  font-size: 1.2em;
-  font-weight: 500;
-}
-
-.leadership-image {
-  max-width: 150px;
-}
-
-.leadership-list {
-  list-style-type: none;
-}
-
-.leadership-list-item {
-  margin-top: 15px;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  .dev-tools-container {
+    width: 300px;
+    min-width: 300px;
+  }
 }
 
 .menu__link,

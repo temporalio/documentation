@@ -1,11 +1,11 @@
 ---
 id: intro
 title: Temporal Troubleshooting overview
-description: 
+description:
 tags:
   - troubleshooting
   - error handling
   - guide-context
 ---
 
-This guide provides troubleshooting solutions for potential Temporal errors and edge cases.
+The following guides provide troubleshooting solutions for potential Temporal errors and edge cases.

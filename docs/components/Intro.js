@@ -25,19 +25,19 @@ const coreConcepts = [
 const appDevGuideLinks = [
   {
     path: "/dev-guide/go",
-    name: "Go dev guide",
+    name: "Go SDK developer's guide",
   },
   {
     path: "/dev-guide/java",
-    name: "Java dev guide",
+    name: "Java SDK developer's guide",
   },
   {
     path: "/dev-guide/python",
-    name: "Python dev guide",
+    name: "Python SDK developer's guide",
   },
   {
     path: "/dev-guide/typescript",
-    name: "TypeScript dev guide",
+    name: "TypeScript SDK developer's guide",
   },
   {
     path: "https://github.com/temporalio/sdk-dotnet#readme",
@@ -45,22 +45,18 @@ const appDevGuideLinks = [
   },
   {
     path: "/dev-guide/php",
-    name: "PHP dev guide",
+    name: "PHP SDK developer's guide",
   },
 ];
 
-const clusterGuide = [
+const troubleshooting = [
   {
-    path: "/cluster-deployment-guide/#advanced-visibility",
-    name: "Visibility",
+    path: "/troubleshooting/deadline-exceeded-error",
+    name: "Deadline exceeded",
   },
   {
-    path: "/cluster-deployment-guide/#archival",
-    name: "Archival",
-  },
-  {
-    path: "/cluster-deployment-guide/#multi-cluster-replication",
-    name: "Multi-Cluster Replication",
+    path: "/troubleshooting/last-connection-error",
+    name: "Last connection",
   },
 ];
 
@@ -116,24 +112,24 @@ const devTools = [
 
 const references = [
   {
-    path: "/references/events",
-    name: "Events",
-  },
-  {
     path: "/references/commands",
     name: `Commands`,
   },
   {
-    path: "/references/sdk-metrics",
-    name: "SDK Metrics",
+    path: "/references/events",
+    name: "Events",
   },
   {
-    path: "/references/configuration",
-    name: `Self-hosted Cluster config`,
+    path: "/references/sdk-metrics",
+    name: "SDK metrics",
+  },
+  {
+    path: "/references/cluster-metrics",
+    name: "Cluster metrics",
   },
   {
     path: "/references/errors",
-    name: `Errors`,
+    name: `Workflow Task errors`,
   },
 ];
 
@@ -169,7 +165,7 @@ const selfHostedDeploymentGuide = [
   {
     path: "/self-hosted-guide/multi-cluster-replication",
     name: "Multi-Cluster Replication",
-  }
+  },
 ];
 
 const displayLinks = (links) => {
@@ -414,64 +410,34 @@ function Explained() {
         />
       </div>
       <CloudCard links={cloudInfo} />
-      <div className="grid md:grid-cols-2">
-        <SimpleCard
-          title="Production readiness"
-          content="Temporal Cluster deployment information and how-to guides."
-          links={clusterGuide}
-        />
-        <SimpleCard
-          title="Dev tools"
-          content="Use the Temporal CLI or Web UI to manage and monitor your Workflows."
-          links={devTools}
-        />
-      </div>
-<<<<<<< HEAD
-      <div className="landing-card-section">
-        <a className="header-link" href="/self-hosted-guide">
-          <h2 className="h2-landing">Cluster deployment guide</h2>
-        </a>
-        <p className="landing-card-p">Temporal Cluster deployment information and how-to guides.</p>
-        <ul className="landing-card-list">{displayLinks(clusterGuide.listOne)}</ul>
-        <ul className="landing-card-list">{displayLinks(clusterGuide.listTwo)}</ul>
-      </div>
-      <div className="landing-card-section">
-        <div className="flex items-center">
-          <a className="header-link" href="/cloud">
-            <h2 className="h2-landing">Temporal Cloud</h2>
-          </a>
+      <div className="second-row-container">
+        <div className="dev-tools-container">
+          <SimpleCard
+            title="Dev tools"
+            content="Use the Temporal CLI and Web UI to manage and monitor your Workflows."
+            links={devTools}
+          />
         </div>
-        <p className="landing-card-p">Temporal Cloud tools and how-to guides</p>
-        <ul className="landing-card-list">{displayLinks(cloudInfo.listOne)}</ul>
-        <ul className="landing-card-list">{displayLinks(cloudInfo.listTwo)}</ul>
+        <Card
+          title="Self-hosted guidance"
+          content="Self-host open source infra software to supervise your durable apps."
+          links={selfHostedDeploymentGuide}
+        />
       </div>
-      <div className="landing-card-section">
-        <h2 className="h2-landing">Devtools</h2>
-        <ul className="landing-card-list">{displayLinks(devTools.listOne)}</ul>
-        <ul className="landing-card-list">{displayLinks(devTools.listTwo)}</ul>
-      </div>
-      <div className="landing-card-section">
-        <a className="header-link" href="/references/">
-          <h2 className="h2-landing">References</h2>
-        </a>
-        <ul className="landing-card-list">{displayLinks(references.listOne)}</ul>
-        <ul className="landing-card-list">{displayLinks(references.listTwo)}</ul>
-      </div>
-    </div>
-  );
-}
-=======
->>>>>>> origin/new-landing-page
 
       <div className="core-concepts">
         <SlideInfo activeSlide={activeSlide} handleClick={handleSlideChange} />
       </div>
 
       <div className="deployment">
-        <div className="references">
-          <SimpleCard title="References" links={references} />
+        <div className="troubleshooting">
+          <SimpleCard
+            title="Troubleshooting"
+            content="Temporal Platform troubleshooting guides"
+            links={troubleshooting}
+          />
         </div>
-        <Card title="Self-hosted guidance" links={selfHostedDeploymentGuide} />
+        <SimpleCard title="References" content="Referable Platform information" links={references} />
       </div>
 
       <div className="my-20 text-center">

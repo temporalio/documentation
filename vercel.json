@@ -1539,7 +1539,7 @@
     },
     {
       "source": "/content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl",
-      "destination": "/cluster-deployment-guide#create-custom-search-attributes"
+      "destination": "/self-hosted-guide/visibility"
     },
     {
       "source": "archive-data",

@@ -51,7 +51,7 @@ The Temporal Server depends on a database.
 Supported databases include the following:
 
 - [Cassandra](/self-hosted-guide/visibility#cassandra)
-- [MySQL](self-hosted/how-to-set-up-mysql-visibility-store)
+- [MySQL](/self-hosted-guide/visibility#mysql)
 - [PostgreSQL](/self-hosted-guide/visibility#postgresql)
 - SQLite is supported with the [development server](/cli#start-dev-server)
 

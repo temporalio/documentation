@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday November 14 2023 13:53:06 PM -0700
+Last assembled: Tuesday November 14 2023 15:38:38 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -40,9 +40,9 @@ cloud/metrics-intro -> /cloud/metrics#configure-a-metrics-endpoint-using-tempora
 
 references/configuration -> /references/configuration#
 
-concepts/what-is-archival -> /self-hosted-guide/archival#
+concepts/what-is-archival -> /clusters#archival
 
-self-hosted/archival -> /self-hosted-guide/archival#archival
+self-hosted/what-is-archival -> /self-hosted-guide/archival#
 
 self-hosted/data-encryption -> /self-hosted-guide/data-encryption#securing-your-data
 
@@ -354,13 +354,31 @@ concepts/what-is-a-codec-server -> /dataconversion#codec-server
 
 concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
 
+cloud/temporal-cloud-limits-sheet -> /cloud/operating-envelope#default-limits
+
 references/dynamic-configuration -> /references/dynamic-configuration#
 
 cli/start-dev-server -> /cli#start-dev-server
 
+self-hosted/how-to-set-up-cassandra-visibility-store -> /self-hosted-guide/visibility#cassandra
+
+self-hosted/how-to-set-up-postgresql-visibility-store -> /self-hosted-guide/visibility#postgresql
+
 references/server-options -> /references/server-options#
 
-concepts/what-is-multi-cluster-replication -> #
+self-hosted/intro -> /self-hosted-guide/introduction#
+
+self-hosted/platform-defaults -> /self-hosted-guide/defaults#
+
+self-hosted/prod-checklist -> //self-hosted-guide/production-checklist#
+
+self-hosted/prometheus-grafana-setup -> /self-hosted-guide/monitoring#
+
+self-hosted/how-to-set-up-visibility-in-a-temporal-cluster -> /self-hosted-guide/visibility#
+
+self-hosted/how-to-upgrade-the-temporal-server-version -> /self-hosted-guide/upgrade-server#upgrade-server
+
+self-hosted/what-is-multi-cluster-replication -> /self-hosted-guide/multi-cluster-replication#
 
 concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
 
@@ -370,23 +388,15 @@ concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-visibility -> /clusters#visibility
 
-self-hosted/how-to-upgrade-the-temporal-server-version -> /self-hosted-guide/upgrade-server#upgrade-server
-
 concepts/what-is-dual-visibility -> /visibility#dual-visibility
 
 self-hosted/how-to-set-up-mysql-visibility-store -> #mysql
 
-self-hosted/how-to-set-up-postgresql-visibility-store -> #postgresql
-
 self-hosted/how-to-set-up-sqlite-visibility-store -> #sqlite
-
-self-hosted/how-to-set-up-cassandra-visibility-store -> #cassandra
 
 self-hosted/how-to-migrate-visibility-database -> #migrating-visibility-database
 
 self-hosted/how-to-integrate-elasticsearch-into-a-temporal-cluster -> #elasticsearch
-
-self-hosted/how-to-set-up-visibility-in-a-temporal-cluster -> #
 
 self-hosted/how-to-set-up-dual-visibility -> #dual-visibility
 
@@ -408,9 +418,9 @@ concepts/what-is-an-activity -> /activities#
 
 concepts/what-is-an-activity-task -> /workers#activity-task
 
-concepts/what-is-a-retry-policy -> /retry-policies#
+concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
 
-self-hosted/platform-defaults -> /self-hosted-guide/defaults#
+concepts/what-is-a-retry-policy -> /retry-policies#
 
 concepts/what-is-a-workflow-execution-timeout -> /workflows#workflow-execution-timeout
 
@@ -503,8 +513,6 @@ go/namespaces -> /dev-guide/go/features#namespaces
 java/namespaces -> /dev-guide/java/features#namespaces
 
 cloud/prometheus-grafana-setup -> /cloud/metrics#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
-
-self-hosted/prometheus-grafana-setup -> /self-hosted-guide/monitoring#prometheus-and-grafana-setup
 
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
@@ -739,8 +747,6 @@ python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
 
 dev-guide/temporal-sdk -> /dev-guide/sdks#
-
-self-hosted/intro -> /self-hosted-guide/introduction#
 
 cloud/users-account-level-roles -> /cloud/users#account-level-roles
 
@@ -1044,7 +1050,7 @@ typescript/testing -> /dev-guide/typescript/testing#replay
 
 typescript/observability -> /dev-guide/typescript/observability#tracing
 
-self-hosted/scaling-and-metrics -> //self-hosted-guide/checklist#scaling-and-metrics
+self-hosted/scaling-and-metrics -> //self-hosted-guide/production-checklist#scaling-and-metrics
 
 concepts/what-is-a-task-token -> /activities#task-token
 
@@ -1159,13 +1165,5 @@ go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/g
 go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
-
-self-hosted/what-is-multi-cluster-replication -> #
-
-self-hosted/what-is-archival -> /self-hosted-guide/archival#
-
-self-hosted/prod-checklist -> //self-hosted-guide/checklist#
-
-cloud/temporal-cloud-limits-sheet -> /cloud/operating-envelope#default-limits
 
 
