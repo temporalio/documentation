@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday November 14 2023 10:49:37 AM -0800
+Last assembled: Tuesday November 14 2023 10:58:27 AM -0800
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -730,6 +730,8 @@ python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
 
+cloud/how-to-verify-export -> #verify
+
 cloud/users-account-level-roles -> /cloud/users#account-level-roles
 
 cloud/get-started-certificates -> #issue-ca-certificates
@@ -1135,7 +1137,5 @@ go/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#loc
 go/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
-
-cloud/how-to-verify-export -> #verify
 
 

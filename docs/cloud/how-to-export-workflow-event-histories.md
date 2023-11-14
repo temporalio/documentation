@@ -142,6 +142,15 @@ The following is an example of the output:
 }
 ```
 
+## Verify export setup {#verify}
+
+**How to verify that the Export feature is set up correctly?**
+
+From the Export configuration page, select **Verify**.
+This action checks if Temporal can successfully write a test file to the sink.
+
+If everything is configured correctly, you will see a `Success` status indicating Temporal has written to your sink.
+
 ## Monitor export progress {#monitor}
 
 **How to monitor the History exportation progress?**
@@ -171,12 +180,3 @@ Once you've finalized the setup, here's how to monitor the export progress:
 
 For optimal results, make it a habit to frequently review the S3 bucket for any new exported files and consistently refer to the UI insights.
 This dual check ensures you remain abreast of the export progress and any potential issues.
-
-## Verify export setup {#verify}
-
-**How to verify that the Export feature is set up correctly?**
-
-From the Export configuration page, select **Verify**.
-This action checks if Temporal can successfully write a test file to the sink.
-
-If everything is configured correctly, you will see a `Success` status indicating Temporal has written to your sink.

@@ -29,11 +29,11 @@
         },
         {
             "type": "h2",
-            "id": "cloud/how-to-monitor-export-progress"
+            "id": "cloud/how-to-verify-export"
         },
         {
             "type": "h2",
-            "id": "cloud/how-to-verify-export"
+            "id": "cloud/how-to-monitor-export-progress"
         }
     ]
 }
