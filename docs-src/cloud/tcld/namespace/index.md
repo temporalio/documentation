@@ -14,7 +14,7 @@ Alias: `n`
 
 - [tcld namespace create](/cloud/tcld/namespace/create)
 - [tcld namespace delete](/cloud/tcld/namespace/delete)
-- [tcld namespace export](/cloud/tcld/namespace/export/index)
+- [tcld namespace export s3](/cloud/tcld/namespace/export/index)
 - [tcld namespace get](/cloud/tcld/namespace/get)
 - [tcld namespace list](/cloud/tcld/namespace/list)
 - [tcld namespace accepted-client-ca](/cloud/tcld/namespace/accepted-client-ca/index)

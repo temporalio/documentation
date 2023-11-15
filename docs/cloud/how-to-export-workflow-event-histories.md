@@ -108,12 +108,12 @@ For example:
 tcld namespace export s3 create --namespace "your-namespace.your-account" --sink-name "your-sink-name" --role-arn "arn:aws:iam::123456789012:role/test-sink" --s3-bucket-name "your-aws-s3-bucket-name”
 ```
 
-Retrieve the status of this command by running the `tcld namespace export get` following command.
+Retrieve the status of this command by running the `tcld namespace export s3 get` following command.
 
 For example:
 
 ```command
-tcld namespace export get --namespace "your-namespace.your-account" --sink-name "your-sink-name"
+tcld namespace export s3 get --namespace "your-namespace.your-account" --sink-name "your-sink-name"
 ```
 
 The following is an example of the output:

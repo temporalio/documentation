@@ -1,6 +1,6 @@
 ---
 id: list
-title: tcld namespace export list
+title: tcld namespace export s3 list
 sidebar_label: list
 description: How to list all export sinks in the Namespace of a Temporal Cloud account using tcld.
 tags:
@@ -8,7 +8,7 @@ tags:
   - cli reference
 ---
 
-The `tcld namespace export list` command allows users to list all existing export sinks within the Namespace of a Temporal Cloud account.
+The `tcld namespace export s3 list` command allows users to list all existing export sinks within the Namespace of a Temporal Cloud account.
 
 The following modifiers control the behavior of the command.
 
@@ -22,7 +22,7 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace export list --namespace <namespace_id>
+tcld namespace export s3 list --namespace <namespace_id>
 ```
 
 #### --page-size
@@ -32,7 +32,7 @@ Determine the number of results to return per page for list operations. If not s
 **Example**
 
 ```bash
-tcld namespace export list --page-size <number_of_results>
+tcld namespace export s3 list --page-size <number_of_results>
 ```
 
 #### --page-token
@@ -42,5 +42,5 @@ Provide the page token to continue listing results from where the previous list 
 **Example**
 
 ```bash
-tcld namespace export list --page-token <token_value>
+tcld namespace export s3 list --page-token <token_value>
 ```

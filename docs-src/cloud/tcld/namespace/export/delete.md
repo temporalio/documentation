@@ -1,6 +1,6 @@
 ---
 id: delete
-title: tcld namespace export delete
+title: tcld namespace export s3 delete
 sidebar_label: delete
 description: How to delete an export sink in the Namespace of a Temporal Cloud account using tcld.
 tags:
@@ -8,7 +8,7 @@ tags:
   - cli reference
 ---
 
-The `tcld namespace export delete` command allows users to delete an existing export sink from the Namespace of a Temporal Cloud account.
+The `tcld namespace export s3 delete` command allows users to delete an existing export sink from the Namespace of a Temporal Cloud account.
 
 The following modifiers control the behavior of the command.
 
@@ -22,7 +22,7 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace export delete --namespace <namespace_id> --sink-name <sink_name>
+tcld namespace export s3 delete --namespace <namespace_id> --sink-name <sink_name>
 ```
 
 #### --sink-name
@@ -32,7 +32,7 @@ Provide the name of the export sink you wish to delete.
 **Example**
 
 ```bash
-tcld namespace export delete --sink-name <sink_name>
+tcld namespace export s3 delete --sink-name <sink_name>
 ```
 
 #### --resource-version
@@ -45,7 +45,7 @@ Alias: `-v`
 **Example**
 
 ```bash
-tcld namespace export delete --resource-version <etag> --sink-name <sink_name>
+tcld namespace export s3 delete --resource-version <etag> --sink-name <sink_name>
 ```
 
 #### --request-id
@@ -58,5 +58,5 @@ Alias: `-r`
 **Example**
 
 ```bash
-tcld namespace export delete --request-id <request_id> --sink-name <sink_name>
+tcld namespace export s3 delete --request-id <request_id> --sink-name <sink_name>
 ```

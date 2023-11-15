@@ -1,6 +1,6 @@
 ---
 id: update
-title: tcld namespace export update
+title: tcld namespace export s3 update
 sidebar_label: update
 description: How to update details of an export sink in the Namespace of a Temporal Cloud account using tcld.
 tags:
@@ -8,7 +8,7 @@ tags:
   - cli reference
 ---
 
-The `tcld namespace export update` command allows users to modify the details of an existing export sink within the Namespace of a Temporal Cloud account.
+The `tcld namespace export s3 update` command allows users to modify the details of an existing export sink within the Namespace of a Temporal Cloud account.
 
 The following modifiers control the behavior of the command.
 
@@ -22,7 +22,7 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace export update --namespace <namespace_id> --sink-name <sink_name> --enabled true
+tcld namespace export s3 update --namespace <namespace_id> --sink-name <sink_name> --enabled true
 ```
 
 #### --sink-name
@@ -32,7 +32,7 @@ Provide the name of the export sink you wish to update.
 **Example**
 
 ```bash
-tcld namespace export update --sink-name <sink_name> --enabled true
+tcld namespace export s3 update --sink-name <sink_name> --enabled true
 ```
 
 #### --enabled
@@ -42,7 +42,7 @@ Specify whether the export is enabled or not.
 **Example**
 
 ```bash
-tcld namespace export update --sink-name <sink_name> --enabled true
+tcld namespace export s3 update --sink-name <sink_name> --enabled true
 ```
 
 #### --role-arn
@@ -52,7 +52,7 @@ Update the role ARN for the IAM Role.
 **Example**
 
 ```bash
-tcld namespace export update --sink-name <sink_name> --role-arn <role_arn>
+tcld namespace export s3 update --sink-name <sink_name> --role-arn <role_arn>
 ```
 
 #### --s3-bucket-name
@@ -62,7 +62,7 @@ Update the name of the AWS S3 bucket that Temporal will send closed workflow his
 **Example**
 
 ```bash
-tcld namespace export update --sink-name <sink_name> --s3-bucket-name <bucket_name>
+tcld namespace export s3 update --sink-name <sink_name> --s3-bucket-name <bucket_name>
 ```
 
 #### --resource-version
@@ -75,7 +75,7 @@ Alias: `-v`
 **Example**
 
 ```bash
-tcld namespace export update --sink-name <sink_name> --resource-version <etag>
+tcld namespace export s3 update --sink-name <sink_name> --resource-version <etag>
 ```
 
 #### --kms-arn
@@ -85,7 +85,7 @@ Update the ARN of the KMS key used for encryption. Note: If the KMS ARN needs to
 **Example**
 
 ```bash
-tcld namespace export update --sink-name <sink_name> --kms-arn <kms_arn>
+tcld namespace export s3 update --sink-name <sink_name> --kms-arn <kms_arn>
 ```
 
 #### --request-id
@@ -98,5 +98,5 @@ Alias: `-r`
 **Example**
 
 ```bash
-tcld namespace export update --sink-name <sink_name> --request-id <request_id>
+tcld namespace export s3 update --sink-name <sink_name> --request-id <request_id>
 ```
