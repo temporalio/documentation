@@ -1,6 +1,6 @@
 ---
 id: data-encryption
-title: How to encrypt data using a custom Data Converter
+title: Encrypting application data
 description: Configure your custom encryption logic with `PayloadCodec` and set it with a custom Data Converter.
 sidebar_label: Securing your data
 tags:
@@ -19,9 +19,9 @@ For example, if you have sensitive information passed in the following objects t
 - Headers (verify if applicable to your SDK)
 - [Query](/concepts/what-is-a-query) inputs and results
 - Results of [Local Activities](/concepts/what-is-a-local-activity) and [Side Effects](/concepts/what-is-a-side-effect)
-- [Application errors and failures](/references/failures)
-
-  Failure messages and stack traces are not encoded as codec-capable Payloads by default; you must explicitly enable encoding these common attributes on failures. For more details, see [Failure Converter](/concepts/what-is-a-failure-converter).
+- [Application errors and failures](/references/failures).
+  Failure messages and stack traces are not encoded as codec-capable Payloads by default; you must explicitly enable encoding these common attributes on failures.
+  For more details, see [Failure Converter](/concepts/what-is-a-failure-converter).
 
 Using encryption ensures that your sensitive data exists unencrypted only on the Client and the Worker Process that is executing the Workflows and Activities, on hosts that you control.
 

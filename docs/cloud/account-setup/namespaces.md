@@ -93,7 +93,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 - [Namespace Name](#temporal-cloud-namespace-name) and region.
 - [Retention Period](/clusters#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution).
 - [CA certificate](/cloud/certificates#certificate-requirements) for the Namespace.
-- [Codec Server endpoint](/self-hosted-guide/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/self-hosted-guide/data-encryption#securing-your-data).
+- [Codec Server endpoint](/self-hosted-guide/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/self-hosted-guide/data-encryption#).
 - [Permissions](/cloud/users#namespace-level-permissions) for each user.
 
 <!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
@@ -112,7 +112,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
    (If you need to change this value later, contact [Temporal Support](/cloud/support#support-ticket).)
 1. In **Certificate**, paste the CA certificate for this Namespace.
 1. Optional: In **Codec Server**, enter the URL and port number of your Codec Server endpoint.
-   For details, see [Securing your data](/self-hosted-guide/data-encryption#securing-your-data).
+   For details, see [Securing your data](/self-hosted-guide/data-encryption#).
 1. Click **Create Namespace**.
 
 <!--- How to create a Namespace in Temporal Cloud using tcld --->

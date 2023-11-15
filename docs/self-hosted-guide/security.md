@@ -302,7 +302,7 @@ Related read:
 
 Each Temporal SDK provides a [Data Converter](/dataconversion#) that can be customized with a custom [Payload Codec](/dataconversion#payload-codec) to encode and secure your data.
 
-For details on what data can be encoded, how to secure it, and what to consider when using encryption, see [Data encryption](/self-hosted-guide/data-encryption#securing-your-data).
+For details on what data can be encoded, how to secure it, and what to consider when using encryption, see [Data encryption](/self-hosted-guide/data-encryption#).
 
 #### Codec Server
 

@@ -22,7 +22,7 @@ Welcome to the self-hosted Temporal Cluster guide.
 - [Security](/self-hosted-guide/security#)
 - [Monitoring](/self-hosted-guide/monitoring#)
 - [Visibility](/self-hosted-guide/visibility#)
-- [Data encryption](/self-hosted-guide/data-encryption#securing-your-data)
+- [Data encryption](/self-hosted-guide/data-encryption#)
 - [Upgrading server](/self-hosted-guide/upgrade-server#upgrade-server)
 - [Archival](/self-hosted-guide/archival#)
 - [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication#)

@@ -2,16 +2,16 @@
   "file_name": "data-encryption.md",
   "id": "data-encryption",
   "file_dir": "self-hosted-guide",
-  "title": "Temporal production readiness - Develop",
+  "title": "Encrypting application data",
   "sidebar_label": "Data encryption",
   "sidebar_position": 7,
   "description": "This guide explains what you need to develop to use Temporal in your production environment.",
-  "use_description": true,
+  "use_description": false,
   "toc_max_heading_level": 4,
   "add_tabs_support": false,
   "sections": [
     {
-      "type": "h2",
+      "type": "p",
       "id": "self-hosted/data-encryption"
     },
     {
