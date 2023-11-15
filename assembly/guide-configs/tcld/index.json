@@ -2,6 +2,7 @@
   "file_name": "index.md",
   "file_dir": "cloud/tcld",
   "id": "index",
+  "slug": "/cloud/tcld",
   "title": "tcld command reference",
   "sidebar_label": "CLI (tcld)",
   "description": "The Temporal Cloud CLI (tcld) is a command-line tool that you can use to interact with Temporal Cloud.",

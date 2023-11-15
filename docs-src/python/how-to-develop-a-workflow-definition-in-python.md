@@ -14,7 +14,13 @@ Specify the `@workflow.defn` decorator on the Workflow class to identify a Workf
 
 Use the `@workflow.run` to mark the entry point method to be invoked. This must be set on one asynchronous method defined on the same class as `@workflow.defn`. Run methods have positional parameters.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 from temporalio import workflow

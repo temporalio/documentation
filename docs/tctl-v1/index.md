@@ -4,6 +4,7 @@ title: tctl v1.17 command reference
 sidebar_label: CLI (tctl)
 sidebar_position: 9
 description: The Temporal CLI (tctl) is a legacy command-line tool that you can use to interact with a Temporal Cluster.
+slug: /tctl-v1
 toc_max_heading_level: 4
 keywords:
 - cli
@@ -27,7 +28,7 @@ import TabItem from '@theme/TabItem';
 The public preview of [Temporal CLI](/cli) is now available.
 We encourage you to begin using it and to provide feedback.
 
-After we release Temporal CLI v1, we will deprecate tctl.
+After the release of Temporal CLI v1.0, tctl will deprecate.
 
 :::
 

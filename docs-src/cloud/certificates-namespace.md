@@ -23,7 +23,7 @@ Temporal Cloud begins sending notifications 15 days before expiration.
 For details, see the previous section ([How to receive notifications about certificate expiration](/cloud/certificates-notifications)).
 
 When updating CA certificates, it's important to follow a rollover process (sometimes referred to as "certificate rotation").
-Doing so enables your Namespace to serve both CA certificates for a period of time until traffic to your old CA certificate ceases.
+Doing so enables your Namespace to serve both CA certificates for a period of time until traffic to your old CA certificate ceases. This prevents any service disruption during the rollover process.
 
 Be aware that the subject of the existing certificate and the subject of the new certificate must not be identical.
 One way to meet this requirement is to add a version or a date to the common name (CN).
@@ -32,31 +32,35 @@ One way to meet this requirement is to add a version or a date to the common nam
 
 ### Update certificates using Temporal Cloud UI
 
+Updating certificates using the following strategy allows for a zero-downtime rotation of certificates.
+
 1. On the left side of the window, select **Namespaces**.
 
-1. Select the name of the Namespace to update.
+2. Select the name of the Namespace to update.
 
-1. In the top-right portion of the page for the Namespace, select **Edit**.
+3. In the top-right portion of the page for the Namespace, select **Edit**.
 
-1. On the **Edit** page, select the **CA Certificates** card to expand it.
+4. On the **Edit** page, select the **CA Certificates** card to expand it.
 
-1. In the certificates box, scroll to the end of the existing certificate (that is, past `-----END CERTIFICATE-----`).
+5. In the certificates box, scroll to the end of the existing certificate (that is, past `-----END CERTIFICATE-----`).
 
-1. On the following new line, paste the entire PEM block of the new certificate.
+6. On the following new line, paste the entire PEM block of the new certificate.
 
-1. Select **Save**.
+7. Select **Save**.
 
-1. Wait until all Workers are using the new certificate.
+8. Wait until all Workers are using the new certificate.
 
-1. Return to the **Edit** page of the Namespace and select the **CA Certificates** card.
+9. Return to the **Edit** page of the Namespace and select the **CA Certificates** card.
 
-1. In the certificates box, delete the old certificate, leaving the new one in place.
+10. In the certificates box, delete the old certificate, leaving the new one in place.
 
-1. Select **Save**.
+11. Select **Save**.
 
 <!--- How to update certificates in Temporal Cloud using tcld --->
 
 ### Update certificates using tcld
+
+Updating certificates using the following strategy allows for a zero-downtime rotation of certificates.
 
 1. Create a single file that contains both your old and new CA certificate PEM blocks.
    Just concatenate the PEM blocks on adjacent lines.

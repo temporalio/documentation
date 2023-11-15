@@ -32,7 +32,7 @@ tags:
 
 Temporal Cloud is a consumption-based service; you pay only for what you need when you need it. Our [pricing](https://temporal.io/pricing) derives from your use of _actions_, _storage_, and _support_. Pricing is flexible, transparent, and predictable, so you know your costs and never pay for unused capacity.
 
-This page introduces the elements of Temporal Cloud pricing so that you can estimate costs for your implementation. To gain a reliable estimate, [contact our team](https://pages.temporal.io/contact-us).
+This page introduces the elements of Temporal Cloud pricing—[actions](#action), [storage](#storage), and [support](#support)—so that you can estimate costs for your implementation. To gain a reliable estimate, [contact our team](https://pages.temporal.io/contact-us).
 
 ## What is an Action? {#action}
 
@@ -80,18 +80,30 @@ The following operations result in Actions.
 - **Side Effect recorded.**
   For a mutable [Side Effect](/workflows#side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
+- **NEW: Workflow Update.** [[Workflow Updates](/workflows#update)] is a primitive that combines a Signal and Query together for a single Action.
+
+**Child Workflows**
+
+- The parent Workflow spawning a Child Workflow results in one Action.
+- Execution of the Child Workflow results in one Action.
 
 **Activities**
 
 - **Activity started or retried.**
   Occurs each time an Activity is started or retried.
-- **Local Activity started.**
-  Occurs each time a [Local Activity](/activities#local-activity) is started.
+- **Local Activity started.** Each [Local Activity](/activities#local-activity) associated with one Workflow Task will count as one Action. (Note: Each additional Workflow Task heartbeat after counts as an additional Action. Also, Local Activities retried following a Workflow Task heartbeat will count as one Action.
 - **Activity Heartbeat recorded.**
   A Heartbeat call from Activity code counts as an Action only if it reaches the [Temporal Server](/clusters#temporal-server).
   Temporal SDKs throttle [Activity Heartbeats](/activities#activity-heartbeat).
   The default throttle is 80% of the [Heartbeat Timeout](/activities#heartbeat-timeout).
   Heartbeats don't apply to Local Activities.
+
+**Schedules**
+
+[Schedules](/workflows#schedule) allows you to "schedule" a Workflow to start at a particular time. Each execution of a Schedule will accrue three actions:
+
+- **Schedule Start**. Will account for two actions
+- **Workflow started**. One action to start the target workflow
 
 [Reach out to our team](https://pages.temporal.io/contact-us) to get more information or to help size your number of Actions.
 
@@ -121,7 +133,7 @@ If you purchase Temporal Cloud credits (as outlined earlier), running storage co
 
 ## What kind of support do I get with Temporal Cloud? {#support}
 
-With a subscription to Temporal Cloud, you also gain access to our support organization of developer success engineers and solution architects. Our experts assist with a range of work streams from Workflow design reviews to setting up observability to break/fix support with an agreed-upon set of SLAs.
+When signing up for Temporal Cloud, select a support plan—either Basic or Premium—and gain access to our support organization, which includes developer success engineers and solution architects. Our experts assist with a range of work streams, from Workflow design reviews to setting up observability, and from troubleshooting support to maintaining an agreed-upon set of SLAs.
 
 The Temporal Developer Success team brings a deep knowledge of how Temporal works and how you can optimize your deployment. This team is comprised of engineers who know Temporal inside and out, and continue to contribute to its development.
 
@@ -132,7 +144,7 @@ If an issue occurs, the team provides support through our [support portal](/clou
 |                     | **Basic**                                                                                   | **Premium**                                                                            |
 | ------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
 | Response times      | P0: 1 business hour<br/>P1: 4 business hours<br/>P2: 1 business day<br/>P3: 2 business days | P0: 30 minutes<br/>P1: 1 business hour<br/>P2: 4 business hours<br/>P3: 1 business day |
-| Pricing (per month) | Greater of $200 or 10% monthly usage                                                        | Greater of $2,000 or 10% monthly activity                                              |
+| Pricing (per month) | Greater of $200 or 10% monthly usage                                                        | Greater of $2,000 or 10% monthly usage                                                 |
 
 Business hours for Temporal Support are 0500–1700 Monday–Friday (Pacific Time).
 For P0 issues, coverage is 24×7.
@@ -155,12 +167,22 @@ Temporal Cloud employs a consumption-based pricing model that's based on storage
 
 **What’s the minimum cost to run Temporal Cloud?**
 
-The Temporal Cloud service is consumption based. You pay only for what you need with no minimum. Basic support has a minimum monthly fee of $200 per month.
+The Temporal Cloud service is consumption based.
+You pay only for what you need with no minimum.
+Basic support has a minimum monthly fee of $200 per month.
 
 **How do I pay for Temporal Cloud?**
 
-Temporal sends a monthly bill based on your consumption. You can pay this bill with a credit card, ACH, wire transfer, or Temporal Credits.
+Temporal sends a monthly bill based on your consumption.
+You can pay this bill with a credit card, ACH, wire transfer, or Temporal Credits.
 
 **Can I purchase Temporal Cloud through my Amazon, Azure, or Google Cloud Platform marketplace?**
 
-You can purchase Temporal Cloud credits in the AWS Marketplace. Please contact our team at sales@temporal.io to learn more about our private offer on the AWS Marketplace.
+You can purchase Temporal Cloud credits in the AWS Marketplace.
+To learn more about our private offer on the AWS Marketplace, contact our team at sales@temporal.io.
+
+**Do you offer any discounts for startups?**
+
+Yes.
+If you're part of a startup that has raised $30 million or less in funding and is not a current Temporal Cloud customer, you can apply for free Temporal Cloud credits.
+To learn more and apply, see [Temporal Cloud for Startups](https://temporal.io/startup).

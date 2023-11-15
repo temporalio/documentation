@@ -16,21 +16,35 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 To Backfill a Scheduled Workflow Execution in Python, use the [backfill()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#backfill) asynchronous
 method on the Schedule Handle.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/backfill_schedule_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/backfill_schedule_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
-# ...
+import asyncio
+from datetime import datetime, timedelta
+
+from temporalio.client import Client, ScheduleBackfill, ScheduleOverlapPolicy
+
+
+
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
         "workflow-schedule-id",
     )
     now = datetime.utcnow()
-    await handle.backfill(
-        ScheduleBackfill(
-            start_at=now - timedelta(minutes=10),
-            end_at=now - timedelta(minutes=9),
-            overlap=ScheduleOverlapPolicy.ALLOW_ALL,
+    (
+        await handle.backfill(
+            ScheduleBackfill(
+                start_at=now - timedelta(minutes=10),
+                end_at=now - timedelta(minutes=9),
+                overlap=ScheduleOverlapPolicy.ALLOW_ALL,
+            ),
         ),
-    ),
+    )
 ```

@@ -12,7 +12,7 @@ tags:
 
 Add the [Temporal Java SDK](https://github.com/temporalio/sdk-java) to your project as a dependency:
 
-**[Apache Maven](https://maven.apache.org/)**:
+**[Apache Maven](https://maven.apache.org/):**
 
 ```maven
 <dependency>
@@ -22,13 +22,13 @@ Add the [Temporal Java SDK](https://github.com/temporalio/sdk-java) to your proj
 </dependency>
 ```
 
-**[Gradle Groovy DSL](https://gradle.org/)**:
+**[Gradle Groovy DSL](https://gradle.org/):**
 
 ```groovy
 implementation 'io.temporal:temporal-sdk:1.17.0'
 ```
 
-**Other**:
+**Other:**
 
 Additional scripts for each SDK version are available here: [https://search.maven.org/artifact/io.temporal/temporal-sdk](https://search.maven.org/artifact/io.temporal/temporal-sdk).
 Select an SDK version to see available scripts.

@@ -16,6 +16,7 @@ tags:
 An Update is a request to and a response from a Temporal Client to a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 - [How to develop, send, and handle Updates in Go](/go/updates)
+- [How to develop, send, and handle Updates in Java](/java/updates)
 
 You can think of an Update as a synchronous, blocking call that could replace both a Signal and a Query. An update is:
 
@@ -49,3 +50,17 @@ An Update has four phases.
 4. **Completion.** The Update handler can return a result or a language-appropriate error/exception to indicate its completion.
    The Platform sends the Update outcome back to the original invoking entity as an Update response.
    A [WorkflowExecutionUpdateCompletedEvent](/references/events#workflowexecutionupdatecompletedevent) Event in the Workflow Execution Event History denotes the completion of an Update.
+
+:::note
+
+Workflow Updates are disabled by default.
+
+To enable `UpdateWorkflowExecution` API, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config value to `true`.
+
+For example, to enable Workflow Updates with the Temporal CLI, pass the value when executing the `temporal` command:
+
+```command
+temporal server start-dev --dynamic-config-value frontend.enableUpdateWorkflowExecution=true
+```
+
+:::

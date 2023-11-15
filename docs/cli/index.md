@@ -4,6 +4,7 @@ title: Temporal CLI command reference
 sidebar_label: CLI (temporal)
 sidebar_position: 8
 description: Discover the Temporal Command Line Interface (CLI) documentation. Navigate, configure, and utilize Temporal CLI effectively.
+slug: /cli
 toc_max_heading_level: 4
 keywords:
 - cli
@@ -369,18 +370,47 @@ This setting makes created Search Attributes immediately available.
 Configure system environment with Temporal CLI environmental variables.
 The following table lists and describes the environment variables you can set for Temporal CLI.
 
-| Variable                                     | Definition                                                                | Client Option                   |
-| -------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------- |
-| `TEMPORAL_CLI_ADDRESS`                       | Host and port (formatted as host:port) for the Temporal Frontend Service. | --address                       |
-| `TEMPORAL_CLI_CODEC_AUTH`                    | Sets the authorization header for requests to Codec Server.               | --codec-auth                    |
-| `TEMPORAL_CLI_CODEC_ENDPOINT`                | Endpoint for remote Codec Server.                                         | --codec-endpoint                |
-| `TEMPORAL_CONTEXT_TIMEOUT`                   | Optional timeout for RPC call context (in seconds). Default: 5.           | --context-timeout               |
-| `TEMPORAL_CLI_NAMESPACE`                     | Namespace in Temporal Workflow. Default: "default".                       | --namespace                     |
-| `TEMPORAL_CLI_TLS_CA`                        | Path to server CA certificate.                                            | --tls-ca-path                   |
-| `TEMPORAL_CLI_TLS_CERT`                      | Path to x509 certificate.                                                 | --tls-cert-path                 |
-| `TEMPORAL_CLI_TLS_DISABLE_HOST_VERIFICATION` | Disables TLS host name verification. Default: false.                      | --tls-disable-host-verification |
-| `TEMPORAL_CLI_TLS_KEY`                       | Path to private certificate key.                                          | --tls-key-path                  |
-| `TEMPORAL_CLI_TLS_SERVER_NAME`               | Override for target TLS server name.                                      | --tls-server-name               |
+| Variable                                 | Definition                                                                | Client Option                   |
+| ---------------------------------------- | ------------------------------------------------------------------------- | ------------------------------- |
+| `TEMPORAL_ADDRESS`                       | Host and port (formatted as host:port) for the Temporal Frontend Service. | --address                       |
+| `TEMPORAL_CODEC_AUTH`                    | Sets the authorization header for requests to Codec Server.               | --codec-auth                    |
+| `TEMPORAL_CODEC_ENDPOINT`                | Endpoint for remote Codec Server.                                         | --codec-endpoint                |
+| `TEMPORAL_CONTEXT_TIMEOUT`               | Optional timeout for RPC call context (in seconds). Default: 5.           | --context-timeout               |
+| `TEMPORAL_NAMESPACE`                     | Namespace in Temporal Workflow. Default: "default".                       | --namespace                     |
+| `TEMPORAL_TLS_CA`                        | Path to server CA certificate.                                            | --tls-ca-path                   |
+| `TEMPORAL_TLS_CERT`                      | Path to x509 certificate.                                                 | --tls-cert-path                 |
+| `TEMPORAL_TLS_DISABLE_HOST_VERIFICATION` | Disables TLS host name verification. Default: false.                      | --tls-disable-host-verification |
+| `TEMPORAL_TLS_KEY`                       | Path to private certificate key.                                          | --tls-key-path                  |
+| `TEMPORAL_TLS_SERVER_NAME`               | Override for target TLS server name.                                      | --tls-server-name               |
+
+## Proxy support
+
+Temporal CLI provides support for users who are operating behind a proxy.
+This feature ensures seamless communication even in network-restricted environments.
+
+#### Setting up proxy support
+
+If you are behind a proxy, you'll need to instruct the Temporal CLI to route its requests via that proxy.
+You can achieve this by setting the `HTTPS_PROXY` environment variable.
+
+```command
+export HTTPS_PROXY=<host>:<port>
+```
+
+Replace `<host>` with the proxy's hostname or IP address, and `<port>` with the proxy's port number.
+
+Once set, you can run the Temporal CLI commands as you normally would.
+
+:::note
+
+Temporal CLI uses the gRPC library which natively supports HTTP CONNECT proxies. The gRPC library checks for the `HTTPS_PROXY` (and its case-insensitive variants) environment variable to determine if it should route requests through a proxy.
+
+:::
+
+In addition to `HTTPS_PROXY`, gRPC also respects the `NO_PROXY` environment variable.
+This can be useful if there are specific addresses or domains you wish to exclude from proxying.
+
+For more information, see [Proxy](https://github.com/grpc/grpc-go/blob/master/Documentation/proxy.md) in the gRPC documentation.
 
 ## Auto-completion
 

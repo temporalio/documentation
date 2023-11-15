@@ -2,6 +2,7 @@
 id: what-is-an-authorizer-plugin
 title: What is an Authorizer Plugin?
 sidebar_label: Authorizer Plugin
+description: The `Authorizer` plugin contains a single `Authorize` method, which is invoked for each incoming API call. `Authorize` receives information about the API call, along with the role and permission claims of the caller.
 tags:
   - term
 ---
@@ -24,7 +25,7 @@ The following arguments must be passed to `Authorizer`:
 - `DecisionDeny`: the requested API call is not invoked and an error is returned to the caller.
 - `DecisionAllow`: the requested API call is invoked.
 
-:::warning
+:::caution
 
 `Authorizer` allows all API calls pass by default. Disable the `nopAuthority` authorizer and configure your own to prevent this behavior.
 

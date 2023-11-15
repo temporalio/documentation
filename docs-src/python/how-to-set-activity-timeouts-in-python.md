@@ -21,7 +21,13 @@ Available timeouts are:
 - schedule_to_start_timeout
 - start_to_close_timeout
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/activity_timeouts_retires/your_workflows_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/activity_timeouts_retires/your_workflows_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 # ...

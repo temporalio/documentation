@@ -14,7 +14,13 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 To remove a Search Attribute, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) function with an empty list as its value.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/workflow_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/workflow_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 # ...

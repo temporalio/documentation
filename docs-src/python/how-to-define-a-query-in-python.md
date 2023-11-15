@@ -17,7 +17,7 @@ To define a Query, set the Query decorator [`@workflow.query`](https://python.te
 
 **Customize names**
 
-You can have a name parameter to customize the Query's name, otherwise it defaults to the unqualified method `__name__`.
+You can have a name parameter to customize the Query's name, otherwise it defaults to the name of the Query method.
 
 :::note
 
@@ -25,7 +25,13 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 
 :::
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/query_your_workflow/wf_query_dacx.py">View source code</a>
+:::copycode Sample application code
+
+The following code sample comes from a working and tested sample application.
+The code sample might be abridged within the guide to highlight key aspects.
+Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/query_your_workflow/wf_query_dacx.py) in the context of the rest of the application code.
+
+:::
 
 ```python
 # ...

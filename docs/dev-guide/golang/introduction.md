@@ -35,8 +35,8 @@ The information on this page helps a developer recommend a Temporal SDK based on
 :::
 
 The [Temporal Go SDK](https://github.com/temporalio/sdk-go) released on March 23, 2020, and enables developers to build, test, and execute Temporal applications in Go.
-This guide documents the concepts, features, and tools that developers encounter on their journey.
 
+This guide documents the concepts, features, and tools that developers encounter on their journey.
 It contextualizes Temporal Application development through a specific set of use cases.
 For example, we work within the Background Check use case for the first several sections.
 And it relies on a set of sample applications specifically tailored to meet the needs of this guide.
@@ -151,8 +151,8 @@ For intricate and vast use cases, having some experience with the following coul
 - Continue reading this guide.
 - [Temporal 101 with Go](https://learn.temporal.io/courses/temporal_101/go): free introductory course.
 - [Temporal 102 with Go](https://learn.temporal.io/courses/temporal_102/go): our free course that builds on Temporal 101.
-- [Documentation samples repository](https://github.com/temporalio/documentation-samples-java)
-- [Go SDK samples repository](https://github.com/temporalio/samples-java)
+- [Documentation samples repository](https://github.com/temporalio/documentation-samples-go)
+- [Go SDK samples repository](https://github.com/temporalio/samples-go)
 - The [Go SDK](https://www.youtube.com/watch?v=-KWutSkFda8&list=PLl9kRkvFJrlRYHYaTPnsvE46szyMIZLdk&pp=iAQB) YouTube playlist
 - Tutorials
   - [Build an eCommerce App With Temporal and Go](https://learn.temporal.io/tutorials/go/ecommerce/)

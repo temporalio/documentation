@@ -242,7 +242,7 @@ The following top level configuration items are required:
 
 _Required_ - The number of history shards to create when initializing the Cluster.
 
-**Warning**: This value is immutable and will be ignored after the first run.
+**Warning:** This value is immutable and will be ignored after the first run.
 Please ensure you set this value appropriately high enough to scale with the worst case peak load for this Cluster.
 
 ### defaultStore
@@ -339,7 +339,7 @@ clusterMetadata:
   #type: kafka
 ```
 
-- `currentClusterName` - _required_ - the name of the current cluster. **Warning**: This value is immutable and will be ignored after the first run.
+- `currentClusterName` - _required_ - the name of the current cluster. **Warning:** This value is immutable and will be ignored after the first run.
 - `enableGlobalNamespace` - _Default:_ `false`.
 - `replicationConsumer` - determines which method to use to consume replication tasks. The type may be either `kafka` or `rpc`.
 - `failoverVersionIncrement` - the increment of each cluster version when failover happens.
@@ -386,7 +386,7 @@ _Required_
 - `bindOnIP`: Used to bind service on specific IP, or `0.0.0.0`.
   Check `net.ParseIP` for supported syntax, only IPv4 is supported, mutually exclusive with `BindOnLocalHost` option.
 
-**Note**: Port values are currently expected to be consistent among role types across all hosts.
+**Note:** Port values are currently expected to be consistent among role types across all hosts.
 
 ## publicClient
 

@@ -10,7 +10,7 @@ tags:
 
 An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 
-- [How to develop an Activity Definition using the Go SDK](/go/how-to-develop-an-activity-definition-in-go)
+- [How to develop an Activity Definition using the Go SDK](/go/generated/how-to-develop-an-activity-definition-in-go)
 - [How to develop an Activity Definition using the Java SDK](/java/developing-activities)
 - [How to develop an Activity Definition using the PHP SDK](/php/developing-activities)
 - [How to develop an Activity Definition using the Python SDK](/python/developing-activities)
@@ -29,6 +29,12 @@ Temporal recommends that Activities be idempotent.
 
 Idempotent means that performing an operation multiple times has the same result as performing it once.
 In the context of Temporal, Activities should be designed to be safely executed multiple times without causing unexpected or undesired side effects.
+
+:::info
+
+By design, completed Activities will not re-execute as part of a [Workflow Replay](/workflows#replays). However, Activities won’t record to the [Event History](/retry-policies#event-history) until they return or produce an error. If an Activity fails to report to the server at all, it will be retried. Designing for idempotence, especially if you have a [Global Namespace](/namespaces#global-namespace), will improve reusability and reliability.
+
+:::
 
 An Activity is idempotent if multiple [Activity Task Executions](/concepts/what-is-an-activity-task-execution) do not change the state of the system beyond the first Activity Task Execution.
 
