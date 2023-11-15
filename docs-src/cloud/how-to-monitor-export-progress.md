@@ -9,7 +9,7 @@ tags:
   - how-to
 ---
 
-**How to monitor the History exportation progress?**
+**How to monitor the History exportation progress**
 
 Once you've finalized the setup, here's how to monitor the export progress:
 
