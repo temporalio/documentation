@@ -10,7 +10,17 @@ tags:
 
 The `tcld namespace export` commands manage exporting Workflow History Exports.
 
-Alias: `cf`
+Specify the name of the sink.
+
+Valid options: `s3`
+
+For example:
+
+```command
+tcld namespace export s3 create
+```
+
+Alias: `es`
 
 - [tcld namespace export create](/cloud/tcld/namespace/export/create)
 - [tcld namespace export get](/cloud/tcld/namespace/export/get)

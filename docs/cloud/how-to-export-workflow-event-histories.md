@@ -95,7 +95,7 @@ The manual setup provides an CloudFormation template to manually configure an Cl
 
 ### Using tcld
 
-Run the `tcld namespace export create` command and provide the following information.
+Run the `tcld namespace export s3 create` command and provide the following information.
 
 - `--namespace` : The Namespace to configure export for.
 - `--sink-name`: The name of the export sink.
@@ -105,7 +105,7 @@ Run the `tcld namespace export create` command and provide the following informa
 For example:
 
 ```command
-tcld namespace export create --namespace "your-namespace.your-account" --sink-name "your-sink-name" --role-arn "arn:aws:iam::123456789012:role/test-sink" --s3-bucket-name "your-aws-s3-bucket-name”
+tcld namespace export s3 create --namespace "your-namespace.your-account" --sink-name "your-sink-name" --role-arn "arn:aws:iam::123456789012:role/test-sink" --s3-bucket-name "your-aws-s3-bucket-name”
 ```
 
 Retrieve the status of this command by running the `tcld namespace export get` following command.

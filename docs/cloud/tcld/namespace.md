@@ -187,7 +187,17 @@ tcld namespace delete --namespace <namespace_id>
 
 The `tcld namespace export` commands manage exporting Workflow History Exports.
 
-Alias: `cf`
+Specify the name of the sink.
+
+- Valid sink names are: `s3`
+
+For example:
+
+```command
+tcld namespace export s3 create
+```
+
+Alias: `es`
 
 - [tcld namespace export create](#create)
 - [tcld namespace export get](#get)
