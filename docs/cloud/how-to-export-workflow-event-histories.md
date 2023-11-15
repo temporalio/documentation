@@ -51,7 +51,7 @@ Before configuring the Export Sink, ensure you have the following:
 
 ## Configure Workflow History Export {#configure}
 
-**How to configure Workflow History Export?**
+**How to configure Workflow History Export**
 
 You can use either use the [Temporal Cloud UI](#using-temporal-cloud-ui) or [tcld](#using-tcld) to configure the Workflow History Export.
 
@@ -144,7 +144,7 @@ The following is an example of the output:
 
 ## Verify export setup {#verify}
 
-**How to verify that the Export feature is set up correctly?**
+**How to verify that the Export feature is set up correctly**
 
 From the Export configuration page, select **Verify**.
 This action checks if Temporal can successfully write a test file to the sink.

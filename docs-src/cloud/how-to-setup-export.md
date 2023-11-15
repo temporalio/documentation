@@ -9,7 +9,7 @@ tags:
   - how-to
 ---
 
-**How to configure Workflow History Export?**
+**How to configure Workflow History Export**
 
 You can use either use the [Temporal Cloud UI](#using-temporal-cloud-ui) or [tcld](#using-tcld) to configure the Workflow History Export.
 

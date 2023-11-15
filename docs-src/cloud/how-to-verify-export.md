@@ -9,7 +9,7 @@ tags:
   - verify
 ---
 
-**How to verify that the Export feature is set up correctly?**
+**How to verify that the Export feature is set up correctly**
 
 From the Export configuration page, select **Verify**.
 This action checks if Temporal can successfully write a test file to the sink.
