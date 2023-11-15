@@ -39,7 +39,8 @@
         },
         {
             "org": "temporalio",
-            "name": "documentation-samples-python"
+            "name": "documentation-samples-python",
+            "ref": "replay-tests"
         },
         {
             "org": "temporalio",
