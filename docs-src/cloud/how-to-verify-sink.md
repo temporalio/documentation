@@ -8,7 +8,7 @@ tags:
   - sink
 ---
 
-**How to verify the Sink?**
+**How to verify the Sink**
 
 From the Export configuration page, select **Verify** to verify that a test file can be written to the sink successfully.
 
