@@ -737,9 +737,9 @@ An Update has four phases.
 
 :::note
 
-Workflow Updates are disabled by default.
+Workflow Updates are currently disabled by default on Temporal Server.
 
-To enable `UpdateWorkflowExecution` API, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config value to `true`.
+To enable the `UpdateWorkflowExecution` API, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config value to `true`.
 
 For example, to enable Workflow Updates with the Temporal CLI, pass the value when executing the `temporal` command:
 
@@ -1167,7 +1167,7 @@ You can also pass any of the [predefined schedules](https://pkg.go.dev/github.co
 
 ```
 | Schedules              | Description                                | Equivalent To |
-| ---------------------- | ------------------------------------------ | ------------- |
+|------------------------|--------------------------------------------|---------------|
 | @yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *     |
 | @monthly               | Run once a month, midnight, first of month | 0 0 1 * *     |
 | @weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0     |
