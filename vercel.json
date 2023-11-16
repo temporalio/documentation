@@ -1804,7 +1804,7 @@
     {
       "source": "/kb/legacy-oss-prod-deploy:path*",
       "destination": "/production-deployment"
-    }
+    },
     {
       "source": "/cloud/release-notes",
       "destination": "https://temporal.io/change-log/product-area/cloud"
