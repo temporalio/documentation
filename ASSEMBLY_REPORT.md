@@ -1,15 +1,5 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday November 16 2023 09:36:01 AM -0800
-
-Assembly Workflow Id: docs-full-assembly-rachfop-123
-
-111 guide configurations found.
-
-1665 information nodes found.
-
-1424 information nodes are attached to guides.
-
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
 concepts/what-is-visibility -> /clusters#visibility
@@ -54,7 +44,7 @@ concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
 
-cloud/security-cloud-intro -> /cloud/security-model#
+cloud/security-cloud-intro -> /cloud/security#
 
 references/server-options -> /references/server-options#withconfig
 
@@ -709,6 +699,8 @@ php/parent-close-policy -> /dev-guide/php/features#parent-close-policy
 python/parent-close-policy -> /dev-guide/python/features#parent-close-policy
 
 typescript/parent-close-policy -> /dev-guide/typescript/features#parent-close-policy
+
+concepts/what-is-a-delay-start-workflow-execution -> #delay-workflow-execution
 
 go/cron-jobs -> /dev-guide/go/features#temporal-cron-jobs
 

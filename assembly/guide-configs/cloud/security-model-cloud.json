@@ -1,9 +1,9 @@
 {
-  "file_name": "security-model-cloud.md",
-  "id": "security-model",
-  "slug": "/cloud/security-model",
+  "file_name": "security.md",
+  "id": "security",
+  "slug": "/cloud/security",
   "file_dir": "cloud/introduction",
-  "title": "What kind of security does Temporal Cloud provide?",
+  "title": "Temporal Cloud's security model",
   "sidebar_label": "Security model",
   "sidebar_position": 1,
   "description": "The security model of Temporal Cloud encompasses applications, data, and the Temporal Cloud platform.",

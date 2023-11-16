@@ -10,6 +10,7 @@ keywords:
 - child-workflow
 - child-workflow-executions
 - continue-as-new
+- delay-workflow
 - explanation
 - queries
 - resets
@@ -21,6 +22,7 @@ tags:
 - child-workflow
 - child-workflow-executions
 - continue-as-new
+- delay-workflow
 - explanation
 - queries
 - resets
@@ -737,9 +739,9 @@ An Update has four phases.
 
 :::note
 
-Workflow Updates are disabled by default.
+Workflow Updates are currently disabled by default on Temporal Server.
 
-To enable `UpdateWorkflowExecution` API, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config value to `true`.
+To enable the `UpdateWorkflowExecution` API, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config value to `true`.
 
 For example, to enable Workflow Updates with the Temporal CLI, pass the value when executing the `temporal` command:
 
@@ -808,6 +810,13 @@ A Workflow Execution can be both a Parent and a Child Workflow Execution because
 A Parent Workflow Execution must await on the Child Workflow Execution to spawn.
 The Parent can optionally await on the result of the Child Workflow Execution.
 Consider the Child's [Parent Close Policy](#parent-close-policy) if the Parent does not await on the result of the Child, which includes any use of Continue-As-New by the Parent.
+
+:::note
+
+Child Workflows do not carry over when the Parent uses [Continue-As-New](#continue-as-new).
+This means that if a Parent Workflow Execution utilizes Continue-As-New, any ongoing Child Workflow Executions will not be retained in the new continued instance of the Parent.
+
+:::
 
 When a Parent Workflow Execution reaches a Closed status, the Cluster propagates Cancellation Requests or Terminations to Child Workflow Executions depending on the Child's Parent Close Policy.
 
@@ -911,6 +920,12 @@ Schedules provide a more flexible and user-friendly approach than [Temporal Cron
 
 A Schedule has an identity and is independent of a Workflow Execution.
 This differs from a Temporal Cron Job, which relies on a cron schedule as a property of the Workflow Execution.
+
+:::info
+
+For triggering a Workflow Execution at a specific one-time future point rather than on a recurring schedule, the [Start Delay](#delay-workflow-execution) option should be used instead of a Schedule.
+
+:::
 
 ### Action
 
@@ -1160,7 +1175,7 @@ You can also pass any of the [predefined schedules](https://pkg.go.dev/github.co
 
 ```
 | Schedules              | Description                                | Equivalent To |
-| ---------------------- | ------------------------------------------ | ------------- |
+|------------------------|--------------------------------------------|---------------|
 | @yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *     |
 | @monthly               | Run once a month, midnight, first of month | 0 0 1 * *     |
 | @weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0     |
@@ -1201,6 +1216,32 @@ A Temporal Cron Job does not stop spawning Runs until it has been Terminated or 
 A Cancellation Request affects only the current Run.
 
 Use the Workflow Id in any requests to Cancel or Terminate.
+
+## What is a Start Delay? {#delay-workflow-execution}
+
+:::tip Support, stability, and dependency info
+
+- Introduced in the [Temporal Go SDK 1.25.0](https://github.com/temporalio/sdk-go/releases/tag/v1.25.0)
+- Introduced in the [Temporal Java SDK 1.25.0](https://github.com/temporalio/sdk-java/releases/tag/v1.22.1)
+- Introduced in the [Temporal Python SDK 1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
+
+:::
+
+Start Delay determines the amount of time to wait before initiating a Workflow Execution.
+
+:::note Experimental feature
+Start Delay Workflow Execution is incompatible with both [Schedules](#schedule) and [Cron Jobs](#temporal-cron-job).
+
+This Workflow Option is considered experimental and may change in future releases.
+
+:::
+
+This is useful if you have a Workflow you want to schedule out in the future, but only want it to execute once: in comparison to reoccurring Workflows using Schedules.
+
+If the Workflow receives a Signal-With-Start during the delay, it dispatches a Workflow Task and the remaining delay is bypassed.
+If the Workflow receives a Signal during the delay that is not a Signal-With-Start, it is ignored and the Workflow continues to be delayed until the delay expires or a Signal-With-Start is received.
+
+You can delay the dispatch of the initial Workflow Execution by setting this option in the Workflow Options field of the SDK of your choice.
 
 ## What is a State Transition? {#state-transition}
 
