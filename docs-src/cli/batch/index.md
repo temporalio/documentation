@@ -22,15 +22,15 @@ There are three types of Batch Jobs:
 
 Batch operations can affect multiple Workflows simultaneously.
 Depending on your needs, you might want to send Signals to running Workflows, Cancel them, or even Terminate them entirely.
-Below, are examples on these commands using Temporal's CLI for each type of Batch operation.
+Below are examples of how to use the Temporal CLI for each type of Batch operation.
 
-Using these commands will directly impact the Workflows you target, so it's important to use them judiciously.
+These commands will directly impact the Workflows you target, so it's important to use them judiciously.
 
 **What Are the CLI Commands for Batch operations in Temporal Workflows?**
 
 You can use the `--query` flag to filter the Workflow Executions to be affected by the Batch Job.
 
-To Cancel a Workflow
+To Cancel a Workflow:
 
 ```command
 temporal workflow cancel \
