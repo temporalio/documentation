@@ -13,6 +13,7 @@
         "docs-src/references",
         "docs-src/tctl-v1",
         "docs-src/self-hosted",
+        "docs-src/production-deployment",
         "docs-src/cli"
     ],
     "content_write_dir": "docs",

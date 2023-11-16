@@ -68,7 +68,7 @@ You can debug production Workflows using:
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/dev-guide/worker-performance).
 For more information, see [Metrics](/dev-guide/go/observability#metrics) for setting up SDK metrics.
 
-Debug Server performance with [Cloud metrics](/cloud/metrics#) or [self-hosted Server metrics](//self-hosted-guide/production-checklist#scaling-and-metrics).
+Debug Server performance with [Cloud metrics](/cloud/metrics#) or [self-hosted Server metrics](/self-hosted-guide/production-checklist#scaling-and-metrics).
 
 ## How to test Workflow Definitions in Go {#testing-and-debugging}
 

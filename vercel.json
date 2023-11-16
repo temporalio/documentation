@@ -1059,15 +1059,15 @@
     },
     {
       "source": "/server-production-deploy",
-      "destination": "/kb/legacy-oss-prod-deploy"
+      "destination": "/production-deployment"
     },
     {
       "source": "/server-production-deployment",
-      "destination": "/kb/legacy-oss-prod-deploy"
+      "destination": "production-deployment"
     },
     {
       "source": "/server/production-deploy",
-      "destination": "/kb/legacy-oss-prod-deploy"
+      "destination": "/production-deployment"
     },
     {
       "source": "/server-quick-install",
@@ -1722,10 +1722,6 @@
       "destination": "/security#authorizer-plugin"
     },
     {
-      "source": "/server/production-deployment",
-      "destination": "/kb/legacy-oss-prod-deploy#temporal-server"
-    },
-    {
       "source": "/tctl-next",
       "destination": "/cli"
     },
@@ -1802,9 +1798,13 @@
       "destination": "/cloud/certificates:path*"
     },
     {
-      "source": "/server/production-deployment/#scaling-and-metrics",
-      "destination": "/kb/legacy-oss-prod-deploy#scaling-and-metrics"
+      "source": "/server/production-deployment/:path*",
+      "destination": "/production-deployment"
     },
+    {
+      "source": "/kb/legacy-oss-prod-deploy:path*",
+      "destination": "/production-deployment"
+    }
     {
       "source": "/cloud/release-notes",
       "destination": "https://temporal.io/change-log/product-area/cloud"
@@ -1964,6 +1964,10 @@
     {
       "source": "/kb/python-sandbox-environment",
       "destination": "/python/python-sandbox-environment"
+    },
+    {
+      "source": "production-readiness/:path*",
+      "destination": "/self-hosted-guide"
     }
   ]
 }

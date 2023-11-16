@@ -1,7 +1,8 @@
 {
     "file_name": "visibility.md",
     "id": "visibility",
-    "file_dir": "self-hosted-guide",
+    "file_dir": "production-deployment/self-hosted-guide",
+    "slug": "/self-hosted-guide/visibility",
     "title": "Self-hosted Visibility feature setup",
     "sidebar_label": "Visibility",
     "sidebar_position": 6,

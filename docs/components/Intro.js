@@ -205,22 +205,14 @@ function SimpleCard({ title, content, links = [] }) {
 function CloudCard({ links }) {
   return (
     <div className="main-card">
-      <div className="grid grid-cols-1 md:grid-cols-2">
+      <div>
         <div>
-          <h1>Temporal Cloud</h1>
-          <p>Temporal Cloud tools and how-to guides.</p>
-          <ul className="landing-card-list">{displayLinks(links)}</ul>
-        </div>
-        <div>
-          <h1>Is Temporal Cloud right for you?</h1>
-          <p>Run Temporal today, without hassle, and with peace of mind.</p>
+          <h1>Deploy your application to production</h1>
+          <p>Choose a production deployment environment that suits your needs.</p>
           <p>
-            <Link to="https://temporal.io/cloud">
-              <button className="cloud-button">Learn more about Temporal Cloud</button>
+            <Link to="/production-deployment">
+              <button className="cloud-button">Get started deploying to production</button>
             </Link>
-          </p>
-          <p>
-            Existing users can <Link to="https://cloud.temporal.io">log in here</Link>.
           </p>
         </div>
       </div>
@@ -410,31 +402,17 @@ function Explained() {
         />
       </div>
       <CloudCard links={cloudInfo} />
-      <div className="second-row-container">
-        <div className="dev-tools-container">
-          <SimpleCard
-            title="Dev tools"
-            content="Use the Temporal CLI and Web UI to manage and monitor your Workflows."
-            links={devTools}
-          />
-        </div>
-        <Card
-          title="Self-hosted guidance"
-          content="Self-host open source infra software to supervise your durable apps."
-          links={selfHostedDeploymentGuide}
-        />
-      </div>
 
       <div className="core-concepts">
         <SlideInfo activeSlide={activeSlide} handleClick={handleSlideChange} />
       </div>
 
       <div className="deployment">
-        <div className="troubleshooting">
+        <div className="dev-tools-container">
           <SimpleCard
-            title="Troubleshooting"
-            content="Temporal Platform troubleshooting guides"
-            links={troubleshooting}
+            title="Dev tools"
+            content="Use the Temporal CLI and Web UI to manage and monitor your Workflows."
+            links={devTools}
           />
         </div>
         <SimpleCard title="References" content="Referable Platform information" links={references} />

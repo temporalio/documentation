@@ -2,7 +2,7 @@
     "file_name": "index.md",
     "id": "index",
     "slug": "/self-hosted-guide",
-    "file_dir": "self-hosted-guide",
+    "file_dir": "production-deployment/self-hosted-guide",
     "title": "Self-hosted Temporal Cluster guide",
     "sidebar_label": "Self-hosted guide",
     "sidebar_position": 5,

@@ -1,7 +1,8 @@
 {
     "file_name": "upgrade-server.md",
     "id": "upgrade-server",
-    "file_dir": "self-hosted-guide",
+    "file_dir": "production-deployment/self-hosted-guide",
+    "slug": "/self-hosted-guide/upgrade-server",
     "title": "Upgrade the Temporal Server",
     "sidebar_label": "Upgrade server",
     "sidebar_position": 8,

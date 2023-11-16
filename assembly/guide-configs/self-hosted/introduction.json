@@ -1,7 +1,8 @@
 {
     "file_name": "introduction.md",
     "id": "introduction",
-    "file_dir": "self-hosted-guide",
+    "file_dir": "production-deployment/self-hosted-guide",
+    "slug": "/self-hosted-guide/introduction",
     "title": "Introduction to the Self-hosted Temporal Cluster deployment guide",
     "sidebar_label": "Introduction",
     "sidebar_position": 1,

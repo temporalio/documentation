@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday November 14 2023 16:40:28 PM -0700
+Last assembled: Thursday November 16 2023 13:05:25 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-123 guide configurations found.
+124 guide configurations found.
 
-1679 information nodes found.
+1680 information nodes found.
 
-1433 information nodes are attached to guides.
+1434 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -44,7 +44,7 @@ concepts/what-is-archival -> /clusters#archival
 
 self-hosted/what-is-archival -> /self-hosted-guide/archival#
 
-self-hosted/data-encryption -> /self-hosted-guide/data-encryption#securing-your-data
+self-hosted/data-encryption -> /self-hosted-guide/data-encryption#
 
 self-hosted/how-to-set-up-codec-server -> /self-hosted-guide/data-encryption#web-ui
 
@@ -264,9 +264,9 @@ cloud/tcld/how-to-install-tcld -> #install-tcld
 
 cloud/tcld/login -> /cloud/tcld/login#
 
-cloud/tcld/logout -> /cloud/tcld/logout#
+cloud/tcld/logout -> /cloud/tcld/logout/#
 
-cloud/tcld/version -> /cloud/tcld/version#
+cloud/tcld/version -> /cloud/tcld/version/#
 
 cloud/tcld/namespace/create -> #create
 
@@ -362,6 +362,8 @@ cli/start-dev-server -> /cli#start-dev-server
 
 self-hosted/how-to-set-up-cassandra-visibility-store -> /self-hosted-guide/visibility#cassandra
 
+self-hosted/how-to-set-up-mysql-visibility-store -> /self-hosted-guide/visibility#mysql
+
 self-hosted/how-to-set-up-postgresql-visibility-store -> /self-hosted-guide/visibility#postgresql
 
 references/server-options -> /references/server-options#
@@ -370,7 +372,7 @@ self-hosted/intro -> /self-hosted-guide/introduction#
 
 self-hosted/platform-defaults -> /self-hosted-guide/defaults#
 
-self-hosted/prod-checklist -> //self-hosted-guide/production-checklist#
+self-hosted/prod-checklist -> /self-hosted-guide/production-checklist#
 
 self-hosted/prometheus-grafana-setup -> /self-hosted-guide/monitoring#
 
@@ -389,8 +391,6 @@ concepts/what-is-the-temporal-server -> /clusters#temporal-server
 concepts/what-is-visibility -> /clusters#visibility
 
 concepts/what-is-dual-visibility -> /visibility#dual-visibility
-
-self-hosted/how-to-set-up-mysql-visibility-store -> #mysql
 
 self-hosted/how-to-set-up-sqlite-visibility-store -> #sqlite
 
@@ -1050,7 +1050,7 @@ typescript/testing -> /dev-guide/typescript/testing#replay
 
 typescript/observability -> /dev-guide/typescript/observability#tracing
 
-self-hosted/scaling-and-metrics -> //self-hosted-guide/production-checklist#scaling-and-metrics
+self-hosted/scaling-and-metrics -> /self-hosted-guide/production-checklist#scaling-and-metrics
 
 concepts/what-is-a-task-token -> /activities#task-token
 
