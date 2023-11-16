@@ -14,6 +14,8 @@ tags:
 Batch commands change multiple [Workflow Executions](/concepts/what-is-a-workflow-execution) by providing a [List Filter](/concepts/what-is-visibility) and the type of Batch Job to execute.
 The List Filter identifies the Workflow Executions in the Batch Job; the Batch type determines what will happen to the Workflow Executions.
 
+**Which batch operations can be performed by the Temporal CLI?**
+
 There are three types of Batch Jobs:
 
 - Cancel: cancels the Workflow Executions specified by the List Filter.
@@ -26,11 +28,9 @@ Below are examples of how to use the Temporal CLI for each type of Batch operati
 
 These commands will directly impact the Workflows you target, so it's important to use them judiciously.
 
-**What Are the CLI Commands for Batch operations in Temporal Workflows?**
+You can use the `--query` flag, which acts as [List Filter](/concepts/what-is-a-list-filter), to filter the Workflow Executions to be affected by the Batch Job.
 
-You can use the `--query` flag to filter the Workflow Executions to be affected by the Batch Job.
-
-To Cancel a Workflow:
+To Cancel Workflows:
 
 ```command
 temporal workflow cancel \
@@ -38,7 +38,7 @@ temporal workflow cancel \
   --reason "Testing"
 ```
 
-To Signal a Workflow:
+To Signal Workflows:
 
 ```command
 temporal workflow signal \
@@ -49,7 +49,7 @@ temporal workflow signal \
   --reason "Testing"
 ```
 
-To Terminate a Workflow:
+To Terminate Workflows:
 
 ```command
 temporal workflow terminate \
