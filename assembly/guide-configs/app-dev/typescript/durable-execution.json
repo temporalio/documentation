@@ -1,0 +1,55 @@
+{
+  "file_name": "durable-execution.md",
+  "id": "durable-execution",
+  "slug": "/dev-guide/typescript/durable-execution",
+  "file_dir": "dev-guide/tscript",
+  "title": "TypeScript SDK dev guide - Develop code that durably executes",
+  "sidebar_label": "Develop for durability",
+  "sidebar_position": 3,
+  "description": "The Durable Execution section of the Temporal Developer's guide covers advanced beginner concepts for working with Temporal, including testing your code, reviewing workflow event history, adding timers, and understanding determinism. Developing for durable execution is a core aspect of Temporal.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "typescript/chapter-durable-execution/durable-execution-intro"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/chapter-durable-execution/retrieve-event-history"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/chapter-durable-execution/how-to-replay-a-workflow-execution-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/chapter-durable-execution/why-add-the-replay-test"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/chapter-durable-execution/backgroundcheck-replay-intrinsic-non-determinism"
+    },
+    {
+      "type": "p",
+      "id": "typescript/chapter-durable-execution/backgroundcheck-replay-inspecting-the-non-deterministic-error"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/chapter-durable-execution/vscode-debugger-extension"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/chapter-durable-execution/non-deterministic-code-changes"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/chapter-durable-execution/add-sleep-for-one-minute"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/chapter-durable-execution/inspect-the-new-event-history"
+    }
+  ]
+}

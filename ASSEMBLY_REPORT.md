@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday November 15 2023 14:22:01 PM -0800
+Last assembled: Wednesday November 15 2023 16:09:51 PM -0800
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-111 guide configurations found.
+112 guide configurations found.
 
-1665 information nodes found.
+1676 information nodes found.
 
-1424 information nodes are attached to guides.
+1434 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1022,6 +1022,16 @@ typescript/testing -> /dev-guide/typescript/testing#replay
 
 typescript/observability -> /dev-guide/typescript/observability#tracing
 
+dev-guide/why-use-a-temporal-sdk -> /dev-guide/sdks#replays
+
+go/generated/backgroundcheck-replay-intrinsic-non-determinism -> /dev-guide/go/durable-execution#intrinsic-non-deterministic-logic
+
+go/chapter-durable-execution/non-deterministic-code-changes -> /dev-guide/go/durable-execution#durability-through-replays
+
+go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#start-workflow
+
+go/chapter-durable-execution/retrieve-event-history -> /dev-guide/go/durable-execution#retrieve-event-history
+
 concepts/what-is-a-task-token -> /activities#task-token
 
 clusters/how-to-install-temporal-cli -> #run-a-development-server
@@ -1102,17 +1112,7 @@ go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 
 go/logging -> /dev-guide/go/observability#logging
 
-dev-guide/why-use-a-temporal-sdk -> /dev-guide/sdks#replays
-
 go/chapter-project-setup/project-setup-introduction -> /dev-guide/go/project-setup#
-
-go/generated/backgroundcheck-replay-intrinsic-non-determinism -> #intrinsic-non-deterministic-logic
-
-go/chapter-durable-execution/non-deterministic-code-changes -> #durability-through-replays
-
-go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#start-workflow
-
-go/chapter-durable-execution/retrieve-event-history -> #retrieve-event-history
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
