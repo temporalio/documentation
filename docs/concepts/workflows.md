@@ -757,7 +757,7 @@ Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
 
 :::note
 
-Currently, the Temporal SDKs that support Dyanmic Handlers are:
+Currently, the Temporal SDKs that support Dynamic Handlers are:
 
 - [Java](/dev-guide/java/features#dynamic-handler)
 - [Python](/dev-guide/python/features#dynamic-handler)
@@ -1175,7 +1175,7 @@ You can also pass any of the [predefined schedules](https://pkg.go.dev/github.co
 
 ```
 | Schedules              | Description                                | Equivalent To |
-|------------------------|--------------------------------------------|---------------|
+| ---------------------- | ------------------------------------------ | ------------- |
 | @yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *     |
 | @monthly               | Run once a month, midnight, first of month | 0 0 1 * *     |
 | @weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0     |
