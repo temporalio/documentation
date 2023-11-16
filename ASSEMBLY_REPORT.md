@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday November 15 2023 11:55:23 AM -0700
+Last assembled: Thursday November 16 2023 10:26:35 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
 112 guide configurations found.
 
-1669 information nodes found.
+1675 information nodes found.
 
-1425 information nodes are attached to guides.
+1430 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1008,6 +1008,20 @@ cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
 cli/cmd-options/first-execution-run-id -> /cli/cmd-options#first-execution-run-id
 
+go/generated/backgroundcheck-boilerplate-backgroundcheck-workflow -> /dev-guide/go/project-setup#workflow-code
+
+java/backgroundcheck-boilerplate-workflow-definition -> /dev-guide/java/project-setup#boilerplate-workflow-code
+
+python/backgroundcheck-boilerplate-backgroundcheck-workflow -> /dev-guide/python/project-setup#workflow-code
+
+go/generated/backgroundcheck-boilerplate-ssntrace-activity -> /dev-guide/go/project-setup#activity-code
+
+java/backgroundcheck-boilerplate-activity-definition -> /dev-guide/java/project-setup#boilerplate-activity-code
+
+go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
+
+java/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/java/project-setup#dev-server-worker
+
 dev-guide/major-components -> #temporal-client
 
 dev-guide/temporal-application -> #temporal-application
@@ -1125,8 +1139,6 @@ go/landing-page/go-dev-guide-structure -> #
 go/chapter-project-setup/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
 
 go/chapter-project-setup/project-structure -> /dev-guide/go/project-setup#boilerplate-project
-
-go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
 
 go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
