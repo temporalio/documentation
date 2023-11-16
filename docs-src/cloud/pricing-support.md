@@ -10,7 +10,7 @@ tags:
   - explanation
 ---
 
-With a subscription to Temporal Cloud, you also gain access to our support organization of developer success engineers and solution architects. Our experts assist with a range of work streams from Workflow design reviews to setting up observability to break/fix support with an agreed-upon set of SLAs.
+When signing up for Temporal Cloud, select a support plan—either Basic or Premium—and gain access to our support organization, which includes developer success engineers and solution architects. Our experts assist with a range of work streams, from Workflow design reviews to setting up observability, and from troubleshooting support to maintaining an agreed-upon set of SLAs.
 
 The Temporal Developer Success team brings a deep knowledge of how Temporal works and how you can optimize your deployment. This team is comprised of engineers who know Temporal inside and out, and continue to contribute to its development.
 
@@ -21,7 +21,7 @@ If an issue occurs, the team provides support through our [support portal](/clou
 |                     | **Basic**                                                                                   | **Premium**                                                                            |
 | ------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
 | Response times      | P0: 1 business hour<br/>P1: 4 business hours<br/>P2: 1 business day<br/>P3: 2 business days | P0: 30 minutes<br/>P1: 1 business hour<br/>P2: 4 business hours<br/>P3: 1 business day |
-| Pricing (per month) | Greater of $200 or 10% monthly usage                                                        | Greater of $2,000 or 10% monthly activity                                              |
+| Pricing (per month) | Greater of $200 or 10% monthly usage                                                        | Greater of $2,000 or 10% monthly usage                                                 |
 
 Business hours for Temporal Support are 0500–1700 Monday–Friday (Pacific Time).
 For P0 issues, coverage is 24×7.

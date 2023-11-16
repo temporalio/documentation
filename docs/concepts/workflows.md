@@ -325,9 +325,13 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 
 ### Limits
 
-There is no limit to the number of concurrent Workflow Executions.
+There is no limit to the number of concurrent Workflow Executions, albeit you must abide by the Workflow Execution's Event History limit.
 
-However, there is a limit to the length and size of a Workflow Execution's Event History (by default, [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) and [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380)).
+:::caution
+
+As a precautionary measure, the Workflow Execution's Event History is limited to [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) or [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380) and will warn you after 10,240 Events or 10 MB.
+
+:::
 
 There is also a limit to the number of certain types of incomplete operations.
 
@@ -404,7 +408,12 @@ If the Event History exceeds 50Ki (51,200) Events, the Workflow Execution is ter
 
 Continue-As-New is a mechanism by which the latest relevant state is passed to a new Workflow Execution, with a fresh Event History.
 
-As a precautionary measure, the Temporal Platform limits the total [Event History](#event-history) to 51,200 Events or 50 MB, and will warn you after 10,240 Events or 10 MB.
+:::caution
+
+As a precautionary measure, the Workflow Execution's Event History is limited to [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) or [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380) and will warn you after 10,240 Events or 10 MB.
+
+:::
+
 To prevent a Workflow Execution Event History from exceeding this limit and failing, use Continue-As-New to start a new Workflow Execution with a fresh Event History.
 
 All values passed to a Workflow Execution through parameters or returned through a result value are recorded into the Event History.
@@ -728,6 +737,53 @@ An Update has four phases.
    The Platform sends the Update outcome back to the original invoking entity as an Update response.
    A [WorkflowExecutionUpdateCompletedEvent](/references/events#workflowexecutionupdatecompletedevent) Event in the Workflow Execution Event History denotes the completion of an Update.
 
+:::note
+
+Workflow Updates are currently disabled by default on Temporal Server.
+
+To enable the `UpdateWorkflowExecution` API, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config value to `true`.
+
+For example, to enable Workflow Updates with the Temporal CLI, pass the value when executing the `temporal` command:
+
+```command
+temporal server start-dev --dynamic-config-value frontend.enableUpdateWorkflowExecution=true
+```
+
+:::
+
+## What is a Dynamic Handler? {#dynamic-handler}
+
+Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
+
+:::note
+
+Currently, the Temporal SDKs that support Dyanmic Handlers are:
+
+- [Java](/dev-guide/java/features#dynamic-handler)
+- [Python](/dev-guide/python/features#dynamic-handler)
+- .NET
+
+The Go SDK supports Dynamic Signals through the [GetUnhandledSignalNames](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetUnhandledSignalNames) function.
+
+:::
+
+These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
+
+Dynamic Handlers provide flexibility to handle cases where the names of Workflows, Activities, Signals, or Queries aren't known at run time.
+
+:::caution
+
+Dynamic Handlers should be used judiciously as a fallback mechanism rather than the primary approach.
+Overusing them can lead to maintainability and debugging issues down the line.
+
+Instead, Workflows, Activities, Signals, and Queries should be defined statically whenever possible, with clear names that indicate their purpose.
+Use static definitions as the primary way of structuring your Workflows.
+
+Reserve Dynamic Handlers for cases where the handler names are not known at compile time and need to be looked up dynamically at runtime.
+They are meant to handle edge cases and act as a catch-all, not as the main way of invoking logic.
+
+:::
+
 ## What is a Side Effect? {#side-effect}
 
 A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.
@@ -754,6 +810,13 @@ A Workflow Execution can be both a Parent and a Child Workflow Execution because
 A Parent Workflow Execution must await on the Child Workflow Execution to spawn.
 The Parent can optionally await on the result of the Child Workflow Execution.
 Consider the Child's [Parent Close Policy](#parent-close-policy) if the Parent does not await on the result of the Child, which includes any use of Continue-As-New by the Parent.
+
+:::note
+
+Child Workflows do not carry over when the Parent uses [Continue-As-New](#continue-as-new).
+This means that if a Parent Workflow Execution utilizes Continue-As-New, any ongoing Child Workflow Executions will not be retained in the new continued instance of the Parent.
+
+:::
 
 When a Parent Workflow Execution reaches a Closed status, the Cluster propagates Cancellation Requests or Terminations to Child Workflow Executions depending on the Child's Parent Close Policy.
 
@@ -839,7 +902,7 @@ This is useful for starting Child Workflows asynchronously (see [relevant issue 
 
 - Introduced in Temporal Server version 1.17.0
 - Available in Temporal CLI (and tctl v1.17)
-- Available in Temporal Cloud in Public Preview
+- Available in Temporal Cloud
 - Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) version [1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
 - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
 - Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow) version [1.1.0](https://github.com/temporalio/sdk-python/releases/tag/1.1.0)
@@ -1020,6 +1083,16 @@ And not C, even though C completed after A, because the result for D is captured
 
 Failures and timeouts do not affect the last completion result.
 
+:::note
+
+When a Schedule triggers a Workflow that completes successfully and yields a result, the result from the initial Schedule execution can be accessed by the subsequent scheduled execution through `LastCompletionResult`.
+
+Be aware that if, during the subsequent run, the Workflow employs the [Continue-As-New](#continue-as-new) feature, `LastCompletionResult` won't be accessible for this new Workflow iteration.
+
+It is important to note that the [status](#status) of the subsequent run is marked as `Continued-As-New` and not as `Completed`.
+
+:::
+
 ### Last failure
 
 A Workflow started by a Schedule can obtain the details of the failure of the most recent run that ended at the time when the Workflow in question was started. Unlike last completion result, a _successful_ run _does_ reset the last failure.
@@ -1102,7 +1175,7 @@ You can also pass any of the [predefined schedules](https://pkg.go.dev/github.co
 
 ```
 | Schedules              | Description                                | Equivalent To |
-| ---------------------- | ------------------------------------------ | ------------- |
+|------------------------|--------------------------------------------|---------------|
 | @yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *     |
 | @monthly               | Run once a month, midnight, first of month | 0 0 1 * *     |
 | @weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0     |

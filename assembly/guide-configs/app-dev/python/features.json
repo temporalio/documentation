@@ -80,6 +80,26 @@
     },
     {
       "type": "h2",
+      "id": "python/what-is-a-dynamic-handler"
+    },
+    {
+      "type": "h3",
+      "id": "python/how-to-set-a-dynamic-workflow-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/how-to-set-a-dynamic-activity-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/how-to-set-a-dynamic-signal-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/how-to-set-a-dynamic-query-in-python"
+    },
+    {
+      "type": "h2",
       "id": "python/workflow-timeouts"
     },
     {
