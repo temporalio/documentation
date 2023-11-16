@@ -53,7 +53,7 @@ An Update has four phases.
 
 :::note
 
-Workflow Updates are disWorkflow Updates are currently disabled by default on Temporal Server.
+Workflow Updates are currently disabled by default on Temporal Server.
 
 To enable the `UpdateWorkflowExecution` API, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config value to `true`.
 
