@@ -858,6 +858,12 @@ Schedules provide a more flexible and user-friendly approach than [Temporal Cron
 A Schedule has an identity and is independent of a Workflow Execution.
 This differs from a Temporal Cron Job, which relies on a cron schedule as a property of the Workflow Execution.
 
+:::info
+
+For triggering a Workflow Execution at a specific one-time future point rather than on a recurring schedule, the [Start Delay](#delay-workflow-execution) option should be used instead of a Schedule.
+
+:::
+
 ### Action
 
 The Action of a Schedule is where the Workflow Execution properties are established, such as Workflow Type, Task Queue, parameters, and timeouts.
@@ -1023,8 +1029,6 @@ A Workflow started by a Schedule can obtain the details of the failure of the mo
 Internally, a Schedule is implemented as a Workflow.
 If you're using Advanced Visibility (Elasticsearch), these Workflow Executions are hidden from normal views.
 If you're using Standard Visibility, they are visible, though there's no need to interact with them directly.
-
-For triggering a Workflow Execution at a specific one-time future point rather than on a recurring schedule, the [Start Delay](#delay-workflow-execution) option should be used instead of a Schedule.
 
 ## What is a Temporal Cron Job? {#temporal-cron-job}
 
