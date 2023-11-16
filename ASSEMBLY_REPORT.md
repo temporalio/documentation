@@ -1,6 +1,5 @@
 # Docs Assembly Workflow report
 
-
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
 concepts/what-is-visibility -> /clusters#visibility
