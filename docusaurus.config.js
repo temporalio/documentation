@@ -328,6 +328,11 @@ module.exports = {
       "data-project-logo": "https://avatars.githubusercontent.com/u/56493103?s=280&v=4",
       async: true,
     },
+    {
+      src: "/scripts/copycode-notice.js",
+      async: true,
+      defer: true,
+    },
   ],
   plugins: [
     function preloadFontPlugin() {

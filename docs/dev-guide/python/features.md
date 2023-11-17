@@ -361,7 +361,7 @@ Visit the source repository to [view the source code](https://github.com/tempora
     result = await handle.query(GreetingWorkflow.greeting)
 ```
 
-## What are Dynamic Handlers? {#dynamic-handlers}
+## What is a Dynamic Handler? {#dynamic-handler}
 
 Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
 These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
@@ -373,7 +373,7 @@ Dynamic Handlers provide flexibility to handle cases where the names of Workflow
 Dynamic Handlers should be used judiciously as a fallback mechanism rather than the primary approach.
 Overusing them can lead to maintainability and debugging issues down the line.
 
-Instead, Workflows, Activities, Signals and Queries should be defined statically whenever possible, with clear names that indicate their purpose.
+Instead, Workflows, Activities, Signals, and Queries should be defined statically whenever possible, with clear names that indicate their purpose.
 Use static definitions as the primary way of structuring your Workflows.
 
 Reserve Dynamic Handlers for cases where the handler names are not known at compile time and need to be looked up dynamically at runtime.
@@ -1087,20 +1087,28 @@ Visit the source repository to [view the source code](https://github.com/tempora
 :::
 
 ```python
-# ...
+import asyncio
+from datetime import datetime, timedelta
+
+from temporalio.client import Client, ScheduleBackfill, ScheduleOverlapPolicy
+
+
+
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
         "workflow-schedule-id",
     )
     now = datetime.utcnow()
-    await handle.backfill(
-        ScheduleBackfill(
-            start_at=now - timedelta(minutes=10),
-            end_at=now - timedelta(minutes=9),
-            overlap=ScheduleOverlapPolicy.ALLOW_ALL,
+    (
+        await handle.backfill(
+            ScheduleBackfill(
+                start_at=now - timedelta(minutes=10),
+                end_at=now - timedelta(minutes=9),
+                overlap=ScheduleOverlapPolicy.ALLOW_ALL,
+            ),
         ),
-    ),
+    )
 ```
 
 ### How to Delete a Scheduled Workflow {#delete}
@@ -1301,4 +1309,23 @@ Visit the source repository to [view the source code](https://github.com/tempora
         cron_schedule="* * * * *",
     )
     print(f"Results: {result}")
+```
+
+## How to use Start Delay {#start-delay}
+
+Use the `start_delay` to schedule a Workflow Execution at a specific one-time future point rather than on a recurring schedule.
+
+Use the `start_delay` option in either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods in the Client.
+
+```python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity,
+            YourParams("Hello", name),
+            start_to_close_timeout=timedelta(seconds=10),
+            start_delay=timedelta(hours=1, minutes=20, seconds=30)
+        )
 ```
