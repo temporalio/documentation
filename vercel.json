@@ -1944,6 +1944,10 @@
     {
       "source": "/kb/failures",
       "destination": "/references/failures"
+    },
+    {
+      "source": "/kb/python-sandbox-environment",
+      "destination": "/python/python-sandbox-environment"
     }
   ]
 }
