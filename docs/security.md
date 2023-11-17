@@ -28,7 +28,7 @@ For information about the security features of our SaaS offering, Temporal Cloud
 
 :::info Self-hosted Temporal Cluster security
 
-For information about how to self-host a secure Temporal Platform, see the [Self-hosted security page](/self-hosted-guide/security#)
+For information about how to self-host a secure Temporal Platform, see the [Self-hosted security page](/self-hosted-guide/security#).
 
 :::
 

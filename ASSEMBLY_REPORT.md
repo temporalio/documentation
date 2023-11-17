@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday November 17 2023 07:55:54 AM -0700
+Last assembled: Friday November 17 2023 12:04:48 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -360,15 +360,7 @@ references/dynamic-configuration -> /references/dynamic-configuration#
 
 cli/start-dev-server -> /cli#start-dev-server
 
-self-hosted/how-to-set-up-cassandra-visibility-store -> /self-hosted-guide/visibility#cassandra
-
-self-hosted/how-to-set-up-mysql-visibility-store -> /self-hosted-guide/visibility#mysql
-
-self-hosted/how-to-set-up-postgresql-visibility-store -> /self-hosted-guide/visibility#postgresql
-
-references/server-options -> /references/server-options#
-
-self-hosted/intro -> /self-hosted-guide/introduction#
+self-hosted/setup -> /self-hosted-guide/setup#
 
 self-hosted/platform-defaults -> /self-hosted-guide/defaults#
 
@@ -382,9 +374,17 @@ self-hosted/how-to-upgrade-the-temporal-server-version -> /self-hosted-guide/upg
 
 self-hosted/what-is-multi-cluster-replication -> /self-hosted-guide/multi-cluster-replication#
 
+references/server-options -> /references/server-options#withconfig
+
 concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
 
 concepts/what-is-a-claimmapper-plugin -> #claim-mapper
+
+self-hosted/how-to-set-up-cassandra-visibility-store -> /self-hosted-guide/visibility#cassandra
+
+self-hosted/how-to-set-up-mysql-visibility-store -> /self-hosted-guide/visibility#mysql
+
+self-hosted/how-to-set-up-postgresql-visibility-store -> /self-hosted-guide/visibility#postgresql
 
 concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
@@ -735,6 +735,8 @@ php/parent-close-policy -> /dev-guide/php/features#parent-close-policy
 python/parent-close-policy -> /dev-guide/python/features#parent-close-policy
 
 typescript/parent-close-policy -> /dev-guide/typescript/features#parent-close-policy
+
+concepts/what-is-a-delay-start-workflow-execution -> #delay-workflow-execution
 
 go/cron-jobs -> /dev-guide/go/features#temporal-cron-jobs
 
@@ -1165,9 +1167,5 @@ go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/g
 go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
-
-concepts/what-is-a-delay-start-workflow-execution -> #delay-workflow-execution
-
-self-hosted/setup -> /self-hosted-guide/introduction#
 
 

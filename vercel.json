@@ -1968,6 +1968,10 @@
     {
       "source": "production-readiness/:path*",
       "destination": "/self-hosted-guide"
+    },
+    {
+      "source": "/kb/python-sandbox-environment",
+      "destination": "/python/python-sandbox-environment"
     }
   ]
 }
