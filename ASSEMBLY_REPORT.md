@@ -1,5 +1,14 @@
 # Docs Assembly Workflow report
 
+Last assembled: Friday November 17 2023 10:59:22 AM -0800
+
+Assembly Workflow Id: docs-full-assembly-rachfop-123
+
+114 guide configurations found.
+
+1671 information nodes found.
+
+1430 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -537,6 +546,8 @@ python/introduction-to-python-sdk -> /dev-guide/python/introduction#
 
 typescript/introduction-to-typescript-sdk -> /dev-guide/typescript/introduction#
 
+python/python-sandbox-environment -> /dev-guide/python/sandbox#
+
 clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
 
 clusters/how-to-create-custom-search-attribute-keys -> /cluster-deployment-guide#create-custom-search-attributes
@@ -1035,6 +1046,8 @@ python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
+python/async-vs-sync -> /dev-guide/python/async-vs-sync#
+
 python/python-dev-guide-structure -> #
 
 python/install-cli -> /dev-guide/python/project-setup#install-cli
@@ -1118,5 +1131,11 @@ go/landing-page/go-dev-guide-structure -> #
 go/chapter-project-setup/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
 
 go/chapter-project-setup/project-structure -> /dev-guide/go/project-setup#boilerplate-project
+
+go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
+
+go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
+
+go/foundations -> /dev-guide/go/foundations#
 
 
