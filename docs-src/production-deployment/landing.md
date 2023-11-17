@@ -7,6 +7,15 @@ tags:
   - production deployment
 ---
 
-First [Build your durable application](/dev-guide) with a Temporal SDK.
+First [Build your durable application](/dev-guide) with a Temporal SDK, using a development Cluster to supervise your durable applications.
+Use the Temporal Client to integrate your Temporal Application with your existing systems.
 
-Then, deploy your application to production using [Temporal Cloud](/cloud), or [self-host](/self-hosted-guide) our open source software, to supervise your durable applications.
+**Build with a dev Cluster.**
+
+![Connect to a development Cluster while building your application](/diagrams/basic-platform-topology-dev.svg)
+
+Then, when it's time to deploy your application to production connect to [Temporal Cloud](/cloud), or connect to a [self-hosted](/self-hosted-guide) Temporal Cluster using Temporal's open source software.
+
+**Deploying to production can be as simple as updating your connection endpoints to point at Temporal Cloud.**
+
+![Connect to Temporal Cloud or a self-hosted Cluster to run in production](/diagrams/basic-platform-topology-prod.svg)

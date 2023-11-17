@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday November 16 2023 13:52:14 PM -0700
+Last assembled: Friday November 17 2023 07:55:54 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -1167,5 +1167,7 @@ go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/pro
 go/foundations -> /dev-guide/go/foundations#
 
 concepts/what-is-a-delay-start-workflow-execution -> #delay-workflow-execution
+
+self-hosted/setup -> /self-hosted-guide/introduction#
 
 

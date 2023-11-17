@@ -1,10 +1,10 @@
 {
-    "file_name": "introduction.md",
-    "id": "introduction",
+    "file_name": "setup.md",
+    "id": "setup",
     "file_dir": "production-deployment/self-hosted-guide",
-    "slug": "/self-hosted-guide/introduction",
+    "slug": "/self-hosted-guide/setup",
     "title": "Introduction to the Self-hosted Temporal Cluster deployment guide",
-    "sidebar_label": "Introduction",
+    "sidebar_label": "Setup",
     "sidebar_position": 1,
     "description": "This guide provides a comprehensive overview to deploy and operate a Temporal Cluster in a live environment.",
     "use_description": false,
@@ -13,7 +13,7 @@
     "sections": [
         {
             "type": "p",
-            "id": "self-hosted/intro"
+            "id": "self-hosted/setup"
         }
     ]
 }
