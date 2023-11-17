@@ -12,7 +12,7 @@ Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
 
 :::note
 
-Currently, the Temporal SDKs that support Dyanmic Handlers are:
+Currently, the Temporal SDKs that support Dynamic Handlers are:
 
 - [Java](/java/what-is-a-dynamic-handler)
 - [Python](/python/what-is-a-dynamic-handler)

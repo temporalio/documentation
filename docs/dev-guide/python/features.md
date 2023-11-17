@@ -2,9 +2,9 @@
 id: features
 title: Python SDK developer's guide - Features
 sidebar_label: Features
-sidebar_position: 4
+sidebar_position: 5
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
-toc_max_heading_level: 4
+toc_max_heading_level: 5
 keywords:
 - activity
 - child workflow
@@ -1309,4 +1309,23 @@ Visit the source repository to [view the source code](https://github.com/tempora
         cron_schedule="* * * * *",
     )
     print(f"Results: {result}")
+```
+
+## How to use Start Delay {#start-delay}
+
+Use the `start_delay` to schedule a Workflow Execution at a specific one-time future point rather than on a recurring schedule.
+
+Use the `start_delay` option in either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods in the Client.
+
+```python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity,
+            YourParams("Hello", name),
+            start_to_close_timeout=timedelta(seconds=10),
+            start_delay=timedelta(hours=1, minutes=20, seconds=30)
+        )
 ```

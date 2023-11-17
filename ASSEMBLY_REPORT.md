@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday November 17 2023 12:53:43 PM -0700
+Last assembled: Friday November 17 2023 12:56:55 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-112 guide configurations found.
+115 guide configurations found.
 
-1670 information nodes found.
+1675 information nodes found.
 
-1434 information nodes are attached to guides.
+1439 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -546,6 +546,8 @@ python/introduction-to-python-sdk -> /dev-guide/python/introduction#
 
 typescript/introduction-to-typescript-sdk -> /dev-guide/typescript/introduction#
 
+python/python-sandbox-environment -> /dev-guide/python/sandbox#
+
 clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
 
 clusters/how-to-create-custom-search-attribute-keys -> /cluster-deployment-guide#create-custom-search-attributes
@@ -709,6 +711,8 @@ php/parent-close-policy -> /dev-guide/php/features#parent-close-policy
 python/parent-close-policy -> /dev-guide/python/features#parent-close-policy
 
 typescript/parent-close-policy -> /dev-guide/typescript/features#parent-close-policy
+
+concepts/what-is-a-delay-start-workflow-execution -> #delay-workflow-execution
 
 go/cron-jobs -> /dev-guide/go/features#temporal-cron-jobs
 
@@ -1041,6 +1045,8 @@ python/how-to-cancel-a-workflow-in-python -> #cancel-a-workflow-execution
 python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-execution
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
+
+python/async-vs-sync -> /dev-guide/python/async-vs-sync#
 
 python/python-dev-guide-structure -> #
 
