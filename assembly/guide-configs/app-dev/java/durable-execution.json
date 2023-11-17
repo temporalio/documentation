@@ -33,14 +33,6 @@
     },
     {
       "type": "h2",
-      "id": "java/chapter-durable-execution/workflow-reset"
-    },
-    {
-      "type": "p",
-      "id": "java/generated/backgroundcheck-replay-inspecting-the-non-deterministic-error"
-    },
-    {
-      "type": "h2",
       "id": "java/chapter-durable-execution/non-deterministic-code-changes"
     },
     {
@@ -50,6 +42,14 @@
     {
       "type": "h3",
       "id": "java/generated/inspect-the-new-event-history"
+    },
+    {
+      "type": "h2",
+      "id": "java/chapter-durable-execution/workflow-reset"
+    },
+    {
+      "type": "p",
+      "id": "java/generated/backgroundcheck-replay-inspecting-the-non-deterministic-error"
     }
   ]
 }
