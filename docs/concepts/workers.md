@@ -368,6 +368,21 @@ Worker Versioning helps manage nondeterministic changes by providing a convenien
 
 Accomplish this goal by assigning a Build ID (a free-form string) to the code that defines a Worker, and specifying which Build IDs are compatible with each other by updating the version sets associated with the Task Queue, stored by the Temporal Server.
 
+:::note
+
+Worker Versioning is not enabled by default. You need to run your Temporal Cluster with additional [dynamic configuration parameters](/references/dynamic-configuration#) to enable it. If you are running a development cluster with `temporal server start-dev`, you can provide them on the command line:
+
+```shell
+temporal server start-dev \
+   --dynamic-config-value frontend.workerVersioningDataAPIs=true \
+   --dynamic-config-value frontend.workerVersioningWorkflowAPIs=true \
+   --dynamic-config-value worker.buildIdScavengerEnabled=true
+```
+
+You can also provide the same values to a production cluster in a YAML file.
+
+:::
+
 ### When and why you should use Worker Versioning
 
 The main reason to use this feature is to deploy incompatible changes to short-lived [Workflows](/workflows).
@@ -382,12 +397,9 @@ If you have no need to query closed Workflows, you can decommission them when no
 
 For example, if you have a Workflow that completes within a day, a good strategy is to assign a new Build ID to every new Worker build and add it as the new overall default in the version sets.
 
-Because your Workflow completes in a day, you know that you won't need to keep older Workers running for more than a day after you deploy the new version (assuming availability).
+Because your Workflow completes in a day, you know that you won't need to keep older Workers running for more than a day after you deploy the new version (assuming availability). You can apply this technique to longer-lived Workflows too; however, you might need to run multiple Worker versions simultaneously while open Workflows complete.
 
-Removing old versions from the sets isn't necessary.
-Leaving them doesn't cause any harm.
-
-You can apply this technique to longer-lived Workflows too; however, you might need to run multiple Worker versions simultaneously while open Workflows complete.
+Version sets have a maximum size limit, which defaults to 100 build IDs across all sets. Operations to add new Build IDs to the sets fail if they exceed this limit. There is also a limit on the number of Version Sets, which defaults to 10. A version can only be garbage collected after a Workflow Execution is deleted.
 
 #### Deploy code changes to Workers
 
