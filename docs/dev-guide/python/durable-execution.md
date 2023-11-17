@@ -158,7 +158,7 @@ Register the Workflow Definition and then specify an existing Event History to c
 Run the tests in the test directory (pytest).
 If the Workflow Definition and the Event History are incompatible, then the test fails.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-fddfb70b-6326-459f-874d-06398b9bd8ba" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-fddfb70b-6326-459f-874d-06398b9bd8ba" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/replay-tests/backgroundcheck_replay/tests/replay_dacx_test.py">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-4563aeca-1667-40ee-bf53-eb54faa76c2b" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-4563aeca-1667-40ee-bf53-eb54faa76c2b" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/replay-tests/backgroundcheck_replay/tests/replay_dacx_test.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 @pytest.mark.asyncio
@@ -222,7 +222,7 @@ temporalio.worker.workflow_sandbox._restrictions.RestrictedWorkflowAccessError:
 
 From the following example code:
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-f8f6f12f-47f3-4c47-97b3-b72574fda335" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-f8f6f12f-47f3-4c47-97b3-b72574fda335" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/replay-tests/backgroundcheck_replay/backgroundcheck_non_deterministic_code_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-4023987a-7e8d-428d-ac5b-d51a01791f9f" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-4023987a-7e8d-428d-ac5b-d51a01791f9f" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/replay-tests/backgroundcheck_replay/backgroundcheck_non_deterministic_code_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 import asyncio
@@ -258,7 +258,7 @@ This is because, Workflows in the Python SDK run in a sandbox, by default, to he
 
 The sandbox is not foolproof and non-determinism can still occur. You are encouraged to define Workflows in files without side effects.
 
-For information on the Sandbox, see Sandbox.
+For information on the Sandbox, see [Sandbox](/dev-guide/python/sandbox#).
 
 ## Non-deterministic code changes {#durability-through-replays}
 
@@ -338,7 +338,7 @@ The Temporal Python SDK offers deterministic implementations to the following AP
 
 Use the `workflow.logger` API to log from Workflows to avoid seeing repeated logs from the Replay of the Workflow code.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-b51a71bd-5041-4c2e-9ef3-1abacac205f1" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-b51a71bd-5041-4c2e-9ef3-1abacac205f1" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/replay-tests/backgroundcheck_replay/backgroundcheck_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-18a60503-d2de-4629-9558-29a18a2b347f" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-18a60503-d2de-4629-9558-29a18a2b347f" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/replay-tests/backgroundcheck_replay/backgroundcheck_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 import asyncio

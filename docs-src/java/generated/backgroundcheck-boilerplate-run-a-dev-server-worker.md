@@ -1,4 +1,3 @@
-
 ---
 id: backgroundcheck-boilerplate-run-a-dev-server-worker
 title: Run a dev server Worker
@@ -24,7 +23,7 @@ To run a Worker Process with a local development server, define the following st
 
 Temporal recommends keeping Worker code separate from Workflow and Activity code.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-d60b224c-5f8a-412c-b511-f24f14f48310" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-d60b224c-5f8a-412c-b511-f24f14f48310" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/durable-execution/backgroundcheck/src/main/java/backgroundcheckboilerplate/workers/DevServerWorker.java">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-7759c9b9-7452-46e9-a9a6-395a14c57885" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-7759c9b9-7452-46e9-a9a6-395a14c57885" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/durable-execution/backgroundcheck/src/main/java/backgroundcheckboilerplate/workers/DevServerWorker.java">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```java
 import backgroundcheckboilerplate.BackgroundCheckBoilerplateActivitiesImpl;

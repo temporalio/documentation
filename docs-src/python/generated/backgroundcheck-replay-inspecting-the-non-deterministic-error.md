@@ -16,4 +16,4 @@ This is because, Workflows in the Python SDK run in a sandbox, by default, to he
 
 The sandbox is not foolproof and non-determinism can still occur. You are encouraged to define Workflows in files without side effects.
 
-For information on the Sandbox, see Sandbox.
+For information on the Sandbox, see [Sandbox](/python/python-sandbox-environment).

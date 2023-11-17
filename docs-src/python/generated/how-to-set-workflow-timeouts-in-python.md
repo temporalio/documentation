@@ -20,7 +20,7 @@ Available timeouts are:
 - `run_timeout`
 - `task_timeout`
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-ae3fa073-1c5c-4a22-b259-9d5ae8fec8dc" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-ae3fa073-1c5c-4a22-b259-9d5ae8fec8dc" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/replay-tests/workflow_timeouts_retries/workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-6182d306-8925-45a0-9347-47618836ede5" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-6182d306-8925-45a0-9347-47618836ede5" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/replay-tests/workflow_timeouts_retries/workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...
