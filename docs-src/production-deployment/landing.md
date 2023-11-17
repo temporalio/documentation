@@ -7,9 +7,9 @@ tags:
   - production deployment
 ---
 
-First [Build your durable application](/dev-guide) with a Temporal SDK, using a development Cluster to supervise your durable Temporal Applications.
+First [build your durable Temporal Application](/dev-guide) with a Temporal SDK, using a development Cluster to supervise it.
 
-Temporal is not opinionated about how or where you deploy your Temporal Application code (Workers).
+Temporal isn't opinionated about how or where you deploy your application code.
 
 Use the Temporal Client to integrate your Temporal Application with your existing systems.
 
