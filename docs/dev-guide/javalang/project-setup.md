@@ -67,11 +67,11 @@ By the end of this section you will know how to construct a new Temporal Applica
 
 There are three ways to follow this guide:
 
-- [Use a local dev server](/java/choose-dev-cluster#local-dev-server)
-- [Use Temporal Cloud](/java/choose-dev-cluster#temporal-cloud)
-- [Use a self-hosted environment such as Docker](/java/choose-dev-cluster#self-hosted-temporal-cluster)
+- [Use a local dev server](#local-dev-server)
+- [Use Temporal Cloud](#temporal-cloud)
+- [Use a self-hosted environment such as Docker](#self-hosted-temporal-cluster)
 
-Read more in the [Choose a development Cluster](/java/choose-dev-cluster) section on this page.
+Read more in the [Choose a development Cluster](#choose-dev-cluster) section on this page.
 
 :::
 
