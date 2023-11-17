@@ -2,7 +2,7 @@
 id: index
 title: How the Temporal Python SDK works
 sidebar_label: How it works
-sidebar_position: 2
+sidebar_position: 10
 description: Describes idiosyncrasy of the Temporal Python SDK.
 toc_max_heading_level: 4
 keywords:
