@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday November 20 2023 09:19:30 AM -0700
+Last assembled: Monday November 20 2023 09:39:51 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -1120,6 +1120,8 @@ java/how-to-handle-a-signal-in-a-workflow-in-java -> #handle-signals
 
 java/how-to-create-a-temporal-client-in-java -> /dev-guide/java/foundations#connect-to-a-dev-cluster
 
+java/chapter-project-setup/install-cli -> /dev-guide/java/project-setup#install-cli
+
 java/interface-hierarchies -> #interface-inheritance
 
 java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-execution-result
@@ -1127,8 +1129,6 @@ java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-executi
 java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-with-start
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
-
-java/chapter-project-setup/install-cli -> /dev-guide/java/project-setup#install-cli
 
 java/chapter-project-setup/choose-dev-cluster -> /dev-guide/java/project-setup#choose-dev-cluster
 
