@@ -12,7 +12,7 @@ tags:
 ### Develop
 
 First [build your durable Temporal Application](/dev-guide) with a Temporal SDK, using a development Cluster to supervise it.
-Temporal isn't opinionated about how or where you deploy your application code and you can use the Temporal Client to integrate your Temporal Application with your existing systems.
+The Temporal Platform isn't opinionated about how or where you deploy your application code and you can use the Temporal Client to integrate your Temporal Application with your existing systems.
 
 **Connect to a development Cluster while building your application.**
 
@@ -26,3 +26,5 @@ When it's time to deploy your application to production, connect to [Temporal Cl
 - [Self-hosted guide](/self-hosted-guide)
 
 ![Connect to Temporal Cloud or a self-hosted Cluster to run in production](/diagrams/basic-platform-topology-prod.svg)
+
+Even when the application's supervisor is Temporal Cloud, you still control the environments where your code executes and the integration points.

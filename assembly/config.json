@@ -41,7 +41,8 @@
         },
         {
             "org": "temporalio",
-            "name": "documentation-samples-java"
+            "name": "documentation-samples-java",
+            "ref": "durable-execution"
         }
     ]
 }
