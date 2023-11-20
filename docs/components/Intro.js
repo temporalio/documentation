@@ -60,38 +60,10 @@ const troubleshooting = [
   },
 ];
 
-const cloudInfo = [
+const prodDeployLinks = [
   {
-    path: "/cloud/introduction",
-    name: "Introduction",
-  },
-  {
-    path: "/cloud/get-started",
-    name: "Get started",
-  },
-  {
-    path: "/cloud/account-setup",
-    name: "Account setup",
-  },
-  {
-    path: "/cloud/saml",
-    name: "SAML",
-  },
-  {
-    path: "/cloud/metrics",
-    name: "Metrics",
-  },
-  {
-    path: "/cloud/audit-logging",
-    name: "Audit Logging",
-  },
-  {
-    path: "/cloud/tcld",
-    name: "CLI (tcld)",
-  },
-  {
-    path: "https://temporal.io/change-log/product-area/cloud",
-    name: "Release notes",
+    path: "/production-deployment",
+    name: "Get started deploying to production",
   },
 ];
 
@@ -209,11 +181,7 @@ function CloudCard({ links }) {
         <div>
           <h1>Deploy your application to production</h1>
           <p>Choose a production deployment environment that suits your needs.</p>
-          <p>
-            <Link to="/production-deployment">
-              <button className="cloud-button">Get started deploying to production</button>
-            </Link>
-          </p>
+          <ul className="single-column-list">{displayLinks(links)}</ul>
         </div>
       </div>
     </div>
@@ -401,7 +369,7 @@ function Explained() {
           links={appDevGuideLinks}
         />
       </div>
-      <CloudCard links={cloudInfo} />
+      <CloudCard links={prodDeployLinks} />
 
       <div className="core-concepts">
         <SlideInfo activeSlide={activeSlide} handleClick={handleSlideChange} />
