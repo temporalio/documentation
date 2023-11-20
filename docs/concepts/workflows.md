@@ -574,6 +574,23 @@ A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/wo
 This timeout is primarily available to recognize whether a Worker has gone down so that the Workflow Execution can be recovered on a different Worker.
 The main reason for increasing the default value would be to accommodate a Workflow Execution that has a very long Workflow Execution History that could take longer than 10 seconds for the Worker to load.
 
+### What is a Timer? {#timer}
+
+A Workflow can set a durable timer for a fixed time.
+Timers in Temporal are persisted, meaning that even if your Worker or Temporal Cluster is down when the time period completes, as soon as your Worker and Cluster are back up, the `sleep()` or `timer()` call will resolve and your code will continue executing.
+This makes it a reliable and resource-light operation that does not tie up the process, and you can run millions of Timers off a single Worker.
+
+- [How to set Timers in Go](/dev-guide/go/features#timers)
+- [How to set Timers in Java](/dev-guide/java/features#timers)
+- [How to set Timers in PHP](/dev-guide/php/features#timers)
+- [How to set Timers in Python](/dev-guide/python/features#timers)
+- [How to set Timers in TypeScript](/dev-guide/typescript/features#timers)
+
+The duration of a Timer is fixed, and your Workflow might specify a value as short as one second or as long as several years.
+Although it's possible to specify an extremely precise duration, such as 36 milliseconds or 15.072 minutes, your Workflows should not rely on sub-second accuracy for Timers.
+We recommend that you consider the duration as a minimum time, one which will be rounded up slightly due to the latency involved with scheduling and firing the Timer.
+For example, setting a Timer for 11.97 seconds is guaranteed to delay execution for at least that long, but will likely be closer to 12 seconds in practice.
+
 ### What is a Memo? {#memo}
 
 A Memo is a non-indexed set of Workflow Execution metadata that developers supply at start time or in Workflow code and that is returned when you describe or list Workflow Executions.

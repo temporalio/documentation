@@ -505,6 +505,12 @@ The Temporal Web UI provides users with Workflow Execution state and metadata fo
 _Tags: [term](/tags/term), [web-ui](/tags/web-ui)_
 
 
+#### [Timer](/workflows#timer)
+A Workflow can set a durable timer for a fixed time.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
 #### [Update](/workflows#update)
 An Update is a request to and a response from Workflow Execution.
 
