@@ -50,7 +50,7 @@ these actions.
 For example, making an HTTP call with the popular `requests` library within an
 asynchronous Activity would lead to blocking your event loop. If you want to make
 an HTTP call from within an asynchronous Activity, you should use an async-safe HTTP library
-such as `aiohttp` or `htmx`. Otherwise, use a synchronous Activity.
+such as `aiohttp` or `httpx`. Otherwise, use a synchronous Activity.
 
 ## Implementing Asynchronous Activities
 
