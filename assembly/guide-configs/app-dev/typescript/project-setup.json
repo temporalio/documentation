@@ -1,0 +1,99 @@
+{
+    "file_name": "project-setup.md",
+    "id": "ts-project-setup",
+    "slug": "/dev-guide/typescript/project-setup",
+    "file_dir": "dev-guide/typescript",
+    "title": "TypeScript SDK dev guide - Set up a Temporal Application project",
+    "sidebar_label": "Project setup",
+    "sidebar_position": 2,
+    "description": "The project setup section of the Temporal TypeSCript SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go—that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "typescript/chapter-project-setup/project-setup-introduction"
+        },
+        {
+            "type": "h2",
+            "id": "typescript/chapter-project-setup/install-cli"
+        },
+        {
+            "type": "h2",
+            "id": "typescript/chapter-project-setup/choose-dev-cluster"
+        },
+        {
+            "type": "h2",
+            "id": "typescript/chapter-project-setup/project-structure"
+        },
+        {
+            "type": "h3",
+            "id": "typescript/generated/backgroundcheck-boilerplate-backgroundcheck-workflow"
+        },
+        {
+            "type": "p",
+            "id": "typescript/generated/backgroundcheck-boilerplate-workflow-details"
+        },
+        {
+            "type": "h3",
+            "id": "typescript/generated/backgroundcheck-boilerplate-ssntrace-activity"
+        },
+        {
+            "type": "p",
+            "id": "typescript/generated/backgroundcheck-boilerplate-activity-details"
+        },
+        {
+            "type": "h3",
+            "id": "typescript/generated/backgroundcheck-boilerplate-run-a-dev-server-worker"
+        },
+        {
+            "type": "p",
+            "id": "typescript/chapter-project-setup/auto-restart-worker-tip"
+        },
+        {
+            "type": "h3",
+            "id": "typescript/generated/backgroundcheck-boilerplate-cloud-worker"
+        },
+        {
+            "type": "p",
+            "id": "typescript/generated/backgroundcheck-boilerplate-cloud-worker-details"
+        },
+        {
+            "type": "h3",
+            "id": "typescript/chapter-project-setup/self-hosted-worker-docker-network"
+        },
+        {
+            "type": "h4",
+            "id": "typescript/generated/backgroundcheck-boilerplate-self-hosted-worker"
+        },
+        {
+            "type": "h4",
+            "id": "typescript/chapter-project-setup/self-hosted-worker-dockerfile"
+        },
+        {
+            "type": "h2",
+            "id": "typescript/chapter-project-setup/backgroundcheck-boilerplate-start-workflow"
+        },
+        {
+            "type": "h2",
+            "id": "typescript/generated/backgroundcheck-boilerplate-add-test-framework"
+        },
+        {
+            "type": "p",
+            "id": "typescript/generated/backgroundcheck-boilerplate-add-test-framework-details"
+        },
+        {
+            "type": "h3",
+            "id": "typescript/generated/backgroundcheck-boilerplate-add-workflow-tests"
+        },
+        {
+            "type": "p",
+            "id": "typescript/generated/backgroundcheck-boilerplate-add-workflow-test-details"
+        },
+        {
+            "type": "h3",
+            "id": "typescript/generated/backgroundcheck-boilerplate-add-activity-tests"
+        }
+    ]
+}
