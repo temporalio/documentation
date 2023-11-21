@@ -10,7 +10,7 @@ tags:
 ---
 
 Zendesk has a per organization setting to associate user emails based on the domain name.
-You must create a Zendesk account for Temporal Support with the same domain name as your Temporal Cloud account.
+For Temporal Cloud users, there is no need to manually create a Zendesk account, as this included in the onboarding process.
 
 :::info
 
@@ -19,17 +19,16 @@ If you need assistance and don't have paid support, post your request in the [Te
 
 :::
 
-To create a Zendesk account for Temporal Support:
+To access Temporal Support on Zendesk:
 
 1. Go to [support.temporal.io](https://support.temporal.io/).
-2. You can choose to sign up with the following options:
-   1. Sign up with Google SSO.
+2. Log in using the company email address provided during your Temporal Cloud onboarding. You can log in using one of the following methods:
+   1. **Google Single Sign-On (SSO)**.
       1. Select **Sign in with Google**.
       2. Select the email address associated with your company.
-   2. Sign up with email and password.
-      1. Select **New to Temporal? Sign up**.
-      2. Enter your full name and the email address associated with your company.
-      3. Select **Sign up**.
+   2. **Email and Password**.
+      1. Enter your **Email** and **Password**.
+      2. Select **Sign in**.
 3. You will be presented with a screen where you can submit ticket.
 
 To request assistance from Temporal Support, see [Create a ticket](#support-ticket).
