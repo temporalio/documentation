@@ -8,9 +8,10 @@ tags:
   - explanation
 ---
 
-A Workflow can set a durable timer for a fixed time.
-Timers in Temporal are persisted, meaning that even if your Worker or Temporal Cluster is down when the time period completes, as soon as your Worker and Cluster are back up, the `sleep()` or `timer()` call will resolve and your code will continue executing.
-This makes it a reliable and resource-light operation that does not tie up the process, and you can run millions of Timers off a single Worker.
+You can add a delay to your Workflow Execution by setting a Timer.
+Timers in Temporal are persisted, meaning that even if your Worker or Temporal Cluster is down when the time period completes, as soon as your Worker and Cluster become available, the call that is awaiting the Timer in your Workflow code will resolve, causing execution to proceed
+Timers are reliable and efficient.
+Workers consume no additional resources while waiting for a Timer to fire, so a single Worker can await millions of Timers concurrently.
 
 - [How to set Timers in Go](/go/timers)
 - [How to set Timers in Java](/java/timers)
