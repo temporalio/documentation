@@ -72,7 +72,7 @@ Additional TypeScript code samples are in the [temporalio/samples-typescript](ht
 
 Further resources for learning how to use the SDK include the following:
 
-- [TypeScript 101 with TypeScript](https://t.mp/ts-101): Our free introductory course.
+- [Temporal 101](https://t.mp/ts-101) and [Temporal 102](https://t.mp/ts-102): Our free introductory courses.
 - [Building Reliable Distributed Systems in Node.js](https://temporal.io/blog/building-reliable-distributed-systems-in-node): An introduction to Temporal and its value through a sample web app, [temporal.menu](https://temporal.menu/).
 - The [TypeScript SDK](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb) YouTube playlist.
 - Tutorials
