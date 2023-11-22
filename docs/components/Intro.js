@@ -388,7 +388,7 @@ function Explained() {
           <ResourceCard
             title="Introduction to Temporal Workflows"
             author="Dominik Tornow"
-            role="Principle Engineer"
+            role="Principal Engineer"
             link="https://temporal.io/blog/dominik-workflow-part-1"
             img="https://images.ctfassets.net/0uuz8ydxyd9p/bSjHrfjo6yDNCRUHw46gU/ab4899b711ecf09bf165ea7a1615b0a8/dominik-tornow.png"
           />
