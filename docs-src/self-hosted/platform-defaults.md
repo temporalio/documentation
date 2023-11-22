@@ -36,15 +36,15 @@ These limits might apply specifically to each Workflow Execution and do not pert
   - Temporal errors at 2 MB: `ErrBlobSizeExceedsLimit: Blob data size exceeds limit.`
   - This is configurable with [BlobSizeLimitError and BlobSizeLimitWarn](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L378-L379), if you know what you are doing.
 - **History total size limit** (leading to a terminated Workflow Execution):
-  - Temporal warns at 10 MB: `history size exceeds warn limit`.
+  - Temporal warns at 10 MB: [history size exceeds warn limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1238).
   - Temporal errors at 50 MB: [history size exceeds error limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204).
   - This is configurable with [HistorySizeLimitError and HistorySizeLimitWarn](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L380-L381), if you know what you are doing.
 - **History total count limit** (leading to a terminated Workflow Execution):
-  - Temporal warns after 10,240 Events: `history size exceeds warn limit`.
+  - Temporal warns after 10,240 Events: [history size exceeds warn limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1238).
   - Temporal errors after 51,200 Events: [history size exceeds error limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204).
   - This is configurable with [HistoryCountLimitError and HistoryCountLimitWarn](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
 - **Concurrent limit**
-  - The following action commands are limited:
+  - The following action Commands are limited:
     - `ScheduleActivityTask`
     - `SignalExternalWorkflowExecution`
     - `RequestCancelExternalWorkflowExecution`
