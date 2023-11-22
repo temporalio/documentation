@@ -1,6 +1,6 @@
 ---
 id: index
-title: Temporal Platfrom production deployments
+title: Temporal Platform production deployments
 sidebar_label: Production deployments
 sidebar_position: 4
 description: Learn more about how to deploy a Temporal Application to production.
@@ -32,7 +32,7 @@ When it's time to deploy your application to production, connect to [Temporal Cl
 - [Temporal Cloud guide](/cloud)
 - [Self-hosted guide](/self-hosted-guide)
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Connect to Temporal Cloud or a self-hosted Cluster to run in production</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/basic-platform-topology-prod.svg" alt="Connect to Temporal Cloud or a self-hosted Cluster to run in production" height="721" width="1141" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Connect to Temporal Cloud or a self-hosted Cluster to run in production</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/basic-platform-topology-prod.svg" alt="Connect to Temporal Cloud or a self-hosted Cluster to run in production" height="1141" width="1141" /></div></div>
 
 Even when the application's supervisor is Temporal Cloud, you still control the environments where your code executes and the integration points.
 

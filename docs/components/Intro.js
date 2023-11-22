@@ -371,10 +371,6 @@ function Explained() {
       </div>
       <CloudCard links={prodDeployLinks} />
 
-      <div className="core-concepts">
-        <SlideInfo activeSlide={activeSlide} handleClick={handleSlideChange} />
-      </div>
-
       <div className="deployment">
         <div className="dev-tools-container">
           <SimpleCard
