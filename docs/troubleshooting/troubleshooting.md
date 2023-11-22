@@ -20,5 +20,5 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This guide provides troubleshooting solutions for potential Temporal errors and edge cases.
+The following guides provide troubleshooting solutions for potential Temporal errors and edge cases.
 

@@ -1,74 +1,20 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday November 20 2023 08:33:21 AM -0800
+Last assembled: Wednesday November 22 2023 08:35:17 AM -0700
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
-115 guide configurations found.
+125 guide configurations found.
 
-1675 information nodes found.
+1687 information nodes found.
 
-1439 information nodes are attached to guides.
+1446 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
-concepts/what-is-visibility -> /clusters#visibility
-
-concepts/what-is-a-temporal-cluster -> /clusters#persistence
-
-concepts/what-is-a-list-filter -> /visibility#list-filter
-
-concepts/what-is-a-search-attribute -> /visibility#search-attribute
-
-concepts/what-is-advanced-visibility -> /visibility#advanced-visibility
-
-clusters/how-to-upgrade-the-temporal-server-version -> #upgrade-server
-
-concepts/what-is-dual-visibility -> /visibility#dual-visibility
-
-clusters/how-to-set-up-mysql-visibility-store -> #mysql
-
-clusters/how-to-set-up-postgresql-visibility-store -> #postgresql
-
-clusters/how-to-set-up-sqlite-visibility-store -> #sqlite
-
-clusters/how-to-set-up-cassandra-visibility-store -> #cassandra
-
-clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster -> #elasticsearch
-
-clusters/how-to-set-up-visibility-in-a-temporal-cluster -> #supported-databases
-
-references/configuration -> /references/configuration#sql
-
-references/dynamic-configuration -> /references/dynamic-configuration#secondary-visibility-settings
-
-concepts/what-is-cluster-configuration -> /clusters#cluster-configuration
-
-concepts/what-is-archival -> /clusters#archival
-
-clusters/how-to-create-a-custom-archiver -> #custom-archiver
-
-concepts/what-is-a-global-namespace -> /namespaces#global-namespace
-
-concepts/what-is-the-temporal-server -> /clusters#temporal-server
-
-concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
-
 cloud/security-cloud-intro -> /cloud/security#
 
-references/server-options -> /references/server-options#withconfig
-
-concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
-
-concepts/what-is-a-claimmapper-plugin -> #claim-mapper
-
-concepts/what-is-a-data-converter -> /dataconversion#
-
-concepts/what-is-a-payload-codec -> /dataconversion#payload-codec
-
-concepts/what-is-a-codec-server -> /dataconversion#codec-server
-
-concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
+self-hosted/security-intro -> /self-hosted-guide/security#
 
 concepts/what-is-the-temporal-cli -> /cli#
 
@@ -77,6 +23,8 @@ references/web-ui-configuration -> /references/web-ui-configuration#
 concepts/what-is-a-workflow-id -> /workflows#workflow-id
 
 concepts/what-is-a-workflow-type -> /workflows#workflow-type
+
+concepts/what-is-a-list-filter -> /visibility#list-filter
 
 concepts/what-is-an-event -> /workflows#event
 
@@ -89,6 +37,18 @@ concepts/what-is-a-task-queue -> /workers#task-queue
 concepts/what-is-a-state-transition -> /workflows#state-transition
 
 cloud/metrics-intro -> /cloud/metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui
+
+references/configuration -> /references/configuration#
+
+concepts/what-is-archival -> /clusters#archival
+
+self-hosted/what-is-archival -> /self-hosted-guide/archival#
+
+self-hosted/data-encryption -> /self-hosted-guide/data-encryption#
+
+self-hosted/how-to-set-up-codec-server -> /self-hosted-guide/data-encryption#web-ui
+
+concepts/what-is-a-frontend-service -> /clusters#frontend-service
 
 references/cluster-metrics -> /references/cluster-metrics#
 
@@ -113,6 +73,8 @@ tctl-v1/admin/cluster/describe -> #describe
 tctl-v1/admin/cluster/list -> #list
 
 tctl-v1/admin/cluster/upsert-remote-cluster -> #upsert_remote_cluster
+
+concepts/what-is-a-search-attribute -> /visibility#search-attribute
 
 tctl-v1/admin/db/scan -> #scan
 
@@ -168,6 +130,8 @@ tctl-v1/batch/terminate -> #terminate
 
 concepts/what-is-a-signal -> /workflows#signal
 
+concepts/what-is-a-temporal-cluster -> /clusters#
+
 tctl-v1/cluster/health -> #health
 
 tctl-v1/cluster/get-search-attributes -> #get-search-attributes
@@ -177,6 +141,8 @@ tctl-v1/workflow/list -> /tctl-v1/workflow#list
 tctl-v1/workflow/run -> /tctl-v1/workflow#run
 
 tctl-v1/workflow/start -> /tctl-v1/workflow#start
+
+concepts/what-is-a-data-converter -> /dataconversion#
 
 tctl-v1/dataconverter/web -> #web
 
@@ -254,6 +220,8 @@ tctl-v1/workflow/terminate -> #terminate
 
 concepts/what-is-a-workflow-task -> /workers#workflow-task
 
+concepts/what-is-advanced-visibility -> /visibility#advanced-visibility
+
 concepts/what-is-an-event-history -> /workflows#event-history
 
 concepts/what-is-a-query -> /workflows#query
@@ -296,9 +264,9 @@ cloud/tcld/how-to-install-tcld -> #install-tcld
 
 cloud/tcld/login -> /cloud/tcld/login#
 
-cloud/tcld/logout -> /cloud/tcld/logout#
+cloud/tcld/logout -> /cloud/tcld/logout/#
 
-cloud/tcld/version -> /cloud/tcld/version#
+cloud/tcld/version -> /cloud/tcld/version/#
 
 cloud/tcld/namespace/create -> #create
 
@@ -356,6 +324,84 @@ cloud/tcld/user/set-account-role -> #set-account-role
 
 cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
 
+self-hosted/how-to-create-a-custom-archiver -> #custom-archiver
+
+self-hosted/how-to-set-up-archival -> #set-up-archival
+
+concepts/what-is-a-global-namespace -> /namespaces#global-namespace
+
+concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
+
+concepts/what-is-a-child-workflow-execution -> /workflows#child-workflow
+
+concepts/what-is-a-local-activity -> /activities#local-activity
+
+concepts/what-is-a-side-effect -> /workflows#side-effect
+
+references/failures -> /references/failures#
+
+concepts/what-is-a-failure-converter -> /dataconversion#failure-converter
+
+concepts/what-is-a-payload -> /dataconversion#payload
+
+concepts/what-is-a-payload-codec -> /dataconversion#payload-codec
+
+concepts/what-is-a-custom-data-converter -> /dataconversion#custom-data-converter
+
+concepts/what-is-a-payload-converter -> /dataconversion#payload-converter
+
+concepts/what-is-a-codec-server -> /dataconversion#codec-server
+
+concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
+
+cloud/temporal-cloud-limits-sheet -> /cloud/operating-envelope#default-limits
+
+references/dynamic-configuration -> /references/dynamic-configuration#
+
+cli/start-dev-server -> /cli#start-dev-server
+
+self-hosted/setup -> /self-hosted-guide/setup#
+
+self-hosted/platform-defaults -> /self-hosted-guide/defaults#
+
+self-hosted/prod-checklist -> /self-hosted-guide/production-checklist#
+
+self-hosted/prometheus-grafana-setup -> /self-hosted-guide/monitoring#
+
+self-hosted/how-to-set-up-visibility-in-a-temporal-cluster -> /self-hosted-guide/visibility#
+
+self-hosted/how-to-upgrade-the-temporal-server-version -> /self-hosted-guide/upgrade-server#upgrade-server
+
+self-hosted/what-is-multi-cluster-replication -> /self-hosted-guide/multi-cluster-replication#
+
+references/server-options -> /references/server-options#withconfig
+
+concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
+
+concepts/what-is-a-claimmapper-plugin -> #claim-mapper
+
+self-hosted/how-to-set-up-cassandra-visibility-store -> /self-hosted-guide/visibility#cassandra
+
+self-hosted/how-to-set-up-mysql-visibility-store -> /self-hosted-guide/visibility#mysql
+
+self-hosted/how-to-set-up-postgresql-visibility-store -> /self-hosted-guide/visibility#postgresql
+
+concepts/what-is-the-temporal-server -> /clusters#temporal-server
+
+concepts/what-is-visibility -> /clusters#visibility
+
+concepts/what-is-dual-visibility -> /visibility#dual-visibility
+
+self-hosted/how-to-set-up-sqlite-visibility-store -> #sqlite
+
+self-hosted/how-to-migrate-visibility-database -> #migrating-visibility-database
+
+self-hosted/how-to-integrate-elasticsearch-into-a-temporal-cluster -> #elasticsearch
+
+self-hosted/how-to-set-up-dual-visibility -> #dual-visibility
+
+concepts/what-is-cluster-configuration -> /clusters#cluster-configuration
+
 concepts/what-is-temporal-cloud -> /cloud#
 
 references/sdk-metrics -> /references/sdk-metrics#
@@ -368,15 +414,13 @@ concepts/what-is-a-workflow-task-execution -> /workers#workflow-task-execution
 
 concepts/what-is-continue-as-new -> /workflows#continue-as-new
 
-concepts/what-is-a-child-workflow-execution -> /workflows#child-workflow
-
 concepts/what-is-an-activity -> /activities#
 
 concepts/what-is-an-activity-task -> /workers#activity-task
 
-concepts/what-is-a-retry-policy -> /retry-policies#
+concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
 
-concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
+concepts/what-is-a-retry-policy -> /retry-policies#
 
 concepts/what-is-a-workflow-execution-timeout -> /workflows#workflow-execution-timeout
 
@@ -397,24 +441,6 @@ python/metrics -> /dev-guide/python/observability#metrics
 typescript/metrics -> /dev-guide/typescript/observability#metrics
 
 concepts/what-is-a-schedule-to-start-timeout -> /activities#schedule-to-start-timeout
-
-concepts/what-is-a-local-activity -> /activities#local-activity
-
-concepts/what-is-a-frontend-service -> /clusters#frontend-service
-
-concepts/what-is-a-side-effect -> /workflows#side-effect
-
-references/failures -> /references/failures#
-
-concepts/what-is-a-failure-converter -> /dataconversion#failure-converter
-
-concepts/what-is-a-payload -> /dataconversion#payload
-
-concepts/what-is-a-custom-data-converter -> /dataconversion#custom-data-converter
-
-concepts/what-is-a-payload-converter -> /dataconversion#payload-converter
-
-prod-readiness-context/how-to-set-up-codec-server -> #codec-server-setup
 
 concepts/what-is-an-activity-definition -> #activity-definition
 
@@ -478,13 +504,13 @@ typescript/heartbeat-timeout -> /dev-guide/typescript/features#heartbeat-timeout
 
 concepts/what-is-persistence -> #persistence
 
+self-hosted/guide-structure -> /self-hosted-guide#
+
 concepts/what-is-a-history-shard -> #history-shard
 
 go/namespaces -> /dev-guide/go/features#namespaces
 
 java/namespaces -> /dev-guide/java/features#namespaces
-
-clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
 
 cloud/prometheus-grafana-setup -> /cloud/metrics#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
 
@@ -548,11 +574,9 @@ typescript/introduction-to-typescript-sdk -> /dev-guide/typescript/introduction#
 
 python/python-sandbox-environment -> /dev-guide/python/sandbox#
 
-clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
+self-hosted/how-to-create-custom-search-attribute-keys -> /self-hosted-guide/visibility#create-custom-search-attributes
 
-clusters/how-to-create-custom-search-attribute-keys -> /cluster-deployment-guide#create-custom-search-attributes
-
-clusters/how-to-remove-a-custom-search-attribute-key -> /cluster-deployment-guide#remove-custom-search-attributes
+self-hosted/how-to-remove-a-custom-search-attribute-key -> /self-hosted-guide/visibility#remove-custom-search-attributes
 
 go/visibility -> /dev-guide/go/observability#visibility
 
@@ -723,6 +747,8 @@ php/cron-jobs -> /dev-guide/php/features#temporal-cron-jobs
 python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
+
+dev-guide/temporal-sdk -> /dev-guide/sdks#
 
 cloud/users-account-level-roles -> /cloud/users#account-level-roles
 
@@ -1026,9 +1052,11 @@ typescript/testing -> /dev-guide/typescript/testing#replay
 
 typescript/observability -> /dev-guide/typescript/observability#tracing
 
+self-hosted/scaling-and-metrics -> /self-hosted-guide/production-checklist#scaling-and-metrics
+
 concepts/what-is-a-task-token -> /activities#task-token
 
-clusters/how-to-install-temporal-cli -> #run-a-development-server
+self-hosted/how-to-install-temporal-cli -> #run-a-development-server
 
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
@@ -1092,6 +1120,8 @@ java/how-to-handle-a-signal-in-a-workflow-in-java -> #handle-signals
 
 java/how-to-create-a-temporal-client-in-java -> /dev-guide/java/foundations#connect-to-a-dev-cluster
 
+java/chapter-project-setup/install-cli -> /dev-guide/java/project-setup#install-cli
+
 java/interface-hierarchies -> #interface-inheritance
 
 java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-execution-result
@@ -1099,8 +1129,6 @@ java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-executi
 java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-with-start
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
-
-java/chapter-project-setup/install-cli -> /dev-guide/java/project-setup#install-cli
 
 java/chapter-project-setup/choose-dev-cluster -> /dev-guide/java/project-setup#choose-dev-cluster
 
@@ -1125,6 +1153,8 @@ go/chapter-durable-execution/non-deterministic-code-changes -> #durability-throu
 go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#start-workflow
 
 go/chapter-durable-execution/retrieve-event-history -> #retrieve-event-history
+
+go/chapter-project-setup/install-cli -> /dev-guide/go/project-setup#install-cli
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 

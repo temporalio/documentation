@@ -2,7 +2,7 @@
     "file_name": "users.md",
     "id": "users",
     "slug": "/cloud/users",
-    "file_dir": "cloud/account-setup",
+    "file_dir": "production-deployment/cloud/account-setup",
     "title": "How to manage users in Temporal Cloud",
     "sidebar_label": "Users",
     "sidebar_position": 3,

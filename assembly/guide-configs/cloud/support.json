@@ -2,7 +2,7 @@
     "file_name": "support.md",
     "id": "support",
     "slug": "/cloud/support",
-    "file_dir": "cloud/introduction",
+    "file_dir": "production-deployment/cloud/introduction",
     "title": "Temporal Cloud services, support, and training",
     "sidebar_label": "Support",
     "sidebar_position": 4,
