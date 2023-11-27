@@ -11,9 +11,9 @@ Often referred to as an Activity Definition, this code is a function or method t
 
 **Developer's guide links**
 
-| Go SDK                                                                               | Java SDK                                                                       | PHP SDK     | Python SDK                                                                               | TypeScript SDK |
-| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ----------- | ---------------------------------------------------------------------------------------- | -------------- |
-| [Project setup chapter](/go/generated/backgroundcheck-boilerplate-ssntrace-activity) | [Project setup chapter](/java/backgroundcheck-boilerplate-activity-definition) | Unavailable | [Project setup chapter](/python/generated/backgroundcheck-boilerplate-ssntrace-activity) | Unavailable    |
+| Go SDK                                                                               | Java SDK                                                                                             | PHP SDK     | Python SDK                                                                     | TypeScript SDK |
+| ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------ | -------------- |
+| [Project setup chapter](/go/generated/backgroundcheck-boilerplate-ssntrace-activity) | [Project setup chapter](/java/chapter-project-setup/backgroundcheck-boilerplate-activity-definition) | Unavailable | [Project setup chapter](/python/backgroundcheck-boilerplate-ssntrace-activity) | Unavailable    |
 
 **Feature guide links**
 

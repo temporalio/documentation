@@ -36,9 +36,9 @@ Often referred to as a Workflow Definition, and considered to be the fundamental
 
 **Developer's guide links**
 
-| Go SDK                                                             | Java SDK                                                                       | PHP SDK     | Python SDK                                                             | TypeScript SDK |
-| ------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ----------- | ---------------------------------------------------------------------- | -------------- |
-| [Project setup chapter](/dev-guide/go/project-setup#workflow-code) | [Project setup chapter](/java/backgroundcheck-boilerplate-workflow-definition) | Unavailable | [Project setup chapter](/dev-guide/python/project-setup#workflow-code) | Unavailable    |
+| Go SDK                                                             | Java SDK                                                                         | PHP SDK     | Python SDK                                                             | TypeScript SDK |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------------- | ----------- | ---------------------------------------------------------------------- | -------------- |
+| [Project setup chapter](/dev-guide/go/project-setup#workflow-code) | [Project setup chapter](/dev-guide/java/project-setup#boilerplate-workflow-code) | Unavailable | [Project setup chapter](/dev-guide/python/project-setup#workflow-code) | Unavailable    |
 
 **Feature guide links**
 
@@ -54,9 +54,9 @@ Often referred to as an Activity Definition, this code is a function or method t
 
 **Developer's guide links**
 
-| Go SDK                                                             | Java SDK                                                                       | PHP SDK     | Python SDK                                                                               | TypeScript SDK |
-| ------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ----------- | ---------------------------------------------------------------------------------------- | -------------- |
-| [Project setup chapter](/dev-guide/go/project-setup#activity-code) | [Project setup chapter](/java/backgroundcheck-boilerplate-activity-definition) | Unavailable | [Project setup chapter](/python/generated/backgroundcheck-boilerplate-ssntrace-activity) | Unavailable    |
+| Go SDK                                                             | Java SDK                                                                         | PHP SDK     | Python SDK                                                             | TypeScript SDK |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------------- | ----------- | ---------------------------------------------------------------------- | -------------- |
+| [Project setup chapter](/dev-guide/go/project-setup#activity-code) | [Project setup chapter](/dev-guide/java/project-setup#boilerplate-activity-code) | Unavailable | [Project setup chapter](/dev-guide/python/project-setup#activity-code) | Unavailable    |
 
 **Feature guide links**
 
@@ -73,9 +73,9 @@ Run as many Workers (instances of your application) as needed.
 
 **Developer's guide links**
 
-| Go SDK                                                                 | Java SDK                                                                           | PHP SDK     | Python SDK                                                                                     | TypeScript SDK |
-| ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ----------- | ---------------------------------------------------------------------------------------------- | -------------- |
-| [Project setup chapter](/dev-guide/go/project-setup#dev-server-worker) | [Project setup chapter](/java/backgroundcheck-boilerplate-run-a-dev-server-worker) | Unavailable | [Project setup chapter](/python/generated/backgroundcheck-boilerplate-run-a-dev-server-worker) | Unavailable    |
+| Go SDK                                                                 | Java SDK                                                                 | PHP SDK     | Python SDK                                                                 | TypeScript SDK |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------ | ----------- | -------------------------------------------------------------------------- | -------------- |
+| [Project setup chapter](/dev-guide/go/project-setup#dev-server-worker) | [Project setup chapter](/dev-guide/java/project-setup#dev-server-worker) | Unavailable | [Project setup chapter](/dev-guide/python/project-setup#dev-server-worker) | Unavailable    |
 
 **Feature guide links**
 

@@ -12,9 +12,9 @@ Run as many Workers (instances of your application) as needed.
 
 **Developer's guide links**
 
-| Go SDK                                                                                     | Java SDK                                                                           | PHP SDK     | Python SDK                                                                                     | TypeScript SDK |
-| ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- | ----------- | ---------------------------------------------------------------------------------------------- | -------------- |
-| [Project setup chapter](/go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker) | [Project setup chapter](/java/backgroundcheck-boilerplate-run-a-dev-server-worker) | Unavailable | [Project setup chapter](/python/generated/backgroundcheck-boilerplate-run-a-dev-server-worker) | Unavailable    |
+| Go SDK                                                                                     | Java SDK                                                                                     | PHP SDK     | Python SDK                                                                           | TypeScript SDK |
+| ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------ | -------------- |
+| [Project setup chapter](/go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker) | [Project setup chapter](/java/generated/backgroundcheck-boilerplate-run-a-dev-server-worker) | Unavailable | [Project setup chapter](/python/backgroundcheck-boilerplate-run-a-dev-server-worker) | Unavailable    |
 
 **Feature guide links**
 

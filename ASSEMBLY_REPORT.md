@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday November 27 2023 09:48:02 AM -0700
+Last assembled: Monday November 27 2023 09:53:30 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -1044,7 +1044,13 @@ python/backgroundcheck-boilerplate-backgroundcheck-workflow -> /dev-guide/python
 
 go/generated/backgroundcheck-boilerplate-ssntrace-activity -> /dev-guide/go/project-setup#activity-code
 
+python/backgroundcheck-boilerplate-ssntrace-activity -> /dev-guide/python/project-setup#activity-code
+
 go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
+
+java/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/java/project-setup#dev-server-worker
+
+python/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/python/project-setup#dev-server-worker
 
 dev-guide/major-components -> #temporal-client
 
@@ -1179,5 +1185,9 @@ go/chapter-project-setup/project-structure -> /dev-guide/go/project-setup#boiler
 go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
+
+java/chapter-project-setup/backgroundcheck-boilerplate-workflow-definition -> /dev-guide/java/project-setup#boilerplate-workflow-code
+
+java/chapter-project-setup/backgroundcheck-boilerplate-activity-definition -> /dev-guide/java/project-setup#boilerplate-activity-code
 
 
