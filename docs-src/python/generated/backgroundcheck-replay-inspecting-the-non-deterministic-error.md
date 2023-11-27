@@ -14,6 +14,6 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 This is because, Workflows in the Python SDK run in a sandbox, by default, to help avoid non-determinism code.
 
-The sandbox is not foolproof and non-determinism can still occur. You are encouraged to define Workflows in files without side effects.
+The sandbox is not foolproof and non-determinism can still occur. You are encouraged to define Workflows in files without side effects. This practice ensures a higher level of Workflow consistency and predictability.
 
-For information on the Sandbox, see [Sandbox](/python/python-sandbox-environment).
+For a deeper understanding of how the sandbox operates and its limitations, please refer to the guide on the [Sandbox](/python/python-sandbox-environment).

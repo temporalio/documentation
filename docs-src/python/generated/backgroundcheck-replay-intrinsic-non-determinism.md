@@ -22,7 +22,7 @@ The following are some common operations that **can't** be done inside of a Work
   This includes calling an external API, conducting a file I/O operation, talking to another service, etc. (use Activities instead).
 - Relying on system time.
   - Use [workflow.now()](https://python.temporal.io/temporalio.workflow.html#now) as a replacement for `time.now()`.
-  - Workflows are backed by custom https://docs.python.org/3/library/asyncio.html event loop. Meaning that many common `asyncio` calls works as expected.
+  - Workflows are backed by a custom [asyncio](https://docs.python.org/3/library/asyncio.html) event loop. Meaning that many common `asyncio` calls works as expected.
     - Use `asyncio.sleep()`.
 - Iterating over data structures with unknown ordering.
   This includes iterating over maps using `range`, because with `range` the order of the map's iteration is randomized.
@@ -43,7 +43,7 @@ temporalio.worker.workflow_sandbox._restrictions.RestrictedWorkflowAccessError:
 
 From the following example code:
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-4023987a-7e8d-428d-ac5b-d51a01791f9f" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-4023987a-7e8d-428d-ac5b-d51a01791f9f" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/replay-tests/backgroundcheck_replay/backgroundcheck_non_deterministic_code_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-b0363e3a-bb8c-4a58-97bb-de241e5bec70" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-b0363e3a-bb8c-4a58-97bb-de241e5bec70" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/replay-tests/backgroundcheck_replay/backgroundcheck_non_deterministic_code_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 import asyncio
