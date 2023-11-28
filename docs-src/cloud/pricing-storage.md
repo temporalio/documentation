@@ -23,11 +23,11 @@ Running storage is a measure of the amount of storage used to store active Workf
 
 If you purchase Temporal Cloud credits (as outlined earlier), running storage costs are tiered and measured in gigabyte-hours.
 
-| **Running storage** | **Cost per GBh** |
-| ------------------- | ---------------- |
-| Less than 10        | $0.042           |
-| 10 to 39            | $0.031           |
-| 40 to 119           | $0.023           |
-| 120 to 499          | $0.018           |
-| 500 to 1999         | $0.013           |
-| 2000 or more        | $0.010           |
+| **Running storage**          | **Cost per GBh per Namespace** |
+| ---------------------------- | ---------------- |
+| Up to 7,000                  | $0.042           |
+| Over 7,000 up to 30,000      | $0.031           |
+| Over 30,000 up to 90,000     | $0.023           |
+| Over 90,000 up to 400,000    | $0.018           |
+| Over 400,000 up to 1,500,000 | $0.013           |
+| Over 1,500,000               | $0.010           |
