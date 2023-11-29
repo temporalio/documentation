@@ -65,3 +65,10 @@ For details, see the [tcld user invite](/cloud/tcld/user#invite) command.
 
 Temporal sends an email message to the specified user.
 To join Temporal Cloud, the user must select **Accept Invite** in the message.
+
+### How to invite a user using the Cloud Ops API
+
+You can invite users pragmatically using the Cloud Ops API.
+
+1. Create a connection to your Temporal Cluster using the Cloud Operations API.
+2. Use the [CreateUser service](https://github.com/temporalio/api-cloud/blob/main/temporal/api/cloud/cloudservice/v1/service.proto) to create a user.
