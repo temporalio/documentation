@@ -11,7 +11,7 @@ tags:
 
 ### Develop
 
-First [build your durable Temporal Application](/dev-guide) with a Temporal SDK, using a development Cluster to supervise it.
+First [build your durable Temporal Application](/dev-guide) with a Temporal SDK, using a development Cluster to orchestrate it.
 The Temporal Platform isn't opinionated about how or where you deploy your application code and you can use the Temporal Client to integrate your Temporal Application with your existing systems.
 
 **Connect to a development Cluster while building your application.**
