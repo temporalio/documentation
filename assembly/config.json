@@ -44,6 +44,11 @@
         {
             "org": "temporalio",
             "name": "documentation-samples-java"
+        },
+        {
+            "org": "temporalio",
+            "name": "documentation-samples-typescript",
+            "ref": "durable-execution"
         }
     ]
 }

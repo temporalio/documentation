@@ -23,6 +23,9 @@ export async function createNodesFromSamples(config) {
         if (ext === ".py") {
           lang = "python";
         }
+        if (ext === ".ts") {
+          lang = "typescript";
+        }
         await createNodes(config, file, lang, sourceURL);
       }
     }
@@ -165,6 +168,8 @@ export async function createNodesFromSamples(config) {
       case ".py":
         return true;
       case ".java":
+        return true;
+      case ".ts":
         return true;
       default:
         return false;

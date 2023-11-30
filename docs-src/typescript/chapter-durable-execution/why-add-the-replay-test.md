@@ -4,7 +4,7 @@ title: Why add a Replay test?
 description: The Replay test checks whether the current Workflow code (Workflow Definition) is compatible with earlier Workflow Execution's Event Histories.
 sidebar_label: why-replay-test
 tags:
-  - go sdk
+  - typescript sdk
   - developer-guide-doc-type
   - event history
   - determinism

@@ -32,6 +32,14 @@
       "id": "typescript/chapter-durable-execution/backgroundcheck-replay-intrinsic-non-determinism"
     },
     {
+      "type": "h2",
+      "id": "typescript/generated/non-deterministic-code-changes"
+    },
+    {
+      "type": "p",
+      "id": "typescript/chapter-durable-execution/backgroundcheck-replay-inspecting-the-non-deterministic-error"
+    },
+    {
       "type": "p",
       "id": "typescript/chapter-durable-execution/backgroundcheck-replay-inspecting-the-non-deterministic-error"
     },
@@ -45,7 +53,7 @@
     },
     {
       "type": "h3",
-      "id": "typescript/chapter-durable-execution/add-sleep-for-one-minute"
+      "id": "typescript/generated/add-sleep-for-one-minute"
     },
     {
       "type": "h3",

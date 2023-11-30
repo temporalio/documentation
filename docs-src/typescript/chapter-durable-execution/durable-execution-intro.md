@@ -4,7 +4,7 @@ title: Introduction to developing for Durable Execution
 description: The Durable Execution section of the Temporal Developer's guide covers advanced beginner concepts for working with Temporal, including testing your code, reviewing workflow event history, adding timers, and understanding determinism. Developing for durable execution is a core aspect of Temporal.
 sidebar_label: Durable Execution
 tags:
-  - go sdk
+  - typescript sdk
   - developer-guide-doc-type
   - introduction-doc-type
 ---

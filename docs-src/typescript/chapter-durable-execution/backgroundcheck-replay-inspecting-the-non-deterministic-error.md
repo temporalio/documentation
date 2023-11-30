@@ -4,12 +4,10 @@ title: Intrinsic non-deterministic logic
 sidebar_label: intrinsic-non-deterministic-logic
 description: This kind of logic prevents the Workflow code from executing to completion because the Workflow can take a different code path than the one expected from the Event History.
 tags:
-- tests
-- replay
-- event history
+  - tests
+  - replay
+  - event history
 ---
-
-If you run the `BackgroundCheckNonDeterministic` Workflow enough times, eventually you will see a Workflow Task failure.
 
 The Worker logs will show something similar to the following:
 

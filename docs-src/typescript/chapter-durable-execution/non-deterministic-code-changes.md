@@ -4,7 +4,7 @@ title: Non-deterministic code changes
 description: History Replay, sometimes also called Workflow Replay, is the mechanism that Temporal uses to reconstruct the state of a Workflow Execution. Temporal provides Durable Execution via this Replay Functionality.
 sidebar_label: Durability through Replays
 tags:
-  - go sdk
+  - typescript sdk
   - developer-guide-doc-type
   - event history
   - replay

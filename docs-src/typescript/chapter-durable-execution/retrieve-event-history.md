@@ -4,7 +4,7 @@ title: Retrieve a Workflow Execution's Event History
 description: Learn how to retrieve your Workflow Execution's Event History
 sidebar_label: Retrieve Event History
 tags:
-  - go sdk
+  - typescript sdk
   - developer-guide-doc-type
   - event history
 ---

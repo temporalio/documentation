@@ -4,30 +4,31 @@ title: Add a call to sleep
 sidebar_label: Add sleep call
 description: Add a call to sleep for one minute to the beginning of the Workflow.
 tags:
-- timer
-- sleep
-- logger
+  - timer
+  - sleep
+  - logger
 ---
 
 In the following sample, we add a couple of logging statements and a Timer to the Workflow code to see how this affects the Event History.
 
 Use the `sleep()` API to cause the Workflow to sleep for a minute before the call to execute the Activity.
 
-Use the `console.log()` API to log from Workflows to avoid seeing repeated logs from the Replay of the Workflow code.
+By using Temporal's logging API, the Worker is able to suppress these log messages during replay so that log statements from the original execution aren't duplicated by the re-execution.
 
 ```typescript
+import { log } from '@temporalio/workflow';
 import { proxyActivities, sleep } from '@temporalio/workflow';
 import type { Activities } from './activities'; // Assuming 'activities' is the file containing your activity definitions
 
 const activities = proxyActivities<Activities>({
-  startToCloseTimeout: '10 seconds', // Setting the StartToCloseTimeout as in the Go example
+  startToCloseTimeout: '10 seconds',
 });
 
 export async function BackgroundCheckWorkflow(param: string): Promise<string> {
   // Sleep for 1 minute
-  console.log('Sleeping for 1 minute...');
+  log.info('Sleeping for 1 minute...');
   await sleep(60 * 1000); // sleep for 60 seconds
-  console.log('Finished sleeping');
+  log.info('Finished sleeping');
 
   // Execute the SSNTraceActivity synchronously
   try {

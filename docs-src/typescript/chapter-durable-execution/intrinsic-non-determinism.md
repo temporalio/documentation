@@ -4,7 +4,7 @@ title: Non-deterministic branching logic
 description: History Replay, sometimes also called Workflow Replay, is the mechanism that Temporal uses to reconstruct the state of a Workflow Execution. Temporal provides Durable Execution via this Replay Functionality.
 sidebar_label: Durability through Replays
 tags:
-  - go sdk
+  - typescript sdk
   - developer-guide-doc-type
   - event history
   - replay
@@ -29,6 +29,6 @@ In the Temporal TypeScript SDK, certain standard functions are replaced by deter
 
 - **Deterministic `Date.now`**: Instead of the standard JavaScript `Date.now()`, which returns the current timestamp, Temporal provides a deterministic version. This function returns the historical start time of the current Workflow task, ensuring consistency across Workflow replays.
 
-- **Deterministic `setTimeout`**: The traditional `setTimeout()` function is replaced with a custom implementation in Temporal. This version behaves similarly to the standard function but leverages `workflow.sleep()` internally. This allows for predictable and controllable behavior within the Workflow context, aligning with Temporal's deterministic execution model.
+- **Deterministic `setTimeout`**: The traditional `setTimeout()` function is replaced with a custom implementation in Temporal. This version behaves similarly to the standard function but leverages `sleep()` internally. This allows for predictable and controllable behavior within the Workflow context, aligning with Temporal's deterministic execution model.
 
 Using these deterministic versions of standard JavaScript functions ensures that Temporal Workflows remain consistent and repeatable across different executions, which is crucial for reliable workflow management.
