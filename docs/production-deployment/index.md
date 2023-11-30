@@ -23,7 +23,7 @@ The Temporal Platform isn't opinionated about how or where you deploy your appli
 
 **Connect to a development Cluster while building your application.**
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Build with a development Cluster</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/basic-platform-topology-dev.svg" alt="Build with a development Cluster" height="681" width="1481" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Build with a development Cluster</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/apps-are-external.png" alt="Build with a development Cluster" height="1212" width="2160" /></div></div>
 
 ### Deploy
 
@@ -32,7 +32,9 @@ When it's time to deploy your application to production, connect to [Temporal Cl
 - [Temporal Cloud guide](/cloud)
 - [Self-hosted guide](/self-hosted-guide)
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Connect to Temporal Cloud or a self-hosted Cluster to run in production</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/basic-platform-topology-prod.svg" alt="Connect to Temporal Cloud or a self-hosted Cluster to run in production" height="812" width="1621" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Connect to a self-hosted Cluster to run in production</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/role-of-cluster.png" alt="Connect to a self-hosted Cluster to run in production" height="1212" width="2160" /></div></div>
 
-Even when the application's supervisor is Temporal Cloud, you still control the environments where your code executes and the integration points.
+Even when the application's orchestrator is Temporal Cloud, you still control the environments where your code executes and the integration points.
+
+<div class="tdiw"><div class="tditw"><p class="tdit">Connect to Temporal Cloud to run in production</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/role-of-cloud.png" alt="Connect to Temporal Cloud to run in production" height="1212" width="2160" /></div></div>
 
