@@ -1010,12 +1010,6 @@ h1 {
   text-decoration: none;
 }
 
-.DocSearch-Hit-title,
-.DocSearch-Hit-icon,
-.DocSearch-Hit-action {
-  --docsearch-hit-active-color: black;
-}
-
 .announcementBar_node_modules-\@docusaurus-theme-classic-lib-next-theme-AnnouncementBar-styles-module {
   --docusaurus-announcement-bar-height: 4rem;
   font-size: 24px;
