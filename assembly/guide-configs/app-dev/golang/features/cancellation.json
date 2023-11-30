@@ -1,0 +1,31 @@
+{
+    "file_name": "cancellation.md",
+    "id": "cancellation",
+    "slug": "/dev-guide/go/features/cancellation",
+    "file_dir": "dev-guide/golang/features",
+    "title": "Workflow Cancellation - Go SDK feature guide",
+    "sidebar_label": "Cancellation",
+    "sidebar_position": 3,
+    "description": "Check out the cancellation feature APIs in the Temporal Go SDK.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "go/features/cancellation/overview"
+        },
+        {
+            "type": "h2",
+            "id": "go/generated/handle-cancellation-request-workflow"
+        },
+        {
+            "type": "h2",
+            "id": "go/generated/handle-cancellation-request-in-activity"
+        },
+        {
+            "type": "h2",
+            "id": "go/generated/request-cancellation-from-a-client"
+        }
+    ]
+}

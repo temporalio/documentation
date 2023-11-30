@@ -547,7 +547,7 @@ The Worker Entity caches the Workflow in memory and begins polling the dedicated
 If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Cluster will resume Scheduling Workflow Tasks on the original Task Queue.
 Another Worker Entity can then resume the Workflow Execution, and set up its own Worker-Specific Task Queue for future Workflow Tasks.
 
-For more information, see [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](/dev-guide/go/foundations#stickyscheduletostarttimeout).
+For more information, see [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](/go/features/core-app/go/how-to-set-workeroptions-in-go#stickyscheduletostarttimeout).
 
 Worker-Specific Task Queues are the default behavior of the Temporal Platform.
 

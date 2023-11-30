@@ -34,6 +34,10 @@
         {
             "type": "h2",
             "id": "dev-guide/sdk-features/deterministic-runtime-safeguards"
+        },
+        {
+            "type": "h2",
+            "id": "dev-guide/sdk-features/message-passing"
         }
     ]
 }

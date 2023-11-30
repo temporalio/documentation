@@ -1,0 +1,43 @@
+{
+    "id": "queries",
+    "file_name": "queries.md",
+    "file_dir": "dev-guide/golang/features",
+    "slug": "/dev-guide/go/features/queries",
+    "title": "Workflow Queries - Go SDK feature guide",
+    "sidebar_label": "Queries",
+    "sidebar_position": 5,
+    "description": "Learn how to Query a Workflow using the Go SDK.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "go/queries"
+        },
+        {
+            "type": "h2",
+            "id": "go/define-query"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-define-a-query-type-in-go"
+        },
+        {
+            "type": "h2",
+            "id": "go/handle-query"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-handle-a-query-in-a-workflow-in-go"
+        },
+        {
+            "type": "h2",
+            "id": "go/send-query"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-send-a-query-to-a-workflow-execution-in-go"
+        }
+    ]
+}

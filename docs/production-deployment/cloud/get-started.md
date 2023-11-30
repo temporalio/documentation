@@ -70,10 +70,10 @@ To add users, see the following:
 Connecting your [Temporal Clients](/temporal#temporal-client) and [Worker Processes](/workers#worker-process) to Temporal Cloud is similar to connecting them to your own [Temporal Cluster](/clusters).
 The primary difference is the requirement to provide client certificates and private keys.
 
-- [Connect to Temporal Cloud in Go](/dev-guide/go/foundations#connect-to-temporal-cloud)
+- [Connect to Temporal Cloud in Go](/dev-guide/go/features/core-app#connect-to-temporal-cloud)
 - [Connect to Temporal Cloud in Python](/dev-guide/python/foundations#connect-to-temporal-cloud)
 - [Connect to Temporal Cloud in TypeScript](/dev-guide/typescript/foundations#connect-to-temporal-cloud)
 
-- [Run a Temporal Cloud Worker in Go](/dev-guide/go/foundations#run-a-temporal-cloud-worker)
+- [Run a Temporal Cloud Worker in Go](/dev-guide/go/features/core-app#run-a-temporal-cloud-worker)
 - [Run a Temporal Cloud Worker in TypeScript](/dev-guide/typescript/foundations#run-a-temporal-cloud-worker)
 

@@ -1,0 +1,55 @@
+{
+    "file_name": "signals.md",
+    "file_dir": "dev-guide/golang/features",
+    "slug": "/dev-guide/go/features/signals/features/signals",
+    "id": "features",
+    "title": "Workflow Signals - Go SDK feature guide",
+    "sidebar_label": "Signals",
+    "sidebar_position": 5,
+    "description": "Learn how to implement Signals using the Go SDK.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "go/features/signals/introduction"
+        },
+        {
+            "type": "h2",
+            "id": "go/features/signals/define-signal"
+        },
+        {
+            "type": "h2",
+            "id": "go/features/signals/handle-signal"
+        },
+        {
+            "type": "p",
+            "id": "go/features/signals/how-to-handle-a-signal-in-go"
+        },
+        {
+            "type": "h2",
+            "id": "go/features/signals/send-signal-from-client"
+        },
+        {
+            "type": "p",
+            "id": "go/features/signals/how-to-send-a-signal-from-a-client-in-go"
+        },
+        {
+            "type": "h2",
+            "id": "go/features/signals/send-signal-from-workflow"
+        },
+        {
+            "type": "p",
+            "id": "go/features/signals/how-to-send-a-signal-from-a-workflow-in-go"
+        },
+        {
+            "type": "h2",
+            "id": "go/features/signals/signal-with-start"
+        },
+        {
+            "type": "p",
+            "id": "go/features/signals/how-to-send-a-signal-with-start-in-go"
+        }
+    ]
+}

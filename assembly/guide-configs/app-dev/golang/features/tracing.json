@@ -1,0 +1,27 @@
+{
+    "file_name": "tracing.md",
+    "id": "tracing",
+    "slug": "/dev-guide/go/features/tracing",
+    "file_dir": "dev-guide/golang/features",
+    "title": "Application tracing - Go SDK feature guide",
+    "sidebar_label": "Tracing",
+    "sidebar_position": 6,
+    "description": "Learn how to implelement tracing using the Temporal Go SDK.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "go/features/tracing/introduction"
+        },
+        {
+            "type": "h2",
+            "id": "go/features/tracing/context-propagation"
+        },
+        {
+            "type": "h2",
+            "id": "go/features/tracing/interceptors"
+        }
+    ]
+}

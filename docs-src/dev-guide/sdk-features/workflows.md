@@ -12,14 +12,9 @@ Often referred to as a Workflow Definition, and considered to be the fundamental
 
 **Developer's guide links**
 
-| Go SDK                                                                                      | Java SDK                                                                                             | PHP SDK     | Python SDK                                                                            | TypeScript SDK |
-| ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------- | -------------- |
-| [Project setup chapter](/go/generated/backgroundcheck-boilerplate-backgroundcheck-workflow) | [Project setup chapter](/java/chapter-project-setup/backgroundcheck-boilerplate-workflow-definition) | Unavailable | [Project setup chapter](/python/backgroundcheck-boilerplate-backgroundcheck-workflow) | Unavailable    |
-
-**Feature guide links**
-
-| Go SDK                                    | Java SDK                                                            | PHP SDK                                    | Python SDK                                    | TypeScript SDK                                    |
-| ----------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------ | --------------------------------------------- | ------------------------------------------------- |
-| [Feature guide](/go/developing-workflows) | [Feature guide](/java/how-to-develop-a-workflow-definition-in-java) | [Feature guide](/php/developing-workflows) | [Feature guide](/python/developing-workflows) | [Feature guide](/typescript/developing-workflows) |
+| Go SDK                                                                                      | Java SDK                                                                                             | PHP SDK                                    | Python SDK                                                                            | TypeScript SDK                                    |
+| ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| [Project setup chapter](/go/generated/backgroundcheck-boilerplate-backgroundcheck-workflow) | [Project setup chapter](/java/chapter-project-setup/backgroundcheck-boilerplate-workflow-definition) | Unavailable                                | [Project setup chapter](/python/backgroundcheck-boilerplate-backgroundcheck-workflow) | Unavailable                                       |
+| [Feature guide](/go/developing-workflows)                                                   | [Feature guide](/java/how-to-develop-a-workflow-definition-in-java)                                  | [Feature guide](/php/developing-workflows) | [Feature guide](/python/developing-workflows)                                         | [Feature guide](/typescript/developing-workflows) |
 
 Learn more about Temporal Workflows in the [conceptual deep dive](/concepts/what-is-a-workflow).

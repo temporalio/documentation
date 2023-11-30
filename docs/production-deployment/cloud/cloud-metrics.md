@@ -197,7 +197,7 @@ If you're following through with the examples provided here, ensure that you hav
 - Root CA certificates and end-entity certificates. See [Certificate requirements](/cloud/certificates#certificate-requirements) for details.
 - Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See Connect to a Cluster for details.
 
-  - [Go](/dev-guide/go/foundations#connect-to-a-cluster)
+  - [Go](/dev-guide/go/project-setup#)
   - [Java](/dev-guide/java/foundations#connect-to-a-cluster)
   - [PHP](/dev-guide/php/foundations#connect-to-a-cluster)
   - [Python](/dev-guide/python/foundations#connect-to-a-cluster)

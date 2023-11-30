@@ -417,7 +417,7 @@ With Workflows you can do the following:
 - Update the value set for a Search Attribute from within the Workflow code
 - Remove the value set for a Search Attribute from within the Workflow code
 
-- [How to manage Search Attributes using the Go SDK](/dev-guide/go/observability#visibility)
+- [How to manage Search Attributes using the Go SDK](/dev-guide/go/features/visibility#)
 - [How to manage Search Attributes using the Java SDK](/dev-guide/java/observability#visibility)
 - [How to manage Search Attributes using the PHP SDK](/dev-guide/php/observability#visibility)
 - [How to manage Search Attributes using the Python SDK](/dev-guide/python/observability#visibility)

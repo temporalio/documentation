@@ -19,7 +19,7 @@ See [Cluster metrics](/references/cluster-metrics) for metrics emitted by the [O
 
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
 
-- [How to emit metrics using the Go SDK](/go/metrics)
+- [How to emit metrics using the Go SDK](/go/features/metrics/metrics)
 - [How to emit metrics using the Java SDK](/java/metrics)
 - [How to emit metrics using the Python SDK](/python/metrics)
 - [How to emit metrics using the TypeScript SDK](/typescript/metrics)

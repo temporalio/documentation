@@ -1,0 +1,79 @@
+{
+  "file_name": "test-suite.md",
+  "id": "test-suite",
+  "slug": "/dev-guide/go/features/test-suite",
+  "file_dir": "dev-guide/golang/features",
+  "title": "Application test suite - Go SDK feature guide",
+  "sidebar_label": "Test suite",
+  "sidebar_position": 2,
+  "description": "The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "go/testing"
+    },
+    {
+      "type": "h2",
+      "id": "go/testing-frameworks"
+    },
+    {
+      "type": "h2",
+      "id": "go/how-to-test-workflow-definitions-in-go"
+    },
+    {
+      "type": "h2",
+      "id": "go/testing-activities"
+    },
+    {
+      "type": "h3",
+      "id": "go/run-an-activity"
+    },
+    {
+      "type": "h3",
+      "id": "go/listen-to-heartbeats"
+    },
+    {
+      "type": "h3",
+      "id": "go/cancel-an-activity"
+    },
+    {
+      "type": "h2",
+      "id": "go/testing-workflows"
+    },
+    {
+      "type": "h3",
+      "id": "go/mock-activities"
+    },
+    {
+      "type": "h3",
+      "id": "go/skip-time"
+    },
+    {
+      "type": "h4",
+      "id": "go/skip-time-set-up"
+    },
+    {
+      "type": "h4",
+      "id": "go/skip-time-skip-automatically"
+    },
+    {
+      "type": "h4",
+      "id": "go/skip-time-skip-manually"
+    },
+    {
+      "type": "h4",
+      "id": "go/skip-time-skip-activities"
+    },
+    {
+      "type": "h2",
+      "id": "go/replays"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-replay-a-workflow-execution-in-go"
+    }
+  ]
+}

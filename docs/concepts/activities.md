@@ -42,7 +42,7 @@ For other Activity-related Events, see [Activity Events](/workflows#activity-eve
 
 An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/workers#activity-task-execution).
 
-- [How to develop an Activity Definition using the Go SDK](/dev-guide/go/foundations#activity-definition)
+- [How to develop an Activity Definition using the Go SDK](/dev-guide/go/features/core-app#activity-definition)
 - [How to develop an Activity Definition using the Java SDK](/dev-guide/java/foundations#develop-activities)
 - [How to develop an Activity Definition using the PHP SDK](/dev-guide/php/foundations#develop-activities)
 - [How to develop an Activity Definition using the Python SDK](/dev-guide/python/foundations#develop-activities)
@@ -111,7 +111,7 @@ Activity Types are scoped through Task Queues.
 
 An Activity Execution is the full chain of [Activity Task Executions](/workers#activity-task-execution).
 
-- [How to start an Activity Execution using the Go SDK](/dev-guide/go/foundations#activity-execution)
+- [How to start an Activity Execution using the Go SDK](/dev-guide/go/features/core-app#activity-execution)
 - [How to start an Activity Execution using the Java SDK](/dev-guide/java/foundations#activity-execution)
 - [How to start an Activity Execution using the PHP SDK](/dev-guide/php/foundations#activity-execution)
 - [How to start an Activity Execution using the Python SDK](/dev-guide/python/foundations#activity-execution)

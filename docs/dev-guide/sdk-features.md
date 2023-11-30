@@ -36,15 +36,10 @@ Often referred to as a Workflow Definition, and considered to be the fundamental
 
 **Developer's guide links**
 
-| Go SDK                                                             | Java SDK                                                                         | PHP SDK     | Python SDK                                                             | TypeScript SDK |
-| ------------------------------------------------------------------ | -------------------------------------------------------------------------------- | ----------- | ---------------------------------------------------------------------- | -------------- |
-| [Project setup chapter](/dev-guide/go/project-setup#workflow-code) | [Project setup chapter](/dev-guide/java/project-setup#boilerplate-workflow-code) | Unavailable | [Project setup chapter](/dev-guide/python/project-setup#workflow-code) | Unavailable    |
-
-**Feature guide links**
-
-| Go SDK                                                       | Java SDK                                                       | PHP SDK                                                       | Python SDK                                                       | TypeScript SDK                                                       |
-| ------------------------------------------------------------ | -------------------------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [Feature guide](/dev-guide/go/foundations#develop-workflows) | [Feature guide](/dev-guide/java/foundations#develop-workflows) | [Feature guide](/dev-guide/php/foundations#develop-workflows) | [Feature guide](/dev-guide/python/foundations#develop-workflows) | [Feature guide](/dev-guide/typescript/foundations#develop-workflows) |
+| Go SDK                                                             | Java SDK                                                                         | PHP SDK                                                       | Python SDK                                                             | TypeScript SDK                                                       |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| [Project setup chapter](/dev-guide/go/project-setup#workflow-code) | [Project setup chapter](/dev-guide/java/project-setup#boilerplate-workflow-code) | Unavailable                                                   | [Project setup chapter](/dev-guide/python/project-setup#workflow-code) | Unavailable                                                          |
+| [Feature guide](/dev-guide/go/features/core-app#develop-workflows) | [Feature guide](/dev-guide/java/foundations#develop-workflows)                   | [Feature guide](/dev-guide/php/foundations#develop-workflows) | [Feature guide](/dev-guide/python/foundations#develop-workflows)       | [Feature guide](/dev-guide/typescript/foundations#develop-workflows) |
 
 Learn more about Temporal Workflows in the [conceptual deep dive](/workflows#).
 
@@ -60,9 +55,9 @@ Often referred to as an Activity Definition, this code is a function or method t
 
 **Feature guide links**
 
-| Go SDK                                                         | Java SDK                                                        | PHP SDK                                                        | Python SDK                                                        | TypeScript SDK                                                        |
-| -------------------------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------- |
-| [Feature guide](/dev-guide/go/foundations#activity-definition) | [Feature guide](/dev-guide/java/foundations#develop-activities) | [Feature guide](/dev-guide/php/foundations#develop-activities) | [Feature guide](/dev-guide/python/foundations#develop-activities) | [Feature guide](/dev-guide/typescript/foundations#develop-activities) |
+| Go SDK                                                               | Java SDK                                                        | PHP SDK                                                        | Python SDK                                                        | TypeScript SDK                                                        |
+| -------------------------------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------- |
+| [Feature guide](/dev-guide/go/features/core-app#activity-definition) | [Feature guide](/dev-guide/java/foundations#develop-activities) | [Feature guide](/dev-guide/php/foundations#develop-activities) | [Feature guide](/dev-guide/python/foundations#develop-activities) | [Feature guide](/dev-guide/typescript/foundations#develop-activities) |
 
 Learn more about Temporal Activities in the [conceptual deep dive](/activities#).
 
@@ -79,12 +74,28 @@ Run as many Workers (instances of your application) as needed.
 
 **Feature guide links**
 
-| Go SDK                                                    | Java SDK                                                      | PHP SDK                                                      | Python SDK                                                      | TypeScript SDK                                                      |
-| --------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------------- | ------------------------------------------------------------------- |
-| [Feature guide](/dev-guide/go/foundations#develop-worker) | [Feature guide](/dev-guide/java/foundations#run-a-dev-worker) | [Feature guide](/dev-guide/php/foundations#run-a-dev-worker) | [Feature guide](/dev-guide/python/foundations#run-a-dev-worker) | [Feature guide](/dev-guide/typescript/foundations#run-a-dev-worker) |
+| Go SDK                                                          | Java SDK                                                      | PHP SDK                                                      | Python SDK                                                      | TypeScript SDK                                                      |
+| --------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------------- | ------------------------------------------------------------------- |
+| [Feature guide](/dev-guide/go/features/core-app#develop-worker) | [Feature guide](/dev-guide/java/foundations#run-a-dev-worker) | [Feature guide](/dev-guide/php/foundations#run-a-dev-worker) | [Feature guide](/dev-guide/python/foundations#run-a-dev-worker) | [Feature guide](/dev-guide/typescript/foundations#run-a-dev-worker) |
 
 Learn more about Temporal Workflows in the [conceptual deep dive](/workflows#).
 
 ## Deterministic runtime safeguards {#deterministic-runtime-safeguards}
 
 TODO
+
+### Sand-boxed run-times
+
+### Static analysis
+
+## Message passing features {#message-passing}
+
+- Signals
+- Queries
+- Updates
+
+### Signals
+
+### Queries
+
+### Updates

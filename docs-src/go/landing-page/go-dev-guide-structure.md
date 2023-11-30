@@ -24,7 +24,8 @@ The follow structure applies to the Temporal Go SDK developer's guide:
   - [Additional resources for learning the Go SDK](/go/chapter-introduction/introduction-to-go-sdk#additional-resources)
   - [Contribution](/go/chapter-introduction/introduction-to-go-sdk#contribution)
 
-- [**Project setup**](/go/landing-page/go-dev-guide-structure)
+- [**Chapter - Project setup**](/go/landing-page/go-dev-guide-structure)
+
   - [Download and install the Temporal CLI](/go/landing-page/go-dev-guide-structure)
   - [Choose a development Cluster and create a Namespace](/go/chapter-project-setup/choose-dev-cluster)
   - [Add boilerplate application code](/go/chapter-project-setup/project-structure)
@@ -32,21 +33,14 @@ The follow structure applies to the Temporal Go SDK developer's guide:
   - [Start your Workflow using the CLI](/go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow)
   - [Add a testing framework and tests to your application](/go/generated/backgroundcheck-boilerplate-add-test-framework)
 
-2. [**Foundations**](/go/foundations): The minimum things required to build and run a simple Workflow with a single Activity.
+- [**Chapter - Develop for durability**](/go/chapter-durable-execution/durable-execution-intro)
 
-   - [Run a development Cluster](/dev-guide/go/foundations#run-a-dev-cluster)
-   - [Add an SDK to your project](/dev-guide/go/foundations#add-your-sdk)
-   - [Create a Temporal Client](/dev-guide/go/foundations#connect-to-a-cluster)
-   - [Develop a basic Workflow Definition](/dev-guide/go/foundations#develop-workflows)
-   - [Develop a basic Activity Definition](/dev-guide/go/foundations#develop-activities)
-   - [Call to execute an Activity](/dev-guide/go/foundations#activity-execution)
-   - [Run a Worker Process](/dev-guide/go/foundations#run-worker-processes)
-   - [Start a Workflow Execution](/dev-guide/go/foundations#start-workflow-execution)
+3. [**Feature guides**](/dev-guide/go/features): All the general features available to a Temporal Application.
 
-3. [**Features**](/dev-guide/go/features): All the general features available to a Temporal Application.
-
+   - [Core application](/go/features/core-app/core-app-intro)
    - [Signals](/dev-guide/go/features#signals)
    - [Queries](/dev-guide/go/features#queries)
+   - [Updates](/dev-guide/go/features#updates)
    - [Workflow timeouts and retries](/dev-guide/go/features#workflow-timeouts)
    - [Activity timeouts and retries](/dev-guide/go/features#activity-timeouts)
    - [Activity Heartbeats](/dev-guide/go/features#activity-heartbeats)
@@ -55,16 +49,12 @@ The follow structure applies to the Temporal Go SDK developer's guide:
    - [Continue-As-New](/dev-guide/go/features#continue-as-new)
    - [Schedules](/dev-guide/go/features#schedule-a-workflow)
    - [Cron Jobs](/dev-guide/go/features#temporal-cron-jobs)
-   - [Updates](/dev-guide/go/features#updates)
-
-4. [**Observability**](/dev-guide/go/observability): Methods for observing a Temporal Application.
-
    - [Metrics](/dev-guide/go/observability#metrics)
    - [Tracing](/dev-guide/go/observability#tracing)
    - [Logging](/dev-guide/go/observability#logging)
    - [Visibility](/dev-guide/go/observability#visibility)
 
-5. [**Worker performance**](/dev-guide/worker-performance)
+4. [**Worker performance**](/dev-guide/worker-performance)
 
    - [Metrics](/dev-guide/worker-performance#metrics)
    - [Configuration](/dev-guide/worker-performance#configuration)

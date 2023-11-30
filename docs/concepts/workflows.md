@@ -46,11 +46,7 @@ Temporal documentation aims to be explicit and differentiate between them.
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
-- [How to develop a Workflow Definition using the Go SDK](/dev-guide/go/foundations#develop-workflows)
-- [How to develop a Workflow Definition using the Java SDK](/dev-guide/java/foundations#develop-workflows)
-- [How to develop a Workflow Definition using the PHP SDK](/dev-guide/php/foundations#develop-workflows)
-- [How to develop a Workflow Definition using the Python SDK](/dev-guide/python/foundations#develop-workflows)
-- [How to develop a Workflow Definition using the TypeScript SDK](/dev-guide/typescript/foundations#develop-workflows)
+- [Implementation guides](/dev-guide/sdk-features#workflow-definitions)
 
 A Workflow Definition is often also referred to as a Workflow Function.
 In Temporal's documentation, a Workflow Definition refers to the source for the instance of a Workflow Execution, while a Workflow Function refers to the source for the instance of a Workflow Function Execution.
@@ -152,7 +148,7 @@ Apart from the ability to create new Task Queues for Workflow Types with the sam
 Patching APIs enable the creation of logical branching inside a Workflow Definition based on a developer-specified version identifier.
 This feature is useful for Workflow Definition logic that needs to be updated but still has running Workflow Executions that depend on it.
 
-- [How to patch Workflow code in Go](/dev-guide/go/versioning#patching)
+- [How to patch Workflow code in Go](/dev-guide/go/features/versioning#patching)
 - [How to patch Workflow code in Java](/dev-guide/java/versioning#patching)
 - [How to patch Workflow code in Python](/dev-guide/python/versioning#python-sdk-patching-api)
 - [How to patch Workflow code in TypeScript](/dev-guide/typescript/versioning#patching)
@@ -161,7 +157,7 @@ This feature is useful for Workflow Definition logic that needs to be updated bu
 
 Temporal [Worker Build Id-based versioning](/workers#worker-versioning) lets you define sets of versions that are compatible with each other, and then assign a Build Id to the code that defines a Worker.
 
-- [How to version Workers in Go](/dev-guide/go/versioning#worker-versioning)
+- [How to version Workers in Go](/dev-guide/go/features/versioning#worker-versioning)
 - [How to version Workers in Java](/dev-guide/java/versioning#worker-versioning)
 - [How to version Workers in Python](/dev-guide/python/versioning#worker-versioning)
 - [How to version Workers in TypeScript](/dev-guide/typescript/versioning#worker-versioning)
@@ -190,7 +186,7 @@ A Temporal Workflow Execution is a durable, reliable, and scalable function exec
 It is the main unit of execution of a [Temporal Application](/temporal#temporal-application).
 
 - [How to start a Workflow Execution using tctl](/tctl-v1/workflow#start)
-- [How to start a Workflow Execution using the Go SDK](/dev-guide/go/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using the Go SDK](/dev-guide/go/features/core-app#start-workflow-execution)
 - [How to start a Workflow Execution using the Java SDK](/dev-guide/java/foundations#start-workflow-execution)
 - [How to start a Workflow Execution using the PHP SDK](/dev-guide/php/foundations#start-workflow-execution)
 - [How to start a Workflow Execution using the Python SDK](/dev-guide/python/foundations#start-workflow-execution)
@@ -228,7 +224,7 @@ For more information, see [Deterministic constraints](#deterministic-constraints
 
 If a failure occurs, the Workflow Execution picks up where the last recorded event occurred in the Event History.
 
-- [How to use Replay APIs using the Go SDK](/dev-guide/go/testing#replay)
+- [How to use Replay APIs using the Go SDK](/dev-guide/go/features/test-suite#replay)
 - [How to use Replay APIs using the Java SDK](/dev-guide/java/testing#replay)
 - [How to use Replay APIs using the Python SDK](/dev-guide/python/testing#replay)
 - [How to use Replay APIs using the TypeScript SDK](/dev-guide/typescript/testing#replay)
@@ -483,7 +479,7 @@ For more information, see the following link.
 
 A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](/workflows#workflow-execution) that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
 
-- [How to set a Workflow Id](/dev-guide/go/foundations#workflow-id)
+- [How to set a Workflow Id](/dev-guide/go/features/core-app#workflow-id)
 
 A Workflow Id is meant to be a business-process identifier such as customer identifier or order identifier.
 
@@ -601,7 +597,7 @@ Memos shouldn't store data that's critical to the execution of a Workflow, for s
 A Signal is an asynchronous request to a [Workflow Execution](/workflows#workflow-execution).
 
 - [How to send a Signal using tctl](/tctl-v1/workflow#signal)
-- [How to develop, send, and handle Signals in Go](/dev-guide/go/features#signals)
+- [How to develop, send, and handle Signals in Go](/dev-guide/go/features/signals/features/signals#)
 - [How to develop, send, and handle Signals in Java](/dev-guide/java/features#signals)
 - [How to develop, send, and handle Signals in PHP](/dev-guide/php/features#signals)
 - [How to develop, send, and handle Signals in Python](/dev-guide/python/features#signals)

@@ -31,7 +31,7 @@ If you're following through with the examples provided here, ensure that you hav
 - Root CA certificates and end-entity certificates. See [Certificate requirements](/cloud/certificates-requirements) for details.
 - Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See Connect to a Cluster for details.
 
-  - [Go](/dev-guide/go/foundations#connect-to-a-cluster)
+  - [Go](/go/chapter-project-setup/project-setup-introduction)
   - [Java](/dev-guide/java/foundations#connect-to-a-cluster)
   - [PHP](/dev-guide/php/foundations#connect-to-a-cluster)
   - [Python](/dev-guide/python/foundations#connect-to-a-cluster)
@@ -70,7 +70,7 @@ SDK metrics are emitted by SDK Clients used to start your Workers and to start, 
 You must configure a Prometheus scrape endpoint for Prometheus to collect and aggregate your SDK metrics.
 Each language development guide has details on how to set this up.
 
-- [Go SDK](/go/metrics)
+- [Go SDK](/go/features/metrics/metrics)
 - [Java SDK](/java/metrics)
 - [TypeScript SDK](/typescript/metrics)
 - [Python](/python/metrics)

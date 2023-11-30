@@ -1,0 +1,31 @@
+{
+    "file_name": "logging.md",
+    "id": "logging",
+    "slug": "/dev-guide/go/features/logging",
+    "file_dir": "dev-guide/golang/features",
+    "title": "Application logging - Go SDK feature guide",
+    "sidebar_label": "Logging",
+    "sidebar_position": 6,
+    "description": "Learn how to log from your Temporal Application using the Go SDK.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "go/logging"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-log-from-a-workflow-in-go"
+        },
+        {
+            "type": "h3",
+            "id": "go/custom-logging"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-set-a-custom-logger-in-go"
+        }
+    ]
+}

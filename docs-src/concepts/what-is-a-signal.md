@@ -12,7 +12,7 @@ tags:
 A Signal is an asynchronous request to a [Workflow Execution](/workflows#workflow-execution).
 
 - [How to send a Signal using tctl](/tctl-v1/workflow#signal)
-- [How to develop, send, and handle Signals in Go](/go/signals)
+- [How to develop, send, and handle Signals in Go](/go/features/signals/introduction)
 - [How to develop, send, and handle Signals in Java](/java/signals)
 - [How to develop, send, and handle Signals in PHP](/php/signals)
 - [How to develop, send, and handle Signals in Python](/python/signals)
