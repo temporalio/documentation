@@ -2,12 +2,12 @@
 id: manage-api-keys
 title: Manage API Keys
 sidebar_label: Manage API Keys
-description: Manage API Keys by generating, deleting, or revoking them using the Cloud UI or tcld.
+description: Manage API Keys by creating, deleting, or updating access to them using the Cloud UI or tcld.
 tags:
   - how to
 ---
 
-Manage API Keys by generating, deleting, or revoking them using the Cloud UI or tcld.
+Manage API Keys by creating, deleting, or updating access to them using the Cloud UI or tcld.
 
 ### Generate an API Key
 
@@ -82,16 +82,16 @@ To delete an API Key using tcld, pass the API Key ID to the [tcld apikey delete]
 tcld apikey delete --id <your-api-key-id>
 ```
 
-### Enablement
+### Update access to an API Key
 
-You can temporarily disable an API Key and later, re-enable it.
+You can update access to an API Key by enabling or disabling it.
 
 After disabling an API Key, that API Key will no longer be able to authenticate with Temporal Cloud.
 Only enabled keys can authenticate with Temporal Cloud.
 
 #### Using the Cloud UI
 
-To disable/enable an API Key using the Cloud UI
+To update access to an API Key using the Cloud UI, follow these steps:
 
 1. [Login](https://cloud.temporal.io/) to the Cloud UI.
 2. Select **Settings** and choose **API Keys**.
@@ -99,7 +99,7 @@ To disable/enable an API Key using the Cloud UI
 
 #### Using the tcld
 
-To disable/enable an API Key using tcld
+To update access to an API Key using the tcld, follow these steps:
 
 1. Login to tcld using either SSO or an API Key.
 2. Use the `apikey disable/enable` commands to disable/enable the key.
@@ -111,12 +111,12 @@ tcld apikey enable --id <api-key-id>
 
 ### Global Administrator API Key Management
 
-Global Administrators can monitor, manage, disable and delete API Keys for any user within their account.
+Global Administrators can monitor, manage, update access, and delete API Keys for any user within their account.
 
 To manage your accounts API Keys
 
 1. [Login](https://cloud.temporal.io/) to the Cloud UI.
 2. Select **Settings** and choose **API Keys**.
 
-From here, you can enable or disable the API Key feature for your account using the **Enable** and **Disable** toggle.
+From here, you can update access to the API Key for an account using the **Enable** and **Disable** toggle.
 You can also disable or delete an individual User API Key using the vertical ellipsis at the right of the API Keys row.
