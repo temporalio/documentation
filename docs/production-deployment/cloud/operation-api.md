@@ -30,7 +30,7 @@ The Cloud Ops API, streamlines the automation of User, Namespace, and Account ma
 Utilize gRPC protos, which compile into any language, for flexible integration.
 Authenticate using Temporal Cloud API Keys; for key management details, refer to [this guide](/cloud/api-keys).
 
-## Getting Started
+## Get started
 
 Begin by ensuring your registration as a Temporal Cloud user.
 If you're not yet a user, [sign up here](https://pages.temporal.io/get-started-with-cloud).
@@ -88,7 +88,7 @@ The following is an example of how to use the generated code for Python; however
 
 This approach can be adapted for other programming languages by following their respective import and usage conventions for the generated code files.
 
-### Using the API
+### Use the API
 
 When interacting with the Temporal Cloud Ops API, follow these guidelines:
 
