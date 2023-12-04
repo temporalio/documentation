@@ -205,4 +205,4 @@ public class HelloActivityJUnit5Test {
 }
 ```
 
-You can find all unit tests for the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [its test package](https://github.com/temporalio/samples-java/tree/master/src/test/java/io/temporal/samples).
+You can find all unit tests for the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [its test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples).
