@@ -84,7 +84,7 @@ You might want to do this as part of your CI deployment process.
 ```python
 # ...
 await client.update_worker_build_id_compatibility(
-    task_queue, BuildIdOpAddNewDefault("deadbeef")
+    "your_task_queue_name", BuildIdOpAddNewDefault("deadbeef")
 )
 ```
 
