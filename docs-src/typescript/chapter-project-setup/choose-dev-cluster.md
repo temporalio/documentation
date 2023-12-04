@@ -5,7 +5,7 @@ sidebar_label: Choose dev Cluster
 description: Discover which development Cluster you should choose
 tags:
   - developer guide
-  - go sdk
+  - typescript sdk
 ---
 
 **Which development Cluster should you choose?**

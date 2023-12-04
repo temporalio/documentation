@@ -4,7 +4,7 @@ title: Start Workflow using the CLI
 sidebar_label: Start Workflow
 description: Learn how to start a Temporal Workflow using the CLI
 tags:
-  - go sdk
+  - typescript sdk
   - workflow
   - developer guide
   - temporal cli
@@ -24,7 +24,7 @@ Use the Temporal CLI `temporal workflow start` command to start your Workflow.
 ```shell
 temporal workflow start \
  --task-queue backgroundcheck-boilerplate-task-queue-local \
- --type BackgroundCheck \
+ --type backgroundCheck \
  --input '"555-55-5555"' \
  --namespace backgroundcheck_namespace \
  --workflow-id backgroundcheck_workflow
@@ -36,13 +36,11 @@ temporal workflow start \
   Unless otherwise specified, Activity Executions use the Workflow Execution's Task Queue name by default.
 - `--type`: This is the Workflow Type name.
   By default, this is the function name.
-  In the Go SDK, this name can be customized when [registering the Worklow with the Workflow](/go/generated/how-to-customize-workflow-type-in-go).
 - `--input`: This must be a valid JSON object that can be unmarshaled into the parameter(s) that the Workflow function accepts.
   Read more about how the Temporal Platform handles your application data in the [Data conversion](/concepts/what-is-a-data-converter) guide.
 - `--namespace`: This is the Namespace that you want to run your Temporal Application in.
 - `--workflow-id`: A [Workflow Id](/concepts/what-is-a-workflow-id) is a custom identifier provided by you.
-  The Temporal Platform generates one if one isn't provided.
-  However, we highly recommend supplying your own Workflow Id with your own naming convention.
+  We highly recommend supplying your own Workflow Id with your own naming convention.
   A [Workflow Id Reuse Policy](/concepts/what-is-a-workflow-id-reuse-policy) enables fine controls over whether Workflow Ids can be reused in the Platform within the Retention Period.
 
 For more details, see the [temporal workflow start](/cli/workflow/start) command API reference.
@@ -52,7 +50,7 @@ Use the Temporal CLI or the Temporal Web UI to monitor the Workflow's progress.
 
 #### List Workflows
 
-Use the 'temporal workflow list` command to list all of the Workflows in the Namespace:
+Use the `temporal workflow list` command to list all of the Workflows in the Namespace:
 
 ```shell
 temporal workflow list \
@@ -93,7 +91,7 @@ Run the `temporal workflow start` command, and make sure to specify the certific
 ```shell
 temporal workflow start \
  --task-queue backgroundcheck-boilerplate-task-queue-cloud \
- --type BackgroundCheck \
+ --type backgroundCheck \
  --input '"555-55-5555"' \
  --namespace <namespace>.<account-id> \
  --workflow-id backgroundcheck_workflow \
@@ -120,7 +118,7 @@ temporal env set cloud.tls-key-path ca.key
 temporal env set local.namespace <namespace>
 ```
 
-In this way, you can just provide a single `--env` command option when using the CLI rather than specifying each connection option in every command.
+In this way, you can provide a single `--env` command option when using the CLI rather than specifying each connection option in every command.
 
 ```shell
 temporal workflow start \
@@ -163,7 +161,7 @@ Use your Temporal CLI alias to run the `temporal workflow start` command and sta
 ```shell
 temporal_docker workflow start \
  --task-queue backgroundcheck-boilerplate-task-queue-self-hosted \
- --type BackgroundCheck \
+ --type backgroundCheck \
  --input '"555-55-5555"' \
  --namespace backgroundcheck_namespace \
  --workflow-id backgroundcheck_workflow

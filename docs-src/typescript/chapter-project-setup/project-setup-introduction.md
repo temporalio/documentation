@@ -7,6 +7,7 @@ tags:
   - introduction
   - developer guide
   - project setup
+  - typescript sdk
 ---
 
 The first step to creating a new Temporal Application is to set up your development environment.

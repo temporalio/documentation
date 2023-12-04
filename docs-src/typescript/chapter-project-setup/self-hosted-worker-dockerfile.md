@@ -15,24 +15,33 @@ Add a Docker file to the root of your Background Check application project.
 Name the file `dockerfile`, with no extensions, and add the following configuration:
 
 ```dockerfile
-FROM golang:1.20 AS builder
+FROM node:20 as build
 
 WORKDIR /app
 
-COPY . .
+COPY package.json package-lock.json /app
 
-RUN go get
-RUN go build -o bin ./self_hosted/main_dacx.go
+RUN npm ci
 
-ENTRYPOINT ["/app/bin"]
+COPY tsconfig.json /app/
+COPY src /app/src
+
+RUN npm run build
+
+# Reinstall without dev dependencies now that the application is built
+RUN npm ci --omit dev
+
+FROM gcr.io/distroless/nodejs20-debian11
+
+ENV WORKFLOW_BUNDLE_PATH=/app/workflow-bundle.js
+
+COPY --from=build /app/node_modules /app/node_modules
+COPY --from=build /app/lib /app/lib
+COPY --from=build $WORKFLOW_BUNDLE_PATH $WORKFLOW_BUNDLE_PATH
+
+CMD ["/app/lib/worker.js"]
 ```
 
-:::info
-
-Make sure the Golang builder version matches the one used by the Go SDK.
-Different versions of the Go SDK may use different versions of Golang.
-
-:::
 
 Then build the Docker image using the following command:
 

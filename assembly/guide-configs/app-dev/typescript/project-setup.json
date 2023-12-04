@@ -36,6 +36,10 @@
             "id": "typescript/generated/backgroundcheck-boilerplate-workflow-details"
         },
         {
+            "type": "p",
+            "id": "typescript/chapter-project-setup/workflow-sandbox"
+        },
+        {
             "type": "h3",
             "id": "typescript/generated/backgroundcheck-boilerplate-ssntrace-activity"
         },
@@ -78,10 +82,6 @@
         {
             "type": "h2",
             "id": "typescript/generated/backgroundcheck-boilerplate-add-test-framework"
-        },
-        {
-            "type": "p",
-            "id": "typescript/generated/backgroundcheck-boilerplate-add-test-framework-details"
         },
         {
             "type": "h3",

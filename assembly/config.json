@@ -37,6 +37,12 @@
         },
         {
             "org": "temporalio",
+            "name": "documentation-samples-typescript",
+            "ref": "project-setup"
+
+        },
+        {
+            "org": "temporalio",
             "name": "documentation-samples-python"
         },
         {
