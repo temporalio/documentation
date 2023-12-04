@@ -76,8 +76,6 @@ Use [grpc](https://grpc.io/docs/) to compile and generate code in your preferred
 After compiling the Protobuf files, you will have generated code files in your project directory.
 These files enable interaction with the Temporal Cloud API in your chosen programming language.
 
-### Use generated code
-
 The following is an example of how to use the generated code for Python; however, this approach can be adapted for other programming languages:
 
 1. **Import the Generated Files:**

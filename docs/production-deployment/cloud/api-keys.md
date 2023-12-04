@@ -66,9 +66,9 @@ To use your API Key with tcld, use one of the following methods:
 
 **How can I use the API Key with Cloud Ops API?**
 
-To use your API Key with the Cloud Ops API, securely pass your API Key in your Cloud Ops API client.
+To use your API Key with the [Cloud Ops API](/ops#), securely pass your API Key in your Cloud Ops API client.
 
-For a complete example, see [Cloud Samples in Go](https://github.com/temporalio/cloud-samples-go/blob/1dd4254b6ed1937e361005c0144410e72b8a5542/client/api/apikey.go)
+For a complete example, see [Cloud Samples in Go](https://github.com/temporalio/cloud-samples-go/blob/1dd4254b6ed1937e361005c0144410e72b8a5542/client/api/apikey.go).
 
 ## Manage API Keys {#manage-api-keys}
 
