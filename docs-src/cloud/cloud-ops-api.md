@@ -18,7 +18,7 @@ Cloud Ops API is an open-source, public gRPC API, library to compile and generat
 You can manage Temporal Cloud resources programmatically using the Cloud Operations API, complementing the Temporal Cloud CLI (tcld).
 The Cloud Ops API, streamlines the automation of User, Namespace, and Account management tasks.
 Utilize gRPC protos, which compile into any language, for flexible integration.
-Authenticate using Temporal Cloud API Keys; for key management details, refer to [this guide](/cloud/api-keys).
+Authenticate using Temporal Cloud API Keys; for key management details, refer to the [API Keys](/cloud/api-keys) documentation.
 
 ## Get started
 
