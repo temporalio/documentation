@@ -19,7 +19,8 @@ FROM node:20 as build
 
 WORKDIR /app
 
-COPY package.json package-lock.json /app
+COPY package.json /app
+COPY package-lock.json /app
 
 RUN npm ci
 
@@ -33,15 +34,12 @@ RUN npm ci --omit dev
 
 FROM gcr.io/distroless/nodejs20-debian11
 
-ENV WORKFLOW_BUNDLE_PATH=/app/workflow-bundle.js
 
 COPY --from=build /app/node_modules /app/node_modules
 COPY --from=build /app/lib /app/lib
-COPY --from=build $WORKFLOW_BUNDLE_PATH $WORKFLOW_BUNDLE_PATH
 
 CMD ["/app/lib/worker.js"]
 ```
-
 
 Then build the Docker image using the following command:
 

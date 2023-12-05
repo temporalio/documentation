@@ -53,8 +53,6 @@ monorepo/
 │   └── send_email.ts
 └── shared_tests
     └── tests.ts
-
-
 ```
 
 Your project will look like this when you've finished this chapter:
@@ -92,7 +90,6 @@ Creating a new Temporal project in /Users/brianhogan/dev/documentation-samples-t
 Downloading files for sample empty. This might take a moment.
 
 Installing packages. This might take a couple of minutes.
-
 ```
 
 Once the dependencies install, the tool asks you if you'd like to initialize a Git repository for your project, which you should do. The tool then confirms your project is created:
@@ -125,12 +122,12 @@ The project generator created the following directory structure for you:
 └── tsconfig.json
 ```
 
-* The `package.json` file holds the project dependencies and a handful of scripts you'll use to run Workflows, Workflows, tests, and other tasks like linting and formatting your code.
-* The `tsconfig.json` file holds the TypeScript configuration designed for working with Temporal's SDK.
-* The `src/activities.ts` file is where you can define Activities. 
-* The `src/client.ts` file has the code for a small CLI program to execute a Workflow. You won't use this directly in this guide.
-* The `src/mocha` folder is where you'll place your tests. We recommend using Mocha to test your Temporal Workflows and Activities.
-* The `src/workflows.ts` file is where you can define Workflows. 
-* The `src/worker.ts` file has the code to configure and run your Worker process, which executes your Workflows and Activities.
+- The `package.json` file holds the project dependencies and a handful of scripts you'll use to run Workflows, Workflows, tests, and other tasks like linting and formatting your code.
+- The `tsconfig.json` file holds the TypeScript configuration designed for working with Temporal's SDK.
+- The `src/activities.ts` file is where you can define Activities.
+- The `src/client.ts` file has the code for a small CLI program to execute a Workflow. You won't use this directly in this guide.
+- The `src/mocha` folder is where you'll place your tests. We recommend using Mocha to test your Temporal Workflows and Activities.
+- The `src/workflows.ts` file is where you can define Workflows.
+- The `src/worker.ts` file has the code to configure and run your Worker process, which executes your Workflows and Activities.
 
 In addition, you'll find configuration files for ESLint and Prettier.

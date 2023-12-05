@@ -28,6 +28,14 @@ The Temporal TypeScript SDK developer's guide is arranged in the following way:
 
 - [**Introduction to the TypeScript SDK**](/dev-guide/typescript/introduction#)
 
+- [**Project setup**](/dev-guide/typescript/project-setup#)
+  - [Download and install the Temporal CLI](/dev-guide/typescript/project-setup#install-cli)
+  - [Choose a development Cluster and create a Namespace](/dev-guide/typescript/project-setup#choose-dev-cluster)
+  - [Add boilerplate application code](/dev-guide/typescript/project-setup#boilerplate-project)
+  - [Run a Worker](/dev-guide/typescript/project-setup#dev-server-worker)
+  - [Start your Workflow using the CLI](/dev-guide/typescript/project-setup#start-workflow)
+  - [Add a testing framework and tests to your application](/dev-guide/typescript/project-setup#test-framework)
+
 - [**Foundations**](/dev-guide/typescript/foundations): The minimum things required to build and run a simple Workflow with a single Activity.
 
   - [Run a development Cluster](/dev-guide/typescript/foundations#run-a-dev-cluster)

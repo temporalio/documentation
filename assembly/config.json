@@ -39,7 +39,6 @@
             "org": "temporalio",
             "name": "documentation-samples-typescript",
             "ref": "project-setup"
-
         },
         {
             "org": "temporalio",

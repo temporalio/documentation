@@ -2,7 +2,7 @@
     "file_name": "project-setup.md",
     "id": "ts-project-setup",
     "slug": "/dev-guide/typescript/project-setup",
-    "file_dir": "dev-guide/typescript",
+    "file_dir": "dev-guide/tscript",
     "title": "TypeScript SDK dev guide - Set up a Temporal Application project",
     "sidebar_label": "Project setup",
     "sidebar_position": 2,
@@ -37,7 +37,7 @@
         },
         {
             "type": "p",
-            "id": "typescript/chapter-project-setup/workflow-sandbox"
+            "id": "typescript/chapter-project-setup/how-to-handle-workflow-logic-requirements-in-typescript"
         },
         {
             "type": "h3",
@@ -94,6 +94,10 @@
         {
             "type": "h3",
             "id": "typescript/generated/backgroundcheck-boilerplate-add-activity-tests"
+        },
+        {
+            "type": "h2",
+            "id": "typescript/chapter-project-setup/conclusion"
         }
     ]
 }
