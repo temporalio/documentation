@@ -21,10 +21,10 @@ If your organization uses Google Workspace or Microsoft Azure AD, and your IT ad
 
 :::
 
-When you create a user in Temporal Cloud, the prospective user receives an email invitation.
-Before accepting the invitation, the user must be logged in to Google using the email address that received the invitation.
-The user must then click **Accept Invite** in the message.
-Attempting to log in to Temporal Cloud without first accepting the invite doesn't work.
+When a user is created in Temporal Cloud, they receive an email invitation containing a link to complete their setup and access Temporal Cloud.
+_For configurations using SAML, users can disregard this email._
+
+However, when using Google or Microsoft for SSO authentication, users must follow the email link for their initial login to Temporal Cloud.
 
 :::info
 
