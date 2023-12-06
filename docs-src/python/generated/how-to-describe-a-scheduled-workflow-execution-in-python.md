@@ -19,7 +19,6 @@ You can get a complete list of the attributes of the Scheduled Workflow Executio
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-00b28dc6-2933-4eea-99d6-9f5ce79e8207" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-00b28dc6-2933-4eea-99d6-9f5ce79e8207" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/schedule_your_workflow/describe_schedule_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -31,4 +30,3 @@ async def main():
 
     print(f"Returns the note: {desc.schedule.state.note}")
 ```
-

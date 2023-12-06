@@ -24,7 +24,6 @@ In regards to organization, we recommend keeping Worker code separate from Workf
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-fd0bdfde-867c-4797-be88-f0925653e87f" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-fd0bdfde-867c-4797-be88-f0925653e87f" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/backgroundcheck_boilerplate/dev_server_worker/main_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 import asyncio
 
 from temporalio.client import Client
@@ -52,4 +51,3 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-

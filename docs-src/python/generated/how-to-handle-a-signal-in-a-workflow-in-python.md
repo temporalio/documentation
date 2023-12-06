@@ -18,10 +18,8 @@ To send a Signal to the Workflow, use the [signal](https://python.temporal.io/te
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-d79e1836-2205-44ae-8038-82ae2ad9e5e7" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-d79e1836-2205-44ae-8038-82ae2ad9e5e7" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/signal_your_workflow/signal_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio.client import Client
 # ...
 # ...
     await handle.signal(GreetingWorkflow.submit_greeting, "User 1")
 ```
-

@@ -16,7 +16,7 @@ A Signal has a name and can have arguments.
 
 - The name, also called a Signal type, is a string.
 - The arguments must be serializable.
-To define a Signal, set the Signal decorator [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) on the Signal function inside your Workflow.
+  To define a Signal, set the Signal decorator [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) on the Signal function inside your Workflow.
 
 Non-dynamic methods can only have positional arguments.
 Temporal suggests taking a single argument that is an object or data class of fields that can be added to as needed.
@@ -30,7 +30,6 @@ You can have a name parameter to customize the Signal's name, otherwise it defau
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-5b63594c-a91f-446a-86df-7ed54b06a365" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-5b63594c-a91f-446a-86df-7ed54b06a365" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/signal_your_workflow/wf_signal_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio import workflow
 # ...
 # ...
@@ -45,4 +44,3 @@ from temporalio import workflow
     async def custom_signal(self, name: str) -> None:
         await self._pending_greetings.put(name)
 ```
-

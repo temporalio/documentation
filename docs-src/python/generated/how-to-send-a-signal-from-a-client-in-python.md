@@ -25,7 +25,6 @@ To get the Workflow handle, you can use any of the following options.
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-ed9699e9-6efc-413d-8c84-4b312d75fc1b" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-ed9699e9-6efc-413d-8c84-4b312d75fc1b" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/signal_your_workflow/signal_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio.client import Client
 # ...
 # ...
@@ -37,4 +36,3 @@ from temporalio.client import Client
     )
     await handle.signal(GreetingWorkflow.submit_greeting, "User 1")
 ```
-

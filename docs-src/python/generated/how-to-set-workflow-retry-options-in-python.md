@@ -17,7 +17,6 @@ Set the Retry Policy to either the [`start_workflow()`](https://python.temporal.
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-21c2fc55-032a-4ca2-afe2-2a73c8dd70da" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-21c2fc55-032a-4ca2-afe2-2a73c8dd70da" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/workflow_timeouts_retries/workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
     handle = await client.execute_workflow(
         YourWorkflow.run,
@@ -27,4 +26,3 @@ Set the Retry Policy to either the [`start_workflow()`](https://python.temporal.
         retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
     )
 ```
-

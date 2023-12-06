@@ -17,7 +17,6 @@ Now, you want to update your code to run `post_patch_activity` instead. This rep
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-9d9a289d-441f-455b-a3d5-79b6009da6e3" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-9d9a289d-441f-455b-a3d5-79b6009da6e3" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/version_your_workflows/workflow_4_patch_complete_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from datetime import timedelta
 
 from temporalio import workflow
@@ -34,4 +33,3 @@ class MyWorkflow:
             schedule_to_close_timeout=timedelta(minutes=5),
         )
 ```
-

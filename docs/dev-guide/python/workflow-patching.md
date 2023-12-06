@@ -141,9 +141,6 @@ The `patched()` function plays a critical role in facilitating smooth transition
 
 ### Implementing the Patching Process {#implementing-patching}
 
-
-
-
 Patching a Workflow in Temporal is a sophisticated method to update Workflow logic while maintaining determinism. This process is particularly crucial when you need to introduce new logic paths in long-running workflows.
 
 ### Initial Workflow Logic Before Patching {#initial-workflow-logic}
@@ -262,4 +259,3 @@ By following these steps, you can effectively manage updates to your Workflow, e
 
 Patching and deprecating patches in Temporal allow for dynamic updates to Workflows while maintaining deterministic behavior.
 This process ensures that Workflows can evolve without disrupting ongoing operations or violating the principles of determinism.
-

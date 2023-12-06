@@ -8,7 +8,4 @@ tags:
   - patching-implementation
 ---
 
-
-
-
 Patching a Workflow in Temporal is a sophisticated method to update Workflow logic while maintaining determinism. This process is particularly crucial when you need to introduce new logic paths in long-running workflows.

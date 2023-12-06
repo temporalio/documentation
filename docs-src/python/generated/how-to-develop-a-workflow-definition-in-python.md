@@ -17,7 +17,6 @@ Use the `@workflow.run` to mark the entry point method to be invoked. This must 
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-b115f644-ab96-4de4-a878-2e39d970a7e5" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-b115f644-ab96-4de4-a878-2e39d970a7e5" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/your_app/your_workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio import workflow
 # ...
 # ...
@@ -31,4 +30,3 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
-

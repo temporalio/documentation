@@ -19,10 +19,8 @@ The following example defines an Activity that takes a string as input and retur
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-c0ada82b-266d-4c96-ae87-5bb346e82f3d" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-c0ada82b-266d-4c96-ae87-5bb346e82f3d" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/your_app/your_activities_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
 @activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
-

@@ -17,7 +17,6 @@ To return the results of a Workflow Execution, use either `start_workflow()` or 
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-75e0a024-c62d-4bcb-8636-7d06b0e9e928" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-75e0a024-c62d-4bcb-8636-7d06b0e9e928" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/your_app/your_workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio import workflow
 # ...
 # ...
@@ -31,4 +30,3 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
-

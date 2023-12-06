@@ -22,7 +22,6 @@ The [payload_converter()](https://python.temporal.io/temporalio.activity.html#pa
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-6cb2c25a-cf62-4e98-9af2-f85769ab208a" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-6cb2c25a-cf62-4e98-9af2-f85769ab208a" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/dynamic_handlers/your_dynamic_activity_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
 @activity.defn(dynamic=True)
 async def dynamic_greeting(args: Sequence[RawValue]) -> str:
@@ -41,4 +40,3 @@ class GreetingWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
-

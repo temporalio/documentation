@@ -25,7 +25,6 @@ The test is marked with `@pytest.mark.asyncio` to indicate that it is an asynchr
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-1adca52c-f7fa-4078-a62e-095751db8d4e" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-1adca52c-f7fa-4078-a62e-095751db8d4e" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/backgroundcheck_boilerplate/tests/workflow_dacx_test.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 import uuid
 
 import pytest
@@ -53,4 +52,3 @@ async def test_execute_workflow():
                 task_queue=task_queue_name,
             )
 ```
-

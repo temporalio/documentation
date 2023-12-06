@@ -22,7 +22,6 @@ If, during the deployment of `post_patch_activity`, there are still live Workers
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-00b44075-30ce-4a5a-be93-d53c5bad266e" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-00b44075-30ce-4a5a-be93-d53c5bad266e" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/version_your_workflows/workflow_3_patch_deprecated_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
 @workflow.defn
 class MyWorkflow:
@@ -34,4 +33,3 @@ class MyWorkflow:
             schedule_to_close_timeout=timedelta(minutes=5),
         )
 ```
-

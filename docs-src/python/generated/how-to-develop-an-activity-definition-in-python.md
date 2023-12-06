@@ -18,6 +18,7 @@ Register the function as an Activity with a custom name through a decorator argu
 :::note
 
 The Temporal Python SDK supports multiple ways of implementing an Activity:
+
 - Asynchronously using [`asyncio`](https://docs.python.org/3/library/asyncio.html)
 - Synchronously multithreaded using [`concurrent.futures.ThreadPoolExecutor`](https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor)
 - Synchronously multiprocess using [`concurrent.futures.ProcessPoolExecutor`](https://docs.python.org/3/library/concurrent.futures.html#processpoolexecutor) and [`multiprocessing.managers.SyncManager`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.managers.SyncManager)
@@ -35,7 +36,6 @@ If you must use a blocking library, consider using a synchronous Activity instea
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-3fab0ca5-7c0e-43a2-a955-a06d7378ce64" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-3fab0ca5-7c0e-43a2-a955-a06d7378ce64" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/your_app/your_activities_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio import activity
 # ...
 # ...
@@ -43,4 +43,3 @@ from temporalio import activity
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
-

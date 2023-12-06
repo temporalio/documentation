@@ -22,7 +22,6 @@ The [payload_converter()](https://python.temporal.io/temporalio.workflow.html#pa
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-0984c38f-ce5c-4970-8569-7d379fcbec58" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-0984c38f-ce5c-4970-8569-7d379fcbec58" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/dynamic_handlers/your_dynamic_workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
 @workflow.defn(dynamic=True)
 class DynamicWorkflow:
@@ -35,4 +34,3 @@ class DynamicWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
-

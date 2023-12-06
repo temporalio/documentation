@@ -19,7 +19,6 @@ Technically this can be multiple parameters, but Temporal strongly encourages a 
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-d315d19c-fe36-46e4-8d9e-2b24193c7136" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-d315d19c-fe36-46e4-8d9e-2b24193c7136" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/your_app/your_activities_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio import activity
 from your_dataobject_dacx import YourParams
 
@@ -29,4 +28,3 @@ from your_dataobject_dacx import YourParams
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
-

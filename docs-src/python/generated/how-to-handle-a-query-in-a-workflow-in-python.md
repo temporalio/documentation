@@ -18,9 +18,6 @@ To send a Query to the Workflow, use the [`query`](https://python.temporal.io/te
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-81846a1e-be96-4aee-98f9-ec9cd3cce19c" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-81846a1e-be96-4aee-98f9-ec9cd3cce19c" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/query_your_workflow/query_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
-
 # ...
     result = await handle.query(GreetingWorkflow.greeting)
 ```
-

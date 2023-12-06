@@ -490,4 +490,3 @@ The following are a few examples of changes that do not lead to non-deterministi
 - Modifying non-Command generating statements in a Workflow Definition, such as logging statements
 - Changing attributes in the `ActivityOptions`
 - Modifying code inside of an Activity Definition
-

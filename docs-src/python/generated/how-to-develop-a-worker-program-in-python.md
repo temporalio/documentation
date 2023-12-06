@@ -19,7 +19,6 @@ When a Worker is created, it accepts a list of Workflows in the workflows parame
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-182c3af1-0776-42e9-820c-62d4af61cd53" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-182c3af1-0776-42e9-820c-62d4af61cd53" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/your_app/run_worker_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio.client import Client
 from temporalio.worker import Worker
 # ...
@@ -38,4 +37,3 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-

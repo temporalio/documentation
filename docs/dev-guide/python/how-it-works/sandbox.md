@@ -170,4 +170,3 @@ For more information on the Python sandbox, see the following resources.
 
 - [Python SDK README](https://github.com/temporalio/sdk-python)
 - [Python API docs](https://python.temporal.io/index.html)
-

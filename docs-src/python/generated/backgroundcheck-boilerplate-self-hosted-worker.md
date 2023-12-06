@@ -17,7 +17,6 @@ Set IP address, port, and Namespace in the Temporal Client options.
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-d34b75ca-ea9c-4b1b-ae3d-f33ba2573faf" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-d34b75ca-ea9c-4b1b-ae3d-f33ba2573faf" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/backgroundcheck_boilerplate/self_hosted_worker/main_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 import asyncio
 
 from temporalio.client import Client
@@ -45,4 +44,3 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-

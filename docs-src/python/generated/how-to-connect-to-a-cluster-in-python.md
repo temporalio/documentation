@@ -18,7 +18,6 @@ Use the `connect()` method on the Client class to create and connect to a Tempor
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-e6618fda-a2f2-4930-9b3b-4af470eec9c3" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-e6618fda-a2f2-4930-9b3b-4af470eec9c3" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/your_app/run_workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -36,4 +35,3 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-

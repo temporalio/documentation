@@ -1377,4 +1377,3 @@ This extension allows you to pass in a `TestWorkflowEnvironment`, `Worker`, and
 an instance of your Workflow into your tests. From there you register your Activities
 with the Worker, start the test environment, and invoke your Workflow as you would
 typically. Then you assert that the results are what you expected.
-

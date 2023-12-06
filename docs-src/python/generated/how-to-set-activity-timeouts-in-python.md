@@ -24,7 +24,6 @@ Available timeouts are:
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-b9677b27-da8b-4612-a6d1-3a39176e95ae" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-b9677b27-da8b-4612-a6d1-3a39176e95ae" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/activity_timeouts_retires/your_workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
         activity_timeout_result = await workflow.execute_activity(
             your_activity,
@@ -35,4 +34,3 @@ Available timeouts are:
             # schedule_to_close_timeout=timedelta(seconds=10),
         )
 ```
-

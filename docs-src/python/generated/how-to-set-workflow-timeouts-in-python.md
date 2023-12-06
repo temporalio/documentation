@@ -23,7 +23,6 @@ Available timeouts are:
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-6a936b32-dbe8-42c2-9fa9-320035e9f584" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-6a936b32-dbe8-42c2-9fa9-320035e9f584" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/workflow_timeouts_retries/workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
     result = await client.execute_workflow(
         YourWorkflow.run,
@@ -36,4 +35,3 @@ Available timeouts are:
         # task_timeout=timedelta(seconds=2),
     )
 ```
-

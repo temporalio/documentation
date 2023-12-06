@@ -20,8 +20,6 @@ The keys are added to or replace the existing Search Attributes, similar to [`di
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-53448854-964d-4e82-b8a9-e59cacd24bfc" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-53448854-964d-4e82-b8a9-e59cacd24bfc" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/your_visibility/workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
         workflow.upsert_search_attributes({"CustomKeywordField": ["new-value"]})
 ```
-

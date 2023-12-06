@@ -19,7 +19,6 @@ Technically this can be multiple parameters, but Temporal strongly encourages a 
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-59469696-376a-445f-936a-c05f57185188" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-59469696-376a-445f-936a-c05f57185188" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/develop-patching/your_app/your_dataobject_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from dataclasses import dataclass
 # ...
 # ...
@@ -28,4 +27,3 @@ class YourParams:
     greeting: str
     name: str
 ```
-
