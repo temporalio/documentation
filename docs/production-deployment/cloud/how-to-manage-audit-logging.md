@@ -67,11 +67,9 @@ The following list specifies both the supported events and the Temporal APIs tha
 
 The following list specifies both the supported events and the Temporal APIs that emit the logs for API Key Operations:
 
-- **Create API Key**: Creates an API Key.
-- **Delete API Key**: Deletes an API Key.
-- **Update API Key**: Updates the status of an API Key.
-  - **Disable API Key**: Activates a deactivate API Key.
-  - **Enable API Key**: Deactivates an active API Key.
+- Create API Key: `CreateAPIKey`
+- Delete API Key: `DeleteAPIKey`
+- Update API Key: `UpdateAPIKey`
 
 ### Audit Log format
 

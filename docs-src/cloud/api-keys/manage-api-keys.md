@@ -7,7 +7,7 @@ tags:
   - how to
 ---
 
-Manage API Keys by creating, deleting, or updating access to them using the Cloud UI or tcld.
+Manage your personal API Keys by creating, deleting, or updating access to them using the Cloud UI or tcld.
 
 ### Generate an API Key
 
@@ -24,8 +24,10 @@ Generate an API Key using one of the following methods.
 
 To generate an API Key using the Cloud UI:
 
+To generate an API Key using the Cloud UI:
+
 1. [Login](https://cloud.temporal.io/) to the Cloud UI.
-2. Select **Settings** and choose **API Keys**.
+2. Navigate to [Profile Page → API Keys](https://cloud.temporal.io/profile/api-keys).
 3. Select **Create API Key** and provide the following:
    1. Name
    2. Description
@@ -67,7 +69,7 @@ Delete an API Key using one of the following methods.
 To delete an API Key using the Cloud UI
 
 1. [Login](https://cloud.temporal.io/) to the Cloud UI.
-2. Select **Settings** and choose **API Keys**.
+2. Navigate to your [Profile Page → API Keys](https://cloud.temporal.io/profile/api-keys).
 3. Select the three vertical dots to the right of the API Key’s row and choose **Delete**.
 4. Choose **Delete**.
 
@@ -94,7 +96,7 @@ Only enabled keys can authenticate with Temporal Cloud.
 To update access to an API Key using the Cloud UI, follow these steps:
 
 1. [Login](https://cloud.temporal.io/) to the Cloud UI.
-2. Select **Settings** and choose **API Keys**.
+2. Navigate to [Profile Page → API Keys](https://cloud.temporal.io/profile/api-keys).
 3. Select the three vertical dots to the right of the API Key’s row and choose **Disable**.
 
 #### Using the tcld

@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday December 04 2023 11:46:47 AM -0800
+Last assembled: Wednesday December 06 2023 10:10:53 AM -0800
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 128 guide configurations found.
 
-1774 information nodes found.
+1775 information nodes found.
 
-1461 information nodes are attached to guides.
+1462 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -760,6 +760,8 @@ python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
 
+cloud/cloud-ops-api -> /ops#
+
 dev-guide/temporal-sdk -> /dev-guide/sdks#
 
 cloud/users-account-level-roles -> /cloud/users#account-level-roles
@@ -1186,6 +1188,8 @@ go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/pro
 
 go/foundations -> /dev-guide/go/foundations#
 
-cloud/cloud-ops-api -> /ops#
+cloud/tcld/index -> /cloud/tcld#
+
+cloud/api-keys/manage-api-keys -> #global-administrator-api-key-management
 
 

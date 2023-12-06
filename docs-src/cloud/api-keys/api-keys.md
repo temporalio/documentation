@@ -6,7 +6,7 @@ description: Temporal Cloud supports API Key Authentication, which provides you 
 tags:
   - explanation
 ssdi:
-  - API Keys is a in Public Preview for Temporal Cloud.
+  - API Keys is in a Public Preview release status for Temporal Cloud.
 ---
 
 Temporal Cloud supports secure programmatic access through API Key Authentication.
@@ -22,8 +22,10 @@ The process is as follows:
 API Key (authentication) → User (identity) → RBAC (authorization)
 ```
 
-These API Keys are integral for authenticating Temporal Cloud operator tools, including Temporal Cloud CLI (tcld) and the Temporal Cloud Operations API.
+These API Keys are integral for authenticating Temporal Cloud operator tools, including [Temporal Cloud CLI (tcld)](/cloud/tcld/index) and the [Temporal Cloud Operations API](/cloud/cloud-ops-api).
 
 Users have the autonomy to create, delete, and update access to their API Keys through the Cloud UI or tcld.
 
+API Keys are an opt-in feature that must be enabled by a Global Administrator for use.
 For broader oversight, Global Administrators can manage user's API Keys using the same interfaces.
+For instructions on API Key Management for your organization, see [global Administrator API Key Management](/cloud/api-keys/manage-api-keys#global-administrator-api-key-management).

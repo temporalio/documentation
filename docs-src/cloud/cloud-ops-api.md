@@ -91,7 +91,7 @@ When interacting with the Temporal Cloud Ops API, follow these guidelines:
 
 3. **Engagement Steps:**
    - **Generate API Key:**
-     - Obtain an API Key for authentication. Note that many operations may require Admin privileges.
+     - Obtain an [API Key for authentication](/cloud/api-keys/manage-api-keys). Note that many operations may require Admin privileges.
    - **Set Up Client:**
      - Establish a secure connection to the Temporal Cloud. Refer to the example [Client setup in Go](https://github.com/temporalio/cloud-samples-go/blob/main/client/temporal/client.go) for guidance.
    - **Execute Operations:**
@@ -102,7 +102,7 @@ These steps provide a structured approach to utilizing the Temporal Cloud Ops AP
 ### Provide feedback
 
 Your input is valuable.
-While the Temporal Cloud Ops API is in Public Preview, we welcome your feedback.
+While the Temporal Cloud Ops API is in a Public Preview release status, we welcome your feedback.
 
 You can provide feedback through the following channels:
 

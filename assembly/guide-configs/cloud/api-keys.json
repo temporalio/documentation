@@ -38,6 +38,10 @@
         {
             "type": "h2",
             "id": "cloud/api-keys/api-keys-faq"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/api-keys/provide-feedback"
         }
     ]
 }
