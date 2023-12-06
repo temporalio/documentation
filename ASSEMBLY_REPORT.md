@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday December 04 2023 13:13:29 PM -0800
+Last assembled: Wednesday December 06 2023 15:27:12 PM -0800
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 125 guide configurations found.
 
@@ -255,6 +255,18 @@ cloud/tcld/account/metrics/accepted-client-ca/list -> #list
 cloud/tcld/account/metrics/accepted-client-ca/set -> #set
 
 cloud/tcld/account/metrics/accepted-client-ca/remove -> #remove
+
+cloud/tcld/apikey/create -> #create
+
+cloud/tcld/apikey/get -> #get
+
+cloud/tcld/apikey/list -> #list
+
+cloud/tcld/apikey/delete -> #delete
+
+cloud/tcld/apikey/disable -> #disable
+
+cloud/tcld/apikey/enable -> #enable
 
 cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
 
@@ -747,6 +759,12 @@ php/cron-jobs -> /dev-guide/php/features#temporal-cron-jobs
 python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
+
+cloud/tcld/index -> /cloud/tcld#
+
+cloud/cloud-ops-api -> /ops#
+
+cloud/api-keys/manage-api-keys -> #global-administrator-api-key-management
 
 dev-guide/temporal-sdk -> /dev-guide/sdks#
 
