@@ -48,12 +48,10 @@ If your organization uses Google Workspace or Microsoft Azure AD, and your IT ad
 
 :::
 
-When a user is created in Temporal Cloud, they receive an email invitation containing a link to complete their setup and access Temporal Cloud.
-_For configurations using SAML, users can disregard this email._
-
-However, when using Google or Microsoft for SSO authentication, users must follow the email link for their initial login to Temporal Cloud.
-
-
+When a user is created in Temporal Cloud, they receive an email invitation containing a link.
+They must use this link to finalize their setup and access Temporal Cloud.
+Accounts with SAML configurations can ignore this email.
+However, those using Google or Microsoft for SSO authentication need to follow the email link for their initial login to Temporal Cloud.
 
 :::info
 
