@@ -1,0 +1,51 @@
+{
+    "id": "schedules",
+    "file_name": "schedules.md",
+    "file_dir": "dev-guide/golang/features",
+    "slug": "/dev-guide/go/features/schedules",
+    "title": "Schedules - Go SDK feature guide",
+    "sidebar_label": "Schedules",
+    "sidebar_position": 5,
+    "description": "Learn how to implement Schedules in Go",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "go/schedules"
+        },
+        {
+            "type": "h2",
+            "id": "go/generated/how-to-create-a-schedule-in-go"
+        },
+        {
+            "type": "h2",
+            "id": "go/generated/how-to-backfill-a-schedule-in-go"
+        },
+        {
+            "type": "h2",
+            "id": "go/generated/how-to-delete-a-schedule-in-go"
+        },
+        {
+            "type": "h2",
+            "id": "go/generated/how-to-describe-a-schedule-in-go"
+        },
+        {
+            "type": "h2",
+            "id": "go/generated/how-to-list-a-schedule-in-go"
+        },
+        {
+            "type": "h2",
+            "id": "go/generated/how-to-pause-a-schedule-in-go"
+        },
+        {
+            "type": "h2",
+            "id": "go/generated/how-to-trigger-a-schedule-in-go"
+        },
+        {
+            "type": "h2",
+            "id": "go/generated/how-to-update-a-schedule-in-go"
+        }
+    ]
+}

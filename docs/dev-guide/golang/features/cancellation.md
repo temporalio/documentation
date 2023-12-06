@@ -1,6 +1,6 @@
 ---
 id: cancellation
-title: Workflow Cancellation
+title: Workflow Cancellation - Go SDK feature guide
 sidebar_label: Cancellation
 sidebar_position: 3
 description: Check out the cancellation feature APIs in the Temporal Go SDK.

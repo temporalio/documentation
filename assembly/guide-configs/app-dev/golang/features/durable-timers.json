@@ -1,0 +1,23 @@
+{
+    "id": "durable-timers",
+    "file_name": "durable-timers.md",
+    "file_dir": "dev-guide/golang/features",
+    "slug": "/dev-guide/go/features/durable-timers",
+    "title": "Durable Timers - Go SDK feature guide",
+    "sidebar_label": "Durable Timers",
+    "sidebar_position": 5,
+    "description": "Learn how to implement Durable Timers using Go.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "h2",
+            "id": "go/timers"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-set-timers-in-go"
+        }
+    ]
+}

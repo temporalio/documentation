@@ -1,6 +1,6 @@
 ---
 id: tracing
-title: Tracing
+title: Application tracing - Go SDK feature guide
 sidebar_label: Tracing
 sidebar_position: 6
 description: Learn how to implelement tracing using the Temporal Go SDK.

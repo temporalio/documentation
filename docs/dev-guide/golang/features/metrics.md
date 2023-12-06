@@ -1,10 +1,10 @@
 ---
-id: observability
-title: Go SDK developer's guide - Observability
-sidebar_label: Observability
+id: metrics
+title: Application metrics - Go SDK feature guide
+sidebar_label: Metrics
 sidebar_position: 6
-description: Improve observability in your Go-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
-slug: /dev-guide/go/observability
+description: Emit important SDK metrics to your monitoring system.
+slug: /dev-guide/go/metrics
 toc_max_heading_level: 4
 keywords:
 - developer-guide-doc-type

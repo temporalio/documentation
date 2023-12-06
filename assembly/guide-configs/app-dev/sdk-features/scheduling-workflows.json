@@ -1,0 +1,32 @@
+{
+    "id": "scheduling-workflows",
+    "file_name": "scheduling-workflows.md",
+    "slug": "/dev-guide/sdk-features/scheduling-workflows",
+    "file_dir": "dev-guide/sdk-features",
+    "title": "Scheduling Workflows - Temporal SDK features",
+    "sidebar_label": "Scheduling Workflows",
+    "sidebar_position": 7,
+    "description": "Review the features available in each SDK.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "language_links": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "dev-guide/sdk-features/scheduling-workflows"
+        },
+        {
+            "type": "h2",
+            "id": "dev-guide/sdk-features/schedules"
+        },
+        {
+            "type": "h2",
+            "id": "dev-guide/sdk-features/start-delay"
+        },
+        {
+            "type": "h2",
+            "id": "dev-guide/sdk-features/cron-jobs"
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "id": "message-passing",
+    "file_name": "message-passing.md",
+    "slug": "/dev-guide/sdk-features/message-passing",
+    "file_dir": "dev-guide/sdk-features",
+    "title": "Message passing - Temporal SDK Features",
+    "sidebar_label": "Message passing",
+    "sidebar_position": 4,
+    "description": "Review message passing implementation guides.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "language_links": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "dev-guide/sdk-features/message-passing"
+        },
+        {
+            "type": "h2",
+            "id": "dev-guide/sdk-features/signals"
+        },
+        {
+            "type": "h2",
+            "id": "dev-guide/sdk-features/queries"
+        },
+        {
+            "type": "h2",
+            "id": "dev-guide/sdk-features/updates"
+        }
+    ]
+}

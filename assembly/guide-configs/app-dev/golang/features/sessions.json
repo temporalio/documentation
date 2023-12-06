@@ -1,0 +1,47 @@
+{
+    "id": "worker-sessions",
+    "file_name": "worker-sessions.md",
+    "file_dir": "dev-guide/golang/features",
+    "slug": "/dev-guide/go/features/worker-sessions",
+    "title": "Worker Sessions - Go SDK features",
+    "sidebar_label": "Worker Sessions",
+    "sidebar_position": 5,
+    "description": "Learn how to implement Worker Sessions using the Go SDK.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "go/worker-sessions"
+        },
+        {
+            "type": "h2",
+            "id": "go/enable-worker-sessions"
+        },
+        {
+            "type": "p",
+            "id": "go/generated/how-to-enable-sessions-on-a-worker"
+        },
+        {
+            "type": "h3",
+            "id": "go/max-concurrent-sessions"
+        },
+        {
+            "type": "p",
+            "id": "go/generated/how-to-configure-max-concurrent-sessions"
+        },
+        {
+            "type": "h2",
+            "id": "go/create-a-session"
+        },
+        {
+            "type": "p",
+            "id": "go/generated/how-to-create-a-session-from-the-workflow-in-go"
+        },
+        {
+            "type": "h2",
+            "id": "go/additional-session-info"
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 ---
 id: debugging
-title: Application debugging
+title: Application debugging - Go SDK feature guide
 sidebar_label: Debugging
 sidebar_position: 8
 description: The Debugging section of the Temporal Go SDK Developer's guide covers the many ways to debug your application.
@@ -62,6 +62,6 @@ You can debug production Workflows using:
 - [Logging](/dev-guide/go/features/logging#)
 
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/dev-guide/worker-performance).
-For more information, see [Metrics](/dev-guide/go/observability#metrics) for setting up SDK metrics.
+For more information, see [Metrics](/dev-guide/go/metrics#metrics) for setting up SDK metrics.
 
 Debug Server performance with [Cloud metrics](/cloud/metrics#) or [self-hosted Server metrics](/self-hosted-guide/production-checklist#scaling-and-metrics).

@@ -282,11 +282,7 @@ Therefore, the Temporal Server relies on the Start-To-Close Timeout to force Act
 An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
 Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
 
-- [How to Heartbeat an Activity using the Go SDK](/dev-guide/go/features#activity-heartbeats)
-- [How to Heartbeat an Activity using the Java SDK](/dev-guide/java/features#activity-heartbeats)
-- [How to Heartbeat an Activity using the PHP SDK](/dev-guide/php/features#activity-heartbeats)
-- [How to Heartbeat an Activity using the Python SDK](/dev-guide/python/features#activity-heartbeats)
-- [How to Heartbeat an Activity using the TypeScript SDK](/dev-guide/typescript/features#activity-heartbeats)
+- [Feature implementation guides](/dev-guide/sdk-features/activity-heartbeats#)
 
 Activity Heartbeats work in conjunction with a [Heartbeat Timeout](#heartbeat-timeout).
 
@@ -355,7 +351,7 @@ And the following scenarios are not suitable for Heartbeating:
 
 A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-heartbeat).
 
-- [How to set a Heartbeat Timeout using the Go SDK](/dev-guide/go/features#heartbeat-timeout)
+- [How to set a Heartbeat Timeout using the Go SDK](/dev-guide/go/features/activity-heartbeats#heartbeat-timeout)
 - [How to set a Heartbeat Timeout using the Java SDK](/dev-guide/java/features#heartbeat-timeout)
 - [How to set a Heartbeat Timeout using the PHP SDK](/dev-guide/php/features#heartbeat-timeout)
 - [How to set a Heartbeat Timeout using the Python SDK](/dev-guide/python/features#heartbeat-timeout)

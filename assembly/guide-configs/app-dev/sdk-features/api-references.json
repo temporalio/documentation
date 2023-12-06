@@ -1,19 +1,20 @@
 {
     "file_name": "api-references.md",
     "id": "api-references",
-    "slug": "/dev-guide/api-references",
-    "file_dir": "dev-guide",
+    "slug": "/dev-guide/sdk-features/api-references",
+    "file_dir": "dev-guide/sdk-features",
     "title": "Temporal SDK API references",
     "sidebar_label": "API references",
-    "sidebar_position": 3,
+    "sidebar_position": 1,
     "description": "Explore Temporal SDK API references.",
     "use_description": false,
     "toc_max_heading_level": 4,
     "add_tabs_support": false,
+    "language_links": true,
     "sections": [
         {
             "type": "p",
-            "id": "dev-guide/api-references"
+            "id": "dev-guide/sdk-features/api-references"
         }
     ]
 }

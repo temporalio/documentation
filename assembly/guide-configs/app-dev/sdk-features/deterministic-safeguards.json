@@ -1,0 +1,28 @@
+{
+    "file_name": "deterministic-safeguards.md",
+    "id": "deterministic-safeguards",
+    "slug": "/dev-guide/sdk-features/deterministic-safeguards",
+    "file_dir": "dev-guide/sdk-features",
+    "title": "Deterministic safeguards - Temporal SDK features",
+    "sidebar_label": "Deterministic safeguards",
+    "sidebar_position": 3,
+    "description": "Review the features available in each SDK.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "language_links": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "dev-guide/sdk-features/deterministic-runtime-safeguards"
+        },
+        {
+            "type": "p",
+            "id": "dev-guide/sdk-features/sandboxed-runtime"
+        },
+        {
+            "type": "p",
+            "id": "dev-guide/sdk-features/static-analysis"
+        }
+    ]
+}

@@ -1,8 +1,8 @@
 ---
 id: test-suite
-title: Test suite
+title: Application test suite - Go SDK feature guide
 sidebar_label: Test suite
-sidebar_position: 7
+sidebar_position: 2
 description: The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 slug: /dev-guide/go/features/test-suite
 toc_max_heading_level: 4

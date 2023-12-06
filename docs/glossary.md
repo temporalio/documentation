@@ -133,6 +133,12 @@ Continue-As-New is the mechanism by which all relevant state is passed to a new 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [continue-as-new](/tags/continue-as-new)_
 
 
+#### [Cron Jobs](/dev-guide/sdk-features/scheduling-workflows#cron-jobs)
+A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
 #### [Custom Data Converter](/dataconversion#custom-data-converter)
 A custom Data Converter extends the default Data Converter with custom logic for Payload conversion or Payload encryption.
 
@@ -313,6 +319,12 @@ The Temporal Persistence store is a database used by Temporal Services to persis
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
+#### [Queries](/dev-guide/sdk-features/message-passing#queries)
+A Query is a synchronous operation that is used to report the state of a Workflow Execution.
+
+_Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_
+
+
 #### [Query](/workflows#query)
 A Query is a synchronous operation that is used to report the state of a Workflow Execution.
 
@@ -367,6 +379,12 @@ A Schedule-To-Start Timeout is the maximum amount of time that is allowed from w
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_
 
 
+#### [Schedules](/dev-guide/sdk-features/scheduling-workflows#schedules)
+The Schedules feature enables the scheduling of Workflow Executions.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
 #### [Search Attribute](/visibility#search-attribute)
 A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.
 
@@ -389,6 +407,12 @@ _Tags: [term](/tags/term), [signals](/tags/signals), [explanation](/tags/explana
 Signal-With-Start starts and Signals a Workflow Execution, or just Signals it if it already exists.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
+#### [Start Delay](/dev-guide/sdk-features/scheduling-workflows#start-delay)
+Start Delay determines the amount of time to wait before initiating a Workflow Execution.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation), [delay-workflow](/tags/delay-workflow)_
 
 
 #### [Start-To-Close Timeout](/activities#start-to-close-timeout)
@@ -577,12 +601,6 @@ A Workflow Definition is the code that defines the constraints of a Workflow Exe
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Workflow Definitions](/dev-guide/sdk-features#workflow-definitions)
-This code orchestrates the execution of Activities, persisting the results.
-
-_Tags: [term](/tags/term), [explanation](/tags/explanation)_
-
-
 #### [Workflow Execution](/workflows#workflow-execution)
 A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.
 
@@ -633,6 +651,12 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/ti
 
 #### [Workflow Type](/workflows#workflow-type)
 A Workflow Type is a name that maps to a Workflow Definition.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
+#### [Workflows](/dev-guide/sdk-features/core-application#workflows)
+This code orchestrates the execution of Activities, persisting the results.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 

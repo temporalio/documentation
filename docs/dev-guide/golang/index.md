@@ -1,7 +1,7 @@
 ---
 id: index
 title: Temporal Go SDK developer's guide
-sidebar_label: Go SDK
+sidebar_label: Go SDK developer's guide
 sidebar_position: 3
 description: The Temporal Go SDK developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
 slug: /dev-guide/go
@@ -43,24 +43,30 @@ The follow structure applies to the Temporal Go SDK developer's guide:
 
 - [**Chapter - Develop for durability**](/dev-guide/go/durable-execution#)
 
+  - [Retrieve Event History](/dev-guide/go/durable-execution#retrieve-event-history)
+  - [Add Replay test](/dev-guide/go/durable-execution#add-replay-test)
+  - [Intrinsic non-determinism](/dev-guide/go/durable-execution#intrinsic-non-deterministic-logic)
+  - [Static Analysis](/dev-guide/go/durable-execution#static-analysis)
+  - [Non-deterministic code changes](/dev-guide/go/durable-execution#durability-through-replays)
+
 3. [**Feature guides**](/dev-guide/go/features): All the general features available to a Temporal Application.
 
-   - [Core application](/dev-guide/go/features/core-app#)
-   - [Signals](/dev-guide/go/features#signals)
-   - [Queries](/dev-guide/go/features#queries)
-   - [Updates](/dev-guide/go/features#updates)
+   - [Core application (Workflows, Activities, Workers)](/dev-guide/go/features/core-app#)
+   - [Signals](/dev-guide/go/features/signals/features/signals#)
+   - [Queries](/dev-guide/go/features/queries#)
+   - [Updates](/dev-guide/go/features/updates#)
    - [Workflow timeouts and retries](/dev-guide/go/features#workflow-timeouts)
    - [Activity timeouts and retries](/dev-guide/go/features#activity-timeouts)
-   - [Activity Heartbeats](/dev-guide/go/features#activity-heartbeats)
+   - [Activity Heartbeats](/dev-guide/go/features/activity-heartbeats#activity-heartbeats)
    - [Async Activity Completion](/dev-guide/go/features#asynchronous-activity-completion)
    - [Child Workflows](/dev-guide/go/features#child-workflows)
-   - [Continue-As-New](/dev-guide/go/features#continue-as-new)
-   - [Schedules](/dev-guide/go/features#schedule-a-workflow)
-   - [Cron Jobs](/dev-guide/go/features#temporal-cron-jobs)
-   - [Metrics](/dev-guide/go/observability#metrics)
-   - [Tracing](/dev-guide/go/observability#tracing)
-   - [Logging](/dev-guide/go/observability#logging)
-   - [Visibility](/dev-guide/go/observability#visibility)
+   - [Continue-As-New](/dev-guide/go/features/continue-as-new#continue-as-new)
+   - [Schedules](/dev-guide/go/features/schedules#)
+   - [Cron Jobs](/dev-guide/go/features/cron-jobs#temporal-cron-jobs)
+   - [Metrics](/dev-guide/go/metrics#metrics)
+   - [Tracing](/dev-guide/go/features/tracing#)
+   - [Logging](/dev-guide/go/features/logging#)
+   - [Visibility](/dev-guide/go/features/visibility#)
 
 4. [**Worker performance**](/dev-guide/worker-performance)
 

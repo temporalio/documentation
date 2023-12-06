@@ -1,0 +1,23 @@
+{
+    "id": "continue-as-new",
+    "file_name": "continue-as-new.md",
+    "file_dir": "dev-guide/golang/features",
+    "slug": "/dev-guide/go/features/continue-as-new",
+    "title": "Continue-As-New - Go SDK feature guide",
+    "sidebar_label": "Continue-As-New",
+    "sidebar_position": 10,
+    "description": "Learn how to implement Continue-As-New using Go.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "h2",
+            "id": "go/continue-as-new"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-continue-as-new-in-go"
+        }
+    ]
+}

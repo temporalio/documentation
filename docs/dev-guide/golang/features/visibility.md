@@ -1,6 +1,6 @@
 ---
 id: visibility
-title: Visibility
+title: Namespace Visibility - Go SDK feature guide
 sidebar_label: Visibility
 sidebar_position: 6
 description: Learn how to use the Temporal Go SDK's visibility features.

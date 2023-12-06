@@ -1,0 +1,23 @@
+{
+    "id": "cron-jobs",
+    "file_name": "cron-jobs.md",
+    "file_dir": "dev-guide/golang/features",
+    "slug": "/dev-guide/go/features/cron-jobs",
+    "title": "Cron jobs - Go SDK feature guide",
+    "sidebar_label": "Cron jobs",
+    "sidebar_position": 5,
+    "description": "Discover Temporal Cron Job implementation guides.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "h2",
+            "id": "go/cron-jobs"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-set-a-cron-schedule-in-go"
+        }
+    ]
+}

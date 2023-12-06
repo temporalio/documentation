@@ -1,0 +1,32 @@
+{
+    "file_name": "core-application.md",
+    "id": "core-application",
+    "slug": "/dev-guide/sdk-features/core-application",
+    "file_dir": "dev-guide/sdk-features",
+    "title": "Core application definitions - Temporal SDK features",
+    "sidebar_label": "Core application",
+    "sidebar_position": 2,
+    "description": "Review the features available in each SDK.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "language_links": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "dev-guide/sdk-features/core-app-definitions"
+        },
+        {
+            "type": "h2",
+            "id": "dev-guide/sdk-features/workflows"
+        },
+        {
+            "type": "h2",
+            "id": "dev-guide/sdk-features/activities"
+        },
+        {
+            "type": "h2",
+            "id": "dev-guide/sdk-features/workers"
+        }
+    ]
+}

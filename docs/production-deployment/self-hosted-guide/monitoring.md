@@ -99,7 +99,7 @@ Depending on how you deploy your Temporal Cluster, you can set different ports f
 SDK metrics are emitted by Clients and must be set up in your application code.
 The Metrics section in the Observability guide details how to set this up for all the supported SDKs.
 
-[Golang](/dev-guide/go/observability#metrics)
+[Golang](/dev-guide/go/metrics#metrics)
 [Java](/dev-guide/java/observability#metrics)
 [PHP](/dev-guide/php/observability#metrics)
 [Python](/dev-guide/python/observability#metrics)

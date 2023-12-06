@@ -46,7 +46,7 @@ Temporal documentation aims to be explicit and differentiate between them.
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
-- [Implementation guides](/dev-guide/sdk-features#workflow-definitions)
+- [Implementation guides](/dev-guide/sdk-features/core-application#workflows)
 
 A Workflow Definition is often also referred to as a Workflow Function.
 In Temporal's documentation, a Workflow Definition refers to the source for the instance of a Workflow Execution, while a Workflow Function refers to the source for the instance of a Workflow Function Execution.
@@ -426,7 +426,7 @@ The new Workflow Execution has the same Workflow Id, but a different Run Id, and
 
 In the case of [Temporal Cron Jobs](#temporal-cron-job), Continue-As-New is actually used internally for the same effect.
 
-- [How to Continue-As-New using the Go SDK](/dev-guide/go/features#continue-as-new)
+- [How to Continue-As-New using the Go SDK](/dev-guide/go/features/continue-as-new#continue-as-new)
 - [How to Continue-As-New using the Java SDK](/dev-guide/java/features#continue-as-new)
 - [How to Continue-As-New using the PHP SDK](/dev-guide/php/features#continue-as-new)
 - [How to Continue-As-New using the Python SDK](/dev-guide/python/features#continue-as-new)
@@ -648,7 +648,7 @@ You can use Queries to expose the internal Workflow Execution state to the exter
 Queries are available for running or completed Workflows Executions only if the Worker is up and listening on the Task Queue.
 
 - [How to send a Query using tctl](/tctl-v1/workflow#query)
-- [How to send and handle Queries with the Go SDK](/dev-guide/go/features#queries)
+- [How to send and handle Queries with the Go SDK](/dev-guide/go/features/queries#)
 - [How to send and handle Queries with the Java SDK](/dev-guide/java/features#queries)
 - [How to send and handle Queries with the PHP SDK](/dev-guide/php/features#queries)
 - [How to send and handle Queries with the Python SDK](/dev-guide/python/features#queries)
@@ -697,7 +697,7 @@ Stack Trace Queries are available only for running Workflow Executions.
 
 An Update is a request to and a response from a Temporal Client to a [Workflow Execution](#workflow-execution).
 
-- [How to develop, send, and handle Updates in Go](/dev-guide/go/features#updates)
+- [How to develop, send, and handle Updates in Go](/dev-guide/go/features/updates#)
 - [How to develop, send, and handle Updates in Java](/dev-guide/java/features#updates)
 
 You can think of an Update as a synchronous, blocking call that could replace both a Signal and a Query. An update is:
@@ -1110,7 +1110,7 @@ Schedules were built to provide a better developer experience, including more co
 
 A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
-- [How to set a Cron Schedule using the Go SDK](/dev-guide/go/features#temporal-cron-jobs)
+- [How to set a Cron Schedule using the Go SDK](/dev-guide/go/features/cron-jobs#temporal-cron-jobs)
 - [How to set a Cron Schedule using the Java SDK](/dev-guide/java/features#cron-schedule)
 - [How to set a Cron Schedule using the PHP SDK](/dev-guide/php/features#temporal-cron-jobs)
 - [How to set a Cron Schedule using the Python SDK](/dev-guide/python/features#temporal-cron-jobs)

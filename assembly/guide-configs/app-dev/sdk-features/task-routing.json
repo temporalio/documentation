@@ -1,0 +1,20 @@
+{
+    "id": "task-routing",
+    "file_name": "task-routing.md",
+    "slug": "/dev-guide/sdk-features/task-routing",
+    "file_dir": "dev-guide/sdk-features",
+    "title": "Task Routing - Temporal SDK features",
+    "sidebar_label": "Task Routing",
+    "sidebar_position": 6,
+    "description": "Review the Task Routing features and capabilities.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "language_links": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "dev-guide/sdk-features/task-routing"
+        }
+    ]
+}

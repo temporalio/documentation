@@ -41,7 +41,7 @@ There are two types of Tasks:
 
 A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.
 
-- [Feature implementation guides](/dev-guide/sdk-features#workers)
+- [Feature implementation guides](/dev-guide/sdk-features/core-application#workers)
 
 ## What is a Worker Entity? {#worker-entity}
 
@@ -334,7 +334,7 @@ If you have a new backward-incompatible Activity Definition, start by using a di
 A Worker Session is a feature provided by some SDKs that provides a straightforward API for [Task Routing](#task-routing) to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 It also includes features like concurrent session limitations and Worker failure detection.
 
-- [How to use Worker Sessions](/dev-guide/go/features#worker-sessions)
+- [How to use Worker Sessions](/dev-guide/go/features/worker-sessions#)
 
 ## What is Worker Versioning? {#worker-versioning}
 

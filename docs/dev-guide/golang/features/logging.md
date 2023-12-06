@@ -1,6 +1,6 @@
 ---
 id: logging
-title: Logging
+title: Application logging - Go SDK feature guide
 sidebar_label: Logging
 sidebar_position: 6
 description: Learn how to log from your Temporal Application using the Go SDK.

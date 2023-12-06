@@ -7,4 +7,6 @@ tags:
   - temporal sdks
 ---
 
-All SDKs support the fundamental ability to define functions or object methods as either Workflows or Activities.
+All SDKs support the fundamental ability to define functions or object methods as either Workflows or Activities, and register that functionality with a Worker.
+
+![Register Workflows and Activities with a Worker and run as many Workers as needed](/diagrams/temporal-application.svg)

@@ -1,15 +1,15 @@
 {
+    "id": "index",
     "file_name": "index.md",
     "file_dir": "dev-guide/golang/features",
     "slug": "/dev-guide/go/features",
-    "id": "index",
     "title": "Temporal Go SDK features",
     "sidebar_label": "Feature guides",
     "sidebar_position": 5,
     "description": "Discover available Temporal Go SDK APIs.",
     "use_description": false,
     "toc_max_heading_level": 4,
-    "add_tabs_support": true,
+    "add_tabs_support": false,
     "sections": [
         {
             "type": "p",
@@ -18,26 +18,6 @@
         {
             "type": "p",
             "id": "go/features"
-        },
-        {
-            "type": "h2",
-            "id": "go/updates"
-        },
-        {
-            "type": "h3",
-            "id": "go/generated/how-to-define-an-update-in-go"
-        },
-        {
-            "type": "h3",
-            "id": "go/generated/how-to-handle-an-update-in-go"
-        },
-        {
-            "type": "h4",
-            "id": "go/generated/how-to-set-an-update-validator-function-in-go"
-        },
-        {
-            "type": "h3",
-            "id": "go/generated/how-to-send-an-update-from-a-client-in-go"
         },
         {
             "type": "h2",
@@ -105,58 +85,6 @@
         },
         {
             "type": "h2",
-            "id": "go/timers"
-        },
-        {
-            "type": "p",
-            "id": "go/how-to-set-timers-in-go"
-        },
-        {
-            "type": "h2",
-            "id": "go/schedules"
-        },
-        {
-            "type": "h3",
-            "id": "go/generated/how-to-create-a-schedule-in-go"
-        },
-        {
-            "type": "h3",
-            "id": "go/generated/how-to-backfill-a-schedule-in-go"
-        },
-        {
-            "type": "h3",
-            "id": "go/generated/how-to-delete-a-schedule-in-go"
-        },
-        {
-            "type": "h3",
-            "id": "go/generated/how-to-describe-a-schedule-in-go"
-        },
-        {
-            "type": "h3",
-            "id": "go/generated/how-to-list-a-schedule-in-go"
-        },
-        {
-            "type": "h3",
-            "id": "go/generated/how-to-pause-a-schedule-in-go"
-        },
-        {
-            "type": "h3",
-            "id": "go/generated/how-to-trigger-a-schedule-in-go"
-        },
-        {
-            "type": "h3",
-            "id": "go/generated/how-to-update-a-schedule-in-go"
-        },
-        {
-            "type": "h2",
-            "id": "go/cron-jobs"
-        },
-        {
-            "type": "p",
-            "id": "go/how-to-set-a-cron-schedule-in-go"
-        },
-        {
-            "type": "h2",
             "id": "go/side-effects"
         },
         {
@@ -198,38 +126,6 @@
         {
             "type": "p",
             "id": "go/how-to-use-a-custom-payload-converter-in-go"
-        },
-        {
-            "type": "h2",
-            "id": "go/worker-sessions"
-        },
-        {
-            "type": "h3",
-            "id": "go/enable-worker-sessions"
-        },
-        {
-            "type": "p",
-            "id": "go/generated/how-to-enable-sessions-on-a-worker"
-        },
-        {
-            "type": "h4",
-            "id": "go/max-concurrent-sessions"
-        },
-        {
-            "type": "p",
-            "id": "go/generated/how-to-configure-max-concurrent-sessions"
-        },
-        {
-            "type": "h3",
-            "id": "go/create-a-session"
-        },
-        {
-            "type": "p",
-            "id": "go/generated/how-to-create-a-session-from-the-workflow-in-go"
-        },
-        {
-            "type": "h3",
-            "id": "go/additional-session-info"
         },
         {
             "type": "h2",

@@ -1210,3 +1210,40 @@ img[data-style="chevron-icon"]:hover {
 #kapa-widget-container button {
   z-index: 10;
 }
+
+.dev-guide-sdk-links {
+  table-layout: auto;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.dev-guide-sdk-links thead {
+  background-color: var(--ifm-background-color);
+  border-bottom: none;
+  border-color: #0d92ca;
+}
+
+.dev-guide-sdk-links th,
+.dev-guide-sdk-links td {
+  border-left-width: 2px;
+  border-right-width: 2px;
+  border-top: 2px;
+  border-style: solid;
+  border-color: #0d92ca;
+}
+
+.dev-guide-sdk-links th:first-child,
+.dev-guide-sdk-links td:first-child {
+}
+
+.dev-guide-sdk-links th:last-child,
+.dev-guide-sdk-links td:last-child {
+}
+
+.dev-guide-sdk-links th {
+}
+
+.dev-guide-sdk-links tr:last-child td {
+  border-width: 2px;
+  border-color: #0d92ca;
+}

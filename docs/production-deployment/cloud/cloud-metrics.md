@@ -236,7 +236,7 @@ SDK metrics are emitted by SDK Clients used to start your Workers and to start, 
 You must configure a Prometheus scrape endpoint for Prometheus to collect and aggregate your SDK metrics.
 Each language development guide has details on how to set this up.
 
-- [Go SDK](/dev-guide/go/observability#metrics)
+- [Go SDK](/dev-guide/go/metrics#metrics)
 - [Java SDK](/dev-guide/java/observability#metrics)
 - [TypeScript SDK](/dev-guide/typescript/observability#metrics)
 - [Python](/dev-guide/python/observability#metrics)

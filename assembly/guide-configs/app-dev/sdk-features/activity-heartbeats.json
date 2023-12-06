@@ -1,0 +1,20 @@
+{
+    "file_name": "activity-heartbeats.md",
+    "id": "activity-heartbeats",
+    "slug": "/dev-guide/sdk-features/activity-heartbeats",
+    "file_dir": "dev-guide/sdk-features",
+    "title": "Activity Heartbeats - Temporal SDK Features",
+    "sidebar_label": "Activity Heartbeats",
+    "sidebar_position": 5,
+    "description": "Review implementation guides for Activity Heartbeats.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "language_links": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "dev-guide/sdk-features/activity-heartbeats"
+        }
+    ]
+}
