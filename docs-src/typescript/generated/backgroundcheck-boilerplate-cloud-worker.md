@@ -20,20 +20,18 @@ A Temporal Cloud Worker requires that you specify the following in the Client co
 - Temporal Cloud Address
 - Certificate and private key associated with the Namespace
 
-Add the following code to `src/worker.ts` to define a worker process that communicates with Temporal Cloud:
+Add the following code to `src/worker.ts` to define a worker process that communicates with Temporal Cloud using an mTLS connection, using
+configuration provided via environment variables.
 
-- Run a Worker with an mTLS connection, configuration is provided via environment variables.
-- Note that serverNameOverride and serverRootCACertificate are optional.
-
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-105f8785-df73-4a14-ab59-5a19698d49fd" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-105f8785-df73-4a14-ab59-5a19698d49fd" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/worker-cloud.ts">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-85ebd8e0-58ea-43b4-a999-7273598a14a4" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-85ebd8e0-58ea-43b4-a999-7273598a14a4" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/worker-cloud.ts">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```typescript
 import fs from 'fs/promises';
 
-// @@@SNIPSTART typescript-mtls-worker
 import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from './activities';
 
+// Note that serverNameOverride and serverRootCACertificate are optional.
 async function run({
   address,
   namespace,

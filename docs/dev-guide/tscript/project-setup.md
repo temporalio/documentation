@@ -436,7 +436,7 @@ To define a Workflow, import the Activity types and the `@temporalio/workflow` l
 Define the Activity Execution options. `StartToCloseTimeout` or `ScheduleToCloseTimeout` must be set:
 The `backgroundCheck` function that follows is an example of a basic Workflow Definition.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-8a4517dc-9372-4569-b8b2-c57fff2d6cbe" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-8a4517dc-9372-4569-b8b2-c57fff2d6cbe" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/workflows.ts">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-6c1320a2-765b-4aaf-b609-f5f6473e5e55" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-6c1320a2-765b-4aaf-b609-f5f6473e5e55" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/workflows.ts">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```typescript
 import * as workflow from '@temporalio/workflow';
@@ -499,7 +499,7 @@ Open `src/activities.ts` in your editor. You'll define your Activities in this f
 
 Add the following code to define your Activity:
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-36ccc9d8-d40d-444a-80e0-1621130aa767" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-36ccc9d8-d40d-444a-80e0-1621130aa767" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/activities.ts">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-5e2a52ec-782b-4c74-a583-1bb3a711746f" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-5e2a52ec-782b-4c74-a583-1bb3a711746f" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/activities.ts">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```typescript
 export async function ssnTrace(param: string): Promise<string> {
@@ -536,7 +536,7 @@ In regards to organization, we recommend keeping Worker code separate from Workf
 
 Add the following code to `src/worker.ts` to define a worker process that communicates with a local development server:
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-e8f9ce35-6d18-4bac-9049-a0c83b863e9f" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-e8f9ce35-6d18-4bac-9049-a0c83b863e9f" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/worker.ts">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-377a48c0-2a17-41dc-8a0d-bc81667e9fb4" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-377a48c0-2a17-41dc-8a0d-bc81667e9fb4" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/worker.ts">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```typescript
 import { NativeConnection, Worker } from '@temporalio/worker';
@@ -600,20 +600,18 @@ A Temporal Cloud Worker requires that you specify the following in the Client co
 - Temporal Cloud Address
 - Certificate and private key associated with the Namespace
 
-Add the following code to `src/worker.ts` to define a worker process that communicates with Temporal Cloud:
+Add the following code to `src/worker.ts` to define a worker process that communicates with Temporal Cloud using an mTLS connection, using
+configuration provided via environment variables.
 
-- Run a Worker with an mTLS connection, configuration is provided via environment variables.
-- Note that serverNameOverride and serverRootCACertificate are optional.
-
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-105f8785-df73-4a14-ab59-5a19698d49fd" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-105f8785-df73-4a14-ab59-5a19698d49fd" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/worker-cloud.ts">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-85ebd8e0-58ea-43b4-a999-7273598a14a4" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-85ebd8e0-58ea-43b4-a999-7273598a14a4" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/worker-cloud.ts">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```typescript
 import fs from 'fs/promises';
 
-// @@@SNIPSTART typescript-mtls-worker
 import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from './activities';
 
+// Note that serverNameOverride and serverRootCACertificate are optional.
 async function run({
   address,
   namespace,
@@ -693,10 +691,11 @@ export function getEnv(): Env {
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/worker-cloud.ts. -->
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-f3c3544a-e9b3-4e5b-8498-0181d2dca2ca" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-f3c3544a-e9b3-4e5b-8498-0181d2dca2ca" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/worker-cloud.ts">view the source code</a> in the context of the rest of the application code.</div></div>
+id: backgroundcheck-boilerplate-cloud-worker
+
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-ec1c8216-b820-4fc2-818f-4ba197aec9f2" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-ec1c8216-b820-4fc2-818f-4ba197aec9f2" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/worker-cloud.ts">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```typescript
-When specifying the Temporal Cloud Namespace, make sure to append the Account Id as it appears in the url of the Cloud UI.
 Consider the following Namespace url: https://cloud.temporal.io/namespaces/backgroundcheck-app.1a23b/workflows, if your Namespace is "backgroundcheck-app" and your Account Id is "1a23b", then you would specify your Namespace as "backgroundcheck-app.1a23b".
 
 The Temporal Cloud gRPC connection address includes your [Namesapce](/namespaces#) and a port number: `<Namespace>.<AccountId>.tmprl.cloud:<port>`.
@@ -779,7 +778,7 @@ To use a Worker with a self-hosted Temporal Cluster, set the IP address, port, a
 
 Add the following code to `src/worker.ts` to define a worker process that communicates with a self-hosted Temporal cluster using a specific namespace and IP address:
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-8135f5f0-28cc-43bc-b39c-8a77a5e44f8a" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-8135f5f0-28cc-43bc-b39c-8a77a5e44f8a" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/worker-self-hosted.ts">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-93ad589b-5464-4601-a8fb-91e7a68e0843" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-93ad589b-5464-4601-a8fb-91e7a68e0843" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/worker-self-hosted.ts">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```typescript
 import { NativeConnection, Worker } from '@temporalio/worker';
@@ -1061,7 +1060,7 @@ You can test Workflow code for the following conditions:
 
 Add the following code to `src/mocha/backgroundcheck.test.ts` to test that the Workflow executes successfully.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-edcfe2eb-c1d9-4696-9eac-b5317323a1b9" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-edcfe2eb-c1d9-4696-9eac-b5317323a1b9" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/mocha/backgroundcheck.test.ts">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-03011c41-c17a-4da6-9dbb-331d534df5de" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-03011c41-c17a-4da6-9dbb-331d534df5de" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/mocha/backgroundcheck.test.ts">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```typescript
 import { TestWorkflowEnvironment } from '@temporalio/testing';
@@ -1137,7 +1136,7 @@ You can test Activity code for the following conditions:
 Add the following code to `src/mocha/ssntrace.test.ts` to test the `ssnTrace`
 Activity and ensure it returns the expected value:
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-baa892bc-424d-4316-a2fd-44e2c75702fb" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-baa892bc-424d-4316-a2fd-44e2c75702fb" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/mocha/ssntrace.test.ts">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-0e99aa81-cff1-43cb-9da8-85742414a615" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-0e99aa81-cff1-43cb-9da8-85742414a615" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/mocha/ssntrace.test.ts">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```typescript
 import { MockActivityEnvironment } from '@temporalio/testing';
