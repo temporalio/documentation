@@ -80,3 +80,4 @@ The follow structure applies to the Temporal Go SDK developer's guide:
    - [Workflow cache tuning](/dev-guide/worker-performance#workflow-cache-tuning)
    - [Invariants](/dev-guide/worker-performance#invariants)
    - [Large value drawbacks](/dev-guide/worker-performance#drawbacks-of-putting-just-large-values-everywhere)
+

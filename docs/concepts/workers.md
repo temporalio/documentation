@@ -346,7 +346,6 @@ It also includes features like concurrent session limitations and Worker failure
 ## What is Worker Versioning? {#worker-versioning}
 
 :::tip Support, stability, and dependency info
-
 - Introduced in Temporal Server version [1.21.0](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
 - Available in CLI version [0.10.0](https://github.com/temporalio/cli/releases/tag/v0.10.0)
 - Available in [Go SDK](/dev-guide/go/versioning#worker-versioning) version [1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
@@ -576,3 +575,4 @@ They receive tasks only from Task Queues that do not have any version sets defin
 To migrate from an unversioned Task Queue, add a new default Build ID to the Task Queue.
 From there, deploy Workers with the same Build ID.
 Unversioned Workers will continue processing open Workflows, while Workers with the new Build ID will process new Workflow Executions.
+

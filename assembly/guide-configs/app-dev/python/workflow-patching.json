@@ -1,0 +1,79 @@
+{
+    "file_name": "workflow-patching.md",
+    "id": "workflow-patching",
+    "slug": "/dev-guide/python/workflow-patching",
+    "file_dir": "dev-guide/python",
+    "title": "Temporal Workflow Developer's Guide - Workflow Patching",
+    "sidebar_label": "Workflow Patching",
+    "sidebar_position": 4,
+    "description": "This section of the Temporal Workflow Developer's Guide covers strategies and techniques for managing updates and patching in Temporal workflows, emphasizing maintaining determinism and reliability throughout the workflow lifecycle.",
+    "use_description": false,
+    "toc_max_heading_level": 3,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "h2",
+            "id": "python/chapter-patching/workflow-patching-introduction"
+        },
+        {
+            "type": "h2",
+            "id": "python/chapter-patching/workflow-patching-strategies"
+        },
+        {
+            "type": "h3",
+            "id": "python/chapter-patching/workflow-patching-short-lived"
+        },
+        {
+            "type": "h3",
+            "id": "python/chapter-patching/workflow-patching-long-running"
+        },
+        {
+            "type": "h2",
+            "id": "python/chapter-patching/workflow-patching-deep-dive"
+        },
+        {
+            "type": "h3",
+            "id": "python/chapter-patching/workflow-patching-stages"
+        },
+        {
+            "type": "h2",
+            "id": "python/chapter-patching/workflow-patching-implementation"
+        },
+        {
+            "type": "h3",
+            "id": "python/chapter-patching/workflow-data-classes-initial-steps"
+        },
+        {
+            "type": "h3",
+            "id": "python/chapter-patching/workflow-data-classes-example"
+        },
+        {
+            "type": "h2",
+            "id": "python/chapter-patching/workflow-transition-to-patching"
+        },
+        {
+            "type": "h3",
+            "id": "python/chapter-patching/workflow-patching-api"
+        },
+        {
+            "type": "h3",
+            "id": "python/chapter-patching/workflow-patching-implementing"
+        },
+        {
+            "type": "h3",
+            "id": "python/chapter-patching/workflow-patching-initial-logic"
+        },
+        {
+            "type": "h3",
+            "id": "python/chapter-patching/workflow-patching-applying"
+        },
+        {
+            "type": "h3",
+            "id": "python/chapter-patching/workflow-patching-deprecating"
+        },
+        {
+            "type": "h3",
+            "id": "python/chapter-patching/workflow-patching-finalizing"
+        }
+    ]
+}

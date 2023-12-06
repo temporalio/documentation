@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday December 06 2023 10:13:04 AM -0800
+Last assembled: Wednesday December 06 2023 13:21:16 PM -0800
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-125 guide configurations found.
+126 guide configurations found.
 
-1687 information nodes found.
+1775 information nodes found.
 
-1446 information nodes are attached to guides.
+1462 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -255,18 +255,6 @@ cloud/tcld/account/metrics/accepted-client-ca/list -> #list
 cloud/tcld/account/metrics/accepted-client-ca/set -> #set
 
 cloud/tcld/account/metrics/accepted-client-ca/remove -> #remove
-
-cloud/tcld/apikey/create -> #create
-
-cloud/tcld/apikey/get -> #get
-
-cloud/tcld/apikey/list -> #list
-
-cloud/tcld/apikey/delete -> #delete
-
-cloud/tcld/apikey/disable -> #disable
-
-cloud/tcld/apikey/enable -> #enable
 
 cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
 
@@ -760,8 +748,6 @@ python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
 
-cloud/cloud-ops-api -> /ops#
-
 dev-guide/temporal-sdk -> /dev-guide/sdks#
 
 cloud/users-account-level-roles -> /cloud/users#account-level-roles
@@ -1187,9 +1173,5 @@ go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/g
 go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
-
-cloud/tcld/index -> /cloud/tcld#
-
-cloud/api-keys/manage-api-keys -> #global-administrator-api-key-management
 
 

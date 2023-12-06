@@ -21,3 +21,4 @@ As you delve deeper, you'll uncover the distinctive attributes and operational i
 
 - [Asynchronous vs. Synchronous Activity implementations](/dev-guide/python/async-vs-sync#)
 - [Python sandbox environment](/dev-guide/python/sandbox#)
+
