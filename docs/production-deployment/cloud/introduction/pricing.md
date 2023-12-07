@@ -1,8 +1,8 @@
 ---
 id: pricing
-title: What is the pricing for Temporal Cloud?
+title: Pricing - Temporal Cloud
 sidebar_label: Pricing
-sidebar_position: 3
+sidebar_position: 6
 description: Temporal Cloud pricing information
 slug: /cloud/pricing
 toc_max_heading_level: 4

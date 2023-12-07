@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday December 04 2023 13:13:29 PM -0800
+Last assembled: Thursday December 07 2023 14:20:26 PM -0700
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
-125 guide configurations found.
+129 guide configurations found.
 
-1687 information nodes found.
+1684 information nodes found.
 
-1446 information nodes are attached to guides.
+1443 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -353,8 +353,6 @@ concepts/what-is-a-payload-converter -> /dataconversion#payload-converter
 concepts/what-is-a-codec-server -> /dataconversion#codec-server
 
 concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
-
-cloud/temporal-cloud-limits-sheet -> /cloud/operating-envelope#default-limits
 
 references/dynamic-configuration -> /references/dynamic-configuration#
 
@@ -750,6 +748,8 @@ typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
 
 dev-guide/temporal-sdk -> /dev-guide/sdks#
 
+cloud/support-create-ticket -> /cloud/support#support-ticket
+
 cloud/users-account-level-roles -> /cloud/users#account-level-roles
 
 cloud/get-started-certificates -> #issue-ca-certificates
@@ -772,13 +772,19 @@ python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-tem
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
 
+cloud/availability-overview -> /cloud/service-availability#
+
+cloud/configuration -> /cloud/configuration#configuration
+
+cloud/pricing-intro -> /cloud/pricing#
+
+cloud/support-intro -> /cloud/support#
+
 cloud/certificates-namespace -> #manage-certificates
 
 cloud/certificates-filters -> #manage-certificate-filters
 
 cloud/users-namespace-level-permissions -> /cloud/users#namespace-level-permissions
-
-cloud/support-create-ticket -> /cloud/support#support-ticket
 
 cloud/certificates-notifications -> #expiration-notifications
 
@@ -806,11 +812,11 @@ cloud/users-update-permissions -> #update-permissions
 
 cloud/users-delete -> #delete-users
 
-cloud/what-is-an-action -> /cloud/pricing#action
-
 concepts/what-is-a-reset -> /workflows#reset
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
+
+cloud/what-is-an-action -> /cloud/pricing#action
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
@@ -1173,5 +1179,9 @@ go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/g
 go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
+
+cloud/sla -> /cloud/sla#
+
+cloud/get-started -> /cloud/get-started#invite-users
 
 

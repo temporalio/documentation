@@ -13,10 +13,6 @@
     "sections": [
         {
             "type": "p",
-            "id": "concepts/what-is-temporal-cloud"
-        },
-        {
-            "type": "p",
             "id": "cloud/cloud-intro"
         }
     ]

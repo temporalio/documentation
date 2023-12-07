@@ -1,11 +1,10 @@
 ---
-id: operating-envelope-intro
-title: What is the operating envelope of Temporal Cloud?
-sidebar_label: Operating envelope
+id: availability-overview
+title: Service availability - Temporal Cloud
+sidebar_label: Service availability
 description: The operating envelope of Temporal Cloud includes availability, regions, throughput, latency, and limits.
 tags:
   - temporal cloud
-  - introduction
   - operations
 ---
 

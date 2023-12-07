@@ -1,13 +1,15 @@
 ---
-id: operating-envelope-latency
-title: What kind of latency can I expect from Temporal Cloud?
+id: latency-slo
+title: Latency Service Level Objective (SLO)
 sidebar_label: Latency
-description: Our latency SLO is 200ms per region for p99.
+description: Temporal Cloud's latency SLO is 200ms per region for p99.
 tags:
   - temporal cloud
   - operations
   - explanation
 ---
+
+**What kind of latency can I expect from Temporal Cloud?**
 
 Temporal Cloud aims for a latency SLO of 200ms per region for p99.
 In June 2023, Temporal measured latency over a week-long period for starting and signaling Workflow Executions as follows:
