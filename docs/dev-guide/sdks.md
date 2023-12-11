@@ -70,8 +70,8 @@ Each Temporal SDK targets a specific programming language.
 - [Java SDK developer's guide](/dev-guide/java/introduction#)
 - [PHP SDK developer's guide](/dev-guide/php)
 - [Python SDK developer's guide](/dev-guide/python/introduction#)
-- [TypeScript developer's guide](/dev-guide/typescript/introduction#)
-- [.NET API reference](https://dotnet.temporal.io/)
+- [TypeScript SDK developer's guide](/dev-guide/typescript/introduction#)
+- [.NET SDK API reference](https://dotnet.temporal.io/)
 
 Despite supporting multiple languages, and supporting many features, Temporal SDKs aim to make developers feel at home in their language.
 
