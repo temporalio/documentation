@@ -17,7 +17,7 @@ This server becomes the environment that runs the Worker. This example uses the 
 to set up and tear down the test environment.
 
 In the body of the test case, you create an instance of a Worker and specify the Workflow and Activities.
-In this example, the Activity is mocked out and replaced with a function that returns a specific result..
+In this example, the Activity is mocked out and replaced with a function that returns a specific result.
 This ensures that the Workflow test doesn't invoke the actual Activity.
 
 Calling `client.workflow.execute(...)` executes the Workflow logic and any invoked Activities inside the test process.

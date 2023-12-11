@@ -15,5 +15,3 @@ You can now do the following things:
 - Describe the tools available and recommended to develop Workflows.
 - Describe the code that actually forms a Temporal application.
 - Implement an appropriate testing framework.
-
-Continue to the next section.
