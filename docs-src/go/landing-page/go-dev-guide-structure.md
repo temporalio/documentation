@@ -1,6 +1,6 @@
 ---
 id: go-dev-guide-structure
-title: GO SDK developer's guide structure
+title: Go SDK developer's guide structure
 description: Explore the Temporal go SDK's developer's guide structure.
 sidebar_label: go SDK guide
 tags:

@@ -75,7 +75,9 @@ async function generateTableOfContents(config, files) {
   for (const [language, filePaths] of Object.entries(filesByLanguage)) {
     let tocContent = `---
 id: ${translateLanguageName(language)}-dev-guide-structure
-title: ${translateLanguageName(language).toUpperCase()} SDK developer's guide structure
+title: ${
+      translateLanguageName(language).charAt(0).toUpperCase() + translateLanguageName(language).slice(1)
+    } SDK developer's guide structure
 description: Explore the Temporal ${translateLanguageName(language)} SDK's developer's guide structure.
 sidebar_label: ${translateLanguageName(language)} SDK guide
 tags:
@@ -95,8 +97,9 @@ This guide is meant to provide a comprehensive overview of the structures, primi
       const content = await fs.readJSON(filePath);
       const h2Sections = content.sections.filter((section) => section.type === "h2");
       const excludedTopics = ["Introduction", "Landing"];
-      const topicName =
-        path.basename(filePath, ".json").charAt(0).toUpperCase() + path.basename(filePath, ".json").slice(1);
+      const filenameWithoutExtension = path.basename(filePath, ".json");
+      const topicName = filenameWithoutExtension.charAt(0).toUpperCase() + filenameWithoutExtension.slice(1);
+
       if (!excludedTopics.includes(topicName)) {
         tocContent += `## ${topicName}\n\n`;
         if (content.description) {

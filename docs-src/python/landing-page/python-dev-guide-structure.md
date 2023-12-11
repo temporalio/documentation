@@ -1,6 +1,6 @@
 ---
 id: python-dev-guide-structure
-title: PYTHON SDK developer's guide structure
+title: Python SDK developer's guide structure
 description: Explore the Temporal python SDK's developer's guide structure.
 sidebar_label: python SDK guide
 tags:
