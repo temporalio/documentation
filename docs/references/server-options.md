@@ -16,7 +16,7 @@ tags:
 
 You can run the [Temporal Server](/clusters#temporal-server) as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.
 
-The Temporal Server services can be [run in various ways](/kb/all-the-ways-to-run-a-cluster).
+The Temporal Server services can be run in various ways.
 We recommend this approach for a limited number of situations.
 
 ```go
@@ -79,7 +79,7 @@ s := temporal.NewServer(
 
 ### WithAuthorizer
 
-Sets a low level [authorization mechanism](/security#authorizer-plugin) that determines whether to allow or deny inbound API calls.
+Sets a low level [authorization mechanism](/self-hosted-guide/security#authorizer-plugin) that determines whether to allow or deny inbound API calls.
 
 ```go
 s := temporal.NewServer(
@@ -100,7 +100,7 @@ s := temporal.NewServer(
 
 ### WithClaimMapper
 
-Configures a [mechanism to map roles](/security/#claimmapper-plugin-interface) to `Claims` for authorization.
+Configures a [mechanism to map roles](/self-hosted-guide/security#claimmapper-plugin-interface) to `Claims` for authorization.
 
 ```go
 s := temporal.NewServer(
