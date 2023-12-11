@@ -93,8 +93,6 @@ Generate an API Key using one of the following methods.
 
 To generate an API Key using the Cloud UI:
 
-To generate an API Key using the Cloud UI:
-
 1. [Login](https://cloud.temporal.io/) to the Cloud UI.
 2. Navigate to [Profile Page → API Keys](https://cloud.temporal.io/profile/api-keys).
 3. Select **Create API Key** and provide the following:
