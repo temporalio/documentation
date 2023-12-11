@@ -22,7 +22,7 @@ If you **must** use a library that references a Node.js or DOM API and you are c
 
 :::
 
-The Workflow sandbox can run only deterministic code, so side effects and access to external state must be done through Activities because Activity outputs are recorded in the Event History and can read deterministically by the Workflow.
+In the TypeScript SDK, you can safely use non-deterministic methods and rely on the sandbox to replace non-deterministic code with deterministic versions. However side effects and access to external state must be done through Activities because Activity outputs are recorded in the Event History and can read deterministically by the Workflow.
 
 This limitation also means that Workflow code cannot directly import the [Activity Definition](/concepts/what-is-an-activity-definition).
 [Activity Types](/concepts/what-is-an-activity-definition#activity-type) can be imported, so they can be invoked in a type-safe manner.

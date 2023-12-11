@@ -15,7 +15,7 @@ This chapter walks through the steps to do that using the TypeScript SDK.
 
 :::competency Construct a new Temporal Application project
 
-This chapter of the Temporal TypeScript SDK developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application using Go.
+This chapter of the Temporal TypeScript SDK developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application using TypeScript.
 
 By the end of this section you will know how to construct a new Temporal Application project.
 
