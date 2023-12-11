@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday December 05 2023 15:35:21 PM -0700
+Last assembled: Monday December 11 2023 08:50:50 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -374,6 +374,8 @@ self-hosted/how-to-upgrade-the-temporal-server-version -> /self-hosted-guide/upg
 
 self-hosted/what-is-multi-cluster-replication -> /self-hosted-guide/multi-cluster-replication#
 
+go/features/metrics/metrics -> /dev-guide/go/metrics#metrics
+
 references/server-options -> /references/server-options#withconfig
 
 concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
@@ -432,8 +434,6 @@ concepts/what-is-an-activity-task-execution -> /workers#activity-task-execution
 
 concepts/what-is-an-update -> /workflows#update
 
-go/features/metrics/metrics -> /dev-guide/go/observability#metrics
-
 java/metrics -> /dev-guide/java/observability#metrics
 
 python/metrics -> /dev-guide/python/observability#metrics
@@ -482,7 +482,7 @@ concepts/what-is-a-schedule-to-close-timeout -> #schedule-to-close-timeout
 
 concepts/what-is-a-heartbeat-timeout -> #heartbeat-timeout
 
-dev-guide/sdk-features/activity-heartbeats -> /dev-guide/sdk-features#
+dev-guide/sdk-features/activity-heartbeats -> /dev-guide/sdk-features/activity-heartbeats#
 
 go/heartbeat-timeout -> /dev-guide/go/features/activity-heartbeats#heartbeat-timeout
 
@@ -624,9 +624,9 @@ go/how-to-set-workeroptions-in-go -> /dev-guide/go/features/core-app#stickysched
 
 concepts/what-is-a-worker-session -> #worker-session
 
-go/worker-sessions -> /dev-guide/go/features#worker-sessions
+go/worker-sessions -> /dev-guide/go/features/worker-sessions#
 
-dev-guide/sdk-features/workflows -> /dev-guide/sdk-features/core-application#workflow-definitions
+dev-guide/sdk-features/workflows -> /dev-guide/sdk-features/core-application#workflows
 
 go/patching -> /dev-guide/go/features/versioning#patching
 
@@ -660,7 +660,7 @@ concepts/what-is-a-workflow-run-timeout -> #workflow-run-timeout
 
 references/commands -> /references/commands#
 
-go/continue-as-new -> /dev-guide/go/features#continue-as-new
+go/continue-as-new -> /dev-guide/go/features/continue-as-new#continue-as-new
 
 java/continue-as-new -> /dev-guide/java/features#continue-as-new
 
@@ -702,7 +702,7 @@ python/queries -> /dev-guide/python/features#queries
 
 typescript/queries -> /dev-guide/typescript/features#queries
 
-go/updates -> /dev-guide/go/features#updates
+go/updates -> /dev-guide/go/features/updates#
 
 java/updates -> /dev-guide/java/features#updates
 
@@ -724,7 +724,7 @@ typescript/parent-close-policy -> /dev-guide/typescript/features#parent-close-po
 
 concepts/what-is-a-delay-start-workflow-execution -> #delay-workflow-execution
 
-go/cron-jobs -> /dev-guide/go/features#temporal-cron-jobs
+go/cron-jobs -> /dev-guide/go/features/cron-jobs#temporal-cron-jobs
 
 java/how-to-set-a-cron-schedule-in-java -> /dev-guide/java/features#cron-schedule
 
@@ -1064,19 +1064,19 @@ python/activity-heartbeats -> /dev-guide/python/features#activity-heartbeats
 
 typescript/activity-heartbeats -> /dev-guide/typescript/features#activity-heartbeats
 
+go/developing-workflows -> /dev-guide/go/features/core-app#develop-workflows
+
 go/generated/backgroundcheck-boilerplate-backgroundcheck-workflow -> /dev-guide/go/project-setup#workflow-code
 
 java/chapter-project-setup/backgroundcheck-boilerplate-workflow-definition -> /dev-guide/java/project-setup#boilerplate-workflow-code
-
-python/backgroundcheck-boilerplate-backgroundcheck-workflow -> /dev-guide/python/project-setup#workflow-code
-
-go/developing-workflows -> /dev-guide/go/features/core-app#develop-workflows
 
 java/how-to-develop-a-workflow-definition-in-java -> /dev-guide/java/foundations#develop-workflows
 
 php/developing-workflows -> /dev-guide/php/foundations#develop-workflows
 
 python/developing-workflows -> /dev-guide/python/foundations#develop-workflows
+
+python/backgroundcheck-boilerplate-backgroundcheck-workflow -> /dev-guide/python/project-setup#workflow-code
 
 go/generated/backgroundcheck-boilerplate-ssntrace-activity -> /dev-guide/go/project-setup#activity-code
 
@@ -1089,6 +1089,24 @@ go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/g
 java/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/java/project-setup#dev-server-worker
 
 python/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/python/project-setup#dev-server-worker
+
+dev-guide/sdk-features/signals -> #signals
+
+dev-guide/sdk-features/queries -> #queries
+
+dev-guide/sdk-features/updates -> #updates
+
+go/schedules -> /dev-guide/go/features/schedules#
+
+java/schedules -> /dev-guide/java/features#schedule-a-workflow
+
+python/schedules -> /dev-guide/python/features#schedule-a-workflow
+
+typescript/schedules -> /dev-guide/typescript/features#schedule-a-workflow
+
+dev-guide/sdk-features/schedules -> #schedules
+
+dev-guide/sdk-features/cron-jobs -> #cron-jobs
 
 python/tracing -> /dev-guide/python/observability#tracing
 
@@ -1180,42 +1198,22 @@ go/chapter-project-setup/project-structure -> /dev-guide/go/project-setup#boiler
 
 go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
+go/generated/add-replay-test-to-background-check-workflow -> /dev-guide/go/durable-execution#add-replay-test
+
+go/chapter-durable-execution/static-analysis -> /dev-guide/go/durable-execution#static-analysis
+
 go/features/core-app/core-app-intro -> /dev-guide/go/features/core-app#
+
+go/async-activity-completion -> /dev-guide/go/features#asynchronous-activity-completion
+
+go/features/tracing/introduction -> /dev-guide/go/features/tracing#
+
+go/logging -> /dev-guide/go/features/logging#
 
 go/generated/how-to-customize-workflow-type-in-go -> /dev-guide/go/features/core-app#customize-workflow-type
 
 go/generated/how-to-customize-activity-type-in-go -> #customize-activity-type
 
 go/testing -> /dev-guide/go/features/test-suite#replay
-
-go/features/tracing/introduction -> /dev-guide/go/features/tracing#
-
-go/logging -> /dev-guide/go/features/logging#
-
-dev-guide/sdk-features/signals -> #signals
-
-dev-guide/sdk-features/queries -> #queries
-
-dev-guide/sdk-features/updates -> #updates
-
-go/schedules -> /dev-guide/go/features#schedule-a-workflow
-
-java/schedules -> /dev-guide/java/features#schedule-a-workflow
-
-python/schedules -> /dev-guide/python/features#schedule-a-workflow
-
-typescript/schedules -> /dev-guide/typescript/features#schedule-a-workflow
-
-dev-guide/sdk-features/scheduled-workflows -> #scheduled-workflows
-
-dev-guide/sdk-features/cron-jobs -> #cron-jobs
-
-go/chapter-durable-execution/static-analysis -> /dev-guide/go/durable-execution#static-analysis
-
-dev-guide/sdk-features/schedules -> #schedules
-
-go/generated/add-replay-test-to-background-check-workflow -> /dev-guide/go/durable-execution#add-replay-test
-
-go/async-activity-completion -> /dev-guide/go/features#asynchronous-activity-completion
 
 
