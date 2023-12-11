@@ -1,0 +1,31 @@
+{
+    "id": "child-workflows",
+    "file_name": "child-workflows.md",
+    "file_dir": "dev-guide/golang/features",
+    "slug": "/dev-guide/go/features/child-workflows",
+    "title": "Child Workflows - Go SDK feature guide",
+    "sidebar_label": "Child Workflows",
+    "sidebar_position": 5,
+    "description": "Learn how to implement Child Workflows using the Temporal Go SDK.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "h2",
+            "id": "go/child-workflows"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-spawn-a-child-workflow-execution-in-go"
+        },
+        {
+            "type": "h4",
+            "id": "go/parent-close-policy"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-set-a-parent-close-policy-in-go"
+        }
+    ]
+}

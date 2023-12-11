@@ -524,7 +524,7 @@ If there is an attempt to spawn a Workflow Execution with a Workflow Id Reuse Po
 
 A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
-- [How to set a Workflow Execution Timeout using the Go SDK](/dev-guide/go/features#workflow-timeouts)
+- [How to set a Workflow Execution Timeout using the Go SDK](/dev-guide/go/features/workflow-timeouts-and-retries#)
 - [How to set a Workflow Execution Timeout using the Java SDK](/dev-guide/java/features#workflow-timeouts)
 - [How to set a Workflow Execution Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
 - [How to set a Workflow Execution Timeout using the Python SDK](/dev-guide/python/features#workflow-timeouts)
@@ -541,7 +541,7 @@ This timeout is most commonly used for stopping the execution of a [Temporal Cro
 
 A Workflow Run Timeout is the maximum amount of time that a single Workflow Run is restricted to.
 
-- [How to set a Workflow Run Timeout using the Go SDK](/dev-guide/go/features#workflow-timeouts)
+- [How to set a Workflow Run Timeout using the Go SDK](/dev-guide/go/features/workflow-timeouts-and-retries#)
 - [How to set a Workflow Run Timeout using the Java SDK](/dev-guide/java/features#workflow-timeouts)
 - [How to set a Workflow Run Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
 - [How to set a Workflow Run Timeout using the Python SDK](/dev-guide/python/features#workflow-timeouts)
@@ -558,7 +558,7 @@ If the Workflow Run Timeout is reached, the Workflow Execution is Terminated.
 
 A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/workers#worker) to execute a [Workflow Task](/workers#workflow-task) after the Worker has pulled that Workflow Task from the [Task Queue](/workers#task-queue).
 
-- [How to set a Workflow Task Timeout using the Go SDK](/dev-guide/go/features#workflow-timeouts)
+- [How to set a Workflow Task Timeout using the Go SDK](/dev-guide/go/features/workflow-timeouts-and-retries#)
 - [How to set a Workflow Task Timeout using the Java SDK](/dev-guide/java/features#workflow-timeouts)
 - [How to set a Workflow Task Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
 - [How to set a Workflow Task Timeout using the Python SDK](/dev-guide/python/features#workflow-timeouts)
@@ -793,7 +793,7 @@ If there is any chance that the code provided to the Side Effect could fail, use
 
 A Child Workflow Execution is a [Workflow Execution](/workflows#workflow-execution) that is spawned from within another Workflow.
 
-- [How to start a Child Workflow Execution using the Go SDK](/dev-guide/go/features#child-workflows)
+- [How to start a Child Workflow Execution using the Go SDK](/dev-guide/go/features/child-workflows#child-workflows)
 - [How to start a Child Workflow Execution using the Java SDK](/dev-guide/java/features#child-workflows)
 - [How to start a Child Workflow Execution using the PHP SDK](/dev-guide/php/features#child-workflows)
 - [How to start a Child Workflow Execution using the Python SDK](/dev-guide/python/features#child-workflows)
@@ -870,7 +870,7 @@ Our advice: **When in doubt, use an Activity.**
 
 A Parent Close Policy determines what happens to a [Child Workflow Execution](#child-workflow) if its Parent changes to a Closed status (Completed, Failed, or Timed out).
 
-- [How to set a Parent Close Policy using the Go SDK](/dev-guide/go/features#parent-close-policy)
+- [How to set a Parent Close Policy using the Go SDK](/dev-guide/go/features/child-workflows#parent-close-policy)
 - [How to set a Parent Close Policy using the Java SDK](/dev-guide/java/features#parent-close-policy)
 - [How to set a Parent Close Policy using the PHP SDK](/dev-guide/php/features#parent-close-policy)
 - [How to set a Parent Close Policy using the Python SDK](/dev-guide/python/features#parent-close-policy)

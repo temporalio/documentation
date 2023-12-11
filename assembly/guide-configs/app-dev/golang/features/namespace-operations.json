@@ -1,0 +1,35 @@
+{
+    "id": "namespace-operations",
+    "file_name": "namespace-operations.md",
+    "file_dir": "dev-guide/golang/features",
+    "slug": "/dev-guide/go/features/namespace-operations",
+    "title": "Namespace operations - Go SDK feature guide",
+    "sidebar_label": "Namespace operations",
+    "sidebar_position": 5,
+    "description": "Learn how to work with GO SDK Namespace operations APIs.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "go/namespaces"
+        },
+        {
+            "type": "h3",
+            "id": "go/register-namespaces"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-register-namespace-in-go"
+        },
+        {
+            "type": "h3",
+            "id": "go/manage-namespaces"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-manage-namespaces-in-go"
+        }
+    ]
+}

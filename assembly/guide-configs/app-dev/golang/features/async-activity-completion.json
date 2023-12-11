@@ -1,0 +1,23 @@
+{
+    "id": "async-activity-completion",
+    "file_name": "async-activity-completion.md",
+    "file_dir": "dev-guide/golang/features",
+    "slug": "/dev-guide/go/features/async-activity-completion",
+    "title": "Asynchronous Activity Completion - Go SDK feature guide",
+    "sidebar_label": "Async Activity Completion",
+    "sidebar_position": 5,
+    "description": "Learn how to asynchronously complete an Activity using Go.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "go/async-activity-completion"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-asynchronously-complete-an-activity-in-go"
+        }
+    ]
+}

@@ -61,7 +61,7 @@ On self-hosted Temporal Clusters, you can register your Namespaces in the follow
 - Use the `tctl namespace register` command with the `--retention` modfiier to register your Namespaces, one at a time, and set the Retention Period on each.
 
   - [How to register a new Namespace using tctl](/tctl-v1/namespace#register)
-  - [How to register a new Namespace using the Go SDK](/dev-guide/go/features#register-namespace)
+  - [How to register a new Namespace using the Go SDK](/dev-guide/go/features/namespace-operations#register-namespace)
   - [How to register a new Namespace using the Java SDK](/dev-guide/java/features#register-namespace)
 
 - In your Client program, register your Namespace using `RegisterNamespaceRequest` API available in all the SDKs.
@@ -77,7 +77,7 @@ On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#) or [tcld comm
 On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs.
 Note that these APIs and tctl commands will not work with Temporal Cloud.
 
-- [How to manage Namespaces using the Go SDK](/dev-guide/go/features#manage-namespaces)
+- [How to manage Namespaces using the Go SDK](/dev-guide/go/features/namespace-operations#manage-namespaces)
 - [How to manage Namespaces using the Java SDK](/dev-guide/java/features#manage-namespaces)
 
 - Update information and configuration for a registered Namespace on your Temporal Cluster:

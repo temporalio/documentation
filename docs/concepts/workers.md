@@ -216,7 +216,7 @@ An Activity Execution inherits the Task Queue name from its Workflow Execution i
 This is optional.
 A Child Workflow Execution inherits the Task Queue name from its Parent Workflow Execution if one is not provided.
 
-- [How to start a Child Workflow Execution using the Go SDK](/dev-guide/go/features#child-workflows)
+- [How to start a Child Workflow Execution using the Go SDK](/dev-guide/go/features/child-workflows#child-workflows)
 - [How to start a Child Workflow Execution using the Java SDK](/dev-guide/java/features#child-workflows)
 - [How to start a Child Workflow Execution using the PHP SDK](/dev-guide/php/features#child-workflows)
 - [How to start a Child Workflow Execution using the Python SDK](/dev-guide/python/features#child-workflows)

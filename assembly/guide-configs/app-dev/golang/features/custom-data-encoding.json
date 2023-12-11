@@ -1,0 +1,23 @@
+{
+    "id": "custom-data-encoding",
+    "file_name": "custom-data-encoding.md",
+    "file_dir": "dev-guide/golang/features",
+    "slug": "/dev-guide/go/features/custom-data-encoding",
+    "title": "Custom data encoding - Go SDK feature guide",
+    "sidebar_label": "Custom data encoding",
+    "sidebar_position": 5,
+    "description": "Learn how to apply custom data encoding using the Go SDK.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "go/custom-payload-conversion"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-use-a-custom-payload-converter-in-go"
+        }
+    ]
+}

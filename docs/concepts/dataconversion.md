@@ -114,7 +114,7 @@ A customized Data Converter can have the following three components:
 
 For details on how to implement custom Payload Converters in your SDK, see Custom Payload conversion for the following SDKs:
 
-- [How to implement custom Payload convesion in Go](/dev-guide/go/features#custom-payload-conversion)
+- [How to implement custom Payload convesion in Go](/dev-guide/go/features/custom-data-encoding#)
 - [How to implement custom Payload conversion in Java](/dev-guide/java/features#custom-payload-conversion)
 
 For details on how to implement custom encryption and compression in your SDK, see [Data Encryption](/self-hosted-guide/data-encryption#).
@@ -144,7 +144,7 @@ When the Data Converter receives a value for conversion, it passes through each 
 
 For details on how to use the Payload Converter for custom data types, see Custom Payload Conversion in the following langauages:
 
-- [How to implement custom Payload convesion in Go](/dev-guide/go/features#custom-payload-conversion)
+- [How to implement custom Payload convesion in Go](/dev-guide/go/features/custom-data-encoding#)
 - [How to implement custom Payload conversion in Java](/dev-guide/java/features#custom-payload-conversion)
 
 ## What is a Failure Converter? {#failure-converter}

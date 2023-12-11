@@ -1,0 +1,31 @@
+{
+    "id": "activity-timeouts-and-retries",
+    "file_name": "activity-timeouts-and-retries.md",
+    "file_dir": "dev-guide/golang/features",
+    "slug": "/dev-guide/go/features/activity-timeouts-and-retries",
+    "title": "Activity timeouts and retries - Go SDK feature guide",
+    "sidebar_label": "Activity timeouts and retries",
+    "sidebar_position": 5,
+    "description": "Learn how to implement Activity timeouts and retries with the Go SDK.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "h2",
+            "id": "go/activity-timeouts"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-set-activity-timeouts-in-go"
+        },
+        {
+            "type": "h3",
+            "id": "go/activity-retries"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-set-an-activity-retry-policy-in-go"
+        }
+    ]
+}

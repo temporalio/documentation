@@ -177,7 +177,7 @@ Ports are configurable in the Cluster configuration.
 Retention Period is the duration for which the Temporal Cluster stores data associated with closed Workflow Executions on a Namespace in the Persistence store.
 
 - [How to set the Retention Period for a Namespace](/tctl-v1/namespace#register)
-- [How to set the Retention Period for a Namespace using the Go SDK](/dev-guide/go/features#namespaces)
+- [How to set the Retention Period for a Namespace using the Go SDK](/dev-guide/go/features/namespace-operations#)
 - [How to set the Retention Period for a Namespace using the Java SDK](/dev-guide/java/features#namespaces)
 
 A Retention Period applies to all closed Workflow Executions within a [Namespace](/namespaces#) and is set when the Namespace is registered.

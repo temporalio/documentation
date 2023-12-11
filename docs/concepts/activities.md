@@ -169,7 +169,7 @@ An Activity Id can be used to [complete the Activity asynchronously](#asynchrono
 A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an [Activity Task](/workers#activity-task) is scheduled (that is, placed in a Task Queue) to when a [Worker](/workers#worker) starts (that is, picks up from the Task Queue) that Activity Task.
 In other words, it's a limit for how long an Activity Task can be enqueued.
 
-- [How to set a Schedule-To-Start Timeout using the Go SDK](/dev-guide/go/features#activity-timeouts)
+- [How to set a Schedule-To-Start Timeout using the Go SDK](/dev-guide/go/features/activity-timeouts-and-retries#activity-timeouts)
 - [How to set a Schedule-To-Start Timeout using the Java SDK](/dev-guide/java/features#activity-timeouts)
 - [How to set a Schedule-To-Start Timeout using the PHP SDK](/dev-guide/php/features#activity-timeouts)
 - [How to set a Schedule-To-Start Timeout using the Python SDK](/dev-guide/python/features#activity-timeouts)
@@ -207,7 +207,7 @@ In most cases, we recommend monitoring the `temporal_activity_schedule_to_start_
 
 A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/workers#activity-task-execution).
 
-- [How to set a Start-To-Close Timeout using the Go SDK](/dev-guide/go/features#activity-timeouts)
+- [How to set a Start-To-Close Timeout using the Go SDK](/dev-guide/go/features/activity-timeouts-and-retries#activity-timeouts)
 - [How to set a Start-To-Close Timeout using the Java SDK](/dev-guide/java/features#activity-timeouts)
 - [How to set a Start-To-Close Timeout using the PHP SDK](/dev-guide/php/features#activity-timeouts)
 - [How to set a Start-To-Close Timeout using the Python SDK](/dev-guide/python/features#activity-timeouts)
@@ -250,10 +250,10 @@ If this timeout is reached, the following actions occur:
 
 A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall [Activity Execution](#activity-execution), from when the first [Activity Task](/workers#activity-task) is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
 
-- [How to set a Schedule-To-Close Timeout using the Go SDK](/dev-guide/go/features#activity-timeouts)
+- [How to set a Schedule-To-Close Timeout using the Go SDK](/dev-guide/go/features/activity-timeouts-and-retries#activity-timeouts)
 - [How to set a Schedule-To-Close Timeout using the Java SDK](/dev-guide/java/features#activity-timeouts)
-- [How to set a Schedule-To-Close Timeout using the PHP SDK](/dev-guide/go/features#activity-timeouts)
-- [How to set a Schedule-To-Close Timeout using the Python SDK](/dev-guide/go/features#activity-timeouts)
+- [How to set a Schedule-To-Close Timeout using the PHP SDK](/dev-guide/go/features/activity-timeouts-and-retries#activity-timeouts)
+- [How to set a Schedule-To-Close Timeout using the Python SDK](/dev-guide/go/features/activity-timeouts-and-retries#activity-timeouts)
 - [How to set a Schedule-To-Close Timeout using the TypeScript SDK](/dev-guide/typescript/features#activity-timeouts)
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Schedule-To-Close Timeout period</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/schedule-to-close-timeout.svg" alt="Schedule-To-Close Timeout period" height="666" width="1120" /></div></div>

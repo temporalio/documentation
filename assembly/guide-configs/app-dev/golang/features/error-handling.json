@@ -1,0 +1,19 @@
+{
+    "id": "error-handling",
+    "file_name": "error-handling.md",
+    "file_dir": "dev-guide/golang/features",
+    "slug": "/dev-guide/go/features/error-handling",
+    "title": "Error handling - Go SDK feature guide",
+    "sidebar_label": "Error handling",
+    "sidebar_position": 5,
+    "description": "Learn how to handle errors using the Go SDK.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "go/error-handling"
+        }
+    ]
+}

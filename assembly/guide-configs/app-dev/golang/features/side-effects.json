@@ -1,0 +1,31 @@
+{
+    "id": "side-effects",
+    "file_name": "side-effects.md",
+    "file_dir": "dev-guide/golang/features",
+    "slug": "/dev-guide/go/features/side-effects",
+    "title": "Side Effects - Go SDK feature guide",
+    "sidebar_label": "Side Effects",
+    "sidebar_position": 5,
+    "description": "Learn how to implement a Side Effect using the Go SDK.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "go/side-effects"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-execute-a-side-effect-in-go"
+        },
+        {
+            "type": "h3",
+            "id": "go/mutable-side-effects"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to-set-mutable-side-effects-in-go"
+        }
+    ]
+}
