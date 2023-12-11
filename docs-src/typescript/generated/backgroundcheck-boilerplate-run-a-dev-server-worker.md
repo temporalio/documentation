@@ -27,8 +27,8 @@ Add the following code to `src/worker.ts` to define a worker process that commun
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-ff0cf730-9305-4534-90b6-8b1b5664034c" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-ff0cf730-9305-4534-90b6-8b1b5664034c" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/worker.ts">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```typescript
-import { NativeConnection, Worker } from "@temporalio/worker";
-import * as activities from "./activities";
+import { NativeConnection, Worker } from '@temporalio/worker';
+import * as activities from './activities';
 
 async function run() {
   // Step 1: Establish a connection with Temporal server.
@@ -36,17 +36,17 @@ async function run() {
   // Worker code uses `@temporalio/worker.NativeConnection`.
   // (But in your application code it's `@temporalio/client.Connection`.)
   const connection = await NativeConnection.connect({
-    address: "localhost:7233",
+    address: 'localhost:7233',
     // TLS and gRPC metadata configuration goes here.
   });
   // Step 2: Register Workflows and Activities with the Worker and specify your
   // namespace and Task Queue.
   const worker = await Worker.create({
     connection,
-    namespace: "default",
-    taskQueue: "background-check",
+    namespace: 'default',
+    taskQueue: 'background-check',
     // Workflows are registered using a path as they run in a separate JS context.
-    workflowsPath: require.resolve("./workflows"),
+    workflowsPath: require.resolve('./workflows'),
     activities,
   });
 

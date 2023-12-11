@@ -23,13 +23,13 @@ Add the following code to `src/mocha/backgroundcheck.test.ts` to test that the W
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-4737aeb5-7ddf-4ab0-b5ab-582156008047" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-4737aeb5-7ddf-4ab0-b5ab-582156008047" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/project-setup/backgroundcheck_boilerplate/src/mocha/backgroundcheck.test.ts">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```typescript
-import { TestWorkflowEnvironment } from "@temporalio/testing";
-import { Worker } from "@temporalio/worker";
-import assert from "assert";
-import { before, describe, it } from "mocha";
-import { backgroundCheck } from "../workflows";
+import { TestWorkflowEnvironment } from '@temporalio/testing';
+import { Worker } from '@temporalio/worker';
+import assert from 'assert';
+import { before, describe, it } from 'mocha';
+import { backgroundCheck } from '../workflows';
 
-describe("Background check workflow", () => {
+describe('Background check workflow', () => {
   let testEnv: TestWorkflowEnvironment;
 
   before(async () => {
@@ -40,28 +40,28 @@ describe("Background check workflow", () => {
     await testEnv?.teardown();
   });
 
-  it("successfully completes the Workflow", async () => {
-    const ssn = "111-22-3333";
+  it('successfully completes the Workflow', async () => {
+    const ssn = '111-22-3333';
     const { client, nativeConnection } = testEnv;
-    const taskQueue = "testing";
+    const taskQueue = 'testing';
 
     const worker = await Worker.create({
       connection: nativeConnection,
       taskQueue,
-      workflowsPath: require.resolve("../workflows"),
+      workflowsPath: require.resolve('../workflows'),
       activities: {
-        ssnTrace: async () => "pass",
+        ssnTrace: async () => 'pass',
       },
     });
 
     const result = await worker.runUntil(
       client.workflow.execute(backgroundCheck, {
         args: [ssn],
-        workflowId: "background-check-test",
+        workflowId: 'background-check-test',
         taskQueue,
-      })
+      }),
     );
-    assert.equal(result, "pass");
+    assert.equal(result, 'pass');
   });
 });
 ```
