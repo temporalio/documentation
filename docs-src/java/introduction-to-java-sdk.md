@@ -146,6 +146,7 @@ For complex and large-scale use cases, having at least some experience with a va
 
 - Continue reading this guide.
 - Temporal 101 course in Java → [t.mp/java-101](https://t.mp/java-101)
+- Temporal 102 course in Java → [t.mp/java-102](https://t.mp/java-102)
 - Documentation samples repository → [temporalio/documentation-samples-java](https://github.com/temporalio/documentation-samples-java)
 - Java SDK samples repository → [temporalio/samples-java](https://github.com/temporalio/samples-java)
 - Java SDK workshops → [youtube.com/playlist?list=PLl9kRkvFJrlSNuTvL0dl3VE5GEe1HFtjf](https://www.youtube.com/playlist?list=PLl9kRkvFJrlSNuTvL0dl3VE5GEe1HFtjf)

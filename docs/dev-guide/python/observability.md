@@ -2,7 +2,7 @@
 id: observability
 title: Python SDK developer's guide - Observability
 sidebar_label: Observability
-sidebar_position: 5
+sidebar_position: 8
 description: Improve observability in your Python-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
 toc_max_heading_level: 4
 keywords:
@@ -146,7 +146,7 @@ You can do this with [Search Attributes](/visibility#search-attribute).
 
 - [Default Search Attributes](/visibility#default-search-attributes) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
 - _Custom Search Attributes_ can contain their own domain-specific data (like `customerId` or `numItems`).
-  - A few [generic Custom Search Attributes](/visibility#custom-search-attributes) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](/kb/all-the-ways-to-run-a-cluster#docker-compose).
+  - A few [generic Custom Search Attributes](/visibility#custom-search-attributes) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](https://github.com/temporalio/docker-compose).
 
 The steps to using custom Search Attributes are:
 

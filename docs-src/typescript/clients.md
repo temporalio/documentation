@@ -446,4 +446,4 @@ Outputs something like:
 
 **For the full list of gRPC calls, see the Methods section of the [WorkflowService](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#methods) API reference.**
 
-Note that if you are trying to do a lot of list-then-filter operations (e.g. `listClosedWorkflowExecutions`), the [Visibility APIs](/typescript/search-attributes) are a better choice for Temporal deployments with [ElasticSearch enabled](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster/) (this is enabled by default for all Temporal Cloud customers).
+Note that if you are trying to do a lot of list-then-filter operations (e.g. `listClosedWorkflowExecutions`), the [Visibility APIs](/typescript/search-attributes) are a better choice for Temporal deployments with [ElasticSearch enabled](/self-hosted/how-to-integrate-elasticsearch-into-a-temporal-cluster/) (this is enabled by default for all Temporal Cloud customers).

@@ -26,6 +26,9 @@ export async function createNodesFromSamples(config) {
         if (ext === ".ts") {
           lang = "typescript";
         }
+        if (ext === ".ts") {
+          lang = "typescript";
+        }
         await createNodes(config, file, lang, sourceURL);
       }
     }
@@ -175,6 +178,7 @@ export async function createNodesFromSamples(config) {
         return false;
     }
   }
+
   function isDACX(str, config, file) {
     str = str.toLowerCase(); // Remember to assign the result back to str
     if (str.includes("_dacx")) {

@@ -32,7 +32,7 @@ If you're using Temporal Cloud, create a [support ticket](/cloud/support#support
 
 :::
 
-[Frontend Service](/clusters/#frontend-service) logs can show which parts of the Cluster aren't working.
+[Frontend Service](/concepts/what-is-a-frontend-service) logs can show which parts of the Cluster aren't working.
 For the error to appear, a service pod or container must be up and running.
 
 OSS users can verify that the Frontend Service is connected and running by using `tctl`.
