@@ -1,12 +1,12 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday December 11 2023 12:35:58 PM -0800
+Last assembled: Monday December 11 2023 13:13:06 PM -0800
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 129 guide configurations found.
 
-1796 information nodes found.
+1726 information nodes found.
 
 1464 information nodes are attached to guides.
 
@@ -658,8 +658,6 @@ go/patching -> /dev-guide/go/versioning#patching
 
 java/patching -> /dev-guide/java/versioning#patching
 
-python/how-to-use-the-python-sdk-patching-api-in-python -> /dev-guide/python/versioning#python-sdk-patching-api
-
 typescript/patching -> /dev-guide/typescript/versioning#patching
 
 concepts/what-is-worker-versioning -> /workers#worker-versioning
@@ -1148,8 +1146,6 @@ python/project-structure -> /dev-guide/python/project-setup#boilerplate-project
 
 python/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#start-workflow
 
-python/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
-
 python/add-sdk -> /dev-guide/python/foundations#install-a-temporal-sdk
 
 python/async-activity-completion -> /dev-guide/python/features#asynchronous-activity-completion
@@ -1315,5 +1311,9 @@ go/debug-environment-development -> /dev-guide/go/debugging#debug-in-a-developme
 go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production-environment
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
+
+python/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
+
+python/generated/how-to-use-the-python-sdk-patching-api-in-python -> /dev-guide/python/versioning#python-sdk-patching-api
 
 

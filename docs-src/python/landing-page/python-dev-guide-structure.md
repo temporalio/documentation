@@ -18,7 +18,7 @@ The project setup section of the Temporal Python SDK Developer's guide covers th
 - [Choose a development Cluster](/python/choose-dev-cluster): Discover which development Cluster you should choose
 - [Boilerplate Temporal Application project code](/python/project-structure): Discover the minimum code I need to create a boilerplate Temporal Application.
 - [Start Workflow using the CLI](/python/backgroundcheck-boilerplate-start-workflow): Learn how to start a Temporal Workflow using the CLI
-- [Add a testing framework](/python/backgroundcheck-boilerplate-add-test-framework): How to add a testing framework to your Temporal Application.
+- [Add a testing framework](/python/generated/backgroundcheck-boilerplate-add-test-framework): How to add a testing framework to your Temporal Application.
 
 ## Foundations
 
@@ -83,4 +83,4 @@ Improve observability in your Python-based Temporal Workflows. View which Workfl
 The Versioning section of the Temporal Developer's guide covers how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 
 - [How to use Worker Versioning in Python](/python/how-to-use-worker-versioning-in-python): Version your Python Workers by using build ID-based versioning
-- [How to use the Python SDK Patching API](/python/how-to-use-the-python-sdk-patching-api-in-python): Heres a sample implementation of patching in new code using the Python SDK's patching API.
+- [How to use the Python SDK Patching API](/python/generated/how-to-use-the-python-sdk-patching-api-in-python): Heres a sample implementation of patching in new code using the Python SDK's patching API.

@@ -220,13 +220,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 Use the `connect()` method on the Client class to create and connect to a Temporal Client to the Temporal Cluster.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-5bec470d-b144-49aa-b30d-60c21e3e9875" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-5bec470d-b144-49aa-b30d-60c21e3e9875" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...
@@ -266,13 +260,7 @@ Use the `connect()` method on the Client class to create and connect to a Tempor
 Then specify the [TLSConfig](https://python.temporal.io/temporalio.service.TLSConfig.html) arguments to connect to a Temporal Cluster with TLS enabled.
 The `client_cert` must be combined with `client_private_key` to authenticate the Client.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/connect_cloud_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-da062a0b-c193-4672-96a6-ca772ef22470" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-da062a0b-c193-4672-96a6-ca772ef22470" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/connect_cloud_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 from temporalio.client import Client, TLSConfig
@@ -308,13 +296,7 @@ Specify the `@workflow.defn` decorator on the Workflow class to identify a Workf
 
 Use the `@workflow.run` to mark the entry point method to be invoked. This must be set on one asynchronous method defined on the same class as `@workflow.defn`. Run methods have positional parameters.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-dbb6e830-7d25-4ff2-bc30-70e7990ae34a" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-dbb6e830-7d25-4ff2-bc30-70e7990ae34a" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 from temporalio import workflow
@@ -344,13 +326,7 @@ Workflow parameters are the method parameters of the singular method decorated w
 These can be any data type Temporal can convert, including [`dataclasses`](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
 Technically this can be multiple parameters, but Temporal strongly encourages a single `dataclass` parameter containing all input fields.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_dataobject_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-5b0fdcd4-f7e8-4a55-a776-fe00afa14f56" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-5b0fdcd4-f7e8-4a55-a776-fe00afa14f56" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_dataobject_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 from dataclasses import dataclass
@@ -375,13 +351,7 @@ To return a value of the Workflow, use `return` to return an object.
 
 To return the results of a Workflow Execution, use either `start_workflow()` or `execute_workflow()` asynchronous methods.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-17ed68ce-bd05-4250-90d0-a6850da295ca" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-17ed68ce-bd05-4250-90d0-a6850da295ca" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 from temporalio import workflow
@@ -409,13 +379,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 You can customize the Workflow name with a custom name in the decorator argument. For example, `@workflow.defn(name="your-workflow-name")`. If the name parameter is not specified, the Workflow name defaults to the function name.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-1b65de08-559c-4221-9fa7-023614f1bb2b" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-1b65de08-559c-4221-9fa7-023614f1bb2b" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 from temporalio import workflow
@@ -480,13 +444,7 @@ If you must use a blocking library, consider using a synchronous Activity instea
 
 :::
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-2221cd27-f319-47eb-95eb-f0a92e1db5b9" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-2221cd27-f319-47eb-95eb-f0a92e1db5b9" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 from temporalio import activity
@@ -521,13 +479,7 @@ Activity parameters are the function parameters of the function decorated with `
 These can be any data type Temporal can convert, including dataclasses when properly type-annotated.
 Technically this can be multiple parameters, but Temporal strongly encourages a single dataclass parameter containing all input fields.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-5801d160-dde0-4ba2-9edf-95ff65f5ec76" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-5801d160-dde0-4ba2-9edf-95ff65f5ec76" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 from temporalio import activity
@@ -553,13 +505,7 @@ An Activity Execution can return inputs and other Activity values.
 
 The following example defines an Activity that takes a string as input and returns a string.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-d724afe5-47c2-46ed-b4f5-533e2f67e4e5" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-d724afe5-47c2-46ed-b4f5-533e2f67e4e5" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...
@@ -579,13 +525,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 You can customize the Activity name with a custom name in the decorator argument. For example, `@activity.defn(name="your-activity")`.
 If the name parameter is not specified, the Activity name defaults to the function name.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-5f1eec94-ba05-400d-afb1-760dce09fa1e" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-5f1eec94-ba05-400d-afb1-760dce09fa1e" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...
@@ -622,13 +562,7 @@ In most cases, use `execute_activity()` unless advanced task capabilities are ne
 
 A single argument to the Activity is positional. Multiple arguments are not supported in the type-safe form of `start_activity()` or `execute_activity()` and must be supplied by the `args` keyword argument.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-340b8b31-a0b9-4403-a697-6bc52f565b75" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-340b8b31-a0b9-4403-a697-6bc52f565b75" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 from temporalio import workflow
@@ -662,13 +596,7 @@ Available timeouts are:
 - schedule_to_start_timeout
 - start_to_close_timeout
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/activity_timeouts_retires/your_workflows_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-78133fa9-4417-40ef-8341-cc89ca4857db" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-78133fa9-4417-40ef-8341-cc89ca4857db" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/activity_timeouts_retires/your_workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...
@@ -696,13 +624,7 @@ You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
 `execute_activity()` is a shortcut for `await start_activity()`. An asynchronous `execute_activity()` helper is provided which takes the same arguments as `start_activity()` and `await`s on the result. `execute_activity()` should be used in most cases unless advanced task capabilities are needed.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-d999cfde-8fd6-44df-befd-7db9abb60911" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-d999cfde-8fd6-44df-befd-7db9abb60911" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 from temporalio import workflow
@@ -741,13 +663,7 @@ To develop a Worker, use the `Worker()` constructor and add your Client, Task Qu
 The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
 When a Worker is created, it accepts a list of Workflows in the workflows parameter, a list of Activities in the activities parameter, or both.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_worker_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-0c45b285-7a02-48eb-86cb-6813785c5bfa" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-0c45b285-7a02-48eb-86cb-6813785c5bfa" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_worker_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 from temporalio.client import Client
@@ -781,13 +697,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 When a `Worker` is created, it accepts a list of Workflows in the `workflows` parameter, a list of Activities in the `activities` parameter, or both.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_worker_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-17e5c279-d643-450f-8b7f-de858c79621a" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-17e5c279-d643-450f-8b7f-de858c79621a" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_worker_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...
@@ -823,13 +733,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 To start a Workflow Execution in Python, use either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods in the Client.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-98d22189-6b36-4cae-a47b-bb2fa070527f" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-98d22189-6b36-4cae-a47b-bb2fa070527f" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...
@@ -861,13 +765,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 To set a Task Queue in Python, specify the `task_queue` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-cf2f08ba-75f9-4b41-b258-949cb0125b65" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-cf2f08ba-75f9-4b41-b258-949cb0125b65" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...
@@ -901,13 +799,7 @@ To set a Workflow Id in Python, specify the `id` argument when executing a Workf
 
 The `id` argument should be a unique identifier for the Workflow Execution.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-5d39d734-62e1-4257-b8d8-ea75c6714964" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-5d39d734-62e1-4257-b8d8-ea75c6714964" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...
@@ -949,13 +841,7 @@ To get a handle for an existing Workflow by its Id, you can use [`get_workflow_h
 Then use [`describe()`](https://python.temporal.io/temporalio.client.workflowhandle#describe) to get the current status of the Workflow.
 If the Workflow does not exist, this call fails.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_app/get_workflow_results_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-2c9cdff5-82f0-48da-a948-ba97e569162a" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-2c9cdff5-82f0-48da-a948-ba97e569162a" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/get_workflow_results_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...

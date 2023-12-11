@@ -113,13 +113,7 @@ logging.basicConfig(level=logging.INFO)
 
 Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio.workflow.html#logger) and level on the Workflow. The following example logs the Workflow.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_loggers/your_workflow_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-c937f69a-9ce0-440a-8971-13acd388119a" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-c937f69a-9ce0-440a-8971-13acd388119a" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_loggers/your_workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...
@@ -171,13 +165,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.html#list_workflows) method on the Client handle and pass a [List Filter](/visibility#list-filter) as an argument to filter the listed Workflows.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/starter_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-dd681084-89a2-42a0-94a8-eb046c9bd117" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-dd681084-89a2-42a0-94a8-eb046c9bd117" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/starter_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...
@@ -194,13 +182,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 To set custom Search Attributes, use the `search_attributes` parameter of the ['start_workflow()'](https://python.temporal.io/temporalio.client.Client.html#start_workflow) method.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/starter_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-92f599fc-ce8f-4daa-8181-76d9a037ed4e" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-92f599fc-ce8f-4daa-8181-76d9a037ed4e" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/starter_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...
@@ -223,13 +205,7 @@ To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https
 
 The keys are added to or replace the existing Search Attributes, similar to [`dict.update()`](https://docs.python.org/3/library/stdtypes.html#dict.update).
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/workflow_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-d22b83d7-8395-43ca-bb67-c56b605f1097" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-d22b83d7-8395-43ca-bb67-c56b605f1097" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...
@@ -245,13 +221,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 To remove a Search Attribute, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) function with an empty list as its value.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/workflow_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-b3272612-62cf-41b2-a9f9-78440f413112" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-b3272612-62cf-41b2-a9f9-78440f413112" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...

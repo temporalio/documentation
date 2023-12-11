@@ -364,13 +364,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 In the Temporal Python SDK programming model, a Workflow Definition is defined as a class.
 The `BackgroundCheck class` below is an example of a basic Workflow Definition.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/workflows/backgroundcheck_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-6b96b7d3-2442-4805-9e62-81b51c37cc1a" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-6b96b7d3-2442-4805-9e62-81b51c37cc1a" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/workflows/backgroundcheck_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 from datetime import timedelta
@@ -415,13 +409,7 @@ You can use asynchronous, synchronous multithreaded, and synchronous multiproces
 
 Below is an example of an Activity defined as a function.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/activities/ssntraceactivity_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-b5988134-2b1b-45e2-963a-234fbcb26b6a" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-b5988134-2b1b-45e2-963a-234fbcb26b6a" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/activities/ssntraceactivity_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 from temporalio import activity
@@ -472,13 +460,7 @@ To run a Worker Process with a local development server, define the following st
 
 In regards to organization, we recommend keeping Worker code separate from Workflow and Activity code.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/dev_server_worker/main_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-8c88bd6b-d438-4a8c-b473-212dc684da62" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-8c88bd6b-d438-4a8c-b473-212dc684da62" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/dev_server_worker/main_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 import asyncio
@@ -520,13 +502,7 @@ A Temporal Cloud Worker requires that you specify the following in the Client co
 - Temporal Cloud Address
 - Certificate and private key associated with the Namespace
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/cloud_worker/main_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-0a6ad19f-2f62-4eea-9688-bc7954c45511" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-0a6ad19f-2f62-4eea-9688-bc7954c45511" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/cloud_worker/main_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 import asyncio
@@ -572,13 +548,7 @@ if __name__ == "__main__":
 <!-- DO NOT EDIT THIS FILE DIRECTLY.
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/cloud_worker/main_dacx.py. -->
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/cloud_worker/main_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-37bb7775-170c-40ab-978b-15a914a1f52f" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-37bb7775-170c-40ab-978b-15a914a1f52f" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/cloud_worker/main_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 When specifying the Temporal Cloud Namespace, make sure to append the Account Id as it appears in the url of the Cloud UI.
@@ -660,13 +630,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 Set IP address, port, and Namespace in the Temporal Client options.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/self_hosted_worker/main_dacx.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-eba1ddc8-7a98-4cf1-8490-71af952e5f23" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-eba1ddc8-7a98-4cf1-8490-71af952e5f23" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/self_hosted_worker/main_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 import asyncio
@@ -927,13 +891,7 @@ Then, it executes the `BackgroundCheck.run` method with a social security number
 
 The test is marked with `@pytest.mark.asyncio` to indicate that it is an asynchronous test.
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/tests/workflow_dacx_test.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-9ecc32b6-5bfc-411c-82e1-86b52866ebc6" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-9ecc32b6-5bfc-411c-82e1-86b52866ebc6" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/tests/workflow_dacx_test.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 import uuid
@@ -974,13 +932,7 @@ It tests the `ssn_trace_activity` function from the activities module.
 The function takes a social security number as input and returns a string indicating whether the SSN is valid or not.
 The test checks if the function returns "pass" when given the SSN "55-55-555".
 
-:::copycode Sample application code
-
-The following code sample comes from a working and tested sample application.
-The code sample might be abridged within the guide to highlight key aspects.
-Visit the source repository to [view the source code](https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/tests/activity_dacx_test.py) in the context of the rest of the application code.
-
-:::
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-25ba90b6-0532-4f7a-8ff5-f8ff989a928b" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-25ba90b6-0532-4f7a-8ff5-f8ff989a928b" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/tests/activity_dacx_test.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 import pytest
