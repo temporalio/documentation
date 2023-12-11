@@ -73,13 +73,13 @@ async function generateTableOfContents(config, files) {
   }, {});
 
   for (const [language, filePaths] of Object.entries(filesByLanguage)) {
+    let languageName =
+      translateLanguageName(language).charAt(0).toUpperCase() + translateLanguageName(language).slice(1);
     let tocContent = `---
 id: ${translateLanguageName(language)}-dev-guide-structure
-title: ${
-      translateLanguageName(language).charAt(0).toUpperCase() + translateLanguageName(language).slice(1)
-    } SDK developer's guide structure
-description: Explore the Temporal ${translateLanguageName(language)} SDK's developer's guide structure.
-sidebar_label: ${translateLanguageName(language)} SDK guide
+title: ${languageName} SDK developer's guide structure
+description: Explore the Temporal ${languageName} SDK's developer's guide structure.
+sidebar_label: ${languageName} SDK guide
 tags:
   - dev guide
   - ${translateLanguageName(language)}

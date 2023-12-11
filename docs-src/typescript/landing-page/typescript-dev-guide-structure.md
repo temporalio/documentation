@@ -1,8 +1,8 @@
 ---
 id: typescript-dev-guide-structure
 title: Typescript SDK developer's guide structure
-description: Explore the Temporal typescript SDK's developer's guide structure.
-sidebar_label: typescript SDK guide
+description: Explore the Temporal Typescript SDK's developer's guide structure.
+sidebar_label: Typescript SDK guide
 tags:
   - dev guide
   - typescript

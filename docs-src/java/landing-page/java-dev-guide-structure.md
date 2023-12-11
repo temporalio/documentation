@@ -1,8 +1,8 @@
 ---
 id: java-dev-guide-structure
 title: Java SDK developer's guide structure
-description: Explore the Temporal java SDK's developer's guide structure.
-sidebar_label: java SDK guide
+description: Explore the Temporal Java SDK's developer's guide structure.
+sidebar_label: Java SDK guide
 tags:
   - dev guide
   - java

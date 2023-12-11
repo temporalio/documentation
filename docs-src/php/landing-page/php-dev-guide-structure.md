@@ -1,8 +1,8 @@
 ---
 id: php-dev-guide-structure
 title: Php SDK developer's guide structure
-description: Explore the Temporal php SDK's developer's guide structure.
-sidebar_label: php SDK guide
+description: Explore the Temporal Php SDK's developer's guide structure.
+sidebar_label: Php SDK guide
 tags:
   - dev guide
   - php
