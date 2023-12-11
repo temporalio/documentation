@@ -6,7 +6,7 @@
     "title": "TypeScript SDK dev guide - Set up a Temporal Application project",
     "sidebar_label": "Project setup",
     "sidebar_position": 2,
-    "description": "The project setup section of the Temporal TypeSCript SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go—that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
+    "description": "The project setup section of the Temporal TypeScript SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in TypeScript—that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
     "use_description": false,
     "toc_max_heading_level": 4,
     "add_tabs_support": true,
