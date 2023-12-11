@@ -22,7 +22,7 @@ The Workflow Type passed is only for type annotations and not for validation.
 
 :::
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-8dc9bfb9-4764-4106-b49b-10d1e3d6cdce" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-8dc9bfb9-4764-4106-b49b-10d1e3d6cdce" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/signal_your_workflow/signal_external_wf_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-8bea256c-c375-4400-8d1d-edc37fcd3f17" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-8bea256c-c375-4400-8d1d-edc37fcd3f17" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/signal_your_workflow/signal_external_wf_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...
