@@ -15,25 +15,23 @@ If you run the `BackgroundCheckNonDeterministic` Workflow enough times, eventual
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-f6d0523a-54fe-4d76-8993-364f199a0516" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-f6d0523a-54fe-4d76-8993-364f199a0516" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/durable-execution/backgroundCheck_replay/backgroundCheckNonDeterministic/src/workflow_dacx.ts">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```typescript
-
-import { proxyActivities, log, sleep } from "@temporalio/workflow";
-import type * as activities from "./activities";
-
+import { log, proxyActivities, sleep } from '@temporalio/workflow';
+import type * as activities from './activities';
 
 const { ssnTraceActivity } = proxyActivities<typeof activities>({
-  startToCloseTimeout: "10 seconds",
+  startToCloseTimeout: '10 seconds',
 });
 
 // backgroundCheckNonDeterministic is an anti-pattern Workflow Definition
 export async function backgroundCheckNonDeterministic(
-  ssn: string
+  ssn: string,
 ): Promise<string> {
   // CAUTION, the following code is an anti-pattern showing what NOT to do
   if (getRandomNumber(1, 100) > 50) {
-    await sleep("10 seconds");
+    await sleep('10 seconds');
   }
 
-  log.info("Preparing to run daily report", {});
+  log.info('Preparing to run daily report', {});
 
   try {
     const ssnTraceResult = await ssnTraceActivity(ssn);
@@ -49,4 +47,3 @@ function getRandomNumber(min: number, max: number) {
   return min + (seed % (max - min + 1));
 }
 ```
-

@@ -150,13 +150,13 @@ If replay fails for any other reason, [ReplayError](https://typescript.temporal.
 In the following example, a single Event History is loaded from a JSON file on disk (as obtained from the [Web UI](/web-ui) or the [Temporal CLI](/cli/workflow#show)):
 
 ```ts
-const filePath = "./history_file.json";
-const history = await JSON.parse(fs.promises.readFile(filePath, "utf8"));
+const filePath = './history_file.json';
+const history = await JSON.parse(fs.promises.readFile(filePath, 'utf8'));
 await Worker.runReplayHistory(
   {
-    workflowsPath: require.resolve("./your/workflows"),
+    workflowsPath: require.resolve('./your/workflows'),
   },
-  history
+  history,
 );
 ```
 
@@ -164,14 +164,14 @@ Alternatively, we can download the Event History programmatically using a Client
 
 ```ts
 const connection = await Connection.connect({ address });
-const client = new Client({ connection, namespace: "your-namespace" });
-const handle = client.workflow.getHandle("your-workflow-id");
+const client = new Client({ connection, namespace: 'your-namespace' });
+const handle = client.workflow.getHandle('your-workflow-id');
 const history = await handle.fetchHistory();
 await Worker.runReplayHistory(
   {
-    workflowsPath: require.resolve("./your/workflows"),
+    workflowsPath: require.resolve('./your/workflows'),
   },
-  history
+  history,
 );
 ```
 
@@ -188,13 +188,13 @@ const executions = client.workflow.list({
 const histories = executions.intoHistories();
 const results = Worker.runReplayHistories(
   {
-    workflowsPath: require.resolve("./your/workflows"),
+    workflowsPath: require.resolve('./your/workflows'),
   },
-  histories
+  histories,
 );
 for await (const result of results) {
   if (result.error) {
-    console.error("Replay failed", result);
+    console.error('Replay failed', result);
   }
 }
 ```
@@ -263,25 +263,23 @@ If you run the `BackgroundCheckNonDeterministic` Workflow enough times, eventual
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-f6d0523a-54fe-4d76-8993-364f199a0516" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-f6d0523a-54fe-4d76-8993-364f199a0516" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/durable-execution/backgroundCheck_replay/backgroundCheckNonDeterministic/src/workflow_dacx.ts">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```typescript
-
-import { proxyActivities, log, sleep } from "@temporalio/workflow";
-import type * as activities from "./activities";
-
+import { log, proxyActivities, sleep } from '@temporalio/workflow';
+import type * as activities from './activities';
 
 const { ssnTraceActivity } = proxyActivities<typeof activities>({
-  startToCloseTimeout: "10 seconds",
+  startToCloseTimeout: '10 seconds',
 });
 
 // backgroundCheckNonDeterministic is an anti-pattern Workflow Definition
 export async function backgroundCheckNonDeterministic(
-  ssn: string
+  ssn: string,
 ): Promise<string> {
   // CAUTION, the following code is an anti-pattern showing what NOT to do
   if (getRandomNumber(1, 100) > 50) {
-    await sleep("10 seconds");
+    await sleep('10 seconds');
   }
 
-  log.info("Preparing to run daily report", {});
+  log.info('Preparing to run daily report', {});
 
   try {
     const ssnTraceResult = await ssnTraceActivity(ssn);
@@ -297,7 +295,6 @@ function getRandomNumber(min: number, max: number) {
   return min + (seed % (max - min + 1));
 }
 ```
-
 
 The Worker logs will show something similar to the following:
 
@@ -513,22 +510,19 @@ By using Temporal's logging API, the Worker is able to suppress these log messag
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-d52f6e95-a93f-4e0e-b8fb-b537b8fa72ae" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-d52f6e95-a93f-4e0e-b8fb-b537b8fa72ae" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-typescript/blob/durable-execution/backgroundCheck_replay/backgroundCheckNonDeterministic/src/workflow_sleep_dacx.ts">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```typescript
-
-
-import { log } from "@temporalio/workflow";
-import { proxyActivities, sleep } from "@temporalio/workflow";
-import type * as activities from "./activities"; // Assuming 'activities' is the file containing your activity definitions
-
+import { log } from '@temporalio/workflow';
+import { proxyActivities, sleep } from '@temporalio/workflow';
+import type * as activities from './activities'; // Assuming 'activities' is the file containing your activity definitions
 
 const { ssnTraceActivity } = proxyActivities<typeof activities>({
-    startToCloseTimeout: "10 seconds",
-  });
+  startToCloseTimeout: '10 seconds',
+});
 
 export async function backgroundCheckWorkflow(param: string): Promise<string> {
   // Sleep for 1 minute
-  log.info("Sleeping for 1 minute...");
+  log.info('Sleeping for 1 minute...');
   await sleep(60 * 1000); // sleep for 60 seconds
-  log.info("Finished sleeping");
+  log.info('Finished sleeping');
 
   // Execute the SSNTraceActivity synchronously
   try {
@@ -540,7 +534,6 @@ export async function backgroundCheckWorkflow(param: string): Promise<string> {
   }
 }
 ```
-
 
 ### Inspect the new Event History {#inspect-new-event-history}
 
@@ -586,4 +579,3 @@ The following are a few examples of changes that do not lead to non-deterministi
 - Modifying non-Command generating statements in a Workflow Definition, such as logging statements
 - Changing attributes in the `ActivityOptions`
 - Modifying code inside of an Activity Definition
-
