@@ -23,6 +23,9 @@ export async function createNodesFromSamples(config) {
         if (ext === ".py") {
           lang = "python";
         }
+        if (ext === ".ts") {
+          lang = "typescript";
+        }
         await createNodes(config, file, lang, sourceURL);
       }
     }
@@ -159,17 +162,10 @@ export async function createNodesFromSamples(config) {
   }
 
   function isSupportedExtension(ext) {
-    switch (ext) {
-      case ".go":
-        return true;
-      case ".py":
-        return true;
-      case ".java":
-        return true;
-      default:
-        return false;
-    }
+    const supportedExts = [".go", ".py", ".java", ".ts"];
+    return supportedExts.includes(ext);
   }
+
   function isDACX(str, config, file) {
     str = str.toLowerCase(); // Remember to assign the result back to str
     if (str.includes("_dacx")) {
