@@ -1,27 +1,28 @@
 import fs from "fs-extra";
 import path from "path";
 
+const LANGUAGE_MAP = {
+  golang: "go",
+  javalang: "java",
+  python: "python",
+  tscript: "typescript",
+  phplang: "php",
+};
+
+const EXCLUDED_FILES = ["async-vs-sync.json", "how-it-works.json", "python-sandbox-environment.json"];
+
 function translateLanguageName(name) {
-  const map = {
-    golang: "go",
-    javalang: "java",
-    python: "python",
-    tscript: "typescript",
-    phplang: "php",
-  };
-  return map[name] || name;
+  return LANGUAGE_MAP[name] || name;
 }
 
 async function sortBySidebarPosition(filePaths) {
-  // Asynchronously get sidebar_position for each file
   const getSidebarPosition = async (file) => {
     const content = await fs.readJSON(file);
-    return content.sidebar_position || Infinity; // Defaulting to Infinity ensures files without this field go to the end
+    return content.sidebar_position || Infinity;
   };
 
   const positions = await Promise.all(filePaths.map(getSidebarPosition));
 
-  // Sorting based on the extracted positions
   filePaths.sort((a, b) => {
     return positions[filePaths.indexOf(a)] - positions[filePaths.indexOf(b)];
   });
@@ -60,6 +61,7 @@ async function getFilesInDirectory(directory, extension) {
   }
   return filesList;
 }
+
 async function generateTableOfContents(config, files) {
   const filesByLanguage = files.reduce((groups, file) => {
     const language = path.basename(path.dirname(file));
@@ -69,10 +71,6 @@ async function generateTableOfContents(config, files) {
     groups[language].push(file);
     return groups;
   }, {});
-
-  // Define a list of filenames to exclude
-
-  const excludedFiles = ["async-vs-sync.json", "how-it-works.json", "python-sandbox-environment.json"];
 
   for (const [language, filePaths] of Object.entries(filesByLanguage)) {
     let tocContent = `---
@@ -90,16 +88,13 @@ This guide is meant to provide a comprehensive overview of the structures, primi
     await sortBySidebarPosition(filePaths);
 
     for (const filePath of filePaths) {
-      if (excludedFiles.includes(path.basename(filePath))) {
-        continue; // Skip this file
+      if (EXCLUDED_FILES.includes(path.basename(filePath))) {
+        continue;
       }
 
       const content = await fs.readJSON(filePath);
       const h2Sections = content.sections.filter((section) => section.type === "h2");
-      // Doesn't include the "Introduction" and "Landing" topics
       const excludedTopics = ["Introduction", "Landing"];
-
-      // Get the topic name from the JSON filename and format it
       const topicName =
         path.basename(filePath, ".json").charAt(0).toUpperCase() + path.basename(filePath, ".json").slice(1);
       if (!excludedTopics.includes(topicName)) {
@@ -109,14 +104,12 @@ This guide is meant to provide a comprehensive overview of the structures, primi
         }
       }
 
-      // Assuming that each JSON has a "description" field at the root level.
       for (const section of h2Sections) {
         const pathParts = section.id.split("/");
         const markdownFilename = pathParts.pop() + ".md";
-        const subdirectory = pathParts.slice(1).join("/"); // Skip language part and join the rest
+        const subdirectory = pathParts.slice(1).join("/");
         const translatedLanguage = translateLanguageName(pathParts[0]);
 
-        // Construct the markdownPath with subdirectory if present
         const markdownPath = path.join(
           config.root_dir,
           "/docs-src",
@@ -124,23 +117,18 @@ This guide is meant to provide a comprehensive overview of the structures, primi
           subdirectory,
           markdownFilename
         );
-        console.log(`markdownPath: ${markdownPath}`);
 
         if (await fs.pathExists(markdownPath)) {
           const metadata = await getMetadataFromMarkdown(markdownPath);
 
-          // Updated URL generation to mirror markdownPath structure
-          let url = markdownPath
-            .replace(config.root_dir, "") // Remove root directory
-            .replace("/docs-src", "") // Remove docs-src directory
-            .replace(".md", ""); // Remove .md extension
+          let url = markdownPath.replace(config.root_dir, "").replace("/docs-src", "").replace(".md", "");
 
           tocContent += `- [${metadata.title}](${url}): ${metadata.description}\n`;
         } else {
           console.log(`File not found: ${markdownPath}`);
         }
       }
-      tocContent += "\n"; // Add a newline for spacing between topics
+      tocContent += "\n";
     }
     const translatedLanguage = translateLanguageName(language);
     const outputPath = path.join(
@@ -159,11 +147,7 @@ export async function devGuideToc(config) {
     let joinPath = path.join(config.root_dir, config.guide_configs_path, "app-dev");
 
     let files = await getFilesInDirectory(joinPath, ".json");
-    // Exclude specific config files
-    files = files.filter(
-      (file) =>
-        !file.endsWith("sdks.json", "async-vs-sync.json", "how-it-works.json", "python-sandbox-environment.json")
-    );
+    files = files.filter((file) => !file.endsWith("sdks.json"));
     await generateTableOfContents(config, files);
   } catch (err) {
     console.error("An error occurred:", err);

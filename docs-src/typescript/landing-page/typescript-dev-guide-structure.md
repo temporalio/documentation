@@ -14,7 +14,7 @@ This guide is meant to provide a comprehensive overview of the structures, primi
 
 The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 
-- [How to install Temporal CLI and run a development server](/self-hosted/how-to-install-temporal-cli):
+- [How to install Temporal CLI and run a development server](/self-hosted/how-to-install-temporal-cli): How to install Temporal CLI and run a development Cluster.
 - [How to install a Temporal SDK](/typescript/add-sdk): A Temporal SDK provides a framework for Temporal Application development.
 - [Linting and types in TypeScript](/typescript/linting-and-types): Set up linting and types in your TypeScript project.
 - [How to connect a Temporal Client to a Temporal Cluster](/typescript/connect-to-a-dev-cluster): When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.

@@ -643,26 +643,19 @@ Restart your Worker after merging `main` into your branch and before running Ass
 ## Autogenerate table of contents
 
 The `devGuideToc.js` file provides a solution for generate a table of contents (ToC) for the developer's guide.
-The script processes JSON configuration files to extract relevant information, then creates a Markdown file for each language with an organized ToC. Here's a breakdown of your code's functionality:
+The script processes JSON configuration files to extract relevant information, then creates a Markdown file for each language with an organized ToC. Here's a breakdown of the code's functionality:
+### Functions
+`translateLanguageName(name)`: This function takes a language name as input and returns the corresponding name from the LANGUAGE_MAP. If the language name is not found in the map, it returns the original name.
 
-1. **`translateLanguageName(name)`:** A helper function that maps language names to their respective abbreviations.
+`sortBySidebarPosition(filePaths)`: This function takes an array of file paths as input and sorts them based on the sidebar_position value in each file's JSON content.
 
-2. **`sortBySidebarPosition(filePaths)`:** This function asynchronously retrieves `sidebar_position` from each JSON file and sorts the files based on this position.
+`getMetadataFromMarkdown(filePath)`: This function takes a file path as input and returns the title and description metadata from the file's markdown content.
 
-3. **`getFilesInDirectory(directory, extension)`:** A recursive function that retrieves all files with a specified extension in a directory and its subdirectories.
+`getFilesInDirectory(directory, extension)`: This function takes a directory path and a file extension as input and returns an array of all files in the directory (and its subdirectories) with the given extension.
 
-4. **`getMetadataFromMarkdown(filePath)`:** Extracts the `title` and `description` from a Markdown file's YAML frontmatter.
+`generateTableOfContents(config, files)`: This function takes a configuration object and an array of file paths as input. It organizes the files by language, generates a table of contents for each language, and writes the table of contents to a markdown file.
 
-5. **`generateTableOfContents(config, files)`:** The main function that:
-   - Categorizes files by their SDK language.
-   - Sorts these files by their sidebar position.
-   - Iterates through each file to construct the ToC.
-   - Extracts section information for each `h2` type.
-   - Builds the Markdown content with proper formatting.
-   - Writes the ToC to an output file for each language.
-
-6. **`devGuideToc(config)`:** An async function that serves as the entry point for the ToC generation process. It retrieves all `.json` files (excluding 'sdks.json') and invokes `generateTableOfContents`.
-
+`devGuideToc(config)`: This is the main function that drives the script. It takes a configuration object as input, reads the guide files, and calls `generateTableOfContents` to generate the table of contents.
 
 ### How to preview the site locally
 

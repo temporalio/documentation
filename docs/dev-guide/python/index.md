@@ -48,7 +48,7 @@ The Features section of the Temporal Developer's guide provides basic implementa
 
 - [How to develop with Signals](/dev-guide/python/features#signals): A Signal is a message sent to a running Workflow Execution
 - [How to develop with Queries](/dev-guide/python/features#queries): A Query is a synchronous operation that is used to get the state of a Workflow Execution.
-- [What is a Dynamic Handler?](/dev-guide/python/features#dynamic-handler): Dynamic Handlers are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named handler matches the call from the Server at runtime.
+- [What is a Dynamic Handler](/dev-guide/python/features#dynamic-handler): Dynamic Handlers are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named handler matches the call from the Server at runtime.
 - [Workflow timeouts](/dev-guide/python/features#workflow-timeouts): Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 - [How to set Activity timeouts](/dev-guide/python/features#activity-timeouts): Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 - [How to Heartbeat an Activity](/dev-guide/python/features#activity-heartbeats): An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
