@@ -9,7 +9,7 @@ tags:
   - audit logging
 ---
 
-The first release of Audit Logging supports Admin Operation events.
+Audit Logging supports [Admin Operation events](#admin-operation-events) as well as [API Key Create, Update, and Delete events](#admin-operation-events).
 
 ### Admin Operation events
 
@@ -33,6 +33,14 @@ The following list specifies both the supported events and the Temporal APIs tha
   - Rename custom Search Attribute: `RenameCustomSearchAttribute`
   - Request increase in Retention Period: `UpdateNamespace`
 
+### API Key Operation events
+
+The following list specifies both the supported events and the Temporal APIs that emit the logs for API Key Operations:
+
+- Create API Key: `CreateAPIKey`
+- Delete API Key: `DeleteAPIKey`
+- Update API Key: `UpdateAPIKey`
+
 ### Audit Log format
 
 The log sent to the Kinesis stream is JSON in the following format:
@@ -42,6 +50,7 @@ The log sent to the Kinesis stream is JSON in the following format:
   "emit_time": // Time the operation was recorded
   "level": // Level of the log entry, such as info, warning, or error
   "user_email":  // Email address of the user who initiated the operation
+  "caller_ip_address": // Customer IP address or server name
   "operation":  // Operation that was performed
   "details":  // Details of the operation
   "status": // Status, such as OK or error
