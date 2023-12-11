@@ -1,7 +1,8 @@
 {
-    "file_name": "generate-certificates.md",
-    "file_dir": "cloud/tcld",
     "id": "generate-certificates",
+    "file_name": "generate-certificates.md",
+    "file_dir": "production-deployment/cloud/tcld",
+    "slug": "/cloud/tcld/generate-certificates/",
     "title": "tcld generate-certificates command reference",
     "sidebar_label": "generate-certificates",
     "description": "How to use Temporal Cloud's tcld generate-certificates command.",
@@ -9,17 +10,17 @@
     "toc_max_heading_level": 4,
     "add_tabs_support": true,
     "sections": [
-      {
-        "type": "p",
-        "id": "cloud/tcld/generate-certificates/index"
-      },
-      {
-        "type": "h2",
-        "id": "cloud/tcld/generate-certificates/certificate-authority-certificate"
-      },
-      {
-        "type": "h2",
-        "id": "cloud/tcld/generate-certificates/end-entity-certificate"
-      }
+        {
+            "type": "p",
+            "id": "cloud/tcld/generate-certificates/index"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/generate-certificates/certificate-authority-certificate"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/generate-certificates/end-entity-certificate"
+        }
     ]
-  }
+}

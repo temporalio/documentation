@@ -1,7 +1,8 @@
 {
-    "file_name": "user.md",
-    "file_dir": "cloud/tcld",
     "id": "user",
+    "file_name": "user.md",
+    "file_dir": "production-deployment/cloud/tcld",
+    "slug": "/cloud/tcld/user/",
     "title": "tcld user command reference",
     "sidebar_label": "user",
     "description": "The Temporal Cloud CLI (tcld) lets you manage users in Temporal Cloud. Invite, list, and delete users and set account-level Roles and Namespace-level permissions.",

@@ -1,7 +1,8 @@
 {
-    "file_name": "logout.md",
-    "file_dir": "cloud/tcld",
     "id": "logout",
+    "file_name": "logout.md",
+    "file_dir": "production-deployment/cloud/tcld",
+    "slug": "/cloud/tcld/logout/",
     "title": "tcld logout command reference",
     "sidebar_label": "logout",
     "description": "The Temporal Cloud CLI (tcld) logout command logs a user out of Temporal Cloud.",

@@ -2,7 +2,7 @@
 id: debugging
 title: Python SDK developer's guide - Debugging
 sidebar_label: Debugging
-sidebar_position: 7
+sidebar_position: 6
 description: The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.
 toc_max_heading_level: 4
 keywords:
@@ -32,4 +32,4 @@ You can debug production Workflows using:
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/dev-guide/worker-performance).
 For more information, see [Observability ▶️ Metrics](/dev-guide/python/observability#metrics) for setting up SDK metrics.
 
-Debug Server performance with [Cloud metrics](/cloud/metrics#) or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).
+Debug Server performance with [Cloud metrics](/cloud/metrics#) or [self-hosted Server metrics](/self-hosted-guide/production-checklist#scaling-and-metrics).

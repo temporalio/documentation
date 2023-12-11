@@ -2,7 +2,7 @@
 id: features
 title: Python SDK developer's guide - Features
 sidebar_label: Features
-sidebar_position: 4
+sidebar_position: 5
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 toc_max_heading_level: 5
 keywords:
@@ -89,8 +89,9 @@ In this section you can find the following:
 - [How to set Activity timeouts & retries](#activity-timeouts)
 - [How to Heartbeat an Activity](#activity-heartbeats)
 - [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
-- [How to register Namespaces](#namespaces)
-- [How to use custom payload conversion](#custom-payload-conversion)
+- [How to Schedule a Workflow](#schedule-a-workflow)
+- [How to use a Temporal Cron Job](#temporal-cron-jobs)
+- [How to use Start Delay](#start-delay)
 
 ## How to develop with Signals {#signals}
 

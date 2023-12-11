@@ -77,21 +77,20 @@ module.exports = {
           activeBasePath: "none",
         },
         {
+          label: "Start learning",
+          href: "https://learn.temporal.io/getting_started/",
+          right: "left",
+        },
+        {
+          label: "Start building",
+          href: "/dev-guide",
+          right: "left",
+        },
+        {
           label: "Temporal Cloud",
           to: "/cloud",
           activeBasePath: "cloud",
           position: "left",
-        },
-        {
-          label: "KB articles",
-          to: "/kb",
-          activeBasePath: "kb",
-          position: "left",
-        },
-        {
-          label: "Learn Temporal",
-          href: "https://learn.temporal.io",
-          right: "left",
         },
       ],
     },
@@ -345,33 +344,6 @@ module.exports = {
         },
       };
     },
-    [
-      "@docusaurus/plugin-content-blog",
-      {
-        /**
-         * Required for any multi-instance plugin
-         */
-        id: "kb",
-        /**
-         * URL route for the blog section of your site.
-         * *DO NOT* include a trailing slash.
-         */
-        routeBasePath: "kb",
-        /**
-         * Path to data on filesystem relative to site dir.
-         */
-        path: "kb",
-        blogTitle: "Temporal Platform knowledge base",
-        blogSidebarTitle: "KB articles",
-        blogSidebarCount: "ALL",
-        blogDescription: "User facing Temporal Platform knowledge base articles",
-        showReadingTime: false, // Show estimated reading time for the blog post.
-        feedOptions: {
-          type: "all",
-          copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
-        },
-      },
-    ],
   ],
 };
 
