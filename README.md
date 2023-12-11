@@ -640,6 +640,30 @@ Run the Assembly Workflow to fix any merge conflict in ASSEMBLY_REPORT.md and an
 
 Restart your Worker after merging `main` into your branch and before running Assembly again.
 
+## Autogenerate table of contents
+
+The `devGuideToc.js` file provides a solution for generate a table of contents (ToC) for the developer's guide.
+The script processes JSON configuration files to extract relevant information, then creates a Markdown file for each language with an organized ToC. Here's a breakdown of your code's functionality:
+
+1. **`translateLanguageName(name)`:** A helper function that maps language names to their respective abbreviations.
+
+2. **`sortBySidebarPosition(filePaths)`:** This function asynchronously retrieves `sidebar_position` from each JSON file and sorts the files based on this position.
+
+3. **`getFilesInDirectory(directory, extension)`:** A recursive function that retrieves all files with a specified extension in a directory and its subdirectories.
+
+4. **`getMetadataFromMarkdown(filePath)`:** Extracts the `title` and `description` from a Markdown file's YAML frontmatter.
+
+5. **`generateTableOfContents(config, files)`:** The main function that:
+   - Categorizes files by their SDK language.
+   - Sorts these files by their sidebar position.
+   - Iterates through each file to construct the ToC.
+   - Extracts section information for each `h2` type.
+   - Builds the Markdown content with proper formatting.
+   - Writes the ToC to an output file for each language.
+
+6. **`devGuideToc(config)`:** An async function that serves as the entry point for the ToC generation process. It retrieves all `.json` files (excluding 'sdks.json') and invokes `generateTableOfContents`.
+
+
 ### How to preview the site locally
 
 Run `yarn start`. This command starts a local development server and opens a browser window to [localhost:3000](http://localhost:3000/).

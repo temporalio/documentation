@@ -362,7 +362,7 @@ Visit the source repository to [view the source code](https://github.com/tempora
     result = await handle.query(GreetingWorkflow.greeting)
 ```
 
-## What is a Dynamic Handler? {#dynamic-handler}
+## What is a Dynamic Handler {#dynamic-handler}
 
 Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
 These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.

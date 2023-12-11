@@ -2,6 +2,7 @@
 id: how-to-install-temporal-cli
 title: How to install Temporal CLI and run a development server
 sidebar_label: Run a development server
+description: How to install Temporal CLI and run a development Cluster.
 tags:
   - cli-feature
   - developer-guide-doc-type

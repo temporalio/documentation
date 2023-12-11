@@ -5,6 +5,7 @@ export { cleanUpTempDir } from "./cleanUpTempDir.js";
 export { attachSourceToGuides } from "./attachSourceToGuides.js";
 export { genLinkIndexes } from "./genLinkIndexes.js";
 export { linkMagic } from "./linkMagic.js";
+export { devGuideToc } from "./devGuideToc.js";
 export { genMarkdownGuides } from "./genMarkdownGuides.js";
 export { genGlossary } from "./genGlossary.js";
 export { getQuestionsFromNotion } from "./getQuestionsFromNotion.js";
