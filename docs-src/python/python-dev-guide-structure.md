@@ -32,6 +32,13 @@ The Temporal Python SDK developer's guide is arranged in the following way:
   - [How to start your Workflow using the CLI](/python/backgroundcheck-boilerplate-start-workflow)
   - [How to add a testing framework and tests to your application](/python/backgroundcheck-boilerplate-add-test-framework)
 
+- [**Develop for durability**](/dev-guide/python/durable-execution)
+
+- [Retrieve a Workflow Execution's Event History](/python/chapter-durable-execution/retrieve-event-history)
+- [Add a Replay test](/python/generated/add-replay-test-to-background-check-workflow)
+- [Intrinsic non-deterministic logic](/python/chapter-durable-execution/backgroundcheck-replay-intrinsic-non-determinism)
+- [Non-deterministic code changes](/python/chapter-durable-execution/non-deterministic-code-changes)
+
 - [**Foundations**](/dev-guide/python/foundations): The minimum things required to build and run a single Activity Workflow.
 
   - [Run a development Cluster](/dev-guide/python/foundations#run-a-dev-cluster)

@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday December 11 2023 08:40:25 AM -0800
+Last assembled: Monday December 11 2023 09:04:49 AM -0800
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -1193,5 +1193,11 @@ go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/g
 go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
 go/foundations -> /dev-guide/go/foundations#
+
+python/chapter-durable-execution/retrieve-event-history -> /dev-guide/python/durable-execution#retrieve-event-history
+
+python/generated/add-replay-test-to-background-check-workflow -> /dev-guide/python/durable-execution#add-replay-test
+
+python/chapter-durable-execution/backgroundcheck-replay-intrinsic-non-determinism -> /dev-guide/python/durable-execution#intrinsic-non-deterministic-logic
 
 
