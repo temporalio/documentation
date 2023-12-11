@@ -25,6 +25,10 @@
         },
         {
             "type": "h2",
+            "id": "cloud/support-create-account"
+        },
+        {
+            "type": "h2",
             "id": "cloud/support-create-ticket"
         },
         {
