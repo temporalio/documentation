@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday December 11 2023 11:41:20 AM -0800
+Last assembled: Monday December 11 2023 12:35:58 PM -0800
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-128 guide configurations found.
+129 guide configurations found.
 
 1796 information nodes found.
 
-1463 information nodes are attached to guides.
+1464 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1183,6 +1183,20 @@ php/handle-signal -> #handle-signal
 php/add-sdk -> #install-a-temporal-sdk
 
 php/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
+
+php/async-activity-completion -> /dev-guide/php/features#asynchronous-activity-completion
+
+php/cancel-activity -> /dev-guide/php/features#cancel-an-activity
+
+php/timers -> /dev-guide/php/features#timers
+
+php/testing-activities -> /dev-guide/php/testing#test-activities
+
+php/testing-workflows -> /dev-guide/php/testing#test-workflows
+
+php/replays -> /dev-guide/php/testing#replay
+
+php/debugging -> /dev-guide/php/debugging#debug
 
 java/tracing -> /dev-guide/java/observability#tracing
 
