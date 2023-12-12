@@ -16,10 +16,14 @@ Set IP address and port in the Service Stubs Options and the Namespace in the
 Temporal Client options.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-5292a827-4063-40b3-abc5-f0f46bf8df60" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-5292a827-4063-40b3-abc5-f0f46bf8df60" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/durable-execution/backgroundcheck/src/main/java/backgroundcheckboilerplate/workers/SelfHostedWorker.java">view the source code</a> in the context of the rest of the application code.</div></div>
 =======
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-d417392f-1153-483e-9b6a-fe6dd85e12f5" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-d417392f-1153-483e-9b6a-fe6dd85e12f5" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/workers/SelfHostedWorker.java">view the source code</a> in the context of the rest of the application code.</div></div>
+>>>>>>> main
+=======
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id456668617" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id456668617" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/workers/SelfHostedWorker.java">view the source code</a> in the context of the rest of the application code.</div></div>
 >>>>>>> main
 
 ```java

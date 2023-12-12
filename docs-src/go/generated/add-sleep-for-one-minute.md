@@ -19,12 +19,7 @@ The Temporal SDK offers both a `workflow.StartTimer()` API, and a `workflow.Slee
 
 Use the `workflow.GetLogger` API to log from Workflows to avoid seeing repeated logs from the Replay of the Workflow code.
 
-<<<<<<< HEAD
-
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-55f9798c-0a3b-45bf-9618-fff7839378c7" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-55f9798c-0a3b-45bf-9618-fff7839378c7" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_replay/workflows/backgroundcheck.go">view the source code</a> in the context of the rest of the application code.</div></div>
-=======
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-d4e51a6e-0d7f-4781-85bb-19694430ba08" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-d4e51a6e-0d7f-4781-85bb-19694430ba08" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_replay/workflows/backgroundcheck.go">view the source code</a> in the context of the rest of the application code.</div></div>
->>>>>>> main
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id1259244707" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id1259244707" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_replay/workflows/backgroundcheck.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 package workflows

@@ -16,10 +16,14 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 The `BackgroundCheckBoilerplateWorkflow` interface below is an example of a the first part of a Workflow Definition.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-9a9f645f-06c8-4475-95c1-0960eed99636" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-9a9f645f-06c8-4475-95c1-0960eed99636" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/durable-execution/backgroundcheck/src/main/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateWorkflow.java">view the source code</a> in the context of the rest of the application code.</div></div>
 =======
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-a4f14e34-9878-4c26-b98c-fe3b5b3e8fda" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-a4f14e34-9878-4c26-b98c-fe3b5b3e8fda" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateWorkflow.java">view the source code</a> in the context of the rest of the application code.</div></div>
+>>>>>>> main
+=======
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id263183478" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id263183478" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateWorkflow.java">view the source code</a> in the context of the rest of the application code.</div></div>
 >>>>>>> main
 
 ```java

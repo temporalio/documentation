@@ -14,12 +14,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 Set IP address, port, and Namespace in the Temporal Client options.
 
-<<<<<<< HEAD
-
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-c35a2ec1-e17f-4eed-8d42-8864a9544225" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-c35a2ec1-e17f-4eed-8d42-8864a9544225" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/self_hosted_worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
-=======
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-4b22fef3-dad1-461f-b4ef-21dcf0eab150" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-4b22fef3-dad1-461f-b4ef-21dcf0eab150" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/self_hosted_worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
->>>>>>> main
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-569908840" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-569908840" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/self_hosted_worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 package main

@@ -16,10 +16,14 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 The `BackgroundCheckActivity` interface below is an example of a the first part defining an Activity
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-18a16830-a9f1-4738-874a-381303f5c21a" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-18a16830-a9f1-4738-874a-381303f5c21a" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/durable-execution/backgroundcheck/src/main/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateActivities.java">view the source code</a> in the context of the rest of the application code.</div></div>
 =======
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-952f3747-f2c6-4dff-98e7-8386dda08839" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-952f3747-f2c6-4dff-98e7-8386dda08839" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateActivities.java">view the source code</a> in the context of the rest of the application code.</div></div>
+>>>>>>> main
+=======
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id1946130376" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id1946130376" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck/src/main/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateActivities.java">view the source code</a> in the context of the rest of the application code.</div></div>
 >>>>>>> main
 
 ```java

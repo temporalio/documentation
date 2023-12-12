@@ -32,10 +32,14 @@ The following are some common operations that **can't** be done inside of a Work
 One way to produce a non-deterministic error is to use a random number to determine whether to sleep inside the Workflow.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-4cdeff3b-fee0-4e94-817d-b2d91687c0ef" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-4cdeff3b-fee0-4e94-817d-b2d91687c0ef" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/durable-execution/backgroundcheck-replay/src/main/java/backgroundcheckreplay/BackgroundCheckReplayNonDeterministicWorkflowImpl.java">view the source code</a> in the context of the rest of the application code.</div></div>
 =======
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-c97c790a-6691-4b76-9ca3-f94191652cf3" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-c97c790a-6691-4b76-9ca3-f94191652cf3" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck-replay/src/main/java/backgroundcheckreplay/BackgroundCheckReplayNonDeterministicWorkflowImpl.java">view the source code</a> in the context of the rest of the application code.</div></div>
+>>>>>>> main
+=======
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id160696211" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id160696211" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck-replay/src/main/java/backgroundcheckreplay/BackgroundCheckReplayNonDeterministicWorkflowImpl.java">view the source code</a> in the context of the rest of the application code.</div></div>
 >>>>>>> main
 
 ```java
