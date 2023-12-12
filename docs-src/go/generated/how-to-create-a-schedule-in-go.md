@@ -19,7 +19,12 @@ The user generates a unique Schedule ID for each new Schedule.
 To create a Schedule in Go, use `Create()` on the [Client](/concepts/what-is-a-temporal-client).
 Schedules must be initialized with a Schedule ID, [Spec](/concepts/what-is-a-schedule#spec), and [Action](/concepts/what-is-a-schedule#action) in `client.ScheduleOptions{}`.
 
+<<<<<<< HEAD
+
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-868f86d2-e865-40b4-af92-aed695388b7d" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-868f86d2-e865-40b4-af92-aed695388b7d" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/create/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+=======
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-f94802b8-a9ac-49db-9755-846f54140b27" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-f94802b8-a9ac-49db-9755-846f54140b27" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/create/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+>>>>>>> main
 
 ```go
 func main() {

@@ -16,7 +16,12 @@ In Go, by default, the Workflow Type name is the same as the function name.
 
 To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
 
+<<<<<<< HEAD
+
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-0bbea096-340a-46db-998b-7de052539ad1" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-0bbea096-340a-46db-998b-7de052539ad1" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+=======
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-776ff6ff-87a3-41f7-b985-968ba4506d80" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-776ff6ff-87a3-41f7-b985-968ba4506d80" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+>>>>>>> main
 
 ```go
 package main

@@ -18,7 +18,12 @@ Deletion does not affect any Workflows started by the Schedule.
 
 To delete a Schedule, use `Delete()` on the `ScheduleHandle`.
 
+<<<<<<< HEAD
+
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-2bb739db-404c-41ae-9c71-c2e317d30687" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-2bb739db-404c-41ae-9c71-c2e317d30687" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/delete/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+=======
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-9c0d49cb-bbf5-4861-83f4-18cbef5fb7f1" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-9c0d49cb-bbf5-4861-83f4-18cbef5fb7f1" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/delete/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+>>>>>>> main
 
 ```go
 func main() {

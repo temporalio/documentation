@@ -21,7 +21,12 @@ We can test Workflow code for the following conditions:
 
 We can also perform a Workflow Replay test, and we'll provide detailed coverage of this topic in another section.
 
+<<<<<<< HEAD
+
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-c851b3cb-f364-4cff-b1e0-ca79b1759da5" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-c851b3cb-f364-4cff-b1e0-ca79b1759da5" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go">view the source code</a> in the context of the rest of the application code.</div></div>
+=======
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-acc32f29-bf4a-4383-91cd-12134222535f" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-acc32f29-bf4a-4383-91cd-12134222535f" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/backgroundcheck_boilerplate/tests/backgroundcheckboilerplate_dacx_test.go">view the source code</a> in the context of the rest of the application code.</div></div>
+>>>>>>> main
 
 ```go
 const ssn string = "555-55-5555"

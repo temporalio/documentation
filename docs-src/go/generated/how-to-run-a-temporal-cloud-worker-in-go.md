@@ -26,7 +26,12 @@ For more information about managing and generating client certificates for Tempo
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
+<<<<<<< HEAD
+
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-05f2d47f-43cd-4764-9403-5bef18e9439a" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-05f2d47f-43cd-4764-9403-5bef18e9439a" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/cloud/worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+=======
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-3688b841-4b9e-4d53-93ee-3ecbab77cfaf" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-3688b841-4b9e-4d53-93ee-3ecbab77cfaf" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/cloud/worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+>>>>>>> main
 
 ```go
 package main

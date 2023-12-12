@@ -22,7 +22,12 @@ Pausing can be enabled by setting `State.Paused` to `true`, or by using `Pause()
 Unpausing a Schedule allows the Workflow to execute as planned.
 To unpause a Schedule, use `Unpause()` on `ScheduleHandle`.
 
+<<<<<<< HEAD
+
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-7b6d05fd-a8c4-4893-abff-4c48e9a2a66c" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-7b6d05fd-a8c4-4893-abff-4c48e9a2a66c" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/pause/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+=======
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-dd9a0565-8edf-40ab-925c-27d7da2a152b" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-dd9a0565-8edf-40ab-925c-27d7da2a152b" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/pause/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+>>>>>>> main
 
 ```go
 func main() {

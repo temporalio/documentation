@@ -19,7 +19,12 @@ By default, this field is set to a very large value, so there's no need to manua
 If a Worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed.
 If the session can't be created within `CreationTimeout`, `CreateSession()` returns an error .
 
+<<<<<<< HEAD
+
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-00312cd2-d6d4-4fe6-b80e-691f91ef231f" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-00312cd2-d6d4-4fe6-b80e-691f91ef231f" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/sessions/worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+=======
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-53b492ee-ace7-4a58-a3a6-7eea7f33eeb2" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-53b492ee-ace7-4a58-a3a6-7eea7f33eeb2" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/sessions/worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+>>>>>>> main
 
 ```go
 func main() {

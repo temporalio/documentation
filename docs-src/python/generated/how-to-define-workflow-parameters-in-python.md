@@ -16,7 +16,12 @@ Workflow parameters are the method parameters of the singular method decorated w
 These can be any data type Temporal can convert, including [`dataclasses`](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
 Technically this can be multiple parameters, but Temporal strongly encourages a single `dataclass` parameter containing all input fields.
 
+<<<<<<< HEAD
+
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-36c6dee6-2f3c-46c2-a496-bffdc9682406" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-36c6dee6-2f3c-46c2-a496-bffdc9682406" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_dataobject_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
+=======
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-d5208859-226f-4057-b4b7-6a83b87eed50" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-d5208859-226f-4057-b4b7-6a83b87eed50" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_dataobject_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
+>>>>>>> main
 
 ```python
 from dataclasses import dataclass

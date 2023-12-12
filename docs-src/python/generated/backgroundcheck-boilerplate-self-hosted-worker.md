@@ -14,7 +14,12 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 Set IP address, port, and Namespace in the Temporal Client options.
 
+<<<<<<< HEAD
+
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-1b1e4c1c-4e72-4e6c-a021-43df3b1e51e0" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-1b1e4c1c-4e72-4e6c-a021-43df3b1e51e0" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/self_hosted_worker/main_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
+=======
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-f2bdd4f7-ae98-465e-a516-972cbc4d912c" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-f2bdd4f7-ae98-465e-a516-972cbc4d912c" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_boilerplate/self_hosted_worker/main_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
+>>>>>>> main
 
 ```python
 import asyncio

@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday December 12 2023 08:58:13 AM -0800
+Last assembled: Tuesday December 12 2023 09:02:06 AM -0800
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-129 guide configurations found.
+130 guide configurations found.
 
-1788 information nodes found.
+1733 information nodes found.
 
-1472 information nodes are attached to guides.
+1473 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1132,6 +1132,18 @@ python/tracing -> /dev-guide/python/observability#tracing
 
 python/logging -> /dev-guide/python/observability#logging
 
+dev-guide/why-use-a-temporal-sdk -> /dev-guide/sdks#replays
+
+python/project-setup-introduction -> /dev-guide/python/project-setup#
+
+python/chapter-durable-execution/backgroundcheck-replay-intrinsic-non-determinism -> #intrinsic-non-deterministic-logic
+
+python/chapter-durable-execution/non-deterministic-code-changes -> #durability-through-replays
+
+python/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#start-workflow
+
+python/chapter-durable-execution/retrieve-event-history -> #retrieve-event-history
+
 python/how-to-cancel-a-workflow-in-python -> #cancel-a-workflow-execution
 
 python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-execution
@@ -1146,9 +1158,9 @@ python/choose-dev-cluster -> /dev-guide/python/project-setup#choose-dev-cluster
 
 python/project-structure -> /dev-guide/python/project-setup#boilerplate-project
 
-python/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#start-workflow
-
 python/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
+
+python/generated/add-replay-test-to-background-check-workflow -> /dev-guide/python/durable-execution#add-replay-test
 
 python/add-sdk -> /dev-guide/python/foundations#install-a-temporal-sdk
 
@@ -1201,8 +1213,6 @@ php/debugging -> /dev-guide/php/debugging#debug
 java/tracing -> /dev-guide/java/observability#tracing
 
 java/logging -> /dev-guide/java/observability#logging
-
-dev-guide/why-use-a-temporal-sdk -> /dev-guide/sdks#replays
 
 java/chapter-project-setup/project-setup-introduction -> /dev-guide/java/project-setup#
 
@@ -1315,29 +1325,5 @@ go/debug-environment-development -> /dev-guide/go/debugging#debug-in-a-developme
 go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production-environment
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
-
-python/how-to-use-the-python-sdk-patching-api-in-python -> /dev-guide/python/versioning#python-sdk-patching-api
-
-python/chapter-durable-execution/non-deterministic-code-changes -> #durability-through-replays
-
-python/python-dev-guide-structure -> #
-
-python/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
-
-python/chapter-durable-execution/retrieve-event-history -> /dev-guide/python/durable-execution#retrieve-event-history
-
-python/generated/add-replay-test-to-background-check-workflow -> /dev-guide/python/durable-execution#add-replay-test
-
-python/chapter-durable-execution/backgroundcheck-replay-intrinsic-non-determinism -> /dev-guide/python/durable-execution#intrinsic-non-deterministic-logic
-
-java/foundations -> /dev-guide/java/foundations#
-
-go/landing-page/go-dev-guide-structure -> #
-
-go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
-
-go/foundations -> /dev-guide/go/foundations#
-
-python/project-setup-introduction -> /dev-guide/python/project-setup#
 
 

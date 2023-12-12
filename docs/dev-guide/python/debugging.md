@@ -25,7 +25,7 @@ You can debug production Workflows using:
 
 - [Web UI](/web-ui)
 - [tctl](/tctl-v1)
-- [Replay](#replay)
+- [Replay](/dev-guide/python/testing#replay)
 - [Tracing](/dev-guide/python/observability#tracing)
 - [Logging](/dev-guide/python/observability#logging)
 

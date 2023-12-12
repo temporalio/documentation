@@ -41,7 +41,7 @@ The Durable Execution section of the Temporal Developer's guide covers advanced 
 
 The Foundations section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 
-- [How to install Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server):
+- [How to install Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): How to install Temporal CLI and run a development Cluster.
 - [How to install a Temporal SDK](/dev-guide/go/foundations#install-a-temporal-sdk): A Temporal SDK provides a framework for Temporal Application development.
 - [How to connect a Temporal Client to a Temporal Cluster](/dev-guide/go/foundations#connect-to-a-dev-cluster): When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.
 - [How to connect to Temporal Cloud](/dev-guide/go/foundations#connect-to-temporal-cloud): Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
