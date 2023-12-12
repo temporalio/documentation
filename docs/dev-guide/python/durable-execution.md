@@ -162,7 +162,7 @@ Register the Workflow Definition and then specify an existing Event History to c
 Run the tests in the test directory (pytest).
 If the Workflow Definition and the Event History are incompatible, then the test fails.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-d07943ac-db49-403f-bfa7-398513b4474e" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-d07943ac-db49-403f-bfa7-398513b4474e" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_replay/tests/replay_dacx_test.py">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-f980aec6-2c45-4a63-9dff-930ee0fab58d" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-f980aec6-2c45-4a63-9dff-930ee0fab58d" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_replay/tests/replay_dacx_test.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 @pytest.mark.asyncio
@@ -206,7 +206,7 @@ The following are some common operations to be aware of inside a Workflow Defini
    - Avoid direct external API calls, file I/O operations, or interactions with other services.
    - Utilize Activities for these operations.
 3. **Time Management:**
-   -Use `workflow.now()` instead of `datetime.now()` or `workflow.time()` instead `time.time()` for current time.
+   - Use `workflow.now()` instead of `datetime.now()` or `workflow.time()` instead `time.time()` for current time.
    - Leverage the custom `asyncio` event loop in Workflows; use `asyncio.sleep()` as needed.
 4. **Data Structure Iteration:**
    - Use Python dictionaries as they are deterministically ordered.
@@ -298,7 +298,7 @@ The Temporal Python SDK offers deterministic implementations to the following AP
 
 Use the `workflow.logger` API to log from Workflows to avoid seeing repeated logs from the Replay of the Workflow code.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-b4ac197e-8c75-429b-b134-aa8d1e40a2bf" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-b4ac197e-8c75-429b-b134-aa8d1e40a2bf" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_replay/backgroundcheck_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-7ca9cabc-abb2-4d13-b676-b4841050ca7e" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-7ca9cabc-abb2-4d13-b676-b4841050ca7e" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/backgroundcheck_replay/backgroundcheck_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 import asyncio
@@ -333,9 +333,8 @@ After updating your Workflow code to include the logging and Timer, run your tes
 You should expect to see the `TestReplayWorkflowHistoryFromFile` test fail.
 This is because the code we added creates new Events and alters the Event History sequence.
 
-# To get this test to pass, we must get an updated Event History JSON file.[Start a new Workflow](/dev-guide/python/project-setup#start-workflow) and after it is complete [download the Event History as a JSON object](#retrieve-event-history).
-
-[Start a new Workflow](notion://www.notion.so/dev-guide/go/project-setup#start-workflow) and after it is complete [download the Event History as a JSON object](#retrieve-event-history).
+To get this test to pass, we must get an updated Event History JSON file.
+[Start a new Workflow](/dev-guide/python/project-setup#start-workflow) and after it is complete [download the Event History as a JSON object](#retrieve-event-history).
 
 :::info Double check Task Queue names
 

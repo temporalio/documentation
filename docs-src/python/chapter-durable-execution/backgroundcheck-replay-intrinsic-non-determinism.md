@@ -19,7 +19,7 @@ The following are some common operations to be aware of inside a Workflow Defini
    - Avoid direct external API calls, file I/O operations, or interactions with other services.
    - Utilize Activities for these operations.
 3. **Time Management:**
-   -Use `workflow.now()` instead of `datetime.now()` or `workflow.time()` instead `time.time()` for current time.
+   - Use `workflow.now()` instead of `datetime.now()` or `workflow.time()` instead `time.time()` for current time.
    - Leverage the custom `asyncio` event loop in Workflows; use `asyncio.sleep()` as needed.
 4. **Data Structure Iteration:**
    - Use Python dictionaries as they are deterministically ordered.
