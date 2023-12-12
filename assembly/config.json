@@ -37,15 +37,15 @@
         },
         {
             "org": "temporalio",
+            "name": "documentation-samples-python"
+        }
+        {
+            "org": "temporalio",
             "name": "documentation-samples-java"
         },
         {
             "org": "temporalio",
             "name": "documentation-samples-typescript"
-        },
-        {
-            "org": "temporalio",
-            "name": "documentation-samples-python"
         }
     ]
 }
