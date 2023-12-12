@@ -17,7 +17,7 @@ You should expect to see the `TestReplayWorkflowHistoryFromFile` test fail.
 This is because the code we added creates new Events and alters the Event History sequence.
 
 To get this test to pass, we must get an updated Event History JSON file.
-[Start a new Workflow](notion://www.notion.so/dev-guide/go/project-setup#start-workflow) and after it is complete [download the Event History as a JSON object](#retrieve-event-history).
+[Start a new Workflow](/python/backgroundcheck-boilerplate-start-workflow) and after it is complete [download the Event History as a JSON object](/python/chapter-durable-execution/retrieve-event-history).
 
 :::info Double check Task Queue names
 
