@@ -20,5 +20,5 @@ The Replay test executes the same steps as the SDK and verifies compatibility.
 
 Workflow code becomes non-deterministic primarily through two main avenues:
 
-1. **[Intrinsic non-deterministic logic](/go/generated/backgroundcheck-replay-intrinsic-non-determinism):** This occurs when Workflow state or branching logic within the Workflow gets determined by factors beyond the SDK's control.
+1. **[Intrinsic non-deterministic logic](/python/chapter-durable-execution/backgroundcheck-replay-intrinsic-non-determinism):** This occurs when Workflow state or branching logic within the Workflow gets determined by factors beyond the SDK's control.
 2. **[Non-deterministic code changes](/python/chapter-durable-execution/non-deterministic-code-changes):** When you change your Workflow code and deploy those changes while there are still active Workflow Executions relying on older code versions.

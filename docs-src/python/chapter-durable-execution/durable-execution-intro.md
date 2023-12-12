@@ -28,7 +28,7 @@ The information in this chapter is also available in the [Temporal 102 course](h
 
 :::
 
-This chapter builds on the [Construct a new Temporal Application project](/go/chapter-project-setup/project-setup-introduction) chapter and relies on the Background Check use case and sample applications as a means to contextualize the information.
+This chapter builds on the [Construct a new Temporal Application project](/python/project-setup-introduction) chapter and relies on the Background Check use case and sample applications as a means to contextualize the information.
 
 This chapter walks through the following sequence:
 
