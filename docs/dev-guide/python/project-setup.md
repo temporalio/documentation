@@ -3,7 +3,7 @@ id: project-setup
 title: Python SDK developer's guide - Project setup
 sidebar_label: Project setup
 sidebar_position: 3
-description: The project setup section of the Temporal Python SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Python—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+description: The project setup section of the Temporal Python SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Python - that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/python/project-setup
 toc_max_heading_level: 4
 keywords:
