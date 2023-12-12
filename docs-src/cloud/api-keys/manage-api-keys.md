@@ -9,6 +9,25 @@ tags:
 
 Manage your personal API Keys by creating, deleting, or updating access to them using the Cloud UI or tcld.
 
+### Global Administrator API Key Management
+
+:::note
+
+API Keys are not enabled for by default.
+You must enable API Key access to allow the creation of API Keys.
+
+:::
+
+Global Administrators can monitor, manage, update access, and delete API Keys for any user within their account.
+
+To manage your accounts API Keys
+
+1. [Login](https://cloud.temporal.io/) to the Cloud UI.
+2. Select **Settings** and choose **API Keys**.
+
+From here, you can update access to the API Key for an account using the **Enable** and **Disable** toggle.
+You can also disable or delete an individual User API Key using the vertical ellipsis at the right of the API Keys row.
+
 ### Generate an API Key
 
 :::note
@@ -108,15 +127,3 @@ To update access to an API Key using the tcld, follow these steps:
 tcld apikey disable --id <api-key-id>
 tcld apikey enable --id <api-key-id>
 ```
-
-### Global Administrator API Key Management
-
-Global Administrators can monitor, manage, update access, and delete API Keys for any user within their account.
-
-To manage your accounts API Keys
-
-1. [Login](https://cloud.temporal.io/) to the Cloud UI.
-2. Select **Settings** and choose **API Keys**.
-
-From here, you can update access to the API Key for an account using the **Enable** and **Disable** toggle.
-You can also disable or delete an individual User API Key using the vertical ellipsis at the right of the API Keys row.

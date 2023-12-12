@@ -14,3 +14,4 @@ To get started, ensure you’re a Temporal Cloud user. If you don’t have an ac
 
 - A Cloud user account
 - Access to the [Temporal Cloud UI](https://cloud.temporal.io/) or Temporal Cloud CLI ([tcld](https://docs.temporal.io/cloud/tcld/))
+- [Enable access to API Keys](/cloud/api-keys/manage-api-keys)
