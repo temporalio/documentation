@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday December 12 2023 09:21:07 AM -0800
+Last assembled: Tuesday December 12 2023 13:14:00 PM -0700
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 129 guide configurations found.
 
@@ -1315,5 +1315,7 @@ go/debug-environment-development -> /dev-guide/go/debugging#debug-in-a-developme
 go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production-environment
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
+
+php/how-to-use-side-effects-in-php -> /dev-guide/php/features#side-effects
 
 

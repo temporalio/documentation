@@ -66,7 +66,7 @@ Each component is explained later in this README.
 This directory contains editable Markdown files, known as "information nodes," that are used to generate the guides seen in the `/docs` directory and on our website.
 These nodes are registered to the Assembly Workflow with guide configurations. These configuration files can be found in `/assembly/guide-configs`.
 
-### `/docs` generated files for Docusaurus
+### `website/docs` generated files for Docusaurus
 
 This directory contains the Markdown files that map directly to what you see in the documentation site. For example, `/docs/concepts/workflows` maps to [docs.temporal.io/workflows](http://docs.temporal.io/workflows).
 
@@ -644,7 +644,9 @@ Restart your Worker after merging `main` into your branch and before running Ass
 
 The `devGuideToc.js` file provides a solution for generate a table of contents (ToC) for the developer's guide.
 The script processes JSON configuration files to extract relevant information, then creates a Markdown file for each language with an organized ToC. Here's a breakdown of the code's functionality:
+
 ### Functions
+
 `translateLanguageName(name)`: This function takes a language name as input and returns the corresponding name from the LANGUAGE_MAP. If the language name is not found in the map, it returns the original name.
 
 `sortBySidebarPosition(filePaths)`: This function takes an array of file paths as input and sorts them based on the sidebar_position value in each file's JSON content.

@@ -154,3 +154,4 @@ For the practical application of those concepts in Temporal, see [Failure Handli
 
 For languages that throw (or raise) errors (or exceptions), throwing an error that is not a Temporal Failure from a Workflow fails the Workflow Task (and the Task will be retried until it succeeds), whereas throwing a Temporal Failure (or letting a Temporal Failure propagate from Temporal calls, like an [Activity Failure](/references/failures#activity-failure) from an Activity call) fails the Workflow Execution.
 For more information, see [Application Failure](/references/failures#application-failure).
+
