@@ -14,12 +14,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation-samples-
 
 Now, you want to update your code to run `post_patch_activity` instead. This represents your desired end state.
 
-<<<<<<< HEAD
-
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-452eb52d-fc0a-4dcd-b6c9-3ed4bc7686f2" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-452eb52d-fc0a-4dcd-b6c9-3ed4bc7686f2" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/version_your_workflows/workflow_4_patch_complete_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
-=======
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-69a0625a-16ec-48ef-928d-f437dd953ba1" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-69a0625a-16ec-48ef-928d-f437dd953ba1" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/version_your_workflows/workflow_4_patch_complete_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
->>>>>>> main
 
 ```python
 from datetime import timedelta
