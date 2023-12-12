@@ -20,7 +20,7 @@ This guide is meant to provide a comprehensive overview of the structures, primi
 
 ## Project-setup
 
-The project setup section of the Temporal Python SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Python—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+The project setup section of the Temporal Python SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Python - that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 
 - [Install the Temporal CLI](/dev-guide/python/project-setup#install-cli): Download and install the Temporal CLI for Mac, Linux, or Windows.
 - [Choose a development Cluster](/dev-guide/python/project-setup#choose-dev-cluster): Discover which development Cluster you should choose

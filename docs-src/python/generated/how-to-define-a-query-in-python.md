@@ -25,7 +25,7 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 
 :::
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-e53193fd-9360-42fe-856f-678770d54864" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-e53193fd-9360-42fe-856f-678770d54864" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/query_your_workflow/wf_query_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-2b0742b9-b028-4fe2-927e-f3cd3f719f24" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-2b0742b9-b028-4fe2-927e-f3cd3f719f24" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/query_your_workflow/wf_query_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
 # ...

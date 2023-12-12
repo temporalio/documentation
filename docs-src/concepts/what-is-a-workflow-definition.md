@@ -118,7 +118,7 @@ This feature is useful for Workflow Definition logic that needs to be updated bu
 
 - [How to patch Workflow code in Go](/go/patching)
 - [How to patch Workflow code in Java](/java/patching)
-- [How to patch Workflow code in Python](/python/how-to-use-the-python-sdk-patching-api-in-python)
+- [How to patch Workflow code in Python](/python/generated/how-to-use-the-python-sdk-patching-api-in-python)
 - [How to patch Workflow code in TypeScript](/typescript/patching)
 
 #### Worker Build Ids
