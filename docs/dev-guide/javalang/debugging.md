@@ -32,7 +32,7 @@ You can debug production Workflows using:
 
 - [Web UI](/web-ui)
 - [tctl](/tctl-v1)
-- [Replay](#replay)
+- [Replay](/dev-guide/java/testing#replay)
 - [Tracing](/dev-guide/java/observability#tracing)
 - [Logging](/dev-guide/java/observability#logging)
 
