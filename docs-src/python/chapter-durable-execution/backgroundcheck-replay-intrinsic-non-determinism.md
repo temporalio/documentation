@@ -28,7 +28,7 @@ Developers are encouraged to use the SDK’s APIs when possible and avoid potent
   - Use `workflow.now()` instead of `datetime.now()` or `workflow.time()` instead `time.time()` for current time.
   - Leverage the custom `asyncio` event loop in Workflows; use `asyncio.sleep()` as needed.
 
-Read more about “How the Python Sandbox works” for details.
+Read more about [How the Python Sandbox works](/python/python-sandbox-environment) for details.
 
 Other common ways to introduce non-deterministic issues into a Workflow:
 
