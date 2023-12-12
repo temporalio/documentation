@@ -93,7 +93,7 @@ Global Administrators can monitor, manage, update access, and delete API Keys fo
 To manage your accounts API Keys
 
 1. [Login](https://cloud.temporal.io/) to the Cloud UI.
-2. Select **Settings** and choose **API Keys**.
+2. [Select **Settings** and choose **API Keys**](https://cloud.temporal.io/settings/api-keys).
 
 From here, you can update access to the API Key for an account using the **Enable** and **Disable** toggle.
 You can also disable or delete an individual User API Key using the vertical ellipsis at the right of the API Keys row.
