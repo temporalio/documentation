@@ -19,16 +19,7 @@ The Temporal SDK offers both a `Workflow.newTimer()` API, and a `Workflow.sleep(
 
 Use the `Workflow.getLogger` API to log from Workflows to suppress repeated logs from the Replay of the Workflow code.
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-b35ca6b8-7f34-4716-9ec8-f6c016a148f5" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-b35ca6b8-7f34-4716-9ec8-f6c016a148f5" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/durable-execution/backgroundcheck-replay/src/main/java/backgroundcheckreplay/BackgroundCheckReplayWorkflowImpl.java">view the source code</a> in the context of the rest of the application code.</div></div>
-=======
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-5c899300-cb10-43c3-8cd1-42d0914cacb3" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-5c899300-cb10-43c3-8cd1-42d0914cacb3" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck-replay/src/main/java/backgroundcheckreplay/BackgroundCheckReplayWorkflowImpl.java">view the source code</a> in the context of the rest of the application code.</div></div>
->>>>>>> main
-=======
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-1005978280" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-1005978280" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-java/blob/main/backgroundcheck-replay/src/main/java/backgroundcheckreplay/BackgroundCheckReplayWorkflowImpl.java">view the source code</a> in the context of the rest of the application code.</div></div>
->>>>>>> main
 
 ```java
 package backgroundcheckreplay;

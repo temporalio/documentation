@@ -24,12 +24,7 @@ Let's walk through this process in sequence.
 
 Suppose you have an initial Workflow version called `pre_patch_activity`:
 
-<<<<<<< HEAD
-
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-522615d7-9571-4db3-aa29-7961fecfceb8" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-522615d7-9571-4db3-aa29-7961fecfceb8" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/version_your_workflows/workflow_1_initial_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
-=======
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-320531399" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-320531399" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-python/blob/main/version_your_workflows/workflow_1_initial_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
->>>>>>> main
 
 ```python
 from datetime import timedelta
