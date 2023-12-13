@@ -46,6 +46,7 @@ The Features section of the Temporal Developer's guide provides basic implementa
 - [How to Continue-As-New](/dev-guide/php/features#continue-as-new): Continue-As-New enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
 - [What is a Timer?](/dev-guide/php/features#timers): A Timer lets a Workflow sleep for a fixed time period.
 - [How to use Temporal Cron Jobs](/dev-guide/php/features#temporal-cron-jobs): A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
+- [How to use Side Effects in PHP](/dev-guide/php/features#side-effects): Side Effects are used to execute non-deterministic code, such as generating a UUID or a random number, without compromising determinism in the Workflow.
 
 ## Observability
 

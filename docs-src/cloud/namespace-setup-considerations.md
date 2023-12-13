@@ -1,6 +1,7 @@
 ---
 slug: namespace-setup-considerations
 title: What are some Namespace best practices?
+id: namespace-setup-considerations
 description: This section provides general guidance for organizing Namespaces across use cases, services, applications, or domains.
 sidebar_label: Best practices
 tags:

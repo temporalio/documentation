@@ -40,6 +40,7 @@ The Features section of the Temporal Developer's guide provides basic implementa
 
 - [How to develop with Signals](/python/signals): A Signal is a message sent to a running Workflow Execution
 - [How to develop with Queries](/python/queries): A Query is a synchronous operation that is used to get the state of a Workflow Execution.
+- [How to develop with Updates](/python/workflow_updates/updates): An Update is an operation that can mutate the state of a Workflow Execution and return a response.
 - [What is a Dynamic Handler](/python/what-is-a-dynamic-handler): Dynamic Handlers are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named handler matches the call from the Server at runtime.
 - [Workflow timeouts](/python/workflow-timeouts): Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 - [How to set Activity timeouts](/python/activity-timeouts): Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.

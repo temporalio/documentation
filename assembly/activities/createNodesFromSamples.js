@@ -168,16 +168,24 @@ export async function createNodesFromSamples(config) {
 
   function isDACX(str, config, file) {
     str = str.toLowerCase(); // Remember to assign the result back to str
+    const extension = path.extname(str);
     if (str.includes("_dacx")) {
       return true;
-    } else if (isSupportedExtension(path.extname(str))) {
+    } else if (isSupportedExtension(extension)) {
       console.log(JSON.stringify(file));
       const readPath = path.join(config.root_dir, config.temp_write_dir, file.directory, file.name);
       try {
         const fileContent = fs.readFileSync(readPath, "utf-8");
-        const firstLine = fileContent.split("\n")[0]; // Get the first line of the file
-        if (firstLine.includes("dacx")) {
-          return true;
+        if (extension === ".py") {
+          // If the file is a Python file, check for """dacx
+          if (fileContent.includes('"""dacx')) {
+            return true;
+          }
+        } else {
+          const firstLine = fileContent.split("\n")[0]; // Get the first line of the file
+          if (firstLine.includes("dacx")) {
+            return true;
+          }
         }
       } catch (err) {
         console.error("File failed to load:", err);
@@ -186,7 +194,6 @@ export async function createNodesFromSamples(config) {
       return false;
     }
   }
-
   function parseURL(repoPath, file) {
     const parts = file.directory.split("/");
     const dirParts = parts.slice(1);
