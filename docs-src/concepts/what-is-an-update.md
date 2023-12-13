@@ -7,6 +7,7 @@ ssdi:
   - Released in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
   - Available in the [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.23.1/client#Client.UpdateWorkflowWithOptions) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
   - Available in the [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+  - Availabe in the [Python SDK](https://python.temporal.io/temporalio.workflow.html#update) since [v.1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
 tags:
   - term
   - updates
@@ -17,6 +18,7 @@ An Update is a request to and a response from a Temporal Client to a [Workflow E
 
 - [How to develop, send, and handle Updates in Go](/go/updates)
 - [How to develop, send, and handle Updates in Java](/java/updates)
+- [How to develop, and send Updates in Python](/python/workflow_updates/updates)
 
 You can think of an Update as a synchronous, blocking call that could replace both a Signal and a Query. An update is:
 
