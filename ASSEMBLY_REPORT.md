@@ -1,14 +1,5 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday December 12 2023 15:35:37 PM -0800
-
-Assembly Workflow Id: docs-full-assembly-rachfop-123
-
-129 guide configurations found.
-
-1726 information nodes found.
-
-1464 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1233,18 +1224,6 @@ java/chapter-project-setup/choose-dev-cluster -> /dev-guide/java/project-setup#c
 java/chapter-project-setup/project-structure -> /dev-guide/java/project-setup#boilerplate-project
 
 java/chapter-project-setup/backgroundcheck-boilerplate-testing-temporal -> /dev-guide/java/project-setup#test-framework
-
-java/generated/add-replay-test-to-background-check-workflow -> /dev-guide/java/durable-execution#add-replay-test
-
-java/chapter-durable-execution/workflow-reset -> /dev-guide/java/durable-execution#workflow-reset
-
-java/add-sdk -> /dev-guide/java/foundations#install-a-temporal-sdk
-
-java/async-activity-completion -> /dev-guide/java/features#asynchronous-activity-completion
-
-java/timers -> /dev-guide/java/features#timers
-
-java/schedules -> /dev-guide/java/features#schedule-a-workflow
 
 java/side-effects -> /dev-guide/java/features#side-effects
 
