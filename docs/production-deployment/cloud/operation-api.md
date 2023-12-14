@@ -1,6 +1,6 @@
 ---
 id: operation-api
-title: Temporal Cloud Operations API
+title: Operations API - Temporal Cloud feature guide
 sidebar_label: Cloud Ops API
 sidebar_position: 7
 description: Temporal Cloud Operations API.
