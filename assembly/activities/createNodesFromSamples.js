@@ -23,6 +23,9 @@ export async function createNodesFromSamples(config) {
         if (ext === ".py") {
           lang = "python";
         }
+        if (ext === ".ts") {
+          lang = "typescript";
+        }
         await createNodes(config, file, lang, sourceURL);
       }
     }
@@ -159,17 +162,10 @@ export async function createNodesFromSamples(config) {
   }
 
   function isSupportedExtension(ext) {
-    switch (ext) {
-      case ".go":
-        return true;
-      case ".py":
-        return true;
-      case ".java":
-        return true;
-      default:
-        return false;
-    }
+    const supportedExts = [".go", ".py", ".java", ".ts"];
+    return supportedExts.includes(ext);
   }
+
   function isDACX(str, config, file) {
     str = str.toLowerCase(); // Remember to assign the result back to str
     if (str.includes("_dacx")) {
@@ -199,8 +195,17 @@ export async function createNodesFromSamples(config) {
     return sourceURL;
   }
 
+  function hashCode(s) {
+    let h = 0;
+    for (let i = 0; i < s.length; i++) {
+      h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
+    }
+    return h;
+  }
+
   function genSourceLinkHTML(link) {
-    const id = uuidv4();
+    // Generate a deterministic id based on the hash of the link
+    const id = "id" + hashCode(link).toString();
     return `<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-${id}" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-${id}" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="${link}">view the source code</a> in the context of the rest of the application code.</div></div>`;
   }
 }

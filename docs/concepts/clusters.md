@@ -23,8 +23,7 @@ This guide provides a comprehensive overview of Temporal Clusters.
 
 A Temporal Cluster is the group of services, known as the [Temporal Server](#temporal-server), combined with [Persistence](#persistence) and [Visibility](#visibility) stores, that together act as a component of the Temporal Platform.
 
-- [How to quickly install a Temporal Cluster for testing and development](/kb/all-the-ways-to-run-a-cluster)
-- [Cluster deployment guide](/cluster-deployment-guide)
+- [Cluster deployment guide](/self-hosted-guide#)
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
 
@@ -51,7 +50,7 @@ Each service is aware of the others, including scaled instances, through a membe
 All Temporal Server releases abide by the [Semantic Versioning Specification](https://semver.org/).
 
 We support upgrade paths from every version beginning with Temporal v1.7.0.
-For details on upgrading your Temporal Cluster, see [Upgrade Server](/cluster-deployment-guide#upgrade-server).
+For details on upgrading your Temporal Cluster, see [Upgrade Server](/self-hosted-guide/upgrade-server#upgrade-server).
 
 We provide maintenance support for previously published minor and major versions by continuing to release critical bug fixes related to security, the prevention of data loss, and reliability, whenever they are found.
 
@@ -242,28 +241,28 @@ You can verify supported databases in the [Temporal Server release notes](https:
 
 - For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
 - For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
-- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports advanced Visibility features](/cluster-deployment-guide#supported-databases). Visibility configuration in Temporal Cluster is updated and Dual Visibility is enabled. For details, see [Visibility store setup](/cluster-deployment-guide#visibility-store).
+- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports Advanced Visibility features](/self-hosted-guide/visibility). The Visibility configuration for Temporal Clusters has been updated and Dual Visibility is enabled. For details, see [Visibility store setup](/self-hosted-guide/visibility).
 
 :::
 
 The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Cluster.
 
-The [Visibility store](/cluster-deployment-guide#visibility-store) in your Temporal Cluster stores persisted Workflow Execution Event History data and is set up as a part of your [Persistence store](#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
+The [Visibility store](/self-hosted-guide/visibility#) in your Temporal Cluster stores persisted Workflow Execution Event History data and is set up as a part of your [Persistence store](#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
 
-- [How to set up a Visibility store](/cluster-deployment-guide#visibility-store)
+- [How to set up a Visibility store](/self-hosted-guide/visibility#)
 
 With Temporal Server v1.21, you can set up [Dual Visibility](/visibility#dual-visibility) to migrate your Visibility store from one database to another.
 
 <!-- A Visibility store can be configured to provide [atandard Visibility](/visibility#standard-visibility) and [advanced Visibility](/visibility#advanced-visibility) features.
 
-Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/cluster-deployment-guide#supported-databases) for updates. -->
+Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted-guide/visibility#) for updates. -->
 
 ## What is Archival? {#archival}
 
 Archival is a feature that automatically backs up [Event Histories](/workflows#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
 
-- [How to create a custom Archiver](/cluster-deployment-guide#custom-archiver)
-- [How to set up Archival](/cluster-deployment-guide#set-up-archival)
+- [How to create a custom Archiver](/self-hosted-guide/archival#custom-archiver)
+- [How to set up Archival](/self-hosted-guide/archival#set-up-archival)
 
 Workflow Execution Event Histories are backed up after the [Retention Period](/namespaces#retention-period) is reached.
 Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.
@@ -378,8 +377,8 @@ These protocols address three areas: servers, client connections, and users.
 
 Temporal offers two plugin interfaces for authentication and authorization of API calls.
 
-- [`ClaimMapper`](/security#claim-mapper)
-- [`Authorizer`](/security#authorizer-plugin)
+- [`ClaimMapper`](/self-hosted-guide/security#claim-mapper)
+- [`Authorizer`](/self-hosted-guide/security#authorizer-plugin)
 
 The logic of both plugins can be customized to fit a variety of use cases.
 When plugins are provided, the Frontend Service invokes their implementation before running the requested operation.
@@ -408,7 +407,7 @@ You can then set up your observability platform (such as Grafana) to use Prometh
 For details on self-hosted Cluster metrics and setup, see the following:
 
 - [Temporal Cluster OSS metrics reference](/references/cluster-metrics#)
-- [Set up Prometheus and Grafana to view SDK and self-hosted Cluster metrics](/kb/prometheus-grafana-setup)
+- [Set up Prometheus and Grafana to view SDK and self-hosted Cluster metrics](/self-hosted-guide/monitoring#prometheus-and-grafana-setup)
 
 ## What is Multi-Cluster Replication? {#multi-cluster-replication}
 

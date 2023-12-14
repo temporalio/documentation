@@ -14,12 +14,6 @@ const supportedTech = [
     class: "w-7 h-7",
   },
   {
-    link: "/dev-guide/php",
-    image: "/img/php.svg",
-    alt: "php logo",
-    class: "w-10",
-  },
-  {
     link: "/dev-guide/python",
     image: "/img/python.svg",
     alt: "Python logo",
@@ -32,10 +26,16 @@ const supportedTech = [
     class: "w-7 h-7",
   },
   {
-    link: "/dev-guide/typescript",
-    image: "/img/javascript.svg",
-    alt: "JavaScript logo",
-    class: "w-7 h-7",
+    link: "/dev-guide/php",
+    image: "/img/php.svg",
+    alt: "php logo",
+    class: "w-10",
+  },
+  {
+    link: "https://github.com/temporalio/sdk-dotnet#readme",
+    image: "/img/dotnet.svg",
+    alt: ".Net logo",
+    class: "w-10",
   },
 ];
 

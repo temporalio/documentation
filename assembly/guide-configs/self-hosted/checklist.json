@@ -1,0 +1,27 @@
+{
+    "file_name": "checklist.md",
+    "id": "production-checklist",
+    "file_dir": "production-deployment/self-hosted-guide",
+    "slug": "/self-hosted-guide/production-checklist",
+    "title": "Temporal Platform's production readiness checklist",
+    "sidebar_label": "Prod checklist",
+    "sidebar_position": 3,
+    "description": "Discover all the production level steps you can take to ensure a smooth deployment.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "self-hosted/prod-checklist"
+        },
+        {
+            "type": "h2",
+            "id": "self-hosted/scaling-and-metrics"
+        },
+        {
+            "type": "h2",
+            "id": "self-hosted/workflow-versioning"
+        }
+    ]
+}

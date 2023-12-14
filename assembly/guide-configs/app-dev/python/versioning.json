@@ -21,27 +21,27 @@
         },
         {
             "type": "h2",
-            "id": "python/how-to-use-the-python-sdk-patching-api-in-python"
+            "id": "python/generated/how-to-use-the-python-sdk-patching-api-in-python"
         },
         {
             "type": "p",
-            "id": "python/how-to-use-the-python-sdk-patching-api-final-in-python"
+            "id": "python/generated/how-to-use-the-python-sdk-patching-api-final-in-python"
         },
         {
             "type": "p",
-            "id": "python/addressing-deployment-challenges-with-python-sdk-patching-api"
+            "id": "python/generated/addressing-deployment-challenges-with-python-sdk-patching-api"
         },
         {
             "type": "h3",
-            "id": "python/patch-in-new-code"
+            "id": "python/generated/patch-in-new-code"
         },
         {
             "type": "h3",
-            "id": "python/understanding-deprecated-patches-in-python-sdk"
+            "id": "python/generated/understanding-deprecated-patches-in-python-sdk"
         },
         {
             "type": "h3",
-            "id": "python/deploying-post-patch-activity-safely"
+            "id": "python/generated/deploying-post-patch-activity-safely"
         }
     ]
 }

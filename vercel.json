@@ -54,6 +54,10 @@
       "destination": "/workers:path*"
     },
     {
+      "source": "/cluster-deployment-guide:path*",
+      "destination": "/self-hosted-guide"
+    },
+    {
       "source": "/application-development-guide",
       "destination": "/dev-guide"
     },
@@ -1011,11 +1015,11 @@
     },
     {
       "source": "/clusters/how-to-set-up-archival",
-      "destination": "/cluster-deployment-guide#archival"
+      "destination": "/self-hosted-guide/archival"
     },
     {
       "source": "/clusters/how-to-create-a-custom-archiver",
-      "destination": "/cluster-deployment-guide#archival"
+      "destination": "/self-hosted-guide/archival"
     },
     {
       "source": "/server-configuration",
@@ -1043,7 +1047,7 @@
     },
     {
       "source": "/clusters/how-to-set-up-multi-cluster-replication",
-      "destination": "/cluster-deployment-guide#set-up-multi-cluster-replication"
+      "destination": "/self-hosted-guide/multi-cluster-replication"
     },
     {
       "source": "/server-options",
@@ -1055,15 +1059,15 @@
     },
     {
       "source": "/server-production-deploy",
-      "destination": "/kb/legacy-oss-prod-deploy"
+      "destination": "/production-deployment"
     },
     {
       "source": "/server-production-deployment",
-      "destination": "/kb/legacy-oss-prod-deploy"
+      "destination": "production-deployment"
     },
     {
       "source": "/server/production-deploy",
-      "destination": "/kb/legacy-oss-prod-deploy"
+      "destination": "/production-deployment"
     },
     {
       "source": "/server-quick-install",
@@ -1099,15 +1103,15 @@
     },
     {
       "source": "/content/how-to-integrate-elasticsearch-into-a-temporal-cluster",
-      "destination": "/cluster-deployment-guide#elasticsearch"
+      "destination": "/self-hosted-guide/visibility"
     },
     {
       "source": "/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster",
-      "destination": "/cluster-deployment-guide#elasticsearch"
+      "destination": "/self-hosted-guide/visibility"
     },
     {
       "source": "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster",
-      "destination": "/cluster-deployment-guide#elasticsearch"
+      "destination": "/self-hosted-guide/visibility"
     },
     {
       "source": "/server-security",
@@ -1535,7 +1539,7 @@
     },
     {
       "source": "/content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl",
-      "destination": "/cluster-deployment-guide#create-custom-search-attributes"
+      "destination": "/self-hosted-guide/visibility"
     },
     {
       "source": "archive-data",
@@ -1718,10 +1722,6 @@
       "destination": "/security#authorizer-plugin"
     },
     {
-      "source": "/server/production-deployment",
-      "destination": "/kb/legacy-oss-prod-deploy#temporal-server"
-    },
-    {
       "source": "/tctl-next",
       "destination": "/cli"
     },
@@ -1798,8 +1798,12 @@
       "destination": "/cloud/certificates:path*"
     },
     {
-      "source": "/server/production-deployment/#scaling-and-metrics",
-      "destination": "/kb/legacy-oss-prod-deploy#scaling-and-metrics"
+      "source": "/server/production-deployment/:path*",
+      "destination": "/production-deployment"
+    },
+    {
+      "source": "/kb/legacy-oss-prod-deploy:path*",
+      "destination": "/production-deployment"
     },
     {
       "source": "/cloud/release-notes",
@@ -1944,6 +1948,26 @@
     {
       "source": "/kb/failures",
       "destination": "/references/failures"
+    },
+    {
+      "source": "/kb/temporal-platform-limits-sheet",
+      "destination": "/self-hosted-guide/defaults"
+    },
+    {
+      "source": "/kb/all-the-ways-to-run-a-cluster",
+      "destination": "/self-hosted-guide"
+    },
+    {
+      "source": "/kb/prometheus-grafana-setup",
+      "destination": "/self-hosted-guide/monitoring"
+    },
+    {
+      "source": "/kb/python-sandbox-environment",
+      "destination": "/python/python-sandbox-environment"
+    },
+    {
+      "source": "production-readiness/:path*",
+      "destination": "/self-hosted-guide"
     },
     {
       "source": "/kb/python-sandbox-environment",

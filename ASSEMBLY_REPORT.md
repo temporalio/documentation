@@ -1,14 +1,5 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday December 14 2023 10:16:25 AM -0800
-
-Assembly Workflow Id: docs-full-assembly-rachfop-123
-
-115 guide configurations found.
-
-1676 information nodes found.
-
-1440 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1152,8 +1143,6 @@ python/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/py
 
 python/add-sdk -> /dev-guide/python/foundations#install-a-temporal-sdk
 
-python/workflow_updates/updates -> /dev-guide/python/features#updates
-
 python/async-activity-completion -> /dev-guide/python/features#asynchronous-activity-completion
 
 python/cancel-activity -> /dev-guide/python/features#cancel-an-activity
@@ -1191,8 +1180,6 @@ php/async-activity-completion -> /dev-guide/php/features#asynchronous-activity-c
 php/cancel-activity -> /dev-guide/php/features#cancel-an-activity
 
 php/timers -> /dev-guide/php/features#timers
-
-php/how-to-use-side-effects-in-php -> /dev-guide/php/features#side-effects
 
 php/testing-activities -> /dev-guide/php/testing#test-activities
 
@@ -1237,18 +1224,6 @@ java/chapter-project-setup/choose-dev-cluster -> /dev-guide/java/project-setup#c
 java/chapter-project-setup/project-structure -> /dev-guide/java/project-setup#boilerplate-project
 
 java/chapter-project-setup/backgroundcheck-boilerplate-testing-temporal -> /dev-guide/java/project-setup#test-framework
-
-java/generated/add-replay-test-to-background-check-workflow -> /dev-guide/java/durable-execution#add-replay-test
-
-java/chapter-durable-execution/workflow-reset -> /dev-guide/java/durable-execution#workflow-reset
-
-java/add-sdk -> /dev-guide/java/foundations#install-a-temporal-sdk
-
-java/async-activity-completion -> /dev-guide/java/features#asynchronous-activity-completion
-
-java/timers -> /dev-guide/java/features#timers
-
-java/schedules -> /dev-guide/java/features#schedule-a-workflow
 
 java/side-effects -> /dev-guide/java/features#side-effects
 
@@ -1319,47 +1294,5 @@ go/debug-environment-development -> /dev-guide/go/debugging#debug-in-a-developme
 go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production-environment
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
-
-clusters/how-to-upgrade-the-temporal-server-version -> #upgrade-server
-
-clusters/how-to-set-up-mysql-visibility-store -> #mysql
-
-clusters/how-to-set-up-postgresql-visibility-store -> #postgresql
-
-clusters/how-to-set-up-sqlite-visibility-store -> #sqlite
-
-clusters/how-to-set-up-cassandra-visibility-store -> #cassandra
-
-clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster -> #elasticsearch
-
-clusters/how-to-set-up-visibility-in-a-temporal-cluster -> #supported-databases
-
-clusters/how-to-create-a-custom-archiver -> #custom-archiver
-
-prod-readiness-context/how-to-set-up-codec-server -> #codec-server-setup
-
-clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
-
-clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
-
-clusters/how-to-create-custom-search-attribute-keys -> /cluster-deployment-guide#create-custom-search-attributes
-
-clusters/how-to-remove-a-custom-search-attribute-key -> /cluster-deployment-guide#remove-custom-search-attributes
-
-python/how-to-use-the-python-sdk-patching-api-in-python -> /dev-guide/python/versioning#python-sdk-patching-api
-
-clusters/how-to-install-temporal-cli -> #run-a-development-server
-
-python/python-dev-guide-structure -> #
-
-python/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
-
-java/foundations -> /dev-guide/java/foundations#
-
-go/landing-page/go-dev-guide-structure -> #
-
-go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
-
-go/foundations -> /dev-guide/go/foundations#
 
 

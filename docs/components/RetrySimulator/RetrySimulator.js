@@ -1,8 +1,8 @@
 import Chart from "chart.js/auto";
 import CodeBlock from "@theme/CodeBlock";
-import React, {useState, useCallback, useEffect, useRef} from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import styles from "./retry-simulator.module.css";
-import {useColorMode} from "@docusaurus/theme-common";
+import { useColorMode } from "@docusaurus/theme-common";
 
 const languageSamples = new Map([]);
 languageSamples.set(
@@ -46,7 +46,7 @@ func TestActivity(ctx context.Context, url string) error {
 
 export default function RetrySimulator() {
   const [state, setState] = useState({
-    retries: [{success: true, runtimeMS: 1}],
+    retries: [{ success: true, runtimeMS: 1 }],
     language: "typescript",
     scheduleToStartTimeout: 0,
     scheduleToCloseTimeout: 0,
@@ -58,7 +58,7 @@ export default function RetrySimulator() {
     maximumInterval: 0,
   });
   const chartCanvas = useRef(null);
-  const {isDarkTheme} = useColorMode();
+  const { isDarkTheme } = useColorMode();
 
   const addRetry = useCallback(function addRetry(success, runtimeMS) {
     const retries = [...state.retries];
@@ -68,10 +68,10 @@ export default function RetrySimulator() {
         success: false,
       };
     }
-    const retry = {success, runtimeMS};
+    const retry = { success, runtimeMS };
     retries.push(retry);
 
-    setState({...state, retries});
+    setState({ ...state, retries });
   });
 
   const updateRetry = useCallback(function updateRetry(index, update) {
@@ -82,14 +82,14 @@ export default function RetrySimulator() {
         delete update.runtimeMS;
       }
     }
-    retries[index] = {...retries[index], ...update};
-    setState({...state, retries});
+    retries[index] = { ...retries[index], ...update };
+    setState({ ...state, retries });
   });
 
   const deleteRetry = useCallback(function deleteRetry(index) {
     const retries = [...state.retries];
     retries.splice(index, 1);
-    setState({...state, retries});
+    setState({ ...state, retries });
   });
 
   const applyRetryScenario = useCallback(function applyRetryScenario(values) {
@@ -103,27 +103,22 @@ export default function RetrySimulator() {
     const maxRetries = 20;
     for (let i = 0; i < maxRetries; ++i) {
       const success = Math.random() < successRate || i === maxRetries - 1;
-      const runtimeMS =
-        requestRuntimeMS +
-        Math.round((Math.random() - 0.5) * (requestRuntimeMS / 2)); // +/- 50%
-      retries.push({success, runtimeMS});
+      const runtimeMS = requestRuntimeMS + Math.round((Math.random() - 0.5) * (requestRuntimeMS / 2)); // +/- 50%
+      retries.push({ success, runtimeMS });
       if (success) {
         break;
       }
     }
 
-    setState({...state, retries});
+    setState({ ...state, retries });
   });
 
-  const updateRetryPolicyParam = useCallback(function updateRetryPolicyParam(
-    prop,
-    ev
-  ) {
+  const updateRetryPolicyParam = useCallback(function updateRetryPolicyParam(prop, ev) {
     const value = getEventValue(ev);
     if (isNaN(value)) {
       return;
     }
-    setState({...state, [prop]: +value});
+    setState({ ...state, [prop]: +value });
     updateChart();
   });
 
@@ -133,13 +128,12 @@ export default function RetrySimulator() {
     }
     const chart = chartCanvas.current.chart;
 
-    const {backoffCoefficient, initialInterval} = state;
-    let {maximumInterval, maximumAttempts} = state;
+    const { backoffCoefficient, initialInterval } = state;
+    let { maximumInterval, maximumAttempts } = state;
     const labels = [];
     const values = [];
     maximumAttempts = maximumAttempts === 0 ? 10 : maximumAttempts;
-    maximumInterval =
-      maximumInterval === 0 ? Number.POSITIVE_INFINITY : maximumInterval;
+    maximumInterval = maximumInterval === 0 ? Number.POSITIVE_INFINITY : maximumInterval;
     let interval = initialInterval;
     for (let i = 0; i < maximumAttempts; ++i) {
       interval = Math.min(interval, maximumInterval);
@@ -151,10 +145,7 @@ export default function RetrySimulator() {
     if (labels.length > chart.data.labels.length) {
       chart.data.labels.push(...labels.slice(chart.data.labels.length));
     } else if (labels.length < chart.data.labels.length) {
-      chart.data.labels.splice(
-        labels.length,
-        chart.data.length - labels.length
-      );
+      chart.data.labels.splice(labels.length, chart.data.length - labels.length);
     }
     chart.data.labels = labels;
     chart.data.datasets = [
@@ -169,10 +160,10 @@ export default function RetrySimulator() {
   });
 
   const updateLanguage = useCallback(function updateLanguage(language) {
-    setState({...state, language});
+    setState({ ...state, language });
   });
 
-  const {success, runtimeMS, reason} = calculateResult(state);
+  const { success, runtimeMS, reason } = calculateResult(state);
   const code = retryPolicyCode(state);
 
   useEffect(
@@ -226,10 +217,7 @@ export default function RetrySimulator() {
             <h3>Sample Activity</h3>
 
             <div>
-              <select
-                className={styles.dropdown}
-                onChange={(ev) => updateLanguage(ev.target.value)}
-              >
+              <select className={styles.dropdown} onChange={(ev) => updateLanguage(ev.target.value)}>
                 <option value="typescript">TypeScript</option>
                 <option value="go">Go</option>
               </select>
@@ -241,10 +229,7 @@ export default function RetrySimulator() {
 
             <h3>Activity Retries (in ms)</h3>
 
-            <select
-              className={styles.dropdown}
-              onChange={(ev) => applyRetryScenario(ev.target.value)}
-            >
+            <select className={styles.dropdown} onChange={(ev) => applyRetryScenario(ev.target.value)}>
               <option value="">Generate a Scenario</option>
               <option value='{"requestRuntimeMS": 10, "successRate": 0.9}'>
                 Fast request (10ms), 90% success rate
@@ -262,9 +247,7 @@ export default function RetrySimulator() {
           </div>
           <div className={styles.scheduleTime}>
             <div className={styles.inputContainer}>
-              <label className={styles.numberInputLabel}>
-                Task Time in Queue
-              </label>
+              <label className={styles.numberInputLabel}>Task Time in Queue</label>
               <input
                 className={styles.numberInput}
                 value={state.scheduleTime}
@@ -296,10 +279,7 @@ export default function RetrySimulator() {
               );
             })}
           </div>
-          <button
-            className={styles.addButton}
-            onClick={() => addRetry(true, 1)}
-          >
+          <button className={styles.addButton} onClick={() => addRetry(true, 1)}>
             + Add
           </button>
         </div>
@@ -357,11 +337,7 @@ export default function RetrySimulator() {
       </div>
       <div className={styles.retryRow}>
         <div className={styles.retryCol}>
-          <div
-            className={
-              styles.result + " " + (success ? styles.success : styles.fail)
-            }
-          >
+          <div className={styles.result + " " + (success ? styles.success : styles.fail)}>
             <h3 className={styles.resultText}>
               {success ? "Success" : "Failed"} after {runtimeMS} ms
               {success ? "" : ": " + reason}
@@ -381,7 +357,7 @@ export default function RetrySimulator() {
   );
 }
 
-function RetryConfig({retry, numRetries, index, updateRetry, deleteRetry}) {
+function RetryConfig({ retry, numRetries, index, updateRetry, deleteRetry }) {
   return (
     <div className={styles.retry} key={"retry-" + index}>
       <div className={styles.inputContainer}>
@@ -389,9 +365,7 @@ function RetryConfig({retry, numRetries, index, updateRetry, deleteRetry}) {
           className={styles.numberInputLabel}
           disabled={index + 1 < numRetries}
           value={retry.success ? "succeeds" : "fails"}
-          onChange={(ev) =>
-            updateRetry(index, {success: ev.target.value === "success"})
-          }
+          onChange={(ev) => updateRetry(index, { success: ev.target.value === "success" })}
         >
           <option value="fails">Fails after</option>
           <option value="succeeds">Succeeds after</option>
@@ -400,7 +374,7 @@ function RetryConfig({retry, numRetries, index, updateRetry, deleteRetry}) {
           type="number"
           className={styles.numberInput}
           value={retry.runtimeMS}
-          onChange={(ev) => updateRetry(index, {runtimeMS: ev.target.value})}
+          onChange={(ev) => updateRetry(index, { runtimeMS: ev.target.value })}
         />
         <span className={styles.removeRetry} onClick={() => deleteRetry(index)}>
           &times;
@@ -410,7 +384,7 @@ function RetryConfig({retry, numRetries, index, updateRetry, deleteRetry}) {
         type="range"
         className={styles.slider}
         value={retry.runtimeMS}
-        onChange={(ev) => updateRetry(index, {runtimeMS: ev.target.value})}
+        onChange={(ev) => updateRetry(index, { runtimeMS: ev.target.value })}
         min="0"
         max="1000"
         step="5"
@@ -419,14 +393,7 @@ function RetryConfig({retry, numRetries, index, updateRetry, deleteRetry}) {
   );
 }
 
-function RetryPolicyParamInputs({
-  param,
-  value,
-  updateRetryPolicyParam,
-  min,
-  max,
-  step,
-}) {
+function RetryPolicyParamInputs({ param, value, updateRetryPolicyParam, min, max, step }) {
   return (
     <div className={styles.parameter}>
       <div className={styles.inputContainer}>
@@ -452,8 +419,6 @@ function RetryPolicyParamInputs({
 }
 
 function calculateResult(state) {
-  let runtimeMS = 0;
-  let retryIntervalMS = state.initialInterval;
   const {
     startToCloseTimeout,
     scheduleToCloseTimeout,
@@ -463,6 +428,7 @@ function calculateResult(state) {
     maximumAttempts,
     backoffCoefficient,
   } = state;
+
   if (scheduleToStartTimeout > 0 && scheduleTime >= scheduleToStartTimeout) {
     return {
       success: false,
@@ -470,51 +436,56 @@ function calculateResult(state) {
       reason: "scheduleTime",
     };
   }
+
+  let retryIntervalMS = state.initialInterval;
+  let totalRuntimeMS = 0;
+
   for (let i = 0; i < state.retries.length; ++i) {
-    runtimeMS = Math.min(
-      runtimeMS + state.retries[i].runtimeMS,
-      startToCloseTimeout
-    );
+    const currentRetryRuntime = state.retries[i].runtimeMS;
+    totalRuntimeMS += currentRetryRuntime;
+
+    if (currentRetryRuntime >= startToCloseTimeout) {
+      return {
+        success: false,
+        runtimeMS: totalRuntimeMS,
+        reason: "startToCloseTimeout",
+      };
+    }
+
     if (!state.retries[i].success) {
       if (maximumAttempts > 0 && i + 1 >= maximumAttempts) {
         return {
           success: false,
-          runtimeMS,
+          runtimeMS: totalRuntimeMS,
           reason: "maximumAttempts",
         };
       }
+
       if (i + 1 >= state.retries.length) {
         return {
           success: false,
-          runtimeMS,
+          runtimeMS: totalRuntimeMS,
           reason: "All retries failed",
         };
       }
-      runtimeMS = Math.min(runtimeMS + retryIntervalMS, startToCloseTimeout);
-    }
-    retryIntervalMS =
-      maximumInterval > 0
-        ? Math.min(retryIntervalMS * backoffCoefficient, maximumInterval)
-        : retryIntervalMS * backoffCoefficient;
-    if (runtimeMS >= startToCloseTimeout) {
-      return {
-        success: false,
-        runtimeMS,
-        reason: "startToCloseTimeout",
-      };
-    }
-    if (
-      scheduleToCloseTimeout > 0 &&
-      scheduleTime + runtimeMS >= scheduleToCloseTimeout
-    ) {
-      let total = scheduleTime + runtimeMS;
-      return {
-        success: false,
-        runtimeMS: total,
-        reason: "scheduleToCloseTimeout",
-      };
+
+      retryIntervalMS =
+        maximumInterval > 0
+          ? Math.min(retryIntervalMS * backoffCoefficient, maximumInterval)
+          : retryIntervalMS * backoffCoefficient;
+
+      totalRuntimeMS += retryIntervalMS;
+
+      if (totalRuntimeMS >= scheduleToCloseTimeout) {
+        return {
+          success: false,
+          runtimeMS: totalRuntimeMS,
+          reason: "scheduleToCloseTimeout",
+        };
+      }
     }
   }
+
   if (state.retries.length === 0) {
     return {
       success: false,
@@ -522,9 +493,10 @@ function calculateResult(state) {
       reason: "No retries",
     };
   }
+
   return {
     success: true,
-    runtimeMS,
+    runtimeMS: totalRuntimeMS,
   };
 }
 
@@ -561,9 +533,7 @@ function retryPolicyCode(state) {
         .filter((key) => key !== "retryPolicy")
         .map((key) => `\t${capitalizeFirstLetter(key)}: ${value[key]},`),
       "\tRetryPolicy: &temporal.RetryPolicy{",
-      ...Object.keys(value.retryPolicy).map(
-        (key) => `\t\t${capitalizeFirstLetter(key)}: ${value.retryPolicy[key]}`
-      ),
+      ...Object.keys(value.retryPolicy).map((key) => `\t\t${capitalizeFirstLetter(key)}: ${value.retryPolicy[key]}`),
       "\t}",
       "}",
     ].join("\n");

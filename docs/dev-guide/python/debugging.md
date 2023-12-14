@@ -25,11 +25,11 @@ You can debug production Workflows using:
 
 - [Web UI](/web-ui)
 - [tctl](/tctl-v1)
-- [Replay](#replay)
+- [Replay](/dev-guide/python/testing#replay)
 - [Tracing](/dev-guide/python/observability#tracing)
 - [Logging](/dev-guide/python/observability#logging)
 
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/dev-guide/worker-performance).
 For more information, see [Observability ▶️ Metrics](/dev-guide/python/observability#metrics) for setting up SDK metrics.
 
-Debug Server performance with [Cloud metrics](/cloud/metrics#) or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).
+Debug Server performance with [Cloud metrics](/cloud/metrics#) or [self-hosted Server metrics](/self-hosted-guide/production-checklist#scaling-and-metrics).
