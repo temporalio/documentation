@@ -576,7 +576,8 @@ The main reason for increasing the default value would be to accommodate a Workf
 
 ### What is a Timer? {#timer}
 
-You can add a delay to your Workflow Execution by setting a Timer.
+Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in their handling of time values.
+
 Timers in Temporal are persisted, meaning that even if your Worker or Temporal Cluster is down when the time period completes, as soon as your Worker and Cluster become available, the call that is awaiting the Timer in your Workflow code will resolve, causing execution to proceed
 Timers are reliable and efficient.
 Workers consume no additional resources while waiting for a Timer to fire, so a single Worker can await millions of Timers concurrently.

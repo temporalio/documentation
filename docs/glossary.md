@@ -506,7 +506,7 @@ _Tags: [term](/tags/term), [web-ui](/tags/web-ui)_
 
 
 #### [Timer](/workflows#timer)
-A Workflow can set a durable timer for a fixed time.
+Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in their handling of time values.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
