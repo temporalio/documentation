@@ -20,13 +20,13 @@ An Update is a request and response from a Temporal Client to a [Workflow Execut
 
 You can think of an Update as a synchronous, blocking call that could replace both a Signal and a Query. An update is:
 
-- A Signal with a response
-- A Query that can change state
-- The logical model of a Signal with the overhead and latency of a Query
+- A Signal that can return a value, and has lower overhead and latency
+- A Query that can mutate workflow state
 
 The Workflow must have a function to handle the Update.
-Unlike a [Signal](/concepts/what-is-a-signal) handler, the Update handler function can return a value to the caller.
-The Update handler listens for Updates by the Update's name.
+The Update handler can mutate workflow state (like a [Signal](/concepts/what-is-a-signal) but unlike a [Query](/concepts/what-is-a-query)) and return a value to the caller (like a Query but unlike a Signal).
+Like every bit of code in a Workflow, Update handlers must be [deterministic](/concepts/what-is-a-workflow-definition#deterministic-constraints).
+However, they may use all the available Workflow features, such as executing Activities and child Workflows, and waiting on timers/conditions.
 
 When there is the potential for multiple Updates to cause a duplication problem, Temporal recommends adding idempotency logic to your Update handler that checks for duplicates.
 
@@ -45,8 +45,6 @@ An Update has four phases.
    If the Update completes the validation stage without error, the Platform changes its state to **Accepted** and a [WorkflowExecutionUpdateAcceptedEvent](/references/events#workflowexecutionupdateacceptedevent) Event is added to Workflow Execution [Event History](#event-history).
 3. **Execution.** Accepted Update requests move to the execution phase.
    In this phase, the Worker delivers the request to the Update handler.
-   Like every bit of code in a Workflow, Update handlers must be [deterministic](/concepts/what-is-a-workflow-definition#deterministic-constraints).
-   However, they may use all the available Workflow features, such as executing Activities and child Workflows, and waiting on timers/conditions.
 4. **Completion.** The Update handler can return a result or a language-appropriate error/exception to indicate its completion.
    The Platform sends the Update outcome back to the original invoking entity as an Update response.
    A [WorkflowExecutionUpdateCompletedEvent](/references/events#workflowexecutionupdatecompletedevent) Event in the Workflow Execution Event History denotes the completion of an Update.
