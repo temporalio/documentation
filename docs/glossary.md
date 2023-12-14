@@ -517,6 +517,12 @@ The Temporal Web UI provides users with Workflow Execution state and metadata fo
 _Tags: [term](/tags/term), [web-ui](/tags/web-ui)_
 
 
+#### [Timer](/workflows#timer)
+Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in their handling of time values.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
 #### [Update](/workflows#update)
 An Update is a request to and a response from Workflow Execution.
 
