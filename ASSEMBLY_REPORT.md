@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday December 14 2023 14:49:34 PM -0700
+Last assembled: Thursday December 14 2023 15:10:39 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -781,6 +781,8 @@ cloud/api-keys/manage-api-keys -> #global-administrator-api-key-management
 cloud/availability-overview -> /cloud/service-availability#
 
 cloud/sla -> /cloud/sla#
+
+cloud/api-keys/api-keys -> /cloud/api-keys#
 
 cloud/support-create-ticket -> /cloud/support#support-ticket
 
