@@ -48,10 +48,10 @@ If your organization uses Google Workspace or Microsoft Azure AD, and your IT ad
 
 :::
 
-When you create a user in Temporal Cloud, the prospective user receives an email invitation.
-Before accepting the invitation, the user must be logged in to Google using the email address that received the invitation.
-The user must then click **Accept Invite** in the message.
-Attempting to log in to Temporal Cloud without first accepting the invite doesn't work.
+When a user is created in Temporal Cloud, they receive an email invitation containing a link.
+They must use this link to finalize their setup and access Temporal Cloud.
+Accounts with SAML configurations can ignore this email.
+However, those using Google or Microsoft for SSO authentication need to follow the email link for their initial login to Temporal Cloud.
 
 :::info
 
@@ -92,6 +92,13 @@ For details, see the [tcld user invite](/cloud/tcld/user#invite) command.
 
 Temporal sends an email message to the specified user.
 To join Temporal Cloud, the user must select **Accept Invite** in the message.
+
+### How to invite a user using the Cloud Ops API
+
+You can invite users pragmatically using the Cloud Ops API.
+
+1. Create a connection to your Temporal Cluster using the Cloud Operations API.
+2. Use the [CreateUser service](https://github.com/temporalio/api-cloud/blob/main/temporal/api/cloud/cloudservice/v1/service.proto) to create a user.
 
 ## What are the account-level Roles for users in Temporal Cloud? {#account-level-roles}
 

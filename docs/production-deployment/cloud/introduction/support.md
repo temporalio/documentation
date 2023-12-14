@@ -64,7 +64,35 @@ For pricing details of these two levels of support, please visit our [pricing pa
 Temporal offers a ticketing system for Temporal Cloud customers.
 We have an active [community Slack](https://temporalio.slack.com) and an active [community Discourse forum](https://community.temporal.io/) where you can post questions and ask for help.
 
+## How to create a Zendesk account for Temporal Support {#zendesk-account}
+
+Zendesk has a per organization setting to associate user emails based on the domain name.
+For Temporal Cloud users, there is no need to manually create a Zendesk account, as this included in the onboarding process.
+
+:::info
+
+This procedure applies only to Temporal Cloud customers whose contracts include paid support.
+If you need assistance and don't have paid support, post your request in the [Temporal Community Forum](https://community.temporal.io) or the `#support-cloud` channel of the [Temporal workspace](https://t.mp/slack) in Slack.
+
+:::
+
+To access Temporal Support on Zendesk:
+
+1. Go to [support.temporal.io](https://support.temporal.io/).
+2. Log in using the company email address provided during your Temporal Cloud onboarding. You can log in using one of the following methods:
+   1. **Google Single Sign-On (SSO)**.
+      1. Select **Sign in with Google**.
+      2. Select the email address associated with your company.
+   2. **Email and Password**.
+      1. Enter your **Email** and **Password**.
+      2. Select **Sign in**.
+3. You will be presented with a screen where you can submit ticket.
+
+To request assistance from Temporal Support, see [Create a ticket](#support-ticket).
+
 ## How to create a ticket for Temporal Support {#support-ticket}
+
+You must have a [Zendesk account](#zendesk-account) with the same domain name as your Temporal Cloud account to create a ticket in Zendesk.
 
 :::info
 
@@ -76,18 +104,18 @@ If you need assistance and don't have paid support, post your request in the [Te
 To request assistance from Temporal Support, create a ticket in Zendesk:
 
 1. Go to [support.temporal.io](https://support.temporal.io/).
-1. Use your Temporal Support credentials to sign in.
-1. Choose **Create a ticket**.
-1. On the **Submit a request** page, choose your issue.
+2. Use your Temporal Support credentials to sign in.
+3. Choose **Create a ticket**.
+4. On the **Submit a request** page, choose your issue.
    Unless your request involves one of the specific areas listed, choose **Submit a Ticket**.
-1. In the form, enter the details of your request.
+5. In the form, enter the details of your request.
    **Subject** and **Description** are required.
-1. If you specify **Priority** (available only on the default form), follow these guidelines:
+6. If you specify **Priority** (available only on the default form), follow these guidelines:
    - Select **Normal** for most issues.
    - Select **High** only for issues to which your service-level agreement (SLA) applies.
      If you're not sure, select **Normal**.
    - Select **Page** only if you are experiencing a complete service outage and urgently need contact with an on-call support person.
-1. At the bottom of the form, choose **Submit**.
+7. At the bottom of the form, choose **Submit**.
 
 ## What type of developer resources exist? {#developer-resources}
 

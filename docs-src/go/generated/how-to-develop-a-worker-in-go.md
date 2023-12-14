@@ -35,7 +35,7 @@ gow run worker/main.go # automatically reloads when file changes
 
 :::
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-501a1716-939f-42e6-881c-e6b9d89e93e6" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-501a1716-939f-42e6-881c-e6b9d89e93e6" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id437322263" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id437322263" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
 package main

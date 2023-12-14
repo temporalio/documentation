@@ -39,7 +39,7 @@ We plan to release additional integrations.
 
 ## Which events are supported by Audit Logging? {#supported-events}
 
-The first release of Audit Logging supports Admin Operation events.
+Audit Logging supports [Admin Operation events](#admin-operation-events) as well as [API Key Create, Update, and Delete events](#admin-operation-events).
 
 ### Admin Operation events
 
@@ -63,6 +63,14 @@ The following list specifies both the supported events and the Temporal APIs tha
   - Rename custom Search Attribute: `RenameCustomSearchAttribute`
   - Request increase in Retention Period: `UpdateNamespace`
 
+### API Key Operation events
+
+The following list specifies both the supported events and the Temporal APIs that emit the logs for API Key Operations:
+
+- Create API Key: `CreateAPIKey`
+- Delete API Key: `DeleteAPIKey`
+- Update API Key: `UpdateAPIKey`
+
 ### Audit Log format
 
 The log sent to the Kinesis stream is JSON in the following format:
@@ -72,6 +80,7 @@ The log sent to the Kinesis stream is JSON in the following format:
   "emit_time": // Time the operation was recorded
   "level": // Level of the log entry, such as info, warning, or error
   "user_email":  // Email address of the user who initiated the operation
+  "caller_ip_address": // Customer IP address or server name
   "operation":  // Operation that was performed
   "details":  // Details of the operation
   "status": // Status, such as OK or error
@@ -87,6 +96,8 @@ To set up Audit Logging, you must have an Amazon Web Services (AWS) account and 
 
 1. If you don't have an AWS account, follow the instructions from AWS in [Create and activate an AWS account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/).
 2. To set up Kinesis Data Streams, open the [AWS Management Console](https://aws.amazon.com/console/), search for Kinesis, and start the setup process.
+
+You can use [this AWS CloudFormation template](https://temporal-auditlogs-config.s3.us-west-2.amazonaws.com/cloudformation/iam-role-for-temporal-audit-logs.yaml) to create an IAM role with access to a Kinesis stream you have in your account.
 
 Be aware that Kinesis has a rate limit of 1,000 messages per second and quotas for both the number of records written and the size of the records.
 For more information, see [Why is my Kinesis data stream throttling?](https://aws.amazon.com/premiumsupport/knowledge-center/kinesis-data-stream-throttling/)
