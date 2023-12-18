@@ -1,7 +1,7 @@
 ---
 id: index
 title: Temporal Python SDK developer's guide
-sidebar_label: Python SDK
+sidebar_label: Python SDK developer's guide
 sidebar_position: 4
 description: The Temporal Python SDK developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
 slug: /dev-guide/python

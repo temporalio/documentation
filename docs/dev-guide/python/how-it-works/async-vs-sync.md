@@ -1,7 +1,7 @@
 ---
 id: async-vs-sync
-title: Asynchronous vs. Synchronous Activity implementations
-sidebar_label: Asynchronous vs. Synchronous Activity
+title: Synchronous vs. asynchronous Activity implementations - Python SDK
+sidebar_label: Sync vs. async Activities
 sidebar_position: 1
 description: Describes the implementation of asynchronous and synchronous activities in the Temporal Python SDK.
 slug: /dev-guide/python/async-vs-sync

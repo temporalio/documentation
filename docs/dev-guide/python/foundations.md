@@ -1,6 +1,6 @@
 ---
 id: foundations
-title: Python SDK developer's guide - Foundations
+title: Foundations - Python SDK feature guide
 sidebar_label: Foundations
 sidebar_position: 4
 description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.

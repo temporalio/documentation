@@ -1,6 +1,6 @@
 ---
 id: versioning
-title: Go SDK developer's guide - Versioning
+title: Versioning - Go SDK feature guide
 sidebar_label: Versioning
 sidebar_position: 9
 description: The Versioning section of the Temporal Developer's guide covers how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.

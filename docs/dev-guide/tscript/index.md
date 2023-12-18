@@ -1,7 +1,7 @@
 ---
 id: index
 title: Temporal TypeScript SDK developer's guide
-sidebar_label: TypeScript SDK
+sidebar_label: TypeScript SDK developer's guide
 sidebar_position: 6
 description: The Temporal TypeScript SDK developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
 slug: /dev-guide/typescript

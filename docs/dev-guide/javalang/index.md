@@ -1,7 +1,7 @@
 ---
 id: index
 title: Temporal Java SDK developer's guide
-sidebar_label: Java SDK
+sidebar_label: Java SDK developer's guide
 sidebar_position: 2
 description: The Temporal Java SDK developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
 slug: /dev-guide/java

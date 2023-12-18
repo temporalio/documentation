@@ -3,7 +3,7 @@
     "id": "versioning",
     "slug": "/dev-guide/python/versioning",
     "file_dir": "dev-guide/python",
-    "title": "Python SDK developer's guide - Versioning",
+    "title": "Versioning - Python SDK feature guide",
     "sidebar_label": "Versioning",
     "sidebar_position": 9,
     "description": "The Versioning section of the Temporal Developer's guide covers how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.",

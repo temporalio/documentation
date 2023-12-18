@@ -1,7 +1,7 @@
 ---
 id: index
 title: Temporal Go SDK developer's guide
-sidebar_label: Go SDK
+sidebar_label: Go SDK developer's guide
 sidebar_position: 2
 description: The Temporal Go SDK developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
 slug: /dev-guide/go

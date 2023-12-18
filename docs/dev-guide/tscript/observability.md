@@ -1,6 +1,6 @@
 ---
 id: observability
-title: TypeScript SDK developer's guide - Observability
+title: Observability - TypeScript SDK feature guide
 sidebar_label: Observability
 sidebar_position: 4
 description: Improve observability in your TypeScript-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.

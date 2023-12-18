@@ -1,6 +1,6 @@
 ---
 id: features
-title: Java SDK developer's guide - Features
+title: Features - Java SDK feature guide
 sidebar_label: Features
 sidebar_position: 4
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.

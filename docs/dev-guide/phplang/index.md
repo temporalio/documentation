@@ -1,7 +1,7 @@
 ---
 id: index
 title: Temporal PHP SDK developer's guide
-sidebar_label: PHP SDK
+sidebar_label: PHP SDK developer's guide
 sidebar_position: 4
 description: The Temporal PHP SDK developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
 slug: /dev-guide/php

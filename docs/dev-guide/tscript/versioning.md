@@ -1,6 +1,6 @@
 ---
 id: versioning
-title: TypeScript SDK developer's guide - Versioning
+title: Versioning - TypeScript SDK feature guide
 sidebar_label: Versioning
 sidebar_position: 7
 description: The Versioning section of the Temporal TypeScript SDK developer's guide explains how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.

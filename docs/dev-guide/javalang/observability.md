@@ -1,6 +1,6 @@
 ---
 id: observability
-title: Java SDK developer's guide - Observability
+title: Observability - Java SDK feature guide
 sidebar_label: Observability
 sidebar_position: 5
 description: Improve observability in your Java-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.

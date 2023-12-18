@@ -1,6 +1,6 @@
 ---
 id: observability
-title: Python SDK developer's guide - Observability
+title: Observability - Python SDK feature guide
 sidebar_label: Observability
 sidebar_position: 8
 description: Improve observability in your Python-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
