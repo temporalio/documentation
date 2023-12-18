@@ -33,19 +33,8 @@
     "documentation_samples_repos": [
         {
             "org": "temporalio",
-            "name": "documentation-samples-go"
-        },
-        {
-            "org": "temporalio",
-            "name": "documentation-samples-typescript"
-        },
-        {
-            "org": "temporalio",
-            "name": "documentation-samples-python"
-        },
-        {
-            "org": "temporalio",
-            "name": "documentation-samples-java"
+            "name": "documentation-samples-typescript",
+            "ref": "fixes2"
         }
     ]
 }

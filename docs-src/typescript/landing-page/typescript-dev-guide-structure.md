@@ -21,6 +21,14 @@ The project setup section of the Temporal TypeScript SDK Developer's guide cover
 - [Add a testing framework](/typescript/generated/backgroundcheck-boilerplate-add-test-framework): How to add a testing framework to your Temporal Application.
 - [Conclusion](/typescript/chapter-project-setup/conclusion): Wrap up and review of concepts
 
+## Durable-execution
+
+The Durable Execution section of the Temporal Developer's guide covers advanced beginner concepts for working with Temporal, including testing your code, reviewing workflow event history, adding timers, and understanding determinism. Developing for durable execution is a core aspect of Temporal.
+
+- [Retrieve a Workflow Execution's Event History](/typescript/chapter-durable-execution/retrieve-event-history): Learn how to retrieve your Workflow Execution's Event History
+- [How to replay a Workflow Execution in TypeScript](/typescript/chapter-durable-execution/how-to-replay-a-workflow-execution-in-typescript): Replay a Workflow Execution
+- [Non-deterministic code changes](/typescript/chapter-durable-execution/non-deterministic-code-changes): History Replay, sometimes also called Workflow Replay, is the mechanism that Temporal uses to reconstruct the state of a Workflow Execution. Temporal provides Durable Execution via this Replay Functionality.
+
 ## Features
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.

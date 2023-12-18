@@ -416,7 +416,7 @@ To start using DACX, choose a source repo.
 - Go → https://github.com/temporalio/documentation-samples-go
 - Python → https://github.com/temporalio/documentation-samples-python
 - Java → TODO
-- TypeScript → TODO
+- TypeScript → https://github.com/temporalio/documentation-samples-typescript
 
 You can also register a new source repo with the Assembly Workflow.
 
