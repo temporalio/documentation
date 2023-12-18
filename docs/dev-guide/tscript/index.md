@@ -35,7 +35,6 @@ The Durable Execution section of the Temporal Developer's guide covers advanced 
 
 - [Retrieve a Workflow Execution's Event History](/dev-guide/typescript/durable-execution#retrieve-event-history): Learn how to retrieve your Workflow Execution's Event History
 - [How to replay a Workflow Execution in TypeScript](/dev-guide/typescript/durable-execution#replay-a-workflow-execution): Replay a Workflow Execution
-- [BackgroundCheckNonDeterministic Workflow](/typescript/generated/non-deterministic-code-changes): BackgroundCheckNonDeterministic Workflow is a non-deterministic Workflow as it uses a random number generator.
 - [Non-deterministic code changes](/dev-guide/typescript/durable-execution#durability-through-replays): History Replay, sometimes also called Workflow Replay, is the mechanism that Temporal uses to reconstruct the state of a Workflow Execution. Temporal provides Durable Execution via this Replay Functionality.
 
 ## Features

@@ -20,13 +20,22 @@ This guide is meant to provide a comprehensive overview of the structures, primi
 
 ## Project-setup
 
-The project setup section of the Temporal Python SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Python - that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+The project setup section of the Temporal Python SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Python—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 
 - [Install the Temporal CLI](/dev-guide/python/project-setup#install-cli): Download and install the Temporal CLI for Mac, Linux, or Windows.
 - [Choose a development Cluster](/dev-guide/python/project-setup#choose-dev-cluster): Discover which development Cluster you should choose
 - [Boilerplate Temporal Application project code](/dev-guide/python/project-setup#boilerplate-project): Discover the minimum code I need to create a boilerplate Temporal Application.
 - [Start Workflow using the CLI](/dev-guide/python/project-setup#start-workflow): Learn how to start a Temporal Workflow using the CLI
 - [Add a testing framework](/dev-guide/python/project-setup#test-framework): How to add a testing framework to your Temporal Application.
+
+## Durable-execution
+
+The Durable Execution section of the Temporal Developer's guide covers advanced beginner concepts for working with Temporal, including testing your code, reviewing workflow event history, adding timers, and understanding determinism. Developing for durable execution is a core aspect of Temporal.
+
+- [Retrieve a Workflow Execution's Event History](/dev-guide/python/durable-execution#retrieve-event-history): Learn how to retrieve your Workflow Execution's Event History
+- [Add a Replay test](/dev-guide/python/durable-execution#add-replay-test): Define the code needed to run a Worker Process in Python.
+- [Intrinsic non-deterministic logic](/dev-guide/python/durable-execution#intrinsic-non-deterministic-logic): This kind of logic prevents the Workflow code from executing to completion because the Workflow can take a different code path than the one expected from the Event History.
+- [Non-deterministic code changes](/dev-guide/python/durable-execution#durability-through-replays): History Replay, sometimes also called Workflow Replay, is the mechanism that Temporal uses to reconstruct the state of a Workflow Execution. Temporal provides Durable Execution via this Replay Functionality.
 
 ## Foundations
 

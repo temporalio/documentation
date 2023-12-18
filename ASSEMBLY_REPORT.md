@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday December 18 2023 10:02:29 AM -0700
+Last assembled: Monday December 18 2023 10:12:04 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-131 guide configurations found.
+132 guide configurations found.
 
-1748 information nodes found.
+1754 information nodes found.
 
-1499 information nodes are attached to guides.
+1508 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1114,6 +1114,12 @@ typescript/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guid
 
 typescript/chapter-project-setup/conclusion -> /dev-guide/typescript/project-setup#conclusion
 
+typescript/chapter-durable-execution/retrieve-event-history -> /dev-guide/typescript/durable-execution#retrieve-event-history
+
+typescript/chapter-durable-execution/how-to-replay-a-workflow-execution-in-typescript -> /dev-guide/typescript/durable-execution#replay-a-workflow-execution
+
+typescript/chapter-durable-execution/non-deterministic-code-changes -> /dev-guide/typescript/durable-execution#durability-through-replays
+
 typescript/how-to-define-signals-and-queries-statically-or-dynamically -> /dev-guide/typescript/features#static-and-dynamic-signals-and-queries
 
 typescript/async-activity-completion -> /dev-guide/typescript/features#asynchronous-activity-completion
@@ -1170,6 +1176,16 @@ python/tracing -> /dev-guide/python/observability#tracing
 
 python/logging -> /dev-guide/python/observability#logging
 
+python/project-setup-introduction -> /dev-guide/python/project-setup#
+
+python/chapter-durable-execution/backgroundcheck-replay-intrinsic-non-determinism -> #intrinsic-non-deterministic-logic
+
+python/chapter-durable-execution/non-deterministic-code-changes -> #durability-through-replays
+
+python/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#start-workflow
+
+python/chapter-durable-execution/retrieve-event-history -> #retrieve-event-history
+
 python/how-to-cancel-a-workflow-in-python -> #cancel-a-workflow-execution
 
 python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-execution
@@ -1184,9 +1200,9 @@ python/choose-dev-cluster -> /dev-guide/python/project-setup#choose-dev-cluster
 
 python/project-structure -> /dev-guide/python/project-setup#boilerplate-project
 
-python/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#start-workflow
-
 python/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
+
+python/generated/add-replay-test-to-background-check-workflow -> /dev-guide/python/durable-execution#add-replay-test
 
 python/add-sdk -> /dev-guide/python/foundations#install-a-temporal-sdk
 
@@ -1329,11 +1345,5 @@ go/debug-environment-development -> /dev-guide/go/debugging#debug-in-a-developme
 go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production-environment
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
-
-typescript/chapter-durable-execution/retrieve-event-history -> /dev-guide/typescript/durable-execution#retrieve-event-history
-
-typescript/chapter-durable-execution/how-to-replay-a-workflow-execution-in-typescript -> /dev-guide/typescript/durable-execution#replay-a-workflow-execution
-
-typescript/chapter-durable-execution/non-deterministic-code-changes -> /dev-guide/typescript/durable-execution#durability-through-replays
 
 
