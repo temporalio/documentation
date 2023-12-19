@@ -386,6 +386,10 @@
       "destination": "/dev-guide/go/versioning:path*"
     },
     {
+      "source": "/kb",
+      "destination": "https://docs.temporal.io"
+    },
+    {
       "source": "/changelog",
       "destination": "https://temporal.io/change-log"
     },
