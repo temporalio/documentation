@@ -256,6 +256,8 @@ If an Activity is supposed to react to a Cancellation, you can test whether it r
 
 ## Testing Workflows {#test-workflows}
 
+
+
 ### How to mock Activities {#mock-activities}
 
 Mock the Activity invocation when unit testing your Workflows.
@@ -359,3 +361,4 @@ WorkflowReplayer.replayWorkflowExecution(file, MyWorkflow.class);
 
 In both examples, if Event History is non-deterministic, an error is thrown.
 You can choose to wait until all histories have been replayed with `replayWorkflowExecutions` by setting the `failFast` argument to `false`.
+

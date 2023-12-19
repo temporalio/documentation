@@ -103,3 +103,4 @@ The Versioning section of the Temporal Developer's guide covers how to update Wo
 
 - [How to patch Workflows in Java](/dev-guide/java/versioning#patching): Use Patching APIs to update Workflow code in Java
 - [How to use Worker Versioning in Java](/dev-guide/java/versioning#worker-versioning): Version your Java Workers by using build ID-based versioning
+

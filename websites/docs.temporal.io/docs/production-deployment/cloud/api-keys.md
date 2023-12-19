@@ -56,6 +56,7 @@ To get started, ensure you’re a Temporal Cloud user. If you don’t have an ac
 
 - A Cloud user account
 - Access to the [Temporal Cloud UI](https://cloud.temporal.io/) or Temporal Cloud CLI ([tcld](https://docs.temporal.io/cloud/tcld/))
+- [Enable access to API Keys](#manage-api-keys)
 
 ## Use API Keys {#use-api-keys}
 
@@ -77,6 +78,25 @@ For a complete example, see [Cloud Samples in Go](https://github.com/temporalio/
 ## Manage API Keys {#manage-api-keys}
 
 Manage your personal API Keys by creating, deleting, or updating access to them using the Cloud UI or tcld.
+
+### Global Administrator API Key Management
+
+:::note
+
+API Keys are not enabled for by default.
+You must enable API Key access to allow the creation of API Keys.
+
+:::
+
+Global Administrators can monitor, manage, update access, and delete API Keys for any user within their account.
+
+To manage your accounts API Keys
+
+1. [Login](https://cloud.temporal.io/) to the Cloud UI.
+2. [Select **Settings** and choose **API Keys**](https://cloud.temporal.io/settings/api-keys).
+
+From here, you can update access to the API Key for an account using the **Enable** and **Disable** toggle.
+You can also disable or delete an individual User API Key using the vertical ellipsis at the right of the API Keys row.
 
 ### Generate an API Key
 
@@ -177,18 +197,6 @@ To update access to an API Key using the tcld, follow these steps:
 tcld apikey disable --id <api-key-id>
 tcld apikey enable --id <api-key-id>
 ```
-
-### Global Administrator API Key Management
-
-Global Administrators can monitor, manage, update access, and delete API Keys for any user within their account.
-
-To manage your accounts API Keys
-
-1. [Login](https://cloud.temporal.io/) to the Cloud UI.
-2. Select **Settings** and choose **API Keys**.
-
-From here, you can update access to the API Key for an account using the **Enable** and **Disable** toggle.
-You can also disable or delete an individual User API Key using the vertical ellipsis at the right of the API Keys row.
 
 ## Best practices {#best-practices}
 

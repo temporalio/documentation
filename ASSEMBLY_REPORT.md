@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday December 12 2023 13:14:00 PM -0700
+Last assembled: Tuesday December 19 2023 08:26:44 AM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly
 
 129 guide configurations found.
 
-1726 information nodes found.
+1727 information nodes found.
 
-1464 information nodes are attached to guides.
+1465 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -708,6 +708,16 @@ python/workflow-timeouts -> /dev-guide/python/features#workflow-timeouts
 
 typescript/workflow-timeouts -> /dev-guide/typescript/features#workflow-timeouts
 
+go/timers -> /dev-guide/go/features#timers
+
+java/timers -> /dev-guide/java/features#timers
+
+php/timers -> /dev-guide/php/features#timers
+
+python/timers -> /dev-guide/python/features#timers
+
+typescript/timers -> /dev-guide/typescript/features#timers
+
 go/signals -> /dev-guide/go/features#signals
 
 java/signals -> /dev-guide/java/features#signals
@@ -1100,8 +1110,6 @@ typescript/cancel-activity -> /dev-guide/typescript/features#cancel-an-activity
 
 typescript/schedules -> /dev-guide/typescript/features#schedule-a-workflow
 
-typescript/timers -> /dev-guide/typescript/features#timers
-
 typescript/async-design-patterns -> /dev-guide/typescript/features#asynchronous-design-patterns
 
 typescript/namespaces -> /dev-guide/typescript/features#namespaces
@@ -1158,8 +1166,6 @@ python/cancel-activity -> /dev-guide/python/features#cancel-an-activity
 
 python/interrupt-a-workflow-execution -> /dev-guide/python/features#interrupt-a-workflow-execution
 
-python/timers -> /dev-guide/python/features#timers
-
 python/schedules -> /dev-guide/python/features#schedule-a-workflow
 
 python/how-to-start-delay -> /dev-guide/python/features#start-delay
@@ -1188,7 +1194,7 @@ php/async-activity-completion -> /dev-guide/php/features#asynchronous-activity-c
 
 php/cancel-activity -> /dev-guide/php/features#cancel-an-activity
 
-php/timers -> /dev-guide/php/features#timers
+php/how-to-use-side-effects-in-php -> /dev-guide/php/features#side-effects
 
 php/testing-activities -> /dev-guide/php/testing#test-activities
 
@@ -1242,8 +1248,6 @@ java/add-sdk -> /dev-guide/java/foundations#install-a-temporal-sdk
 
 java/async-activity-completion -> /dev-guide/java/features#asynchronous-activity-completion
 
-java/timers -> /dev-guide/java/features#timers
-
 java/schedules -> /dev-guide/java/features#schedule-a-workflow
 
 java/side-effects -> /dev-guide/java/features#side-effects
@@ -1294,8 +1298,6 @@ go/add-sdk -> /dev-guide/go/foundations#install-a-temporal-sdk
 
 go/async-activity-completion -> /dev-guide/go/features#asynchronous-activity-completion
 
-go/timers -> /dev-guide/go/features#timers
-
 go/schedules -> /dev-guide/go/features#schedule-a-workflow
 
 go/side-effects -> /dev-guide/go/features#side-effects
@@ -1315,7 +1317,5 @@ go/debug-environment-development -> /dev-guide/go/debugging#debug-in-a-developme
 go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production-environment
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
-
-php/how-to-use-side-effects-in-php -> /dev-guide/php/features#side-effects
 
 

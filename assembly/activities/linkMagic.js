@@ -108,7 +108,7 @@ function linkPreview(newPath, linkText) {
 
 function getImageDimensions(imgPath) {
   const ext = path.extname(imgPath);
-  const filePath = path.join(rootDir, "website/static", imgPath);
+  const filePath = path.join(rootDir, "websites/docs.temporal.io/static", imgPath);
   if (ext == "svg") {
     const svgFile = fs.readFileSync(`${filePath}`, "utf8");
     const svg = svgParser.parse(svgFile);

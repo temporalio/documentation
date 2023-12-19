@@ -93,3 +93,4 @@ The Versioning section of the Temporal TypeScript SDK developer's guide explains
 
 - [How to patch Workflow code in TypeScript](/dev-guide/typescript/versioning#patching): The TypeScript SDK Patching API lets you change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 - [How to use Worker Versioning in TypeScript](/dev-guide/typescript/versioning#worker-versioning): Version your TypeScript Workers by using build ID-based versioning
+

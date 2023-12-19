@@ -67,3 +67,4 @@ The Testing section of the Temporal Developer's guide covers the many ways to te
 The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.
 
 - [Debugging](/dev-guide/php/debugging#debug): Testing provides a framework to facilitate Workflow and integration testing.
+

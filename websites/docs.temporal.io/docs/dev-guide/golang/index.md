@@ -107,3 +107,4 @@ The Versioning section of the Temporal Developer's guide covers how to update Wo
 
 - [Temporal Go SDK Patching APIs](/dev-guide/go/versioning#patching): Patching Workflows in Go
 - [How to use Worker Versioning in Go](/dev-guide/go/versioning#worker-versioning): Version your Go Workers by using build ID–based versioning
+

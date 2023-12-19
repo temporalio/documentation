@@ -179,3 +179,4 @@ using asynchronous Activities _only_ when you are certain that your Activities
 are async safe and don't make blocking calls.
 
 If you experience bugs that you think may be a result of an unsafe call being made in an asynchronous Activity, convert it to a synchronous Activity and see if the issue resolves.
+
