@@ -181,6 +181,19 @@ But we don't want to fail on that change, so we check only the function name par
 
 ## How to use Worker Versioning in Go {#worker-versioning}
 
+:::caution
+
+Worker Versioning is currently in Private Preview, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Cluster to enable Worker Versioning:
+
+```
+temporal server start-dev \
+   --dynamic-config-value frontend.workerVersioningDataAPIs=true \
+   --dynamic-config-value frontend.workerVersioningWorkflowAPIs=true \
+   --dynamic-config-value worker.buildIdScavengerEnabled=true
+```
+
+:::
+
 To use Worker Versioning in Go, you need to do the following:
 
 1. Determine and assign a Build ID to your built Worker code, and opt in to versioning.
