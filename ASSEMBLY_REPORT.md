@@ -1,14 +1,5 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday December 11 2023 10:43:55 AM -0800
-
-Assembly Workflow Id: docs-full-assembly-rachfop-123
-
-128 guide configurations found.
-
-1776 information nodes found.
-
-1463 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -658,7 +649,7 @@ go/patching -> /dev-guide/go/versioning#patching
 
 java/patching -> /dev-guide/java/versioning#patching
 
-python/how-to-use-the-python-sdk-patching-api-in-python -> /dev-guide/python/versioning#python-sdk-patching-api
+python/generated/how-to-use-the-python-sdk-patching-api-in-python -> /dev-guide/python/versioning#python-sdk-patching-api
 
 typescript/patching -> /dev-guide/typescript/versioning#patching
 
@@ -1080,6 +1071,52 @@ typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
+typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+
+typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
+
+typescript/how-to-use-a-prebuilt-workflow-bundle-in-typescript -> /dev-guide/typescript/foundations#prebuilt-workflow-bundles
+
+typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
+
+typescript/cancellation-scopes -> /dev-guide/typescript/foundations#cancellation-scopes
+
+typescript/how-to-define-signals-and-queries-statically-or-dynamically -> /dev-guide/typescript/features#static-and-dynamic-signals-and-queries
+
+typescript/async-activity-completion -> /dev-guide/typescript/features#asynchronous-activity-completion
+
+typescript/local-activities -> /dev-guide/typescript/features#local-activities
+
+typescript/cancel-activity -> /dev-guide/typescript/features#cancel-an-activity
+
+typescript/schedules -> /dev-guide/typescript/features#schedule-a-workflow
+
+typescript/timers -> /dev-guide/typescript/features#timers
+
+typescript/async-design-patterns -> /dev-guide/typescript/features#asynchronous-design-patterns
+
+typescript/namespaces -> /dev-guide/typescript/features#namespaces
+
+typescript/how-to-use-a-custom-payload-converter-in-typescript -> /dev-guide/typescript/features#custom-payload-conversion
+
+typescript/how-to-implement-interceptors-in-typescript -> /dev-guide/typescript/features#interceptors
+
+typescript/tracing -> /dev-guide/typescript/observability#tracing
+
+typescript/how-to-log-from-a-workflow-in-typescript -> /dev-guide/typescript/observability#logging
+
+typescript/testing-frameworks -> /dev-guide/typescript/testing#test-frameworks
+
+typescript/testing-activities -> /dev-guide/typescript/testing#test-activities
+
+typescript/testing-workflows -> /dev-guide/typescript/testing#test-workflows
+
+typescript/debug-environment-development -> /dev-guide/typescript/debugging#debug-in-a-development-environment
+
+typescript/debug-environment-production -> /dev-guide/typescript/debugging#debug-in-a-production-environment
+
+typescript/troubleshoot-issues -> /dev-guide/typescript/debugging#troubleshoot-common-issues
+
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
 python/tracing -> /dev-guide/python/observability#tracing
@@ -1094,8 +1131,6 @@ python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 python/async-vs-sync -> /dev-guide/python/async-vs-sync#
 
-python/python-dev-guide-structure -> #
-
 python/install-cli -> /dev-guide/python/project-setup#install-cli
 
 python/choose-dev-cluster -> /dev-guide/python/project-setup#choose-dev-cluster
@@ -1104,7 +1139,29 @@ python/project-structure -> /dev-guide/python/project-setup#boilerplate-project
 
 python/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#start-workflow
 
-python/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
+python/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
+
+python/add-sdk -> /dev-guide/python/foundations#install-a-temporal-sdk
+
+python/async-activity-completion -> /dev-guide/python/features#asynchronous-activity-completion
+
+python/cancel-activity -> /dev-guide/python/features#cancel-an-activity
+
+python/interrupt-a-workflow-execution -> /dev-guide/python/features#interrupt-a-workflow-execution
+
+python/timers -> /dev-guide/python/features#timers
+
+python/schedules -> /dev-guide/python/features#schedule-a-workflow
+
+python/how-to-start-delay -> /dev-guide/python/features#start-delay
+
+python/debugging -> /dev-guide/python/debugging#debug
+
+python/testing-frameworks -> /dev-guide/python/testing#test-frameworks
+
+python/testing-activities -> /dev-guide/python/testing#test-activities
+
+python/testing-workflows -> /dev-guide/python/testing#test-workflows
 
 cli/server/start-dev -> /cli/server#start-dev
 
@@ -1117,6 +1174,20 @@ php/handle-signal -> #handle-signal
 php/add-sdk -> #install-a-temporal-sdk
 
 php/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
+
+php/async-activity-completion -> /dev-guide/php/features#asynchronous-activity-completion
+
+php/cancel-activity -> /dev-guide/php/features#cancel-an-activity
+
+php/timers -> /dev-guide/php/features#timers
+
+php/testing-activities -> /dev-guide/php/testing#test-activities
+
+php/testing-workflows -> /dev-guide/php/testing#test-workflows
+
+php/replays -> /dev-guide/php/testing#replay
+
+php/debugging -> /dev-guide/php/debugging#debug
 
 java/tracing -> /dev-guide/java/observability#tracing
 
@@ -1154,7 +1225,17 @@ java/chapter-project-setup/project-structure -> /dev-guide/java/project-setup#bo
 
 java/chapter-project-setup/backgroundcheck-boilerplate-testing-temporal -> /dev-guide/java/project-setup#test-framework
 
-java/foundations -> /dev-guide/java/foundations#
+java/side-effects -> /dev-guide/java/features#side-effects
+
+java/testing-frameworks -> /dev-guide/java/testing#test-frameworks
+
+java/testing-activities -> /dev-guide/java/testing#test-activities
+
+java/testing-workflows -> /dev-guide/java/testing#test-workflows
+
+java/debug-environment-development -> /dev-guide/java/debugging#debug-in-a-development-environment
+
+java/debug-environment-production -> /dev-guide/java/debugging#debug-in-a-production-environment
 
 go/testing -> /dev-guide/go/testing#replay
 
@@ -1180,16 +1261,38 @@ go/generated/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/generated/how-to-customize-activity-type-in-go -> #customize-activity-type
 
-go/landing-page/go-dev-guide-structure -> #
-
 go/chapter-project-setup/choose-dev-cluster -> /dev-guide/go/project-setup#choose-dev-cluster
 
 go/chapter-project-setup/project-structure -> /dev-guide/go/project-setup#boilerplate-project
 
-go/generated/backgroundcheck-boilerplate-run-a-dev-server-worker -> /dev-guide/go/project-setup#dev-server-worker
-
 go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
-go/foundations -> /dev-guide/go/foundations#
+go/generated/add-replay-test-to-background-check-workflow -> /dev-guide/go/durable-execution#add-replay-test
+
+go/add-sdk -> /dev-guide/go/foundations#install-a-temporal-sdk
+
+go/async-activity-completion -> /dev-guide/go/features#asynchronous-activity-completion
+
+go/timers -> /dev-guide/go/features#timers
+
+go/schedules -> /dev-guide/go/features#schedule-a-workflow
+
+go/side-effects -> /dev-guide/go/features#side-effects
+
+go/error-handling -> /dev-guide/go/features#error-handling-in-go
+
+go/selectors -> /dev-guide/go/features#selectors
+
+go/testing-frameworks -> /dev-guide/go/testing#test-frameworks
+
+go/testing-activities -> /dev-guide/go/testing#test-activities
+
+go/testing-workflows -> /dev-guide/go/testing#test-workflows
+
+go/debug-environment-development -> /dev-guide/go/debugging#debug-in-a-development-environment
+
+go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production-environment
+
+go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
 
 

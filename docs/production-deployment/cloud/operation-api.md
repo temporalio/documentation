@@ -19,7 +19,7 @@ tags:
 
 :::
 
-The Temporal Cloud Operations API (Cloud Ops API) is a library for managing the automation of Users, Namespaces, and Temporal Cloud Accounts.
+The [Temporal Cloud Operations API](https://github.com/temporalio/api-cloud/tree/main) (Cloud Ops API) is a library for managing the automation of Users, Namespaces, and Temporal Cloud Accounts.
 
 Cloud Ops API is an open-source, public gRPC API, library to compile and generate code in your desired programming language.
 

@@ -6,7 +6,7 @@
     "title": "Python SDK developer's guide - Project setup",
     "sidebar_label": "Project setup",
     "sidebar_position": 3,
-    "description": "The project setup section of the Temporal Python SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Python—that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
+    "description": "The project setup section of the Temporal Python SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Python - that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
     "use_description": false,
     "toc_max_heading_level": 4,
     "add_tabs_support": true,
@@ -29,31 +29,31 @@
         },
         {
             "type": "h3",
-            "id": "python/backgroundcheck-boilerplate-backgroundcheck-workflow"
+            "id": "python/generated/backgroundcheck-boilerplate-backgroundcheck-workflow"
         },
         {
             "type": "p",
-            "id": "python/backgroundcheck-boilerplate-workflow-details"
+            "id": "python/generated/backgroundcheck-boilerplate-workflow-details"
         },
         {
             "type": "h3",
-            "id": "python/backgroundcheck-boilerplate-ssntrace-activity"
+            "id": "python/generated/backgroundcheck-boilerplate-ssntrace-activity"
         },
         {
             "type": "p",
-            "id": "python/backgroundcheck-boilerplate-activity-details"
+            "id": "python/generated/backgroundcheck-boilerplate-activity-details"
         },
         {
             "type": "h3",
-            "id": "python/backgroundcheck-boilerplate-run-a-dev-server-worker"
+            "id": "python/generated/backgroundcheck-boilerplate-run-a-dev-server-worker"
         },
         {
             "type": "h3",
-            "id": "python/backgroundcheck-boilerplate-cloud-worker"
+            "id": "python/generated/backgroundcheck-boilerplate-cloud-worker"
         },
         {
             "type": "p",
-            "id": "python/backgroundcheck-boilerplate-cloud-worker-details"
+            "id": "python/generated/backgroundcheck-boilerplate-cloud-worker-details"
         },
         {
             "type": "h3",
@@ -61,7 +61,7 @@
         },
         {
             "type": "h4",
-            "id": "python/backgroundcheck-boilerplate-self-hosted-worker"
+            "id": "python/generated/backgroundcheck-boilerplate-self-hosted-worker"
         },
         {
             "type": "h4",
@@ -73,19 +73,19 @@
         },
         {
             "type": "h2",
-            "id": "python/backgroundcheck-boilerplate-add-test-framework"
+            "id": "python/generated/backgroundcheck-boilerplate-add-test-framework"
         },
         {
             "type": "p",
-            "id": "python/backgroundcheck-boilerplate-add-test-framework-details"
+            "id": "python/generated/backgroundcheck-boilerplate-add-test-framework-details"
         },
         {
             "type": "h3",
-            "id": "python/backgroundcheck-boilerplate-add-workflow-tests"
+            "id": "python/generated/backgroundcheck-boilerplate-add-workflow-tests"
         },
         {
             "type": "h3",
-            "id": "python/backgroundcheck-boilerplate-add-activity-tests"
+            "id": "python/generated/backgroundcheck-boilerplate-add-activity-tests"
         }
     ]
 }
