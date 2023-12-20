@@ -116,7 +116,7 @@ in none of them, then they have to share the Id.
 
 :::caution
 
-Worker Versioning is currently in Private Preview, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Cluster to enable Worker Versioning:
+Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Cluster to enable Worker Versioning:
 
 ```
 temporal server start-dev \
