@@ -90,6 +90,6 @@ Improve observability in your Python-based Temporal Workflows. View which Workfl
 
 The Versioning section of the Temporal Developer's guide covers how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 
-- [How to use Worker Versioning in Python](/dev-guide/python/versioning#worker-versioning): Version your Python Workers by using build ID-based versioning
 - [How to use the Python SDK Patching API](/dev-guide/python/versioning#python-sdk-patching-api): Heres a sample implementation of patching in new code using the Python SDK's patching API.
+- [How to use Worker Versioning in Python](/dev-guide/python/versioning#worker-versioning): Version your Python Workers by using build ID-based versioning
 

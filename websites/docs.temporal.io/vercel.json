@@ -386,6 +386,10 @@
       "destination": "/dev-guide/go/versioning:path*"
     },
     {
+      "source": "/kb",
+      "destination": "https://docs.temporal.io"
+    },
+    {
       "source": "/changelog",
       "destination": "https://temporal.io/change-log"
     },
@@ -1752,6 +1756,10 @@
     {
       "source": "/java/:path*",
       "destination": "/dev-guide/java"
+    },
+    {
+      "source": "/python/:path*",
+      "destination": "/dev-guide/python"
     },
     {
       "source": "/concepts/what-is-a-retry-policy",

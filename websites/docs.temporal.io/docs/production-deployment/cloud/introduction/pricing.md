@@ -40,7 +40,7 @@ Actions are the fundamental consumption pricing unit in Temporal Cloud.
 An Action in Temporal occurs as part of an execution of your Workflow.
 Each time you execute a Temporal Workflow (a Workflow Execution), the associated Actions are collected and ultimately represent the state and progress of your Temporal Application.
 
-Actions are collected and billed monthly for each Namespace. The base rate is $25 per one million Actions, and you are billed only for the prorated amount of Actions you use. If you use fewer than one million Actions per month, your bill for Actions will be less than $25 for that month.
+Actions are collected and billed monthly for each Namespace. The base rate is $25 per one million Actions per month (across all Namespaces), and you are billed only for the prorated amount of Actions you use. If you use fewer than one million Actions per month, your bill for Actions will be less than $25 for that month.
 
 | **Actions per month** | **Cost per 1M (USD)** |
 | --------------------- | --------------------- |
@@ -111,25 +111,27 @@ The following operations result in Actions.
 
 An execution of a particular Workflow could exist for a few seconds, a day, month, or even forever. Temporal collects the Event History during this time and dispatches work when necessary. In this context, a Workflow Execution has only two states, open (active) or closed.
 
-Storage costs are measured in gigabyte-hours (GBh) and include charges for active Workflows, "running" storage, and the long-term, "retained" storage of Event Histories of closed Workflows. These are measured per Namespace.
+Storage costs are measured in gigabyte-hours (GBh) and include charges for active Workflows, active storage, and the long-term, "retained" storage of Event Histories of closed Workflows. These are measured per Namespace.
 
-Running storage is a measure of the amount of storage used to store active Workflows. When the execution of a Workflow ends, Temporal Cloud stores Event History for a defined Retention Period, for historical use. This is retained storage. Typical uses include compliance, debugging, workload refresh, and business analytics. Both kinds of storage have fixed costs.
+_Active storage_ is a measure of the amount of storage used to store active Workflows.
+
+When the execution of a Workflow ends, Temporal Cloud stores Event History for a defined Retention Period, for historical use. This is _retained storage_. Typical uses include compliance, debugging, workload refresh, and business analytics. Both kinds of storage have fixed costs.
 
 | **Storage** | **Cost per GBh** |
 | ----------- | ---------------- |
 | Retained    | $0.00042         |
-| Running     | $0.042           |
+| Active      | $0.042           |
 
-If you purchase Temporal Cloud credits (as outlined earlier), running storage costs are tiered and measured in gigabyte-hours.
+If you purchase Temporal Cloud credits (as outlined earlier), active storage costs are tiered and measured in gigabyte-hours.
 
-| **Running storage** | **Cost per GBh** |
-| ------------------- | ---------------- |
-| Less than 10        | $0.042           |
-| 10 to 39            | $0.031           |
-| 40 to 119           | $0.023           |
-| 120 to 499          | $0.018           |
-| 500 to 1999         | $0.013           |
-| 2000 or more        | $0.010           |
+| **Active storage**           | **Cost per GBh per Namespace** |
+| ---------------------------- | ------------------------------ |
+| Up to 7,000                  | $0.039                         |
+| Over 7,000 up to 30,000      | $0.031                         |
+| Over 30,000 up to 90,000     | $0.023                         |
+| Over 90,000 up to 400,000    | $0.018                         |
+| Over 400,000 up to 1,500,000 | $0.013                         |
+| Over 1,500,000               | $0.010                         |
 
 ## What kind of support do I get with Temporal Cloud? {#support}
 

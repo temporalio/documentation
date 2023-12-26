@@ -357,6 +357,19 @@ It also includes features like concurrent session limitations and Worker failure
 
 :::
 
+:::caution
+
+Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Cluster to enable Worker Versioning:
+
+```
+temporal server start-dev \
+   --dynamic-config-value frontend.workerVersioningDataAPIs=true \
+   --dynamic-config-value frontend.workerVersioningWorkflowAPIs=true \
+   --dynamic-config-value worker.buildIdScavengerEnabled=true
+```
+
+:::
+
 Worker Versioning simplifies the process of deploying changes to [Workflow Definitions](/workflows/#workflow-definition).
 It does this by letting you define sets of versions that are compatible with each other, and then assigning a Build ID to the code that defines a Worker.
 The Temporal Server uses the Build ID to determine which versions of a Workflow Definition a Worker can process.
