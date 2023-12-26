@@ -16,7 +16,7 @@
         "docs-src/production-deployment",
         "docs-src/cli"
     ],
-    "content_write_dir": "docs",
+    "content_write_dir": "websites/docs.temporal.io/docs",
     "docs_src": "docs-src",
     "secure_config_dir": "assembly/secure",
     "notion_creds_file_name": "notion-creds.json",
