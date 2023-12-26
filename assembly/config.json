@@ -23,7 +23,7 @@
     "temp_write_dir": "assembly/temp",
     "temp_archive_dir": "archive",
     "source_info_nodes_file_name": "source-info-nodes.json",
-    "guide_configs_path": "assembly/guide-configs",
+    "guide_configs_path": "guide-configs",
     "attached_nodes_file_name": "matched-guides.json",
     "link_mapping_file_name": "link-mapping.json",
     "assembly_report_file_name": "ASSEMBLY_REPORT.md",
