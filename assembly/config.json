@@ -30,22 +30,10 @@
     "notion_store_file_name": "notion-questions.json",
     "glossary_file_name": "glossary.md",
     "samples_file_paths_filename": "samples-file-paths.json",
-    "documentation_samples_repos": [
-        {
-            "org": "temporalio",
-            "name": "documentation-samples-go"
-        },
-        {
-            "org": "temporalio",
-            "name": "documentation-samples-python"
-        },
-        {
-            "org": "temporalio",
-            "name": "documentation-samples-java"
-        },
-        {
-            "org": "temporalio",
-            "name": "documentation-samples-typescript"
-        }
-    ]
+    "sample_apps_dir": "sample-apps",
+    "sample_apps_source_url": {
+        "owner": "temporalio",
+        "repo": "documentation",
+        "ref": "local_dacx"
+    }
 }

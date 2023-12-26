@@ -12,14 +12,23 @@ const codeBlocks = "```";
 
 export async function createNodesFromSamples(config) {
   console.log("creating nodes from samples...");
-  const readPath = path.join(config.root_dir, config.temp_write_dir, config.samples_file_paths_filename);
-  const filePaths = await fs.readJSON(readPath);
+  // const readPath = path.join(config.root_dir, config.temp_write_dir, config.samples_file_paths_filename);
+  // const filePaths = await fs.readJSON(readPath);
+  const filePaths = await readLocalDirectory(path.join(config.root_dir, config.sample_apps_dir));
   for (const repoPaths of filePaths) {
     for (const file of repoPaths.repo_files) {
       const ext = path.extname(file.name);
       let lang = ext.slice(1);
       if (isDACX(file.name, config, file) && isSupportedExtension(ext)) {
-        const sourceURL = parseURL(repoPaths.source_url, file);
+        let str =
+          "https://github.com/" +
+          path.join(
+            config.sample_apps_source_url.owner,
+            config.sample_apps_source_url.repo,
+            "blob",
+            config.sample_apps_source_url.ref
+          );
+        const sourceURL = parseURL(str, file);
         if (ext === ".py") {
           lang = "python";
         }
@@ -30,6 +39,17 @@ export async function createNodesFromSamples(config) {
       }
     }
   }
+  async function readLocalDirectory(directoryPath) {
+    const fileNames = fs.readdirSync(directoryPath);
+    const localFilePaths = fileNames.map((fileName) => {
+      return {
+        source_url: path.join(directoryPath, fileName), // or a relevant local path
+        repo_files: [{ name: fileName, directory: directoryPath }],
+      };
+    });
+    return localFilePaths;
+  }
+
   async function createNodes(config, file, lang, sourceURL) {
     const sampleFileReadPath = path.join(config.root_dir, config.temp_write_dir, file.directory, file.name);
     const raw = await fs.readFile(sampleFileReadPath);
