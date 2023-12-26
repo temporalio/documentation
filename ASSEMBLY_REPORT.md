@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday December 20 2023 08:53:43 AM -0800
+Last assembled: Tuesday December 26 2023 10:04:05 AM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -1193,6 +1193,8 @@ php/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 php/async-activity-completion -> /dev-guide/php/features#asynchronous-activity-completion
 
 php/cancel-activity -> /dev-guide/php/features#cancel-an-activity
+
+php/how-to-use-side-effects-in-php -> /dev-guide/php/features#side-effects
 
 php/testing-activities -> /dev-guide/php/testing#test-activities
 
