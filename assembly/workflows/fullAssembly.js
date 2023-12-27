@@ -19,10 +19,6 @@ export async function fullAssembly(params) {
 
   await activities.createNodesFromSamples(config);
 
-  if (params.cli) {
-    await activities.genCLI(config);
-  }
-
   await activities.genSourceObjects(config);
 
   await deterministicActivities.attachSourceToGuides(config);
@@ -37,12 +33,9 @@ export async function fullAssembly(params) {
 
   await activities.genGlossary(config);
 
-  if (params.runCoverageUpdate) {
-    await activities.getQuestionsFromNotion(config);
-
-    await activities.updateCoverageBoard(config);
-  }
   await activities.genReport(config);
+
+  await activities.genGitAttributes(config);
 
   await activities.cleanUpTempDir(config);
 
