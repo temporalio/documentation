@@ -8,6 +8,19 @@ tags:
   - how-to
 ---
 
+:::caution
+
+Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Cluster to enable Worker Versioning:
+
+```
+temporal server start-dev \
+   --dynamic-config-value frontend.workerVersioningDataAPIs=true \
+   --dynamic-config-value frontend.workerVersioningWorkflowAPIs=true \
+   --dynamic-config-value worker.buildIdScavengerEnabled=true
+```
+
+:::
+
 To use [Worker Versioning](/workers#worker-versioning) in Python, you need to do the following:
 
 1. Determine and assign a Build ID to your built Worker code, and opt in to versioning.

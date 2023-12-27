@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday December 14 2023 15:10:39 PM -0700
+Last assembled: Wednesday December 27 2023 10:04:33 AM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly
 
-133 guide configurations found.
+134 guide configurations found.
 
-1724 information nodes found.
+1728 information nodes found.
 
-1462 information nodes are attached to guides.
+1463 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1197,6 +1197,8 @@ php/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 php/async-activity-completion -> /dev-guide/php/features#asynchronous-activity-completion
 
 php/cancel-activity -> /dev-guide/php/features#cancel-an-activity
+
+php/how-to-use-side-effects-in-php -> /dev-guide/php/features#side-effects
 
 php/testing-activities -> /dev-guide/php/testing#test-activities
 
