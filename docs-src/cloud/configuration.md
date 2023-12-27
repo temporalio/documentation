@@ -11,7 +11,7 @@ tags:
   - settings
 ---
 
-Temporal Cloud has many operational features, many of which that support customization.
+Temporal Cloud has many operational features, and many of them can be customized.
 These features fall into the following three main categories:
 
 - At the Temporal Cloud Account level
