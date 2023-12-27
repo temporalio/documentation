@@ -34,6 +34,6 @@
     "sample_apps_source_url": {
         "owner": "temporalio",
         "repo": "documentation",
-        "ref": "local_dacx"
+        "ref": "main"
     }
 }
