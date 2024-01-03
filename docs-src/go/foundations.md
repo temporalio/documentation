@@ -13,7 +13,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 In this section you can find the following:
 
-- [Run a development Cluster](/clusters/how-to-install-temporal-cli)
+- [Run a development Cluster](/go/chapter-project-setup/install-cli)
 - [Connect to a dev Cluster](/go/connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](/go/connect-to-temporal-cloud)
 - [Develop a Workflow](/go/developing-workflows)

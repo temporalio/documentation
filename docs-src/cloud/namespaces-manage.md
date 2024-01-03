@@ -27,8 +27,8 @@ On the **Edit** page, you can do the following:
 - Add a [custom Search Attribute](/visibility#custom-search-attributes).
 - [Manage CA certificates](/cloud/certificates).
 - [Manage certificate filters](/cloud/certificates-filters#manage-certificate-filters-using-temporal-cloud-ui).
-- Set [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) for all users on the Namespace.
-  Each user on the Namespace has the option to [override this setting](/production-readiness/develop#web-ui) in their browser.
+- Set [Codec Server endpoint](/self-hosted/how-to-set-up-codec-server#set-your-codec-server-endpoints-with-web-ui-and-cli) for all users on the Namespace.
+  Each user on the Namespace has the option to [override this setting](/self-hosted/how-to-set-up-codec-server#web-ui) in their browser.
 - Manage [Namespace-level permissions](/cloud/users-namespace-level-permissions).
 - Add users.
 

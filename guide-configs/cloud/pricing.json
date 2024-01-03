@@ -1,0 +1,43 @@
+{
+    "file_name": "pricing.md",
+    "id": "pricing",
+    "slug": "/cloud/pricing",
+    "file_dir": "production-deployment/cloud/introduction",
+    "title": "What is the pricing for Temporal Cloud?",
+    "sidebar_label": "Pricing",
+    "sidebar_position": 3,
+    "description": "Temporal Cloud pricing information",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cloud/pricing-intro"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/what-is-an-action"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/pricing-storage"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/pricing-support"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/pricing-sso-and-saml"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/pricing-estimate"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/pricing-faq"
+        }
+    ]
+}

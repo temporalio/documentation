@@ -17,6 +17,19 @@ ssdi:
   - Not yet available in Temporal Cloud
 ---
 
+:::caution
+
+Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Cluster to enable Worker Versioning:
+
+```
+temporal server start-dev \
+   --dynamic-config-value frontend.workerVersioningDataAPIs=true \
+   --dynamic-config-value frontend.workerVersioningWorkflowAPIs=true \
+   --dynamic-config-value worker.buildIdScavengerEnabled=true
+```
+
+:::
+
 Worker Versioning simplifies the process of deploying changes to [Workflow Definitions](/workflows/#workflow-definition).
 It does this by letting you define sets of versions that are compatible with each other, and then assigning a Build ID to the code that defines a Worker.
 The Temporal Server uses the Build ID to determine which versions of a Workflow Definition a Worker can process.
@@ -26,21 +39,6 @@ We recommend that you read about Workflow Definitions before proceeding, because
 Worker Versioning helps manage nondeterministic changes by providing a convenient way to ensure that [Workers](#workers) with different Workflow and Activity Definitions operating on the same [Task Queue](#task-queue) don't attempt to process [Workflow Tasks](#workflow-task) and [Activity Tasks](#activity-task-execution) that they can't successfully process, according to sets of versions associated with that Task Queue that you've defined.
 
 Accomplish this goal by assigning a Build ID (a free-form string) to the code that defines a Worker, and specifying which Build IDs are compatible with each other by updating the version sets associated with the Task Queue, stored by the Temporal Server.
-
-:::note
-
-Worker Versioning is not enabled by default. You need to run your Temporal Cluster with additional [dynamic configuration parameters](/references/dynamic-configuration) to enable it. If you are running a development cluster with `temporal server start-dev`, you can provide them on the command line:
-
-```shell
-temporal server start-dev \
-   --dynamic-config-value frontend.workerVersioningDataAPIs=true \
-   --dynamic-config-value frontend.workerVersioningWorkflowAPIs=true \
-   --dynamic-config-value worker.buildIdScavengerEnabled=true
-```
-
-You can also provide the same values to a production cluster in a YAML file.
-
-:::
 
 ### When and why you should use Worker Versioning
 
@@ -58,7 +56,7 @@ For example, if you have a Workflow that completes within a day, a good strategy
 
 Because your Workflow completes in a day, you know that you won't need to keep older Workers running for more than a day after you deploy the new version (assuming availability). You can apply this technique to longer-lived Workflows too; however, you might need to run multiple Worker versions simultaneously while open Workflows complete.
 
-Version sets have a maximum size limit, which defaults to 100 build IDs across all sets. Operations to add new Build IDs to the sets fail if they exceed this limit. There is also a limit on the number of Version Sets, which defaults to 10. A version can only be garbage collected after a Workflow Execution is deleted.
+Version sets have a maximum size limit, which defaults to 100 build IDs across all sets. Operations to add new Build IDs to the sets will fail if they exceed this limit. There is also a limit on the number of Version Sets, which defaults to 10. A version can only be garbage collected after a Workflow Execution is deleted.
 
 #### Deploy code changes to Workers
 

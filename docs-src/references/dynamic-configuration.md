@@ -78,9 +78,9 @@ Not defining constraints on a dynamic configuration key sets the values across t
   frontend.persistenceNamespaceMaxQPS: # Rate limit on the number of queries the Frontend sends to the Persistence store.
     - constraints: {} # Sets default value that applies to all Namespaces
       value: 2000 # The default value for this key is 0.
-    - constraints: {namespace: "namespace1"} # Sets limit on number of queries that can be sent from "namespace1" Namespace to the Persistence store.
+    - constraints: { namespace: "namespace1" } # Sets limit on number of queries that can be sent from "namespace1" Namespace to the Persistence store.
       value: 4000
-    - constraints: {namespace: "namespace2"}
+    - constraints: { namespace: "namespace2" }
       value: 1000
   ```
 
@@ -93,23 +93,23 @@ Not defining constraints on a dynamic configuration key sets the values across t
 
   ```yaml
   matching.numTaskqueueReadPartitions: # Number of Task Queue partitions for read operations.
-  - constraints: {namespace: "namespace1", taskQueueName: "tq"}  # Applies to the "tq" Task Queue for both Workflows and Activities.
-    value: 8 # The default value for this key is 4. Task Queues that need to support high traffic require higher number of partitions. Set these values in accordance to your poller count. 
-  - constraints: {namespace: "namespace1", taskQueueName: "other-tq", taskType: "Activity"} # Applies to the "other_tq" Task Queue for Activities specifically.
-    value: 20 
-  - constraints: {namespace: "namespace2"}  # Applies to all task queues in "namespace2".
-    value: 10
-  - constraints: {}  # Applies to all other task queues in "namespace1" and all other Namespaces.
-    value: 16
-  matching.numTaskqueueWritePartitions:  # Number of Task Queue partitions for write operations.
-  - constraints: {namespace: "namespace1", taskQueueName: "tq"}  # Applies to the "tq" Task Queue for both Workflows and Activities.
-    value: 8 # The default value for this key is 4. Task Queues that need to support high traffic require higher number of partitions. Set these values in accordance to your poller count. 
-  - constraints: {namespace: "namespace1", taskQueueName: "other-tq", taskType: "Activity"} # Applies to the "other_tq" Task Queue for Activities specifically.
-    value: 20 
-  - constraints: {namespace: "namespace2"}  # Applies to all task queues in "namespace2".
-    value: 10
-  - constraints: {}  # Applies to all other task queues in "namespace1" and all other Namespaces.
-    value: 16
+    - constraints: { namespace: "namespace1", taskQueueName: "tq" } # Applies to the "tq" Task Queue for both Workflows and Activities.
+      value: 8 # The default value for this key is 4. Task Queues that need to support high traffic require higher number of partitions. Set these values in accordance to your poller count.
+    - constraints: { namespace: "namespace1", taskQueueName: "other-tq", taskType: "Activity" } # Applies to the "other_tq" Task Queue for Activities specifically.
+      value: 20
+    - constraints: { namespace: "namespace2" } # Applies to all task queues in "namespace2".
+      value: 10
+    - constraints: {} # Applies to all other task queues in "namespace1" and all other Namespaces.
+      value: 16
+  matching.numTaskqueueWritePartitions: # Number of Task Queue partitions for write operations.
+    - constraints: { namespace: "namespace1", taskQueueName: "tq" } # Applies to the "tq" Task Queue for both Workflows and Activities.
+      value: 8 # The default value for this key is 4. Task Queues that need to support high traffic require higher number of partitions. Set these values in accordance to your poller count.
+    - constraints: { namespace: "namespace1", taskQueueName: "other-tq", taskType: "Activity" } # Applies to the "other_tq" Task Queue for Activities specifically.
+      value: 20
+    - constraints: { namespace: "namespace2" } # Applies to all task queues in "namespace2".
+      value: 10
+    - constraints: {} # Applies to all other task queues in "namespace1" and all other Namespaces.
+      value: 16
   ```
 
 <!-- Note that the values set with most constraints take priority over values that are set with fewer constraints, regardless of the order in which they are set in the dynamic configuration key. -->
@@ -193,7 +193,7 @@ The Persistence store in the Cluster has default size limits set for optimal per
 The default values on these keys are based on extensive testing.
 You can change these values, but ensure that you are provisioning enough database resources to handle the changed values.
 
-For details on platform limits, see the [Temporal Platform limits sheet](/kb/temporal-platform-limits-sheet).
+For details on platform limits, see the [Temporal Platform limits sheet](/self-hosted/platform-defaults).
 
 | Dynamic configuration key               | Type | Description                                                                                                                                                                                                                                     | Default value            |
 | --------------------------------------- | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
