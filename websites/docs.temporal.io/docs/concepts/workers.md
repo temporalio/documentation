@@ -394,12 +394,9 @@ If you have no need to query closed Workflows, you can decommission them when no
 
 For example, if you have a Workflow that completes within a day, a good strategy is to assign a new Build ID to every new Worker build and add it as the new overall default in the version sets.
 
-Because your Workflow completes in a day, you know that you won't need to keep older Workers running for more than a day after you deploy the new version (assuming availability).
+Because your Workflow completes in a day, you know that you won't need to keep older Workers running for more than a day after you deploy the new version (assuming availability). You can apply this technique to longer-lived Workflows too; however, you might need to run multiple Worker versions simultaneously while open Workflows complete.
 
-Removing old versions from the sets isn't necessary.
-Leaving them doesn't cause any harm.
-
-You can apply this technique to longer-lived Workflows too; however, you might need to run multiple Worker versions simultaneously while open Workflows complete.
+Version sets have a maximum size limit, which defaults to 100 build IDs across all sets. Operations to add new Build IDs to the sets will fail if they exceed this limit. There is also a limit on the number of Version Sets, which defaults to 10. A version can only be garbage collected after a Workflow Execution is deleted.
 
 #### Deploy code changes to Workers
 
