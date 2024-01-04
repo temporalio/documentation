@@ -489,7 +489,7 @@ The steps to using custom Search Attributes are:
 
 Here is how to query Workflow Executions:
 
-Use [`WorkflowService.listWorkflowExecutions`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.workflowservice-1/#listworkflowexecutions):
+Use [`WorkflowService.listWorkflowExecutions`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#listworkflowexecutions):
 
 ```typescript
 import { Connection } from '@temporalio/client';
