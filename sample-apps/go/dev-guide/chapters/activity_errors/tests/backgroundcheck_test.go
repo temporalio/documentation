@@ -67,7 +67,7 @@ func (s *UnitTestSuite) Test_SSNTraceActivity() {
 	s.Equal("pass", result)
 }
 
-// TestReplayWorkflowHistoryFromFile tests for Event History compatability.
+// TestReplayWorkflowHistoryFromFile tests for Event History compatibility.
 func (s *UnitTestSuite) TestReplayWorkflowHistoryFromFile() {
 	// Create a new Replayer
 	replayer := worker.NewWorkflowReplayer()

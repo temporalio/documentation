@@ -139,9 +139,13 @@ Inject Activity context via interceptor and log all Activity Executions
 [instrumentation/src/activities/interceptors.ts](https://github.com/temporalio/samples-typescript/blob/master/instrumentation/src/activities/interceptors.ts)
 
 ```ts
-import { Context } from "@temporalio/activity";
-import { ActivityExecuteInput, ActivityInboundCallsInterceptor, Next } from "@temporalio/worker";
-import { Logger } from "winston";
+import { Context } from '@temporalio/activity';
+import {
+  ActivityExecuteInput,
+  ActivityInboundCallsInterceptor,
+  Next,
+} from '@temporalio/worker';
+import { Logger } from 'winston';
 
 /** An Activity Context with an attached logger */
 export interface ContextWithLogger extends Context {
@@ -154,7 +158,9 @@ export function getContext(): ContextWithLogger {
 }
 
 /** Logs Activity executions and their duration */
-export class ActivityInboundLogInterceptor implements ActivityInboundCallsInterceptor {
+export class ActivityInboundLogInterceptor
+  implements ActivityInboundCallsInterceptor
+{
   public readonly logger: Logger;
 
   constructor(ctx: Context, logger: Logger) {
@@ -167,7 +173,10 @@ export class ActivityInboundLogInterceptor implements ActivityInboundCallsInterc
     (ctx as ContextWithLogger).logger = this.logger;
   }
 
-  async execute(input: ActivityExecuteInput, next: Next<ActivityInboundCallsInterceptor, "execute">): Promise<unknown> {
+  async execute(
+    input: ActivityExecuteInput,
+    next: Next<ActivityInboundCallsInterceptor, 'execute'>,
+  ): Promise<unknown> {
     let error: any = undefined;
     const startTime = process.hrtime.bigint();
     try {
@@ -179,9 +188,9 @@ export class ActivityInboundLogInterceptor implements ActivityInboundCallsInterc
       const durationNanos = process.hrtime.bigint() - startTime;
       const durationMs = Number(durationNanos / 1_000_000n);
       if (error) {
-        this.logger.error("activity failed", { error, durationMs });
+        this.logger.error('activity failed', { error, durationMs });
       } else {
-        this.logger.debug("activity completed", { durationMs });
+        this.logger.debug('activity completed', { durationMs });
       }
     }
   }
@@ -204,7 +213,7 @@ Use the injected logger from an Activity
 ```ts
 export async function greet(name: string): Promise<string> {
   const { log } = Context.current();
-  log.info("Log from activity", { name });
+  log.info('Log from activity', { name });
   return `Hello, ${name}!`;
 }
 ```
@@ -247,7 +256,7 @@ Explicitly declaring a sink's interface is optional but is useful for ensuring t
 [sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/workflows.ts)
 
 ```ts
-import { log, proxySinks, Sinks } from "@temporalio/workflow";
+import { log, proxySinks, Sinks } from '@temporalio/workflow';
 
 export interface AlertSinks extends Sinks {
   alerter: {
@@ -271,15 +280,15 @@ Implement and inject the Sink function into a Worker
 [sinks/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/worker.ts)
 
 ```ts
-import { InjectedSinks, Worker } from "@temporalio/worker";
-import { MySinks } from "./workflows";
+import { InjectedSinks, Worker } from '@temporalio/worker';
+import { MySinks } from './workflows';
 
 async function main() {
   const sinks: InjectedSinks<MySinks> = {
     alerter: {
       alert: {
         fn(workflowInfo, message) {
-          console.log("sending SMS alert!", {
+          console.log('sending SMS alert!', {
             workflowId: workflowInfo.workflowId,
             workflowRunId: workflowInfo.runId,
             message,
@@ -290,12 +299,12 @@ async function main() {
     },
   };
   const worker = await Worker.create({
-    workflowsPath: require.resolve("./workflows"),
-    taskQueue: "sinks",
+    workflowsPath: require.resolve('./workflows'),
+    taskQueue: 'sinks',
     sinks,
   });
   await worker.run();
-  console.log("Worker gracefully shutdown");
+  console.log('Worker gracefully shutdown');
 }
 
 main().catch((err) => {
@@ -319,9 +328,9 @@ main().catch((err) => {
 const { alerter } = proxySinks<MySinks>();
 
 export async function sinkWorkflow(): Promise<string> {
-  log.info("Workflow Execution started");
-  alerter.alert("alerter: Workflow Execution started");
-  return "Hello, Temporal!";
+  log.info('Workflow Execution started');
+  alerter.alert('alerter: Workflow Execution started');
+  return 'Hello, Temporal!';
 }
 ```
 
@@ -342,10 +351,12 @@ Instead of explicitly calling `proxySinks()` to create a logger sink in your Wor
 [logger-shared/src/sharedLogger.ts](https://github.com/temporalio/samples-typescript/blob/master/logger-shared/src/sharedLogger.ts)
 
 ```ts
-import { inWorkflowContext, proxySinks } from "@temporalio/workflow";
-import logger from "./logger";
+import { inWorkflowContext, proxySinks } from '@temporalio/workflow';
+import logger from './logger';
 
-const sharedLogger = inWorkflowContext() ? proxySinks().defaultWorkerLogger : logger;
+const sharedLogger = inWorkflowContext()
+  ? proxySinks().defaultWorkerLogger
+  : logger;
 export default sharedLogger;
 ```
 
@@ -358,10 +369,10 @@ You can then import `sharedLogger.ts` from Activities and Workflows.
 [logger-shared/src/activities/index.ts](https://github.com/temporalio/samples-typescript/blob/master/logger-shared/src/activities/index.ts)
 
 ```ts
-import logger from "../sharedLogger";
+import logger from '../sharedLogger';
 
 export async function greet(name: string): Promise<string> {
-  logger.info("Log from Activity", { name });
+  logger.info('Log from Activity', { name });
   return `Hello, ${name}!`;
 }
 ```
@@ -373,17 +384,17 @@ export async function greet(name: string): Promise<string> {
 [logger-shared/src/workflows/index.ts](https://github.com/temporalio/samples-typescript/blob/master/logger-shared/src/workflows/index.ts)
 
 ```ts
-import { proxyActivities } from "@temporalio/workflow";
-import type * as activities from "../activities";
-import logger from "../sharedLogger";
+import { proxyActivities } from '@temporalio/workflow';
+import type * as activities from '../activities';
+import logger from '../sharedLogger';
 
 const { greet } = proxyActivities<typeof activities>({
-  startToCloseTimeout: "5 minutes",
+  startToCloseTimeout: '5 minutes',
 });
 
 export async function logSampleWorkflow(): Promise<void> {
-  const greeting = await greet("Temporal");
-  logger.info("Log from Workflow", { greeting });
+  const greeting = await greet('Temporal');
+  logger.info('Log from Workflow', { greeting });
 }
 ```
 
