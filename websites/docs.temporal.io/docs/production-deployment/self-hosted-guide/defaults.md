@@ -20,7 +20,7 @@ tags:
 
 :::info Looking for Temporal Cloud defaults?
 
-See the [Temporal Cloud defaults and limits page](/cloud/operating-envelope#default-limits)
+See the [Temporal Cloud defaults and limits page](/cloud/limits#)
 
 :::
 

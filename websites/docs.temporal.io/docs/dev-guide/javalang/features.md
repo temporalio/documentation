@@ -521,9 +521,9 @@ An [Update](/workflows#update) is an operation that can mutate the state of a Wo
 
 ### How to define Updates {#define-update}
 
-A Update handler has a name, arguments, response, and an optional validator.
+An Update handler has a name, arguments, response, and an optional validator.
 
-- The name, also called a Update type, is a string.
+- The name, also called an Update type, is a string.
 - The arguments and response must be [serializable](/dataconversion#).
 
 The `@UpdateMethod` annotation indicates that the method is used to handle and respond to update requests.
@@ -607,9 +607,9 @@ public interface GreetingWorkflow {
 }
 ```
 
-### How to send a Update from a Client {#send-update-from-client}
+### How to send an Update from a Client {#send-update-from-client}
 
-To send a Update to a Workflow Execution from a Client, call the Update method, annotated with `@UpdateMethod` in the Workflow interface, from the Client code.
+To send an Update to a Workflow Execution from a Client, call the Update method, annotated with `@UpdateMethod` in the Workflow interface, from the Client code.
 
 In the following Client code example, start the Workflow `getGreetings` and call the Update method `addGreeting` that is handled in the Workflow.
 
@@ -617,13 +617,13 @@ In the following Client code example, start the Workflow `getGreetings` and call
 WorkflowOptions workflowOptions =
     WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
 
-// create a typed Workflow stub for GreetingsWorkflow
+// Create a typed Workflow stub for GreetingsWorkflow
 GreetingWorkflow workflow = client.newWorkflowStub(GreetingWorkflow.class, workflowOptions);
 
-// start the Workflow
+// Start the Workflow
 WorkflowClient.start(workflow::getGreetings);
 
-// send a update to the Workflow. addGreeting returns
+// Send an update to the Workflow. addGreeting returns
 // the number of greetings our workflow has received.
 int count = workflow.addGreeting("World");
 ```

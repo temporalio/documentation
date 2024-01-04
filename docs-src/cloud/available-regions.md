@@ -1,6 +1,6 @@
 ---
-id: operating-envelope-regions
-title: Where is Temporal Cloud hosted and running?
+id: available-regions
+title: Available regions
 sidebar_label: Regions
 description: Temporal Cloud currently runs in multiple regions in AWS.
 tags:
@@ -9,7 +9,15 @@ tags:
   - explanation
 ---
 
-Temporal Cloud currently runs in the following regions in Amazon Web Services (AWS):
+**Where is Temporal Cloud available?**
+
+Developers and applications can access Temporal Cloud from any location with internet connectivity, irrespective of where the Temporal Cloud resources (Namespaces) are located.
+
+Temporal Cloud is compatible with applications deployed in various cloud environments or data centers.
+
+To minimize latency, we advise creating your Namespace in a region geographically close to your Workers' hosting location.
+
+Currently, Temporal Cloud operates in several regions on Amazon Web Services (AWS):
 
 | Area          | Code           | Region            |
 | ------------- | -------------- | ----------------- |
@@ -26,6 +34,4 @@ Temporal Cloud currently runs in the following regions in Amazon Web Services (A
 | North America | us-west-2      | Oregon            |
 | South America | sa-east-1      | São Paulo         |
 
-Furthermore, it is compatible with applications deployed in any cloud environment or data center.
-
-To reduce latency, we recommend that you create your [Namespace](/concepts/what-is-a-namespace) in a region that is geographically close to where your [Workers](/concepts/what-is-a-worker) are hosted, but your Workers and [Client](/concepts/what-is-a-temporal-client) code don't need to be hosted on AWS.
+_**Your Workers and Client code aren't required to be hosted on AWS.**_
