@@ -235,8 +235,9 @@ This Event type contains Activity inputs, as well as Activity Timeout configurat
 
 ### ActivityTaskStarted
 
-This [Event](/concepts/what-is-an-event) type indicates that the [Activity Task](/concepts/what-is-an-activity-task) has started executing.
-The SDK client has picked up the Activity Task and is processing the [Activity](/concepts/what-is-an-activity) invocation.
+This [Event](/concepts/what-is-an-event) type indicates that an [Activity Task Execution](/concepts/what-is-an-activity-task-execution) was started.
+The SDK Worker picked up the Activity Task and started processing the [Activity](/concepts/what-is-an-activity) invocation.
+Note, however, that this Event is not written to History until the terminal Event (like [ActivityTaskCompleted](/references/events#activitytaskcompleted) or [ActivityTaskFailed](/references/events#activitytaskfailed)) occurs.
 
 | Field              | Description                                                                                                          |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------- |
@@ -261,8 +262,8 @@ This Event type contains [Activity Execution](/concepts/what-is-an-activity-exec
 
 ### ActivityTaskFailed
 
-This [Event](/concepts/what-is-an-event) type indicates that the [Activity Task](/concepts/what-is-an-activity-task) has completed.
-The SDK picked up the Activity Task but unsuccessfully completed it.
+This [Event](/concepts/what-is-an-event) type indicates that the [Activity Task](/concepts/what-is-an-activity-task) has failed.
+The SDK client picked up the Activity Task but unsuccessfully completed it.
 This Event type contains [Activity Execution](/concepts/what-is-an-activity-execution) errors.
 
 | Field              | Description                                                                                                 |
@@ -274,7 +275,7 @@ This Event type contains [Activity Execution](/concepts/what-is-an-activity-exec
 
 ### ActivityTaskTimedOut
 
-This [Event](/concepts/what-is-an-event) type indicates that the Activity has timed out according to the [Temporal Server](/concepts/what-is-the-temporal-server) , due to the [Activity](/concepts/what-is-an-activity) having not completed within the timeout settings.
+This [Event](/concepts/what-is-an-event) type indicates that the Activity has timed out according to the [Temporal Server](/concepts/what-is-the-temporal-server), due to one of these [Activity](/concepts/what-is-an-activity) timeouts: [Schedule-to-Close Timeout](/activities#schedule-to-close-timeout) and [Schedule-to-Start Timeout](/activities#schedule-to-start-timeout).
 
 | Field              | Description                                                                                                 |
 | ------------------ | ----------------------------------------------------------------------------------------------------------- |
@@ -285,8 +286,7 @@ This [Event](/concepts/what-is-an-event) type indicates that the Activity has ti
 
 ### ActivityTaskCancelRequested
 
-This [Event](/concepts/what-is-an-event) type indicates that a request to cancel the [Activity](/concepts/what-is-an-activity) has occurred.
-The SDK client will be able to confirm cancelation of an Activity during an Activity heartbeat.
+This [Event](/concepts/what-is-an-event) type indicates that a request to [cancel](/activities#cancellation) the [Activity](/concepts/what-is-an-activity) has occurred.
 
 | Field                            | Description                                                                                                |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -295,7 +295,7 @@ The SDK client will be able to confirm cancelation of an Activity during an Acti
 
 ### ActivityTaskCanceled
 
-This [Event](/concepts/what-is-an-event) type indicates that the [Activity](/concepts/what-is-an-activity) has been canceled.
+This [Event](/concepts/what-is-an-event) type indicates that the [Activity](/concepts/what-is-an-activity) has been [canceled](/activities#cancellation).
 
 | Field                            | Description                                                                                                                |
 | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
@@ -531,5 +531,27 @@ This [Event](/concepts/what-is-an-event) type indicates that the Workflow [Searc
 
 | Field                            | Description                                                                                          |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with.      |
-| search_attributes                | Provides data for setting up a Workflow`s [Search Attributes](/concepts/what-is-a-search-attribute). |
+| workflow_task_completed_event_id | The [WorkflowTaskCompleted](#workflowtaskcompleted) Event reported the Event with this Id.           |
+| search_attributes                | Provides data for setting up a Workflow's [Search Attributes](/concepts/what-is-a-search-attribute). |
+
+### WorkflowExecutionUpdateAcceptedEvent
+
+This [Event](/concepts/what-is-an-event) type indicates that a [Workflow Execution](/concepts/what-is-a-workflow-execution) has accepted an [Update](/concepts/what-is-an-update) for execution.
+The original request input payload is both indicated and stored by this Event, as it generates no Event when initially requesting an Update.
+
+| Field                                | Description                                                                                                                                                            |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| protocol_instance_id                 | The instance of the Update protocol with this Id is executing this Update.                                                                                             |
+| accepted_request_message_id          | The Id of the request message sent by [Temporal Server](/concepts/what-is-the-temporal-server) to the [Worker](/concepts/what-is-a-worker).                            |
+| accepted_request_sequencing_event_id | Execute this Update after the Event with this Id.                                                                                                                      |
+| accepted_request                     | The request input and metadata initially provided by the invoker of the Update and subsequently relayed by Temporal Server to the Worker for acceptance and execution. |
+
+### WorkflowExecutionUpdateCompletedEvent
+
+This [Event](/concepts/what-is-an-event) type indicates that a [Workflow Execution](/concepts/what-is-a-workflow-execution) has executed an [Update](/concepts/what-is-an-update) to completion.
+
+| Field             | Description                                                                                                                                  |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| meta              | The metadata associated with this Update, sourced from the initial request.                                                                  |
+| accepted_event_id | The Id of the [WorkflowExecutionUpdateAcceptedEvent](#WorkflowExecutionUpdateAcceptedEvent) The Platform accepted this Update for execution. |
+| outcome           | The outcome of execution of this Update whether the execution resulted in a success or a failure.                                            |

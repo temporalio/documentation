@@ -1,6 +1,6 @@
 ---
 id: what-is-a-schedule
-title: What is a Schedule
+title: What is a Schedule?
 sidebar_label: Schedule
 description: A Schedule enables the scheduling of Workflow Executions.
 tags:
@@ -8,8 +8,14 @@ tags:
   - explanation
 ssdi:
   - Introduced in Temporal Server version 1.17.0
-  - Available in tctl v1.17 and Temporal CLI
-  - Available in Temporal Cloud via tctl and CLI
+  - Available in Temporal CLI (and tctl v1.17)
+  - Available in Temporal Cloud
+  - Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) version [1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
+  - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+  - Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow) version [1.1.0](https://github.com/temporalio/sdk-python/releases/tag/1.1.0)
+  - Available in [TypeScript SDK](https://github.com/temporalio/samples-typescript/tree/main/schedules#schedules) version [1.5.0](https://github.com/temporalio/sdk-typescript/blob/main/CHANGELOG.md#150---2022-12-07)
+  - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.Schedules.html) version [0.1.0](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-alpha4)
+  - Available in [gRPC API](https://api-docs.temporal.io/#temporal.api.workflowservice.v1.CreateScheduleRequest)
 ---
 
 A Schedule contains instructions for starting a [Workflow Execution](/workflows#workflow-execution) at specific times.
@@ -20,6 +26,12 @@ Schedules provide a more flexible and user-friendly approach than [Temporal Cron
 
 A Schedule has an identity and is independent of a Workflow Execution.
 This differs from a Temporal Cron Job, which relies on a cron schedule as a property of the Workflow Execution.
+
+:::info
+
+For triggering a Workflow Execution at a specific one-time future point rather than on a recurring schedule, the [Start Delay](/concepts/what-is-a-delay-start-workflow-execution) option should be used instead of a Schedule.
+
+:::
 
 ### Action
 
@@ -143,8 +155,8 @@ The following options are available:
 
 The Temporal Cluster might be down or unavailable at the time when a Schedule should take an Action.
 When it comes back up, the Catchup Window controls which missed Actions should be taken at that point.
-The default is one minute, which means that the Schedule attempts to take any Actions that wouldn't be more than one minute late.
-An outage that lasts longer than the Catchup Window could lead to missed Actions.
+The default is one year, meaning Actions will be taken unless over one year late.
+If your Actions are more time-sensitive, you can set the Catchup Window to a smaller value (minimum ten seconds), accepting that an outage longer than the window could lead to missed Actions.
 (But you can always [Backfill](#backfill).)
 
 #### Pause-on-failure
@@ -177,22 +189,22 @@ And not C, even though C completed after A, because the result for D is captured
 
 Failures and timeouts do not affect the last completion result.
 
+:::note
+
+When a Schedule triggers a Workflow that completes successfully and yields a result, the result from the initial Schedule execution can be accessed by the subsequent scheduled execution through `LastCompletionResult`.
+
+Be aware that if, during the subsequent run, the Workflow employs the [Continue-As-New](/concepts/what-is-continue-as-new) feature, `LastCompletionResult` won't be accessible for this new Workflow iteration.
+
+It is important to note that the [status](/concepts/what-is-a-workflow-execution#status) of the subsequent run is marked as `Continued-As-New` and not as `Completed`.
+
+:::
+
 ### Last failure
 
 A Workflow started by a Schedule can obtain the details of the failure of the most recent run that ended at the time when the Workflow in question was started. Unlike last completion result, a _successful_ run _does_ reset the last failure.
 
 ### Limitations
 
-:::info Experimental
-
-The Scheduled Workflows feature is available in Temporal Server version 1.18.
-
 Internally, a Schedule is implemented as a Workflow.
 If you're using Advanced Visibility (Elasticsearch), these Workflow Executions are hidden from normal views.
 If you're using Standard Visibility, they are visible, though there's no need to interact with them directly.
-
-:::
-
-Native support for Schedules in language SDKs is coming soon.
-For now, `tctl` and the web UI are the main interfaces to Schedules.
-For advanced use, you can also use the gRPC API by getting a `WorkflowServiceClient` object from the SDK and calling methods such as `CreateSchedule`.

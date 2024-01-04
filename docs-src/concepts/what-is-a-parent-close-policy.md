@@ -11,12 +11,16 @@ tags:
 
 A Parent Close Policy determines what happens to a [Child Workflow Execution](/concepts/what-is-a-child-workflow-execution) if its Parent changes to a Closed status (Completed, Failed, or Timed out).
 
-- [How to set a Parent Close Policy](/application-development/features#parent-close-policy)
+- [How to set a Parent Close Policy using the Go SDK](/go/parent-close-policy)
+- [How to set a Parent Close Policy using the Java SDK](/java/parent-close-policy)
+- [How to set a Parent Close Policy using the PHP SDK](/php/parent-close-policy)
+- [How to set a Parent Close Policy using the Python SDK](/python/parent-close-policy)
+- [How to set a Parent Close Policy using the TypeScript SDK](/typescript/parent-close-policy)
 
 There are three possible values:
 
-- **Abandon**: the Child Workflow Execution is not affected.
-- **Request Cancel**: a Cancellation request is sent to the Child Workflow Execution.
+- **Abandon:** the Child Workflow Execution is not affected.
+- **Request Cancel:** a Cancellation request is sent to the Child Workflow Execution.
 - **Terminate** (default): the Child Workflow Execution is forcefully Terminated.
 
 [`ParentClosePolicy`](https://github.com/temporalio/api/blob/c1f04d0856a3ba2995e92717607f83536b5a44f5/temporal/api/enums/v1/workflow.proto#L44) proto definition.

@@ -10,12 +10,16 @@ tags:
 
 An Activity Execution is the full chain of [Activity Task Executions](/concepts/what-is-an-activity-task-execution).
 
-- [How to spawn an Activity Execution](/application-development/foundations#activity-execution)
+- [How to start an Activity Execution using the Go SDK](/go/spawning-activities)
+- [How to start an Activity Execution using the Java SDK](/java/spawning-activities)
+- [How to start an Activity Execution using the PHP SDK](/php/spawning-activities)
+- [How to start an Activity Execution using the Python SDK](/python/spawning-activities)
+- [How to start an Activity Execution using the TypeScript SDK](/typescript/spawning-activities)
 
 ![Activity Execution](/diagrams/activity-execution.svg)
 
 By default, an Activity Execution has no time limit.
-Activity Execution [timeouts](/application-development/features#activity-timeouts) and [retry policies](/concepts/what-is-a-retry-policy) can be customized.
+You can customize [Activity Execution timeouts](/concepts/what-is-a-start-to-close-timeout) and [retry policies](/concepts/what-is-a-retry-policy).
 
 If an Activity Execution fails (because it exhausted all retries, threw a [non-retryable error](/concepts/what-is-a-retry-policy#non-retryable-errors), or was canceled), the error is returned to the [Workflow](/workflows), which decides how to handle it.
 
@@ -31,7 +35,7 @@ Activities can only receive Cancellation if they emit Heartbeats or in Core-base
 An Activity may receive Cancellation if:
 
 - The Activity was requested to be Cancelled. This can often cascade from Workflow Cancellation, but not always—SDKs have ways to stop Cancellation from cascading. <!-- TODO link to workflow cancellation -->
-- The Activity was considered failed by the Server because any of the Activity timeouts have triggered (for example, the Server didn't receive a heartbeat within the Activity's Heartbeat timeout). The [Cancelled Failure](/kb/failures#cancelled-failure) that the Activity receives will have `message: 'TIMED_OUT'`.
+- The Activity was considered failed by the Server because any of the Activity timeouts have triggered (for example, the Server didn't receive a heartbeat within the Activity's Heartbeat timeout). The [Cancelled Failure](/references/failures#cancelled-failure) that the Activity receives will have `message: 'TIMED_OUT'`.
 - The Workflow Run reached a [Closed state](/workflows#status), in which case the Cancelled Failure will have `message: 'NOT_FOUND'`.
 - In some SDKs:
   - The Worker is shutting down.

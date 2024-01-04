@@ -1,11 +1,17 @@
 ---
 id: retries
 title: Activity and Workflow Retries
+sidebar_label: Retries
+description: Activities and Workflows can fail for a number of expected and unexpected reasons. In most failure cases, we want to retry the failed Activity or Child Workflow or even the parent Workflow. By default, Temporal retries Activities, but not Workflows. To change the default behavior, a custom Retry Policy can be provided.
+tags:
+    - activity
+    - workflow
+    - retry
 ---
 
 :::info Try the Developer's guide
 
-The majority of this information has moved into the [Developer's guide](/application-development/?lang=php).
+The majority of this information has moved into the [Developer's guide](/dev-guide/?lang=php).
 
 However, if you can't find what you are looking for there, we recommend checking this doc set as well.
 

@@ -5,6 +5,7 @@ sidebar_label: history_host
 description: Overview of history_host commands
 tags:
   - tctl
+  - cli reference
 ---
 
 The `tctl admin history_host` command runs an admin-level operation on the history host.

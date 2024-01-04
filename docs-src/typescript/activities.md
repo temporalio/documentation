@@ -3,6 +3,9 @@ id: activities
 title: Activities in TypeScript
 sidebar_label: Activities
 description: Activities are the only way to interact with external resources in Temporal, like making an HTTP request or accessing the file system. Unlike Workflows, Activities execute in the standard Node.js environment.
+tags:
+  - explanation
+  - how-to
 ---
 
 **`@temporalio/activity`** [![NPM](https://img.shields.io/npm/v/@temporalio/activity)](https://www.npmjs.com/package/@temporalio/activity) [API reference](https://typescript.temporal.io/api/namespaces/activity) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/activity)
@@ -12,8 +15,8 @@ description: Activities are the only way to interact with external resources in 
 **Activities are the only way to interact with external resources in Temporal**, such as making an HTTP request or accessing the file system.
 
 - Unlike [Workflows](/typescript/determinism), Activities execute in the standard Node.js environment. Any code that needs to talk to the outside world needs to be in an Activity, not a Workflow.
-- **Separate from Workflows**: Activities cannot be in the same file as Workflows and must be separately registered (see below for [How to register an Activity on a Worker](#how-to-register-an-activity-on-a-worker))
-- **Idempotency**: Activities may be retried repeatedly, so you may need to use [idempotency keys](https://stripe.com/blog/idempotency) for critical side effects.
+- **Separate from Workflows:** Activities cannot be in the same file as Workflows and must be separately registered (see below for [How to register an Activity on a Worker](#how-to-register-an-activity-on-a-worker))
+- **Idempotency:** Activities may be retried repeatedly, so you may need to use [idempotency keys](https://stripe.com/blog/idempotency) for critical side effects.
 - The `'@temporalio/activity'` package offers useful utilities for Activity functions such as sleeping, Heartbeating, cancellation, and retrieving metadata (see [docs on Activity Context utilities](#activity-context-utilities) below).
 
 ## How to write an Activity Function
@@ -39,11 +42,11 @@ Note that we only import the type of our activities, the TypeScript compiler wil
 <!--SNIPSTART typescript-hello-workflow {"enable_source_link": false}-->
 
 ```ts
-import { proxyActivities } from '@temporalio/workflow';
+import * as workflow from '@temporalio/workflow';
 // Only import the activity types
 import type * as activities from './activities';
 
-const { greet } = proxyActivities<typeof activities>({
+const { greet } = workflow.proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute',
 });
 
@@ -196,7 +199,7 @@ You can route tasks to specific machines with the [Sticky Queues pattern](/types
 
 :::
 
-Advanced users can also register [Activity Interceptors](/typescript/interceptors) here.
+Advanced users can also register [Activity Interceptors](/typescript/how-to-implement-interceptors-in-typescript) here.
 For more on Activity and Workflow registration, see [the Worker docs](/typescript/workers) for more details.
 
 ### Using pure ESM Node Modules
@@ -437,20 +440,21 @@ The [`sleep`](https://typescript.temporal.io/api/classes/activity.Context#sleep)
 import { CancelledFailure, Context } from '@temporalio/activity';
 
 export async function fakeProgress(sleepIntervalMs = 1000): Promise<void> {
+  const { log, info, sleep, heartbeat } = Context.current();
   try {
     // allow for resuming from heartbeat
-    const startingPoint = Context.current().info.heartbeatDetails || 1;
-    console.log('Starting activity at progress:', startingPoint);
+    const startingPoint = info.heartbeatDetails || 1;
+    log.info('Starting activity at progress', { startingPoint });
     for (let progress = startingPoint; progress <= 100; ++progress) {
       // simple utility to sleep in activity for given interval or throw if Activity is cancelled
       // don't confuse with Workflow.sleep which is only used in Workflow functions!
-      console.log('Progress:', progress);
-      await Context.current().sleep(sleepIntervalMs);
-      Context.current().heartbeat(progress);
+      log.info('Progress', { progress });
+      await sleep(sleepIntervalMs);
+      heartbeat(progress);
     }
   } catch (err) {
     if (err instanceof CancelledFailure) {
-      console.log('Fake progress activity cancelled', err.message);
+      log.warn('Fake progress activity cancelled', { message: err.message });
       // Cleanup
     }
     throw err;
@@ -471,10 +475,11 @@ The [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/
 ```ts
 import { Context } from '@temporalio/activity';
 import fetch from 'node-fetch';
+import type { AbortSignal as FetchAbortSignal } from 'node-fetch/externals';
 
 export async function cancellableFetch(url: string): Promise<Uint8Array> {
   const response = await fetch(url, {
-    signal: Context.current().cancellationSignal,
+    signal: Context.current().cancellationSignal as FetchAbortSignal,
   });
   const contentLengthHeader = response.headers.get('Content-Length');
   if (contentLengthHeader === null) {
@@ -505,7 +510,7 @@ Please get in touch with us if you find the need for them.
 
 ### Activity Interceptors
 
-Interceptors are a mechanism for users to modify inbound and outbound SDK calls. Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities, but you can also use them to run code after an Activity failure (and before the next retry). See the [Interceptors docs](/typescript/interceptors) and the [SDK API Reference](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptor) for more information.
+Interceptors are a mechanism for users to modify inbound and outbound SDK calls. Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities, but you can also use them to run code after an Activity failure (and before the next retry). See the [Interceptors docs](/typescript/how-to-implement-interceptors-in-typescript) and the [SDK API Reference](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptor) for more information.
 
 ### Async Activity Completion
 

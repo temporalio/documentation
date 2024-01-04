@@ -2,7 +2,10 @@
 id: data-converters
 title: Data Converters
 sidebar_label: Data Converters
-description: Learn and customize how data is serialized in the TypeScript SDK
+description: Learn and customize how data is serialized in the TypeScript SDK.
+tags:
+    - typescript
+    - data converters
 ---
 
 > Background reading: [Data Converters in Temporal](/concepts/what-is-a-data-converter/)
@@ -68,7 +71,7 @@ interface PayloadConverter {
 
 Some example implementations are in the SDK itself:
 
-- [`common/src/converter/payload-converters.ts`](https://github.com/temporalio/sdk-typescript/blob/main/packages/common/src/converter/payload-converters.ts)
+- [`common/src/converter/payload-converter.ts`](https://github.com/temporalio/sdk-typescript/blob/main/packages/common/src/converter/payload-converter.ts)
 - [`common/src/converter/protobuf-payload-converters.ts`](https://github.com/temporalio/sdk-typescript/blob/main/packages/common/src/converter/protobuf-payload-converters.ts)
 
 There's also a sample project that creates an EJSON custom `PayloadConverter`: [samples-typescript/ejson](https://github.com/temporalio/samples-typescript/tree/main/ejson)
@@ -256,9 +259,7 @@ To serialize values as [Protocol Buffers](https://en.wikipedia.org/wiki/Protocol
 [protobufs/protos/root.js](https://github.com/temporalio/samples-typescript/blob/master/protobufs/protos/root.js)
 
 ```js
-const { patchProtobufRoot } = require(
-  '@temporalio/common/lib/converter/patch-protobuf-root',
-);
+const { patchProtobufRoot } = require('@temporalio/common/lib/protobufs');
 const unpatchedRoot = require('./json-module');
 module.exports = patchProtobufRoot(unpatchedRoot);
 ```

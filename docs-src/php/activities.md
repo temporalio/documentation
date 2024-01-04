@@ -2,11 +2,15 @@
 id: activities
 title: Activities in PHP
 sidebar_label: Activities
+description: Activities in PHP
+tags:
+    - php
+    - activities
 ---
 
 :::info Try the Developer's guide
 
-The majority of this information has moved into the [Developer's guide](/application-development/?lang=php).
+The majority of this information has moved into the [Developer's guide](/dev-guide/?lang=php).
 
 However, if you can't find what you are looking for there, we recommend checking this doc set as well.
 
@@ -16,8 +20,7 @@ However, if you can't find what you are looking for there, we recommend checking
 
 An Activity is a manifestation of a particular Task in the business logic.
 
-Activities are defined as methods of a plain PHP interface annotated with `#[ActivityInterface]` (you can use PHP 8 attributes
-in PHP7 as well).
+Activities are defined as methods of a plain PHP interface annotated with the `#[ActivityInterface]` attribute.
 
 Each method defines a single Activity type.
 A single Workflow can use more than one Activity interface and call more that one Activity method from the same interface.
@@ -45,9 +48,9 @@ interface FileProcessingActivities
 We recommend to use a single value type argument for Activity methods.
 In this way, adding new arguments as fields to the value type is a backwards-compatible change.
 
-An optional `#[ActivityMethod]` annotation can be used to override a default Activity name.
+An optional `#[ActivityMethod]` attribute can be used to override a default Activity name.
 
-Option `prefix` of `ActivityInterface` annotation will allow you to define your own prefix for all activity names (by
+Option `prefix` of `ActivityInterface` attribute will allow you to define your own prefix for all activity names (by
 default it's empty).
 
 ```php
@@ -69,7 +72,7 @@ interface FileProcessingActivities
 
 Activity implementation is an implementation of an Activity interface.
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
-Therefore, the Activity implementation code must be _stateless_.
+Activity implementation code should be _idempotent_.
 
 The values passed to Activities through invocation parameters or returned through a result value are recorded in the execution history.
 The entire execution history is transferred from the Temporal service to Workflow workers when a Workflow state needs to recover.

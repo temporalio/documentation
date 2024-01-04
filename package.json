@@ -1,58 +1,17 @@
 {
-  "name": "temporal-documentation",
+  "name": "assemble-script",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
-    "build": "docusaurus build",
-    "clear": "docusaurus clear",
-    "deploy": "docusaurus deploy",
-    "docusaurus": "docusaurus",
-    "format": "dprint fmt",
-    "gen": "snipsync && ./assemble.js && dprint fmt && docusaurus build",
-    "gen-cloud": "snipsync && ./assemble.js --cloud && dprint fmt && docusaurus build",
-    "assemble": "./assemble.js",
-    "serve": "docusaurus serve",
-    "start": "docusaurus start",
-    "swizzle": "docusaurus swizzle",
-    "write-heading-ids": "docusaurus write-heading-ids",
-    "write-translations": "docusaurus write-translations"
+    "assemble": "./assemble.js && dprint fmt",
+    "assemble-cloud": "./assemble.js --cloud && dprint fmt",
+    "format": "dprint fmt"
   },
   "dependencies": {
-    "@docusaurus/core": "^2.1.0",
-    "@docusaurus/preset-classic": "^2.1.0",
-    "@mdx-js/react": "^1.5.8",
-    "beautiful-react-diagrams": "^0.5.1",
-    "chart.js": "3.7.1",
-    "clsx": "^1.1.1",
-    "fs-extra": "^10.1.0",
-    "gray-matter": "^4.0.3",
     "path": "^0.12.7",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-player": "^2.6.0",
-    "readdirp": "^3.6.0",
-    "remark-typescript-tools": "1.0.9",
-    "snipsync": "1.7.0",
     "temporalio": "^1.1.0",
-    "typescript": "4.x",
-    "uuid": "^8.3.2",
-    "webpack-font-preload-plugin": "^1.5.0"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "dprint": "^0.29.1",
-    "eslint": "^7.32.0",
-    "eslint-plugin-react": "^7.23.2"
+    "snipsync": "1.7.0",
+    "fs-extra": "^10.1.0"
   }
 }

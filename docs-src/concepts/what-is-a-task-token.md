@@ -2,7 +2,7 @@
 id: what-is-a-task-token
 title: What is a Task Token?
 sidebar_label: Task Token
-description: A Task Token is a unique Id that correlates to an Activity Execution.
+description: A Task Token is a unique identifier for an Activity Task Execution.
 tags:
   - term
   - explanation

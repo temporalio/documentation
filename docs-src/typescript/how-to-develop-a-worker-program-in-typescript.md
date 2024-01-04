@@ -1,11 +1,11 @@
 ---
 id: how-to-develop-a-worker-program-in-typescript
 title: How to develop a Worker program in TypeScript
-sidebar_label: Develop a Worker program
+sidebar_label: Run a dev Worker
 description: Develop a Worker program
 tags:
-  - developer-guide
-  - sdk
+  - dev-guide
+  - workers
   - typescript
 ---
 
@@ -16,24 +16,36 @@ Below is an example of starting a Worker that polls the Task Queue named `tutori
 <!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
 
 ```ts
-import { Worker } from '@temporalio/worker';
+import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from './activities';
 
 async function run() {
-  // Step 1: Register Workflows and Activities with the Worker and connect to
-  // the Temporal server.
+  // Step 1: Establish a connection with Temporal server.
+  //
+  // Worker code uses `@temporalio/worker.NativeConnection`.
+  // (But in your application code it's `@temporalio/client.Connection`.)
+  const connection = await NativeConnection.connect({
+    address: 'localhost:7233',
+    // TLS and gRPC metadata configuration goes here.
+  });
+  // Step 2: Register Workflows and Activities with the Worker.
   const worker = await Worker.create({
+    connection,
+    namespace: 'default',
+    taskQueue: 'hello-world',
+    // Workflows are registered using a path as they run in a separate JS context.
     workflowsPath: require.resolve('./workflows'),
     activities,
-    taskQueue: 'hello-world',
   });
-  // Worker connects to localhost by default and uses console.error for logging.
-  // Customize the Worker by passing more options to create():
-  // https://typescript.temporal.io/api/classes/worker.Worker
-  // If you need to configure server connection parameters, see docs:
-  // https://docs.temporal.io/typescript/security#encryption-in-transit-with-mtls
 
-  // Step 2: Start accepting tasks on the `hello-world` queue
+  // Step 3: Start accepting tasks on the `hello-world` queue
+  //
+  // The worker runs until it encounters an unexepected error or the process receives a shutdown signal registered on
+  // the SDK Runtime object.
+  //
+  // By default, worker logs are written via the Runtime logger to STDERR at INFO level.
+  //
+  // See https://typescript.temporal.io/api/classes/worker.Runtime#install to customize these defaults.
   await worker.run();
 }
 
@@ -102,12 +114,12 @@ There are three main things the Worker needs:
 
 This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
 
-| Options         | Description                                                                                                                                                                        |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                     |
-| `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](https://legacy-documentation-sdks.temporal.io/typescript/logging))                                        |
-| `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](https://legacy-documentation-sdks.temporal.io/typescript/interceptors)) |
+| Options         | Description                                                                                                                                                          |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                       |
+| `sinks`         | Allows injection of Workflow Sinks. See [Logging](/typescript/how-to-log-from-a-workflow-in-typescript)                                                              |
+| `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/how-to-implement-interceptors-in-typescript)) |
 
 **Operation guides:**
 
-- [How to tune Workers](/application-development/worker-performance)
+- [How to tune Workers](/dev-guide/worker-performance)

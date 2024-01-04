@@ -1,11 +1,16 @@
 ---
 id: distributed-cron
 title: Distributed CRON
+sidebar_label: Distributed CRON
+description: Distributed CRON
+tags:
+    - cron
+    - workflow
 ---
 
 :::info Try the Developer's guide
 
-The majority of this information has moved into the [Developer's guide](/application-development/?lang=php).
+The majority of this information has moved into the [Developer's guide](/dev-guide/?lang=php).
 
 However, if you can't find what you are looking for there, we recommend checking this doc set as well.
 

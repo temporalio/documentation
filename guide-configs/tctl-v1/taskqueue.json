@@ -1,0 +1,29 @@
+{
+  "file_name": "taskqueue.md",
+  "file_dir": "tctl-v1",
+  "id": "taskqueue",
+  "title": "tctl v1.17 taskqueue command reference",
+  "sidebar_label": "taskqueue",
+  "description": "Explore the tctl Task Queue commands, which describe Task Queues and list the partitions of a Task Queue in a Temporal Cluster.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "cli/release-message"
+    },
+    {
+      "type": "p",
+      "id": "tctl-v1/taskqueue/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/taskqueue/describe"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/taskqueue/list-partition"
+    }
+  ]
+}

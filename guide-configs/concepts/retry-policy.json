@@ -1,0 +1,19 @@
+{
+  "file_name": "retry-policies.md",
+  "id": "retry-policies",
+  "slug": "/retry-policies",
+  "file_dir": "concepts",
+  "title": "What is a Temporal Retry Policy?",
+  "sidebar_label": "Retry Policies",
+  "sidebar_position": 4,
+  "description": "A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.",
+  "use_description": true,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "concepts/what-is-a-retry-policy"
+    }
+  ]
+}

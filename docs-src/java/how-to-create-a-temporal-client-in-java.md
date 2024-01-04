@@ -1,12 +1,31 @@
 ---
 id: how-to-create-a-temporal-client-in-java
 title: How to create a Temporal Client in Java
-sidebar_label: Temporal Client
+sidebar_label: Connect to a dev Cluster
 description: To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
 tags:
   - java
   - developer-guide
 ---
+
+A [Temporal Client](/concepts/what-is-a-temporal-client) enables you to communicate with the [Temporal Cluster](/concepts/what-is-a-temporal-cluster).
+Communication with a Temporal Cluster includes, but isn't limited to, the following:
+
+- Starting Workflow Executions.
+- Sending Signals to Workflow Executions.
+- Sending Queries to Workflow Executions.
+- Getting the results of a Workflow Execution.
+- Providing an Activity Task Token.
+
+:::caution
+
+A Temporal Client cannot be initialized and used inside a Workflow.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Cluster.
+
+:::
+
+When you are running a Cluster locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
+Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
 
 To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with `@WorkflowMethod`).
 
@@ -41,7 +60,7 @@ The following example shows how to create a `WorkflowClient` instance called "cl
 WorkflowClient client = WorkflowClient.newInstance(
                 service,
                 WorkflowClientOptions.newBuilder()
-                        .setNamespace(“Abc”)
+                        .setNamespace(“your-namespace”)
                     .build());
 ```
 

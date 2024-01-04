@@ -3,6 +3,10 @@ id: logging
 title: Logging and Sinks in TypeScript SDK
 sidebar_label: Logging and Sinks
 description: Workflow Sinks allow you to export information from the Workflow back to the Node.js environment, often used for logging, metrics, tracing.
+tags:
+ - logging
+ - sinks
+ - metrics
 ---
 
 :::note Sample available
@@ -93,14 +97,12 @@ Use the injected logger from an Activity
 
 <!--SNIPSTART typescript-activity-use-injected-logger -->
 
-[instrumentation/src/activities/index.ts](https://github.com/temporalio/samples-typescript/blob/master/instrumentation/src/activities/index.ts)
+[custom-logger/src/activities/index.ts](https://github.com/temporalio/samples-typescript/blob/master/custom-logger/src/activities/index.ts)
 
 ```ts
-import { getContext } from './interceptors';
-
 export async function greet(name: string): Promise<string> {
-  const { logger } = getContext();
-  logger.info('Log from activity', { name });
+  const { log } = Context.current();
+  log.info('Log from activity', { name });
   return `Hello, ${name}!`;
 }
 ```
@@ -145,7 +147,7 @@ Explicitly declaring a Sink's interface is optional, but is useful for ensuring 
 [sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/workflows.ts)
 
 ```ts
-import { LoggerSinks, proxySinks, Sinks } from '@temporalio/workflow';
+import { log, proxySinks, Sinks } from '@temporalio/workflow';
 
 export interface AlertSinks extends Sinks {
   alerter: {
@@ -153,7 +155,7 @@ export interface AlertSinks extends Sinks {
   };
 }
 
-export type MySinks = AlertSinks & LoggerSinks;
+export type MySinks = AlertSinks;
 ```
 
 <!--SNIPEND-->
@@ -169,18 +171,19 @@ Implementing Sinks is a two-step process.
 [sinks/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/worker.ts)
 
 ```ts
-import { defaultSinks, InjectedSinks, Worker } from '@temporalio/worker';
+import { InjectedSinks, Worker } from '@temporalio/worker';
 import { MySinks } from './workflows';
 
 async function main() {
   const sinks: InjectedSinks<MySinks> = {
-    ...defaultSinks(),
     alerter: {
       alert: {
         fn(workflowInfo, message) {
-          console.log(`sending SMS alert!
-workflow: ${workflowInfo.runId}
-message: ${message}`);
+          console.log('sending SMS alert!', {
+            workflowId: workflowInfo.workflowId,
+            workflowRunId: workflowInfo.runId,
+            message,
+          });
         },
         callDuringReplay: false, // The default
       },
@@ -213,10 +216,10 @@ main().catch((err) => {
 [sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/workflows.ts)
 
 ```ts
-const { alerter, defaultWorkerLogger } = proxySinks<MySinks>();
+const { alerter } = proxySinks<MySinks>();
 
 export async function sinkWorkflow(): Promise<string> {
-  defaultWorkerLogger.info('default logger: Workflow Execution started', {});
+  log.info('Workflow Execution started');
   alerter.alert('alerter: Workflow Execution started');
   return 'Hello, Temporal!';
 }
@@ -226,9 +229,9 @@ export async function sinkWorkflow(): Promise<string> {
 
 Some important features of the [InjectedSinkFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedSinkFunction) interface:
 
-- **Injected WorkflowInfo argument**: The first argument of a Sink function implementation is a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo/) that contains useful metadata.
-- **Limited arguments types**: The remaining Sink function arguments are copied between the sandbox and the Node.js environment using the [structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
-- **No return value**: To prevent breaking determinism, Sink functions cannot return values to the Workflow.
+- **Injected WorkflowInfo argument:** The first argument of a Sink function implementation is a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo/) that contains useful metadata.
+- **Limited arguments types:** The remaining Sink function arguments are copied between the sandbox and the Node.js environment using the [structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
+- **No return value:** To prevent breaking determinism, Sink functions cannot return values to the Workflow.
 
 #### Shared logger interface
 

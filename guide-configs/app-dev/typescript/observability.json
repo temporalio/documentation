@@ -1,0 +1,83 @@
+{
+  "id": "observability",
+  "file_name": "observability.md",
+  "slug": "/dev-guide/typescript/observability",
+  "file_dir": "dev-guide/tscript",
+  "title": "TypeScript SDK developer's guide - Observability",
+  "sidebar_label": "Observability",
+  "sidebar_position": 4,
+  "description": "Improve observability in your TypeScript-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.",
+  "use_description": false,
+  "toc_max_heading_level": 3,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "typescript/observability"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/metrics"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-emit-metrics-typescript"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/tracing"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-configure-tracing-in-typescript"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/how-to-log-from-a-workflow-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/custom-logging"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-set-a-custom-logger-in-typescript"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/visibility"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-list-workflow-executions-using-the-client-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/set-custom-search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/upsert-custom-search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execution-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/remove-search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-remove-search-attributes-from-a-workflow-in-typescript"
+    }
+  ]
+}

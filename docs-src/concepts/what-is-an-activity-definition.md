@@ -10,7 +10,11 @@ tags:
 
 An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 
-- [How to develop an Activity Definition](/application-development/foundations#develop-activities)
+- [How to develop an Activity Definition using the Go SDK](/go/generated/how-to-develop-an-activity-definition-in-go)
+- [How to develop an Activity Definition using the Java SDK](/java/developing-activities)
+- [How to develop an Activity Definition using the PHP SDK](/php/developing-activities)
+- [How to develop an Activity Definition using the Python SDK](/python/developing-activities)
+- [How to develop an Activity Definition using the TypeScript SDK](/typescript/developing-activities)
 
 The term 'Activity Definition' is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition——the method or function that is invoked for an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 Therefore, the terms Activity Function and Activity Method refer to the source of an instance of an execution.
@@ -23,14 +27,23 @@ Activity Definitions are named and referenced in code by their [Activity Type](/
 
 Temporal recommends that Activities be idempotent.
 
+Idempotent means that performing an operation multiple times has the same result as performing it once.
+In the context of Temporal, Activities should be designed to be safely executed multiple times without causing unexpected or undesired side effects.
+
+:::info
+
+By design, completed Activities will not re-execute as part of a [Workflow Replay](/workflows#replays). However, Activities won’t record to the [Event History](/retry-policies#event-history) until they return or produce an error. If an Activity fails to report to the server at all, it will be retried. Designing for idempotence, especially if you have a [Global Namespace](/namespaces#global-namespace), will improve reusability and reliability.
+
+:::
+
 An Activity is idempotent if multiple [Activity Task Executions](/concepts/what-is-an-activity-task-execution) do not change the state of the system beyond the first Activity Task Execution.
 
 We recommend using idempotency keys for critical side effects.
 
 The lack of idempotency might affect the correctness of your application but does not affect the Temporal Platform.
-In other words, lack of idempotency does not lead to a platform error.
+In other words, lack of idempotency doesn't lead to a platform error.
 
-In some cases, whether something is idempotent does not affect the correctness of an application.
+In some cases, whether something is idempotent doesn't affect the correctness of an application.
 For example, if you have a monotonically incrementing counter, you might not care that retries increment the counter because you don’t care about the actual value, only that the current value is greater than a previous value.
 
 #### Constraints

@@ -3,6 +3,8 @@ id: workflows
 title: Workflows in TypeScript
 sidebar_label: Workflows
 description: Workflows are async functions that can orchestrate Activities and access special Workflow APIs, subject to deterministic limitations.
+tags:
+ - workflow
 ---
 
 import Tabs from '@theme/Tabs';
@@ -37,11 +39,11 @@ Workflow Definitions are "just functions", which can store state, and orchestrat
 <!--SNIPSTART typescript-hello-workflow {"enable_source_link": false}-->
 
 ```ts
-import { proxyActivities } from '@temporalio/workflow';
+import * as workflow from '@temporalio/workflow';
 // Only import the activity types
 import type * as activities from './activities';
 
-const { greet } = proxyActivities<typeof activities>({
+const { greet } = workflow.proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute',
 });
 
@@ -96,18 +98,18 @@ Please see the [Temporal Client docs](/typescript/clients) or the [API Reference
 
 The `@temporalio/workflow` package exports all the useful primitives that you can use in Workflows. See the [API reference](https://typescript.temporal.io/api/namespaces/workflow) for the full list, but the main ones are:
 
-| APIs                         | Purpose                                                                                                                                                                                                                                                                                                                                                                                                   |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `proxyActivities`            | Make idempotent side effects (like making a HTTP request) with Activities ([see Activities doc](/typescript/activities))                                                                                                                                                                                                                                                                                  |
-| `proxyLocalActivities`       | Make idempotent side effects (like making a HTTP request) with Activities ([see Activities doc](/typescript/activities))                                                                                                                                                                                                                                                                                  |
-| `defineSignal`/`defineQuery` | [Signal and Query](#signals-and-queries) Workflows while they are running                                                                                                                                                                                                                                                                                                                                 |
-| `sleep`                      | Defer execution by [sleeping](#sleep) for fixed time                                                                                                                                                                                                                                                                                                                                                      |
-| `condition`                  | Defer execution until a [`condition`](#condition) is true, with optional timeout                                                                                                                                                                                                                                                                                                                          |
-| `startChild`/`executeChild`  | Spawn new [Child Workflows](#child-workflows) with customizable ParentClosePolicy                                                                                                                                                                                                                                                                                                                         |
-| `continueAsNew`              | Truncate Event History for [Entity Workflows](#entity-workflows)                                                                                                                                                                                                                                                                                                                                          |
-| `patched`/`deprecatePatch`   | Migrate Workflows to new versions ([see Patching doc](/typescript/patching))                                                                                                                                                                                                                                                                                                                              |
-| `uuid4`                      | Generate an RFC compliant V4 [uuid](https://typescript.temporal.io/api/namespaces/workflow/#uuid4) without needing to call an Activity or Side Effect.                                                                                                                                                                                                                                                    |
-| APIs for advanced users      | including [`workflowInfo`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) (to retrieve Workflow metadata), Workflow data [`Sinks`](/typescript/logging), [Cancellation Scopes](/typescript/cancellation-scopes), [Failure types](/typescript/handling-failure), and [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle) |
+| APIs                         | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `proxyActivities`            | Make idempotent side effects (like making a HTTP request) with Activities ([see Activities doc](/typescript/activities))                                                                                                                                                                                                                                                                                                                   |
+| `proxyLocalActivities`       | Make idempotent side effects (like making a HTTP request) with Activities ([see Activities doc](/typescript/activities))                                                                                                                                                                                                                                                                                                                   |
+| `defineSignal`/`defineQuery` | [Signal and Query](#signals-and-queries) Workflows while they are running                                                                                                                                                                                                                                                                                                                                                                  |
+| `sleep`                      | Defer execution by [sleeping](#sleep) for fixed time                                                                                                                                                                                                                                                                                                                                                                                       |
+| `condition`                  | Defer execution until a [`condition`](#condition) is true, with optional timeout                                                                                                                                                                                                                                                                                                                                                           |
+| `startChild`/`executeChild`  | Spawn new [Child Workflows](#child-workflows) with customizable ParentClosePolicy                                                                                                                                                                                                                                                                                                                                                          |
+| `continueAsNew`              | Truncate Event History for [Entity Workflows](#entity-workflows)                                                                                                                                                                                                                                                                                                                                                                           |
+| `patched`/`deprecatePatch`   | Migrate Workflows to new versions ([see Patching doc](/typescript/patching))                                                                                                                                                                                                                                                                                                                                                               |
+| `uuid4`                      | Generate an RFC compliant V4 [uuid](https://typescript.temporal.io/api/namespaces/workflow/#uuid4) without needing to call an Activity or Side Effect.                                                                                                                                                                                                                                                                                     |
+| APIs for advanced users      | including [`workflowInfo`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) (to retrieve Workflow metadata), Workflow data [`Sinks`](/typescript/how-to-log-from-a-workflow-in-typescript), [Cancellation Scopes](/typescript/cancellation-scopes), [Failure types](/typescript/handling-failure), and [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle) |
 
 You can import them individually or as a group:
 
@@ -165,13 +167,13 @@ export async function unblockOrCancel(): Promise<void> {
   let isBlocked = true;
   wf.setHandler(unblockSignal, () => void (isBlocked = false));
   wf.setHandler(isBlockedQuery, () => isBlocked);
-  console.log('Blocked');
+  wf.log.info('Blocked');
   try {
     await wf.condition(() => !isBlocked);
-    console.log('Unblocked');
+    wf.log.info('Unblocked');
   } catch (err) {
     if (err instanceof wf.CancelledFailure) {
-      console.log('Cancelled');
+      wf.log.info('Cancelled');
     }
     throw err;
   }
@@ -690,7 +692,7 @@ export async function OneClickBuy(itemId: string) {
 
 </details>
 
-:::warning `condition` Antipatterns
+:::caution `condition` Antipatterns
 
 - No time based condition functions are allowed in your function as this is very error prone.
   Use the optional `timeout` arg or a `sleep` timer.
@@ -760,7 +762,7 @@ export async function yourWorkflow(userId: string) {
 
 You can invert this to create a Reminder pattern where the promise resolves IF no Signal is received.
 
-:::warning Antipattern: Racing sleep.then
+:::caution Antipattern: Racing sleep.then
 
 Be careful when racing a chained `sleep`. This may cause bugs because the chained `.then` will still continue to execute.
 
@@ -992,7 +994,7 @@ import PCP from '../concepts/what-is-a-parent-close-policy.md'
 
 ## `continueAsNew`
 
-We need to call `continueAsNew` before our Workflow hits the 50,000 Event limit. [Events](../concepts/what-is-an-event) are generated when a Workflow does various things involving Temporal Server, including calling an Activity, receiving a Signal, or calling `sleep`, but not handling a Query.
+We need to call `continueAsNew` before our Workflow History exceeds 51,200 Events. [Events](../concepts/what-is-an-event) are generated when a Workflow does various things involving Temporal Server, including calling an Activity, receiving a Signal, or calling `sleep`, but not handling a Query.
 
 <details>
 <summary>More info</summary>
@@ -1008,13 +1010,13 @@ We need to call `continueAsNew` before our Workflow hits the 50,000 Event limit.
 [continue-as-new/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/continue-as-new/src/workflows.ts)
 
 ```ts
-import { continueAsNew, sleep } from '@temporalio/workflow';
+import { continueAsNew, log, sleep } from '@temporalio/workflow';
 
 export async function loopingWorkflow(iteration = 0): Promise<void> {
   if (iteration === 10) {
     return;
   }
-  console.log('Running Workflow iteration:', iteration);
+  log.info('Running Workflow iteration', { iteration });
   await sleep(1000);
   // Must match the arguments expected by `loopingWorkflow`
   await continueAsNew<typeof loopingWorkflow>(iteration + 1);
@@ -1041,7 +1043,7 @@ export async function loopingWorkflow(foo: any, isContinued?: boolean) {
 You should not try to call `continueAsNew` too often - if at all!
 Its primary purpose is to truncate event history, which if too large may slow down your workflows and eventually cause an error. Calling it too frequently to be preemptive can cause other performance issues as each new Workflow Execution has overhead.
 
-Temporal's default limits are set to warn you at 10,000 events in a single Workflow Execution, and error at 50,000.
+Temporal's default limits are set to warn you after the Event History exceeds 10,240 Events in a single Workflow Execution, and error after the Event History exceeds 51,200 Events.
 This is sufficient for:
 
 - If executing one activity a day, it can support an infinite loop for over 2 decades (27 years)

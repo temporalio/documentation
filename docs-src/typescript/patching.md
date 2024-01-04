@@ -1,39 +1,18 @@
 ---
 id: patching
-title: Patching TypeScript Workflows
-sidebar_label: Patching (Migrating)
-description: Any Workflow code change that affects the order in which commands are generated breaks this assumption. So we have to keep both the old and new code when migrating Workflows while they are still running.
+title: How to patch Workflow code in TypeScript
+description: The TypeScript SDK Patching API lets you change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
+sidebar_label: Patching
+tags:
+  - typescript
+  - workflow code
+  - patching
+  - versioning
 ---
 
-## Alternatives
+The TypeScript SDK Patching API lets you change Workflow Definitions without causing [non-deterministic behavior](/concepts/what-is-a-workflow-definition#non-deterministic-change) in current long-running Workflows.
 
-Before you explore our patching/versioning API, check if your needs can be addressed in other ways:
-
-- [Version Task Queue](#version-task-queue)
-- [Version Workflow Name](#version-workflow-name)
-
-Both options mean that Workflows running `v1` code will never migrate to `v2` code: they will run `v1` code to completion.
-If you would like to update Workflows running `v1` _while they are still running_, you [may need to "patch in" code](#do-i-need-to-patch).
-
-### Version Task Queue
-
-If we're currently running our v1 Workflow code on Workers that poll on `queue1`, we can run v2 Workflow code on Workers that poll on `queue2`:
-
-1. Leave some Workers running your v1 `Workflow`, on the `queue1` Task Queue.
-1. Change your `Workflow` code and spin up new Workers that are polling a `queue2` Task Queue.
-1. Cut over your Clients to only call `Workflow` on `queue2` from now on.
-1. Remove your v1 Workers when all the v1 Workflows have completed.
-
-### Version Workflow Name
-
-While versioning the Task Queue is usually easier, we can also create a new version of a Workflow by copying it and changing its name:
-
-1. Copy `Workflow1`'s code to a `Workflow2` function and change what you need.
-1. Register `Workflow2` in your Workers alongside `Workflow1`.
-1. Cut over your Clients to only call `Workflow2` from now on.
-1. Remove `Workflow1` code when none of them are running anymore.
-
-## Do I need to Patch?
+### Do I need to Patch?
 
 You may need to patch if:
 
@@ -80,9 +59,9 @@ export async function yourWorkflow(value: number): Promise<number> {
 }
 ```
 
-## Migrating Workflows in Patches
+### Migrating Workflows in Patches
 
-Workflow code has to be [deterministic](/typescript/determinism) by taking the same code path when replaying history events.
+Workflow code has to be [deterministic](/workflows#deterministic-constraints) by taking the same code path when replaying History Events.
 Any Workflow code change that affects the order in which commands are generated breaks this assumption.
 
 So we have to keep both the old and new code when migrating Workflows while they are still running:
@@ -100,9 +79,9 @@ We explain more in this optional 30 minute introduction: [https://www.youtube.co
 
 </details>
 
-## TypeScript SDK Patching API
+### TypeScript SDK Patching API
 
-In principle, the TypeScript SDK's patching mechanism works in a similar "feature-flag" fashion to the other SDK's, however, the "versioning" API has been updated to a notion of "patching in" code.
+In principle, the TypeScript SDK's patching mechanism works in a similar "feature-flag" fashion to the other SDKs; however, the "versioning" API has been updated to a notion of "patching in" code.
 There are three steps to this reflecting three stages of migration:
 
 - Running v1 code with vFinal patched in concurrently
@@ -155,7 +134,7 @@ Patching is a three-step process:
 2. Remove old code and `deprecatePatch`
 3. When you are sure all old Workflows are done executing, remove `deprecatePatch`
 
-### Step 1: Patch in new code
+#### Step 1: Patch in new code
 
 `patched` inserts a marker into the Workflow history.
 
@@ -184,10 +163,12 @@ export async function myWorkflow(): Promise<void> {
 
 <!--SNIPEND-->
 
-### Step 2: Deprecate patch
+#### Step 2: Deprecate patch
 
-Once we know that all Workflows started with `v1` code have completed we can [deprecate the patch](https://typescript.temporal.io/api/namespaces/workflow#deprecatepatch).
-Deprecated patches bridge between `v2` and `vFinal` (the end result), they work similarly to regular patches by recording a marker in the Workflow history, this marker does not fail replay when Workflow code does not emit it.
+When we know that all Workflows started with `v1` code have completed, we can [deprecate the patch](https://typescript.temporal.io/api/namespaces/workflow#deprecatepatch).
+Deprecated patches bridge between `v2` and `vFinal` (the end result).
+They work similarly to regular patches by recording a marker in the Workflow history.
+This marker does not fail replay when Workflow code does not emit it.
 
 If while we're deploying `v3` (below) there are still live Workers running `v2` code and those Workers pick up Workflow histories generated by `v3`, they will safely use the patched branch.
 
@@ -208,11 +189,11 @@ export async function myWorkflow(): Promise<void> {
 
 <!--SNIPEND-->
 
-### Step 3: Solely deploy new code
+#### Step 3: Solely deploy new code
 
 `vFinal` is safe to deploy once all `v2` or earlier Workflows are complete due to the assertion mentioned above.
 
-## Upgrading Workflow dependencies
+### Upgrading Workflow dependencies
 
 Upgrading Workflow dependencies (such as ones installed into `node_modules`) _might_ break determinism in unpredictable ways.
 We recommended using a lock file (`package-lock.json` or `yarn.lock`) to fix Workflow dependency versions and gain control of when they're updated.

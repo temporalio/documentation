@@ -2,11 +2,13 @@
 id: how-to-handle-a-signal-in-a-workflow-in-java
 title: How to handle Signals in an Workflow in Java
 sidebar_label: Handle Signals
-description: Use the `@SignalMethod` annotation to handle Signals within the Workflow interface.
+description: Use the @SignalMethod annotation to handle Signals within the Workflow interface.
 tags:
   - java
   - developer-guide
 ---
+
+Workflows listen for Signals by the Signal's name.
 
 Use the `@SignalMethod` annotation to handle Signals in the Workflow interface.
 
@@ -79,18 +81,3 @@ public class HelloWorldImpl implements HelloWorld {
 ```
 
 This Workflow completes when the Signal updates the greeting to `Bye`.
-
-**Dynamic Signal Handler**
-You can also implement Signal handlers dynamically. This is useful for library-level code and implementation of DSLs.
-
-Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
-
-```java
-Workflow.registerListener(
-  (DynamicSignalHandler)
-      (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
-```
-
-When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
-Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
-`DynamicSignalHandler` can be implemented in both regular and dynamic Workflow implementations.

@@ -5,6 +5,7 @@ sidebar_label: membership
 description: Run admin operations on membership
 tags:
   - tctl
+  - cli reference
 ---
 
 The `tctl admin membership` command allows admin operations to be run on membership items.

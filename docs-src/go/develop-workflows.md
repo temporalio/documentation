@@ -104,6 +104,6 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 - `workflow.Channel` This is a replacement for the native `chan` type.
   Temporal provides support for both buffered and unbuffered channels.
 - `workflow.Selector` This is a replacement for the `select` statement.
-  Learn more on the [Go SDK Selectors](https://legacy-documentation-sdks.temporal.io/go/selectors) page.
+  Learn more on the [Go SDK Selectors](/go/selectors) page.
 - `workflow.Context` This is a replacement for `context.Context`.
-  See [Tracing](/app-dev-context/tracing) for more information about context propagation.
+  See [Tracing](/go/tracing) for more information about context propagation.

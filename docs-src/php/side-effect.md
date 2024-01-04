@@ -1,6 +1,12 @@
 ---
 id: side-effect
 title: SideEffect
+sidebar_label: Side Effect
+description: Use SideEffect to execute a function once and record its result into the Workflow history.
+tags:
+    - side effect
+    - php
+    - workflow
 ---
 
 `Workflow::sideEffect` is useful for short, non-deterministic code snippets, such as getting a random

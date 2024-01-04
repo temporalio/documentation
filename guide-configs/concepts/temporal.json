@@ -1,0 +1,43 @@
+{
+  "file_name": "temporal.md",
+  "id": "temporal",
+  "slug": "/temporal",
+  "file_dir": "concepts",
+  "title": "What is Temporal?",
+  "sidebar_label": "Temporal",
+  "sidebar_position": 1,
+  "description": "Discover the Temporal Platform, a runtime for durable executions that consists of a Temporal Cluster and Worker Processes, plus SDKs in multiple languages.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "concepts/what-is-temporal"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-durable-execution"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-the-temporal-platform"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-temporal-application"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-temporal-sdk"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-temporal-client"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-failure"
+    }
+  ]
+}

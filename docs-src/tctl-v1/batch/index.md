@@ -5,6 +5,7 @@ sidebar_label: batch
 description: A tctl batch command enables you to affect multiple existing Workflow Executions with a single command.
 tags:
   - tctl
+  - cli reference
 ---
 
 **How to run a tctl batch command.**

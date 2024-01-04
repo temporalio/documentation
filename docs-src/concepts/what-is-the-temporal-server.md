@@ -28,7 +28,8 @@ Each service is aware of the others, including scaled instances, through a membe
 
 All Temporal Server releases abide by the [Semantic Versioning Specification](https://semver.org/).
 
-Fairly precise upgrade paths and support have been established starting from Temporal `v1.7.0`.
+We support upgrade paths from every version beginning with Temporal v1.7.0.
+For details on upgrading your Temporal Cluster, see [Upgrade Server](/self-hosted/how-to-upgrade-the-temporal-server-version).
 
 We provide maintenance support for previously published minor and major versions by continuing to release critical bug fixes related to security, the prevention of data loss, and reliability, whenever they are found.
 
@@ -38,7 +39,7 @@ We offer maintenance support of the last three **minor** versions after a releas
 
 We offer maintenance support of **major** versions for at least 12 months after a GA release, and we provide at least 6 months' notice before EOL/deprecating support.
 
-#### Dependencies
+**Dependencies**
 
 Temporal offers official support for, and is tested against, dependencies with the exact versions described in the `go.mod` file of the corresponding release tag.
 (For example, [v1.5.1](https://github.com/temporalio/temporal/tree/v1.5.1) dependencies are documented in [the go.mod for v1.5.1](https://github.com/temporalio/temporal/blob/v1.5.1/go.mod).)

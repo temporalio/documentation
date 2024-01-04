@@ -3,6 +3,10 @@ id: production-deploy
 title: Production Deploy Checklist for TypeScript SDK
 sidebar_label: Deploy Checklist
 description: Recommended steps to take before deploying your Temporal app to production.
+tags:
+    - typescript
+    - production
+    - deploy
 ---
 
 The following are recommended steps to take before deploying your Temporal application to production.
@@ -11,8 +15,8 @@ The following are recommended steps to take before deploying your Temporal appli
 
 Either use Temporal Cloud ([join the waitlist](https://pages.temporal.io/cloud-early-access)) or deploy a self-hosted Temporal Cluster:
 
-- [Deployment guide](/server/production-deployment/)
-- [Scaling checklist](/server/production-deployment#checklist-for-scaling-temporal)
+- [Deployment guide](/kb/legacy-oss-prod-deploy/)
+- [Scaling checklist](/kb/legacy-oss-prod-deploy#checklist-for-scaling-temporal)
 
 ## Linting and types
 
@@ -48,15 +52,11 @@ Temporal Clients and Workers connect with Temporal Clusters through gRPC.
 
 For more information, see [Connecting to Temporal Cloud (with mTLS)](/typescript/security#local-mtls-sample-tutorial).
 
-## Pre-build code
-
-This information has been moved to [Register Types](/application-development/foundations/#register-types) section in the application developer guide.
-
 ## Logging
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
 
-For more information about sending logs, see [Logging](/typescript/logging).
+For more information about sending logs, see [Logging](/typescript/how-to-log-from-a-workflow-in-typescript).
 
 ## Metrics and tracing
 
@@ -67,11 +67,11 @@ Workers can emit metrics and traces. There are a few [telemetry options](https:/
 - `metrics: { otel: { url } }`: The URL of a gRPC [OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
 - `metrics: { prometheus: { bindAddress } }`: Address on the Worker host that will have metrics for [Prometheus](https://prometheus.io/) to scrape.
 
-To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](/typescript/logging#opentelemetry-tracing) package.
+To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](/typescript/how-to-log-from-a-workflow-in-typescript#opentelemetry-tracing) package.
 
 ### Monitoring
 
-Here is the [full list of SDK metrics](/references/sdk-metrics/). Some of them are used in the [Worker Tuning Guide](/application-development/worker-performance) to determine how to change your deployment configuration. The guide also assumes you track the host-level metrics that are important for measuring your application's load (for many applications, this is just CPU, but some applications may run into other bottlenecks—like with Activities that use a lot of memory, or open a lot of sockets). How you track host-level metrics depends on where you deploy your Workers.
+Here is the [full list of SDK metrics](/references/sdk-metrics/). Some of them are used in the [Worker Tuning Guide](/dev-guide/worker-performance) to determine how to change your deployment configuration. The guide also assumes you track the host-level metrics that are important for measuring your application's load (for many applications, this is just CPU, but some applications may run into other bottlenecks—like with Activities that use a lot of memory, or open a lot of sockets). How you track host-level metrics depends on where you deploy your Workers.
 
 ## Performance tuning
 
@@ -83,7 +83,7 @@ We endeavor to give you good defaults, so you don't have to worry about them, bu
   - `maxCachedWorkflows` to limit Workflow cache size and trade memory for CPU (biggest lever for Worker performance)
   - `maxConcurrentActivityTaskExecutions` and other options for tuning concurrency
   - `stickyQueueScheduleToStartTimeout` to determine how quickly Temporal stops trying to send work to Workers that are no longer present, via [Sticky Queues](/concepts/what-is-a-sticky-execution)
-  - See [Worker Tuning Guide](/application-development/worker-performance)
+  - See [Worker Tuning Guide](/dev-guide/worker-performance)
 - [Activity Timeouts and Retries](/typescript/activities#activity-timeouts) as you gain an understanding of Temporal and the services you rely on, you will likely want to adjust the timeouts and Retry Policy to reflect your desired behavior.
   - Note that there are separate [Timeouts and Retry Policy](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowruntimeout) at the Workflow level, but we do not encourage their usage unless you know what you are doing.
 - _to be completed as we get more user feedback_

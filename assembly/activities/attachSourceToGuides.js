@@ -4,24 +4,20 @@ import path from "path";
 
 export async function attachSourceToGuides(config) {
   console.log("attaching source content to guide configurations...");
-  const infoNodeReadPath = path.join(
-    config.root_dir,
-    config.temp_write_dir,
-    config.source_info_nodes_file_name
-  );
+  const infoNodeReadPath = path.join(config.root_dir, config.temp_write_dir, config.source_info_nodes_file_name);
   const sourceInfoNodes = await fs.readJSON(infoNodeReadPath);
-  const guideConfigs = {cfgs: []};
+  const guideConfigs = { cfgs: [] };
   const guidesReadPath = path.join(config.root_dir, config.guide_configs_path);
   for await (const entry of readdirp(guidesReadPath)) {
+    if (entry.basename === ".DS_Store") {
+      continue;
+    }
+
     const raw_content = await fs.readJSON(entry.fullPath);
     guideConfigs.cfgs.push(raw_content);
   }
   guideConfigs.cfgs = await attachNodes(guideConfigs.cfgs, sourceInfoNodes);
-  const writePath = path.join(
-    config.root_dir,
-    config.temp_write_dir,
-    config.guide_configs_with_attached_nodes_file_name
-  );
+  const writePath = path.join(config.root_dir, config.temp_write_dir, config.attached_nodes_file_name);
   await fs.writeJSON(writePath, guideConfigs);
   return;
 }

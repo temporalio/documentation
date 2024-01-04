@@ -1,0 +1,29 @@
+{
+  "file_name": "batch.md",
+  "file_dir": "cli",
+  "id": "batch",
+  "title": "Temporal CLI batch command reference",
+  "sidebar_label": "batch",
+  "description": "Efficiently execute batch operations with the Temporal CLI. Automate and manage bulk operations seamlessly.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "cli/batch/index"
+    },
+    {
+      "type": "h2",
+      "id": "cli/batch/list"
+    },
+    {
+      "type": "h2",
+      "id": "cli/batch/describe"
+    },
+    {
+      "type": "h2",
+      "id": "cli/batch/terminate"
+    }
+  ]
+}

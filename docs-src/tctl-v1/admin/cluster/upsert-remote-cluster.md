@@ -5,7 +5,7 @@ sidebar_label: upsert_remote_cluster
 description: How to run admin-level tctl commands.
 tags:
   - tctl
-  - admin
+  - cli reference
 ---
 
 The `tctl admin cluster upsert_remote_cluster` command adds or updates remote Cluster information in the current Cluster.

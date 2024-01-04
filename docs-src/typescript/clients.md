@@ -3,6 +3,9 @@ id: clients
 title: Workflow Clients in TypeScript
 sidebar_label: Clients
 description: Workflow Clients are embedded in your application code, and connect to Temporal Server via gRPC. They are the only way to schedule new Workflow Executions with Temporal Server.
+tags:
+  - client
+  - typescript
 ---
 
 <!-- prettier-ignore -->
@@ -40,30 +43,30 @@ import { nanoid } from 'nanoid';
 import { example } from './workflows';
 
 async function run() {
-  // Connect to the default Server location (localhost:7233)
-  console.log(Date.now());
-  const connection = await Connection.connect();
+  // Connect to the default Server location
+  const connection = await Connection.connect({ address: 'localhost:7233' });
   // In production, pass options to configure TLS and other settings:
   // {
   //   address: 'foo.bar.tmprl.cloud',
   //   tls: {}
   // }
 
-  console.log(Date.now());
   const client = new Client({
     connection,
     // namespace: 'foo.bar', // connects to 'default' namespace if not specified
   });
 
   const handle = await client.workflow.start(example, {
+    taskQueue: 'hello-world',
     // type inference works! args: [name: string]
     args: ['Temporal'],
-    taskQueue: 'hello-world',
     // in practice, use a meaningful business ID, like customerId or transactionId
     workflowId: 'workflow-' + nanoid(),
   });
-  await handle.result();
-  console.log(Date.now());
+  console.log(`Started workflow ${handle.workflowId}`);
+
+  // optional: wait for client result
+  console.log(await handle.result()); // Hello, Temporal!
 }
 
 run().catch((err) => {
@@ -443,4 +446,4 @@ Outputs something like:
 
 **For the full list of gRPC calls, see the Methods section of the [WorkflowService](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#methods) API reference.**
 
-Note that if you are trying to do a lot of list-then-filter operations (e.g. `listClosedWorkflowExecutions`), the [Visibility APIs](/typescript/search-attributes) are a better choice for Temporal deployments with [ElasticSearch enabled](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster/) (this is enabled by default for all Temporal Cloud customers).
+Note that if you are trying to do a lot of list-then-filter operations (e.g. `listClosedWorkflowExecutions`), the [Visibility APIs](/typescript/search-attributes) are a better choice for Temporal deployments with [ElasticSearch enabled](/self-hosted/how-to-integrate-elasticsearch-into-a-temporal-cluster/) (this is enabled by default for all Temporal Cloud customers).

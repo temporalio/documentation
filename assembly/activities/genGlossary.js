@@ -1,11 +1,15 @@
 import fs from "fs-extra";
 import path from "path";
+import { localRef } from "../common/index.js";
 
+const ukid = "glossary gen unknown id";
 const glossFrontmatter = `---
 id: glossary
 title: Glossary
 description: The following terms have specific definitions within the context of the Temporal Platform.
 sidebar_label: Glossary
+sidebar_position: 11
+toc_max_heading_level: 4
 tags:
   - reference
 ---
@@ -16,42 +20,32 @@ The following terms are used in [Temporal Platform](/temporal) documentation.`;
 
 export async function genGlossary(config) {
   console.log(`generating the glossary...`);
-  const sourceNodesFilePath = path.join(
-    config.root_dir,
-    config.temp_write_dir,
-    config.source_info_nodes_file_name
-  );
+  const sourceNodesFilePath = path.join(config.root_dir, config.temp_write_dir, config.source_info_nodes_file_name);
   let sourceNodes = await fs.readJSON(sourceNodesFilePath);
 
   let terms = await getTerms(config, sourceNodes);
   terms = await sortTerms(terms);
   const glossStr = await genGlossString(terms);
 
-  const glossaryWritePath = path.join(
-    config.root_dir,
-    config.content_write_dir,
-    config.glossary_file_name
-  );
+  const glossaryWritePath = path.join(config.root_dir, config.content_write_dir, config.glossary_file_name);
   await fs.writeFile(glossaryWritePath, glossStr);
   return;
 }
 
 async function getTerms(config, sourceNodes) {
   const terms = [];
-  const matchedGuidesFilePath = path.join(
-    config.root_dir,
-    config.temp_write_dir,
-    config.guide_configs_with_attached_nodes_file_name
-  );
+  const matchedGuidesFilePath = path.join(config.root_dir, config.temp_write_dir, config.attached_nodes_file_name);
   let matchedGuides = await fs.readJSON(matchedGuidesFilePath);
   for (const node of sourceNodes) {
     if (node.tags !== undefined) {
       tagloop: for (const tag of node.tags) {
-        if (tag == "term") {
+        if (localRef(node.id, tag) == "term") {
           const slug = await findSlug(matchedGuides.full_index, node.id);
           const term = {
             label: node.label,
             markdown_link: `[${node.label}](${slug})`,
+            description: node.description,
+            tags: node.tags ? node.tags : [],
           };
           terms.push(term);
           break tagloop;
@@ -65,7 +59,11 @@ async function getTerms(config, sourceNodes) {
 async function genGlossString(terms) {
   let glossStr = `${glossFrontmatter}\n\n`;
   for (const term of terms) {
-    glossStr = `${glossStr}- ${term.markdown_link}\n`;
+    // If term.description is undefined, log the term's label.
+    if (typeof term.description === 'undefined' || term.description === null) {
+      console.log(`🚨🚨Term without a label: ${term.label} has undefined description.🚨🚨`);
+    }
+    glossStr = `${glossStr}#### ${term.markdown_link}\n${term.description}\n\n${genTagString(term.tags)}\n`;
   }
   return glossStr;
 }
@@ -88,7 +86,9 @@ async function findSlug(fullIndex, nodeId) {
   for (const link of fullIndex) {
     if (link.node_id == nodeId) {
       if (link.file_dir != "/") {
-        if (link.guide_id.includes("index")) {
+        if (link.slug != "none") {
+          return `${link.slug}#${link.local_ref}`;
+        } else if (link.guide_id.includes("index")) {
           return `/${link.file_dir}#${link.local_ref}`;
         } else {
           return `/${link.file_dir}/${link.guide_id}#${link.local_ref}`;
@@ -99,4 +99,14 @@ async function findSlug(fullIndex, nodeId) {
     }
   }
   return `/${nodeId}`;
+}
+
+function genTagString(tags) {
+  let s = "_Tags: ";
+  for (const tag of tags) {
+    s = `${s}[${localRef(ukid, tag)}](/tags/${localRef(ukid, tag)}), `;
+  }
+  s = s.slice(0, -2);
+  s = `${s}_\n\n`;
+  return s;
 }

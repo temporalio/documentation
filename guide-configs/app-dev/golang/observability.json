@@ -1,0 +1,87 @@
+{
+  "file_name": "observability.md",
+  "id": "observability",
+  "slug": "/dev-guide/go/observability",
+  "file_dir": "dev-guide/golang",
+  "title": "Go SDK developer's guide - Observability",
+  "sidebar_label": "Observability",
+  "sidebar_position": 6,
+  "description": "Improve observability in your Go-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "go/observability"
+    },
+    {
+      "type": "h2",
+      "id": "go/metrics"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-emit-metrics-in-go"
+    },
+    {
+      "type": "h2",
+      "id": "go/tracing"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-configure-tracing-in-go"
+    },
+    {
+      "type": "h2",
+      "id": "go/logging"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-log-from-a-workflow-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/custom-logging"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-set-a-custom-logger-in-go"
+    },
+    {
+      "type": "h2",
+      "id": "go/visibility"
+    },
+    {
+      "type": "h3",
+      "id": "go/search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-list-workflow-executions-using-the-client-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/set-custom-search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/upsert-custom-search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execution-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/remove-search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-remove-search-attributes-from-a-workflow-in-go"
+    }
+  ]
+}

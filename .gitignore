@@ -1,10 +1,9 @@
 # Dependencies
-/node_modules
-/assembly/node_modules
-/assembly/secure
+node_modules
+secure
 
 # Production
-/build
+build
 
 # Generated files
 .docusaurus
@@ -32,3 +31,7 @@ package-lock.json
 
 # .vscode
 .vscode/*
+
+# Env
+.env
+/assembly/.env

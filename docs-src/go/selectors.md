@@ -2,9 +2,16 @@
 id: selectors
 title: Go SDK Selectors
 sidebar_label: Selectors
+description: Implementing Selectors in the Temporal Go SDK.
+tags:
+  - developer-guide-doc-type
+  - go sdk
+  - api
+  - selectors
+  - goroutines
 ---
 
-## Overview
+### Overview
 
 In Go, the `select` statement lets a goroutine wait on multiple communication operations.
 A `select` **blocks until one of its cases can run**, then it executes that case.
@@ -15,7 +22,7 @@ Temporal's Go SDK `Selector`s are similar and act as a replacement.
 They can block on sending and receiving from Channels but as a bonus can listen on Future deferred work.
 Usage of Selectors to defer and process work (in place of Go's `select`) are necessary in order to ensure deterministic Workflow code execution (though using `select` in Activity code is fine).
 
-## Full API Example
+### Full API Example
 
 The API is sufficiently different from `select` that it bears documenting:
 
@@ -52,7 +59,7 @@ func SampleWorkflow(ctx workflow.Context) error {
 }
 ```
 
-## Using Selectors with Futures
+### Using Selectors with Futures
 
 You usually add `Future`s after `Activities`:
 
@@ -83,7 +90,7 @@ It is intentionally flexible; you may call it conditionally or multiple times:
 A Future matches only once per Selector instance even if Select is called multiple times.
 If multiple items are available, the order of matching is not defined.
 
-### Using Selectors with Timers
+#### Using Selectors with Timers
 
 An important use case of futures is setting up a race between a timer and a pending activity, effectively adding a "soft" timeout that doesn't result in any errors or retries of that activity.
 
@@ -116,7 +123,7 @@ selector.Select(ctx)
 
 We create timers with the `workflow.NewTimer` API.
 
-## Using Selectors with Channels
+### Using Selectors with Channels
 
 `selector.AddReceive(channel, func(c workflow.ReceiveChannel, more bool) {})` is the primary mechanism which receives messages from `Channels`.
 
@@ -132,11 +139,11 @@ selector.AddReceive(channel, func(c workflow.ReceiveChannel, more bool) {
 
 Merely matching on the channel doesn't consume the message; it has to be explicitly consumed with a `c.Receive(ctx, &signalVal)` call.
 
-## Querying Selector State
+### Querying Selector State
 
 You can use the `selector.HasPending` API to ensure that signals are not lost when a Workflow is closed (e.g. by `ContinueAsNew`).
 
-## Learn More
+### Learn More
 
 Usage of Selectors is best learned by example:
 

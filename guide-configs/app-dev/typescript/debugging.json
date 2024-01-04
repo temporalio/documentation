@@ -1,0 +1,31 @@
+{
+  "file_name": "debugging.md",
+  "id": "debugging",
+  "slug": "/dev-guide/typescript/debugging",
+  "file_dir": "dev-guide/tscript",
+  "title": "TypeScript SDK developer's guide - Debugging",
+  "sidebar_label": "Debugging",
+  "sidebar_position": 6,
+  "description": "The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "typescript/debugging"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/debug-environment-development"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/debug-environment-production"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/troubleshoot-issues"
+    }
+  ]
+}

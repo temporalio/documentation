@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const {Connection, WorkflowClient} = require("@temporalio/client");
+const { Connection, WorkflowClient } = require("@temporalio/client");
 const fs = require("fs-extra");
 const path = require("path");
 
@@ -8,6 +8,8 @@ async function run() {
   let cloud = false;
   let coverage = false;
   let debug = false;
+  let cli = false;
+  let samples = false;
 
   for (const arg of args) {
     if (arg == "--cloud") {
@@ -19,6 +21,12 @@ async function run() {
     if (arg == "--debug") {
       debug = true;
     }
+    if (arg == "--cli") {
+      cli = true;
+    }
+    if (arg == "--samples") {
+      samples = true;
+    }
   }
 
   const rootDir = path.resolve();
@@ -27,6 +35,8 @@ async function run() {
     assemblyDir: "assembly",
     runCoverageUpdate: coverage,
     debug: debug,
+    cli: cli,
+    samples: samples,
   };
 
   let result = "";
@@ -43,6 +53,7 @@ async function useCloud(params) {
   const cert = await fs.readFile("./assembly/secure/docs-assembly.pem");
   const key = await fs.readFile("./assembly/secure/docs-assembly.key");
   const data = await fs.readJSON("./assembly/secure/cloud-connection.json");
+  console.log(data);
   const connection = await Connection.connect({
     address: data.address,
     tls: {

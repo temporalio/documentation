@@ -1,23 +1,19 @@
-import svgParser from 'svg-parser';
-import sizeOf from 'image-size';
+import svgParser from "svg-parser";
+import sizeOf from "image-size";
 import fs from "fs-extra";
 import path from "path";
 
-const docsLinkRegex =
-  "\\[([a-zA-Z0-9-_#.&`',\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)(#[a-zA-Z0-9-_.]+)?\\)";
+const docsLinkRegex = "\\[([a-zA-Z0-9-_#.&`',?*()\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)(#[a-zA-Z0-9-_.]+)?\\)";
 const linkRegex = RegExp(docsLinkRegex, "gm");
 const docsImageRegex = "!\\[([a-zA-Z0-9-_#.&\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)\\)";
 const imageRegex = RegExp(docsImageRegex, "gm");
 let rootDir = "";
+const linkMapping = [];
 
 export async function linkMagic(config) {
   rootDir = config.root_dir;
   console.log("replacing links in guide content...");
-  const matchedGuidesPath = path.join(
-    config.root_dir,
-    config.temp_write_dir,
-    config.guide_configs_with_attached_nodes_file_name
-  );
+  const matchedGuidesPath = path.join(config.root_dir, config.temp_write_dir, config.attached_nodes_file_name);
   let matchedGuides = await fs.readJSON(matchedGuidesPath);
   const updatedGuides = [];
   for (let guideCfg of matchedGuides.cfgs) {
@@ -27,7 +23,8 @@ export async function linkMagic(config) {
   matchedGuides.cfgs = updatedGuides;
   console.log("writing matcheded guides again...");
   await fs.writeJSON(matchedGuidesPath, matchedGuides);
-  await linkMagicReferences(config, matchedGuides.full_index);
+  const linkMappingPath = path.join(config.root_dir, config.temp_write_dir, config.link_mapping_file_name);
+  await fs.writeJSON(linkMappingPath, linkMapping);
   return;
 }
 
@@ -41,7 +38,7 @@ async function replaceWithLocalRefs(guideConfig, fullIndex) {
           langtab.node.markdown_content = await parseAndReplace(
             langtab.node.markdown_content,
             fullIndex,
-            guideConfig.id
+            `${guideConfig.file_dir}/${guideConfig.id}`
           );
         }
         updatedLangTabs.push(langtab);
@@ -51,71 +48,13 @@ async function replaceWithLocalRefs(guideConfig, fullIndex) {
       section.node.markdown_content = await parseAndReplace(
         section.node.markdown_content,
         fullIndex,
-        guideConfig.id
+        `${guideConfig.file_dir}/${guideConfig.id}`
       );
     }
     updatedSections.push(section);
     guideConfig.sections = updatedSections;
   }
   return guideConfig;
-}
-
-async function linkMagicReferences(config, link_index) {
-  console.log("link magic on references...");
-  const sourceNodesPath = path.join(
-    config.root_dir,
-    config.temp_write_dir,
-    config.source_info_nodes_file_name
-  );
-  let sourceNodes = await fs.readJSON(sourceNodesPath);
-  let isReference = false;
-  for (const node of sourceNodes) {
-    if (node.tags !== undefined) {
-      tagloop: for (const tag of node.tags) {
-        if (tag == "reference") {
-          node.markdown_content = await parseAndReplace(
-            node.markdown_content,
-            link_index,
-            ""
-          );
-          isReference = true;
-          break tagloop;
-        }
-      }
-    }
-    if (isReference) {
-      const refString = await genRefString(node);
-      const refWritePath = path.join(
-        config.root_dir,
-        config.content_write_dir,
-        `${node.id}.md`
-      );
-      await fs.writeFile(refWritePath, refString);
-    }
-    isReference = false;
-  }
-  return;
-}
-
-async function genRefString(node) {
-  const parts = node.id.split("/");
-  const id = parts[1];
-  let refString = `---
-id: ${id}
-title: ${node.title}
-description: ${node.description}
-sidebar_label: ${node.label}\n`;
-
-  if (node.tags != undefined) {
-    refString = `${refString}tags:\n`;
-    for (const tag of node.tags) {
-      refString = `${refString} - ${tag}\n`;
-    }
-  }
-  refString = `${refString}---\n\n`;
-  refString = `${refString}<!-- This file is generated. Do not edit it directly. -->\n\n`;
-  refString = `${refString}${node.markdown_content}`;
-  return refString;
 }
 
 async function parseAndReplace(raw_content, link_index, current_guide_id) {
@@ -163,20 +102,20 @@ function centeredImage(image, dimensions) {
   return `<div class="tdiw"><div class="tditw"><p class="tdit">${image[1]}</p></div><div class="tdiiw"><img class="img_ev3q" src="${image[2]}" alt="${image[1]}" height="${dimensions.height}" width="${dimensions.width}" /></div></div>`;
 }
 
-function linkPreview(newPath, linkText, nodeTitle, description) {
-  return `<a class="tdlp" href="${newPath}">${linkText}<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">${nodeTitle}</span><br /><br /><span class="tdlppd">${description}</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="${newPath}">Learn more</a></span></span></a>`;
+function linkPreview(newPath, linkText) {
+  return `[${linkText}](${newPath})`;
 }
 
 function getImageDimensions(imgPath) {
-  const ext = path.extname(imgPath)
-  const filePath = path.join(rootDir, "static", imgPath);
-  if (ext == 'svg') {
-    const svgFile = fs.readFileSync(`${filePath}`, 'utf8');
+  const ext = path.extname(imgPath);
+  const filePath = path.join(rootDir, "websites/docs.temporal.io/static", imgPath);
+  if (ext == "svg") {
+    const svgFile = fs.readFileSync(`${filePath}`, "utf8");
     const svg = svgParser.parse(svgFile);
-    return {width: svg.children[0].properties.width, height: svg.children[0].properties.height};
+    return { width: svg.children[0].properties.width, height: svg.children[0].properties.height };
   } else {
     const dimensions = sizeOf(filePath);
-    return {width: dimensions.width, height: dimensions.height}
+    return { width: dimensions.width, height: dimensions.height };
   }
 }
 
@@ -191,22 +130,40 @@ async function replaceLinks(line, match, link, current_guide_id) {
     localRef = match[3];
   }
   // define the new path
-  if (link.guide_id != current_guide_id) {
-    if (link.file_dir != "/") {
-      newPath = `/${link.file_dir}/${link.guide_id}${localRef}`;
+
+  if (`${link.file_dir}/${link.guide_id}` != current_guide_id) {
+    if (link.slug == "none") {
+      if (link.file_dir != "/") {
+        newPath = `/${link.file_dir}/${link.guide_id}${localRef}`;
+      } else {
+        newPath = `/${link.guide_id}${localRef}`;
+      }
     } else {
-      newPath = `/${link.guide_id}${localRef}`;
+      newPath = `${link.slug}${localRef}`;
     }
   } else {
     newPath = `${localRef}`;
   }
   // convert to link preview
-  const html = linkPreview(
-    newPath,
-    match[1],
-    link.node_title,
-    link.node_description
-  );
+  const html = linkPreview(newPath, match[1]);
   line = line.replaceAll(replaceable, html);
+  pushToLinkMapping(link.node_id, newPath);
   return line;
+}
+
+function pushToLinkMapping(nodeId, newPath) {
+  if (!alreadyThere(nodeId)) {
+    linkMapping.push({
+      node_id: nodeId,
+      maps_to: newPath,
+    });
+  }
+  function alreadyThere(nodeId) {
+    for (const item of linkMapping) {
+      if (item.node_id == nodeId) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

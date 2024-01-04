@@ -5,7 +5,7 @@ sidebar_label: remove_remote_cluster
 description: Removing remote Clusters.
 tags:
   - tctl
-  - admin
+  - cli reference
 ---
 
 The `tctl admin cluster remove_remote_cluster` command removes remote Cluster information on the given Cluster.

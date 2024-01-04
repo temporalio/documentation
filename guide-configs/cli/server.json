@@ -1,0 +1,21 @@
+{
+"file_name": "server.md",
+"file_dir": "cli",
+"id": "server",
+"title": "Temporal CLI server command reference",
+"sidebar_label": "server",
+"description": "Effectively manage the Temporal Server by using the Temporal command-line interface (CLI). Explore documentation about administration and configuration.",
+"use_description": false,
+"toc_max_heading_level": 4,
+"add_tabs_support": true,
+"sections": [
+    {
+        "type": "p",
+        "id": "cli/server/index"
+        },
+        {
+        "type": "h2",
+        "id": "cli/server/start-dev"
+        }
+]
+}

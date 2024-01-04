@@ -5,6 +5,7 @@ sidebar_label: taskqueue
 description: How to operate Task Queues using tctl.
 tags:
   - tctl
+  - cli reference
 ---
 
 The `tctl taskqueue` command enables [Task Queue](/concepts/what-is-a-task-queue) operations.

@@ -11,8 +11,12 @@ tags:
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
 It is the main unit of execution of a [Temporal Application](/concepts/what-is-a-temporal-application).
 
-- [How to start a Workflow Execution using an SDK](/application-development/foundations#start-workflow-execution)
 - [How to start a Workflow Execution using tctl](/tctl-v1/workflow#start)
+- [How to start a Workflow Execution using the Go SDK](/go/spawning-workflows)
+- [How to start a Workflow Execution using the Java SDK](/java/how-to-spawn-a-workflow-execution-in-java)
+- [How to start a Workflow Execution using the PHP SDK](/php/spawning-workflows)
+- [How to start a Workflow Execution using the Python SDK](/python/spawning-workflows)
+- [How to start a Workflow Execution using the TypeScript SDK](/typescript/spawning-workflows)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
 It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](/concepts/what-is-a-signal) and the environment through [Activities](/concepts/what-is-an-activity).
@@ -37,6 +41,19 @@ Scalability is responsiveness in the presence of load.
 
 A single Workflow Execution is limited in size and throughput but is scalable because it can [Continue-As-New](/concepts/what-is-continue-as-new) in response to load.
 A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) and [Worker Processes](/concepts/what-is-a-worker-process).
+
+### Replays
+
+A Replay is the method by which a Workflow Execution resumes making progress. During a Replay the Commands that are generated are checked against an existing Event History. Replays are necessary and often happen to give the effect that Workflow Executions are resumable, reliable, and durable.
+
+For more information, see [Deterministic constraints](/concepts/what-is-a-workflow-definition#deterministic-constraints).
+
+If a failure occurs, the Workflow Execution picks up where the last recorded event occurred in the Event History.
+
+- [How to use Replay APIs using the Go SDK](/go/replays)
+- [How to use Replay APIs using the Java SDK](/java/replays)
+- [How to use Replay APIs using the Python SDK](/python/replays)
+- [How to use Replay APIs using the TypeScript SDK](/typescript/replays)
 
 ### Commands and awaitables
 
@@ -66,18 +83,20 @@ Awaitables are provided when using APIs for the following:
 
 ### Status
 
-A Workflow Execution can be either Open or Closed.
+A Workflow Execution can be either _Open_ or _Closed_.
 
 ![Workflow Execution statuses](/diagrams/workflow-execution-statuses.svg)
 
-**Open**
+#### Open
+
+An _Open_ status means that the Workflow Execution is able to make progress.
 
 - Running: The only Open status for a Workflow Execution.
   When the Workflow Execution is Running, it is either actively progressing or is waiting on something.
 
-**Closed**
+#### Closed
 
-A Closed status means that the Workflow Execution cannot make further progress because of one of the following reasons:
+A _Closed_ status means that the Workflow Execution cannot make further progress because of one of the following reasons:
 
 - Cancelled: The Workflow Execution successfully handled a cancellation request.
 - Completed: The Workflow Execution has completed successfully.
@@ -116,9 +135,8 @@ No, there is no time constraint on how long a Workflow Execution can be Running.
 
 However, Workflow Executions intended to run indefinitely should be written with some care.
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
-There is a hard limit of 50,000 Events in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
-The Temporal Cluster logs a warning at every 10,000 Events.
-When the Event History reaches 50,000 Events or the size limit of 50 MB, the Workflow Execution is forcefully terminated.
+The Temporal Cluster logs a warning after 10Ki (10,240) Events and periodically logs additional warnings as new Events are added.
+If the Event History exceeds 50Ki (51,200) Events, the Workflow Execution is terminated.
 
 To prevent _runaway_ Workflow Executions, you can use the Workflow Execution Timeout, the Workflow Run Timeout, or both.
 A Workflow Execution Timeout can be used to limit the duration of Workflow Execution Chain, and a Workflow Run Timeout can be used to limit the duration an individual Workflow Execution (Run).
@@ -129,22 +147,24 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 
 ### Limits
 
-Each pending Activity generates a metadata entry in the Workflow's mutable state.
-Too many entries create a large mutable state, which causes unstable persistence.
+There is no limit to the number of concurrent Workflow Executions, albeit you must abide by the Workflow Execution's Event History limit.
 
-To protect the system, Temporal enforces a maximum of 50,000 pending Activities, Child Workflows, external Workflows, and Signals.
-These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/master/service/history/configs/config.go):
+:::caution
 
-- `NumPendingChildExecutionsLimit`
-- `NumPendingActivitiesLimit`
-- `NumPendingSignals`
-- `NumPendingCancelRequestsLimit`
-
-By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass 50,000 pending Activities, Child Workflows, external Workflows, or Signals.
-Similar constraints are enforced for `SignalExternalWorkflowExecution`, `RequestCancelExternalWorkflowExecution`, and `StartChildWorkflowExecution` Commands.
-
-:::note
-
-Cloud users are limited to 2,000 each of pending Activities, Child Workflows, external Workflows, and Signals.
+As a precautionary measure, the Workflow Execution's Event History is limited to [51,200 Events](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L382) or [50 MB](https://github.com/temporalio/temporal/blob/e3496b1c51bfaaae8142b78e4032cc791de8a76f/service/history/configs/config.go#L380) and will warn you after 10,240 Events or 10 MB.
 
 :::
+
+There is also a limit to the number of certain types of incomplete operations.
+
+Each in-progress Activity generates a metadata entry in the Workflow Execution's mutable state.
+Too many entries in a single Workflow Execution's mutable state causes unstable persistence.
+To protect the system, Temporal enforces a maximum number of incomplete Activities, Child Workflows, Signals, or Cancellation requests per Workflow Execution (by default, 2,000 for each type of operation).
+Once the limit is reached for a type of operation, if the Workflow Execution attempts to start another operation of that type (by producing a `ScheduleActivityTask`, `StartChildWorkflowExecution`, `SignalExternalWorkflowExecution`, or `RequestCancelExternalWorkflowExecution` Command), it will be unable to (the Workflow Task Execution will fail and get retried).
+
+These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/master/service/history/configs/config.go):
+
+- `NumPendingActivitiesLimit`
+- `NumPendingChildExecutionsLimit`
+- `NumPendingSignalsLimit`
+- `NumPendingCancelRequestsLimit`

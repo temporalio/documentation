@@ -2,15 +2,18 @@
 id: how-to-develop-an-activity-definition-in-php
 title: Develop an Activity Definition in PHP
 sidebar_label: Activity Definition
+description: Develop an Activity Definition in PHP
+tags:
+ - activity
+ - activity definition
 ---
 
-Activities are defined as methods of a plain PHP interface annotated with `#[YourActivityInterface]`.
-(You can also use PHP 8 attributes in PHP 7.)
+Activities are defined as methods of a plain PHP interface annotated with `#[ActivityInterface]`.
 
 Following is an example of an interface that defines four Activities:
 
 ```php
-#[YourActivityInterface]
+#[ActivityInterface]
 // Defining an interface for the activities.
 interface FileProcessingActivities
 {

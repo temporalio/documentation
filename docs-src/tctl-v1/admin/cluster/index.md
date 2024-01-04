@@ -5,7 +5,7 @@ sidebar_label: cluster
 description: Running admin-level operations on clusters.
 tags:
   - tctl
-  - admin
+  - cli reference
 ---
 
 The `tctl admin cluster` command runs the administrator-level operations on a given Cluster.

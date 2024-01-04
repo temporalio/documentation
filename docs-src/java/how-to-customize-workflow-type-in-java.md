@@ -21,13 +21,13 @@ In the following example, the Workflow Type defaults to `NotifyUserAccounts`.
 ```
 
 To overwrite this default naming and assign a custom Workflow Type, use the `@WorkflowMethod` annotation with the `name` parameter.
-In the following example, the Workflow Type is set to `Abc`.
+In the following example, the Workflow Type is set to `your-workflow`.
 
 ```java
 @WorkflowInterface
 
   public interface NotifyUserAccounts {
-  @WorkflowMethod(name = "Abc")
+  @WorkflowMethod(name = "your-workflow")
   void notify(String[] accountIds);
   }
 ```
