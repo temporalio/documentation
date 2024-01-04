@@ -27,7 +27,7 @@ func main() {
 	// Register Workflows
 	yourWorker.RegisterWorkflow(workflows.BackgroundCheck)
 	yourWorker.RegisterWorkflow(workflows.BackgroundCheckNonDeterministic)
-	// Register Acivities
+	// Register Activities
 	yourWorker.RegisterActivity(activities.SSNTraceActivity)
 	// Start the the Worker Process
 	err = yourWorker.Run(worker.InterruptCh())

@@ -49,7 +49,7 @@ func main() {
 	yourWorker := worker.New(temporalClient, "backgroundcheck-activity-errors-task-queue-cloud", worker.Options{})
 	// Register Workflows
 	yourWorker.RegisterWorkflow(workflows.BackgroundCheck)
-	// Register Acivities
+	// Register Activities
 	yourWorker.RegisterActivity(&activities.Activities{})
 	// Start the the Worker Process
 	err = yourWorker.Run(worker.InterruptCh())
