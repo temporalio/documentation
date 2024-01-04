@@ -221,7 +221,7 @@ auth:
   providers:
       label: sso # for internal use; in future may expose as button text
       type: oidc 
-      providerUrl: ttps://accounts.google.com
+      providerUrl: https://accounts.google.com
       issuerUrl: 
       clientId: xxxxx-xxxx.apps.googleusercontent.com
       clientSecret: xxxxxxxxxxxxxxxxxxxx
