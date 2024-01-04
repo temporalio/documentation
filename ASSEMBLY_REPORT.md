@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday December 27 2023 09:41:50 AM -0700
+Last assembled: Thursday January 04 2024 09:56:55 AM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
-129 guide configurations found.
+134 guide configurations found.
 
-1731 information nodes found.
+1728 information nodes found.
 
-1465 information nodes are attached to guides.
+1463 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -366,8 +366,6 @@ concepts/what-is-a-codec-server -> /dataconversion#codec-server
 
 concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
 
-cloud/temporal-cloud-limits-sheet -> /cloud/operating-envelope#default-limits
-
 references/dynamic-configuration -> /references/dynamic-configuration#
 
 cli/start-dev-server -> /cli#start-dev-server
@@ -414,7 +412,7 @@ self-hosted/how-to-set-up-dual-visibility -> #dual-visibility
 
 concepts/what-is-cluster-configuration -> /clusters#cluster-configuration
 
-concepts/what-is-temporal-cloud -> /cloud#
+concepts/what-is-temporal-cloud -> /cloud/overview#
 
 references/sdk-metrics -> /references/sdk-metrics#
 
@@ -585,6 +583,8 @@ python/introduction-to-python-sdk -> /dev-guide/python/introduction#
 typescript/introduction-to-typescript-sdk -> /dev-guide/typescript/introduction#
 
 python/python-sandbox-environment -> /dev-guide/python/sandbox#
+
+cloud/get-started -> /cloud/get-started#invite-users
 
 self-hosted/how-to-create-custom-search-attribute-keys -> /self-hosted-guide/visibility#create-custom-search-attributes
 
@@ -776,17 +776,13 @@ cloud/cloud-ops-api -> /ops#
 
 cloud/api-keys/manage-api-keys -> #global-administrator-api-key-management
 
-dev-guide/temporal-sdk -> /dev-guide/sdks#
+cloud/availability-overview -> /cloud/service-availability#
+
+cloud/sla -> /cloud/sla#
+
+cloud/api-keys/api-keys -> /cloud/api-keys#
 
 cloud/users-account-level-roles -> /cloud/users#account-level-roles
-
-cloud/get-started-certificates -> #issue-ca-certificates
-
-cloud/get-started-namespace -> #create-a-namespace
-
-cloud/get-started-invite -> #invite-users
-
-cloud/get-started-connect -> #connect-to-temporal-cloud
 
 cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 
@@ -799,6 +795,10 @@ go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cl
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
+
+cloud/pricing-intro -> /cloud/pricing#
+
+cloud/support-intro -> /cloud/support#
 
 cloud/certificates-namespace -> #manage-certificates
 
@@ -834,11 +834,13 @@ cloud/users-update-permissions -> #update-permissions
 
 cloud/users-delete -> #delete-users
 
-cloud/what-is-an-action -> /cloud/pricing#action
+dev-guide/temporal-sdk -> /dev-guide/sdks#
 
 concepts/what-is-a-reset -> /workflows#reset
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
+
+cloud/what-is-an-action -> /cloud/pricing#action
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
@@ -1317,5 +1319,7 @@ go/debug-environment-development -> /dev-guide/go/debugging#debug-in-a-developme
 go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production-environment
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
+
+cloud/limits -> /cloud/limits#
 
 

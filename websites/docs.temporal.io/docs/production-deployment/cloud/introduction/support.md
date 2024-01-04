@@ -1,8 +1,8 @@
 ---
 id: support
-title: Temporal Cloud services, support, and training
+title: Services, support, and training - Temporal Cloud
 sidebar_label: Support
-sidebar_position: 4
+sidebar_position: 7
 description: Temporal Cloud users can reach out for help through our community Slack channel, or file a support ticket through Zendesk. 
 slug: /cloud/support
 toc_max_heading_level: 4

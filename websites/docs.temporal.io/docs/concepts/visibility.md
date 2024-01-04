@@ -398,7 +398,7 @@ Default total maximum number of Search Attribute **keys** per Temporal Cluster i
 This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
 -->
 
-For Temporal Cloud specific configurations, see the [Default limits](/cloud/operating-envelope#what-are-the-default-maximum-numbers-of-custom-search-attributes) sheet.
+For Temporal Cloud specific configurations, see the [Defaults, limits, and configurable settings -Temporal Cloud](/cloud/limits#number-of-custom-search-attribute) guide.
 
 ### Usage
 

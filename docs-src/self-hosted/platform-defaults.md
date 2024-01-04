@@ -11,7 +11,7 @@ tags:
 
 :::info Looking for Temporal Cloud defaults?
 
-See the [Temporal Cloud defaults and limits page](/cloud/temporal-cloud-limits-sheet)
+See the [Temporal Cloud defaults and limits page](/cloud/limits)
 
 :::
 
