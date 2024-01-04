@@ -58,7 +58,7 @@ func main() {
 	yourWorker := worker.New(temporalClient, "backgroundcheck-boilerplate-task-queue-cloud", worker.Options{})
 	// Register Workflows
 	yourWorker.RegisterWorkflow(workflows.BackgroundCheck)
-	// Register Acivities
+	// Register Activities
 	yourWorker.RegisterActivity(activities.SSNTraceActivity)
 	// Start the the Worker Process
 	err = yourWorker.Run(worker.InterruptCh())

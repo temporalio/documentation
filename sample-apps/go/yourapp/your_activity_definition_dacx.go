@@ -54,7 +54,7 @@ type YourActivityObject struct {
 // YourActivityDefinition is your custom Activity Definition.
 // An Activity Definiton is an exportable function.
 func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
-	// Use Acivities for calling external APIs.
+	// Use Activities for calling external APIs.
 	// This is just an example of using the logger to print "Hello World!"
 	logger := activity.GetLogger(ctx)
 	logger.Info("The message is:", param.ActivityParamX)

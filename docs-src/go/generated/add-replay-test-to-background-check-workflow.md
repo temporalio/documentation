@@ -22,7 +22,7 @@ If the Workflow Definition and the Event History are incompatible then the test 
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-2073845838" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-2073845838" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/durability/tests/backgroundcheck_test.go">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```go
-// TestReplayWorkflowHistoryFromFile tests for Event History compatability.
+// TestReplayWorkflowHistoryFromFile tests for Event History compatibility.
 func (s *UnitTestSuite) TestReplayWorkflowHistoryFromFile() {
 	// Create a new Replayer
 	replayer := worker.NewWorkflowReplayer()
