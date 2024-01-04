@@ -1980,6 +1980,10 @@
     {
       "source": "/kb/python-sandbox-environment",
       "destination": "/python/python-sandbox-environment"
+    },
+    {
+      "source": "/kb/cadence-to-temporal",
+      "destionation": "https://community.temporal.io/t/cadence-to-temporal-migration-highlights/10347"
     }
   ]
 }
