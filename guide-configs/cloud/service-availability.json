@@ -1,0 +1,31 @@
+{
+    "id": "service-availability",
+    "file_name": "sevice-availability.md",
+    "slug": "/cloud/service-availability",
+    "file_dir": "production-deployment/cloud/introduction",
+    "title": "Service availability - Temporal Cloud",
+    "sidebar_label": "Availability",
+    "sidebar_position": 3,
+    "description": "The operating envelope of Temporal Cloud includes availability, regions, throughput, and latency.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cloud/availability-overview"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/available-regions"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/throughput-expectations"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/latency-slo"
+        }
+    ]
+}

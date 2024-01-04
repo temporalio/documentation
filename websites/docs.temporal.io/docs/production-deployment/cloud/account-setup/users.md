@@ -1,6 +1,6 @@
 ---
 id: users
-title: How to manage users in Temporal Cloud
+title: User management - Temporal Cloud feature guide
 sidebar_label: Users
 sidebar_position: 3
 description: Invite users, set account level roles, and set Namespace-level positions for users.

@@ -1,14 +1,14 @@
 ---
 id: guide-structure
-title: Structure of the Self-hosted Cluster deployment guide
+title: Structure of the self-hosted Temporal Service deployment guide
 sidebar_label: structure
-description: Review the structure and toc of the Self-hosted Cluster deployment guide
+description: Review the structure and toc of the Self-hosted Temporal Service deployment guide
 tags:
   - self-hosted
 ---
 
-Welcome to the self-hosted Temporal Cluster guide.
-This guide shows you how to self-host open source infrastructure software that supervises your durable applications.
+Welcome to the self-hosted Temporal Service guide.
+This guide shows you how to self-host open source infrastructure software that orchestrates your durable applications.
 
 :::info Sign up for Temporal Cloud!
 

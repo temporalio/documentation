@@ -1,0 +1,19 @@
+{
+    "id": "overview",
+    "file_name": "overview.md",
+    "file_dir": "production-deployment/cloud/introduction",
+    "slug": "/cloud/overview",
+    "title": "Overview - Temporal Cloud",
+    "sidebar_label": "Overview",
+    "sidebar_position": 1,
+    "description": "Learn more about Temporal Cloud.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "concepts/what-is-temporal-cloud"
+        }
+    ]
+}
