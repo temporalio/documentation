@@ -1,10 +1,10 @@
 {
-    "file_name": "configuration.md",
-    "id": "configuration",
-    "slug": "/cloud/configuration",
+    "file_name": "limits.md",
+    "id": "limits",
+    "slug": "/cloud/limits",
     "file_dir": "production-deployment/cloud/introduction",
-    "title": "Defaults, limits, and configurable settings - Temporal Cloud",
-    "sidebar_label": "Configuration",
+    "title": "System limits - Temporal Cloud",
+    "sidebar_label": "Limits",
     "sidebar_position": 4,
     "description": "Learn more about Temporal Cloud defaults, limits, and configurable settings.",
     "use_description": false,
@@ -13,7 +13,7 @@
     "sections": [
         {
             "type": "p",
-            "id": "cloud/configuration"
+            "id": "cloud/limits"
         }
     ]
 }

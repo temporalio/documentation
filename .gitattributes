@@ -61,9 +61,9 @@ websites/docs.temporal.io/docs/production-deployment/cloud/how-to-manage-audit-l
 websites/docs.temporal.io/docs/production-deployment/cloud/index.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/operation-api.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/index.md linguist-generated=true
-websites/docs.temporal.io/docs/production-deployment/cloud/introduction/configuration.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/get-started.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/index.md linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/cloud/introduction/limits.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/account-setup/certificates.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/account-setup/namespaces.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/how-to-manage-saml-with-temporal-cloud.md linguist-generated=true

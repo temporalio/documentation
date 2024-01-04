@@ -15,8 +15,6 @@ Developers and applications can access Temporal Cloud from any location with int
 
 Temporal Cloud is compatible with applications deployed in various cloud environments or data centers.
 
-_**Your Workers and Client code aren't required to be hosted on AWS.**_
-
 To minimize latency, we advise creating your Namespace in a region geographically close to your Workers' hosting location.
 
 Currently, Temporal Cloud operates in several regions on Amazon Web Services (AWS):
@@ -35,3 +33,5 @@ Currently, Temporal Cloud operates in several regions on Amazon Web Services (AW
 | North America | us-east-2      | Ohio              |
 | North America | us-west-2      | Oregon            |
 | South America | sa-east-1      | São Paulo         |
+
+_**Your Workers and Client code aren't required to be hosted on AWS.**_
