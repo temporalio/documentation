@@ -77,7 +77,7 @@ Run the tests in the test directory (`go test`).
 If the Workflow Definition and the Event History are incompatible then the test fails.
 */
 
-// TestReplayWorkflowHistoryFromFile tests for Event History compatability.
+// TestReplayWorkflowHistoryFromFile tests for Event History compatibility.
 func (s *UnitTestSuite) TestReplayWorkflowHistoryFromFile() {
 	// Create a new Replayer
 	replayer := worker.NewWorkflowReplayer()
