@@ -21,7 +21,7 @@ In the introduction to Temporal Cloud you'll find the following information:
 - [Overview of Temporal Cloud](/cloud/overview#)
 - [Security](/cloud/security)
 - [Service availability](/cloud/service-availability#)
-- [Defaults, limits, and configurable settings](/cloud/configuration)
+- [Defaults, limits, and configurable settings](/cloud/limits#)
 - [SLA](/cloud/sla#)
 - [Pricing](/cloud/pricing#)
 - [Support](/cloud/support#)

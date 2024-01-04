@@ -20,7 +20,7 @@ To request a Temporal Cloud account, complete the [request form](https://pages.t
 - [Introduction to Temporal Cloud](/cloud/introduction)
   - [Security model](/cloud/security-cloud-intro)
   - [Service availability](/cloud/availability-overview) (availability, region support, throughput, latency, and limits)
-  - [Account, Namespace, and application level configurations](/cloud/configuration)
+  - [Account, Namespace, and application level configurations](/cloud/limits)
   - [Service Level Agreement (SLA)](/cloud/sla)
   - [Pricing](/cloud/pricing)
   - [Support](/cloud/support)
