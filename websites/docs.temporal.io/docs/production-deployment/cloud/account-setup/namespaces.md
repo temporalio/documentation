@@ -1,6 +1,6 @@
 ---
 id: namespaces
-title: How to manage Namespaces in Temporal Cloud
+title: Namespace management - Temporal Cloud feature guide
 sidebar_label: Namespaces
 sidebar_position: 2
 description: Create Namespaces, use Namespace endpoints for access, and obtain Namespace information.

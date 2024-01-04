@@ -1,13 +1,15 @@
 ---
-id: operating-envelope-availability
-title: What is Temporal Cloud's SLA on Availability?
-sidebar_label: Availability
+id: sla
+title: Service Level Agreement (SLA) - Temporal Cloud
+sidebar_label: SLA
 description: Temporal Cloud provides 99.99% availability of the cloud service and a 99.9% guarantee against service errors.
 tags:
   - temporal cloud
   - operations
   - explanation
 ---
+
+**What is Temporal Cloud's Service Level Agreement? SLA?**
 
 Temporal Cloud provides 99.99% availability, and its service level agreement (SLA) has a 99.9% guarantee against service errors.
 
@@ -19,22 +21,22 @@ Errors that are recorded against the SLA are service errors, such as the `UNAVAI
 
 Errors that aren't counted against the SLA include the following:
 
-- ClientVersionNotSupported
-- InvalidArgument
-- NamespaceAlreadyExists
-- NamespaceInvalidState
-- NamespaceNotActive
-- NamespaceNotFound
-- NotFound
-- PermissionDenied
-- QueryFailed
-- RetryReplication
-- ShardOwnershipLost
-- StickyWorkerUnavailable
-- TaskAlreadyStarted
-- Throttling (resources exhausted; triggers retry)
-- WorkflowExecutionAlreadyStarted
-- WorkflowNotReady
+- `ClientVersionNotSupported`
+- `InvalidArgument`
+- `NamespaceAlreadyExists`
+- `NamespaceInvalidState`
+- `NamespaceNotActive`
+- `NamespaceNotFound`
+- `NotFound`
+- `PermissionDenied`
+- `QueryFailed`
+- `RetryReplication`
+- `ShardOwnershipLost`
+- `StickyWorkerUnavailable`
+- `TaskAlreadyStarted`
+- `Throttling (resources exhausted; triggers retry)`
+- `WorkflowExecutionAlreadyStarted`
+- `WorkflowNotReady`
 
 Our internal alerting system is based on our service level objectives (SLO) for all errors, not just errors that count against the SLA.
 When we receive an alert that an SLO is not being met, we page our on-call engineers, which often means that issues are resolved before they become noticeable.

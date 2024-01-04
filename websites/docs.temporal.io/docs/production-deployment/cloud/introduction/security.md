@@ -1,8 +1,8 @@
 ---
 id: security
-title: Temporal Cloud's security model
+title: Security model - Temporal Cloud
 sidebar_label: Security model
-sidebar_position: 1
+sidebar_position: 2
 description: The security model of Temporal Cloud encompasses applications, data, and the Temporal Cloud platform.
 slug: /cloud/security
 toc_max_heading_level: 4

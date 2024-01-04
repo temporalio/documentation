@@ -1,6 +1,6 @@
 ---
 id: operation-api
-title: Temporal Cloud Operations API
+title: Operations API - Temporal Cloud feature guide
 sidebar_label: Cloud Ops API
 sidebar_position: 7
 description: Temporal Cloud Operations API.
@@ -41,7 +41,7 @@ Explore API functionalities through [Go language samples](https://github.com/tem
 
 This process assumes you have basic familiarity with gRPC and Protocol Buffers (protobuf).
 
-- [Temporal Cloud user account](/cloud/get-started)
+- [Temporal Cloud user account](/cloud/get-started#)
 - [API Key](/cloud/tcld/apikey#create) for authentication
 - [Protocol Buffers](https://github.com/protocolbuffers/protobuf/releases)
 
