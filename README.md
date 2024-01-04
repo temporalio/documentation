@@ -157,9 +157,10 @@ Format all files.
 yarn format
 ```
 
-Make sure you have a working build:
+Optionally, make sure you have a working build (the Github CI tools will check this too):
 
 ```bash
+cd websites/docs.temporal.io
 yarn build
 ```
 
