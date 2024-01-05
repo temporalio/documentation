@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday January 05 2024 13:50:12 PM -0700
+Last assembled: Friday January 05 2024 14:05:55 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -8,7 +8,7 @@ Assembly Workflow Id: docs-full-assembly
 
 1744 information nodes found.
 
-1472 information nodes are attached to guides.
+1478 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1327,5 +1327,17 @@ go/debug-environment-development -> /dev-guide/go/debugging#debug-in-a-developme
 go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production-environment
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
+
+cloud/tcld/namespace/export/index -> #export
+
+cloud/tcld/namespace/export/create -> #create
+
+cloud/tcld/namespace/export/get -> #get
+
+cloud/tcld/namespace/export/delete -> #delete
+
+cloud/tcld/namespace/export/list -> #list
+
+cloud/tcld/namespace/export/update -> #update
 
 

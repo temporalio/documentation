@@ -24,6 +24,30 @@
         },
         {
             "type": "h2",
+            "id": "cloud/tcld/namespace/export/index"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/export/create"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/export/get"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/export/delete"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/export/list"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/export/update"
+        },
+        {
+            "type": "h2",
             "id": "cloud/tcld/namespace/get"
         },
         {
