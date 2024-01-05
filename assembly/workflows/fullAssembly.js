@@ -17,15 +17,7 @@ export async function fullAssembly(params) {
 
   await activities.createTempDir(config);
 
-  if (params.samples) {
-    await activities.getSamplesRepos(config);
-
-    await activities.createNodesFromSamples(config);
-  }
-
-  if (params.cli) {
-    await activities.genCLI(config);
-  }
+  await activities.createNodesFromSamples(config);
 
   await activities.genSourceObjects(config);
 
@@ -33,18 +25,17 @@ export async function fullAssembly(params) {
 
   await activities.genLinkIndexes(config);
 
+  await activities.devGuideToc(config);
+
   await activities.linkMagic(config);
 
   await activities.genMarkdownGuides(config);
 
   await activities.genGlossary(config);
 
-  if (params.runCoverageUpdate) {
-    await activities.getQuestionsFromNotion(config);
-
-    await activities.updateCoverageBoard(config);
-  }
   await activities.genReport(config);
+
+  await activities.genGitAttributes(config);
 
   await activities.cleanUpTempDir(config);
 

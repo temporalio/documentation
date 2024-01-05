@@ -1,0 +1,19 @@
+{
+    "file_name": "get-started.md",
+    "id": "get-started",
+    "file_dir": "production-deployment/cloud",
+    "slug": "/cloud/get-started",
+    "title": "Get started with Temporal Cloud",
+    "sidebar_label": "Get started",
+    "sidebar_position": 2,
+    "description": "Create an account, issue certificates, create a Namespace, invite users, and connect.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cloud/get-started"
+        }
+    ]
+}

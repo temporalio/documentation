@@ -1,0 +1,42 @@
+{
+    "file_name": "security.md",
+    "id": "security",
+    "file_dir": "production-deployment/self-hosted-guide",
+    "slug": "/self-hosted-guide/security",
+    "title": "Temporal Platform security features",
+    "sidebar_label": "Security",
+    "sidebar_position": 3,
+    "description": "This guide is an overview of the Temporal Platform security features.",
+    "toc_max_heading_level": 4,
+    "add_tabs_support": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "self-hosted/security-intro"
+        },
+        {
+            "type": "h2",
+            "id": "self-hosted/cluster-plugins"
+        },
+        {
+            "type": "h3",
+            "id": "concepts/what-is-a-claimmapper-plugin"
+        },
+        {
+            "type": "h3",
+            "id": "concepts/what-is-an-authorizer-plugin"
+        },
+        {
+            "type": "h4",
+            "id": "self-hosted/how-to-authorize-sdk-api-calls"
+        },
+        {
+            "type": "p",
+            "id": "java/how-to-provide-an-authorization-token-in-java"
+        },
+        {
+            "type": "h2",
+            "id": "self-hosted/data-converter"
+        }
+    ]
+}

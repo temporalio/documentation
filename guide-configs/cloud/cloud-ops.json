@@ -1,0 +1,19 @@
+{
+    "file_name": "operation-api.md",
+    "id": "operation-api",
+    "file_dir": "production-deployment/cloud",
+    "slug": "/ops",
+    "title": "Operations API - Temporal Cloud feature guide",
+    "sidebar_label": "Cloud Ops API",
+    "sidebar_position": 7,
+    "description": "Temporal Cloud Operations API.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cloud/cloud-ops-api"
+        }
+    ]
+}

@@ -86,18 +86,18 @@ You can use the default Search Attributes in a List Filter, such as in the Tempo
 
 ### Custom Search Attributes
 
-You can [create custom Search Attributes](/clusters/how-to-create-custom-search-attribute-keys) with unique key names that are relevant to your business needs.
+You can [create custom Search Attributes](/self-hosted/how-to-create-custom-search-attribute-keys) with unique key names that are relevant to your business needs.
 
 Use custom Search Attributes in a List Filter, such as in the Temporal Web UI or with the `tctl workflow list` commands, under the following conditions:
 
 - Without advanced Visibility, you cannot use a custom Search Attribute in your List Filter.
 - With advanced Visibility, you can create multiple custom Search Attributes and use them in combinations with List Filters to get a list of specific Workflow Executions.
   For example: `tctl workflow list -q "WorkflowType = 'main.YourWorkflowDefinition' and YourCustomSA = 'YourCustomSAValue' and (StartTime > '2022-06-07T16:46:34.236-08:00' or CloseTime < '2022-06-08T16:46:34-08:00')"`
-  - With Temporal Server v1.19 and earlier, you must [integrate Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster) to use custom Search Attributes with List Filters.
+  - With Temporal Server v1.19 and earlier, you must [integrate Elasticsearch](/self-hosted/how-to-integrate-elasticsearch-into-a-temporal-cluster) to use custom Search Attributes with List Filters.
   - With Temporal Server v1.20 and later, custom Search Attribute capabilities are available on MySQL (v8.0.17 or later), PostgreSQL (v12 and later), and SQLite (v3.31.0 and later), in addition to Elasticsearch.
 
 If you use Elasticsearch as your Visibility store, your custom Search Attributes apply globally and can be used across Namespaces.
-However, if using any of the [supported SQL databases](/cluster-deployment-guide#visibility-store) with Temporal Server v1.20 and later, your custom Search Attributes are associated with a specific Namespace and can be used for Workflow Executions in that Namespace.
+However, if using any of the [supported SQL databases](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster) with Temporal Server v1.20 and later, your custom Search Attributes are associated with a specific Namespace and can be used for Workflow Executions in that Namespace.
 
 See [custom Search Attributes limits](#custom-search-attributes-limits) for limits on the number and size of custom Search Attributes you can create.
 
@@ -168,15 +168,15 @@ Default total maximum number of Search Attribute **keys** per Temporal Cluster i
 This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
 -->
 
-For Temporal Cloud specific configurations, see the [Default limits](/cloud/operating-envelope#what-are-the-default-maximum-numbers-of-custom-search-attributes) sheet.
+For Temporal Cloud specific configurations, see the [Defaults, limits, and configurable settings -Temporal Cloud](/cloud/limits#number-of-custom-search-attribute) guide.
 
 ### Usage
 
 Search Attributes available in your Visibility store can be used with Workflow Executions for that Cluster.
 To actually have results from the use of a [List Filter](/concepts/what-is-a-list-filter), Search Attributes must be added to a Workflow Execution as metadata.
 
-- To create custom Search Attributes in your Visibility store, see [Create custom Search Attributes](/clusters/how-to-create-custom-search-attribute-keys).
-- To remove a custom Search Attribute from the Visbility store, see [Remove custom Search Attributes](/clusters/how-to-remove-a-custom-search-attribute-key).
+- To create custom Search Attributes in your Visibility store, see [Create custom Search Attributes](/self-hosted/how-to-create-custom-search-attribute-keys).
+- To remove a custom Search Attribute from the Visbility store, see [Remove custom Search Attributes](/self-hosted/how-to-remove-a-custom-search-attribute-key).
   Removing custom Search Attributes is not supported on Temporal Cloud.
 - To rename a custom Search Attribute on Temporal Cloud, see [`tcld namespace search-attributes rename`](/cloud/tcld/namespace#rename).
 

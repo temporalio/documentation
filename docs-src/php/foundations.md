@@ -11,7 +11,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 In this section you can find the following:
 
-- [Run a development Cluster](/clusters/how-to-install-temporal-cli)
+- [Run a development Cluster](/self-hosted/how-to-install-temporal-cli)
 - [Install your SDK](/php/add-sdk)
 - [Connect to a dev Cluster](/php/connect-to-a-dev-cluster)
 - [Develop a Workflow](/php/developing-workflows)

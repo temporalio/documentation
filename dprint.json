@@ -33,15 +33,17 @@
   },
   "includes": [
     "docs-src/**/*.{md}",
-    "docs/dev-guide/**/*.md",
-    "docs/typescript/**/*.md",
-    "docs/typescript/*.md",
-    "docs/cloud/**/*.md",
-    "docs/concepts/*.md",
-    "kb/*.md",
+    "website/docs/dev-guide/**/*.md",
     "vercel.json"
   ],
-  "excludes": ["**/node_modules", "**/*-lock.json", "blogs/**", ".docusaurus/", ".github", "/build"],
+  "excludes": [
+    "website/docs/components",
+    "**/node_modules",
+    "**/*-lock.json",
+    ".docusaurus/",
+    ".github",
+    "website/build"
+  ],
   "incremental": true,
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.69.5.wasm",
