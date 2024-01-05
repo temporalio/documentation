@@ -1,6 +1,6 @@
 {
     "file_name": "feature.md",
-    "file_dir": "cloud/tcld",
+    "file_dir": "production-deployment/cloud/tcld",
     "id": "feature",
     "title": "tcld feature command reference",
     "sidebar_label": "feature",

@@ -15,7 +15,7 @@ websites/docs.temporal.io/docs/tctl-v1/taskqueue.md linguist-generated=true
 websites/docs.temporal.io/docs/tctl-v1/workflow.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/account.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/apikey.md linguist-generated=true
-websites/docs.temporal.io/docs/cloud/tcld/feature.md linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/cloud/tcld/feature.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/generate-certificates.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/index.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/login.md linguist-generated=true
@@ -62,7 +62,7 @@ websites/docs.temporal.io/docs/production-deployment/cloud/how-to-manage-audit-l
 websites/docs.temporal.io/docs/production-deployment/cloud/index.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/operation-api.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/index.md linguist-generated=true
-websites/docs.temporal.io/docs/cloud/how-to-export-workflow-event-histories.md linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/cloud/how-to-export-workflow-event-histories.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/get-started.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/index.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/limits.md linguist-generated=true

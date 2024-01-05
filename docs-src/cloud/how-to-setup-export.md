@@ -17,7 +17,7 @@ You can use either use the [Temporal Cloud UI](#using-temporal-cloud-ui) or [tcl
 
 The following steps guides you through setting up Workflow History Export using the Temporal Cloud UI.
 
-![](../../static/img/export-sink-ui.png)
+![](/img/export-sink-ui.png)
 
 The Temporal Cloud UI provides two ways for configuring Workflow History Export:
 
