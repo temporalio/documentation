@@ -12,7 +12,7 @@ Temporal Cluster provides [dynamic configuration](/concepts/what-is-cluster-conf
 The dynamic configuration keys are set with default values when you create your Cluster configuration.
 You can override these values as you test your Cluster setup for optimal performance according to your workload requirements.
 
-For the complete list of dynamic configuration keys, see <https://github.com/temporalio/temporal/blob/master/common/dynamicconfig/constants.go>.
+For the complete list of dynamic configuration keys, see [https://github.com/temporalio/temporal/blob/master/common/dynamicconfig/constants.go](https://github.com/temporalio/temporal/blob/master/common/dynamicconfig/constants.go).
 Ensure that you check server release notes for any changes to these keys and values.
 
 For the default values of dynamic configuration keys, check the following links:

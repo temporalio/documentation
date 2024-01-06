@@ -110,10 +110,10 @@ A List Filter using a time range provides a resolution of 1 ns on [Elasticsearch
 
 List Filters support the following operators:
 
-- **=, !=, >, >=, <, <=**
-- **AND, OR, ()**
-- **BETWEEN ... AND**
-- **IN**
+- **`=, !=, >, >=, <, <=`**
+- **`AND, OR, ()`**
+- **`BETWEEN ... AND`**
+- **`IN`**
 
 <!-- - **ORDER BY** -->
 

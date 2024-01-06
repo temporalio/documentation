@@ -63,8 +63,9 @@ A cluster can mutate a Workflow Execution History only if the following is true:
   `(last event's version) <= (version in namespace)`
 
 <details>
-<summary>Namespace version change example
-</summary>
+    <summary>
+    Namespace version change example
+    </summary>
 
 Assuming the following scenario:
 
@@ -110,8 +111,9 @@ Whenever there is a new Workflow Execution History entry generated, the version 
 The Workflow Executions's mutable state will keep track of all history entries (events) and the corresponding version.
 
 <details>
-<summary>Version history example (without data conflict)
-</summary>
+    <summary>
+        Version history example (without data conflict)
+    </summary>
 
 - Cluster A comes with initial version: 1
 - Cluster B comes with initial version: 2
@@ -203,8 +205,9 @@ View in both Cluster A & B
 Since Temporal is AP, during failover (change of active Temporal Cluster Namespace), there can exist cases where more than one Cluster can modify a Workflow Execution, causing divergence of Workflow Execution History. Below shows how the version history will look like under such conditions.
 
 <details>
-<summary>Version history example (with data conflict)
-</summary>
+    <summary>
+    Version history example (with data conflict)
+    </summary>
 
 Below, shows version history of the same Workflow Execution in 2 different Clusters.
 
@@ -265,39 +268,39 @@ Note: below is a tree structures
 
 ```
 | ------------- | ------------- |
-| Events        |               |
-| ------------- | ------------- |
-| Event ID      | Event Version |
-| ------------- | ------------- |
-| 1             | 1             |
-| 2             | 1             |
-| 3             | 2             |
-| ------------- | ------------- |
-|               |               |
-| ------------- | ------------- |
-|               |               |
-| --------------| ------------- |  | -------- | ------------- |
-| Event ID      | Event Version |  | Event ID | Event Version |
-| ------------- | ------------- |  | -------- | ------------- |
-| 4             | 2             |  | 4        | 3             |
-| --------------| ------------- |  | -------- | ------------- |
+| Events         |               |
+| -------------- | ------------- |
+| Event ID       | Event Version |
+| -------------  | ------------- |
+| 1              | 1             |
+| 2              | 1             |
+| 3              | 2             |
+| -------------  | ------------- |
+|                |               |
+| -------------  | ------------- |
+|                |               |
+| -------------- | ------------- |  | -------- | ------------- |
+| Event ID       | Event Version |  | Event ID | Event Version |
+| -------------  | ------------- |  | -------- | ------------- |
+| 4              | 2             |  | 4        | 3             |
+| -------------- | ------------- |  | -------- | ------------- |
 
 
 | --------------- | ----------- |
-| Version History |             |
-| --------------- | ------------|
-| Event ID        | Version     |
-| --------------- | ------------|
-| 2               | 1           |
-| 3               | 2           |
-| --------------- | ------------|
+| Version History |              |
+| --------------- | ------------ |
+| Event ID        | Version      |
+| --------------- | ------------ |
+| 2               | 1            |
+| 3               | 2            |
+| --------------- | ------------ |
 
 
 | --------------- | ----------- |  | --------------- | ------- |
-| Event ID        | Version     |  | Event ID        | Version |
-| --------------- | ----------- |  | --------------- | ------- |
-| 4               | 2           |  | 4               | 3       |
-| --------------- | ----------- |  | --------------- | ------- |
+| Event ID | Version |  | Event ID | Version |
+| -------- | ------- || --------------- | ------- |
+| 4   | 2   |  | 4 | 3 |
+| --- | --- || --------------- | ------- |
 ```
 
 T = 2: replication task from Cluster B arrives in Cluster C, same as above
@@ -335,8 +338,8 @@ Due to the nature of Multi-cluster Replication (for example, Workflow Execution 
 
 ```
 | ------------- |          | ------------- |          | ------------- |
-| Cluster A     |          | Network Layer |          | Cluster B     |
-| ------------- |          | ------------- |          | ------------- |
+| Cluster A |  | Network Layer |  | Cluster B |
+| --------- || ------------- |          | ------------- |
         |                          |                          |
         | Run 1 Replication Events |                          |
         | -----------------------> |                          |
@@ -351,10 +354,10 @@ Due to the nature of Multi-cluster Replication (for example, Workflow Execution 
         |                          |                          |
         |                          | Run 1 Replication Events |
         |                          | -----------------------> |
-        |                          |                          |
-| --------- |              | ------------- |          | ------------- |
-| Cluster A |              | Network Layer |          | Cluster B     |
-| --------- |              | ------------- |          | ------------- |
+        |     |  |
+        | --- || ------------- |          | ------------- |
+| Cluster A |  | Network Layer |  | Cluster B |
+| --------- || ------------- |          | ------------- |
 ```
 
 Because Run 2 appears in Cluster B first, Run 1 cannot be replicated as "runnable" due to the rule `at most one Run open` (see above), thus the "zombie" Workflow Execution state is introduced.
@@ -389,7 +392,7 @@ T = 0: task A is generated according to Event Id: 4, version: 2
 | -------- | ------------- |
 | Event ID | Event Version |
 | -------- | ------------- |
-| 4        | 2             | <-- task A belongs to this event
+| 4        | 2             | <-- task A belongs to this event |
 | -------- | ------------- |
 ```
 
@@ -407,10 +410,10 @@ T = 1: conflict resolution happens, Workflow Execution's mutable state is rebuil
 | ------------- | -------------- |
 
 | --------------| -------------- |                                  |----------| ----------------- |
-| Event ID      | Event Version  |                                  | Event ID |  Event Version    |
-| ------------- |--------------- |                                  | -------- | ----------------- |
-| 4             | 2              | <-- task A belongs to this event | 4        | 3                 | <-- current branch / mutable state |
-| ------------- | -------------- |                                  | -------- | ----------------- |
+| Event ID | Event Version |  | Event ID | Event Version |
+| -------- | ------------- || -------- | ----------------- |
+| 4   | 2   | <-- task A belongs to this event | 4 | 3 | <-- current branch / mutable state |
+| --- | --- || -------- | ----------------- |
 ```
 
 T = 2: task A is loaded.

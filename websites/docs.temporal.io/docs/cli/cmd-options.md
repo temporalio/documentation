@@ -256,7 +256,7 @@ Can be specified multiple times.
 
 ## calendar
 
-Calendar specification in JSON ({"dayOfWeek":"Fri","hour":"17","minute":"5"}) or as a Cron string ("30 2 \* \* 5" or "@daily").
+Calendar specification in JSON `({"dayOfWeek":"Fri","hour":"17","minute":"5"})` or as a Cron string `("30 2 \* \* 5" or "@daily")`.
 
 ## catchup-window
 

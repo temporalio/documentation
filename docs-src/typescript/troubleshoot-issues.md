@@ -77,9 +77,9 @@ If you do not see Webpack output in your terminal make sure that you have not di
 Some common examples that will **not** work in the Workflow isolate:
 
 <details>
-<summary>
-Importing node built-in modules
-</summary>
+    <summary>
+    Importing node built-in modules
+    </summary>
 
 :::danger Antipattern
 
@@ -106,9 +106,9 @@ You'll typically see an error in this form in the Webpack output:
 </details>
 
 <details>
-<summary>
-Importing and calling Activities directly from Workflow code
-</summary>
+    <summary>
+    Importing and calling Activities directly from Workflow code
+    </summary>
 
 :::danger Antipattern
 

@@ -1068,7 +1068,7 @@ Related reads:
 
 - [How to develop a Workflow Definition](/dev-guide/java/foundations#develop-workflows)
 
-- Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
+- Java Workflow reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html)
 
 #### How to set a Parent Close Policy {#parent-close-policy}
 
@@ -1142,7 +1142,7 @@ continueAsNew.greet(input);
 
 Providing these options allows you to continue Workflow Execution as a new Workflow run, with a different Workflow Type, and on a different Task Queue.
 
-Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
+Java Workflow reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html)
 
 ## What is a Timer? {#timers}
 

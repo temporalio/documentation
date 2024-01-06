@@ -438,7 +438,7 @@ Ensure that your Client can handle an Object type return or is able to convert t
 Related references:
 
 - [Data Converter](/dataconversion#)
-- Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
+- Java DataConverter reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
 
 ### How to customize your Workflow Type {#workflow-type}
 
@@ -504,7 +504,7 @@ The following constraints apply when writing Workflow Definitions:
   A single implementation can implement a Workflow Type which by definition is dynamically loaded from some external source.
   All standard `WorkflowOptions` and determinism rules apply to Dynamic Workflow implementations.
 
-Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
+Java Workflow reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html)
 
 ## How to develop a basic Activity {#develop-activities}
 
@@ -615,7 +615,7 @@ The `execute` method for `DynamicActivity` can return type Object.
 Ensure that your Workflow or Client can handle an Object type return or is able to convert the Object type response.
 
 - [Data Converter](/dataconversion#)
-- Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
+- Java DataConverter reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
 
 ### How to customize your Activity Type {#activity-type}
 
@@ -1420,7 +1420,7 @@ A Workflow Execution can be started either synchronously or asynchronously.
   ```
 
 - Asynchronous start initiates a Workflow Execution and immediately returns to the caller. This is the most common way to start Workflows in production code.
-  The `WorkflowClient` <https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)> provides some static methods, such as `start`, `execute`, `signalWithStart` etc., that help with starting your Workflows asynchronously.
+  The `WorkflowClient` [https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)](https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)) provides some static methods, such as `start`, `execute`, `signalWithStart` etc., that help with starting your Workflows asynchronously.
 
   The following examples show how to start Workflow Executions asynchronously, with either typed or untyped `WorkflowStub`.
 
@@ -1558,7 +1558,7 @@ The following fields are available:
 | [`RetryOptions`](#retryoptions)                         | No                   | [`RetryOptions`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.17.0/io/temporal/common/RetryOptions.html) |
 | [`CronSchedule`](#cronschedule)                         | No                   | String                                                                                                               |
 | [`Memo`](#memo)                                         | No                   | string                                                                                                               |
-| [`SearchAttributes`](#searchattributes)                 | No                   | Map<String, Object>                                                                                                  |
+| [`SearchAttributes`](#searchattributes)                 | No                   | `Map<String, Object>`                                                                                                |
 
 #### WorkflowId
 

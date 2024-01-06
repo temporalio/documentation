@@ -304,7 +304,7 @@ For example, to create a dashboard in your local Grafana UI at [localhost:8085](
    For example, add `sum by (operation) (rate(service_requests{service_name="frontend"}[2m]))` to see all the Frontend Service requests on your local docker-compose Temporal Cluster.
 4. You should see the graph show metrics data for the Frontend Service from the docker-compose Temporal Cluster.
 5. When you start your Workflows (after setting up your SDK Metrics), you will see your SDK metrics in the graph as well.
-6. Optional: In the Legend field, add "{{operation}}" to clean the legend on the graph to show operations.
+6. Optional: In the Legend field, add "`{{operation}}`" to clean the legend on the graph to show operations.
 
 You can add multiple queries in your dashboard to report relevant data.
 For more details on configuring Grafana dashboards, see the [Grafana Dashboards documentation](https://grafana.com/docs/grafana/latest/dashboards/).

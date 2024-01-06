@@ -549,9 +549,9 @@ The Workflow's V8 isolate environment completely replaces the JavaScript [`setTi
 We recommend using our [`sleep(timeout)`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) API instead, because it is a cancellation-aware Promise wrapper for `setTimeout`.
 
 <details>
-<summary>
-Why Durable Timers Are a Hard Problem
-</summary>
+    <summary>
+    Why Durable Timers Are a Hard Problem
+    </summary>
 
 JavaScript has a `setTimeout`, which seems relatively straightforward.
 However, they are held in memory - if your system goes down, those timers are gone.
@@ -661,7 +661,9 @@ export async function trackStepChanges(): Promise<void> {
 ```
 
 <details>
-<summary>Example usage in our Next.js One-Click Buy code sample</summary>
+    <summary>
+    Example usage in our Next.js One-Click Buy code sample
+    </summary>
 
 `condition` only returns true when the function evaluates to `true`; if the `condition` resolves as `false`, then a timeout has occurred.
 This leads to some nice patterns, like placing `await condition` inside an `if`:
@@ -709,9 +711,9 @@ The real value of `sleep` and `condition` is in knowing how to use them to model
 Here are some examples we use the most; we welcome more if you can think of them!
 
 <details>
-<summary>
-Racing Timers
-</summary>
+    <summary>
+    Racing Timers
+    </summary>
 
 Use `Promise.race` with Timers to dynamically adjust delays.
 
@@ -736,9 +738,9 @@ export async function processOrderWorkflow({
 
 </details>
 <details>
-<summary>
-Racing Signals
-</summary>
+    <summary>
+    Racing Signals
+    </summary>
 
 Use `Promise.race` with Signals and Triggers to have a promise resolve at the earlier of either system time or human intervention.
 
@@ -861,9 +863,9 @@ Triggers, like the [`condition()`](#condition) return value and other Promises, 
 Unlike Promises, they export `resolve` or `reject` methods, so you can programmatically control them.
 
 <details>
-<summary>
-Trigger Code Example
-</summary>
+    <summary>
+    Trigger Code Example
+    </summary>
 
 ```ts
 import { defineSignal, sleep, Trigger } from '@temporalio/workflow';
@@ -961,9 +963,9 @@ Special Notes:
 - Child Workflow Executions are [`CancellationScope`](/typescript/cancellation-scopes) aware and will automatically be cancelled when their containing scope is cancelled.
 
 <details>
-<summary>
-When to use Child Workflows vs Activities
-</summary>
+    <summary>
+    When to use Child Workflows vs Activities
+    </summary>
 
 Child Workflows and Activities are both started from Workflows, so you may feel confused about when to use which.
 Here are some important differences:
@@ -997,7 +999,10 @@ import PCP from '../concepts/what-is-a-parent-close-policy.md'
 We need to call `continueAsNew` before our Workflow History exceeds 51,200 Events. [Events](../concepts/what-is-an-event) are generated when a Workflow does various things involving Temporal Server, including calling an Activity, receiving a Signal, or calling `sleep`, but not handling a Query.
 
 <details>
-<summary>More info</summary>
+
+    <summary>
+        More info
+    </summary>
 
 [What is Continue-As-New?](/concepts/what-is-continue-as-new)
 

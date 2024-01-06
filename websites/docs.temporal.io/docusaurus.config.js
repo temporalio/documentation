@@ -44,8 +44,8 @@ module.exports = {
     },
     metadata: [{ name: "robots", content: "follow, index" }],
     prism: {
-      theme: require("prism-react-renderer/themes/nightOwlLight"),
-      darkTheme: require("prism-react-renderer/themes/dracula"),
+      //theme: require("prism-react-renderer/themes/nightOwlLight"),
+      // darkTheme: require("prism-react-renderer/themes/dracula"),
       additionalLanguages: ["java", "ruby", "php"],
     },
     docs: {
@@ -228,7 +228,6 @@ module.exports = {
           // // below remark plugin disabled until we can figure out why it is not transpiling to ESNext properly - swyx
           // // original PR https://github.com/temporalio/documentation/pull/496/files
           admonitions: {
-            tag: ":::",
             keywords: ["note", "tip", "info", "caution", "danger", "competency", "copycode"],
           },
           remarkPlugins: [
