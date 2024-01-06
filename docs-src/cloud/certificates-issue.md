@@ -9,6 +9,9 @@ tags:
   - certificates
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Temporal Cloud authenticates a client connection by validating the client certificate against one or more CA certificates that are configured for the specified Namespace.
 
 ### Option 1: You already have certificate management infrastructure
