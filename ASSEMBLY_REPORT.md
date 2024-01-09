@@ -1,12 +1,8 @@
 # Docs Assembly Workflow report
 
-<<<<<<< HEAD
-Last assembled: Tuesday November 14 2023 13:24:32 PM -0800
-=======
-Last assembled: Thursday January 04 2024 14:42:40 PM -0700
->>>>>>> main
+Last assembled: Tuesday January 09 2024 08:13:22 AM -0800
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 134 guide configurations found.
 
@@ -764,6 +760,8 @@ python/parent-close-policy -> /dev-guide/python/features#parent-close-policy
 
 typescript/parent-close-policy -> /dev-guide/typescript/features#parent-close-policy
 
+concepts/what-is-a-delay-start-workflow-execution -> #delay-workflow-execution
+
 go/cron-jobs -> /dev-guide/go/features#temporal-cron-jobs
 
 java/how-to-set-a-cron-schedule-in-java -> /dev-guide/java/features#cron-schedule
@@ -1274,11 +1272,6 @@ go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 
 go/logging -> /dev-guide/go/observability#logging
 
-<<<<<<< HEAD
-dev-guide/why-use-a-temporal-sdk -> /dev-guide/sdks#replays
-
-=======
->>>>>>> main
 go/chapter-project-setup/project-setup-introduction -> /dev-guide/go/project-setup#
 
 go/generated/backgroundcheck-replay-intrinsic-non-determinism -> #intrinsic-non-deterministic-logic
@@ -1289,11 +1282,8 @@ go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guid
 
 go/chapter-durable-execution/retrieve-event-history -> #retrieve-event-history
 
-<<<<<<< HEAD
-=======
 go/chapter-project-setup/install-cli -> /dev-guide/go/project-setup#install-cli
 
->>>>>>> main
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 go/generated/how-to-customize-workflow-type-in-go -> #customize-workflow-type
@@ -1306,9 +1296,6 @@ go/chapter-project-setup/project-structure -> /dev-guide/go/project-setup#boiler
 
 go/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/go/project-setup#test-framework
 
-<<<<<<< HEAD
-go/foundations -> /dev-guide/go/foundations#
-=======
 go/generated/add-replay-test-to-background-check-workflow -> /dev-guide/go/durable-execution#add-replay-test
 
 go/add-sdk -> /dev-guide/go/foundations#install-a-temporal-sdk
@@ -1334,6 +1321,5 @@ go/debug-environment-development -> /dev-guide/go/debugging#debug-in-a-developme
 go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production-environment
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
->>>>>>> main
 
 
