@@ -1,0 +1,1 @@
+# Go SDK developer's guide | Handle Activity errors example app

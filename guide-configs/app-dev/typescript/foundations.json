@@ -1,0 +1,227 @@
+{
+  "file_name": "foundations.md",
+  "id": "foundations",
+  "slug": "/dev-guide/typescript/foundations",
+  "file_dir": "dev-guide/tscript",
+  "title": "TypeScript SDK developer's guide - Foundations",
+  "sidebar_label": "Foundations",
+  "sidebar_position": 2,
+  "description": "The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
+  "use_description": false,
+  "toc_max_heading_level": 2,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "typescript/foundations"
+    },
+    {
+      "type": "h2",
+      "id": "self-hosted/how-to-install-temporal-cli"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/add-sdk"
+    },
+    {
+      "type": "p",
+      "id": "typescript/index"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/api-reference-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/code-samples"
+    },
+    {
+      "type": "p",
+      "id": "typescript/code-samples-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/how-to-import-an-ecmascript-module"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/linting-and-types"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/connect-to-a-dev-cluster"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-connect-to-a-development-cluster-in-typescript"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/connect-to-temporal-cloud"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-connect-to-temporal-cloud-in-typescript"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/developing-workflows"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-develop-a-workflow-definition-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/workflow-parameters"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-define-workflow-parameters-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/workflow-return-values"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-define-workflow-return-values-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/workflow-type"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-customize-workflow-type-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/workflow-logic-requirements"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-handle-workflow-logic-requirements-in-typescript"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/developing-activities"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-develop-an-activity-definition-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/activity-parameters"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-define-activity-parameters-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/activity-return-values"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-define-activity-return-values-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/activity-type"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-customize-activity-type-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/activity-design-patterns"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/spawning-activities"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-spawn-an-activity-execution-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/required-activity-timeout"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/get-activity-results"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-get-the-result-of-an-activity-execution-in-typescript"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/run-a-dev-worker"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/how-to-run-a-worker-on-docker"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/run-a-temporal-cloud-worker"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/registering-types"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-register-types-with-a-worker-in-typescript"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/how-to-use-a-prebuilt-workflow-bundle-in-typescript"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/how-to-shut-down-a-worker"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/spawning-workflows"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-spawn-a-workflow-execution-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/set-task-queue"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-set-a-workflow-task-queue-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/set-workflow-id"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-set-a-workflow-id-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/get-workflow-results"
+    },
+    {
+      "type": "p",
+      "id": "typescript/how-to-get-the-result-of-a-workflow-execution-in-typescript"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/cancellation-scopes"
+    }
+  ]
+}

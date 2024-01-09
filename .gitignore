@@ -1,10 +1,9 @@
 # Dependencies
-/node_modules
-/assembly/node_modules
-/assembly/secure
+node_modules
+secure
 
 # Production
-/build
+build
 
 # Generated files
 .docusaurus

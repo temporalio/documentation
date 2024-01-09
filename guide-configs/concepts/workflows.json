@@ -1,0 +1,131 @@
+{
+  "file_name": "workflows.md",
+  "id": "workflows",
+  "slug": "/workflows",
+  "file_dir": "concepts",
+  "title": "What is a Temporal Workflow?",
+  "sidebar_label": "Workflows",
+  "sidebar_position": 2,
+  "description": "This guide provides a comprehensive overview of Temporal Workflows.",
+  "use_description": true,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "concepts/what-is-a-workflow"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-workflow-definition"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-workflow-type"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-workflow-execution"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-command"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-an-event"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-an-event-history"
+    },
+    {
+      "type": "h4",
+      "id": "concepts/what-is-continue-as-new"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-reset"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-run-id"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-workflow-id"
+    },
+    {
+      "type": "h4",
+      "id": "concepts/what-is-a-workflow-id-reuse-policy"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-workflow-execution-timeout"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-workflow-run-timeout"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-workflow-task-timeout"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-timer"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-memo"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-signal"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-signal-with-start"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-query"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-an-update"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-dynamic-handler"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-side-effect"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-child-workflow-execution"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-parent-close-policy"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-schedule"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-temporal-cron-job"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-delay-start-workflow-execution"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-state-transition"
+    }
+  ]
+}

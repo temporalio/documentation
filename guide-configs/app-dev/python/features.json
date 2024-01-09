@@ -1,0 +1,290 @@
+{
+    "file_name": "features.md",
+    "file_dir": "dev-guide/python",
+    "id": "features",
+    "title": "Python SDK developer's guide - Features",
+    "sidebar_label": "Features",
+    "sidebar_position": 5,
+    "description": "The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.",
+    "use_description": false,
+    "toc_max_heading_level": 5,
+    "add_tabs_support": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "python/features"
+        },
+        {
+            "type": "h2",
+            "id": "python/signals"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-define-a-signal-in-python"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-handle-a-signal-in-a-workflow-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/send-signal-from-client"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-send-a-signal-from-a-client-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/send-signal-from-workflow"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-send-a-signal-from-a-workflow-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/signal-with-start"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-send-a-signal-with-start-in-python"
+        },
+        {
+            "type": "h2",
+            "id": "python/queries"
+        },
+        {
+            "type": "h3",
+            "id": "python/define-query"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-define-a-query-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/handle-query"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-handle-a-query-in-a-workflow-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/send-query"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-send-a-query-to-a-workflow-execution-in-python"
+        },
+        {
+            "type": "h2",
+            "id": "python/what-is-a-dynamic-handler"
+        },
+        {
+            "type": "h3",
+            "id": "python/generated/how-to-set-a-dynamic-workflow-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/generated/how-to-set-a-dynamic-activity-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/generated/how-to-set-a-dynamic-signal-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/generated/how-to-set-a-dynamic-query-in-python"
+        },
+        {
+            "type": "h2",
+            "id": "python/workflow-timeouts"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-set-workflow-timeouts-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/workflow-retries"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-set-workflow-retry-options-in-python"
+        },
+        {
+            "type": "h2",
+            "id": "python/activity-timeouts"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-set-activity-timeouts-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/activity-retries"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-set-an-activity-retry-policy-in-python"
+        },
+        {
+            "type": "h2",
+            "id": "python/activity-heartbeats"
+        },
+        {
+            "type": "p",
+            "id": "python/how-to-heartbeat-an-activity-in-python"
+        },
+        {
+            "type": "h4",
+            "id": "python/heartbeat-timeout"
+        },
+        {
+            "type": "p",
+            "id": "python/how-to-set-a-heartbeat-timeout-in-python"
+        },
+        {
+            "type": "h2",
+            "id": "python/async-activity-completion"
+        },
+        {
+            "type": "p",
+            "id": "python/how-to-set-asynchronous-activity-completion-in-python"
+        },
+        {
+            "type": "h2",
+            "id": "python/cancel-activity"
+        },
+        {
+            "type": "p",
+            "id": "python/how-to-cancel-an-activity-from-a-workflow-in-python"
+        },
+        {
+            "type": "h2",
+            "id": "python/interrupt-a-workflow-execution"
+        },
+        {
+            "type": "h3",
+            "id": "python/how-to-cancel-a-workflow-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/how-to-terminate-a-workflow-execution-in-python"
+        },
+        {
+            "type": "h2",
+            "id": "python/child-workflows"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-spawn-a-child-workflow-execution-in-python"
+        },
+        {
+            "type": "h4",
+            "id": "python/parent-close-policy"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-set-a-parent-close-policy-in-python"
+        },
+        {
+            "type": "h2",
+            "id": "python/continue-as-new"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-continue-as-new-in-python"
+        },
+        {
+            "type": "h2",
+            "id": "python/timers"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-set-timers-in-python"
+        },
+        {
+            "type": "h2",
+            "id": "python/schedules"
+        },
+        {
+            "type": "h3",
+            "id": "python/schedule-create"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-schedule-a-workflow-execution-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/schedule-backfill"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-backfill-a-scheduled-workflow-execution-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/schedule-delete"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-delete-a-scheduled-workflow-execution-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/schedule-describe"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-describe-a-scheduled-workflow-execution-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/schedule-list"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-list-scheduled-workflow-executions-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/schedule-pause"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-pause-a-scheduled-workflow-execution-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/schedule-trigger"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-trigger-a-scheduled-workflow-execution-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/schedule-update"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-update-scheduled-workflow-execution-in-python"
+        },
+        {
+            "type": "h2",
+            "id": "python/cron-jobs"
+        },
+        {
+            "type": "p",
+            "id": "python/generated/how-to-set-a-cron-schedule-in-python"
+        },
+        {
+            "type": "h2",
+            "id": "python/how-to-start-delay"
+        }
+    ]
+}

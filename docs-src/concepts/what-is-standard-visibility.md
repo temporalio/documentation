@@ -18,4 +18,4 @@ Closed Workflow Executions can be filtered by a time constraint and either a Wor
 [Search Attributes](https://docs.temporal.io/visibility#search-attribute) are not supported with Standard Visibility.
 
 Support for standard Visibility is deprecated beginning with Temporal Server v1.21.
-For updates, check [Supported databases](/cluster-deployment-guide#supported-databases).
+For updates, check [Supported databases](/self-hosted/how-to-set-up-visibility-in-a-temporal-cluster).

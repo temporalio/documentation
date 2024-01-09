@@ -9,7 +9,7 @@ tags:
 ---
 
 The Temporal Web UI provides users with Workflow Execution state and metadata for debugging purposes.
-It ships with every [Temporal CLI](/concepts/what-is-the-temporal-cli) release and [Docker Compose](/kb/all-the-ways-to-run-a-cluster#docker--docker-compose) update and is available with [Temporal Cloud](/cloud).
+It ships with every [Temporal CLI](/concepts/what-is-the-temporal-cli) release and [Docker Compose](https://github.com/temporalio/docker-compose) update and is available with [Temporal Cloud](/cloud).
 
 You can configure the Temporal Web UI to work in your own environment.
 See the [UI configuration reference](/references/web-ui-configuration).
@@ -137,17 +137,17 @@ Displays the following information:
 
 On self-hosted Temporal Clusters, Archive shows [Archived](/concepts/what-is-archival) data of your Workflow Executions on the Namespace.
 
-To see data in your self-hosted Temporal Cluster, you must have [Archival set up and configured](/cluster-deployment-guide#archival).
+To see data in your self-hosted Temporal Cluster, you must have [Archival set up and configured](/self-hosted/what-is-archival).
 
 For information and details on the Archive feature in Temporal Cloud, contact your Temporal representative.
 
 ### Codec Server
 
 The Web UI can use a [Codec Server](/dataconversion#codec-server) with a custom Data Converter to decode inputs and return values.
-For details, see [Securing your data](/production-readiness/develop#securing-your-data).
-The UI supports both a [Codec Server endpoint](/production-readiness/develop#web-ui) and the `tctl` plugin port.
+For details, see [Securing your data](/self-hosted/data-encryption).
+The UI supports both a [Codec Server endpoint](/self-hosted/how-to-set-up-codec-server#web-ui) and the `tctl` plugin port.
 
-For details on setting the Codec Server endpoint, see [Codec Server setup](/production-readiness/develop#codec-server-setup).
+For details on setting the Codec Server endpoint, see [Codec Server setup](/self-hosted/how-to-set-up-codec-server).
 
 ### Labs mode
 

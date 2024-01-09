@@ -23,6 +23,7 @@ Temporal currently offers the following SDKs:
 - [Get started with the PHP SDK](/dev-guide/php)
 - [Get started with the Python SDK](/python/introduction-to-python-sdk)
 - [Get started with the TypeScript SDK](/typescript/introduction-to-typescript-sdk)
+- [.NET SDK API reference](https://dotnet.temporal.io/)
 
 Each SDK emits metrics which can be ingested into monitoring platforms.
 See the [SDK metrics reference](/references/sdk-metrics) for a complete list.
@@ -42,7 +43,7 @@ By default, Workflows run in a sandbox environment.
 If a Workflow Execution performs a non-deterministic event, an exception is thrown, which results in failing the Workflow Task.
 The Workflow will not progress until the code is fixed.
 
-For more information, see the knowledge base article on [Python sandbox environments](/kb/python-sandbox-environment).
+For more information, see the knowledge base article on [Python sandbox environments](/python/python-sandbox-environment).
 
 ### SDKs in development
 
