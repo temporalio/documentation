@@ -177,6 +177,6 @@ For complex and large-scale use cases, having at least some experience with a va
 
 **How to contribute to the Temporal Java SDK**
 
-The Temporal Java SDK is MIT licensed, and contributions are welcome.
+The Temporal Java SDK is an Apache 2.0 licensed, and contributions are welcome.
 Please review our [contribution guidelines](https://github.com/temporalio/sdk-java/blob/master/CONTRIBUTING.md).
 
