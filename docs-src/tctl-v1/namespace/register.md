@@ -62,7 +62,7 @@ tctl namespace register --description <value>
 
 ### --global_namespace
 
-Specifies whether a [Namespace](/concepts/what-is-a-namespace) is a [Global Namespace](/namespaces/#global-namespace).
+Specifies whether a [Namespace](/concepts/what-is-a-namespace) is a [Global Namespace](/concepts/what-is-a-global-namespace).
 When enabled, it controls the creation of replication tasks on updates allowing the state to be replicated across Clusters.
 This is a read-only setting and cannot be changed.
 
@@ -118,7 +118,7 @@ tctl namespace register --owner_email <value>
 
 Set the [Retention Period](/clusters#retention-period) for the [Namespace](/concepts/what-is-a-namespace).
 
-The Retention Period applies to Closed [Workflow Executions](/workflows#workflow-execution).
+The Retention Period applies to Closed [Workflow Executions](/concepts/what-is-a-workflow-execution).
 
 **Example**
 

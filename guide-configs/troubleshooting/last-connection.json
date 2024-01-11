@@ -1,12 +1,12 @@
 {
-  "file_name": "last-connection-error.md",
+  "file_name": "last-connection-error.mdx",
   "id": "last-connection-error",
   "file_dir": "troubleshooting",
   "title": "Troubleshoot the failed reaching server error",
   "sidebar_label": "Failed reaching server error",
   "description": "Failed reaching server errors can result from expired certificates. This guide provides troubleshooting solutions.",
   "toc_max_heading_level": 4,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "p",

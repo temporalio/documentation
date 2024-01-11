@@ -1,6 +1,6 @@
 {
   "id": "testing",
-  "file_name": "testing.md",
+  "file_name": "testing.mdx",
   "slug": "/dev-guide/typescript/testing",
   "file_dir": "dev-guide/tscript",
   "title": "TypeScript SDK developer's guide - Testing",

@@ -36,4 +36,4 @@ See [how to set Namespace in a Client in Java](/java/how-to-create-a-temporal-cl
 Note that Namespace registration using this API takes up to 10 seconds to complete.
 Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
 
-To update your Namespace, use the [`UpdateNamespace` API](/dev-guide/java/features/#namespaces) with the `NamespaceClient`.
+To update your Namespace use the [UpdateNamespace API](/java/manage-namespaces) with the NamespaceClient.

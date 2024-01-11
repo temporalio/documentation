@@ -25,7 +25,7 @@ Go samples for Search Attributes can be found at [`temporalio/samples-go`](https
 
 ## Value types
 
-Here are the [Search Attribute value types](/visibility#types) and their corresponding types in Go:
+Here are the [Search Attribute value types](/concepts/what-is-a-search-attribute#supported-types) and their corresponding types in Go:
 
 - Bool = bool
 - Datetime = time.Time

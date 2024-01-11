@@ -4,7 +4,7 @@ title: Workflows in TypeScript
 sidebar_label: Workflows
 description: Workflows are async functions that can orchestrate Activities and access special Workflow APIs, subject to deterministic limitations.
 tags:
- - workflow
+  - workflow
 ---
 
 import Tabs from '@theme/Tabs';
@@ -133,7 +133,7 @@ The rest of this document explains the major Workflow APIs you should know:
 
 ## Signals and Queries
 
-> _Background reading: [Signals and Queries in Temporal](/workflows/#signals)_
+> _Background reading: [Signals and Queries in Temporal](/concepts/what-is-a-signal)_
 
 <RelatedReadContainer>
   <RelatedReadItem page={WhatIsASignal} />
@@ -971,7 +971,7 @@ Child Workflows and Activities are both started from Workflows, so you may feel 
 Here are some important differences:
 
 - Child Workflows have access to all Workflow APIs, but are subject to [Workflow Limitations](/typescript/workflows#workflow-limitations). Activities have the inverse pros and cons.
-- Child Workflows can continue on if their Parent is canceled, with a [ParentClosePolicy](/concepts/what-is-a-parent-close-policy/) of `ABANDON`, whereas Activities are _always_ canceled when their Workflow is canceled (they may react to a [cancellationSignal](/typescript/activities#activity-cancellation) for cleanup if canceled). The decision is roughly analogous to spawning a child process in a terminal to do work vs doing work in the same process.
+- Child Workflows can continue on if their Parent is canceled, with a [ParentClosePolicy](/concepts/what-is-a-parent-close-policy/) of `ABANDON`, whereas Activities are _always_ canceled when their Workflow is canceled (they may react to a [cancellationSignal](/typescript/cancellation-scopes) for cleanup if canceled). The decision is roughly analogous to spawning a child process in a terminal to do work vs doing work in the same process.
 - Temporal tracks all state changes within Child Workflows in Event History, whereas only the input, output, and retry attempts of Activities are tracked.
 
 Activities usually model a single operation on the external world. Workflows are modeling composite operations that consist of multiple activities or other child workflows.

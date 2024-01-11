@@ -44,7 +44,7 @@ The benefit to using Signals has to do with the timing of failure retries.
 For example, consider an external process that is waiting for a human to review something and respond, and they could take up to a week to do so.
 If you use Async Completion (#1), you would
 
-- set a [Start-To-Close Timeout](/activities#start-to-close-timeout) of one week on the Activity,
+- set a [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of one week on the Activity,
 - in the Activity, notify the external process you need the human review, and
 - have the external process Asynchronously Complete the Activity when the human responds.
 
@@ -52,7 +52,7 @@ If the Activity fails on the second step to notify the external system and doesn
 
 If you use Signals, you would:
 
-- set a [Start-To-Close Timeout](/activities#start-to-close-timeout) of one minute on the Activity,
+- set a [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of one minute on the Activity,
 - in the Activity, notify the external process you need the human review,
 - complete the Activity without the result, and
 - have the external process Signal the Workflow when the human responds.

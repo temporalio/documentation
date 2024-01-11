@@ -1,5 +1,5 @@
 {
-  "file_name": "index.md",
+  "file_name": "index.mdx",
   "file_dir": "tctl-v1",
   "slug": "/tctl-v1",
   "id": "index",
@@ -9,7 +9,7 @@
   "description": "The Temporal CLI (tctl) is a legacy command-line tool that you can use to interact with a Temporal Cluster.",
   "use_description": false,
   "toc_max_heading_level": 4,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "p",

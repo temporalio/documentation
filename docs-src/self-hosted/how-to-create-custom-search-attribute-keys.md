@@ -15,7 +15,7 @@ Creating a custom Search Attribute in your Visibility store makes it available t
 
 **On Temporal Cloud**
 
-To create custom Search Attributes on Temporal Cloud, use [`tcld namespace search-attributes add`](/cloud/tcld/namespace#search-attributes).
+To create custom Search Attributes on Temporal Cloud, use [`tcld namespace search-attributes add`](/cloud/tcld/namespace/search-attributes/index).
 For example, to add a custom Search Attributes "CustomSA" to your Temporal Cloud Namespace "YourNamespace", run the following command.
 `tcld namespace search-attributes add --namespace YourNamespace --search-attribute "CustomSA"`
 

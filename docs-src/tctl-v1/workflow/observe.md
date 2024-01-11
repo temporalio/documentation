@@ -8,7 +8,7 @@ tags:
   - cli reference
 ---
 
-The `tctl workflow observe` command shows the progress of the [Event History](/concepts/what-is-an-event-history) of a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow observe` command shows the progress of the [Event History](/concepts/what-is-an-event-history) of a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 See also [`tctl workflow observeid`](/tctl-v1/workflow/observeid).
 

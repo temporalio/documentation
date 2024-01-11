@@ -24,7 +24,7 @@ Note that if you use MySQL, PostgreSQL, or SQLite as your Visibility store, Temp
 To enable advanced Visibility on your SQL databases, ensure that you do the following:
 
 - [Upgrade your Temporal Server](/self-hosted/how-to-upgrade-the-temporal-server-version) to version 1.20 or later.
-- [Update your database schemas](/self-hosted/how-to-upgrade-the-temporal-server-version#upgrade-mysql-or-postgresql-schema) for MySQL to version 8.0.17 (or later), PostgreSQL to version 12 (or later), or SQLite to v3.31.0 (or later).
+- [Update your database schemas](/self-hosted/how-to-upgrade-the-temporal-server-version) for MySQL to version 8.0.17 (or later), PostgreSQL to version 12 (or later), or SQLite to v3.31.0 (or later).
 
 Beginning with Temporal Server v1.21, you can set up a secondary Visibility store in your Temporal Cluster to enable [Dual Visibility](/concepts/what-is-dual-visibility).
 This is useful for migrating your Visibility store database.

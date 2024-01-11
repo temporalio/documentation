@@ -1,5 +1,5 @@
 {
-  "file_name": "retry-policies.md",
+  "file_name": "retry-policies.mdx",
   "id": "retry-policies",
   "slug": "/retry-policies",
   "file_dir": "concepts",
@@ -9,7 +9,7 @@
   "description": "A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.",
   "use_description": true,
   "toc_max_heading_level": 4,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "p",

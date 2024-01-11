@@ -27,7 +27,7 @@ The base [Failure proto message](https://api-docs.temporal.io/#temporal.api.fail
 - `string stack_trace`
 - `string source`: The SDK this Failure originated in (for example, `"TypeScriptSDK"`). In some SDKs, this field is used to rehydrate the stack trace into an exception object.
 - `Failure cause`: The `Failure` message of the cause of this Failure (if applicable).
-- `Payload encoded_attributes`: Contains the encoded `message` and `stack_trace` fields when using a [Failure Converter](/security#failure-converter).
+- `Payload encoded_attributes`: Contains the encoded `message` and `stack_trace` fields when using a [Failure Converter](/concepts/what-is-a-failure-converter).
 
 ## Application Failure
 
@@ -59,7 +59,7 @@ During conversion, the following Application Failure fields are set:
 - `cause` is a Failure converted from the error's `cause` property.
 - stack trace is copied.
 
-When an [Activity Execution](/activities#activity-execution) fails, the Application Failure from the last Activity Task is the `cause` field of the [ActivityFailure](#activity-failure) thrown in the Workflow.
+When an [Activity Execution](/concepts/what-is-an-activity-execution) fails, the Application Failure from the last Activity Task is the `cause` field of the [ActivityFailure](#activity-failure) thrown in the Workflow.
 
 ### Non-retryable
 
@@ -68,7 +68,7 @@ Activities and Workflow can also avoid retrying by setting an Application Failur
 
 ## Cancelled Failure
 
-When [Cancellation](/activities#cancellation) of a Workflow or Activity is requested, SDKs represent the cancellation to the user in language-specific ways.
+When [Cancellation](/concepts/what-is-an-activity-execution#cancellation) of a Workflow or Activity is requested, SDKs represent the cancellation to the user in language-specific ways.
 For example, in TypeScript, in some cases a Cancelled Failure is thrown directly by a Workflow API function, and in other cases the Cancelled Failure is wrapped in a different Failure.
 To check both types of cases, TypeScript has the [isCancellation](https://typescript.temporal.io/api/namespaces/workflow#iscancellation) helper.
 

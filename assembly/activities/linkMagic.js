@@ -123,9 +123,14 @@ async function replaceLinks(line, match, link, current_guide_id) {
   let newPath;
   let localRef;
   let replaceable = match[0];
+
   // define what needs to be replaced
   if (match[3] === undefined) {
-    localRef = `#${link.local_ref}`;
+    if (link.local_ref == "" || link.local_ref == undefined) {
+      localRef = "";
+    } else {
+      localRef = `#${link.local_ref}`;
+    }
   } else {
     localRef = match[3];
   }
@@ -143,6 +148,9 @@ async function replaceLinks(line, match, link, current_guide_id) {
     }
   } else {
     newPath = `${localRef}`;
+  }
+  if (newPath == "" && link.local_ref == "") {
+    newPath = link.slug;
   }
   // convert to link preview
   const html = linkPreview(newPath, match[1]);
