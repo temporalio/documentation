@@ -18,8 +18,6 @@ tags:
 
 This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
 
-
-
 ## Foundations
 
 The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
@@ -38,7 +36,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 - [How to use a prebuilt Workflow bundle in TypeScript](/dev-guide/typescript/foundations#prebuilt-workflow-bundles): Pass a prebuilt bundle instead of `workflowsPath`. or use the `bundleWorkflowCode` helper.
 - [How to shut down a Worker and track its state](/dev-guide/typescript/foundations#shut-down-a-worker): To shut down a Worker, send a shutdown Signal to the Worker or call `Worker.shutdown()`.
 - [How to start a Workflow Execution](/dev-guide/typescript/foundations#start-workflow-execution): Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
-- [Cancellation scopes in Typescript](/dev-guide/typescript/foundations#cancellation-scopes): 
+- [Cancellation scopes in Typescript](/dev-guide/typescript/foundations#cancellation-scopes):
 
 ## Features
 
@@ -89,12 +87,10 @@ The Debugging section of the Temporal Developer's guide covers the many ways to 
 - [How to debug in a production environment](/dev-guide/typescript/debugging#debug-in-a-production-environment): Debug production Workflows using the Web UI, tctl, Replays, Tracing, or Logging.
 - [How to troubleshoot common issues in the TypeScript SDK](/dev-guide/typescript/debugging#troubleshoot-common-issues): This guide helps you troubleshoot various common issues with code that uses the TypeScript SDK.
 
-
 ## Versioning
 
 The Versioning section of the Temporal TypeScript SDK developer's guide explains how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 
 - [How to patch Workflow code in TypeScript](/dev-guide/typescript/versioning#patching): The TypeScript SDK Patching API lets you change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 - [How to use Worker Versioning in TypeScript](/dev-guide/typescript/versioning#worker-versioning): Version your TypeScript Workers by using build ID-based versioning
-
 

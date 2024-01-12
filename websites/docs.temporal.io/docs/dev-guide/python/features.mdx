@@ -336,7 +336,6 @@ To define an update handler, use the [@workflow.update](https://python.temporal.
 - **Method Parameters:** Update handlers should only use positional parameters. For non-dynamic methods, it's recommended to use a single parameter that is an object or data class, which allows for future expansion of fields.
 - **Return Values:** The update handler can return a serializable value. This value is sent back to the caller of the update.
 
-
 ```python
 # ...
     @workflow.update
