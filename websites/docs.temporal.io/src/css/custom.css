@@ -1077,14 +1077,12 @@ h1 {
 
 .tdiiw {
   margin: 0 auto;
-  padding: 15px;
+  padding: 0px;
   text-align: center;
   overflow: none;
 }
 
 tdiiw img {
-  max-width: 100%;
-  height: auto;
   object-fit: contain; /* ensures the image maintains its aspect ratio */
 }
 

@@ -135,11 +135,11 @@ A Workflow Execution's Event History is also available in the Web UI.
 
 Navigate to the Workflows page in the UI and select the Workflow Execution.
 
-<div class="tdiw" height="1058"><div class="tditw"><p class="tdit">Select a Workflow Execution from the Workflows page</p></div><div class="tdiiw"><img class="img_ev3q" src="/img/java/select-workflow-execution-in-ui.png" alt="Select a Workflow Execution from the Workflows page" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Select a Workflow Execution from the Workflows page</p></div><div class="tdiiw" height="1058"><img class="img_ev3q" src="/img/java/select-workflow-execution-in-ui.png" alt="Select a Workflow Execution from the Workflows page" /></div></div>
 
 From the Workflow details page you can copy the Event History from the JSON tab and paste it into the `backgroundcheck_workflow_history.json` file.
 
-<div class="tdiw" height="1178"><div class="tditw"><p class="tdit">Copy Event History JSON object from the Web UI</p></div><div class="tdiiw"><img class="img_ev3q" src="/img/java/copy-events-from-workflow-details-page.png" alt="Copy Event History JSON object from the Web UI" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Copy Event History JSON object from the Web UI</p></div><div class="tdiiw" height="1178"><img class="img_ev3q" src="/img/java/copy-events-from-workflow-details-page.png" alt="Copy Event History JSON object from the Web UI" /></div></div>
 
 ## Add a Replay test {#add-replay-test}
 
@@ -439,7 +439,7 @@ decided to delete it. Once you have deployed your change, you would go to
 the currently blocked Workflow in the Web-UI and select **Reset** from the dropdown
 in the top right.
 
-<div class="tdiw" height="1036"><div class="tditw"><p class="tdit">Select the Workflow Reset Option</p></div><div class="tdiiw"><img class="img_ev3q" src="/img/java/select-reset-web-ui.png" alt="Select the Workflow Reset Option" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Select the Workflow Reset Option</p></div><div class="tdiiw" height="1036"><img class="img_ev3q" src="/img/java/select-reset-web-ui.png" alt="Select the Workflow Reset Option" /></div></div>
 
 Next you'll see a list of available points where the Workflow can be reset to.
 The only valid option would be to reset the Worklfow to the first `WorkflowTaskCompleted`
@@ -448,20 +448,20 @@ always include a reason why you are resetting this event. The reason will be
 persisted in the Event History and may be useful to others who inspect why the
 Workflow was reset.
 
-<div class="tdiw" height="938"><div class="tditw"><p class="tdit">Workflow Reset Points</p></div><div class="tdiiw"><img class="img_ev3q" src="/img/java/select-event-reset-web-ui.png" alt="Workflow Reset Points" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Workflow Reset Points</p></div><div class="tdiiw" height="938"><img class="img_ev3q" src="/img/java/select-event-reset-web-ui.png" alt="Workflow Reset Points" /></div></div>
 
 Once you've reset the Workflow you'll notice that the Workflow terminated and
 the Web UI provided a link to a new Workflow execution. The Event History up until
 the point you chose was copied over and executed.
 
-<div class="tdiw" height="1250"><div class="tditw"><p class="tdit">Workflow Terminated and Reset</p></div><div class="tdiiw"><img class="img_ev3q" src="/img/java/event-terminated-and-reset.png" alt="Workflow Terminated and Reset" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Workflow Terminated and Reset</p></div><div class="tdiiw" height="1250"><img class="img_ev3q" src="/img/java/event-terminated-and-reset.png" alt="Workflow Terminated and Reset" /></div></div>
 
 After the Timer has fired the Workflow should execute to completion without any
 more errors. If you scroll down in the Web UI you'll see the new Event History,
 including the `WorkflowTaskFailed` event that was used as the reset point, along
 with the reason you reset the workflow.
 
-<div class="tdiw" height="1716"><div class="tditw"><p class="tdit">New Event History Success with Reset</p></div><div class="tdiiw"><img class="img_ev3q" src="/img/java/new-event-history-success-with-reset.png" alt="New Event History Success with Reset" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">New Event History Success with Reset</p></div><div class="tdiiw" height="1716"><img class="img_ev3q" src="/img/java/new-event-history-success-with-reset.png" alt="New Event History Success with Reset" /></div></div>
 
 ### Resetting via the CLI
 
@@ -490,7 +490,7 @@ io.temporal.worker.NonDeterministicException: Failure handling event 5 of type '
 
 And you will see information about the failure in the Web UI as well.
 
-<div class="tdiw" height="622"><div class="tditw"><p class="tdit">Web UI view of a non-determinism error</p></div><div class="tdiiw"><img class="img_ev3q" src="/img/java/non-deterministic-workflow-task-failure-java.png" alt="Web UI view of a non-determinism error" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Web UI view of a non-determinism error</p></div><div class="tdiiw" height="622"><img class="img_ev3q" src="/img/java/non-deterministic-workflow-task-failure-java.png" alt="Web UI view of a non-determinism error" /></div></div>
 
 To inspect the Workflow Task failure using the Temporal CLI, you can use the `long` value for the `--fields` command option with the `temporal workflow show` command.
 
