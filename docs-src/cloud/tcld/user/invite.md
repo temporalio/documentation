@@ -27,7 +27,7 @@ Alias: `-e`
 
 _Required modifier_
 
-Specify the [account-level Role](/cloud/#account-level-roles) for the invited user.
+Specify the [account-level Role](/cloud/users-account-level-roles) for the invited user.
 
 Available account roles: `admin` | `developer` | `read`.
 
@@ -35,7 +35,7 @@ Alias: `--ar`
 
 #### --namespace-permission
 
-Specify the [Namespace-level permissions](/cloud/#namespace-level-permissions) for the invited user.
+Specify the [Namespace-level permissions](/cloud/users-namespace-level-permissions) for the invited user.
 You can supply this modifier multiple times to set multiple Namespace permissions in a single request.
 
 Each value must be in the format of `namespace=permission-type`.

@@ -8,7 +8,7 @@ tags:
   - explanation
 ---
 
-A custom Data Converter extends the default [Data Converter](/concepts/what-is-a-data-converter) with custom logic for [Payload](/concepts/what-is-a-payload) conversion or encoding.
+A custom Data Converter extends the default Data Converter with custom logic for [Payload](/concepts/what-is-a-payload) conversion or encoding.
 
 You can create a custom Data Converter to alter formats (for example, using [MessagePack](https://msgpack.org/) instead of JSON) or add compression and encryption.
 

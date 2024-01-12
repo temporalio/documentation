@@ -530,7 +530,7 @@ dcRedirectionPolicy:
 
 _Optional_
 
-Configuration for setting up file-based [dynamic configuration](/concepts/what-is-cluster-configuration#dynamicconfiguration) client for the Cluster.
+Configuration for setting up file-based [dynamic configuration](/concepts/what-is-cluster-configuration#dynamic-configuration) client for the Cluster.
 
 This setting is required if specifying dynamic configuration. Supported configuration values are as follows:
 

@@ -1,5 +1,5 @@
 {
-  "file_name": "batch.md",
+  "file_name": "batch.mdx",
   "file_dir": "tctl-v1",
   "id": "batch",
   "title": "tctl v1.17 batch command reference",
@@ -7,7 +7,7 @@
   "description": "Explore the tctl batch commands, which let you affect multiple existing Workflow Executions with a single command to a Temporal Cluster.",
   "use_description": false,
   "toc_max_heading_level": 4,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "p",

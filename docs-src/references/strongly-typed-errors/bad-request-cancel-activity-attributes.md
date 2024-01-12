@@ -8,9 +8,9 @@ tags:
   - strongly-typed
 ---
 
-This error either indicates the possibility of unset attributes for [RequestCancelActivity](/references/commands/#requestcancelactivity), or an invalid History Builder state.
+This error either indicates the possibility of unset attributes for [RequestCancelActivity](/references/commands#requestcancelactivitytask), or an invalid History Builder state.
 
-Update the [Temporal SDK](/temporal/#temporal-sdk) to the most recent release.
+Update the [Temporal SDK](/concepts/what-is-a-temporal-sdk) to the most recent release.
 Reset any unset attributes before retrying the [Workflow Task](/concepts/what-is-a-workflow-task).
 
 If you continue to see this error, review your code for [nondeterministic causes](/concepts/what-is-a-workflow-definition#non-deterministic-change).

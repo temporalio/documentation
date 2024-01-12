@@ -8,6 +8,6 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the [Workflow Task](/concepts/what-is-a-workflow-task) failed due to an unset or incorrect [Marker](/references/events/#markerrecorded) name.
+This error indicates that the [Workflow Task](/concepts/what-is-a-workflow-task) failed due to an unset or incorrect [Marker](/references/events#markerrecorded) name.
 
 Enter a valid Marker name and redeploy the Task.

@@ -1,6 +1,6 @@
 {
     "id": "overview",
-    "file_name": "overview.md",
+    "file_name": "overview.mdx",
     "file_dir": "production-deployment/cloud/introduction",
     "slug": "/cloud/overview",
     "title": "Overview - Temporal Cloud",

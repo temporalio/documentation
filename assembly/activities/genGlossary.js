@@ -60,7 +60,7 @@ async function genGlossString(terms) {
   let glossStr = `${glossFrontmatter}\n\n`;
   for (const term of terms) {
     // If term.description is undefined, log the term's label.
-    if (typeof term.description === 'undefined' || term.description === null) {
+    if (typeof term.description === "undefined" || term.description === null) {
       console.log(`🚨🚨Term without a label: ${term.label} has undefined description.🚨🚨`);
     }
     glossStr = `${glossStr}#### ${term.markdown_link}\n${term.description}\n\n${genTagString(term.tags)}\n`;
@@ -85,17 +85,22 @@ async function sortTerms(terms) {
 async function findSlug(fullIndex, nodeId) {
   for (const link of fullIndex) {
     if (link.node_id == nodeId) {
+      let str = "";
       if (link.file_dir != "/") {
         if (link.slug != "none") {
-          return `${link.slug}#${link.local_ref}`;
+          str = `${link.slug}#${link.local_ref}`;
         } else if (link.guide_id.includes("index")) {
-          return `/${link.file_dir}#${link.local_ref}`;
+          str = `/${link.file_dir}#${link.local_ref}`;
         } else {
-          return `/${link.file_dir}/${link.guide_id}#${link.local_ref}`;
+          str = `/${link.file_dir}/${link.guide_id}#${link.local_ref}`;
         }
       } else {
-        return `/${link.guide_id}#${link.local_ref}`;
+        str = `/${link.guide_id}#${link.local_ref}`;
       }
+      if (str.endsWith("#")) {
+        return str.slice(0, -1);
+      }
+      return str;
     }
   }
   return `/${nodeId}`;

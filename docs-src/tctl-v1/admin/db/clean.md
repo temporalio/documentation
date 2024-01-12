@@ -9,7 +9,7 @@ tags:
   - cli reference
 ---
 
-The `tctl admin db clean` command cleans corrupted [Workflow Executions](/workflows/#workflow-executions) from the targeted database.
+The `tctl admin db clean` command cleans corrupted [Workflow Executions](/concepts/what-is-a-workflow-execution) from the targeted database.
 
 The modifiers below change the behavior of the command.
 
@@ -48,7 +48,7 @@ Default: "temporal"
 
 #### --input_directory
 
-The directory which contains the corrupted [Workflow Execution](/workflows/#workflow-executions) files from running [`scan`](/tctl-v1/admin/db/scan).
+The directory which contains the corrupted [Workflow Execution](/concepts/what-is-a-workflow-execution) files from running [`scan`](/tctl-v1/admin/db/scan).
 
 #### --lower_shard_bound
 

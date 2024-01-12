@@ -1294,6 +1294,10 @@
       "destination": "/cloud/tcld/request#get"
     },
     {
+      "source": "/cloud/operating-envelope",
+      "destination": "/cloud/service-availability"
+    },
+    {
       "source": "/external-resources",
       "destination": "/kb/additional-resources"
     },

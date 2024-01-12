@@ -111,9 +111,9 @@ If you are using mTLS, is completely up to you how to get the `clientCert` and `
 Just keep in mind that they are whitespace sensitive and some environment variable systems have been known to cause frustration because they modify whitespace.
 
 <details>
-<summary>
-  Example code that works for local dev and for certs hosted on AWS S3
-</summary>
+    <summary>
+      Example code that works for local dev and for certs hosted on AWS S3
+    </summary>
 
 ```ts
 let serverRootCACertificate: Buffer | undefined;
@@ -160,7 +160,9 @@ You can leave the remaining vars, like `TEMPORAL_SERVER_NAME_OVERRIDE` and `TEMP
 There is another var, `TEMPORAL_TASK_QUEUE`, which the example defaults to `'hello-world-mtls'` but you can customize as needed.
 
 <details>
-<summary>Example environment settings</summary>
+    <summary>
+    Example environment settings
+    </summary>
 
 ```ts
 export function getEnv(): Env {

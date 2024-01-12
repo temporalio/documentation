@@ -1,6 +1,6 @@
 {
   "id": "features",
-  "file_name": "features.md",
+  "file_name": "features.mdx",
   "slug": "/dev-guide/php/features",
   "file_dir": "dev-guide/phplang",
   "title": "PHP SDK developer's guide - Features",
@@ -9,7 +9,7 @@
   "description": "The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.",
   "use_description": false,
   "toc_max_heading_level": 4,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "p",

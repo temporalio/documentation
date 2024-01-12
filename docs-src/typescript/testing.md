@@ -234,9 +234,9 @@ When an Activity is executing time switches back to "normal",
 can be used outside of Workflow code to skip time.
 
 <details>
-<summary>
-Workflow implementation
-</summary>
+    <summary>
+    Workflow implementation
+    </summary>
 
 <!--SNIPSTART typescript-timer-reminder-workflow-->
 

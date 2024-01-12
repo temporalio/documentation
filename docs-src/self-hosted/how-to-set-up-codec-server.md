@@ -218,7 +218,7 @@ To set a Codec Server endpoint on a Namespace, do the following.
 1. Optional: If your Codec Server is configured to [verify origins of requests](#cors), enable **Include cross-origin credentials**.
 
 Setting a Codec Server endpoint on a Namespace enables it for all users on the Namespace.
-On Temporal Cloud, you must have [Namespace Admin privileges](/cloud/#namespace-level-permissions) to add a Codec Server endpoint on the Namespace.
+On Temporal Cloud, you must have [Namespace Admin privileges](/cloud/users-namespace-level-permissions) to add a Codec Server endpoint on the Namespace.
 
 All users on a Namespace have the option to override the Namespace-level setting at the browser level.
 Overriding the Namespace-level endpoint only affects your browser.

@@ -35,7 +35,7 @@ Some values, such as the Metrics configuration or Server log level can be change
 
 For details on static configuration keys, see [Cluster configuration reference](/references/configuration).
 
-For static configuration examples, see <https://github.com/temporalio/temporal/tree/master/config>.
+For static configuration examples, see [https://github.com/temporalio/temporal/tree/master/config](https://github.com/temporalio/temporal/tree/master/config).
 
 ### Dynamic configuration
 
@@ -52,4 +52,4 @@ Use dynamic configuration keys to fine-tune your self-deployed Cluster setup.
 
 For details on dynamic configuration keys, see [Dynamic configuration reference](/references/dynamic-configuration).
 
-For dynamic configuration examples, see <https://github.com/temporalio/temporal/tree/master/config/dynamicconfig>.
+For dynamic configuration examples, see [https://github.com/temporalio/temporal/tree/master/config/dynamicconfig](https://github.com/temporalio/temporal/tree/master/config/dynamicconfig).

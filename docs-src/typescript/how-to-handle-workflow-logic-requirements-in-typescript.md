@@ -27,7 +27,11 @@ To make the Workflow runtime deterministic, functions like `Math.random()`, `Dat
 
 [FinalizationRegistry](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry) and [WeakRef](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef) are removed because v8's garbage collector is not deterministic.
 
-<details><summary>Expand to see the implications of the deterministic Date API</summary>
+<details>
+
+    <summary>
+      Expand to see the implications of the deterministic Date API
+    </summary>
 
 ```typescript
 import { sleep } from '@temporalio/workflow';
