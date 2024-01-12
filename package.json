@@ -9,9 +9,10 @@
     "format": "dprint fmt"
   },
   "dependencies": {
+    "dprint": "^0.45.0",
+    "fs-extra": "^10.1.0",
     "path": "^0.12.7",
-    "temporalio": "^1.1.0",
     "snipsync": "1.7.0",
-    "fs-extra": "^10.1.0"
+    "temporalio": "^1.1.0"
   }
 }
