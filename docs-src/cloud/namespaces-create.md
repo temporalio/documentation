@@ -51,8 +51,9 @@ To create a Namespace in Temporal Cloud, gather the following information:
    Typically, a development Namespace has a short retention period and a production Namespace has a longer retention period.
    (If you need to change this value later, contact [Temporal Support](/cloud/support-create-ticket).)
 1. In **Certificate**, paste the CA certificate for this Namespace.
-1. Optional: In **Codec Server**, enter the URL and port number of your Codec Server endpoint.
-   For details, see [Securing your data](/self-hosted/data-encryption).
+1. Optional: In **Codec Server**, enter the HTTPS URL (including the port number) of your Codec Server endpoint.
+   You may also enable "Pass the user access token with your endpoint" and "Include cross-origin credentials."
+   For details, see [Hosting your Codec Server](self-hosted/how-to-set-up-codec-server#hosting-your-codec-server).
 1. Click **Create Namespace**.
 
 <!--- How to create a Namespace in Temporal Cloud using tcld --->
