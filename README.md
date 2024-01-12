@@ -63,10 +63,10 @@ Each component is explained later in this README.
 
 ### `/docs-src` information nodes
 
-This directory contains editable Markdown files, known as "information nodes," that are used to generate the guides seen in the `/docs` directory and on our website.
+This directory contains editable Markdown files, known as "information nodes," that are used to generate the guides seen in the `/websites/docs.temporal.io/docs` directory and on our website.
 These nodes are registered to the Assembly Workflow with guide configurations. These configuration files can be found in `/assembly/guide-configs`.
 
-### `website/docs` generated files for Docusaurus
+### `website/docs.temporal.io/docs` generated files for Docusaurus
 
 This directory contains the Markdown files that map directly to what you see in the documentation site. For example, `/docs/concepts/workflows` maps to [docs.temporal.io/workflows](http://docs.temporal.io/workflows).
 
@@ -83,13 +83,15 @@ Please make comments and suggestions in the appropriate source nodes.
 
 ### `/assembly` Assembly Workflow
 
-The `/assembly` directory contains a Temporal Application written in JavaScript that uses Temporal's TypeScript SDK. This application acts as a build wrapper around the Docusaurus framework to assemble and generate the files in `/docs`.
+The `/assembly` directory contains a Temporal Application written in JavaScript that uses Temporal's TypeScript SDK. This application acts as a build wrapper around the Docusaurus framework to assemble and generate the files in `/websites/docs.temporal.io/docs`.
 
-Generated files are composed of many individual files, known as information nodes, contained in the `docs-src` directory.
+Generated files are composed of many individual files, known as information nodes, contained in the `/docs-src` directory.
 
 Modularizing our content not only tidies up the repository but also provides a great example of Temporal at work. Our pre-build processes, a set of independent scripts, are invoked in a Temporal Workflow to generate and format what goes into Docusaurus.
 
-Each JSON configuration file in [assembly/guide-configs](https://github.com/temporalio/documentation/blob/main/assembly/guide-configs) represents a user-facing narrative that pieces together concepts, how-to guides, and SDK-specific developer guides.
+### `/guide-configs` Guide configurations
+
+Each JSON configuration file in [`/guide-configs`](https://github.com/temporalio/documentation/blob/main/guide-configs) represents a user-facing narrative that pieces together concepts, how-to guides, and SDK-specific developer guides.
 
 Run the Assembly Workflow with a local Cluster (such as [Temporal CLI](https://docs.temporal.io/kb/all-the-ways-to-run-a-cluster#temporal-cli)) or [Temporal Cloud](https://docs.temporal.io/cloud/).
 
