@@ -105,6 +105,8 @@ Please make comments and suggestions in the appropriate source nodes.
 
 ### `/assembly` Assembly Workflow
 
+**Please note that our docs tooling is not designed to build natively on Windows. If you want to contribute from a Windows environment, please run these commands under a [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) shell.**
+
 The `/assembly` directory contains a Temporal Application written in JavaScript that uses Temporal's TypeScript SDK. This application acts as a build wrapper around the Docusaurus framework to assemble and generate the files in `/websites/docs.temporal.io/docs`.
 
 Generated files are composed of many individual files, known as information nodes, contained in the `/docs-src` directory.
