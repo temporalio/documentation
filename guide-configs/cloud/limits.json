@@ -1,0 +1,19 @@
+{
+    "file_name": "limits.mdx",
+    "id": "limits",
+    "slug": "/cloud/limits",
+    "file_dir": "production-deployment/cloud/introduction",
+    "title": "System limits - Temporal Cloud",
+    "sidebar_label": "Limits",
+    "sidebar_position": 4,
+    "description": "Learn more about Temporal Cloud defaults, limits, and configurable settings.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cloud/limits"
+        }
+    ]
+}

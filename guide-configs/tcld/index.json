@@ -1,0 +1,22 @@
+{
+    "id": "index",
+    "file_name": "index.mdx",
+    "file_dir": "production-deployment/cloud/tcld",
+    "slug": "/cloud/tcld",
+    "title": "tcld command reference",
+    "sidebar_label": "CLI (tcld)",
+    "description": "The Temporal Cloud CLI (tcld) is a command-line tool that you can use to interact with Temporal Cloud.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cloud/tcld/index"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/how-to-install-tcld"
+        }
+    ]
+}

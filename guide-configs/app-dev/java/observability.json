@@ -1,0 +1,83 @@
+{
+  "file_name": "observability.mdx",
+  "id": "observability",
+  "slug": "/dev-guide/java/observability",
+  "file_dir": "dev-guide/javalang",
+  "title": "Java SDK developer's guide - Observability",
+  "sidebar_label": "Observability",
+  "sidebar_position": 5,
+  "description": "Improve observability in your Java-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "java/observability"
+    },
+    {
+      "type": "h2",
+      "id": "java/metrics"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-emit-metrics-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/tracing"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-configure-tracing-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/logging"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-log-from-a-workflow-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/custom-logging"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-set-a-custom-logger-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/visibility"
+    },
+    {
+      "type": "h3",
+      "id": "java/search-attributes"
+    },
+    {
+      "type": "h3",
+      "id": "java/set-custom-search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/upsert-custom-search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execution-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/remove-search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-remove-search-attributes-from-a-workflow-in-java"
+    }
+  ]
+}

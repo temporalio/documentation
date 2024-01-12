@@ -1,0 +1,102 @@
+{
+    "id": "namespace",
+    "file_name": "namespace.mdx",
+    "file_dir": "production-deployment/cloud/tcld",
+    "slug": "/cloud/tcld/namespace/",
+    "title": "tcld namespace command reference",
+    "sidebar_label": "namespace",
+    "description": "The Temporal Cloud CLI (tcld) Namespace commands let you create, configure, update, list, and delete Namespaces, certificates, Certificate Filters, and Search Attributes in Temporal Cloud.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cloud/tcld/namespace/index"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/namespace/create"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/namespace/delete"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/namespace/get"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/namespace/list"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/namespace/accepted-client-ca/index"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/accepted-client-ca/add"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/accepted-client-ca/list"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/accepted-client-ca/remove"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/accepted-client-ca/set"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/namespace/certificate-filters/index"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/certificate-filters/add"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/certificate-filters/clear"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/certificate-filters/export"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/certificate-filters/import"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/namespace/search-attributes/index"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/search-attributes/add"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/search-attributes/rename"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/namespace/retention/index"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/retention/get"
+        },
+        {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/retention/set"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/namespace/update-codec-server"
+        }
+    ]
+}

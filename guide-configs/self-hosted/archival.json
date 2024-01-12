@@ -1,0 +1,27 @@
+{
+    "file_name": "archival.mdx",
+    "id": "archival",
+    "file_dir": "production-deployment/self-hosted-guide",
+    "slug": "/self-hosted-guide/archival",
+    "title": "Self-hosted Archival setup",
+    "sidebar_label": "Archival",
+    "sidebar_position": 9,
+    "description": "Learn how to setup the self-hosted Cluster Archival feature.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "self-hosted/what-is-archival"
+        },
+        {
+            "type": "h3",
+            "id": "self-hosted/how-to-set-up-archival"
+        },
+        {
+            "type": "h3",
+            "id": "self-hosted/how-to-create-a-custom-archiver"
+        }
+    ]
+}

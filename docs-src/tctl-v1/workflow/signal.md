@@ -8,7 +8,7 @@ tags:
   - cli reference
 ---
 
-The `tctl workflow signal` command [Signals](/concepts/what-is-a-signal) a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow signal` command [Signals](/concepts/what-is-a-signal) a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 Workflows listen for Signals by their Signal name, and can be made to listen to one or more Signal names.
 Workflows can also listen for SQL queries.

@@ -4,35 +4,64 @@ import { v4 as uuidv4 } from "uuid";
 import rangeParser from "parse-numeric-range";
 import graymatter from "gray-matter";
 
-// const docsAsSourceRegex =
-//   "(?:@dacx\\n)(id:.*)(?:\\n)(title:.*)(?:\\n)(label:.*)(?:\\n)(description:.*)(?:\\n)(lines:.*)(?:\\n)(tags:.*)(?:\\n@dacx)";
 const docsAsSourceRegex = '(?:\\/\\*\\s*@dacx|"""\\s*@dacx)((?:.|\\n)*?)(?:@dacx\\s*\\*\\/|@dacx\\s*""")';
 const docsAsSource = RegExp(docsAsSourceRegex, "gm");
 const codeBlocks = "```";
 
 export async function createNodesFromSamples(config) {
   console.log("creating nodes from samples...");
-  const readPath = path.join(config.root_dir, config.temp_write_dir, config.samples_file_paths_filename);
-  const filePaths = await fs.readJSON(readPath);
-  for (const repoPaths of filePaths) {
-    for (const file of repoPaths.repo_files) {
-      const ext = path.extname(file.name);
-      let lang = ext.slice(1);
-      if (isDACX(file.name, config, file) && isSupportedExtension(ext)) {
-        const sourceURL = parseURL(repoPaths.source_url, file);
-        if (ext === ".py") {
-          lang = "python";
-        }
-        if (ext === ".ts") {
-          lang = "typescript";
-        }
-        await createNodes(config, file, lang, sourceURL);
+  const filePaths = await readLocalDirectory(path.join(config.root_dir, config.sample_apps_dir));
+  for (const file of filePaths) {
+    const ext = path.extname(file.name);
+    let lang = ext.slice(1);
+    if (isDACX(file.name, config, file) && isSupportedExtension(ext)) {
+      let str =
+        "https://github.com/" +
+        path.join(
+          config.sample_apps_source_url.owner,
+          config.sample_apps_source_url.repo,
+          "blob",
+          config.sample_apps_source_url.ref
+        );
+      const sourceURL = parseURL(config, str, file);
+      if (ext === ".py") {
+        lang = "python";
       }
+      if (ext === ".ts") {
+        lang = "typescript";
+      }
+      await createNodes(config, file, lang, sourceURL);
     }
   }
+
+  async function readLocalDirectory(directoryPath) {
+    let fileMetadata = [];
+
+    function readDirRecursive(currentPath) {
+      const files = fs.readdirSync(currentPath, { withFileTypes: true });
+
+      files.forEach((file) => {
+        const fullPath = path.join(currentPath, file.name);
+        if (file.isDirectory()) {
+          readDirRecursive(fullPath);
+        } else {
+          fileMetadata.push({
+            name: file.name,
+            path: fullPath,
+            directory: path.relative(directoryPath, fullPath),
+            size: fs.statSync(fullPath).size,
+            // Add more properties as needed
+          });
+        }
+      });
+    }
+
+    readDirRecursive(directoryPath);
+    return fileMetadata;
+  }
+
   async function createNodes(config, file, lang, sourceURL) {
-    const sampleFileReadPath = path.join(config.root_dir, config.temp_write_dir, file.directory, file.name);
-    const raw = await fs.readFile(sampleFileReadPath);
+    const raw = await fs.readFile(file.path);
     const contents = raw.toString("utf8");
     const fileLines = contents.split("\n");
     const nodeData = findMetaData(contents);
@@ -86,7 +115,6 @@ export async function createNodesFromSamples(config) {
     for (const match of nodeData) {
       const node = {};
       let tags = match.data.tags;
-      //const tagArray = tags.split(",").map((tag) => tag.trim());
       node.metadata = {
         id: match.data.id,
         title: match.data.title,
@@ -167,6 +195,7 @@ export async function createNodesFromSamples(config) {
   }
 
   function isDACX(str, config, file) {
+<<<<<<< HEAD
     str = str.toLowerCase(); // Remember to assign the result back to str
     const extension = path.extname(str);
     if (str.includes("_dacx")) {
@@ -174,6 +203,13 @@ export async function createNodesFromSamples(config) {
     } else if (isSupportedExtension(extension)) {
       console.log(JSON.stringify(file));
       const readPath = path.join(config.root_dir, config.temp_write_dir, file.directory, file.name);
+=======
+    str = str.toLowerCase();
+    if (str.includes("_dacx")) {
+      return true;
+    } else if (isSupportedExtension(path.extname(str))) {
+      const readPath = path.join(file.path);
+>>>>>>> main
       try {
         const fileContent = fs.readFileSync(readPath, "utf-8");
         if (extension === ".py") {
@@ -194,12 +230,18 @@ export async function createNodesFromSamples(config) {
       return false;
     }
   }
+<<<<<<< HEAD
   function parseURL(repoPath, file) {
     const parts = file.directory.split("/");
     const dirParts = parts.slice(1);
     const directory = path.join(...dirParts);
     const sourceURL = repoPath + "/" + path.join(directory, file.name);
     return sourceURL;
+=======
+
+  function parseURL(config, repoPath, file) {
+    return repoPath + "/" + path.join(config.sample_apps_dir, file.directory);
+>>>>>>> main
   }
 
   function hashCode(s) {

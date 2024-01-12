@@ -1,0 +1,183 @@
+{
+  "file_name": "foundations.mdx",
+  "id": "foundations",
+  "slug": "/dev-guide/java/foundations",
+  "file_dir": "dev-guide/javalang",
+  "title": "Java SDK developer's guide - Foundations",
+  "sidebar_label": "Foundations",
+  "sidebar_position": 3,
+  "description": "The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "java/foundations"
+    },
+    {
+      "type": "h2",
+      "id": "self-hosted/how-to-install-temporal-cli"
+    },
+    {
+      "type": "h2",
+      "id": "java/add-sdk"
+    },
+    {
+      "type": "p",
+      "id": "java/index"
+    },
+    {
+      "type": "h3",
+      "id": "java/api-reference-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/code-samples"
+    },
+    {
+      "type": "p",
+      "id": "java/code-samples-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/how-to-create-a-temporal-client-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/how-to-develop-a-workflow-definition-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/interface-hierarchies"
+    },
+    {
+      "type": "h3",
+      "id": "java/workflow-parameters"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-define-workflow-parameters-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/workflow-return-values"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-define-workflow-return-values-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/workflow-type"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-customize-workflow-type-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/workflow-logic-requirements"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-handle-workflow-logic-requirements-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/developing-activities"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-develop-an-activity-definition-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/activity-parameters"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-define-activity-parameters-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/activity-return-values"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-define-activity-return-values-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/activity-type"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-customize-activity-type-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/spawning-activities"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-spawn-an-activity-execution-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/required-activity-timeout"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-set-activity-timeouts-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/reference-activityoptions"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-get-the-result-of-an-activity-execution-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/how-to-develop-a-worker-program-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/registering-types"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-register-types-with-a-worker-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/how-to-spawn-a-workflow-execution-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/set-task-queue"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-set-a-workflow-task-queue-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/set-workflow-id"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-set-a-workflow-id-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/reference-workflowoptions"
+    },
+    {
+      "type": "h3",
+      "id": "java/how-to-get-the-result-of-a-workflow-execution-in-java"
+    }
+  ]
+}

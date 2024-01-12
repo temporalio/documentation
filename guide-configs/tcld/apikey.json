@@ -1,0 +1,42 @@
+{
+    "id": "apikey",
+    "file_name": "apikey.mdx",
+    "file_dir": "production-deployment/cloud/tcld",
+    "slug": "/cloud/tcld/apikey",
+    "title": "tcld apikey command reference",
+    "sidebar_label": "apikey",
+    "description": "The Temporal Cloud CLI (tcld) apikey commands manage API keys in Temporal Cloud. These commands allow you to create, retrieve, list, delete, disable, and enable API keys.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cloud/tcld/apikey/index"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/apikey/create"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/apikey/get"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/apikey/list"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/apikey/delete"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/apikey/disable"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/apikey/enable"
+        }
+    ]
+}

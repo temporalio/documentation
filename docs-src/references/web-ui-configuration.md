@@ -43,7 +43,7 @@ publicPath: ""
 ## enableUi
 
 Enables the browser UI.
-This configuration can be set dynamically with the [TEMPORAL_UI_ENABLED](/references/web-ui-environment-variables#temporaluienabled) environment variable.
+This configuration can be set dynamically with the [TEMPORAL_UI_ENABLED](/references/web-ui-environment-variables#temporal_ui_enabled) environment variable.
 If disabled—that is, set to `false`—the UI server APIs remain available.
 
 ```yaml
@@ -61,7 +61,7 @@ cloudUi: false
 ## enableOpenApi
 
 Enables the UI Server's Open API reference documentation at `/openapi/`.
-This configuration can be set dynamically with the [TEMPORAL_OPEN_API_ENABLED](/references/web-ui-environment-variables#temporalopenapienabled) environment variable.
+This configuration can be set dynamically with the [TEMPORAL_OPEN_API_ENABLED](/references/web-ui-environment-variables#temporal_openapi_enabled) environment variable.
 For example, if you are currently viewing the Web UI at `http://localhost:8080`, the page is available at [localhost:8080/openapi/](http://localhost:8080/openapi/).
 
 ```yaml
@@ -197,7 +197,7 @@ tls:
   caFile: ../ca.cert
   certFile: ../cluster.pem
   keyFile: ../cluster.key
-  caData: 
+  caData:
   certData:
   keyData:
   enableHostVerification: true
@@ -213,17 +213,17 @@ Settings apply when Auth is enabled.
 auth:
   enabled: true
   providers:
-      label: sso # for internal use; in future may expose as button text
-      type: oidc 
-      providerUrl: ttps://accounts.google.com
-      issuerUrl: 
-      clientId: xxxxx-xxxx.apps.googleusercontent.com
-      clientSecret: xxxxxxxxxxxxxxxxxxxx
-      callbackUrl: https://xxxx.com:8080/auth/sso/callback
-      scopes:
-        - openid
-        - profile
-        - email
+    label: sso # for internal use; in future may expose as button text
+    type: oidc
+    providerUrl: https://accounts.google.com
+    issuerUrl:
+    clientId: xxxxx-xxxx.apps.googleusercontent.com
+    clientSecret: xxxxxxxxxxxxxxxxxxxx
+    callbackUrl: https://xxxx.com:8080/auth/sso/callback
+    scopes:
+      - openid
+      - profile
+      - email
 ```
 
 ## codec

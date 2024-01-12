@@ -11,7 +11,7 @@ tags:
 
 :::info Looking for Temporal Cloud defaults?
 
-See the [Temporal Cloud defaults and limits page](/cloud/temporal-cloud-limits-sheet)
+See the [Temporal Cloud defaults and limits page](/cloud/limits)
 
 :::
 
@@ -58,6 +58,6 @@ These limits might apply specifically to each Workflow Execution and do not pert
     - `limit.numPendingCancelRequests.error`
     - `limit.numPendingChildExecutions.error`
   - By default, [Batch jobs](/cli/batch) are limited to one job at a time.
-- [Custom Search Attributes limits](/visibility/#custom-search-attributes-limits)
+- [Custom Search Attributes limits](/concepts/what-is-a-search-attribute#custom-search-attributes-limits)
 
 For details on dynamic configuration keys, see [Dynamic configuration reference](/references/dynamic-configuration).

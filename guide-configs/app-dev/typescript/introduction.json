@@ -1,0 +1,19 @@
+{
+  "file_name": "introduction.mdx",
+  "id": "introduction",
+  "slug": "/dev-guide/typescript/introduction",
+  "file_dir": "dev-guide/tscript",
+  "title": "Introduction to the Temporal TypeScript SDK",
+  "sidebar_label": "Introduction",
+  "sidebar_position": 1,
+  "description": "The Temporal TypeScript SDK developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "typescript/introduction-to-typescript-sdk"
+    }
+  ]
+}

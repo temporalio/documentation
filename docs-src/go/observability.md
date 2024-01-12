@@ -13,7 +13,7 @@ tags:
   - tracing
 ---
 
-The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/concepts/what-is-a-temporal-application)—that is, ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the [Temporal Platform](/concepts/what-is-the-temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
+The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/concepts/what-is-a-temporal-application)—that is, ways to view which [Workflow Executions](/concepts/what-is-a-workflow-execution) are tracked by the [Temporal Platform](/concepts/what-is-the-temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
 
 This section covers features related to viewing the state of the application, including:
 

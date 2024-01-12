@@ -33,8 +33,8 @@ In TypeScript, the default Data Converter supports:
 
 To send values that are not [JSON-serializable](https://en.wikipedia.org/wiki/JSON#Data_types) like `BigInt`s or `Date`s, provide a custom Data Converter to the Client and Worker:
 
-- [`new WorkflowClient({ ..., dataConverter })`](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions#dataconverter)
-- [`Worker.create({ ..., dataConverter })`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#dataconverter)
+- [`new WorkflowClient(\{ ..., dataConverter })`](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions#dataconverter)
+- [`Worker.create(\{ ..., dataConverter })`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#dataconverter)
 
 Data Converters have [two parts](/concepts/what-is-a-data-converter#payload-codec):
 

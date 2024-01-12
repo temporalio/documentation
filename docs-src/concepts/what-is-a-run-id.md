@@ -8,7 +8,7 @@ tags:
   - explanation
 ---
 
-A Run Id is a globally unique, platform-level identifier for a [Workflow Execution](/workflows#workflow-execution).
+A Run Id is a globally unique, platform-level identifier for a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 The current Run Id is mutable and can change during a [Workflow Retry](/concepts/what-is-a-retry-policy). You shouldn't rely on storing the current Run Id, or using it for any logical choices, because a Workflow Retry changes the Run Id and can lead to non-determinism issues.
 

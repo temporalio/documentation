@@ -27,7 +27,7 @@ All Namespaces in your self-hosted Cluster or Temporal Cloud account are listed 
 You can also switch Namespaces from the Workflows view by selecting from the Namespace switcher at the top right corner of the window.
 After you select a Namespace, the Web UI shows the Recent Workflows page for that Namespace.
 In Temporal Cloud, users can access only the Namespaces that they have been granted access to.
-For details, see [Namespace-level permissions](/cloud/#namespace-level-permissions).
+For details, see [Namespace-level permissions](/cloud/users-namespace-level-permissions).
 
 ### Recent Workflows
 
@@ -114,9 +114,9 @@ Click a Schedule to see details, such as configured frequency, start and end tim
 
 ### Settings
 
-On Temporal Cloud, **Settings** is visible only to [Global Admins](/cloud/#account-level-roles).
+On Temporal Cloud, **Settings** is visible only to [Global Admins](/cloud/users-account-level-roles).
 
-Click **Settings** to see and manage the list of users in your account and to set up integrations such as [Observability](/cloud/metrics-intro#configure-a-metrics-endpoint-using-temporal-cloud-ui) and [Audit logging](/cloud/audit-logging).
+Click **Settings** to see and manage the list of users in your account and to set up integrations such as [Observability](/cloud/metrics) and [Audit logging](/cloud/audit-logging).
 
 On self-hosted Temporal Clusters, manage your users, metrics, and logging in your [server configuration](/references/configuration).
 
@@ -143,7 +143,7 @@ For information and details on the Archive feature in Temporal Cloud, contact yo
 
 ### Codec Server
 
-The Web UI can use a [Codec Server](/dataconversion#codec-server) with a custom Data Converter to decode inputs and return values.
+The Web UI can use a [Codec Server](/concepts/what-is-a-codec-server) with a custom Data Converter to decode inputs and return values.
 For details, see [Securing your data](/self-hosted/data-encryption).
 The UI supports both a [Codec Server endpoint](/self-hosted/how-to-set-up-codec-server#web-ui) and the `tctl` plugin port.
 

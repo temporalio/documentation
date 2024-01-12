@@ -1,0 +1,71 @@
+{
+  "file_name": "workers.mdx",
+  "id": "workers",
+  "slug": "/workers",
+  "file_dir": "concepts",
+  "title": "What is a Temporal Worker?",
+  "sidebar_label": "Workers",
+  "sidebar_position": 5,
+  "description": "There is a tight coupling between Temporal Task Queues and Worker Processes.",
+  "use_description": true,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-worker"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-task"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-worker-program"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-worker-entity"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-worker-process"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-workflow-task"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-workflow-task-execution"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-an-activity-task"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-an-activity-task-execution"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-task-queue"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-sticky-execution"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-task-routing"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-worker-session"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-worker-versioning"
+    }
+  ]
+}
