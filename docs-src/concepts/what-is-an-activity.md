@@ -13,7 +13,7 @@ Temporal documentation aims to be explicit and differentiate between them.
 
 An Activity is a normal function or method that executes a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email message.
 Activity code can be non-deterministic.
-We recommend that it be [idempotent](/activities#idempotency).
+We recommend that it be [idempotent](/concepts/what-is-an-activity-definition#idempotency).
 
 Workflow code orchestrates the execution of Activities, persisting the results.
 If an Activity Function Execution fails, any future execution starts from initial state (except [Heartbeats](/concepts/what-is-an-activity-heartbeat)).

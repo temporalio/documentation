@@ -1,5 +1,5 @@
 {
-    "file_name": "security.md",
+    "file_name": "security.mdx",
     "id": "security",
     "file_dir": "production-deployment/self-hosted-guide",
     "slug": "/self-hosted-guide/security",
@@ -8,7 +8,7 @@
     "sidebar_position": 3,
     "description": "This guide is an overview of the Temporal Platform security features.",
     "toc_max_heading_level": 4,
-    "add_tabs_support": true,
+    "add_tabs_support": false,
     "sections": [
         {
             "type": "p",

@@ -1,5 +1,5 @@
 {
-  "file_name": "visibility.md",
+  "file_name": "visibility.mdx",
   "id": "visibility",
   "slug": "/visibility",
   "file_dir": "concepts",
@@ -9,7 +9,7 @@
   "description": "This guide provides a comprehensive overview of Temporal Visibility.",
   "use_description": true,
   "toc_max_heading_level": 4,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "p",

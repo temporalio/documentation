@@ -1082,6 +1082,12 @@ h1 {
   overflow: none;
 }
 
+tdiiw img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain; /* ensures the image maintains its aspect ratio */
+}
+
 .tdi {
   max-width: 800px;
   padding: 0;

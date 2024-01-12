@@ -1,5 +1,5 @@
 {
-  "file_name": "cmd-options.md",
+  "file_name": "cmd-options.mdx",
   "file_dir": "cli",
   "id": "cmd-options",
   "title": "Temporal CLI command options reference",
@@ -7,7 +7,7 @@
   "description": "Explore the command-line options available in the Temporal CLI. Customize and configure various aspects of the CLI tool for seamless Workflow management.",
   "use_description": false,
   "toc_max_heading_level": 4,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "h2",

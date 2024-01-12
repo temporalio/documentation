@@ -1,6 +1,6 @@
 {
     "id": "namespace",
-    "file_name": "namespace.md",
+    "file_name": "namespace.mdx",
     "file_dir": "production-deployment/cloud/tcld",
     "slug": "/cloud/tcld/namespace/",
     "title": "tcld namespace command reference",
@@ -8,7 +8,7 @@
     "description": "The Temporal Cloud CLI (tcld) Namespace commands let you create, configure, update, list, and delete Namespaces, certificates, Certificate Filters, and Search Attributes in Temporal Cloud.",
     "use_description": false,
     "toc_max_heading_level": 4,
-    "add_tabs_support": true,
+    "add_tabs_support": false,
     "sections": [
         {
             "type": "p",

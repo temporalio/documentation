@@ -11,7 +11,7 @@ tags:
 An Update handler has a name, arguments, response, and an optional validator.
 
 - The name, also called an Update type, is a string.
-- The arguments and response must be [serializable](/dataconversion#).
+- The arguments and response must be [serializable](/concepts/what-is-a-data-converter).
 
 The `@UpdateMethod` annotation indicates that the method is used to handle and respond to update requests.
 

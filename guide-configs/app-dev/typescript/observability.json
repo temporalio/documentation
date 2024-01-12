@@ -1,6 +1,6 @@
 {
   "id": "observability",
-  "file_name": "observability.md",
+  "file_name": "observability.mdx",
   "slug": "/dev-guide/typescript/observability",
   "file_dir": "dev-guide/tscript",
   "title": "TypeScript SDK developer's guide - Observability",

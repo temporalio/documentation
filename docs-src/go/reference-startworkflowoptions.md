@@ -225,7 +225,7 @@ if err != nil {
 - Type: `map[string]interface{}`
 - Default: Empty.
 
-These are the corresponding [Search Attribute value types](/visibility#types) in Go:
+These are the corresponding [Search Attribute value types](/concepts/what-is-a-search-attribute#supported-types) in Go:
 
 - Keyword = string
 - Int = int64

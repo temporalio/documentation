@@ -35,4 +35,4 @@ You can delete a user in two other ways in Web UI:
 
 ### How to update an account-level Role using tcld
 
-For details, see the [tcld user delete](/cloud/tcld/user#delete) command.
+For details, see the [tcld user delete](/cloud/tcld/user/delete) command.

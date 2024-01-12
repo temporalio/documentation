@@ -1,5 +1,5 @@
 {
-  "file_name": "cluster.md",
+  "file_name": "cluster.mdx",
   "file_dir": "tctl-v1",
   "id": "cluster",
   "title": "tctl v1.17 cluster command reference",
@@ -7,7 +7,7 @@
   "description": "Explore the tctl Cluster commands, which can get all Search Attributes and check the health of the Frontend Service.",
   "use_description": false,
   "toc_max_heading_level": 4,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "p",

@@ -1,6 +1,6 @@
 {
     "id": "request",
-    "file_name": "request.md",
+    "file_name": "request.mdx",
     "file_dir": "production-deployment/cloud/tcld",
     "slug": "/cloud/tcld/request/",
     "title": "tcld request command reference",
@@ -8,7 +8,7 @@
     "description": "The Temporal Cloud CLI (tcld) request commands manage asynchronous requests in Temporal Cloud.",
     "use_description": false,
     "toc_max_heading_level": 4,
-    "add_tabs_support": true,
+    "add_tabs_support": false,
     "sections": [
         {
             "type": "p",

@@ -1,6 +1,6 @@
 {
     "id": "account",
-    "file_name": "account.md",
+    "file_name": "account.mdx",
     "file_dir": "production-deployment/cloud/tcld",
     "slug": "/cloud/tcld/account",
     "title": "tcld account command reference",
@@ -8,7 +8,7 @@
     "description": "The Temporal Cloud CLI (tcld) account commands manage accounts in Temporal Cloud. Get information about an account and configure the metrics endpoint.",
     "use_description": false,
     "toc_max_heading_level": 4,
-    "add_tabs_support": true,
+    "add_tabs_support": false,
     "sections": [
         {
             "type": "p",
