@@ -1,6 +1,6 @@
 {
     "id": "apikey",
-    "file_name": "apikey.md",
+    "file_name": "apikey.mdx",
     "file_dir": "production-deployment/cloud/tcld",
     "slug": "/cloud/tcld/apikey",
     "title": "tcld apikey command reference",
@@ -8,7 +8,7 @@
     "description": "The Temporal Cloud CLI (tcld) apikey commands manage API keys in Temporal Cloud. These commands allow you to create, retrieve, list, delete, disable, and enable API keys.",
     "use_description": false,
     "toc_max_heading_level": 4,
-    "add_tabs_support": true,
+    "add_tabs_support": false,
     "sections": [
         {
             "type": "p",

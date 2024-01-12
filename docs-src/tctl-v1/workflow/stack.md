@@ -8,7 +8,7 @@ tags:
   - cli reference
 ---
 
-The `tctl workflow stack` command queries [Workflow Execution](/workflows#workflow-execution) with `__stack_trace` as the query type.
+The `tctl workflow stack` command queries [Workflow Execution](/concepts/what-is-a-workflow-execution) with `__stack_trace` as the query type.
 
 This command can be used to locate errors and blocks in a [Workflow Definition](/concepts/what-is-a-workflow-definition).
 

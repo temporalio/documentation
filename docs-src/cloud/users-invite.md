@@ -61,7 +61,7 @@ To join Temporal Cloud, a user must select **Accept Invite** in the message.
 
 ### How to invite a user using tcld
 
-For details, see the [tcld user invite](/cloud/tcld/user#invite) command.
+For details, see the [tcld user invite](/cloud/tcld/user/invite) command.
 
 Temporal sends an email message to the specified user.
 To join Temporal Cloud, the user must select **Accept Invite** in the message.

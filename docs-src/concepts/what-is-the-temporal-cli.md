@@ -8,7 +8,7 @@ tags:
   - cli
 ---
 
-The Temporal CLI, evolving from its precursor [tctl](/concepts/what-is-the-temporal-cli), serves as a command-line interface that provides developers with direct access to a Temporal Cluster.
+The Temporal CLI, evolving from its precursor [tctl](/concepts/what-is-tctl-v1), serves as a command-line interface that provides developers with direct access to a Temporal Cluster.
 It's a powerful tool for managing, monitoring, and debugging Temporal Applications.
 With the Temporal CLI, developers can start Workflows, Signal or cancel them, and Query Workflow state, directly from their terminal.
 This interface also facilitates administrative tasks such as Namespace management.
@@ -73,7 +73,7 @@ temporal server start-dev --dynamic-config-value system.forceSearchAttributesCac
 
 This setting makes created Search Attributes immediately available.
 
-## Environmental variables
+## Environment variables
 
 Configure system environment with Temporal CLI environmental variables.
 The following table lists and describes the environment variables you can set for Temporal CLI.

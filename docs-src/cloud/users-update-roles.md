@@ -32,4 +32,4 @@ To update an account-level Role, a user must have the Global Admin account-level
 
 ### How to update an account-level Role using tcld
 
-For details, see the [tcld user set-account-role](/cloud/tcld/user#set-account-role) command.
+For details, see the [tcld user set-account-role](/cloud/tcld/user/set-account-role) command.

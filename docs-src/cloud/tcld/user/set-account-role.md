@@ -8,7 +8,7 @@ tags:
   - cli reference
 ---
 
-The `tcld user set-account-role` command sets an [account-level Role](/cloud/#account-level-roles) for the specified user in Temporal Cloud.
+The `tcld user set-account-role` command sets an [account-level Role](/cloud/users-account-level-roles) for the specified user in Temporal Cloud.
 You must set either `--user-email` or `--user-id`.
 
 Alias: `ri`

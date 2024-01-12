@@ -107,7 +107,7 @@ Alias: `--sa`
 
 _Can be specified more than once_
 
-A [Namespace-level permission](/cloud/#namespace-level-permissions) for a user in the form `_email_=_permission_`.
+A [Namespace-level permission](/cloud/users-namespace-level-permissions) for a user in the form `_email_=_permission_`.
 
 Valid values for _permission_: `Admin` | `Write` | `Read`
 

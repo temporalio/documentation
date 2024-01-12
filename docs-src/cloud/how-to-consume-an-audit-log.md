@@ -16,7 +16,7 @@ Subsequent logs arrive every 2 minutes if any actions occurred during that 2-min
 :::note
 
 You must configure and implement your own consumer of the Kinesis stream.
-For an example, see [Example of consuming an Audit Log](/#example-of-consuming-an-audit-log).
+For an example, see [Example of consuming an Audit Log](#example-of-consuming-an-audit-log).
 
 :::
 
