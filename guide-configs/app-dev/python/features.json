@@ -80,6 +80,18 @@
         },
         {
             "type": "h2",
+            "id": "python/updates"
+        },
+        {
+            "type": "h3",
+            "id": "python/generated/how-to-define-an-update-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/generated/how-to-send-an-update-from-a-client-in-python"
+        },
+        {
+            "type": "h2",
             "id": "python/what-is-a-dynamic-handler"
         },
         {

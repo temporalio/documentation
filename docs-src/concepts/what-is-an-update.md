@@ -16,6 +16,7 @@ tags:
 An Update is a request and response from a Temporal Client to a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 - [How to develop, send, and handle Updates in Go](/go/updates)
+- [How to develop, and send Updates in Python](/python/updates)
 - [How to develop, send, and handle Updates in Java](/java/updates)
 
 You can think of an Update as a synchronous, blocking call that could replace both a Signal and a Query. An update is:
