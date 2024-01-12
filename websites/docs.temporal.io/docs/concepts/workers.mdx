@@ -69,7 +69,7 @@ Therefore, a single Worker can handle millions of open Workflow Executions, assu
 
 ## What is a Worker Process? {#worker-process}
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Component diagram of a Worker Process and the Temporal Server</p></div><div class="tdiiw" height="422"><img class="img_ev3q" src="/diagrams/worker-and-server-component.svg" alt="Component diagram of a Worker Process and the Temporal Server" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Component diagram of a Worker Process and the Temporal Server</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/worker-and-server-component.svg" alt="Component diagram of a Worker Process and the Temporal Server" /></div></div>
 
 A Worker Process is responsible for polling a [Task Queue](#task-queue), dequeueing a [Task](#task), executing your code in response to a Task, and responding to the [Temporal Cluster](/clusters) with the results.
 
@@ -154,7 +154,7 @@ A Task Queue is a lightweight, dynamically allocated queue that one or more [Wor
 
 There are two types of Task Queues, Activity Task Queues and Workflow Task Queues.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Task Queue component</p></div><div class="tdiiw" height="500"><img class="img_ev3q" src="/diagrams/task-queue.svg" alt="Task Queue component" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Task Queue component</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/task-queue.svg" alt="Task Queue component" /></div></div>
 
 Task Queues are very lightweight components.
 Task Queues do not require explicit registration but instead are created on demand when a Workflow Execution or Activity spawns or when a Worker Process subscribes to it.
