@@ -12,4 +12,4 @@ This error indicates that the [Workflow Task](/concepts/what-is-a-workflow-task)
 These attributes are either unset or exceeding size limits.
 
 Reset any unset and empty atrributes.
-Adjust the size of the [Memo](/workflows/#memo) or payload to fit within the system's limits.
+Adjust the size of the [Memo](/concepts/what-is-a-memo) or payload to fit within the system's limits.

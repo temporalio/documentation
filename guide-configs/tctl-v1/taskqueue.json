@@ -1,5 +1,5 @@
 {
-  "file_name": "taskqueue.md",
+  "file_name": "taskqueue.mdx",
   "file_dir": "tctl-v1",
   "id": "taskqueue",
   "title": "tctl v1.17 taskqueue command reference",
@@ -7,7 +7,7 @@
   "description": "Explore the tctl Task Queue commands, which describe Task Queues and list the partitions of a Task Queue in a Temporal Cluster.",
   "use_description": false,
   "toc_max_heading_level": 4,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "p",

@@ -8,6 +8,15 @@ tags:
   - cli reference
 ---
 
+:::info Temporal CLI is now available
+
+The public preview of [Temporal CLI](/cli) is now available.
+We encourage you to begin using it and to provide feedback.
+
+After the release of Temporal CLI v1.0, tctl will deprecate.
+
+:::
+
 A [Schedule](/concepts/what-is-a-schedule) is an experimental feature available in `tctl 1.17` and `tctl next`.
 
 - [Backfill a Schedule using tctl](/tctl-v1/schedule/backfill)

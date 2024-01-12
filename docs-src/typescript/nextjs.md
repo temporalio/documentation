@@ -43,11 +43,11 @@ touch src/worker.ts src/workflows.ts src/activities.ts
 ```
 
 <details>
-<summary>
+    <summary>
 
-Configure TypeScript to compile from `temporal/src` to `temporal/lib` with a `tsconfig.json`.
+    Configure TypeScript to compile from `temporal/src` to `temporal/lib` with a `tsconfig.json`.
 
-</summary>
+    </summary>
 
 Sample `tsconfig.json` to get you started:
 
@@ -74,11 +74,11 @@ Sample `tsconfig.json` to get you started:
 </details>
 
 <details>
-<summary>
+    <summary>
 
-For convenience, you may want to set up some npm scripts to run the builds in your project root `package.json`.
+    For convenience, you may want to set up some npm scripts to run the builds in your project root `package.json`.
 
-</summary>
+    </summary>
 
 ```js
 // /package.json

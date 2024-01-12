@@ -4,7 +4,7 @@ title: Workflows in TypeScript
 sidebar_label: Workflows
 description: Workflows are async functions that can orchestrate Activities and access special Workflow APIs, subject to deterministic limitations.
 tags:
- - workflow
+  - workflow
 ---
 
 import Tabs from '@theme/Tabs';
@@ -133,7 +133,7 @@ The rest of this document explains the major Workflow APIs you should know:
 
 ## Signals and Queries
 
-> _Background reading: [Signals and Queries in Temporal](/workflows/#signals)_
+> _Background reading: [Signals and Queries in Temporal](/concepts/what-is-a-signal)_
 
 <RelatedReadContainer>
   <RelatedReadItem page={WhatIsASignal} />
@@ -549,9 +549,9 @@ The Workflow's V8 isolate environment completely replaces the JavaScript [`setTi
 We recommend using our [`sleep(timeout)`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) API instead, because it is a cancellation-aware Promise wrapper for `setTimeout`.
 
 <details>
-<summary>
-Why Durable Timers Are a Hard Problem
-</summary>
+    <summary>
+    Why Durable Timers Are a Hard Problem
+    </summary>
 
 JavaScript has a `setTimeout`, which seems relatively straightforward.
 However, they are held in memory - if your system goes down, those timers are gone.
@@ -661,7 +661,9 @@ export async function trackStepChanges(): Promise<void> {
 ```
 
 <details>
-<summary>Example usage in our Next.js One-Click Buy code sample</summary>
+    <summary>
+    Example usage in our Next.js One-Click Buy code sample
+    </summary>
 
 `condition` only returns true when the function evaluates to `true`; if the `condition` resolves as `false`, then a timeout has occurred.
 This leads to some nice patterns, like placing `await condition` inside an `if`:
@@ -709,9 +711,9 @@ The real value of `sleep` and `condition` is in knowing how to use them to model
 Here are some examples we use the most; we welcome more if you can think of them!
 
 <details>
-<summary>
-Racing Timers
-</summary>
+    <summary>
+    Racing Timers
+    </summary>
 
 Use `Promise.race` with Timers to dynamically adjust delays.
 
@@ -736,9 +738,9 @@ export async function processOrderWorkflow({
 
 </details>
 <details>
-<summary>
-Racing Signals
-</summary>
+    <summary>
+    Racing Signals
+    </summary>
 
 Use `Promise.race` with Signals and Triggers to have a promise resolve at the earlier of either system time or human intervention.
 
@@ -861,9 +863,9 @@ Triggers, like the [`condition()`](#condition) return value and other Promises, 
 Unlike Promises, they export `resolve` or `reject` methods, so you can programmatically control them.
 
 <details>
-<summary>
-Trigger Code Example
-</summary>
+    <summary>
+    Trigger Code Example
+    </summary>
 
 ```ts
 import { defineSignal, sleep, Trigger } from '@temporalio/workflow';
@@ -961,15 +963,15 @@ Special Notes:
 - Child Workflow Executions are [`CancellationScope`](/typescript/cancellation-scopes) aware and will automatically be cancelled when their containing scope is cancelled.
 
 <details>
-<summary>
-When to use Child Workflows vs Activities
-</summary>
+    <summary>
+    When to use Child Workflows vs Activities
+    </summary>
 
 Child Workflows and Activities are both started from Workflows, so you may feel confused about when to use which.
 Here are some important differences:
 
 - Child Workflows have access to all Workflow APIs, but are subject to [Workflow Limitations](/typescript/workflows#workflow-limitations). Activities have the inverse pros and cons.
-- Child Workflows can continue on if their Parent is canceled, with a [ParentClosePolicy](/concepts/what-is-a-parent-close-policy/) of `ABANDON`, whereas Activities are _always_ canceled when their Workflow is canceled (they may react to a [cancellationSignal](/typescript/activities#activity-cancellation) for cleanup if canceled). The decision is roughly analogous to spawning a child process in a terminal to do work vs doing work in the same process.
+- Child Workflows can continue on if their Parent is canceled, with a [ParentClosePolicy](/concepts/what-is-a-parent-close-policy/) of `ABANDON`, whereas Activities are _always_ canceled when their Workflow is canceled (they may react to a [cancellationSignal](/typescript/cancellation-scopes) for cleanup if canceled). The decision is roughly analogous to spawning a child process in a terminal to do work vs doing work in the same process.
 - Temporal tracks all state changes within Child Workflows in Event History, whereas only the input, output, and retry attempts of Activities are tracked.
 
 Activities usually model a single operation on the external world. Workflows are modeling composite operations that consist of multiple activities or other child workflows.
@@ -997,7 +999,10 @@ import PCP from '../concepts/what-is-a-parent-close-policy.md'
 We need to call `continueAsNew` before our Workflow History exceeds 51,200 Events. [Events](../concepts/what-is-an-event) are generated when a Workflow does various things involving Temporal Server, including calling an Activity, receiving a Signal, or calling `sleep`, but not handling a Query.
 
 <details>
-<summary>More info</summary>
+
+    <summary>
+        More info
+    </summary>
 
 [What is Continue-As-New?](/concepts/what-is-continue-as-new)
 

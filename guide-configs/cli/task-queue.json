@@ -1,5 +1,5 @@
 {
-  "file_name": "task-queue.md",
+  "file_name": "task-queue.mdx",
   "file_dir": "cli",
   "id": "task-queue",
   "title": "Temporal CLI task-queue command reference",
@@ -7,7 +7,7 @@
   "description": "Efficiently manage Task Queues with the Temporal CLI. Create, configure, and monitor Task Queues to optimize Workflow Execution and Task processing.",
   "use_description": false,
   "toc_max_heading_level": 4,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "p",

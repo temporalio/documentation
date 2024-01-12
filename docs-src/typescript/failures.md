@@ -4,9 +4,9 @@ title: Handling Failures in TypeScript
 sidebar_label: Handling Failures
 description: Failures in Temporal are structured and typed. They represent a variety of failure scenarios across the different SDKs and the server.
 tags:
-    - typescript
-    - failures
-    - error handling
+  - typescript
+  - failures
+  - error handling
 ---
 
 Failures in Temporal are structured and typed. They represent a variety of failure scenarios across the different SDKs and the server.
@@ -166,7 +166,7 @@ Any unhandled exception that doesn't extend [`TemporalFailure`](#temporalfailure
 
 `CancelledFailure` is thrown in a Workflow when a cancellation scope or the entire Workflow has been cancelled or set as the cause for when a Child Workflow or Activity has been cancelled.
 
-In an Activity, it may be thrown if the Activity was requested to be cancelled. More on activity cancellation [here](/typescript/activities#activity-cancellation).
+In an Activity, it may be thrown if the Activity was requested to be cancelled. More on activity cancellation [here](/typescript/cancellation-scopes).
 
 ### [ActivityFailure](https://typescript.temporal.io/api/classes/client.ActivityFailure)
 

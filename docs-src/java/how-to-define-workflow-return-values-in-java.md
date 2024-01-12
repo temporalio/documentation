@@ -16,4 +16,4 @@ Ensure that your Client can handle an Object type return or is able to convert t
 Related references:
 
 - [Data Converter](/concepts/what-is-a-data-converter)
-- Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
+- Java DataConverter reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)

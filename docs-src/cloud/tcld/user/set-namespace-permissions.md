@@ -8,7 +8,7 @@ tags:
   - cli reference
 ---
 
-The `tcld user set-namespace-permissions` command sets [Namespace-level permissions](/cloud/#namespace-level-permissions) for a specified user in Temporal Cloud.
+The `tcld user set-namespace-permissions` command sets [Namespace-level permissions](/cloud/users-namespace-level-permissions) for a specified user in Temporal Cloud.
 You must set either `--user-email` or `--user-id`.
 
 Alias: `snp`
@@ -52,7 +52,7 @@ Alias: `-v`
 
 #### --namespace-permission
 
-Specify the [Namespace-level permissions](/cloud/#namespace-level-permissions) for the invited user.
+Specify the [Namespace-level permissions](/cloud/users-namespace-level-permissions) for the invited user.
 You can supply this modifier multiple times to set multiple Namespace permissions in a single request.
 
 Each value must be in the format of `namespace=permission-type`.

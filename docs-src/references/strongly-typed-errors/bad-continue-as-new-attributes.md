@@ -8,7 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the [Workflow Task](/concepts/what-is-a-workflow-task) failed to validate a [ContinueAsNew](/references/commands/#continueasnew) attribute.
+This error indicates that the [Workflow Task](/concepts/what-is-a-workflow-task) failed to validate a [ContinueAsNew](/references/commands#continueasnewworkflowexecution) attribute.
 The attribute could be unset or invalid.
 
 Reset any missing attributes.

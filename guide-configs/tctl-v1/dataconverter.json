@@ -1,5 +1,5 @@
 {
-  "file_name": "dataconverter.md",
+  "file_name": "dataconverter.mdx",
   "file_dir": "tctl-v1",
   "id": "dataconverter",
   "title": "tctl v1.17 data-converter command reference",
@@ -7,7 +7,7 @@
   "description": "Explore the tctl Data Converter commands, which enable custom Data Converter operations on a Temporal Cluster.",
   "use_description": false,
   "toc_max_heading_level": 4,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "p",

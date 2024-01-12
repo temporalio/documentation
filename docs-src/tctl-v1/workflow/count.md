@@ -8,7 +8,7 @@ tags:
   - cli reference
 ---
 
-The `tctl workflow count` command counts [Workflow Executions](/workflows#workflow-execution).
+The `tctl workflow count` command counts [Workflow Executions](/concepts/what-is-a-workflow-execution).
 This command requires Elasticsearch to be enabled.
 
 `tctl workflow count <modifiers>`
@@ -25,7 +25,7 @@ Alias: `-q`
 
 **Example**
 
-To count all open [Workflow Executions](/workflows#workflow-execution):
+To count all open [Workflow Executions](/concepts/what-is-a-workflow-execution):
 
 ```bash
 tctl workflow count --query 'ExecutionStatus="Running"'

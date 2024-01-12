@@ -8,7 +8,7 @@ tags:
   - cli reference
 ---
 
-The `tctl workflow listarchived` command lists archived [Workflow Executions](/workflows#workflow-execution).
+The `tctl workflow listarchived` command lists archived [Workflow Executions](/concepts/what-is-a-workflow-execution).
 
 By default, this command lists a maximum of 100 Workflow Executions.
 
@@ -97,7 +97,7 @@ tctl workflow listarchived --query <value>
 
 ### --pagesize
 
-Specify the maximum number of [Workflow Executions](/workflows#workflow-execution) to list on a page.
+Specify the maximum number of [Workflow Executions](/concepts/what-is-a-workflow-execution) to list on a page.
 (By default, the `tctl workflow listarchived` command lists 100 Workflow Executions per page.)
 
 **Example**

@@ -1,6 +1,6 @@
 {
   "id": "testing",
-  "file_name": "testing.md",
+  "file_name": "testing.mdx",
   "slug": "/dev-guide/php/testing",
   "file_dir": "dev-guide/phplang",
   "title": "PHP SDK developer's guide - Testing",

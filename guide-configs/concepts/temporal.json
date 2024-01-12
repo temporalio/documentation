@@ -1,5 +1,5 @@
 {
-  "file_name": "temporal.md",
+  "file_name": "temporal.mdx",
   "id": "temporal",
   "slug": "/temporal",
   "file_dir": "concepts",
@@ -9,7 +9,7 @@
   "description": "Discover the Temporal Platform, a runtime for durable executions that consists of a Temporal Cluster and Worker Processes, plus SDKs in multiple languages.",
   "use_description": false,
   "toc_max_heading_level": 4,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "p",

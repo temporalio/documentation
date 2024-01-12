@@ -26,7 +26,7 @@ This modifier is required unless the global `--namespace` modifier is specified 
 tctl namespace describe --namespace_id <id>
 ```
 
-Example results for a [Global Namespace](/namespaces/#global-namespaces)
+Example results for a [Global Namespace](/concepts/what-is-a-global-namespace)
 
 ```bash
 $ tctl --ns canary-namespace n desc

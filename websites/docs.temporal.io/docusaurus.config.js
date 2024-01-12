@@ -44,8 +44,8 @@ module.exports = {
     },
     metadata: [{ name: "robots", content: "follow, index" }],
     prism: {
-      theme: require("prism-react-renderer/themes/nightOwlLight"),
-      darkTheme: require("prism-react-renderer/themes/dracula"),
+      //theme: require("prism-react-renderer/themes/nightOwlLight"),
+      // darkTheme: require("prism-react-renderer/themes/dracula"),
       additionalLanguages: ["java", "ruby", "php"],
     },
     docs: {
@@ -228,67 +228,9 @@ module.exports = {
           // // below remark plugin disabled until we can figure out why it is not transpiling to ESNext properly - swyx
           // // original PR https://github.com/temporalio/documentation/pull/496/files
           admonitions: {
-            tag: ":::",
             keywords: ["note", "tip", "info", "caution", "danger", "competency", "copycode"],
           },
-          remarkPlugins: [
-            [
-              () =>
-                function addTSNoCheck(tree) {
-                  // Disable TS type checking for any TypeScript code blocks.
-                  // This is because imports are messy with snipsync: we don't
-                  // have a way to pull in a separate config for every example
-                  // snipsync pulls from.
-                  function visitor(node) {
-                    if (!/^ts$/.test(node.lang)) {
-                      return;
-                    }
-                    node.value = "// @ts-nocheck\n" + node.value;
-                  }
-
-                  visit(tree, "code", visitor);
-                },
-              {},
-            ],
-            [
-              require("remark-typescript-tools").transpileCodeblocks,
-              {
-                compilerSettings: {
-                  tsconfig: path.join(__dirname, "tsconfig.json"),
-                  externalResolutions: {},
-                },
-                fileExtensions: [".md", ".mdx"],
-                // remark-typescript-tools automatically running prettier with a custom config that doesn't
-                // line up with ours. This disables any post processing, including the default prettier step.
-                postProcessTs: (files) => files,
-                postProcessTranspiledJs: (files) => files,
-              },
-            ],
-            [
-              () =>
-                function removeTSNoCheck(tree) {
-                  function visitor(node) {
-                    if (!/^ts$/.test(node.lang) && !/^js$/.test(node.lang)) {
-                      return;
-                    }
-                    if (node.value.startsWith("// @ts-nocheck\n")) {
-                      node.value = node.value.slice("// @ts-nocheck\n".length);
-                      if (node.lang === "ts") {
-                        node.value = dedent(node.value);
-                      }
-                    }
-                    // If TS compiled output is empty, replace it with a more helpful comment
-                    if (node.lang === "js" && node.value.trim() === "export {};") {
-                      node.value = "// Not required in JavaScript";
-                    } else if (node.lang === "js") {
-                      node.value = convertIndent4ToIndent2(node.value).trim();
-                    }
-                  }
-                  visit(tree, "code", visitor);
-                },
-              {},
-            ],
-          ],
+          remarkPlugins: [],
         },
         // Will be passed to @docusaurus/plugin-content-blog
         // options: https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog
