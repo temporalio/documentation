@@ -19,6 +19,6 @@ Each Namespace in Temporal Cloud has two unique endpoints, both of which include
 To ensure the security of your data, all traffic to and from your Namespace is encrypted.
 However, for enhanced protection, you have additional options:
 
-- (recommended} Set up [PrivateLink](https://aws.amazon.com/privatelink/) by [creating a ticket for Temporal Support](/cloud/support-create-ticket).
+- (recommended) Set up [PrivateLink](https://aws.amazon.com/privatelink/) by [creating a ticket for Temporal Support](/cloud/support-create-ticket).
   If you don't host your Clients and Workers on AWS, you can create an AWS account to proxy traffic through.
 - Allow list, for outgoing network requests from your Clients and Workers, the [IP address ranges](https://docs.aws.amazon.com/vpc/latest/userguide/aws-ip-ranges.html) of the AWS region in which your Namespace is located.
