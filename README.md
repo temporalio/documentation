@@ -6,33 +6,55 @@ Welcome to Temporal's documentation repository!
 
 **Table of contents**
 
-- [What is the goal of this README?](#what-is-the-goal-of-this-readme)
-  - [What is the “Temporal Platform information corpus”?](#what-is-the-temporal-platform-information-corpus)
-- [What is in this repository?](#what-is-in-this-repository)
-  - [/docs-src information nodes](#docs-src-information-nodes)
-  - [/docs generated files for Docusaurus](#docs-generated-files-for-docusaurus)
-  - [/assembly Assembly Workflow](#assembly-assembly-workflow)
-  - [Snipsync code synchronization tooling](#snipsync-code-synchronization-tooling)
-- [How to get approval to create a pull request](#how-to-get-approval-to-create-a-pull-request)
-- [How to fix a typo](#how-to-fix-a-typo)
-- [How to make changes to this repository](#how-to-make-changes-to-this-repository)
-  - [How to install the dependencies for this repo](#how-to-install-the-dependencies-for-this-repo)
-  - [How to follow style guidance](#how-to-follow-style-guidance)
-  - [What is the philosophy around versioning the documentation?](#what-is-the-philosophy-around-versioning-the-document)
-  - [How to explicitly identify support, stability, and dependency info](#how-to-explicitly-identify-support-stability-and-dependency-info)
-  - [How to auto-format files](#how-to-auto-format-files)
-  - [How to run the Assembly Workflow](#how-to-run-the-assembly-workflow)
-  - [How to create a guide configuration](#how-to-create-a-guide-configuration)
-  - [How to use DACX](#how-to-use-dacx)
-- [Local development command reference](#local-development-command-reference)
-  - [`yarn`](#yarn)
-  - [`yarn build`](#yarn-build)
-  - [`yarn start`](#yarn-start)
-  - [`yarn assemble`](#yarn-assemble)
-    - [`--cloud`](#--cloud)
-    - [`--samples`](#--samples)
-  - [`yarn format`](#yarn-format)
-  - [`yarn snipsync`](#yarn-snipsync)
+- [Temporal documentation](#temporal-documentation)
+  - [What is the goal of this README?](#what-is-the-goal-of-this-readme)
+    - [What is the “Temporal Platform information corpus”?](#what-is-the-temporal-platform-information-corpus)
+  - [What is in this repository?](#what-is-in-this-repository)
+    - [`/docs-src` information nodes](#docs-src-information-nodes)
+    - [`website/docs.temporal.io/docs` generated files for Docusaurus](#websitedocstemporaliodocs-generated-files-for-docusaurus)
+    - [`/assembly` Assembly Workflow](#assembly-assembly-workflow)
+    - [`/guide-configs` Guide configurations](#guide-configs-guide-configurations)
+      - [DACX information node generation tooling](#dacx-information-node-generation-tooling)
+    - [Snipsync code synchronization tooling](#snipsync-code-synchronization-tooling)
+  - [How to get approval to create a pull request](#how-to-get-approval-to-create-a-pull-request)
+  - [How to fix a typo](#how-to-fix-a-typo)
+  - [How to make changes to this repository](#how-to-make-changes-to-this-repository)
+    - [How to install the dependencies for this repo](#how-to-install-the-dependencies-for-this-repo)
+    - [How to follow style guidance](#how-to-follow-style-guidance)
+      - [Capitalization of core terms](#capitalization-of-core-terms)
+      - [Abbreviation of "identifier"](#abbreviation-of-identifier)
+      - [En dashes in ranges](#en-dashes-in-ranges)
+      - [Infinitive verb forms in headings](#infinitive-verb-forms-in-headings)
+      - [Infinitive verb forms in labels](#infinitive-verb-forms-in-labels)
+      - [Sentence casing in headings](#sentence-casing-in-headings)
+    - [What is the philosophy around versioning the documentation?](#what-is-the-philosophy-around-versioning-the-documentation)
+      - [How to explicitly identify support, stability, and dependency info](#how-to-explicitly-identify-support-stability-and-dependency-info)
+    - [How to find broken links](#how-to-find-broken-links)
+    - [How to run the Assembly Workflow](#how-to-run-the-assembly-workflow)
+    - [How to create a guide configuration](#how-to-create-a-guide-configuration)
+    - [How to use DACX](#how-to-use-dacx)
+      - [Identify DACX files](#identify-dacx-files)
+      - [Write documentation using vanilla Markdown](#write-documentation-using-vanilla-markdown)
+      - [Use `@dacx` comments to identify information nodes](#use-dacx-comments-to-identify-information-nodes)
+      - [Basic line-selection requirements](#basic-line-selection-requirements)
+      - [Use Assembly to generate the info nodes](#use-assembly-to-generate-the-info-nodes)
+      - [Add info nodes to an Assembly guide config](#add-info-nodes-to-an-assembly-guide-config)
+      - [Run Assembly one more time](#run-assembly-one-more-time)
+    - [How to use Snipsync](#how-to-use-snipsync)
+    - [How to create a pull request](#how-to-create-a-pull-request)
+      - [Assembly Workflow merge conflicts](#assembly-workflow-merge-conflicts)
+  - [Autogenerate table of contents](#autogenerate-table-of-contents)
+    - [Functions](#functions)
+    - [How to preview the site locally](#how-to-preview-the-site-locally)
+  - [Local development command reference](#local-development-command-reference)
+    - [`yarn`](#yarn)
+    - [`yarn build`](#yarn-build)
+    - [`yarn start`](#yarn-start)
+    - [`yarn assemble`](#yarn-assemble)
+      - [`--cloud`](#--cloud)
+      - [`--samples`](#--samples)
+    - [`yarn format`](#yarn-format)
+    - [`yarn snipsync`](#yarn-snipsync)
     - [`--clear`](#--clear)
 
 ## What is the goal of this README?
@@ -63,10 +85,10 @@ Each component is explained later in this README.
 
 ### `/docs-src` information nodes
 
-This directory contains editable Markdown files, known as "information nodes," that are used to generate the guides seen in the `/docs` directory and on our website.
+This directory contains editable Markdown files, known as "information nodes," that are used to generate the guides seen in the `/websites/docs.temporal.io/docs` directory and on our website.
 These nodes are registered to the Assembly Workflow with guide configurations. These configuration files can be found in `/assembly/guide-configs`.
 
-### `website/docs` generated files for Docusaurus
+### `website/docs.temporal.io/docs` generated files for Docusaurus
 
 This directory contains the Markdown files that map directly to what you see in the documentation site. For example, `/docs/concepts/workflows` maps to [docs.temporal.io/workflows](http://docs.temporal.io/workflows).
 
@@ -83,13 +105,15 @@ Please make comments and suggestions in the appropriate source nodes.
 
 ### `/assembly` Assembly Workflow
 
-The `/assembly` directory contains a Temporal Application written in JavaScript that uses Temporal's TypeScript SDK. This application acts as a build wrapper around the Docusaurus framework to assemble and generate the files in `/docs`.
+The `/assembly` directory contains a Temporal Application written in JavaScript that uses Temporal's TypeScript SDK. This application acts as a build wrapper around the Docusaurus framework to assemble and generate the files in `/websites/docs.temporal.io/docs`.
 
-Generated files are composed of many individual files, known as information nodes, contained in the `docs-src` directory.
+Generated files are composed of many individual files, known as information nodes, contained in the `/docs-src` directory.
 
 Modularizing our content not only tidies up the repository but also provides a great example of Temporal at work. Our pre-build processes, a set of independent scripts, are invoked in a Temporal Workflow to generate and format what goes into Docusaurus.
 
-Each JSON configuration file in [assembly/guide-configs](https://github.com/temporalio/documentation/blob/main/assembly/guide-configs) represents a user-facing narrative that pieces together concepts, how-to guides, and SDK-specific developer guides.
+### `/guide-configs` Guide configurations
+
+Each JSON configuration file in [`/guide-configs`](https://github.com/temporalio/documentation/blob/main/guide-configs) represents a user-facing narrative that pieces together concepts, how-to guides, and SDK-specific developer guides.
 
 Run the Assembly Workflow with a local Cluster (such as [Temporal CLI](https://docs.temporal.io/kb/all-the-ways-to-run-a-cluster#temporal-cli)) or [Temporal Cloud](https://docs.temporal.io/cloud/).
 
@@ -151,15 +175,10 @@ Open another terminal. Run the Workflow from the root of the repository.
 yarn assemble
 ```
 
-Format all files.
+Optionally, make sure you have a working build (the Github CI tools will check this too):
 
 ```bash
-yarn format
-```
-
-Make sure you have a working build:
-
-```bash
+cd websites/docs.temporal.io
 yarn build
 ```
 
@@ -294,12 +313,6 @@ ssdi:
 ---
 ```
 
-### How to auto-format files
-
-Run `yarn format`.
-
-If you don't run this command locally before posting a pull request, a GitHub action runs the formatting.
-
 ### How to find broken links
 
 [hyperlink](https://www.npmjs.com/package/hyperlink) is a command-line tool to find broken links.
@@ -335,12 +348,6 @@ In a third terminal, start the Workflow from the root of this repository.
 
 ```bash
 yarn assemble
-```
-
-After the Workflow Execution is completed, run the auto-formatter.
-
-```bash
-yarn format
 ```
 
 ### How to create a guide configuration
