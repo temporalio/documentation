@@ -67,7 +67,7 @@ These Search Attributes are created when the initial index is created.
 - All default Search Attributes are reserved and read-only.
   You cannot create a custom one with the same name or alter the existing one.
 
-- Search attributes cannot be encrypted in the system.
+- Search attributes are not encrypted in the system.
   Do not use PII as either the search attribute name or the value.
 
 - ExecutionStatus values correspond to Workflow Execution statuses: Running, Completed, Failed, Canceled, Terminated, ContinuedAsNew, TimedOut.
