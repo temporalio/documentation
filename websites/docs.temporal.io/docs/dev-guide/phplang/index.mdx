@@ -18,6 +18,7 @@ tags:
 
 This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
 
+
 ## Foundations
 
 The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
@@ -35,8 +36,8 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
-- [Signals in PHP](/dev-guide/php/features#signals):
-- [Queries in PHP](/dev-guide/php/features#queries):
+- [Signals in PHP](/dev-guide/php/features#signals): 
+- [Queries in PHP](/dev-guide/php/features#queries): 
 - [Workflow timeouts](/dev-guide/php/features#workflow-timeouts): Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 - [How to set Activity timeouts](/dev-guide/php/features#activity-timeouts): Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 - [How to Heartbeat an Activity](/dev-guide/php/features#activity-heartbeats): An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
@@ -54,6 +55,7 @@ Improve observability in your PHP-based Temporal Workflows. View which Workflow 
 
 - [How to use Visibility APIs](/dev-guide/php/observability#visibility): The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
 
+
 ## Testing
 
 The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
@@ -67,4 +69,5 @@ The Testing section of the Temporal Developer's guide covers the many ways to te
 The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.
 
 - [Debugging](/dev-guide/php/debugging#debug): Testing provides a framework to facilitate Workflow and integration testing.
+
 
