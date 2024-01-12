@@ -1,5 +1,5 @@
 {
-  "file_name": "workflow.md",
+  "file_name": "workflow.mdx",
   "file_dir": "tctl-v1",
   "id": "workflow",
   "title": "tctl v1.17 workflow command reference",
@@ -7,7 +7,7 @@
   "description": "Explore the wide range of tctl Workflow commands for efficient management of Workflow Executions in a Temporal Cluster.",
   "use_description": false,
   "toc_max_heading_level": 4,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "p",

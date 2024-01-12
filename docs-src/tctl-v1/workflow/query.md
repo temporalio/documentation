@@ -10,7 +10,7 @@ tags:
 
 Alias: `q`
 
-The `tctl workflow query` command sends a [Query](/concepts/what-is-a-query) to a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow query` command sends a [Query](/concepts/what-is-a-query) to a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 Queries can be used to retrieve all or part of the Workflow state with given parameters.
 

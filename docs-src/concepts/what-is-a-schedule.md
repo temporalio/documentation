@@ -18,11 +18,12 @@ ssdi:
   - Available in [gRPC API](https://api-docs.temporal.io/#temporal.api.workflowservice.v1.CreateScheduleRequest)
 ---
 
-A Schedule contains instructions for starting a [Workflow Execution](/workflows#workflow-execution) at specific times.
+A Schedule contains instructions for starting a [Workflow Execution](/concepts/what-is-a-workflow-execution) at specific times.
 Schedules provide a more flexible and user-friendly approach than [Temporal Cron Jobs](/concepts/what-is-a-temporal-cron-job).
 
 - [How to enable Schedules](#limitations)
-- [How to operate Schedules using tctl](/tctl-v1/schedule#)
+- [How to operate Schedules using the Temporal CLI](/cli/schedule/index)
+- [How to operate Schedules using tctl](/tctl-v1/schedule/index)
 
 A Schedule has an identity and is independent of a Workflow Execution.
 This differs from a Temporal Cron Job, which relies on a cron schedule as a property of the Workflow Execution.
@@ -115,7 +116,7 @@ For more operational control, embed the contents of the time zone database file 
 
 A Schedule can be Paused.
 When a Schedule is Paused, the Spec has no effect.
-However, you can still force manual actions by using the [tctl schedule trigger](/tctl-v1/schedule#trigger) command.
+However, you can still force manual actions by using the [tctl schedule trigger](/tctl-v1/schedule/trigger) command.
 
 To assist communication among developers and operators, a “notes” field can be updated on pause or resume to store an explanation for the current state.
 

@@ -1,5 +1,5 @@
 {
-  "file_name": "admin.md",
+  "file_name": "admin.mdx",
   "file_dir": "tctl-v1",
   "id": "admin",
   "title": "tctl v1.17 admin command reference",
@@ -7,7 +7,7 @@
   "description": "Explore the wide range of tctl admin commands that let you run admin operations on a Temporal Cluster.",
   "use_description": false,
   "toc_max_heading_level": 4,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "p",

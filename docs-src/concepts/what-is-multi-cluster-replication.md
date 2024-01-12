@@ -51,8 +51,9 @@ A cluster can mutate a Workflow Execution History only if the following is true:
   `(last event's version) <= (version in namespace)`
 
 <details>
-<summary>Namespace version change example
-</summary>
+    <summary>
+      Namespace version change example
+    </summary>
 
 Assuming the following scenario:
 
@@ -98,8 +99,9 @@ Whenever there is a new Workflow Execution History entry generated, the version 
 The Workflow Executions's mutable state will keep track of all history entries (events) and the corresponding version.
 
 <details>
-<summary>Version history example (without data conflict)
-</summary>
+    <summary>
+        Version history example (without data conflict)
+    </summary>
 
 - Cluster A comes with initial version: 1
 - Cluster B comes with initial version: 2
@@ -191,8 +193,9 @@ View in both Cluster A & B
 Since Temporal is AP, during failover (change of active Temporal Cluster Namespace), there can exist cases where more than one Cluster can modify a Workflow Execution, causing divergence of Workflow Execution History. Below shows how the version history will look like under such conditions.
 
 <details>
-<summary>Version history example (with data conflict)
-</summary>
+    <summary>
+      Version history example (with data conflict)
+    </summary>
 
 Below, shows version history of the same Workflow Execution in 2 different Clusters.
 

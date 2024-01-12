@@ -1,6 +1,6 @@
 {
     "id": "service-availability",
-    "file_name": "sevice-availability.md",
+    "file_name": "sevice-availability.mdx",
     "slug": "/cloud/service-availability",
     "file_dir": "production-deployment/cloud/introduction",
     "title": "Service availability - Temporal Cloud",
