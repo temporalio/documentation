@@ -3,7 +3,7 @@
   "file_dir": "dev-guide/golang",
   "slug": "/dev-guide/go/features",
   "id": "features",
-  "title": "Go SDK developer's guide - Features",
+  "title": "Features - Go SDK feature guide",
   "sidebar_label": "Features",
   "sidebar_position": 5,
   "description": "The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.",

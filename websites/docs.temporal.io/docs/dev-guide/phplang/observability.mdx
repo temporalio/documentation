@@ -1,6 +1,6 @@
 ---
 id: observability
-title: PHP SDK developer's guide - Observability
+title: Observability - PHP SDK feature guide
 sidebar_label: Observability
 sidebar_position: 3
 description: Improve observability in your PHP-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
