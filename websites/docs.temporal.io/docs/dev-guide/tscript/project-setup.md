@@ -1,7 +1,7 @@
 ---
 id: ts-project-setup
 title: Set up a Temporal Application project - TypeScript SDK dev guide
-sidebar_label: Ch. Project setup
+sidebar_label: Project setup
 sidebar_position: 2
 description: The project setup section of the Temporal TypeScript SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in TypeScript—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/typescript/project-setup

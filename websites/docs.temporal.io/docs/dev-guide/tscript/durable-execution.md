@@ -1,7 +1,7 @@
 ---
 id: durable-execution
 title: Develop code that durably executes - TypeScript SDK dev guide
-sidebar_label: Ch. Develop for durability
+sidebar_label: Develop for durability
 sidebar_position: 3
 description: The Durable Execution section of the Temporal Developer's guide covers advanced beginner concepts for working with Temporal, including testing your code, reviewing workflow event history, adding timers, and understanding determinism. Developing for durable execution is a core aspect of Temporal.
 slug: /dev-guide/typescript/durable-execution
