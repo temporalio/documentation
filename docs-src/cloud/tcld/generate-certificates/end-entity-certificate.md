@@ -53,7 +53,7 @@ tcld generate-certificates end-entity-certificate --validity-period <value>
 
 #### --ca-certificate-file
 
-Specify the path of the X.509 CA certificate for the certificate authority.
+Specify the path of the X.509 CA certificate in a `.pem` file for the certificate authority.
 
 Alias: `--ca-cert`
 
@@ -65,7 +65,7 @@ tcld generate-certificates end-entity-certificate --ca-certificate-file <path>
 
 #### --ca-key-file
 
-Specify the path of the private key for the certificate authority.
+Specify the path of the private key in a `.key` file for the certificate authority.
 
 Alias: `--ca-key`
 
@@ -77,7 +77,7 @@ tcld generate-certificates end-entity-certificate --ca-key-file <path>
 
 #### --certificate-file
 
-Specify a path where the generated X.509 leaf certificate file will be stored.
+Specify a path to a `.pem` file where the generated X.509 leaf certificate file will be stored.
 
 Alias: `--cert`
 
@@ -89,7 +89,7 @@ tcld generate-certificates end-entity-certificate --certificate-file <path>
 
 #### --key-file
 
-Specify a path where the leaf certificate's private key will be stored.
+Specify a path to a `.key` file where the leaf certificate's private key will be stored.
 
 Alias: `--key`
 
