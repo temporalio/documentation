@@ -249,8 +249,7 @@ We recommend using a self-hosted environment if you are starting something new a
 
 For example, running a self-hosted Cluster lets you try different databases, view Cluster metrics, use custom [Search Attributes](/visibility#search-attribute), and even play with the [Archival](/clusters#archival) feature.
 
-It's completely possible to run a production level self-hosted Cluster.
-However, for the purposes of this guide, we show how to use a self-hosted environment that runs completely out of Docker.
+For the purposes of this guide, we show how to use a self-hosted environment that runs completely out of Docker.
 We acknowledge that it takes a fair amount of experience to elevate from a self-hosted environment in Docker to something that can run at an enterprise production scale.
 The self-hosted information in this guide should help you make more informed decisions.
 
