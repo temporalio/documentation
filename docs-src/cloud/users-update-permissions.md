@@ -43,4 +43,4 @@ A user who has the Global Admin account-level [Role](/cloud/users-account-level-
 
 ### How to update Namespace-level permissions using tcld
 
-For details, see the [tcld user set-namespace-permissions](/cloud/tcld/user#set-namespace-permissions) command.
+For details, see the [tcld user set-namespace-permissions](/cloud/tcld/user/set-namespace-permissions) command.

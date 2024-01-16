@@ -8,7 +8,7 @@ tags:
   - cli reference
 ---
 
-The `tctl admin workflow describe` command describes internal information of the current [Workflow Execution](/workflows/#workflow-execution).
+The `tctl admin workflow describe` command describes internal information of the current [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 #### --workflow_id value
 

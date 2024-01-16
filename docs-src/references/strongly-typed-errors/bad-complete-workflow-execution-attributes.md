@@ -8,7 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the [Workflow Task](/concepts/what-is-a-workflow-task) failed due to unset attributes on [CompleteWorkflowExecution](/references/commands/#completeworkflowexecution).
+This error indicates that the [Workflow Task](/concepts/what-is-a-workflow-task) failed due to unset attributes on [CompleteWorkflowExecution](/references/commands#completeworkflowexecution).
 
 Reset any missing attributes.
 Adjust the size of your Payload if it exceeds size limits.

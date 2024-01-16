@@ -1,0 +1,18 @@
+{
+  "file_name": "security.mdx",
+  "id": "security",
+  "file_dir": "/",
+  "slug": "/security",
+  "title": "Temporal Platform security",
+  "sidebar_label": "Security",
+  "sidebar_position": 6,
+  "description": "Find resources about the security features of the Temporal Platform.",
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "platform-overview/security"
+    }
+  ]
+}

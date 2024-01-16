@@ -1,0 +1,81 @@
+{
+  "file_name": "workflow.mdx",
+  "file_dir": "cli",
+  "id": "workflow",
+  "title": "Temporal CLI workflow command reference",
+  "sidebar_label": "workflow",
+  "description": "Effectively manage Workflows with the Temporal CLI. Explore comprehensive documentation on commands and options for Workflow management and monitoring.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "cli/workflow/index"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/cancel"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/count"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/delete"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/describe"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/execute"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/list"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/query"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/reset"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/reset-batch"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/show"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/signal"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/stack"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/start"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/terminate"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/trace"
+    },
+    {
+      "type": "h2",
+      "id": "cli/workflow/update"
+    }
+  ]
+}

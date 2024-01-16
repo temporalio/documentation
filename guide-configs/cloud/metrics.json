@@ -1,0 +1,39 @@
+{
+    "file_name": "cloud-metrics.mdx",
+    "id": "metrics",
+    "file_dir": "production-deployment/cloud",
+    "slug": "/cloud/metrics",
+    "title": "Metrics - Temporal Cloud feature guide",
+    "sidebar_label": "Metrics",
+    "sidebar_position": 5,
+    "description": "Configure and track performance metrics for Temporal Cloud.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cloud/metrics-intro"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/configure-metrics-endpoint-using-ui"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/configure-metrics-endpoint-using-cli"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/emitted-metrics"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/how-to-use-metrics"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/prometheus-grafana-setup"
+        }
+    ]
+}

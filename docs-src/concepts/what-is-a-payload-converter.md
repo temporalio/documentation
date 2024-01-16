@@ -20,7 +20,7 @@ For more information, see the API references.
 - [Python](https://python.temporal.io/temporalio.converter.PayloadConverter.html)
 - [TypeScript](https://typescript.temporal.io/api/interfaces/common.PayloadConverter)
 
-For supported values, see [default Data Converter](/dataconversion#default-data-converter).
+For supported values, see [default Data Converter](/concepts/what-is-a-data-converter#default-data-converter).
 
 #### Custom payload conversion
 

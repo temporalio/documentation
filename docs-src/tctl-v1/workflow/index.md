@@ -8,7 +8,7 @@ tags:
   - cli reference
 ---
 
-The `tctl workflow` commands enable [Workflow Execution](/workflows#workflow-execution) operations.
+The `tctl workflow` commands enable [Workflow Execution](/concepts/what-is-a-workflow-execution) operations.
 
 - [tctl workflow cancel](/tctl-v1/workflow/cancel)
 - [tctl workflow count](/tctl-v1/workflow/count)

@@ -24,7 +24,7 @@ The following fields are available:
 | [`RetryOptions`](#retryoptions)                         | No                   | [`RetryOptions`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.17.0/io/temporal/common/RetryOptions.html) |
 | [`CronSchedule`](#cronschedule)                         | No                   | String                                                                                                               |
 | [`Memo`](#memo)                                         | No                   | string                                                                                                               |
-| [`SearchAttributes`](#searchattributes)                 | No                   | Map<String, Object>                                                                                                  |
+| [`SearchAttributes`](#searchattributes)                 | No                   | `Map<String, Object>`                                                                                                |
 
 #### WorkflowId
 

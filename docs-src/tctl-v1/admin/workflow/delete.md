@@ -8,7 +8,7 @@ tags:
   - cli reference
 ---
 
-The `tctl admin workflow delete` command deletes the current [Workflow Execution](/workflows/#workflow-execution) and the mutableState record.
+The `tctl admin workflow delete` command deletes the current [Workflow Execution](/concepts/what-is-a-workflow-execution) and the mutableState record.
 
 #### --db_engine value
 

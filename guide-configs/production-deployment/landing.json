@@ -1,0 +1,19 @@
+{
+    "file_name": "index.mdx",
+    "id": "index",
+    "slug": "/production-deployment",
+    "file_dir": "production-deployment",
+    "title": "Temporal Platform production deployments",
+    "sidebar_label": "Production deployments",
+    "sidebar_position": 4,
+    "description": "Learn more about how to deploy a Temporal Application to production.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "production-deployment/landing"
+        }
+    ]
+}

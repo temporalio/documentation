@@ -1,0 +1,19 @@
+{
+    "file_name": "index.mdx",
+    "id": "index",
+    "slug": "/dev-guide/java",
+    "file_dir": "dev-guide/javalang",
+    "title": "Temporal Java SDK developer's guide",
+    "sidebar_label": "Java SDK developer's guide",
+    "sidebar_position": 2,
+    "description": "The Temporal Java SDK developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "java/landing-page/java-dev-guide-structure"
+        }
+    ]
+}

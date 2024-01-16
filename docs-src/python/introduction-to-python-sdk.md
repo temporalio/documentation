@@ -115,7 +115,8 @@ Additional Python code samples are in the [temporalio/samples-python](https://gi
 
 ### What are the supported Python versions? {#python-versions}
 
-- Python 3.7+
+- Temporal Python SDK 1.4 supports Python versions 3.7 to 3.11.
+- Temporal Python SDK 1.5 and later versions support Python 3.8 and above.
 
 ## Where can I get help with using the Python SDK? {#help}
 

@@ -8,7 +8,7 @@ tags:
   - explanation
 ---
 
-Temporal is a scalable and reliable runtime for durable function executions called [Temporal Workflow Executions](/workflows#workflow-execution).
+Temporal is a scalable and reliable runtime for durable function executions called [Temporal Workflow Executions](/concepts/what-is-a-workflow-execution).
 
 Said another way, it's a platform that guarantees the [Durable Execution](/concepts/what-is-durable-execution) of your application code.
 

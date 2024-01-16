@@ -1,0 +1,19 @@
+{
+    "file_name": "index.mdx",
+    "id": "index",
+    "slug": "/dev-guide/typescript",
+    "file_dir": "dev-guide/tscript",
+    "title": "Temporal TypeScript SDK developer's guide",
+    "sidebar_label": "TypeScript SDK developer's guide",
+    "sidebar_position": 6,
+    "description": "The Temporal TypeScript SDK developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "typescript/landing-page/typescript-dev-guide-structure"
+        }
+    ]
+}

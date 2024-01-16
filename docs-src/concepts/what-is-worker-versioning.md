@@ -17,7 +17,20 @@ ssdi:
   - Not yet available in Temporal Cloud
 ---
 
-Worker Versioning simplifies the process of deploying changes to [Workflow Definitions](/workflows/#workflow-definition).
+:::caution
+
+Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Cluster to enable Worker Versioning:
+
+```
+temporal server start-dev \
+   --dynamic-config-value frontend.workerVersioningDataAPIs=true \
+   --dynamic-config-value frontend.workerVersioningWorkflowAPIs=true \
+   --dynamic-config-value worker.buildIdScavengerEnabled=true
+```
+
+:::
+
+Worker Versioning simplifies the process of deploying changes to [Workflow Definitions](/concepts/what-is-a-workflow-definition).
 It does this by letting you define sets of versions that are compatible with each other, and then assigning a Build ID to the code that defines a Worker.
 The Temporal Server uses the Build ID to determine which versions of a Workflow Definition a Worker can process.
 
@@ -42,17 +55,18 @@ If you have no need to query closed Workflows, you can decommission them when no
 For example, if you have a Workflow that completes within a day, a good strategy is to assign a new Build ID to every new Worker build and add it as the new overall default in the version sets.
 
 Because your Workflow completes in a day, you know that you won't need to keep older Workers running for more than a day after you deploy the new version (assuming availability).
-
-Removing old versions from the sets isn't necessary.
-Leaving them doesn't cause any harm.
-
 You can apply this technique to longer-lived Workflows too; however, you might need to run multiple Worker versions simultaneously while open Workflows complete.
+
+Version sets have a maximum size limit, which defaults to 100 build IDs across all sets.
+Operations to add new Build IDs to the sets will fail if they exceed this limit.
+There is also a limit on the number of Version Sets, which defaults to 10.
+A version can only be garbage collected after a Workflow Execution is deleted.
 
 #### Deploy code changes to Workers
 
 The feature also lets you implement compatible changes to or prevent a buggy code path from executing on currently open Workflows.
 You can achieve this by adding a new version to an existing set and defining it as _compatible_ with an existing version, which shouldn't execute any future Workflow Tasks.
-Because the new version processes existing [Event Histories](/workflows/#event-history), it must adhere to the usual [deterministic constraints](/workflows/#deterministic-constraints), and you might need to use one of the [versioning APIs](/workflows/#workflow-versioning).
+Because the new version processes existing [Event Histories](/concepts/what-is-an-event-history), it must adhere to the usual [deterministic constraints](/concepts/what-is-a-workflow-definition#deterministic-constraints), and you might need to use one of the [versioning APIs](/concepts/what-is-a-workflow-definition#workflow-versioning).
 
 Moreover, this feature lets you make incompatible changes to Activity Definitions in conjunction with incompatible changes to Workflow Definitions that use those Activities.
 This functionality works because any Activity that a Workflow schedules on the same Task Queue gets dispatched by default only to Workers compatible with the Workflow that scheduled it.

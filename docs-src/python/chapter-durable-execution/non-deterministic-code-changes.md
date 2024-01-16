@@ -58,7 +58,7 @@ Let's take a closer look:
 - `WorkflowTaskScheduled`: This Event indicates a Workflow Task is in the Task Queue.
 - `WorkflowTaskStarted`: This Event indicates that a Worker successfully polled the Task and started evaluating Workflow code.
 - `WorkflowTaskCompleted`: This Event indicates that the Worker suspended execution and made as much progress that it could.
-- `ActivityTaskScheduled`: This Event indicates that the ExecuteActivity API was called and the Worker sent the [`ScheduleActivityTask`](/references/commands#scheduleactivitytask) Command to the Server.
+- `ActivityTaskScheduled`: This Event indicates that the ExecuteActivity API was called and the Worker sent the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command to the Server.
 - `ActivityTaskStarted`: This Event indicates that the Worker successfully polled the Activity Task and started evaluating Activity code.
 - `ActivityTaskCompleted`: This Event indicates that the Worker completed evaluation of the Activity code and returned any results to the Server.
   In response, the Server schedules another Workflow Task to finish evaluating the Workflow code resulting in the remaining Events, `WorkflowTaskScheduled`.`WorkflowTaskStarted`, `WorkflowTaskCompleted`, `WorkflowExecutionCompleted`.

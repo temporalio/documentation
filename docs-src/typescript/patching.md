@@ -71,8 +71,9 @@ So we have to keep both the old and new code when migrating Workflows while they
   new code.
 
 <details>
-<summary>30 Min Video: Introduction to Versioning
-</summary>
+    <summary>
+    30 Min Video: Introduction to Versioning
+    </summary>
 
 Because we design for potentially long-running Workflows at scale, versioning with Temporal works differently than with other Workflow systems.
 We explain more in this optional 30 minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY)
