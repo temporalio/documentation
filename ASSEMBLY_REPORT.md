@@ -1,7 +1,5 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday January 12 2024 17:21:00 PM -0500
-
 Assembly Workflow Id: docs-full-assembly
 
 134 guide configurations found.
@@ -748,8 +746,6 @@ typescript/queries -> /dev-guide/typescript/features#queries
 
 go/updates -> /dev-guide/go/features#updates
 
-python/updates -> /dev-guide/python/features#updates
-
 java/updates -> /dev-guide/java/features#updates
 
 java/what-is-a-dynamic-handler -> /dev-guide/java/features#dynamic-handler
@@ -1333,5 +1329,7 @@ go/debug-environment-development -> /dev-guide/go/debugging#debug-in-a-developme
 go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production-environment
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
+
+python/updates -> /dev-guide/python/features#updates
 
 
