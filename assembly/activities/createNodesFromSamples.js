@@ -190,8 +190,18 @@ export async function createNodesFromSamples(config) {
   }
 
   function isSupportedExtension(ext) {
-    const supportedExts = [".go", ".py", ".java", ".ts"];
-    return supportedExts.includes(ext);
+    switch (ext) {
+      case ".go":
+        return true;
+      case ".py":
+        return true;
+      case ".java":
+        return true;
+      case ".ts":
+        return true;
+      default:
+        return false;
+    }
   }
 
   function isDACX(str, config, file) {

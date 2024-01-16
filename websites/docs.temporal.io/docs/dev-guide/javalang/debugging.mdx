@@ -1,6 +1,6 @@
 ---
 id: debugging
-title: Java SDK developer's guide - Debugging
+title: Debugging - Java SDK feature guide
 sidebar_label: Debugging
 sidebar_position: 7
 description: The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.

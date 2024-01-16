@@ -1,6 +1,6 @@
 ---
 id: observability
-title: Python SDK developer's guide - Observability
+title: Observability - Python SDK feature guide
 sidebar_label: Observability
 sidebar_position: 8
 description: Improve observability in your Python-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
@@ -116,9 +116,11 @@ Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id1586962972" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id1586962972" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_loggers/your_workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
+
 # ...
         workflow.logger.info("Workflow input parameter: %s" % name)
 ```
+
 
 ### How to provide a custom logger {#custom-logger}
 
@@ -168,10 +170,12 @@ Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.h
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-232567295" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-232567295" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
+
 # ...
     async for workflow in client.list_workflows('WorkflowType="GreetingWorkflow"'):
         print(f"Workflow: {workflow.id}")
 ```
+
 
 ### How to set custom Search Attributes {#custom-search-attributes}
 
@@ -185,6 +189,7 @@ To set custom Search Attributes, use the `search_attributes` parameter of the ['
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-232567295" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-232567295" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
+
 # ...
     handle = await client.start_workflow(
         GreetingWorkflow.run,
@@ -193,6 +198,7 @@ To set custom Search Attributes, use the `search_attributes` parameter of the ['
         search_attributes={"CustomKeywordField": ["old-value"]},
     )
 ```
+
 
 ### How to upsert Search Attributes {#upsert-search-attributes}
 
@@ -208,9 +214,11 @@ The keys are added to or replace the existing Search Attributes, similar to [`di
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-732047655" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-732047655" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
+
 # ...
         workflow.upsert_search_attributes({"CustomKeywordField": ["new-value"]})
 ```
+
 
 ### How to remove a Search Attribute from a Workflow {#remove-search-attribute}
 
@@ -224,7 +232,9 @@ To remove a Search Attribute, use the [`upsert_search_attributes()`](https://pyt
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-732047655" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-732047655" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
+
 # ...
         workflow.upsert_search_attributes({"CustomKeywordField": []})
 ```
+
 

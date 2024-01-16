@@ -1,6 +1,6 @@
 ---
 id: debugging
-title: PHP SDK developer's guide - Debugging
+title: Debugging - PHP SDK feature guide
 sidebar_label: Debugging
 sidebar_position: 5
 description: The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.

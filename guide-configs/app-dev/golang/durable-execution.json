@@ -3,7 +3,7 @@
   "id": "durable-execution",
   "slug": "/dev-guide/go/durable-execution",
   "file_dir": "dev-guide/golang",
-  "title": "Go SDK dev guide - Develop code that durably executes",
+  "title": "Develop code that durably executes - Go SDK dev guide",
   "sidebar_label": "Develop for durability",
   "sidebar_position": 3,
   "description": "The Durable Execution section of the Temporal Developer's guide covers advanced beginner concepts for working with Temporal, including testing your code, reviewing workflow event history, adding timers, and understanding determinism. Developing for durable execution is a core aspect of Temporal.",

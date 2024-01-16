@@ -1,9 +1,9 @@
 ---
 id: index
-title: Temporal TypeScript SDK developer's guide
+title: Temporal TypeScript SDK development documentation
 sidebar_label: TypeScript SDK
 sidebar_position: 6
-description: The Temporal TypeScript SDK developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
+description: Learn how to use the Temporal TypeScript SDK.
 slug: /dev-guide/typescript
 toc_max_heading_level: 4
 keywords:
@@ -18,25 +18,24 @@ tags:
 
 This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
 
-## Foundations
+## Project-setup
 
-The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+The project setup section of the Temporal TypeScript SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in TypeScript—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 
-- [How to install Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): How to install Temporal CLI and run a development Cluster.
-- [How to install a Temporal SDK](/dev-guide/typescript/foundations#install-a-temporal-sdk): A Temporal SDK provides a framework for Temporal Application development.
-- [Linting and types in TypeScript](/dev-guide/typescript/foundations#linting-and-types): Set up linting and types in your TypeScript project.
-- [How to connect a Temporal Client to a Temporal Cluster](/dev-guide/typescript/foundations#connect-to-a-dev-cluster): When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.
-- [How to connect to Temporal Cloud](/dev-guide/typescript/foundations#connect-to-temporal-cloud): Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
-- [How to develop a basic Workflow](/dev-guide/typescript/foundations#develop-workflows): Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.
-- [How to develop a basic Activity](/dev-guide/typescript/foundations#develop-activities): One of the primary things that Workflows do is orchestrate the execution of Activities.
-- [How to start an Activity Execution](/dev-guide/typescript/foundations#activity-execution): Calls to spawn Activity Executions are written within a Workflow Definition.
-- [How to run Worker Processes](/dev-guide/typescript/foundations#run-a-dev-worker): The Worker Process is where Workflow Functions and Activity Functions are executed.
-- [How to run a Worker on Docker in TypeScript](/dev-guide/typescript/foundations#run-a-worker-on-docker): Workers based on the TypeScript SDK can be deployed and run as Docker containers.
-- [How to run a Temporal Cloud Worker](/dev-guide/typescript/foundations#run-a-temporal-cloud-worker): The Worker Process is where Workflow Functions and Activity Functions are executed.
-- [How to use a prebuilt Workflow bundle in TypeScript](/dev-guide/typescript/foundations#prebuilt-workflow-bundles): Pass a prebuilt bundle instead of `workflowsPath`. or use the `bundleWorkflowCode` helper.
-- [How to shut down a Worker and track its state](/dev-guide/typescript/foundations#shut-down-a-worker): To shut down a Worker, send a shutdown Signal to the Worker or call `Worker.shutdown()`.
-- [How to start a Workflow Execution](/dev-guide/typescript/foundations#start-workflow-execution): Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
-- [Cancellation scopes in Typescript](/dev-guide/typescript/foundations#cancellation-scopes):
+- [Install the Temporal CLI](/dev-guide/typescript/project-setup#install-cli): Download and install the Temporal CLI for Mac, Linux, or Windows.
+- [Choose a development Cluster](/dev-guide/typescript/project-setup#choose-dev-cluster): Discover which development Cluster you should choose
+- [Boilerplate Temporal Application project code](/dev-guide/typescript/project-setup#boilerplate-project): Discover the minimum code you need to create a boilerplate Temporal Application with TypeScript
+- [Start Workflow using the CLI](/dev-guide/typescript/project-setup#start-workflow): Learn how to start a Temporal Workflow using the CLI
+- [Add a testing framework](/dev-guide/typescript/project-setup#test-framework): How to add a testing framework to your Temporal Application.
+- [Conclusion](/dev-guide/typescript/project-setup#conclusion): Wrap up and review of concepts
+
+## Durable-execution
+
+The Durable Execution section of the Temporal Developer's guide covers advanced beginner concepts for working with Temporal, including testing your code, reviewing workflow event history, adding timers, and understanding determinism. Developing for durable execution is a core aspect of Temporal.
+
+- [Retrieve a Workflow Execution's Event History](/dev-guide/typescript/durable-execution#retrieve-event-history): Learn how to retrieve your Workflow Execution's Event History
+- [How to replay a Workflow Execution in TypeScript](/dev-guide/typescript/durable-execution#replay-a-workflow-execution): Replay a Workflow Execution
+- [Non-deterministic code changes](/dev-guide/typescript/durable-execution#durability-through-replays): History Replay, sometimes also called Workflow Replay, is the mechanism that Temporal uses to reconstruct the state of a Workflow Execution. Temporal provides Durable Execution via this Replay Functionality.
 
 ## Features
 
@@ -60,6 +59,26 @@ The Features section of the Temporal Developer's guide provides basic implementa
 - [How to create and manage Namespaces](/dev-guide/typescript/features#namespaces): You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..
 - [How to use a custom payload converter in TypeScript](/dev-guide/typescript/features#custom-payload-conversion): Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.
 - [How to implement interceptors in TypeScript](/dev-guide/typescript/features#interceptors): Interceptors are a mechanism for modifying inbound and outbound SDK calls, commonly used to add tracing and authorization.
+
+## Foundations
+
+The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+
+- [How to install Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): How to install Temporal CLI and run a development Cluster.
+- [How to install a Temporal SDK](/dev-guide/typescript/foundations#install-a-temporal-sdk): A Temporal SDK provides a framework for Temporal Application development.
+- [Linting and types in TypeScript](/dev-guide/typescript/foundations#linting-and-types): Set up linting and types in your TypeScript project.
+- [How to connect a Temporal Client to a Temporal Cluster](/dev-guide/typescript/foundations#connect-to-a-dev-cluster): When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.
+- [How to connect to Temporal Cloud](/dev-guide/typescript/foundations#connect-to-temporal-cloud): Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
+- [How to develop a basic Workflow](/dev-guide/typescript/foundations#develop-workflows): Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.
+- [How to develop a basic Activity](/dev-guide/typescript/foundations#develop-activities): One of the primary things that Workflows do is orchestrate the execution of Activities.
+- [How to start an Activity Execution](/dev-guide/typescript/foundations#activity-execution): Calls to spawn Activity Executions are written within a Workflow Definition.
+- [How to run Worker Processes](/dev-guide/typescript/foundations#run-a-dev-worker): The Worker Process is where Workflow Functions and Activity Functions are executed.
+- [How to run a Worker on Docker in TypeScript](/dev-guide/typescript/foundations#run-a-worker-on-docker): Workers based on the TypeScript SDK can be deployed and run as Docker containers.
+- [How to run a Temporal Cloud Worker](/dev-guide/typescript/foundations#run-a-temporal-cloud-worker): The Worker Process is where Workflow Functions and Activity Functions are executed.
+- [How to use a prebuilt Workflow bundle in TypeScript](/dev-guide/typescript/foundations#prebuilt-workflow-bundles): Pass a prebuilt bundle instead of `workflowsPath`. or use the `bundleWorkflowCode` helper.
+- [How to shut down a Worker and track its state](/dev-guide/typescript/foundations#shut-down-a-worker): To shut down a Worker, send a shutdown Signal to the Worker or call `Worker.shutdown()`.
+- [How to start a Workflow Execution](/dev-guide/typescript/foundations#start-workflow-execution): Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+- [Cancellation scopes in Typescript](/dev-guide/typescript/foundations#cancellation-scopes):
 
 ## Observability
 

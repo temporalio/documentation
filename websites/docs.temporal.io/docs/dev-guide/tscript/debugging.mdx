@@ -1,6 +1,6 @@
 ---
 id: debugging
-title: TypeScript SDK developer's guide - Debugging
+title: Debugging - TypeScript SDK feature guide
 sidebar_label: Debugging
 sidebar_position: 6
 description: The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.

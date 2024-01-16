@@ -35,7 +35,7 @@ If you inspect the new Event History, you will see two new Events in response to
 However, it is also important to note that you don't see any Events related to logging.
 And if you were to remove the Sleep call from the code, there wouldn't be a compatibility issue with the previous code.
 This is to highlight that only certain code changes within Workflow code is non-deterministic.
-The basic thing to remember is that if the API call causes a [Command](/references/commands#) to create Events in the Workflow History that takes a new path from the existing Event History then it is a non-deterministic change.
+The basic thing to remember is that if the API call causes a [Command](/references/commands) to create Events in the Workflow History that takes a new path from the existing Event History then it is a non-deterministic change.
 
 This becomes a critical aspect of Workflow development when there are running Workflows that have not yet completed and rely on earlier versions of the code.
 

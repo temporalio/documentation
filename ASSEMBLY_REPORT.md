@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday January 16 2024 11:42:23 AM -0800
+Last assembled: Tuesday January 16 2024 15:48:23 PM -0700
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly
 
-134 guide configurations found.
+137 guide configurations found.
 
-1731 information nodes found.
+1757 information nodes found.
 
-1465 information nodes are attached to guides.
+1508 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1100,6 +1100,18 @@ typescript/observability -> /dev-guide/typescript/observability#tracing
 
 self-hosted/scaling-and-metrics -> /self-hosted-guide/production-checklist#scaling-and-metrics
 
+dev-guide/why-use-a-temporal-sdk -> /dev-guide/sdks#replays
+
+typescript/chapter-project-setup/project-setup-introduction -> /dev-guide/typescript/project-setup
+
+go/generated/backgroundcheck-replay-intrinsic-non-determinism -> /dev-guide/go/durable-execution#intrinsic-non-deterministic-logic
+
+go/chapter-durable-execution/non-deterministic-code-changes -> /dev-guide/go/durable-execution#durability-through-replays
+
+go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#start-workflow
+
+go/chapter-durable-execution/retrieve-event-history -> /dev-guide/go/durable-execution#retrieve-event-history
+
 concepts/what-is-a-task-token -> /activities#task-token
 
 self-hosted/how-to-install-temporal-cli -> #run-a-development-server
@@ -1108,15 +1120,23 @@ typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
-typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+typescript/chapter-project-setup/install-cli -> /dev-guide/typescript/project-setup#install-cli
 
-typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
+typescript/chapter-project-setup/choose-dev-cluster -> /dev-guide/typescript/project-setup#choose-dev-cluster
 
-typescript/how-to-use-a-prebuilt-workflow-bundle-in-typescript -> /dev-guide/typescript/foundations#prebuilt-workflow-bundles
+typescript/chapter-project-setup/project-structure -> /dev-guide/typescript/project-setup#boilerplate-project
 
-typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
+typescript/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guide/typescript/project-setup#start-workflow
 
-typescript/cancellation-scopes -> /dev-guide/typescript/foundations#cancellation-scopes
+typescript/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/typescript/project-setup#test-framework
+
+typescript/chapter-project-setup/conclusion -> /dev-guide/typescript/project-setup#conclusion
+
+typescript/chapter-durable-execution/retrieve-event-history -> /dev-guide/typescript/durable-execution#retrieve-event-history
+
+typescript/chapter-durable-execution/how-to-replay-a-workflow-execution-in-typescript -> /dev-guide/typescript/durable-execution#replay-a-workflow-execution
+
+typescript/chapter-durable-execution/non-deterministic-code-changes -> /dev-guide/typescript/durable-execution#durability-through-replays
 
 typescript/how-to-define-signals-and-queries-statically-or-dynamically -> /dev-guide/typescript/features#static-and-dynamic-signals-and-queries
 
@@ -1136,6 +1156,16 @@ typescript/how-to-use-a-custom-payload-converter-in-typescript -> /dev-guide/typ
 
 typescript/how-to-implement-interceptors-in-typescript -> /dev-guide/typescript/features#interceptors
 
+typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+
+typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
+
+typescript/how-to-use-a-prebuilt-workflow-bundle-in-typescript -> /dev-guide/typescript/foundations#prebuilt-workflow-bundles
+
+typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
+
+typescript/cancellation-scopes -> /dev-guide/typescript/foundations#cancellation-scopes
+
 typescript/tracing -> /dev-guide/typescript/observability#tracing
 
 typescript/how-to-log-from-a-workflow-in-typescript -> /dev-guide/typescript/observability#logging
@@ -1154,9 +1184,25 @@ typescript/troubleshoot-issues -> /dev-guide/typescript/debugging#troubleshoot-c
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
+cli/server/start-dev -> /cli/server#start-dev
+
+cli/operator/namespace/create -> /cli/operator#create
+
+cli/workflow/start -> /cli/workflow#start
+
 python/tracing -> /dev-guide/python/observability#tracing
 
 python/logging -> /dev-guide/python/observability#logging
+
+python/project-setup-introduction -> /dev-guide/python/project-setup
+
+python/chapter-durable-execution/backgroundcheck-replay-intrinsic-non-determinism -> #intrinsic-non-deterministic-logic
+
+python/chapter-durable-execution/non-deterministic-code-changes -> #durability-through-replays
+
+python/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#start-workflow
+
+python/chapter-durable-execution/retrieve-event-history -> #retrieve-event-history
 
 python/how-to-cancel-a-workflow-in-python -> #cancel-a-workflow-execution
 
@@ -1172,9 +1218,9 @@ python/choose-dev-cluster -> /dev-guide/python/project-setup#choose-dev-cluster
 
 python/project-structure -> /dev-guide/python/project-setup#boilerplate-project
 
-python/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#start-workflow
-
 python/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
+
+python/generated/add-replay-test-to-background-check-workflow -> /dev-guide/python/durable-execution#add-replay-test
 
 python/add-sdk -> /dev-guide/python/foundations#install-a-temporal-sdk
 
@@ -1195,12 +1241,6 @@ python/testing-frameworks -> /dev-guide/python/testing#test-frameworks
 python/testing-activities -> /dev-guide/python/testing#test-activities
 
 python/testing-workflows -> /dev-guide/python/testing#test-workflows
-
-cli/server/start-dev -> /cli/server#start-dev
-
-cli/operator/namespace/create -> /cli/operator#create
-
-cli/workflow/start -> /cli/workflow#start
 
 php/handle-signal -> #handle-signal
 
@@ -1223,8 +1263,6 @@ php/debugging -> /dev-guide/php/debugging#debug
 java/tracing -> /dev-guide/java/observability#tracing
 
 java/logging -> /dev-guide/java/observability#logging
-
-dev-guide/why-use-a-temporal-sdk -> /dev-guide/sdks#replays
 
 java/chapter-project-setup/project-setup-introduction -> /dev-guide/java/project-setup
 
@@ -1285,14 +1323,6 @@ go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 go/logging -> /dev-guide/go/observability#logging
 
 go/chapter-project-setup/project-setup-introduction -> /dev-guide/go/project-setup
-
-go/generated/backgroundcheck-replay-intrinsic-non-determinism -> #intrinsic-non-deterministic-logic
-
-go/chapter-durable-execution/non-deterministic-code-changes -> #durability-through-replays
-
-go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#start-workflow
-
-go/chapter-durable-execution/retrieve-event-history -> #retrieve-event-history
 
 go/chapter-project-setup/install-cli -> /dev-guide/go/project-setup#install-cli
 
