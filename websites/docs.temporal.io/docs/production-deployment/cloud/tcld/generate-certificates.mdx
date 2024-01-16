@@ -59,7 +59,7 @@ tcld generate-certificates certificate-authority-certificate --validity-period <
 
 #### --ca-certificate-file
 
-Specify a path where the generated X.509 certificate file will be stored.
+Specify a path to a `.pem` file where the generated X.509 certificate file will be stored.
 
 Alias: `--ca-cert`
 
@@ -71,7 +71,7 @@ tcld generate-certificates certificate-authority-certificate --ca-certificate-fi
 
 #### --ca-key-file
 
-Specify a path where the certificate's private key will be stored.
+Specify a path to a `.key` file where the certificate's private key will be stored.
 
 Alias: `--ca-key`
 
@@ -87,10 +87,6 @@ When enabled, a 4096-bit RSA key pair is generated for the certificate instead o
 Because an ECDSA P-384 key pair is the recommended default, this option is disabled.
 
 Alias: `--rsa`
-
-Specify a path to store the generated X.509 certificate file.
-
-Alias: `--ca-cert`
 
 **Example**
 
@@ -145,7 +141,7 @@ tcld generate-certificates end-entity-certificate --validity-period <value>
 
 #### --ca-certificate-file
 
-Specify the path of the X.509 CA certificate for the certificate authority.
+Specify the path of the X.509 CA certificate in a `.pem` file for the certificate authority.
 
 Alias: `--ca-cert`
 
@@ -157,7 +153,7 @@ tcld generate-certificates end-entity-certificate --ca-certificate-file <path>
 
 #### --ca-key-file
 
-Specify the path of the private key for the certificate authority.
+Specify the path of the private key in a `.key` file for the certificate authority.
 
 Alias: `--ca-key`
 
@@ -169,7 +165,7 @@ tcld generate-certificates end-entity-certificate --ca-key-file <path>
 
 #### --certificate-file
 
-Specify a path where the generated X.509 leaf certificate file will be stored.
+Specify a path to a `.pem` file where the generated X.509 leaf certificate file will be stored.
 
 Alias: `--cert`
 
@@ -181,7 +177,7 @@ tcld generate-certificates end-entity-certificate --certificate-file <path>
 
 #### --key-file
 
-Specify a path where the leaf certificate's private key will be stored.
+Specify a path to a `.key` file where the leaf certificate's private key will be stored.
 
 Alias: `--key`
 
