@@ -17,13 +17,9 @@ Workers can emit metrics and traces. There are a few [telemetry options](https:/
 To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](https://legacy-documentation-sdks.temporal.io/typescript/logging#opentelemetry-tracing) package.
 
 ```typescript
-telemetryOptions: {
+  telemetryOptions: {
     metrics: {
       prometheus: { bindAddress: '0.0.0.0:9464' },
     },
-    logging: {
-      forward: {},
-      filter: makeTelemetryFilterString({ core: 'INFO', other: 'WARN' })
-     },
   },
 ```

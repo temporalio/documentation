@@ -115,6 +115,7 @@ In production settings, you can configure the `address` and `namespace` the Work
 ```js
 import {
   DefaultLogger,
+  makeTelemetryFilterString,
   NativeConnection,
   Runtime,
   Worker,
@@ -122,9 +123,11 @@ import {
 
 Runtime.install({
   logger: new DefaultLogger('DEBUG'),
-  logging: {
-    forward: {},
-    filter: makeTelemetryFilterString({ core: 'INFO' }),
+  telemetryOptions: {
+    logging: {
+      forward: {},
+      filter: makeTelemetryFilterString({ core: 'INFO' }),
+    },
   },
 });
 const connection = await NativeConnection.connect({

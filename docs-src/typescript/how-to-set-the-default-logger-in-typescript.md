@@ -39,8 +39,10 @@ async function main() {
     Runtime.install({
       logger: new DefaultLogger('DEBUG'),
       telemetryOptions: {
-        forward: {},
-        filter: makeTelemetryFilterString({ core: 'DEBUG', other: 'DEBUG' }),
+        logging: {
+          forward: {}, // This enables log forwarding
+          filter: makeTelemetryFilterString({ core: 'DEBUG' }),
+        },
       },
     });
   }
