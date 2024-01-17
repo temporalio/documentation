@@ -36,13 +36,17 @@ You must set an end-entity certificate to expire before its root CA certificate,
 
 To create a new CA certificate, use `tcld gen ca`.
 
-```
+```sh
+mkdir temporal-certs
+cd temporal-certs
 tcld gen ca --org temporal -d 1y --ca-cert ca.pem --ca-key ca.key
 ```
 
+The contents of the generated `ca.pem` should be pasted into the "CA Certificates" section of your Namespace settings page.
+
 To create a new end-entity certificate, use `tcld gen leaf`.
 
-```
+```sh
 tcld gen leaf --org temporal -d 364d --ca-cert ca.pem --ca-key ca.key --cert client.pem --key client.key
 ```
 
