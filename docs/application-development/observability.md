@@ -140,7 +140,7 @@ telemetryOptions: {
     },
     logging: {
       forward: {},
-      filter: makeTelemetryFilterString({ core: 'INFO', other: 'WARN' })
+      filter: makeTelemetryFilterString({ core: 'INFO' })
     },
   },
 ```
