@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday January 16 2024 15:48:23 PM -0700
+Last assembled: Wednesday January 17 2024 12:58:29 PM -0600
 
 Assembly Workflow Id: docs-full-assembly
 
-137 guide configurations found.
+138 guide configurations found.
 
-1757 information nodes found.
+1758 information nodes found.
 
-1508 information nodes are attached to guides.
+1509 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -406,15 +406,15 @@ concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
 
 concepts/what-is-a-claimmapper-plugin -> #claim-mapper
 
+concepts/what-is-the-temporal-server -> /clusters#temporal-server
+
+concepts/what-is-a-temporal-client -> /temporal#temporal-client
+
 self-hosted/how-to-set-up-cassandra-visibility-store -> /self-hosted-guide/visibility#cassandra
 
 self-hosted/how-to-set-up-mysql-visibility-store -> /self-hosted-guide/visibility#mysql
 
 self-hosted/how-to-set-up-postgresql-visibility-store -> /self-hosted-guide/visibility#postgresql
-
-concepts/what-is-a-temporal-client -> /temporal#temporal-client
-
-concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-visibility -> /clusters#visibility
 
