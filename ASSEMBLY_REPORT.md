@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday January 16 2024 15:48:23 PM -0700
+Last assembled: Wednesday January 17 2024 12:10:27 PM -0800
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 137 guide configurations found.
 
@@ -803,6 +803,8 @@ cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 cloud/certificates-issue -> /cloud/certificates#issue-certificates
 
 go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
+
+java/connect-to-temporal-cloud -> /dev-guide/java/foundations#connect-to-temporal-cloud
 
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
 
