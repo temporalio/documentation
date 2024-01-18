@@ -95,7 +95,7 @@ FROM gcr.io/distroless/nodejs20-debian11
 COPY --from=builder /app /app
 WORKDIR /app
 
-CMD ["node", "build/worker.js"]
+CMD ["build/worker.js"]
 ```
 
 ### Properly configure Node.js memory in Docker
