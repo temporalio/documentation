@@ -49,8 +49,6 @@ The following operations result in Actions.
   Includes sending a [Signal](/concepts/what-is-a-signal) from a client or from within a Workflow to another Workflow.
 - **Query received.** [Queries](/concepts/what-is-a-query) aren't recorded in Event History.
   An operation such as viewing the stack trace in the Temporal Cloud UI results in a Query.
-- **Version marker recorded.**
-  Occurs when a Workflow calls `get-version` or `patch`.
 - **Side Effect recorded.**
   For a mutable [Side Effect](/concepts/what-is-a-side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
