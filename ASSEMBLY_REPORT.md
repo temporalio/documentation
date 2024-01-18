@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday January 05 2024 14:21:12 PM -0700
+Last assembled: Thursday January 18 2024 09:38:24 AM -0800
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 136 guide configurations found.
 
@@ -278,6 +278,8 @@ cloud/tcld/generate-certificates/end-entity-certificate -> #end-entity-certifica
 
 cloud/tcld/how-to-install-tcld -> #install-tcld
 
+cloud/tcld/feature/index -> /production-deployment/cloud/tcld/feature#
+
 cloud/tcld/login -> /cloud/tcld/login#
 
 cloud/tcld/logout -> /cloud/tcld/logout/#
@@ -287,6 +289,8 @@ cloud/tcld/version -> /cloud/tcld/version/#
 cloud/tcld/namespace/create -> #create
 
 cloud/tcld/namespace/delete -> #delete
+
+cloud/tcld/namespace/export/index -> #export
 
 cloud/tcld/namespace/get -> #get
 
@@ -301,6 +305,16 @@ cloud/tcld/namespace/search-attributes/index -> #search-attributes
 cloud/tcld/namespace/retention/index -> #retention
 
 cloud/tcld/namespace/update-codec-server -> #update-codec-server
+
+cloud/tcld/namespace/export/create -> #create
+
+cloud/tcld/namespace/export/get -> #get
+
+cloud/tcld/namespace/export/delete -> #delete
+
+cloud/tcld/namespace/export/list -> #list
+
+cloud/tcld/namespace/export/update -> #update
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
@@ -1328,18 +1342,48 @@ go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
 
-cloud/tcld/namespace/export/index -> #export
+cloud/what-is-workflow-history-export -> /cloud/export#
 
-cloud/tcld/namespace/export/create -> #create
+php/observability -> /dev-guide/php/observability#
 
-cloud/tcld/namespace/export/get -> #get
+python/updates -> /dev-guide/python/features#updates
 
-cloud/tcld/namespace/export/delete -> #delete
+cli/schedule/index -> /cli/schedule#
 
-cloud/tcld/namespace/export/list -> #list
+tctl-v1/schedule/index -> /tctl-v1/schedule#
 
-cloud/tcld/namespace/export/update -> #update
+java/generated/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/java/project-setup#cloud-worker
 
-cloud/tcld/feature/index -> /production-deployment/cloud/tcld/feature#
+concepts/what-is-tctl-v1 -> /tctl-v1#
+
+typescript/chapter-project-setup/project-setup-introduction -> /dev-guide/typescript/project-setup#
+
+typescript/chapter-project-setup/install-cli -> /dev-guide/typescript/project-setup#install-cli
+
+typescript/chapter-project-setup/choose-dev-cluster -> /dev-guide/typescript/project-setup#choose-dev-cluster
+
+typescript/chapter-project-setup/project-structure -> /dev-guide/typescript/project-setup#boilerplate-project
+
+typescript/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guide/typescript/project-setup#start-workflow
+
+typescript/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/typescript/project-setup#test-framework
+
+typescript/chapter-project-setup/conclusion -> /dev-guide/typescript/project-setup#conclusion
+
+typescript/chapter-durable-execution/retrieve-event-history -> /dev-guide/typescript/durable-execution#retrieve-event-history
+
+typescript/chapter-durable-execution/how-to-replay-a-workflow-execution-in-typescript -> /dev-guide/typescript/durable-execution#replay-a-workflow-execution
+
+typescript/chapter-durable-execution/non-deterministic-code-changes -> /dev-guide/typescript/durable-execution#durability-through-replays
+
+python/project-setup-introduction -> /dev-guide/python/project-setup#
+
+python/chapter-durable-execution/backgroundcheck-replay-intrinsic-non-determinism -> #intrinsic-non-deterministic-logic
+
+python/chapter-durable-execution/non-deterministic-code-changes -> #durability-through-replays
+
+python/chapter-durable-execution/retrieve-event-history -> #retrieve-event-history
+
+python/generated/add-replay-test-to-background-check-workflow -> /dev-guide/python/durable-execution#add-replay-test
 
 

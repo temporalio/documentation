@@ -223,7 +223,6 @@ Use the `connect()` method on the Client class to create and connect to a Tempor
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id27997904" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id27997904" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -241,7 +240,6 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-
 
 ## How to connect to Temporal Cloud {#connect-to-temporal-cloud}
 
@@ -265,7 +263,6 @@ The `client_cert` must be combined with `client_private_key` to authenticate the
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id807791535" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id807791535" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/connect_cloud_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio.client import Client, TLSConfig
 # ...
 # ...
@@ -286,7 +283,6 @@ async def main():
     )
 ```
 
-
 ## How to develop a basic Workflow {#develop-workflows}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definition).
@@ -303,7 +299,6 @@ Use the `@workflow.run` to mark the entry point method to be invoked. This must 
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id310936741" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id310936741" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio import workflow
 # ...
 # ...
@@ -317,7 +312,6 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
-
 
 ### How to define Workflow parameters {#workflow-parameters}
 
@@ -335,7 +329,6 @@ Technically this can be multiple parameters, but Temporal strongly encourages a 
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-134305596" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-134305596" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_dataobject_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from dataclasses import dataclass
 # ...
 # ...
@@ -344,7 +337,6 @@ class YourParams:
     greeting: str
     name: str
 ```
-
 
 ### How to define Workflow return parameters {#workflow-return-values}
 
@@ -362,7 +354,6 @@ To return the results of a Workflow Execution, use either `start_workflow()` or 
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id310936741" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id310936741" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio import workflow
 # ...
 # ...
@@ -376,7 +367,6 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
-
 
 ### How to customize your Workflow Type {#workflow-type}
 
@@ -392,7 +382,6 @@ You can customize the Workflow name with a custom name in the decorator argument
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id310936741" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id310936741" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio import workflow
 # ...
 # ...
@@ -406,7 +395,6 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
-
 
 ### How develop Workflow logic {#workflow-logic-requirements}
 
@@ -441,6 +429,7 @@ Register the function as an Activity with a custom name through a decorator argu
 :::note
 
 The Temporal Python SDK supports multiple ways of implementing an Activity:
+
 - Asynchronously using [`asyncio`](https://docs.python.org/3/library/asyncio.html)
 - Synchronously multithreaded using [`concurrent.futures.ThreadPoolExecutor`](https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor)
 - Synchronously multiprocess using [`concurrent.futures.ProcessPoolExecutor`](https://docs.python.org/3/library/concurrent.futures.html#processpoolexecutor) and [`multiprocessing.managers.SyncManager`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.managers.SyncManager)
@@ -458,7 +447,6 @@ If you must use a blocking library, consider using a synchronous Activity instea
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-1041271480" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-1041271480" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio import activity
 # ...
 # ...
@@ -466,7 +454,6 @@ from temporalio import activity
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
-
 
 ### How to develop Activity Parameters {#activity-parameters}
 
@@ -495,7 +482,6 @@ Technically this can be multiple parameters, but Temporal strongly encourages a 
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-1041271480" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-1041271480" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio import activity
 from your_dataobject_dacx import YourParams
 
@@ -505,7 +491,6 @@ from your_dataobject_dacx import YourParams
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
-
 
 ### How to define Activity return values {#activity-return-values}
 
@@ -523,13 +508,11 @@ The following example defines an Activity that takes a string as input and retur
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-1041271480" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-1041271480" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
 @activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
-
 
 ### How to customize your Activity Type {#activity-type}
 
@@ -545,13 +528,11 @@ If the name parameter is not specified, the Activity name defaults to the functi
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-1041271480" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-1041271480" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
 @activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
-
 
 ## How to start an Activity Execution {#activity-execution}
 
@@ -584,7 +565,6 @@ A single argument to the Activity is positional. Multiple arguments are not supp
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id310936741" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id310936741" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio import workflow
 # ...
 # ...
@@ -598,7 +578,6 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
-
 
 ### How to set the required Activity Timeouts {#required-timeout}
 
@@ -620,7 +599,6 @@ Available timeouts are:
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-503450107" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-503450107" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/activity_timeouts_retires/your_workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
         activity_timeout_result = await workflow.execute_activity(
             your_activity,
@@ -631,7 +609,6 @@ Available timeouts are:
             # schedule_to_close_timeout=timedelta(seconds=10),
         )
 ```
-
 
 ### How to get the results of an Activity Execution {#get-activity-results}
 
@@ -650,7 +627,6 @@ You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id310936741" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id310936741" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio import workflow
 # ...
 # ...
@@ -664,7 +640,6 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
-
 
 ## How to run Worker Processes {#run-a-dev-worker}
 
@@ -691,7 +666,6 @@ When a Worker is created, it accepts a list of Workflows in the workflows parame
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id866773583" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id866773583" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_worker_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 from temporalio.client import Client
 from temporalio.worker import Worker
 # ...
@@ -711,7 +685,6 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-
 ### How to register types {#register-types}
 
 All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
@@ -727,7 +700,6 @@ When a `Worker` is created, it accepts a list of Workflows in the `workflows` pa
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id866773583" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id866773583" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_worker_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -743,7 +715,6 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-
 
 ## How to start a Workflow Execution {#start-workflow-execution}
 
@@ -765,7 +736,6 @@ To start a Workflow Execution in Python, use either the [`start_workflow()`](htt
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id27997904" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id27997904" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -783,7 +753,6 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-
 
 ### How to set a Workflow's Task Queue {#set-task-queue}
 
@@ -799,7 +768,6 @@ To set a Task Queue in Python, specify the `task_queue` argument when executing 
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id27997904" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id27997904" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -817,7 +785,6 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-
 
 ### How to set a Workflow Id {#workflow-id}
 
@@ -835,7 +802,6 @@ The `id` argument should be a unique identifier for the Workflow Execution.
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id27997904" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id27997904" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -853,7 +819,6 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-
 
 ### How to get the results of a Workflow Execution {#get-workflow-results}
 
@@ -879,7 +844,6 @@ If the Workflow does not exist, this call fails.
 <div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-1242882532" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-1242882532" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/get_workflow_results_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -894,5 +858,4 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-
 

@@ -75,8 +75,6 @@ The following operations result in Actions.
   Includes sending a [Signal](/workflows#signal) from a client or from within a Workflow to another Workflow.
 - **Query received.** [Queries](/workflows#query) aren't recorded in Event History.
   An operation such as viewing the stack trace in the Temporal Cloud UI results in a Query.
-- **Version marker recorded.**
-  Occurs when a Workflow calls `get-version` or `patch`.
 - **Side Effect recorded.**
   For a mutable [Side Effect](/workflows#side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
@@ -104,6 +102,12 @@ The following operations result in Actions.
 
 - **Schedule Start**. Will account for two actions
 - **Workflow started**. One action to start the target workflow
+
+**Export**
+
+[Workflow History Export](/cloud/export#) allows you to export closed Workflow Histories to a cloud storage sink of your choice.
+
+- **Workflow exported**. Each Workflow exported accrues a single action.
 
 [Reach out to our team](https://pages.temporal.io/contact-us) to get more information or to help size your number of Actions.
 
