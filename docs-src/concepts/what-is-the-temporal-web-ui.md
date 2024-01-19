@@ -31,8 +31,8 @@ For details, see [Namespace-level permissions](/cloud/users-namespace-level-perm
 
 ### Recent Workflows
 
-Recent Workflows lists all Workflow Executions run in the past 24 hours.
-The default number shown is 1,000 Workflow Executions.
+The main Workflows page displays a table of recent Workflow Executions.
+The Web UI will display a maximum of 1,000 Workflow Executions.
 
 Users can list Workflow Executions by any of the following:
 
