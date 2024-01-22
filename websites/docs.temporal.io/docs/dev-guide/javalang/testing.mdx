@@ -250,9 +250,9 @@ If an Activity references its context, you need to mock that context when testin
 
 When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in your test code so that you can verify them.
 
-### Cancel an Activity {#cancel-an-activity}
+### Cancelling an Activity {#cancelling-an-activity}
 
-If an Activity is supposed to react to a Cancellation, you can test whether it reacts correctly by canceling it.
+Activity Cancellation lets Activities know they don't need to continue work and gives time for the Activity to clean up any resources it's created. You can cancel Java-based activities if they emit Heartbeats. To test an Activity that reacts to Cancellations, make sure that the Activity reacts correctly and cancels.
 
 ## Testing Workflows {#test-workflows}
 
