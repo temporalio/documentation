@@ -7,7 +7,7 @@ tags:
   - guide-context
 ---
 
-Mocking isolates code undergoing testing so the focus remains on the code, and not on external dependencies or other state. You can test activities using a mocked Activity environment.
+Mocking isolates code undergoing testing so the focus remains on the code, and not on external dependencies or other state. You can test Activities using a mocked Activity environment.
 
 This approach offers a way to mock the Activity context, listen to Heartbeats, and cancel the Activity. You test the Activity in isolation, calling it directly without needing to create a Worker to run it.
 
