@@ -239,8 +239,18 @@ You can find all unit tests for the [Temporal Java samples](https://github.com/t
 
 ## Testing Activities {#test-activities}
 
-An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.
-This behavior allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
+Mocking isolates code undergoing testing so the focus remains on the code, and not on external dependencies or other state. You can test activities using a mocked Activity environment. 
+
+This approach offers a way to mock the Activity context, listen to Heartbeats, and cancel the Activity. You test the Activity in isolation, calling it directly without needing to create a Worker to run it.
+
+Temporal provides the `TestActivityEnvironment` and `TestActivityExtension` classes for testing Activities outside the scope of a Workflow. Testing
+Activities are similar to testing non-Temporal Java code.
+
+For example, you can test an Activity for:
+
+- Exceptions thrown when invoking the Activity Execution.
+- Exceptions thrown when checking for the result of the Activity Execution.
+- Activity return values. Check that the return value matches the expected value.
 
 ### Run an Activity {#run-an-activity}
 
@@ -248,7 +258,9 @@ If an Activity references its context, you need to mock that context when testin
 
 ### Listen to Heartbeats {#listen-to-heartbeats}
 
-When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in your test code so that you can verify them.
+Activities usually issue periodic Heartbeats, a feature that broadcasts recurring proof-of-life updates. Each ping shows that an Activity is making progress and the Worker hasn't crashed. Heartbeats may include details that report task progress in the event an Activity Worker crashes.
+
+When testing Activities that support Heartbeats, make sure you can see those Heartbeats in your test code. Provide appropriate test coverage. This enables you to verify both the Heartbeat's content and behavior.
 
 ### Cancel an Activity {#cancel-an-activity}
 
