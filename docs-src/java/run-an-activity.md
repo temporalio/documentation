@@ -7,4 +7,5 @@ tags:
   - guide-context
 ---
 
-During isolation testing, if an Activity references its context, you'll need to mock that context. Mocked information stands in for the context, allowing you to focus your testing on the Activity's code.
+During isolation testing, if an Activity references its context, you'll need to mock that context.
+Mocked information stands in for the context, allowing you to focus your testing on the Activity's code.
