@@ -10,6 +10,10 @@
       "destination": "https://temporal.io/about"
     },
     {
+      "source": "/getting-started",
+      "destination": "https://learn.temporal.io/getting_started"
+    },
+    {
       "source": "/docs/:path*",
       "destination": "/:path*"
     },
