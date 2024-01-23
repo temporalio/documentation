@@ -32,7 +32,7 @@ For details, see [Namespace-level permissions](/cloud/users-namespace-level-perm
 ### Recent Workflows
 
 The main Workflows page displays a table of recent Workflow Executions.
-The Web UI will display a maximum of 1,000 Workflow Executions.
+The Web UI displays a maximum of 1,000 Workflow Executions.
 
 Users can list Workflow Executions by any of the following:
 
