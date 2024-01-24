@@ -42,14 +42,6 @@
       "destination": "/dev-guide"
     },
     {
-      "source": "/get-started",
-      "destination": "https://learn.temporal.io/getting_started"
-    },
-    {
-      "source": "/getting-started",
-      "destination": "https://learn.temporal.io/getting_started"
-    },
-    {
       "source": "/references/glossary",
       "destination": "/glossary"
     },
