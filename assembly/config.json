@@ -3,6 +3,7 @@
         "docs-src/cloud",
         "docs-src/concepts",
         "docs-src/dev-guide",
+        "docs-src/dotnet",
         "docs-src/go",
         "docs-src/java",
         "docs-src/platform-overview",
