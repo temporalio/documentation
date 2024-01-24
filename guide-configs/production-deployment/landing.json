@@ -5,7 +5,7 @@
     "file_dir": "production-deployment",
     "title": "Temporal Platform production deployments",
     "sidebar_label": "Production deployments",
-    "sidebar_position": 4,
+    "sidebar_position": 5,
     "description": "Learn more about how to deploy a Temporal Application to production.",
     "use_description": false,
     "toc_max_heading_level": 4,
