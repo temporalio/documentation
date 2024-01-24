@@ -3,6 +3,8 @@ const path = require("path");
 const visit = require("unist-util-visit");
 const FontPreloadPlugin = require("webpack-font-preload-plugin");
 
+const { remarkCodeHike } = require("@code-hike/mdx");
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: "Temporal Documentation",
@@ -208,6 +210,7 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           routeBasePath: "/",
+          beforeDefaultRemarkPlugins: [[remarkCodeHike, { theme: "nord" }]],
           exclude: ["**/php/**", "**/typescript/**", "**/go/**", "**/java/**", "**/clusters/**"], // do not render context content
           // editUrl: "https://github.com/temporalio/documentation/blob/master",
           /**
@@ -237,7 +240,7 @@ module.exports = {
         // blog: {},
         // Will be passed to @docusaurus/theme-classic.
         theme: {
-          customCss: require.resolve("./src/css/custom.css"),
+          customCss: [require.resolve("@code-hike/mdx/styles.css"), require.resolve("./src/css/custom.css")],
         },
         // gtag: {
         //   trackingID: "GTM-TSXFPF2",

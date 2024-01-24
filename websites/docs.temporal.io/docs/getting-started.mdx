@@ -8,4 +8,245 @@ tags:
   - getting-started
 ---
 
+Temporal offers a range of SDKs to help you build Temporal applications.
+The SDKs are available for .Net, Go, Java, TypeScript, PHP, and Python.
+
 Visit [learn.tempora.io](https://learn.temporal.io/getting_started) to get started with Temporal.
+
+
+## Temporal Go SDK
+
+- Get started with the [Temporal Go SDK](/dev-guide/go/introduction).
+- For starting a project with the Temporal Go SDK, see [Project setup](/dev-guide/go/project-setup).
+
+
+
+![](/get-started/go.svg)
+
+<CH.Scrollycoding  showCopyButton={true} rows="focus" showExpandButton={true}>
+
+
+
+
+### Workflow Definition
+- **Purpose and Structure**: This file contains the definition of the workflow. In Temporal, a workflow orchestrates a series of activities and maintains the state of the workflow.
+- **Key Components**:
+  - The workflow function `GreetingSample` which orchestrates the activities.
+  - ActivityOptions for configuring timeouts and retries.
+  - The use of `workflow.ExecuteActivity` to call activities.
+- **Error Handling and Logging**: Demonstrates how to log messages and handle errors within a workflow.
+
+<CH.Code>
+
+```go workflow.go
+package greetings
+
+import (
+	"time"
+	"go.temporal.io/sdk/workflow"
+)
+
+func GreetingSample(ctx workflow.Context) (string, error) {
+	logger := workflow.GetLogger(ctx)
+
+	ao := workflow.ActivityOptions{
+		StartToCloseTimeout: 10 * time.Second,
+	}
+	ctx = workflow.WithActivityOptions(ctx, ao)
+
+
+	var a *Activities
+
+	var greetResult string
+	err := workflow.ExecuteActivity(ctx, a.GetGreeting).Get(ctx, &greetResult)
+	if err != nil {
+		logger.Error("Get greeting failed.", "Error", err)
+		return "", err
+	}
+
+	var nameResult string
+	err = workflow.ExecuteActivity(ctx, a.GetName).Get(ctx, &nameResult)
+	if err != nil {
+		logger.Error("Get name failed.", "Error", err)
+		return "", err
+	}
+
+	var sayResult string
+	err = workflow.ExecuteActivity(ctx, a.SayGreeting, greetResult, nameResult).Get(ctx, &sayResult)
+	if err != nil {
+		logger.Error("Marshalling failed with error.", "Error", err)
+		return "", err
+	}
+
+	logger.Info("GreetingSample completed.", "Result", sayResult)
+	return sayResult, nil
+}
+```
+</CH.Code>
+---
+
+
+### Activities Implementation
+- **Role of Activities**: Activities are where the actual business logic of the application is executed. They represent individual units of work that are carried out by workers.
+- **Defining Activities**: 
+  - `GetGreeting`, `GetName`, and `SayGreeting` are the activities that are executed in this workflow.
+  - Each activity has its own input and output, and potentially an error.
+- **Custom Activity Struct**: The use of a struct `Activities` to group related activities.
+
+
+<CH.Code>
+```go activities.go
+package greetings
+
+import "fmt"
+
+type Activities struct {
+	Name     string
+	Greeting string
+}
+
+func (a *Activities) GetGreeting() (string, error) {
+	return a.Greeting, nil
+}
+
+
+func (a *Activities) GetName() (string, error) {
+	return a.Name, nil
+}
+
+func (a *Activities) SayGreeting(greeting string, name string) (string, error) {
+	result := fmt.Sprintf("Greeting: %s %s!\n", greeting, name)
+	return result, nil
+}
+```
+</CH.Code>
+---
+
+### Worker Setup
+- **Initializing a Worker**: This section explains how to set up a Temporal worker that listens for and executes workflow and activity tasks.
+- **Client and Worker Configuration**: 
+  - How to create a Temporal client and connect to the Temporal server.
+  - Registration of the workflow and activities with the worker.
+- **Starting the Worker**: Code for starting the worker to listen for tasks.
+
+<CH.Code>
+```go worker/main.go
+package main
+
+import (
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+
+	"github.com/temporalio/samples-go/greetings"
+)
+
+func main() {
+	// The client and worker are heavyweight objects that should be created once per process.
+	c, err := client.Dial(client.Options{
+		HostPort: client.DefaultHostPort,
+	})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+
+	w := worker.New(c, "greetings", worker.Options{})
+
+	w.RegisterWorkflow(greetings.GreetingSample)
+	activities := &greetings.Activities{Name: "Temporal", Greeting: "Hello"}
+	w.RegisterActivity(activities)
+
+	err = w.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
+}
+```
+</CH.Code>
+
+---
+### Workflow Starter
+
+- **Triggering Workflows**: This part of the code is responsible for starting workflow executions.
+- **Client Creation and Workflow Execution**: 
+  - Creating a Temporal client.
+  - Configuring workflow options like ID and task queue.
+  - Executing the workflow with `ExecuteWorkflow`.
+- **Result Retrieval**: Demonstrates how to retrieve the result of the workflow execution and handle errors.
+
+<CH.Code>
+```go starter/main.go
+package main
+
+import (
+	"context"
+	"log"
+
+	"github.com/pborman/uuid"
+	"go.temporal.io/sdk/client"
+
+	"github.com/temporalio/samples-go/greetings"
+)
+
+func main() {
+	// The client is a heavyweight object that should be created once per process.
+	c, err := client.Dial(client.Options{
+		HostPort: client.DefaultHostPort,
+	})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+
+	workflowOptions := client.StartWorkflowOptions{
+		ID:        "greetings_" + uuid.New(),
+		TaskQueue: "greetings",
+	}
+
+	we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, greetings.GreetingSample)
+	if err != nil {
+		log.Fatalln("Unable to execute workflow", err)
+	}
+	log.Println("Started workflow", "WorkflowID", we.GetID(), "RunID", we.GetRunID())
+
+	var result string
+	err = we.Get(context.Background(), &result)
+	if err != nil {
+		log.Fatalln("Unable get workflow result", err)
+	}
+	log.Println("Workflow result:", result)
+}
+```
+</CH.Code>
+---
+By following these sections, you will have a comprehensive understanding of how to structure and implement a Temporal application using the Go SDK, covering everything from defining workflows and activities to setting up workers and initiating workflow executions.
+
+</CH.Scrollycoding>
+
+![](/get-started/java.svg)
+
+- Get started with the [Temporal Java SDK](/dev-guide/java/introduction).
+- For starting a project with the Temporal Java SDK, see [Project setup](/dev-guide/java/project-setup).
+
+![](/get-started/typescript.svg)
+
+- Get started with the [Temporal TypeScript SDK](/dev-guide/typescript/introduction).
+- For starting a project with the Temporal TypeScript SDK, see [Project setup](/dev-guide/typescript/project-setup).
+
+![](/get-started/php.svg)
+
+Get started with the [Temporal PHP SDK](/dev-guide/php/introduction).
+
+![](/get-started/python.svg)
+
+- Get started with the [Temporal Python SDK](/dev-guide/python/introduction).
+- For starting a project with the Temporal Python SDK, see [Project setup](/dev-guide/python/project-setup).
+
+
+<!--
+![](/get-started/dotnet.svg)
+Get started with the [Temporal .NET SDK](/dev-guide/dotnet/introduction).
+![](/get-started/ruby.svg)
+-->
