@@ -45,6 +45,10 @@
     },
     {
       "type": "h2",
+      "id": "java/connect-to-temporal-cloud"
+    },
+    {
+      "type": "h2",
       "id": "java/how-to-develop-a-workflow-definition-in-java"
     },
     {

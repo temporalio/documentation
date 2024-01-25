@@ -49,6 +49,7 @@ Update your Temporal Client connections and Workers to use your Temporal Cloud N
 Each SDK has a way to use your CA certificates and private keys to authenticate and authorize access to your Temporal Cloud Namespace.
 
 - [Connect to Temporal Cloud in Go](/go/connect-to-temporal-cloud)
+- [Connect to Temporal Cloud in Java](/java/connect-to-temporal-cloud)
 - [Connect to Temporal Cloud in Python](/python/connect-to-temporal-cloud)
 - [Connect to Temporal Cloud in TypeScript](/typescript/connect-to-temporal-cloud)
 
