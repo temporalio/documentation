@@ -569,7 +569,8 @@ A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/wo
 
 **The default value is 10 seconds.**
 This timeout is primarily available to recognize whether a Worker has gone down so that the Workflow Execution can be recovered on a different Worker.
-The main reason for increasing the default value would be to accommodate a Workflow Execution that has a very long Workflow Execution History that could take longer than 10 seconds for the Worker to load.
+The main reason for increasing the default value is to accommodate a Workflow Execution that has an extensive Workflow Execution History, requiring more than 10 seconds for the Worker to load.
+It's worth mentioning that although you can extend the timeout up to the maximum value of 120 seconds, it's not recommended to move beyond the default value.
 
 ### What is a Timer? {#timer}
 
