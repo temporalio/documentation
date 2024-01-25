@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday January 19 2024 16:45:13 PM -0500
+Last assembled: Thursday January 25 2024 10:42:06 AM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
-137 guide configurations found.
+138 guide configurations found.
 
-1752 information nodes found.
+1753 information nodes found.
 
-1508 information nodes are attached to guides.
+1510 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -406,15 +406,15 @@ concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
 
 concepts/what-is-a-claimmapper-plugin -> #claim-mapper
 
+concepts/what-is-the-temporal-server -> /clusters#temporal-server
+
+concepts/what-is-a-temporal-client -> /temporal#temporal-client
+
 self-hosted/how-to-set-up-cassandra-visibility-store -> /self-hosted-guide/visibility#cassandra
 
 self-hosted/how-to-set-up-mysql-visibility-store -> /self-hosted-guide/visibility#mysql
 
 self-hosted/how-to-set-up-postgresql-visibility-store -> /self-hosted-guide/visibility#postgresql
-
-concepts/what-is-a-temporal-client -> /temporal#temporal-client
-
-concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-visibility -> /clusters#visibility
 
@@ -803,6 +803,8 @@ cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 cloud/certificates-issue -> /cloud/certificates#issue-certificates
 
 go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
+
+java/connect-to-temporal-cloud -> /dev-guide/java/foundations#connect-to-temporal-cloud
 
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
 
