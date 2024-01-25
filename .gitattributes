@@ -31,6 +31,7 @@ websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/index.mdx
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/monitoring.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/multi-cluster-replication.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/security.mdx linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/server-frontend-api-reference.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/setup.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/upgrade-server.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/visibility.mdx linguist-generated=true
