@@ -82,7 +82,8 @@ html[data-theme="light"] {
 
 a,
 a:hover {
-  text-decoration: underline;
+  text-decoration: underline 1px;
+  text-underline-offset: 2px;
 }
 
 .alert {
