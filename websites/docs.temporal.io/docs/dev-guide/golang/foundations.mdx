@@ -265,7 +265,7 @@ If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal
 
 If you don't set a custom Namespace name in the Namespace field, the client connects to the default Namespace.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id455375777" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id455375777" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/gateway/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/gateway/main_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -324,7 +324,7 @@ For more information about managing and generating client certificates for Tempo
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-1258417871" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-1258417871" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/cloud/client/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/cloud/client/main_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -382,7 +382,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation/blob/mai
 In the Temporal Go SDK programming model, a [Workflow Definition](/workflows#workflow-definition) is an exportable function.
 Below is an example of a basic Workflow Definition.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id1754629572" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id1754629572" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -426,7 +426,7 @@ However, the best practice is to pass a single parameter that is of a `struct` t
 
 All Workflow Definition parameters must be serializable and can't be channels, functions, variadic, or unsafe pointers.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id1754629572" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id1754629572" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -468,7 +468,7 @@ However, it's not possible to receive both a custom value and an error in the ca
 The caller will receive either one or the other.
 Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be terminated, and any custom return values will be ignored by the system.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id1754629572" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id1754629572" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -513,7 +513,7 @@ In Go, by default, the Workflow Type name is the same as the function name.
 
 To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id1879988855" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id1879988855" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/worker/main_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -592,7 +592,7 @@ Activities written as struct methods can use shared struct variables, such as:
 
 Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-1818982284" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-1818982284" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_activity_definition_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_activity_definition_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -652,7 +652,7 @@ This parameter is optional for an Activity Definition, though it is recommended,
 An Activity Definition can support as many other custom parameters as needed.
 However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-1818982284" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-1818982284" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_activity_definition_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_activity_definition_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -682,7 +682,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation/blob/mai
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-1818982284" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-1818982284" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_activity_definition_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_activity_definition_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -715,7 +715,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation/blob/mai
 
 To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id1879988855" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id1879988855" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/worker/main_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -762,7 +762,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation/blob/mai
 	       The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
 	       The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id1754629572" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id1754629572" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -1099,7 +1099,7 @@ gow run worker/main.go # automatically reloads when file changes
 :::
 
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id1879988855" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id1879988855" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/worker/main_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -1609,7 +1609,7 @@ For more information about managing and generating client certificates for Tempo
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id1190464606" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id1190464606" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/cloud/worker/main_dacx.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/cloud/worker/main_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
