@@ -79,7 +79,7 @@ Improve observability in your Java-based Temporal Workflows. View which Workflow
 The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 
 - [Test frameworks](/java/testing-frameworks): Testing provides a framework to facilitate Workflow and integration testing.
-- [Testing Activities](/java/testing-activities): Testing provides a framework to facilitate Workflow and integration testing.
+- [Test Activities](/java/testing-activities): Testing provides a framework to facilitate Workflow and integration testing.
 - [Testing Workflows](/java/testing-workflows): Testing provides a framework to facilitate Workflow and integration testing.
 - [How to Replay a Workflow Execution](/java/replays): Replay recreates the exact state of a Workflow Execution.
 
