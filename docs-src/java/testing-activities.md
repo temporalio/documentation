@@ -1,6 +1,6 @@
 ---
 id: testing-activities
-title: Testing Activities
+title: Test Activities
 description: Testing provides a framework to facilitate Workflow and integration testing.
 sidebar_label: Test Activities
 tags:

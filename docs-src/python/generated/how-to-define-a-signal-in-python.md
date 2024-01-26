@@ -27,7 +27,7 @@ Return values from Signal methods are ignored.
 
 You can have a name parameter to customize the Signal's name, otherwise it defaults to the name of the Signal method.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id1435988550" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id1435988550" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/signal_your_workflow/wf_signal_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/signal_your_workflow/wf_signal_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
 from temporalio import workflow
