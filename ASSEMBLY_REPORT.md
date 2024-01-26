@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday January 19 2024 14:18:59 PM -0600
+Last assembled: Friday January 26 2024 09:17:07 AM -0600
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -406,15 +406,15 @@ concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
 
 concepts/what-is-a-claimmapper-plugin -> #claim-mapper
 
+concepts/what-is-the-temporal-server -> /clusters#temporal-server
+
+concepts/what-is-a-temporal-client -> /temporal#temporal-client
+
 self-hosted/how-to-set-up-cassandra-visibility-store -> /self-hosted-guide/visibility#cassandra
 
 self-hosted/how-to-set-up-mysql-visibility-store -> /self-hosted-guide/visibility#mysql
 
 self-hosted/how-to-set-up-postgresql-visibility-store -> /self-hosted-guide/visibility#postgresql
-
-concepts/what-is-a-temporal-client -> /temporal#temporal-client
-
-concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-visibility -> /clusters#visibility
 
