@@ -269,7 +269,7 @@ This enables you to verify both the Heartbeat's content and behavior.
 
 ### Cancel an Activity {#cancel-an-activity}
 
-If an Activity is supposed to react to a Cancellation, you can test whether it reacts correctly by canceling it.
+Activity cancellation lets Activities know they don't need to continue work and gives time for the Activity to clean up any resources it's created. You can cancel Java-based activities if they emit Heartbeats. To test an Activity that reacts to Cancellations, make sure that the Activity reacts correctly and cancels.
 
 ## Testing Workflows {#test-workflows}
 
