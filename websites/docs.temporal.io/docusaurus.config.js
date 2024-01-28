@@ -210,7 +210,9 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           routeBasePath: "/",
-          beforeDefaultRemarkPlugins: [[remarkCodeHike, { theme: "nord" }]],
+          beforeDefaultRemarkPlugins: [
+            [remarkCodeHike, { theme: "nord", staticMediaQuery: "not screen, (max-width: 768px)" }],
+          ],
           exclude: ["**/php/**", "**/typescript/**", "**/go/**", "**/java/**", "**/clusters/**"], // do not render context content
           // editUrl: "https://github.com/temporalio/documentation/blob/master",
           /**

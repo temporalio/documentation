@@ -39,6 +39,7 @@ Visit [learn.tempora.io](https://learn.temporal.io/getting_started) to get start
 <CH.Code>
 
 ```go workflow.go
+
 package greetings
 
 import (
@@ -175,7 +176,7 @@ func main() {
   - Configuring workflow options like ID and task queue.
   - Executing the workflow with `ExecuteWorkflow`.
 - **Result Retrieval**: Demonstrates how to retrieve the result of the workflow execution and handle errors.
-
+<!-- HELLOOOOO -->
 <CH.Code>
 ```go starter/main.go
 package main
@@ -225,28 +226,47 @@ By following these sections, you will have a comprehensive understanding of how 
 
 </CH.Scrollycoding>
 
-![](/get-started/java.svg)
-
-- Get started with the [Temporal Java SDK](/dev-guide/java/introduction).
-- For starting a project with the Temporal Java SDK, see [Project setup](/dev-guide/java/project-setup).
-
-![](/get-started/typescript.svg)
-
-- Get started with the [Temporal TypeScript SDK](/dev-guide/typescript/introduction).
-- For starting a project with the Temporal TypeScript SDK, see [Project setup](/dev-guide/typescript/project-setup).
-
-![](/get-started/php.svg)
-
-Get started with the [Temporal PHP SDK](/dev-guide/php/foundations).
-
-![](/get-started/python.svg)
-
-- Get started with the [Temporal Python SDK](/dev-guide/python/introduction).
-- For starting a project with the Temporal Python SDK, see [Project setup](/dev-guide/python/project-setup).
 
 
-<!--
-![](/get-started/dotnet.svg)
-Get started with the [Temporal .NET SDK](/dev-guide/dotnet/introduction).
-![](/get-started/ruby.svg)
--->
+## New section
+
+Annotations:
+
+```py focus=2 mark=4[6:8]
+print(1)
+print(2)
+print(3)
+# focus
+print(4)
+# link[1:8] /workflows
+print("A Temporal Site")
+```
+
+## mark Annotations
+
+Highligh a line
+
+
+```py
+print("This is line 1")
+# mark
+print("This is line 2")
+print("This is line 3")
+```
+
+
+Inline tokens:
+
+```py
+# mark[7:14]
+class Temporal:
+  def workflow(self):
+    # mark[5:10]
+    return "Hello World!"
+```
+
+This reads from a file.
+
+```py hi.js
+# from ./hi.js
+```
