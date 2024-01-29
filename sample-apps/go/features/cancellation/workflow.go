@@ -51,14 +51,19 @@ func YourWorkflow(ctx workflow.Context) error {
 }
 
 /*
+**How to handle a Cancellation in a Workflow in Go.**
+
+Workflow Definitions can be written to handle execution cancellation requests with Go's `defer` and the `workflow.NewDisconnectedContext` API.
+In the Workflow Definition, there is a special Activity that handles clean up should the execution be cancelled.
+
 If the Workflow receives a Cancellation Request, but all Activities gracefully handle the Cancellation, and/or no Activities are skipped then the Workflow status will be Complete.
 It is completely up to the needs of the business process and your use case which determines whether you want to return the Cancellation error to show a Canceled status or Complete status regardless of whether a Cancellation has propagated to and/or skipped Activities.
 */
 
 /* @dacx
 id: handle-cancellation-request-workflow
-title: How to handle a Cancellation in a Workflow in Go
+title: Handle Cancellation in Workflow
 label: Handle Cancellation in Workflow
 description: You can design your Workflow to run clean up Activities, and change to a Canceled status when a Cancellation Request is received.
-lines: 15-16, 19, 24-39, 42, 44-46, 48-56
+lines: 15-16, 19, 21-39, 42, 44-46, 48-61
 @dacx */

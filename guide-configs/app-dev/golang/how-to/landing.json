@@ -1,0 +1,23 @@
+{
+    "id": "index",
+    "file_name": "index.mdx",
+    "slug": "/dev-guide/go/how-to",
+    "file_dir": "dev-guide/golang/how-to",
+    "title": "Go SDK feature how-tos",
+    "sidebar_label": "How to",
+    "sidebar_position": 2,
+    "description": "Learn how to use Temporal Go SDK features.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "go/how-to/landing-page/landing"
+        },
+        {
+            "type": "p",
+            "id": "go/how-to/landing-page/how-to-dev-guide-structure"
+        }
+    ]
+}

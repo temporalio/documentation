@@ -136,3 +136,5 @@ websites/docs.temporal.io/docs/dev-guide/golang/observability.mdx linguist-gener
 websites/docs.temporal.io/docs/dev-guide/golang/project-setup.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/testing.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/versioning.mdx linguist-generated=true
+websites/docs.temporal.io/docs/dev-guide/golang/how-to/cancellation/cancellation.mdx linguist-generated=true
+websites/docs.temporal.io/docs/dev-guide/golang/how-to/index.mdx linguist-generated=true
