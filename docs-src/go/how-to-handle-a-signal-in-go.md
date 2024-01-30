@@ -43,7 +43,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
  			selector.Select(ctx)
  		}
  	})
-   // submit activity 1
+   // submit activity one
    // signal can be received while activity one is pending
 
  }
