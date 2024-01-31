@@ -3,6 +3,8 @@ const path = require("path");
 const visit = require("unist-util-visit");
 const FontPreloadPlugin = require("webpack-font-preload-plugin");
 
+const { remarkCodeHike } = require("@code-hike/mdx");
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: "Temporal Documentation",
@@ -218,6 +220,7 @@ module.exports = {
            * Whether to display the last date the doc was updated.
            */
           showLastUpdateTime: false,
+          beforeDefaultRemarkPlugins: [[remarkCodeHike, { theme: "nord" }]],
           /**
            * Skip the next release docs when versioning is enabled.
            * This will not generate HTML files in the production build for documents
@@ -237,7 +240,7 @@ module.exports = {
         // blog: {},
         // Will be passed to @docusaurus/theme-classic.
         theme: {
-          customCss: require.resolve("./src/css/custom.css"),
+          customCss: [require.resolve("@code-hike/mdx/styles.css"), require.resolve("./src/css/custom.css")],
         },
         // gtag: {
         //   trackingID: "GTM-TSXFPF2",
