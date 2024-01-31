@@ -145,7 +145,7 @@ fi
 
 if [ "$PERSIST" = false ] && [ "$START" = false ]; then
     echo "Executing yarn build..."
-    cd websites/docs.temporal.io && yarn build
+    cd websites/docs.temporal.io && yarn && yarn build
 
 
 
