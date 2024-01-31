@@ -19,7 +19,7 @@ There are many computational and logistical aspects to generating and rotating k
 
 - Store your encryption keys in the same manner as you store passwords, config details, and other sensitive data. When possible, load the key into your application, so you don't need to make a network call to retrieve it. Separate keys for each environment or namespace as much as possible.
 
-- Make sure you have a key rotation strategy in place in the event that your keys are compromised or need to be replaced for another reason. Consider using a dedicated secrets engine or a key management system (KMS). Note that when  you rotate keys, you may also need to retain old keys to query old workflows.
+- Make sure you have a key rotation strategy in place in the event that your keys are compromised or need to be replaced for another reason. Consider using a dedicated secrets engine or a key management system (KMS). Note that when you rotate keys, you may also need to retain old keys to query old Workflows.
 
 ### Key Rotation
 
