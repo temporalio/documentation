@@ -237,7 +237,7 @@ public class HelloActivityJUnit5Test {
 
 You can find all unit tests for the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [its test package](https://github.com/temporalio/samples-java/tree/main/core/src/test/java/io/temporal/samples).
 
-## Testing Activities {#test-activities}
+## Test Activities {#test-activities}
 
 Mocking isolates code undergoing testing so the focus remains on the code, and not on external dependencies or other state. You can test Activities using a mocked Activity environment.
 
@@ -250,19 +250,26 @@ For example, you can test an Activity for:
 
 - Exceptions thrown when invoking the Activity Execution.
 - Exceptions thrown when checking for the result of the Activity Execution.
-- Activity return values. Check that the return value matches the expected value.
+- Activity's return values. Check that the return value matches the expected value.
 
 ### Run an Activity {#run-an-activity}
 
-If an Activity references its context, you need to mock that context when testing in isolation.
+During isolation testing, if an Activity references its context, you'll need to mock that context.
+Mocked information stands in for the context, allowing you to focus your testing on the Activity's code.
 
 ### Listen to Heartbeats {#listen-to-heartbeats}
 
-When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in your test code so that you can verify them.
+Activities usually issue periodic Heartbeats, a feature that broadcasts recurring proof-of-life updates.
+Each ping shows that an Activity is making progress and the Worker hasn't crashed.
+Heartbeats may include details that report task progress in the event an Activity Worker crashes.
+
+When testing Activities that support Heartbeats, make sure you can see those Heartbeats in your test code.
+Provide appropriate test coverage.
+This enables you to verify both the Heartbeat's content and behavior.
 
 ### Cancel an Activity {#cancel-an-activity}
 
-If an Activity is supposed to react to a Cancellation, you can test whether it reacts correctly by canceling it.
+Activity cancellation lets Activities know they don't need to continue work and gives time for the Activity to clean up any resources it's created. You can cancel Java-based activities if they emit Heartbeats. To test an Activity that reacts to Cancellations, make sure that the Activity reacts correctly and cancels.
 
 ## Testing Workflows {#test-workflows}
 

@@ -37,6 +37,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 - [How to install Temporal CLI and run a development server](/self-hosted/how-to-install-temporal-cli): How to install Temporal CLI and run a development Cluster.
 - [How to install a Temporal SDK](/java/add-sdk): A Temporal SDK provides a framework for Temporal Application development.
 - [How to create a Temporal Client in Java](/java/how-to-create-a-temporal-client-in-java): To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
+- [How to connect to Temporal Cloud](/java/connect-to-temporal-cloud): Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
 - [How to develop a Workflow Definition in Java](/java/how-to-develop-a-workflow-definition-in-java): In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.
 - [How to develop a basic Activity](/java/developing-activities): One of the primary things that Workflows do is orchestrate the execution of Activities.
 - [How to start an Activity Execution](/java/spawning-activities): Calls to spawn Activity Executions are written within a Workflow Definition.
@@ -78,7 +79,7 @@ Improve observability in your Java-based Temporal Workflows. View which Workflow
 The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 
 - [Test frameworks](/java/testing-frameworks): Testing provides a framework to facilitate Workflow and integration testing.
-- [Testing Activities](/java/testing-activities): Testing provides a framework to facilitate Workflow and integration testing.
+- [Test Activities](/java/testing-activities): Testing provides a framework to facilitate Workflow and integration testing.
 - [Testing Workflows](/java/testing-workflows): Testing provides a framework to facilitate Workflow and integration testing.
 - [How to Replay a Workflow Execution](/java/replays): Replay recreates the exact state of a Workflow Execution.
 

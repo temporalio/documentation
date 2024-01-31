@@ -19,7 +19,7 @@ Using `patched` inserts a marker into the Workflow History.
 
 During replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case, `my-patch`). This ensures you can safely deploy code from `post_patch_activity` as a "feature flag" alongside the original version (`pre_patch_activity`).
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-462186947" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-462186947" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_2_patched_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_2_patched_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
 # ...

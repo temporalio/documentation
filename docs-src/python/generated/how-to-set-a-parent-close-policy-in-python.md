@@ -14,7 +14,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation/blob/mai
 
 Set the `parent_close_policy` parameter inside the [`start_child_workflow`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function or the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function to specify the behavior of the Child Workflow when the Parent Workflow closes.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id1180396912" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id1180396912" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_child_workflow/your_child_workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_child_workflow/your_child_workflow_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
 from temporalio.workflow import ParentClosePolicy
