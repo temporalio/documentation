@@ -34,7 +34,7 @@ To create a Codec Server, you need the following components:
 - A [Payload Codec](/concepts/what-is-a-payload-codec) with the requisite keys and logic to decode your encrypted payloads.
   You can use the Payload Codec that you applied with your Data Converter to encode your Payloads and configure it with your Codec Server.
   However, if you are writing your Codec Server in a different SDK from the one that applies the Data Converter, ensure that your logic and keys are correctly replicated.
-- Key management infrastructure or plan for sharing your encryption keys between the Workers and your Codec Server.
+- [Key management infrastructure](/concepts/what-is-key-management) or plan for sharing your encryption keys between the Workers and your Codec Server.
 - [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) configuration on the HTTP/HTTPS endpoints in your Codec Server for sending and receiving requests from the Temporal Web UI.
 - Optional: Secure access through VPN and access control.
   For details, see [Authorization](#authorization).
