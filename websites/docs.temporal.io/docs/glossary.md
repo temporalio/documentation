@@ -73,12 +73,6 @@ Archival is a feature that automatically backs up Event Histories from Temporal 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Archival](/self-hosted-guide/archival)
-Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.
-
-_Tags: [term](/tags/term), [explanation](/tags/explanation)_
-
-
 #### [Asynchronous Activity Completion](/activities#asynchronous-activity-completion)
 Asynchronous Activity Completion occurs when an external system provides the final result of a computation, started by an Activity, to the Temporal System.
 
