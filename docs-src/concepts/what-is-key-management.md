@@ -13,7 +13,7 @@ Key Management is a fundamental part of working with encryption keys.
 
 There are many computational and logistical aspects to generating and rotating keys, and this usually calls for a dedicated application in your stack. Here are some general recommendations for working with encryption keys for Temporal applications:
 
-- [Symmetric Encryption](https://en.wikipedia.org/wiki/Symmetric-key_algorithm)  is generally faster and will produce smaller payloads than asymmetric. Normally, an advantage of _asymmetric_ encryption is that it allows you to distribute your encryption and decryption keys separately, but depending on your infrastructure, this might not offer any security benefits with Temporal.
+- [Symmetric Encryption](https://en.wikipedia.org/wiki/Symmetric-key_algorithm) is generally faster and will produce smaller payloads than asymmetric. Normally, an advantage of _asymmetric_ encryption is that it allows you to distribute your encryption and decryption keys separately, but depending on your infrastructure, this might not offer any security benefits with Temporal.
 
 - AES-based algorithms are [hardware accelerated in Go](https://pkg.go.dev/crypto/aes) and other languages. AES algorithms are widely vetted and trusted, and there are many different variants that may suit your requirements. Load tests using `ALG_AES_256_GCM_HKDF_SHA512_COMMIT_KEY` have performed well.
 
