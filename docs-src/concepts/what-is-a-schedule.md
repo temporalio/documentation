@@ -48,7 +48,8 @@ Workflow Executions started by a Schedule have the following additional properti
 
 ### Spec
 
-The Schedule Spec describes when the Action is taken.
+The Schedule Spec defines when the Action should be taken.
+Unless many Schedules have Actions scheduled at the same time, Actions should generally start within 1 second of the specified time.
 There are two kinds of Schedule Spec:
 
 - A simple interval, like "every 30 minutes" (aligned to start at the Unix epoch, and optionally including a phase offset).
