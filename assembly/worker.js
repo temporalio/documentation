@@ -39,7 +39,11 @@ async function run() {
   }
 
   async function useLocal() {
+    const connection = await NativeConnection.connect(
+        (process.env.TEMPORAL_SERVER_ADDRESS) ? {address: process.env.TEMPORAL_SERVER_ADDRESS} : {}
+    );
     const worker = await Worker.create({
+	    connection,
       workflowsPath: path.resolve("./workflows/fullAssembly.js"),
       activities,
       taskQueue: `docs-assembly`,

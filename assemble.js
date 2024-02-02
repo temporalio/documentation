@@ -77,7 +77,9 @@ async function useCloud(params) {
 }
 
 async function useLocal(params) {
-  const connection = await Connection.connect({});
+  const connection = await Connection.connect(
+      (process.env.TEMPORAL_SERVER_ADDRESS)?{address: process.env.TEMPORAL_SERVER_ADDRESS}:{}
+  );
   const client = new WorkflowClient({
     connection,
   });
