@@ -4,7 +4,8 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "make": "yarn && cd ./assembly && yarn && cd .. && cd ./websites/docs.temporal.io && yarn",
+    "make": "chmod +x make.sh && ./make.sh",
+    "worker": "pushd assembly && yarn worker && popd",
     "assemble": "./assemble.js && dprint fmt",
     "assemble-cloud": "./assemble.js --cloud && dprint fmt",
     "snipsync": "snipsync",
