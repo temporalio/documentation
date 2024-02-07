@@ -7,6 +7,38 @@ tags:
   - guide-context
 ---
 
+```python
+def greet(name):
+    print(f"Hello, {name}!")
+
+greet("World")
+```
+
+<codapi-snippet sandbox="python" editor="basic" init-delay="500">
+</codapi-snippet>
+
+```python
+import io
+import numpy as np
+import matplotlib.pyplot as plt
+
+data = {"a": np.arange(50), "c": np.random.randint(0, 50, 50), "d": np.random.randn(50)}
+data["b"] = data["a"] + 10 * np.random.randn(50)
+data["d"] = np.abs(data["d"]) * 100
+
+plt.scatter("a", "b", c="c", s="d", data=data)
+plt.xlabel("entry a")
+plt.ylabel("entry b")
+plt.show()
+
+stream = io.StringIO()
+plt.savefig(stream, format="svg")
+print(stream.getvalue())
+```
+
+<codapi-snippet sandbox="python" output-mode="svg">
+</codapi-snippet>
+
 Welcome to Temporal Python SDK developer's guide!
 
 :::info Temporal Python SDK API reference
