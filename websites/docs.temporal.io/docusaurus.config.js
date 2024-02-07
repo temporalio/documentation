@@ -255,12 +255,22 @@ module.exports = {
       },
     ],
   ],
+  stylesheets: [
+    {
+      href: "https://unpkg.com/@antonz/codapi@0.13.0/dist/snippet.css",
+    },
+  ],
   scripts: [
     {
       src: "/scripts/googletag.js",
       async: true,
       defer: true,
     },
+    {
+      src: "https://unpkg.com/@antonz/codapi@0.13.0/dist/snippet.js",
+      defer: true,
+    },
+
     {
       src: "https://widget.kapa.ai/kapa-widget.bundle.js",
       "data-website-id": "91a88508-9cdc-441f-b1df-37aa9329e6bc",
