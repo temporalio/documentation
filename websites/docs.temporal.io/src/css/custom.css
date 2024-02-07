@@ -74,7 +74,7 @@ html[data-theme="light"] {
   --ifm-card-background-color: #ffffff;
   --ifm-badge-background-color: rgba(239, 246, 255); */
   --card-color: #ffffff;
-  --docusaurus-highlighted-code-line-bg: rgb(179, 250, 206);
+  --docusaurus-highlighted-code-line-bg: rgb(57, 104, 77);
 }
 
 /* --ifm-background-surface-color: #000000;
@@ -82,7 +82,8 @@ html[data-theme="light"] {
 
 a,
 a:hover {
-  text-decoration: underline;
+  text-decoration: underline 1px;
+  text-underline-offset: 2px;
 }
 
 .alert {
@@ -1144,50 +1145,19 @@ code {
 /* When the screen width is greater than or equal to 1024px (common desktop size), the element is shown */
 
 .copycode-notice-container {
-  background-color: #141414;
+  background-color: #cd9eff;
   border: 1px solid #fff;
-  color: #efefef;
+  color: #000000;
   margin-bottom: 3px;
-  padding: 0;
   border-radius: 6px;
-}
-.copycode-notice {
-  display: flex;
   justify-content: left;
   padding: 7px;
-  vertical-align: center;
+  vertical-align: center !important;
   align-items: center;
-  font-family: monospace;
-  font-size: 1.2em;
 }
 
-.copycode-notice img {
-  height: 28px !important;
-}
-
-img[data-style="copycode-icon"] {
-  margin-right: 15px;
-  margin-left: 15px;
-}
-
-img[data-style="chevron-icon"] {
-  margin-left: 15px;
-  cursor: pointer;
-  transition: transform 1s;
-}
-
-img[data-style="chevron-icon"]:hover {
-  animation: bounce 0.5s;
-}
-
-.copycode-info {
-  position: relative;
-  padding: 15px; /* Some padding for the content inside the modal */
-  display: none;
-}
-
-.copycode-info a {
-  color: #ffffff !important;
+.copycode-notice-container a {
+  color: #000000 !important;
 }
 
 @keyframes bounce {
