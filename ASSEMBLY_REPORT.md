@@ -1,10 +1,14 @@
 # Docs Assembly Workflow report
 
+Last assembled: Wednesday February 07 2024 13:24:44 PM -0700
+
+Assembly Workflow Id: docs-full-assembly
+
 138 guide configurations found.
 
-1759 information nodes found.
+1754 information nodes found.
 
-1510 information nodes are attached to guides.
+1511 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -801,6 +805,8 @@ cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 cloud/certificates-issue -> /cloud/certificates#issue-certificates
 
 go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
+
+java/connect-to-temporal-cloud -> /dev-guide/java/foundations#connect-to-temporal-cloud
 
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
 
