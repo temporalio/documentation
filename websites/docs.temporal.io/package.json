@@ -39,12 +39,10 @@
     "@mdx-js/react": "^3.0.0",
     "chart.js": "^4.4.1",
     "clsx": "^1.1.1",
-    "docusaurus": "^1.14.7",
     "path": "^0.12.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-player": "^2.6.0",
-    "snipsync": "^1.8.0",
     "tar-fs": "^2.1.1",
     "webpack-font-preload-plugin": "^1.5.0"
   },
