@@ -7,7 +7,7 @@ tags:
   - term
   - explanation
 ssdi:
-  - Generally Available as of Nov '23
+  - Generally Available as of Nov 2023
   - Introduced in Temporal Server version [1.17.0](https://github.com/temporalio/temporal/releases/tag/v1.17.0)
   - Available in Temporal CLI (and tctl v1.17)
   - Available in Temporal Cloud
