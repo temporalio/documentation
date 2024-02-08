@@ -1,5 +1,9 @@
 # Docs Assembly Workflow report
 
+Last assembled: Thursday February 08 2024 10:31:41 AM -0800
+
+Assembly Workflow Id: docs-full-assembly
+
 138 guide configurations found.
 
 1754 information nodes found.
@@ -801,6 +805,8 @@ cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 cloud/certificates-issue -> /cloud/certificates#issue-certificates
 
 go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
+
+java/connect-to-temporal-cloud -> /dev-guide/java/foundations#connect-to-temporal-cloud
 
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
 
