@@ -22,6 +22,7 @@ A Temporal Cloud Worker requires that you specify the following in the Client co
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_boilerplate/cloud_worker/main_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 import asyncio
 import os
 
@@ -60,4 +61,6 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 ```
+

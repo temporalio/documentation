@@ -85,5 +85,5 @@ Progress:
                                                       java.base /java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)                              
                                                       java.base/java.lang.Thread.run(Thread.j ava:1623) ,                                                                     
                                                       FailureInfo:{ApplicationFailureInfo:{Type:io.temporal.worker.NonDeterministicException, NonRetryable:false}}},          
-                                                      Identity:79209@Masons-Laptop, ForkEventVersion:0}
+                                                      Identity:79209@Masons-Laptop, ForkEventVersion:0}                                                                       
 ```

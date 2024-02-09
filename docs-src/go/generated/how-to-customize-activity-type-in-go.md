@@ -17,6 +17,7 @@ To customize the Activity Type, set the `Name` parameter with `RegisterOptions` 
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/worker/main_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 func main() {
 // ...
 	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
@@ -32,3 +33,4 @@ func main() {
 }
 // ...
 ```
+

@@ -24,6 +24,7 @@ In regards to organization, we recommend keeping Worker code separate from Workf
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_boilerplate/dev_server_worker/main_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 import asyncio
 
 from temporalio.client import Client
@@ -51,3 +52,4 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+

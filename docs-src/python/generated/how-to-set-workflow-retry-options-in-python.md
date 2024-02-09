@@ -17,6 +17,7 @@ Set the Retry Policy to either the [`start_workflow()`](https://python.temporal.
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/workflow_timeouts_retries/workflows_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
     handle = await client.execute_workflow(
         YourWorkflow.run,
@@ -26,3 +27,4 @@ Set the Retry Policy to either the [`start_workflow()`](https://python.temporal.
         retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
     )
 ```
+

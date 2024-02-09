@@ -23,6 +23,7 @@ If the Workflow does not exist, this call fails.
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/get_workflow_results_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -37,3 +38,4 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+

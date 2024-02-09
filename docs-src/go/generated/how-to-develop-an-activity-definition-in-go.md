@@ -27,6 +27,7 @@ Because this is such a common need, the rest of this guide shows Activities writ
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_activity_definition_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 package yourapp
 
 import (
@@ -53,4 +54,6 @@ type YourActivityObject struct {
 func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
 // ...
 }
+
 ```
+

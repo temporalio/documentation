@@ -22,6 +22,7 @@ Use the `workflow.GetLogger` API to log from Workflows to avoid seeing repeated 
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/durability/workflows/backgroundcheck.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 package workflows
 
 import (
@@ -60,3 +61,4 @@ func BackgroundCheck(ctx workflow.Context, param string) (string, error) {
 	return ssnTraceResult, nil
 }
 ```
+

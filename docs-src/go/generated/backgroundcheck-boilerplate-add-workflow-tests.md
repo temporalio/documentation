@@ -24,6 +24,8 @@ We can also perform a Workflow Replay test, and we'll provide detailed coverage 
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/tests/backgroundcheckboilerplate_test.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
+
 const ssn string = "555-55-5555"
 
 // Test_BackgroundCheckWorkflow tests the BackgroundCheck Workflow function
@@ -48,3 +50,4 @@ func (s *UnitTestSuite) Test_BackgroundCheckWorkflow() {
 	s.Equal(result, ssnTraceResult)
 }
 ```
+

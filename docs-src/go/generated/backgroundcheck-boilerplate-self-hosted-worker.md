@@ -17,6 +17,7 @@ Set IP address, port, and Namespace in the Temporal Client options.
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/self_hosted_worker/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 package main
 
 import (
@@ -55,3 +56,4 @@ func main() {
 	}
 }
 ```
+

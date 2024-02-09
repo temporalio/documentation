@@ -22,6 +22,7 @@ Schedules must be initialized with a Schedule ID, [Spec](/concepts/what-is-a-sch
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/create/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 func main() {
 // ...
 	scheduleID := "schedule_id"
@@ -40,3 +41,4 @@ func main() {
 }
 // ...
 ```
+

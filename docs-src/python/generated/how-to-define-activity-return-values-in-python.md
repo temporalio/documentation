@@ -19,8 +19,10 @@ The following example defines an Activity that takes a string as input and retur
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
 @activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
+

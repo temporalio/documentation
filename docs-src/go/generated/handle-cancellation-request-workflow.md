@@ -14,6 +14,7 @@ It is completely up to the needs of the business process and your use case which
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/cancellation/workflow.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 // YourWorkflow is a Workflow Definition that shows how it can be canceled.
 func YourWorkflow(ctx workflow.Context) error {
 // ...
@@ -46,4 +47,6 @@ func YourWorkflow(ctx workflow.Context) error {
 	// If a CanceledError is returned, the Workflow changes to a Canceled state.
 	return err
 }
+
 ```
+

@@ -18,6 +18,7 @@ Below is an example of a basic Workflow Definition.
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 package yourapp
 
 import (
@@ -33,3 +34,4 @@ func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
 	return nil
 }
 ```
+

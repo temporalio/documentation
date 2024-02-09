@@ -19,6 +19,7 @@ You can get a complete list of the attributes of the Scheduled Workflow Executio
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/describe_schedule_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -30,3 +31,4 @@ async def main():
 
     print(f"Returns the note: {desc.schedule.state.note}")
 ```
+

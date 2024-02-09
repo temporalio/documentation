@@ -18,16 +18,18 @@ You can test Workflow code for the following conditions:
 - Error when checking for a result of a Workflow. Is there an error in getting the result returned by the Workflow?
 - Workflow return value. If the Workflow did return something other than an error, is it what you expected it to be?
 
+
 Add the following code to `src/mocha/backgroundcheck.test.ts` to test that the Workflow executes successfully.
 
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/mocha/backgroundcheck.test.ts">View the source code</a> in the context of the rest of the application code.</div>
 
 ```typescript
+
 import { TestWorkflowEnvironment } from '@temporalio/testing';
-import { Worker } from '@temporalio/worker';
-import assert from 'assert';
 import { before, describe, it } from 'mocha';
+import { Worker } from '@temporalio/worker';
 import { backgroundCheck } from '../workflows';
+import assert from 'assert';
 
 describe('Background check workflow', () => {
   let testEnv: TestWorkflowEnvironment;
@@ -59,9 +61,11 @@ describe('Background check workflow', () => {
         args: [ssn],
         workflowId: 'background-check-test',
         taskQueue,
-      }),
+      })
     );
     assert.equal(result, 'pass');
   });
 });
+
 ```
+

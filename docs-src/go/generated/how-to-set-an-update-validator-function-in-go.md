@@ -28,6 +28,8 @@ The platform treats a panic in the Validator function as a rejection of the Upda
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/your_updatable_workflow.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
+
 // UpdatableWorkflowWithValidator is a Workflow Definition.
 // This Workflow Definition has an Update handler that uses the isPositive() validator function.
 // After setting the Update hanlder it sleeps for 1 minutue.
@@ -62,3 +64,4 @@ func isPositive(ctx workflow.Context, u YourUpdateArg) error {
 	return nil
 }
 ```
+

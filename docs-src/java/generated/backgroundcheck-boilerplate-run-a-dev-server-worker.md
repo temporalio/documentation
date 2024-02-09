@@ -13,7 +13,6 @@ tags:
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation/blob/main/sample-apps/java/backgroundcheck-replay/src/main/java/backgroundcheckreplay/workers/DevServerWorker.java. -->
 
 To run a Worker Process with a local development server, define the following steps in code:
-
 - Generate the gRPC stubs necessary to configure a connection to a Temporal Cluster running on localhost using the 'default' namespace
 - Initialize a Temporal Client (`WorkflowClient`), passing in the gRPC stubs.
 - Initialize a WorkerFactory, passing in the Temporal Client (`WorkflowClient`)
@@ -26,6 +25,7 @@ Temporal recommends keeping Worker code separate from Workflow and Activity code
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/java/backgroundcheck-replay/src/main/java/backgroundcheckreplay/workers/DevServerWorker.java">View the source code</a> in the context of the rest of the application code.</div>
 
 ```java
+
 import backgroundcheckreplay.BackgroundCheckReplayActivitiesImpl;
 import backgroundcheckreplay.BackgroundCheckReplayWorkflowImpl;
 import backgroundcheckreplay.BackgroundCheckReplayNonDeterministicWorkflowImpl;
@@ -60,3 +60,4 @@ public class DevServerWorker {
     // Start the Worker
     factory.start();
 ```
+

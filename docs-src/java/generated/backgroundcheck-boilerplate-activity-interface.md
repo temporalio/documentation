@@ -18,6 +18,7 @@ The `BackgroundCheckActivity` interface below is an example of a the first part 
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/java/backgroundcheck/src/main/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateActivities.java">View the source code</a> in the context of the rest of the application code.</div>
 
 ```java
+
 import io.temporal.activity.ActivityInterface;
 
 
@@ -31,3 +32,4 @@ public interface BackgroundCheckBoilerplateActivities {
 
 }
 ```
+

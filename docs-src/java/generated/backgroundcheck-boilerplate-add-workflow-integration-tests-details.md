@@ -20,10 +20,10 @@ must be online for the testing. Furthermore, any mutations the Activity would ty
 perform as part of its regular execution will be performed as part of testing.
 We recommend either having an entirely separate testing environment for testing
 your Workflows, or testing your Workflow and Activity code in isolation, as
-detailed in prior sections in this guide.
+detailed in prior sections in this guide. 
 
 As for the code, first you register your Workflow with the `TestWorkflowExtension`.
-This extension allows you to pass in a `TestWorkflowEnvironment`, `Worker`, and
+This extension allows you to pass in a `TestWorkflowEnvironment`, `Worker`, and 
 an instance of your Workflow into your tests. From there you register your Activities
-with the Worker, start the test environment, and invoke your Workflow as you would
+with the Worker, start the test environment, and invoke your Workflow as you would 
 typically. Then you assert that the results are what you expected.

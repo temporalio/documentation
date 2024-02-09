@@ -21,8 +21,10 @@ The [payload_converter()](https://python.temporal.io/temporalio.workflow.html#pa
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/dynamic_handlers/your_dynamic_signal_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
     @workflow.signal(dynamic=True)
     async def dynamic_signal(self, name: str, args: Sequence[RawValue]) -> None:
         await self._pending_greetings.put(name)
 ```
+

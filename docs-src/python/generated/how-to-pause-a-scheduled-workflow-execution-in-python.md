@@ -19,6 +19,7 @@ You can pass a `note` to the `pause()` method to provide a reason for pausing th
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/pause_schedule_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -28,3 +29,4 @@ async def main():
 
     await handle.pause(note="Pausing the schedule for now")
 ```
+

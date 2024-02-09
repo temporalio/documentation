@@ -26,6 +26,8 @@ Update handlers, unlike Query handlers, can change Workflow state.
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/your_updatable_workflow.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
+
 // ...
 func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error) {
 	counter := param.StartCount
@@ -39,3 +41,4 @@ func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error
 // ...
 }
 ```
+

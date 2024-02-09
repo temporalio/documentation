@@ -24,14 +24,19 @@ The `backgroundCheck` function that follows is an example of a basic Workflow De
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/workflows.ts">View the source code</a> in the context of the rest of the application code.</div>
 
 ```typescript
+
+
 import * as workflow from '@temporalio/workflow';
 import type * as activities from './activities';
+
 
 const { ssnTrace } = workflow.proxyActivities<typeof activities>({
   startToCloseTimeout: '10 seconds',
 });
 
+
 export async function backgroundCheck(ssn: string): Promise<string> {
   return await ssnTrace(ssn);
 }
 ```
+

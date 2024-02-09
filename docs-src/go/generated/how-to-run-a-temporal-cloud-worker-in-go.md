@@ -15,12 +15,11 @@ tags:
 THIS FILE IS GENERATED from https://github.com/temporalio/documentation/blob/main/sample-apps/go/cloud/worker/main_dacx.go. -->
 
 To run a Worker that talks to Temporal Cloud, you need the following:
-
 - A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
-  See [certificate requirements](/cloud/certificates-requirements).
+See [certificate requirements](/cloud/certificates-requirements).
 - Your [Temporal Cloud Namespace Id](/concepts/what-is-a-cloud-namespace-id), which includes your [Temporal Cloud Namespace Name](/concepts/what-is-a-cloud-namespace-name) and the unique five- or six-digit [Temporal Cloud Account Id](/concepts/what-is-a-cloud-account-id) that is appended to it.
-  This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
-  Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
+This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
+Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
 
 For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates-intro).
 
@@ -29,6 +28,7 @@ For more information about configuring TLS to secure inter- and intra-network co
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/cloud/worker/main_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 package main
 
 import (
@@ -72,3 +72,4 @@ func main() {
 // ...
 }
 ```
+

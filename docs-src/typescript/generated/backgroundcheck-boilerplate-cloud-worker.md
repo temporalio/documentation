@@ -20,15 +20,17 @@ A Temporal Cloud Worker requires that you specify the following in the Client co
 - Temporal Cloud Address
 - Certificate and private key associated with the Namespace
 
+
 Add the following code to `src/worker.ts` to define a worker process that communicates with Temporal Cloud using an mTLS connection, using
 configuration provided via environment variables:
 
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/worker-cloud.ts">View the source code</a> in the context of the rest of the application code.</div>
 
 ```typescript
+
 import fs from 'fs/promises';
 
-import { NativeConnection, Worker } from '@temporalio/worker';
+import { Worker, NativeConnection } from '@temporalio/worker';
 import * as activities from './activities';
 
 // Note that serverNameOverride and serverRootCACertificate are optional.
@@ -107,3 +109,4 @@ export function getEnv(): Env {
   };
 }
 ```
+

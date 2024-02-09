@@ -21,6 +21,8 @@ However, all parameters must be serializable (parameters can’t be channels, fu
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_activity_definition_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
+
 // YourActivityParam is the struct passed to your Activity.
 // Use a struct so that your function signature remains compatible if fields change.
 type YourActivityParam struct {
@@ -32,3 +34,4 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 // ...
 }
 ```
+

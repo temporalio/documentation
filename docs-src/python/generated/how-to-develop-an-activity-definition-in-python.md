@@ -18,7 +18,6 @@ Register the function as an Activity with a custom name through a decorator argu
 :::note
 
 The Temporal Python SDK supports multiple ways of implementing an Activity:
-
 - Asynchronously using [`asyncio`](https://docs.python.org/3/library/asyncio.html)
 - Synchronously multithreaded using [`concurrent.futures.ThreadPoolExecutor`](https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor)
 - Synchronously multiprocess using [`concurrent.futures.ProcessPoolExecutor`](https://docs.python.org/3/library/concurrent.futures.html#processpoolexecutor) and [`multiprocessing.managers.SyncManager`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.managers.SyncManager)
@@ -36,6 +35,7 @@ If you must use a blocking library, consider using a synchronous Activity instea
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 from temporalio import activity
 # ...
 # ...
@@ -43,3 +43,4 @@ from temporalio import activity
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
+

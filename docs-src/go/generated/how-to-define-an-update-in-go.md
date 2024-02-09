@@ -22,6 +22,8 @@ Ensure that every Workflow listening to the same Update name can handle the same
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/your_updatable_workflow.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
+
 // YourUpdateName holds a string value used to correlate Updates.
 const YourUpdateName = "your_update_name"
 // ...
@@ -33,3 +35,4 @@ func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error
 // ...
 }
 ```
+

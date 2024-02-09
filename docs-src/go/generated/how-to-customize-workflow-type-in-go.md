@@ -19,6 +19,7 @@ To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` 
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/worker/main_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 package main
 
 import (
@@ -43,4 +44,6 @@ func main() {
 	yourWorker.RegisterWorkflowWithOptions(yourapp.YourSimpleWorkflowDefinition, registerWFOptions)
 // ...
 }
+
 ```
+

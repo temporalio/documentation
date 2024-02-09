@@ -18,6 +18,7 @@ You can set each Workflow to repeat on a schedule with the `cron_schedule` optio
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_cron_job/your_cron_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
     result = await client.execute_workflow(
         CronWorkflow.run,
@@ -27,3 +28,4 @@ You can set each Workflow to repeat on a schedule with the `cron_schedule` optio
     )
     print(f"Results: {result}")
 ```
+

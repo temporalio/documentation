@@ -28,6 +28,8 @@ Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_loggers/your_workflow_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
         workflow.logger.info("Workflow input parameter: %s" % name)
 ```
+

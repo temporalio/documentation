@@ -18,6 +18,7 @@ Set `EnableSessionWorker` to `true` in the Worker options.
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/worker/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 // ...
 func main() {
 // ...
@@ -33,3 +34,4 @@ func main() {
 // ...
 }
 ```
+

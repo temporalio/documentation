@@ -19,6 +19,7 @@ The `client_cert` must be combined with `client_private_key` to authenticate the
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/connect_cloud_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 from temporalio.client import Client, TLSConfig
 # ...
 # ...
@@ -38,3 +39,4 @@ async def main():
         ),
     )
 ```
+

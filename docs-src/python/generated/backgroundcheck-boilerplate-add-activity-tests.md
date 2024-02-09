@@ -20,6 +20,7 @@ The test checks if the function returns "pass" when given the SSN "55-55-555".
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_boilerplate/tests/activity_dacx_test.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 import pytest
 from temporalio.testing import ActivityEnvironment
 from activities.ssntraceactivity_dacx import ssn_trace_activity
@@ -35,3 +36,4 @@ async def test_ssn_trace_activity() -> str:
         ssn_trace_activity, "55-55-555"
     )
 ```
+

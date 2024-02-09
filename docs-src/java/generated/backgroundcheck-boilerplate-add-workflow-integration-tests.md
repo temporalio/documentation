@@ -18,12 +18,11 @@ to allow for testing Workflows. There are two ways to test Workflows; the first
 is to test the Workflow code without invoking the real Activities by mocking
 the Workflow's Activities and the second is to test the Workflow and its Activities
 in their entirety. This section will focus on the second scenario while a previous
-section will cover the first.
+section will cover the first. 
 
 As for the actual testing code, testing Workflows is similar to testing non-Temporal java code.
 
 Some examples of things an Workflow can be tested for are:
-
 - Exceptions thrown when invoking the Workflow Execution.
 - Exceptions thrown when checking for the result of the Workflow Execution.
 - Workflow return values. Check to ensure the return value is expected.
@@ -33,6 +32,7 @@ We can also perform a Workflow Replay test, and we'll provide detailed coverage 
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/java/backgroundcheck/src/test/java/backgroundcheckboilerplate/BackgroundCheckBoilerplateWorkflowIntegrationTest.java">View the source code</a> in the context of the rest of the application code.</div>
 
 ```java
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -71,3 +71,4 @@ public class BackgroundCheckBoilerplateWorkflowIntegrationTest {
   }
 }
 ```
+

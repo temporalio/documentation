@@ -21,6 +21,7 @@ To trigger a Scheduled Workflow Execution, use `trigger()` on `ScheduleHandle`.
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/trigger/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 func main() {
 // ...
 	for i := 0; i < 5; i++ {
@@ -31,3 +32,4 @@ func main() {
 	}
 // ...
 ```
+

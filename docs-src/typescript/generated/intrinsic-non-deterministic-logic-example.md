@@ -15,23 +15,25 @@ Eventually, the way that sleep has been implemented here will produce a non-dete
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_durable_execution/backgroundcheck_nondeterministic/src/workflow_dacx.ts">View the source code</a> in the context of the rest of the application code.</div>
 
 ```typescript
-import { log, proxyActivities, sleep } from '@temporalio/workflow';
-import type * as activities from './activities';
+
+import { proxyActivities, log, sleep } from "@temporalio/workflow";
+import type * as activities from "./activities";
+
 
 const { ssnTraceActivity } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '10 seconds',
+  startToCloseTimeout: "10 seconds",
 });
 
 // backgroundCheckNonDeterministic is an anti-pattern Workflow Definition
 export async function backgroundCheckNonDeterministic(
-  ssn: string,
+  ssn: string
 ): Promise<string> {
   // CAUTION, the following code is an anti-pattern showing what NOT to do
   if (getRandomNumber(1, 100) > 50) {
-    await sleep('10 seconds');
+    await sleep("10 seconds");
   }
 
-  log.info('Preparing to run daily report', {});
+  log.info("Preparing to run daily report", {});
 
   try {
     const ssnTraceResult = await ssnTraceActivity(ssn);
@@ -47,3 +49,4 @@ function getRandomNumber(min: number, max: number) {
   return min + (seed % (max - min + 1));
 }
 ```
+

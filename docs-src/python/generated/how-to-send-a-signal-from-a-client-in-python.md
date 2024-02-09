@@ -25,6 +25,7 @@ To get the Workflow handle, you can use any of the following options.
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/signal_your_workflow/signal_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 from temporalio.client import Client
 # ...
 # ...
@@ -36,3 +37,4 @@ from temporalio.client import Client
     )
     await handle.signal(GreetingWorkflow.submit_greeting, "User 1")
 ```
+

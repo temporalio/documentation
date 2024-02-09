@@ -18,6 +18,8 @@ To set a Timer in Python, call the [`asyncio.sleep()`](https://docs.python.org/3
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/continue_as_new/your_workflows_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
         await asyncio.sleep(10)
 ```
+

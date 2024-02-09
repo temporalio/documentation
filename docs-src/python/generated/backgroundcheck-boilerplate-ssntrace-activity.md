@@ -20,6 +20,7 @@ Below is an example of an Activity defined as a function.
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_boilerplate/activities/ssntraceactivity_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 from temporalio import activity
 
 
@@ -28,3 +29,4 @@ from temporalio import activity
 async def ssn_trace_activity(ssn) -> str:
     return "pass"
 ```
+

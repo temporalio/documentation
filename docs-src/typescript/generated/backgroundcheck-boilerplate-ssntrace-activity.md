@@ -21,9 +21,12 @@ Add the following code to define your Activity:
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/activities.ts">View the source code</a> in the context of the rest of the application code.</div>
 
 ```typescript
+
+
 export async function ssnTrace(param: string): Promise<string> {
   // This is where a call to another service is made
   // Here we are pretending that the service that does SSNTrace returned "pass"
   return 'pass';
 }
 ```
+

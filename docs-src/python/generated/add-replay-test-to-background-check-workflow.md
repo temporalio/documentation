@@ -22,9 +22,15 @@ If the Workflow Definition and the Event History are incompatible, then the test
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_replay/tests/replay_dacx_test.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
+
+
+
+
 @pytest.mark.asyncio
 async def test_replay_workflow_history_from_file():
     async with await WorkflowEnvironment.start_time_skipping():
         with open("tests/backgroundcheck_workflow_history.json", "r") as f:
             history_json = json.load(f)
 ```
+

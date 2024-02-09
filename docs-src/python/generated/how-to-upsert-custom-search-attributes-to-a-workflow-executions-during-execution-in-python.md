@@ -20,6 +20,8 @@ The keys are added to or replace the existing Search Attributes, similar to [`di
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
         workflow.upsert_search_attributes({"CustomKeywordField": ["new-value"]})
 ```
+

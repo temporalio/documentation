@@ -21,13 +21,13 @@ The default data converter supports converting multiple types including:
 - `bytes`
 - `google.protobuf.message.Message` - As JSON when encoding, but has ability to decode binary proto from other languages
 - Anything that can be converted to JSON including:
-  - Anything that `[json.dump](https://docs.python.org/3/library/json.html#json.dump)` supports natively
-  - [dataclasses](https://docs.python.org/3/library/dataclasses.html)
-  - Iterables including ones JSON dump may not support by default, e.g. `set`
-  - Any class with a `dict()` method and a static `parse_obj()` method, e.g. [Pydantic models](https://pydantic-docs.helpmanual.io/usage/models)
-    - The default data converter is deprecated for Pydantic models and will warn if used since not all fields work. See [this sample](https://github.com/temporalio/samples-python/tree/main/pydantic_converter) for the recommended approach.
-  - [IntEnum, StrEnum](https://docs.python.org/3/library/enum.html) based enumerates
-  - [UUID](https://docs.python.org/3/library/uuid.html)
+    - Anything that `[json.dump](https://docs.python.org/3/library/json.html#json.dump)` supports natively
+    - [dataclasses](https://docs.python.org/3/library/dataclasses.html)
+    - Iterables including ones JSON dump may not support by default, e.g. `set`
+    - Any class with a `dict()` method and a static `parse_obj()` method, e.g. [Pydantic models](https://pydantic-docs.helpmanual.io/usage/models)
+        - The default data converter is deprecated for Pydantic models and will warn if used since not all fields work. See [this sample](https://github.com/temporalio/samples-python/tree/main/pydantic_converter) for the recommended approach.
+    - [IntEnum, StrEnum](https://docs.python.org/3/library/enum.html) based enumerates
+    - [UUID](https://docs.python.org/3/library/uuid.html)
 
 This notably doesn't include any `date`, `time`, or `datetime` objects as they may not work across SDKs.
 

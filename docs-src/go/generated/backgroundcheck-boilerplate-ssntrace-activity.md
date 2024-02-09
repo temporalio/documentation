@@ -18,6 +18,7 @@ Below is an example of an Activity defined as a function.
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/activities/ssntraceactivity.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 package activities
 
 import (
@@ -33,3 +34,4 @@ func SSNTraceActivity(ctx context.Context, param string) (*string, error) {
 	return &result, nil
 }
 ```
+

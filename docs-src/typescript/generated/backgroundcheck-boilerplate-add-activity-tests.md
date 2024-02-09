@@ -21,13 +21,15 @@ You can test Activity code for the following conditions:
 Add the following code to `src/mocha/ssntrace.test.ts` to test the `ssnTrace`
 Activity and ensure it returns the expected value:
 
+
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/mocha/ssntrace.test.ts">View the source code</a> in the context of the rest of the application code.</div>
 
 ```typescript
+
 import { MockActivityEnvironment } from '@temporalio/testing';
-import assert from 'assert';
 import { describe, it } from 'mocha';
 import * as activities from '../activities';
+import assert from 'assert';
 
 describe('ssnTrace activity', async () => {
   it('successfully passes the ssn trace', async () => {
@@ -38,3 +40,4 @@ describe('ssnTrace activity', async () => {
   });
 });
 ```
+

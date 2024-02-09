@@ -25,6 +25,7 @@ This is useful if you want to do something after it has only started, or to get 
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_child_workflow/your_child_workflow_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
 @workflow.defn
 class ComposeGreetingWorkflow:
@@ -44,3 +45,4 @@ class GreetingWorkflow:
 # ...
         )
 ```
+

@@ -17,6 +17,7 @@ To Continue-As-New in Python, call the [`continue_as_new()`](https://python.temp
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/continue_as_new/your_workflows_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
 @workflow.defn
 class LoopingWorkflow:
@@ -27,3 +28,4 @@ class LoopingWorkflow:
         await asyncio.sleep(10)
         workflow.continue_as_new(iteration + 1)
 ```
+

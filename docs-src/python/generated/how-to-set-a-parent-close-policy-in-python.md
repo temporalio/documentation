@@ -17,6 +17,7 @@ Set the `parent_close_policy` parameter inside the [`start_child_workflow`](http
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_child_workflow/your_child_workflow_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 from temporalio.workflow import ParentClosePolicy
 # ...
 # ...
@@ -38,3 +39,4 @@ class GreetingWorkflow:
             parent_close_policy=ParentClosePolicy.ABANDON,
         )
 ```
+

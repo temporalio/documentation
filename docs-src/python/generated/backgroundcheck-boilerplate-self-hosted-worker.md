@@ -17,6 +17,7 @@ Set IP address, port, and Namespace in the Temporal Client options.
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_boilerplate/self_hosted_worker/main_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 import asyncio
 
 from temporalio.client import Client
@@ -44,3 +45,4 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+

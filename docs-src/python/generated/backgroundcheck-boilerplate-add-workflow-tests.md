@@ -25,6 +25,7 @@ The test is marked with `@pytest.mark.asyncio` to indicate that it is an asynchr
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_boilerplate/tests/workflow_dacx_test.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 import uuid
 
 import pytest
@@ -52,3 +53,4 @@ async def test_execute_workflow():
                 task_queue=task_queue_name,
             )
 ```
+

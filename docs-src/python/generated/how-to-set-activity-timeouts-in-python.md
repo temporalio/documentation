@@ -24,6 +24,7 @@ Available timeouts are:
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/activity_timeouts_retires/your_workflows_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
         activity_timeout_result = await workflow.execute_activity(
             your_activity,
@@ -34,3 +35,4 @@ Available timeouts are:
             # schedule_to_close_timeout=timedelta(seconds=10),
         )
 ```
+

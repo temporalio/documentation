@@ -18,6 +18,7 @@ To send a Signal-With-Start in Python, use the [`start_workflow()`](https://pyth
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/signal_your_workflow/signal_with_start_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 from temporalio.client import Client
 # ...
 # ...
@@ -31,3 +32,4 @@ async def main():
         start_signal_args=["User Signal with Start"],
     )
 ```
+

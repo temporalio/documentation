@@ -16,7 +16,6 @@ In the following sample, we add a couple of logging statements and a Timer to th
 
 Use the `asyncio.sleep()` API to cause the Workflow to sleep for a minute before the call to execute the Activity.
 The Temporal Python SDK offers deterministic implementations to the following API calls:
-
 - [workflow.now()](https://python.temporal.io/temporalio.workflow.html#now)
 - [workflow.random()](https://python.temporal.io/temporalio.workflow.html#random)
 - [workflow.time_ns()](https://python.temporal.io/temporalio.workflow.html#time_ns)
@@ -28,6 +27,7 @@ Use the `workflow.logger` API to log from Workflows to avoid seeing repeated log
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_replay/backgroundcheck_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 import asyncio
 from datetime import timedelta
 
@@ -50,3 +50,4 @@ class BackgroundCheck:
             schedule_to_close_timeout=timedelta(seconds=5),
         )
 ```
+

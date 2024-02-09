@@ -20,6 +20,7 @@ Add the following code to `src/worker.ts` to define a worker process that commun
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/worker-self-hosted.ts">View the source code</a> in the context of the rest of the application code.</div>
 
 ```typescript
+
 import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from './activities';
 
@@ -51,3 +52,4 @@ run().catch((err) => {
   process.exit(1);
 });
 ```
+

@@ -16,11 +16,12 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation/blob/mai
 **How to add a Testing Framework and Tests for the Workflow and Activity.**
 
 Each Temporal SDK has a testing suite that can be used in conjunction with a typical language specific testing framework.
-In the Temporal Go SDK, the `testsuite` package (https://pkg.go.dev/go.temporal.io/sdk/testsuite) provides a test environment in which the Workflow and Activity code may be run for test purposes.
+In the Temporal Go SDK, the `testsuite` package (https://pkg.go.dev/go.temporal.io/sdk/testsuite)  provides a test environment in which the Workflow and Activity code may be run for test purposes.
 
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/tests/backgroundcheckboilerplate_test.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 package setup
 
 import (
@@ -49,3 +50,4 @@ func Test_BackgroundCheckApplication(t *testing.T) {
 	suite.Run(t, s)
 }
 ```
+

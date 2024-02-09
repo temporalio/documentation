@@ -19,6 +19,7 @@ Technically this can be multiple parameters, but Temporal strongly encourages a 
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_dataobject_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 from dataclasses import dataclass
 # ...
 # ...
@@ -27,3 +28,4 @@ class YourParams:
     greeting: str
     name: str
 ```
+

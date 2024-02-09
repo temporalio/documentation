@@ -21,6 +21,8 @@ We can test Activity code for the following conditions:
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/tests/backgroundcheckboilerplate_test.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
+
 // Test_SSNTraceActivity tests the SSNTraceActivity function
 func (s *UnitTestSuite) Test_SSNTraceActivity() {
 	// Create a test environment
@@ -38,3 +40,4 @@ func (s *UnitTestSuite) Test_SSNTraceActivity() {
 	s.Equal("pass", result)
 }
 ```
+

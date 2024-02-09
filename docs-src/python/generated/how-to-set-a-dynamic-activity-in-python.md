@@ -22,6 +22,7 @@ The [payload_converter()](https://python.temporal.io/temporalio.activity.html#pa
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/dynamic_handlers/your_dynamic_activity_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
 @activity.defn(dynamic=True)
 async def dynamic_greeting(args: Sequence[RawValue]) -> str:
@@ -40,3 +41,4 @@ class GreetingWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
+

@@ -18,7 +18,9 @@ Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.h
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
     async for workflow in client.list_workflows('WorkflowType="GreetingWorkflow"'):
         print(f"Workflow: {workflow.id}")
 ```
+

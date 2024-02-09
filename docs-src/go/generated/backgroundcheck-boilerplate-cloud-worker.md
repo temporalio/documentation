@@ -22,6 +22,7 @@ A Temporal Cloud Worker requires that you specify the following in the Client co
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/cloud_worker/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 package main
 
 import (
@@ -83,3 +84,4 @@ func main() {
 	}
 }
 ```
+

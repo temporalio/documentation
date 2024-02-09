@@ -22,6 +22,8 @@ If the Workflow Definition and the Event History are incompatible then the test 
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/durability/tests/backgroundcheck_test.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
+
 // TestReplayWorkflowHistoryFromFile tests for Event History compatibility.
 func (s *UnitTestSuite) TestReplayWorkflowHistoryFromFile() {
 	// Create a new Replayer
@@ -34,3 +36,4 @@ func (s *UnitTestSuite) TestReplayWorkflowHistoryFromFile() {
 	s.NoError(err)
 }
 ```
+

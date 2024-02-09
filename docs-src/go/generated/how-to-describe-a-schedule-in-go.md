@@ -21,8 +21,10 @@ To describe a Schedule, use `Describe()` on the ScheduleHandle.
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/describe/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 func main() {
 // ...
 	scheduleHandle.Describe(ctx)
 // ...
 ```
+

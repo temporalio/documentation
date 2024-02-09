@@ -19,6 +19,7 @@ The `BackgroundCheck class` below is an example of a basic Workflow Definition.
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_boilerplate/workflows/backgroundcheck_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 from datetime import timedelta
 
 from temporalio import workflow
@@ -38,3 +39,4 @@ class BackgroundCheck:
             schedule_to_close_timeout=timedelta(seconds=5),
         )
 ```
+

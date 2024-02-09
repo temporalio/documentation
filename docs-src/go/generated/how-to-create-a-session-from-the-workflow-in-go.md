@@ -39,6 +39,7 @@ If not, you get a `workflow.ErrSessionFailed` error when the next call of `workf
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/workflow.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 package sessions
 
 import (
@@ -73,4 +74,6 @@ func SomeFileProcessingWorkflow(ctx workflow.Context, param FileProcessingWFPara
 	err = workflow.ExecuteActivity(sessionCtx, a.UploadFile, uploadParam).Get(sessionCtx, nil)
 // ...
 }
+
 ```
+

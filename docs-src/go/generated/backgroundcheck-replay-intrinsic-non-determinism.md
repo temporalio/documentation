@@ -23,10 +23,10 @@ The following are some common operations that **can't** be done inside of a Work
   - Use `workflow.Now()` as a replacement for `time.Now()`.
   - Use `workflow.Sleep()` as a replacement for `time.Sleep()`.
 - Working directly with threads or goroutines.
-  - Use `workflow.Go()` as a replacement for the `go` statement.
-  - Use `workflow.Channel()` as a replacement for the native `chan` type.
-    Temporal provides support for both buffered and unbuffered channels.
-  - Use `workflow.Selector()` as a replacement for the `select` statement.
+	- Use `workflow.Go()` as a replacement for the `go` statement.
+    - Use `workflow.Channel()` as a replacement for the native `chan` type.
+	Temporal provides support for both buffered and unbuffered channels.
+	- Use `workflow.Selector()` as a replacement for the `select` statement.
 - Iterating over data structures with unknown ordering.
   This includes iterating over maps using `range`, because with `range` the order of the map's iteration is randomized.
   Instead you can collect the keys of the map, sort them, and then iterate over the sorted keys to access the map.
@@ -39,6 +39,7 @@ One way to produce a non-deterministic error is to use a random number to determ
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/durability/workflows/backgroundcheck_non_deterministic_code.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 package workflows
 
 import (
@@ -75,3 +76,4 @@ func BackgroundCheckNonDeterministic(ctx workflow.Context, param string) (string
 	return ssnTraceResult, nil
 }
 ```
+

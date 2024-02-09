@@ -17,6 +17,7 @@ To start a Workflow Execution in Python, use either the [`start_workflow()`](htt
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -34,3 +35,4 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+

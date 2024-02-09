@@ -21,6 +21,7 @@ If you don't set a custom Namespace name in the Namespace field, the client conn
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/gateway/main_dacx.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
+
 package main
 
 import (
@@ -48,3 +49,4 @@ func main() {
 // ...
 }
 ```
+

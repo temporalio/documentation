@@ -17,6 +17,7 @@ To set custom Search Attributes, use the `search_attributes` parameter of the ['
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
     handle = await client.start_workflow(
         GreetingWorkflow.run,
@@ -25,3 +26,4 @@ To set custom Search Attributes, use the `search_attributes` parameter of the ['
         search_attributes={"CustomKeywordField": ["old-value"]},
     )
 ```
+

@@ -28,8 +28,10 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/query_your_workflow/wf_query_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
+
 # ...
     @workflow.query
     def greeting(self) -> str:
         return self._greeting
 ```
+
