@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday February 08 2024 10:31:41 AM -0800
+Last assembled: Monday February 12 2024 09:05:41 AM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
-138 guide configurations found.
+139 guide configurations found.
 
-1754 information nodes found.
+1755 information nodes found.
 
-1511 information nodes are attached to guides.
+1515 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1355,6 +1355,12 @@ go/side-effects -> /dev-guide/go/features#side-effects
 go/error-handling -> /dev-guide/go/features#error-handling-in-go
 
 go/selectors -> /dev-guide/go/features#selectors
+
+go/generated/handle-cancellation-request-workflow -> /dev-guide/go/cancellation#handle-cancellation-in-workflow
+
+go/generated/handle-cancellation-request-in-activity -> /dev-guide/go/cancellation#handle-cancellation-in-an-activity
+
+go/generated/request-cancellation-from-a-client -> /dev-guide/go/cancellation#request-cancellation
 
 go/testing-frameworks -> /dev-guide/go/testing#test-frameworks
 

@@ -67,6 +67,14 @@ The Features section of the Temporal Developer's guide provides basic implementa
 - [Error Handling in Go](/go/error-handling): Handling Activity or Workflow errors in Go.
 - [Go SDK Selectors](/go/selectors): Implementing Selectors in the Temporal Go SDK.
 
+## Cancellation
+
+How to cancel a Workflow Execution and it's Activities using the Go SDK.
+
+- [Handle Cancellation in Workflow](/go/generated/handle-cancellation-request-workflow): You can design your Workflow to run clean up Activities, and change to a Canceled status when a Cancellation Request is received.
+- [Handle Cancellation in an Activity](/go/generated/handle-cancellation-request-in-activity): Listen for ctx.Done() to react to a Cancellation Request in an Activity
+- [Request Cancellation](/go/generated/request-cancellation-from-a-client): Use the Temporal Client's CancelWorkflow API to send a Cancellation Request to the Workflow.
+
 ## Observability
 
 Improve observability in your Go-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
