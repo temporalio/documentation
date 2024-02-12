@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday February 12 2024 09:03:28 AM -0700
+Last assembled: Monday February 12 2024 09:05:41 AM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
 139 guide configurations found.
 
-1754 information nodes found.
+1755 information nodes found.
 
-1514 information nodes are attached to guides.
+1515 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -369,6 +369,8 @@ concepts/what-is-a-payload-codec -> /dataconversion#payload-codec
 concepts/what-is-a-custom-data-converter -> /dataconversion#custom-data-converter
 
 concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
+
+concepts/what-is-key-management -> /dataconversion#key-management
 
 cloud/limits -> /cloud/limits
 
@@ -1354,6 +1356,12 @@ go/error-handling -> /dev-guide/go/features#error-handling-in-go
 
 go/selectors -> /dev-guide/go/features#selectors
 
+go/generated/handle-cancellation-request-workflow -> /dev-guide/go/cancellation#handle-cancellation-in-workflow
+
+go/generated/handle-cancellation-request-in-activity -> /dev-guide/go/cancellation#handle-cancellation-in-an-activity
+
+go/generated/request-cancellation-from-a-client -> /dev-guide/go/cancellation#request-cancellation
+
 go/testing-frameworks -> /dev-guide/go/testing#test-frameworks
 
 go/testing-activities -> /dev-guide/go/testing#test-activities
@@ -1365,11 +1373,5 @@ go/debug-environment-development -> /dev-guide/go/debugging#debug-in-a-developme
 go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production-environment
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
-
-go/generated/handle-cancellation-request-workflow -> /dev-guide/go/cancellation#handle-cancellation-in-workflow
-
-go/generated/handle-cancellation-request-in-activity -> /dev-guide/go/cancellation#handle-cancellation-in-an-activity
-
-go/generated/request-cancellation-from-a-client -> /dev-guide/go/cancellation#request-cancellation
 
 
