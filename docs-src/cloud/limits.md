@@ -34,9 +34,7 @@ The following aspects apply at the Temporal Cloud Account level (per account).
 
 **How many namespaces can I create?​**
 
-The initial limit is 10 Namespaces.
-
-As Namespaces get created and start being used (Workflows get created in them), this limit gets automatically and incrementally raised up to 100.
+By default, each account is provisioned with a starting quota of ten Namespaces. As you create and use your Namespaces, for example by scheduling Workflows, Temporal Cloud automatically raises your limit towards 100. Our service identifies your usage patterns and responds by slowly increasing your account's Namespace allowance towards the hard limit of 100.
 
 ### Retained Prometheus endpoint data
 
