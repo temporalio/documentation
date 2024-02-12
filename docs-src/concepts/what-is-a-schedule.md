@@ -30,18 +30,6 @@ This differs from a Temporal Cron Job, which relies on a cron schedule as a prop
 
 :::caution
 
-If the result returned by the scheduled workflow exceeds max block size minus temporal extra information (2MB - 1KB) this result will not be awailable for the next run.
-
-:::
-
-:::caution
-
-The Temporal server enriches responses from scheduled Workflow Executions with additional contextual data, enabling their identification and handoff to subsequent executions. However, if the returned result exceeds the designated block size by temporal overhead (e.g., 2MB - 1KB), it becomes unavailable for use in the subsequent run.
-
-:::
-
-:::caution
-
 The Temporal server enriches responses from scheduled Workflow Executions with additional contextual data, enabling their identification and handoff to subsequent executions. However, if the returned result exceeds the designated block size by temporal overhead (e.g., 2MB - 1KB), it becomes unavailable for use in the subsequent run.
 
 :::
