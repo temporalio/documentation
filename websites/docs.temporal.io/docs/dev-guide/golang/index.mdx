@@ -52,6 +52,14 @@ The Foundations section of the Temporal Go SDK Developer's guide covers the mini
 - [How to run a Temporal Cloud Worker](/dev-guide/go/foundations#run-a-temporal-cloud-worker): The Worker Process is where Workflow Functions and Activity Functions are executed.
 - [How to start a Workflow Execution](/dev-guide/go/foundations#start-workflow-execution): Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
+## Cancellation
+
+How to cancel a Workflow Execution and it's Activities using the Go SDK.
+
+- [Handle Cancellation in Workflow](/dev-guide/go/cancellation#handle-cancellation-in-workflow): You can design your Workflow to run clean up Activities, and change to a Canceled status when a Cancellation Request is received.
+- [Handle Cancellation in an Activity](/dev-guide/go/cancellation#handle-cancellation-in-an-activity): Listen for ctx.Done() to react to a Cancellation Request in an Activity
+- [Request Cancellation](/dev-guide/go/cancellation#request-cancellation): Use the Temporal Client's CancelWorkflow API to send a Cancellation Request to the Workflow.
+
 ## Features
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.

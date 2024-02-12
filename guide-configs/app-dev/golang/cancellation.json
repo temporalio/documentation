@@ -1,11 +1,11 @@
 {
     "id": "cancellation",
     "file_name": "cancellation.mdx",
-    "slug": "/dev-guide/go/how-to/cancellation",
-    "file_dir": "dev-guide/golang/how-to/cancellation",
-    "title": "Workflow Cancellation - Go SDK feature how-to",
+    "slug": "/dev-guide/go/cancellation",
+    "file_dir": "dev-guide/golang/cancellation",
+    "title": "Workflow Cancellation - Go SDK feature guide",
     "sidebar_label": "Workflow Cancellation",
-    "sidebar_position": 1,
+    "sidebar_position": 6,
     "description": "How to cancel a Workflow Execution and it's Activities using the Go SDK.",
     "use_description": false,
     "toc_max_heading_level": 4,
@@ -13,7 +13,7 @@
     "sections": [
         {
             "type": "p",
-            "id": "go/how-to/cancellation/overview"
+            "id": "go/cancellation/overview"
         },
         {
             "type": "h2",
