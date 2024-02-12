@@ -553,13 +553,13 @@ Key Management is a fundamental part of working with encryption keys.
 
 There are many computational and logistical aspects to generating and rotating keys, and this usually calls for a dedicated application in your stack. Here are some general recommendations for working with encryption keys for Temporal applications:
 
-- [Symmetric Encryption](https://en.wikipedia.org/wiki/Symmetric-key_algorithm)  is generally faster and will produce smaller payloads than asymmetric. Normally, an advantage of _asymmetric_ encryption is that it allows you to distribute your encryption and decryption keys separately, but depending on your infrastructure, this might not offer any security benefits with Temporal.
+- [Symmetric Encryption](https://en.wikipedia.org/wiki/Symmetric-key_algorithm) is generally faster and will produce smaller payloads than asymmetric. Normally, an advantage of _asymmetric_ encryption is that it allows you to distribute your encryption and decryption keys separately, but depending on your infrastructure, this might not offer any security benefits with Temporal.
 
 - AES-based algorithms are [hardware accelerated in Go](https://pkg.go.dev/crypto/aes) and other languages. AES algorithms are widely vetted and trusted, and there are many different variants that may suit your requirements. Load tests using `ALG_AES_256_GCM_HKDF_SHA512_COMMIT_KEY` have performed well.
 
 - Store your encryption keys in the same manner as you store passwords, config details, and other sensitive data. When possible, load the key into your application, so you don't need to make a network call to retrieve it. Separate keys for each environment or namespace as much as possible.
 
-- Make sure you have a key rotation strategy in place in the event that your keys are compromised or need to be replaced for another reason. Consider using a dedicated secrets engine or a key management system (KMS). Note that when  you rotate keys, you may also need to retain old keys to query old workflows.
+- Make sure you have a key rotation strategy in place in the event that your keys are compromised or need to be replaced for another reason. Consider using a dedicated secrets engine or a key management system (KMS). Note that when you rotate keys, you may also need to retain old keys to query old Workflows.
 
 ### Key Rotation
 
@@ -574,3 +574,4 @@ You should design your Encode and Decode steps to accept all the necessary param
 ### Using Vault for Key Management
 
 [This repository](https://github.com/zboralski/codecserver) provides a robust and complete example of using Temporal with HashiCorp's [Vault](https://www.vaultproject.io/) secrets engine.
+
