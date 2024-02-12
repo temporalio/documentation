@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday February 12 2024 09:05:41 AM -0700
+Last assembled: Monday February 12 2024 13:19:31 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -816,11 +816,11 @@ cloud/pricing-intro -> /cloud/pricing
 
 cloud/support-intro -> /cloud/support
 
+cloud/support-create-ticket -> /cloud/support#support-ticket
+
 cloud/certificates-namespace -> #manage-certificates
 
 cloud/certificates-filters -> #manage-certificate-filters
-
-cloud/support-create-ticket -> /cloud/support#support-ticket
 
 cloud/certificates-notifications -> #expiration-notifications
 
