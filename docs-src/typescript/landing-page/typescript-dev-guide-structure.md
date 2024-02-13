@@ -67,7 +67,6 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 - [How to run Worker Processes](/typescript/run-a-dev-worker): The Worker Process is where Workflow Functions and Activity Functions are executed.
 - [How to run a Worker on Docker in TypeScript](/typescript/how-to-run-a-worker-on-docker): Workers based on the TypeScript SDK can be deployed and run as Docker containers.
 - [How to run a Temporal Cloud Worker](/typescript/run-a-temporal-cloud-worker): The Worker Process is where Workflow Functions and Activity Functions are executed.
-- [How to use a prebuilt Workflow bundle in TypeScript](/typescript/how-to-use-a-prebuilt-workflow-bundle-in-typescript): Pass a prebuilt bundle instead of `workflowsPath`. or use the `bundleWorkflowCode` helper.
 - [How to shut down a Worker and track its state](/typescript/how-to-shut-down-a-worker): To shut down a Worker, send a shutdown Signal to the Worker or call `Worker.shutdown()`.
 - [How to start a Workflow Execution](/typescript/spawning-workflows): Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 - [Cancellation scopes in Typescript](/typescript/cancellation-scopes):
