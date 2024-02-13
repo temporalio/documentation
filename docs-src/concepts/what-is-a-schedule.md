@@ -28,12 +28,6 @@ Schedules provide a more flexible and user-friendly approach than [Temporal Cron
 A Schedule has an identity and is independent of a Workflow Execution.
 This differs from a Temporal Cron Job, which relies on a cron schedule as a property of the Workflow Execution.
 
-:::caution
-
-The Temporal server enriches responses from scheduled Workflow Executions with additional contextual data, enabling their identification and handoff to subsequent executions. However, if the returned result exceeds the designated block size by temporal overhead (e.g., 2MB - 1KB), it becomes unavailable for use in the subsequent run.
-
-:::
-
 :::info
 
 For triggering a Workflow Execution at a specific one-time future point rather than on a recurring schedule, the [Start Delay](/concepts/what-is-a-delay-start-workflow-execution) option should be used instead of a Schedule.
