@@ -29,4 +29,4 @@ You can then set up your observability platform (such as Grafana) to use Prometh
 For details on self-hosted Cluster metrics and setup, see the following:
 
 - [Temporal Cluster OSS metrics reference](/references/cluster-metrics)
-- [Set up Prometheus and Grafana to view SDK and self-hosted Cluster metrics](/self-hosted/prometheus-grafana-setup#prometheus-and-grafana-setup)
+- [Set up Prometheus and Grafana to view SDK and self-hosted Cluster metrics](/self-hosted/prometheus-grafana-setup)
