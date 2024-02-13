@@ -207,6 +207,15 @@ It is important to note that the [status](/concepts/what-is-a-workflow-execution
 
 :::
 
+:::caution
+
+A scheduled workflow may complete with a result up to the maximum blob size (2 MiB by default).
+However, due to internal limitations, results that are within 1 KiB of this limit cannot be passed to the next execution.
+So, for example, a workflow that returns a result of size above 2,096,127 (2MiB - 1KiB) bytes will be allowed to compete successfully, but that value will not be available as a last completion result.
+This limitation may be lifted in the future.
+
+:::
+
 ### Last failure
 
 A Workflow started by a Schedule can obtain the details of the failure of the most recent run that ended at the time when the Workflow in question was started. Unlike last completion result, a _successful_ run _does_ reset the last failure.
