@@ -21,9 +21,8 @@ Using end-to-end encryption in your custom Data Converter ensures that sensitive
 
 Apply your encryption logic in a custom Payload Codec and use it locally to encrypt data.
 You maintain all the encryption keys, and the Temporal Server sees only encrypted data. Refer to [What is Key Management?](/concepts/what-is-key-management) for more guidance.
-Your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
 
-For details, see [Securing your data](/self-hosted/data-encryption).
+Your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control. For details, see [Securing your data](/self-hosted/data-encryption).
 
 The following samples use encryption (AES GCM with 256-bit key) in a custom Data Converter:
 
