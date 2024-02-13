@@ -19,8 +19,11 @@ To create a Namespace, a user must have the Developer or Global Admin account-le
 
 :::tip
 
-By default, each account has a quota of 10 Namespaces.
-If you want to increase this limit, open a [support ticket](/cloud/support-create-ticket).
+By default, each account is provisioned with ten Namespaces.
+As you create and use your Namespaces, for example by scheduling Workflows, Temporal Cloud automatically raises your limit.
+Our service identifies your usage patterns.
+It responds by slowly increasing your allowance, up to 100 Namespaces.
+You can request further increases beyond the 100 Namespace limit by opening a [support ticket](/cloud/support-create-ticket).
 
 :::
 
