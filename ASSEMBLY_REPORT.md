@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday January 30 2024 17:21:03 PM -0600
+Last assembled: Tuesday February 13 2024 13:23:53 PM -0600
 
 Assembly Workflow Id: docs-full-assembly
 
-138 guide configurations found.
+139 guide configurations found.
 
-1753 information nodes found.
+1755 information nodes found.
 
-1510 information nodes are attached to guides.
+1515 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -369,6 +369,8 @@ concepts/what-is-a-payload-codec -> /dataconversion#payload-codec
 concepts/what-is-a-custom-data-converter -> /dataconversion#custom-data-converter
 
 concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
+
+concepts/what-is-key-management -> /dataconversion#key-management
 
 cloud/limits -> /cloud/limits
 
@@ -1353,6 +1355,12 @@ go/side-effects -> /dev-guide/go/features#side-effects
 go/error-handling -> /dev-guide/go/features#error-handling-in-go
 
 go/selectors -> /dev-guide/go/features#selectors
+
+go/generated/handle-cancellation-request-workflow -> /dev-guide/go/cancellation#handle-cancellation-in-workflow
+
+go/generated/handle-cancellation-request-in-activity -> /dev-guide/go/cancellation#handle-cancellation-in-an-activity
+
+go/generated/request-cancellation-from-a-client -> /dev-guide/go/cancellation#request-cancellation
 
 go/testing-frameworks -> /dev-guide/go/testing#test-frameworks
 
