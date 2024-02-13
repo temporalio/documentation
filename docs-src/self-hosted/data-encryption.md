@@ -28,13 +28,11 @@ Using encryption ensures that your sensitive data exists unencrypted only on the
 By default, your data is serialized to a [Payload](/concepts/what-is-a-payload) by a [Data Converter](/concepts/what-is-a-data-converter).
 To encrypt your Payload, configure your custom encryption logic with a [Payload Codec](/concepts/what-is-a-payload-codec) and set it with a [custom Data Converter](/concepts/what-is-a-custom-data-converter).
 
-A Payload Codec does byte-to-byte conversion to transform your Payload (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the wire and the [Payload Converter](/concepts/what-is-a-payload-converter):
+A Payload Codec does byte-to-byte conversion to transform your Payload (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the Client and the [Payload Converter](/concepts/what-is-a-payload-converter):
 
-```bash
-User code <--> Payload Converter <--> Payload Codec <--> Wire <--> Temporal Server
-```
+![Remote data encoding architecture](/diagrams/remote-data-encoding.svg)
 
-You can run your Payload Codec with a [Codec Server](/concepts/what-is-a-codec-server) and use the Codec Server endpoints in Web UI and tctl to decode your encrypted Payload locally.
+You can run your Payload Codec with a [Codec Server](/concepts/what-is-a-codec-server) and use the Codec Server endpoints in the Web UI and CLI to decode your encrypted Payload locally.
 For details on how to set up a Codec Server, see [Codec Server setup](/self-hosted/how-to-set-up-codec-server).
 
 However, if you plan to set up [remote data encoding](/concepts/what-is-remote-data-encoding) for your data, ensure that you consider all security implications of running encryption remotely before implementing it.
@@ -50,8 +48,3 @@ Examples for implementing encryption:
 - [Java sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads)
 - [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
 - [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)
-
-Examples for implementing compression:
-
-- [Go sample](https://pkg.go.dev/go.temporal.io/sdk/converter#ZlibCodecOptions)
-- [Java sample](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/payload/codec/ZlibPayloadCodec.html)
