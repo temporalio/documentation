@@ -54,13 +54,14 @@ module.exports = {
         autoCollapseCategories: true,
       },
     },
-    // announcementBar: {
-    //   id: "replay_announcement",
-    //   content: 'Get your tickets for <a href="https://temporal.io/replay">Replay 2023</a>!',
-    //   backgroundColor: "#141414",
-    //   textColor: "#ffffff",
-    //   isCloseable: true,
-    // },
+    announcementBar: {
+      id: "replay_announcement",
+      content:
+        'Replay will return September 18-20 in Seattle, WA! <a href="https://www.papercall.io/replay2024">Submit a talk proposal</a> or <a href="https://www.eventbrite.com/e/replay-2024-tickets-744609486017?aff=ebdsoporgprofile">secure your tickets</a>.',
+      backgroundColor: "#141414",
+      textColor: "#ffffff",
+      isCloseable: true,
+    },
     navbar: {
       hideOnScroll: false,
       logo: {
