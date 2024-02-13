@@ -1,5 +1,6 @@
 # Docs Assembly Workflow report
 
+Last assembled: Tuesday February 13 2024 11:06:48 AM -0800
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -7,7 +8,7 @@ Assembly Workflow Id: docs-full-assembly
 
 1755 information nodes found.
 
-1515 information nodes are attached to guides.
+1514 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -538,6 +539,8 @@ go/namespaces -> /dev-guide/go/features#namespaces
 java/namespaces -> /dev-guide/java/features#namespaces
 
 cloud/prometheus-grafana-setup -> /cloud/metrics#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
+
+cli/workflow/show -> /cli/workflow#show
 
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
