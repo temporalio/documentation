@@ -24,9 +24,4 @@ A customized Data Converter can have the following three components:
 - [Payload Codec](/concepts/what-is-a-payload-codec)
 - [Failure Converter](/concepts/what-is-a-failure-converter)
 
-For details on how to implement custom Payload Converters in your SDK, see Custom Payload conversion for the following SDKs:
-
-- [How to implement custom Payload convesion in Go](/go/custom-payload-conversion)
-- [How to implement custom Payload conversion in Java](/java/custom-payload-conversion)
-
 For details on how to implement custom encryption and compression in your SDK, see [Data Encryption](/self-hosted/data-encryption).

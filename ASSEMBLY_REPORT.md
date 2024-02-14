@@ -1,10 +1,10 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday February 13 2024 11:11:27 AM -0800
+Last assembled: Wednesday February 14 2024 10:04:11 AM -0800
 
 Assembly Workflow Id: docs-full-assembly
 
-139 guide configurations found.
+141 guide configurations found.
 
 1755 information nodes found.
 
@@ -48,9 +48,9 @@ self-hosted/what-is-archival -> /self-hosted-guide/archival
 
 concepts/what-is-a-codec-server -> /dataconversion#codec-server
 
-self-hosted/data-encryption -> /self-hosted-guide/data-encryption
+self-hosted/data-encryption -> /production-deployment/data-encryption
 
-self-hosted/how-to-set-up-codec-server -> /self-hosted-guide/data-encryption#web-ui
+self-hosted/how-to-set-up-codec-server -> /production-deployment/data-encryption#web-ui
 
 concepts/what-is-a-frontend-service -> /clusters#frontend-service
 
@@ -544,9 +544,9 @@ cli/workflow/show -> /cli/workflow#show
 
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
-go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
+go/custom-payload-conversion -> /dev-guide/go/converters#custom-payload-conversion
 
-java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conversion
+java/custom-payload-conversion -> /dev-guide/java/converters#custom-payload-conversion
 
 cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
 
@@ -1375,5 +1375,11 @@ go/debug-environment-development -> /dev-guide/go/debugging#debug-in-a-developme
 go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production-environment
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
+
+java/how-to-use-a-custom-payload-codec-in-java -> /dev-guide/java/converters#custom-payload-codec
+
+go/how-to-use-a-custom-payload-codec-in-go -> /dev-guide/go/converters#custom-payload-codec
+
+go/how-to-use-a-custom-payload-converter-in-go -> /dev-guide/go/converters#custom-payload-converter
 
 
