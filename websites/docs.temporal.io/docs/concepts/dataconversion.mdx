@@ -101,12 +101,7 @@ A customized Data Converter can have the following three components:
 - [Payload Codec](#payload-codec)
 - [Failure Converter](#failure-converter)
 
-For details on how to implement custom Payload Converters in your SDK, see Custom Payload conversion for the following SDKs:
-
-- [How to implement custom Payload convesion in Go](/dev-guide/go/features#custom-payload-conversion)
-- [How to implement custom Payload conversion in Java](/dev-guide/java/features#custom-payload-conversion)
-
-For details on how to implement custom encryption and compression in your SDK, see [Data Encryption](/self-hosted-guide/data-encryption).
+For details on how to implement custom encryption and compression in your SDK, see [Data Encryption](/production-deployment/data-encryption).
 
 ## What is a Payload Converter? {#payload-converter}
 
@@ -158,7 +153,7 @@ Using end-to-end encryption in your custom Data Converter ensures that sensitive
 Apply your encryption logic in a custom Payload Codec and use it locally to encrypt data.
 You maintain all the encryption keys, and the Temporal Server sees only encrypted data. Refer to [What is Key Management?](#key-management) for more guidance.
 
-Your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control. For details, see [Securing your data](/self-hosted-guide/data-encryption).
+Your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control. For details, see [Securing your data](/production-deployment/data-encryption).
 
 The following samples use encryption (AES GCM with 256-bit key) in a custom Data Converter:
 
@@ -230,7 +225,7 @@ Samples:
 
 ## What is a Codec Server? {#codec-server}
 
-A Codec Server is an HTTP/HTTPS server that uses a [custom Payload Codec](/self-hosted-guide/data-encryption) to decode your data remotely through endpoints.
+A Codec Server is an HTTP/HTTPS server that uses a [custom Payload Codec](/production-deployment/data-encryption) to decode your data remotely through endpoints.
 
 ![](/diagrams/tctl-diagram-codec-server.svg)
 
@@ -253,12 +248,12 @@ Most SDKs provide example Codec Server implementation samples, listed here:
 
 #### Usage
 
-When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server. For details on what data is encoded, see [Securing your data](/self-hosted-guide/data-encryption).
+When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server. For details on what data is encoded, see [Securing your data](/production-deployment/data-encryption).
 
 To see decoded data when using the CLI or Web UI to perform some operations on a Workflow Execution, configure the Codec Server endpoint in the Web UI and CLI.
 When you configure the Codec Server endpoints, the CLI and Web UI send the encoded data to the Codec Server, and display the decoded data received from the Codec Server.
 
-For details on creating your Codec Server, see [Codec Server Setup](/self-hosted-guide/data-encryption#codec-server-setup).
+For details on creating your Codec Server, see [Codec Server Setup](/production-deployment/data-encryption#codec-server-setup).
 
 ## What is Key Management? {#key-management}
 
