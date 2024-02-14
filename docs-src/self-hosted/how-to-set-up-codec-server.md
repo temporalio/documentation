@@ -101,7 +101,7 @@ For details on setting up authorization, see [Authorization](#authorization).
 It is important to establish how you will provide access to your Codec Server.
 Because it is designed to decode potentially sensitive data with a single API call, access to a production Codec Server should be restricted.
 
-Depending on your infrastructure and risk levels, it may be sufficient to restrict HTTP ingress to your Codec Server (such as by using a VPN like [WireGuard](https://www.wireguard.com/)).
+Depending on your infrastructure and risk levels, it might be sufficient to restrict HTTP ingress to your Codec Server (such as by using a VPN like [WireGuard](https://www.wireguard.com/)).
 The Temporal Web UI can communicate with a Codec Server that is only accessible on `localhost`, as you'll see in the exercise at the end of this chapter, so this is a legitimate security pattern.
 However, if your Codec Server is exposed to the internet at all, you will likely need an authentication solution.
 
