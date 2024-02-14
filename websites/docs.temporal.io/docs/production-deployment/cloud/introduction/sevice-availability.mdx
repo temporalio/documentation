@@ -56,13 +56,18 @@ _**Your Workers and Client code aren't required to be hosted on AWS.**_
 
 **What kind of throughput can I get with Temporal Cloud?**
 
-A Namespace has a default quota of 200 [Actions](/cloud/pricing#action) per second with spikes up to 400 Actions per second.
-However, Temporal Cloud can provide more than 150,000 Actions per second.
+Each Namespace has a rate limit, which is measured in [Actions](/cloud/pricing#action) per second (APS). 
+A Namespace's default limit is set at 200 APS and automatically adjusts based on recent usage (over the prior 7 days). 
+Your throughput limit will never fall below this default value.
 
-If your Action rate exceeds your quota, Temporal Cloud throttles Actions until the rate matches your quota.
-Actions like Start or Signal Workflow Execution always receive higher priority than other Actions, even when throttled.
+When your Action rate exceeds your quota, Temporal Cloud throttles Actions until the rate matches your quota.
+Throttling means limiting the rate at which actions are performed to prevent overloading the system.
+Even when throttled, Actions like Start or Signal Workflow Execution always receive higher priority than other Actions.
 
-To raise your quota, create a [support ticket](/cloud/support#support-ticket).
+If your usage grows slowly, your throughput limit grows with your usage.
+At times, you may hit a maximum throughput threshold and need to switch to a higher consumption tier.
+Learn more about our tiers by visiting our [information page](/cloud/pricing#action) or [reach out to our team](https://pages.temporal.io/contact-us) to help size your number of Actions.
+Temporal Cloud can provide more than 150,000 Actions per second at its highest tier.
 
 ## Latency Service Level Objective (SLO) {#latency}
 
