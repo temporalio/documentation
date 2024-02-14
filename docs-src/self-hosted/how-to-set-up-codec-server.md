@@ -23,7 +23,7 @@ Decoded payloads can then be displayed in the Workflow Execution Event History o
 Because you create, operate, and manage access to your Codec Server in your controlled environment, ensure that you consider the following:
 
 - When you register a Codec Server endpoint with your Web UI, expect the Codec Server to receive multiple requests per Workflow Execution.
-- Ensure that you secure access to your Codec Server. For details, see [Authorization](#authorization). You may need some form of [Key management infrastructure](/concepts/what-is-key-management) for sharing your encryption keys between the Workers and your Codec Server.
+- Ensure that you secure access to your Codec Server. For details, see [Authorization](#authorization). You might need some form of [Key management infrastructure](/concepts/what-is-key-management) for sharing your encryption keys between the Workers and your Codec Server.
 - You will need to enable [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) on the HTTP/HTTPS endpoints in your Codec Server to receive requests from the Temporal Web UI.
 - You may introduce latency in the Web UI when sending and receiving payloads to the Codec Server.
 
