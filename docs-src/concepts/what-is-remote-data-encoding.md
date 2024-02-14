@@ -17,13 +17,13 @@ The Codec Server is independent of the Temporal Cluster and decodes your encrypt
 You create, operate, and manage access to your Codec Server in your own environment.
 The `temporal` CLI and the Web UI in turn provide built-in hooks to call the Codec Server to decode encrypted payloads on demand.
 
-#### Encoding data on the Web UI and tctl
+#### Encoding data on the Web UI and CLI
 
 You can perform some operations on your Workflow Execution using `temporal` and the Web UI, such as starting or sending a Signal to an active Workflow Execution using `temporal` or canceling a Workflow Execution from the Web UI, which might require inputs that contain sensitive data.
 
 To encode this data, [specify your Codec Server endpoints](/concepts/what-is-a-codec-server#endpoints) with [`temporal`](/cli/cmd-options#codec-endpoint) and configure your Web UI to use the Codec Server endpoints.
 
-#### Decoding data on the Web UI and tctl
+#### Decoding data on the Web UI and CLI
 
 If you use custom encoding, Payload data handled by the Temporal Cluster is stored encoded. Since the Web UI uses the [Visibility](/concepts/what-is-visibility) database to show events and data stored on the Temporal Server, all data in the Workflow Execution History in your Web UI is displayed in the encoded format.
 
