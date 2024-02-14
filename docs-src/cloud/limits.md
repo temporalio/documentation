@@ -132,6 +132,12 @@ When creating custom Search Attributes in Temporal Cloud, the attribute names mu
 
 For more information on custom Search Attributes see [Custom Search Attributes limits](/visibility#custom-search-attributes).
 
+### Visibility API Rate Limit
+
+**What is the rate limit for requests to the Visibility APIs?**
+
+The default rate limit for requests to the Visibility APIs is 10 requests per second.
+
 ## Programming model level
 
 The following aspects apply at the programming model level.
