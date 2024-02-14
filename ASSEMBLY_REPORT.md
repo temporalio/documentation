@@ -1,7 +1,5 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday February 14 2024 09:07:21 AM -0800
-
 Assembly Workflow Id: docs-full-assembly
 
 139 guide configurations found.
