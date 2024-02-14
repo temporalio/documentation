@@ -818,11 +818,11 @@ cloud/pricing-intro -> /cloud/pricing
 
 cloud/support-intro -> /cloud/support
 
+cloud/support-create-ticket -> /cloud/support#support-ticket
+
 cloud/certificates-namespace -> #manage-certificates
 
 cloud/certificates-filters -> #manage-certificate-filters
-
-cloud/support-create-ticket -> /cloud/support#support-ticket
 
 cloud/certificates-notifications -> #expiration-notifications
 

@@ -79,8 +79,11 @@ To create a Namespace, a user must have the Developer or Global Admin account-le
 
 :::tip
 
-By default, each account has a quota of 10 Namespaces.
-If you want to increase this limit, open a [support ticket](/cloud/support#support-ticket).
+By default, each account is provisioned with ten Namespaces.
+As you create and use your Namespaces, for example by scheduling Workflows, Temporal Cloud automatically raises your limit.
+Our service identifies your usage patterns.
+It responds by slowly increasing your allowance, up to 100 Namespaces.
+You can request further increases beyond the 100 Namespace limit by opening a [support ticket](/cloud/support#support-ticket).
 
 :::
 
@@ -132,8 +135,11 @@ Customers should consider not only a Namespace naming convention but also how to
 
 Before considering an appropriate Namespace configuration, you should be aware of the following constraints:
 
-- Each Temporal account has a default limit of 10 Namespaces.
-  You can request an increase by [creating a ticket for Temporal Support](/cloud/support#support-ticket).
+- By default, each account is provisioned with ten Namespaces.
+  As you create and use your Namespaces, for example by scheduling Workflows, Temporal Cloud automatically raises your limit.
+  Our service identifies your usage patterns.
+  It responds by slowly increasing your allowance, up to 100 Namespaces.
+  You can request further increases beyond the 100 Namespace limit by opening a [support ticket](/cloud/support#support-ticket).
 - Cross-Namespace communications between [Workflows](/workflows) is not yet supported.
   For now, you can use the [SDK client](/temporal#temporal-client) from within an [Activity](/activities) as a workaround.
 - Each Namespace has a rate limit ("throttling").

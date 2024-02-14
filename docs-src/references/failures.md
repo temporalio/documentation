@@ -42,7 +42,7 @@ This is the only type of Failure created and thrown by user code.
 
 ### Throw from Workflows
 
-Only Workflow errors that are Temporal Failures cause the Worklow Execution to fail; all other errors cause the Workflow Task to fail and be retried (except for Go, where any error returned from the Workflow fails the Execution, and a panic fails the Task).
+Only Workflow errors that are Temporal Failures cause the Workflow Execution to fail; all other errors cause the Workflow Task to fail and be retried (except for Go, where any error returned from the Workflow fails the Execution, and a panic fails the Task).
 Most types of Temporal Failures automatically occur, like a [Cancelled Failure](#cancelled-failure) when the Workflow is Cancelled or an [Activity Failure](#activity-failure) when an Activity Fails.
 You can also explicitly fail the Workflow Execution by throwing (or returning, depending on the SDK) an Application Failure.
 
