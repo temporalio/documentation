@@ -9,7 +9,7 @@ tags:
 ---
 
 Data Converters in Temporal are SDK components that handle the serialization and encoding of data entering and exiting a Temporal Cluster.
-Workflow input and output need to be serialized and deserialized so they can be sent as JSON to the Temporal Cluster.
+Workflow inputs and outputs need to be serialized and deserialized so they can be sent as JSON to the Temporal Cluster.
 
 ![Data Converter encodes and decodes data](/diagrams/default-data-converter.svg)
 
