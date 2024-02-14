@@ -37,7 +37,7 @@ When you create your Codec Server to handle requests from the Web UI, the follow
 
 The Web UI and CLI send a POST to a `/decode` endpoint. In your Codec Server, create a `/decode` path and pass the incoming payload to the decode method in your Payload Codec.
 
-For examples on how to create your Codec Server, see following Codec Server implementation samples:
+For examples on how to create your Codec Server, see the following Codec Server implementation samples:
 
 - [Go](https://github.com/temporalio/samples-go/tree/main/codec-server)
 - [Java](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)
