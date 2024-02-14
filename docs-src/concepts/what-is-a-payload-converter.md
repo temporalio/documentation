@@ -38,4 +38,4 @@ A custom PayloadConverter must implement the functions:
 - `ToPayload` (for a single value) or
 - `ToPayloads` (for a list of values) to convert values to a Payload.
 
-Defining a new Composite Data Converter is not necessary to use a Custom Data Converter. To keep your code more manageable, you can just override the default Converter to use your Codec instead.
+Defining a new Composite Data Converter is not necessary to use a Custom Data Converter. To keep your code more manageable, you can override the default Converter to use your Codec instead.
