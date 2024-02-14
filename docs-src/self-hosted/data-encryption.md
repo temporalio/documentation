@@ -37,10 +37,10 @@ For details on how to set up a Codec Server, see [Codec Server setup](/self-host
 
 However, if you plan to set up [remote data encoding](/concepts/what-is-remote-data-encoding) for your data, ensure that you consider all security implications of running encryption remotely before implementing it.
 
-In codec implementations, we recommend running the function (such as compression or encryption) on the entire input Payload and putting the result in the data field of a new Payload with a different encoding metadata field.
-Using this technique ensures that the input Payload's metadata is preserved.
+When implementing a custom codec, it is recommended to perform your compression or encryption on the entire input Payload and store the result in the data field of a new Payload with a different encoding metadata field.
+This ensures that the input Payload's metadata is preserved.
 When the encoded Payload is sent to be decoded, you can verify the metadata field before applying the decryption.
-If your Payload is _not_ encoded, we recommend passing the unencoded data to the decode function instead of failing the conversion.
+If your Payload is not encoded, it is recommended to pass the unencoded data to the decode function instead of failing the conversion.
 
 Examples for implementing encryption:
 
