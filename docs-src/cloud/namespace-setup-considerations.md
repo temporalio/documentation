@@ -16,8 +16,11 @@ Customers should consider not only a Namespace naming convention but also how to
 
 Before considering an appropriate Namespace configuration, you should be aware of the following constraints:
 
-- Each Temporal account has a default limit of 10 Namespaces.
-  You can request an increase by [creating a ticket for Temporal Support](/cloud/support-create-ticket).
+- By default, each account is provisioned with ten Namespaces.
+  As you create and use your Namespaces, for example by scheduling Workflows, Temporal Cloud automatically raises your limit.
+  Our service identifies your usage patterns.
+  It responds by slowly increasing your allowance, up to 100 Namespaces.
+  You can request further increases beyond the 100 Namespace limit by opening a [support ticket](/cloud/support-create-ticket).
 - Cross-Namespace communications between [Workflows](/workflows) is not yet supported.
   For now, you can use the [SDK client](/concepts/what-is-a-temporal-client) from within an [Activity](/concepts/what-is-an-activity) as a workaround.
 - Each Namespace has a rate limit ("throttling").
