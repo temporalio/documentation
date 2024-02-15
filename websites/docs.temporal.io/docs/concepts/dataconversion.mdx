@@ -27,7 +27,7 @@ tags:
 This guide provides an overview of data handling using a Data Converter on the Temporal Platform.
 
 Data Converters in Temporal are SDK components that handle the serialization and encoding of data entering and exiting a Temporal Cluster.
-Workflow input and output need to be serialized and deserialized so they can be sent as JSON to the Temporal Cluster.
+Workflow inputs and outputs need to be serialized and deserialized so they can be sent as JSON to a Temporal Cluster.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Data Converter encodes and decodes data</p></div><div class="tdiiw" height="1240"><img class="img_ev3q" src="/diagrams/default-data-converter.svg" alt="Data Converter encodes and decodes data" /></div></div>
 
@@ -35,10 +35,10 @@ The Data Converter encodes data from your application to a [Payload](#payload) b
 When the Temporal Server sends the encoded data back to the Worker, the Data Converter decodes it for processing within your application.
 This ensures that all your sensitive data exists in its original format only on hosts that you control.
 
-Data Converter steps are followed when data is sent to the Temporal Cluster (as input to a Workflow) and when it is returned from a Workflow (as output).
+Data Converter steps are followed when data is sent to a Temporal Cluster (as input to a Workflow) and when it is returned from a Workflow (as output).
 Due to how Temporal provides access to Workflow output, this implementation is asymmetric:
 
-- Data encoding is performed automatically using the default converter provided by Temporal or your custom Data Converter when passing input to the Temporal Cluster. For example, plain text input is usually serialized into a JSON object.
+- Data encoding is performed automatically using the default converter provided by Temporal or your custom Data Converter when passing input to a Temporal Cluster. For example, plain text input is usually serialized into a JSON object.
 - Data decoding may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Cluster. Instead, they are stored encoded on the Cluster, and you need to provide an additional parameter when using [`temporal workflow show`](/cli/workflow#show) or when browsing the Web UI to view output.
 
 Each piece of data (like a single argument or return value) is encoded as a [Payload](#payload), which consists of binary data and key-value metadata.
@@ -90,7 +90,7 @@ A custom Data Converter extends the default Data Converter with custom logic for
 You can create a custom Data Converter to alter formats (for example, using [MessagePack](https://msgpack.org/) instead of JSON) or add compression and encryption.
 
 A Payload Codec encodes and decodes [Payloads](#payload), with bytes-to-bytes conversion.
-To use custom encryption and/or compression logic, create a custom Payload Codec with your encryption/compression logic in the `encode` function and your decryption/decompression logic in the `decode` function.
+To use custom encryption or compression logic, create a custom Payload Codec with your encryption/compression logic in the `encode` function and your decryption/decompression logic in the `decode` function.
 To implement a custom Payload Codec, you can override the default Data Converter, or create a customized Data Converter that defines its own Payload Converter.
 
 Custom Data Converters are not applied to all data; for example, [Search Attributes](/visibility#search-attribute) are persisted unencoded so they can be indexed for searching.
@@ -135,7 +135,7 @@ A custom PayloadConverter must implement the functions:
 - `ToPayload` (for a single value) or
 - `ToPayloads` (for a list of values) to convert values to a Payload.
 
-Defining a new Composite Data Converter is not necessary to use a Custom Data Converter. To keep your code more manageable, you can just override the default Converter to use your Codec instead.
+Defining a new Composite Data Converter is not necessary to use a Custom Data Converter. To keep your code more manageable, you can override the default Converter to use your Codec instead.
 
 ## What is a Payload Codec? {#payload-codec}
 
