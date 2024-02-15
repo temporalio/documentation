@@ -1162,8 +1162,6 @@ typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
 
 typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
 
-typescript/how-to-use-a-prebuilt-workflow-bundle-in-typescript -> /dev-guide/typescript/foundations#prebuilt-workflow-bundles
-
 typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
 
 typescript/cancellation-scopes -> /dev-guide/typescript/foundations#cancellation-scopes
