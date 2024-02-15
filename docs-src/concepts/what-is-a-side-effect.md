@@ -11,7 +11,8 @@ tags:
 :::note
 
 Side Effects are included in the Go, Java, and PHP SDKs.
-They are not included in other SDKs, as [Local Activities](/concepts/what-is-a-local-activity) fit the same use case and are slighly less resource intensive.
+They are not included in other SDKs.
+[Local Activities](/concepts/what-is-a-local-activity) fit the same use case and are slightly less resource intensive.
 
 :::
 
