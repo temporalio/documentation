@@ -1,14 +1,12 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday February 12 2024 20:44:25 PM -0500
-
 Assembly Workflow Id: docs-full-assembly
 
 139 guide configurations found.
 
 1755 information nodes found.
 
-1515 information nodes are attached to guides.
+1514 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -816,11 +814,11 @@ cloud/pricing-intro -> /cloud/pricing
 
 cloud/support-intro -> /cloud/support
 
+cloud/support-create-ticket -> /cloud/support#support-ticket
+
 cloud/certificates-namespace -> #manage-certificates
 
 cloud/certificates-filters -> #manage-certificate-filters
-
-cloud/support-create-ticket -> /cloud/support#support-ticket
 
 cloud/certificates-notifications -> #expiration-notifications
 
@@ -1163,8 +1161,6 @@ typescript/how-to-implement-interceptors-in-typescript -> /dev-guide/typescript/
 typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
 
 typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
-
-typescript/how-to-use-a-prebuilt-workflow-bundle-in-typescript -> /dev-guide/typescript/foundations#prebuilt-workflow-bundles
 
 typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
 
