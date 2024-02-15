@@ -36,9 +36,3 @@ To see decoded data when using the CLI or Web UI to perform some operations on a
 When you configure the Codec Server endpoints, the CLI and Web UI send the encoded data to the Codec Server, and display the decoded data received from the Codec Server.
 
 For details on creating your Codec Server, see [Codec Server Setup](/self-hosted/how-to-set-up-codec-server).
-
-After you start your Codec Server, [configure your Codec Server endpoints](/self-hosted/how-to-set-up-codec-server#set-your-codec-server-endpoints-with-web-ui-and-cli).
-
-<!-- You can set your Codec Server endpoints to encode data sent to the Temporal Server (see [Remote data encoding](/concepts/what-is-remote-data-encoding)).
-However, before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely.
-For example, codecs that perform encryption might need to be secured to prevent decryption by untrusted callers. -->
