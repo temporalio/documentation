@@ -28,10 +28,16 @@ func main() {
 	log.Println("Workflow Execution cancelled", "WorkflowID", cancellation.WorkflowId)
 }
 
+/*
+**How to request Cancellation of a Workflow and Activities in Go.**
+
+Use the `CancelWorkflow` API to cancel a Workflow Execution using its Id.
+*/
+
 /* @dacx
 id: request-cancellation-from-a-client
-title: How to request Cancellation of a Workflow and Activities in Go
+title: Request Cancellation
 label: Request Cancellation
 description: Use the Temporal Client's CancelWorkflow API to send a Cancellation Request to the Workflow.
-lines: 13, 21-27, 29
+lines: 13, 21-27, 29-35
 @dacx */

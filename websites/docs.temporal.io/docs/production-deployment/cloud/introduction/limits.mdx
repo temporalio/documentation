@@ -45,9 +45,11 @@ The following aspects apply at the Temporal Cloud Account level (per account).
 
 **How many namespaces can I create?​**
 
-The initial limit is 10 Namespaces.
-
-As Namespaces get created and start being used (Workflows get created in them), this limit gets automatically and incrementally raised up to 100.
+By default, each account is provisioned with ten Namespaces.
+As you create and use your Namespaces, for example by scheduling Workflows, Temporal Cloud automatically raises your limit.
+Our service identifies your usage patterns.
+It responds by slowly increasing your allowance, up to 100 Namespaces.
+You can request further increases beyond the 100 Namespace limit by opening a [support ticket](/cloud/support#support-ticket).
 
 ### Retained Prometheus endpoint data
 
@@ -140,6 +142,12 @@ When creating custom Search Attributes in Temporal Cloud, the attribute names mu
 - Allowed characters: `[a-zA-Z0-9.,:-_\/ ]`.
 
 For more information on custom Search Attributes see [Custom Search Attributes limits](/visibility#custom-search-attributes).
+
+### Visibility API Rate Limit
+
+**What is the rate limit for requests to the Visibility APIs?**
+
+The default rate limit for requests to the Visibility APIs, per Namespace, is 10 requests per second.
 
 ## Programming model level
 
