@@ -50,6 +50,10 @@
     {
       "type": "h3",
       "id": "self-hosted/how-to-set-up-codec-server"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-key-management"
     }
   ]
 }

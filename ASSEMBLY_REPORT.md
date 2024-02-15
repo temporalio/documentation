@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday February 13 2024 11:30:26 AM -0600
+Last assembled: Thursday February 15 2024 07:38:47 AM -0600
 
 Assembly Workflow Id: docs-full-assembly
 
-138 guide configurations found.
+139 guide configurations found.
 
-1753 information nodes found.
+1755 information nodes found.
 
-1510 information nodes are attached to guides.
+1514 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -369,6 +369,8 @@ concepts/what-is-a-payload-codec -> /dataconversion#payload-codec
 concepts/what-is-a-custom-data-converter -> /dataconversion#custom-data-converter
 
 concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
+
+concepts/what-is-key-management -> /dataconversion#key-management
 
 cloud/limits -> /cloud/limits
 
@@ -814,11 +816,11 @@ cloud/pricing-intro -> /cloud/pricing
 
 cloud/support-intro -> /cloud/support
 
+cloud/support-create-ticket -> /cloud/support#support-ticket
+
 cloud/certificates-namespace -> #manage-certificates
 
 cloud/certificates-filters -> #manage-certificate-filters
-
-cloud/support-create-ticket -> /cloud/support#support-ticket
 
 cloud/certificates-notifications -> #expiration-notifications
 
@@ -1162,8 +1164,6 @@ typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
 
 typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
 
-typescript/how-to-use-a-prebuilt-workflow-bundle-in-typescript -> /dev-guide/typescript/foundations#prebuilt-workflow-bundles
-
 typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
 
 typescript/cancellation-scopes -> /dev-guide/typescript/foundations#cancellation-scopes
@@ -1353,6 +1353,12 @@ go/side-effects -> /dev-guide/go/features#side-effects
 go/error-handling -> /dev-guide/go/features#error-handling-in-go
 
 go/selectors -> /dev-guide/go/features#selectors
+
+go/generated/handle-cancellation-request-workflow -> /dev-guide/go/cancellation#handle-cancellation-in-workflow
+
+go/generated/handle-cancellation-request-in-activity -> /dev-guide/go/cancellation#handle-cancellation-in-an-activity
+
+go/generated/request-cancellation-from-a-client -> /dev-guide/go/cancellation#request-cancellation
 
 go/testing-frameworks -> /dev-guide/go/testing#test-frameworks
 

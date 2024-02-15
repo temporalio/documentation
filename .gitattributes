@@ -126,6 +126,7 @@ websites/docs.temporal.io/docs/dev-guide/javalang/observability.mdx linguist-gen
 websites/docs.temporal.io/docs/dev-guide/javalang/project-setup.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/javalang/testing.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/javalang/versioning.mdx linguist-generated=true
+websites/docs.temporal.io/docs/dev-guide/golang/cancellation.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/debugging.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/durable-execution.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/features.mdx linguist-generated=true
