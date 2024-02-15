@@ -101,4 +101,4 @@ The Versioning section of the Temporal Developer's guide covers how to update Wo
 The Converters and Codecs section of the Temporal Developer's guide provides guidance on how to support compression, encryption, and other special data handling by implementing custom converters and codecs.
 
 - [How to use a custom Payload Codec in Java](/java/how-to-use-a-custom-payload-codec-in-java): Create a custom implementation of `PayloadCodec` and use it in `CodecDataConverter` to set a custom Data Converter.
-- [How to use custom payload conversion](/java/custom-payload-conversion): Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.
+- [How to use custom Payload conversion](/java/custom-payload-conversion): Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.

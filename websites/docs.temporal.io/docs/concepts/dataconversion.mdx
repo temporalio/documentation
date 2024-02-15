@@ -194,7 +194,7 @@ For example, if you are both working with highly sensitive data and using a soph
 
 Remote data encoding is exposing your Payload Codec via HTTP endpoints to support remote encoding and decoding.
 
-Running your encoding remotely allows you to use it with the [`temporal` CLI](/cli) to encode/decode data for several commands including `temproal workflow show` and with Temporal Web UI to decode data in your Workflow Execution details view.
+Running your encoding remotely allows you to use it with the [`temporal` CLI](/cli) to encode/decode data for several commands including `temporal workflow show` and with Temporal Web UI to decode data in your Workflow Execution details view.
 
 To run data encoding/decoding remotely, use a [Codec Server](#codec-server). A Codec Server is an HTTP server that uses your custom Codec logic to decode your data remotely.
 The Codec Server is independent of the Temporal Cluster and decodes your encrypted payloads through predefined endpoints.

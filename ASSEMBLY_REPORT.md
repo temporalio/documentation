@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday February 15 2024 11:31:26 AM -0800
+Last assembled: Thursday February 15 2024 15:23:49 PM -0800
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -544,10 +544,6 @@ cli/workflow/show -> /cli/workflow#show
 
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
-go/custom-payload-conversion -> /dev-guide/go/converters#custom-payload-conversion
-
-java/custom-payload-conversion -> /dev-guide/java/converters#custom-payload-conversion
-
 cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
 
 go/register-namespaces -> /dev-guide/go/features#register-namespace
@@ -818,11 +814,11 @@ cloud/pricing-intro -> /cloud/pricing
 
 cloud/support-intro -> /cloud/support
 
+cloud/support-create-ticket -> /cloud/support#support-ticket
+
 cloud/certificates-namespace -> #manage-certificates
 
 cloud/certificates-filters -> #manage-certificate-filters
-
-cloud/support-create-ticket -> /cloud/support#support-ticket
 
 cloud/certificates-notifications -> #expiration-notifications
 
@@ -1322,6 +1318,10 @@ java/debug-environment-development -> /dev-guide/java/debugging#debug-in-a-devel
 
 java/debug-environment-production -> /dev-guide/java/debugging#debug-in-a-production-environment
 
+java/how-to-use-a-custom-payload-codec-in-java -> /dev-guide/java/converters#custom-payload-codec
+
+java/custom-payload-conversion -> /dev-guide/java/converters#custom-payload-conversion
+
 go/testing -> /dev-guide/go/testing#replay
 
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
@@ -1376,9 +1376,9 @@ go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
 
-java/how-to-use-a-custom-payload-codec-in-java -> /dev-guide/java/converters#custom-payload-codec
-
 go/how-to-use-a-custom-payload-codec-in-go -> /dev-guide/go/converters#custom-payload-codec
+
+go/custom-payload-conversion -> /dev-guide/go/converters#custom-payload-conversion
 
 go/how-to-use-a-custom-payload-converter-in-go -> /dev-guide/go/converters#custom-payload-converter
 
