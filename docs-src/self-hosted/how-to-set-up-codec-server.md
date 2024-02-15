@@ -102,10 +102,10 @@ It is important to establish how you will provide access to your Codec Server.
 Because it is designed to decode potentially sensitive data with a single API call, access to a production Codec Server should be restricted.
 
 Depending on your infrastructure and risk levels, it might be sufficient to restrict HTTP ingress to your Codec Server (such as by using a VPN like [WireGuard](https://www.wireguard.com/)).
-The Temporal Web UI can communicate with a Codec Server that is only accessible on `localhost`, as you'll see in the exercise at the end of this chapter, so this is a legitimate security pattern.
+The Temporal Web UI can communicate with a Codec Server that is only accessible on `localhost`, so this is a legitimate security pattern.
 However, if your Codec Server is exposed to the internet at all, you will likely need an authentication solution.
 
-If you are already using an organization-wide authentication provider, you should integrate it with your Codec Server. Remember, a Codec Server is just a standalone HTTP server, so you can use existing libraries for OAuth, Auth0, or any other protocol.
+If you are already using an organization-wide authentication provider, you should integrate it with your Codec Server. Remember, a Codec Server is just a standalone HTTP server, so you can use existing libraries for OAuth, [Auth0](https://auth0.com/), or any other protocol.
 [This repository](https://github.com/pvsone/codec-cors-credentials) contains an example of using Auth0 to handle browser-based auth to a Codec Server.
 
 To enable authorization from the Web UI (for both a self-hosted Cluster and Temporal Cloud), your Codec Server must be an HTTPS Server.
