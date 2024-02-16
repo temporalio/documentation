@@ -158,7 +158,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/t
 
 
 #### [Durable Execution](/temporal#durable-execution)
-todo
+Durable Execution in the context of Temporal refers to the ability of a Workflow Execution to maintain its state and progress even in the face of failures, crashes, or server outages.
 
 _Tags: [temporal](/tags/temporal), [durable-execution](/tags/durable-execution), [term](/tags/term)_
 

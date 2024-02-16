@@ -2,7 +2,7 @@
 id: what-is-durable-execution
 title: Durable Execution
 sidebar_label: Durable Execution
-description: todo
+description: Durable Execution in the context of Temporal refers to the ability of a Workflow Execution to maintain its state and progress even in the face of failures, crashes, or server outages.
 tags:
   - temporal
   - durable execution
