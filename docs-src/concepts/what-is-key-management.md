@@ -1,6 +1,6 @@
 ---
 id: what-is-key-management
-title: What is Key Management
+title: What is Key Management?
 sidebar_label: Key Management
 description: Key Management is a necessary component of an encryption solution
 tags:

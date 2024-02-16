@@ -157,6 +157,12 @@ Dual Visibility is a feature that lets you set a secondary Visibility store in y
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_
 
 
+#### [Durable Execution](/temporal#durable-execution)
+Durable Execution in the context of Temporal refers to the ability of a Workflow Execution to maintain its state and progress even in the face of failures, crashes, or server outages.
+
+_Tags: [temporal](/tags/temporal), [durable-execution](/tags/durable-execution), [term](/tags/term)_
+
+
 #### [Dynamic Handler](/workflows#dynamic-handler)
 Dynamic Handlers are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named handler matches the call from the Server at runtime.
 
