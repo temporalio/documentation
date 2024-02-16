@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday January 30 2024 13:43:57 PM -0800
+Last assembled: Friday February 16 2024 12:34:19 PM -0700
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly
 
-138 guide configurations found.
+141 guide configurations found.
 
-1759 information nodes found.
+1755 information nodes found.
 
-1510 information nodes are attached to guides.
+1513 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -48,9 +48,9 @@ self-hosted/what-is-archival -> /self-hosted-guide/archival
 
 concepts/what-is-a-codec-server -> /dataconversion#codec-server
 
-self-hosted/data-encryption -> /self-hosted-guide/data-encryption
+self-hosted/data-encryption -> /production-deployment/data-encryption
 
-self-hosted/how-to-set-up-codec-server -> /self-hosted-guide/data-encryption#web-ui
+self-hosted/how-to-set-up-codec-server -> /production-deployment/data-encryption#web-ui
 
 concepts/what-is-a-frontend-service -> /clusters#frontend-service
 
@@ -540,11 +540,9 @@ java/namespaces -> /dev-guide/java/features#namespaces
 
 cloud/prometheus-grafana-setup -> /cloud/metrics#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
 
+cli/workflow/show -> /cli/workflow#show
+
 concepts/what-is-a-default-data-converter -> #default-data-converter
-
-go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
-
-java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conversion
 
 cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
 
@@ -816,11 +814,11 @@ cloud/pricing-intro -> /cloud/pricing
 
 cloud/support-intro -> /cloud/support
 
+cloud/support-create-ticket -> /cloud/support#support-ticket
+
 cloud/certificates-namespace -> #manage-certificates
 
 cloud/certificates-filters -> #manage-certificate-filters
-
-cloud/support-create-ticket -> /cloud/support#support-ticket
 
 cloud/certificates-notifications -> #expiration-notifications
 
@@ -1164,8 +1162,6 @@ typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
 
 typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
 
-typescript/how-to-use-a-prebuilt-workflow-bundle-in-typescript -> /dev-guide/typescript/foundations#prebuilt-workflow-bundles
-
 typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
 
 typescript/cancellation-scopes -> /dev-guide/typescript/foundations#cancellation-scopes
@@ -1320,6 +1316,10 @@ java/debug-environment-development -> /dev-guide/java/debugging#debug-in-a-devel
 
 java/debug-environment-production -> /dev-guide/java/debugging#debug-in-a-production-environment
 
+java/how-to-use-a-custom-payload-codec-in-java -> /dev-guide/java/converters#custom-payload-codec
+
+java/custom-payload-conversion -> /dev-guide/java/converters#custom-payload-conversion
+
 go/testing -> /dev-guide/go/testing#replay
 
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
@@ -1356,6 +1356,12 @@ go/error-handling -> /dev-guide/go/features#error-handling-in-go
 
 go/selectors -> /dev-guide/go/features#selectors
 
+go/generated/handle-cancellation-request-workflow -> /dev-guide/go/cancellation#handle-cancellation-in-workflow
+
+go/generated/handle-cancellation-request-in-activity -> /dev-guide/go/cancellation#handle-cancellation-in-an-activity
+
+go/generated/request-cancellation-from-a-client -> /dev-guide/go/cancellation#request-cancellation
+
 go/testing-frameworks -> /dev-guide/go/testing#test-frameworks
 
 go/testing-activities -> /dev-guide/go/testing#test-activities
@@ -1367,5 +1373,11 @@ go/debug-environment-development -> /dev-guide/go/debugging#debug-in-a-developme
 go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production-environment
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
+
+go/how-to-use-a-custom-payload-codec-in-go -> /dev-guide/go/converters#custom-payload-codec
+
+go/custom-payload-conversion -> /dev-guide/go/converters#custom-payload-conversion
+
+go/how-to-use-a-custom-payload-converter-in-go -> /dev-guide/go/converters#custom-payload-converter
 
 

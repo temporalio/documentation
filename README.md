@@ -105,6 +105,7 @@ Please make comments and suggestions in the appropriate source nodes.
 
 ### `/assembly` Assembly Workflow
 
+
 **Please note that our docs tooling is not designed to build natively on Windows. If you want to contribute from a Windows environment, please run these commands under a [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) shell.**
 
 The `/assembly` directory contains a Temporal Application written in JavaScript that uses Temporal's TypeScript SDK. This application acts as a build wrapper around the Docusaurus framework to assemble and generate the files in `/websites/docs.temporal.io/docs`.
@@ -193,9 +194,11 @@ git push origin yourfix
 
 ## How to make changes to this repository
 
+
 **STOP! [Make sure you are eligible to create a pull request!](#how-to-get-approval-to-create-a-pull-request)**
 
 **After receiving approval, follow these steps to make changes to this repository.**
+
 
 If you want to fix a typo or something minor, check out the [How to fix a typo](#how-to-fix-a-typo) section of this README.
 
@@ -328,6 +331,18 @@ yarn check-links
 This command will start the hyperlink checker.
 
 ### How to run the Assembly Workflow
+
+You have two methods to run the Assembly Workflow.
+For most, using the automated method helps ensure that you can make changes to the documentation repo.
+
+#### Automated method
+
+Are your trying to contribute to the Temporal Platform documentation?
+
+To build your changes, run `yarn make`.
+For more information, see [make-README.md](./make-README.md)
+
+#### Manual method
 
 Make sure you have a Namespace set up and ready to use.
 We recommend using the [Temporal CLI development Server](https://docs.temporal.io/cli/#starting-the-temporal-server).

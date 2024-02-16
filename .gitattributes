@@ -25,7 +25,7 @@ websites/docs.temporal.io/docs/production-deployment/cloud/tcld/user.mdx linguis
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/version.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/archival.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/checklist.mdx linguist-generated=true
-websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/data-encryption.mdx linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/data-encryption.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/defaults.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/index.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/monitoring.mdx linguist-generated=true
@@ -116,6 +116,7 @@ websites/docs.temporal.io/docs/dev-guide/phplang/foundations.mdx linguist-genera
 websites/docs.temporal.io/docs/dev-guide/phplang/index.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/phplang/observability.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/phplang/testing.mdx linguist-generated=true
+websites/docs.temporal.io/docs/dev-guide/javalang/converters.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/javalang/debugging.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/javalang/durable-execution.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/javalang/features.mdx linguist-generated=true
@@ -126,6 +127,8 @@ websites/docs.temporal.io/docs/dev-guide/javalang/observability.mdx linguist-gen
 websites/docs.temporal.io/docs/dev-guide/javalang/project-setup.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/javalang/testing.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/javalang/versioning.mdx linguist-generated=true
+websites/docs.temporal.io/docs/dev-guide/golang/cancellation.mdx linguist-generated=true
+websites/docs.temporal.io/docs/dev-guide/golang/converters.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/debugging.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/durable-execution.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/features.mdx linguist-generated=true

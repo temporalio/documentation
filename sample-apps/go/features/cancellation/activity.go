@@ -41,10 +41,16 @@ func (a *Activities) ActivityToBeSkipped(ctx context.Context) error {
 	return nil
 }
 
+/*
+**How to handle a Cancellation in an Activity in Go.**
+
+Ensure that the Activity is Heartbeating to receive the Cancellation request and stop execution.
+*/
+
 /* @dacx
 id: handle-cancellation-request-in-activity
-title: How to handle a Cancellation in an Activity in Go
+title: Handle Cancellation in an Activity
 label: Handle Cancellation in an Activity
 description: Listen for ctx.Done() to react to a Cancellation Request in an Activity
-lines: 13-14, 18-30
+lines: 13-14, 18-30, 44-48
 @dacx */

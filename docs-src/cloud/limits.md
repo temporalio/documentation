@@ -34,9 +34,11 @@ The following aspects apply at the Temporal Cloud Account level (per account).
 
 **How many namespaces can I create?​**
 
-The initial limit is 10 Namespaces.
-
-As Namespaces get created and start being used (Workflows get created in them), this limit gets automatically and incrementally raised up to 100.
+By default, each account is provisioned with ten Namespaces.
+As you create and use your Namespaces, for example by scheduling Workflows, Temporal Cloud automatically raises your limit.
+Our service identifies your usage patterns.
+It responds by slowly increasing your allowance, up to 100 Namespaces.
+You can request further increases beyond the 100 Namespace limit by opening a [support ticket](/cloud/support-create-ticket).
 
 ### Retained Prometheus endpoint data
 
@@ -61,12 +63,11 @@ The following aspects apply at the Namespace level (per Namespace).
 
 **What is the limit of Actions per second?**
 
-The throughput of a Namespace is measured in Actions per second (APS).
-
-The default limit is 200 APS with the ability to spike to 400 APS.
-
-The APS limit is automatically adjusted based on the actual usage over the trailing 7 days.
-The lowest APS limit that ever gets set is 200 APS.
+Each Namespace has a rate limit, which is measured in Actions per second (APS).
+A Namespace may be throttled when its throughput becomes too high.
+Throttling means limiting the rate at which actions are performed to prevent overloading the system.
+A Namespace's default limit is set at 200 APS and automatically adjusts based on recent usage (over the prior 7 days).
+Your throughput limit will never fall below this default value.
 
 ### Certificates
 
@@ -129,6 +130,12 @@ When creating custom Search Attributes in Temporal Cloud, the attribute names mu
 - Allowed characters: `[a-zA-Z0-9.,:-_\/ ]`.
 
 For more information on custom Search Attributes see [Custom Search Attributes limits](/visibility#custom-search-attributes).
+
+### Visibility API Rate Limit
+
+**What is the rate limit for requests to the Visibility APIs?**
+
+The default rate limit for requests to the Visibility APIs, per Namespace, is 10 requests per second.
 
 ## Programming model level
 
