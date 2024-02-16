@@ -142,7 +142,7 @@ Before considering an appropriate Namespace configuration, you should be aware o
   You can request further increases beyond the 100 Namespace limit by opening a [support ticket](/cloud/support#support-ticket).
 - Cross-Namespace communications between [Workflows](/workflows) is not yet supported.
   For now, you can use the [SDK client](/temporal#temporal-client) from within an [Activity](/activities) as a workaround.
-- Each Namespace has a rate limit, which is measured in Actions per second (APS). 
+- Each Namespace has a rate limit, which is measured in Actions per second (APS).
   A namespace may be throttled when its throughput becomes too high.
   Throttling means limiting the rate at which actions are performed to prevent overloading the system.
   A Namespace's default limit is set at 200 APS and automatically adjusts based on recent usage (over the prior 7 days).
