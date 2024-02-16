@@ -52,7 +52,7 @@ func main() {
 	yourWorker.RegisterWorkflow(workflows.BackgroundCheckNonDeterministic)
 	// Register Activities
 	yourWorker.RegisterActivity(activities.SSNTraceActivity)
-	// Start the the Worker Process
+	// Start the Worker Process
 	err = yourWorker.Run(worker.InterruptCh())
 	if err != nil {
 		log.Fatalln("Unable to start the Worker Process", err)
