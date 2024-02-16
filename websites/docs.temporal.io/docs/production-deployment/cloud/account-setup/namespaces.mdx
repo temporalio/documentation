@@ -116,7 +116,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. In **Certificate**, paste the CA certificate for this Namespace.
 1. Optional: In **Codec Server**, enter the HTTPS URL (including the port number) of your Codec Server endpoint.
    You may also enable "Pass the user access token with your endpoint" and "Include cross-origin credentials."
-   For details, see [Hosting your Codec Server](/production-deployment/data-encryption#hosting-your-codec-server).
+   For details, see [Hosting your Codec Server](/production-deployment/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli).
 1. Click **Create Namespace**.
 
 <!--- How to create a Namespace in Temporal Cloud using tcld --->
@@ -142,7 +142,7 @@ Before considering an appropriate Namespace configuration, you should be aware o
   You can request further increases beyond the 100 Namespace limit by opening a [support ticket](/cloud/support#support-ticket).
 - Cross-Namespace communications between [Workflows](/workflows) is not yet supported.
   For now, you can use the [SDK client](/temporal#temporal-client) from within an [Activity](/activities) as a workaround.
-- Each Namespace has a rate limit, which is measured in Actions per second (APS). 
+- Each Namespace has a rate limit, which is measured in Actions per second (APS).
   A namespace may be throttled when its throughput becomes too high.
   Throttling means limiting the rate at which actions are performed to prevent overloading the system.
   A Namespace's default limit is set at 200 APS and automatically adjusts based on recent usage (over the prior 7 days).
