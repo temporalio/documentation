@@ -805,6 +805,14 @@ They are meant to handle edge cases and act as a catch-all, not as the main way 
 
 ## What is a Side Effect? {#side-effect}
 
+:::note
+
+Side Effects are included in the Go, Java, and PHP SDKs.
+They are not included in other SDKs.
+[Local Activities](/activities#local-activity) fit the same use case and are slightly less resource intensive.
+
+:::
+
 A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.
 
 A Side Effect does not re-execute upon replay, but instead returns the recorded result.
