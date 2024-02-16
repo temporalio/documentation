@@ -181,10 +181,6 @@
     },
     {
       "type": "h2",
-      "id": "typescript/how-to-use-a-prebuilt-workflow-bundle-in-typescript"
-    },
-    {
-      "type": "h2",
       "id": "typescript/how-to-shut-down-a-worker"
     },
     {

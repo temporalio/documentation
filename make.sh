@@ -130,7 +130,7 @@ fi
 
 # Execute assemble.js and then run dprint fmt
 echo "Executing assemble.js and running dprint fmt"
-node ./assemble.js > /dev/null 2>&1 && dprint fmt > /dev/null 2>&1
+node ./assemble.js > /dev/null 2>&1 && yarn format > /dev/null 2>&1
 
 
 if [ "$PERSIST" = false ] || [ "$START" ]; then
@@ -145,7 +145,7 @@ fi
 
 if [ "$PERSIST" = false ] && [ "$START" = false ]; then
     echo "Executing yarn build..."
-    cd websites/docs.temporal.io && yarn && yarn build
+    yarn format > /dev/null 2>&1 && cd websites/docs.temporal.io && yarn && yarn build
 
 
 

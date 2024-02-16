@@ -1,0 +1,27 @@
+{
+  "file_name": "converters.mdx",
+  "file_dir": "dev-guide/javalang",
+  "slug": "/dev-guide/java/converters",
+  "id": "converters",
+  "title": "Converters and Codecs - Java SDK feature guide",
+  "sidebar_label": "Converters and Codecs",
+  "sidebar_position": 10,
+  "description": "The Converters and Codecs section of the Temporal Developer's guide provides guidance on how to support compression, encryption, and other special data handling by implementing custom converters and codecs.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "h2",
+      "id": "java/how-to-use-a-custom-payload-codec-in-java"
+    },
+    {
+      "type": "h2",
+      "id": "java/custom-payload-conversion"
+    },
+    {
+      "type": "p",
+      "id": "java/how-to-use-a-custom-payload-converter-in-java"
+    }
+  ]
+}
