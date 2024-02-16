@@ -96,7 +96,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 - [Namespace Name](#temporal-cloud-namespace-name) and region.
 - [Retention Period](/clusters#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution).
 - [CA certificate](/cloud/certificates#certificate-requirements) for the Namespace.
-- [Codec Server endpoint](/self-hosted-guide/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/self-hosted-guide/data-encryption).
+- [Codec Server endpoint](/production-deployment/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/production-deployment/data-encryption).
 - [Permissions](/cloud/users#namespace-level-permissions) for each user.
 
 <!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
@@ -116,7 +116,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. In **Certificate**, paste the CA certificate for this Namespace.
 1. Optional: In **Codec Server**, enter the HTTPS URL (including the port number) of your Codec Server endpoint.
    You may also enable "Pass the user access token with your endpoint" and "Include cross-origin credentials."
-   For details, see [Hosting your Codec Server](/self-hosted-guide/data-encryption#hosting-your-codec-server).
+   For details, see [Hosting your Codec Server](/production-deployment/data-encryption#hosting-your-codec-server).
 1. Click **Create Namespace**.
 
 <!--- How to create a Namespace in Temporal Cloud using tcld --->
@@ -252,8 +252,8 @@ On the **Edit** page, you can do the following:
 - Add a [custom Search Attribute](/visibility#custom-search-attributes).
 - [Manage CA certificates](/cloud/certificates).
 - [Manage certificate filters](/cloud/certificates#manage-certificate-filters-using-temporal-cloud-ui).
-- Set [Codec Server endpoint](/self-hosted-guide/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli) for all users on the Namespace.
-  Each user on the Namespace has the option to [override this setting](/self-hosted-guide/data-encryption#web-ui) in their browser.
+- Set [Codec Server endpoint](/production-deployment/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli) for all users on the Namespace.
+  Each user on the Namespace has the option to [override this setting](/production-deployment/data-encryption#web-ui) in their browser.
 - Manage [Namespace-level permissions](/cloud/users#namespace-level-permissions).
 - Add users.
 

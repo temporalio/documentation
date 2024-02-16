@@ -1,6 +1,6 @@
 ---
 id: custom-payload-conversion
-title: How to use custom payload conversion
+title: How to use custom Payload conversion
 description: Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.
 sidebar_label: Custom payload conversion
 tags:
