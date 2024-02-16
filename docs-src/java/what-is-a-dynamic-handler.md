@@ -4,7 +4,6 @@ title: What is a Dynamic Handler?
 sidebar_label: Dynamic Handler
 description: Dynamic Handlers are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named handler matches the call from the Server at runtime.
 tags:
-  - term
   - explanation
 ---
 
