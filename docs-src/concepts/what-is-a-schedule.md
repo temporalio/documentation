@@ -7,7 +7,8 @@ tags:
   - term
   - explanation
 ssdi:
-  - Introduced in Temporal Server version 1.17.0
+  - Generally Available as of Nov 2023
+  - Introduced in Temporal Server version [1.17.0](https://github.com/temporalio/temporal/releases/tag/v1.17.0)
   - Available in Temporal CLI (and tctl v1.17)
   - Available in Temporal Cloud
   - Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) version [1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)

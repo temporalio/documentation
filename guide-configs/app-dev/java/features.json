@@ -274,14 +274,6 @@
     {
       "type": "p",
       "id": "java/how-to-manage-namespaces-in-java"
-    },
-    {
-      "type": "h2",
-      "id": "java/custom-payload-conversion"
-    },
-    {
-      "type": "p",
-      "id": "java/how-to-use-a-custom-payload-converter-in-java"
     }
   ]
 }
