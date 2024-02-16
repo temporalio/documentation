@@ -194,3 +194,45 @@ Example:
 
 - Prometheus query for getting latency by percentile:
   `histogram_quantile($percentile, sum(rate(persistence_latency_bucket{service="$service" service_name="history"}[1m])) by (operation, le))`
+
+## Schedule metrics
+
+Temporal emits metrics that track the performance and outcomes of these Scheduled Executions.
+
+Below are additional metrics that can help you monitor and optimize your Scheduled Workflow Executions.
+
+### `schedule_buffer_overruns`
+
+Indicates instances where the buffer for holding Scheduled Workflows exceeds its maximum capacity.
+This scenario typically occurs when schedules with a `buffer_all` overlap policy have their average run length exceeding the average schedule interval.
+
+Example: To monitor buffer overruns.
+
+`sum(rate(schedule_buffer_overruns{namespace="$namespace"}[5m]))`
+
+### `schedule_missed_catchup_window`
+
+Tracks occurrences when the system fails to execute a Scheduled Action within the defined catchup window.
+Missed catchup windows can result from extended outages beyond the configured catchup period.
+
+Example: To identify missed catchup opportunities.
+
+`sum(rate(schedule_missed_catchup_window{namespace="$namespace"}[5m]))`
+
+### `schedule_rate_limited`
+
+Reflects instances where the creation of Workflows by a Schedule is throttled due to rate limiting policies within a Namespace.
+This metric is crucial for identifying scheduling patterns that frequently hit rate limits, potentially causing missed catchup windows.
+
+Example: To assess the impact of rate limiting on Scheduled Executions.
+
+`sum(rate(schedule_rate_limited{namespace="$namespace"}[5m]))`
+
+### `schedule_action_success`
+
+Measures the successful execution of Workflows as per their schedules or through manual triggers.
+This metric is confirms that Workflows are running as expected without delays or errors.
+
+Example: To track the success rate of Scheduled Workflow Executions.
+
+`sum(rate(schedule_action_success{namespace="$namespace"}[5m]))`
