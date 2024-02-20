@@ -69,7 +69,7 @@ The volume of these requests might be quite high to execute against all the matc
 - **Elapsed Time:** If your workflow is “resuming sleep” when in the target Namespace, determine how you will calculate the delta for the sleep invocation in the new execution.
 - **Child Relationships:** If your Workflow has Child Workflow relationships (other than Detached Parent Close Policy children), determine how you can pass the state of those children into the parent to execute the child in a resumed state.
 - **Heartbeat state:** If you have long running activities relying on heartbeat state, determine how you can resume these activities in the target Namespace.
-- If ChildWorkflows are the same type as their Parent types, those will be returned in ListFilters being used to gather relevant executions. Unless these are Detached ParentClosePolicy children, this is not what you want since the Parent/Child relationship will not be carried over to the target Namespace.
+- If Child Workflows are the same type as their Parent types, those will be returned in List Filters being used to gather relevant executions. Unless these are Detached ParentClosePolicy children, this is not what you want since the Parent/Child relationship will not be carried over to the target Namespace.
 - Long running activities that use heartbeat details will not receive the “latest” details in the target Namespace.
 - Duration between Awaitables inside workflow definition needs to be considered for elapsed time accuracy when resuming in the target Namespace.
 - Signaling directly from one workflow to another needs to handle NotFound executions in the target Namespace since they may resume out of order.
