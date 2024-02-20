@@ -61,7 +61,7 @@ If you are performing a live migration, make sure your Worker capacity can suppo
 Both a Signal and a Query will be executed against your workflow during the course of the migration.
 Also, the Query API loads the entire history of Workflows into Workers to compute the result (if they are not already cached).
 That means that your self-hosted cluster Worker capacity will need to support having those executions in memory to serve those requests.
-The volume of these requests might be quite high to execute against all the matches to a ListFilter.
+The volume of these requests might be quite high to execute against all the matches to a `ListFilter`.
 
 ### Considerations when resuming Workflows on a new Cluster or Namespace
 
