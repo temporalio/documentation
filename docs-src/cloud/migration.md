@@ -22,12 +22,11 @@ Here’s a high-level overview of what you can expect:
 - **Migrate Workflow Executions:** There are different approaches for new, running, and completed Workflow Executions.
   - **New Workflow Executions:** After you’ve updated your Client connection code, Temporal Cloud will automatically be responsible for all new Workflow Executions.
   - **Running Workflow Executions:** Short-running Workflows can often be drained and then started again on Temporal Cloud. Long-running Workflows that cannot be drained and might require you to implement more code changes to pass the state of the currently running Workflow to Temporal Cloud.
-  - **Completed Workflow Executions:** Completed Workflow Execution History cannot yet be migrated to Temporal Cloud. 
+  - **Completed Workflow Executions:** Completed Workflow Execution History cannot yet be migrated to Temporal Cloud.
 
 ### Updating Client connection code in your Workers
 
-Whether you’re self-hosting Temporal or using Temporal Cloud, your Workflow
-code always lives inside your own application.
+Whether you’re self-hosting Temporal or using Temporal Cloud, you manage runtime of your code.
 To migrate your Workflows to Temporal Cloud, you need to change some parameters in the Client connection code, such as the endpoint’s hostname and port number.
 
 The changes needed to direct your Workflow to your Temporal Cloud
@@ -58,7 +57,7 @@ To accomplish this migration, you must cancel your current Workflow and pass the
 Refer to [this repository](https://github.com/temporalio/migration-example/blob/main/src/main/java/io/temporal/migration/example/README.md) for an example of migrating running Workflows in Java.
 
 If you are performing a live migration, make sure your Worker capacity can support the migration load.
-Both a Signal and a Query will be executed against your workflow during the course of the migration.
+Both a [Signal](/concepts/what-is-a-signal) and a [Query](/concepts/what-is-a-query) will be executed during the course of the migration.
 Also, the Query API loads the entire history of Workflows into Workers to compute the result (if they are not already cached).
 That means that your self-hosted cluster Worker capacity will need to support having those executions in memory to serve those requests.
 The volume of these requests might be quite high to execute against all the matches to a `ListFilter`.
@@ -66,13 +65,13 @@ The volume of these requests might be quite high to execute against all the matc
 ### Considerations when resuming Workflows on a new Cluster or Namespace
 
 - **Skipping Steps:** If your Workflow steps cannot guarantee idempotency, determine if you need to skip those steps when resuming the execution in the target Namespace.
-- **Elapsed Time:** If your workflow is “resuming sleep” when in the target Namespace, determine how you will calculate the delta for the sleep invocation in the new execution.
+- **Elapsed Time:** If your Workflow is “resuming sleep” when in the target Namespace, determine how you will calculate the delta for the sleep invocation in the new execution.
 - **Child Relationships:** If your Workflow has Child Workflow relationships (other than Detached Parent Close Policy children), determine how you can pass the state of those children into the parent to execute the child in a resumed state.
 - **Heartbeat state:** If you have long running activities relying on heartbeat state, determine how you can resume these activities in the target Namespace.
-- If Child Workflows are the same type as their Parent types, those will be returned in List Filters being used to gather relevant executions. Unless these are Detached ParentClosePolicy children, this is not what you want since the Parent/Child relationship will not be carried over to the target Namespace.
-- Long running activities that use heartbeat details will not receive the “latest” details in the target Namespace.
-- Duration between Awaitables inside workflow definition needs to be considered for elapsed time accuracy when resuming in the target Namespace.
-- Signaling directly from one workflow to another needs to handle NotFound executions in the target Namespace since they may resume out of order.
+- If Child Workflows are the same type as their Parent types, those will be returned in List Filters being used to gather relevant executions. Unless these are Detached `ParentClosePolicy` children, this is not what you want since the Parent/Child relationship will not be carried over to the target Namespace.
+- Long running activities that use heartbeat details will not receive the latest details in the target Namespace.
+- Duration between Awaitables inside Workflow definition needs to be considered for elapsed time accuracy when resuming in the target Namespace.
+- Signaling directly from one Workflow to another needs to handle NotFound executions in the target Namespace since they may resume out of order.
 
 ### Other considerations when migrating
 
