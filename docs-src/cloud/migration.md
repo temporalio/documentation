@@ -65,7 +65,7 @@ The volume of these requests might be quite high to execute against all the matc
 
 ### Considerations when resuming Workflows on a new Cluster or Namespace
 
-- **Skipping Steps:** If your workflow steps cannot guarantee idempotency, determine if you need to skip those steps when resuming the execution in the target Namespace.
+- **Skipping Steps:** If your Workflow steps cannot guarantee idempotency, determine if you need to skip those steps when resuming the execution in the target Namespace.
 - **Elapsed Time:** If your workflow is “resuming sleep” when in the target Namespace, determine how you will calculate the delta for the sleep invocation in the new execution.
 - **Child Relationships:** If your workflow has ChildWorkflow relationships (other than Detached ParentClosePolicy children), determine how you can pass the state of those children into the parent to execute the child in a resumed state.
 - **Heartbeat state:** If you have long running activities relying on heartbeat state, determine how you can resume these activities in the target Namespace.
