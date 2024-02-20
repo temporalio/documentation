@@ -67,7 +67,7 @@ The volume of these requests might be quite high to execute against all the matc
 
 - **Skipping Steps:** If your Workflow steps cannot guarantee idempotency, determine if you need to skip those steps when resuming the execution in the target Namespace.
 - **Elapsed Time:** If your workflow is “resuming sleep” when in the target Namespace, determine how you will calculate the delta for the sleep invocation in the new execution.
-- **Child Relationships:** If your workflow has ChildWorkflow relationships (other than Detached ParentClosePolicy children), determine how you can pass the state of those children into the parent to execute the child in a resumed state.
+- **Child Relationships:** If your Workflow has Child Workflow relationships (other than Detached Parent Close Policy children), determine how you can pass the state of those children into the parent to execute the child in a resumed state.
 - **Heartbeat state:** If you have long running activities relying on heartbeat state, determine how you can resume these activities in the target Namespace.
 - If ChildWorkflows are the same type as their Parent types, those will be returned in ListFilters being used to gather relevant executions. Unless these are Detached ParentClosePolicy children, this is not what you want since the Parent/Child relationship will not be carried over to the target Namespace.
 - Long running activities that use heartbeat details will not receive the “latest” details in the target Namespace.
