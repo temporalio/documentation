@@ -65,8 +65,8 @@ The following aspects apply at the Namespace level (per Namespace).
 
 Each Namespace has a rate limit, which is measured in Actions per second (APS).
 A Namespace may be throttled when its throughput becomes too high.
-Throttling means limiting the rate at which actions are performed to prevent overloading the system.
-A Namespace's default limit is set at 200 APS and automatically adjusts based on recent usage (over the prior 7 days).
+Throttling means limiting the rate at which Actions are performed to prevent the Namespace from exceeding its APS limit.
+A Namespace's default limit is set at 400 APS and automatically adjusts based on recent usage (over the prior 7 days).
 Your throughput limit will never fall below this default value.
 
 ### Certificates
