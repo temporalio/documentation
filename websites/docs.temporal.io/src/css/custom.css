@@ -19,6 +19,7 @@
   /* --doc-sidebar-width: 275px !important;
   --ifm-link-hover-decoration: none;
   --ifm-link-hover-color: inherit; */
+  --ifm-link-decoration: underline;
 }
 
 html[data-theme="dark"] {
@@ -82,7 +83,7 @@ html[data-theme="light"] {
 
 a,
 a:hover {
-  text-decoration: underline 1px;
+  text-decoration: underline;
   text-underline-offset: 2px;
 }
 
