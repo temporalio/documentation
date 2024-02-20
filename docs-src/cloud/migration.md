@@ -21,7 +21,7 @@ Here’s a high-level overview of what you can expect:
 - **Update the Client connection code in your Worker:** Your Client connection code requires several small changes to ensure Temporal Cloud becomes responsible for new Workflow Executions.
 - **Migrate Workflow Executions:** There are different approaches for new, running, and completed Workflow Executions.
   - **New Workflow Executions:** After you’ve updated your Client connection code, Temporal Cloud will automatically be responsible for all new Workflow Executions.
-  - **Running Workflow Executions:** Short-running Workflows can often be drained and then started again on Temporal Cloud. Long-running Workflows that cannot be drained may require you to implement more code changes to pass the state of the currently running Workflow to Temporal Cloud.
+  - **Running Workflow Executions:** Short-running Workflows can often be drained and then started again on Temporal Cloud. Long-running Workflows that cannot be drained and might require you to implement more code changes to pass the state of the currently running Workflow to Temporal Cloud.
   - **Completed Workflow Executions:** Completed Workflow Execution History cannot yet be migrated to Temporal Cloud. This is [in development](#multi-cluster-replication).
 
 ### Updating Client connection code in your Workers
