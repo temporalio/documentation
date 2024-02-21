@@ -1,0 +1,19 @@
+{
+    "file_name": "migration.mdx",
+    "id": "migration",
+    "file_dir": "production-deployment/",
+    "slug": "/production-deployments/migration",
+    "title": "Migrating to Temporal Cloud",
+    "sidebar_label": "Migration",
+    "sidebar_position": 3,
+    "description": "Migrate to Temporal Cloud from a Self-hosted Cluster.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cloud/migration"
+        }
+    ]
+}

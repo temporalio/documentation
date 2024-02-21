@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday February 20 2024 15:50:15 PM -0700
+Last assembled: Wednesday February 21 2024 08:45:04 AM -0800
 
 Assembly Workflow Id: docs-full-assembly
 
-141 guide configurations found.
+142 guide configurations found.
 
-1755 information nodes found.
+1756 information nodes found.
 
-1513 information nodes are attached to guides.
+1514 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -849,6 +849,8 @@ cloud/users-delete -> #delete-users
 java/generated/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/java/project-setup#cloud-worker
 
 php/connect-to-a-dev-cluster -> /dev-guide/php/foundations#connect-to-a-dev-cluster
+
+cloud/saml-intro -> /cloud/saml
 
 dev-guide/temporal-sdk -> /dev-guide/sdks
 
