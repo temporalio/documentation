@@ -70,7 +70,7 @@ websites/docs.temporal.io/docs/production-deployment/cloud/account-setup/namespa
 websites/docs.temporal.io/docs/production-deployment/cloud/how-to-manage-saml-with-temporal-cloud.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/account-setup/users.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/cloud-metrics.mdx linguist-generated=true
-websites/docs.temporal.io/docs/production-deployment/cloud/migration.mdx linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/migration.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/overview.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/pricing.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/security.mdx linguist-generated=true
