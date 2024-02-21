@@ -26,8 +26,8 @@ Before considering an appropriate Namespace configuration, you should be aware o
 - Each Namespace has a rate limit, which is measured in Actions per second (APS).
   A namespace may be throttled when its throughput becomes too high.
   Throttling means limiting the rate at which actions are performed to prevent overloading the system.
-  A Namespace's default limit is set at 200 APS and automatically adjusts based on recent usage (over the prior 7 days).
-  Your throughput limit will never fall below this default value.
+  A Namespace's default limit is set at 400 APS and automatically adjusts based on recent usage (over the prior 7 days).
+  Your APS limit will never fall below this default value.
 - Each Namespace has a service-level agreement (SLA) of 99.9% uptime.
 - For now, Namespaces are single-region only.
 - A Namespace is a security isolation boundary.
