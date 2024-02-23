@@ -1,6 +1,6 @@
 ---
 id: migration
-title: Migrating to Temporal Cloud
+title: Migrate to Cloud
 sidebar_label: Migration
 description: Understand how to migrate to Temporal Cloud.
 tags:
