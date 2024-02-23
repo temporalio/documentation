@@ -50,8 +50,8 @@ module.exports = {
     },
     docs: {
       sidebar: {
-        hideable: false,
-        autoCollapseCategories: false,
+        hideable: true,
+        autoCollapseCategories: true,
       },
     },
     announcementBar: {
