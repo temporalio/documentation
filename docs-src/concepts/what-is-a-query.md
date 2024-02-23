@@ -41,7 +41,7 @@ Sending Queries to completed Workflow Executions is supported, though Query reje
 
 #### Stack Trace Query
 
-In many SDKs, the Temporal Client exposes a predefined `__stack_trace` Query that returns the stack trace of all the threads owned by that Workflow Execution.
+In many SDKs, the Temporal Client exposes a predefined `__stack_trace` Query that returns the call stack of all the threads owned by that Workflow Execution.
 This is a great way to troubleshoot a Workflow Execution in production.
 For example, if a Workflow Execution has been stuck at a state for longer than an expected period of time, you can send a `__stack_trace` Query to return the current call stack.
 The `__stack_trace` Query name does not require special handling in your Workflow code.
