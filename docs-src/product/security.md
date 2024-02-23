@@ -1,7 +1,7 @@
 ---
 id: security
-title: Temporal Platform security resources
-description: todo
+title: Temporal security resources
+description: Learn more about Temporal security resources
 sidebar_label: Security
 tags:
   - security

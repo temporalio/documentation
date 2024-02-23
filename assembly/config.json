@@ -1,20 +1,6 @@
 {
     "content_source_dirs": [
-        "docs-src/cloud",
-        "docs-src/concepts",
-        "docs-src/dev-guide",
-        "docs-src/go",
-        "docs-src/java",
-        "docs-src/platform-overview",
-        "docs-src/python",
-        "docs-src/php",
-        "docs-src/troubleshooting",
-        "docs-src/typescript",
-        "docs-src/references",
-        "docs-src/tctl-v1",
-        "docs-src/self-hosted",
-        "docs-src/production-deployment",
-        "docs-src/cli"
+        "docs-src"
     ],
     "content_write_dir": "websites/docs.temporal.io/docs",
     "docs_src": "docs-src",
