@@ -16,7 +16,7 @@ export default function EditThisPageWrapper() {
     <>
       <div style={feedbackStyle}>
         <p style={{ margin: 0, fontWeight: "500" }}>Have feedback on our documentation?</p>
-        <a href="https://temporalio.slack.com/ssb/redirect" target="_blank" rel="noopener noreferrer">
+        <a href="http://t.mp/slack" target="_blank" rel="noopener noreferrer">
           Join our community Slack channel
         </a>
       </div>
