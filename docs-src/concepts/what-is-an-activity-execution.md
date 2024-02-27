@@ -23,6 +23,15 @@ You can customize [Activity Execution timeouts](/concepts/what-is-a-start-to-clo
 
 If an Activity Execution fails (because it exhausted all retries, threw a [non-retryable error](/concepts/what-is-a-retry-policy#non-retryable-errors), or was canceled), the error is returned to the [Workflow](/workflows), which decides how to handle it.
 
+:::note
+
+Temporal guarantees that an Activity Task either runs or timeouts.
+If the Activity Task times out, the Activity Execution will be retried according to the Activity Execution Retry Policy.
+
+In scenarios where the Activity Execution Retry Policy is set to `1` and a Timeout occurs, the Activity Execution will not be tried.
+
+:::
+
 ### Cancellation
 
 Activity Cancellation:
