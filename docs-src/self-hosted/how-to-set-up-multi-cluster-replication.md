@@ -27,7 +27,7 @@ For example:
 ```yaml
 # cluster A
 clusterMetadata:
-  enableGlobalNamespace: false
+  enableGlobalNamespace: true
   failoverVersionIncrement: 100
   masterClusterName: "clusterA"
   currentClusterName: "clusterA"
@@ -43,7 +43,7 @@ clusterMetadata:
 
 # cluster B
 clusterMetadata:
-  enableGlobalNamespace: false
+  enableGlobalNamespace: true
   failoverVersionIncrement: 100
   masterClusterName: "clusterA"
   currentClusterName: "clusterB"
@@ -67,7 +67,7 @@ For example:
 ```yaml
 # cluster A
 clusterMetadata:
-  enableGlobalNamespace: false
+  enableGlobalNamespace: true
   failoverVersionIncrement: 100
   masterClusterName: "clusterA"
   currentClusterName: "clusterA"
@@ -79,7 +79,7 @@ clusterMetadata:
 
 # cluster B
 clusterMetadata:
-  enableGlobalNamespace: false
+  enableGlobalNamespace: true
   failoverVersionIncrement: 100
   masterClusterName: "clusterB"
   currentClusterName: "clusterB"
