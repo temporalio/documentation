@@ -22,11 +22,11 @@ The following steps guides you through setting up Workflow History Export using 
 The Temporal Cloud UI provides two ways for configuring Workflow History Export:
 
 - [Automated setup](#automated-setup) (recommended): The Cloud UI launches the AWS CloudFormation Console to create a stack, with write permission to the S3 bucket.
-- [Manual setup](#manual-setup): The Cloud UI provides an CloudFormation template for user’s to use to manually configure an CloudFormation stack.
+- [Manual setup](#manual-setup): The Cloud UI provides a CloudFormation template for user’s to use to manually configure a CloudFormation stack.
 
 #### Automated setup
 
-The automated setup creates an CloudFormation stack with write permission to the S3 bucket.
+The automated setup creates a CloudFormation stack with write permission to the S3 bucket.
 [Verify the export setup](/cloud/how-to-verify-export) before saving the configuration.
 
 1. Open the Temporal Cloud UI and navigate to the Namespace you want to configure.
@@ -42,7 +42,7 @@ The automated setup creates an CloudFormation stack with write permission to the
 
 #### Manual setup
 
-The manual setup provides an CloudFormation template to manually configure an CloudFormation stack.
+The manual setup provides a CloudFormation template to manually configure a CloudFormation stack.
 
 1. Open the Temporal Cloud UI and navigate to the Namespace you want to configure.
 2. Select **Configure** from the **Export** card.
@@ -66,7 +66,7 @@ For example:
 tcld namespace export s3 create --namespace "your-namespace.your-account" --sink-name "your-sink-name" --role-arn "arn:aws:iam::123456789012:role/test-sink" --s3-bucket-name "your-aws-s3-bucket-name”
 ```
 
-Retrieve the status of this command by running the `tcld namespace export s3 get` following command.
+Retrieve the status of this command by running the `tcld namespace export s3 get` command.
 
 For example:
 

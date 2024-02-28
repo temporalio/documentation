@@ -19,6 +19,8 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
+_Required option_
+
 **Example**
 
 ```bash
@@ -38,9 +40,3 @@ tcld namespace export s3 list --page-size <number_of_results>
 #### --page-token
 
 Provide the page token to continue listing results from where the previous list operation left off.
-
-**Example**
-
-```bash
-tcld namespace export s3 list --page-token <token_value>
-```

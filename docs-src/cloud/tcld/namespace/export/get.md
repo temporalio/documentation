@@ -19,18 +19,10 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
-**Example**
-
-```bash
-tcld namespace export s3 get --namespace <namespace_id> --sink-name <sink_name>
-```
+_Required option_
 
 #### --sink-name
 
 Provide the name of the export sink you wish to retrieve details for.
 
-**Example**
-
-```bash
-tcld namespace export s3 get --sink-name <sink_name>
-```
+_Required option_

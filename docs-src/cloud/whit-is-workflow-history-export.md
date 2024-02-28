@@ -14,5 +14,7 @@ The Workflow History Export feature allows users to export Closed Workflow Histo
 
 The Export feature in Temporal Cloud provides the following benefits:
 
-- Preserves historical Workflow data for compliance and auditing purposes.
+- Preserve complete set of Workflow History data in [proto format](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto) for compliance and auditing purposes.
 - Enables feeding Workflow History into data warehouses for analytics.
+
+For pricing information, see [Temporal Cloud Pricing](/cloud/pricing).

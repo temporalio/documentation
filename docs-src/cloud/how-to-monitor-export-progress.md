@@ -9,7 +9,7 @@ tags:
   - how-to
 ---
 
-**How to monitor the History exportation progress**
+**How to monitor the History export progress**
 
 Once you've finalized the setup, here's how to monitor the export progress:
 
@@ -17,7 +17,7 @@ Once you've finalized the setup, here's how to monitor the export progress:
    - **Schedule**: The Export job is scheduled to run on an hourly basis, starting at 10 minutes past each hour.
      This ensures that the history data of Closed Workflows is exported to your designated S3 bucket approximately 60 minutes post Workflow closure. This delay can be configured.
    - **Duration**: The time taken for the export process can vary based on the amount of data, so it may not be instantaneous.
-     Be patient and check the S3 bucket after the scheduled time.
+
 2. **Checking the S3 Bucket**:
    - **Files Arrival**: Post the initial hour of setting up, inspect your S3 bucket.
      You should see the exported Workflow History files.
@@ -28,11 +28,20 @@ Once you've finalized the setup, here's how to monitor the export progress:
    s3://[bucket-name]/temporal-workflow-history/export/[Namespace]/[Year]/[Month]/[Day]/[Hour]/[Minute]/
    ```
 
-3. **UI Insights**:
+3. **Delivery guarantee**:
+   - At least once delivery.
+   - Each Closed Workflow is expected to be found in the exported file ranging from one to four hours.
+
+4. **UI insights**:
    - **Last Successful Export**: This displays the timestamp of the most recent successful export.
      It's an essential indicator of the last time your export process completed without any hitches.
    - **Last Status Check**: This reflects the timestamp of the latest internal Workflow check.
      This internal check routinely evaluates the health and status of the Export mechanism, ensuring its uninterrupted functioning.
 
-For optimal results, make it a habit to frequently review the S3 bucket for any new exported files and consistently refer to the UI insights.
+5. **Charge monitoring**:
+   - Actions from the Export Job are included on the Usage UI, starting on `2024/03/01` UTC.
+   - **Metrics**: Will show up on `saas_actions` internal metrics and `temporal_cloud_v0_total)action_count` external metrics with `is_background` flag. For more information, see [Cloud metrics](/cloud/metrics-intro).
+   - **Metronome**: Show up on billing.
+
+For optimal results, review the S3 bucket for any new exported files and refer to the UI insights.
 This dual check ensures you remain abreast of the export progress and any potential issues.

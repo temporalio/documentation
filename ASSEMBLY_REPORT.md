@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday January 18 2024 09:38:24 AM -0800
+Last assembled: Wednesday February 28 2024 11:07:42 AM -0800
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 136 guide configurations found.
 
-1744 information nodes found.
+1745 information nodes found.
 
-1478 information nodes are attached to guides.
+1479 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -315,6 +315,8 @@ cloud/tcld/namespace/export/delete -> #delete
 cloud/tcld/namespace/export/list -> #list
 
 cloud/tcld/namespace/export/update -> #update
+
+cloud/tcld/namespace/export/validate -> #validate
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
@@ -860,6 +862,8 @@ dev-guide/temporal-sdk -> /dev-guide/sdks#
 
 concepts/what-is-a-reset -> /workflows#reset
 
+cloud/what-is-workflow-history-export -> /cloud/export#
+
 concepts/what-is-the-temporal-web-ui -> /web-ui#
 
 cloud/what-is-an-action -> /cloud/pricing#action
@@ -1341,49 +1345,5 @@ go/debug-environment-development -> /dev-guide/go/debugging#debug-in-a-developme
 go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production-environment
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
-
-cloud/what-is-workflow-history-export -> /cloud/export#
-
-php/observability -> /dev-guide/php/observability#
-
-python/updates -> /dev-guide/python/features#updates
-
-cli/schedule/index -> /cli/schedule#
-
-tctl-v1/schedule/index -> /tctl-v1/schedule#
-
-java/generated/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/java/project-setup#cloud-worker
-
-concepts/what-is-tctl-v1 -> /tctl-v1#
-
-typescript/chapter-project-setup/project-setup-introduction -> /dev-guide/typescript/project-setup#
-
-typescript/chapter-project-setup/install-cli -> /dev-guide/typescript/project-setup#install-cli
-
-typescript/chapter-project-setup/choose-dev-cluster -> /dev-guide/typescript/project-setup#choose-dev-cluster
-
-typescript/chapter-project-setup/project-structure -> /dev-guide/typescript/project-setup#boilerplate-project
-
-typescript/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guide/typescript/project-setup#start-workflow
-
-typescript/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/typescript/project-setup#test-framework
-
-typescript/chapter-project-setup/conclusion -> /dev-guide/typescript/project-setup#conclusion
-
-typescript/chapter-durable-execution/retrieve-event-history -> /dev-guide/typescript/durable-execution#retrieve-event-history
-
-typescript/chapter-durable-execution/how-to-replay-a-workflow-execution-in-typescript -> /dev-guide/typescript/durable-execution#replay-a-workflow-execution
-
-typescript/chapter-durable-execution/non-deterministic-code-changes -> /dev-guide/typescript/durable-execution#durability-through-replays
-
-python/project-setup-introduction -> /dev-guide/python/project-setup#
-
-python/chapter-durable-execution/backgroundcheck-replay-intrinsic-non-determinism -> #intrinsic-non-deterministic-logic
-
-python/chapter-durable-execution/non-deterministic-code-changes -> #durability-through-replays
-
-python/chapter-durable-execution/retrieve-event-history -> #retrieve-event-history
-
-python/generated/add-replay-test-to-background-check-workflow -> /dev-guide/python/durable-execution#add-replay-test
 
 

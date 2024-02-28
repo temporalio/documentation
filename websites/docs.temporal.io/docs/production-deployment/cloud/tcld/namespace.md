@@ -24,7 +24,7 @@ Alias: `n`
 
 - [tcld namespace create](#create)
 - [tcld namespace delete](#delete)
-- [tcld namespace export s3](#export)
+- [tcld namespace export](#export)
 - [tcld namespace get](#get)
 - [tcld namespace list](#list)
 - [tcld namespace accepted-client-ca](#accepted-client-ca)
@@ -186,17 +186,9 @@ tcld namespace delete --namespace <namespace_id>
 
 ## export
 
-The `tcld namespace export s3` commands manage exporting Workflow History Exports.
-
-Specify the name of the sink.
+The `tcld namespace export s3` commands manage Workflow History Exports.
 
 Valid options: `s3`
-
-For example:
-
-```command
-tcld namespace export s3 create
-```
 
 Alias: `es`
 
@@ -205,10 +197,17 @@ Alias: `es`
 - [tcld namespace export s3 delete](#delete)
 - [tcld namespace export s3 list](#list)
 - [tcld namespace export s3 update](#update)
+- [tcld namespace export s3 validate](#validate)
 
 ### create
 
 The `tcld namespace export s3 create` command allows users to create an export sink for the Namespace of a Temporal Cloud account.
+
+**Example**
+
+```bash
+tcld namespace export s3 create --namespace <namespace_id> --sink-name <sink_name> --s3-bucket-name <bucket_name> --role-arn <role_arn>
+```
 
 The following modifiers control the behavior of the command.
 
@@ -218,6 +217,8 @@ Specify a Namespace hosted on Temporal Cloud.
 If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
+
+_Required option_
 
 **Example**
 
@@ -229,6 +230,8 @@ tcld namespace export s3 create --namespace <namespace_id> --sink-name <sink_nam
 
 Provide a name for the export sink.
 
+_Required option_
+
 **Example**
 
 ```bash
@@ -239,6 +242,8 @@ tcld namespace export s3 create --sink-name <sink_name> --s3-bucket-name <bucket
 
 Provide role arn for the IAM Role.
 
+_Required option_
+
 **Example**
 
 ```bash
@@ -248,6 +253,8 @@ tcld namespace export s3 create --role-arn <role_arn> --s3-bucket-name <bucket_n
 #### --s3-bucket-name
 
 Provide the name of an AWS S3 bucket that Temporal will send closed workflow histories to.
+
+_Required option_
 
 **Example**
 
@@ -291,25 +298,23 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
-**Example**
-
-```bash
-tcld namespace export s3 get --namespace <namespace_id> --sink-name <sink_name>
-```
+_Required option_
 
 #### --sink-name
 
 Provide the name of the export sink you wish to retrieve details for.
 
-**Example**
-
-```bash
-tcld namespace export s3 get --sink-name <sink_name>
-```
+_Required option_
 
 ### delete
 
 The `tcld namespace export s3 delete` command allows users to delete an existing export sink from the Namespace of a Temporal Cloud account.
+
+**Example**
+
+```bash
+tcld namespace export s3 delete --namespace <namespace_id> --sink-name <sink_name>
+```
 
 The following modifiers control the behavior of the command.
 
@@ -320,21 +325,13 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
-**Example**
-
-```bash
-tcld namespace export s3 delete --namespace <namespace_id> --sink-name <sink_name>
-```
+_Required option_
 
 #### --sink-name
 
 Provide the name of the export sink you wish to delete.
 
-**Example**
-
-```bash
-tcld namespace export s3 delete --sink-name <sink_name>
-```
+_Required option_
 
 #### --resource-version
 
@@ -343,24 +340,12 @@ If not specified, the CLI will use the latest version.
 
 Alias: `-v`
 
-**Example**
-
-```bash
-tcld namespace export s3 delete --resource-version <etag> --sink-name <sink_name>
-```
-
 #### --request-id
 
 Specify a request identifier to use for the asynchronous operation.
 If not specified, the server assigns a request identifier.
 
 Alias: `-r`
-
-**Example**
-
-```bash
-tcld namespace export s3 delete --request-id <request_id> --sink-name <sink_name>
-```
 
 ### list
 
@@ -374,6 +359,8 @@ Specify a Namespace hosted on Temporal Cloud.
 If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
+
+_Required option_
 
 **Example**
 
@@ -395,15 +382,15 @@ tcld namespace export s3 list --page-size <number_of_results>
 
 Provide the page token to continue listing results from where the previous list operation left off.
 
-**Example**
-
-```bash
-tcld namespace export s3 list --page-token <token_value>
-```
-
 ### update
 
 The `tcld namespace export s3 update` command allows users to modify the details of an existing export sink within the Namespace of a Temporal Cloud account.
+
+**Example**
+
+```bash
+tcld namespace export s3 update --namespace <namespace_id> --sink-name <sink_name> --enabled true
+```
 
 The following modifiers control the behavior of the command.
 
@@ -414,51 +401,25 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
-**Example**
-
-```bash
-tcld namespace export s3 update --namespace <namespace_id> --sink-name <sink_name> --enabled true
-```
+_Required option_
 
 #### --sink-name
 
 Provide the name of the export sink you wish to update.
 
-**Example**
-
-```bash
-tcld namespace export s3 update --sink-name <sink_name> --enabled true
-```
+_Required option_
 
 #### --enabled
 
 Specify whether the export is enabled or not.
 
-**Example**
-
-```bash
-tcld namespace export s3 update --sink-name <sink_name> --enabled true
-```
-
 #### --role-arn
 
 Update the role ARN for the IAM Role.
 
-**Example**
-
-```bash
-tcld namespace export s3 update --sink-name <sink_name> --role-arn <role_arn>
-```
-
 #### --s3-bucket-name
 
 Update the name of the AWS S3 bucket that Temporal will send closed workflow histories to.
-
-**Example**
-
-```bash
-tcld namespace export s3 update --sink-name <sink_name> --s3-bucket-name <bucket_name>
-```
 
 #### --resource-version
 
@@ -467,21 +428,9 @@ If not specified, the CLI will use the latest version.
 
 Alias: `-v`
 
-**Example**
-
-```bash
-tcld namespace export s3 update --sink-name <sink_name> --resource-version <etag>
-```
-
 #### --kms-arn
 
 Update the ARN of the KMS key used for encryption. Note: If the KMS ARN needs to be added or updated, users should create the IAM Role with KMS or modify the created IAM Role accordingly. Providing it as part of the input won't help.
-
-**Example**
-
-```bash
-tcld namespace export s3 update --sink-name <sink_name> --kms-arn <kms_arn>
-```
 
 #### --request-id
 
@@ -490,11 +439,40 @@ If not specified, the server assigns a request identifier.
 
 Alias: `-r`
 
-**Example**
+### validate
 
-```bash
-tcld namespace export s3 update --sink-name <sink_name> --request-id <request_id>
-```
+The `tcld namespace export s3 validate` command allows users to validate an export sink from the Namespace of a Temporal Cloud account.
+
+The following modifiers control the behavior of the command.
+
+#### --namespace
+
+Specify a Namespace hosted on Temporal Cloud.
+If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+
+Alias: `-n`
+
+_Required option_
+
+#### --sink-name
+
+Provide the name of the export sink you wish to retrieve details for.
+
+_Required option_
+
+#### --role-arn
+
+Provide role arn for the IAM Role.
+
+_Required option_
+
+#### --s3-bucket-name
+
+Update the name of the AWS S3 bucket that Temporal will send closed workflow histories to.
+
+#### --kms-arn
+
+Update the ARN of the KMS key used for encryption. Note: If the KMS ARN needs to be added or updated, users should create the IAM Role with KMS or modify the created IAM Role accordingly. Providing it as part of the input won't help.
 
 ## get
 

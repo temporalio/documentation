@@ -47,6 +47,10 @@
             "id": "cloud/tcld/namespace/export/update"
         },
         {
+            "type": "h3",
+            "id": "cloud/tcld/namespace/export/validate"
+        },
+        {
             "type": "h2",
             "id": "cloud/tcld/namespace/get"
         },
