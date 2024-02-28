@@ -19,7 +19,7 @@ An Action is the fundamental pricing unit in Temporal Cloud.
 _Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_
 
 
-#### [Activity](/activities#)
+#### [Activity](/activities)
 In day-to-day conversation, the term "Activity" denotes an Activity Type, Activity Definition, or Activity Execution.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -73,19 +73,13 @@ Archival is a feature that automatically backs up Event Histories from Temporal 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Archival](/self-hosted-guide/archival#)
-Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.
-
-_Tags: [term](/tags/term), [explanation](/tags/explanation)_
-
-
 #### [Asynchronous Activity Completion](/activities#asynchronous-activity-completion)
 Asynchronous Activity Completion occurs when an external system provides the final result of a computation, started by an Activity, to the Temporal System.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Audit Logging](/cloud/audit-logging#)
+#### [Audit Logging](/cloud/audit-logging)
 Audit Logging is a feature that provides forensic access information for accounts, users, and Namespaces.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/tags/temporal-cloud), [operations](/tags/operations)_
@@ -139,7 +133,7 @@ A custom Data Converter extends the default Data Converter with custom logic for
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Data Converter](/dataconversion#)
+#### [Data Converter](/dataconversion)
 A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -163,19 +157,13 @@ Dual Visibility is a feature that lets you set a secondary Visibility store in y
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_
 
 
+#### [Durable Execution](/temporal#durable-execution)
+Durable Execution in the context of Temporal refers to the ability of a Workflow Execution to maintain its state and progress even in the face of failures, crashes, or server outages.
+
+_Tags: [temporal](/tags/temporal), [durable-execution](/tags/durable-execution), [term](/tags/term)_
+
+
 #### [Dynamic Handler](/workflows#dynamic-handler)
-Dynamic Handlers are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named handler matches the call from the Server at runtime.
-
-_Tags: [term](/tags/term), [explanation](/tags/explanation)_
-
-
-#### [Dynamic Handler](/dev-guide/java/features#dynamic-handler)
-Dynamic Handlers are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named handler matches the call from the Server at runtime.
-
-_Tags: [term](/tags/term), [explanation](/tags/explanation)_
-
-
-#### [Dynamic Handler](/dev-guide/python/features#dynamic-handler)
 Dynamic Handlers are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named handler matches the call from the Server at runtime.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -205,7 +193,7 @@ A Failure Converter converts error objects to proto Failures and back.
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Failures](/references/failures#)
+#### [Failures](/references/failures)
 A Failure is Temporal's representation of various types of errors that occur in the system.
 
 _Tags: [failure](/tags/failure), [explanation](/tags/explanation), [term](/tags/term)_
@@ -271,13 +259,13 @@ Multi-Cluster Replication is a feature which asynchronously replicates Workflow 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication#)
+#### [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication)
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Namespace](/namespaces#)
+#### [Namespace](/namespaces)
 A Namespace is a unit of isolation within the Temporal Platform
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -337,7 +325,7 @@ A Retention Period is the amount of time a Workflow Execution Event History rema
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Retry Policy](/retry-policies#)
+#### [Retry Policy](/retry-policies)
 A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -433,7 +421,7 @@ A Task Token is a unique identifier for an Activity Task Execution.
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Temporal](/temporal#)
+#### [Temporal](/temporal)
 Temporal is a scalable and reliable runtime for Reentrant Processes called Temporal Workflow Executions.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -445,7 +433,7 @@ A Temporal Application is a set of Workflow Executions.
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Temporal CLI](/cli#)
+#### [Temporal CLI](/cli)
 The Temporal CLI is the most recent version of Temporal's command-line tool.
 
 _Tags: [term](/tags/term), [cli](/tags/cli)_
@@ -457,7 +445,7 @@ A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communi
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Temporal Cloud](/cloud/overview#)
+#### [Temporal Cloud](/cloud/overview)
 Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -481,7 +469,7 @@ A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal C
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Temporal Cluster](/clusters#)
+#### [Temporal Cluster](/clusters)
 A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -511,7 +499,7 @@ The Temporal Server is a grouping of four horizontally scalable services.
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Temporal Web UI](/web-ui#)
+#### [Temporal Web UI](/web-ui)
 The Temporal Web UI provides users with Workflow Execution state and metadata for debugging purposes.
 
 _Tags: [term](/tags/term), [web-ui](/tags/web-ui)_
@@ -571,7 +559,7 @@ A Worker Session is a feature provided by some SDKs that provides a straightforw
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Workflow](/workflows#)
+#### [Workflow](/workflows)
 In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -595,7 +583,7 @@ A Workflow Execution Timeout is the maximum time that a Workflow Execution can b
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_
 
 
-#### [Workflow History Export](/cloud/export#)
+#### [Workflow History Export](/cloud/export)
 Workflow History export allows users to export Closed Workflow Histories to a users Cloud Storage Sink
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/tags/temporal-cloud), [operations](/tags/operations)_
@@ -643,7 +631,7 @@ A Workflow Type is a name that maps to a Workflow Definition.
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [tctl](/tctl-v1#)
+#### [tctl](/tctl-v1)
 tctl is a command-line tool that you can use to interact with a Temporal Cluster.
 
 _Tags: [term](/tags/term), [tctl](/tags/tctl)_

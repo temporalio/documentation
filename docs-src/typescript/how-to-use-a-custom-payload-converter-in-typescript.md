@@ -12,7 +12,7 @@ Temporal SDKs provide a [Payload Converter](/concepts/what-is-a-payload-converte
 Implementing custom Payload conversion is optional.
 It is needed only if the [default Data Converter](/concepts/what-is-a-default-data-converter) does not support your custom values.
 
-To support custom Payload conversion, create a [custom Payload Converter](/concepts/what-is-a-payload-converter#custom-payload-conversion) and configure the Data Converter to use it in your Client options.
+To support custom Payload conversion, create a [custom Payload Converter](/concepts/what-is-a-payload-converter#composite-data-converters) and configure the Data Converter to use it in your Client options.
 
 The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
 You can set multiple encoding Payload Converters to run your conversions.
@@ -20,8 +20,8 @@ When the Data Converter receives a value for conversion, it passes through each 
 
 To send values that are not [JSON-serializable](https://en.wikipedia.org/wiki/JSON#Data_types) like a `BigInt` or `Date`, provide a custom [Data Converter](https://typescript.temporal.io/api/interfaces/worker.DataConverter/) to the Client and Worker:
 
-- [new WorkflowClient({ ..., dataConverter })](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions#dataconverter)
-- [Worker.create({ ..., dataConverter })](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#dataconverter)
+- [new WorkflowClient(\{ ..., dataConverter })](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions#dataconverter)
+- [Worker.create(\{ ..., dataConverter })](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#dataconverter)
 
 A Data Converter has two parts:
 

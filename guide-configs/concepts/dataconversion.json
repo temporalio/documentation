@@ -1,5 +1,5 @@
 {
-  "file_name": "dataconversion.md",
+  "file_name": "dataconversion.mdx",
   "id": "dataconversion",
   "slug": "/dataconversion",
   "file_dir": "concepts",
@@ -33,11 +33,11 @@
     },
     {
       "type": "h2",
-      "id": "concepts/what-is-a-failure-converter"
+      "id": "concepts/what-is-a-payload-codec"
     },
     {
       "type": "h2",
-      "id": "concepts/what-is-a-payload-codec"
+      "id": "concepts/what-is-a-failure-converter"
     },
     {
       "type": "h2",
@@ -48,8 +48,8 @@
       "id": "concepts/what-is-a-codec-server"
     },
     {
-      "type": "h3",
-      "id": "self-hosted/how-to-set-up-codec-server"
+      "type": "h2",
+      "id": "concepts/what-is-key-management"
     }
   ]
 }

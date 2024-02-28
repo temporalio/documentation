@@ -10,7 +10,7 @@ tags:
   - visibility
 ---
 
-A Search Attribute is an indexed field used in a [List Filter](/concepts/what-is-a-list-filter) to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
+A Search Attribute is an indexed field used in a [List Filter](/concepts/what-is-a-list-filter) to filter a list of [Workflow Executions](/concepts/what-is-a-workflow-execution) that have the Search Attribute in their metadata.
 
 Each Search Attribute is a key-value pair metadata object included in a Workflow Execution's Visibility information.
 This information is available in the Visibility store.
@@ -66,6 +66,9 @@ These Search Attributes are created when the initial index is created.
 
 - All default Search Attributes are reserved and read-only.
   You cannot create a custom one with the same name or alter the existing one.
+
+- Search attributes are not encrypted in the system.
+  Do not use PII as either the search attribute name or the value.
 
 - ExecutionStatus values correspond to Workflow Execution statuses: Running, Completed, Failed, Canceled, Terminated, ContinuedAsNew, TimedOut.
 
@@ -168,7 +171,7 @@ Default total maximum number of Search Attribute **keys** per Temporal Cluster i
 This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
 -->
 
-For Temporal Cloud specific configurations, see the [Defaults, limits, and configurable settings -Temporal Cloud](/cloud/limits#number-of-custom-search-attribute) guide.
+For Temporal Cloud specific configurations, see the [Defaults, limits, and configurable settings -Temporal Cloud](/cloud/limits#number-of-custom-search-attributes) guide.
 
 ### Usage
 
@@ -178,7 +181,7 @@ To actually have results from the use of a [List Filter](/concepts/what-is-a-lis
 - To create custom Search Attributes in your Visibility store, see [Create custom Search Attributes](/self-hosted/how-to-create-custom-search-attribute-keys).
 - To remove a custom Search Attribute from the Visbility store, see [Remove custom Search Attributes](/self-hosted/how-to-remove-a-custom-search-attribute-key).
   Removing custom Search Attributes is not supported on Temporal Cloud.
-- To rename a custom Search Attribute on Temporal Cloud, see [`tcld namespace search-attributes rename`](/cloud/tcld/namespace#rename).
+- To rename a custom Search Attribute on Temporal Cloud, see [`tcld namespace search-attributes rename`](/cloud/tcld/namespace/search-attributes/rename).
 
 With Workflows you can do the following:
 

@@ -43,7 +43,11 @@
     },
     {
       "source": "/get-started",
-      "destination": "/"
+      "destination": "https://learn.temporal.io/getting_started"
+    },
+    {
+      "source": "/getting-started",
+      "destination": "https://learn.temporal.io/getting_started"
     },
     {
       "source": "/references/glossary",
@@ -1294,6 +1298,10 @@
       "destination": "/cloud/tcld/request#get"
     },
     {
+      "source": "/cloud/operating-envelope",
+      "destination": "/cloud/service-availability"
+    },
+    {
       "source": "/external-resources",
       "destination": "/kb/additional-resources"
     },
@@ -1984,6 +1992,10 @@
     {
       "source": "/kb/cadence-to-temporal",
       "destination": "https://community.temporal.io/t/cadence-to-temporal-migration-highlights/"
+    },
+    {
+      "source": "/self-hosted-guide/data-encryption",
+      "destination": "/production-deployment/data-encryption"
     }
   ]
 }

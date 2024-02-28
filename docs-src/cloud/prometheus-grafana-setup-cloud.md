@@ -31,11 +31,11 @@ If you're following through with the examples provided here, ensure that you hav
 - Root CA certificates and end-entity certificates. See [Certificate requirements](/cloud/certificates-requirements) for details.
 - Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See Connect to a Cluster for details.
 
-  - [Go](/dev-guide/go/foundations#connect-to-a-cluster)
-  - [Java](/dev-guide/java/foundations#connect-to-a-cluster)
-  - [PHP](/dev-guide/php/foundations#connect-to-a-cluster)
-  - [Python](/dev-guide/python/foundations#connect-to-a-cluster)
-  - [TypeScript](/dev-guide/typescript/foundations#connect-to-a-cluster)
+  - [Go](/go/connect-to-temporal-cloud)
+  - [Java](/java/generated/backgroundcheck-boilerplate-cloud-worker)
+  - [PHP](/php/connect-to-a-dev-cluster)
+  - [Python](/python/connect-to-temporal-cloud)
+  - [TypeScript](/typescript/connect-to-temporal-cloud)
 
 - Prometheus and Grafana installed.
 
@@ -252,7 +252,7 @@ If you see metrics on the scrape endpoints, but Prometheus shows your targets ar
 Verify your Prometheus configuration and restart Prometheus.
 
 If you’re running Grafana as a container, you can set your SDK metrics Prometheus data source in your Grafana configuration.
-See the example Grafana configuration described in the [Prometheus and Grafana setup for open-source Temporal Cluster](/self-hosted/prometheus-grafana-setup#grafana-configuration) article.
+See the example Grafana configuration described in the [Prometheus and Grafana setup for open-source Temporal Cluster](/self-hosted/prometheus-grafana-setup#grafana) article.
 
 #### Grafana dashboards setup
 

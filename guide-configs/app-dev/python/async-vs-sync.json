@@ -1,10 +1,10 @@
 {
-    "file_name": "async-vs-sync.md",
+    "file_name": "async-vs-sync.mdx",
     "id": "async-vs-sync",
     "slug": "/dev-guide/python/async-vs-sync",
     "file_dir": "dev-guide/python/how-it-works",
-    "title": "Asynchronous vs. Synchronous Activity implementations",
-    "sidebar_label": "Asynchronous vs. Synchronous Activity",
+    "title": "Synchronous vs. asynchronous Activity implementations - Python SDK",
+    "sidebar_label": "Sync vs. async Activities",
     "sidebar_position": 1,
     "description": "Describes the implementation of asynchronous and synchronous activities in the Temporal Python SDK.",
     "use_description": false,

@@ -1,15 +1,15 @@
 {
-  "file_name": "foundations.md",
+  "file_name": "foundations.mdx",
   "id": "foundations",
   "slug": "/dev-guide/typescript/foundations",
   "file_dir": "dev-guide/tscript",
-  "title": "TypeScript SDK developer's guide - Foundations",
+  "title": "Foundations - TypeScript SDK feature guide",
   "sidebar_label": "Foundations",
-  "sidebar_position": 2,
+  "sidebar_position": 3,
   "description": "The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
   "use_description": false,
   "toc_max_heading_level": 2,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "p",
@@ -178,10 +178,6 @@
     {
       "type": "p",
       "id": "typescript/how-to-register-types-with-a-worker-in-typescript"
-    },
-    {
-      "type": "h2",
-      "id": "typescript/how-to-use-a-prebuilt-workflow-bundle-in-typescript"
     },
     {
       "type": "h2",

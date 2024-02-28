@@ -8,26 +8,22 @@ tags:
   - explanation
 ---
 
-A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.
-It is used by the Temporal SDK framework to serialize/deserialize data such as input and output of Activities and Workflows that need to be sent over the wire to the Temporal Cluster.
+Data Converters in Temporal are SDK components that handle the serialization and encoding of data entering and exiting a Temporal Cluster.
+Workflow inputs and outputs need to be serialized and deserialized so they can be sent as JSON to a Temporal Cluster.
 
 ![Data Converter encodes and decodes data](/diagrams/default-data-converter.svg)
 
 The Data Converter encodes data from your application to a [Payload](/concepts/what-is-a-payload) before it is sent to the Temporal Cluster in the Client call.
 When the Temporal Server sends the encoded data back to the Worker, the Data Converter decodes it for processing within your application.
-This technique ensures that all your sensitive data exists in its original format only on hosts that you control.
+This ensures that all your sensitive data exists in its original format only on hosts that you control.
 
-The main pieces of data that run through the Data Converter are arguments and return values:
+Data Converter steps are followed when data is sent to a Temporal Cluster (as input to a Workflow) and when it is returned from a Workflow (as output).
+Due to how Temporal provides access to Workflow output, this implementation is asymmetric:
 
-- The Client:
-  - Encodes Workflow, Signal, and Query arguments.
-  - Decodes Workflow and Query return values.
-- The Worker:
-  - Decodes Workflow, Signal, and Query arguments.
-  - Encodes Workflow and Query return values.
-  - Decodes and encodes Activity arguments and return values.
+- Data encoding is performed automatically using the default converter provided by Temporal or your custom Data Converter when passing input to a Temporal Cluster. For example, plain text input is usually serialized into a JSON object.
+- Data decoding may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Cluster. Instead, they are stored encoded on the Cluster, and you need to provide an additional parameter when using [`temporal workflow show`](/cli/workflow/show) or when browsing the Web UI to view output.
 
-Each piece of data (like a single argument or return value) is encoded as a [Payload](/concepts/what-is-a-payload) Protobuf message, which consists of binary data and key-value metadata.
+Each piece of data (like a single argument or return value) is encoded as a [Payload](/concepts/what-is-a-payload), which consists of binary data and key-value metadata.
 
 For details, see the API references:
 

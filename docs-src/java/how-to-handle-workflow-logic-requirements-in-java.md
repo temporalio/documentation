@@ -34,4 +34,4 @@ The following constraints apply when writing Workflow Definitions:
   A single implementation can implement a Workflow Type which by definition is dynamically loaded from some external source.
   All standard `WorkflowOptions` and determinism rules apply to Dynamic Workflow implementations.
 
-Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
+Java Workflow reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html)

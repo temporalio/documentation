@@ -43,7 +43,7 @@ tcld generate-certificates certificate-authority-certificate --validity-period <
 
 #### --ca-certificate-file
 
-Specify a path where the generated X.509 certificate file will be stored.
+Specify a path to a `.pem` file where the generated X.509 certificate file will be stored.
 
 Alias: `--ca-cert`
 
@@ -55,7 +55,7 @@ tcld generate-certificates certificate-authority-certificate --ca-certificate-fi
 
 #### --ca-key-file
 
-Specify a path where the certificate's private key will be stored.
+Specify a path to a `.key` file where the certificate's private key will be stored.
 
 Alias: `--ca-key`
 
@@ -71,10 +71,6 @@ When enabled, a 4096-bit RSA key pair is generated for the certificate instead o
 Because an ECDSA P-384 key pair is the recommended default, this option is disabled.
 
 Alias: `--rsa`
-
-Specify a path to store the generated X.509 certificate file.
-
-Alias: `--ca-cert`
 
 **Example**
 

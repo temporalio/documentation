@@ -51,7 +51,7 @@ func main() {
 	yourWorker.RegisterWorkflow(workflows.BackgroundCheck)
 	// Register Activities
 	yourWorker.RegisterActivity(&activities.Activities{})
-	// Start the the Worker Process
+	// Start the Worker Process
 	err = yourWorker.Run(worker.InterruptCh())
 	if err != nil {
 		log.Fatalln("Unable to start the Worker Process", err)

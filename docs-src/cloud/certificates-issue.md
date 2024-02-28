@@ -36,13 +36,17 @@ You must set an end-entity certificate to expire before its root CA certificate,
 
 To create a new CA certificate, use `tcld gen ca`.
 
-```
+```sh
+mkdir temporal-certs
+cd temporal-certs
 tcld gen ca --org temporal -d 1y --ca-cert ca.pem --ca-key ca.key
 ```
 
+The contents of the generated `ca.pem` should be pasted into the "CA Certificates" section of your Namespace settings page.
+
 To create a new end-entity certificate, use `tcld gen leaf`.
 
-```
+```sh
 tcld gen leaf --org temporal -d 364d --ca-cert ca.pem --ca-key ca.key --cert client.pem --key client.key
 ```
 
@@ -55,24 +59,19 @@ Follow these steps to issue a certificate for use with Temporal Cloud:
 1. Install certstrap by following the instructions in the [certstrap README](https://github.com/square/certstrap#getting-started).
 2. Set the Namespace Name as the common name for the certificate:
 
-<Tabs>
-  <TabItem value="macos" label="MacOS" default>
+For Linux or macOS:
 
 ```command
 export NAMESPACE_NAME=your-namespace
 ```
 
-</TabItem>
-  <TabItem value="windows" label="Windows">
+For Windows:
 
 ```command
 set NAMESPACE_NAME=your-namespace
 ```
 
-</TabItem>
-</Tabs>
-
-3. Initialize a new certificate authority:
+1. Initialize a new certificate authority:
 
 ```command
 ./certstrap init --common-name "My Cert Auth"

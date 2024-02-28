@@ -1,14 +1,14 @@
 {
-    "file_name": "features.md",
+    "file_name": "features.mdx",
     "file_dir": "dev-guide/python",
     "id": "features",
-    "title": "Python SDK developer's guide - Features",
+    "title": "Features - Python SDK feature guide",
     "sidebar_label": "Features",
     "sidebar_position": 5,
     "description": "The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.",
     "use_description": false,
     "toc_max_heading_level": 5,
-    "add_tabs_support": true,
+    "add_tabs_support": false,
     "sections": [
         {
             "type": "p",
@@ -77,6 +77,18 @@
         {
             "type": "p",
             "id": "python/generated/how-to-send-a-query-to-a-workflow-execution-in-python"
+        },
+        {
+            "type": "h2",
+            "id": "python/updates"
+        },
+        {
+            "type": "h3",
+            "id": "python/generated/how-to-define-an-update-in-python"
+        },
+        {
+            "type": "h3",
+            "id": "python/generated/how-to-send-an-update-from-a-client-in-python"
         },
         {
             "type": "h2",

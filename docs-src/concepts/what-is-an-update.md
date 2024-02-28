@@ -4,9 +4,13 @@ title: What is an Update?
 sidebar_label: Update
 description: An Update is a request to and a response from Workflow Execution.
 ssdi:
+  - In Pre-Release stage (API is subject to change)
   - Released in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
   - Available in the [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.23.1/client#Client.UpdateWorkflowWithOptions) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
   - Available in the [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+  - Available in the [Python SDK](https://docs.temporal.io/dev-guide/python/features#updates) since [v1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
+  - Available in the [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_ExecuteUpdateAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowUpdateOptions_) since [v0.1.0-beta2](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta2)
+  - Available in the [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#executeupdate) since [v1.9.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0)
 tags:
   - term
   - updates
@@ -16,6 +20,7 @@ tags:
 An Update is a request and response from a Temporal Client to a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 - [How to develop, send, and handle Updates in Go](/go/updates)
+- [How to develop, and send Updates in Python](/python/updates)
 - [How to develop, send, and handle Updates in Java](/java/updates)
 
 You can think of an Update as a synchronous, blocking call that could replace both a Signal and a Query. An update is:

@@ -1,15 +1,15 @@
 {
-  "file_name": "features.md",
+  "file_name": "features.mdx",
   "file_dir": "/dev-guide/javalang",
   "slug": "/dev-guide/java/features",
   "id": "features",
-  "title": "Java SDK developer's guide - Features",
+  "title": "Features - Java SDK feature guide",
   "sidebar_label": "Features",
   "sidebar_position": 4,
   "description": "The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.",
   "use_description": false,
   "toc_max_heading_level": 4,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "p",
@@ -274,14 +274,6 @@
     {
       "type": "p",
       "id": "java/how-to-manage-namespaces-in-java"
-    },
-    {
-      "type": "h2",
-      "id": "java/custom-payload-conversion"
-    },
-    {
-      "type": "p",
-      "id": "java/how-to-use-a-custom-payload-converter-in-java"
     }
   ]
 }

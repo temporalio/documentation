@@ -17,7 +17,7 @@ The Temporal Cluster and SDKs emit metrics that can be used to monitor performan
 
 After you enable your monitoring tool, you can relay these metrics to any monitoring and observability platform.
 
-## Prometheus and Grafana setup
+## Prometheus
 
 This article discusses setting up Prometheus and Grafana to view metrics data on Temporal Cluster, Temporal Client, and Temporal Worker performance.
 
@@ -33,7 +33,7 @@ To set up Prometheus and Grafana:
 1. Set up Prometheus endpoints for your [Cluster metrics](#cluster-metrics-setup) and [SDK metrics](#sdk-metrics-setup).
 2. [Configure Prometheus](#prometheus-configuration) to receive metrics data from your Cluster and SDK Clients.
    Make sure to test whether you are receiving metrics data on your Prometheus endpoint.
-3. [Set up Grafana](#grafana-configuration) to use Prometheus as a data source.
+3. [Set up Grafana](#grafana) to use Prometheus as a data source.
 4. Set up your [Grafana dashboard](#grafana-dashboard-setup) with Prometheus queries to display relevant data.
 
 The Temporal Cluster and SDKs emit all metrics by default.
@@ -86,11 +86,11 @@ Depending on how you deploy your Temporal Cluster, you can set different ports f
 SDK metrics are emitted by Clients and must be set up in your application code.
 The Metrics section in the Observability guide details how to set this up for all the supported SDKs.
 
-[Golang](/dev-guide/go/observability#metrics)
-[Java](/dev-guide/java/observability#metrics)
-[PHP](/dev-guide/php/observability#metrics)
-[Python](/dev-guide/python/observability#metrics)
-[TypeScript](/dev-guide/typescript/observability#metrics)
+[Golang](/go/metrics)
+[Java](/java/metrics)
+[PHP](/php/observability)
+[Python](/python/metrics)
+[TypeScript](/typescript/metrics)
 
 For example, with the Java SDK, you can set up the Prometheus registry and Micrometer stats reporter, set the scope, and expose an endpoint from which Prometheus can scrape the SDK Client metrics in the following way.
 
@@ -217,16 +217,21 @@ To check whether you’re receiving your metrics data, restart your local docker
 
 - [localhost:8000/metrics](http://localhost:8000/metrics) - The port for exposing your Cluster metrics.
   You should see all the Cluster metrics emitted when you start your local docker-compose Temporal Cluster.
-- [localhost:8077/metrics](http://localhost:8077/metrics) - The port for exposing your SDK metrics.
-  Depending on whether you have set this port on the Client that is starting your Worker or your Workflow Executions, the related metrics should show when you start your Worker or Workflow Execution.
 - [localhost:8078/metrics](http://localhost:8078/metrics) - The port for exposing your SDK metrics.
   Depending on whether you have set this port on the Client that is starting your Worker or your Workflow Executions, the related metrics should show when you start your Worker or Workflow Execution.
 - [localhost:9090/](http://localhost:9090/) - The port for Prometheus detail.
   Go to **Status > Targets** to check the statuses of your Prometheus target endpoints.
 
-### Grafana configuration
+## Datadog
 
-With Prometheus configured, set up Grafana to use Prometheus as a data source.
+Datadog has a Temporal integration for collecting Cluster metrics.
+Once you've [configured Prometheus](#prometheus), configure the Datadog Agent according to their guide:
+
+[docs.datadoghq.com/integrations/temporal/](https://docs.datadoghq.com/integrations/temporal/)
+
+## Grafana
+
+With [Prometheus](#prometheus) configured, set up Grafana to use Prometheus as a data source.
 
 For example, in the modified local docker-compose Temporal Cluster setup described in the previous section, create a separate container with port 8085 for Grafana.
 
@@ -276,7 +281,7 @@ datasources:
 In this example, Grafana is set to pull metrics from Prometheus at the port 9090, as defined in the Prometheus configuration.
 After you update this configuration, restart your local docker-compose Temporal Cluster, and go to [localhost:8085](http://localhost:8085) to access Grafana.
 
-### Grafana dashboard setup
+### Dashboard setup
 
 To set up your dashboards in Grafana, either use the UI or configure them in your Grafana deployment on the Cluster, as done in this [dashboards](https://github.com/tsurdilo/my-temporal-dockercompose/tree/main/deployment/grafana/dashboards) example.
 
@@ -291,7 +296,7 @@ For example, to create a dashboard in your local Grafana UI at [localhost:8085](
    For example, add `sum by (operation) (rate(service_requests{service_name="frontend"}[2m]))` to see all the Frontend Service requests on your local docker-compose Temporal Cluster.
 4. You should see the graph show metrics data for the Frontend Service from the docker-compose Temporal Cluster.
 5. When you start your Workflows (after setting up your SDK Metrics), you will see your SDK metrics in the graph as well.
-6. Optional: In the Legend field, add "{{operation}}" to clean the legend on the graph to show operations.
+6. Optional: In the Legend field, add "`{{operation}}`" to clean the legend on the graph to show operations.
 
 You can add multiple queries in your dashboard to report relevant data.
 For more details on configuring Grafana dashboards, see the [Grafana Dashboards documentation](https://grafana.com/docs/grafana/latest/dashboards/).
@@ -300,4 +305,4 @@ After you set up your dashboard, you can start experimenting with different samp
 
 Temporal also has a repository of community-driven [Grafana dashboards](https://github.com/temporalio/dashboards) that you can get started with.
 You can set these up in your Grafana configuration to show the dashboards by default when you start your Cluster.
-If you are following the examples provided here and importing a dashboard from the community-driven dashboards repository, update the data source for each panel to "Temporal Prometheus" (which is the name set for the Prometheus data source in the [Grafana configuration](#grafana-configuration) section).
+If you are following the examples provided here and importing a dashboard from the community-driven dashboards repository, update the data source for each panel to "Temporal Prometheus" (which is the name set for the Prometheus data source in the [Grafana configuration](#grafana) section).

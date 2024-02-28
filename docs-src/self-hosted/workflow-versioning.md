@@ -30,7 +30,7 @@ export async function myWorkflow(
 ): Promise<MyWorkflowOutput>;
 ```
 
-By using this technique, you can add fields in a way that will be compatible with existing [Event Histories](/workflows#event-history) (assuming you use a [Payload Converter](/dataconversion#payload-converter) that can deserialize older [Payloads](/dataconversion#payload), such as JSON).
+By using this technique, you can add fields in a way that will be compatible with existing [Event Histories](/workflows#event-history) (assuming you use a [Payload Converter](/concepts/what-is-a-payload-converter) that can deserialize older [Payloads](/concepts/what-is-a-payload), such as JSON).
 We recommend doing this for all your Workflows and Activities in production.
 
 You can go even farther by defining your inputs and outputs using [Protocol Buffers (protobuf)](https://protobuf.dev/) or another interface definition language (IDL).
@@ -61,7 +61,7 @@ Be sure that all previously received Signals have been processed and that all ru
 The newly started Workflow then unpacks the state in the input and can "resume" the Workflow according to your business logic.
 
 A huge benefit of this approach is that you avoid making patches to running Workflows.
-Instead, tell them all to continue onto a new [Task Queue](/workers#task-queue) with [Workers](/workers) that have the updated Workflow code.
+Instead, tell them all to continue onto a new [Task Queue](/concepts/what-is-a-task-queue) with [Workers](/workers) that have the updated Workflow code.
 
 ### When and how to make changes to your Workflow code
 

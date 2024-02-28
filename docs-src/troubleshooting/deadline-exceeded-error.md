@@ -51,7 +51,7 @@ Use [`grpc-health-probe`](https://github.com/grpc-ecosystem/grpc-health-probe) t
 ./grpc-health-probe -addr=historyAddress:historyPort -service=temporal.api.workflowservice.v1.HistoryService
 ```
 
-Logs can also be used to find failed Client [Query](/workflows#queries) requests.
+Logs can also be used to find failed Client [Query](/concepts/what-is-a-query) requests.
 
 ### Check your Cluster metrics
 

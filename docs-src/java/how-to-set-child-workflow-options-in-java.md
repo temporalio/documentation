@@ -22,7 +22,7 @@ Set Child Workflow specific options with the `ChildWorkflowOptions.Builder` clas
 | [`RetryOptions`](#retryoptions)                         | No       | RetryOptions                 |
 | [`CronSchedule`](#cronschedule)                         | No       | String                       |
 | [`Memo`](#memo)                                         | No       | String                       |
-| [`SearchAttributes`](#searchattributes)                 | No       | Map<String, Object>          |
+| [`SearchAttributes`](#searchattributes)                 | No       | `Map<String, Object>`        |
 
 ### `Namespace`
 

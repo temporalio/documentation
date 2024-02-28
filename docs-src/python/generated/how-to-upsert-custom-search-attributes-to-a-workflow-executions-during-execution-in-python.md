@@ -17,7 +17,7 @@ To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https
 
 The keys are added to or replace the existing Search Attributes, similar to [`dict.update()`](https://docs.python.org/3/library/stdtypes.html#dict.update).
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-732047655" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-732047655" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
 ```python
 # ...

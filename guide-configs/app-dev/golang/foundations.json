@@ -1,15 +1,15 @@
 {
-  "file_name": "foundations.md",
+  "file_name": "foundations.mdx",
   "id": "foundations",
   "slug": "/dev-guide/go/foundations",
   "file_dir": "dev-guide/golang",
-  "title": "Go SDK developer's guide - Foundations",
+  "title": "Foundations - Go SDK feature guide",
   "sidebar_label": "Foundations",
   "sidebar_position": 4,
   "description": "The Foundations section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go – that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
   "use_description": false,
   "toc_max_heading_level": 4,
-  "add_tabs_support": true,
+  "add_tabs_support": false,
   "sections": [
     {
       "type": "p",

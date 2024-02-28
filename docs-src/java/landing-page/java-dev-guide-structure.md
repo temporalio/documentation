@@ -37,6 +37,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 - [How to install Temporal CLI and run a development server](/self-hosted/how-to-install-temporal-cli): How to install Temporal CLI and run a development Cluster.
 - [How to install a Temporal SDK](/java/add-sdk): A Temporal SDK provides a framework for Temporal Application development.
 - [How to create a Temporal Client in Java](/java/how-to-create-a-temporal-client-in-java): To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
+- [How to connect to Temporal Cloud](/java/connect-to-temporal-cloud): Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
 - [How to develop a Workflow Definition in Java](/java/how-to-develop-a-workflow-definition-in-java): In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.
 - [How to develop a basic Activity](/java/developing-activities): One of the primary things that Workflows do is orchestrate the execution of Activities.
 - [How to start an Activity Execution](/java/spawning-activities): Calls to spawn Activity Executions are written within a Workflow Definition.
@@ -62,7 +63,6 @@ The Features section of the Temporal Developer's guide provides basic implementa
 - [How to set a Cron Schedule in Java](/java/how-to-set-a-cron-schedule-in-java): Set the Cron Schedule with the `WorkflowStub` instance in the Client code using [`WorkflowOptions.Builder.setCronSchedule`
 - [Side Effects](/java/side-effects): A Side Effect is used to produce non-deterministic code, such as generating a UUID or a random number.
 - [How to create and manage Namespaces](/java/namespaces): You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..
-- [How to use custom payload conversion](/java/custom-payload-conversion): Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.
 
 ## Observability
 
@@ -78,7 +78,7 @@ Improve observability in your Java-based Temporal Workflows. View which Workflow
 The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 
 - [Test frameworks](/java/testing-frameworks): Testing provides a framework to facilitate Workflow and integration testing.
-- [Testing Activities](/java/testing-activities): Testing provides a framework to facilitate Workflow and integration testing.
+- [Test Activities](/java/testing-activities): Testing provides a framework to facilitate Workflow and integration testing.
 - [Testing Workflows](/java/testing-workflows): Testing provides a framework to facilitate Workflow and integration testing.
 - [How to Replay a Workflow Execution](/java/replays): Replay recreates the exact state of a Workflow Execution.
 
@@ -95,3 +95,10 @@ The Versioning section of the Temporal Developer's guide covers how to update Wo
 
 - [How to patch Workflows in Java](/java/patching): Use Patching APIs to update Workflow code in Java
 - [How to use Worker Versioning in Java](/java/how-to-use-worker-versioning-in-java): Version your Java Workers by using build ID-based versioning
+
+## Converters
+
+The Converters and Codecs section of the Temporal Developer's guide provides guidance on how to support compression, encryption, and other special data handling by implementing custom converters and codecs.
+
+- [How to use a custom Payload Codec in Java](/java/how-to-use-a-custom-payload-codec-in-java): Create a custom implementation of `PayloadCodec` and use it in `CodecDataConverter` to set a custom Data Converter.
+- [How to use custom Payload conversion](/java/custom-payload-conversion): Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.

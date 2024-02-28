@@ -32,9 +32,9 @@ A Worker is a process that connects to the Temporal Server, polls **Task Queues*
 - **Workers are run on user-controlled hosts.** This is an important security feature which means Temporal Server (or Temporal Cloud) never executes your Workflow or Activity code, and that Workers can have different hardware (e.g. custom GPUs for Machine Learning) than the rest of the system.
 
 <details>
-<summary>
-Your Workflows will only progress if there are Workers polling the right Task Queues, and they must have the right Workflows and Activities registered to execute those Tasks.
-</summary>
+    <summary>
+    Your Workflows will only progress if there are Workers polling the right Task Queues, and they must have the right Workflows and Activities registered to execute those Tasks.
+    </summary>
 
 The TypeScript SDK uses TypeScript, but cannot completely protect you from typos.
 If you are experiencing issues, you can check the status of Workers and the Task Queues they poll with [tctl](/tctl-v1) or the [Temporal Web UI](/web-ui).
@@ -46,9 +46,9 @@ If you are experiencing issues, you can check the status of Workers and the Task
 ### How to develop a Worker
 
 <details>
-<summary>
-The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Rust Core SDK</a>.
-It comes pre-compiled for most installations.
+    <summary>
+    The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Rust Core SDK</a>.
+    It comes pre-compiled for most installations.
 </summary>
 
 We've provided pre-compiled binaries for:
@@ -147,9 +147,9 @@ Temporal also supports mTLS encryption (required by Temporal Cloud) this way - p
 import WhatIsATaskQueue from '../concepts/what-is-a-task-queue.md'
 
 <details>
-<summary>
-A Task Queue is a dynamic queue in Temporal Server polled by one or more Workers.
-</summary>
+    <summary>
+    A Task Queue is a dynamic queue in Temporal Server polled by one or more Workers.
+    </summary>
 
 <WhatIsATaskQueue />
 
@@ -162,11 +162,11 @@ In Temporal, a Task Queue is represented in code by its name as a `string`.
 There are two main places where the name of the Task Queue is supplied by the developer.
 
 <details>
-<summary>
+    <summary>
 
-When scheduling a Workflow, a `taskQueue` must be specified.
+    When scheduling a Workflow, a `taskQueue` must be specified.
 
-</summary>
+    </summary>
 
 ```ts
 import { Connection, WorkflowClient } from '@temporalio/client';
@@ -181,11 +181,11 @@ const result = await client.execute(yourWorkflow, {
 
 </details>
 <details>
-<summary>
+    <summary>
 
-When creating a Worker, you **must** pass the `taskQueue` option to the [`Worker.create()` function](https://typescript.temporal.io/api/classes/worker.Worker#create).
+    When creating a Worker, you **must** pass the `taskQueue` option to the [`Worker.create()` function](https://typescript.temporal.io/api/classes/worker.Worker#create).
 
-</summary>
+    </summary>
 
 ```ts
 const worker = await Worker.create({

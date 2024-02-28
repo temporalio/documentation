@@ -16,12 +16,18 @@ Customers should consider not only a Namespace naming convention but also how to
 
 Before considering an appropriate Namespace configuration, you should be aware of the following constraints:
 
-- Each Temporal account has a default limit of 10 Namespaces.
-  You can request an increase by [creating a ticket for Temporal Support](/cloud/support-create-ticket).
+- By default, each account is provisioned with ten Namespaces.
+  As you create and use your Namespaces, for example by scheduling Workflows, Temporal Cloud automatically raises your limit.
+  Our service identifies your usage patterns.
+  It responds by slowly increasing your allowance, up to 100 Namespaces.
+  You can request further increases beyond the 100 Namespace limit by opening a [support ticket](/cloud/support-create-ticket).
 - Cross-Namespace communications between [Workflows](/workflows) is not yet supported.
-  For now, you can use the [SDK client](/temporal#temporal-client) from within an [Activity](/activities) as a workaround.
-- Each Namespace has a rate limit ("throttling").
-  The default rate limit is 200 Actions per second but can be increased via a support ticket.
+  For now, you can use the [SDK client](/concepts/what-is-a-temporal-client) from within an [Activity](/concepts/what-is-an-activity) as a workaround.
+- Each Namespace has a rate limit, which is measured in Actions per second (APS).
+  A namespace may be throttled when its throughput becomes too high.
+  Throttling means limiting the rate at which actions are performed to prevent overloading the system.
+  A Namespace's default limit is set at 400 APS and automatically adjusts based on recent usage (over the prior 7 days).
+  Your APS limit will never fall below this default value.
 - Each Namespace has a service-level agreement (SLA) of 99.9% uptime.
 - For now, Namespaces are single-region only.
 - A Namespace is a security isolation boundary.
@@ -29,8 +35,8 @@ Before considering an appropriate Namespace configuration, you should be aware o
   Isolating applications or environments (development, test, staging, production) should take this into consideration.
 - A Namespace is an endpoint.
   To access a Namespace from a Temporal Client requires mTLS authorization, which requires [CA certificates](/cloud/certificates-requirements#ca-certificates).
-- [Workflow Id](/workflows#workflow-id) uniqueness is per Namespace.
-- [Task Queue](/workers#task-queue) names are unique per Namespace.
+- [Workflow Id](/concepts/what-is-a-workflow-id) uniqueness is per Namespace.
+- [Task Queue](/concepts/what-is-a-task-queue) names are unique per Namespace.
 - Closed Workflow retention is per Namespace.
 - RBAC [permissions](/cloud/users-namespace-level-permissions) are implemented at the Namespace level.
 
@@ -40,7 +46,7 @@ Namespace configuration requires some consideration.
 Following are some general guidelines to consider.
 
 - Namespaces are usually defined per use case.
-  A use case can encompass a broad range of Workflow types and a nearly unlimited scale of concurrent [Workflow Executions](/workflows#workflow-execution).
+  A use case can encompass a broad range of Workflow types and a nearly unlimited scale of concurrent [Workflow Executions](/concepts/what-is-a-workflow-execution).
 - Namespaces can be split along additional boundaries such as service, application, domain or even sub-domain.
 - Environments such as production and development usually have requirements for isolation.
   We recommend that each environment has its own Namespace.

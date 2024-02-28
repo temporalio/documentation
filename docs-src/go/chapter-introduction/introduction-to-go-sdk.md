@@ -39,6 +39,8 @@ You can expect to see several applications in use to capture the iterative steps
 
 The Temporal Go SDK supports Go 1.18+.
 
+The Temporal Go SDK does not currently support generics.
+
 Ensure you have the latest version of the Temporal Go SDK by checking [releases](https://github.com/temporalio/sdk-go/releases).
 
 ## Add to project

@@ -248,7 +248,9 @@ export const createActivities = (db: DB) => ({
 <!--SNIPEND-->
 
 <details>
-  <summary>See full example</summary>
+  <summary>
+    See full example
+  </summary>
 
 When you register these in the Worker, pass your shared dependencies accordingly:
 

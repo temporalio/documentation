@@ -4,14 +4,18 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "make": "chmod +x make.sh && ./make.sh",
+    "worker": "pushd assembly && yarn worker && popd",
     "assemble": "./assemble.js && dprint fmt",
     "assemble-cloud": "./assemble.js --cloud && dprint fmt",
+    "snipsync": "snipsync",
     "format": "dprint fmt"
   },
   "dependencies": {
+    "dprint": "^0.45.0",
+    "fs-extra": "^10.1.0",
     "path": "^0.12.7",
-    "temporalio": "^1.1.0",
     "snipsync": "1.7.0",
-    "fs-extra": "^10.1.0"
+    "temporalio": "^1.1.0"
   }
 }

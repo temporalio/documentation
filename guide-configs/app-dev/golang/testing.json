@@ -1,11 +1,11 @@
 {
-  "file_name": "testing.md",
+  "file_name": "testing.mdx",
   "id": "testing",
   "slug": "/dev-guide/go/testing",
   "file_dir": "dev-guide/golang",
-  "title": "Go SDK developer's guide - Testing",
+  "title": "Testing - Go SDK feature guide",
   "sidebar_label": "Testing",
-  "sidebar_position": 7,
+  "sidebar_position": 8,
   "description": "The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.",
   "use_description": false,
   "toc_max_heading_level": 4,
@@ -33,7 +33,7 @@
     },
     {
       "type": "h3",
-      "id": "go/cancel-an-activity"
+      "id": "go/cancellation/cancel-an-activity"
     },
     {
       "type": "h2",

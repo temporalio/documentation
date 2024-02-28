@@ -7,7 +7,8 @@ tags:
   - term
   - explanation
 ssdi:
-  - Introduced in Temporal Server version 1.17.0
+  - Generally Available as of Nov 2023
+  - Introduced in Temporal Server version [1.17.0](https://github.com/temporalio/temporal/releases/tag/v1.17.0)
   - Available in Temporal CLI (and tctl v1.17)
   - Available in Temporal Cloud
   - Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) version [1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
@@ -18,11 +19,12 @@ ssdi:
   - Available in [gRPC API](https://api-docs.temporal.io/#temporal.api.workflowservice.v1.CreateScheduleRequest)
 ---
 
-A Schedule contains instructions for starting a [Workflow Execution](/workflows#workflow-execution) at specific times.
+A Schedule contains instructions for starting a [Workflow Execution](/concepts/what-is-a-workflow-execution) at specific times.
 Schedules provide a more flexible and user-friendly approach than [Temporal Cron Jobs](/concepts/what-is-a-temporal-cron-job).
 
 - [How to enable Schedules](#limitations)
-- [How to operate Schedules using tctl](/tctl-v1/schedule#)
+- [How to operate Schedules using the Temporal CLI](/cli/schedule/index)
+- [How to operate Schedules using tctl](/tctl-v1/schedule/index)
 
 A Schedule has an identity and is independent of a Workflow Execution.
 This differs from a Temporal Cron Job, which relies on a cron schedule as a property of the Workflow Execution.
@@ -47,7 +49,8 @@ Workflow Executions started by a Schedule have the following additional properti
 
 ### Spec
 
-The Schedule Spec describes when the Action is taken.
+The Schedule Spec defines when the Action should be taken.
+Unless many Schedules have Actions scheduled at the same time, Actions should generally start within 1 second of the specified time.
 There are two kinds of Schedule Spec:
 
 - A simple interval, like "every 30 minutes" (aligned to start at the Unix epoch, and optionally including a phase offset).
@@ -115,7 +118,7 @@ For more operational control, embed the contents of the time zone database file 
 
 A Schedule can be Paused.
 When a Schedule is Paused, the Spec has no effect.
-However, you can still force manual actions by using the [tctl schedule trigger](/tctl-v1/schedule#trigger) command.
+However, you can still force manual actions by using the [tctl schedule trigger](/tctl-v1/schedule/trigger) command.
 
 To assist communication among developers and operators, a “notes” field can be updated on pause or resume to store an explanation for the current state.
 
@@ -196,6 +199,16 @@ When a Schedule triggers a Workflow that completes successfully and yields a res
 Be aware that if, during the subsequent run, the Workflow employs the [Continue-As-New](/concepts/what-is-continue-as-new) feature, `LastCompletionResult` won't be accessible for this new Workflow iteration.
 
 It is important to note that the [status](/concepts/what-is-a-workflow-execution#status) of the subsequent run is marked as `Continued-As-New` and not as `Completed`.
+
+:::
+
+:::caution
+
+A scheduled Workflow Execution may complete with a result up to the maximum blob size (2 MiB by default).
+However, due to internal limitations, results that are within 1 KiB of this limit cannot be passed to the next execution.
+So, for example, a Workflow Execution that returns a result of size 2,096,640 bytes (which is above 2MiB - 1KiB limit)
+will be allowed to compete successfully, but that value will not be available as a last completion result.
+This limitation may be lifted in the future.
 
 :::
 

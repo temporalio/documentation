@@ -107,14 +107,32 @@ Alias: `--sa`
 
 _Can be specified more than once_
 
-A [Namespace-level permission](/cloud/#namespace-level-permissions) for a user in the form `_email_=_permission_`.
+A [Namespace-level permission](/cloud/users-namespace-level-permissions) for a user in the form `_email_=_permission_`.
 
 Valid values for _permission_: `Admin` | `Write` | `Read`
 
 Alias: `-p`
 
+#### --endpoint
+
+The codec server endpoint to decode payloads for all users interacting with this Namespace. Must be HTTPS.
+
+Alias: `-e`
+
+#### --pass-access-token
+
+Pass the user access token to the remote endpoint (default: false).
+
+Alias: `--pat`
+
+#### --include-credentials
+
+Include cross-origin credentials (default: false).
+
+Alias: `--ic`
+
 **Example**
 
 ```bash
-tcld namespace create --namespace <namespace_id> --region us-west-2 --retention-days 60 --certificate-filter-input '{"filters": [{"commonName": "test1"}]}' --user-namespace-permission "user@example.com=Admin" --search-attribute "customer_id=Int" --search-attribute "customer_name=Text"
+tcld namespace create --namespace <namespace_id> --region us-west-2 --retention-days 60 --certificate-filter-input '{"filters": [{"commonName": "test1"}]}' --user-namespace-permission "user@example.com=Admin" --search-attribute "customer_id=Int" --search-attribute "customer_name=Text" --endpoint "https://test-codec-server.com" --pass-access-token --include-credentials
 ```

@@ -186,7 +186,7 @@ Once you've finalized the setup, here's how to monitor the export progress:
 
 5. **Charge monitoring**:
    - Actions from the Export Job are included on the Usage UI, starting on `2024/03/01` UTC.
-   - **Metrics**: Will show up on `saas_actions` internal metrics and `temporal_cloud_v0_total)action_count` external metrics with `is_background` flag. For more information, see [Cloud metrics](/cloud/metrics#).
+   - **Metrics**: Will show up on `saas_actions` internal metrics and `temporal_cloud_v0_total)action_count` external metrics with `is_background` flag. For more information, see [Cloud metrics](/cloud/metrics).
    - **Metronome**: Show up on billing.
 
 For optimal results, review the S3 bucket for any new exported files and refer to the UI insights.

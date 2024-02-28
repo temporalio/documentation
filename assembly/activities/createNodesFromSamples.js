@@ -190,8 +190,18 @@ export async function createNodesFromSamples(config) {
   }
 
   function isSupportedExtension(ext) {
-    const supportedExts = [".go", ".py", ".java", ".ts"];
-    return supportedExts.includes(ext);
+    switch (ext) {
+      case ".go":
+        return true;
+      case ".py":
+        return true;
+      case ".java":
+        return true;
+      case ".ts":
+        return true;
+      default:
+        return false;
+    }
   }
 
   function isDACX(str, config, file) {
@@ -227,8 +237,6 @@ export async function createNodesFromSamples(config) {
   }
 
   function genSourceLinkHTML(link) {
-    // Generate a deterministic id based on the hash of the link
-    const id = "id" + hashCode(link).toString();
-    return `<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-${id}" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-${id}" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="${link}">view the source code</a> in the context of the rest of the application code.</div></div>`;
+    return `<div class="copycode-notice-container"><a href="${link}">View the source code</a> in the context of the rest of the application code.</div>`;
   }
 }

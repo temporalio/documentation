@@ -1,24 +1,26 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday February 28 2024 11:07:42 AM -0800
+Last assembled: Wednesday February 28 2024 11:13:11 AM -0800
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-136 guide configurations found.
+144 guide configurations found.
 
-1745 information nodes found.
+1773 information nodes found.
 
-1479 information nodes are attached to guides.
+1530 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
-cloud/security-cloud-intro -> /cloud/security#
+cloud/security-cloud-intro -> /cloud/security
 
-self-hosted/security-intro -> /self-hosted-guide/security#
+self-hosted/security-intro -> /self-hosted-guide/security
 
-concepts/what-is-the-temporal-cli -> /cli#
+concepts/what-is-the-temporal-cli -> /cli
 
-references/web-ui-configuration -> /references/web-ui-configuration#
+references/web-ui-configuration -> /references/web-ui-configuration
+
+cloud/users-namespace-level-permissions -> /cloud/users#namespace-level-permissions
 
 concepts/what-is-a-workflow-id -> /workflows#workflow-id
 
@@ -28,7 +30,7 @@ concepts/what-is-a-list-filter -> /visibility#list-filter
 
 concepts/what-is-an-event -> /workflows#event
 
-references/events -> /references/events#
+references/events -> /references/events
 
 concepts/what-is-a-run-id -> /workflows#run-id
 
@@ -36,23 +38,27 @@ concepts/what-is-a-task-queue -> /workers#task-queue
 
 concepts/what-is-a-state-transition -> /workflows#state-transition
 
-cloud/metrics-intro -> /cloud/metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui
+cloud/users-account-level-roles -> /cloud/users#account-level-roles
 
-references/configuration -> /references/configuration#
+references/configuration -> /references/configuration
 
 concepts/what-is-archival -> /clusters#archival
 
-self-hosted/what-is-archival -> /self-hosted-guide/archival#
+self-hosted/what-is-archival -> /self-hosted-guide/archival
 
-self-hosted/data-encryption -> /self-hosted-guide/data-encryption#
+concepts/what-is-a-codec-server -> /dataconversion#codec-server
 
-self-hosted/how-to-set-up-codec-server -> /self-hosted-guide/data-encryption#web-ui
+self-hosted/data-encryption -> /production-deployment/data-encryption
+
+self-hosted/how-to-set-up-codec-server -> /production-deployment/data-encryption#web-ui
 
 concepts/what-is-a-frontend-service -> /clusters#frontend-service
 
-references/cluster-metrics -> /references/cluster-metrics#
+concepts/what-is-a-query -> /workflows#query
 
-references/web-ui-environment-variables -> /references/web-ui-environment-variables#
+references/cluster-metrics -> /references/cluster-metrics
+
+references/web-ui-environment-variables -> /references/web-ui-environment-variables
 
 concepts/what-is-an-activity-execution -> /activities#activity-execution
 
@@ -79,6 +85,8 @@ concepts/what-is-a-search-attribute -> /visibility#search-attribute
 tctl-v1/admin/db/scan -> #scan
 
 tctl-v1/admin/db/clean -> #clean
+
+concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
 
 tctl-v1/admin/decode/proto -> #proto
 
@@ -118,7 +126,7 @@ tctl-v1/admin/workflow/delete -> #delete
 
 concepts/what-is-a-task -> /workers#task
 
-concepts/what-is-a-workflow -> /workflows#
+concepts/what-is-a-workflow -> /workflows
 
 tctl-v1/batch/start -> #start
 
@@ -130,7 +138,7 @@ tctl-v1/batch/terminate -> #terminate
 
 concepts/what-is-a-signal -> /workflows#signal
 
-concepts/what-is-a-temporal-cluster -> /clusters#
+concepts/what-is-a-temporal-cluster -> /clusters
 
 tctl-v1/cluster/health -> #health
 
@@ -142,11 +150,11 @@ tctl-v1/workflow/run -> /tctl-v1/workflow#run
 
 tctl-v1/workflow/start -> /tctl-v1/workflow#start
 
-concepts/what-is-a-data-converter -> /dataconversion#
+concepts/what-is-a-data-converter -> /dataconversion
 
 tctl-v1/dataconverter/web -> #web
 
-concepts/what-is-a-namespace -> /namespaces#
+concepts/what-is-a-namespace -> /namespaces
 
 tctl-v1/how-to-install-tctl -> #install
 
@@ -159,6 +167,8 @@ tctl-v1/namespace/list -> #list
 tctl-v1/namespace/register -> #register
 
 tctl-v1/namespace/update -> #update
+
+concepts/what-is-a-global-namespace -> /namespaces#global-namespace
 
 concepts/what-is-a-command -> /workflows#command
 
@@ -224,8 +234,6 @@ concepts/what-is-advanced-visibility -> /visibility#advanced-visibility
 
 concepts/what-is-an-event-history -> /workflows#event-history
 
-concepts/what-is-a-query -> /workflows#query
-
 concepts/what-is-a-start-to-close-timeout -> /activities#start-to-close-timeout
 
 concepts/what-is-a-temporal-cron-job -> /workflows#cron-schedules
@@ -278,13 +286,13 @@ cloud/tcld/generate-certificates/end-entity-certificate -> #end-entity-certifica
 
 cloud/tcld/how-to-install-tcld -> #install-tcld
 
-cloud/tcld/feature/index -> /production-deployment/cloud/tcld/feature#
+cloud/tcld/feature/index -> /production-deployment/cloud/tcld/feature
 
-cloud/tcld/login -> /cloud/tcld/login#
+cloud/tcld/login -> /cloud/tcld/login
 
-cloud/tcld/logout -> /cloud/tcld/logout/#
+cloud/tcld/logout -> /cloud/tcld/logout/
 
-cloud/tcld/version -> /cloud/tcld/version/#
+cloud/tcld/version -> /cloud/tcld/version/
 
 cloud/tcld/namespace/create -> #create
 
@@ -360,9 +368,11 @@ self-hosted/how-to-create-a-custom-archiver -> #custom-archiver
 
 self-hosted/how-to-set-up-archival -> #set-up-archival
 
-concepts/what-is-a-global-namespace -> /namespaces#global-namespace
+concepts/what-is-a-retention-period -> /clusters#retention-period
 
-concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
+concepts/what-is-a-payload-converter -> /dataconversion#payload-converter
+
+concepts/what-is-a-payload -> /dataconversion#payload
 
 concepts/what-is-a-child-workflow-execution -> /workflows#child-workflow
 
@@ -370,41 +380,47 @@ concepts/what-is-a-local-activity -> /activities#local-activity
 
 concepts/what-is-a-side-effect -> /workflows#side-effect
 
-references/failures -> /references/failures#
+references/failures -> /references/failures
 
 concepts/what-is-a-failure-converter -> /dataconversion#failure-converter
-
-concepts/what-is-a-payload -> /dataconversion#payload
 
 concepts/what-is-a-payload-codec -> /dataconversion#payload-codec
 
 concepts/what-is-a-custom-data-converter -> /dataconversion#custom-data-converter
 
-concepts/what-is-a-payload-converter -> /dataconversion#payload-converter
-
-concepts/what-is-a-codec-server -> /dataconversion#codec-server
-
 concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
 
-cloud/limits -> /cloud/limits#
+concepts/what-is-key-management -> /dataconversion#key-management
 
-references/dynamic-configuration -> /references/dynamic-configuration#
+cloud/limits -> /cloud/limits
+
+references/dynamic-configuration -> /references/dynamic-configuration
 
 cli/start-dev-server -> /cli#start-dev-server
 
-self-hosted/setup -> /self-hosted-guide/setup#
+self-hosted/setup -> /self-hosted-guide/setup
 
-self-hosted/platform-defaults -> /self-hosted-guide/defaults#
+self-hosted/platform-defaults -> /self-hosted-guide/defaults
 
-self-hosted/prod-checklist -> /self-hosted-guide/production-checklist#
+self-hosted/prod-checklist -> /self-hosted-guide/production-checklist
 
-self-hosted/prometheus-grafana-setup -> /self-hosted-guide/monitoring#
+self-hosted/prometheus-grafana-setup -> /self-hosted-guide/monitoring
 
-self-hosted/how-to-set-up-visibility-in-a-temporal-cluster -> /self-hosted-guide/visibility#
+self-hosted/how-to-set-up-visibility-in-a-temporal-cluster -> /self-hosted-guide/visibility
 
 self-hosted/how-to-upgrade-the-temporal-server-version -> /self-hosted-guide/upgrade-server#upgrade-server
 
-self-hosted/what-is-multi-cluster-replication -> /self-hosted-guide/multi-cluster-replication#
+self-hosted/what-is-multi-cluster-replication -> /self-hosted-guide/multi-cluster-replication
+
+go/metrics -> /dev-guide/go/observability#metrics
+
+java/metrics -> /dev-guide/java/observability#metrics
+
+php/observability -> /dev-guide/php/observability
+
+python/metrics -> /dev-guide/python/observability#metrics
+
+typescript/metrics -> /dev-guide/typescript/observability#metrics
 
 references/server-options -> /references/server-options#withconfig
 
@@ -412,13 +428,15 @@ concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
 
 concepts/what-is-a-claimmapper-plugin -> #claim-mapper
 
+concepts/what-is-the-temporal-server -> /clusters#temporal-server
+
+concepts/what-is-a-temporal-client -> /temporal#temporal-client
+
 self-hosted/how-to-set-up-cassandra-visibility-store -> /self-hosted-guide/visibility#cassandra
 
 self-hosted/how-to-set-up-mysql-visibility-store -> /self-hosted-guide/visibility#mysql
 
 self-hosted/how-to-set-up-postgresql-visibility-store -> /self-hosted-guide/visibility#postgresql
-
-concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-visibility -> /clusters#visibility
 
@@ -434,9 +452,11 @@ self-hosted/how-to-set-up-dual-visibility -> #dual-visibility
 
 concepts/what-is-cluster-configuration -> /clusters#cluster-configuration
 
-concepts/what-is-temporal-cloud -> /cloud/overview#
+cloud/metrics-intro -> /cloud/metrics
 
-references/sdk-metrics -> /references/sdk-metrics#
+concepts/what-is-temporal-cloud -> /cloud/overview
+
+references/sdk-metrics -> /references/sdk-metrics
 
 concepts/what-is-a-temporal-sdk -> /temporal#temporal-sdk
 
@@ -446,13 +466,15 @@ concepts/what-is-a-workflow-task-execution -> /workers#workflow-task-execution
 
 concepts/what-is-continue-as-new -> /workflows#continue-as-new
 
-concepts/what-is-an-activity -> /activities#
+concepts/what-is-an-activity -> /activities
 
 concepts/what-is-an-activity-task -> /workers#activity-task
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
 
-concepts/what-is-a-retry-policy -> /retry-policies#
+concepts/what-is-a-retry-policy -> /retry-policies
+
+references/commands -> /references/commands#cancelworkflowexecution
 
 concepts/what-is-a-workflow-execution-timeout -> /workflows#workflow-execution-timeout
 
@@ -462,17 +484,11 @@ concepts/what-is-an-activity-type -> /activities#activity-type
 
 concepts/what-is-an-activity-task-execution -> /workers#activity-task-execution
 
-concepts/what-is-an-update -> /workflows#update
-
-go/metrics -> /dev-guide/go/observability#metrics
-
-java/metrics -> /dev-guide/java/observability#metrics
-
-python/metrics -> /dev-guide/python/observability#metrics
-
-typescript/metrics -> /dev-guide/typescript/observability#metrics
+concepts/what-is-a-schedule-to-close-timeout -> /activities#schedule-to-close-timeout
 
 concepts/what-is-a-schedule-to-start-timeout -> /activities#schedule-to-start-timeout
+
+concepts/what-is-an-update -> /workflows#update
 
 concepts/what-is-an-activity-definition -> #activity-definition
 
@@ -510,8 +526,6 @@ python/activity-timeouts -> /dev-guide/python/features#activity-timeouts
 
 typescript/activity-timeouts -> /dev-guide/typescript/features#activity-timeouts
 
-concepts/what-is-a-schedule-to-close-timeout -> #schedule-to-close-timeout
-
 concepts/what-is-a-heartbeat-timeout -> #heartbeat-timeout
 
 go/activity-heartbeats -> /dev-guide/go/features#activity-heartbeats
@@ -536,7 +550,7 @@ typescript/heartbeat-timeout -> /dev-guide/typescript/features#heartbeat-timeout
 
 concepts/what-is-persistence -> #persistence
 
-self-hosted/guide-structure -> /self-hosted-guide#
+self-hosted/guide-structure -> /self-hosted-guide
 
 concepts/what-is-a-history-shard -> #history-shard
 
@@ -546,13 +560,9 @@ java/namespaces -> /dev-guide/java/features#namespaces
 
 cloud/prometheus-grafana-setup -> /cloud/metrics#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
 
+cli/workflow/show -> /cli/workflow#show
+
 concepts/what-is-a-default-data-converter -> #default-data-converter
-
-go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
-
-java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conversion
-
-concepts/what-is-a-retention-period -> /clusters#retention-period
 
 cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
 
@@ -560,7 +570,7 @@ go/register-namespaces -> /dev-guide/go/features#register-namespace
 
 java/register-namespaces -> /dev-guide/java/features#register-namespace
 
-cloud/namespaces-intro -> /cloud/namespaces#
+cloud/namespaces-intro -> /cloud/namespaces
 
 go/manage-namespaces -> /dev-guide/go/features#manage-namespaces
 
@@ -592,21 +602,19 @@ concepts/what-is-durable-execution -> #durable-execution
 
 concepts/what-is-a-worker-process -> /workers#worker-process
 
-concepts/what-is-a-temporal-client -> #temporal-client
-
 concepts/what-is-a-worker-program -> /workers#worker-program
 
-go/chapter-introduction/introduction-to-go-sdk -> /dev-guide/go/introduction#
+go/chapter-introduction/introduction-to-go-sdk -> /dev-guide/go/introduction
 
-java/introduction-to-java-sdk -> /dev-guide/java/introduction#
+java/introduction-to-java-sdk -> /dev-guide/java/introduction
 
-python/introduction-to-python-sdk -> /dev-guide/python/introduction#
+python/introduction-to-python-sdk -> /dev-guide/python/introduction
 
-typescript/introduction-to-typescript-sdk -> /dev-guide/typescript/introduction#
+typescript/introduction-to-typescript-sdk -> /dev-guide/typescript/introduction
 
-python/python-sandbox-environment -> /dev-guide/python/sandbox#
+python/python-sandbox-environment -> /dev-guide/python/sandbox
 
-cloud/get-started -> /cloud/get-started#invite-users
+cloud/users-invite -> /cloud/users#invite-users
 
 self-hosted/how-to-create-custom-search-attribute-keys -> /self-hosted-guide/visibility#create-custom-search-attributes
 
@@ -706,8 +714,6 @@ typescript/replays -> /dev-guide/typescript/testing#replay
 
 concepts/what-is-a-workflow-run-timeout -> #workflow-run-timeout
 
-references/commands -> /references/commands#
-
 go/continue-as-new -> /dev-guide/go/features#continue-as-new
 
 java/continue-as-new -> /dev-guide/java/features#continue-as-new
@@ -762,6 +768,8 @@ typescript/queries -> /dev-guide/typescript/features#queries
 
 go/updates -> /dev-guide/go/features#updates
 
+python/updates -> /dev-guide/python/features#updates
+
 java/updates -> /dev-guide/java/features#updates
 
 java/what-is-a-dynamic-handler -> /dev-guide/java/features#dynamic-handler
@@ -780,6 +788,10 @@ python/parent-close-policy -> /dev-guide/python/features#parent-close-policy
 
 typescript/parent-close-policy -> /dev-guide/typescript/features#parent-close-policy
 
+cli/schedule/index -> /cli/schedule
+
+tctl-v1/schedule/index -> /tctl-v1/schedule
+
 concepts/what-is-a-delay-start-workflow-execution -> #delay-workflow-execution
 
 go/cron-jobs -> /dev-guide/go/features#temporal-cron-jobs
@@ -792,45 +804,43 @@ python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
 
-cloud/tcld/index -> /cloud/tcld#
+cloud/tcld/index -> /cloud/tcld
 
-cloud/cloud-ops-api -> /ops#
+cloud/cloud-ops-api -> /ops
 
 cloud/api-keys/manage-api-keys -> #global-administrator-api-key-management
 
-cloud/availability-overview -> /cloud/service-availability#
+cloud/get-started -> /cloud/get-started
 
-cloud/sla -> /cloud/sla#
+cloud/availability-overview -> /cloud/service-availability
 
-cloud/api-keys/api-keys -> /cloud/api-keys#
+cloud/sla -> /cloud/sla
+
+cloud/api-keys/api-keys -> /cloud/api-keys
 
 cloud/how-to-verify-export -> #verify
-
-cloud/users-account-level-roles -> /cloud/users#account-level-roles
 
 cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 
 cloud/certificates-issue -> /cloud/certificates#issue-certificates
 
-cloud/users-invite -> /cloud/users#invite-users
-
 go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
+
+java/connect-to-temporal-cloud -> /dev-guide/java/foundations#connect-to-temporal-cloud
 
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
 
-cloud/pricing-intro -> /cloud/pricing#
+cloud/pricing-intro -> /cloud/pricing
 
-cloud/support-intro -> /cloud/support#
+cloud/support-intro -> /cloud/support
+
+cloud/support-create-ticket -> /cloud/support#support-ticket
 
 cloud/certificates-namespace -> #manage-certificates
 
 cloud/certificates-filters -> #manage-certificate-filters
-
-cloud/users-namespace-level-permissions -> /cloud/users#namespace-level-permissions
-
-cloud/support-create-ticket -> /cloud/support#support-ticket
 
 cloud/certificates-notifications -> #expiration-notifications
 
@@ -858,13 +868,19 @@ cloud/users-update-permissions -> #update-permissions
 
 cloud/users-delete -> #delete-users
 
-dev-guide/temporal-sdk -> /dev-guide/sdks#
+java/generated/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/java/project-setup#cloud-worker
+
+php/connect-to-a-dev-cluster -> /dev-guide/php/foundations#connect-to-a-dev-cluster
+
+cloud/saml-intro -> /cloud/saml
+
+dev-guide/temporal-sdk -> /dev-guide/sdks
 
 concepts/what-is-a-reset -> /workflows#reset
 
-cloud/what-is-workflow-history-export -> /cloud/export#
+cloud/what-is-workflow-history-export -> /cloud/export
 
-concepts/what-is-the-temporal-web-ui -> /web-ui#
+concepts/what-is-the-temporal-web-ui -> /web-ui
 
 cloud/what-is-an-action -> /cloud/pricing#action
 
@@ -925,6 +941,8 @@ cli/cmd-options/time-format -> /cli/cmd-options#time-format
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
 cli/workflow/list -> /cli/workflow#list
+
+concepts/what-is-tctl-v1 -> /tctl-v1
 
 cli/cmd-options/name -> /cli/cmd-options#name
 
@@ -1100,7 +1118,7 @@ dev-guide/temporal-application -> #temporal-application
 
 dev-guide/official-sdks -> #official-sdks
 
-go/chapter-durable-execution/durable-execution-intro -> /dev-guide/go/durable-execution#
+go/chapter-durable-execution/durable-execution-intro -> /dev-guide/go/durable-execution
 
 references/strongly-typed-errors/non-deterministic-error -> /references/errors#non-deterministic-error
 
@@ -1110,6 +1128,18 @@ typescript/observability -> /dev-guide/typescript/observability#tracing
 
 self-hosted/scaling-and-metrics -> /self-hosted-guide/production-checklist#scaling-and-metrics
 
+dev-guide/why-use-a-temporal-sdk -> /dev-guide/sdks#replays
+
+typescript/chapter-project-setup/project-setup-introduction -> /dev-guide/typescript/project-setup
+
+go/generated/backgroundcheck-replay-intrinsic-non-determinism -> /dev-guide/go/durable-execution#intrinsic-non-deterministic-logic
+
+go/chapter-durable-execution/non-deterministic-code-changes -> /dev-guide/go/durable-execution#durability-through-replays
+
+go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#start-workflow
+
+go/chapter-durable-execution/retrieve-event-history -> /dev-guide/go/durable-execution#retrieve-event-history
+
 concepts/what-is-a-task-token -> /activities#task-token
 
 self-hosted/how-to-install-temporal-cli -> #run-a-development-server
@@ -1118,15 +1148,23 @@ typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
-typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+typescript/chapter-project-setup/install-cli -> /dev-guide/typescript/project-setup#install-cli
 
-typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
+typescript/chapter-project-setup/choose-dev-cluster -> /dev-guide/typescript/project-setup#choose-dev-cluster
 
-typescript/how-to-use-a-prebuilt-workflow-bundle-in-typescript -> /dev-guide/typescript/foundations#prebuilt-workflow-bundles
+typescript/chapter-project-setup/project-structure -> /dev-guide/typescript/project-setup#boilerplate-project
 
-typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
+typescript/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guide/typescript/project-setup#start-workflow
 
-typescript/cancellation-scopes -> /dev-guide/typescript/foundations#cancellation-scopes
+typescript/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/typescript/project-setup#test-framework
+
+typescript/chapter-project-setup/conclusion -> /dev-guide/typescript/project-setup#conclusion
+
+typescript/chapter-durable-execution/retrieve-event-history -> /dev-guide/typescript/durable-execution#retrieve-event-history
+
+typescript/chapter-durable-execution/how-to-replay-a-workflow-execution-in-typescript -> /dev-guide/typescript/durable-execution#replay-a-workflow-execution
+
+typescript/chapter-durable-execution/non-deterministic-code-changes -> /dev-guide/typescript/durable-execution#durability-through-replays
 
 typescript/how-to-define-signals-and-queries-statically-or-dynamically -> /dev-guide/typescript/features#static-and-dynamic-signals-and-queries
 
@@ -1146,6 +1184,14 @@ typescript/how-to-use-a-custom-payload-converter-in-typescript -> /dev-guide/typ
 
 typescript/how-to-implement-interceptors-in-typescript -> /dev-guide/typescript/features#interceptors
 
+typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+
+typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
+
+typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
+
+typescript/cancellation-scopes -> /dev-guide/typescript/foundations#cancellation-scopes
+
 typescript/tracing -> /dev-guide/typescript/observability#tracing
 
 typescript/how-to-log-from-a-workflow-in-typescript -> /dev-guide/typescript/observability#logging
@@ -1164,9 +1210,25 @@ typescript/troubleshoot-issues -> /dev-guide/typescript/debugging#troubleshoot-c
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
+cli/server/start-dev -> /cli/server#start-dev
+
+cli/operator/namespace/create -> /cli/operator#create
+
+cli/workflow/start -> /cli/workflow#start
+
 python/tracing -> /dev-guide/python/observability#tracing
 
 python/logging -> /dev-guide/python/observability#logging
+
+python/project-setup-introduction -> /dev-guide/python/project-setup
+
+python/chapter-durable-execution/backgroundcheck-replay-intrinsic-non-determinism -> #intrinsic-non-deterministic-logic
+
+python/chapter-durable-execution/non-deterministic-code-changes -> #durability-through-replays
+
+python/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#start-workflow
+
+python/chapter-durable-execution/retrieve-event-history -> #retrieve-event-history
 
 python/how-to-cancel-a-workflow-in-python -> #cancel-a-workflow-execution
 
@@ -1174,7 +1236,7 @@ python/how-to-terminate-a-workflow-execution-in-python -> #terminate-a-workflow-
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
-python/async-vs-sync -> /dev-guide/python/async-vs-sync#
+python/async-vs-sync -> /dev-guide/python/async-vs-sync
 
 python/install-cli -> /dev-guide/python/project-setup#install-cli
 
@@ -1182,9 +1244,9 @@ python/choose-dev-cluster -> /dev-guide/python/project-setup#choose-dev-cluster
 
 python/project-structure -> /dev-guide/python/project-setup#boilerplate-project
 
-python/backgroundcheck-boilerplate-start-workflow -> /dev-guide/python/project-setup#start-workflow
-
 python/generated/backgroundcheck-boilerplate-add-test-framework -> /dev-guide/python/project-setup#test-framework
+
+python/generated/add-replay-test-to-background-check-workflow -> /dev-guide/python/durable-execution#add-replay-test
 
 python/add-sdk -> /dev-guide/python/foundations#install-a-temporal-sdk
 
@@ -1206,17 +1268,9 @@ python/testing-activities -> /dev-guide/python/testing#test-activities
 
 python/testing-workflows -> /dev-guide/python/testing#test-workflows
 
-cli/server/start-dev -> /cli/server#start-dev
-
-cli/operator/namespace/create -> /cli/operator#create
-
-cli/workflow/start -> /cli/workflow#start
-
 php/handle-signal -> #handle-signal
 
 php/add-sdk -> #install-a-temporal-sdk
-
-php/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 php/async-activity-completion -> /dev-guide/php/features#asynchronous-activity-completion
 
@@ -1236,9 +1290,7 @@ java/tracing -> /dev-guide/java/observability#tracing
 
 java/logging -> /dev-guide/java/observability#logging
 
-dev-guide/why-use-a-temporal-sdk -> /dev-guide/sdks#replays
-
-java/chapter-project-setup/project-setup-introduction -> /dev-guide/java/project-setup#
+java/chapter-project-setup/project-setup-introduction -> /dev-guide/java/project-setup
 
 java/generated/backgroundcheck-replay-intrinsic-non-determinism -> #intrinsic-non-deterministic-logic
 
@@ -1290,21 +1342,17 @@ java/debug-environment-development -> /dev-guide/java/debugging#debug-in-a-devel
 
 java/debug-environment-production -> /dev-guide/java/debugging#debug-in-a-production-environment
 
+java/how-to-use-a-custom-payload-codec-in-java -> /dev-guide/java/converters#custom-payload-codec
+
+java/custom-payload-conversion -> /dev-guide/java/converters#custom-payload-conversion
+
 go/testing -> /dev-guide/go/testing#replay
 
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 
 go/logging -> /dev-guide/go/observability#logging
 
-go/chapter-project-setup/project-setup-introduction -> /dev-guide/go/project-setup#
-
-go/generated/backgroundcheck-replay-intrinsic-non-determinism -> #intrinsic-non-deterministic-logic
-
-go/chapter-durable-execution/non-deterministic-code-changes -> #durability-through-replays
-
-go/chapter-project-setup/backgroundcheck-boilerplate-start-workflow -> /dev-guide/go/project-setup#start-workflow
-
-go/chapter-durable-execution/retrieve-event-history -> #retrieve-event-history
+go/chapter-project-setup/project-setup-introduction -> /dev-guide/go/project-setup
 
 go/chapter-project-setup/install-cli -> /dev-guide/go/project-setup#install-cli
 
@@ -1334,6 +1382,12 @@ go/error-handling -> /dev-guide/go/features#error-handling-in-go
 
 go/selectors -> /dev-guide/go/features#selectors
 
+go/generated/handle-cancellation-request-workflow -> /dev-guide/go/cancellation#handle-cancellation-in-workflow
+
+go/generated/handle-cancellation-request-in-activity -> /dev-guide/go/cancellation#handle-cancellation-in-an-activity
+
+go/generated/request-cancellation-from-a-client -> /dev-guide/go/cancellation#request-cancellation
+
 go/testing-frameworks -> /dev-guide/go/testing#test-frameworks
 
 go/testing-activities -> /dev-guide/go/testing#test-activities
@@ -1345,5 +1399,11 @@ go/debug-environment-development -> /dev-guide/go/debugging#debug-in-a-developme
 go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production-environment
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
+
+go/how-to-use-a-custom-payload-codec-in-go -> /dev-guide/go/converters#custom-payload-codec
+
+go/custom-payload-conversion -> /dev-guide/go/converters#custom-payload-conversion
+
+go/how-to-use-a-custom-payload-converter-in-go -> /dev-guide/go/converters#custom-payload-converter
 
 
