@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday February 23 2024 08:53:32 AM -0700
+Last assembled: Wednesday February 28 2024 07:47:20 AM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -470,6 +470,14 @@ concepts/what-is-a-schedule-to-start-timeout -> /activities#schedule-to-start-ti
 
 concepts/what-is-an-update -> /workflows#update
 
+cloud/available-regions -> /cloud/service-availability#regions
+
+cloud/support-intro -> /cloud/support
+
+cloud/api-keys/api-keys -> /cloud/api-keys
+
+cloud/support-create-ticket -> /cloud/support#support-ticket
+
 concepts/what-is-an-activity-definition -> #activity-definition
 
 concepts/what-is-an-activity-heartbeat -> #activity-heartbeat
@@ -796,8 +804,6 @@ cloud/availability-overview -> /cloud/service-availability
 
 cloud/sla -> /cloud/sla
 
-cloud/api-keys/api-keys -> /cloud/api-keys
-
 cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 
 cloud/certificates-issue -> /cloud/certificates#issue-certificates
@@ -811,10 +817,6 @@ python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-tem
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
 
 cloud/pricing-intro -> /cloud/pricing
-
-cloud/support-intro -> /cloud/support
-
-cloud/support-create-ticket -> /cloud/support#support-ticket
 
 cloud/certificates-namespace -> #manage-certificates
 

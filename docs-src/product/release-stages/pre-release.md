@@ -8,22 +8,21 @@ tags:
   - term
 ---
 
-**Access:** Pre-release New Features are invite-only for Temporal Cloud customers, meaning Temporal will specifically select Temporal Cloud customers to be part of testing the Pre-release New Features.
-Temporal Cloud customers are invited to provide feedback via the Temporal engineering teams.
+**Access:** Most Pre-release features are released in the open source Temporal software and are publicly available.
+However, some features which are explicit to hosting Temporal Services, such as [API Keys](/cloud/api-keys/api-keys), may be specific to Temporal Cloud.
 
-Given the open source nature of Temporal, the Pre-release of New Features are available to all self-hosted Temporal customers, without the need for an invitation.
-While support from the Temporal team will not be provided for self-hosted Temporal customers, community support is available on Slack.
+In Temporal Cloud, Pre-release features are invite-only: Temporal will work directly with a group of existing Temporal Cloud customers to be part of testing of each Pre-release feature.
+These customers are invited to provide feedback to the Temporal team.
 
-**Classification:** Pre-release of New Features may not be fully mature and may have bugs.
-Customer acknowledges and agrees that the Pre-release New Features are provided on an “as-is” basis, and Pre-release
-New Features are provided without any indemnification, support, warranties, or representation of any kind.
+**Classification:** New features in Pre-release may not be fully mature and may have bugs.
+Users acknowledge and agree that Pre-release features are provided on an “as-is” basis, and that they are provided without any indemnification, support, warranties, or representation of any kind.
 
-**Feedback:** Based on your participation in the Pre-release, feedback is requested but not required.
-Feedback is however highly encouraged and considered important to guiding Temporal’s New Feature development.
-Please share your experiences to influence the future direction of Temporal.
+**Feedback:** Feedback is highly encouraged and important for guiding Temporal feature development.
+We encourage you to share your experience so that you can influence the future direction of Temporal.
 
-**Availability:** Temporal may modify these New Features before release, or may even decide not to release them at all.
-This means there is no guarantee any New Features may become Generally Available.
-An API can be deprecated in any Pre-release feature at any time with advance notice and transition window.
-Temporal self-hosted customers may need to enable the Pre-release New Feature in their local development environment in order to gain Pre-release access.
-Temporal Cloud customers will contact theTemporal account team or [Temporal Support team to gain Pre-release access](/cloud/support-create-ticket).
+**Availability:** Temporal may modify features before they become Generally Available, or may even decide to remove them.
+This means there is no guarantee that a new feature will become Generally Available.
+A Pre-release feature can be deprecated at any time.
+
+Pre-release features may be disabled by default, and can be enabled via configuration.
+Temporal Cloud customers can contact the Temporal account team or [Temporal Support Team](/cloud/support-create-ticket) to gain Pre-release access.
