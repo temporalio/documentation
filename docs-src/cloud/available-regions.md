@@ -22,6 +22,7 @@ Currently, Temporal Cloud operates in several regions on Amazon Web Services (AW
 | Area          | Code           | Region            |
 | ------------- | -------------- | ----------------- |
 | Asia Pacific  | ap-northeast-1 | Tokyo             |
+| Asia Pacific  | ap-northeast-2 | Seoul             |
 | Asia Pacific  | ap-south-1     | Mumbai            |
 | Asia Pacific  | ap-southeast-1 | Singapore         |
 | Asia Pacific  | ap-southeast-2 | Sydney            |
