@@ -16,8 +16,8 @@ export default function EditThisPageWrapper() {
     <>
       <div style={feedbackStyle}>
         <p style={{ margin: 0, fontWeight: "500" }}>Have feedback on our documentation?</p>
-        <a href="http://t.mp/slack" target="_blank" rel="noopener noreferrer">
-          Join our community Slack channel
+        <a href="https://t.mp/docs-feedback" target="_blank" rel="noopener noreferrer">
+          Post on our Community forum.
         </a>
       </div>
     </>
