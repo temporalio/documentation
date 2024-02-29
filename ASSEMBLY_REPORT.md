@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday February 29 2024 09:11:29 AM -0800
+Last assembled: Thursday February 29 2024 11:25:39 AM -0800
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -298,11 +298,11 @@ cloud/tcld/namespace/create -> #create
 
 cloud/tcld/namespace/delete -> #delete
 
-cloud/tcld/namespace/export/index -> #export
-
 cloud/tcld/namespace/get -> #get
 
 cloud/tcld/namespace/list -> #list
+
+cloud/tcld/namespace/export/index -> #export
 
 cloud/tcld/namespace/accepted-client-ca/index -> #accepted-client-ca
 

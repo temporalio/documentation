@@ -21,9 +21,9 @@ Alias: `n`
 
 - [tcld namespace create](#create)
 - [tcld namespace delete](#delete)
-- [tcld namespace export](#export)
 - [tcld namespace get](#get)
 - [tcld namespace list](#list)
+- [tcld namespace export](#export)
 - [tcld namespace accepted-client-ca](#accepted-client-ca)
 - [tcld namespace certificate-filters](#certificate-filters)
 - [tcld namespace search-attributes](#search-attributes)
@@ -265,43 +265,25 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
-_Required option_
-
-**Example**
-
-```bash
-tcld namespace export s3 create --namespace <namespace_id> --sink-name <sink_name> --s3-bucket-name <bucket_name>
-```
+_Required modifier_
 
 #### --sink-name
 
 Provide a name for the export sink.
 
-_Required option_
-
-**Example**
-
-```bash
-tcld namespace export s3 create --sink-name <sink_name> --s3-bucket-name <bucket_name>
-```
+_Required modifier_
 
 #### --role-arn
 
 Provide role arn for the IAM Role.
 
-_Required option_
+_Required modifier_
 
 #### --s3-bucket-name
 
 Provide the name of an AWS S3 bucket that Temporal will send closed workflow histories to.
 
-_Required option_
-
-**Example**
-
-```bash
-tcld namespace export s3 create --s3-bucket-name <bucket_name>
-```
+_Required modifier_
 
 #### --request-id
 
@@ -333,13 +315,13 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
-_Required option_
+_Required modifier_
 
 #### --sink-name
 
 Provide the name of the export sink you wish to retrieve details for.
 
-_Required option_
+_Required modifier_
 
 ### delete
 
@@ -360,13 +342,13 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
-_Required option_
+_Required modifier_
 
 #### --sink-name
 
 Provide the name of the export sink you wish to delete.
 
-_Required option_
+_Required modifier_
 
 #### --resource-version
 
@@ -386,6 +368,12 @@ Alias: `-r`
 
 The `tcld namespace export s3 list` command allows users to list all existing export sinks within the Namespace of a Temporal Cloud account.
 
+**Example**
+
+```bash
+tcld namespace export s3 list --namespace <namespace_id>
+```
+
 The following modifiers control the behavior of the command.
 
 #### --namespace
@@ -395,7 +383,7 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
-_Required option_
+_Required modifier_
 
 #### --page-size
 
@@ -424,13 +412,13 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
-_Required option_
+_Required modifier_
 
 #### --sink-name
 
 Provide the name of the export sink you wish to update.
 
-_Required option_
+_Required modifier_
 
 #### --enabled
 
@@ -481,19 +469,19 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
-_Required option_
+_Required modifier_
 
 #### --sink-name
 
 Provide the name of the export sink you wish to retrieve details for.
 
-_Required option_
+_Required modifier_
 
 #### --role-arn
 
 Provide role arn for the IAM Role.
 
-_Required option_
+_Required modifier_
 
 #### --s3-bucket-name
 

@@ -6,7 +6,7 @@
     "title": "Export - Temporal Cloud feature guide",
     "sidebar_label": "Export",
     "sidebar_position": 9,
-    "description": "Workflow History export allows users to export Closed Workflow Histories to a users Cloud Storage Sink.",
+    "description": "Workflow History export allows users to export Closed Workflow Histories to a user's Cloud Storage Sink.",
     "use_description": false,
     "toc_max_heading_level": 4,
     "add_tabs_support": false,

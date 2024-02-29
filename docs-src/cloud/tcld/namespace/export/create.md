@@ -26,43 +26,25 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
-_Required option_
-
-**Example**
-
-```bash
-tcld namespace export s3 create --namespace <namespace_id> --sink-name <sink_name> --s3-bucket-name <bucket_name>
-```
+_Required modifier_
 
 #### --sink-name
 
 Provide a name for the export sink.
 
-_Required option_
-
-**Example**
-
-```bash
-tcld namespace export s3 create --sink-name <sink_name> --s3-bucket-name <bucket_name>
-```
+_Required modifier_
 
 #### --role-arn
 
 Provide role arn for the IAM Role.
 
-_Required option_
+_Required modifier_
 
 #### --s3-bucket-name
 
 Provide the name of an AWS S3 bucket that Temporal will send closed workflow histories to.
 
-_Required option_
-
-**Example**
-
-```bash
-tcld namespace export s3 create --s3-bucket-name <bucket_name>
-```
+_Required modifier_
 
 #### --request-id
 

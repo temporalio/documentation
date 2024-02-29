@@ -10,6 +10,12 @@ tags:
 
 The `tcld namespace export s3 list` command allows users to list all existing export sinks within the Namespace of a Temporal Cloud account.
 
+**Example**
+
+```bash
+tcld namespace export s3 list --namespace <namespace_id>
+```
+
 The following modifiers control the behavior of the command.
 
 #### --namespace
@@ -19,7 +25,7 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
-_Required option_
+_Required modifier_
 
 #### --page-size
 

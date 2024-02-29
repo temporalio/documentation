@@ -25,13 +25,13 @@ If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPAC
 
 Alias: `-n`
 
-_Required option_
+_Required modifier_
 
 #### --sink-name
 
 Provide the name of the export sink you wish to delete.
 
-_Required option_
+_Required modifier_
 
 #### --resource-version
 

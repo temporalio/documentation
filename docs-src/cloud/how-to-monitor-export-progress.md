@@ -15,7 +15,7 @@ Once you've finalized the setup, here's how to monitor the export progress:
 
 1. **Export Job Execution**:
    - **Schedule**: The Export job is scheduled to run on an hourly basis, starting at 10 minutes past each hour.
-   - **Duration**: The time taken for the export process can vary based on the amount of data, so it may not be instantaneous.
+   - **Duration**: The time taken for the export process can vary, so it might not be instantaneous.
 
 2. **Checking the S3 Bucket**:
    - **Files Arrival**: Post the initial hour of setting up, inspect your S3 bucket.
@@ -38,8 +38,8 @@ Once you've finalized the setup, here's how to monitor the export progress:
      This internal check routinely evaluates the health and status of the Export mechanism, ensuring its uninterrupted functioning.
 
 5. **Usage monitoring**:
-   - Actions from the Export Job are included on the Usage UI.
-   - **Metrics**: Export related metrics are available in `temporal_cloud_v0_total_action_count` with the label `is_background`. For more information, see [Cloud metrics](/cloud/metrics-intro).
+   - Actions from the Export Job are included in the Usage UI.
+   - **Metrics**: Export related metrics are available in `temporal_cloud_v0_total_action_count` with the label `is_background=“true”`. For more information, see [Cloud metrics](/cloud/metrics-intro).
 
 For optimal results, review the S3 bucket for any new exported files and refer to the UI insights.
 This dual check ensures you remain abreast of the export progress and any potential issues.

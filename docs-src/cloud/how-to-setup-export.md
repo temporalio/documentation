@@ -33,7 +33,7 @@ The automated setup creates a CloudFormation stack with write permission to the 
 2. Select **Configure** from the **Export** card.
 3. Provide the following information to configure the export sink and then select **Create and launch stack**:
    1. Name: A name for the export sink.
-   2. AWS S3 Bucket Name: the name of an the configured AWS S3 bucket to send Closed Workflow Histories to.
+   2. AWS S3 Bucket Name: The name of the configured AWS S3 bucket to send Closed Workflow Histories to.
    3. AWS Account ID: The AWS account ID.
    4. Role Name: The name of the AWS IAM role to use for the CloudFormation stack that has write permission to the S3 bucket.
    5. KMS ARN: (optional) The ARN of the AWS KMS key to use for encryption of the exported Workflow History.
