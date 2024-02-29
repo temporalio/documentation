@@ -93,3 +93,11 @@ The Versioning section of the Temporal Developer's guide covers how to update Wo
 
 - [How to use the Python SDK Patching API](/python/generated/how-to-use-the-python-sdk-patching-api-in-python): Heres a sample implementation of patching in new code using the Python SDK's patching API.
 - [How to use Worker Versioning in Python](/python/how-to-use-worker-versioning-in-python): Version your Python Workers by using build ID-based versioning
+
+## Converters
+
+The Converters and Codecs section of the Temporal Developer's guide provides guidance on how to support compression, encryption, and other special data handling by implementing custom converters and codecs.
+
+- [How to use a custom Payload Codec in Python](/python/how-to-use-a-custom-payload-codec-in-python): Create a custom `PayloadCodec` implementation and define your encryption/compression and decryption/decompression logic in the `encode` and `decode` functions.
+- [How to use custom payload conversion](/python/custom-payload-conversion): Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.
+- [How to use a custom Payload Converter in Python](/python/how-to-use-a-custom-payload-converter-in-python): Use a `CompositeDataConverter` to apply custom `PayloadConverter` in a specified order.
