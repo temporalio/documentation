@@ -12,8 +12,8 @@ tags:
 ---
 
 Use a [Composite Data Converter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter) to apply custom, type-specific Payload Converters in a specified order.
-Defining a new Composite Data Converter is not always necessary to use a Custom Codec.
-You can just override the default Converter instead to keep your code more manageable, but a Composite Data Converter may be necessary for complex Workflow logic.
+Defining a new Composite Data Converter is not always necessary to implement custom data handling.
+You can override the default Converter with a custom Codec, but a Composite Data Converter may be necessary for complex Workflow logic.
 
 `NewCompositeDataConverter` creates a new instance of `CompositeDataConverter` from an ordered list of type-specific Payload Converters.
 The following type-specific Payload Converters are available in the Go SDK, listed in the order that they are applied by the default Data Converter:

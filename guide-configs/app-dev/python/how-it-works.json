@@ -4,7 +4,7 @@
     "file_dir": "dev-guide/python/how-it-works",
     "title": "How the Temporal Python SDK works",
     "sidebar_label": "How it works",
-    "sidebar_position": 10,
+    "sidebar_position": 11,
     "description": "Describes idiosyncrasy of the Temporal Python SDK.",
     "use_description": false,
     "toc_max_heading_level": 4,

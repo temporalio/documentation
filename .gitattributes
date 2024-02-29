@@ -99,6 +99,7 @@ websites/docs.temporal.io/docs/dev-guide/tscript/project-setup.md linguist-gener
 websites/docs.temporal.io/docs/dev-guide/tscript/testing.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/tscript/versioning.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/python/how-it-works/async-vs-sync.mdx linguist-generated=true
+websites/docs.temporal.io/docs/dev-guide/python/converters.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/python/debugging.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/python/durable-execution.md linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/python/features.mdx linguist-generated=true
