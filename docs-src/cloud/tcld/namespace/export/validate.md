@@ -10,6 +10,12 @@ tags:
 
 The `tcld namespace export s3 validate` command allows users to validate an export sink from the Namespace of a Temporal Cloud account.
 
+**Example**
+
+```bash
+tcld namespace export s3 validate --namespace <namespace_id> --sink-name <sink_name> --s3-bucket-name <bucket_name> --role-arn <role_arn>
+```
+
 The following modifiers control the behavior of the command.
 
 #### --namespace

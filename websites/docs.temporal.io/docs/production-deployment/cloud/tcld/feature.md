@@ -22,7 +22,7 @@ The `tcld feature` commands manage features in Temporal Cloud.
 Alias: `f`
 
 - [tcld feature get](#get)
-- [tcld feature toggle-apikey](#toggle-apikey)
+- [tcld feature toggle](#toggle)
 
 ## get
 
@@ -49,13 +49,20 @@ The following is an example output:
 ]
 ```
 
-## toggle-apikey
+## toggle
 
-The `tcld feature toggle-apikey` command turns on or off the `apikey` feature in Temporal Cloud.
+The `tcld feature toggle-*` command turns on or off the `*` feature in Temporal Cloud.
+
+:::note
+
+The `*` symbol represents the name of the feature.
+Replace `*` with the name of the available feature to toggle.
+
+:::
 
 Alias: `tak`
 
-`tcld feature toggle-apikey`
+`tcld feature toggle-*`
 
 The command has no modifiers.
 
@@ -68,4 +75,11 @@ The following is an example output:
 ```json
 Feature flag enable-apikey is now true
 ```
+
+:::note
+
+The feature `apikey` is an example.
+Update the feature name to toggle a different feature.
+
+:::
 

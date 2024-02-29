@@ -13,4 +13,4 @@ The `tcld feature` commands manage features in Temporal Cloud.
 Alias: `f`
 
 - [tcld feature get](/cloud/tcld/feature/get)
-- [tcld feature toggle-apikey](/cloud/tcld/feature/toggle-apikey)
+- [tcld feature toggle](/cloud/tcld/feature/toggle)

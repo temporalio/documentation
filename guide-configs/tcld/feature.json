@@ -19,7 +19,7 @@
         },
         {
             "type": "h2",
-            "id": "cloud/tcld/feature/toggle-apikey"
+            "id": "cloud/tcld/feature/toggle"
         }
     ]
 }

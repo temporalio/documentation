@@ -52,12 +52,6 @@ Provide role arn for the IAM Role.
 
 _Required option_
 
-**Example**
-
-```bash
-tcld namespace export s3 create --role-arn <role_arn> --s3-bucket-name <bucket_name>
-```
-
 #### --s3-bucket-name
 
 Provide the name of an AWS S3 bucket that Temporal will send closed workflow histories to.
@@ -77,18 +71,6 @@ If not specified, the server assigns a request identifier.
 
 Alias: `-r`
 
-**Example**
-
-```bash
-tcld namespace export s3 create --request-id <request_id> --s3-bucket-name <bucket_name>
-```
-
 #### --kms-arn
 
 Provide the ARN of the KMS key to use for encryption. Note: If the KMS ARN needs to be added or updated, users should create the IAM Role with KMS or modify the created IAM Role accordingly. Providing it as part of the input won't help.
-
-**Example**
-
-```bash
-tcld namespace export s3 create --kms-arn <kms_arn> --s3-bucket-name <bucket_name>
-```

@@ -24,6 +24,14 @@
         },
         {
             "type": "h2",
+            "id": "cloud/tcld/namespace/get"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/namespace/list"
+        },
+        {
+            "type": "h2",
             "id": "cloud/tcld/namespace/export/index"
         },
         {
@@ -49,14 +57,6 @@
         {
             "type": "h3",
             "id": "cloud/tcld/namespace/export/validate"
-        },
-        {
-            "type": "h2",
-            "id": "cloud/tcld/namespace/get"
-        },
-        {
-            "type": "h2",
-            "id": "cloud/tcld/namespace/list"
         },
         {
             "type": "h2",

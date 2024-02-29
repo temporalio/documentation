@@ -11,18 +11,18 @@ tags:
 
 **How to configure Workflow History Export**
 
-You can use either use the [Temporal Cloud UI](#using-temporal-cloud-ui) or [tcld](#using-tcld) to configure the Workflow History Export.
+You can use either the [Temporal Cloud UI](#using-temporal-cloud-ui) or [tcld](#using-tcld) to configure the Workflow History Export.
 
 ### Using Temporal Cloud UI
 
-The following steps guides you through setting up Workflow History Export using the Temporal Cloud UI.
+The following steps guide you through setting up Workflow History Export using the Temporal Cloud UI.
 
 ![](/img/export-sink-ui.png)
 
 The Temporal Cloud UI provides two ways for configuring Workflow History Export:
 
 - [Automated setup](#automated-setup) (recommended): The Cloud UI launches the AWS CloudFormation Console to create a stack, with write permission to the S3 bucket.
-- [Manual setup](#manual-setup): The Cloud UI provides a CloudFormation template for user’s to use to manually configure a CloudFormation stack.
+- [Manual setup](#manual-setup): The Cloud UI provides a CloudFormation template for users to manually configure a CloudFormation stack.
 
 #### Automated setup
 

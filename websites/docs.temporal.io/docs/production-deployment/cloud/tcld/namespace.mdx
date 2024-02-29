@@ -199,6 +199,38 @@ Alias: `-v`
 tcld namespace delete --namespace <namespace_id>
 ```
 
+## get
+
+The `tcld namespace get` command gets information about the specified [Namespace](/namespaces) in Temporal Cloud.
+
+Alias: `g`
+
+`tcld namespace get`
+
+The following modifier controls the behavior of the command.
+
+#### --namespace
+
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+
+Alias: `-n`
+
+**Example**
+
+```bash
+tcld namespace get --namespace <namespace_id>
+```
+
+## list
+
+The `tcld namespace list` command lists all [Namespaces](/namespaces) in Temporal Cloud.
+
+Alias: `l`
+
+`tcld namespace list`
+
+The command has no modifiers.
+
 ## export
 
 The `tcld namespace export s3` commands manage Workflow History Exports.
@@ -259,12 +291,6 @@ Provide role arn for the IAM Role.
 
 _Required option_
 
-**Example**
-
-```bash
-tcld namespace export s3 create --role-arn <role_arn> --s3-bucket-name <bucket_name>
-```
-
 #### --s3-bucket-name
 
 Provide the name of an AWS S3 bucket that Temporal will send closed workflow histories to.
@@ -284,25 +310,19 @@ If not specified, the server assigns a request identifier.
 
 Alias: `-r`
 
-**Example**
-
-```bash
-tcld namespace export s3 create --request-id <request_id> --s3-bucket-name <bucket_name>
-```
-
 #### --kms-arn
 
 Provide the ARN of the KMS key to use for encryption. Note: If the KMS ARN needs to be added or updated, users should create the IAM Role with KMS or modify the created IAM Role accordingly. Providing it as part of the input won't help.
 
-**Example**
-
-```bash
-tcld namespace export s3 create --kms-arn <kms_arn> --s3-bucket-name <bucket_name>
-```
-
 ### get
 
 The `tcld namespace export s3 get` command allows users to retrieve details about an existing export sink from the Namespace of a Temporal Cloud account.
+
+**Example**
+
+```bash
+tcld namespace export s3 get --namespace <namespace_id> --sink-name <sink_name>
+```
 
 The following modifiers control the behavior of the command.
 
@@ -377,21 +397,9 @@ Alias: `-n`
 
 _Required option_
 
-**Example**
-
-```bash
-tcld namespace export s3 list --namespace <namespace_id>
-```
-
 #### --page-size
 
 Determine the number of results to return per page for list operations. If not specified, the default value is 100.
-
-**Example**
-
-```bash
-tcld namespace export s3 list --page-size <number_of_results>
-```
 
 #### --page-token
 
@@ -458,6 +466,12 @@ Alias: `-r`
 
 The `tcld namespace export s3 validate` command allows users to validate an export sink from the Namespace of a Temporal Cloud account.
 
+**Example**
+
+```bash
+tcld namespace export s3 validate --namespace <namespace_id> --sink-name <sink_name> --s3-bucket-name <bucket_name> --role-arn <role_arn>
+```
+
 The following modifiers control the behavior of the command.
 
 #### --namespace
@@ -488,38 +502,6 @@ Update the name of the AWS S3 bucket that Temporal will send closed workflow his
 #### --kms-arn
 
 Update the ARN of the KMS key used for encryption. Note: If the KMS ARN needs to be added or updated, users should create the IAM Role with KMS or modify the created IAM Role accordingly. Providing it as part of the input won't help.
-
-## get
-
-The `tcld namespace get` command gets information about the specified [Namespace](/namespaces) in Temporal Cloud.
-
-Alias: `g`
-
-`tcld namespace get`
-
-The following modifier controls the behavior of the command.
-
-#### --namespace
-
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
-
-Alias: `-n`
-
-**Example**
-
-```bash
-tcld namespace get --namespace <namespace_id>
-```
-
-## list
-
-The `tcld namespace list` command lists all [Namespaces](/namespaces) in Temporal Cloud.
-
-Alias: `l`
-
-`tcld namespace list`
-
-The command has no modifiers.
 
 ## accepted-client-ca
 

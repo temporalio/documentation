@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday February 28 2024 11:13:11 AM -0800
+Last assembled: Thursday February 29 2024 09:11:29 AM -0800
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -278,7 +278,7 @@ cloud/tcld/apikey/enable -> #enable
 
 cloud/tcld/feature/get -> #get
 
-cloud/tcld/feature/toggle-apikey -> #toggle-apikey
+cloud/tcld/feature/toggle -> #toggle
 
 cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
 

@@ -21,21 +21,9 @@ Alias: `-n`
 
 _Required option_
 
-**Example**
-
-```bash
-tcld namespace export s3 list --namespace <namespace_id>
-```
-
 #### --page-size
 
 Determine the number of results to return per page for list operations. If not specified, the default value is 100.
-
-**Example**
-
-```bash
-tcld namespace export s3 list --page-size <number_of_results>
-```
 
 #### --page-token
 

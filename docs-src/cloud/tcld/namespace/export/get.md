@@ -10,6 +10,12 @@ tags:
 
 The `tcld namespace export s3 get` command allows users to retrieve details about an existing export sink from the Namespace of a Temporal Cloud account.
 
+**Example**
+
+```bash
+tcld namespace export s3 get --namespace <namespace_id> --sink-name <sink_name>
+```
+
 The following modifiers control the behavior of the command.
 
 #### --namespace
