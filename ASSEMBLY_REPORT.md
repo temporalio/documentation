@@ -1,6 +1,5 @@
 # Docs Assembly Workflow report
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 144 guide configurations found.
 
