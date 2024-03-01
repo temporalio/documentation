@@ -27,7 +27,7 @@ Depending on your Workflows’ requirements, the migration process may be as sim
 There are two aspects to consider when migrating: your Temporal Client connection code and your Workflow Executions.
 Here’s a high-level overview of what you can expect:
 
-- **Introduce another Temporal client to your Starter and Worker Processes:** Configure and deploy a new Temporal client so that Temporal Cloud becomes responsible for new Workflow Executions.
+- **Introduce another Temporal Client to your Starter and Worker Processes:** Configure and deploy a new Temporal Client so that Temporal Cloud becomes responsible for new Workflow Executions.
 - **Migrate Workflow Executions:** There are different approaches for new, running, and completed Workflow Executions.
   - **New Workflow Executions:** When you no longer need to send Signals or Queries to your self-hosted Cluster, you can deprecate your old Client code. Until then, your self-hosted Cluster can receive relevant traffic, while new Workflow Executions are sent to Temporal Cloud.
   - **Running Workflow Executions:** Short-running Workflows can often be drained and then started again on Temporal Cloud. Long-running Workflows that cannot be drained might require you to implement more code changes to pass the state of the currently running Workflow to Temporal Cloud.
