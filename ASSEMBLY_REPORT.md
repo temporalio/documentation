@@ -1,7 +1,5 @@
 # Docs Assembly Workflow report
 
-144 guide configurations found.
-
 1773 information nodes found.
 
 1530 information nodes are attached to guides.
