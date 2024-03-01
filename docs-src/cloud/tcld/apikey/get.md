@@ -16,7 +16,7 @@ The following option controls the behavior of the command.
 
 #### --id
 
-_Required option_
+_Required modifier_
 
 Specify the ID of the API Key to retrieve.
 
