@@ -1,7 +1,5 @@
 # Docs Assembly Workflow report
 
-1773 information nodes found.
-
 1530 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
