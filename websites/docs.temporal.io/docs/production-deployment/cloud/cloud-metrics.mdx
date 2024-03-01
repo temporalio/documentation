@@ -80,8 +80,8 @@ $ curl --cert client.pem --key client-key.pem "https://<account-id>.tmprl.cloud/
           "__name__": "temporal_cloud_v0_state_transition_count",
           "__rollup__": "true",
           "operation": "WorkflowContext",
-          "temporal_account": "a2dd6",
-          "temporal_namespace": "mynamespace.a2dd6",
+          "temporal_account": "your-account",
+          "temporal_namespace": "your-namespace.your-account-is",
           "temporal_service_type": "history"
         },
         "value": [
@@ -150,11 +150,32 @@ Temporal tracks the following metrics for your various Namespaces.
 - `temporal_cloud_v0_workflow_timeout_count`: Workflows that timed out before completing execution.
 
 Metrics for all Namespaces in your account are available from the metrics endpoint.
-The `temporal_namespace` label identifies the Namespace that is associated with each metric so that each user can build their own dashboard to meet their needs.
 
 Metrics lag real-time performance by about one minute.
 
 Temporal Cloud retains raw metrics for seven days.
+
+### Metric labels
+
+Metrics for all Namespaces in your account are available from the metrics endpoint. Use the following labels to filter metrics:
+
+| Label                      | Explanation                                                                                                                                                                                                                                                               |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `le`                       | Less than or equal to (`le`) is used in histograms to categorize observations into buckets based on their value being less than or equal to a predefined upper limit.                                                                                                     |
+| `operation`                | This includes operations such as:<ul><li>SignalWorkflowExecution</li><li>StartBatchOperation</li><li>StartWorkflowExecution</li><li>TaskQueueMgr</li><li>TerminateWorkflowExecution</li><li>UpdateNamespace</li><li>UpdateSchedule</li></ul> This list is non-exhaustive. |
+| `resource_exhausted_cause` | Cause for resource exhaustion.                                                                                                                                                                                                                                            |
+| `task_type`                | Activity or Workflow.                                                                                                                                                                                                                                                     |
+| `temporal_account`         | Temporal Account.                                                                                                                                                                                                                                                         |
+| `temporal_namespace`       | Temporal Namespace.                                                                                                                                                                                                                                                       |
+| `temporal_service_type`    | Frontend or Matching or History or Worker.                                                                                                                                                                                                                                |
+| `is_background`            | This label on `temporal_cloud_v0_total_action_count` indicates when actions are produced by a Temporal background job, for example: hourly Workflow Export.                                                                                                               |
+| `namespace_mode`           | This label on `temporal_cloud_v0_total_action_count` indicates if actions are produced by an active vs a passive Namespace. For a regular Namespace, `namespace_mode` will always be “active”.                                                                            |
+
+The following is an example of how you can filter metrics using labels:
+
+```text
+temporal_cloud_v0_poll_success_count{__rollup__="true", operation="TaskQueueMgr", task_type="Activity", temporal_account="12345", temporal_namespace="your_namespace.12345", temporal_service_type="matching"}
+```
 
 ## How to use Temporal Cloud performance metrics {#how-to-use}
 
