@@ -116,24 +116,23 @@ An Activity Execution is the full chain of [Activity Task Executions](/workers#a
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Activity Execution</p></div><div class="tdiiw" height="1780"><img class="img_ev3q" src="/diagrams/activity-execution.svg" alt="Activity Execution" /></div></div>
 
-By default, an Activity Execution has no time limit.
 You can customize [Activity Execution timeouts](#start-to-close-timeout) and [retry policies](/retry-policies).
 
 If an Activity Execution fails (because it exhausted all retries, threw a [non-retryable error](/retry-policies#non-retryable-errors), or was canceled), the error is returned to the [Workflow](/workflows), which decides how to handle it.
 
-
 :::note
 
 Temporal guarantees that an Activity Task either runs or timeouts.
+There are multiple failure scenarios when an Activity Task is lost.
+It can be lost during delivery to a Worker or after the Activity Function is called and the Worker crashed.
+
+Temporal doesn't detect task loss directly.
+It relies on [Start-To-Close timeout](#start-to-close-timeout).
 If the Activity Task times out, the Activity Execution will be retried according to the Activity Execution Retry Policy.
 
 In scenarios where the Activity Execution Retry Policy is set to `1` and a Timeout occurs, the Activity Execution will not be tried.
 
 :::
-
-
-
-
 
 ### Cancellation
 
