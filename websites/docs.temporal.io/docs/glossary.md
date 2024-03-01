@@ -583,6 +583,12 @@ A Workflow Execution Timeout is the maximum time that a Workflow Execution can b
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_
 
 
+#### [Workflow History Export](/cloud/export)
+Workflow History export allows users to export Closed Workflow Histories to a user's Cloud Storage Sink
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/tags/temporal-cloud), [operations](/tags/operations)_
+
+
 #### [Workflow Id](/workflows#workflow-id)
 A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.
 

@@ -9,7 +9,8 @@
     "assemble": "./assemble.js && dprint fmt",
     "assemble-cloud": "./assemble.js --cloud && dprint fmt",
     "snipsync": "snipsync",
-    "format": "dprint fmt"
+    "format": "dprint fmt",
+    "vale": "./assembly/run-vale.sh"
   },
   "dependencies": {
     "dprint": "^0.45.0",

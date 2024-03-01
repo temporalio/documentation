@@ -1,14 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday February 27 2024 12:45:29 PM -0800
+1773 information nodes found.
 
-Assembly Workflow Id: docs-full-assembly
-
-142 guide configurations found.
-
-1756 information nodes found.
-
-1514 information nodes are attached to guides.
+1530 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -276,11 +270,17 @@ cloud/tcld/apikey/disable -> #disable
 
 cloud/tcld/apikey/enable -> #enable
 
+cloud/tcld/feature/get -> #get
+
+cloud/tcld/feature/toggle -> #toggle
+
 cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
 
 cloud/tcld/generate-certificates/end-entity-certificate -> #end-entity-certificate
 
 cloud/tcld/how-to-install-tcld -> #install-tcld
+
+cloud/tcld/feature/index -> /production-deployment/cloud/tcld/feature
 
 cloud/tcld/login -> /cloud/tcld/login
 
@@ -296,6 +296,8 @@ cloud/tcld/namespace/get -> #get
 
 cloud/tcld/namespace/list -> #list
 
+cloud/tcld/namespace/export/index -> #export
+
 cloud/tcld/namespace/accepted-client-ca/index -> #accepted-client-ca
 
 cloud/tcld/namespace/certificate-filters/index -> #certificate-filters
@@ -305,6 +307,18 @@ cloud/tcld/namespace/search-attributes/index -> #search-attributes
 cloud/tcld/namespace/retention/index -> #retention
 
 cloud/tcld/namespace/update-codec-server -> #update-codec-server
+
+cloud/tcld/namespace/export/create -> #create
+
+cloud/tcld/namespace/export/get -> #get
+
+cloud/tcld/namespace/export/delete -> #delete
+
+cloud/tcld/namespace/export/list -> #list
+
+cloud/tcld/namespace/export/update -> #update
+
+cloud/tcld/namespace/export/validate -> #validate
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
@@ -798,6 +812,8 @@ cloud/sla -> /cloud/sla
 
 cloud/api-keys/api-keys -> /cloud/api-keys
 
+cloud/how-to-verify-export -> #verify
+
 cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 
 cloud/certificates-issue -> /cloud/certificates#issue-certificates
@@ -855,6 +871,8 @@ cloud/saml-intro -> /cloud/saml
 dev-guide/temporal-sdk -> /dev-guide/sdks
 
 concepts/what-is-a-reset -> /workflows#reset
+
+cloud/what-is-workflow-history-export -> /cloud/export
 
 concepts/what-is-the-temporal-web-ui -> /web-ui
 
