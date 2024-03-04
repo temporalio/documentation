@@ -49,6 +49,7 @@ websites/docs.temporal.io/docs/references/web-ui-configuration.mdx linguist-gene
 websites/docs.temporal.io/docs/references/web-ui-environment-variables.mdx linguist-generated=true
 websites/docs.temporal.io/docs/references/web-ui-server-env-vars.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/index.mdx linguist-generated=true
+websites/docs.temporal.io/docs/release-stages.mdx linguist-generated=true
 websites/docs.temporal.io/docs/concepts/activities.mdx linguist-generated=true
 websites/docs.temporal.io/docs/concepts/clusters.mdx linguist-generated=true
 websites/docs.temporal.io/docs/concepts/dataconversion.mdx linguist-generated=true

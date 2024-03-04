@@ -505,7 +505,6 @@ Use the `sleep()` API to cause the Workflow to sleep for a minute before the cal
 
 By using Temporal's logging API, the Worker is able to suppress these log messages during replay so that log statements from the original execution aren't duplicated by the re-execution.
 
-
 ```typescript
 import { log } from '@temporalio/workflow';
 import { proxyActivities, sleep } from '@temporalio/workflow';

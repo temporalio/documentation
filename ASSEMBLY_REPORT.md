@@ -1,13 +1,14 @@
 # Docs Assembly Workflow report
 
+Last assembled: Monday March 04 2024 13:46:58 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
-142 guide configurations found.
+145 guide configurations found.
 
-1756 information nodes found.
+1777 information nodes found.
 
-1530 information nodes are attached to guides.
+1534 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -489,6 +490,14 @@ concepts/what-is-a-schedule-to-start-timeout -> /activities#schedule-to-start-ti
 
 concepts/what-is-an-update -> /workflows#update
 
+cloud/available-regions -> /cloud/service-availability#regions
+
+cloud/support-intro -> /cloud/support
+
+cloud/api-keys/api-keys -> /cloud/api-keys
+
+cloud/support-create-ticket -> /cloud/support#support-ticket
+
 concepts/what-is-an-activity-definition -> #activity-definition
 
 concepts/what-is-an-activity-heartbeat -> #activity-heartbeat
@@ -815,8 +824,6 @@ cloud/availability-overview -> /cloud/service-availability
 
 cloud/sla -> /cloud/sla
 
-cloud/api-keys/api-keys -> /cloud/api-keys
-
 cloud/how-to-verify-export -> #verify
 
 cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
@@ -832,10 +839,6 @@ python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-tem
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
 
 cloud/pricing-intro -> /cloud/pricing
-
-cloud/support-intro -> /cloud/support
-
-cloud/support-create-ticket -> /cloud/support#support-ticket
 
 cloud/certificates-namespace -> #manage-certificates
 
@@ -1165,6 +1168,14 @@ typescript/chapter-durable-execution/how-to-replay-a-workflow-execution-in-types
 
 typescript/chapter-durable-execution/non-deterministic-code-changes -> /dev-guide/typescript/durable-execution#durability-through-replays
 
+typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+
+typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
+
+typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
+
+typescript/cancellation-scopes -> /dev-guide/typescript/foundations#cancellation-scopes
+
 typescript/how-to-define-signals-and-queries-statically-or-dynamically -> /dev-guide/typescript/features#static-and-dynamic-signals-and-queries
 
 typescript/async-activity-completion -> /dev-guide/typescript/features#asynchronous-activity-completion
@@ -1182,14 +1193,6 @@ typescript/namespaces -> /dev-guide/typescript/features#namespaces
 typescript/how-to-use-a-custom-payload-converter-in-typescript -> /dev-guide/typescript/features#custom-payload-conversion
 
 typescript/how-to-implement-interceptors-in-typescript -> /dev-guide/typescript/features#interceptors
-
-typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
-
-typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
-
-typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
-
-typescript/cancellation-scopes -> /dev-guide/typescript/foundations#cancellation-scopes
 
 typescript/tracing -> /dev-guide/typescript/observability#tracing
 
