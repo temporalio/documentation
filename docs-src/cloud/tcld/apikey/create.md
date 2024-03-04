@@ -16,7 +16,7 @@ The following options control the behavior of the command.
 
 #### --name
 
-_Required option_
+_Required modifier_
 
 Specify the display name of the API Key.
 
