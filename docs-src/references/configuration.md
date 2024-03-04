@@ -326,7 +326,7 @@ An example `clusterMetadata` section:
 
 ```yaml
 clusterMetadata:
-  enableGlobalNamespace: false
+  enableGlobalNamespace: true
   failoverVersionIncrement: 10
   masterClusterName: "active"
   currentClusterName: "active"

@@ -48,8 +48,8 @@ $ curl --cert client.pem --key client-key.pem "https://<account-id>.tmprl.cloud/
           "__name__": "temporal_cloud_v0_state_transition_count",
           "__rollup__": "true",
           "operation": "WorkflowContext",
-          "temporal_account": "a2dd6",
-          "temporal_namespace": "mynamespace.a2dd6",
+          "temporal_account": "your-account",
+          "temporal_namespace": "your-namespace.your-account-is",
           "temporal_service_type": "history"
         },
         "value": [

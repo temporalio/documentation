@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday March 04 2024 13:44:09 PM -0700
+Last assembled: Monday March 04 2024 13:46:58 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
-143 guide configurations found.
+145 guide configurations found.
 
-1760 information nodes found.
+1777 information nodes found.
 
-1518 information nodes are attached to guides.
+1534 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -276,11 +276,17 @@ cloud/tcld/apikey/disable -> #disable
 
 cloud/tcld/apikey/enable -> #enable
 
+cloud/tcld/feature/get -> #get
+
+cloud/tcld/feature/toggle -> #toggle
+
 cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
 
 cloud/tcld/generate-certificates/end-entity-certificate -> #end-entity-certificate
 
 cloud/tcld/how-to-install-tcld -> #install-tcld
+
+cloud/tcld/feature/index -> /production-deployment/cloud/tcld/feature
 
 cloud/tcld/login -> /cloud/tcld/login
 
@@ -296,6 +302,8 @@ cloud/tcld/namespace/get -> #get
 
 cloud/tcld/namespace/list -> #list
 
+cloud/tcld/namespace/export/index -> #export
+
 cloud/tcld/namespace/accepted-client-ca/index -> #accepted-client-ca
 
 cloud/tcld/namespace/certificate-filters/index -> #certificate-filters
@@ -305,6 +313,18 @@ cloud/tcld/namespace/search-attributes/index -> #search-attributes
 cloud/tcld/namespace/retention/index -> #retention
 
 cloud/tcld/namespace/update-codec-server -> #update-codec-server
+
+cloud/tcld/namespace/export/create -> #create
+
+cloud/tcld/namespace/export/get -> #get
+
+cloud/tcld/namespace/export/delete -> #delete
+
+cloud/tcld/namespace/export/list -> #list
+
+cloud/tcld/namespace/export/update -> #update
+
+cloud/tcld/namespace/export/validate -> #validate
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
@@ -804,6 +824,8 @@ cloud/availability-overview -> /cloud/service-availability
 
 cloud/sla -> /cloud/sla
 
+cloud/how-to-verify-export -> #verify
+
 cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 
 cloud/certificates-issue -> /cloud/certificates#issue-certificates
@@ -857,6 +879,8 @@ cloud/saml-intro -> /cloud/saml
 dev-guide/temporal-sdk -> /dev-guide/sdks
 
 concepts/what-is-a-reset -> /workflows#reset
+
+cloud/what-is-workflow-history-export -> /cloud/export
 
 concepts/what-is-the-temporal-web-ui -> /web-ui
 
@@ -1144,6 +1168,14 @@ typescript/chapter-durable-execution/how-to-replay-a-workflow-execution-in-types
 
 typescript/chapter-durable-execution/non-deterministic-code-changes -> /dev-guide/typescript/durable-execution#durability-through-replays
 
+typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+
+typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
+
+typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
+
+typescript/cancellation-scopes -> /dev-guide/typescript/foundations#cancellation-scopes
+
 typescript/how-to-define-signals-and-queries-statically-or-dynamically -> /dev-guide/typescript/features#static-and-dynamic-signals-and-queries
 
 typescript/async-activity-completion -> /dev-guide/typescript/features#asynchronous-activity-completion
@@ -1161,14 +1193,6 @@ typescript/namespaces -> /dev-guide/typescript/features#namespaces
 typescript/how-to-use-a-custom-payload-converter-in-typescript -> /dev-guide/typescript/features#custom-payload-conversion
 
 typescript/how-to-implement-interceptors-in-typescript -> /dev-guide/typescript/features#interceptors
-
-typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
-
-typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
-
-typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
-
-typescript/cancellation-scopes -> /dev-guide/typescript/foundations#cancellation-scopes
 
 typescript/tracing -> /dev-guide/typescript/observability#tracing
 
