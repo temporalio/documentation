@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday March 04 2024 13:46:58 PM -0700
+Last assembled: Monday March 04 2024 22:25:23 PM -0800
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -452,7 +452,7 @@ self-hosted/how-to-set-up-dual-visibility -> #dual-visibility
 
 concepts/what-is-cluster-configuration -> /clusters#cluster-configuration
 
-cloud/metrics-intro -> /cloud/metrics
+cloud/metrics-intro -> /cloud/metrics/
 
 concepts/what-is-temporal-cloud -> /cloud/overview
 
@@ -566,7 +566,7 @@ go/namespaces -> /dev-guide/go/features#namespaces
 
 java/namespaces -> /dev-guide/java/features#namespaces
 
-cloud/prometheus-grafana-setup -> /cloud/metrics#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
+cloud/prometheus-grafana-setup -> /cloud/metrics/prometheus-grafana#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
 
 cli/workflow/show -> /cli/workflow#show
 
@@ -870,10 +870,6 @@ cloud/users-update-permissions -> #update-permissions
 
 cloud/users-delete -> #delete-users
 
-java/generated/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/java/project-setup#cloud-worker
-
-php/connect-to-a-dev-cluster -> /dev-guide/php/foundations#connect-to-a-dev-cluster
-
 cloud/saml-intro -> /cloud/saml
 
 dev-guide/temporal-sdk -> /dev-guide/sdks
@@ -881,6 +877,10 @@ dev-guide/temporal-sdk -> /dev-guide/sdks
 concepts/what-is-a-reset -> /workflows#reset
 
 cloud/what-is-workflow-history-export -> /cloud/export
+
+java/generated/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/java/project-setup#cloud-worker
+
+php/connect-to-a-dev-cluster -> /dev-guide/php/foundations#connect-to-a-dev-cluster
 
 concepts/what-is-the-temporal-web-ui -> /web-ui
 

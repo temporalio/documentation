@@ -17,7 +17,7 @@ export default function EditThisPageWrapper() {
       <div style={feedbackStyle}>
         <p style={{ margin: 0, fontWeight: "500" }}>Have feedback on our documentation?</p>
         <a href="https://t.mp/docs-feedback" target="_blank" rel="noopener noreferrer">
-          Post on our Community forum.
+          Post in our Community forum.
         </a>
       </div>
     </>
