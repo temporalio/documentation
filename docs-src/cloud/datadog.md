@@ -81,9 +81,10 @@ Use the tcld to authenticate, generate, and add certificates to your Cloud accou
    tcld generate-certificates certificate-authority-certificate --org ${ACCOUNT_ID} -d 1y --ca-cert ca.pem --ca-key ca.key
    ```
 3. **Add certificates to Cloud account**: Ensure your Temporal Cloud Namespace is configured with the generated certificates.
-    ```bash
-    tcld namespace accepted-client-ca add --ca-certificate-file ca.pem
-    ```
+   ```bash
+   tcld namespace accepted-client-ca add --ca-certificate-file ca.pem
+   ```
+
 Replace `${ACCOUNT_ID}` with your Temporal Cloud account ID.
 This is the assigned account identifier.
 

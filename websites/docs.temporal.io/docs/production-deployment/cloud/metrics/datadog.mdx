@@ -49,6 +49,14 @@ Before you begin, ensure you have the following:
 
 ## Step 1. Setting up the GitHub project
 
+Temporal provides a script demonstrating the minimum work necessary to read recently generated metrics from a Temporal Cloud account using the Prometheus API and import them into DataDog while handling some common edge and error cases.
+
+The following tutorial uses the [Prometheus Querying Language to DataDog in Go](https://github.com/temporalio/samples-server/tree/main/cloud/observability/promql-to-dd-go) (PromQL); however, you can use and customize this code and others to suit your needs.
+Support for other languages include:
+
+- [PromQL to DataDog in Python](https://github.com/temporalio/samples-server/blob/main/cloud/observability/README.md)
+- [PromQL to Datadog in Typescript](https://github.com/temporalio/samples-server/tree/main/cloud/observability/promql-to-dd-ts)
+
 Clone the `promql-to-dd-go` directory from the Temporal samples server and navigate into it:
 
 ```bash
@@ -71,8 +79,11 @@ Choose a method for generating certificates.
 You can use one of the methods provided, or if your organization has its own certification manager, use that.
 
 These certificates are used to communicate with Your Temporal Cloud account.
+For more information on certifications and Temporal Cloud, see [Certificate management](/cloud/certificates).
 
-### Using **tcld**:
+### Using **tcld**
+
+Use the tcld to authenticate, generate, and add certificates to your Cloud account.
 
 1. **Login**: Authenticate with your Temporal Cloud account.
    ```bash
@@ -80,21 +91,24 @@ These certificates are used to communicate with Your Temporal Cloud account.
    ```
 2. **Create certs**: Generate the necessary certificates for secure communication.
    ```bash
-   tcld generate-certificates certificate-authority-certificate --org Unique_Id -d 1y --ca-cert ca.pem --ca-key ca.key
+   tcld generate-certificates certificate-authority-certificate --org ${ACCOUNT_ID} -d 1y --ca-cert ca.pem --ca-key ca.key
    ```
-3. **Add certificates to Cloud Namespace**: Ensure your Temporal Cloud Namespace is configured with the generated certificates.
+3. **Add certificates to Cloud account**: Ensure your Temporal Cloud Namespace is configured with the generated certificates.
+    ```bash
+    tcld namespace accepted-client-ca add --ca-certificate-file ca.pem
+    ```
+Replace `${ACCOUNT_ID}` with your Temporal Cloud account ID.
+This is the assigned account identifier.
 
-```bash
-tcld namespace accepted-client-ca add --ca-certificate-file ca.pem
-```
+### Using **certstrap**
 
-### Using **CertStrap**:
+You can also use certification managers like certstrap.
 
-1. Follow the [certstrap README](https://github.com/square/certstrap) to download and install certstrap locally.
+1. Follow the [certstrap README](https://github.com/square/certstrap) to download and install certstrap.
 2. Create a new certificate authority with `certstrap init --common-name CertAuth`.
 3. Request a certificate key pair with `certstrap request-cert --common-name metrics-cert`.
 4. Sign the certificate request to generate the end-entity certificate with `certstrap sign metrics-cert --CA CertAuth`.
-5. Locate your newly created certificates in the 'out' folder within the certstrap directory.
+5. Locate your newly created certificates in the 'out' folder within the certstrap directory and follow this guide.
 
 :::note
 Certificate names must be unique per account.
@@ -185,15 +199,19 @@ k9s
 
 Review the logs to confirm the integration is functioning as expected.
 
+You can use a [pre-built dashboard](https://github.com/temporalio/samples-server/blob/main/cloud/observability/promql-to-dd-go/examples/datadog_dashboard.json) to visualize your metrics in DataDog.
+
 ## Conclusion
 
-Congratulations! You've successfully set up the export of metrics from Temporal Cloud to DataDog. This integration enables you to leverage DataDog's comprehensive observability platform to monitor your Temporal Cloud metrics, providing insights into your workflows and operations.
+You've successfully set up the export of metrics from Temporal Cloud to DataDog.
+This integration enables you to leverage DataDog's comprehensive observability platform to monitor your Temporal Cloud metrics, providing insights into your workflows and operations.
+
+This is just the start.
+Customize and extend this code to meet your needs.
 
 ### Next steps
 
 - Explore DataDog dashboards to visualize your Temporal metrics.
 - Set up alerts in DataDog based on the metrics received from Temporal Cloud.
 - Consider integrating additional observability tools or exporting metrics to other platforms as needed.
-
-By following this tutorial, you've taken a significant step towards improving the observability of your cloud resources.
 
