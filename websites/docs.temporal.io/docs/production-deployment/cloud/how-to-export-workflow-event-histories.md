@@ -184,7 +184,7 @@ Once you've finalized the setup, here's how to monitor the export progress:
 
 5. **Usage monitoring**:
    - Actions from the Export Job are included in the Usage UI.
-   - **Metrics**: Export related metrics are available in `temporal_cloud_v0_total_action_count` with the label `is_background=“true”`. For more information, see [Cloud metrics](/cloud/metrics).
+   - **Metrics**: Export related metrics are available in `temporal_cloud_v0_total_action_count` with the label `is_background=“true”`. For more information, see [Cloud metrics](/cloud/metrics/).
 
 For optimal results, review the S3 bucket for any new exported files and refer to the UI insights.
 This dual check ensures you remain abreast of the export progress and any potential issues.
