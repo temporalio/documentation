@@ -45,6 +45,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 - [How to install Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): How to install Temporal CLI and run a development Cluster.
 - [How to install a Temporal SDK](/dev-guide/java/foundations#install-a-temporal-sdk): A Temporal SDK provides a framework for Temporal Application development.
 - [How to create a Temporal Client in Java](/dev-guide/java/foundations#connect-to-a-dev-cluster): To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
+- [How to connect to Temporal Cloud](/dev-guide/java/foundations#connect-to-temporal-cloud): Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
 - [How to develop a Workflow Definition in Java](/dev-guide/java/foundations#develop-workflows): In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.
 - [How to develop a basic Activity](/dev-guide/java/foundations#develop-activities): One of the primary things that Workflows do is orchestrate the execution of Activities.
 - [How to start an Activity Execution](/dev-guide/java/foundations#activity-execution): Calls to spawn Activity Executions are written within a Workflow Definition.
@@ -70,7 +71,6 @@ The Features section of the Temporal Developer's guide provides basic implementa
 - [How to set a Cron Schedule in Java](/dev-guide/java/features#cron-schedule): Set the Cron Schedule with the `WorkflowStub` instance in the Client code using [`WorkflowOptions.Builder.setCronSchedule`
 - [Side Effects](/dev-guide/java/features#side-effects): A Side Effect is used to produce non-deterministic code, such as generating a UUID or a random number.
 - [How to create and manage Namespaces](/dev-guide/java/features#namespaces): You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..
-- [How to use custom payload conversion](/dev-guide/java/features#custom-payload-conversion): Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.
 
 ## Observability
 
@@ -86,7 +86,7 @@ Improve observability in your Java-based Temporal Workflows. View which Workflow
 The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 
 - [Test frameworks](/dev-guide/java/testing#test-frameworks): Testing provides a framework to facilitate Workflow and integration testing.
-- [Testing Activities](/dev-guide/java/testing#test-activities): Testing provides a framework to facilitate Workflow and integration testing.
+- [Test Activities](/dev-guide/java/testing#test-activities): Testing provides a framework to facilitate Workflow and integration testing.
 - [Testing Workflows](/dev-guide/java/testing#test-workflows): Testing provides a framework to facilitate Workflow and integration testing.
 - [How to Replay a Workflow Execution](/dev-guide/java/testing#replay): Replay recreates the exact state of a Workflow Execution.
 
@@ -103,4 +103,11 @@ The Versioning section of the Temporal Developer's guide covers how to update Wo
 
 - [How to patch Workflows in Java](/dev-guide/java/versioning#patching): Use Patching APIs to update Workflow code in Java
 - [How to use Worker Versioning in Java](/dev-guide/java/versioning#worker-versioning): Version your Java Workers by using build ID-based versioning
+
+## Converters
+
+The Converters and Codecs section of the Temporal Developer's guide provides guidance on how to support compression, encryption, and other special data handling by implementing custom converters and codecs.
+
+- [How to use a custom Payload Codec in Java](/dev-guide/java/converters#custom-payload-codec): Create a custom implementation of `PayloadCodec` and use it in `CodecDataConverter` to set a custom Data Converter.
+- [How to use custom Payload conversion](/dev-guide/java/converters#custom-payload-conversion): Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.
 

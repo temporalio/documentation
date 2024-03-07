@@ -19,7 +19,7 @@ A Temporal Cloud Worker requires that you specify the following in the Client co
 - Temporal Cloud Address
 - Certificate and private key associated with the Namespace
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-1402338417" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-1402338417" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/cloud_worker/main.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/cloud_worker/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 package main
@@ -76,7 +76,7 @@ func main() {
 	yourWorker.RegisterWorkflow(workflows.BackgroundCheck)
 	// Register Activities
 	yourWorker.RegisterActivity(activities.SSNTraceActivity)
-	// Start the the Worker Process
+	// Start the Worker Process
 	err = yourWorker.Run(worker.InterruptCh())
 	if err != nil {
 		log.Fatalln("Unable to start the Worker Process", err)

@@ -15,6 +15,7 @@ websites/docs.temporal.io/docs/tctl-v1/taskqueue.mdx linguist-generated=true
 websites/docs.temporal.io/docs/tctl-v1/workflow.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/account.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/apikey.mdx linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/cloud/tcld/feature.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/generate-certificates.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/index.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/login.mdx linguist-generated=true
@@ -25,12 +26,13 @@ websites/docs.temporal.io/docs/production-deployment/cloud/tcld/user.mdx linguis
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/version.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/archival.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/checklist.mdx linguist-generated=true
-websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/data-encryption.mdx linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/data-encryption.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/defaults.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/index.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/monitoring.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/multi-cluster-replication.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/security.mdx linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/server-frontend-api-reference.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/setup.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/upgrade-server.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/self-hosted-guide/visibility.mdx linguist-generated=true
@@ -47,6 +49,7 @@ websites/docs.temporal.io/docs/references/web-ui-configuration.mdx linguist-gene
 websites/docs.temporal.io/docs/references/web-ui-environment-variables.mdx linguist-generated=true
 websites/docs.temporal.io/docs/references/web-ui-server-env-vars.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/index.mdx linguist-generated=true
+websites/docs.temporal.io/docs/release-stages.mdx linguist-generated=true
 websites/docs.temporal.io/docs/concepts/activities.mdx linguist-generated=true
 websites/docs.temporal.io/docs/concepts/clusters.mdx linguist-generated=true
 websites/docs.temporal.io/docs/concepts/dataconversion.mdx linguist-generated=true
@@ -61,6 +64,7 @@ websites/docs.temporal.io/docs/production-deployment/cloud/how-to-manage-audit-l
 websites/docs.temporal.io/docs/production-deployment/cloud/index.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/operation-api.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/index.mdx linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/cloud/how-to-export-workflow-event-histories.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/get-started.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/index.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/limits.mdx linguist-generated=true
@@ -69,6 +73,7 @@ websites/docs.temporal.io/docs/production-deployment/cloud/account-setup/namespa
 websites/docs.temporal.io/docs/production-deployment/cloud/how-to-manage-saml-with-temporal-cloud.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/account-setup/users.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/cloud-metrics.mdx linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/migration.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/overview.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/pricing.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/security.mdx linguist-generated=true
@@ -115,6 +120,7 @@ websites/docs.temporal.io/docs/dev-guide/phplang/foundations.mdx linguist-genera
 websites/docs.temporal.io/docs/dev-guide/phplang/index.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/phplang/observability.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/phplang/testing.mdx linguist-generated=true
+websites/docs.temporal.io/docs/dev-guide/javalang/converters.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/javalang/debugging.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/javalang/durable-execution.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/javalang/features.mdx linguist-generated=true
@@ -125,6 +131,8 @@ websites/docs.temporal.io/docs/dev-guide/javalang/observability.mdx linguist-gen
 websites/docs.temporal.io/docs/dev-guide/javalang/project-setup.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/javalang/testing.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/javalang/versioning.mdx linguist-generated=true
+websites/docs.temporal.io/docs/dev-guide/golang/cancellation.mdx linguist-generated=true
+websites/docs.temporal.io/docs/dev-guide/golang/converters.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/debugging.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/durable-execution.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/features.mdx linguist-generated=true

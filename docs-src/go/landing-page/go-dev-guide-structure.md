@@ -62,10 +62,17 @@ The Features section of the Temporal Developer's guide provides basic implementa
 - [How to use Temporal Cron Jobs](/go/cron-jobs): A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 - [Side Effects](/go/side-effects): A Side Effect is used to produce non-deterministic code, such as generating a UUID or a random number.
 - [How to create and manage Namespaces](/go/namespaces): You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..
-- [How to use custom payload conversion](/go/custom-payload-conversion): Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.
 - [How to use Worker Session APIs](/go/worker-sessions): To use Worker Sessions for Activity Executions the Worker must be enabled to use Sessions for the Workflows and Activities it is registered with.
 - [Error Handling in Go](/go/error-handling): Handling Activity or Workflow errors in Go.
 - [Go SDK Selectors](/go/selectors): Implementing Selectors in the Temporal Go SDK.
+
+## Cancellation
+
+How to cancel a Workflow Execution and it's Activities using the Go SDK.
+
+- [Handle Cancellation in Workflow](/go/generated/handle-cancellation-request-workflow): You can design your Workflow to run clean up Activities, and change to a Canceled status when a Cancellation Request is received.
+- [Handle Cancellation in an Activity](/go/generated/handle-cancellation-request-in-activity): Listen for ctx.Done() to react to a Cancellation Request in an Activity
+- [Request Cancellation](/go/generated/request-cancellation-from-a-client): Use the Temporal Client's CancelWorkflow API to send a Cancellation Request to the Workflow.
 
 ## Observability
 
@@ -99,3 +106,11 @@ The Versioning section of the Temporal Developer's guide covers how to update Wo
 
 - [Temporal Go SDK Patching APIs](/go/patching): Patching Workflows in Go
 - [How to use Worker Versioning in Go](/go/how-to-use-worker-versioning-in-go): Version your Go Workers by using build ID–based versioning
+
+## Converters
+
+The Converters and Codecs section of the Temporal Developer's guide provides guidance on how to support compression, encryption, and other special data handling by implementing custom converters and codecs.
+
+- [How to use a custom Payload Codec in Go](/go/how-to-use-a-custom-payload-codec-in-go): Create a custom `PayloadCodec` implementation and define your encryption/compression and decryption/decompression logic in the `Encode` and `Decode` functions.
+- [How to use custom payload conversion](/go/custom-payload-conversion): Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.
+- [How to use a custom Payload Converter in Go](/go/how-to-use-a-custom-payload-converter-in-go): Use a `CompositeDataConverter` to apply custom `PayloadConverter` in a specified order.

@@ -4,17 +4,21 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "make": "yarn && cd ./assembly && yarn && cd .. && cd ./websites/docs.temporal.io && yarn",
+    "make": "chmod +x make.sh && ./make.sh",
+    "worker": "pushd assembly && yarn worker && popd",
     "assemble": "./assemble.js && dprint fmt",
     "assemble-cloud": "./assemble.js --cloud && dprint fmt",
     "snipsync": "snipsync",
-    "format": "dprint fmt"
+    "format": "dprint fmt",
+    "vale": "./assembly/run-vale.sh"
   },
   "dependencies": {
+    "@temporalio/client": "^1.9.0",
+    "@temporalio/worker": "^1.9.0",
+    "@temporalio/workflow": "^1.9.0",
     "dprint": "^0.45.0",
     "fs-extra": "^10.1.0",
     "path": "^0.12.7",
-    "snipsync": "1.7.0",
-    "temporalio": "^1.1.0"
+    "snipsync": "1.7.0"
   }
 }

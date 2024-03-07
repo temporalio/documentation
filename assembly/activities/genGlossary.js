@@ -8,7 +8,7 @@ id: glossary
 title: Glossary
 description: The following terms have specific definitions within the context of the Temporal Platform.
 sidebar_label: Glossary
-sidebar_position: 11
+sidebar_position: 12
 toc_max_heading_level: 4
 tags:
   - reference
@@ -95,7 +95,11 @@ async function findSlug(fullIndex, nodeId) {
           str = `/${link.file_dir}/${link.guide_id}#${link.local_ref}`;
         }
       } else {
-        str = `/${link.guide_id}#${link.local_ref}`;
+        if (link.slug != "none") {
+          str = `${link.slug}#${link.local_ref}`;
+        } else {
+          str = `/${link.guide_id}#${link.local_ref}`;
+        }
       }
       if (str.endsWith("#")) {
         return str.slice(0, -1);

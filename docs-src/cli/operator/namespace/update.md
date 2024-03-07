@@ -24,6 +24,13 @@ Any [Archives](/concepts/what-is-archival) that were previously enabled or disab
 However, URI values for archival states cannot be changed after the states are enabled.
 `temporal operator namespace update --history-archival-state="enabled" --visibility-archival-state="disabled"`
 
+:::note
+
+The Namespace needs to be the last argument passed in your command.
+For example, `temporal operator namespace update --retention 180 your_namespace`.
+
+:::
+
 Use the options listed below to change the command's behavior.
 
 - [--active-cluster](/cli/cmd-options/active-cluster)

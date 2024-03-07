@@ -516,8 +516,10 @@ The Workflow Id Reuse Policy can have one of the following values:
   Use this when there can only be one Workflow Execution per Workflow Id within a Namespace for the given retention period.
 - **Terminate if Running:** Specifies that if a Workflow Execution with the same Workflow Id is already running, it should be terminated and a new Workflow Execution with the same Workflow Id should be started. This policy allows for only one Workflow Execution with a specific Workflow Id to be running at any given time.
 
-A Workflow Id Reuse Policy applies only if a Closed Workflow Execution with the same Workflow Id exists within the Retention Period of the associated Namespace.
-For example, if the Namespace's retention period is 30 days, a Workflow Id Reuse Policy can only compare the Workflow Id of the spawning Workflow Execution against the Closed Workflow Executions for the last 30 days.
+The first three values (Allow Duplicate, Allow Duplicate Failed Only, and Reject Duplicate) of the Workflow Id Reuse Policy apply to Closed Workflow Executions that are retained within the Namespace.
+For example, the Temporal Service can only check the Workflow Id of the spawning Workflow Execution based on the Workflow Id Reuse Policy against the Closed Workflow Executions for the last 30 days given a default Retention Period.
+The fourth value of the Workflow Id Reuse Policy, Terminate if Running, only applies to a Workflow Execution that is currently open within the Namespace.
+For Terminate if Running, the Retention Period is not a consideration for this policy.
 
 If there is an attempt to spawn a Workflow Execution with a Workflow Id Reuse Policy that won't allow it the Server will prevent the Workflow Execution from spawning.
 
@@ -569,7 +571,8 @@ A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/wo
 
 **The default value is 10 seconds.**
 This timeout is primarily available to recognize whether a Worker has gone down so that the Workflow Execution can be recovered on a different Worker.
-The main reason for increasing the default value would be to accommodate a Workflow Execution that has a very long Workflow Execution History that could take longer than 10 seconds for the Worker to load.
+The main reason for increasing the default value is to accommodate a Workflow Execution that has an extensive Workflow Execution History, requiring more than 10 seconds for the Worker to load.
+It's worth mentioning that although you can extend the timeout up to the maximum value of 120 seconds, it's not recommended to move beyond the default value.
 
 ### What is a Timer? {#timer}
 
@@ -804,6 +807,14 @@ They are meant to handle edge cases and act as a catch-all, not as the main way 
 
 ## What is a Side Effect? {#side-effect}
 
+:::note
+
+Side Effects are included in the Go, Java, and PHP SDKs.
+They are not included in other SDKs.
+[Local Activities](/activities#local-activity) fit the same use case and are slightly less resource intensive.
+
+:::
+
 A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.
 
 A Side Effect does not re-execute upon replay, but instead returns the recorded result.
@@ -917,7 +928,8 @@ This is useful for starting Child Workflows asynchronously (see [relevant issue 
 ## What is a Schedule? {#schedule}
 
 :::tip Support, stability, and dependency info
-- Introduced in Temporal Server version 1.17.0
+- Generally Available as of Nov 2023
+- Introduced in Temporal Server version [1.17.0](https://github.com/temporalio/temporal/releases/tag/v1.17.0)
 - Available in Temporal CLI (and tctl v1.17)
 - Available in Temporal Cloud
 - Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) version [1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
@@ -959,7 +971,8 @@ Workflow Executions started by a Schedule have the following additional properti
 
 ### Spec
 
-The Schedule Spec describes when the Action is taken.
+The Schedule Spec defines when the Action should be taken.
+Unless many Schedules have Actions scheduled at the same time, Actions should generally start within 1 second of the specified time.
 There are two kinds of Schedule Spec:
 
 - A simple interval, like "every 30 minutes" (aligned to start at the Unix epoch, and optionally including a phase offset).
@@ -1108,6 +1121,16 @@ When a Schedule triggers a Workflow that completes successfully and yields a res
 Be aware that if, during the subsequent run, the Workflow employs the [Continue-As-New](#continue-as-new) feature, `LastCompletionResult` won't be accessible for this new Workflow iteration.
 
 It is important to note that the [status](#status) of the subsequent run is marked as `Continued-As-New` and not as `Completed`.
+
+:::
+
+:::caution
+
+A scheduled Workflow Execution may complete with a result up to the maximum blob size (2 MiB by default).
+However, due to internal limitations, results that are within 1 KiB of this limit cannot be passed to the next execution.
+So, for example, a Workflow Execution that returns a result of size 2,096,640 bytes (which is above 2MiB - 1KiB limit)
+will be allowed to compete successfully, but that value will not be available as a last completion result.
+This limitation may be lifted in the future.
 
 :::
 

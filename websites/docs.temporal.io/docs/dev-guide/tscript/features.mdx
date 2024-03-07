@@ -2,7 +2,7 @@
 id: features
 title: Features - TypeScript SDK feature guide
 sidebar_label: Features
-sidebar_position: 3
+sidebar_position: 4
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 slug: /dev-guide/typescript/features
 toc_max_heading_level: 3
@@ -1120,7 +1120,7 @@ Temporal SDKs provide a [Payload Converter](/dataconversion#payload-converter) t
 Implementing custom Payload conversion is optional.
 It is needed only if the [default Data Converter](/dataconversion#default-data-converter) does not support your custom values.
 
-To support custom Payload conversion, create a [custom Payload Converter](/dataconversion#custom-payload-conversion) and configure the Data Converter to use it in your Client options.
+To support custom Payload conversion, create a [custom Payload Converter](/dataconversion#composite-data-converters) and configure the Data Converter to use it in your Client options.
 
 The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
 You can set multiple encoding Payload Converters to run your conversions.

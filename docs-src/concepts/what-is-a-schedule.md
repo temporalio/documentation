@@ -7,7 +7,8 @@ tags:
   - term
   - explanation
 ssdi:
-  - Introduced in Temporal Server version 1.17.0
+  - Generally Available as of Nov 2023
+  - Introduced in Temporal Server version [1.17.0](https://github.com/temporalio/temporal/releases/tag/v1.17.0)
   - Available in Temporal CLI (and tctl v1.17)
   - Available in Temporal Cloud
   - Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) version [1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
@@ -48,7 +49,8 @@ Workflow Executions started by a Schedule have the following additional properti
 
 ### Spec
 
-The Schedule Spec describes when the Action is taken.
+The Schedule Spec defines when the Action should be taken.
+Unless many Schedules have Actions scheduled at the same time, Actions should generally start within 1 second of the specified time.
 There are two kinds of Schedule Spec:
 
 - A simple interval, like "every 30 minutes" (aligned to start at the Unix epoch, and optionally including a phase offset).
@@ -197,6 +199,16 @@ When a Schedule triggers a Workflow that completes successfully and yields a res
 Be aware that if, during the subsequent run, the Workflow employs the [Continue-As-New](/concepts/what-is-continue-as-new) feature, `LastCompletionResult` won't be accessible for this new Workflow iteration.
 
 It is important to note that the [status](/concepts/what-is-a-workflow-execution#status) of the subsequent run is marked as `Continued-As-New` and not as `Completed`.
+
+:::
+
+:::caution
+
+A scheduled Workflow Execution may complete with a result up to the maximum blob size (2 MiB by default).
+However, due to internal limitations, results that are within 1 KiB of this limit cannot be passed to the next execution.
+So, for example, a Workflow Execution that returns a result of size 2,096,640 bytes (which is above 2MiB - 1KiB limit)
+will be allowed to compete successfully, but that value will not be available as a last completion result.
+This limitation may be lifted in the future.
 
 :::
 

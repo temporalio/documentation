@@ -1,6 +1,6 @@
 ---
 id: testing-activities
-title: Testing Activities
+title: Test Activities
 description: Testing provides a framework to facilitate Workflow and integration testing.
 sidebar_label: Test Activities
 tags:
@@ -18,4 +18,4 @@ For example, you can test an Activity for:
 
 - Exceptions thrown when invoking the Activity Execution.
 - Exceptions thrown when checking for the result of the Activity Execution.
-- Activity return values. Check that the return value matches the expected value.
+- Activity's return values. Check that the return value matches the expected value.

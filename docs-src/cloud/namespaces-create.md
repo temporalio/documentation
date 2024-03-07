@@ -19,8 +19,11 @@ To create a Namespace, a user must have the Developer or Global Admin account-le
 
 :::tip
 
-By default, each account has a quota of 10 Namespaces.
-If you want to increase this limit, open a [support ticket](/cloud/support-create-ticket).
+By default, each account is provisioned with ten Namespaces.
+As you create and use your Namespaces, for example by scheduling Workflows, Temporal Cloud automatically raises your limit.
+Our service identifies your usage patterns.
+It responds by slowly increasing your allowance, up to 100 Namespaces.
+You can request further increases beyond the 100 Namespace limit by opening a [support ticket](/cloud/support-create-ticket).
 
 :::
 
@@ -53,7 +56,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. In **Certificate**, paste the CA certificate for this Namespace.
 1. Optional: In **Codec Server**, enter the HTTPS URL (including the port number) of your Codec Server endpoint.
    You may also enable "Pass the user access token with your endpoint" and "Include cross-origin credentials."
-   For details, see [Hosting your Codec Server](/self-hosted/how-to-set-up-codec-server#hosting-your-codec-server).
+   For details, see [Hosting your Codec Server](/self-hosted/how-to-set-up-codec-server#set-your-codec-server-endpoints-with-web-ui-and-cli).
 1. Click **Create Namespace**.
 
 <!--- How to create a Namespace in Temporal Cloud using tcld --->

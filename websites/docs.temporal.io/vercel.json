@@ -1992,6 +1992,10 @@
     {
       "source": "/kb/cadence-to-temporal",
       "destination": "https://community.temporal.io/t/cadence-to-temporal-migration-highlights/"
+    },
+    {
+      "source": "/self-hosted-guide/data-encryption",
+      "destination": "/production-deployment/data-encryption"
     }
   ]
 }

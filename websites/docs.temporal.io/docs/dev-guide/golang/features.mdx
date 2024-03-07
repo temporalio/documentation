@@ -21,7 +21,6 @@ keywords:
 - continue-as-new
 - create
 - cron
-- data converter
 - delete
 - describe
 - developer-guide-doc-type
@@ -40,8 +39,6 @@ keywords:
 - namespace management
 - namespace registration
 - pause
-- payload conversion
-- payload converter
 - query
 - retention-policy
 - retries
@@ -83,7 +80,6 @@ tags:
 - continue-as-new
 - create
 - cron
-- data-converter
 - delete
 - describe
 - developer-guide-doc-type
@@ -102,8 +98,6 @@ tags:
 - namespace-management
 - namespace-registration
 - pause
-- payload-conversion
-- payload-converter
 - query
 - retention-policy
 - retries
@@ -182,6 +176,8 @@ Workflows listen for Signals by the Signal's name.
 
 Use the `GetSignalChannel()` API from the `go.temporal.io/sdk/workflow` package to get the Signal Channel.
 
+A common use-case is to block a Workflow while waiting for a Signal, like in the following snippet:
+
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
   // ...
@@ -193,6 +189,27 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
   }
   // ...
 }
+```
+
+Alternatively, you might want the Workflow to proceed and still be capable of handling external Signals.
+
+```go
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
+   var signal MySignal
+   signalChan := workflow.GetSignalChannel(ctx, "your-signal-name")
+ 	workflow.Go(ctx, func(ctx workflow.Context) {
+ 		for {
+ 			selector := workflow.NewSelector(ctx)
+ 			selector.AddReceive(signalChan, func(c workflow.ReceiveChannel, more bool) {
+ 				c.Receive(ctx, &mySignal)
+ 			})
+ 			selector.Select(ctx)
+ 		}
+ 	})
+   // submit activity one
+   // signal can be received while activity one is pending
+
+ }
 ```
 
 In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
@@ -401,7 +418,7 @@ When sending and receiving the Update, use the Update name as an identifier.
 The name does not link to the data type(s) sent with the Update.
 Ensure that every Workflow listening to the same Update name can handle the same Update arguments.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id542569346" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id542569346" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/your_updatable_workflow.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/your_updatable_workflow.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -434,7 +451,7 @@ WorkflowPanicPolicy is set in the Worker Options.
 
 Update handlers, unlike Query handlers, can change Workflow state.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id542569346" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id542569346" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/your_updatable_workflow.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/your_updatable_workflow.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -471,7 +488,7 @@ The Validator function, unlike the Update Handler, can not change the state of t
 
 The platform treats a panic in the Validator function as a rejection of the Update."
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id542569346" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id542569346" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/your_updatable_workflow.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/your_updatable_workflow.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -522,7 +539,7 @@ Invoke the UpdateWorkflow() method on an instance of the [Go SDK Temporal Client
 You must provide the Workflow Id, but specifying a Run Id is optional.
 If you supply only the Workflow Id (and provide an empty string as the Run Id param), the currently running Workflow Execution receives the Update.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-179220649" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-179220649" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/update/main.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/update/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -1021,7 +1038,7 @@ The user generates a unique Schedule ID for each new Schedule.
 To create a Schedule in Go, use `Create()` on the [Client](/temporal#temporal-client).
 Schedules must be initialized with a Schedule ID, [Spec](/workflows#spec), and [Action](/workflows#action) in `client.ScheduleOptions{}`.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-1058578536" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-1058578536" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/create/main.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/create/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -1056,7 +1073,7 @@ This is useful for executing a missed or delayed Action, or for testing the Work
 To backfill a Schedule in Go, use `Backfill()` on `ScheduleHandle`.
 Specify the start and end times to execute the Workflow, along with the overlap policy.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-661341178" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-661341178" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/backfill/main.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/backfill/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -1095,7 +1112,7 @@ Deletion does not affect any Workflows started by the Schedule.
 
 To delete a Schedule, use `Delete()` on the `ScheduleHandle`.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id260842823" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id260842823" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/delete/main.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/delete/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -1122,7 +1139,7 @@ This can include details about the Schedule Spec (such as Intervals), CronExpres
 
 To describe a Schedule, use `Describe()` on the ScheduleHandle.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id1887490791" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id1887490791" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/describe/main.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/describe/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -1142,7 +1159,7 @@ The `List` action returns all available Schedules and their respective Schedule 
 
 To return information on all Schedules, use `ScheduleClient.List()`.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-236392262" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-236392262" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/list/main.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/list/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -1172,7 +1189,7 @@ Pausing can be enabled by setting `State.Paused` to `true`, or by using `Pause()
 Unpausing a Schedule allows the Workflow to execute as planned.
 To unpause a Schedule, use `Unpause()` on `ScheduleHandle`.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-2011929610" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-2011929610" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/pause/main.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/pause/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -1198,7 +1215,7 @@ By default, `trigger` is subject to the Overlap Policy.
 
 To trigger a Scheduled Workflow Execution, use `trigger()` on `ScheduleHandle`.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-1098283720" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-1098283720" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/trigger/main.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/trigger/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -1224,7 +1241,7 @@ These changes can be made to Workflow Actions, Action parameters, Memos, and the
 
 Use `Update()` on the ScheduleHandle to modify a Schedule.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-1110975899" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-1110975899" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/update/main.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/update/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -1492,55 +1509,6 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
   //...
   ```
 
-## How to use custom payload conversion {#custom-payload-conversion}
-
-Temporal SDKs provide a [Payload Converter](/dataconversion#payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
-
-Implementing custom Payload conversion is optional.
-It is needed only if the [default Data Converter](/dataconversion#default-data-converter) does not support your custom values.
-
-To support custom Payload conversion, create a [custom Payload Converter](/dataconversion#custom-payload-conversion) and configure the Data Converter to use it in your Client options.
-
-The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
-You can set multiple encoding Payload Converters to run your conversions.
-When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.
-
-Use [CompositeDataConverter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter) to apply custom, type-specific Payload Converters in a specified order.
-
-`NewCompositeDataConverter` creates a new instance of `CompositeDataConverter` from an ordered list of type-specific Payload Converters.
-The following type-specific Payload Converters are available in the Go SDK, listed in the order that they are applied by the default Data Converter:
-
-- [NewNilPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#NilPayloadConverter.ToString)
-- [NewByteSlicePayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#ByteSlicePayloadConverter)
-- [NewProtoJSONPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#ProtoJSONPayloadConverter)
-- [NewProtoPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#ProtoPayloadConverter)
-- [NewJSONPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#JSONPayloadConverter)
-
-The order in which the Payload Converters are applied is important because during serialization the Data Converter tries the Payload Converters in that specific order until a Payload Converter returns a non-nil Payload.
-
-A custom [`PayloadConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadConverter) must implement functions `FromPayload` (for a single value) or `FromPayloads` (for a list of values) to convert to values from a Payload, and `ToPayload` (for a single value) or `ToPayloads` (for a list of values) to convert values to a Payload.
-
-To set your custom Payload Converter, use [`NewCompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#NewCompositeDataConverter) and set it as the Data Converter in the Client options.
-
-- To replace the default Data Converter with a custom `NewCompositeDataConverter`, use the following.
-
-  ```go
-  dataConverter := converter.NewCompositeDataConverter(YourCustomPayloadConverter())
-  ```
-
-- To add your custom type conversion to the default Data Converter, use the following to keep the defaults but set yours just before the default JSON fall through.
-
-  ```go
-  dataConverter := converter.NewCompositeDataConverter(
-    converter.NewNilPayloadConverter(),
-    converter.NewByteSlicePayloadConverter(),
-    converter.NewProtoJSONPayloadConverter(),
-    converter.NewProtoPayloadConverter(),
-    YourCustomPayloadConverter(),
-    converter.NewJSONPayloadConverter(),
-  )
-  ```
-
 ## How to use Worker Session APIs {#worker-sessions}
 
 :::tip Support, stability, and dependency info
@@ -1559,7 +1527,7 @@ THIS FILE IS GENERATED from https://github.com/temporalio/documentation/blob/mai
 
 Set `EnableSessionWorker` to `true` in the Worker options.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-1045790397" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-1045790397" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/worker/main.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/worker/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -1593,7 +1561,7 @@ By default, this field is set to a very large value, so there's no need to manua
 If a Worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed.
 If the session can't be created within `CreationTimeout`, `CreateSession()` returns an error .
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id-1045790397" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id-1045790397" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/worker/main.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/worker/main.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
@@ -1640,7 +1608,7 @@ It is safe to call `CompleteSession()` on a failed Session, meaning that you can
 If the Worker goes down between Activities, any scheduled Activities meant for the Session Worker are canceled.
 If not, you get a `workflow.ErrSessionFailed` error when the next call of `workflow.ExecuteActivity()` is made from that Workflow.
 
-<div class="copycode-notice-container"><div class="copycode-notice"><img data-style="copycode-icon" src="/icons/copycode.png" alt="Copy code icon" /> Sample application code information <img id="i-id1737814848" data-event="clickable-copycode-info" data-style="chevron-icon" src="/icons/chevron.png" alt="Chevron icon" /></div><div id="copycode-info-id1737814848" class="copycode-info">The following code sample comes from a working and tested sample application. The code sample might be abridged within the guide to highlight key aspects. Visit the source repository to <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/workflow.go">view the source code</a> in the context of the rest of the application code.</div></div>
+<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/workflow.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
 
