@@ -42,7 +42,7 @@ The current implementation does not have generic type resolution. Users should u
 When converting from JSON, Workflow and Activity type hints are taken into account to convert to the proper types.
 All common Python typings including `Optional`, `Union`, all forms of iterables and mappings, and `NewType` are supported in addition the regular JSON values mentioned before.
 
-In Pyhton, Data Converters contain a reference to a Payload Converter class that is used to convert input and output payloads.
+In Python, Data Converters contain a reference to a Payload Converter class that is used to convert input and output payloads.
 By default, the Payload Converter is a `CompositePayloadConverter` which contains multiple `EncodingPayloadConverter`s to try to serialize/deserialize payloads.
 Upon serialization, each `EncodingPayloadConverter` is used in order until one succeeds.
 
