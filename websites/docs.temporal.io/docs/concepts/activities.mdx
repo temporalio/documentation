@@ -75,6 +75,10 @@ In other words, lack of idempotency doesn't lead to a platform error.
 In some cases, whether something is idempotent doesn't affect the correctness of an application.
 For example, if you have a monotonically incrementing counter, you might not care that retries increment the counter because you don’t care about the actual value, only that the current value is greater than a previous value.
 
+For more information about idempotency in Temporal, see the following post:
+
+[Idempotency and Durable Execution](https://temporal.io/blog/idempotency-and-durable-execution)
+
 #### Constraints
 
 Activity Definitions are executed as normal functions.
