@@ -11,7 +11,7 @@ tags:
 
 To take your application to production, you deploy your application code, including your Workflows, Activities, and Workers, on your infrastructure using your existing build, test and deploy tools.
 
-Then you need a production-ready Temporal Service to coordinate the execution of your Workflows and Activities. 
+Then you need a production-ready Temporal Service to coordinate the execution of your Workflows and Activities.
 
 You can use Temporal Cloud, a fully-managed platform, or you can self-host the service.
 
