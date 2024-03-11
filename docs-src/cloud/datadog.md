@@ -97,7 +97,7 @@ You can also use certification managers like certstrap.
 3. Request a certificate key pair with `certstrap request-cert --common-name metrics-cert`.
 4. Sign the certificate request to generate the end-entity certificate with `certstrap sign metrics-cert --CA CertAuth`.
 5. Locate your newly created certificates in the `out` folder within the certstrap directory.
-6. Add the certificates to your Cloud Account, for more information see [How to add, update, and remove certificates in a Temporal Cloud Namespace](cloud/certificates#update-certificates-using-temporal-cloud-ui).
+6. Add the certificates to your Cloud Account, for more information see [How to add, update, and remove certificates in a Temporal Cloud Namespace](/cloud/certificates#update-certificates-using-temporal-cloud-ui).
 
 :::note
 
