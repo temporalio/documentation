@@ -202,7 +202,7 @@ Thank you for installing promql-to-dd-go.
 </TabItem>
 </Tabs>
 
-You can use the `helm status` command to confirm the deployment or `helm get all` to view the deployment.
+Use the `helm status` command to confirm the deployment or `helm get all` to view the deployment.
 
 ### Deploy K9s
 
@@ -214,7 +214,7 @@ k9s
 
 Review the logs to confirm the integration is functioning as expected.
 
-You can use a [pre-built dashboard](https://github.com/temporalio/samples-server/blob/main/cloud/observability/promql-to-dd-go/examples/datadog_dashboard.json) to visualize your metrics in DataDog.
+Use a [pre-built dashboard](https://github.com/temporalio/samples-server/blob/main/cloud/observability/promql-to-dd-go/examples/datadog_dashboard.json) to visualize your metrics in DataDog.
 
 ## Conclusion
 
@@ -222,7 +222,8 @@ You've successfully set up the export of metrics from Temporal Cloud to DataDog.
 This integration enables you to leverage DataDog's comprehensive observability platform to monitor your Temporal Cloud metrics, providing insights into your workflows and operations.
 
 This is just the start.
-Customize and extend this code to meet your needs.
+
+Customize and extend this code, dashboards, and deployment processes to meet your needs.
 
 ### Next steps
 
