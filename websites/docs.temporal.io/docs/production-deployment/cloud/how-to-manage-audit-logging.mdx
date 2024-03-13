@@ -41,6 +41,9 @@ We plan to release additional integrations.
 
 Audit Logging supports [Admin Operation events](#admin-operation-events) as well as [API Key Create, Update, and Delete events](#admin-operation-events).
 
+Please note that Audit Logging only captures operations in the Temporal Cloud control plane and not the data plane. This means events such as Workflow Start, Terminate, Schedules, Batch operations, etc. will not be logged.
+Instead, explore the [Export](/cloud/export) feature, which lets you to send closed Workflow histories and data plane events to external storage.
+
 ### Admin Operation events
 
 The following list specifies both the supported events and the Temporal APIs that emit the logs.
