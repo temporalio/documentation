@@ -23,5 +23,16 @@ If an issue occurs, the team provides support through our [support portal](/clou
 | Response times      | P0: 1 hour<br/>P1: 4 business hours<br/>P2: 1 business day<br/>P3: 2 business days | P0: 30 minutes<br/>P1: 1 business hour<br/>P2: 4 business hours<br/>P3: 1 business day |
 | Pricing (per month) | Greater of $200 or 10% monthly usage                                               | Greater of $2,000 or 10% monthly usage                                                 |
 
+## Priority definitions
+
+- **P0 - Critical** (Production is down).
+  - The Temporal Cloud service is unavailable or significantly degraded with major customer impact.
+- **P1 - High** (Production impaired)
+  - Temporal Cloud service is degraded with customer impact, or a significant milestone is at risk.
+- **P2 - Normal** (Dev/test impaired)
+  - Temporal Cloud service or other issues without production impact or a workaround is available.
+- **P3 - Low** (General guidance)
+  - Questions or an issue that is not impacting system availability or functionality.
+
 Business hours for Temporal Support are 0500–1700 Monday–Friday (Pacific Time).
 For P0 issues, coverage is 24×7.
