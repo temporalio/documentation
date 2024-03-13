@@ -8,7 +8,7 @@ tags:
   - support
 ---
 
-We offer four services to Temporal Cloud customers. For access to any of these services, please [create a support ticket](/cloud/support) or contact your dedicated account manager.
+We offer four services to Temporal Cloud customers. For access to any of these services, please [create a support ticket](/cloud/support#support-ticket) or contact your dedicated account manager.
 
 - **Technical onboarding:** Every Temporal Cloud customer is offered a dedicated onboarding session led by a Developer Success Engineer.
   This session covers basic setup and Namespace planning and provides an overview of metrics and observability, an overview of development resources, and information you will need in preparation for your go-live.
