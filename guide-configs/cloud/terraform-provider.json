@@ -1,0 +1,19 @@
+{
+    "file_name": "terraform-provider.mdx",
+    "id": "terraform",
+    "file_dir": "production-deployment/cloud",
+    "slug": "/cloud/terraform",
+    "title": "Terraform Provider - Temporal Cloud infrastructure as code",
+    "sidebar_label": "Terraform",
+    "sidebar_position": 8,
+    "description": "Configure and manage Temporal Cloud infrastructure.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cloud/terraform-provider"
+        }
+    ]
+}

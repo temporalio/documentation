@@ -80,6 +80,7 @@ websites/docs.temporal.io/docs/production-deployment/cloud/introduction/security
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/sevice-availability.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/sla.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/support.mdx linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/cloud/terraform-provider.mdx linguist-generated=true
 websites/docs.temporal.io/docs/cli/activity.mdx linguist-generated=true
 websites/docs.temporal.io/docs/cli/batch.mdx linguist-generated=true
 websites/docs.temporal.io/docs/cli/cmd-options.mdx linguist-generated=true

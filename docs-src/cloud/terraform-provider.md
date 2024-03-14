@@ -1,0 +1,164 @@
+---
+id: terraform-provider
+title: Temporal Cloud Terraform provider
+sidebar_label: Terraform provider
+description:
+tags:
+  - temporal cloud
+  - terraform
+ssdi:
+  - The Terraform Provider is in a Public Preview release status for Temporal Cloud.
+---
+
+The Terraform Temporal provider is a plugin that allows Terraform to manage resources on Temporal Cloud.
+Terraform is a tool used to codify and provision infrastructure as code (IaC).
+With this provider, you can use Terraform to automate the management of Temporal Cloud Namespaces, resources for Temporal Cloud users, and more.
+
+The [Temporal Cloud Terraform provider](https://registry.terraform.io/providers/temporalio/temporalcloud/latest) is available in the Terraform Registry, where you can find detailed documentation on the supported resources and data sources.
+
+The GitHub repository for the Terraform provider is [terraform-provider-temporalcloud](https://github.com/temporalio/terraform-provider-temporalcloud/tree/main), where you can find the source code, contribution guidelines, and additional information.
+
+:::note
+
+Temporal supports the [Cloud Namespace](/cloud/namespaces) resource management, a user resource for managing Temporal Cloud users, and data sources for retrieving information about existing Namespaces and users, with the Temporal Cloud Terraform provider.
+
+:::
+
+### Prerequisites
+
+You must have access to the following to use the Temporal Cloud Terraform provider:
+
+- [Terraform account](https://developer.hashicorp.com/terraform)
+- [Terraform CLI](https://developer.hashicorp.com/terraform/cli)
+- [Temporal tcld](/cloud/tcld/)
+- [Issued certification authority](/cloud/certificates)
+
+## Get started
+
+This walk you through getting started with the Temporal Cloud Terraform provider.
+You will generate an API Key used to authenticate your requests with your Temporal Cloud account.
+Then you will create a Temporal Cloud Namespace with the Terraform provider.
+
+### 1. Generate an API Key
+
+You can skip generating an API Key if you already possess a valid API Key.
+
+1. Use the tcld to log in and generate an API Key.
+   This API Key is used to authenticate the Terraform provider run.
+
+```bash
+# authenticate your session
+tcld login
+# generate an API Key
+tcld apikey create -n "terraform-test" --desc "Testing the API Key for the TF Provider" -d 90d
+```
+
+You will use this key when creating or destroying Namespaces with the Terraform provider.
+
+2. Provide your working environment with the API Key generated in the previous step.
+
+<Tabs>
+  <TabItem value="macos" label="macOS" default>
+Export your environment variable for secure access to the API Keys.
+
+```bash
+# replace <yoursecretkey> with the "secretKey": output from the tcld apikey create command
+export TEMPORAL_CLOUD_API_KEY=<yoursecretkey>
+```
+
+</TabItem>
+  <TabItem value="windows" label="Windows">
+Export your environment variable for secure access to the API Keys.
+
+```bash
+# replace <yoursecretkey> with the "secretKey": output from the tcld apikey create command
+set TEMPORAL_CLOUD_API_KEY=<yoursecretkey>
+```
+
+</TabItem>
+</Tabs>
+
+The `TEMPORAL_CLOUD_API_KEY` is used to authenticate the Terraform provider.
+
+3. Generate your CA certificate
+
+You can skip generating your CA certificate if you already possess a CA certificate connected to your Temporal Cloud account.
+
+The CA certificate allows you to authenticate and interact with your Temporal Cloud Namespace.
+You can use an existing CA cert or [create one using tcld](/cloud/certificates).
+Once you have your CA certificate be sure to add the CA `.pem` file to your working directory.
+
+```bash
+mv ca.pem test-temporal-terraform
+```
+
+### 2. Create a Temporal Cloud Namespace with Terraform
+
+You're ready to create a Namespace using the Temporal Terraform provider.
+Use the following sample or find more [examples in the terraform-provider-temporalcloud](https://github.com/temporalio/terraform-provider-temporalcloud/tree/main/examples) GitHub repository.
+
+1. Create a Terraform configuration file to define a Namespace.
+
+```yml
+terraform {
+	required_providers {
+		temporalcloud = {
+			source = "temporalio/temporalcloud"
+		}
+	}
+}
+
+provider "temporalcloud" {
+
+}
+
+resource "temporalcloud_namespace" "terraform" {
+	name               = "terraform"
+	regions            = ["aws-us-east-1"]
+	accepted_client_ca = base64encode(file("ca.pem"))
+	retention_days     = 14
+}
+```
+
+In this example you are creating the Temporal Cloud Namespace name as `terraform`, specifying the AWS region `aws-us-east-1`, and specifying the path to the CA certificate.
+
+2. Initailze the Terraform provider.
+
+Run the following command to initialize the Terraform provider.
+
+```bash
+terraform init
+```
+
+3. Apply the Terraform configuration.
+
+Once to initialize occurs, apply the Terraform configuration to your Temporal Cloud account.
+
+```bash
+terraform apply
+```
+
+Follow the onscreen prompts.
+
+Upon completion, you'll see a success message indicating your Namespace is created.
+
+```bash
+temporalcloud_namespace.terraform: Creation complete after 2m17s [id=<yournamespace>]
+```
+
+### 3. Validate the creation of the Namespace
+
+Validate the creation of your Namespace through the Terraform provider.
+To validate, run the `tcld namespace get` command and pass in your [Cloud Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name) and [Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id):
+
+```bash
+tcld namespace get -n "<yournamespace>.<youraccountid>"
+```
+
+### 4. Delete a Temporal Cloud Namespace
+
+To delete the Namespace, run the following command:
+
+```bash
+terraform destroy
+```
