@@ -52,14 +52,21 @@ The following steps describe how to set up Observability on Temporal Cloud to ge
 1. Log in to Temporal Cloud UI as a Global Admin.
 2. Go to **Settings** and select **Integrations**.
 3. Select **Configure Observability** (if you’re setting it up for the first time) or click **Edit** in the Observability section (if it was already configured before).
-4. Add your root CA certificate (.pem) and save it.
-   Note that if an observability endpoint is already set up, you can append your root CA certificate here to use the generated observability endpoint with your instance of Grafana.
-5. To test your endpoint, run the following command on your host:
-   ```
-   curl -v --cert <path to your client-cert.pem> --key <path to your client-cert.key> "<your generated Temporal Cloud prometheus_endpoint>/api/v1/query?query=temporal_cloud_v0_state_transition_count"
-   ```
-   If you have Workflows running on a Namespace in your Temporal Cloud instance, you should see some data as a result of running this command.
-6. Copy the HTTP API endpoint that is generated (it is shown in the UI).
+4. In the **Connection** section, enter the URL that was generated in the Observability section on the Temporal Cloud UI.
+5. Leave the **Authentication** section as No Authentication.
+6. In the **TLS Settings** section, select **TLS Client Authentication** and enter the following:
+   1. **ServerName** can be left blank.
+   2. Enter in your end-entity certificate and key.
+      Note that if an observability endpoint is already set up, you can append your root CA certificate here to use the generated observability endpoint with your instance of Grafana.
+7. Enter **Save and test** to verify that the data source is working.
+8. To test your endpoint, run the following command on your host:
+
+```
+curl -v --cert <path to your client-cert.pem> --key <path to your client-cert.key> "<your generated Temporal Cloud prometheus_endpoint>/api/v1/query?query=temporal_cloud_v0_state_transition_count"
+```
+
+If you have Workflows running on a Namespace in your Temporal Cloud instance, you should see some data as a result of running this command.
+9. Copy the HTTP API endpoint that is generated (it is shown in the UI).
 
 This endpoint should be configured as a data source for Temporal Cloud metrics in Grafana.
 See [Data sources configuration for Temporal Cloud and SDK metrics in Grafana](#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana) for details.
