@@ -3,8 +3,8 @@
     "id": "datadog",
     "file_dir": "production-deployment/cloud/metrics/",
     "slug": "/cloud/metrics/datadog",
-    "title": "DataDog Metrics - Temporal Cloud feature guide",
-    "sidebar_label": "DataDog",
+    "title": "Datadog Metrics",
+    "sidebar_label": "Datadog",
     "sidebar_position": 2,
     "description": "Configure and track performance metrics for Temporal Cloud.",
     "use_description": false,
@@ -12,7 +12,7 @@
     "add_tabs_support": false,
     "sections": [
         {
-            "type": "h2",
+            "type": "p",
             "id": "cloud/datadog"
         }
     ]
