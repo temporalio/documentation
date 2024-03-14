@@ -242,7 +242,10 @@ This Event type contains Activity inputs, as well as Activity Timeout configurat
 
 This [Event](/workflows#event) type indicates that an [Activity Task Execution](/workers#activity-task-execution) was started.
 The SDK Worker picked up the Activity Task and started processing the [Activity](/activities) invocation.
-Note, however, that this Event is not written to History until the terminal Event (like [ActivityTaskCompleted](#activitytaskcompleted) or [ActivityTaskFailed](#activitytaskfailed)) occurs.
+Note that the ActivityTaskStarted event is written into Workflow history when your activity completes or fails after all of its retries.
+This happens after the terminal Event (like [ActivityTaskCompleted](#activitytaskcompleted) or [ActivityTaskFailed](#activitytaskfailed)) occurs.
+See [When does Temporal write the ActivityTaskStarted event into Workflow history?](https://community.temporal.io/t/when-does-temporal-write-the-activitytaskstarted-event-into-workflow-history/6162) for more details.
+
 
 | Field              | Description                                                                                                          |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------- |
