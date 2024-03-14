@@ -14,7 +14,7 @@ The Temporal Go SDK supports three tracing implementations: Datadog](https://pkg
 
 Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
 
-Tracing can be configured by providing a tracer implementation in [ClientOptions]((https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions)) during client instantiation.
+Tracing can be configured by providing a tracer implementation in [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) during client instantiation.
 
 For details on how to configure and leverage tracing, see the respective documentation:
 
