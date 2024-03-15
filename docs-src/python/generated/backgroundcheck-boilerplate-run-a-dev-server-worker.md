@@ -35,11 +35,10 @@ from workflows.backgroundcheck_dacx import BackgroundCheck
 
 
 async def main():
-    client = await Client.connect("localhost:7233")
+    client = await Client.connect("localhost:7233", namespace="backgroundcheck_namespace",)
 
     worker = Worker(
         client,
-        namespace="backgroundcheck_namespace",
         task_queue="backgroundcheck-boilerplate-task-queue",
         workflows=[BackgroundCheck],
         activities=[ssn_trace_activity],
