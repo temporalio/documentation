@@ -21,6 +21,8 @@ export async function fullAssembly(params) {
 
   await activities.genSourceObjects(config);
 
+  await activities.userDataSourceTable(config);
+
   await deterministicActivities.attachSourceToGuides(config);
 
   await activities.genLinkIndexes(config);

@@ -2,6 +2,7 @@ export { getConfig } from "./getConfig.js";
 export { createTempDir } from "./createTempDir.js";
 export { createNodesFromSamples } from "./createNodesFromSamples.js";
 export { genSourceObjects } from "./genSourceObjects.js";
+export { userDataSourceTable } from "./userDataSourceTable.js";
 export { attachSourceToGuides } from "./attachSourceToGuides.js";
 export { genLinkIndexes } from "./genLinkIndexes.js";
 export { linkMagic } from "./linkMagic.js";
