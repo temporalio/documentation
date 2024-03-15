@@ -9,4 +9,7 @@ tags:
   - explanation
 ---
 
-A Reset terminates a [Workflow Execution](/concepts/what-is-a-workflow-execution), removes the progress in the [Event History](/workflows#event-history) up to the reset point, and then creates a new Workflow Execution with the same [Workflow Type](/workflows#workflow-type) and [Id](/concepts/what-is-a-workflow-id) to continue.
+A Reset terminates a [Workflow Execution](/concepts/what-is-a-workflow-execution) and creates a new Workflow Execution with the same [Workflow Type](/workflows#workflow-type) and [Workflow ID](/concepts/what-is-a-workflow-id).
+The [Event History](/workflows#event-history) is copied from the original execution up to and including the reset point.
+The new execution continues from the reset point.
+Signals in the original history can be optionally copied to the new history, whether they appear after the reset point or not.

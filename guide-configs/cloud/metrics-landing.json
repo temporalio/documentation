@@ -1,8 +1,8 @@
 {
-    "file_name": "cloud-metrics.mdx",
+    "file_name": "index.mdx",
     "id": "metrics",
-    "file_dir": "production-deployment/cloud",
-    "slug": "/cloud/metrics",
+    "file_dir": "production-deployment/cloud/metrics/",
+    "slug": "/cloud/metrics/",
     "title": "Metrics - Temporal Cloud feature guide",
     "sidebar_label": "Metrics",
     "sidebar_position": 5,
@@ -30,10 +30,6 @@
         {
             "type": "h2",
             "id": "cloud/how-to-use-metrics"
-        },
-        {
-            "type": "h2",
-            "id": "cloud/prometheus-grafana-setup"
         }
     ]
 }
