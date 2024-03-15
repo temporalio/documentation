@@ -14,7 +14,7 @@ You can update Namespace-level [permissions](/cloud/users-namespace-level-permis
 
 <!-- How to update Namespace-level permissions for a Namespace in Temporal Cloud using Web UI -->
 
-### How to update Namespace-level permissions for a Namespace using Web UI
+### How to update a user's Namespace-level permissions across multiple Namespaces using the Web UI
 
 1. In Temporal Web UI, select **Namespaces** in the left portion of the window.
 1. On the **Namespaces** page, select the Namespace.
@@ -25,7 +25,7 @@ You can update Namespace-level [permissions](/cloud/users-namespace-level-permis
 
 <!-- How to update Namespace-level permissions for a user in Temporal Cloud using Web UI -->
 
-### How to update Namespace-level permissions for a user using Web UI
+### How to update Namespace-level permissions for multiple users within a single Namespace using the Web UI
 
 :::note
 
