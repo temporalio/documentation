@@ -116,7 +116,7 @@ There is a limit to the number of custom Search Attributes per attribute type pe
 | Datetime              | 20    |
 | Double                | 20    |
 | Int                   | 20    |
-| Keyword               | 20    |
+| Keyword               | 40    |
 | KeywordList           | 5     |
 | Text                  | 5     |
 
