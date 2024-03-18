@@ -117,7 +117,7 @@ There is a limit to the number of custom Search Attributes per attribute type pe
 | Double                | 20    |
 | Int                   | 20    |
 | Keyword               | 20    |
-| KeywordList           | 40    |
+| KeywordList           | 5     |
 | Text                  | 5     |
 
 ### Custom Search Attribute names
