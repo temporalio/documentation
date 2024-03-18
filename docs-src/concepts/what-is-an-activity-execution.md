@@ -43,7 +43,7 @@ Activity Cancellation:
 - lets the Activity know it doesn't need to keep doing work, and
 - gives the Activity time to clean up any resources it has created.
 
-Activities must heartbeat to receive cancellations from the server.
+Activities must heartbeat to receive cancellations from a Temporal Service.
 
 An Activity may receive Cancellation if:
 
