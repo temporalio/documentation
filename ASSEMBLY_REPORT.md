@@ -1,7 +1,5 @@
 # Docs Assembly Workflow report
 
-Assembly Workflow Id: docs-full-assembly
-
 147 guide configurations found.
 
 1778 information nodes found.
