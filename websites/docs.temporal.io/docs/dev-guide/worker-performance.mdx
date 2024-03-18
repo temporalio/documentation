@@ -64,12 +64,12 @@ then you might have too many workers, consider sizing down.
 
 ### Worker Executor Slots sizing
 
-The main area of tuning should be the number of Worker Executor Slots. If:
+The main area to focus on when tuning is the number of Worker Executor Slots.
+Increase the maximum number of working slots by adjusting `maxConcurrentWorkflowTaskExecutionSize` or `maxConcurrentActivityExecutionSize` if both of the following conditions are met:
 
-1. the Worker hosts are underutilized (there are no bottlenecks on CPU, load average, etc), and
-2. the `worker_task_slots_available` metric from the corresponding Worker type often shows a depleted number of available Worker slots, and
+1. The Worker hosts are underutilized (no bottlenecks on CPU, load average, etc.).
+2. The `worker_task_slots_available` metric from the corresponding Worker type frequently shows a depleted number of available Worker slots.
 
-then consider increasing the maximum number of working slots by adjusting `maxConcurrentWorkflowTaskExecutionSize` or `maxConcurrentActivityExecutionSize`.
 
 ### Poller count
 
