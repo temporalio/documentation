@@ -61,7 +61,7 @@ Let's take a closer look:
 - `ActivityTaskScheduled`: This Event indicates that the ExecuteActivity API was called and the Worker sent the [`ScheduleActivityTask`](/references/commands#scheduleactivitytask) Command to the Server.
 - `ActivityTaskStarted`: This Event indicates that the Worker successfully polled the Activity Task and started evaluating Activity code.
   The ActivityTaskStarted event is written into Workflow history when your activity completes or fails after all of its retries.
-  It may be counter-intuitive that this happens after the terminal Event (like [ActivityTaskCompleted](/references/events#activitytaskcompleted) or [ActivityTaskFailed](/references/events#activitytaskfailed)).
+  It may be counter-intuitive that this happens after the final Activity Event (like [ActivityTaskCompleted](/references/events#activitytaskcompleted) or [ActivityTaskFailed](/references/events#activitytaskfailed)).
   Don't be misled into thinking that the activity is failing to start.
   See [When does Temporal write the ActivityTaskStarted event into Workflow history?](https://community.temporal.io/t/when-does-temporal-write-the-activitytaskstarted-event-into-workflow-history/6162) for more details.
 - `ActivityTaskCompleted`: This Event indicates that the Worker completed evaluation of the Activity code and returned any results to the Server.
