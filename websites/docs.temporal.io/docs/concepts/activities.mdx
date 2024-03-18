@@ -145,7 +145,7 @@ Activity Cancellation:
 - lets the Activity know it doesn't need to keep doing work, and
 - gives the Activity time to clean up any resources it has created.
 
-Activities must heartbeat to receive cancellations from the server.
+Activities must heartbeat to receive cancellations from a Temporal Service.
 
 An Activity may receive Cancellation if:
 
@@ -155,7 +155,7 @@ An Activity may receive Cancellation if:
 - In some SDKs:
   - The Worker is shutting down.
   - An Activity sends a Heartbeat but the Heartbeat details can't be converted by the Worker's configured [Data Converter](/dataconversion). This fails the Activity Task Execution with an Application Failure.
-  - The Activity exceeded its attempt timeout on the Worker side and is not heartbeating or the server hasn't relayed its timeout cancellation.
+  - The Activity timed out on the Worker side and is not Heartbeating or the Temporal Service hasn't relayed a Cancellation.
 
 There are different ways to receive Cancellation depending on the SDK. <!-- TODO link to dev guide -->
 An Activity may accept or ignore Cancellation:
