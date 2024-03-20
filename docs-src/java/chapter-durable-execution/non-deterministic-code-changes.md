@@ -70,10 +70,8 @@ Let's take a closer look:
 - `WorkflowTaskCompleted`: The Workflow progresses until it reaches a line that issues a Command to the Temporal Cluster. The Workflow suspends execution as it made as much progress as it could.
 - `ActivityTaskScheduled`: This Event indicates that a request to execute an Activity was made, in this instance a call to the `SSNTraceActivity`, and the Worker sent the [`ScheduleActivityTask`](/references/commands#scheduleactivitytask) Command to the Server.
 - `ActivityTaskStarted`: This Event indicates that the Worker successfully polled the Activity Task and started evaluating Activity code.
-  The ActivityTaskStarted event is written into Workflow history when your activity completes or fails after all of its retries.
-  It may be counter-intuitive that this happens after the final Activity Event (like [ActivityTaskCompleted](/references/events#activitytaskcompleted) or [ActivityTaskFailed](/references/events#activitytaskfailed)).
-  Don't be misled into thinking that the activity is failing to start.
-  See [When does Temporal write the ActivityTaskStarted event into Workflow history?](https://community.temporal.io/t/when-does-temporal-write-the-activitytaskstarted-event-into-workflow-history/6162) for more details.
+  Visit the [Events](references/events.md) page to learn how and when this event is written into Workflow history.
+  The process can be counter-intuitive.
 - `ActivityTaskCompleted`: This Event indicates that the Worker completed evaluation of the Activity code and returned any results to the Server.
   In response, the Server schedules another Workflow Task to finish evaluating the Workflow code resulting in the remaining Events, `WorkflowTaskScheduled`.`WorkflowTaskStarted`, `WorkflowTaskCompleted`, `WorkflowExecutionCompleted`.
 
