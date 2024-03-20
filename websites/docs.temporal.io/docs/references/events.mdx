@@ -242,7 +242,9 @@ This Event type contains Activity inputs, as well as Activity Timeout configurat
 
 This [Event](/workflows#event) type indicates that an [Activity Task Execution](/workers#activity-task-execution) was started.
 The SDK Worker picked up the Activity Task and started processing the [Activity](/activities) invocation.
-Note, however, that this Event is not written to History until the terminal Event (like [ActivityTaskCompleted](#activitytaskcompleted) or [ActivityTaskFailed](#activitytaskfailed)) occurs.
+The ActivityTaskStarted event is written into Workflow history when your activity completes or fails after all of its retries.
+It may be counter-intuitive that this happens after the final Activity Event (like [ActivityTaskCompleted](#activitytaskcompleted) or [ActivityTaskFailed](#activitytaskfailed)).
+Don't be misled into thinking that the activity is failing.
 
 | Field              | Description                                                                                                          |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------- |
