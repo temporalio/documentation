@@ -239,7 +239,7 @@ This [Event](/concepts/what-is-an-event) type indicates that an [Activity Task E
 The SDK Worker picked up the Activity Task and started processing the [Activity](/concepts/what-is-an-activity) invocation.
 The ActivityTaskStarted event is written into Workflow Event History when the Activity completes or fails after all of its retries.
 It may be counter-intuitive that this happens after the final Activity Event (like [ActivityTaskCompleted](/references/events#activitytaskcompleted) or [ActivityTaskFailed](/references/events#activitytaskfailed)).
-Don't be misled into thinking that the activity is failing.
+Don't be misled into thinking that the Activity did not start if you don't see this Event in the History.
 
 | Field              | Description                                                                                                          |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------- |
