@@ -23,3 +23,9 @@ As Temporal continues working on improving latencies, these numbers will progres
 
 Latency observed from the Temporal Client is influenced by other system components like the Codec Server, egress proxy, and the network itself.
 Also, concurrent operations on the same Workflow Execution may result in higher latency.
+
+| Operation                          | p90  |  p99 |
+| :--------------------------------- | :--: | ---: |
+| `StartWorkflowExecution`           | 24ms | 54ms |
+| `SignalWorkflowExecution`          | 14ms | 40ms |
+| `SignalWithStartWorkflowExecution` | 24ms | 61ms |
