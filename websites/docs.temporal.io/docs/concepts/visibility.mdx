@@ -270,7 +270,7 @@ Default Search Attributes are set globally in any Namespace.
 These Search Attributes are created when the initial index is created.
 
 | NAME                       | TYPE         | DEFINITION                                                                                                                                                                                                   |
-| -------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+|----------------------------|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | BatcherUser                | Keyword      | Used by internal batcher Workflow that runs in `TemporalBatcher` Namespace division to indicate the user who started the batch operation.                                                                    |
 | BinaryChecksums            | Keyword List | List of binary Ids of Workers that run the Workflow Execution. Deprecated since server version 1.21 in favor of the `BuildIds` search attribute.                                                             |
 | BuildIds                   | Keyword List | List of Worker Build Ids that have processed the Workflow Execution, formatted as `versioned:{BuildId}` or `unversioned:{BuildId}`, or the sentinel `unversioned` value. Available from server version 1.21. |
@@ -340,7 +340,7 @@ Custom Search Attributes must be one of the following types:
 - Double
 - Int
 - Keyword
-- KeywordList (not supported on Temporal Cloud)
+- KeywordList
 - Text
 
 Note:
@@ -366,13 +366,13 @@ Note:
 The following table lists the maximum number of custom Search Attributes you can create per Namespace by supported Visibility database.
 
 | Search Attribute type | MySQL (v8.0.17 and later) | PostgreSQL (v12 and later) | SQLite (v3.31.0 and later) | Temporal Cloud |
-| --------------------- | :-----------------------: | :------------------------: | :------------------------: | :------------: |
+|-----------------------|:-------------------------:|:--------------------------:|:--------------------------:|:--------------:|
 | Bool                  |             3             |             3              |             3              |       20       |
 | Datetime              |             3             |             3              |             3              |       20       |
 | Double                |             3             |             3              |             3              |       20       |
 | Int                   |             3             |             3              |             3              |       20       |
-| Keyword               |            10             |             10             |             10             |       20       |
-| KeywordList           |             3             |             3              |             3              | Not supported  |
+| Keyword               |            10             |             10             |             10             |       40       |
+| KeywordList           |             3             |             3              |             3              |       5        |
 | Text                  |             3             |             3              |             3              |       5        |
 
 Temporal does not impose a limit on the number of custom Search Attributes you can create with Elasticsearch. However, [Elasticsearch sets a default mapping limit](https://www.elastic.co/guide/en/elasticsearch/reference/8.6/mapping-settings-limit.html) that may apply.

@@ -115,15 +115,15 @@ Each batch job operates on a maximum of 50 Workflow Executions per second.
 
 There is a limit to the number of custom Search Attributes per attribute type per Namespace:
 
-| Search Attribute type | Limit         |
-| --------------------- | ------------- |
-| Bool                  | 20            |
-| Datetime              | 20            |
-| Double                | 20            |
-| Int                   | 20            |
-| Keyword               | 20            |
-| KeywordList           | Not supported |
-| Text                  | 5             |
+| Search Attribute type | Limit |
+| --------------------- | ----- |
+| Bool                  | 20    |
+| Datetime              | 20    |
+| Double                | 20    |
+| Int                   | 20    |
+| Keyword               | 40    |
+| KeywordList           | 5     |
+| Text                  | 5     |
 
 ### Custom Search Attribute names
 
