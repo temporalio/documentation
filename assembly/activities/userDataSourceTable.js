@@ -1,31 +1,52 @@
 import fs from "fs";
 import path from "path";
+import { Octokit } from "@octokit/core";
 
 async function fetchAndGenerateTable() {
-  const response = await fetch(
-    "https://raw.githubusercontent.com/temporalio/saas-policy/main/config/policy/v2/action_groups/data.json?token=GHSAT0AAAAAABS7EKG6GHKKYUGPZVN4IPAKZPUZZ4A"
-  );
-  const data = await response.json();
+  const octokit = new Octokit({
+    auth: "",
+  });
+
+  const response = await octokit.request("GET /repos/{owner}/{repo}/contents/{path}", {
+    owner: "temporalio",
+    repo: "saas-policy",
+    path: "config/policy/v2/action_groups/data.json",
+    headers: {
+      "X-GitHub-Api-Version": "2022-11-28",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = response.data;
+  const content = Buffer.from(data.content, "base64").toString("utf-8");
+  const jsonData = JSON.parse(content);
 
   const permissionMap = {};
 
-  for (const [type, rolePerms] of Object.entries(data.config)) {
+  // Assuming jsonData is the object structure you are iterating over. If `data.config` is the correct path, adjust accordingly.
+  for (const [type, rolePerms] of Object.entries(jsonData)) {
+    // Changed to jsonData to match the fetched and parsed data
     for (const [role, perms] of Object.entries(rolePerms)) {
-      for (const [perm, allowed] of Object.entries(perms)) {
-        if (allowed) {
-          const [prefix, name] = perm.split(":");
-          if (!permissionMap[name]) {
-            permissionMap[name] = {
-              name,
-              prefix,
-              roles: [],
-            };
-          }
-          permissionMap[name].roles.push(`${type}:${role}`);
+      for (const perm of perms) {
+        // Assuming perms is an array of permission strings. If it's an object, adjust accordingly.
+        const [prefix, name] = perm.split(":");
+        if (!permissionMap[name]) {
+          permissionMap[name] = {
+            name,
+            prefix,
+            roles: [],
+          };
         }
+        permissionMap[name].roles.push(`${type}:${role}`);
       }
     }
   }
+
+  // If you need to do something with permissionMap (like returning it or logging it), do that here.
+  console.log(permissionMap);
 
   const outputLines = [];
 
