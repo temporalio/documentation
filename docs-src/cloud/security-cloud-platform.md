@@ -18,6 +18,17 @@ A Namespace (regardless of account) cannot interact with other Namespaces.
 Each Namespace is available through a secure gRPC (mTLS) endpoint and an HTTPS (TLS) endpoint.
 You can make these endpoints more secure by routing all communication through AWS PrivateLink.
 
+Temporal Cloud is a multi-tenant service.
+Namespaces in the same environment are logically segregated.
+Namespaces do not share data processing or data storage across regional boundaries.
+
+#### PrivateLink
+
+[AWS PrivateLink](https://aws.amazon.com/privatelink/) allows you to establish a private connection between your Amazon Virtual Private Cloud (VPC) and Temporal Cloud, without routing traffic over the internet.
+This ensures that your communication with Temporal Cloud remains within the AWS network, providing an extra layer of security and privacy.
+It's important to note that PrivateLink enables a one-way connection from your VPC to Temporal Cloud.
+Temporal Cloud does not gain peering access to your VPC or any resources within it.
+
 :::note
 
 If you are interested in leveraging AWS PrivateLink in your Namespaces, [create a support ticket](/cloud/support#support-ticket) that includes the following information:
@@ -28,9 +39,16 @@ If you are interested in leveraging AWS PrivateLink in your Namespaces, [create 
 
 :::
 
-Temporal Cloud is a multi-tenant service.
-Namespaces in the same environment are logically segregated.
-Namespaces do not share data processing or data storage across regional boundaries.
+To set up PrivateLink connectivity with Temporal Cloud, you'll need to perform the following high-level steps:
+
+1. Add a VPC Endpoint Interface in your AWS VPC.
+2. Configure security groups to allow TCP egress traffic to port `7233` (for gRPC communication).
+
+Once set up, you can test your PrivateLink connectivity using:
+
+1. Non-Temporal tools like cURL (useful for testing from environments that restrict tool usage).
+2. Temporal CLI: by setting the [--tls-server-name](/cli/cmd-options#tls-server-name) parameter to the PrivateLink endpoint.
+3. Temporal SDKs: by setting the server name argument to the PrivateLink endpoint.
 
 ### Encryption
 
