@@ -8,12 +8,12 @@ tags:
   - explanation
 ---
 
-A Temporal Cloud Account Id is a unique identifier for a customer for the entire time they use Temporal Cloud.
-Temporal Technologies assigns each Account Id, which is an opaque code of five or six alphanumeric characters, such as `f45a2`.
-The Account Id is shown in the upper-right corner of Workflows and Schedules listed in the Web UI.
+A Temporal Cloud Account Id is a 5- or 6-digit code made up of numbers and letters.
+Assigned by Temporal Technologies, it provides a unique customer identifier that persists through their Temporal Cloud experience.
 
-:::info
+To find an Account Id, login to Temporal Cloud.
+Navigate to the Namespace list page from the left-side vertical navigation.
+The Account Id is the five characters after the period in any Cloud Namespace name.
 
-For more information on obtaining a Temporal Cloud Account Id, see our [Cloud account commands](/cloud/tcld/account/get) page.
-
-:::
+To view the same information from the command line, use the `tcld` CLI utility.
+After logging in (`tcld login`), issue `tcld namespace list`.
