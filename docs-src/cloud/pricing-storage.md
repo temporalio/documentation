@@ -18,18 +18,18 @@ _Active storage_ is a measure of the amount of storage used to store active Work
 
 When the execution of a Workflow ends, Temporal Cloud stores Event History for a defined Retention Period, for historical use. This is _retained storage_. Typical uses include compliance, debugging, workload refresh, and business analytics. Both kinds of storage have fixed costs.
 
-| **Storage** | **Cost per GBh** |
-| ----------- | ---------------- |
-| Retained    | $0.00042         |
-| Active      | $0.042           |
+| **Storage** | **Cost per GBh (USD)** |
+| ----------- | ---------------------- |
+| Retained    | $0.00042               |
+| Active      | $0.042                 |
 
-If you purchase Temporal Cloud credits (as outlined earlier), active storage costs are tiered and measured in gigabyte-hours.
+If you purchase Temporal Cloud credits (as [outlined earlier](/cloud/what-is-an-action)), active storage costs are tiered and measured in gigabyte-hours.
 
-| **Active storage**           | **Cost per GBh per Namespace** |
-| ---------------------------- | ------------------------------ |
-| Up to 7,000                  | $0.039                         |
-| Over 7,000 up to 30,000      | $0.031                         |
-| Over 30,000 up to 90,000     | $0.023                         |
-| Over 90,000 up to 400,000    | $0.018                         |
-| Over 400,000 up to 1,500,000 | $0.013                         |
-| Over 1,500,000               | $0.010                         |
+| **Active Storage (Per GB Hour Per Namespace)** | **Cost (USD)** |
+| ---------------------------------------------- | -------------- |
+| Up to 7,000                                    | $0.039         |
+| Over 7,000 up to 30,000                        | $0.031         |
+| Over 30,000 up to 90,000                       | $0.023         |
+| Over 90,000 up to 400,000                      | $0.018         |
+| Over 400,000 up to 1,500,000                   | $0.013         |
+| Over 1,500,000                                 | $0.010         |
