@@ -15,5 +15,5 @@ To find an Account Id, login to Temporal Cloud.
 Navigate to the Namespace list page from the left-side vertical navigation.
 The Account Id is the alphanumeric character string found after the period in any Cloud Namespace name.
 
-To view the same information from the command line, use the `tcld` CLI utility.
+To view this information from the command line instead of the Web, use the `tcld` CLI utility.
 After logging in (`tcld login`), issue `tcld namespace list`.
