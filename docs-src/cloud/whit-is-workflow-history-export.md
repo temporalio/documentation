@@ -8,6 +8,8 @@ tags:
   - explanation
   - temporal cloud
   - operations
+ssdi:
+  - Workflow History Export is in a Public Preview release status for Temporal Cloud.
 ---
 
 The Workflow History Export feature allows users to export Closed Workflow Histories to a user's Cloud Storage Sink.
