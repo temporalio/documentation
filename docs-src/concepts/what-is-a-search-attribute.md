@@ -113,7 +113,7 @@ Custom Search Attributes must be one of the following types:
 - Double
 - Int
 - Keyword
-- KeywordList (not supported on Temporal Cloud)
+- KeywordList
 - Text
 
 Note:
