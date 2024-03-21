@@ -11,6 +11,8 @@ tags:
 
 Temporal Cloud authenticates a client connection by validating the client certificate against one or more CA certificates that are configured for the specified Namespace.
 
+Choose one of the following options to generate and manage the certificates:
+
 ### Option 1: You already have certificate management infrastructure
 
 If you have existing certificate management infrastructure that supports issuing CA and end-entity certificates, it satisfies the requirements.
@@ -134,4 +136,6 @@ openssl pkcs8 -topk8 -inform PEM -outform PEM -in <out/your-namespace.key> -out 
 ##### 6. Use the Certificates with Temporal Cloud
 
 You can now use the generated client certificate (`your-namespace.crt`) and the CA certificate (`Cert.crt`) with Temporal Cloud.
+You will upload the contents of the `Cert.crt` file to the **CA Certificates** section of your **Namespace** settings.
+
 Follow the instructions to [upload the CA certificate and configure your client](/cloud/certificates#update-certificates-using-temporal-cloud-ui) with the end-entity certificate.
