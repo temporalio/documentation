@@ -38,5 +38,4 @@ From the Command Line:
 
 
 To view Namespace information from the command line instead of the Web, use the `tcld` CLI utility.
-1. Log in: `tcld login`.
 
