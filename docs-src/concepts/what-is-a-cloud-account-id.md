@@ -28,7 +28,7 @@ Either use a Web browser and visit [Temporal Cloud](https://cloud.temporal.io) o
 3. View the Namespaces listed for the user. 
    Each Namespace uses an Account Id suffix.
 
-From the Command Line:
+**From the Command Line:**
 
 1. Use the `tcld` utility to log into an account.
    A Web page automatically opens for authentication.
