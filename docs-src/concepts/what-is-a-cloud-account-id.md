@@ -34,6 +34,31 @@ From the Command Line:
    A Web page automatically opens for authentication.
        $ tcld login
 
+2. Ensure the user code shown by the CLI utility matches the code shown in the Web browser.
+   Then, click Confirm in the browser to continue.
+
+       $ tcld login
+       Login via this url: https://login.tmprl.cloud/activate?user_code=KTGC-ZPWQ
+
+   After confirmation, the Web lets you know that the CLI "device" is now connected.
+
+4. Return to the command line.
+   Issue the following command.
+
+       $ tcld namespace list
+
+   The CLI tool returns a short JSON packet with your namespace information. 
+   This is the same list found in the Web Namespaces list.
+   Like the browser version, each Namespace uses an Account Id suffix.
+
+       $ tcld namespace list
+       {
+   	    "namespaces": [
+       		"your-namespace.123def",
+       		"another-namespace.123def"
+   	    ],
+       	"nextPageToken": ""
+       }
 
 
 
