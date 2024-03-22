@@ -12,7 +12,12 @@ A Temporal Cloud Account Id is a unique customer identifier assigned by Temporal
 The Id is a short string of numbers and letters, at least five characters long.
 The identifier remains constant for the entire time a customer uses Temporal Cloud.
 
-To find an Account Id, log in to Temporal Cloud.
+To find an Account Id, follow these steps:
+
+1. Log into Temporal Cloud.
+2. Navigate to the Namespace list page from the left-side vertical navigation.
+
+The Account Id is the alphanumeric character string found after the period in any Cloud Namespace 
 Navigate to the Namespace list page from the left-side vertical navigation.
 The Account Id is the alphanumeric character string found after the period in any Cloud Namespace name.
 
