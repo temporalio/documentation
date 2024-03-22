@@ -34,7 +34,6 @@ From the Command Line:
    A Web page automatically opens for authentication.
        $ tcld login
 
-1. Log into Temporal Cloud.
 2. Navigate to the Namespace list page from the left-side vertical navigation.
 
 
