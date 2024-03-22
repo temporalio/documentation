@@ -41,7 +41,7 @@ Follow these steps.
        $ tcld login
        Login via this url: https://login.tmprl.cloud/activate?user_code=KTGC-ZPWQ
 
-   After confirmation, the Web lets you know that the CLI "device" is now connected.
+   After confirmation, Web feedback lets you know that the CLI "device" is now connected.
 
 4. Return to the command line.
    Issue the following command.
