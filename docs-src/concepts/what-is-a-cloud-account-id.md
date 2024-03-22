@@ -49,7 +49,7 @@ Follow these steps.
        $ tcld namespace list
 
    The CLI tool returns a short JSON packet with your namespace information. 
-   This is the same list found in the Web Namespaces list.
+   This is the same list found in the Temporal Cloud Web UI Namespaces list.
    Like the browser version, each Namespace uses an Account Id suffix.
 
        $ tcld namespace list
