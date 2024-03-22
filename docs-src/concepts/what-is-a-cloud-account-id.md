@@ -8,7 +8,6 @@ tags:
   - explanation
 ---
 
-The identifier remains constant for the entire time a customer uses Temporal Cloud.
 
 To find an Account Id, follow these steps:
 
