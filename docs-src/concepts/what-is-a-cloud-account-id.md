@@ -23,7 +23,7 @@ Either use a Web browser and visit [Temporal Cloud](https://cloud.temporal.io) o
 
 From the Web:
 
-1. Log into Temporal Cloud from a Web Browser.
+1. Log into Temporal Cloud.
 2. Navigate to the Namespace list page from the left-side vertical navigation. 
 3. View the Namespaces listed for the user. 
    Each Namespace uses an Account Id suffix.
