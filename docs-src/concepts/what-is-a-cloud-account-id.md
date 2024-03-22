@@ -10,7 +10,7 @@ tags:
 
 
 A Temporal Cloud Account Id is a unique customer identifier assigned by Temporal Technologies.
-Each Id is a short string of numbers and letters, at least five characters long.
+Each Id is a short string of numbers and letters like `f45a2`, at least five characters long.
 This account identifier is retained throughout the time each customer uses Temporal Cloud.
 
 At times you may need to know a customer Account Id.
