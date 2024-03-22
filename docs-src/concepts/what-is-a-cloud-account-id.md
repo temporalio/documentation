@@ -61,5 +61,6 @@ Follow these steps.
        	"nextPageToken": ""
        }
 
+In this example, the account ID is `123def`.
 
 
