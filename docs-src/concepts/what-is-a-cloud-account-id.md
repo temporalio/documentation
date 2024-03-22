@@ -34,7 +34,6 @@ From the Command Line:
    A Web page automatically opens for authentication.
        $ tcld login
 
-2. Navigate to the Namespace list page from the left-side vertical navigation.
 
 
 To view Namespace information from the command line instead of the Web, use the `tcld` CLI utility.
