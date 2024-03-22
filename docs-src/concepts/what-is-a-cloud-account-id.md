@@ -41,4 +41,3 @@ To view Namespace information from the command line instead of the Web, use the 
 1. Log in: `tcld login`.
 2. Issue `tcld namespace list`.
 
-The Account Id is the alphanumeric character string found after the period in any Cloud Namespace name.
