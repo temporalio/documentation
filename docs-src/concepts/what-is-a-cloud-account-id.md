@@ -32,6 +32,7 @@ Follow these steps.
 
 1. Use the `tcld` utility to log into an account.
    A Web page automatically opens for authentication.
+
        $ tcld login
 
 2. Ensure the user code shown by the CLI utility matches the code shown in the Web browser.
