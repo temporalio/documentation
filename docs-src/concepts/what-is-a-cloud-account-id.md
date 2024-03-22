@@ -20,4 +20,5 @@ To find an Account Id, follow these steps:
 The Account Id is the alphanumeric character string found after the period in any Cloud Namespace name.
 
 To view Namespace information from the command line instead of the Web, use the `tcld` CLI utility.
+Follow these steps:
 After logging in (`tcld login`), issue `tcld namespace list`.
