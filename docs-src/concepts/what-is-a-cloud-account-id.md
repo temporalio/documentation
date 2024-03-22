@@ -21,7 +21,7 @@ This is the alphanumeric character string found after the period in any Temporal
 You can retrieve an Account Id from the [Temporal Cloud](https://cloud.temporal.io) Web UI or by using the `tcld` utility at a command line interface (CLI).
 Follow these steps.
 
-**From Temporal Cloud’s Web UI:**
+**From Temporal Cloud Web UI:**
 
 1. Log into Temporal Cloud.
 2. Navigate to the Namespace list page from the left-side vertical navigation. 
