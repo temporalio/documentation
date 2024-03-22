@@ -18,7 +18,7 @@ Accessing the account's Namespaces provides an easy way to capture this informat
 Each Temporal Namespace use an Account Id suffix.
 This is the alphanumeric character string found after the period in any Temporal Cloud Namespace name.
 
-You can retrieve an Account Id from the [Temporal Cloud](https://cloud.temporal.io) website or by using the `tcld` utility at a command line interface (CLI).
+You can retrieve an Account Id from the [Temporal Cloud](https://cloud.temporal.io) Web UI or by using the `tcld` utility at a command line interface (CLI).
 Follow these steps.
 
 **From Temporal Cloud’s Web UI:**
