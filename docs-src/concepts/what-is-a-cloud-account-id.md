@@ -17,7 +17,6 @@ To find an Account Id, follow these steps:
 1. Log into Temporal Cloud.
 2. Navigate to the Namespace list page from the left-side vertical navigation.
 
-The Account Id is the alphanumeric character string found after the period in any Cloud Namespace 
 Navigate to the Namespace list page from the left-side vertical navigation.
 The Account Id is the alphanumeric character string found after the period in any Cloud Namespace name.
 
