@@ -31,7 +31,7 @@ From the Command Line:
 
 1. Use the `tcld` utility to log into an account.
    A Web page automatically opens for authentication.
-
+       $ tcld login
 
 1. Log into Temporal Cloud.
 2. Navigate to the Namespace list page from the left-side vertical navigation.
