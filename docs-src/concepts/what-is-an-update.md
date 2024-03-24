@@ -33,6 +33,8 @@ The Update handler can mutate workflow state (like a [Signal](/concepts/what-is-
 Like every bit of code in a Workflow, Update handlers must be [deterministic](/concepts/what-is-a-workflow-definition#deterministic-constraints).
 However, they may use all the available Workflow features, such as executing Activities and child Workflows, and waiting on timers/conditions.
 
+To avoid losing Updates when using [Continue-As-New](/concepts/what-is-continue-as-new), ensure that all Update handlers have completed before calling Continue-As-New.
+
 When there is the potential for multiple Updates to cause a duplication problem, Temporal recommends adding idempotency logic to your Update handler that checks for duplicates.
 
 An Update has four phases.
