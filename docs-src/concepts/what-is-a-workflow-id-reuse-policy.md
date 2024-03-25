@@ -11,16 +11,7 @@ tags:
 A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.
 
 It is not possible for a new Workflow Execution to spawn with the same Workflow Id as another Open Workflow Execution, regardless of the Workflow Id Reuse Policy.
-In some cases, an attempt to spawn a Workflow Execution with a Workflow Id that is the same as the Id of a currently Open Workflow Execution results in a `Workflow execution already started` error.
-
-:::note
-
-The default [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions) behavior in the Go SDK is to not return an error when a new Workflow Execution is attempted with the same Workflow Id as an open Workflow Execution.
-Instead, it returns a WorkflowRun instance representing the current or last run of the open Workflow Execution.
-
-To return the `Workflow execution already started` error, set `WorkflowExecutionErrorWhenAlreadyStarted` to `true`.
-
-:::
+See [Workflow Id Conflict Policy](/concepts/what-is-a-workflow-id-conflict-policy) for resolving a Workflow Id conflict.
 
 The Workflow Id Reuse Policy can have one of the following values:
 
@@ -38,4 +29,4 @@ For example, the Temporal Service can only check the Workflow Id of the spawning
 The fourth value of the Workflow Id Reuse Policy, Terminate if Running, only applies to a Workflow Execution that is currently open within the Namespace.
 For Terminate if Running, the Retention Period is not a consideration for this policy.
 
-If there is an attempt to spawn a Workflow Execution with a Workflow Id Reuse Policy that won't allow it the Server will prevent the Workflow Execution from spawning.
+If there is an attempt to spawn a Workflow Execution with a Workflow Id Reuse Policy that won't allow it, the Server will prevent the Workflow Execution from spawning.
