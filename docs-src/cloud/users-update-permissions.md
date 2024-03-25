@@ -14,7 +14,7 @@ You can update Namespace-level [permissions](/cloud/users-namespace-level-permis
 
 <!-- How to update Namespace-level permissions for a Namespace in Temporal Cloud using Web UI -->
 
-### How to update Namespace-level permissions for a Namespace using Web UI
+### How to use the Web UI to update a user's permissions across multiple Namespaces
 
 1. In Temporal Web UI, select **Namespaces** in the left portion of the window.
 1. On the **Namespaces** page, select the Namespace.
@@ -25,7 +25,7 @@ You can update Namespace-level [permissions](/cloud/users-namespace-level-permis
 
 <!-- How to update Namespace-level permissions for a user in Temporal Cloud using Web UI -->
 
-### How to update Namespace-level permissions for a user using Web UI
+### How to use the Web UI to update permissions for multiple users within a single Namespace
 
 :::note
 
@@ -41,6 +41,6 @@ A user who has the Global Admin account-level [Role](/cloud/users-account-level-
 
 <!-- How to update an account-level Role in Temporal Cloud using tcld -->
 
-### How to update Namespace-level permissions using tcld
+### How to use tcld to update Namespace-level permissions
 
 For details, see the [tcld user set-namespace-permissions](/cloud/tcld/user/set-namespace-permissions) command.

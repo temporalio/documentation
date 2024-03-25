@@ -18,7 +18,7 @@ Together these components create a runtime for your application.
 
 A Temporal Cluster consists of the Temporal Server and a database.
 
-Our software as a server (SaaS) offering, Temporal Cloud, offers an alternative to hosting a Temporal Cluster yourself.
+Our software as a service (SaaS) offering, Temporal Cloud, offers an alternative to hosting a Temporal Cluster yourself.
 
 Worker Processes are hosted and operated by you and execute your code. Workers run using one of our SDKs.
 

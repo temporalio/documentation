@@ -335,7 +335,7 @@ Use the `worker_type` key to differentiate execution slots.
 (Workflow Workers execute Workflow Tasks; Activity Workers execute Activity Tasks.)
 
 - Type: Gauge
-- Available in: Go, Java
+- Available in: Core, Go, Java
 - Tags: `namespace`, `task_queue`, `worker_type`
 
 ### workflow_active_thread_count
@@ -407,7 +407,7 @@ A Workflow Worker polled a Task Queue and timed out without picking up a Workflo
 
 - Type: Counter
 - Available in: Core, Go, Java
-- Tags: `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`
 
 ### workflow_task_queue_poll_succeed
 
@@ -415,7 +415,7 @@ A Workflow Worker polled a Task Queue and successfully picked up a Workflow Task
 
 - Type: Counter
 - Available in: Core, Go, Java
-- Tags: `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`
 
 ### workflow_task_replay_latency
 
@@ -431,4 +431,4 @@ The Schedule-To-Start time of a Workflow Task.
 
 - Type: Histogram
 - Available in: Core, Go, Java
-- Tags: `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`
