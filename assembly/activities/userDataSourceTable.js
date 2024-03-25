@@ -1,37 +1,44 @@
 import fs from "fs";
 import path from "path";
-import { Octokit } from "@octokit/core";
+import fetch from "node-fetch";
+
+const configData = JSON.parse(fs.readFileSync("./secure/cloud-connection.json", "utf-8"));
 
 async function fetchAndGenerateTable() {
-  const octokit = new Octokit({
-    auth: "",
-  });
+  // Check if the github_token value or key is empty
+  if (!configData.github_token || configData.github_token.trim() === "") {
+    console.log("GitHub token is missing or empty. Skipping execution.");
+    return "";
+  }
 
-  const response = await octokit.request("GET /repos/{owner}/{repo}/contents/{path}", {
-    owner: "temporalio",
-    repo: "saas-policy",
-    path: "config/policy/v2/action_groups/data.json",
-    headers: {
-      "X-GitHub-Api-Version": "2022-11-28",
-    },
-  });
+  const response = await fetch(
+    "https://api.github.com/repos/temporalio/saas-policy/contents/config/policy/v2/action_groups/data.json",
+    {
+      headers: {
+        Authorization: `Bearer ${configData.github_token}`,
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    }
+  );
 
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
 
-  const data = response.data;
-  const content = Buffer.from(data.content, "base64").toString("utf-8");
-  const jsonData = JSON.parse(content);
+  const data = await response.json();
+  const downloadUrl = data.download_url;
 
+  const downloadResponse = await fetch(downloadUrl);
+  if (!downloadResponse.ok) {
+    throw new Error(`HTTP error! status: ${downloadResponse.status}`);
+  }
+
+  const jsonData = await downloadResponse.json();
   const permissionMap = {};
 
-  // Assuming jsonData is the object structure you are iterating over. If `data.config` is the correct path, adjust accordingly.
-  for (const [type, rolePerms] of Object.entries(jsonData)) {
-    // Changed to jsonData to match the fetched and parsed data
+  for (const [type, rolePerms] of Object.entries(jsonData.config)) {
     for (const [role, perms] of Object.entries(rolePerms)) {
-      for (const perm of perms) {
-        // Assuming perms is an array of permission strings. If it's an object, adjust accordingly.
+      for (const perm in perms) {
         const [prefix, name] = perm.split(":");
         if (!permissionMap[name]) {
           permissionMap[name] = {
@@ -45,7 +52,6 @@ async function fetchAndGenerateTable() {
     }
   }
 
-  // If you need to do something with permissionMap (like returning it or logging it), do that here.
   console.log(permissionMap);
 
   const outputLines = [];
@@ -59,7 +65,7 @@ async function fetchAndGenerateTable() {
 
     for (const { name, roles } of sortedPermissions) {
       const row = `| ${name} | ${roles.includes("namespace:admin") ? "✔" : " "} | ${
-        roles.includes("write:developer") ? "✔" : " "
+        roles.includes("account:developer") ? "✔" : " "
       } | ${roles.includes("namespace:read") ? "✔" : " "} | ${roles.includes("namespace:write") ? "✔" : " "} | ${
         roles.includes("account:read") ? "✔" : " "
       } |`;
@@ -107,4 +113,3 @@ Action groups define the permissions and access control for different roles with
   // print the file path
   console.log(`Generated table at ${sourceNodesFilePath}`);
 }
-userDataSourceTable;
