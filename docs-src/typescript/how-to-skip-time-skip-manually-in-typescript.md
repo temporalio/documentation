@@ -37,6 +37,13 @@ export async function sleeperWorkflow() {
 
 ```ts
 test('sleeperWorkflow counts days correctly', async () => {
+
+  const worker = await Worker.create({
+    connection: testEnv.nativeConnection,
+    taskQueue: 'test',
+    workflowsPath: require.resolve('./workflows'),
+  });
+
   // `start()` starts the test server in "normal" mode, not skipped time mode.
   // If you don't advance time using `testEnv.sleep()`, then `sleeperWorkflow()`
   // will run for days.
@@ -44,6 +51,8 @@ test('sleeperWorkflow counts days correctly', async () => {
     workflowId: uuid4(),
     taskQueue,
   });
+
+  worker.run();
 
   let numDays = await handle.query(daysQuery);
   assert.equal(numDays, 0);
