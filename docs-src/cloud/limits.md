@@ -29,7 +29,6 @@ The following aspects apply at the Temporal Cloud Account level (per account).
 **How many users can I add?**
 
 By default, 300 users across all Namespaces.
-You can request this limit be rasied by opening a [support ticket](/cloud/support-create-ticket).
 
 ### Namespaces
 
