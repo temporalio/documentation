@@ -9,7 +9,7 @@ tags:
   - child-workflow
 ---
 
-A Child Workflow Execution is a [Workflow Execution](/concepts/what-is-a-workflow-execution) that is spawned from within another Workflow.
+A Child Workflow Execution is a [Workflow Execution](/concepts/what-is-a-workflow-execution) that is spawned from within another Workflow in the same Namespace.
 
 - [How to start a Child Workflow Execution using the Go SDK](/go/child-workflows)
 - [How to start a Child Workflow Execution using the Java SDK](/java/child-workflows)
