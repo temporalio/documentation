@@ -8,7 +8,6 @@ tags:
   - explanation
 ---
 
-
 A Temporal Cloud Account Id is a unique customer identifier assigned by Temporal Technologies.
 Each Id is a short string of numbers and letters like `f45a2`, at least five characters long.
 This account identifier is retained throughout the time each customer uses Temporal Cloud.
@@ -24,8 +23,8 @@ Follow these steps.
 **From the Temporal Cloud Web UI:**
 
 1. Log into Temporal Cloud.
-2. Navigate to the Namespace list page from the left-side vertical navigation. 
-3. View the Namespaces listed for the user. 
+2. Navigate to the Namespace list page from the left-side vertical navigation.
+3. View the Namespaces listed for the user.
    Each Namespace uses an Account Id suffix.
 
 **From the Command Line:**
@@ -43,24 +42,22 @@ Follow these steps.
 
    After confirmation, Web feedback lets you know that the CLI "device" is now connected.
 
-4. Return to the command line.
+3. Return to the command line.
    Issue the following command.
 
        $ tcld namespace list
 
-   The CLI tool returns a short JSON packet with your namespace information. 
+   The CLI tool returns a short JSON packet with your namespace information.
    This is the same list found in the Temporal Cloud Web UI Namespaces list.
    Like the browser version, each Namespace uses an Account Id suffix.
 
        $ tcld namespace list
        {
-   	    "namespaces": [
+        "namespaces": [
        		"your-namespace.123def",
        		"another-namespace.123def"
-   	    ],
+        ],
        	"nextPageToken": ""
        }
 
 In this example, the account ID is `123def`.
-
-
