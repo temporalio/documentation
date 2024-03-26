@@ -3,7 +3,7 @@ id: glossary
 title: Glossary
 description: The following terms have specific definitions within the context of the Temporal Platform.
 sidebar_label: Glossary
-sidebar_position: 12
+sidebar_position: 11
 toc_max_heading_level: 4
 tags:
   - reference
@@ -205,7 +205,7 @@ The Frontend Service is a stateless gateway service that exposes a strongly type
 _Tags: [term](/tags/term)_
 
 
-#### [General Availability](/temporal/release-stages#general-availability)
+#### [General Availability](/release-stages#general-availability)
 Learn more about the General Availability release stage
 
 _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_
@@ -307,13 +307,13 @@ The Temporal Persistence store is a database used by Temporal Services to persis
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Pre-release](/temporal/release-stages#pre-release)
+#### [Pre-release](/release-stages#pre-release)
 Learn more about the Pre-release stage
 
 _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_
 
 
-#### [Public Preview](/temporal/release-stages#public-preview)
+#### [Public Preview](/release-stages#public-preview)
 Learn more about the Public Preview release stage
 
 _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_
