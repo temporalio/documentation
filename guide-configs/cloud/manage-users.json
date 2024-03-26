@@ -38,6 +38,10 @@
         {
             "type": "h2",
             "id": "cloud/users-delete"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/action-groups"
         }
     ]
 }
