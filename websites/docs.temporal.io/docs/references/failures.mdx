@@ -64,7 +64,7 @@ During conversion, the following Application Failure fields are set:
 - `non_retryable` is set to false.
 - `details` are left unset.
 - `cause` is a Failure converted from the error's `cause` property.
-- stack trace is copied.
+- call stack is copied.
 
 When an [Activity Execution](/activities#activity-execution) fails, the Application Failure from the last Activity Task is the `cause` field of the [ActivityFailure](#activity-failure) thrown in the Workflow.
 

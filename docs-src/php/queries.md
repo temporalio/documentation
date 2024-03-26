@@ -20,7 +20,7 @@ example:
 
 `tctl --namespace samples-namespace workflow query -w your_workflow_id -r your_run_id -qt __stack_trace`
 
-> You can also access the stack trace from Temporal Web UI.
+> You can also access the call stack from Temporal Web UI.
 
 This command uses `__stack_trace`, which is a built-in query type supported by the Temporal client
 library. You can add custom query types to handle queries such as querying the current state of a
