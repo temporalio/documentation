@@ -4,10 +4,11 @@
 cleanup() {
     read -p "Shut down workers? (Y/n)" -n 1 yn
     if [[ -z $yn ]]; then yn="Y"; fi
-    if [[ $yn =~ [Yy].* ]]; then 
+    if [[ $yn =~ [Yy].* ]]; then
         pkill "temporal" > /dev/null 2>&1
         pkill "worker.js" > /dev/null 2>&1
         pkill "npm" > /dev/null 2>&1 # Fixed: Use "npm" instead of "npm run serve"
+        fuser -k $port/tcp > /dev/null 2>&1 # Kill the process running on the specific port
     fi
     exit 0
 }
@@ -96,7 +97,10 @@ fi
 while true; do
     read -p "Finished viewing site (Y/n)? " -n 1 yn
     if [[ -z $yn ]]; then yn="Y"; fi
-    if [[ $yn =~ [Yy].* ]]; then break; fi
+    if [[ $yn =~ [Yy].* ]]; then
+        fuser -k $port/tcp > /dev/null 2>&1 # Kill the Docusaurus server process
+        break
+    fi
 done
 
 cleanup
