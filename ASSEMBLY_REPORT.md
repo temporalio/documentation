@@ -1,6 +1,8 @@
 # Docs Assembly Workflow report
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Last assembled: Tuesday March 26 2024 16:20:56 PM -0600
+
+Assembly Workflow Id: docs-full-assembly
 
 147 guide configurations found.
 
