@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday March 26 2024 16:45:44 PM -0600
+Last assembled: Tuesday March 26 2024 16:27:23 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -276,17 +276,11 @@ cloud/tcld/apikey/disable -> #disable
 
 cloud/tcld/apikey/enable -> #enable
 
-cloud/tcld/feature/get -> #get
-
-cloud/tcld/feature/toggle -> #toggle
-
 cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
 
 cloud/tcld/generate-certificates/end-entity-certificate -> #end-entity-certificate
 
 cloud/tcld/how-to-install-tcld -> #install-tcld
-
-cloud/tcld/feature/index -> /production-deployment/cloud/tcld/feature
 
 cloud/tcld/login -> /cloud/tcld/login
 
@@ -302,8 +296,6 @@ cloud/tcld/namespace/get -> #get
 
 cloud/tcld/namespace/list -> #list
 
-cloud/tcld/namespace/export/index -> #export
-
 cloud/tcld/namespace/accepted-client-ca/index -> #accepted-client-ca
 
 cloud/tcld/namespace/certificate-filters/index -> #certificate-filters
@@ -313,18 +305,6 @@ cloud/tcld/namespace/search-attributes/index -> #search-attributes
 cloud/tcld/namespace/retention/index -> #retention
 
 cloud/tcld/namespace/update-codec-server -> #update-codec-server
-
-cloud/tcld/namespace/export/create -> #create
-
-cloud/tcld/namespace/export/get -> #get
-
-cloud/tcld/namespace/export/delete -> #delete
-
-cloud/tcld/namespace/export/list -> #list
-
-cloud/tcld/namespace/export/update -> #update
-
-cloud/tcld/namespace/export/validate -> #validate
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
@@ -452,7 +432,7 @@ self-hosted/how-to-set-up-dual-visibility -> #dual-visibility
 
 concepts/what-is-cluster-configuration -> /clusters#cluster-configuration
 
-cloud/metrics-intro -> /cloud/metrics/
+cloud/metrics-intro -> /cloud/metrics
 
 concepts/what-is-temporal-cloud -> /cloud/overview
 
@@ -489,14 +469,6 @@ concepts/what-is-a-schedule-to-close-timeout -> /activities#schedule-to-close-ti
 concepts/what-is-a-schedule-to-start-timeout -> /activities#schedule-to-start-timeout
 
 concepts/what-is-an-update -> /workflows#update
-
-cloud/available-regions -> /cloud/service-availability#regions
-
-cloud/support-intro -> /cloud/support
-
-cloud/api-keys/api-keys -> /cloud/api-keys
-
-cloud/support-create-ticket -> /cloud/support#support-ticket
 
 concepts/what-is-an-activity-definition -> #activity-definition
 
@@ -566,11 +538,15 @@ go/namespaces -> /dev-guide/go/features#namespaces
 
 java/namespaces -> /dev-guide/java/features#namespaces
 
-cloud/prometheus-grafana-setup -> /cloud/metrics/prometheus-grafana#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
+cloud/prometheus-grafana-setup -> /cloud/metrics#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
 
 cli/workflow/show -> /cli/workflow#show
 
 concepts/what-is-a-default-data-converter -> #default-data-converter
+
+go/custom-payload-conversion -> /dev-guide/go/converters#custom-payload-conversion
+
+java/custom-payload-conversion -> /dev-guide/java/converters#custom-payload-conversion
 
 cloud/namespaces-create -> /cloud/namespaces#create-a-namespace
 
@@ -824,7 +800,7 @@ cloud/availability-overview -> /cloud/service-availability
 
 cloud/sla -> /cloud/sla
 
-cloud/how-to-verify-export -> #verify
+cloud/api-keys/api-keys -> /cloud/api-keys
 
 cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 
@@ -840,9 +816,13 @@ typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connec
 
 cloud/pricing-intro -> /cloud/pricing
 
+cloud/support-intro -> /cloud/support
+
 cloud/certificates-namespace -> #manage-certificates
 
 cloud/certificates-filters -> #manage-certificate-filters
+
+cloud/support-create-ticket -> /cloud/support#support-ticket
 
 cloud/certificates-notifications -> #expiration-notifications
 
@@ -870,23 +850,17 @@ cloud/users-update-permissions -> #update-permissions
 
 cloud/users-delete -> #delete-users
 
-cloud/saml-intro -> /cloud/saml
-
-dev-guide/temporal-sdk -> /dev-guide/sdks
-
-cloud/pricing-storage -> #storage
-
-concepts/what-is-a-reset -> /workflows#reset
-
-cloud/what-is-workflow-history-export -> /cloud/export
-
-cloud/what-is-an-action -> #action
-
 java/generated/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/java/project-setup#cloud-worker
 
 php/connect-to-a-dev-cluster -> /dev-guide/php/foundations#connect-to-a-dev-cluster
 
+dev-guide/temporal-sdk -> /dev-guide/sdks
+
+concepts/what-is-a-reset -> /workflows#reset
+
 concepts/what-is-the-temporal-web-ui -> /web-ui
+
+cloud/what-is-an-action -> /cloud/pricing#action
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
@@ -1170,14 +1144,6 @@ typescript/chapter-durable-execution/how-to-replay-a-workflow-execution-in-types
 
 typescript/chapter-durable-execution/non-deterministic-code-changes -> /dev-guide/typescript/durable-execution#durability-through-replays
 
-typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
-
-typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
-
-typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
-
-typescript/cancellation-scopes -> /dev-guide/typescript/foundations#cancellation-scopes
-
 typescript/how-to-define-signals-and-queries-statically-or-dynamically -> /dev-guide/typescript/features#static-and-dynamic-signals-and-queries
 
 typescript/async-activity-completion -> /dev-guide/typescript/features#asynchronous-activity-completion
@@ -1195,6 +1161,16 @@ typescript/namespaces -> /dev-guide/typescript/features#namespaces
 typescript/how-to-use-a-custom-payload-converter-in-typescript -> /dev-guide/typescript/features#custom-payload-conversion
 
 typescript/how-to-implement-interceptors-in-typescript -> /dev-guide/typescript/features#interceptors
+
+typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+
+typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
+
+typescript/how-to-use-a-prebuilt-workflow-bundle-in-typescript -> /dev-guide/typescript/foundations#prebuilt-workflow-bundles
+
+typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
+
+typescript/cancellation-scopes -> /dev-guide/typescript/foundations#cancellation-scopes
 
 typescript/tracing -> /dev-guide/typescript/observability#tracing
 
@@ -1346,10 +1322,6 @@ java/debug-environment-development -> /dev-guide/java/debugging#debug-in-a-devel
 
 java/debug-environment-production -> /dev-guide/java/debugging#debug-in-a-production-environment
 
-java/how-to-use-a-custom-payload-codec-in-java -> /dev-guide/java/converters#custom-payload-codec
-
-java/custom-payload-conversion -> /dev-guide/java/converters#custom-payload-conversion
-
 go/testing -> /dev-guide/go/testing#replay
 
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
@@ -1404,10 +1376,40 @@ go/debug-environment-production -> /dev-guide/go/debugging#debug-in-a-production
 
 go/how-to-test-workflow-definitions-in-go -> /dev-guide/go/debugging#testing-and-debugging
 
+java/how-to-use-a-custom-payload-codec-in-java -> /dev-guide/java/converters#custom-payload-codec
+
 go/how-to-use-a-custom-payload-codec-in-go -> /dev-guide/go/converters#custom-payload-codec
 
-go/custom-payload-conversion -> /dev-guide/go/converters#custom-payload-conversion
-
 go/how-to-use-a-custom-payload-converter-in-go -> /dev-guide/go/converters#custom-payload-converter
+
+cloud/saml-intro -> /cloud/saml
+
+cloud/tcld/feature/get -> #get
+
+cloud/tcld/feature/toggle -> #toggle
+
+cloud/tcld/feature/index -> /production-deployment/cloud/tcld/feature
+
+cloud/tcld/namespace/export/index -> #export
+
+cloud/tcld/namespace/export/create -> #create
+
+cloud/tcld/namespace/export/get -> #get
+
+cloud/tcld/namespace/export/delete -> #delete
+
+cloud/tcld/namespace/export/list -> #list
+
+cloud/tcld/namespace/export/update -> #update
+
+cloud/tcld/namespace/export/validate -> #validate
+
+cloud/available-regions -> /cloud/service-availability#regions
+
+cloud/how-to-verify-export -> #verify
+
+cloud/pricing-storage -> #storage
+
+cloud/what-is-workflow-history-export -> /cloud/export
 
 
