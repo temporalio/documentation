@@ -71,7 +71,7 @@ To skip a sandbox environment for a Workflow, set the `sandboxed` argument in 
 The entire Workflow will run without sandbox restrictions.
 
 ```python
-@workflow.def(sandboxed=False)
+@workflow.defn(sandboxed=False)
 ```
 
 ### Skip Sandboxing for a Worker
