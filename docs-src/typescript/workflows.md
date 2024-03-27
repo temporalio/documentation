@@ -1063,7 +1063,7 @@ Our recommendation is to size it to continue as new between once a day to once a
 
 Here is a simple pattern that we recommend to represent a single entity. It keeps track of the number of iterations regardless of frequency, and calls `continueAsNew` while properly handling pending updates from Signals.
 
-```tsx
+```ts
 interface Input {
   /* define your workflow input type here */
 }
