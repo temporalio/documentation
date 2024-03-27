@@ -703,7 +703,7 @@ There are three steps to follow:
 2. The Activity Function completes in a way that identifies it as waiting to be completed by an external system.
 3. The Temporal Client is used to Heartbeat and complete the Activity.
 
-To mark an Activity as completing asynchoronus, do the following inside the Activity.
+To mark an Activity as completing asynchronously, do the following inside the Activity.
 
 ```python
 # Capture token for later completion
@@ -765,7 +765,7 @@ async def run_activity(input: ComposeArgsInput):
      @workflow.run
      async def run(self, input: ComposeArgsInput) -> None:
         activity_handle = workflow.start_activity(
-            cancel_activity,
+            cancellable_activity,
             ComposeArgsInput(input.arg1, input.arg2),
             start_to_close_timeout=timedelta(minutes=5),
             heartbeat_timeout=timedelta(seconds=30),

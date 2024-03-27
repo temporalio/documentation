@@ -34,7 +34,7 @@ async def run_activity(input: ComposeArgsInput):
      @workflow.run
      async def run(self, input: ComposeArgsInput) -> None:
         activity_handle = workflow.start_activity(
-            cancel_activity,
+            cancellable_activity,
             ComposeArgsInput(input.arg1, input.arg2),
             start_to_close_timeout=timedelta(minutes=5),
             heartbeat_timeout=timedelta(seconds=30),

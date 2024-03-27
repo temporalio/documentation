@@ -7,15 +7,16 @@ tags:
   - term
   - explanation
 ssdi:
-  - Generally Available as of Nov 2023
+  - Is [Generally Available](https://docs.temporal.io/temporal/release-stages#general-availability) as of Nov 2023
   - Introduced in Temporal Server version [1.17.0](https://github.com/temporalio/temporal/releases/tag/v1.17.0)
   - Available in Temporal CLI (and tctl v1.17)
   - Available in Temporal Cloud
-  - Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) version [1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
-  - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
-  - Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow) version [1.1.0](https://github.com/temporalio/sdk-python/releases/tag/1.1.0)
-  - Available in [TypeScript SDK](https://github.com/temporalio/samples-typescript/tree/main/schedules#schedules) version [1.5.0](https://github.com/temporalio/sdk-typescript/blob/main/CHANGELOG.md#150---2022-12-07)
-  - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.Schedules.html) version [0.1.0](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-alpha4)
+  - Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) since [v1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
+  - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+  - Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow) since [v1.1.0](https://github.com/temporalio/sdk-python/releases/tag/1.1.0)
+  - Available in [TypeScript SDK](https://github.com/temporalio/samples-typescript/tree/main/schedules#schedules) since [v1.5.0](https://github.com/temporalio/sdk-typescript/blob/main/CHANGELOG.md#150---2022-12-07)
+  - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.Schedules.html) since [v0.1.0](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-alpha4)
+  - Available in PHP SDK since [v2.8.0](https://github.com/temporalio/sdk-php/releases/tag/v2.8.0)
   - Available in [gRPC API](https://api-docs.temporal.io/#temporal.api.workflowservice.v1.CreateScheduleRequest)
 ---
 
