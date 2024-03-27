@@ -18,10 +18,10 @@ They also investigate your Workflows to optimize their environments and possibly
 
 If an issue occurs, the team provides support through our [support portal](/cloud/support-create-ticket), [community forum](https://community.temporal.io/), and (with Premium support) a dedicated Slack channel. Temporal offers two levels of support defined by their availability and SLAs.
 
-|                         | **Basic**                                                                                       | **Premium**                                                                               |
-| ----------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+|                         | **Basic**                                                                                      | **Premium**                                                                               |
+| ----------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | **Response times**      | P0: 1 business hour<br />P1: 4 business hours<br />P2: 1 business day<br />P3: 2 business days | P0: 30 minutes<br />P1: 1 business hour<br />P2: 4 business hours<br />P3: 1 business day |
-| **Pricing (per month)** | Greater of $200 or 10% of monthly usage                                                         | Greater of $2,000 or 10% of monthly usage                                                 |
+| **Pricing (per month)** | Greater of $200 or 10% of monthly usage                                                        | Greater of $2,000 or 10% of monthly usage                                                 |
 
 **Business Hours**: 05:00-17:00 Mon-Fri US Pacific Time.
 For P0 issues, coverage is 24×7.
