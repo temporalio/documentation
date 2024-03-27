@@ -26,14 +26,14 @@ For P0 issues, coverage is 24×7.
 
 **Priority definitions**
 
-- **P0 - Critical** (Production is down).
-  - The Temporal Cloud service is unavailable or significantly degraded with major customer impact.
-- **P1 - High** (Production impaired)
-  - Temporal Cloud service is degraded with customer impact, or a significant milestone is at risk.
-- **P2 - Normal** (Dev/test impaired)
-  - Temporal Cloud service or other issues without production impact or a workaround is available.
+- **P0 - Critical** (Production impacted)
+  - The Temporal Cloud service is unavailable or degraded with a significant impact.
+- **P1 - High** (Production issue)
+  - An issue related to production workloads running on the Temporal Cloud service, or a significant project is blocked.
+- **P2 - Normal** (General issues)
+  - General Temporal Cloud service or other issues where there is no production impact, or a workaround exists to mitigate the impact.
 - **P3 - Low** (General guidance)
-  - Questions or an issue that is not impacting system availability or functionality.
+  - Questions or an issue with the Temporal Cloud service that is not impacting system availability or functionality.
 
 For pricing details of these two levels of support, please visit our [pricing page](/cloud/pricing).
 
