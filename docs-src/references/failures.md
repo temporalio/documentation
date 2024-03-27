@@ -56,7 +56,7 @@ This could be triggered by raising an exception in your Workflow code.
 Any exception that does not extend Temporal's `FailureError` exception is considered a Workflow Task Failure.
 These types of failures will cause the Workflow Task to be retried.
 
-### Workflow Execution Failures
+#### Workflow Execution Failures
 
 An `ApplicationError`, an extension of `FailureError`, can be raised in a Workflow to fail the Workflow Execution.
 Workflow Execution Failures put the Workflow Execution into the "Failed" state and no more attempts will be made in progressing this execution.
