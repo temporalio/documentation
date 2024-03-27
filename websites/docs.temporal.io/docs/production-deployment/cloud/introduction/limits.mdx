@@ -180,7 +180,42 @@ These operations create Events that are then logged in the Event History.
 The transaction size limit restricts the total size of Events that can be accommodated within a single transaction.
 
 The size limit for any given [Event History](/workflows#event-history) transaction is 4 MB.
-This isn't configurable.
+This limit is non-configurable for Temporal Cloud.
+
+**What is the blob size limit for a transaction?**
+
+- **Blob size limit** for Payloads, including Workflow context and each Workflow and Activity argument and return value:
+  - Temporal warns at 256 KB: `Blob size exceeds limit`.
+  - Temporal errors at 2 MB: `ErrBlobSizeExceedsLimit: Blob data size exceeds limit.`
+
+This limit is non-configurable for Temporal Cloud.
+
+The following provides solutions for handling large payloads.
+
+**Solutions for handling large payloads**
+
+If you're at risk of reaching the blob size limit, consider the following solutions:
+
+1. Use compression with a [custom Data Converter](/dataconversion#custom-data-converter) for large payloads.
+2. Break larger batches of commands into smaller batch sizes.
+
+**Monitoring and Debugging**
+
+To proactively identify and address issues related to blob size limits, consider the following:
+
+1. Monitor the `temporal_request_failure` SDK metric for operations such as:
+   - `RespondWorkflowTaskCompleted`
+   - `ActivityTaskCompleted`
+2. Set up alerts on the `temporal_request_failure` SDK metric for these operations to receive notifications when failures occur.
+3. Implement a gRPC proxy between the Client Worker and the service to obtain gRPC message size information. This allows you to check the message size and identify potential issues before they cause failures.
+
+**Versioning Workflows**
+
+If you've encountered the blob size limit and need to make changes to your Workflow to address the issue, you'll need to [version your Workflow](/workflows#workflow-versioning).
+Versioning allows you to make the necessary modifications without affecting existing Workflow executions.
+
+By monitoring the relevant metrics, setting up alerts, and implementing a gRPC proxy for message size checks, you can proactively identify and address blob size limit issues.
+If you do encounter this limit, remember to version your Workflow to ensure a smooth transition when making changes to resolve the issue.
 
 ### Per Workflow Execution concurrency limits
 
