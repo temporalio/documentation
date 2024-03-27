@@ -20,7 +20,7 @@ If an issue occurs, the team provides support through our [support portal](/clou
 
 |                         | **Basic**                                                                                       | **Premium**                                                                               |
 | ----------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| **Response times**      | P0: 1 business hour<br />P1: 4 business hours<br />P2: 1 business days<br />P3: 2 business days | P0: 30 minutes<br />P1: 1 business hour<br />P2: 4 business hours<br />P3: 1 business day |
+| **Response times**      | P0: 1 business hour<br />P1: 4 business hours<br />P2: 1 business day<br />P3: 2 business days | P0: 30 minutes<br />P1: 1 business hour<br />P2: 4 business hours<br />P3: 1 business day |
 | **Pricing (per month)** | Greater of $200 or 10% of monthly usage                                                         | Greater of $2,000 or 10% of monthly usage                                                 |
 
 **Business Hours**: 05:00-17:00 Mon-Fri US Pacific Time.
