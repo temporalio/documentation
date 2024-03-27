@@ -34,6 +34,7 @@ async function run() {
       workflowsPath: path.resolve("./workflows/fullAssembly.js"),
       activities,
       taskQueue: `docs-assembly-${data.unique_id}`,
+      identity: `docs-worker-${data.unique_id}`,
     });
     await worker.run();
   }
