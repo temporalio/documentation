@@ -38,7 +38,7 @@ Follow these steps.
      the maximum number of actions per second that a namespace supports.
 
 Each Namespace automatically appends an Account Id suffix to its customer-supplied identifier.
-This five-or-longer string appears after the name, separated by a period.
+This five-character-or-longer string appears after the name, separated by a period.
 
 | Status | Name                     | Region    | Retention | APS Limit | Export |
 | ------ | ------------------------ | --------- | --------- | --------- | ------ |
