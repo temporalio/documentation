@@ -15,11 +15,11 @@ We use a ticketing system for entering, tracking, and closing these issues.
 If an issue occurs, the team also provides support through a dedicated Slack channel, forums, and a knowledge base.
 We offer two levels of support defined by their availability and SLAs in the following table:
 
-|                          | **Basic**                                                                                       | **Premium**                                                                               |
-| ------------------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| **Response times**       | P0: 1 business hour<br />P1: 4 business hours<br />P2: 1 business days<br />P3: 2 business days | P0: 30 minutes<br />P1: 1 business hour<br />P2: 4 business hours<br />P3: 1 business day |
-| **Onboarding & Success** | Development, deployment, and optimization guidance                                              | Development, deployment, and optimization guidance                                        |
-| **Channels**             | Community SlackEmail, Forums, Docs, Knowledge Base                                              | Private Slack ChannelEmail, Forums, Docs, Knowledge Base                                  |
+|                          | **Basic**                                                                                      | **Premium**                                                                               |
+| ------------------------ | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| **Response times**       | P0: 1 business hour<br />P1: 4 business hours<br />P2: 1 business day<br />P3: 2 business days | P0: 30 minutes<br />P1: 1 business hour<br />P2: 4 business hours<br />P3: 1 business day |
+| **Onboarding & Success** | Development, deployment, and optimization guidance                                             | Development, deployment, and optimization guidance                                        |
+| **Channels**             | Community SlackEmail, Forums, Docs, Knowledge Base                                             | Private Slack ChannelEmail, Forums, Docs, Knowledge Base                                  |
 
 **Business Hours**: 05:00-17:00 Mon-Fri US Pacific Time.
 For P0 issues, coverage is 24×7.
