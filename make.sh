@@ -1,13 +1,15 @@
 #!/bin/bash
-# My adaptation of Patrick's script
+# Run Assembly tasks and, optionally, build and serve the
+# updated Website
 
 cleanup() {
     read -p "Shut down workers? (Y/n)" -n 1 yn
     if [[ -z $yn ]]; then yn="Y"; fi
     if [[ $yn =~ [Yy].* ]]; then 
         pkill "temporal" > /dev/null 2>&1
-        pkill "worker.js" > /dev/null 2>&1
-        pkill "npm" > /dev/null 2>&1 # Fixed: Use "npm" instead of "npm run serve"
+        killall "worker.js" > /dev/null 2>&1 # Fixed: Use killall instead of pkill
+        killall "npm" > /dev/null 2>&1 # Fixed: Use "npm" instead of "npm run serve" | use killall instead of pkill
+        killall "node" > /dev/null 2>&1 # Fixed: Add kill node
     fi
     exit 0
 }
