@@ -89,4 +89,4 @@ In this Namespace listing sample, the Account Id is 123def.
    }
    ```
 
-In this example, the account ID is `123def`.
+In this example, the Account ID is `123def`.
