@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday March 27 2024 10:27:16 AM -0500
+Last assembled: Wednesday March 27 2024 14:23:42 PM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -452,7 +452,7 @@ self-hosted/how-to-set-up-dual-visibility -> #dual-visibility
 
 concepts/what-is-cluster-configuration -> /clusters#cluster-configuration
 
-cloud/metrics-intro -> /cloud/metrics
+cloud/metrics-intro -> /cloud/metrics/
 
 concepts/what-is-temporal-cloud -> /cloud/overview
 
@@ -566,7 +566,7 @@ go/namespaces -> /dev-guide/go/features#namespaces
 
 java/namespaces -> /dev-guide/java/features#namespaces
 
-cloud/prometheus-grafana-setup -> /cloud/metrics#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
+cloud/prometheus-grafana-setup -> /cloud/metrics/prometheus-grafana#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
 
 cli/workflow/show -> /cli/workflow#show
 
@@ -870,21 +870,23 @@ cloud/users-update-permissions -> #update-permissions
 
 cloud/users-delete -> #delete-users
 
-java/generated/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/java/project-setup#cloud-worker
-
-php/connect-to-a-dev-cluster -> /dev-guide/php/foundations#connect-to-a-dev-cluster
-
 cloud/saml-intro -> /cloud/saml
 
 dev-guide/temporal-sdk -> /dev-guide/sdks
+
+cloud/pricing-storage -> #storage
 
 concepts/what-is-a-reset -> /workflows#reset
 
 cloud/what-is-workflow-history-export -> /cloud/export
 
-concepts/what-is-the-temporal-web-ui -> /web-ui
+cloud/what-is-an-action -> #action
 
-cloud/what-is-an-action -> /cloud/pricing#action
+java/generated/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/java/project-setup#cloud-worker
+
+php/connect-to-a-dev-cluster -> /dev-guide/php/foundations#connect-to-a-dev-cluster
+
+concepts/what-is-the-temporal-web-ui -> /web-ui
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
@@ -1407,7 +1409,5 @@ go/how-to-use-a-custom-payload-codec-in-go -> /dev-guide/go/converters#custom-pa
 go/custom-payload-conversion -> /dev-guide/go/converters#custom-payload-conversion
 
 go/how-to-use-a-custom-payload-converter-in-go -> /dev-guide/go/converters#custom-payload-converter
-
-cloud/pricing-storage -> #storage
 
 
