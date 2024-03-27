@@ -553,6 +553,12 @@ A Worker Entity is the individual Worker within a Worker Process that listens to
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
+#### [Worker Identity](/workers#worker-identity)
+A Worker Identity is an identifier for a Worker Client.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
 #### [Worker Process](/workers#worker-process)
 A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.
 
