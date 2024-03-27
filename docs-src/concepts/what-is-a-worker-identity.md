@@ -9,9 +9,9 @@ tags:
 ---
 
 Workers have an associated identifier that helps identify the specific Worker instance.
-In most SDKs, the Worker Identity is referenced as `${process.pid}@${os.hostname()}`, which combines the Worker's process ID (`process.pid`) and the hostname of the machine running the worker (`os.hostname()`).
+In most SDKs, the Worker Identity is referenced as `${process.pid}@${os.hostname()}`, which combines the Worker's process ID (`process.pid`) and the hostname of the machine running the Worker (`os.hostname()`).
 
-The Worker identity is visible in various contexts, such as Workflow History and the list of pollers on a Task Queue.
+The Worker Identity is visible in various contexts, such as Workflow History and the list of pollers on a Task Queue.
 
 You can use the Worker Identity to aid in debugging operational issues.
 By providing a user assigned identifier, you can trace issues back to specific Worker instances.
@@ -31,12 +31,12 @@ To overcome the limitations of the default Worker Identity, it is recommended to
 
 Here are some approaches:
 
-- **Use environment-specific identifiers**: Choose an identifier that is specific to your execution environment. For example, when running Workers on Amazon ECS, you can set the Worker Identity to the ECS task ID, which uniquely identifies the task running the Worker.
+- **Use environment-specific identifiers**: Choose an identifier that is specific to your execution environment. For example, when running Workers on Amazon ECS, you can set the Worker Identity to the ECS Task ID, which uniquely identifies the task running the Worker.
 - **Include relevant context**: Incorporate information that helps establish the context of the Worker, such as the deployment environment (`staging` or `production`), region, or any other relevant details.
 - **Ensure uniqueness**: Make sure that the Worker Identity is unique within your system to avoid ambiguity when debugging issues.
-- **Keep it concise**: While including relevant information is important, try to keep the worker identity concise and easily readable to facilitate quick identification and troubleshooting.
+- **Keep it concise**: While including relevant information is important, try to keep the Worker Identity concise and easily readable to facilitate quick identification and troubleshooting.
 
-The following is an example of setting a custom worker identity in a TypeScript SDK:
+The following is an example of setting a custom Worker Identity in the TypeScript SDK:
 
 ```typescript
   // ...
