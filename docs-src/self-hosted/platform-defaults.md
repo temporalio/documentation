@@ -44,13 +44,13 @@ These limits might apply specifically to each Workflow Execution and do not pert
   - Temporal errors after 51,200 Events: [history size exceeds error limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204).
   - This is configurable with [HistoryCountLimitError and HistoryCountLimitWarn](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
 - **Concurrent limit**
-  - The following action Commands are limited:
+  - The following Commands are limited:
     - `ScheduleActivityTask`
     - `SignalExternalWorkflowExecution`
     - `RequestCancelExternalWorkflowExecution`
     - `StartChildWorkflowExecution`
   - These will fail if the concurrent pending count exceeds 2,000.
-    For optimal performance, limit concurrent actions to 500 or fewer.
+    For optimal performance, limit concurrent operations to 500 or fewer.
     This reduces Workflow's Event History size and decreases the loading time in the Web UI.
   - As of v1.21, the open source Temporal Cluster has a default limit of 2,000 pending Activities, Child Workflows, Signals, or Workflow cancellation requests, but you can override the limits in the dynamic configuration using these variables:
     - `limit.numPendingActivities.error`

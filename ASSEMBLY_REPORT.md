@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday March 13 2024 15:00:27 PM -0500
+Last assembled: Wednesday March 27 2024 10:27:16 AM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
-145 guide configurations found.
+147 guide configurations found.
 
-1777 information nodes found.
+1778 information nodes found.
 
-1534 information nodes are attached to guides.
+1535 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1407,5 +1407,7 @@ go/how-to-use-a-custom-payload-codec-in-go -> /dev-guide/go/converters#custom-pa
 go/custom-payload-conversion -> /dev-guide/go/converters#custom-payload-conversion
 
 go/how-to-use-a-custom-payload-converter-in-go -> /dev-guide/go/converters#custom-payload-converter
+
+cloud/pricing-storage -> #storage
 
 

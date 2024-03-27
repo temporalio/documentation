@@ -17,6 +17,8 @@ Welcome to the Temporal TypeScript SDK developer's guide!
 
 The Temporal TypeScript SDK released on July 26, 2022. The TypeScript SDK provides access to the Temporal programming model using idiomatic JavaScript and TypeScript programming paradigms.
 
+The Temporal TypeScript SDK only supports the Node.js runtime environment.
+
 ## What programming skills and experiences are useful when using the TypeScript SDK? {#skills}
 
 You can start working with the SDK with only TypeScript knowledge.

@@ -27,6 +27,7 @@ List Filters support the following operators:
 - **`AND, OR, ()`**
 - **`BETWEEN ... AND`**
 - **`IN`**
+- **STARTS_WITH**
 
 <!-- - **ORDER BY** -->
 
@@ -137,6 +138,10 @@ ExecutionTime between '2021-08-22T15:04:05+00:00' and '2021-08-28T15:04:05+00:00
 
 ```sql
 ExecutionTime < '2021-08-28T15:04:05+00:00' or ExecutionTime > '2021-08-22T15:04:05+00:00'
+```
+
+```sql
+WorkflowType STARTS_WITH '<workflow-type-prefix>'
 ```
 
 <!-- ```sql

@@ -29,7 +29,7 @@ async def main():
         client_private_key = f.read()
     client = await Client.connect(
         "your-custom-namespace.tmprl.cloud:7233",
-        namespace="your-custom-namespace",
+        namespace="<your-custom-namespace>.<id>",
         tls=TLSConfig(
             client_cert=client_cert,
             client_private_key=client_private_key,
