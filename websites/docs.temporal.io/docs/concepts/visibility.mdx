@@ -111,6 +111,7 @@ List Filters support the following operators:
 - **`AND, OR, ()`**
 - **`BETWEEN ... AND`**
 - **`IN`**
+- **STARTS_WITH**
 
 <!-- - **ORDER BY** -->
 
@@ -223,6 +224,10 @@ ExecutionTime between '2021-08-22T15:04:05+00:00' and '2021-08-28T15:04:05+00:00
 ExecutionTime < '2021-08-28T15:04:05+00:00' or ExecutionTime > '2021-08-22T15:04:05+00:00'
 ```
 
+```sql
+WorkflowType STARTS_WITH '<workflow-type-prefix>'
+```
+
 <!-- ```sql
 order by ExecutionTime
 ```
@@ -270,7 +275,7 @@ Default Search Attributes are set globally in any Namespace.
 These Search Attributes are created when the initial index is created.
 
 | NAME                       | TYPE         | DEFINITION                                                                                                                                                                                                   |
-|----------------------------|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | BatcherUser                | Keyword      | Used by internal batcher Workflow that runs in `TemporalBatcher` Namespace division to indicate the user who started the batch operation.                                                                    |
 | BinaryChecksums            | Keyword List | List of binary Ids of Workers that run the Workflow Execution. Deprecated since server version 1.21 in favor of the `BuildIds` search attribute.                                                             |
 | BuildIds                   | Keyword List | List of Worker Build Ids that have processed the Workflow Execution, formatted as `versioned:{BuildId}` or `unversioned:{BuildId}`, or the sentinel `unversioned` value. Available from server version 1.21. |
@@ -366,7 +371,7 @@ Note:
 The following table lists the maximum number of custom Search Attributes you can create per Namespace by supported Visibility database.
 
 | Search Attribute type | MySQL (v8.0.17 and later) | PostgreSQL (v12 and later) | SQLite (v3.31.0 and later) | Temporal Cloud |
-|-----------------------|:-------------------------:|:--------------------------:|:--------------------------:|:--------------:|
+| --------------------- | :-----------------------: | :------------------------: | :------------------------: | :------------: |
 | Bool                  |             3             |             3              |             3              |       20       |
 | Datetime              |             3             |             3              |             3              |       20       |
 | Double                |             3             |             3              |             3              |       20       |

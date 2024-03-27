@@ -10,7 +10,7 @@ tags:
 The following is a simple pattern that represents a single entity.
 It tracks the number of iterations regardless of frequency, and calls `continueAsNew` while properly handling pending updates from Signals.
 
-```tsx
+```ts
 interface Input {
   /* Define your Workflow input type here */
 }
