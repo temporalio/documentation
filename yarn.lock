@@ -179,7 +179,7 @@
     node-fetch "^2.6.7"
     universal-user-agent "^6.0.0"
 
-"@octokit/rest@^18.0.3":
+"@octokit/rest@^18.12.0":
   version "18.12.0"
   resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-18.12.0.tgz#f06bc4952fc87130308d810ca9d00e79f6988881"
   integrity sha512-gDPiOHlyGavxr72y0guQEhLsemgVjwRePayJ+FcKc2SJqKUbxbkvf5kAZEWA/MKvsfYlQAMVzNJE3ezQcxMJ2Q==
@@ -729,6 +729,11 @@ concat-map@0.0.1:
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
 
+dedent@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/dedent/-/dedent-0.7.0.tgz#2495ddbaf6eb874abb0e1be9df22d2e5a544326c"
+  integrity sha512-Q6fKUPqnAHAyhiUgFU7BUzLiv0kd8saH9al7tnu5Q/okj6dnupxyTgFIBjVzJATdfIAm9NAsvXNzjaKa+bxVyA==
+
 deprecation@^2.0.0, deprecation@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/deprecation/-/deprecation-2.3.1.tgz#6368cbdb40abf3373b525ac87e4a260c3a700919"
@@ -1209,15 +1214,16 @@ serialize-javascript@^6.0.1:
   dependencies:
     randombytes "^2.1.0"
 
-snipsync@1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/snipsync/-/snipsync-1.7.0.tgz#8049a37415531701ed0fcb64ea5d44a941483cad"
-  integrity sha512-JyakzPHiZpA5p0wzYYEh/f1w2qa8jzBrFc6o6sTL8QH3clbcQdygXggUMX3KeHK7c90sm7T5keUzRm65bLAxMA==
+snipsync@1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/snipsync/-/snipsync-1.9.0.tgz#493fc2d215c19ae85fdf987573de8cc85bb9abb3"
+  integrity sha512-Uw/YLrZwFUDl4yLRQNVkDdCmMVfuSYw+6JsXI0VKbVQwKS/0GhZV0Apw6A88DC3Ew337yA+H0ekD3qHvO68Hlw==
   dependencies:
-    "@octokit/rest" "^18.0.3"
+    "@octokit/rest" "^18.12.0"
     anzip "^0.2.0"
     arraybuffer-to-buffer "^0.0.7"
     cli-progress "^3.8.2"
+    dedent "^0.7.0"
     glob "^7.1.6"
     js-logger "^1.6.1"
     line-reader "^0.4.0"
