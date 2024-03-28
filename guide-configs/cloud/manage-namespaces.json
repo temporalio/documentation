@@ -29,6 +29,10 @@
         },
         {
             "type": "h2",
+            "id": "concepts/what-is-a-cloud-grpc-endpoint"
+        },
+        {
+            "type": "h2",
             "id": "cloud/namespaces-create"
         },
         {
