@@ -8,7 +8,7 @@ tags:
 ---
 
 Workers have an associated identifier that helps identify the specific Worker instance.
-In most SDKs, the Worker Identity is referenced as `${process.pid}@${os.hostname()}`, which combines the Worker's process ID (`process.pid`) and the hostname of the machine running the Worker (`os.hostname()`).
+By default, Temporal SDKs set a Worker Identity to `${process.pid}@${os.hostname()}`, which combines the Worker's process ID (`process.pid`) and the hostname of the machine running the Worker (`os.hostname()`).
 
 The Worker Identity is visible in various contexts, such as Workflow History and the list of pollers on a Task Queue.
 
@@ -26,7 +26,7 @@ Some common issues include:
 
 **What are some recommended approaches?**
 
-To overcome the limitations of the default Worker Identity, it is recommended to set a meaningful Worker Identity that can be linked back to the corresponding machine, process, execution context, or log stream.
+It is recommended that you ensure that the Worker Identity can be linked back to the corresponding machine, process, execution context, or log stream. In some execution environment, this may require that you explicitely specify the Worker Identity.
 
 Here are some approaches:
 
