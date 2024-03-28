@@ -26,7 +26,8 @@ Some common issues include:
 
 **What are some recommended approaches?**
 
-It is recommended that you ensure that the Worker Identity can be linked back to the corresponding machine, process, execution context, or log stream. In some execution environment, this may require that you explicitely specify the Worker Identity.
+It is recommended that you ensure that the Worker Identity can be linked back to the corresponding machine, process, execution context, or log stream.
+In some execution environment, this might require that you explicitly specify the Worker Identity.
 
 Here are some approaches:
 
@@ -34,19 +35,3 @@ Here are some approaches:
 - **Include relevant context**: Incorporate information that helps establish the context of the Worker, such as the deployment environment (`staging` or `production`), region, or any other relevant details.
 - **Ensure uniqueness**: Make sure that the Worker Identity is unique within your system to avoid ambiguity when debugging issues.
 - **Keep it concise**: While including relevant information is important, try to keep the Worker Identity concise and easily readable to facilitate quick identification and troubleshooting.
-
-The following is an example of setting a custom Worker Identity in the TypeScript SDK:
-
-```typescript
-  // ...
-  const worker = await Worker.create({
-    connection,
-    namespace: "your-namespace.a1bb2",
-    workflowsPath: path.resolve("./workflows/your-workflow.js"),
-    activities,
-    taskQueue: `your-task-queue-${data.unique_id}`,
-    identity: `{ecs_worker.id}-{deployment_environment}-{region}`,
-  });
-  await worker.run();
-}
-```
