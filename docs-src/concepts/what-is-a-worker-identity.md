@@ -4,7 +4,6 @@ title: What is a Worker Identity?
 sidebar_label: Worker Identity
 description: A Worker Identity is an identifier for a Worker Client.
 tags:
-  - term
   - explanation
 ---
 
