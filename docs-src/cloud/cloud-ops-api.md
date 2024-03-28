@@ -6,7 +6,7 @@ description: The Temporal Cloud Operations API (Cloud Ops API) manages the autom
 tags:
   - explanation
 ssdi:
-  - API Keys is a in Public Preview for Temporal Cloud.
+  - API Keys is in [Public Preview](/temporal/release-stages#public-preview) for Temporal Cloud.
 ---
 
 The [Temporal Cloud Operations API](https://github.com/temporalio/api-cloud/tree/main) (Cloud Ops API) is a library for managing the automation of Users, Namespaces, and Temporal Cloud Accounts.

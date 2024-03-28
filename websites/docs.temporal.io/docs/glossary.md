@@ -3,7 +3,7 @@ id: glossary
 title: Glossary
 description: The following terms have specific definitions within the context of the Temporal Platform.
 sidebar_label: Glossary
-sidebar_position: 11
+sidebar_position: 12
 toc_max_heading_level: 4
 tags:
   - reference
@@ -205,6 +205,12 @@ The Frontend Service is a stateless gateway service that exposes a strongly type
 _Tags: [term](/tags/term)_
 
 
+#### [General Availability](/temporal/release-stages#general-availability)
+Learn more about the General Availability release stage
+
+_Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_
+
+
 #### [Global Namespace](/namespaces#global-namespace)
 A Global Namespace is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.
 
@@ -253,13 +259,13 @@ A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Multi-Cluster Replication](/clusters#multi-cluster-replication)
+#### [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication)
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication)
+#### [Multi-Cluster Replication](/clusters#multi-cluster-replication)
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -299,6 +305,18 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 The Temporal Persistence store is a database used by Temporal Services to persist events generated and processed in the Temporal Cluster and SDK.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
+#### [Pre-release](/temporal/release-stages#pre-release)
+Learn more about the Pre-release stage
+
+_Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_
+
+
+#### [Public Preview](/temporal/release-stages#public-preview)
+Learn more about the Public Preview release stage
+
+_Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_
 
 
 #### [Query](/workflows#query)
@@ -581,6 +599,12 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_
+
+
+#### [Workflow History Export](/cloud/export)
+Workflow History export allows users to export Closed Workflow Histories to a user's Cloud Storage Sink
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/tags/temporal-cloud), [operations](/tags/operations)_
 
 
 #### [Workflow Id](/workflows#workflow-id)

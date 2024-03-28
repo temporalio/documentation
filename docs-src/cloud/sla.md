@@ -13,8 +13,8 @@ tags:
 
 Temporal Cloud provides 99.99% availability, and its service level agreement (SLA) has a 99.9% guarantee against service errors.
 
-To calculate the service-error rate, we capture all requests that arrive in a region during a five-minute interval and record the number of gRPC service errors that occurred.
-For each region, we calculate the service-error rate as `1 - (count of errors / count of requests)`.
+To calculate the service-error rate, we capture all requests that arrive in a Namespace during a five-minute interval and record the number of gRPC service errors that occurred.
+For each Namespace, we calculate the service-error rate as `1 - (count of errors / count of requests)`.
 Rates are averaged per month and reset quarterly.
 
 Errors that are recorded against the SLA are service errors, such as the `UNAVAILABLE` [gRPC status code](https://grpc.github.io/grpc/core/md_doc_statuscodes.html).

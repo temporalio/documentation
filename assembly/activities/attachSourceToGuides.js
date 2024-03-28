@@ -36,10 +36,10 @@ async function findMatches(guideConfig, infoNodes) {
   const newSections = [];
   for (const section of guideConfig.sections) {
     if (section.type == "langtabs") {
-      section.langtabs = await matchLangTabs(section.langtabs, infoNodes);
+      section.langtabs = await matchLangTabs(section.langtabs, infoNodes, guideConfig.id);  // Pass the guideConfig.id here
       newSections.push(section);
     } else {
-      section.node = await matchNode(section.id, infoNodes);
+      section.node = await matchNode(section.id, infoNodes, guideConfig.id);  // Pass the guideConfig.id here
       newSections.push(section);
     }
   }
@@ -47,23 +47,26 @@ async function findMatches(guideConfig, infoNodes) {
   return guideConfig;
 }
 
-async function matchLangTabs(langtabs, infoNodes) {
+
+async function matchLangTabs(langtabs, infoNodes, guideId) {
   let updatedTabs = [];
   for (const langtab of langtabs) {
     if (langtab.id != "none" && langtab.id != "na") {
-      langtab.node = await matchNode(langtab.id, infoNodes);
+      langtab.node = await matchNode(langtab.id, infoNodes, guideId);  // Pass the guideId here
     }
     updatedTabs.push(langtab);
   }
   return updatedTabs;
 }
 
-async function matchNode(id, infoNodes) {
+
+async function matchNode(id, infoNodes, guideId) {  // Accept the guideId here
   const match = infoNodes.find((node) => {
     return node.id === id;
   });
   if (match == undefined) {
-    throw `Can't find a matching node for ${id}`;
+    // If it can't find the matching node, returns the ID and guide config that caused the error.
+    throw `Can't find a matching node for ${id} in the Guide Config: ${guideId}.json`; 
   }
   return match;
 }

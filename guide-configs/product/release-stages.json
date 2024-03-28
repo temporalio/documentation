@@ -1,0 +1,30 @@
+{
+    "file_name": "release-stages.mdx",
+    "id": "release-stages",
+    "file_dir": "/",
+    "slug": "/temporal/release-stages",
+    "title": "Temporal product release stages guide",
+    "sidebar_label": "Release stages",
+    "sidebar_position": 11,
+    "description": "Learn more about Temporal product release stages",
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "product/release-stages/introduction"
+        },
+        {
+            "type": "h2",
+            "id": "product/release-stages/pre-release"
+        },
+        {
+            "type": "h2",
+            "id": "product/release-stages/public-preview"
+        },
+        {
+            "type": "h2",
+            "id": "product/release-stages/general-availability"
+        }
+    ]
+}

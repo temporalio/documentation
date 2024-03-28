@@ -11,7 +11,7 @@ tags:
   - settings
 ---
 
-This page addresses the default limits of the Temporal Cloud system.
+This page addresses the limits of the Temporal Cloud system.
 Reach out to your account team should you have any quesitons about these limits.
 
 These limits fall into the following three main categories:
@@ -28,7 +28,7 @@ The following aspects apply at the Temporal Cloud Account level (per account).
 
 **How many users can I add?**
 
-300 users across all Namespaces.
+By default, 300 users across all Namespaces.
 
 ### Namespaces
 
@@ -66,8 +66,10 @@ The following aspects apply at the Namespace level (per Namespace).
 Each Namespace has a rate limit, which is measured in Actions per second (APS).
 A Namespace may be throttled when its throughput becomes too high.
 Throttling means limiting the rate at which Actions are performed to prevent the Namespace from exceeding its APS limit.
+
 A Namespace's default limit is set at 400 APS and automatically adjusts based on recent usage (over the prior 7 days).
 Your throughput limit will never fall below this default value.
+You can request this limit be manually rasied by opening a [support ticket](/cloud/support-create-ticket).
 
 ### Certificates
 
@@ -104,21 +106,23 @@ You can set the Retention Period between 1 and 90 days.
 
 A Namespace can have just one [Batch job](/cli/batch) running at a time.
 
+Each batch job operates on a maximum of 50 Workflow Executions per second.
+
 ### Number of Custom Search Attributes
 
 **How many custom Search Attributes are allowed per Namespace?**
 
 There is a limit to the number of custom Search Attributes per attribute type per Namespace:
 
-| Search Attribute type | Limit         |
-| --------------------- | ------------- |
-| Bool                  | 20            |
-| Datetime              | 20            |
-| Double                | 20            |
-| Int                   | 20            |
-| Keyword               | 20            |
-| KeywordList           | Not supported |
-| Text                  | 5             |
+| Search Attribute type | Limit |
+| --------------------- | ----- |
+| Bool                  | 20    |
+| Datetime              | 20    |
+| Double                | 20    |
+| Int                   | 20    |
+| Keyword               | 40    |
+| KeywordList           | 5     |
+| Text                  | 5     |
 
 ### Custom Search Attribute names
 
@@ -135,11 +139,13 @@ For more information on custom Search Attributes see [Custom Search Attributes l
 
 **What is the rate limit for requests to the Visibility APIs?**
 
-The default rate limit for requests to the Visibility APIs, per Namespace, is 10 requests per second.
+The rate limit for requests to the Visibility APIs varies, and may be as low as 30 requests per second.
+This limit is not configurable.
 
 ## Programming model level
 
 The following aspects apply at the programming model level.
+See also: [Self-hosted Temporal Cluster defaults](/self-hosted-guide/defaults).
 
 ### Identifier length limit
 
@@ -158,14 +164,16 @@ This limit applies to all gRPC endpoints across the Temporal Platform.
 
 **What is the size limit for an Event History transaction?**
 
-An Event History transaction encompasses a set of operations such as initiating a new Workflow, scheduling an Activity, processing a Signal, or starting a Child Workflow. These operations create Events that are then logged in the Event History. The default transaction size limit restricts the total size of Events that can be accommodated within a single transaction.
+An Event History transaction encompasses a set of operations such as initiating a new Workflow, scheduling an Activity, processing a Signal, or starting a Child Workflow.
+These operations create Events that are then logged in the Event History.
+The transaction size limit restricts the total size of Events that can be accommodated within a single transaction.
 
 The size limit for any given [Event History](/concepts/what-is-an-event-history) transaction is 4 MB.
 This isn't configurable.
 
 ### Per Workflow Execution concurrency limits
 
-**How many incomplete concurrent Actions can a Workflow Execution have?**
+**How many incomplete concurrent operations can a Workflow Execution have?**
 
 If a Workflow Execution has 2,000 incomplete Activities, Signals, Child Workflows, or external Workflow Cancellation requests, additional [Commands](/concepts/what-is-a-command) of that type will fail to be applied to that Workflow Execution:
 
@@ -173,6 +181,9 @@ If a Workflow Execution has 2,000 incomplete Activities, Signals, Child Workflow
 - `SignalExternalWorkflowExecution`
 - `StartChildWorkflowExecution`
 - `RequestCancelExternalWorkflowExecution`
+
+For optimal performance, limit concurrent operations to 500 or fewer.
+This reduces Workflow's Event History size and decreases the loading time in the Web UI.
 
 ### Per Workflow Execution Signal limit
 

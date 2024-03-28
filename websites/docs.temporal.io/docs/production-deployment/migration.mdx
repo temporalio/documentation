@@ -1,7 +1,7 @@
 ---
 id: migration
-title: Migrating to Temporal Cloud
-sidebar_label: Migration
+title: Migrate to Cloud
+sidebar_label: Migrate to Cloud
 sidebar_position: 3
 description: Migrate to Temporal Cloud from a Self-hosted Cluster.
 slug: /production-deployments/migration
@@ -27,11 +27,11 @@ Depending on your Workflows’ requirements, the migration process may be as sim
 There are two aspects to consider when migrating: your Temporal Client connection code and your Workflow Executions.
 Here’s a high-level overview of what you can expect:
 
-- **Update the Client connection code in your Worker:** Your Client connection code requires several small changes to ensure Temporal Cloud becomes responsible for new Workflow Executions.
+- **Introduce another Temporal Client to your Starter and Worker Processes:** Configure and deploy a new Temporal Client so that Temporal Cloud becomes responsible for new Workflow Executions.
 - **Migrate Workflow Executions:** There are different approaches for new, running, and completed Workflow Executions.
-  - **New Workflow Executions:** After you’ve updated your Client connection code, Temporal Cloud will automatically be responsible for all new Workflow Executions.
+  - **New Workflow Executions:** When you no longer need to send Signals or Queries to your self-hosted Cluster, you can deprecate your old Client code. Until then, your self-hosted Cluster can receive relevant traffic, while new Workflow Executions are sent to Temporal Cloud.
   - **Running Workflow Executions:** Short-running Workflows can often be drained and then started again on Temporal Cloud. Long-running Workflows that cannot be drained might require you to implement more code changes to pass the state of the currently running Workflow to Temporal Cloud.
-  - **Completed Workflow Executions:** Completed Workflow Execution History cannot yet be migrated to Temporal Cloud.
+  - **Completed Workflow Executions:** Completed Workflow Execution History cannot be automatically migrated to Temporal Cloud. Refer to [Multi-Cluster Replication](#multi-cluster-replication) for more information.
 
 ### Updating Client connection code in your Workers
 
@@ -54,7 +54,8 @@ Workflow Execution.
 To migrate from a self-hosted Temporal Cluster to Temporal Cloud, take into account the current state, Event History, and any future expectations of your Workflow Executions.
 
 **New Workflows are automatically executed on Temporal Cloud.**
-Once your new code is deployed, all new executions of your Workflows will run automatically on Temporal Cloud instead of your self-hosted Cluster.
+Once you’ve made the code changes in Step 1, and your new code is deployed, new Workflow Executions will be sent to Temporal Cloud.
+Existing Workflows must receive Signals to migrate and re-execute on Cloud.
 If you maintain your self-hosted instance, you will still be able to use it to access any execution history from before your migration.
 You can also export JSON from your previous execution history, that you can then import into your own analytics system.
 
@@ -84,7 +85,7 @@ The volume of these requests might be high to execute against all the matches to
 ### Other considerations when migrating
 
 - Have you added an mTLS certificate to your Temporal Namespace? Review our [documentation for adding a certificate to your Temporal Cloud account](/cloud/certificates) for more information.
-- There are differences in how metrics are generated in self-hosted Temporal and Temporal Cloud. Review the [documentation on Temporal Cloud metrics](/cloud/metrics) for more information.
+- There are differences in how metrics are generated in self-hosted Temporal and Temporal Cloud. Review the [documentation on Temporal Cloud metrics](/cloud/metrics/) for more information.
 - Consider the implications for [security and access to your cluster](/cloud/security).
 - Review your current load (actions per second) and speak to your Account Executive and Solutions Architect so we can set appropriate [Namespace limits](/cloud/limits).
 

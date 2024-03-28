@@ -18,10 +18,23 @@ An Activity Execution is the full chain of [Activity Task Executions](/concepts/
 
 ![Activity Execution](/diagrams/activity-execution.svg)
 
-By default, an Activity Execution has no time limit.
 You can customize [Activity Execution timeouts](/concepts/what-is-a-start-to-close-timeout) and [retry policies](/concepts/what-is-a-retry-policy).
 
 If an Activity Execution fails (because it exhausted all retries, threw a [non-retryable error](/concepts/what-is-a-retry-policy#non-retryable-errors), or was canceled), the error is returned to the [Workflow](/workflows), which decides how to handle it.
+
+:::note
+
+Temporal guarantees that an Activity Task either runs or timeouts.
+There are multiple failure scenarios when an Activity Task is lost.
+It can be lost during delivery to a Worker or after the Activity Function is called and the Worker crashed.
+
+Temporal doesn't detect task loss directly.
+It relies on [Start-To-Close timeout](/concepts/what-is-a-start-to-close-timeout).
+If the Activity Task times out, the Activity Execution will be retried according to the Activity Execution Retry Policy.
+
+In scenarios where the Activity Execution Retry Policy is set to `1` and a Timeout occurs, the Activity Execution will not be tried.
+
+:::
 
 ### Cancellation
 
@@ -30,7 +43,7 @@ Activity Cancellation:
 - lets the Activity know it doesn't need to keep doing work, and
 - gives the Activity time to clean up any resources it has created.
 
-Activities can only receive Cancellation if they emit Heartbeats or in Core-based SDKs (TypeScript/Python) are Local Activities (which don't heartbeat but receive Cancellation anyway).
+Activities must heartbeat to receive cancellations from a Temporal Service.
 
 An Activity may receive Cancellation if:
 
@@ -40,6 +53,7 @@ An Activity may receive Cancellation if:
 - In some SDKs:
   - The Worker is shutting down.
   - An Activity sends a Heartbeat but the Heartbeat details can't be converted by the Worker's configured [Data Converter](/concepts/what-is-a-data-converter). This fails the Activity Task Execution with an Application Failure.
+  - The Activity timed out on the Worker side and is not Heartbeating or the Temporal Service hasn't relayed a Cancellation.
 
 There are different ways to receive Cancellation depending on the SDK. <!-- TODO link to dev guide -->
 An Activity may accept or ignore Cancellation:

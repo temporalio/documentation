@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday March 28 2024 12:14:54 PM -0500
+Last assembled: Thursday March 28 2024 12:55:52 PM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
-142 guide configurations found.
+147 guide configurations found.
 
-1756 information nodes found.
+1778 information nodes found.
 
-1514 information nodes are attached to guides.
+1535 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -276,11 +276,17 @@ cloud/tcld/apikey/disable -> #disable
 
 cloud/tcld/apikey/enable -> #enable
 
+cloud/tcld/feature/get -> #get
+
+cloud/tcld/feature/toggle -> #toggle
+
 cloud/tcld/generate-certificates/certificate-authority-certificate -> #certificate-authority-certificate
 
 cloud/tcld/generate-certificates/end-entity-certificate -> #end-entity-certificate
 
 cloud/tcld/how-to-install-tcld -> #install-tcld
+
+cloud/tcld/feature/index -> /production-deployment/cloud/tcld/feature
 
 cloud/tcld/login -> /cloud/tcld/login
 
@@ -296,6 +302,8 @@ cloud/tcld/namespace/get -> #get
 
 cloud/tcld/namespace/list -> #list
 
+cloud/tcld/namespace/export/index -> #export
+
 cloud/tcld/namespace/accepted-client-ca/index -> #accepted-client-ca
 
 cloud/tcld/namespace/certificate-filters/index -> #certificate-filters
@@ -305,6 +313,18 @@ cloud/tcld/namespace/search-attributes/index -> #search-attributes
 cloud/tcld/namespace/retention/index -> #retention
 
 cloud/tcld/namespace/update-codec-server -> #update-codec-server
+
+cloud/tcld/namespace/export/create -> #create
+
+cloud/tcld/namespace/export/get -> #get
+
+cloud/tcld/namespace/export/delete -> #delete
+
+cloud/tcld/namespace/export/list -> #list
+
+cloud/tcld/namespace/export/update -> #update
+
+cloud/tcld/namespace/export/validate -> #validate
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
@@ -432,7 +452,7 @@ self-hosted/how-to-set-up-dual-visibility -> #dual-visibility
 
 concepts/what-is-cluster-configuration -> /clusters#cluster-configuration
 
-cloud/metrics-intro -> /cloud/metrics
+cloud/metrics-intro -> /cloud/metrics/
 
 concepts/what-is-temporal-cloud -> /cloud/overview
 
@@ -469,6 +489,14 @@ concepts/what-is-a-schedule-to-close-timeout -> /activities#schedule-to-close-ti
 concepts/what-is-a-schedule-to-start-timeout -> /activities#schedule-to-start-timeout
 
 concepts/what-is-an-update -> /workflows#update
+
+cloud/available-regions -> /cloud/service-availability#regions
+
+cloud/support-intro -> /cloud/support
+
+cloud/api-keys/api-keys -> /cloud/api-keys
+
+cloud/support-create-ticket -> /cloud/support#support-ticket
 
 concepts/what-is-an-activity-definition -> #activity-definition
 
@@ -538,7 +566,7 @@ go/namespaces -> /dev-guide/go/features#namespaces
 
 java/namespaces -> /dev-guide/java/features#namespaces
 
-cloud/prometheus-grafana-setup -> /cloud/metrics#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
+cloud/prometheus-grafana-setup -> /cloud/metrics/prometheus-grafana#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
 
 cli/workflow/show -> /cli/workflow#show
 
@@ -796,7 +824,7 @@ cloud/availability-overview -> /cloud/service-availability
 
 cloud/sla -> /cloud/sla
 
-cloud/api-keys/api-keys -> /cloud/api-keys
+cloud/how-to-verify-export -> #verify
 
 cloud/certificates-requirements -> /cloud/certificates#certificate-requirements
 
@@ -811,10 +839,6 @@ python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-tem
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
 
 cloud/pricing-intro -> /cloud/pricing
-
-cloud/support-intro -> /cloud/support
-
-cloud/support-create-ticket -> /cloud/support#support-ticket
 
 cloud/certificates-namespace -> #manage-certificates
 
@@ -846,19 +870,23 @@ cloud/users-update-permissions -> #update-permissions
 
 cloud/users-delete -> #delete-users
 
-java/generated/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/java/project-setup#cloud-worker
-
-php/connect-to-a-dev-cluster -> /dev-guide/php/foundations#connect-to-a-dev-cluster
-
 cloud/saml-intro -> /cloud/saml
 
 dev-guide/temporal-sdk -> /dev-guide/sdks
 
+cloud/pricing-storage -> #storage
+
 concepts/what-is-a-reset -> /workflows#reset
 
-concepts/what-is-the-temporal-web-ui -> /web-ui
+cloud/what-is-workflow-history-export -> /cloud/export
 
-cloud/what-is-an-action -> /cloud/pricing#action
+cloud/what-is-an-action -> #action
+
+java/generated/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/java/project-setup#cloud-worker
+
+php/connect-to-a-dev-cluster -> /dev-guide/php/foundations#connect-to-a-dev-cluster
+
+concepts/what-is-the-temporal-web-ui -> /web-ui
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
@@ -1142,6 +1170,14 @@ typescript/chapter-durable-execution/how-to-replay-a-workflow-execution-in-types
 
 typescript/chapter-durable-execution/non-deterministic-code-changes -> /dev-guide/typescript/durable-execution#durability-through-replays
 
+typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+
+typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
+
+typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
+
+typescript/cancellation-scopes -> /dev-guide/typescript/foundations#cancellation-scopes
+
 typescript/how-to-define-signals-and-queries-statically-or-dynamically -> /dev-guide/typescript/features#static-and-dynamic-signals-and-queries
 
 typescript/async-activity-completion -> /dev-guide/typescript/features#asynchronous-activity-completion
@@ -1159,14 +1195,6 @@ typescript/namespaces -> /dev-guide/typescript/features#namespaces
 typescript/how-to-use-a-custom-payload-converter-in-typescript -> /dev-guide/typescript/features#custom-payload-conversion
 
 typescript/how-to-implement-interceptors-in-typescript -> /dev-guide/typescript/features#interceptors
-
-typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
-
-typescript/linting-and-types -> /dev-guide/typescript/foundations#linting-and-types
-
-typescript/how-to-shut-down-a-worker -> /dev-guide/typescript/foundations#shut-down-a-worker
-
-typescript/cancellation-scopes -> /dev-guide/typescript/foundations#cancellation-scopes
 
 typescript/tracing -> /dev-guide/typescript/observability#tracing
 

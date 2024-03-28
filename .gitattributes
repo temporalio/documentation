@@ -15,6 +15,7 @@ websites/docs.temporal.io/docs/tctl-v1/taskqueue.mdx linguist-generated=true
 websites/docs.temporal.io/docs/tctl-v1/workflow.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/account.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/apikey.mdx linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/cloud/tcld/feature.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/generate-certificates.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/index.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/tcld/login.mdx linguist-generated=true
@@ -48,6 +49,7 @@ websites/docs.temporal.io/docs/references/web-ui-configuration.mdx linguist-gene
 websites/docs.temporal.io/docs/references/web-ui-environment-variables.mdx linguist-generated=true
 websites/docs.temporal.io/docs/references/web-ui-server-env-vars.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/index.mdx linguist-generated=true
+websites/docs.temporal.io/docs/release-stages.mdx linguist-generated=true
 websites/docs.temporal.io/docs/concepts/activities.mdx linguist-generated=true
 websites/docs.temporal.io/docs/concepts/clusters.mdx linguist-generated=true
 websites/docs.temporal.io/docs/concepts/dataconversion.mdx linguist-generated=true
@@ -62,6 +64,8 @@ websites/docs.temporal.io/docs/production-deployment/cloud/how-to-manage-audit-l
 websites/docs.temporal.io/docs/production-deployment/cloud/index.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/operation-api.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/index.mdx linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/cloud/metrics/datadog.mdx linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/cloud/how-to-export-workflow-event-histories.md linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/get-started.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/index.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/limits.mdx linguist-generated=true
@@ -69,10 +73,11 @@ websites/docs.temporal.io/docs/production-deployment/cloud/account-setup/certifi
 websites/docs.temporal.io/docs/production-deployment/cloud/account-setup/namespaces.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/how-to-manage-saml-with-temporal-cloud.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/account-setup/users.mdx linguist-generated=true
-websites/docs.temporal.io/docs/production-deployment/cloud/cloud-metrics.mdx linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/cloud/metrics/index.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/migration.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/overview.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/pricing.mdx linguist-generated=true
+websites/docs.temporal.io/docs/production-deployment/cloud/metrics/prometheus-grafana.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/security.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/sevice-availability.mdx linguist-generated=true
 websites/docs.temporal.io/docs/production-deployment/cloud/introduction/sla.mdx linguist-generated=true

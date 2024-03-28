@@ -179,7 +179,7 @@
     node-fetch "^2.6.7"
     universal-user-agent "^6.0.0"
 
-"@octokit/rest@^18.0.3":
+"@octokit/rest@^18.12.0":
   version "18.12.0"
   resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-18.12.0.tgz#f06bc4952fc87130308d810ca9d00e79f6988881"
   integrity sha512-gDPiOHlyGavxr72y0guQEhLsemgVjwRePayJ+FcKc2SJqKUbxbkvf5kAZEWA/MKvsfYlQAMVzNJE3ezQcxMJ2Q==
@@ -195,40 +195,6 @@
   integrity sha512-eJ2jbzjdijiL3B4PrSQaSjuF2sPEQPVCPzBvTHJD9Nz+9dw2SGH4K4xeQJ77YfTq5bRQ+bD8wT11JbeDPmxmGg==
   dependencies:
     "@octokit/openapi-types" "^12.11.0"
-
-"@opentelemetry/api@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-1.7.0.tgz#b139c81999c23e3c8d3c0a7234480e945920fc40"
-  integrity sha512-AdY5wvN0P2vXBi3b29hxZgSFvdhdxPB9+f0B6s//P9Q8nibRWeA3cHm8UmLpio9ABigkVHJ5NMPk+Mz8VCCyrw==
-
-"@opentelemetry/core@1.21.0", "@opentelemetry/core@^1.19.0":
-  version "1.21.0"
-  resolved "https://registry.yarnpkg.com/@opentelemetry/core/-/core-1.21.0.tgz#8c16faf16edf861b073c03c9d45977b3f4003ee1"
-  integrity sha512-KP+OIweb3wYoP7qTYL/j5IpOlu52uxBv5M4+QhSmmUfLyTgu1OIS71msK3chFo1D6Y61BIH3wMiMYRCxJCQctA==
-  dependencies:
-    "@opentelemetry/semantic-conventions" "1.21.0"
-
-"@opentelemetry/resources@1.21.0", "@opentelemetry/resources@^1.19.0":
-  version "1.21.0"
-  resolved "https://registry.yarnpkg.com/@opentelemetry/resources/-/resources-1.21.0.tgz#e773e918cc8ca26493a987dfbfc6b8a315a2ab45"
-  integrity sha512-1Z86FUxPKL6zWVy2LdhueEGl9AHDJcx+bvHStxomruz6Whd02mE3lNUMjVJ+FGRoktx/xYQcxccYb03DiUP6Yw==
-  dependencies:
-    "@opentelemetry/core" "1.21.0"
-    "@opentelemetry/semantic-conventions" "1.21.0"
-
-"@opentelemetry/sdk-trace-base@^1.19.0":
-  version "1.21.0"
-  resolved "https://registry.yarnpkg.com/@opentelemetry/sdk-trace-base/-/sdk-trace-base-1.21.0.tgz#ffad912e453a92044fb220bd5d2f6743bf37bb8a"
-  integrity sha512-yrElGX5Fv0umzp8Nxpta/XqU71+jCAyaLk34GmBzNcrW43nqbrqvdPs4gj4MVy/HcTjr6hifCDCYA3rMkajxxA==
-  dependencies:
-    "@opentelemetry/core" "1.21.0"
-    "@opentelemetry/resources" "1.21.0"
-    "@opentelemetry/semantic-conventions" "1.21.0"
-
-"@opentelemetry/semantic-conventions@1.21.0":
-  version "1.21.0"
-  resolved "https://registry.yarnpkg.com/@opentelemetry/semantic-conventions/-/semantic-conventions-1.21.0.tgz#83f7479c524ab523ac2df702ade30b9724476c72"
-  integrity sha512-lkC8kZYntxVKr7b8xmjCVUgE0a8xgDakPyDo9uSWavXPyYqLgYYGdEd2j8NxihRyb6UwpX3G/hFUF4/9q2V+/g==
 
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
@@ -362,91 +328,66 @@
   resolved "https://registry.yarnpkg.com/@swc/types/-/types-0.1.5.tgz#043b731d4f56a79b4897a3de1af35e75d56bc63a"
   integrity sha512-myfUej5naTBWnqOCc/MdVOLVjXUXtIA+NpDrDBKJtLLg2shUjBu3cZmB/85RyitKc55+lUUyl7oRfLOvkr2hsw==
 
-"@temporalio/activity@1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@temporalio/activity/-/activity-1.9.0.tgz#2c742b8f41c3f87c99d206e3430ed92e318e2eb1"
-  integrity sha512-a9bLEUAM/Y8oInFvmjQPOHnTobp4dX6u7Y61Q0eFtuGQsVb4G51UtXAUtxhgn9lZJv37Tjw+K6yvXYjt4vsSXg==
+"@temporalio/activity@1.9.3":
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/@temporalio/activity/-/activity-1.9.3.tgz#e243c1577c6bff950bb881561cbd88a84a69cad7"
+  integrity sha512-QmY2dCNNSANhCgy4HCaeRmosyg73wI7KFbxTpnCrFjAWjxpJqBYC5qROrWHQEG/52Mcf59MtmznWSqz3M04Naw==
   dependencies:
-    "@temporalio/common" "1.9.0"
+    "@temporalio/common" "1.9.3"
     abort-controller "^3.0.0"
 
-"@temporalio/client@1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@temporalio/client/-/client-1.9.0.tgz#e1fe0f45b83b6634117d290528cbb9489821f1ae"
-  integrity sha512-8J2ZJe4xaWpq648657oUfNW/moNqgRL3ARq2oxRWH+g0qBOYKvUhGI7xTJSbuA2+s7sSbRyOX7WBnkT5r9ce5A==
+"@temporalio/client@1.9.3", "@temporalio/client@^1.9.0":
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/@temporalio/client/-/client-1.9.3.tgz#3d0bcafb3ae58253bd7113cbdb31afe40b09c489"
+  integrity sha512-RgcqMqgrzQG3jOrCxnh8mYqwDqngAMKoCUOPwZZU5AAJa0sBcBLV2lEhJ9KGEavpfZej/duplUa67EV0s+M/6w==
   dependencies:
     "@grpc/grpc-js" "~1.7.3"
-    "@temporalio/common" "1.9.0"
-    "@temporalio/proto" "1.9.0"
+    "@temporalio/common" "1.9.3"
+    "@temporalio/proto" "1.9.3"
     abort-controller "^3.0.0"
     long "^5.2.3"
     uuid "^9.0.1"
 
-"@temporalio/common@1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@temporalio/common/-/common-1.9.0.tgz#e714bb064897c06e5c89d53230ed3e03b927858b"
-  integrity sha512-x7Rmarsy5uOT91lla0p777CFc+uNX62Vgb0FHOcR2X7o1rFl1BPKY9A1Ew7nt28Po59aNbCbdhLykksq4e3yng==
+"@temporalio/common@1.9.3":
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/@temporalio/common/-/common-1.9.3.tgz#7130136ca18c55f140ba291784b99a78a9865cc8"
+  integrity sha512-o6aAiqyIyu8b1bUOeY4nu04ZMwLAPR66Vtc8W/xYs7WM874wNhZlm8XWspqnmflI3W7td4y3Y50AHRi/BUNxRg==
   dependencies:
-    "@temporalio/proto" "1.9.0"
+    "@temporalio/proto" "1.9.3"
     long "^5.2.3"
     ms "^3.0.0-canary.1"
     proto3-json-serializer "^2.0.0"
 
-"@temporalio/core-bridge@1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@temporalio/core-bridge/-/core-bridge-1.9.0.tgz#ab8fbe5d061852554da941649169e10242cc755c"
-  integrity sha512-QFsYgKOvp2aGjanEMonY4zp/4MaCbFh8cOuGkFf2yFoANqbeMAUC7zwczaK9XN7m+LhyaQCZOYHgnZePPJIp3g==
+"@temporalio/core-bridge@1.9.3":
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/@temporalio/core-bridge/-/core-bridge-1.9.3.tgz#802fe618f838eb4ef7095a5b49609b27fd190364"
+  integrity sha512-0cYVDzypc+ilpWeBsYkHP8wv/SbtcLZA4z4ZZd2c6OWKEM3+p4UuW8AiXZf/avL+rpo7cjrSRl+PTWe52vPReg==
   dependencies:
-    "@temporalio/common" "1.9.0"
+    "@temporalio/common" "1.9.3"
     arg "^5.0.2"
     cargo-cp-artifact "^0.1.8"
     which "^4.0.0"
 
-"@temporalio/interceptors-opentelemetry@1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@temporalio/interceptors-opentelemetry/-/interceptors-opentelemetry-1.9.0.tgz#034dc31caf4a5833012ecc8639aee94e747801c8"
-  integrity sha512-I9BxddiykHaQKN+3tRo0SjtbKrmlXzODGmAzKx2bEDvXFiWkI2PCqrrWSiwsGIrznxWOnAWNGSmBiqJfERg/UQ==
-  dependencies:
-    "@opentelemetry/api" "^1.7.0"
-    "@opentelemetry/core" "^1.19.0"
-    "@opentelemetry/resources" "^1.19.0"
-    "@opentelemetry/sdk-trace-base" "^1.19.0"
-
-"@temporalio/proto@1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@temporalio/proto/-/proto-1.9.0.tgz#c32691c076efb3843c808ecc8c19e1c36fcd4a0e"
-  integrity sha512-jfSo/NSEjBXvCwl55A+e7zuJ90ZbAcvU16+4/bLCL6H/8JTDvafVimPcvYi6UQwJZcQMUsKegu8q36HWw/jfgQ==
+"@temporalio/proto@1.9.3":
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/@temporalio/proto/-/proto-1.9.3.tgz#8cb2e241f46de3a3b1fd5f3835d9c99ea58877bd"
+  integrity sha512-YOeelTGdz8zLX8LUlXlERvd/VTaCPmV9xN/JEUQoxsyc7YpOB2wVwdrXS7Al/2b1jOTYRm00vbn3rljRV9W5dA==
   dependencies:
     long "^5.2.3"
     protobufjs "^7.2.5"
 
-"@temporalio/testing@1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@temporalio/testing/-/testing-1.9.0.tgz#724d7f1457eb9b3bd6db8c766ca8ed74e1d328a7"
-  integrity sha512-UVrHRQuQ8m2uLNxL/XsvC5Fbs1NKs6E38zjZSVAJTPBgQ8j/TR8EuuOzARPdbZrOLdZhDRAHGJNL5AQhTjXjog==
-  dependencies:
-    "@grpc/grpc-js" "~1.7.3"
-    "@temporalio/activity" "1.9.0"
-    "@temporalio/client" "1.9.0"
-    "@temporalio/common" "1.9.0"
-    "@temporalio/core-bridge" "1.9.0"
-    "@temporalio/proto" "1.9.0"
-    "@temporalio/worker" "1.9.0"
-    "@temporalio/workflow" "1.9.0"
-    abort-controller "^3.0.0"
-
-"@temporalio/worker@1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@temporalio/worker/-/worker-1.9.0.tgz#119ca2b2e7e0745ffd2151636db50fc8a237bd47"
-  integrity sha512-ekrmJ/rpM+ErBe7jCBZ1FSf0iAThlMgZ5ez/B02Coy+L7HPVG3MH2hiYi1t6SPcl8zviZbb7vIGTaV0SnWwQYg==
+"@temporalio/worker@^1.9.0":
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/@temporalio/worker/-/worker-1.9.3.tgz#d8a2d4a527b1eb3ad1b8e99a9e48387553348ae2"
+  integrity sha512-RFotNUeWNnLDk4EvnPVZBiYAZWc+daezr/Prn/iMsCI6e3CxbchDha6GiqIVkIF3ppq1R2Vl+FpouNA/gBniGg==
   dependencies:
     "@swc/core" "^1.3.102"
-    "@temporalio/activity" "1.9.0"
-    "@temporalio/client" "1.9.0"
-    "@temporalio/common" "1.9.0"
-    "@temporalio/core-bridge" "1.9.0"
-    "@temporalio/proto" "1.9.0"
-    "@temporalio/workflow" "1.9.0"
+    "@temporalio/activity" "1.9.3"
+    "@temporalio/client" "1.9.3"
+    "@temporalio/common" "1.9.3"
+    "@temporalio/core-bridge" "1.9.3"
+    "@temporalio/proto" "1.9.3"
+    "@temporalio/workflow" "1.9.3"
     abort-controller "^3.0.0"
     heap-js "^2.3.0"
     memfs "^4.6.0"
@@ -457,13 +398,13 @@
     unionfs "^4.5.1"
     webpack "^5.89.0"
 
-"@temporalio/workflow@1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@temporalio/workflow/-/workflow-1.9.0.tgz#1706cb241e46f633484bcbdb7e9ebfed43f66443"
-  integrity sha512-0/9b8bUbtVdvuV9t7BQ7Ki/SVi9y2HnymO70SaT05x2t2aXS8BuW7q73vwIPoKazFdvNK7LA1nNcZ3Kgz9iz8w==
+"@temporalio/workflow@1.9.3", "@temporalio/workflow@^1.9.0":
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/@temporalio/workflow/-/workflow-1.9.3.tgz#daf5a0d78b4ae2fdac243a934cd3360d5715361e"
+  integrity sha512-JU3SKZf+Cdm9ebNIbhLB3DM3NmGyusOCCZ1eSOWCHPAJo+fW9Zi6B2ba+Td7XRu6EGWJwvBwh6fnqzVCxtBPMA==
   dependencies:
-    "@temporalio/common" "1.9.0"
-    "@temporalio/proto" "1.9.0"
+    "@temporalio/common" "1.9.3"
+    "@temporalio/proto" "1.9.3"
 
 "@types/eslint-scope@^3.7.3":
   version "3.7.7"
@@ -787,6 +728,11 @@ concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
+
+dedent@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/dedent/-/dedent-0.7.0.tgz#2495ddbaf6eb874abb0e1be9df22d2e5a544326c"
+  integrity sha512-Q6fKUPqnAHAyhiUgFU7BUzLiv0kd8saH9al7tnu5Q/okj6dnupxyTgFIBjVzJATdfIAm9NAsvXNzjaKa+bxVyA==
 
 deprecation@^2.0.0, deprecation@^2.3.1:
   version "2.3.1"
@@ -1268,15 +1214,16 @@ serialize-javascript@^6.0.1:
   dependencies:
     randombytes "^2.1.0"
 
-snipsync@1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/snipsync/-/snipsync-1.7.0.tgz#8049a37415531701ed0fcb64ea5d44a941483cad"
-  integrity sha512-JyakzPHiZpA5p0wzYYEh/f1w2qa8jzBrFc6o6sTL8QH3clbcQdygXggUMX3KeHK7c90sm7T5keUzRm65bLAxMA==
+snipsync@1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/snipsync/-/snipsync-1.9.0.tgz#493fc2d215c19ae85fdf987573de8cc85bb9abb3"
+  integrity sha512-Uw/YLrZwFUDl4yLRQNVkDdCmMVfuSYw+6JsXI0VKbVQwKS/0GhZV0Apw6A88DC3Ew337yA+H0ekD3qHvO68Hlw==
   dependencies:
-    "@octokit/rest" "^18.0.3"
+    "@octokit/rest" "^18.12.0"
     anzip "^0.2.0"
     arraybuffer-to-buffer "^0.0.7"
     cli-progress "^3.8.2"
+    dedent "^0.7.0"
     glob "^7.1.6"
     js-logger "^1.6.1"
     line-reader "^0.4.0"
@@ -1353,20 +1300,6 @@ tapable@^2.1.1, tapable@^2.2.0:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-2.2.1.tgz#1967a73ef4060a82f12ab96af86d52fdb76eeca0"
   integrity sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==
-
-temporalio@^1.1.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/temporalio/-/temporalio-1.9.0.tgz#7ce02e5d2ff8909d1756390fd065cdfc68cfad34"
-  integrity sha512-S9cg/9iagMF18BPYuiAPPNrWnqc0nkBX2qWrGyo8+arInOWry5n6MKsqLwpmXA2X3grJs7D758Y3sxUp/yHzDA==
-  dependencies:
-    "@temporalio/activity" "1.9.0"
-    "@temporalio/client" "1.9.0"
-    "@temporalio/common" "1.9.0"
-    "@temporalio/interceptors-opentelemetry" "1.9.0"
-    "@temporalio/proto" "1.9.0"
-    "@temporalio/testing" "1.9.0"
-    "@temporalio/worker" "1.9.0"
-    "@temporalio/workflow" "1.9.0"
 
 terser-webpack-plugin@^5.3.10:
   version "5.3.10"
