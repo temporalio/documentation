@@ -25,7 +25,7 @@ The base [Failure proto message](https://api-docs.temporal.io/#temporal.api.fail
 
 - `string message`
 - `string stack_trace`
-- `string source`: The SDK this Failure originated in (for example, `"TypeScriptSDK"`). In some SDKs, this field is used to rehydrate the stack trace into an exception object.
+- `string source`: The SDK this Failure originated in (for example, `"TypeScriptSDK"`). In some SDKs, this field is used to rehydrate the call stack into an exception object.
 - `Failure cause`: The `Failure` message of the cause of this Failure (if applicable).
 - `Payload encoded_attributes`: Contains the encoded `message` and `stack_trace` fields when using a [Failure Converter](/concepts/what-is-a-failure-converter).
 
@@ -57,7 +57,7 @@ During conversion, the following Application Failure fields are set:
 - `non_retryable` is set to false.
 - `details` are left unset.
 - `cause` is a Failure converted from the error's `cause` property.
-- stack trace is copied.
+- call stack is copied.
 
 When an [Activity Execution](/concepts/what-is-an-activity-execution) fails, the Application Failure from the last Activity Task is the `cause` field of the [ActivityFailure](#activity-failure) thrown in the Workflow.
 
