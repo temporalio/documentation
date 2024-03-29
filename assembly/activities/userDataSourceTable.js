@@ -3,7 +3,14 @@ import path from "path";
 import fetch from "node-fetch";
 
 const configData = JSON.parse(fs.readFileSync("./secure/cloud-connection.json", "utf-8"));
-
+const roleDisplayNames = {
+  "account:admin": "Global Admin",
+  "account:developer": "Developer",
+  "account:read": "Read-only",
+  "namespace:admin": "Namespace Admin",
+  "namespace:write": "Write",
+  "namespace:read": "Read",
+};
 async function fetchAndGenerateTable() {
   // Check if the github_token value or key is empty
   if (!configData.github_token || configData.github_token.trim() === "") {
@@ -40,46 +47,51 @@ async function fetchAndGenerateTable() {
     for (const [role, perms] of Object.entries(rolePerms)) {
       for (const perm in perms) {
         const [prefix, name] = perm.split(":");
-        if (!permissionMap[name]) {
-          permissionMap[name] = {
-            name,
+        const shortName = name.replace(/^(saas-temporal|saas-api):/, "");
+        if (!permissionMap[shortName]) {
+          permissionMap[shortName] = {
+            name: shortName,
             prefix,
             roles: [],
           };
         }
-        permissionMap[name].roles.push(`${type}:${role}`);
+        permissionMap[shortName].roles.push(`${type}:${role}`);
       }
     }
   }
-
-  console.log(permissionMap);
-
   const outputLines = [];
 
-  function printTable(header, permissions) {
-    outputLines.push(`### ${header}\n`);
-    outputLines.push("| Permission | Admin | Developer | Read | Write | Account |");
-    outputLines.push("|------------|-------|------------|------|-------|---------|");
+  function printTable(header, description, permissions, roles) {
+    outputLines.push(`#### ${header}\n`);
+    outputLines.push(description + "\n");
+    outputLines.push("| Permission |" + roles.map((role) => ` ${roleDisplayNames[role]} |`).join(""));
+    outputLines.push("|" + "-----------|".repeat(roles.length + 1));
 
-    const sortedPermissions = Object.values(permissions).sort((a, b) => a.name.localeCompare(b.name));
+    const sortedPermissions = Object.values(permissions)
+      .filter((perm) => roles.some((role) => perm.roles.includes(role)))
+      .sort((a, b) => a.name.localeCompare(b.name));
 
-    for (const { name, roles } of sortedPermissions) {
-      const row = `| ${name} | ${roles.includes("namespace:admin") ? "✔" : " "} | ${
-        roles.includes("account:developer") ? "✔" : " "
-      } | ${roles.includes("namespace:read") ? "✔" : " "} | ${roles.includes("namespace:write") ? "✔" : " "} | ${
-        roles.includes("account:read") ? "✔" : " "
-      } |`;
+    for (const { name, roles: permRoles } of sortedPermissions) {
+      const row = `| ${name} |${roles.map((role) => (permRoles.includes(role) ? " ✔ |" : " |")).join("")}`;
       outputLines.push(row);
     }
 
     outputLines.push("");
   }
 
-  const saasApiPermissions = Object.values(permissionMap).filter((p) => p.prefix === "saas-api");
-  const saasTemporalPermissions = Object.values(permissionMap).filter((p) => p.prefix === "saas-temporal");
+  printTable(
+    "Account-level Role details",
+    "This table provides API-level details for the permissions granted to a user through account-level Roles.  These permissions are configured per user.",
+    permissionMap,
+    ["account:admin", "account:developer", "account:read"]
+  );
 
-  printTable("Cloud Management APIs", saasApiPermissions);
-  printTable("Temporal Server APIs", saasTemporalPermissions);
+  printTable(
+    "Namespace-level permissions details",
+    "This table provides API-level details for the permissions granted to a user through Namespace-level permissions.  These permissions are configured per Namespace per user.",
+    permissionMap,
+    ["namespace:admin", "namespace:write", "namespace:read"]
+  );
 
   return outputLines.join("\n");
 }
@@ -90,13 +102,19 @@ export async function userDataSourceTable(config) {
   const sourceNodesFilePath = path.join(config.root_dir, config.docs_src, "cloud", "action-groups.md");
   const headerContent = `---
 id: action-groups
-title: Action groups
-sidebar_label: Action groups
-description: Action groups permissions for Temporal Cloud and Temporal Server.
+title: Roles and permissions
+sidebar_label: Roles and permissions
+description: Roles and permission for Temporal Cloud and Temporal Server.
 ---
 
-Action groups define the permissions and access control for different roles within Temporal Cloud and Temporal Server.
-They determine which APIs and resources each role can access and interact with.
+Temporal account-level Roles and Namespace-level permissions provide access to specific Temporal Workflow and Temporal Cloud operational APIs. 
+The following table provides the API details associated with each account-level Role and Namespace-level permission.
+
+:::note
+
+Account Global Admin has Namespace Admin permissions on Namespaces.
+
+:::
   `;
 
   try {
