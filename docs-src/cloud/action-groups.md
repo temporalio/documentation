@@ -1,8 +1,8 @@
 ---
 id: action-groups
 title: Account-level Roles and Namespace-level permissions
-sidebar_label: Account-level Roles and Namespace-level permissions
-description: Account-level Roles and Namespace-level permissions for Temporal Cloud and Temporal Server.
+sidebar_label: Roles and permissions
+description: Roles and permission for Temporal Cloud and Temporal Server.
 ---
 
 Temporal account-level Roles and Namespace-level permissions provide access to specific Temporal Workflow and Temporal Cloud operational APIs.
