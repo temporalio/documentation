@@ -874,17 +874,19 @@ cloud/saml-intro -> /cloud/saml
 
 dev-guide/temporal-sdk -> /dev-guide/sdks
 
+cloud/pricing-storage -> #storage
+
 concepts/what-is-a-reset -> /workflows#reset
 
 cloud/what-is-workflow-history-export -> /cloud/export
+
+cloud/what-is-an-action -> #action
 
 java/generated/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/java/project-setup#cloud-worker
 
 php/connect-to-a-dev-cluster -> /dev-guide/php/foundations#connect-to-a-dev-cluster
 
 concepts/what-is-the-temporal-web-ui -> /web-ui
-
-cloud/what-is-an-action -> /cloud/pricing#action
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
