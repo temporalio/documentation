@@ -102,9 +102,9 @@ export async function userDataSourceTable(config) {
   const sourceNodesFilePath = path.join(config.root_dir, config.docs_src, "cloud", "action-groups.md");
   const headerContent = `---
 id: action-groups
-title: Roles and permissions
-sidebar_label: Roles and permissions
-description: Roles and permission for Temporal Cloud and Temporal Server.
+title: Account-level Roles and Namespace-level permissions
+sidebar_label: Account-level Roles and Namespace-level permissions
+description: Account-level Roles and Namespace-level permissions for Temporal Cloud and Temporal Server.
 ---
 
 Temporal account-level Roles and Namespace-level permissions provide access to specific Temporal Workflow and Temporal Cloud operational APIs. 
