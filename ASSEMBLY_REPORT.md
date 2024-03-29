@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday March 28 2024 16:05:37 PM -0600
+Last assembled: Friday March 29 2024 09:27:49 AM -0600
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -871,6 +871,8 @@ cloud/users-update-permissions -> #update-permissions
 cloud/users-delete -> #delete-users
 
 cloud/saml-intro -> /cloud/saml
+
+concepts/what-is-a-cloud-grpc-endpoint -> /cloud/namespaces#temporal-cloud-grpc-endpoint
 
 dev-guide/temporal-sdk -> /dev-guide/sdks
 

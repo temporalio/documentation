@@ -33,7 +33,7 @@ The changes needed to direct your Workflow to your Temporal Cloud
 Namespace are only a few lines of code, including:
 
 - [Add your SSL certificate and private key](/cloud/saml-intro) associated with your Namespace.
-- [Copy the Cloud-hosted endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint) from the Namespace detail Web page.
+- [Copy the Cloud-hosted endpoint](/concepts/what-is-a-cloud-grpc-endpoint) from the Namespace detail Web page.
   The endpoint uses this format: `namespace.account_id.tmprl.cloud:port`.
 - [Connect to Temporal Cloud](/cloud/get-started) with your Client.
 - [Configure tcld, the Cloud CLI](/cloud/tcld/index), with the same address, Namespace, and
