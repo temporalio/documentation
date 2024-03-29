@@ -140,6 +140,27 @@ A Namespace Id is formed by concatenating the following:
 
 For example, for the Account Id `f45a2` and Namespace Name `accounting-production`, the Namespace Id is `accounting-production.f45a2`.
 
+## What is a Cloud gRPC Endpoint? {#temporal-cloud-grpc-endpoint}
+
+Temporal Clients communicate between application code and a Temporal Server by sending and receiving messages via the gRPC protocol.
+gRPC is a Remote Procedure Call framework featuring low latency and high performance.
+gRPC provides Temporal with an efficient, language-agnostic communication framework.
+
+Every Temporal Namespace uses a gRPC endpoint for communication.
+When migrating to Temporal Cloud, you'll need to switch the gRPC endpoint in your code from your current hosting, whether self-hosted or locally-hosted, to Temporal Cloud.
+
+A Namespace-specific gRPC endpoint is found on the detail page for each Cloud Namespace.
+Follow these steps to find it:
+
+1. Log into your account on [cloud.temporal.io](https://cloud.temporal.io/namespaces).
+2. Navigate to the Namespace list page from the left-side vertical navigation.
+3. Tap or click on the Namespace Name to select and open the page for the Namespace whose endpoint you want to retrieve.
+4. On the Namespace detail page, locate the Namespace name.
+   Just below that is a row of information including the completed Workflow retention policy, the Namespace region, the Actions-Per-Second limit, and the gRPC endpoint.
+5. Click the copy icon next to the gRPC address to copy it to your clipboard.
+
+<div class="tdiw"><div class="tditw"><p class="tdit">gRPC endpoint</p></div><div class="tdiiw" height="207"><img class="img_ev3q" src="/img/grpc-endpoint.png" alt="gRPC endpoint" /></div></div>
+
 ## How to create a Namespace in Temporal Cloud {#create-a-namespace}
 
 :::info
