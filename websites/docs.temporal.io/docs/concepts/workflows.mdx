@@ -700,7 +700,7 @@ Sending Queries to completed Workflow Executions is supported, though Query reje
 
 #### Stack Trace Query
 
-In many SDKs, the Temporal Client exposes a predefined `__stack_trace` Query that returns the stack trace of all the threads owned by that Workflow Execution.
+In many SDKs, the Temporal Client exposes a predefined `__stack_trace` Query that returns the call stack of all the threads owned by that Workflow Execution.
 This is a great way to troubleshoot a Workflow Execution in production.
 For example, if a Workflow Execution has been stuck at a state for longer than an expected period of time, you can send a `__stack_trace` Query to return the current call stack.
 The `__stack_trace` Query name does not require special handling in your Workflow code.
@@ -714,13 +714,13 @@ Stack Trace Queries are available only for running Workflow Executions.
 ## What is an Update? {#update}
 
 :::tip Support, stability, and dependency info
-- In Pre-Release stage (API is subject to change)
-- Released in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
-- Available in the [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.23.1/client#Client.UpdateWorkflowWithOptions) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
-- Available in the [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
-- Available in the [Python SDK](https://docs.temporal.io/dev-guide/python/features#updates) since [v1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
-- Available in the [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_ExecuteUpdateAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowUpdateOptions_) since [v0.1.0-beta2](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta2)
-- Available in the [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#executeupdate) since [v1.9.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0)
+- In [Pre-release](/temporal/release-stages#pre-release) (API is subject to change)
+- Introduced in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
+- Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.23.1/client#Client.UpdateWorkflowWithOptions) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
+- Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+- Available in [Python SDK](https://docs.temporal.io/dev-guide/python/features#updates) since [v1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
+- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_ExecuteUpdateAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowUpdateOptions_) since [v0.1.0-beta2](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta2)
+- Available in [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#executeupdate) since [v1.9.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0)
 
 :::
 
@@ -933,15 +933,16 @@ This is useful for starting Child Workflows asynchronously (see [relevant issue 
 ## What is a Schedule? {#schedule}
 
 :::tip Support, stability, and dependency info
-- Generally Available as of Nov 2023
+- Is [Generally Available](https://docs.temporal.io/temporal/release-stages#general-availability) as of Nov 2023
 - Introduced in Temporal Server version [1.17.0](https://github.com/temporalio/temporal/releases/tag/v1.17.0)
 - Available in Temporal CLI (and tctl v1.17)
 - Available in Temporal Cloud
-- Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) version [1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
-- Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
-- Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow) version [1.1.0](https://github.com/temporalio/sdk-python/releases/tag/1.1.0)
-- Available in [TypeScript SDK](https://github.com/temporalio/samples-typescript/tree/main/schedules#schedules) version [1.5.0](https://github.com/temporalio/sdk-typescript/blob/main/CHANGELOG.md#150---2022-12-07)
-- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.Schedules.html) version [0.1.0](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-alpha4)
+- Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) since [v1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
+- Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+- Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow) since [v1.1.0](https://github.com/temporalio/sdk-python/releases/tag/1.1.0)
+- Available in [TypeScript SDK](https://github.com/temporalio/samples-typescript/tree/main/schedules#schedules) since [v1.5.0](https://github.com/temporalio/sdk-typescript/blob/main/CHANGELOG.md#150---2022-12-07)
+- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.Schedules.html) since [v0.1.0](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-alpha4)
+- Available in PHP SDK since [v2.8.0](https://github.com/temporalio/sdk-php/releases/tag/v2.8.0)
 - Available in [gRPC API](https://api-docs.temporal.io/#temporal.api.workflowservice.v1.CreateScheduleRequest)
 
 :::
@@ -1266,9 +1267,13 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 ## What is a Start Delay? {#delay-workflow-execution}
 
 :::tip Support, stability, and dependency info
-- Introduced in the [Temporal Go SDK 1.25.0](https://github.com/temporalio/sdk-go/releases/tag/v1.25.0)
-- Introduced in the [Temporal Java SDK 1.25.0](https://github.com/temporalio/sdk-java/releases/tag/v1.22.1)
-- Introduced in the [Temporal Python SDK 1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
+- In [Public Preview](/temporal/release-stages#public-preview)
+- Available in the [Go SDK](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions.StartDelay) since [v1.25.0](https://github.com/temporalio/sdk-go/releases/tag/v1.25.0)
+- Available in the [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setStartDelay(java.time.Duration)) since [v1.25.0](https://github.com/temporalio/sdk-java/releases/tag/v1.22.1)
+- Available in the [Python SDK](https://python.temporal.io/temporalio.client.Client.html#start_workflow) since [v1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
+- Available in the [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowOptions.html#Temporalio_Client_WorkflowOptions_StartDelay) since [v1.0.0](https://github.com/temporalio/sdk-dotnet/releases/tag/1.0.0)
+- Available in the [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#startdelay) since [v1.9.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0)
+- Available in the [PHP SDK](https://github.com/temporalio/sdk-php/blob/d230c855559c166579049df42235f22e2fe9f815/src/Client/WorkflowOptions.php#L313) since [v2.7.0](https://github.com/temporalio/sdk-php/releases/tag/v2.7.0)
 
 :::
 

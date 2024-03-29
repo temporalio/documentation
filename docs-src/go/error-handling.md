@@ -66,7 +66,7 @@ if err != nil {
 
 	var panicErr *PanicError
 	if errors.As(err, &panicErr) {
-		// handle panic, message and stack trace are available by panicErr.Error() and panicErr.StackTrace()
+		// handle panic, message and call stack are available by panicErr.Error() and panicErr.StackTrace()
 	}
 }
 ```

@@ -7,13 +7,14 @@ tags:
   - explanation
   - versioning
 ssdi:
+  - In [Pre-release](/temporal/release-stages#pre-release)
   - Introduced in Temporal Server version [1.21.0](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
   - Available in CLI version [0.10.0](https://github.com/temporalio/cli/releases/tag/v0.10.0)
-  - Available in [Go SDK](/dev-guide/go/versioning#worker-versioning) version [1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
-  - Available in [Java SDK](/dev-guide/java/versioning#worker-versioning) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
-  - Available in [TypeScript SDK](/dev-guide/typescript/versioning#worker-versioning) version [1.8.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.8.0)
-  - Available in [Python SDK](https://python.temporal.io/temporalio.worker.Worker.html) version [1.3.0](https://github.com/temporalio/sdk-python/releases/tag/1.3.0)
-  - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Worker.TemporalWorkerOptions.html#Temporalio_Worker_TemporalWorkerOptions_UseWorkerVersioning) version [0.1.0-beta1](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta1)
+  - Available in [Go SDK](/dev-guide/go/versioning#worker-versioning) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
+  - Available in [Java SDK](/dev-guide/java/versioning#worker-versioning) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+  - Available in [TypeScript SDK](/dev-guide/typescript/versioning#worker-versioning) since [v1.8.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.8.0)
+  - Available in [Python SDK](https://python.temporal.io/temporalio.worker.Worker.html) since [v1.3.0](https://github.com/temporalio/sdk-python/releases/tag/1.3.0)
+  - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Worker.TemporalWorkerOptions.html#Temporalio_Worker_TemporalWorkerOptions_UseWorkerVersioning) since [v0.1.0-beta1](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta1)
   - Not yet available in Temporal Cloud
 ---
 
