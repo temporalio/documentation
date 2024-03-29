@@ -6,9 +6,9 @@ Assembly Workflow Id: docs-full-assembly
 
 147 guide configurations found.
 
-1778 information nodes found.
+1779 information nodes found.
 
-1535 information nodes are attached to guides.
+1536 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -871,6 +871,8 @@ cloud/users-update-permissions -> #update-permissions
 cloud/users-delete -> #delete-users
 
 cloud/saml-intro -> /cloud/saml
+
+concepts/what-is-a-cloud-grpc-endpoint -> /cloud/namespaces#temporal-cloud-grpc-endpoint
 
 dev-guide/temporal-sdk -> /dev-guide/sdks
 
