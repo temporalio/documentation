@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday March 29 2024 09:27:49 AM -0600
+Last assembled: Tuesday April 02 2024 16:37:40 PM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
 147 guide configurations found.
 
-1779 information nodes found.
+1780 information nodes found.
 
-1536 information nodes are attached to guides.
+1537 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -733,6 +733,8 @@ python/continue-as-new -> /dev-guide/python/features#continue-as-new
 typescript/continue-as-new -> /dev-guide/typescript/features#continue-as-new
 
 go/how-to-set-a-workflow-id-in-go -> /dev-guide/go/foundations#workflow-id
+
+concepts/what-is-a-workflow-id-conflict-policy -> #workflow-id-conflict-policy
 
 go/workflow-timeouts -> /dev-guide/go/features#workflow-timeouts
 

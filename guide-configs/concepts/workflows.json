@@ -60,6 +60,10 @@
       "id": "concepts/what-is-a-workflow-id-reuse-policy"
     },
     {
+      "type": "h4",
+      "id": "concepts/what-is-a-workflow-id-conflict-policy"
+    },
+    {
       "type": "h3",
       "id": "concepts/what-is-a-workflow-execution-timeout"
     },
