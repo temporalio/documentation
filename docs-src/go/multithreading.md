@@ -20,7 +20,7 @@ Although Temporal Workflows run async in Go, there is a control in place that en
 
 Temporal's Go SDKs contains a deterministic runner to control the thread execution. This deterministic runner will decide which Workflow thread to run in the right order, and one at a time. Each task will execute in a loop until all threads are blocked.
 
-`workflow.Go()` creates a new thread and add it to this runner.
+`workflow.Go()` creates a new thread and adds it to this runner.
 
 This significantly minimizes the likelihood of race conditions, and eliminates the need to use a mutex.
 
