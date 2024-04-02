@@ -10,6 +10,10 @@ tags:
 
 This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
 
+## Multithreading
+
+Describes how the Go SDK safely implements multithreading.
+
 ## Project-setup
 
 The project setup section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go—that is, all the relevant steps to start a Workflow Execution that executes an Activity.

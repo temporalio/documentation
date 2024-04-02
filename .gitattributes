@@ -139,8 +139,10 @@ websites/docs.temporal.io/docs/dev-guide/golang/debugging.mdx linguist-generated
 websites/docs.temporal.io/docs/dev-guide/golang/durable-execution.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/features.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/foundations.mdx linguist-generated=true
+websites/docs.temporal.io/docs/dev-guide/golang/how-it-works/how-it-works.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/introduction.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/index.mdx linguist-generated=true
+websites/docs.temporal.io/docs/dev-guide/golang/how-it-works/multithreading.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/observability.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/project-setup.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/golang/testing.mdx linguist-generated=true
