@@ -1,0 +1,16 @@
+{
+  "file_name": "blob-size-limit-error.mdx",
+  "id": "blob-size-limit-error",
+  "file_dir": "troubleshooting",
+  "title": "Troubleshoot blob size limit error",
+  "sidebar_label": "Blob size limit error",
+  "description": "Blob size limit error occur as a result of sending a large payload to Temporal.",
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "troubleshooting/blob-size-limit-error"
+    }
+  ]
+}
