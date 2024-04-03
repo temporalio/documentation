@@ -1,7 +1,5 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday March 28 2024 11:39:07 AM -0700
-
 Assembly Workflow Id: docs-full-assembly-rachfop
 
 147 guide configurations found.
@@ -871,6 +869,8 @@ cloud/users-update-permissions -> #update-permissions
 cloud/users-delete -> #delete-users
 
 cloud/saml-intro -> /cloud/saml
+
+concepts/what-is-a-cloud-grpc-endpoint -> /cloud/namespaces#temporal-cloud-grpc-endpoint
 
 dev-guide/temporal-sdk -> /dev-guide/sdks
 
