@@ -8,7 +8,107 @@ tags:
   - explanation
 ---
 
-A Workflow Definition is the code that defines the constraints of a Workflow Execution.
+A Workflow Definition is the code that defines the Workflow and written in your programming language of choice using a corresponding Temporal SDK.
+A Workflow Definition defines the constraints of a Workflow Execution.
+
+Below are different ways to develop a basic Workflow Definition.
+
+<Tabs groupId="basic-workflow-definition" queryString>
+  <TabItem value="go" label="Go">
+
+### Workflow Definition in Go
+
+```go
+  package yourapp
+
+import (
+	"time"
+
+	"go.temporal.io/sdk/workflow"
+)
+// ...
+
+// YourSimpleWorkflowDefintiion is the most basic Workflow Defintion.
+func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
+	// ...
+	return nil
+}
+```
+
+</TabItem>
+  <TabItem value="java" label="Java">
+
+### Workflow Definition in Java
+
+```java
+// Workflow interface
+@WorkflowInterface
+public interface YourWorkflow {
+
+    @WorkflowMethod
+    String yourWFMethod(Arguments args);
+}
+```
+
+</TabItem>
+  <TabItem value="php" label="PHP">
+
+### Workflow Definition in PHP
+
+```PHP
+use Temporal\Workflow\YourWorkflowInterface;
+use Temporal\Workflow\WorkflowMethod;
+
+#[WorkflowInterface]
+interface FileProcessingWorkflow
+{
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+
+}
+```
+
+</TabItem>
+  <TabItem value="python" label="Python">
+
+### Workflow Definition in Python
+
+```Python
+from temporalio import workflow
+# ...
+# ...
+@workflow.defn(name="YourWorkflow")
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity,
+            YourParams("Hello", name),
+            start_to_close_timeout=timedelta(seconds=10),
+        )
+```
+
+</TabItem>
+  <TabItem value="typescript" label="Typescript">
+
+### Workflow Definition in Typescript
+
+```Typescript
+type ExampleArgs = {
+  name: string;
+};
+
+export async function example(
+  args: ExampleArgs,
+): Promise<{ greeting: string }> {
+  const greeting = await greet(args.name);
+  return { greeting };
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 - [How to develop a Workflow Definition using the Go SDK](/go/developing-workflows)
 - [How to develop a Workflow Definition using the Java SDK](/java/how-to-develop-a-workflow-definition-in-java)

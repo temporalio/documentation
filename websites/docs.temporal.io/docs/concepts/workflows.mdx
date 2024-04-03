@@ -36,12 +36,115 @@ tags:
 
 This guide provides a comprehensive overview of Temporal Workflows.
 
-In day-to-day conversations, the term _Workflow_ frequently denotes either a [Workflow Type](#workflow-type), a [Workflow Definition](#workflow-definition), or a [Workflow Execution](#workflow-execution).
+A Temporal Workflow defines the overall flow of the application. Conceptually, a Workflow is a sequence of steps written in a general-purpose programming language.
+With Temporal, those steps are defined by writing code, known as a Workflow Definition, and are carried out by running that code, which results in a Workflow Execution.
+
+In day-to-day conversations, the term _Workflow_ might refer to [Workflow Type](#workflow-type), a [Workflow Definition](#workflow-definition), or a [Workflow Execution](#workflow-execution).
 Temporal documentation aims to be explicit and differentiate between them.
 
 ## What is a Workflow Definition? {#workflow-definition}
 
-A Workflow Definition is the code that defines the constraints of a Workflow Execution.
+A Workflow Definition is the code that defines the Workflow and written in your programming language of choice using a corresponding Temporal SDK.
+A Workflow Definition defines the constraints of a Workflow Execution.
+
+Below are different ways to develop a basic Workflow Definition.
+
+<Tabs groupId="basic-workflow-definition" queryString>
+  <TabItem value="go" label="Go">
+
+### Workflow Definition in Go
+
+```go
+  package yourapp
+
+import (
+	"time"
+
+	"go.temporal.io/sdk/workflow"
+)
+// ...
+
+// YourSimpleWorkflowDefintiion is the most basic Workflow Defintion.
+func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
+	// ...
+	return nil
+}
+```
+
+</TabItem>
+  <TabItem value="java" label="Java">
+
+### Workflow Definition in Java
+
+```java
+// Workflow interface
+@WorkflowInterface
+public interface YourWorkflow {
+
+    @WorkflowMethod
+    String yourWFMethod(Arguments args);
+}
+```
+
+</TabItem>
+  <TabItem value="php" label="PHP">
+
+### Workflow Definition in PHP
+
+```PHP
+use Temporal\Workflow\YourWorkflowInterface;
+use Temporal\Workflow\WorkflowMethod;
+
+#[WorkflowInterface]
+interface FileProcessingWorkflow
+{
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+
+}
+```
+
+</TabItem>
+  <TabItem value="python" label="Python">
+
+### Workflow Definition in Python
+
+```Python
+from temporalio import workflow
+# ...
+# ...
+@workflow.defn(name="YourWorkflow")
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity,
+            YourParams("Hello", name),
+            start_to_close_timeout=timedelta(seconds=10),
+        )
+```
+
+</TabItem>
+  <TabItem value="typescript" label="Typescript">
+
+### Workflow Definition in Typescript
+
+```Typescript
+type ExampleArgs = {
+  name: string;
+};
+
+export async function example(
+  args: ExampleArgs,
+): Promise<{ greeting: string }> {
+  const greeting = await greet(args.name);
+  return { greeting };
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 - [How to develop a Workflow Definition using the Go SDK](/dev-guide/go/foundations#develop-workflows)
 - [How to develop a Workflow Definition using the Java SDK](/dev-guide/java/foundations#develop-workflows)
@@ -183,6 +286,7 @@ A Workflow Type is a name that maps to a Workflow Definition.
 
 ## What is a Workflow Execution? {#workflow-execution}
 
+While the Workflow Definition is the code that defines the Workflow and the Workflow Execution is created by executing that code.
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
 It is the main unit of execution of a [Temporal Application](/temporal#temporal-application).
 
