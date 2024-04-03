@@ -67,6 +67,37 @@ Therefore, a single Worker can handle millions of open Workflow Executions, assu
 
 - [How to tune Workers](/dev-guide/worker-performance)
 
+## What is a Worker Identity? {#worker-identity}
+
+Workers have an associated identifier that helps identify the specific Worker instance.
+By default, Temporal SDKs set a Worker Identity to `${process.pid}@${os.hostname()}`, which combines the Worker's process ID (`process.pid`) and the hostname of the machine running the Worker (`os.hostname()`).
+
+The Worker Identity is visible in various contexts, such as Workflow History and the list of pollers on a Task Queue.
+
+You can use the Worker Identity to aid in debugging operational issues.
+By providing a user assigned identifier, you can trace issues back to specific Worker instances.
+
+**What are some limitations of the default identity?**
+
+While the default identity format may seem sensible, it often proves to be of limited usefulness in cloud environments.
+Some common issues include:
+
+- **Docker containers**: When running Workers inside Docker containers, the process ID is always `1`, as each container typically runs a single process. This makes the process identifier meaningless for identification purposes.
+- **Random hostnames**: In some cloud environments, such as Amazon ECS (Elastic Container Service), the hostname is a randomly generated string that does not provide any meaningful information about the Worker's execution context.
+- **Ephemeral IP addresses**: In certain cases, the hostname might be set to an ephemeral IP address, which can change over time and does not uniquely identify a Worker instance.
+
+**What are some recommended approaches?**
+
+It is recommended that you ensure that the Worker Identity can be linked back to the corresponding machine, process, execution context, or log stream.
+In some execution environment, this might require that you explicitly specify the Worker Identity.
+
+Here are some approaches:
+
+- **Use environment-specific identifiers**: Choose an identifier that is specific to your execution environment. For example, when running Workers on Amazon ECS, you can set the Worker Identity to the ECS Task ID, which uniquely identifies the task running the Worker.
+- **Include relevant context**: Incorporate information that helps establish the context of the Worker, such as the deployment environment (`staging` or `production`), region, or any other relevant details.
+- **Ensure uniqueness**: Make sure that the Worker Identity is unique within your system to avoid ambiguity when debugging issues.
+- **Keep it concise**: While including relevant information is important, try to keep the Worker Identity concise and easily readable to facilitate quick identification and troubleshooting.
+
 ## What is a Worker Process? {#worker-process}
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Component diagram of a Worker Process and the Temporal Server</p></div><div class="tdiiw" height="422"><img class="img_ev3q" src="/diagrams/worker-and-server-component.svg" alt="Component diagram of a Worker Process and the Temporal Server" /></div></div>
@@ -343,13 +374,14 @@ It also includes features like concurrent session limitations and Worker failure
 ## What is Worker Versioning? {#worker-versioning}
 
 :::tip Support, stability, and dependency info
+- In [Pre-release](/temporal/release-stages#pre-release)
 - Introduced in Temporal Server version [1.21.0](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
 - Available in CLI version [0.10.0](https://github.com/temporalio/cli/releases/tag/v0.10.0)
-- Available in [Go SDK](/dev-guide/go/versioning#worker-versioning) version [1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
-- Available in [Java SDK](/dev-guide/java/versioning#worker-versioning) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
-- Available in [TypeScript SDK](/dev-guide/typescript/versioning#worker-versioning) version [1.8.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.8.0)
-- Available in [Python SDK](https://python.temporal.io/temporalio.worker.Worker.html) version [1.3.0](https://github.com/temporalio/sdk-python/releases/tag/1.3.0)
-- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Worker.TemporalWorkerOptions.html#Temporalio_Worker_TemporalWorkerOptions_UseWorkerVersioning) version [0.1.0-beta1](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta1)
+- Available in [Go SDK](/dev-guide/go/versioning#worker-versioning) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
+- Available in [Java SDK](/dev-guide/java/versioning#worker-versioning) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+- Available in [TypeScript SDK](/dev-guide/typescript/versioning#worker-versioning) since [v1.8.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.8.0)
+- Available in [Python SDK](https://python.temporal.io/temporalio.worker.Worker.html) since [v1.3.0](https://github.com/temporalio/sdk-python/releases/tag/1.3.0)
+- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Worker.TemporalWorkerOptions.html#Temporalio_Worker_TemporalWorkerOptions_UseWorkerVersioning) since [v0.1.0-beta1](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta1)
 - Not yet available in Temporal Cloud
 
 :::

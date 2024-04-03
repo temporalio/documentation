@@ -8,7 +8,7 @@ tags:
   - how-to
 ---
 
-To mark an Activity as completing asynchoronus, do the following inside the Activity.
+To mark an Activity as completing asynchronously, do the following inside the Activity.
 
 ```python
 # Capture token for later completion
