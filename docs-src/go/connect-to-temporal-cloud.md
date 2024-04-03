@@ -11,7 +11,10 @@ tags:
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
-- An address that includes your [Cloud Namespace Name](/concepts/what-is-a-namespace) and a port number: `<Namespace>.<ID>.tmprl.cloud:<port>`.
+- The [Temporal Cloud Namespace Id](/concepts/what-is-a-cloud-namespace-id).
+- The [Namespace's gRPC endpoint](/concepts/what-is-a-cloud-grpc-endpoint).
+  An endpoint listing is available at the [Temporal Cloud Website](https://cloud.temporal.io/namespaces) on each Namespace detail page.
+  The endpoint contains the Namespace Id and port.
 - mTLS CA certificate.
 - mTLS private key.
 
