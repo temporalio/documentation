@@ -12,15 +12,15 @@ tags:
 [`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment) exposes a [`.cancel()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#cancel) method that cancels the Activity Context.
 
 ```ts
-import { CancelledFailure, Context } from '@temporalio/activity';
+import { CancelledFailure, heatbeat, sleep } from '@temporalio/activity';
 import { MockActivityEnvironment } from '@temporalio/testing';
 import assert from 'assert';
 
 async function activityFoo(): Promise<void> {
-  Context.current().heartbeat(6);
-  // .sleep() is Cancellation-aware, which means that on Cancellation,
+  heartbeat(6);
+  // @temporalio/activity's sleep() is Cancellation-aware, which means that on Cancellation,
   // CancelledFailure will be thrown from it.
-  await Context.current().sleep(100);
+  await sleep(100);
 }
 
 const env = new MockActivityEnvironment();

@@ -75,7 +75,6 @@ const worker = await Worker.create({
   taskQueue,
   workflowBundle: {
     codePath: './path-to-bundle.js',
-    sourceMapPath: './path-to-bundle.js.map',
   },
 });
 
@@ -169,10 +168,10 @@ There are two main places where the name of the Task Queue is supplied by the de
     </summary>
 
 ```ts
-import { Connection, WorkflowClient } from '@temporalio/client';
+import { Client, Connection } from '@temporalio/client';
 const connection = await Connection.connect();
-const client = new WorkflowClient({ connection });
-const result = await client.execute(yourWorkflow, {
+const client = new Client({ connection });
+const result = await client.workflow.execute(yourWorkflow, {
   // required
   taskQueue: 'testhttp',
   workflowId: 'business-meaningful-id',

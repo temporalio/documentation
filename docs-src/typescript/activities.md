@@ -81,7 +81,7 @@ This is necessary due to the decoupled nature of Workflows and Activities, but a
 
 ### Activity Options
 
-When you call `proxyActivities` in a Workflow function, there are [a range of ActivityOptions](https://typescript.temporal.io/api/interfaces/common.ActivityOptions) you can set:
+When you call `proxyActivities` in a Workflow function, there are [a range of `ActivityOptions`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions) you can set:
 
 ```ts
 // Sample of typical options you can set while creating a proxy for the `greet` Activity
@@ -136,7 +136,7 @@ const { longRunningActivity } = proxyActivities<typeof activities>({
 
 ### Activity Retry Policy
 
-You can set a `retry` policy with [RetryPolicy](https://typescript.temporal.io/api/interfaces/client.RetryPolicy/) that define how activity is retried in case of failure.
+You can set a `retry` policy with [`RetryPolicy`](https://typescript.temporal.io/api/interfaces/common.RetryPolicy/) that define how activity is retried in case of failure.
 
 ```ts
 // Example 1 - default
@@ -173,7 +173,7 @@ const { greet } = proxyActivities<typeof activities>({
 });
 ```
 
-For a proper guide to each Retry Option, see the [RetryPolicy API Reference](https://typescript.temporal.io/api/interfaces/client.RetryPolicy/).
+For a proper guide to each Retry Option, see the [`RetryPolicy` API Reference](https://typescript.temporal.io/api/interfaces/common.RetryPolicy/).
 
 As you customize your Workflow errors to be more descriptive, advanced users will want to become familiar with [Temporal's Failure classes](/typescript/handling-failure).
 
@@ -344,15 +344,23 @@ ApplicationFailure: Activity function actC is not registered on this Worker, ava
 
 ## Activity Context utilities
 
-Temporal SDK also exports a [`Context`](https://typescript.temporal.io/api/classes/activity.Context/) class with useful features for activities: `import { Context } from '@temporalio/activity'`
+The `@temporalio/activity` package exports various useful features for activities:
 
-| Activity Context properties            | Description                                                                                                                                                                                    |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Context.current().cancellationSignal` | An `AbortSignal` which can be used to cancel requests on Activity cancellation. Typically used by the `fetch` and `child_process` libraries but is supported by a few other libraries as well. |
-| `Context.current().cancelled`          | Await this promise in an Activity to get notified of cancellation. This promise will never be resolved; it will only be rejected with a `CancelledFailure`.                                    |
-| `Context.current().heartbeat()`        | Send a Heartbeat from an Activity.                                                                                                                                                             |
-| `Context.current().info`               | Holds [information](https://typescript.temporal.io/api/interfaces/activity.Info) about the current executing Activity                                                                          |
-| `Context.current().sleep()`            | Helper function for sleeping in an Activity - resolves when deadline is reached or rejects when the Context is cancelled. Prefer this to `setTimeout`.                                         |
+| Function or object                                                                                  | Description                                                                                                                                                                                           |
+| --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`activityInfo()`](https://typescript.temporal.io/api/namespaces/activity#activityinfo)             | Return [information](https://typescript.temporal.io/api/interfaces/activity.Info) about the current executing Activity.                                                                               |
+| [`log`](https://typescript.temporal.io/api/namespaces/activity#log)                                 | A Logger object that automatically injects contextual information about this activity on emitted log messages.                                                                                        |
+| [`sleep()`](https://typescript.temporal.io/api/namespaces/activity#sleep)                           | Helper function for sleeping in an Activity - resolves when deadline is reached or rejects when the Context is cancelled. Prefer this to `setTimeout`.                                                |
+| [`cancelled()`](https://typescript.temporal.io/api/namespaces/activity#cancelled)                   | Return a promise that can be awaited in an Activity to get notified of cancellation. This promise will never be resolved; it will only be rejected with a `CancelledFailure`.                         |
+| [`cancellationSignal()`](https://typescript.temporal.io/api/namespaces/activity#cancellationsignal) | Return an `AbortSignal` which can be used to cancel requests on Activity cancellation. Typically used by the `fetch` and `child_process` libraries but is supported by a few other libraries as well. |
+| [`heartbeat()`](https://typescript.temporal.io/api/namespaces/activity#heartbeat)                   | Send a Heartbeat from an Activity.                                                                                                                                                                    |
+
+:::note
+
+All of the above are equivalently accessible through the "Activity Context" object, which can be obtained by calling the [`Context.current()`](https://typescript.temporal.io/api/classes/activity.Context#current) function.
+For styslistic reason, the former syntax is used throughough this documentation.
+
+::
 
 ### Heartbeating
 
@@ -385,8 +393,8 @@ Not suitable for Heartbeating:
 // activity implementation
 export async function example(sleepIntervalMs = 1000): Promise<void> {
   for (let progress = 1; progress <= 1000; ++progress) {
-    await Context.current().sleep(sleepIntervalMs);
-    Context.current().heartbeat();
+    await sleep(sleepIntervalMs);
+    heartbeat();
   }
 }
 
@@ -405,10 +413,10 @@ Extending the example above:
 
 ```ts
 export async function example(sleepIntervalMs = 1000): Promise<void> {
-  const startingPoint = Context.current().info.heartbeatDetails || 1; // allow for resuming from heartbeat
+  const startingPoint = activityInfo().heartbeatDetails || 1; // allow for resuming from heartbeat
   for (let progress = startingPoint; progress <= 100; ++progress) {
-    await Context.current().sleep(sleepIntervalMs);
-    Context.current().heartbeat(progress);
+    await sleep(sleepIntervalMs);
+    heartbeat(progress);
   }
 }
 ```
@@ -424,28 +432,33 @@ Activity Cancellation is an optional capability that lets you do graceful cleanu
 
 There are 3 ways to handle Activity cancellation:
 
-1. Await on [`Context.current().cancelled`](https://typescript.temporal.io/api/classes/activity.Context#cancelled)
-2. Catch a [`CancelledFailure`](/typescript/handling-failure/) while awaiting "cancellation-aware" APIs like `Context.current().sleep`. Errors can be validated with the `isCancellation(err)` utility function (see example below)
-3. Pass the context's abort Signal at [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/classes/activity.Context#cancelled) to a library that supports it like `fetch`
+1. Await on the promise returned by [`cancelled()`](https://typescript.temporal.io/api/namespaces/activity#cancelled);
+2. Catch a [`CancelledFailure`](/typescript/handling-failure/) while awaiting "cancellation-aware" APIs like `sleep()`. Errors can be validated with the [`isCancellation(err)`](https://typescript.temporal.io/api/namespaces/workflow#iscancellation) utility function (see example below);
+3. Pass the context's abort Signal returned by [`cancellationSignal()`](https://typescript.temporal.io/api/namespaces/activity#cancellationsignal) to a library that supports it, like `fetch`.
 
-[`heartbeat()`](https://typescript.temporal.io/api/classes/activity.Context/#heartbeat) in the TypeScript SDK is a background operation and does not propagate errors to the caller, such as when the scheduling Workflow has already completed or the Activity has been closed by the Server (due to timeout for instance). These errors are translated into cancellation and can be handled using the methods above.
+[`heartbeat()`](https://typescript.temporal.io/api/namespaces/activity#heartbeat) in the TypeScript SDK is a background operation and does not propagate errors to the caller, such as when the scheduling Workflow has already completed or the Activity has been closed by the Server (due to timeout for instance). These errors are translated into cancellation and can be handled using the methods above.
 
 #### Example: Activity that fakes progress and can be cancelled
 
-The [`sleep`](https://typescript.temporal.io/api/classes/activity.Context#sleep) method exposed in `Context.current()` is comparable to a standard `sleep` function: `new Promise(resolve => setTimeout(resolve, sleepMS));` except that it also rejects if the Activity is cancelled.
+The [`sleep()`](https://typescript.temporal.io/api/namespaces/activity#sleep) function exported by the `@temporalio/activity` package is comparable to a standard `sleep` function: `new Promise(resolve => setTimeout(resolve, sleepMS));` except that it also rejects if the Activity is cancelled.
 
 <!--SNIPSTART typescript-activity-fake-progress-->
 
 [activities-cancellation-heartbeating/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-cancellation-heartbeating/src/activities.ts)
 
 ```ts
-import { CancelledFailure, Context } from '@temporalio/activity';
+import {
+  activityInfo,
+  CancelledFailure,
+  heartbeat,
+  log,
+  sleep,
+} from '@temporalio/activity';
 
 export async function fakeProgress(sleepIntervalMs = 1000): Promise<void> {
-  const { log, info, sleep, heartbeat } = Context.current();
   try {
     // allow for resuming from heartbeat
-    const startingPoint = info.heartbeatDetails || 1;
+    const startingPoint = activityInfo().heartbeatDetails || 1;
     log.info('Starting activity at progress', { startingPoint });
     for (let progress = startingPoint; progress <= 100; ++progress) {
       // simple utility to sleep in activity for given interval or throw if Activity is cancelled
@@ -468,20 +481,20 @@ export async function fakeProgress(sleepIntervalMs = 1000): Promise<void> {
 
 #### Example: Activity that makes a cancellable HTTP request with cancellationSignal
 
-The [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/classes/activity.Context#cancellationsignal) returns an `AbortSignal` that is typically used by the `node_fetch` and `child_process` libraries but is supported by a few other libraries as well as the Web-standard [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal).
+The [`cancellationSignal()`](https://typescript.temporal.io/api/namespaces/activity#cancellationsignal) function returns an `AbortSignal` that is typically used by the `node_fetch` and `child_process` libraries but is supported by a few other libraries as well as the Web-standard [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal).
 
 <!--SNIPSTART typescript-activity-cancellable-fetch-->
 
 [activities-examples/src/activities/cancellable-fetch.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-examples/src/activities/cancellable-fetch.ts)
 
 ```ts
-import { Context } from '@temporalio/activity';
+import { cancellationSignal, heartbeat } from '@temporalio/activity';
 import fetch from 'node-fetch';
 import type { AbortSignal as FetchAbortSignal } from 'node-fetch/externals';
 
 export async function cancellableFetch(url: string): Promise<Uint8Array> {
   const response = await fetch(url, {
-    signal: Context.current().cancellationSignal as FetchAbortSignal,
+    signal: cancellationSignal() as FetchAbortSignal,
   });
   const contentLengthHeader = response.headers.get('Content-Length');
   if (contentLengthHeader === null) {
@@ -497,7 +510,7 @@ export async function cancellableFetch(url: string): Promise<Uint8Array> {
     }
     bytesRead += chunk.length;
     chunks.push(chunk);
-    Context.current().heartbeat(bytesRead / contentLength);
+    heartbeat(bytesRead / contentLength);
   }
   return Buffer.concat(chunks);
 }
@@ -507,8 +520,7 @@ export async function cancellableFetch(url: string): Promise<Uint8Array> {
 
 ## Advanced Features
 
-These are Activity features that most users will not need, but are available for advanced users.
-Please get in touch with us if you find the need for them.
+These are Activity features that most users will not need, but are available for advanced use cases.
 
 ### Activity Interceptors
 
@@ -529,7 +541,7 @@ Async Activity completion is done through a two-step process:
 
 You can [read the tests](https://github.com/temporalio/sdk-typescript/blob/7d47f501cb56cced27118b5f0abb320cc0ba03ef/packages/test/src/test-async-completion.ts#L40-L98) for more information.
 
-### Local Activities (experimental)
+### Local Activities
 
 Temporal has an optimization feature called Local Activities.
 

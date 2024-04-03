@@ -21,7 +21,7 @@ const connection = await Connection.connect({
     },
   },
 });
-const client = new WorkflowClient({ connection, namespace: 'foo.bar' });
+const client = new Client({ connection, namespace: 'foo.bar' });
 ```
 
 [The Hello World mTLS sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.

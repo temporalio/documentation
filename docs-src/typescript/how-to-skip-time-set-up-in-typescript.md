@@ -33,7 +33,7 @@ afterAll(async () => {
 });
 ```
 
-`TestWorkflowEnvironment` has [`client.workflow`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment/#workflowclient) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection) for creating Workers:
+`TestWorkflowEnvironment` has [`client`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment/#client) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection) for creating Workers:
 
 ```typescript
 import { Worker } from '@temporalio/worker';

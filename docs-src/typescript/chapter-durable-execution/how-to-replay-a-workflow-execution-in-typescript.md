@@ -43,7 +43,7 @@ await Worker.runReplayHistory(
 ```
 
 To gain confidence that changes to a Workflow are safe to deploy, we recommend that you obtain Event Histories from the relevant Task Queue and replay them in bulk.
-You can do so by combining the [workflow.list](https://typescript.temporal.io/api/classes/client.WorkflowClient#list) and [worker.runReplayHistories](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistories) APIs.
+You can do so by combining the [client.workflow.list()](https://typescript.temporal.io/api/classes/client.WorkflowClient#list) and [worker.runReplayHistories()](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistories) APIs.
 
 In the following example (which, as of server 1.18, requires [Advanced Visibility](/concepts/what-is-advanced-visibility) to be enabled), Event Histories are downloaded from the server and then replayed by passing in a client and a set of Workflows Executions.
 The [results](https://typescript.temporal.io/api/interfaces/worker.ReplayResult) returned by the async iterator contain information about the Workflow Execution and whether an error occurred during replay.

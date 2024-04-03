@@ -20,7 +20,7 @@ When the Data Converter receives a value for conversion, it passes through each 
 
 To send values that are not [JSON-serializable](https://en.wikipedia.org/wiki/JSON#Data_types) like a `BigInt` or `Date`, provide a custom [Data Converter](https://typescript.temporal.io/api/interfaces/worker.DataConverter/) to the Client and Worker:
 
-- [new WorkflowClient(\{ ..., dataConverter })](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions#dataconverter)
+- [new Client(\{ ..., dataConverter })](https://typescript.temporal.io/api/interfaces/client.ClientOptions#dataconverter)
 - [Worker.create(\{ ..., dataConverter })](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#dataconverter)
 
 A Data Converter has two parts:

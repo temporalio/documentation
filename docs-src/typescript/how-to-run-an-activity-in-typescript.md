@@ -15,14 +15,14 @@ The constructor accepts an optional partial Activity [`Info`](https://typescript
 Then use [`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) to run a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.Context).
 
 ```ts
-import { Context } from '@temporalio/activity';
+import { activityInfo } from '@temporalio/activity';
 import { MockActivityEnvironment } from '@temporalio/testing';
 import assert from 'assert';
 
 // A function that takes two numbers and returns a promise that resolves to the sum of the two numbers
 // and the current attempt.
 async function activityFoo(a: number, b: number): Promise<number> {
-  return a + b + Context.current().info.attempt;
+  return a + b + activityInfo().attempt;
 }
 
 // Create a MockActivityEnvironment with attempt set to 2. Run the activityFoo

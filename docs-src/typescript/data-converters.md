@@ -4,8 +4,8 @@ title: Data Converters
 sidebar_label: Data Converters
 description: Learn and customize how data is serialized in the TypeScript SDK.
 tags:
-    - typescript
-    - data converters
+  - typescript
+  - data converters
 ---
 
 > Background reading: [Data Converters in Temporal](/concepts/what-is-a-data-converter/)
@@ -33,7 +33,7 @@ In TypeScript, the default Data Converter supports:
 
 To send values that are not [JSON-serializable](https://en.wikipedia.org/wiki/JSON#Data_types) like `BigInt`s or `Date`s, provide a custom Data Converter to the Client and Worker:
 
-- [`new WorkflowClient(\{ ..., dataConverter })`](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions#dataconverter)
+- [`new Client(\{ ..., dataConverter })`](https://typescript.temporal.io/api/interfaces/client.ClientOptions#dataconverter)
 - [`Worker.create(\{ ..., dataConverter })`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#dataconverter)
 
 Data Converters have [two parts](/concepts/what-is-a-data-converter#payload-codec):

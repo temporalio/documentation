@@ -66,7 +66,7 @@ const decodedWorkflows = executions.map(
       memo: memo && Object.keys(memo!).length === 0 ? null : memo, // convert empty object to null
       searchAttributes,
       stateTransitionCount: stateTransitionCount!.toInt(),
-    } as unknown as Workflow;
+    } as unknown as WorkflowInfo;
   },
 );
 ```

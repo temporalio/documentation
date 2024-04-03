@@ -9,28 +9,28 @@ tags:
   - typescript
 ---
 
-Use a new `WorkflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to create a new Client.
+Use `new Client()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to create a new Client.
 
 ```typescript
-import { Connection, WorkflowClient } from '@temporalio/client';
+import { Client, Connection } from '@temporalio/client';
 const connection = await Connection.connect(); // to configure for production
-const client = new WorkflowClient({ connection });
+const client = new Client({ connection });
 ```
 
-Declaring the `WorkflowClient()` creates a new connection to the Temporal service.
+Declaring the `new Client()` creates a new connection to the Temporal service.
 
-If you omit the connection and just call the `new WorkflowClient()`, you create a default connection that works locally.
+If you omit the connection and just call the `new Client()`, you create a default connection that works locally.
 However, always configure your connection and Namespace when [deploying to production](/typescript/connect-to-temporal-cloud).
 
 The following example, creates a Client, connects to an account, and declares your Namespace.
 
 ```typescript
-import { Connection, WorkflowClient } from '@temporalio/client';
+import { Client, Connection } from '@temporalio/client';
 
 const connection = await Connection.connect({
   address: '<Namespace_ID>.tmprl.cloud',
 });
-const client = new WorkflowClient({
+const client = new Client({
   connection,
   namespace: 'your.namespace',
 });

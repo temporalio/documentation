@@ -1013,7 +1013,7 @@ See the [Customize Workflow Type](#customize-workflow-type) section to see how t
 A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
 The Temporal Cluster then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
 
-When you have a Workflow Client, you can schedule the start of a Workflow with `client.start()`, specifying `workflowId`, `taskQueue`, and `args` and returning a Workflow handle immediately after the Server acknowledges the receipt.
+When you have a Client, you can schedule the start of a Workflow with `client.start()`, specifying `workflowId`, `taskQueue`, and `args` and returning a Workflow handle immediately after the Server acknowledges the receipt.
 
 ```typescript
 const handle = await client.start(example, {
@@ -1027,7 +1027,7 @@ const result = await handle.result();
 
 Calling `client.start()` and `client.execute()` send a command to Temporal Server to schedule a new Workflow Execution on the specified Task Queue. It does not actually start until a Worker that has a matching Workflow Type, polling that Task Queue, picks it up.
 
-You can test this by executing a Workflow Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
+You can test this by executing a Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
 
 Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/workflows#deterministic-constraints).
 

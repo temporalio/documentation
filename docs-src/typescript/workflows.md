@@ -28,7 +28,7 @@ Each Workflow function has two parts:
 - The function implementation code (body) is known as the **Workflow Definition**.
 
 Each Workflow Definition is bundled with any third party dependencies, and registered by Workflow Type in a [Worker](/typescript/workers).
-A Workflow function becomes a **Workflow Execution** (instance) only when started from a [**Workflow Client**](/typescript/clients) using its Workflow Type.
+A Workflow function becomes a **Workflow Execution** (instance) only when started from a [**Client**](/typescript/clients) using its Workflow Type.
 
 <!-- todo: we need a diagram here to show the relationship -->
 
@@ -365,7 +365,7 @@ const storeState = handle.query<number>(store.query); // 30
 
 ```ts
 // alternative, more concise but slightly less safe implementation
-import * as wf from '@temporalio/workflows';
+import * as wf from '@temporalio/workflow';
 
 function useState<T = any>(name: string, initialValue: T) {
   const signal = wf.defineSignal<[T]>(name);
@@ -526,8 +526,8 @@ Arguments for both are sent as needed.
 
 ```ts
 // Signal With Start in Client file
-const client = new WorkflowClient();
-await client.signalWithStart(YourWorkflow, {
+const client = new Client();
+await client.workflow.signalWithStart(YourWorkflow, {
   workflowId,
   args: [arg1, arg2],
   signal: MySignal,
@@ -535,7 +535,7 @@ await client.signalWithStart(YourWorkflow, {
 });
 ```
 
-See the [Workflow Client](/typescript/clients/#workflow-options) docs for more notes on how starting Workflows and Workflow Options look like.
+See the [Client](/typescript/clients/#workflow-options) docs for more notes on how starting Workflows and Workflow Options look like.
 
 ## Deferred Execution
 
@@ -612,7 +612,7 @@ You can check the valid ISO string formats on [MDN's Date docs](https://develope
 
 :::caution Preventing Confusion: Workflow sleep vs Activity sleep
 
-There is an unrelated [`sleep` utility function](https://typescript.temporal.io/api/classes/activity.Context/#sleep) available in **Activity Context** that is not durable, but is cancellation aware. See [the Activities docs for details](/typescript/activities).
+There is an unrelated [`sleep` utility function](https://typescript.temporal.io/api/namespaces/activity#sleep) available in **Activity Context** that is not durable, but is cancellation aware. See [the Activities docs for details](/typescript/activities).
 
 :::
 

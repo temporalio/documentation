@@ -11,15 +11,15 @@ tags:
 
 Long-running Activities should Heartbeat their progress back to the Workflow for earlier detection of stalled Activities (with [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout)) and resuming stalled Activities from checkpoints (with Heartbeat details).
 
-To set Activity Heartbeat, use `Context.current().heartbeat()` in your Activity implementation, and set `heartbeatTimeout` in your Workflow.
+To set Activity Heartbeat, use the `heartbeat()` function in your Activity implementation, and set `heartbeatTimeout` in your Workflow.
 
 ```ts
 // activity implementation
 export async function example(sleepIntervalMs = 1000): Promise<void> {
   for (let progress = 1; progress <= 1000; ++progress) {
-    await Context.current().sleep(sleepIntervalMs);
+    await sleep(sleepIntervalMs);
     // record activity heartbeat
-    Context.current().heartbeat();
+    heartbeat();
   }
 }
 
@@ -41,10 +41,10 @@ The following example extends the previous sample to include a `heartbeatDetails
 
 ```ts
 export async function example(sleepIntervalMs = 1000): Promise<void> {
-  const startingPoint = Context.current().info.heartbeatDetails || 1; // allow for resuming from heartbeat
+  const startingPoint = activityInfo().heartbeatDetails || 1; // allow for resuming from heartbeat
   for (let progress = startingPoint; progress <= 100; ++progress) {
-    await Context.current().sleep(sleepIntervalMs);
-    Context.current().heartbeat(progress);
+    await sleep(sleepIntervalMs);
+    heartbeat(progress);
   }
 }
 ```

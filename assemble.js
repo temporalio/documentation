@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const { Connection, WorkflowClient } = require("@temporalio/client");
+const { Connection, Client } = require("@temporalio/client");
 const fs = require("fs-extra");
 const path = require("path");
 
@@ -63,12 +63,12 @@ async function useCloud(params) {
       },
     },
   });
-  const client = new WorkflowClient({
+  const client = new Client({
     connection,
     namespace: data.namespace,
   });
 
-  const result = await client.execute("fullAssembly", {
+  const result = await client.workflow.execute("fullAssembly", {
     taskQueue: `docs-assembly-${data.unique_id}`,
     workflowId: `docs-full-assembly-${data.unique_id}`,
     args: [params],
@@ -78,10 +78,10 @@ async function useCloud(params) {
 
 async function useLocal(params) {
   const connection = await Connection.connect({});
-  const client = new WorkflowClient({
+  const client = new Client({
     connection,
   });
-  const result = await client.execute("fullAssembly", {
+  const result = await client.workflow.execute("fullAssembly", {
     taskQueue: `docs-assembly`,
     workflowId: `docs-full-assembly`,
     args: [params],

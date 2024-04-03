@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-[`WorkflowClient.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
+[`Client.workflow.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
 
 ```typescript
 import { Client } from '@temporalio/client';

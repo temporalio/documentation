@@ -176,7 +176,7 @@ await Worker.runReplayHistory(
 ```
 
 To gain confidence that changes to a Workflow are safe to deploy, we recommend that you obtain Event Histories from the relevant Task Queue and replay them in bulk.
-You can do so by combining the [workflow.list](https://typescript.temporal.io/api/classes/client.WorkflowClient#list) and [worker.runReplayHistories](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistories) APIs.
+You can do so by combining the [client.workflow.list()](https://typescript.temporal.io/api/classes/client.WorkflowClient#list) and [worker.runReplayHistories()](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistories) APIs.
 
 In the following example (which, as of server 1.18, requires [Advanced Visibility](/visibility#advanced-visibility) to be enabled), Event Histories are downloaded from the server and then replayed by passing in a client and a set of Workflows Executions.
 The [results](https://typescript.temporal.io/api/interfaces/worker.ReplayResult) returned by the async iterator contain information about the Workflow Execution and whether an error occurred during replay.
@@ -271,9 +271,7 @@ const { ssnTraceActivity } = proxyActivities<typeof activities>({
 });
 
 // backgroundCheckNonDeterministic is an anti-pattern Workflow Definition
-export async function backgroundCheckNonDeterministic(
-  ssn: string
-): Promise<string> {
+export async function backgroundCheckNonDeterministic(ssn: string): Promise<string> {
   // CAUTION, the following code is an anti-pattern showing what NOT to do
   if (getRandomNumber(1, 100) > 50) {
     await sleep("10 seconds");

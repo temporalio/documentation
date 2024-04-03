@@ -4,9 +4,9 @@ title: TypeScript SDK introduction
 sidebar_label: Introduction
 description: The TypeScript SDK lets developers write highly scalable, reliable, and long-running workflows without being a distributed systems expert.
 tags:
- - overview
- - introduction
- - typescript
+  - overview
+  - introduction
+  - typescript
 ---
 
 The Temporal TypeScript SDK lets you write highly scalable and reliable long-running Workflows without being a distributed systems expert.
@@ -54,7 +54,17 @@ Run "Hello Temporal" locally (~10 minutes)
 
 :::note Prerequisites
 
-<strong>Node.js 14+</strong>: this project requires Node.js version 14 or later.
+<strong>Node.js 14.18+</strong>: We strongly recommend the use of version 18 or later. The Temporal's TypeScript SDK only support Node.JS.
+
+:::note
+
+The Temporal TypeScript SDK is dropping support for Node.js 14 and Node.js 16 due to their end-of-life status.
+
+The [Temporal TypeScript SDK 1.9 version](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0) is the last minor release supporting Node.js 14, and version 1.10 may be the last supporting Node.js 16.
+
+Update your deployments to supported Node.js versions to ensure continued compatibility and security updates.
+
+:::
 
 <details>
 <summary>

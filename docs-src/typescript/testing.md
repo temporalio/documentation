@@ -4,9 +4,9 @@ title: Testing TypeScript Workflows
 sidebar_label: Testing
 description: Testing TypeScript Workflows
 tags:
- - testing
- - typescript
- - jest
+  - testing
+  - typescript
+  - jest
 ---
 
 :::note Sample available
@@ -30,14 +30,11 @@ The constructor accepts an optional partial Activity [`Info`](https://typescript
 [`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) runs a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.Context).
 
 ```ts
-import { Context } from '@temporalio/activity';
+import { activityInfo } from '@temporalio/activity';
 import { MockActivityEnvironment } from '@temporalio/testing';
 
 const env = new MockActivityEnvironment({ attempt: 2 });
-const result = await env.run(
-  async (x) => x + Context.current().info.attempt,
-  2,
-);
+const result = await env.run(async (x) => x + activityInfo().attempt, 2);
 assert.equal(result, 4);
 ```
 
@@ -51,7 +48,7 @@ assert.equal(result, 4);
 It also exposes a `cancel` method which cancels the Activity Context.
 
 ```ts
-import { CancelledFailure, Context } from '@temporalio/activity';
+import { CancelledFailure, heartbeat, sleep } from '@temporalio/activity';
 import { MockActivityEnvironment } from '@temporalio/testing';
 
 const env = new MockActivityEnvironment();
@@ -65,8 +62,8 @@ env.on('heartbeat', (d: unknown) => {
 await assert.rejects(
   () =>
     env.run(async () => {
-      Context.current().heartbeat(6);
-      await Context.current().sleep(100); // <- sleep is cancellation aware
+      heartbeat(6);
+      await sleep(100); // <- sleep is cancellation aware
     }),
   (err) => {
     assert.ok(err instanceof CancelledFailure);

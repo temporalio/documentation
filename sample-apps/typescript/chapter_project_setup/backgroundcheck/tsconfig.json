@@ -1,14 +1,14 @@
 {
-  "extends": "@tsconfig/node18/tsconfig.json",
-  "version": "4.4.2",
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "version": "5.4.3",
   "compilerOptions": {
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "rootDir": "backgroundcheck/src",
+    "rootDir": "./src",
     "outDir": "./lib"
   },
-  "include": ["backgroundcheck/src/**/*.ts"]
+  "include": ["./src/**/*.ts"]
 }

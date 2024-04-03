@@ -217,9 +217,9 @@ This section provides a higher-level view of the change proposal process, partic
 
 ### How to install the dependencies for this repo
 
-**Before proceeding, make sure [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) and [Node.js](https://nodejs.org/en/download/) are installed. Make sure you install the latest version of Node.js (later than 18.0.0).**
+**Before proceeding, make sure [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) and [Node.js](https://nodejs.org/en/download/) are installed. Make sure you install the latest version of Node.js (later than 20.0.0).**
 
-On a Mac, use the command `brew install node@18`.
+On a Mac, use the command `brew install node@20`.
 
 In the root directory of the repository, run `yarn` to install the packages needed to generate the `build` output. This includes the Docusaurus framework.
 

@@ -4,9 +4,9 @@ title: Connection and Encryption in the TypeScript SDK
 sidebar_label: Connection and Security
 description: A summary of the security features you should know as a TypeScript SDK user.
 tags:
- - security
- - encryption
- - tls
+  - security
+  - encryption
+  - tls
 ---
 
 Temporal Workers and Clients connect with your Temporal Cluster via gRPC, and must be configured securely for production.
@@ -29,12 +29,12 @@ import Content from '../concepts/what-is-a-namespace.md'
 <Content />
 
 All SDK connections (whether Workers or Clients) are to a specific namespace.
-If not specified in [WorkflowClientOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions), this defaults to the `default` namespace.
+If not specified in [ClientOptions](https://typescript.temporal.io/api/interfaces/client.ClientOptions), this defaults to the `default` namespace.
 
 ```ts
 const connection = await Connection.connect();
 
-const client = new WorkflowClient({
+const client = new Client({
   connection,
   namespace: 'your-custom-namespace', // defaults to 'default'
 });
@@ -52,7 +52,7 @@ When instantiating either of them, you can choose whether to connect securely.
 A full example for a client Connection looks like this:
 
 ```js
-import { Connection, WorkflowClient } from '@temporalio/client';
+import { Client, Connection } from '@temporalio/client';
 
 const connection = await Connection.connect({
   // defaults port to 7233 if not specified
@@ -66,7 +66,7 @@ const connection = await Connection.connect({
     },
   },
 });
-const client = new WorkflowClient({
+const client = new Client({
   connection,
   namespace: 'foo.bar', // as explained in Namespaces section
 });

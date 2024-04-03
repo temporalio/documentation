@@ -17,7 +17,6 @@ const worker = await Worker.create({
   taskQueue,
   workflowBundle: {
     codePath: './path-to-bundle.js',
-    sourceMapPath: './path-to-bundle.js.map',
   },
 });
 

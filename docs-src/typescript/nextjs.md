@@ -4,9 +4,9 @@ title: Integrating Temporal into an Existing Next.js Application
 sidebar_label: Next.js Tutorial
 description: In this tutorial, we'll talk about how Temporal integrates into an existing Next.js application using Next.js API routes. This gives you the ability to write full-stack, long-running applications end to end in TypeScript.
 tags:
-    - nextjs
-    - tutorial
-    - typescript
+  - nextjs
+  - tutorial
+  - typescript
 ---
 
 In this tutorial, we'll talk about how Temporal integrates into an **existing Next.js application** using Next.js API routes.
@@ -54,7 +54,7 @@ Sample `tsconfig.json` to get you started:
 ```js
 // /temporal/tsconfig.json
 {
-  "extends": "@tsconfig/node16/tsconfig.json", // optional but nice to have
+  "extends": "@tsconfig/node20/tsconfig.json", // optional but nice to have
   "version": "4.4.2",
   "compilerOptions": {
     "emitDecoratorMetadata": false,
@@ -111,11 +111,11 @@ Inside of `/temporal/src/activities.ts` we'll write a simple Activity function t
 
 ```ts
 // /temporal/src/activities.ts
-import { Context } from '@temporalio/activity';
+import { activityInfo } from '@temporalio/activity';
 
 export async function purchase(id: string): Promise<string> {
   console.log(`Purchased ${id}!`);
-  return Context.current().info.activityId;
+  return activityInfo().activityId;
 }
 ```
 
@@ -187,13 +187,13 @@ Now we will create a Client and start a Workflow Execution:
 
 ```ts
 // pages/api/startBuy.ts
-import { Connection, WorkflowClient } from '@temporalio/client';
+import { Client, Connection } from '@temporalio/client';
 import { OneClickBuy } from '../../temporal/lib/workflows.js';
 
 export default async function startBuy(req, res) {
   const { itemId } = req.body; // TODO: validate itemId and req.method
-  const client = new WorkflowClient();
-  const handle = await client.start(OneClickBuy, {
+  const client = new Client();
+  const handle = await client.workflow.start(OneClickBuy, {
     workflowId: 'business-meaningful-id',
     // must match the taskQueue polled by Worker above
     taskQueue: 'tutorial',

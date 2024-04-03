@@ -67,14 +67,14 @@ The constructor accepts an optional partial Activity [`Info`](https://typescript
 Then use [`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) to run a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.Context).
 
 ```ts
-import { Context } from '@temporalio/activity';
+import { activityInfo } from '@temporalio/activity';
 import { MockActivityEnvironment } from '@temporalio/testing';
 import assert from 'assert';
 
 // A function that takes two numbers and returns a promise that resolves to the sum of the two numbers
 // and the current attempt.
 async function activityFoo(a: number, b: number): Promise<number> {
-  return a + b + Context.current().info.attempt;
+  return a + b + activityInfo().attempt;
 }
 
 // Create a MockActivityEnvironment with attempt set to 2. Run the activityFoo
@@ -94,12 +94,12 @@ When an Activity is run by a Worker, Heartbeats are throttled to avoid overloadi
 `MockActivityEnvironment`, however, does not throttle Heartbeats.
 
 ```ts
-import { Context } from '@temporalio/activity';
+import { heartbeat } from '@temporalio/activity';
 import { MockActivityEnvironment } from '@temporalio/testing';
 import assert from 'assert';
 
 async function activityFoo(): Promise<void> {
-  Context.current().heartbeat(6);
+  heartbeat(6);
 }
 
 const env = new MockActivityEnvironment();
@@ -118,15 +118,15 @@ If an Activity is supposed to react to a Cancellation, you can test whether it r
 [`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment) exposes a [`.cancel()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#cancel) method that cancels the Activity Context.
 
 ```ts
-import { CancelledFailure, Context } from '@temporalio/activity';
+import { CancelledFailure, heatbeat, sleep } from '@temporalio/activity';
 import { MockActivityEnvironment } from '@temporalio/testing';
 import assert from 'assert';
 
 async function activityFoo(): Promise<void> {
-  Context.current().heartbeat(6);
-  // .sleep() is Cancellation-aware, which means that on Cancellation,
+  heartbeat(6);
+  // @temporalio/activity's sleep() is Cancellation-aware, which means that on Cancellation,
   // CancelledFailure will be thrown from it.
-  await Context.current().sleep(100);
+  await sleep(100);
 }
 
 const env = new MockActivityEnvironment();
@@ -208,7 +208,7 @@ afterAll(async () => {
 });
 ```
 
-`TestWorkflowEnvironment` has [`client.workflow`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment/#workflowclient) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection) for creating Workers:
+`TestWorkflowEnvironment` has [`client`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment/#client) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection) for creating Workers:
 
 ```typescript
 import { Worker } from '@temporalio/worker';
@@ -576,7 +576,7 @@ await Worker.runReplayHistory(
 ```
 
 To gain confidence that changes to a Workflow are safe to deploy, we recommend that you obtain Event Histories from the relevant Task Queue and replay them in bulk.
-You can do so by combining the [workflow.list](https://typescript.temporal.io/api/classes/client.WorkflowClient#list) and [worker.runReplayHistories](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistories) APIs.
+You can do so by combining the [Client.workflow.list()](https://typescript.temporal.io/api/classes/client.WorkflowClient#list) and [worker.runReplayHistories()](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistories) APIs.
 
 In the following example (which, as of server 1.18, requires [Advanced Visibility](/visibility#advanced-visibility) to be enabled), Event Histories are downloaded from the server and then replayed by passing in a client and a set of Workflows Executions.
 The [results](https://typescript.temporal.io/api/interfaces/worker.ReplayResult) returned by the async iterator contain information about the Workflow Execution and whether an error occurred during replay.
