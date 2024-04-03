@@ -72,7 +72,6 @@ Each Temporal SDK targets a specific programming language.
 - [Python SDK developer's guide](/dev-guide/python/introduction)
 - [TypeScript SDK developer's guide](/dev-guide/typescript/introduction)
 - [.NET SDK API reference](https://dotnet.temporal.io/)
-- [PHP SDK API reference](https://php.temporal.io/namespaces/temporal.html)
 
 Despite supporting multiple languages, and supporting many features, Temporal SDKs aim to make developers feel at home in their language.
 
@@ -90,7 +89,7 @@ The Workflow defines the overarching business logic, encompassing tasks such as 
 
 :::caution Do not copy and use code
 
-The following is psuedocode, for tested samples see your langauge SDK's developer's guide.
+The following is pseudocode. For tested samples see your language SDK's developer's guide.
 
 :::
 
@@ -112,7 +111,7 @@ In the event of an Activity failure, the SDK automatically initiates retries acc
 
 :::caution Do not copy and use code
 
-The following is psuedocode, for tested samples see your langauge SDK's developer's guide.
+The following is pseudocode. For tested samples see your language SDK's developer's guide.
 
 :::
 
@@ -258,7 +257,7 @@ A Workflow executes Activities (other functions that interact with external syst
 This Workflow code, while executing, can be paused, resumed, and migrated across physical machines without losing state.
 
 When a Workflow calls the API to execute an Activity, the Worker sends a [Command](https://docs.temporal.io/references/commands) back to the Cluster. The Cluster creates Activity Tasks in response which the same or a different Worker can then pick up and begin executing. In this way, the Worker and Cluster work together to incrementally execute Workflow code in a reliable way.
-We discuss this more in detail in [How the SDKs work] section.
+We discuss this more in detail in [The SDK and Temporal Cluster relationship](/dev-guide/sdks#sdk-and-cluster-relationship) section.
 
 The SDK APIs also enable developers to write code that more genuinely maps to their process. This is because without a specialized SDK, developers might have to write a lot of boilerplate code. This can lead to code that's hard to maintain, difficult to understand, or that doesn't directly correspond to the underlying business process.
 
@@ -359,8 +358,6 @@ However, Temporal enables developers to control a variety of timeouts, a Retry P
 
 The following code is an example of a custom set of Activity Execution options that affect the timeout and retry behavior of the execution, should the Activity encounter a failure.
 
-This code is for example purposes only; for best practices and tested samples, use the developer’s guide.
-
 :::caution Do not copy and use code
 
 The following code is for example purposes only.
@@ -451,7 +448,7 @@ When you create a new Worker process, the Worker creates a long-lasting connecti
 <div class="tdiw"><div class="tditw"><p class="tdit">A Worker long polls for Tasks</p></div><div class="tdiiw" height="661"><img class="img_ev3q" src="/diagrams/how-sdk-works-1.svg" alt="A Worker long polls for Tasks" /></div></div>
 
 Although the Worker is now running, unless a Workflow is explicitly started, the Task Queue doesn't have any Tasks on it and so, no code executes.
-We can use a Temporal Client (Available in Temporal SDKs and the CLI) to start a new Workflow.
+We can use a Temporal Client (available in Temporal SDKs and the CLI) to start a new Workflow.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Start a Workflow using a Temporal Client</p></div><div class="tdiiw" height="901"><img class="img_ev3q" src="/diagrams/how-sdk-works-2.svg" alt="Start a Workflow using a Temporal Client" /></div></div>
 
@@ -460,7 +457,7 @@ Starting a Workflow Execution creates a new Event, WorkflowExecutionStarted, and
 The Temporal Cluster then schedules a Workflow Task by adding it to the Task Queue.
 When the Worker has capacity, it picks up this Task, and begin executing code.
 
-Each step of the Task, Scheduled, Started, Completed gets recorded into the Event History.
+Each step of the Task (e.g. Scheduled, Started, and Completed), gets recorded into the Event History.
 
 - Scheduled means that the Cluster has added a Task to the Task Queue.
 - Started means that the Worker has dequeued the Task.
