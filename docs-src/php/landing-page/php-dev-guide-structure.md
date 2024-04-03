@@ -27,8 +27,6 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
-- [Signals in PHP](/php/signals):
-- [Queries in PHP](/php/queries):
 - [Workflow timeouts](/php/workflow-timeouts): Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 - [How to set Activity timeouts](/php/activity-timeouts): Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 - [How to Heartbeat an Activity](/php/activity-heartbeats): An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.

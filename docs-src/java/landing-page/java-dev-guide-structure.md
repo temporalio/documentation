@@ -48,8 +48,6 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
-- [Signals in Java](/java/signals):
-- [Queries in Java](/java/queries):
 - [What is a Dynamic Handler?](/java/what-is-a-dynamic-handler): Dynamic Handlers are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named handler matches the call from the Server at runtime.
 - [How to develop with Updates](/java/updates): An Update is an operation that can mutate the state of a Workflow Execution and return a response.
 - [Workflow timeouts](/java/workflow-timeouts): Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
