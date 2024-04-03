@@ -9,10 +9,10 @@ tags:
   - typescript
 ---
 
-Connect to a Client with `client.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.
+Connect to a Client with `client.workflow.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.
 
 ```typescript
-const handle = await client.start(example, {
+const handle = await client.workflow.start(example, {
   workflowId: 'yourWorkflowId',
   taskQueue: 'yourTaskQueue',
   args: ['your', 'arg', 'uments'],

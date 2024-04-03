@@ -12,7 +12,7 @@ tags:
 You can set each Workflow to repeat on a schedule with the `cronSchedule` option:
 
 ```typescript
-const handle = await client.start(scheduledWorkflow, {
+const handle = await client.workflow.start(scheduledWorkflow, {
   // ...
   cronSchedule: '* * * * *', // start every minute
 });

@@ -29,7 +29,7 @@ In TypeScript, the default Data Converter supports:
 
 ## Custom Data Converter
 
-> API doc: [DataConverter](https://typescript.temporal.io/api/interfaces/worker.DataConverter/)
+> API doc: [DataConverter](https://typescript.temporal.io/api/interfaces/common.DataConverter/)
 
 To send values that are not [JSON-serializable](https://en.wikipedia.org/wiki/JSON#Data_types) like `BigInt`s or `Date`s, provide a custom Data Converter to the Client and Worker:
 

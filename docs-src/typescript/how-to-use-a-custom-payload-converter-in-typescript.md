@@ -18,7 +18,7 @@ The order in which your encoding Payload Converters are applied depend on the or
 You can set multiple encoding Payload Converters to run your conversions.
 When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.
 
-To send values that are not [JSON-serializable](https://en.wikipedia.org/wiki/JSON#Data_types) like a `BigInt` or `Date`, provide a custom [Data Converter](https://typescript.temporal.io/api/interfaces/worker.DataConverter/) to the Client and Worker:
+To send values that are not [JSON-serializable](https://en.wikipedia.org/wiki/JSON#Data_types) like a `BigInt` or `Date`, provide a custom [Data Converter](https://typescript.temporal.io/api/interfaces/common.DataConverter/) to the Client and Worker:
 
 - [new Client(\{ ..., dataConverter })](https://typescript.temporal.io/api/interfaces/client.ClientOptions#dataconverter)
 - [Worker.create(\{ ..., dataConverter })](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#dataconverter)

@@ -19,14 +19,14 @@ Start a Workflow with the parameters that are in the `client.ts` file. In this e
 import { example } from './workflows';
 
 ...
-await client.start(example, {
+await client.workflow.start(example, {
   args: [{ name: 'Temporal', born: 2019 }],
   taskQueue: 'your-queue',
   workflowId: 'business-meaningful-id',
 });
 ```
 
-In `workflows.ts` define the type of the parameter that the Workflow function takes in. The interface `ExampleParam` is a name we can now use to describe the requirement in the previous example. It still represents having the two properties called `name` and `born` that is of the type `string`. Then define a function that takes in a parameter of the type `ExampleParam` and return a `Promise<string>`. The `Promise` object represents the eventual completion, or failure, of `await client.start()` and its resulting value.
+In `workflows.ts` define the type of the parameter that the Workflow function takes in. The interface `ExampleParam` is a name we can now use to describe the requirement in the previous example. It still represents having the two properties called `name` and `born` that is of the type `string`. Then define a function that takes in a parameter of the type `ExampleParam` and return a `Promise<string>`. The `Promise` object represents the eventual completion, or failure, of `await client.workflow.start()` and its resulting value.
 
 ```ts
 interface ExampleParam {

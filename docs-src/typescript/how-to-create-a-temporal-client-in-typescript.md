@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-Use `new Client()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to create a new Client.
+Use `new Client()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection) to create a new Client.
 
 ```typescript
 import { Client, Connection } from '@temporalio/client';

@@ -12,26 +12,22 @@ tags:
 To return the results of a Workflow Execution:
 
 ```typescript
-return (
-  'Completed '
-  + wf.workflowInfo().workflowId
-  + ', Total Charged: '
-  + totalCharged
-);
+return 'Completed ' + wf.workflowInfo().workflowId + ', Total Charged: '
+  + totalCharged;
 ```
 
 `totalCharged` is just a function declared in your code. For a full example, see [subscription-workflow-project-template-typescript/src/workflows.ts](https://github.com/temporalio/subscription-workflow-project-template-typescript/blob/main/src/workflows.ts).
 
 A Workflow function may return a result. If it doesn’t (in which case the return type is `Promise<void>`), the result will be `undefined`.
 
-If you started a Workflow with `handle.start()`, you can choose to wait for the result anytime with `handle.result()`.
+If you started a Workflow with `client.workflow.start()`, you can choose to wait for the result anytime with `handle.result()`.
 
 ```typescript
 const handle = client.getHandle(workflowId);
 const result = await handle.result();
 ```
 
-Using a Workflow Handle isn't necessary with `client.execute()`.
+Using a Workflow Handle isn't necessary with `client.workflow.execute()`.
 
 Workflows that prematurely end will throw a `WorkflowFailedError` if you call `result()`.
 

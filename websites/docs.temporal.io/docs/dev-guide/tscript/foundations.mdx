@@ -339,14 +339,14 @@ Start a Workflow with the parameters that are in the `client.ts` file. In this e
 import { example } from './workflows';
 
 ...
-await client.start(example, {
+await client.workflow.start(example, {
   args: [{ name: 'Temporal', born: 2019 }],
   taskQueue: 'your-queue',
   workflowId: 'business-meaningful-id',
 });
 ```
 
-In `workflows.ts` define the type of the parameter that the Workflow function takes in. The interface `ExampleParam` is a name we can now use to describe the requirement in the previous example. It still represents having the two properties called `name` and `born` that is of the type `string`. Then define a function that takes in a parameter of the type `ExampleParam` and return a `Promise<string>`. The `Promise` object represents the eventual completion, or failure, of `await client.start()` and its resulting value.
+In `workflows.ts` define the type of the parameter that the Workflow function takes in. The interface `ExampleParam` is a name we can now use to describe the requirement in the previous example. It still represents having the two properties called `name` and `born` that is of the type `string`. Then define a function that takes in a parameter of the type `ExampleParam` and return a `Promise<string>`. The `Promise` object represents the eventual completion, or failure, of `await client.workflow.start()` and its resulting value.
 
 ```ts
 interface ExampleParam {
@@ -1013,10 +1013,10 @@ See the [Customize Workflow Type](#customize-workflow-type) section to see how t
 A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
 The Temporal Cluster then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
 
-When you have a Client, you can schedule the start of a Workflow with `client.start()`, specifying `workflowId`, `taskQueue`, and `args` and returning a Workflow handle immediately after the Server acknowledges the receipt.
+When you have a Client, you can schedule the start of a Workflow with `client.workflow.start()`, specifying `workflowId`, `taskQueue`, and `args` and returning a Workflow handle immediately after the Server acknowledges the receipt.
 
 ```typescript
-const handle = await client.start(example, {
+const handle = await client.workflow.start(example, {
   workflowId: 'your-workflow-id',
   taskQueue: 'your-task-queue',
   args: ['argument01', 'argument02', 'argument03'], // this is typechecked against workflowFn's args
@@ -1025,7 +1025,7 @@ const handle = client.getHandle(workflowId);
 const result = await handle.result();
 ```
 
-Calling `client.start()` and `client.execute()` send a command to Temporal Server to schedule a new Workflow Execution on the specified Task Queue. It does not actually start until a Worker that has a matching Workflow Type, polling that Task Queue, picks it up.
+Calling `client.workflow.start()` and `client.workflow.execute()` send a command to Temporal Server to schedule a new Workflow Execution on the specified Task Queue. It does not actually start until a Worker that has a matching Workflow Type, polling that Task Queue, picks it up.
 
 You can test this by executing a Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
 
@@ -1116,10 +1116,10 @@ If you do not specify `taskQueue`, the TypeScript SDK places Activity and Child 
 
 Although it is not required, we recommend providing your own [Workflow Id](/workflows#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
-Connect to a Client with `client.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.
+Connect to a Client with `client.workflow.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.
 
 ```typescript
-const handle = await client.start(example, {
+const handle = await client.workflow.start(example, {
   workflowId: 'yourWorkflowId',
   taskQueue: 'yourTaskQueue',
   args: ['your', 'arg', 'uments'],
@@ -1141,26 +1141,22 @@ In the Temporal Platform, it's also acceptable to use Queries as the preferred m
 To return the results of a Workflow Execution:
 
 ```typescript
-return (
-  'Completed '
-  + wf.workflowInfo().workflowId
-  + ', Total Charged: '
-  + totalCharged
-);
+return 'Completed ' + wf.workflowInfo().workflowId + ', Total Charged: '
+  + totalCharged;
 ```
 
 `totalCharged` is just a function declared in your code. For a full example, see [subscription-workflow-project-template-typescript/src/workflows.ts](https://github.com/temporalio/subscription-workflow-project-template-typescript/blob/main/src/workflows.ts).
 
 A Workflow function may return a result. If it doesn’t (in which case the return type is `Promise<void>`), the result will be `undefined`.
 
-If you started a Workflow with `handle.start()`, you can choose to wait for the result anytime with `handle.result()`.
+If you started a Workflow with `client.workflow.start()`, you can choose to wait for the result anytime with `handle.result()`.
 
 ```typescript
 const handle = client.getHandle(workflowId);
 const result = await handle.result();
 ```
 
-Using a Workflow Handle isn't necessary with `client.execute()`.
+Using a Workflow Handle isn't necessary with `client.workflow.execute()`.
 
 Workflows that prematurely end will throw a `WorkflowFailedError` if you call `result()`.
 
@@ -1218,7 +1214,7 @@ When a `CancellationScope` is cancelled, it propagates cancellation in any child
 
 ### CancelledFailure
 
-Timers and triggers throw [CancelledFailure](https://typescript.temporal.io/api/classes/client.CancelledFailure) when cancelled; Activities and Child Workflows throw `ActivityFailure` and `ChildWorkflowFailure` with cause set to `CancelledFailure`.
+Timers and triggers throw [CancelledFailure](https://typescript.temporal.io/api/classes/common.CancelledFailure) when cancelled; Activities and Child Workflows throw `ActivityFailure` and `ChildWorkflowFailure` with cause set to `CancelledFailure`.
 One exception is when an Activity or Child Workflow is scheduled in an already cancelled scope (or Workflow).
 In this case, they propagate the `CancelledFailure` that was thrown to cancel the scope.
 

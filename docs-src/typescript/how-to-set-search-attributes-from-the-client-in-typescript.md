@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-We can set [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes) during `client.start()` or `client.execute()` and read with [`handle.describe()`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#describe):
+We can set [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes) during `client.workflow.start()` or `client.workflow.execute()` and read with [`handle.describe()`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#describe):
 
 <!--SNIPSTART typescript-search-attributes-client -->
 

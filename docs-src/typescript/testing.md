@@ -23,7 +23,7 @@ The test framework provides utilities for testing both Activities and Workflows.
 
 Activities can be tested with [`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment)
 
-The constructor accepts an optional partial Activity [`Info`](https://typescript.temporal.io/api/classes/activity.Info) object in case any info fields are needed for the test.
+The constructor accepts an optional partial Activity [`Info`](https://typescript.temporal.io/api/interfaces/activity.Info) object in case any info fields are needed for the test.
 
 ### Running an activity in Context
 
@@ -77,7 +77,7 @@ Workflows can be tested with [`TestWorkflowEnvironment`](https://typescript.temp
 
 A typical test suite would set up a single instance of the test environment to be reused in all tests (e.g. in a [Mocha](https://mochajs.org/) `before()` hook or a [Jest](https://jestjs.io/) `beforeAll` hook).
 
-When creating an environment, [`TestWorkflowEnvironment.create`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#create) will automatically start a test server that you can access with [`client`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#client) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection).
+When creating an environment, [`TestWorkflowEnvironment`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment) will automatically start a test server that you can access with [`client`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#client) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection).
 
 ### Example setup
 
