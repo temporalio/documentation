@@ -60,7 +60,7 @@ When you create a new Worker process, the Worker creates a long-lasting connecti
 ![A Worker long polls for Tasks](/diagrams/how-sdk-works-1.svg)
 
 Although the Worker is now running, unless a Workflow is explicitly started, the Task Queue doesn't have any Tasks on it and so, no code executes.
-We can use a Temporal Client (Available in Temporal SDKs and the CLI) to start a new Workflow.
+We can use a Temporal Client (available in Temporal SDKs and the CLI) to start a new Workflow.
 
 ![Start a Workflow using a Temporal Client](/diagrams/how-sdk-works-2.svg)
 
@@ -69,7 +69,7 @@ Starting a Workflow Execution creates a new Event, WorkflowExecutionStarted, and
 The Temporal Cluster then schedules a Workflow Task by adding it to the Task Queue.
 When the Worker has capacity, it picks up this Task, and begin executing code.
 
-Each step of the Task, Scheduled, Started, Completed gets recorded into the Event History.
+Each step of the Task (e.g. Scheduled, Started, and Completed), gets recorded into the Event History.
 
 - Scheduled means that the Cluster has added a Task to the Task Queue.
 - Started means that the Worker has dequeued the Task.

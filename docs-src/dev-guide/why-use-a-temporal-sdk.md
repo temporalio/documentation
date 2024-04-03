@@ -19,7 +19,7 @@ The Workflow defines the overarching business logic, encompassing tasks such as 
 
 :::caution Do not copy and use code
 
-The following is psuedocode, for tested samples see your langauge SDK's developer's guide.
+The following is pseudocode. For tested samples see your language SDK's developer's guide.
 
 :::
 
@@ -41,7 +41,7 @@ In the event of an Activity failure, the SDK automatically initiates retries acc
 
 :::caution Do not copy and use code
 
-The following is psuedocode, for tested samples see your langauge SDK's developer's guide.
+The following is pseudocode. For tested samples see your language SDK's developer's guide.
 
 :::
 

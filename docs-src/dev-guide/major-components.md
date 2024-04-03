@@ -119,7 +119,7 @@ A Workflow executes Activities (other functions that interact with external syst
 This Workflow code, while executing, can be paused, resumed, and migrated across physical machines without losing state.
 
 When a Workflow calls the API to execute an Activity, the Worker sends a [Command](https://docs.temporal.io/references/commands) back to the Cluster. The Cluster creates Activity Tasks in response which the same or a different Worker can then pick up and begin executing. In this way, the Worker and Cluster work together to incrementally execute Workflow code in a reliable way.
-We discuss this more in detail in [How the SDKs work] section.
+We discuss this more in detail in [The SDK and Temporal Cluster relationship](/dev-guide/sdks#sdk-and-cluster-relationship) section.
 
 The SDK APIs also enable developers to write code that more genuinely maps to their process. This is because without a specialized SDK, developers might have to write a lot of boilerplate code. This can lead to code that's hard to maintain, difficult to understand, or that doesn't directly correspond to the underlying business process.
 
@@ -219,8 +219,6 @@ By default, if an Activity attempts to communicate with another system and encou
 However, Temporal enables developers to control a variety of timeouts, a Retry Policy, Heartbeat monitoring, and asynchronous completion.
 
 The following code is an example of a custom set of Activity Execution options that affect the timeout and retry behavior of the execution, should the Activity encounter a failure.
-
-This code is for example purposes only; for best practices and tested samples, use the developer’s guide.
 
 :::caution Do not copy and use code
 
