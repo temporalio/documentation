@@ -390,21 +390,21 @@ function Explained() {
             author="Dominik Tornow"
             role="Principal Engineer"
             link="https://temporal.io/blog/dominik-workflow-part-1"
-            img="https://images.ctfassets.net/0uuz8ydxyd9p/bSjHrfjo6yDNCRUHw46gU/ab4899b711ecf09bf165ea7a1615b0a8/dominik-tornow.png"
+            img="https://images.ctfassets.net/0uuz8ydxyd9p/bSjHrfjo6yDNCRUHw46gU/ab4899b711ecf09bf165ea7a1615b0a8/dominik-tornow.png?w=80&h=80"
           />
           <ResourceCard
             title="Failure Handling in Practice"
             author="Fitz"
             role="Developer Advocate"
             link="https://temporal.io/blog/failure-handling-in-practice"
-            img="https://images.ctfassets.net/0uuz8ydxyd9p/5rtdEzcJFPLV5Ce29uPyFb/951227c4a68cb13b1bd03c8856b1f740/fitzface_shadowed_blue-2.jpg"
+            img="https://images.ctfassets.net/0uuz8ydxyd9p/5rtdEzcJFPLV5Ce29uPyFb/951227c4a68cb13b1bd03c8856b1f740/fitzface_shadowed_blue-2.jpg?w=80&h=80"
           />
           <ResourceCard
             title="Time-Travel Debugging Production Code"
             author="Loren Sands-Ramshaw"
             role="Developer Relations Engineer"
             link="https://temporal.io/blog/time-travel-debugging-production-code"
-            img="https://images.ctfassets.net/0uuz8ydxyd9p/3koq3MoNG4lPucMRTSkEUW/40ba102fafaba8524b8826b345ee55cd/loren-ivy-512-square.png"
+            img="https://images.ctfassets.net/0uuz8ydxyd9p/3koq3MoNG4lPucMRTSkEUW/40ba102fafaba8524b8826b345ee55cd/loren-ivy-512-square.png?w=80&h=80"
           />
         </div>
       </div>
