@@ -7,7 +7,7 @@ tags:
   - guide-context
 ---
 
-To migrate your Worker to Temporal Cloud, you'll change some parameters in your Client connection code, such as updating the namespace and gRPC endpoint.
+To run a Temporal Cloud Worker, you'll change some parameters in your Client connection code, such as updating the namespace and gRPC endpoint.
 You'll use:
 
 - The [Temporal Cloud Namespace Id](/concepts/what-is-a-cloud-namespace-id).
