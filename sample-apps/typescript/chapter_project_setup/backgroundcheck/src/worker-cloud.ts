@@ -92,7 +92,7 @@ export function getEnv(): Env {
 }
 
 /*
- To migrate your Worker to Temporal Cloud, you'll change some parameters in your Client connection code, such as updating the namespace and gRPC endpoint.
+ To run a Temporal Cloud Worker, you'll change some parameters in your Client connection code, such as updating the namespace and gRPC endpoint.
  You'll use:
  
  - The [Temporal Cloud Namespace Id](https://docs.temporal.io/cloud/namespaces#temporal-cloud-namespace-id).
