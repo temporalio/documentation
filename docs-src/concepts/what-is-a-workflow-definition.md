@@ -8,18 +8,18 @@ tags:
   - explanation
 ---
 
-A Workflow Definition is the code that defines the Workflow and written in your programming language of choice using a corresponding Temporal SDK.
+A Workflow Definition is the code that defines the Workflow and written with a programming language and a corresponding Temporal SDK.
 A Workflow Definition defines the constraints of a Workflow Execution.
 
 Below are different ways to develop a basic Workflow Definition.
 
 <Tabs groupId="basic-workflow-definition" queryString>
-  <TabItem value="go" label="Go">
+<TabItem value="go" label="Go">
 
-### Workflow Definition in Go
+**Workflow Definition in Go**
 
 ```go
-  package yourapp
+package yourapp
 
 import (
 	"time"
@@ -36,9 +36,9 @@ func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
 ```
 
 </TabItem>
-  <TabItem value="java" label="Java">
+<TabItem value="java" label="Java">
 
-### Workflow Definition in Java
+**Workflow Definition in Java**
 
 ```java
 // Workflow interface
@@ -51,9 +51,9 @@ public interface YourWorkflow {
 ```
 
 </TabItem>
-  <TabItem value="php" label="PHP">
+<TabItem value="php" label="PHP">
 
-### Workflow Definition in PHP
+**Workflow Definition in PHP**
 
 ```PHP
 use Temporal\Workflow\YourWorkflowInterface;
@@ -69,9 +69,9 @@ interface FileProcessingWorkflow
 ```
 
 </TabItem>
-  <TabItem value="python" label="Python">
+<TabItem value="python" label="Python">
 
-### Workflow Definition in Python
+**Workflow Definition in Python**
 
 ```Python
 from temporalio import workflow
@@ -89,9 +89,9 @@ class YourWorkflow:
 ```
 
 </TabItem>
-  <TabItem value="typescript" label="Typescript">
+<TabItem value="typescript" label="Typescript">
 
-### Workflow Definition in Typescript
+**Workflow Definition in Typescript**
 
 ```Typescript
 type ExampleArgs = {
@@ -107,6 +107,27 @@ export async function example(
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+**Workflow Definition in C# and .NET**
+
+```csharp
+using Temporalio.Workflows;
+
+[Workflow]
+public class YourWorkflow
+{
+    [WorkflowRun]
+    public async Task<string> RunAsync(string name)
+    {
+        return await Workflow.ExecuteActivityAsync(
+            (MyActivities act) => act.SayHello(name),
+            new() { ScheduleToCloseTimeout = TimeSpan.FromMinutes(5) });
+    }
+}
+```
+
+</TabItem>
 
 </Tabs>
 
@@ -116,7 +137,7 @@ export async function example(
 - [How to develop a Workflow Definition using the Python SDK](/python/developing-workflows)
 - [How to develop a Workflow Definition using the TypeScript SDK](/typescript/developing-workflows)
 
-A Workflow Definition is often also referred to as a Workflow Function.
+A Workflow Definition may be also referred to as a Workflow Function.
 In Temporal's documentation, a Workflow Definition refers to the source for the instance of a Workflow Execution, while a Workflow Function refers to the source for the instance of a Workflow Function Execution.
 
 A Workflow Execution effectively executes once to completion, while a Workflow Function Execution occurs many times during the life of a Workflow Execution.

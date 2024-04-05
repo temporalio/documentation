@@ -8,7 +8,7 @@ tags:
   - explanation
 ---
 
-While the Workflow Definition is the code that defines the Workflow and the Workflow Execution is created by executing that code.
+While the Workflow Definition is the code that defines the Workflow, the Workflow Execution is created by executing that code.
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
 It is the main unit of execution of a [Temporal Application](/concepts/what-is-a-temporal-application).
 
