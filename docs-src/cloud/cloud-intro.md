@@ -11,7 +11,7 @@ Welcome to the Temporal Cloud guide.
 
 In this guide you will find information about Temporal Cloud, onboarding, features, and how to use them.
 
-To request a Temporal Cloud account, complete the [request form](https://pages.temporal.io/cloud-request-access).
+To create a Temporal Cloud account, sign up [here](https://temporal.io/get-cloud).
 
 **[Get started with Temporal Cloud.](/cloud/get-started)**
 

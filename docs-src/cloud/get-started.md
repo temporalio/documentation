@@ -12,7 +12,7 @@ Follow these steps to start using Temporal Cloud:
 
 **1. Sign up for Temporal Cloud!**
 
-To request a Temporal Cloud account, complete the [request form](https://pages.temporal.io/cloud-request-access).
+To create a Temporal Cloud account, sign up [here](https://temporal.io/get-cloud).
 
 **2. Accept Global Admin permissions**
 
