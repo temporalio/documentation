@@ -7,12 +7,16 @@ tags:
   - guide-context
 ---
 
-To run a Worker that uses [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
+To run a Temporal Cloud Worker, you'll change some parameters in your Client connection code, such as updating the namespace and gRPC endpoint.
+You'll use:
 
-- An address that includes your [Cloud Namespace Name](/concepts/what-is-a-namespace) and a port number: `<Namespace>.<ID>.tmprl.cloud:<port>`.
-- mTLS CA certificate.
-- mTLS private key.
+- The [Temporal Cloud Namespace Id](/concepts/what-is-a-cloud-namespace-id).
+- The [Namespace's gRPC endpoint](/concepts/what-is-a-cloud-grpc-endpoint).
+  The endpoint uses this format `(namespace.unique_id.tmprl.cloud:port)`.
+- [Paths to the SSL certificate (.pem) and private key (.key)](/cloud/saml-intro) registered to your Namespace and stored on your Worker's file system.
 
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates-intro).
+Copy the Namespace Id and the gRPC endpoint from the Namespace detail Web page on [Temporal Cloud Namespaces](https://cloud.temporal.io/namespaces). Click on a Namespace name to open the Namespace details.
 
-For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+For information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates-intro).
+
+For information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
