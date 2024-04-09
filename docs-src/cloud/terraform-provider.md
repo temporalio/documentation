@@ -31,11 +31,11 @@ You must have access to the following to use the Temporal Cloud Terraform provid
 - [Terraform account](https://developer.hashicorp.com/terraform)
 - [Terraform CLI](https://developer.hashicorp.com/terraform/cli)
 - [Temporal tcld](/cloud/tcld/)
+  - This is an optional tool used to log in to your Temporal Cloud account and create an API Key.
 - [Issued certification authority](/cloud/certificates)
+  - This is needed when Account Role permission set actions are used. For example, when managing a Namespace.
 
 ## Setup
-
-**How to use Terraform with Temporal Cloud**
 
 Generate an API Key to authenticate your requests with your Temporal Cloud account.
 Then use an action to create a manage your Temporal Cloud Terraform resources.
@@ -83,9 +83,7 @@ set TEMPORAL_CLOUD_API_KEY=<yoursecretkey>
 
 The `TEMPORAL_CLOUD_API_KEY` is used to authenticate the Terraform provider.
 
-3. Generate your CA certificate
-
-You can skip generating your CA certificate if you already possess a CA certificate connected to your Temporal Cloud account.
+3. (optional) Generate your CA certificate
 
 The CA certificate allows you to authenticate and interact with your Temporal Cloud Namespace.
 You can use an existing CA cert or [create one using tcld](/cloud/certificates).
@@ -100,7 +98,7 @@ mv ca.pem test-temporal-terraform
 Manage your Temporal Cloud Namespace with Terraform.
 You can create, update, and delete Namespaces with the Terraform provider.
 
-You must have the Global Admin permission set associated with your account to manage Namespaces.
+You must have the Account Role permission set associated with your account to manage Namespaces.
 
 **How do I create a Namespace with Terraform?**
 
@@ -119,7 +117,7 @@ provider "temporalcloud" {
 
 }
 
-resource "temporalcloud_namespace" "terraform" {
+resource "temporalcloud_namespace" "namespace" {
 	name               = "terraform"
 	regions            = ["aws-us-east-1"]
 	accepted_client_ca = base64encode(file("ca.pem"))
@@ -156,7 +154,8 @@ temporalcloud_namespace.terraform: Creation complete after 2m17s [id=<yournamesp
 **How do I validate the creation of the Namespace?**
 
 Validate the creation of your Namespace through the Terraform provider.
-To validate, run the `tcld namespace get` command and pass in your [Cloud Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name) and [Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id):
+To validate see your Namespace in the Cloud UI or through the `tcld namespace get` command.
+Run the `tcld namespace get` command and pass in your [Cloud Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name) and [Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id):
 
 ```bash
 tcld namespace get -n "<yournamespace>.<youraccountid>"
