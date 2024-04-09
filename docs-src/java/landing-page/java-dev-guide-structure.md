@@ -44,6 +44,18 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 - [How to develop a Worker Program in Java](/java/how-to-develop-a-worker-program-in-java): Use the `newWorker` method on an instance of a `WorkerFactory` to create a new Worker in Java.
 - [How to spawn a Workflow Execution in Java](/java/how-to-spawn-a-workflow-execution-in-java): Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
 
+## Client
+
+The Temporal Client section of the Temporal Developer's guide introduces Clients, features that communicate and interact with the Temporal Service.
+
+- [Communicating with the Temporal Server](/java/chapter-temporal-client/temporal-client-communicating-with-grpc): Client Communications with the Temporal Server using gRPC
+- [Configuring Development Service Clients](/java/chapter-temporal-client/temporal-client-configuring-development-client): Configuring the Temporal Development Service Client
+- [Connect your Client to a Temporal Development Cluster](/java/chapter-temporal-client/temporal-client-connect-to-development-server): Configure your Client to connect to a Temporal Development Cluster.
+- [Temporal Cloud Prerequisites](/java/chapter-temporal-client/temporal-client-prepare-for-icloud): Prepare the information you need to use Temporal Cloud with Java Clients.
+- [Authenticate your Development System](/java/chapter-temporal-client/temporal-client-login-with-tcld): Authenticate your development system using the 'tcld' Command Line tool.
+- [Generate your mTLS credentials](/java/chapter-temporal-client/temporal-client-issue-mtls-credentials): Use a compatible mTLS CA certificate and mTLS private key to connect to Temporal Cloud.
+- [Connect your Client to Temporal Cloud](/java/chapter-temporal-client/temporal-client-connect-to-cloud): Use your mTLS credentials and gRPC endpoint to connect to Temporal Cloud.
+
 ## Features
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
@@ -64,15 +76,6 @@ The Features section of the Temporal Developer's guide provides basic implementa
 - [Side Effects](/java/side-effects): A Side Effect is used to produce non-deterministic code, such as generating a UUID or a random number.
 - [How to create and manage Namespaces](/java/namespaces): You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..
 
-## Observability
-
-Improve observability in your Java-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
-
-- [How to emit metrics](/java/metrics): Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
-- [How to setup Tracing](/java/tracing): Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
-- [How to log from a Workflow](/java/logging): Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
-- [How to use Visibility APIs](/java/visibility): The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
-
 ## Testing
 
 The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
@@ -81,6 +84,15 @@ The Testing section of the Temporal Developer's guide covers the many ways to te
 - [Test Activities](/java/testing-activities): Testing provides a framework to facilitate Workflow and integration testing.
 - [Testing Workflows](/java/testing-workflows): Testing provides a framework to facilitate Workflow and integration testing.
 - [How to Replay a Workflow Execution](/java/replays): Replay recreates the exact state of a Workflow Execution.
+
+## Observability
+
+Improve observability in your Java-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
+
+- [How to emit metrics](/java/metrics): Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
+- [How to setup Tracing](/java/tracing): Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
+- [How to log from a Workflow](/java/logging): Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
+- [How to use Visibility APIs](/java/visibility): The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
 
 ## Debugging
 

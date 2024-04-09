@@ -52,6 +52,21 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 - [How to develop a Worker Program in Java](/dev-guide/java/foundations#run-a-dev-worker): Use the `newWorker` method on an instance of a `WorkerFactory` to create a new Worker in Java.
 - [How to spawn a Workflow Execution in Java](/dev-guide/java/foundations#start-workflow-execution): Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
 
+## Client
+
+The Temporal Client section of the Temporal Developer's guide introduces Clients, features that communicate and interact with the Temporal Service.
+
+- [Introducing the Temporal Client](/dev-guide/java/temporal-client): A Client is more than just a language-specific wrapper around a set of server APIs.
+   Each client encapsulates complex mechanisms that interact with the Temporal server.
+- [Communicating with gRPC](/dev-guide/java/temporal-client#grpc-client-communication): Every Temporal Cluster, Server, and Namespace, uses a gRPC endpoint.
+  Any mechanism that sends information to the server or retrieves information from the server uses a Temporal Client and its gRPC communication.
+- [Configuring the Development Client](/dev-guide/java/temporal-client#client): Working with a Temporal Development Cluster is baked into Clients, and a special `newLocalServiceStubs` method provides easy configuration.
+- [Connecting to the Development Server](/dev-guide/java/temporal-client#connect-to-a-temporal-development-service): Create a simple Temporal Client and use it to build a Worker Factory.
+- [Temporal Cloud Prerequisites](/dev-guide/java/temporal-client#prerequisites): Prepare the information you need to use Temporal Cloud with Java Clients.
+- [Authenticate your Development System](/dev-guide/java/temporal-client#authenticate-with-tcld): Authenticate your development system using the 'tcld' Command Line tool.
+- [Generate your mTLS credentials](/dev-guide/java/temporal-client#mtls-credentials): To connect to Temporal Cloud, you need mTLS credentials. Follow these steps to issue yours.
+- [Connect to Temporal Cloud](/dev-guide/java/temporal-client#connect-to-temporal-cloud): Use your mTLS credentials and gRPC endpoint to connect to Temporal Cloud.
+
 ## Features
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.

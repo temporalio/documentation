@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday April 03 2024 05:09:08 AM -0700
+Last assembled: Tuesday April 09 2024 10:24:22 AM -0600
 
 Assembly Workflow Id: docs-full-assembly
 
-147 guide configurations found.
+148 guide configurations found.
 
-1779 information nodes found.
+1789 information nodes found.
 
-1536 information nodes are attached to guides.
+1545 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -1331,6 +1331,22 @@ java/generated/add-replay-test-to-background-check-workflow -> /dev-guide/java/d
 java/chapter-durable-execution/workflow-reset -> /dev-guide/java/durable-execution#workflow-reset
 
 java/add-sdk -> /dev-guide/java/foundations#install-a-temporal-sdk
+
+java/chapter-temporal-client/temporal-client-intro -> /dev-guide/java/temporal-client
+
+java/chapter-temporal-client/temporal-client-communicating-with-grpc -> /dev-guide/java/temporal-client#grpc-client-communication
+
+java/chapter-temporal-client/temporal-client-configuring-development-client -> /dev-guide/java/temporal-client#client
+
+java/chapter-temporal-client/temporal-client-connect-to-development-server -> /dev-guide/java/temporal-client#connect-to-a-temporal-development-service
+
+java/chapter-temporal-client/temporal-client-prepare-for-icloud -> /dev-guide/java/temporal-client#prerequisites
+
+java/chapter-temporal-client/temporal-client-login-with-tcld -> /dev-guide/java/temporal-client#authenticate-with-tcld
+
+java/chapter-temporal-client/temporal-client-issue-mtls-credentials -> /dev-guide/java/temporal-client#mtls-credentials
+
+java/chapter-temporal-client/temporal-client-connect-to-cloud -> /dev-guide/java/temporal-client#connect-to-temporal-cloud
 
 java/async-activity-completion -> /dev-guide/java/features#asynchronous-activity-completion
 

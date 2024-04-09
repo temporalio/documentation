@@ -122,6 +122,7 @@ websites/docs.temporal.io/docs/dev-guide/phplang/foundations.mdx linguist-genera
 websites/docs.temporal.io/docs/dev-guide/phplang/index.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/phplang/observability.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/phplang/testing.mdx linguist-generated=true
+websites/docs.temporal.io/docs/dev-guide/javalang/temporal-client.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/javalang/converters.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/javalang/debugging.mdx linguist-generated=true
 websites/docs.temporal.io/docs/dev-guide/javalang/durable-execution.mdx linguist-generated=true

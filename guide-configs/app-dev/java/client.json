@@ -1,0 +1,49 @@
+{
+  "file_name": "temporal-client.mdx",
+  "id": "temporal-client",
+  "file_dir": "dev-guide/javalang",
+  "slug": "/dev-guide/java/temporal-client",
+  "title": "Temporal Client - Java SDK dev guide",
+  "sidebar_label": "Temporal Client",
+  "sidebar_position": 5,
+  "description": "The Temporal Client section of the Temporal Developer's guide introduces Clients, features that communicate and interact with the Temporal Service.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "java/chapter-temporal-client/temporal-client-intro"
+    },
+    {
+      "type": "h2",
+      "id": "java/chapter-temporal-client/temporal-client-communicating-with-grpc"
+    },
+    {
+      "type": "h2",
+      "id": "java/chapter-temporal-client/temporal-client-configuring-development-client"
+    },
+    {
+      "type": "h2",
+      "id": "java/chapter-temporal-client/temporal-client-connect-to-development-server"
+    },
+    {
+      "type": "h2",
+      "id": "java/chapter-temporal-client/temporal-client-prepare-for-icloud"
+    },
+    {
+      "type": "h2",
+      "id": "java/chapter-temporal-client/temporal-client-login-with-tcld"
+    },
+    {
+      "type": "h2",
+      "id": "java/chapter-temporal-client/temporal-client-issue-mtls-credentials"
+    },
+    {
+      "type": "h2",
+      "id": "java/chapter-temporal-client/temporal-client-connect-to-cloud"
+    }
+
+  ]
+}
+
