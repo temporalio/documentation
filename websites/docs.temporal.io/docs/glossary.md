@@ -487,6 +487,12 @@ A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal C
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
+#### [Temporal Cloud gRPC Endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint)
+A Cloud gRPC Endpoint is a Namespace-specific address used to access Temporal Cloud from your code.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
 #### [Temporal Cluster](/clusters)
 A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.
 

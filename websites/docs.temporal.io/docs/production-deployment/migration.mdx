@@ -36,13 +36,14 @@ Here’s a high-level overview of what you can expect:
 ### Updating Client connection code in your Workers
 
 Whether you’re self-hosting Temporal or using Temporal Cloud, you manage runtime of your code.
-To migrate your Workflows to Temporal Cloud, you need to change some parameters in the Client connection code, such as the endpoint’s hostname and port number.
+To migrate your Workflows to Temporal Cloud, you need to change some parameters in the Client connection code, such as updating the namespace and gRPC endpoint.
 
 The changes needed to direct your Workflow to your Temporal Cloud
 Namespace are only a few lines of code, including:
 
 - [Add your SSL certificate and private key](/cloud/saml) associated with your Namespace.
-- [Create a string](/cloud/namespaces) to reference your cloud endpoint `(namespace.unique_id.tmprl.cloud:port)`.
+- [Copy the Cloud-hosted endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint) from the Namespace detail Web page.
+  The endpoint uses this format: `namespace.account_id.tmprl.cloud:port`.
 - [Connect to Temporal Cloud](/cloud/get-started) with your Client.
 - [Configure tcld, the Cloud CLI](/cloud/tcld), with the same address, Namespace, and
   certificate used to create a Client through code.
@@ -85,7 +86,7 @@ The volume of these requests might be high to execute against all the matches to
 ### Other considerations when migrating
 
 - Have you added an mTLS certificate to your Temporal Namespace? Review our [documentation for adding a certificate to your Temporal Cloud account](/cloud/certificates) for more information.
-- There are differences in how metrics are generated in self-hosted Temporal and Temporal Cloud. Review the [documentation on Temporal Cloud metrics](/cloud/metrics) for more information.
+- There are differences in how metrics are generated in self-hosted Temporal and Temporal Cloud. Review the [documentation on Temporal Cloud metrics](/cloud/metrics/) for more information.
 - Consider the implications for [security and access to your cluster](/cloud/security).
 - Review your current load (actions per second) and speak to your Account Executive and Solutions Architect so we can set appropriate [Namespace limits](/cloud/limits).
 

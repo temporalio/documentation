@@ -25,7 +25,7 @@ The base [Failure proto message](https://api-docs.temporal.io/#temporal.api.fail
 
 - `string message`
 - `string stack_trace`
-- `string source`: The SDK this Failure originated in (for example, `"TypeScriptSDK"`). In some SDKs, this field is used to rehydrate the stack trace into an exception object.
+- `string source`: The SDK this Failure originated in (for example, `"TypeScriptSDK"`). In some SDKs, this field is used to rehydrate the call stack into an exception object.
 - `Failure cause`: The `Failure` message of the cause of this Failure (if applicable).
 - `Payload encoded_attributes`: Contains the encoded `message` and `stack_trace` fields when using a [Failure Converter](/concepts/what-is-a-failure-converter).
 
@@ -46,6 +46,22 @@ Only Workflow errors that are Temporal Failures cause the Workflow Execution to 
 Most types of Temporal Failures automatically occur, like a [Cancelled Failure](#cancelled-failure) when the Workflow is Cancelled or an [Activity Failure](#activity-failure) when an Activity Fails.
 You can also explicitly fail the Workflow Execution by throwing (or returning, depending on the SDK) an Application Failure.
 
+If a Workflow raises an exception, it will either be retried, or marked as failed.
+This is dependent on whether the exception is a **Workflow Task Failure** or a **Workflow Execution Failure**.
+
+#### Workflow Task Failures
+
+A **Workflow Task Failure** is an unexpected situation failing to process a Workflow Task.
+This could be triggered by raising an exception in your Workflow code.
+Any exception that does not extend Temporal's `FailureError` exception is considered a Workflow Task Failure.
+These types of failures will cause the Workflow Task to be retried.
+
+#### Workflow Execution Failures
+
+An `ApplicationError`, an extension of `FailureError`, can be raised in a Workflow to fail the Workflow Execution.
+Workflow Execution Failures put the Workflow Execution into the "Failed" state and no more attempts will be made in progressing this execution.
+If you are creating custom exceptions you would either need to extend the `ApplicationError` class—a child class of `FailureError`— or explicitly state that this exception is a Workflow Execution Failure by raising a new `ApplicationError`.
+
 ### Throw from Activities
 
 In Activities, you can either throw an Application Failure or another Error to fail the Activity Task.
@@ -57,7 +73,7 @@ During conversion, the following Application Failure fields are set:
 - `non_retryable` is set to false.
 - `details` are left unset.
 - `cause` is a Failure converted from the error's `cause` property.
-- stack trace is copied.
+- call stack is copied.
 
 When an [Activity Execution](/concepts/what-is-an-activity-execution) fails, the Application Failure from the last Activity Task is the `cause` field of the [ActivityFailure](#activity-failure) thrown in the Workflow.
 

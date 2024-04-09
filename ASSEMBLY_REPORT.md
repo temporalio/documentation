@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday April 01 2024 14:33:37 PM -0700
+Last assembled: Tuesday April 09 2024 15:38:28 PM -0700
 
-Assembly Workflow Id: docs-full-assembly-rachfop
+Assembly Workflow Id: docs-full-assembly
 
-146 guide configurations found.
+148 guide configurations found.
 
-1778 information nodes found.
+1781 information nodes found.
 
-1535 information nodes are attached to guides.
+1538 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -452,7 +452,7 @@ self-hosted/how-to-set-up-dual-visibility -> #dual-visibility
 
 concepts/what-is-cluster-configuration -> /clusters#cluster-configuration
 
-cloud/metrics-intro -> /cloud/metrics
+cloud/metrics-intro -> /cloud/metrics/
 
 concepts/what-is-temporal-cloud -> /cloud/overview
 
@@ -566,7 +566,7 @@ go/namespaces -> /dev-guide/go/features#namespaces
 
 java/namespaces -> /dev-guide/java/features#namespaces
 
-cloud/prometheus-grafana-setup -> /cloud/metrics#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
+cloud/prometheus-grafana-setup -> /cloud/metrics/prometheus-grafana#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
 
 cli/workflow/show -> /cli/workflow#show
 
@@ -870,21 +870,25 @@ cloud/users-update-permissions -> #update-permissions
 
 cloud/users-delete -> #delete-users
 
-java/generated/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/java/project-setup#cloud-worker
-
-php/connect-to-a-dev-cluster -> /dev-guide/php/foundations#connect-to-a-dev-cluster
-
 cloud/saml-intro -> /cloud/saml
 
+concepts/what-is-a-cloud-grpc-endpoint -> /cloud/namespaces#temporal-cloud-grpc-endpoint
+
 dev-guide/temporal-sdk -> /dev-guide/sdks
+
+cloud/pricing-storage -> #storage
 
 concepts/what-is-a-reset -> /workflows#reset
 
 cloud/what-is-workflow-history-export -> /cloud/export
 
-concepts/what-is-the-temporal-web-ui -> /web-ui
+cloud/what-is-an-action -> #action
 
-cloud/what-is-an-action -> /cloud/pricing#action
+java/generated/backgroundcheck-boilerplate-cloud-worker -> /dev-guide/java/project-setup#cloud-worker
+
+php/connect-to-a-dev-cluster -> /dev-guide/php/foundations#connect-to-a-dev-cluster
+
+concepts/what-is-the-temporal-web-ui -> /web-ui
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 

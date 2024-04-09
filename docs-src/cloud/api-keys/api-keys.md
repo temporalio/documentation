@@ -6,7 +6,7 @@ description: Temporal Cloud supports API Key Authentication, which provides you 
 tags:
   - explanation
 ssdi:
-  - API Keys is in a Public Preview release status for Temporal Cloud.
+  - In [Public Preview](/temporal/release-stages#public-preview)
 ---
 
 Temporal Cloud supports secure programmatic access through API Key Authentication.

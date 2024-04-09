@@ -11,10 +11,11 @@ tags:
   - workflow stack
   - query
   - stack trace
+  - call stack
 ---
 
 The `temporal workflow stack` command queries a [Workflow Execution](/concepts/what-is-a-workflow-execution) with `--stack-trace` as the [Query](/concepts/what-is-a-query#stack-trace-query) type.
-Returning the stack trace of all the threads owned by a Workflow Execution can be great for troubleshooting in production.
+Returning the call stack of all the threads owned by a Workflow Execution can be great for troubleshooting in production.
 
 Use the following options to change the command's behavior.
 

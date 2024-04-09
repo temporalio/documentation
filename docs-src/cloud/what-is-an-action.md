@@ -20,18 +20,21 @@ Actions are collected and billed monthly for each Namespace. The base rate is $2
 | --------------------- | --------------------- |
 | Any number            | $25.00 (prorated)     |
 
-Alternatively, Temporal also offers a credit system. Credits provide an additional discount schedule for both billable Actions and storage. Credits do not expire. The following table outlines cost estimates and discount bands for the credits system. Please reach out to the team if you are interested in this option.
+Alternatively, Temporal also offers a credit system. Credits provide an additional discount schedule for both billable Actions and [storage](/cloud/pricing-storage).
+Credits do not expire.
+The following table outlines cost estimates for the credits system.
+Please [reach out to the team](https://pages.temporal.io/contact-us) if you are interested in this option.
 
-| **Actions per month (millions)** | **Cost per 1M (USD)** | **Cost band**       | **Actions per second** |
-| -------------------------------- | --------------------- | ------------------- | ---------------------- |
-| 0 to 299                         | $23.25                | $0–$7,500           | ~115                   |
-| 300 to 1,499                     | $18.80                | $5,640–$28,200      | ~570                   |
-| 1,500 to 7,499                   | $14.10                | $21,150–$105,750    | ~2,860                 |
-| 7,500 to 29,999                  | $10.50                | $78,750–$315,000    | ~11,400                |
-| 30,000 to 149,999                | $7.90                 | $237,000–$1,185,000 | ~57,000                |
-| 150,000 or more                  | $5.90                 | Begins at $885,000  | n/a                    |
+| **Actions (Per Million Actions per Namespace)** | **Cost (USD)** |
+| ----------------------------------------------- | -------------- |
+| Up to 300M                                      | $23.25         |
+| Over 300M up to 1.5B                            | $18.80         |
+| Over 1.5B up to 7.5B                            | $14.10         |
+| Over 7.5B up to 30B                             | $10.50         |
+| Over 30B up to 150B                             | $7.90          |
+| Over 150B                                       | $5.90          |
 
-The following operations result in Actions.
+The following operations result in Actions:
 
 **Workflows**
 
@@ -48,7 +51,7 @@ The following operations result in Actions.
 - **Signal sent.**
   Includes sending a [Signal](/concepts/what-is-a-signal) from a client or from within a Workflow to another Workflow.
 - **Query received.** [Queries](/concepts/what-is-a-query) aren't recorded in Event History.
-  An operation such as viewing the stack trace in the Temporal Cloud UI results in a Query.
+  An operation such as viewing the call stack in the Temporal Cloud UI results in a Query.
 - **Side Effect recorded.**
   For a mutable [Side Effect](/concepts/what-is-a-side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)

@@ -4,13 +4,13 @@ title: What is an Update?
 sidebar_label: Update
 description: An Update is a request to and a response from Workflow Execution.
 ssdi:
-  - In Pre-Release stage (API is subject to change)
-  - Released in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
-  - Available in the [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.23.1/client#Client.UpdateWorkflowWithOptions) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
-  - Available in the [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
-  - Available in the [Python SDK](https://docs.temporal.io/dev-guide/python/features#updates) since [v1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
-  - Available in the [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_ExecuteUpdateAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowUpdateOptions_) since [v0.1.0-beta2](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta2)
-  - Available in the [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#executeupdate) since [v1.9.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0)
+  - In [Pre-release](/temporal/release-stages#pre-release) (API is subject to change)
+  - Introduced in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
+  - Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.23.1/client#Client.UpdateWorkflowWithOptions) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
+  - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+  - Available in [Python SDK](https://docs.temporal.io/dev-guide/python/features#updates) since [v1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
+  - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_ExecuteUpdateAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowUpdateOptions_) since [v0.1.0-beta2](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta2)
+  - Available in [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#executeupdate) since [v1.9.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0)
 tags:
   - term
   - updates
@@ -32,6 +32,8 @@ The Workflow must have a function to handle the Update.
 The Update handler can mutate workflow state (like a [Signal](/concepts/what-is-a-signal) but unlike a [Query](/concepts/what-is-a-query)) and return a value to the caller (like a Query but unlike a Signal).
 Like every bit of code in a Workflow, Update handlers must be [deterministic](/concepts/what-is-a-workflow-definition#deterministic-constraints).
 However, they may use all the available Workflow features, such as executing Activities and child Workflows, and waiting on timers/conditions.
+
+To avoid losing Updates when using [Continue-As-New](/concepts/what-is-continue-as-new), ensure that all Update handlers have completed before calling Continue-As-New.
 
 When there is the potential for multiple Updates to cause a duplication problem, Temporal recommends adding idempotency logic to your Update handler that checks for duplicates.
 
