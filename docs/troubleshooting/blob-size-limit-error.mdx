@@ -34,7 +34,7 @@ There are multiple strategies you can use to avoid this error:
 
 2. Break larger batches of commands into smaller batch sizes:
    - Workflow-level batching:
-     1. Modify the Workflow to process Activities in smaller batches.
+     1. Modify the Workflow to process Activities or Child Workflows into smaller batches.
      2. Iterate through each batch, waiting for completion before moving to the next.
    - Workflow Task-level batching:
      1. Execute Activities in smaller batches within a single Workflow Task.
