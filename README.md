@@ -8,7 +8,7 @@ Welcome to Temporal's documentation repository!
 
 - [Temporal documentation](#temporal-documentation)
   - [What is the goal of this README?](#what-is-the-goal-of-this-readme)
-    - [What is the “Temporal Platform information corpus”?](#what-is-the-temporal-platform-information-corpus)
+    - [What is the “Temporal information corpus”?](#what-is-the-temporal-information-corpus)
   - [What is in this repository?](#what-is-in-this-repository)
     - [`/docs-src` information nodes](#docs-src-information-nodes)
     - [`website/docs.temporal.io/docs` generated files for Docusaurus](#websitedocstemporaliodocs-generated-files-for-docusaurus)
@@ -59,7 +59,7 @@ Welcome to Temporal's documentation repository!
 
 ## What is the goal of this README?
 
-The goal of this README is to empower community contribution to the Temporal Platform information corpus, specifically docs.temporal.io. See [How to make changes to this repository](#how-to-make-changes-to-this-repository).
+The goal of this README is to empower community contribution to the Temporal information corpus, specifically docs.temporal.io. See [How to make changes to this repository](#how-to-make-changes-to-this-repository).
 
 Maintainers and contributors to this project are expected to conduct themselves in a respectful way. See the [CNCF Community Code of Conduct](https://github.com/cncf/foundation/blob/master/code-of-conduct.md) as a reference.
 
@@ -67,9 +67,9 @@ This repository and its contents are open-source; individual and commercial use 
 
 [MIT License](https://github.com/temporalio/documentation/blob/main/LICENSE.md)
 
-### What is the “Temporal Platform information corpus”?
+### What is the “Temporal information corpus”?
 
-It is all of the Temporal Platform related information.
+It is all Temporal related information.
 It includes the relevant information that might not be in this repository but can be found in other locations.
 
 [Adding to this repository](#how-to-make-changes-to-this-repository) is only way to add to the information corpus.
@@ -80,13 +80,8 @@ Consider registering your already published information with Temporal IQ and rea
 
 ## What is in this repository?
 
-This repository contains a large chunk of the Temporal Platform information corpus, divided into "source-of-truth" Markdown files and "generated" Markdown files, along with a changelog and an Assembly Workflow.
+This repository contains a large chunk of the Temporal information corpus, divided into "source-of-truth" Markdown files and "generated" Markdown files, along with a changelog and an Assembly Workflow.
 Each component is explained later in this README.
-
-### `/docs-src` information nodes
-
-This directory contains editable Markdown files, known as "information nodes," that are used to generate the guides seen in the `/websites/docs.temporal.io/docs` directory and on our website.
-These nodes are registered to the Assembly Workflow with guide configurations. These configuration files can be found in `/assembly/guide-configs`.
 
 ### `website/docs.temporal.io/docs` generated files for Docusaurus
 
@@ -102,30 +97,6 @@ Generated content has the following note below the metadata:
 
 When suggesting changes to this repository, try not to highlight the errors in generated files.
 Please make comments and suggestions in the appropriate source nodes.
-
-### `/assembly` Assembly Workflow
-
-
-**Please note that our docs tooling is not designed to build natively on Windows. If you want to contribute from a Windows environment, please run these commands under a [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) shell.**
-
-The `/assembly` directory contains a Temporal Application written in JavaScript that uses Temporal's TypeScript SDK. This application acts as a build wrapper around the Docusaurus framework to assemble and generate the files in `/websites/docs.temporal.io/docs`.
-
-Generated files are composed of many individual files, known as information nodes, contained in the `/docs-src` directory.
-
-Modularizing our content not only tidies up the repository but also provides a great example of Temporal at work. Our pre-build processes, a set of independent scripts, are invoked in a Temporal Workflow to generate and format what goes into Docusaurus.
-
-### `/guide-configs` Guide configurations
-
-Each JSON configuration file in [`/guide-configs`](https://github.com/temporalio/documentation/blob/main/guide-configs) represents a user-facing narrative that pieces together concepts, how-to guides, and SDK-specific developer guides.
-
-Run the Assembly Workflow with a local Cluster (such as [Temporal CLI](https://docs.temporal.io/kb/all-the-ways-to-run-a-cluster#temporal-cli)) or [Temporal Cloud](https://docs.temporal.io/cloud/).
-
-See [How to run the Assembly Workflow](#how-to-run-the-assembly-workflow) for more information about this Workflow.
-
-#### DACX information node generation tooling
-
-Beyond creating generated files, the Assembly Workflow can generate information nodes for documentation code-sample repositories.
-For more information, see [How to use DACX](#how-to-use-dacx).
 
 ### Snipsync code synchronization tooling
 
@@ -194,11 +165,9 @@ git push origin yourfix
 
 ## How to make changes to this repository
 
-
 **STOP! [Make sure you are eligible to create a pull request!](#how-to-get-approval-to-create-a-pull-request)**
 
 **After receiving approval, follow these steps to make changes to this repository.**
-
 
 If you want to fix a typo or something minor, check out the [How to fix a typo](#how-to-fix-a-typo) section of this README.
 
@@ -296,27 +265,11 @@ Sentence casing means that only proper nouns and the first letter of the first w
 
 ### What is the philosophy around versioning the documentation?
 
-The Temporal Platform includes many different components and core dependencies. Many components are independently versioned, meaning that they document their stability and support for their own dependencies. The [Temporal Go SDK reference](https://pkg.go.dev/go.temporal.io/sdk?tab=versions) provides a good example of document versioning.
+Temporal includes many different components and core dependencies. Many components are independently versioned, meaning that they document their stability and support for their own dependencies. The [Temporal Go SDK reference](https://pkg.go.dev/go.temporal.io/sdk?tab=versions) provides a good example of document versioning.
 
-The goal of this information set, in regards to versioning, is to remain “current”. That is, this information should serve the needs of the Platform’s user base as best it can based on what is/has recently happened across all the components of the Temporal Platform.
+The goal of this information set, in regards to versioning, is to remain “current.” That is, this information should serve the needs of Temporal’s user base as best it can based on what is/has recently happened across all the Temporal's components.
 
-Whenever possible, we make explicit callouts to support, stability, and dependency information by using the `ssdi` metadata tag in `docs-src` nodes.
-
-#### How to explicitly identify support, stability, and dependency info
-
-Use the `ssdi` metadata in a `docs-src` node to explicitly call out support, stability, and dependency information.
-Example:
-
-```markdown
----
-id: what-is-x
-// ...
-ssdi:
-  - Introduced in [Temporal Server version x.xx.x](/path/to/release/notes/)
-  - Available in [Temporal CLI version x.xx.x](/path/to/release/notes/)
-  - Released in Temporal Cloud on <date>
----
-```
+Whenever possible, we make explicit call outs to support, stability, and dependency information by using the `ssdi` metadata tag in `docs-src` nodes.
 
 ### How to find broken links
 
@@ -329,359 +282,6 @@ yarn check-links
 ```
 
 This command will start the hyperlink checker.
-
-### How to run the Assembly Workflow
-
-You have two methods to run the Assembly Workflow.
-For most, using the automated method helps ensure that you can make changes to the documentation repo.
-
-#### Automated method
-
-Are your trying to contribute to the Temporal Platform documentation?
-
-To build your changes, run `yarn make`.
-For more information, see [make-README.md](./make-README.md)
-
-#### Manual method
-
-Make sure you have a Namespace set up and ready to use.
-We recommend using the [Temporal CLI development Server](https://docs.temporal.io/cli/#starting-the-temporal-server).
-
-In a separate terminal, start the Temporal Server:
-
-```bash
-temporal server start-dev
-```
-
-In a separate terminal, run the Worker in the `/assembly` folder.
-
-```bash
-cd assembly
-yarn install
-./worker.js
-```
-
-In a third terminal, start the Workflow from the root of this repository.
-
-```bash
-yarn assemble
-```
-
-### How to create a guide configuration
-
-Guide configurations are stored in `assembly/guide-configs`.
-
-They are more or less organized to reflect the intended output in the `docs` directory; however, this arrangement is purely for file management purposes and does not affect where the guide output is written.
-
-Guide configurations link independent source nodes together into a guide-style narrative.
-Some of the guide-level metadata is supplied directly in the guide configuration, and the rest is generated from the source nodes. For example, the “keywords” and “tags” metadata are generated from the source nodes attached to the config.
-
-Example configuration:
-
-```json
-{
-  "file_name": "foundations.md", // name of the file that gets written to the docs directory
-  "file_dir": "dev-guide/golang", // the directory that the file is written to
-  "id": "foundations", // id of the document that is used by Docusaurus
-  "slug": "/dev-guide/go/foundations", // slug of the document that is used by Docusaurus - OVERRIDES id + file_dir slug
-  "title": "Go SDK developer's guide - Foundations", // title of the published document
-  "sidebar_label": "Foundations", // sidebar label of the document
-  "sidebar_position": 1, // position of the label in the sidebar
-  "description": "The Foundations section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go – that is, all the relevant steps to start a Workflow Execution that executes an Activity.", // Published description metadata
-  "use_description": false, // uses the description as the first sentence in the generated doc
-  "toc_max_heading_level": 4, // sets the maximum toc level for the generated doc
-  "add_tabs_support": true, // adds mdx imports to generated doc to support tabs
-  "sections": [
-    // array of sections
-    {
-      "type": "p", // section type - p sections use the previous heading as an anchor
-      "id": "go/foundations" // this is the directory + doc id within docs-src
-    },
-    {
-      "type": "h2", // can go as deep as h4
-      "id": "clusters/how-to-install-temporal-cli"
-    },
-    {
-      "type": "h2",
-      "id": "go/add-sdk"
-    },
-    {
-      "type": "p",
-      "id": "go/how-to-use-the-go-sdk"
-    },
-    {
-      "type": "h3",
-      "id": "go/api-reference-go"
-    },
-    {
-      "type": "h3",
-      "id": "go/code-samples"
-    }
-  ]
-}
-```
-
-### How to use DACX
-
-**What is DACX?**
-
-DACX is short for “Docs as code.”
-All the logic of the DACX tool is built into the Assembly Workflow.
-
-**Why use DACX?**
-
-DACX is similar to [Snipsync](https://github.com/temporalio/snipsync), except that DACX lets you write the documentation within the code.
-Rather than curating the information and code within the documentation repository, you curate the information within the source code's repository.
-The Assembly Workflow then generates Markdown guides from the narrative inlined with the code.
-As a result, DACX provides rich content in multiple places.
-
-To start using DACX, choose a source repo.
-
-- Go → https://github.com/temporalio/documentation-samples-go
-- Python → https://github.com/temporalio/documentation-samples-python
-- Java → TODO
-- TypeScript → https://github.com/temporalio/documentation-samples-typescript
-
-You can also register a new source repo with the Assembly Workflow.
-
-Add your repository in the `documentation_samples_repos` section of the [Assembly configuration](https://github.com/temporalio/documentation/blob/main/assembly/config.json) file.
-
-Specify a branch name in the `ref` field if your changes are not merged into the main branch of the source repo.
-
-Example:
-
-```go
-{
-  "org": "your-org" // for us, this is temporalio
-  "name": "your-repo" // name of the repository
-  "ref" : "your-branch-name" // name of your branch; optional
-  // if a branch is not specified, main is used
-}
-```
-
-#### Identify DACX files
-
-The Assembly Workflow identifies DACX files by the inclusion of `_dacx` in filenames.
-In your source repository, add `_dacx` at the end of the file name, but before the file extension, to identify files using DACX.
-
-For example, `my_main_workflow_file_dacx.go`.
-
-This must be done for every file that contains DACX.
-
-#### Write documentation using vanilla Markdown
-
-In the source repository, write your documentation as Markdown in multiline comments.
-
-The Assembly Workflow identifies all multiline comments as Markdown documentation.
-
-Single-line comments are treated the same as the rest of the code.
-
-Single-line commenting is still highly encouraged to make the code understandable.
-
-For example:
-
-```go
-/*
-This is treated as Markdown documentation.
-
-Format this information as you would any other Markdown content.
-
-Because Markdown maintains readability, anyone can read this, even when a [link](/somelink) is present.
-*/
-
-// MyCode is my code; this comment is treated the same as the code
-func MyCode () error {
- // ...
-}
-```
-
-#### Use `@dacx` comments to identify information nodes
-
-In the source repository, add `@dacx` to a multiline comment at the bottom of the `_dacx` file.
-
-The comment must be structured exactly like the following:
-
-```go
-/* @dacx
-id: id-of-resulting-info-node
-title: Title of the resulting info node
-label: Info node label (often becomes the anchor if node is used as a header)
-description: Longer description of the info node used in link page previews.
-lines: line numbers
-@dacx */
-```
-
-Example:
-
-```go
-/* @dacx
-id: how-to-run-a-temporal-cloud-worker-in-go
-title: How to run a Temporal Cloud Worker in Go
-label: Run a Cloud Worker
-description: Use a certificate key pair and your Temporal Cloud Namespace to connect to Temporal Cloud.
-lines: 1-52, 64
-@dacx */
-```
-
-#### Basic line-selection requirements
-
-You must select both the opening multiline comment line and the closing multiline comment line when selecting multiline comments, either as a distinct selection or as part of a large group of Markdown and code.
-
-For example:
-
-```go
-/*
-This is treated as Markdown documentation.
-
-Format this information as you would any other Markdown content.
-
-Because Markdown maintains readability, anyone can read this, even when a [link](/somelink) is present.
-*/
-
-// MyCode is my code; this comment is treated the same as the code
-func MyCode () error {
- // ...
-}
-
-/* @dacx
-id: my-dacx-code-example
-title: My DACX code example
-label: DACX example
-description: Always select the opening and closing multiline comment characters.
-lines: 1-7
-@dacx */
-```
-
-In the preceding example, we capture lines 1 through 7 to capture the whole multiline comment section.
-
-We could also capture the full multiline comment as part of capturing a group of Markdown and code:
-
-```go
-/* @dacx
-id: my-dacx-code-example
-title: My DACX code example
-label: DACX example
-description: Always select the opening and closing multiline comment characters.
-lines: 1-12
-@dacx */
-```
-
-#### Use Assembly to generate the info nodes
-
-In the documentation repository, run `yarn assemble --samples` to generate the information nodes into their respective language-specific directories.
-
-For example, information nodes generated from `.go` files are generated into the `/docs-src/go` directory.
-
-#### Add info nodes to an Assembly guide config
-
-In the documentation repo, register the information node in a [guide configuration](https://github.com/temporalio/documentation/tree/main/assembly/guide-configs) file.
-
-Arrange the information nodes to create a linear experience.
-
-In many cases, information nodes are attached to developer guide configurations.
-
-For example:
-
-```json
-{
-  "file_name": "foundations.md",
-  "id": "foundations",
-  "file_dir": "application-development/golang",
-  "title": "Go SDK developer's guide - Foundations",
-  "sidebar_label": "Foundations", // This is the label of the guide in the sidebar
-  "sidebar_position": 1, // This is the position within the sidebar relative to others at the same level
-  "description": "The Foundations section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go – that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
-  "use_description": false,
-  "toc_max_heading_level": 4,
-  "add_tabs_support": true,
-  "sections": [
-    {
-      "type": "p", // use p for sections that you don't want a header for or want to string together.
-      "id": "go/foundations"
-    },
-    {
-      "type": "h2",
-      "id": "go/add-sdk"
-    },
-    {
-      "type": "h2", // this is the header level you want
-      "id": "how-to-develop-a-workflow-in-go" // this is the id of the info node
-    }
-    // ...
-  ]
-}
-```
-
-#### Run Assembly one more time
-
-In the documentation repo, run `yarn assemble` to generate the guides from the guide configurations.
-
-Preview your work locally with the command `yarn start`.
-
-### How to use Snipsync
-
-Make sure your source code repository is registered in the `snipsync.config.yaml` file.
-
-Place your [snipsync](https://github.com/temporalio/snipsync) snippet wrappers where you want the snippet to be within the information node.
-
-```
-<!--SNIPSTART typescript-hello-client -->
-<!--SNIPEND-->
-
-```
-
-Run `yarn snipsync` to merge the snippet contents (in this case, from `[samples-typescript](https://github.com/temporalio/samples-typescript/blob/75bdcd613bd24f8f357cb96d1b83051353c5685a/hello-world/src/client.ts#L1)`) between the `SNIPSTART` and `SNIPEND` tags.
-
-[Run the Assembly Workflow](https://www.notion.so/Documentation-repo-README-content-WIP-ddd0e586594246b3b9948919bbf7b12b?pvs=21).
-
-Format the files with `yarn format`.
-
-[Create a pull request](#how-to-create-a-pull-request).
-
-### How to create a pull request
-
-Commit your changes to a new branch.
-
-If you are outside the Temporal organization, fork the repository and create pull requests from branches on your own fork.
-
-See the README in GitHub's [first-contributions](https://github.com/firstcontributions/first-contributions) repo for guidance on forking and creating pull requests.
-
-Vercel provides a deployment preview for each push to the pull request.
-
-!https://github.com/temporalio/documentation/raw/main/static/img/readme/vercel-deploy-preview.png
-
-If you don't belong to the Temporal organization, a member of the Temporal @temporalio/education team will need to approve your preview.
-
-If you don't belong to the Temporal organization, you may need to sign the Contributor License Agreement yourself.
-
-The @temporalio/education team tries to review GitHub issues and pull requests on a regular schedule.
-
-When we merge your pull request, a new build automatically occurs and your changes publish to [https://docs.temporal.io](https://docs.temporal.io/).
-
-#### Assembly Workflow merge conflicts
-
-Run the Assembly Workflow to fix any merge conflict in ASSEMBLY_REPORT.md and any generated guides in the `/docs` directory.
-
-Restart your Worker after merging `main` into your branch and before running Assembly again.
-
-## Autogenerate table of contents
-
-The `devGuideToc.js` file provides a solution for generate a table of contents (ToC) for the developer's guide.
-The script processes JSON configuration files to extract relevant information, then creates a Markdown file for each language with an organized ToC. Here's a breakdown of the code's functionality:
-
-### Functions
-
-`translateLanguageName(name)`: This function takes a language name as input and returns the corresponding name from the LANGUAGE_MAP. If the language name is not found in the map, it returns the original name.
-
-`sortBySidebarPosition(filePaths)`: This function takes an array of file paths as input and sorts them based on the sidebar_position value in each file's JSON content.
-
-`getMetadataFromMarkdown(filePath)`: This function takes a file path as input and returns the title and description metadata from the file's markdown content.
-
-`getFilesInDirectory(directory, extension)`: This function takes a directory path and a file extension as input and returns an array of all files in the directory (and its subdirectories) with the given extension.
-
-`generateTableOfContents(config, files)`: This function takes a configuration object and an array of file paths as input. It organizes the files by language, generates a table of contents for each language, and writes the table of contents to a markdown file.
-
-`devGuideToc(config)`: This is the main function that drives the script. It takes a configuration object as input, reads the guide files, and calls `generateTableOfContents` to generate the table of contents.
 
 ### How to preview the site locally
 
@@ -704,32 +304,6 @@ Note that the `/build` directory is ignored by Git.
 
 This command spins up a local web server and serves the contents of the `/build` directory to [localhost:3000](http://localhost:3000/).
 
-### `yarn assemble`
-
-This command starts and runs the Assembly Workflow, provided you have a Temporal Cluster to connect to.
-
-It accepts the following arguments:
-
-#### `--cloud`
-
-When provided, this flag causes the Temporal Client to connect to a Temporal Cloud Namespace. This flag requires that the following private information is set in `assembly/secure`:
-
-- `docs-assembly.pem`: Paste and save the full CA certificate text.
-- `docs-assembly.key`: Paste and save the full secret that was generated with the certificate.
-- `cloud-connection.json`: Paste the following JSON, replacing the values with your own.
-
-```
-{
-  "address": "your-cloud-address",
-  "unique_id": "your-unique-custom-id",
-  "namespace": "your-namespace"
-}
-```
-
-#### `--samples`
-
-When provided, this flag causes the Assembly Workflow to generate information nodes from the documentation samples repositories.
-
 ### `yarn format`
 
 This command formats the documents per the `dprint.json` configuration.
@@ -738,6 +312,6 @@ This command formats the documents per the `dprint.json` configuration.
 
 This command runs the Snipsync tool per the snipsync.config.yaml file.
 
-### `--clear`
+#### `--clear`
 
 Run `yarn snipsync --clear` to remove the snippets.
