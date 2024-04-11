@@ -15,10 +15,14 @@ origins:
     repo: samples-go
   - owner: temporalio
     repo: samples-java
+  - files:
+      pattern: "./sample-apps/**/*.go"
+      owner: "temporalio"
+      repo: "documentation"
+      ref: "main"
 
 targets:
   - docs
-  - docs-src
 
 features:
   enable_source_link: true
