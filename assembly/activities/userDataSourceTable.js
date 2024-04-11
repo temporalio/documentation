@@ -83,14 +83,14 @@ async function fetchAndGenerateTable() {
     "Account-level Role details",
     "This table provides API-level details for the permissions granted to a user through account-level Roles.  These permissions are configured per user.",
     permissionMap,
-    ["account:admin", "account:developer", "account:read"]
+    ["account:read", "account:developer", "account:admin"]
   );
 
   printTable(
     "Namespace-level permissions details",
     "This table provides API-level details for the permissions granted to a user through Namespace-level permissions.  These permissions are configured per Namespace per user.",
     permissionMap,
-    ["namespace:admin", "namespace:write", "namespace:read"]
+    ["namespace:read", "namespace:write", "namespace:admin"]
   );
 
   return outputLines.join("\n");
