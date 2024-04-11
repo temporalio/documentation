@@ -7,23 +7,22 @@ description: Audit Logging provides forensic access information at the account, 
 slug: /cloud/audit-logging
 toc_max_heading_level: 4
 keywords:
-- audit logging
-- explanation
-- how-to
-- operations
-- temporal cloud
-- term
-- troubleshooting
+  - audit logging
+  - explanation
+  - how-to
+  - operations
+  - temporal cloud
+  - term
+  - troubleshooting
 tags:
-- audit-logging
-- explanation
-- how-to
-- operations
-- temporal-cloud
-- term
-- troubleshooting
+  - audit-logging
+  - explanation
+  - how-to
+  - operations
+  - temporal-cloud
+  - term
+  - troubleshooting
 ---
-
 
 Audit Logging is a feature of [Temporal Cloud](/cloud/overview) that provides forensic access information at the account level, the user level, and the [Namespace](/namespaces) level.
 
@@ -223,7 +222,10 @@ The Audit Logging page of the Temporal Cloud UI provides the current status of a
 
 After an Admin Operation is performed, users can see Audit Log messages flow through Kinesis.
 
-Temporal retains Audit Log information for up to 30 days.
+Upon successful configuration of the Audit Log sink and set up of Kinesis, you will receive events within the hour of setup.
+Temporal is able to retain Audit Log information for up to 30 days.
+To retrieve logs up to the past 30 days, you will need to file a request.
+
 If you experience an issue with an Audit Log sink, we can provide the missing audit information.
 Open a support ticket to request assistance.
 
@@ -237,4 +239,3 @@ When you no longer need Audit Logging, you can delete the Audit Log sink.
 1. At the bottom of the **Audit Logging** page, choose **Delete**.
 
 After you confirm the deletion, the Audit Log Sink is removed from your account and logs stop flowing to your Kinesis stream.
-
