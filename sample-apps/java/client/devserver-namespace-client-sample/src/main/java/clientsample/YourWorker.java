@@ -30,7 +30,7 @@ public class YourWorker {
         // A Workflow Factory creates Workers
         WorkerFactory factory = WorkerFactory.newInstance(client);
         
-        // A Worker listens to one task queue, processing Workflows and Activities
+        // A Worker listens to one Task Queue, processing Workflows and Activities
         Worker worker = factory.newWorker("YourTaskQueue");
 
         // Register a Workflow implementation with this Worker
