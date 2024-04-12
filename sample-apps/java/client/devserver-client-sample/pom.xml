@@ -5,17 +5,14 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xml:space="preserve">
   <modelVersion>4.0.0</modelVersion>
 
-  <!--
-    Build Product Details
-  -->
-  <name>Time Fetcher</name>
+  <name>Your Fetcher</name>
   <groupId>io.temporal</groupId>
-  <artifactId>timefetch</artifactId>
+  <artifactId>clientsample</artifactId>
   <version>1.0.0</version>
 
   <!--
     CAUTION: Temporal applications require Java 8 (1.8) compiler source
-             and target at the time this tutorial was developed.
+             and target at the time this material was developed.
   -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
