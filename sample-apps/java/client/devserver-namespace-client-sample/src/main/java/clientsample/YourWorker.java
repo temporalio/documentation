@@ -37,7 +37,7 @@ public class YourWorker {
         // The implementation must be known at runtime to dispatch Workflow tasks
         worker.registerWorkflowImplementationTypes(YourWorkflowImpl.class);
 
-        // Start all registered workers. The workers will start polling
+        // Start all registered Workers. The Workers will start polling
         factory.start();
     }
 }
