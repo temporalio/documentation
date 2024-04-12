@@ -13,7 +13,7 @@ Calling `newLocalServiceStubs` sets up the default service details for you.
 WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 ```
 
-The two Client configuration files are located at:
+The two Client configuration source files are located at:
 
 * **Worker**: src/main/java/clientsample/YourWorker.java.
   The Worker uses its client to poll the Task Queue for tasks, and to initiate their execution.
