@@ -9,7 +9,7 @@ Clients know the Temporal Service is run on localhost (127.0.0.1) using port 723
 Calling `newLocalServiceStubs` sets up the default service details for you.
 
 ```
-// Create Developer Server local service stub
+// Create a stub that accesses a Temporal Service on the local development machine
 WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 ```
 
