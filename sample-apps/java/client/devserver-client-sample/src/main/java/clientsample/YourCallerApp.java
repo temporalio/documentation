@@ -8,7 +8,7 @@ import io.temporal.serviceclient.WorkflowServiceStubs;
 public class YourCallerApp {
 
     public static void main(String[] args) {
-        // Create Developer Server local service stub
+        // Create Developer Server local Service Stub
         WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 
         // Create a new Workflow Client

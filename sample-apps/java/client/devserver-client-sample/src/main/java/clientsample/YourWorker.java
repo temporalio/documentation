@@ -7,23 +7,23 @@ import io.temporal.serviceclient.WorkflowServiceStubs;
 
 public class YourWorker {
     public static void initiateWorker(String[] args) {
-        // Create Developer Server local service stub
+        // Create Developer Server local Service Stub
         WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 
         // A Workflow Client can start, Signal, and Query a Workflow Execution, etc
         WorkflowClient client = WorkflowClient.newInstance(service);
         
-        // A Workflow Factory creates workers
+        // A Workflow Factory creates Workers
         WorkerFactory factory = WorkerFactory.newInstance(client);
         
-        // A Worker listens to one task queue, processing workflows and activities
+        // A Worker listens to one task queue, processing Workflows and Activities
         Worker worker = factory.newWorker("YourTaskQueue");
 
-        // Register a Workflow implementation with this worker
-        // The implementation must be known at runtime to dispatch workflow tasks
+        // Register a Workflow implementation with this Worker
+        // The implementation must be known at runtime to dispatch Workflow tasks
         worker.registerWorkflowImplementationTypes(YourWorkflowImpl.class);
 
-        // Start all registered workers. The workers will start polling
+        // Start all registered Workers. The Workers will start polling
         factory.start();
     }
 }

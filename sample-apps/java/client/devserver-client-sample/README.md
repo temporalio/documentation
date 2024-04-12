@@ -5,7 +5,7 @@ This project demonstrates how to configure a Temporal Client to work with the lo
 ## Configuring Clients
 
 Configuration for the Development Service is built into Temporal Clients.
-Clients know the service is run on localhost (127.0.0.1) using port 7233.
+Clients know the Temporal Service is run on localhost (127.0.0.1) using port 7233.
 Calling `newLocalServiceStubs` sets up the default service details for you.
 
 ```
@@ -15,8 +15,10 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 
 The two Client configuration files are located at:
 
-* **Worker**: src/main/java/clientsample/YourWorker.java. The Worker uses its client to poll the Task Queue for tasks, and to initiate their execution.
-* **Caller**: src/main/java/clientsample/YourCallerApp.java. The Caller uses its client to establish a "stub" (unique to the JavaSDK) and invoke a new Workflow Execution. 
+* **Worker**: src/main/java/clientsample/YourWorker.java.
+  The Worker uses its client to poll the Task Queue for tasks, and to initiate their execution.
+* **Caller**: src/main/java/clientsample/YourCallerApp.java.
+  The Caller uses its client to establish a "stub" (unique to the JavaSDK) and invoke a new Workflow Execution.
 
 ## Building and Executing
 
