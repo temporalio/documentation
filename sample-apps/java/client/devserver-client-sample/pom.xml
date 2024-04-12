@@ -5,7 +5,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xml:space="preserve">
   <modelVersion>4.0.0</modelVersion>
 
-  <name>Your Fetcher</name>
+  <name>Your Project</name>
   <groupId>io.temporal</groupId>
   <artifactId>clientsample</artifactId>
   <version>1.0.0</version>
