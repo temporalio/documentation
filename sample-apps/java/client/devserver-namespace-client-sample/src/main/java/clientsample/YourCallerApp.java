@@ -19,7 +19,7 @@ public class YourCallerApp {
             System.exit(1);
         }
 
-        // Add the Namespace as a Client option
+        // Add the Namespace as a Client Option
         WorkflowClientOptions clientOptions = WorkflowClientOptions
             .newBuilder()
             .setNamespace(namespace)
