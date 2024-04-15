@@ -1,19 +1,17 @@
-# Client Sample Project: Development Server
+# Client Sample Project: Configuring a Client for local Service
 
-This project demonstrates how to configure a Temporal Client to work with the local Development Server.
+ This project demonstrates how to access a Temporal Service running locally using the Temporal Client provided by the Java SDK.
 
 ## Configuring Clients
 
-Configuration for the Development Service is built into Temporal Clients.
-Clients know the Temporal Service is run on localhost (127.0.0.1) using port 7233.
-Calling `newLocalServiceStubs` sets up the default service details for you.
+The WorkflowServiceStubs instance represents a connection to the Temporal Service.
 
 ```
 // Create a stub that accesses a Temporal Service on the local development machine
 WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 ```
 
-The two Client configuration source files are located at:
+The two source files that configure instances of Workflow Clients are located at:
 
 * **Worker**: src/main/java/clientsample/YourWorker.java.
   The Worker uses its client to poll the Task Queue for tasks, and to initiate their execution.

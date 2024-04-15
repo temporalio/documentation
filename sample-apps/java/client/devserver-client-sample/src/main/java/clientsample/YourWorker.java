@@ -10,13 +10,14 @@ public class YourWorker {
         // Create a stub that accesses a Temporal Service on the local development machine
         WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 
-        // A Workflow Client can start, Signal, and Query a Workflow Execution, etc
+        // The Worker uses the Client to communicate with the Temporal Service
         WorkflowClient client = WorkflowClient.newInstance(service);
         
-        // A Workflow Factory creates Workers
+        // A WorkerFactory creates Workers
         WorkerFactory factory = WorkerFactory.newInstance(client);
-        
-        // A Worker listens to one task queue, processing Workflows and Activities
+
+        // A Worker listens to one Task Queue.
+        // This Worker processes both Workflows and Activities
         Worker worker = factory.newWorker("YourTaskQueue");
 
         // Register a Workflow implementation with this Worker

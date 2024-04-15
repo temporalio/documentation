@@ -8,10 +8,12 @@ import io.temporal.serviceclient.WorkflowServiceStubs;
 public class YourCallerApp {
 
     public static void main(String[] args) {
-        // Create a stub that accesses a Temporal Service on the local development machine
+        // Create an instance that connects to a Temporal Service running on the local
+        // machine, using the default port (7233)
         WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 
-        // Create a new Workflow Client
+        // Initialize the Temporal Client
+        // This application uses the Client to communicate with the local Temporal Service
         WorkflowClient client = WorkflowClient.newInstance(service);
 
         // Establish the Workflow Options
