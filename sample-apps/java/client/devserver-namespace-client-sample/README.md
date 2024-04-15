@@ -1,12 +1,17 @@
-# Client Sample Project: Development Server with Custom Namespace
+# Client Sample Project: Configuring a Client for local Service using a custom Namespace
 
-This project demonstrates how to configure a Temporal Client for the local Development Server.
+This project demonstrates how to access a Temporal Service running locally using the Temporal Client provided by the Java SDK.
 Adding custom Namespaces during development supports isolation.
-It also lets you stage different configurations and separate multiple Workflow versions from each other.
+It enables you to you stage multiple configurations and/or Workflow versions separate from each other.
 
 ## Configuring Clients
+The WorkflowServiceStubs instance represents a connection to the Temporal Service.
 
-The two Client configuration source files are located at:
+```
+WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+```
+
+The two source files that configure instances of  Workflow Clients are located at:
 
 * **Worker**: src/main/java/clientsample/YourWorker.java.
   The Worker uses its client to poll the Task Queue for tasks, and to initiate their execution.
@@ -21,7 +26,7 @@ To build a Namespace, issue the following command at your command line:
 temporal operator namespace create -n new_custom_namespace_name
 ```
 
-**Note**: Older versions of the 'temporal' CLI did not use '-n'.
+**Note**: Older versions of the 'temporal' CLI do not use '-n' or '--namespace'.
 
 The utility immediately confirms the creation of the new Namespace.
 
@@ -33,8 +38,9 @@ Namespace custom-namespace successfully registered.
 
 * Visit localhost:8233/namespaces to see the provisioned Namespaces.
 * Visit localhost:8233/workflows, and select your new Namespace from the drop-down at the top-left.
-* To remove a Namespace, use 'temporal operator namespace delete -n namespace_name'.
-  You will be prompted to type the Namespace name again before deletion.
+* To remove a Namespace, use 'temporal operator namespace delete -n namespace_name'. 
+    You will be prompted to type the Namespace name again before deletion.
+    **Note**: Older versions of the 'temporal' CLI do not use '-n' or '--namespace'.
 
 ## Building and Executing
 
