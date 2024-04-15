@@ -43,7 +43,26 @@ Then use an action to create a manage your Temporal Cloud Terraform resources.
 
 ### Generate an API Key
 
+You can generate an API Key through the Temporal Web UI or through the `tcld apikey create` command.
+
+:::note
+
 You can skip generating an API Key if you already possess a valid API Key.
+
+:::
+
+**Using the Temporal Web UI**
+
+1. Log into the Temporal Cloud Web UI.
+2. Select your account name in the top right corner.
+3. Select **API Keys** from the menu.
+4. Choose **Create API Key**.
+  1. Enter a name for your API Key.
+  2. (optional) Provide a description.
+  3. (optional) Set a duration for the API Key.
+  4. Choose **Generate API Key**.
+
+**Using the tcld**
 
 1. Use tcld to log in and generate an API Key.
    This API Key is used to authenticate the Terraform provider run.
