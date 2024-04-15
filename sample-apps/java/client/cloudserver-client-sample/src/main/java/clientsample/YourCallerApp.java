@@ -31,24 +31,26 @@ public class YourCallerApp {
     }
 
     public static void main(String[] args) {
-        // Populate prerequisites from environmental variables
+        // Populate connection pre-requisites from environmental variables
         String namespace = getenv("TEMPORAL_CLOUD_NAMESPACE");
         String gRPCEndpoint = getenv("TEMPORAL_CLOUD_GRPC_ENDPOINT");
         String clientKeyPath = getenv("TEMPORAL_MTLS_PRIVATE_KEY_PATH");
         String clientCertPath = getenv("TEMPORAL_MTLS_CERT_PATH");
 
         try {
-            // Generate SSL context
+            // Generate an SSL context
             InputStream clientCertInputStream = new FileInputStream(clientCertPath);
             InputStream clientKeyInputStream = new FileInputStream(clientKeyPath);
             SslContext sslContext = SimpleSslContextBuilder.forPKCS8(clientCertInputStream, clientKeyInputStream).build();
 
-            // Set Service Stub options and generate the Stub
+            // Set the Service Stub options (SSL context and gRPC endpoint)
             WorkflowServiceStubsOptions stubsOptions = WorkflowServiceStubsOptions
                 .newBuilder()
                 .setSslContext(sslContext)
                 .setTarget(gRPCEndpoint)
                 .build();
+
+            // Create a stub that accesses a Temporal Service
             WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
 
             // Set the Client options
@@ -58,9 +60,11 @@ public class YourCallerApp {
                 .build();
 
             // Initialize the Temporal Client
+            // This application uses the Client to communicate with the Temporal Service
             WorkflowClient client = WorkflowClient.newInstance(serviceStub, clientOptions);
 
-            // Create a new Workflow Execution
+            // A Worker listens to one Task QueueFileInputStream
+            // This Worker processes both Workflows and Activities
             WorkflowOptions options = WorkflowOptions
                 .newBuilder()
                 .setTaskQueue("YourTaskQueue")

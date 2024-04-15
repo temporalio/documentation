@@ -1,10 +1,16 @@
-# Client Sample Project: Cloud Server
-
-This project demonstrates how to configure a Temporal Client for the Temporal Cloud Server.
+# Client Sample Project: Configuring a Client for Temporal Cloud
+This project demonstrates how to access a Temporal Service running on Temporal Cloud using the Temporal Client provided by the Java SDK.
 
 ## Configuring Clients
 
-The two Client configuration source files are located at:
+The WorkflowServiceStubs instance represents a connection to the Temporal Service.
+
+```
+WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
+```
+
+
+The two source files that configure instances of Workflow Clients are located at:
 
 * **Worker**: src/main/java/clientsample/YourWorker.java.
   The Worker uses its client to poll the Task Queue for tasks, and to initiate their execution.

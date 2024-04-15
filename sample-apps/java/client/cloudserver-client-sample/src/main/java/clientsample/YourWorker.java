@@ -39,17 +39,19 @@ public class YourWorker {
         String clientCertPath = getenv("TEMPORAL_MTLS_CERT_PATH");
 
         try {
-            // Generate SSL context
+            // Generate an SSL context
             InputStream clientCertInputStream = new FileInputStream(clientCertPath);
             InputStream clientKeyInputStream = new FileInputStream(clientKeyPath);
             SslContext sslContext = SimpleSslContextBuilder.forPKCS8(clientCertInputStream, clientKeyInputStream).build();
 
-            // Set Service Stub options and generate the Stub
+            // Set the Service Stub options (SSL context and gRPC endpoint)
             WorkflowServiceStubsOptions stubsOptions = WorkflowServiceStubsOptions
                 .newBuilder()
                 .setSslContext(sslContext)
                 .setTarget(gRPCEndpoint)
                 .build();
+
+            // Create a stub that accesses a Temporal Service on Temporal Cloud
             WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
 
             // Set the Client options
@@ -61,10 +63,11 @@ public class YourWorker {
             // Initialize the Temporal Client
             WorkflowClient client = WorkflowClient.newInstance(serviceStub, clientOptions);
 
-            // A Workflow Factory creates Workers
+            // A WorkerFactory creates Workers
             WorkerFactory factory = WorkerFactory.newInstance(client);
         
-            // A Worker listens to one Task Queue, processing Workflows and Activities
+            // A Worker listens to one Task Queue
+            // This Worker processes both Workflows and Activities
             Worker worker = factory.newWorker("YourTaskQueue");
 
             // Register a Workflow implementation with this Worker
