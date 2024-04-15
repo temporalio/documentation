@@ -3,6 +3,7 @@ id: terraform-provider
 title: Temporal Cloud Terraform provider
 sidebar_label: Terraform provider
 description: Use the Temporal Cloud Terraform provider to manage Temporal Cloud resources.
+sidebar_position: 7
 tags:
   - temporal cloud
   - terraform
@@ -30,8 +31,8 @@ You must have access to the following to use the Temporal Cloud Terraform provid
 
 - [Terraform account](https://developer.hashicorp.com/terraform)
 - [Terraform CLI](https://developer.hashicorp.com/terraform/cli)
-- [Temporal tcld](/cloud/tcld/)
-  - This is an optional tool used to log in to your Temporal Cloud account and create an API Key.
+- [API Key](/cloud/api-keys): an API Key is required to use the Terraform provider.
+  - [Temporal tcld](/cloud/tcld/): This is an optional tool used to log in to your Temporal Cloud account and create an API Key.
 - [Issued certification authority](/cloud/certificates)
   - This is needed when Account Role permission set actions are used. For example, when managing a Namespace.
 
@@ -39,8 +40,6 @@ You must have access to the following to use the Temporal Cloud Terraform provid
 
 Generate an API Key to authenticate your requests with your Temporal Cloud account.
 Then use an action to create a manage your Temporal Cloud Terraform resources.
-
-Use the following sample or find more [examples in the terraform-provider-temporalcloud](https://github.com/temporalio/terraform-provider-temporalcloud/tree/main/examples) GitHub repository.
 
 ### Generate an API Key
 
@@ -152,6 +151,16 @@ temporalcloud_namespace.terraform: Creation complete after 2m17s [id=<yournamesp
 ```
 
 **How do I validate the creation of the Namespace?**
+
+You can validate the creation of the Namespace through the Temporal Web UI or through the `tcld namespace get` command.
+
+**Using the Temporal Web UI**
+
+1. Log into the Temporal Cloud Web UI.
+2. Navigate to the Namespaces page.
+3. Search for the Namespace you created.
+
+**Using the tcld**
 
 Validate the creation of your Namespace through the Terraform provider.
 To validate see your Namespace in the Cloud UI or through the `tcld namespace get` command.
