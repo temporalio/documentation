@@ -7,13 +7,12 @@ description: Learn how to use the Temporal Python SDK.
 slug: /dev-guide/python
 toc_max_heading_level: 4
 keywords:
-- dev guide
-- python
+  - dev guide
+  - python
 tags:
-- dev-guide
-- python
+  - dev-guide
+  - python
 ---
-
 
 This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
 
@@ -101,3 +100,10 @@ The Versioning section of the Temporal Developer's guide covers how to update Wo
 - [How to use the Python SDK Patching API](/dev-guide/python/versioning#python-sdk-patching-api): Heres a sample implementation of patching in new code using the Python SDK's patching API.
 - [How to use Worker Versioning in Python](/dev-guide/python/versioning#worker-versioning): Version your Python Workers by using build ID-based versioning
 
+## Converters
+
+The Converters and Codecs section of the Temporal Developer's guide provides guidance on how to support compression, encryption, and other special data handling by implementing custom converters and codecs.
+
+- [Custom Payload Codecs](/dev-guide/python/converters#custom-payload-codec): Create a custom `PayloadCodec` implementation and define your encryption/compression and decryption/decompression logic in the `encode` and `decode` functions.
+- [Custom payload conversion sequence](/dev-guide/python/converters#conversion-sequence): Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.
+- [Custom Payload Converter](/dev-guide/python/converters#custom-payload-converter): Use a `CompositeDataConverter` to apply custom `PayloadConverter` in a specified order.
