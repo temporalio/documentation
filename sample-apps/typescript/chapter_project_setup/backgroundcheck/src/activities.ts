@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* dacx */
 /*
 In the Temporal TypeScript SDK programming model, an Activity is an exportable async function.

@@ -52,7 +52,7 @@ describe('Background check workflow', () => {
         args: [ssn],
         workflowId: 'background-check-test',
         taskQueue,
-      })
+      }),
     );
     assert.equal(result, 'pass');
   });
@@ -67,8 +67,8 @@ In the body of the test case, you create an instance of a Worker and register th
 In this example, the Activity is mocked out and replaced with a function that returns a specific result..
 This ensures that the Workflow test doesn't invoke the actual Activity.
 
-Calling `client.workflow.execute(...)` executes the Workflow logic and any invoked Activities inside the test process.
-The first parameter of `env.ExecuteWorkflow(...)` contains a reference to the
+Calling `client.workflow.execute(...)` executes the Workflow logic and any invoked Activities inside the test process.
+The first parameter of `env.ExecuteWorkflow(...)` contains a reference to the
 Workflow function. The second parameter contains an object that specifices the arguments for the Workflow, the Workflow ID,
 and a Task Queue name.
 */
