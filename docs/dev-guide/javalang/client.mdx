@@ -1,0 +1,140 @@
+---
+id: temporal_client
+title: Temporal Client - Java SDK feature guide
+sidebar_label: Temporal Client
+sidebar_position: 5
+toc_max_heading_level: 4
+description: The Temporal Client section of the Temporal Developer's guide provides guidance on how to configure Java Client code to connect to the Temporal Service.
+keywords:
+ - Java
+ - developer-guide
+ - guide-context
+tags:
+ - java
+ - client
+ - temporal client
+ - workers
+ - applications
+ - developer-guide
+ - guide-context
+---
+
+The Temporal Client section of the Temporal Developer's guide explains what a Client is and shows you how to configure your Java Client code to connect to the Temporal Service.
+
+In this section you will find the following:
+
+* [What is a Temporal Client](#what-is-a-temporal-client)
+* [Types of Clients](#types-of-clients)
+* [Set up a local Service Client]()
+* [Configure a local Service Client to use a custom Namespace]()
+* [Set up a Client to connect to a remote service]()
+* [Configure a Temporal Cloud Service Client]()
+* [Configure a Schedule Client]()
+* [Other Java Clients]()
+
+## What is a Temporal Client
+
+A [Temporal Client](/concepts/temporal#temporal-client) is an SDK-supplied component that communicates with the Temporal Service.
+A Temporal Client is used to start and query Workflow Executions by external processes.
+Each Client wraps a "Service stub", a term unique to the Java SDK although the mechanism exists in each SDK.
+A stub refers to a remote calling mechanism that allows runtime invocation using [gRPC](/cloud/namespaces#temporal-cloud-grpc-endpoint).
+
+### What is gRPC
+
+gRPC is a Remote Procedure Call framework developed by Google.
+It features low latency and high performance.
+gRPC provides Temporal with an efficient, language-agnostic communication framework.
+This protocol allows the two-way communication needed to fully orchestrate Temporal applications.
+
+Stateless communication offers advantages.
+It allows for flexibility and scalability in the execution of tasks.
+It also enables the Temporal Service to decompose tasks as needed, without tying those tasks to a particular Client.
+
+### What are Service stubs
+
+The Temporal Client communicates with the Temporal Server in a stateless manner using gRPC.
+The gRPC APIs are provided by Service stubs.
+A stub adds gRPC communication capabilities to the Client that wraps it. 
+
+```java
+import io.temporal.serviceclient;
+
+// Create a stub that accesses a Temporal Service
+WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
+```
+
+You configure stubs with a Temporal Service endpoint to connect to and other supporting options like secure connection contexts.
+
+```java
+WorkflowServiceStubsOptions stubsOptions = WorkflowServiceStubsOptions
+    .newBuilder()
+    .setSslContext(sslContext)
+    .setTarget(gRPCEndpoint)
+    .build();
+```
+
+When using Temporal Cloud, a gRPC endpoint looks like `mynamespace.myaccountidentifier.tmprl.cloud:7233`.
+This endpoint includes a communication port (normally 7233), a [Namespace](/concepts/namespaces) identifier, and an [account identifier](/cloud/account-setup/namespaces#temporal-cloud-account-id).
+
+Namespaces provides traffic isolation.
+They enable you to support your development lifecycles by separating production, development, and exploratory Workflow execution.
+
+Self-hosted endpoints will use their own naming and port schemes.
+
+## Types of Clients
+
+The Java SDK provides a number of Client types. 
+You work almost exclusively with just two of them: the [`WorkflowClient`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html) and the [`ScheduleClient`](https://javadoc.io/static/io.temporal/temporal-sdk/1.23.1/io/temporal/client/schedules/ScheduleClient.html).
+
+:::tip
+A Client should be created once and persisted throughout the duration of your application process.
+:::
+
+### Workflow Client
+
+The `WorkflowClient` is part of the `io.temporal.client` package.
+A Workflow Client can start and query workflows from your code or enable other types to do the same.
+
+```java
+import io.temporal.client;
+
+// Initialize the Temporal Client
+WorkflowClient client = WorkflowClient.newInstance(serviceStub, clientOptions);
+
+// A WorkflowClient can establish a Workflow stub to be called at runtime
+YourWorkflow workflow = client.newWorkflowStub(YourWorkflow.class, options);
+
+// The newly created workflow stub uses Temporal orchestration to complete its work
+String results = workflow.initiateWorkflow();
+```
+
+Just like a Client wraps a stub, other types can wrap Clients.
+
+```java
+// A WorkerFactory creates Workers
+WorkerFactory factory = WorkerFactory.newInstance(client);
+```
+
+### Schedule Client
+
+A [`ScheduleClient`](https://javadoc.io/static/io.temporal/temporal-sdk/1.23.1/io/temporal/client/schedules/ScheduleClient.html) is a specialized type of client used for operations related to scheduling.
+It can create, list, and get handles to Schedules.
+
+```java
+import io.temporal.client.schedules;
+
+// Schedule every 30 minutes
+ScheduleSpec spec = ScheduleSpec.newBuilder()
+    .setCronExpressions(Collections.singletonList("*/30 * * * *")).build();
+Schedule schedule = Schedule.newBuilder()
+    .setAction(action).setSpec(spec).build();
+scheduleClient.createSchedule(scheduleName, schedule,
+    ScheduleOptions.newBuilder().build());
+```
+
+## Set up a local Service Client
+## Configure a local Service Client to use a custom Namespace
+## Set up a Client to connect to a remote Service
+## Configure a Temporal Cloud Service Client
+## Configure a Schedule Client
+## Other Java Clients
