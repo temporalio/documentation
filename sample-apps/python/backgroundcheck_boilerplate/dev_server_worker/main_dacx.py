@@ -19,7 +19,7 @@ dacx"""
 
 
 async def main():
-    client = await Client.connect("localhost:7233")
+    client = await Client.connect("localhost:7233", namespace="backgroundcheck_namespace")
 
     worker = Worker(
         client,
