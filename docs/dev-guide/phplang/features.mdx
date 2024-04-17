@@ -968,7 +968,7 @@ Here you simply specify the time to wait before dispatching the first Workflow t
 $workflow = $workflowClient->newWorkflowStub(
     GreeterWorkflowInterface::class,
     WorkflowOptions::new()
-        ->withWorkflowStartDelay('10 minutes'),
+        ->withWorkflowStartDelay(CarbonInterval::minutes(10)),
 );
 $workflowClient->start($workflow, 'Hello world!');
 ```
