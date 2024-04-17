@@ -1,8 +1,8 @@
 ---
 id: high-availability
 slug: /cloud/high-availability
-title: High-availability Namespaces.
-sidebar_label: High-availability
+title: High availability namespaces.
+sidebar_label: High Availability
 sidebar_position: 5
 tags:
   - high-availability
@@ -17,54 +17,51 @@ tags:
 
 :::
 
-Temporal Cloud's high availability Namespace feature introduces push-button multi-region availability for your Temporal Service.
+Temporal Cloud's high availability namespace feature introduces push-button multi-region availability for your Temporal Service.
 This feature enables you to choose a standby region for a Temporal Namespace.
 The service takes care of the complexity of replicating data from the active region to the standby region and failing over to the standby region when needed.
 
 
-- [What is high-availability?](/cloud/high-availability#high-availability-intro)
-- [Why choose high-availability?](/cloud/high-availability#why-high-availability)
+- [What is high availability?](/cloud/high-availability#high-availability-intro)
+- [Why choose high availability?](/cloud/high-availability#why-high-availability)
 - [Understanding failover and failover scenarios](/cloud/high-availability#failovers)
-- [High-availability SLA](/cloud/high-availability#sla)
+- [High availability SLA](/cloud/high-availability#sla)
+- [Architecture overview](/cloud/high-availability#architecture)
 
-## What is high-availability? {#high-availability-intro}
+## What is high availability? {#high-availability-intro}
 
-A high-availability Namespace provides a single endpoint for a multi-region service.
-This option offers a single logical Namespace that runs in two physical regions, one active and one standby.
+A high availability namespace provides a single endpoint for a multi-region service.
+This option offers a single logical namespace that runs in two physical regions, one active and one standby.
 As Workflows progress in the active region, history events are asynchronously replicated to the standby region.
 
 In case of an incident or outage in the active region, Temporal Cloud will "failover" to the standby region.
 A failover means to switch the roles of the active and standby regions.
-Temporal's high-availability failovers enable existing Workflow Executions to keep running and new Executions to be initiated.
+Temporal's high availability failovers enable existing Workflow Executions to keep running and new Executions to be initiated.
 
 In the traditional definition of active/active replication, multiple nodes serve requests and accept writes simultaneously with strong synchronous data consistency.
-High-availability Namespaces in Temporal Cloud allow two replicated namespaces (one active, one standby) to accept requests, but not simultaneously.
+High availability namespaces in Temporal Cloud allow two replicated namespaces (one active, one standby) to accept requests, but not simultaneously.
 Requests are accepted, and Workflow history events are written to the active region and then asynchronously replicated to the standby region.
 
-**Before failover**:
+Before failover            |  After failover
+:-------------------------:|:-------------------------:
+![Before failover](/img/multi-region/before-failover.png)  |  ![After failover](/img/multi-region/after-failover.png)
 
-![Before failover](/img/multi-region/before-failover.png)
+## Why choose high availability? {#why-high-availability}
 
-**After failover**:
-
-![After failover](/img/multi-region/after-failover.png)
-
-## Why choose high-availability? {#why-high-availability}
-
-For a Namespace in a single region, Temporal Cloud provides 99.99% availability and its contractual service level agreement (SLA) has a 99.9% guarantee against service errors.
+For a namespace in a single region, Temporal Cloud provides 99.99% availability and its contractual service level agreement (SLA) has a 99.9% guarantee against service errors.
 For many applications, this is sufficient availability.
-With this strategy, Temporal clients connect to a single Namespace in a single AWS region.
+With this strategy, Temporal clients connect to a single namespace in a single AWS region.
 This approach works well for workloads that need the availability provided by Temporal Cloud’s single-region namespaces.
 
-High-availability supports standby recovery.
-It is deployed using a simple Namespace setting.
+High availability supports standby recovery.
+It is deployed using a simple namespace setting.
 All back-end deployment is completed by Temporal Cloud.
 
-In the event of a regional failure, Temporal Cloud automatically fails over to the Namespace in the secondary region.
+In the event of a regional failure, Temporal Cloud automatically fails over to the namespace in the secondary region.
 When faced with network latency or other region-wide issues, failover can be deliberately triggered.
 
 
-High-availability advantages:
+High availability advantages:
 
 * No manual deployment or configuration needed with push button operation.
 * Open workflows continue in a secondary region with minimal interruption and data loss.
@@ -73,18 +70,18 @@ High-availability advantages:
 
 ## Understanding failover and failover scenarios {#failovers}
 
-Consider an incident or outage that leads to elevated error rates or latency in the active region of a high-availability Namespace.
+Consider an incident or outage that leads to elevated error rates or latency in the active region of a high availability namespace.
 Under these circumstances, Temporal Cloud will initiate a namespace failover operation.
 This operation shifts Workflow processing to a standby region, unaffected by the incident.
 This allows both existing Workflows to progress and new Workflows to be created as the incident is addressed.
 
 
-Customers who wish to test the set-up of their high-availability Namespace can manually trigger failovers using the UI, API, or CLI.
+Customers who wish to test the set-up of their high availability namespace can manually trigger failovers using the UI, API, or CLI.
 For most scenarios, we recommend you let Temporal handle failovers for you.
 
 ### Replication lag {#replication-lag}
 
-When using high-availability Namespaces, the replication between regions is asynchronous.
+When using high availability namespaces, the replication between regions is asynchronous.
 Any updates to the workflow in the active region, and the history events associated with it, will be applied to the standby region with a short delay.
 This delay is called the replication lag.
 Temporal Cloud aims to provide a P95 replication delay of less than 1 minute.
@@ -94,15 +91,18 @@ Due to this delay, a [forced failover]((/cloud/high-availability#forced-failover
 <!--FIXME: Add link to conflict resolution converage-->
 Temporal event versioning and conflict resolution mechanisms ensure that the eventual history of the Workflow is still replayable by the SDK.
 Critical operations like Signals won't get lost.
-  
 
-The Temporal Cloud failover mechanism chooses from several modes to execute Namespace failovers with Hybrid mode being the default.
+
+### Failover scenarios
+
+The Temporal Cloud failover mechanism supports several modes to execute namespace failovers. 
+Hybrid mode is the default.
 These modes include:
 
-####Graceful failover (handover) {#graceful-failover}
+#### Graceful failover (handover) {#graceful-failover}
 
 In this mode, replication tasks are fully processed and drained.
-Traffic to the Namespace is paused before the failover to ensure no loss of progress or data conflicts.
+Traffic to the namespace is paused before the failover to ensure no loss of progress or data conflicts.
 
 This approach may result in a short period of unavailability with a default value of 10 seconds.
 
@@ -112,14 +112,14 @@ User requests like start/signal workflow will be rejected as operations are paus
 
 This mode favors consistency over availability.
 
-####Forced failover {#forced-failover}
+#### Forced failover {#forced-failover}
 
-In this mode, a Namespace is immediately activated in the standby region.
+In this mode, a namespace is immediately activated in the standby region.
 <!--FIXME: Add link to conflict resolution converage-->
 Events not yet replicated due to [replication lag](/cloud/high-availability#replication-lag) will undergo conflict resolution upon reaching the new active region.
 This mode prioritizes availability over consistency.
 
-####Hybrid failover mode {#hybrid-failover}
+#### Hybrid failover mode {#hybrid-failover}
 
 While graceful failovers are normally preferred for consistency, they are not always practical.
 The hybrid failover mode (the default mode) limits graceful failover attempts to 10 seconds or less.
@@ -129,9 +129,9 @@ This strategy balances consistency and availability requirements.
 <!--FIXME: Add links to Triggering a failover, Worker deployment, and Routing (probably re-named?  traffic after failovers?)-->
 See the sections on triggering a failover, Worker deployment, and routing for more information.
 
-## High-availability SLA {#high-availability-sla}
+## High availability SLA {#high-availability-sla}
 
-High-availability Namespaces offer 99.99% availability.
+High availability namespaces offer 99.99% availability.
 This is enforced by an SLA on [service error rates](https://docs.temporal.io/cloud/sla).
 Our system is designed to limit data loss after recovery when the incident triggering the failover is resolved.
 
@@ -144,6 +144,49 @@ We've designed Temporal Cloud to proactively respond to incidents by triggering 
 Our recovery time objective ([RTO](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Time_Objective)) is 20 minutes or less per incident.
 We aim to reduce this RTO in the future.
 
-## Regional availability {#regional-availability}
+### Regional availability {#regional-availability}
 
-High-availability namespaces are available in all existing [Temporal Cloud regions](/cloud/service-availability#regions).
+High availability namespaces are available in all existing [Temporal Cloud regions](/cloud/service-availability#regions).
+
+:::info
+- Namespace pairing is limited to regions within the same continent.
+South America is excluded as only one region is available.
+
+
+:::
+
+## Architecture overview {#architecture}
+
+High availability namespaces enable replication of Namespace metadata and Workflow Executions across connected regions.
+This redundancy, plus the added failover capability, provides measurable stability when dealing with outages.
+
+A high availability namespace is normally in a single region at any moment.
+The passive region assumes a standby role.
+The only exception occurs in the event of a network partition.
+
+In this event, an operator may elect to promote a standby region to active status.
+Be aware that this action will temporarily result in both regions being active.
+Once the network partition is resolved and communication between the regions is restored, a conflict resolution algorithm determines which region continues as the active one.
+This ensures only one region remains active.
+
+### Metadata replication {#metadata-replication}
+
+Updates to a high availability namespace record are replicated across regions.
+This includes configurations such as retention periods, Search Attributes, and other settings, 
+This process ensures that all regions will eventually share a consistent and unified view of the namespace metadata.
+
+:::info
+- A namespace failover, which involves changing the "active region" field of a Namespace record, is an update.
+  It will be replicated via the same namespace metadata mechanism.
+
+:::
+
+### Workflow execution replication
+
+<!--PAUSING HERE. PICK UP TOMORROW. -->
+
+Workflows in a multi-region namespace can only be mutated in the active region. Workflow Tasks and Activity Tasks are only dispatched from the active region, and thus forward progress will only be made there. This also means that certain requests, such as Start Workflow and Signal Workflow can only be processed on the active side. However, standby regions are capable of receiving API requests from Clients and Workers, and will automatically forward these requests to the active cluster for execution. This is critical in providing an “all-active” experience for Temporal users to ensure no downtime during Namespace failover: during the short time window between when the standby region becomes the active region and when the Clients and Workers receive the DNS update, requests will be forwarded from the now passive active region to the active standby region. 
+
+As Workflow Executions progress and are operated on, replication tasks are created in the active region and then dispatched to the standby region. The processing of these replication tasks ensures that the standby region undergoes the same state transitions as the active region, allowing them to synchronize and achieve the same state. 
+
+While standby regions do not distribute Workflow or Activity Tasks, they perform verification tasks to confirm that intended operations are executed and Workflows reach the desired state. This mechanism ensures consistency and reliability in the replication process across Temporal regions.
