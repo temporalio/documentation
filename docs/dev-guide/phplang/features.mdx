@@ -965,14 +965,6 @@ public function run()
 Use the Workflow [Start Delay](/workflows#delay-workflow-execution) functionality if you need to a Workflow Execution without the need for regular launches.
 Here you simply specify the time to wait before dispatching the first Workflow task.
 
-:::note
-
-If the Workflow gets a Signal before the delay, the Workflow task will be dispatched and the rest of the delay will be ignored.
-A Signal from [`WorkflowClientInterface::startWithSignal()`](https://php.temporal.io/classes/Temporal-Client-WorkflowClient.html#method_startWithSignal) won't trigger the workflow task.
-Cannot be set the same time as a `WorkflowOptions::withCronSchedule()`.
-
-:::
-
 ```php
 $workflow = $workflowClient->newWorkflowStub(
     GreeterWorkflowInterface::class,
