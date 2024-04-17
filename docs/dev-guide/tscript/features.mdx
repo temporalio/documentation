@@ -140,7 +140,7 @@ It takes a Workflow Id, Workflow arguments, a Signal name, and Signal arguments.
 
 If there's a Workflow running with the given Workflow Id, it will be signaled. If there isn't, a new Workflow will be started and immediately signaled.
 
-[`WorkflowClient.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
+[`Client.workflow.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
 
 ```typescript
 import { Client } from '@temporalio/client';
@@ -533,15 +533,15 @@ If an Activity gets retried, the Activity can access the `details` from the last
 
 Long-running Activities should Heartbeat their progress back to the Workflow for earlier detection of stalled Activities (with [Heartbeat Timeout](/activities#heartbeat-timeout)) and resuming stalled Activities from checkpoints (with Heartbeat details).
 
-To set Activity Heartbeat, use `Context.current().heartbeat()` in your Activity implementation, and set `heartbeatTimeout` in your Workflow.
+To set Activity Heartbeat, use the `heartbeat()` function in your Activity implementation, and set `heartbeatTimeout` in your Workflow.
 
 ```ts
 // activity implementation
 export async function example(sleepIntervalMs = 1000): Promise<void> {
   for (let progress = 1; progress <= 1000; ++progress) {
-    await Context.current().sleep(sleepIntervalMs);
+    await sleep(sleepIntervalMs);
     // record activity heartbeat
-    Context.current().heartbeat();
+    heartbeat();
   }
 }
 
@@ -563,10 +563,10 @@ The following example extends the previous sample to include a `heartbeatDetails
 
 ```ts
 export async function example(sleepIntervalMs = 1000): Promise<void> {
-  const startingPoint = Context.current().info.heartbeatDetails || 1; // allow for resuming from heartbeat
+  const startingPoint = activityInfo().heartbeatDetails || 1; // allow for resuming from heartbeat
   for (let progress = startingPoint; progress <= 100; ++progress) {
-    await Context.current().sleep(sleepIntervalMs);
-    Context.current().heartbeat(progress);
+    await sleep(sleepIntervalMs);
+    heartbeat(progress);
   }
 }
 ```
@@ -609,11 +609,11 @@ To asynchronously complete an Activity, call [`AsyncCompletionClient.complete`](
 [activities-examples/src/activities/async-completion.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-examples/src/activities/async-completion.ts)
 
 ```ts
-import { CompleteAsyncError, Context } from '@temporalio/activity';
+import { activityInfo, CompleteAsyncError } from '@temporalio/activity';
 import { AsyncCompletionClient } from '@temporalio/client';
 
 export async function doSomethingAsync(): Promise<string> {
-  const taskToken = Context.current().info.taskToken;
+  const taskToken = activityInfo().taskToken;
   setTimeout(() => doSomeWork(taskToken), 1000);
   throw new CompleteAsyncError();
 }
@@ -1068,7 +1068,7 @@ A Cron Schedule is provided as an option when the call to spawn a Workflow Execu
 You can set each Workflow to repeat on a schedule with the `cronSchedule` option:
 
 ```typescript
-const handle = await client.start(scheduledWorkflow, {
+const handle = await client.workflow.start(scheduledWorkflow, {
   // ...
   cronSchedule: '* * * * *', // start every minute
 });
@@ -1125,9 +1125,9 @@ The order in which your encoding Payload Converters are applied depend on the or
 You can set multiple encoding Payload Converters to run your conversions.
 When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.
 
-To send values that are not [JSON-serializable](https://en.wikipedia.org/wiki/JSON#Data_types) like a `BigInt` or `Date`, provide a custom [Data Converter](https://typescript.temporal.io/api/interfaces/worker.DataConverter/) to the Client and Worker:
+To send values that are not [JSON-serializable](https://en.wikipedia.org/wiki/JSON#Data_types) like a `BigInt` or `Date`, provide a custom [Data Converter](https://typescript.temporal.io/api/interfaces/common.DataConverter/) to the Client and Worker:
 
-- [new WorkflowClient(\{ ..., dataConverter })](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions#dataconverter)
+- [new Client(\{ ..., dataConverter })](https://typescript.temporal.io/api/interfaces/client.ClientOptions#dataconverter)
 - [Worker.create(\{ ..., dataConverter })](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#dataconverter)
 
 A Data Converter has two parts:
@@ -1708,7 +1708,7 @@ See how to use it in the [interceptors-opentelemetry](https://github.com/tempora
 - [WorkflowInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInboundCallsInterceptor/): Intercept Workflow inbound calls like execution, Signals, and Queries.
 - [WorkflowOutboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.WorkflowOutboundCallsInterceptor/): Intercept Workflow outbound calls to Temporal APIs like scheduling Activities and starting Timers.
 - [ActivityInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptor): Intercept inbound calls to an Activity (such as `execute`).
-- [WorkflowClientCallsInterceptor](https://typescript.temporal.io/api/interfaces/client.WorkflowClientCallsInterceptor/): Intercept methods of [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient/) and [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle) like starting or signaling a Workflow.
+- [WorkflowClientInterceptor](https://typescript.temporal.io/api/interfaces/client.WorkflowClientInterceptor/): Intercept workflow-related methods of [`Client`](https://typescript.temporal.io/api/classes/client.Client/) and [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle) like starting or signaling a Workflow.
 
 ### How interceptors work
 
@@ -1796,7 +1796,7 @@ Please contact us if you need to discuss this further.
 
 - Activity interceptors are registered on Worker creation by passing an array of [ActivityInboundCallsInterceptor factory functions](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptorFactory) through [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).
 
-- Client interceptors are registered on `WorkflowClient` construction by passing an array of [WorkflowClientCallsInterceptor factory functions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientCallsInterceptorFactory) via [WorkflowClientOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions#interceptors).
+- Client interceptors are registered on `Client` construction by passing an array of [WorkflowClientInterceptor](https://typescript.temporal.io/api/interfaces/client.WorkflowClientInterceptor) via [ClientOptions.interceptors](https://typescript.temporal.io/api/interfaces/client.ClientOptions#interceptors).
 
 **Workflow interceptors registration**
 
@@ -1804,7 +1804,7 @@ Workflow interceptor registration is different from the other interceptors becau
 To register Workflow interceptors, export an `interceptors` function from a file located in the `workflows` directory and provide the name of that file to the Worker on creation via [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).
 
 At the time of construction, the Workflow context is already initialized for the current Workflow.
-Use [`workflowInfo`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) to add Workflow-specific information in the interceptor.
+You may use call the [`workflowInfo()`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) function to access Workflow-specific information from an interceptor.
 
 `src/workflows/your-interceptors.ts`
 

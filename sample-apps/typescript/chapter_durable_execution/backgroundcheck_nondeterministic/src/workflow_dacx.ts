@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import { proxyActivities, log, sleep } from "@temporalio/workflow";
 import type * as activities from "./activities";
 
@@ -12,9 +13,7 @@ const { ssnTraceActivity } = proxyActivities<typeof activities>({
 });
 
 // backgroundCheckNonDeterministic is an anti-pattern Workflow Definition
-export async function backgroundCheckNonDeterministic(
-  ssn: string
-): Promise<string> {
+export async function backgroundCheckNonDeterministic(ssn: string): Promise<string> {
   // CAUTION, the following code is an anti-pattern showing what NOT to do
   if (getRandomNumber(1, 100) > 50) {
     await sleep("10 seconds");
@@ -41,5 +40,5 @@ id: intrinsic-non-deterministic-logic-example
 title: BackgroundCheckNonDeterministic Workflow
 label: intrinsic-non-deterministic-logic
 description: BackgroundCheckNonDeterministic Workflow is a non-deterministic Workflow as it uses a random number generator.
-lines: 1-37
+lines: 2-36
 @dacx */
