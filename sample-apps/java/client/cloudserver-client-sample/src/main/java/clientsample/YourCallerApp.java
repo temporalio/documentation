@@ -1,3 +1,4 @@
+// @@@SNIPSTART javasdk-build-caller-app-using-temporal-cloud
 package clientsample;
 
 import io.temporal.client.WorkflowClient;
@@ -43,19 +44,15 @@ public class YourCallerApp {
             InputStream clientKeyInputStream = new FileInputStream(clientKeyPath);
             SslContext sslContext = SimpleSslContextBuilder.forPKCS8(clientCertInputStream, clientKeyInputStream).build();
 
-            // @@@SNIPSTART javasdk-set-service-stub-options
             // Set the Service Stub options (SSL context and gRPC endpoint)
             WorkflowServiceStubsOptions stubsOptions = WorkflowServiceStubsOptions
                 .newBuilder()
                 .setSslContext(sslContext)
                 .setTarget(gRPCEndpoint)
                 .build();
-            // @@@SNIPEND
 
-            // @@@SNIPSTART javasdk-create-service-stubs-with-options
-            // Create a stub that accesses a Temporal Service
+             // Create a stub that accesses a Temporal Service
             WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
-            // @@@SNIPEND
 
             // Set the Client options
             WorkflowClientOptions clientOptions = WorkflowClientOptions
@@ -89,4 +86,4 @@ public class YourCallerApp {
         System.exit(0);
     }
 }
-
+// @@@SNIPEND

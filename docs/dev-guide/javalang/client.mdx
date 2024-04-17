@@ -24,201 +24,76 @@ It explains the role and use of Clients and shows you how to configure your Java
 
 This section includes the following topics:
 
-* [What is a Temporal Client](#what-is-a-temporal-client)
-* [Workflow Client](#workflow-client)
-* [Set up a Client for local service](#set-up-a-client-for-local-service)
-* [Set up a Client to connect to a remote service](#set-up-a-client-to-connect-to-a-remote-service)
-* [Configure a Temporal Cloud Client](#configure-a-temporal-cloud-client)
+* [How to initialize a Temporal Client for the Temporal CLI development service](#how-to-initialize-a-temporal-client-for-the-temporal-cli-development-service)
+* [How to initialize a Temporal Client to connect to a custom Namespace](#how-to-initialize-a-temporal-client-to-connect-to-a-custom-namespace)
+* [How to initialize a Temporal Client to connect to Temporal Cloud](#how-to-initialize-a-temporal-client-to-connect-to-temporal-cloud)
 
-## What is a Temporal Client
+## How to initialize a Temporal Client for the Temporal CLI development service
+The Java SDK provides an already-configured way to connect to a locally hosted Temporal Service.
+The `.newLocalServiceStubs()` method returns a stub that points to the default Temporal CLI service settings (localhost:7233).
 
-A [Temporal Client](/temporal#temporal-client) is an SDK-supplied component that communicates with the Temporal Service.
-A Temporal Client like the Java SDK's `WorkflowClient` is used to start and query Workflow Executions.
-
-<!--SNIPSTART javasdk-initialize-temporal-client -->
+<!--SNIPSTART javasdk-build-caller-app-using-local-client {"selectedLines": ["11-17"]}-->
+[sample-apps/java/client/devserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/devserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
 ```java
-import io.temporal.client.WorkflowClient;
+// ...
+        // Create an instance that connects to a Temporal Service running on the local
+        // machine, using the default port (7233)
+        WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newLocalServiceStubs();
 
-// Initialize the Temporal Client
-WorkflowClient client = WorkflowClient.newInstance(serviceStub, clientOptions);
+        // Initialize the Temporal Client
+        // This application uses the Client to communicate with the local Temporal Service
+        WorkflowClient client = WorkflowClient.newInstance(serviceStub);
 ```
 <!--SNIPEND-->
 
-Each Client wraps a "service stub," a term unique to the Java SDK although the mechanism exists in each SDK.
+The Namespace is assumed to be 'default' unless otherwise specified.
 
-<!--SNIPSTART javasdk-create-new-local-service-stub {"enable_source_link": false} -->
+You are now ready to use the Temporal CLI development service.
+
+## How to initialize a Temporal Client to connect to a custom Namespace
+
+Custom Namespaces on local development systems let you to build out new features while isolating Workflow Executions.
+Namespaces are established by setting a Client's options to configure the new instance.
+
+<!--SNIPSTART javasdk-build-caller-app-using-local-client-custom-namespace {"selectedLines": ["23-31"]}-->
+[sample-apps/java/client/devserver-namespace-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/devserver-namespace-client-sample/src/main/java/clientsample/YourCallerApp.java)
 ```java
-import io.temporal.serviceclient.WorkflowServiceStubs;
+// ...
+        // Add the Namespace as a Client Option
+        WorkflowClientOptions clientOptions = WorkflowClientOptions
+            .newBuilder()
+            .setNamespace(namespace)
+            .build();
 
-// Create a stub that accesses a Temporal Service
-WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
+        // Initialize the Temporal Client
+        // This application uses the Client to communicate with the Temporal Service
+        WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
 ```
 <!--SNIPEND-->
 
-A stub refers to a remote calling mechanism that enables runtime invocation using [gRPC](/cloud/namespaces#temporal-cloud-grpc-endpoint).
+Your Client is now configured to use the custom Namespace.
 
-### What are service stubs
+## How to initialize a Temporal Client to connect to Temporal Cloud.
 
-The Temporal Client communicates with the Temporal Service using gRPC.
-The gRPC APIs are handled by service stubs that you configure.
+When you use a remote service, you don't use the `newLocalServicesStubs` convenience method.
+Instead, set your connection details as stub configuration options:
 
-<!-- SNIPSTART javasdk-create-service-stubs-with-options -->
+<!--SNIPSTART javasdk-build-caller-app-using-temporal-cloud {"selectedLines": ["46-54"]}-->
+[sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
 ```java
-import io.temporal.serviceclient;
+// ...
+            // Set the Service Stub options (SSL context and gRPC endpoint)
+            WorkflowServiceStubsOptions stubsOptions = WorkflowServiceStubsOptions
+                .newBuilder()
+                .setSslContext(sslContext)
+                .setTarget(gRPCEndpoint)
+                .build();
 
-// Create a stub that accesses a Temporal Service
-WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
+             // Create a stub that accesses a Temporal Service
+            WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
 ```
 <!--SNIPEND-->
 
-A stub adds gRPC communication capabilities to a Client.
-The service stub enables Workers, applications, schedulers, and other code that uses Clients to benefit from Temporal Service's orchestration.
-
-
-Stubs must be configured before use.
-You set the gRPC Temporal Service endpoint for the service you'll connect to.
-You may also need to establish other supporting options like secure connection contexts.
-These features ensure safe reliable operations.
-
-<!--SNIPSTART javasdk-set-service-stub-options {"enable_source_link": false} -->
-```java
-WorkflowServiceStubsOptions stubsOptions = WorkflowServiceStubsOptions
-    .newBuilder()
-    .setSslContext(sslContext)
-    .setTarget(gRPCEndpoint)
-    .build();
-```
-<!--SNIPEND-->
-
-## Workflow Client
-
-The Java SDK offers several Client types including the [`WorkflowClient`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html), provided by the `io.temporal.client` package.
-A Workflow Client can start and query Workflows from your code or enable other types to do the same.
-
-For example, a Client can direct Workflow invocation:
-
-```java
-import io.temporal.client;
-
-// Initialize the Temporal Client
-WorkflowClient client = WorkflowClient.newInstance(serviceStub, clientOptions);
-
-// The Client establishes a Workflow stub
-YourWorkflow workflow = client.newWorkflowStub(YourWorkflow.class, options);
-
-// The newly created workflow stub uses Temporal orchestration to complete its work
-String results = workflow.initiateWorkflow();
-```
-
-Just like a Client wraps a stub, other types can wrap Clients.
-Worker Factories use Clients to handle Service interaction for the Workers they create.
-
-```java
-// A WorkerFactory creates Workers
-WorkerFactory factory = WorkerFactory.newInstance(client);
-```
-
-:::tip
-A Client should be created once and persisted throughout the duration of your application process.
-:::
-
-## Set up a Client for local service
-
-The Java SDK provides a preset way to connect to a locally hosted Temporal Service.
-The `.newLocalServiceStubs()` method returns a pre-configured stub that points to localhost running on port 7233.
-
-```java
-// Create a stub that accesses a Temporal Service on the local development machine
-WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
-
-// The Worker uses the Client to communicate with the Temporal Service
-WorkflowClient client = WorkflowClient.newInstance(service);
-```
-
-You can use the client directly or to set up and configure other types.
-
-### Build a Calling App
-
-The following examples shows how you might use a client in your application to invoke a Workflow.
-A Workflow stub, like a Workflow Services stub, uses a gRPC link to the Temporal Service.
-Instead of calling methods directly, a stub allows the Temporal Service to orchestrate that execution.
-Activities and Workflows will follow the policies you set for retries, timeouts, and replays.
-
-```java
-// Establish the Workflow Options
-WorkflowOptions options = WorkflowOptions
-    .newBuilder()
-    .setTaskQueue("YourTaskQueue")
-    .build();
-
-// Build the Workflow stub for dynamic invocation
-YourWorkflow workflowStub = client.newWorkflowStub(YourWorkflow.class, options);
-
-// Run the Workflow and wait for the results string
-String results = workflowStub.initiateWorkflow();
-System.out.println(results);
-```
-
-The actual execution of the Workflow code may end up happening on one Worker (Temporal's "sticky" execution helps that happen to make your processes more efficient) or several.
-In real life, all sorts of unexpected outages may happen.
-
-The following code may look like a direct method call but it's actually working closely with Temporal orchestration and using gRPC communication:
-
-```java
-String results = workflowStub.initiateWorkflow();
-```
-
-Orchestration handles re-routing, replay, and retries to ensure your Workflow is run once and reliably.
-
-### Use a custom Namespace
-
-Custom Namespaces on local development systems enables you to build out new features while isolating Workflow Executions.
-Namespaces are established by setting a Client's options.
-They help configure the new Client instance.
-
-```java
-// Add the Namespace as a Client Option
-WorkflowClientOptions clientOptions = WorkflowClientOptions
-    .newBuilder()
-    .setNamespace(namespace)
-    .build();
-
-// Initialize the Temporal Client
-// The custom Namespace is used
-WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
-```
-
-## Set up a Client to connect to a remote service
-
-When you use a remote service, you will not be able to use the following convenience method that builds a local service stub on port 7233:
-
-```java
-WorkflowServiceStubsOptions stubsOptions = WorkflowServiceStubs.newLocalServiceStubs();
-```
-
-Instead, you set your connection details as stub configuration options:
-
-```java
-// Set the Service Stub options (SSL context and gRPC endpoint)
-WorkflowServiceStubsOptions stubsOptions = WorkflowServiceStubsOptions
-    .newBuilder()
-    .setSslContext(sslContext)
-    .setTarget(gRPCEndpoint)
-    .build();
-
-// Create a stub that accesses a Temporal Service
-WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
-```
-
-This is the only piece that needs to change.
-Once the service stub is set, your remaining code does not need to update how a Client is built, configured, and used.
-
-## Configure a Temporal Cloud Client
-
-It takes just a few extra steps to configure a Client for Temporal Cloud.
-This section shows you what you need.
-
-### Prerequisites
 Each Temporal Cloud service Client has four prerequisites.
 The sample code assumes you've set these as environmental variables in the shell that runs the Client code:
 
@@ -229,69 +104,61 @@ The sample code assumes you've set these as environmental variables in the shell
 
 Retrieve and test these values before building your Client.
 
+<!--SNIPSTART javasdk-build-caller-app-using-temporal-cloud {"selectedLines": ["24-38"]}-->
+[sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
 ```java
-private static String getenv(String envName) {
-    String value = System.getenv(envName);
-    if (value == null || value.isEmpty()) {
-        System.err.println("Error: Environmental variable " + envName + " could not be retrieved.");
-        System.exit(1);
+// ...
+    private static String getenv(String envName) {
+        String value = System.getenv(envName);
+        if (value == null || value.isEmpty()) {
+            System.err.println("Error: Environmental variable " + envName + " could not be retrieved.");
+            System.exit(1);
+        }
+        return value;
     }
-    return value;
-}
 
-public static void main(String[] args) {
-    // Populate connection pre-requisites from environmental variables
-    String namespace = getenv("TEMPORAL_CLOUD_NAMESPACE");
-    String gRPCEndpoint = getenv("TEMPORAL_CLOUD_GRPC_ENDPOINT");
-    String clientKeyPath = getenv("TEMPORAL_MTLS_PRIVATE_KEY_PATH");
-    String clientCertPath = getenv("TEMPORAL_MTLS_CERT_PATH");
-    // ...
-}
+    public static void main(String[] args) {
+        // Populate connection pre-requisites from environmental variables
+        String namespace = getenv("TEMPORAL_CLOUD_NAMESPACE");
+        String gRPCEndpoint = getenv("TEMPORAL_CLOUD_GRPC_ENDPOINT");
+        String clientKeyPath = getenv("TEMPORAL_MTLS_PRIVATE_KEY_PATH");
+        String clientCertPath = getenv("TEMPORAL_MTLS_CERT_PATH");
 ```
-
-### Configure the Cloud Client
+<!--SNIPEND-->
 
 The following sample generates an SSL context from the mTLS .pem and .key files.
 Along with the gRPC endpoint, this information configures a service stub for Temporal Cloud.
-Add the Namespace to your Client build options and you're ready to initialize a new Client:
+Add the Namespace to your Client build options and initialize the new Client:
 
+<!--SNIPSTART javasdk-build-caller-app-using-temporal-cloud {"selectedLines": ["41-64"]}-->
+[sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
 ```java
-try {
-    // Generate an SSL context
-    InputStream clientCertInputStream = new FileInputStream(clientCertPath);
-    InputStream clientKeyInputStream = new FileInputStream(clientKeyPath);
-    SslContext sslContext = SimpleSslContextBuilder.forPKCS8(clientCertInputStream, clientKeyInputStream).build();
+// ...
+            // Generate an SSL context
+            InputStream clientCertInputStream = new FileInputStream(clientCertPath);
+            InputStream clientKeyInputStream = new FileInputStream(clientKeyPath);
+            SslContext sslContext = SimpleSslContextBuilder.forPKCS8(clientCertInputStream, clientKeyInputStream).build();
 
-    // Set the Service Stub options (SSL context and gRPC endpoint)
-    WorkflowServiceStubsOptions stubsOptions = WorkflowServiceStubsOptions
-        .newBuilder()
-        .setSslContext(sslContext)
-        .setTarget(gRPCEndpoint)
-        .build();
+            // Set the Service Stub options (SSL context and gRPC endpoint)
+            WorkflowServiceStubsOptions stubsOptions = WorkflowServiceStubsOptions
+                .newBuilder()
+                .setSslContext(sslContext)
+                .setTarget(gRPCEndpoint)
+                .build();
 
-    // Create a stub that accesses a Temporal Service
-    WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
+             // Create a stub that accesses a Temporal Service
+            WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
 
-    // Set the Client options
-    WorkflowClientOptions clientOptions = WorkflowClientOptions
-        .newBuilder()
-        .setNamespace(namespace)
-        .build();
+            // Set the Client options
+            WorkflowClientOptions clientOptions = WorkflowClientOptions
+                .newBuilder()
+                .setNamespace(namespace)
+                .build();
 
-    // Initialize the Temporal Client
-    // This application uses the Client to communicate with the Temporal Service
-    WorkflowClient client = WorkflowClient.newInstance(serviceStub, clientOptions);
+            // Initialize the Temporal Client
+            // This application uses the Client to communicate with the Temporal Service
+            WorkflowClient client = WorkflowClient.newInstance(serviceStub, clientOptions);
 ```
+<!--SNIPEND-->
 
-Any logic that follows the Client establishment won't be affected by Temporal Cloud or local hosting.
-If you've built and tested your code using the development service, these small changes help it deploy for Temporal Cloud orchestration.
-
-The two exceptions at the end of the code sample handle missing mTLS files (`FileNotFoundException`) and SSL issues (`SSLException`).
-
-```
-} catch (FileNotFoundException e) {
-    System.out.println(e.getMessage());
-} catch (SSLException e) {
-    System.out.println(e.getMessage());
-}
-```
+You are now ready to start working with Temporal Cloud.
