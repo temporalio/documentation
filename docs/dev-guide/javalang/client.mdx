@@ -35,49 +35,41 @@ This section includes the following topics:
 A [Temporal Client](/temporal#temporal-client) is an SDK-supplied component that communicates with the Temporal Service.
 A Temporal Client like the Java SDK's `WorkflowClient` is used to start and query Workflow Executions.
 
+<!--SNIPSTART javasdk-initialize-temporal-client -->
 ```java
 import io.temporal.client.WorkflowClient;
 
 // Initialize the Temporal Client
 WorkflowClient client = WorkflowClient.newInstance(serviceStub, clientOptions);
 ```
+<!--SNIPEND-->
 
 Each Client wraps a "service stub," a term unique to the Java SDK although the mechanism exists in each SDK.
 
+<!--SNIPSTART javasdk-create-new-local-service-stub {"enable_source_link": false} -->
 ```java
 import io.temporal.serviceclient.WorkflowServiceStubs;
 
 // Create a stub that accesses a Temporal Service
 WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
 ```
+<!--SNIPEND-->
 
 A stub refers to a remote calling mechanism that enables runtime invocation using [gRPC](/cloud/namespaces#temporal-cloud-grpc-endpoint).
-
-### What is gRPC
-
-gRPC is a Remote Procedure Call framework developed by Google.
-It features low latency and high performance.
-gRPC provides Temporal with an efficient, language-agnostic communication framework.
-This protocol supports the two-way communication needed to fully orchestrate Temporal applications.
-
-Stateless communication offers many advantages.
-It supports flexibility and scaling in Task execution.
-Tasks run Workflows and Actions.
-It also enables the Temporal Service to decompose tasks as needed, without tying those tasks to a particular Client.
-Your code doesn't use gRPC directly.
-In the Java SDK, its features are bundled into SDK-provided service stubs.
 
 ### What are service stubs
 
 The Temporal Client communicates with the Temporal Service using gRPC.
 The gRPC APIs are handled by service stubs that you configure.
 
+<!-- SNIPSTART javasdk-create-service-stubs-with-options -->
 ```java
 import io.temporal.serviceclient;
 
 // Create a stub that accesses a Temporal Service
 WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
 ```
+<!--SNIPEND-->
 
 A stub adds gRPC communication capabilities to a Client.
 The service stub enables Workers, applications, schedulers, and other code that uses Clients to benefit from Temporal Service's orchestration.
@@ -88,6 +80,7 @@ You set the gRPC Temporal Service endpoint for the service you'll connect to.
 You may also need to establish other supporting options like secure connection contexts.
 These features ensure safe reliable operations.
 
+<!--SNIPSTART javasdk-set-service-stub-options {"enable_source_link": false} -->
 ```java
 WorkflowServiceStubsOptions stubsOptions = WorkflowServiceStubsOptions
     .newBuilder()
@@ -95,6 +88,7 @@ WorkflowServiceStubsOptions stubsOptions = WorkflowServiceStubsOptions
     .setTarget(gRPCEndpoint)
     .build();
 ```
+<!--SNIPEND-->
 
 ## Workflow Client
 
@@ -142,32 +136,6 @@ WorkflowClient client = WorkflowClient.newInstance(service);
 ```
 
 You can use the client directly or to set up and configure other types.
-
-### Build a Worker Factory
-
-A Worker Factory uses a client to build a Worker, as Workers must be able to communicate with the Temporal Service.
-In the following example, the new Worker listens to 'YourTaskQueue' and can manage 'YourWorkflow' tasks (implemented in 'YourWorkflowImpl').
-You should also configure your Workers to manage Activity tasks.
-
-```java
-// A WorkerFactory creates Workers
-WorkerFactory factory = WorkerFactory.newInstance(client);
-
-// A Worker listens to one Task Queue.
-// This Worker processes both Workflows and Activities
-Worker worker = factory.newWorker("YourTaskQueue");
-
-// Register a Workflow implementation with this Worker
-// The implementation must be known at runtime to dispatch Workflow tasks
-worker.registerWorkflowImplementationTypes(YourWorkflowImpl.class);
-
-// Start all registered Workers. The Workers will start polling
-factory.start();
-```
-
-Worker code is normally invoked from a 'main' method, where the JVM starts program execution.
-Starting the factory will block.
-This enables the Worker application to continue running as it polls for new tasks on its Task Queue.
 
 ### Build a Calling App
 

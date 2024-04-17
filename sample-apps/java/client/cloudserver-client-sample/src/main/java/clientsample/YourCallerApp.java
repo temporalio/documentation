@@ -43,15 +43,19 @@ public class YourCallerApp {
             InputStream clientKeyInputStream = new FileInputStream(clientKeyPath);
             SslContext sslContext = SimpleSslContextBuilder.forPKCS8(clientCertInputStream, clientKeyInputStream).build();
 
+            // @@@SNIPSTART javasdk-set-service-stub-options
             // Set the Service Stub options (SSL context and gRPC endpoint)
             WorkflowServiceStubsOptions stubsOptions = WorkflowServiceStubsOptions
                 .newBuilder()
                 .setSslContext(sslContext)
                 .setTarget(gRPCEndpoint)
                 .build();
+            // @@@SNIPEND
 
+            // @@@SNIPSTART javasdk-create-service-stubs-with-options
             // Create a stub that accesses a Temporal Service
             WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
+            // @@@SNIPEND
 
             // Set the Client options
             WorkflowClientOptions clientOptions = WorkflowClientOptions
