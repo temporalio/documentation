@@ -48,8 +48,6 @@ The `.newLocalServiceStubs()` method returns a stub that points to the default T
 
 The Namespace is assumed to be 'default' unless otherwise specified.
 
-You are now ready to use the Temporal CLI development service.
-
 ## How to initialize a Temporal Client to connect to a custom Namespace
 
 Custom Namespaces on local development systems let you to build out new features while isolating Workflow Executions.
@@ -70,8 +68,6 @@ Namespaces are established by setting a Client's options to configure the new in
         WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
 ```
 <!--SNIPEND-->
-
-Your Client is now configured to use the custom Namespace.
 
 ## How to initialize a Temporal Client to connect to Temporal Cloud.
 
@@ -95,36 +91,13 @@ Instead, set your connection details as stub configuration options:
 <!--SNIPEND-->
 
 Each Temporal Cloud service Client has four prerequisites.
-The sample code assumes you've set these as environmental variables in the shell that runs the Client code:
 
-* **TEMPORAL\_CLOUD\_NAMESPACE**: The full Namespace Id from the [Cloud Namespace](https://cloud.temporal.io/namespaces) details page.
-* **TEMPORAL\_CLOUD\_GRPC\_ENDPOINT**: The gRPC endpoint from the [Cloud Namespace](https://cloud.temporal.io/namespaces) details page.
-* **TEMPORAL\_MTLS\_PRIVATE\_KEY\_PATH**: The path to the file with your mTLS private key.
-* **TEMPORAL\_MTLS\_CERT\_PATH**: The path to the .pem file with your mTLS x509 Certificate.
+* The full Namespace Id from the [Cloud Namespace](https://cloud.temporal.io/namespaces) details page
+* The gRPC endpoint from the [Cloud Namespace](https://cloud.temporal.io/namespaces) details page
+* Your mTLS private key
+* Your mTLS x509 Certificate
 
-Retrieve and test these values before building your Client.
-
-<!--SNIPSTART javasdk-build-caller-app-using-temporal-cloud {"selectedLines": ["24-38"]}-->
-[sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
-```java
-// ...
-    private static String getenv(String envName) {
-        String value = System.getenv(envName);
-        if (value == null || value.isEmpty()) {
-            System.err.println("Error: Environmental variable " + envName + " could not be retrieved.");
-            System.exit(1);
-        }
-        return value;
-    }
-
-    public static void main(String[] args) {
-        // Populate connection pre-requisites from environmental variables
-        String namespace = getenv("TEMPORAL_CLOUD_NAMESPACE");
-        String gRPCEndpoint = getenv("TEMPORAL_CLOUD_GRPC_ENDPOINT");
-        String clientKeyPath = getenv("TEMPORAL_MTLS_PRIVATE_KEY_PATH");
-        String clientCertPath = getenv("TEMPORAL_MTLS_CERT_PATH");
-```
-<!--SNIPEND-->
+Retrieve these values before building your Client.
 
 The following sample generates an SSL context from the mTLS .pem and .key files.
 Along with the gRPC endpoint, this information configures a service stub for Temporal Cloud.
@@ -160,5 +133,3 @@ Add the Namespace to your Client build options and initialize the new Client:
             WorkflowClient client = WorkflowClient.newInstance(serviceStub, clientOptions);
 ```
 <!--SNIPEND-->
-
-You are now ready to start working with Temporal Cloud.
