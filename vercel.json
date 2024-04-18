@@ -2000,6 +2000,10 @@
     {
       "source": "/temporal/release-stages",
       "destination": "/evaluate/release-stages"
+    },
+    {
+      "source": "/getting-started",
+      "destination": "https://learn.temporal.io/getting_started/"
     }
   ]
 }
