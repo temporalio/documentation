@@ -203,7 +203,7 @@ The Frontend Service is a stateless gateway service that exposes a strongly type
 
 _Tags: [term](/tags/term)_
 
-#### [General Availability](/temporal/release-stages#general-availability)
+#### [General Availability](/evaluate/release-stages#general-availability)
 
 Learn more about the General Availability release stage
 
@@ -305,13 +305,13 @@ The Temporal Persistence store is a database used by Temporal Services to persis
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Pre-release](/temporal/release-stages#pre-release)
+#### [Pre-release](/evaluate/release-stages#pre-release)
 
 Learn more about the Pre-release stage
 
 _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_
 
-#### [Public Preview](/temporal/release-stages#public-preview)
+#### [Public Preview](/evaluate/release-stages#public-preview)
 
 Learn more about the Public Preview release stage
 
