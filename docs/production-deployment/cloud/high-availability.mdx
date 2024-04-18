@@ -16,6 +16,8 @@ tags:
 - High Availability is in [Public Preview](/temporal/release-stages#public-preview) for Temporal Cloud.
 
 :::
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>I kept high availability namespace in lower-case here, as the original doc did.
+Is this correct?</span>
 
 Temporal Cloud's high availability namespace feature introduces push-button multi-region availability for your Temporal Service.
 This feature enables you to choose a standby region for a Temporal Namespace.
@@ -27,6 +29,7 @@ The service takes care of the complexity of replicating data from the active reg
 - [Understanding failover and failover scenarios](/cloud/high-availability#failovers)
 - [High availability SLA](/cloud/high-availability#sla)
 - [Architecture overview](/cloud/high-availability#architecture)
+- [Manage high-availability namespaces](/cloud/high-availability#manage-high-availability-namespaces)
 
 ## What is high availability? {#high-availability-intro}
 
@@ -88,14 +91,15 @@ Temporal Cloud aims to provide a P95 replication delay of less than 1 minute.
 
 
 Due to this delay, a [forced failover]((/cloud/high-availability#forced-failover) could cause workflows to rollback in progress or cause recently started Workflows to be absent until the region recovers.
-<!--FIXME: Add link to conflict resolution converage-->
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>FIXME: Add link to conflict resolution converage</span>
 Temporal event versioning and conflict resolution mechanisms ensure that the eventual history of the Workflow is still replayable by the SDK.
 Critical operations like Signals won't get lost.
 
 
 ### Failover scenarios
 
-The Temporal Cloud failover mechanism supports several modes to execute namespace failovers. 
+The Temporal Cloud failover mechanism supports several modes to execute namespace failovers.
+
 Hybrid mode is the default.
 These modes include:
 
@@ -115,7 +119,7 @@ This mode favors consistency over availability.
 #### Forced failover {#forced-failover}
 
 In this mode, a namespace is immediately activated in the standby region.
-<!--FIXME: Add link to conflict resolution converage-->
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>FIXME: Add link to conflict resolution converage</span>
 Events not yet replicated due to [replication lag](/cloud/high-availability#replication-lag) will undergo conflict resolution upon reaching the new active region.
 This mode prioritizes availability over consistency.
 
@@ -126,7 +130,7 @@ The hybrid failover mode (the default mode) limits graceful failover attempts to
 If the graceful approach does not resolve the issue, Temporal Cloud automatically switches to a forced failover.
 This strategy balances consistency and availability requirements.
 
-<!--FIXME: Add links to Triggering a failover, Worker deployment, and Routing (probably re-named?  traffic after failovers?)-->
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>FIXME: FIXME: Add links to Triggering a failover, Worker deployment, and Routing (probably re-named?  traffic after failovers?</span>
 See the sections on triggering a failover, Worker deployment, and routing for more information.
 
 ## High availability SLA {#high-availability-sla}
@@ -181,12 +185,128 @@ This process ensures that all regions will eventually share a consistent and uni
 
 :::
 
-### Workflow execution replication
+### Workflow execution replication {#workflow-execution-replication}
 
-<!--PAUSING HERE. PICK UP TOMORROW. -->
+Certain Workflow operations are limited to the active region:
 
-Workflows in a multi-region namespace can only be mutated in the active region. Workflow Tasks and Activity Tasks are only dispatched from the active region, and thus forward progress will only be made there. This also means that certain requests, such as Start Workflow and Signal Workflow can only be processed on the active side. However, standby regions are capable of receiving API requests from Clients and Workers, and will automatically forward these requests to the active cluster for execution. This is critical in providing an “all-active” experience for Temporal users to ensure no downtime during Namespace failover: during the short time window between when the standby region becomes the active region and when the Clients and Workers receive the DNS update, requests will be forwarded from the now passive active region to the active standby region. 
+* Workflows in a multi-region namespace can only be mutated in the active region.
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Q: Is there a better way to explain what "mutated" means?</span>
+* Workflow Tasks and Activity Tasks are only dispatched from the active region, and thus forward progress will only be made there.
 
-As Workflow Executions progress and are operated on, replication tasks are created in the active region and then dispatched to the standby region. The processing of these replication tasks ensures that the standby region undergoes the same state transitions as the active region, allowing them to synchronize and achieve the same state. 
+This means that certain requests, such as Start Workflow and Signal Workflow can only be processed in the active region.
 
-While standby regions do not distribute Workflow or Activity Tasks, they perform verification tasks to confirm that intended operations are executed and Workflows reach the desired state. This mechanism ensures consistency and reliability in the replication process across Temporal regions.
+Standby regions may receive API requests from Clients and Workers.
+They automatically forward these requests to the active cluster for execution.
+
+This feature provides an “all-active” experience for Temporal users.
+It helps ensure there's no downtime during Namespace failover.
+There's a short time window from when a standby region becomes the active region to when Clients and Workers receive a DNS update.
+During this time requests forward from the now passive active region to the active standby region.
+
+As Workflow Executions progress and are operated on, replication tasks created in the active region are dispatched to the standby region.
+The processing of these replication tasks ensures that the standby region undergoes the same state transitions as the active region.
+This enables the replicated tasks to synchronize and achieve the same state.
+
+Standby regions do not distribute Workflow or Activity Tasks.
+Instead, they perform verification tasks to confirm that intended operations are executed and Workflows reach the desired state.
+This mechanism ensures consistency and reliability in the replication process across Temporal regions.
+
+### Conflict Resolution {#conflict-resolution}
+
+High availability namespaces rely on asynchronous event replication across Temporal regions.
+In the event of a non-graceful failover, replication lag may result in a temporary setback in workflow progress.
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Is there a good link for "at most once" and "at least once" semantics? A Kafka source? https://docs.confluent.io/kafka/design/delivery-semantics.html?</span>
+
+Single-region Namespaces, which can provide _at-most-once_ semantics for the execution of Activities (when [Maximum Attempts](https://docs.temporal.io/retry-policies#maximum-attempts) is set to 0).
+High availability namespaces can only provide _at-least-once_ semantics for execution of Activities.
+Completed Activities _may_ be dispatched again in the newly active region, leading to repeated executions.
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>I removed "This implies", but I think there's something missing here</span>
+
+When a Workflow Execution is updated in a new region following a failover, events from the previous cluster arriving post-failover cannot be directly applied.
+At this point, Temporal Cloud forks the Workflow History.
+It creates a new branch history for execution, and begins the conflict resolution process.
+
+The Temporal Service ensures that workflow histories remain valid and are replayable by SDKs post-failover or after conflict resolution.
+This capability is crucial for workflows to continue to make forward progress.
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>I did not include the pricing section; Should it be here? Should namespaces (and/or high-availability) be uppercased now that we're talking about programmatic and UI customization? I AM ROUGHING OUT THIS SECTION. I am still deciding how to best frame it.</span>
+
+## Manage high-availability namespaces {#manage-high-availability-namespaces}
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Intro</span>
+
+### Create high-availability namespaces {#create}
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Intro</span>
+
+The following sections show how to create high-availability namespaces
+
+#### Create a high-availability namespace with the Temporal Cloud Web UI
+
+During Namespace creation, specify a region for the Namespace to be created in, as you normally would.
+Select the “upgrade to a high-availability namespace” option.
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Source still referred to multi-region; Will the WebUI be updated?</span>
+
+#### Use the Temporal 'tcld' CLI utility to create a high-availability namespace
+
+Enter the following at the command line.
+Include both regions to add.
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Correct?</span>
+
+```
+tcld namespace create --region <region list> 
+```
+
+The utility responds:
+
+```
+[y/n] Adding a standby region improves availability and increases the cost.
+Do you want to proceed?
+```
+
+Confirm with "y" to continue.
+
+#### Create a high-availability namespace with API calls
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Fill this out; Something about no confirmation; Something about South America; Something about co-located regions in the same sector/area</span>
+
+### Add a new region to a namespace {#add-regions}
+
+Use [`AddNamespaceRegion`](https://github.com/temporalio/api-cloud/pull/19) to add additional Namespace regions to an existing Namespace.
+
+You can upgrade an existing single-region Namespace to a multi-region Namespace by adding a standby region.
+
+#### Add a new region using the Temporal Cloud Web UI
+
+To upgrade an existing Namespace to a multi-region namespace:
+
+1. Navigate to the Namespace
+1. Select the “Upgrade Namespace” button.
+1. Select the standby region you want to add to this Namespace.
+
+You will see an estimated time for replication.
+This time is based on your selection and the size and scale of Workflows in your namespace, 
+
+#### Add a new region using the Temporal 'tcld' CLI utility
+
+At the command line, enter:
+
+```
+tcld namespace add --region <region list>
+```
+
+The utility responds:
+
+```
+[y/n] Adding a standby region improves availability and increases the cost.
+It will take an estimated <x amount of time> for this operation.
+Do you still want to proceed?
+```
+
+Confirm with "y".
+
+#### Add a new region programatically using the Temporal SDK APIs
+
+See [`AddNamespaceRegion`](https://github.com/temporalio/api-cloud/pull/19)
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Fill this in.</span>
+
