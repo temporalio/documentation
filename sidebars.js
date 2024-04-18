@@ -152,7 +152,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Deploy",
+      label: "Deploy to production",
       collapsed: false,
       link: {
         type: "doc",
