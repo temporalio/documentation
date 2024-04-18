@@ -28,8 +28,9 @@ The service takes care of the complexity of replicating data from the active reg
 - [Why choose high availability?](/cloud/high-availability#why-high-availability)
 - [Understanding failover and failover scenarios](/cloud/high-availability#failovers)
 - [High availability SLA](/cloud/high-availability#sla)
-- [Architecture overview](/cloud/high-availability#architecture)
-- [Manage high-availability namespaces](/cloud/high-availability#manage-high-availability-namespaces)
+- [High availability architecture overview](/cloud/high-availability#architecture)
+- [Pricing](/cloud/high-availability#pricing)
+- [Manage your high-availability namespaces](/cloud/high-availability#management)
 
 ## What is high availability? {#high-availability-intro}
 
@@ -159,7 +160,7 @@ South America is excluded as only one region is available.
 
 :::
 
-## Architecture overview {#architecture}
+## High availability architecture overview {#architecture}
 
 High availability namespaces enable replication of Namespace metadata and Workflow Executions across connected regions.
 This redundancy, plus the added failover capability, provides measurable stability when dealing with outages.
@@ -231,27 +232,43 @@ It creates a new branch history for execution, and begins the conflict resolutio
 The Temporal Service ensures that workflow histories remain valid and are replayable by SDKs post-failover or after conflict resolution.
 This capability is crucial for workflows to continue to make forward progress.
 
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>I did not include the pricing section; Should it be here? Should namespaces (and/or high-availability) be uppercased now that we're talking about programmatic and UI customization? I AM ROUGHING OUT THIS SECTION. I am still deciding how to best frame it.</span>
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>I did not include the pricing section; Should it be here? Should namespaces (and/or high-availability) be uppercased now that we're talking about programmatic and UI customization? I AM ROUGHING OUT THIS SECTION.
+I am still deciding how to best frame it.</span>
 
-## Manage high-availability namespaces {#manage-high-availability-namespaces}
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Intro</span>
+## Pricing {#pricing}
+
+## Manage your high-availability namespaces {#management}
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Better intro needed</span>
+
+Temporal enables you to create and manage your high-availability namespaces using the Temporal Cloud Web UI interface, the command line 'tcld' CLI utility, and by issuing API commands.
+
+This section provides how-to instructions for the following tasks:
+
+* [Create high availability namespaces](/cloud/high-availability#create)
+* [Upgrade single-region namespaces to high availability](/cloud/high-availability#add-regions)
+* [Discontinuing high-avaiability](/cloud/high-availability#discontinuing)
 
 ### Create high-availability namespaces {#create}
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Intro</span>
 
-The following sections show how to create high-availability namespaces
+The following sections show how to create high-availability namespaces.
+High availability provides multi-region deployment backed by Temporal's data replication and active-standby features.
 
-#### Create a high-availability namespace with the Temporal Cloud Web UI
+**Remember**: namespace pairing is limited to regions within the same continent.
 
-During Namespace creation, specify a region for the Namespace to be created in, as you normally would.
-Select the “upgrade to a high-availability namespace” option.
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Source still referred to multi-region; Will the WebUI be updated?</span>
+#### Temporal Cloud Web UI
 
-#### Use the Temporal 'tcld' CLI utility to create a high-availability namespace
+During Namespace creation, specify the first region for the Namespace to be created in.
+Then select the “upgrade to a high-availability namespace” option.
 
-Enter the following at the command line.
-Include both regions to add.
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Correct?</span>
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Question: Will there be a confirmation step? If so, should this be presented as a numbered or bulleted task list? Another question: the original write-up still refers to multi-region; Will the WebUI be updated? I used high-availability here but this needs to match reality.</span>
+
+#### Temporal 'tcld' CLI
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Correct? Does the order matter? Will the first region always be the primary/active one?</span>
+
+Enter the following command at your command line.
+Include both regions to add by specifying the [region codes](/cloud/service-availability).
 
 ```
 tcld namespace create --region <region list> 
@@ -266,28 +283,69 @@ Do you want to proceed?
 
 Confirm with "y" to continue.
 
-#### Create a high-availability namespace with API calls
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Then what happens? Guessing here:</span>
 
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Fill this out; Something about no confirmation; Something about South America; Something about co-located regions in the same sector/area</span>
+Temporal cloud will establish the new high availability namespace and confirm its details:
 
-### Add a new region to a namespace {#add-regions}
+```
+[detail information that does not yet exist]
+```
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>detail information that does not exist</span>
+
+
+#### API calls
 
 Use [`AddNamespaceRegion`](https://github.com/temporalio/api-cloud/pull/19) to add additional Namespace regions to an existing Namespace.
 
-You can upgrade an existing single-region Namespace to a multi-region Namespace by adding a standby region.
+Include a fully configured <span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>no link `AddNamespaceRegionRequest`</span>.
+Specify the active and standby regions.
+The service returns <span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>no link `AddNamespaceRegionResponse `</span>.
 
-#### Add a new region using the Temporal Cloud Web UI
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Some sort of code sample here</span>.
+
+```
+Some sort of code sample here? Or a link to the reference docs with a proper code sample?
+```
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Also (but probably reference docs that do not belong here):</span>
+
+* <span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>FailoverNamespace</span>
+* <span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>GetNamespaceFailoverHistory</span>
+* etc
+
+### Upgrade single-region namespaces to high availability {#add-regions}
+
+
+The following sections show you how to upgrade an existing namespace to take advantage of high availability's push-button multi-region service.
+
+#### Temporal Cloud Web UI
 
 To upgrade an existing Namespace to a multi-region namespace:
 
-1. Navigate to the Namespace
-1. Select the “Upgrade Namespace” button.
-1. Select the standby region you want to add to this Namespace.
+1.
+Visit Temporal Cloud [Namespaces](https://cloud.temporal.io/namespaces) in your Web browser
+1.
+Navigate to the Namespace details page
+1.
+Select the “Upgrade Namespace” button
+1.
+Select the standby region you want to add to this Namespace
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Screen shots? More specific wording and feedback? Probably a last second update when the details are more stable; plus they can be follow-up ticketed</span>
 
 You will see an estimated time for replication.
 This time is based on your selection and the size and scale of Workflows in your namespace, 
 
-#### Add a new region using the Temporal 'tcld' CLI utility
+After you trigger the upgrade process, you can monitor the status of the globalization process in the UI.
+The timestamp indicates how much time is left remaining for replication to complete.
+The time can range between a few minutes to a few days (at the extreme).
+
+You don’t need to monitor this in real-time.
+Once your multi-region namespace is ready, you will receive an email alerting you.
+All global admins are notified this way.
+
+#### Temporal 'tcld' CLI
 
 At the command line, enter:
 
@@ -305,8 +363,160 @@ Do you still want to proceed?
 
 Confirm with "y".
 
-#### Add a new region programatically using the Temporal SDK APIs
+To check the status of your upgrade, issue the following command.
+This command returns the status of the multi-region namespace and how much time remains for globalization to complete.
+
+```
+tcld namespace get --namespace <namespace_id>
+```
+
+As with WebUI upgrades, once your multi-region namespace is ready, all global admins will receive an email update.
+
+#### API calls
 
 See [`AddNamespaceRegion`](https://github.com/temporalio/api-cloud/pull/19)
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Fill this in.</span>
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Fill this in like the API section in 'create';</span>
 
+### Discontinuing high availability service {#discontinuing}
+
+Disabling high availability removes the multi-region availability and automatic failover features that represents Temporal's highest level of service recovery.
+To disable the feature and end charges, users must contact Temporal directly.
+Charges will stop once this decomissioning procedure complete.
+It is on our roadmap to automate this process.
+
+* Customers making this request must let us know which region you want the namespace to land in after it is de-globalized.
+* If you cease services in the middle of the month, your namespace ceases being global within 1 business day.
+* Temporal will not retain replicated data in the standby region once high availability has been disabled.
+* After disabling high availability, there is a wait time of 7 days before we can re-enable the feature for a given namespace.
+
+## Operations
+
+This section provides how-to instructions for the following operations tasks:
+
+* [Trigger failovers](/cloud/high-availability#triggering-failovers)
+* [Monitoring and observability](/cloud/high-availability#observability)
+
+### Triggering failovers {#triggering-failovers}
+
+At times, you may face issues of network latency
+Under this and other region-specific pressures you can decide to manually  trigger a failover.
+These instructions show you how to perform this action and move your active namespace to the standby region.
+
+After any failover, whether triggered by you or by Temporal, information about the event appears in both the [Temporal Cloud WebUI](https://cloud.temporal.io/namespaces) on the Namespace detail page and in your audit logs.
+
+You don’t need to monitor this in real-time.
+Whenever there is a failover event, all global admins receive an alert email.
+
+More information is available in [Monitoring and Observability](/cloud/high-availability#observability).
+
+#### Temporal Cloud Web UI
+
+Visit the [Namespace WebUI page](https://cloud.temporal.io/namespaces).
+Navigate to the namespace details page and click the menu option to “Trigger a failover”.
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>More details; screenshot maybe? Specific wording?</span>
+
+#### Temporal 'tcld' CLI
+
+To manually trigger a fall-over, issue the following from your command line:
+
+```
+tcld namespace failover --namespace <namespace_id> --target_region <region>
+```
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Response? Specific wording? tcld command to fetch details to confirm new active and standby settings?</span>
+
+#### API calls
+
+[`GetNamespaceFailoverHistory`](https://github.com/temporalio/api-cloud/pull/19)
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>To be filled in</span>
+
+### Monitoring and observability {#observability}
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>STOPPING DRAFT HERE FOR THE DAY</span>
+
+Within the UI, CLI, and API for a multi-region Namespace, users can view and alert on key cloud metrics.
+
+During the process of adding a region to a Namespace, users can see the progress of Workflow replication. Errors—if any—will also be surfaced in the UI. 
+
+There is also information available in the UI and API to monitor and keep track of failovers. Users can see start time, source and destination region, who initiated the failover, duration of the failover event, and any additional context that may be available. 
+
+There is continuous visibility into the replication lag in seconds and this can be viewed in external metrics. 
+You will also notice that multi-region namespace shows 2x the Action count in temporal_cloud_v0_total_action_count. This is due to replication. 
+
+### Auditing operational events {#auditing}
+
+In the event of a failover triggered by Temporal, users are notified that the failover has happened via the audit log. Users can set alerts when a failover event is triggered (if done so by Temporal).
+
+The audit log contains information about failovers once triggered, specifically "operation": "FailoverNamespaces" in the logs. After the failover, users will be able to see in the UI that the namespace is active in the new region. 
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>From doc: editorial note: include this section in the audit log section of docs</span>
+
+### Worker Deployment
+
+After enabling the multi-region namespace feature, there is no additional worker configuration needed. If there is a failover event to the standby region, the DNS redirection orchestrated by Temporal ensures that your existing workers can continue to poll the namespace. More details are available in the section Routing below. It is important to note that workers would be communicating cross-region in this scenario.
+
+However, in case of a complete regional outage, your Workers in that region could go down as well. If you wish your Workflows to progress during the outage, you need to have a redundant set of Workers in the standby region. 
+
+### Routing
+
+If you are not using PrivateLink, this feature is completely transparent to you. You don’t need to make any changes on your end. 
+
+How it works: When the multi-region namespace feature is enabled, we replace the namespace DNS record 
+
+```
+<ns>.<acct>.<tmprl_domain>
+```
+
+with a CNAME to a regional DNS record in the format 
+
+```
+<region>.region.<tmprl_domain>
+```
+
+This regional DNS record will live in a subzone: 
+
+```
+region.<tmprl_domain>
+```
+
+Clients resolving the namespace’s DNS record will thus be directed to a regional DNS record. 
+
+During a failover, we change the target of the namespace DNS record from one region to another. Using a CNAME record also allows us to support a lower TTL for the record (configured at 15 seconds). As a rule of thumb, DNS reconciliation is not expected to take more than 2x the TTL, leading to at most a 30-second delay for clients to converge to the newly targeted region.
+
+#### For PrivateLink customers
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>ADD IMAGE</span>
+
+Depending on your networking setup and use of PrivateLink, there may be additional configuration changes you need to make. These include but are not limited to setting override DNS and ensuring network connectivity between the two regions.
+
+How it works: The regional DNS needs to be reached through IP addresses local to your network. As the CNAME for the namespace record is public, PrivateLink clients also know which region is currently active. Using a subzone for 
+
+```
+region.<tmprl_domain>
+```
+
+you can override the regional DNS and make sure traffic is routed internally. 
+
+To set up the DNS override, you can override specific regions to target the relevant IP addresses (e.g. aws-us-west-1.region.tmprl.cloud to target 192.168.1.2). Using AWS, this can be done using a private hosted zone in Route53 for 
+
+```
+region.<tmprl_domain>
+```
+
+and linking that private zone to the VPCs you use for Workers. When your Workers connect to the Namespace, they first resolve the
+
+```
+ <ns>.<acct>.<tmprl_domain>
+ ```
+ 
+record, which then targets 
+
+```
+<active>.region.<tmprl_domain>
+```using a CNAME, leading traffic to reach the internal IP you are using.
+
+You also need to consider how to configure Workers to run in this scenario. One option is to have Workers running in both regions at all times. Another option is to establish connectivity between the regions to redirect Workers once failover occurs.
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>ANY OTHER LINKS, READ MORE, etc?</span>
