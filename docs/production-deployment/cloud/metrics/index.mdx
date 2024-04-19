@@ -1,5 +1,5 @@
 ---
-id: metrics
+id: index
 title: Metrics - Temporal Cloud feature guide
 sidebar_label: Metrics
 sidebar_position: 5
@@ -7,27 +7,26 @@ description: Configure and track performance metrics for Temporal Cloud.
 slug: /cloud/metrics/
 toc_max_heading_level: 4
 keywords:
-- explanation
-- how-to
-- introduction
-- metrics
-- observability
-- promentheus
-- reference
-- tcld cli
-- temporal cloud
+  - explanation
+  - how-to
+  - introduction
+  - metrics
+  - observability
+  - promentheus
+  - reference
+  - tcld cli
+  - temporal cloud
 tags:
-- explanation
-- how-to
-- introduction
-- metrics
-- observability
-- promentheus
-- reference
-- tcld-cli
-- temporal-cloud
+  - explanation
+  - how-to
+  - introduction
+  - metrics
+  - observability
+  - promentheus
+  - reference
+  - tcld-cli
+  - temporal-cloud
 ---
-
 
 Beyond the [metrics](/references/sdk-metrics) provided by the Temporal SDKs, some key metrics exist only in Temporal Cloud.
 You can use your own observability tool to query an endpoint and review Namespace metrics.
@@ -191,4 +190,3 @@ rate(temporal_cloud_v0_service_latency_sum[5m]) / rate(temporal_cloud_v0_service
 # the approximate 99th percentile latency over the last 5 minutes, broken down by operation
 histogram_quantile(0.99, sum(rate(temporal_cloud_v0_service_latency_bucket[5m])) by (le, operation))
 ```
-
