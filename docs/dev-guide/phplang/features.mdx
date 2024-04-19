@@ -446,7 +446,7 @@ interface FileProcessingWorkflow {
 
 Update handlers, unlike Query handlers, can change Workflow state.
 
-#### How to validate an Update in a Workflow {#validate-an-update}
+### How to validate an Update in a Workflow {#validate-an-update}
 
 Validate certain aspects of the data sent to the Workflow using an Update Validator method. For instance, a counter Workflow might never want to accept a non-positive number. Use the [`#[UpdateValidatorMethod]`](https://php.temporal.io/classes/Temporal-Workflow-UpdateValidatorMethod.html) attribute and set the `forUpdate` argument to the name of your Update handler. Your Update Validator should accept the same input parameters as your Update Handler and return `void`.
 
@@ -463,7 +463,6 @@ interface GreetingWorkflow {
     public function addGreetingValidator(string $name): void;
 }
 ```
-
 
 ### How to send an Update from a Temporal Client {#send-update-from-client}
 
