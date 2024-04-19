@@ -61,6 +61,7 @@ In this section you can find the following:
 - [How to set Activity timeouts & retries](#activity-timeouts)
 - [How to Heartbeat an Activity](#activity-heartbeats)
 - [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
+- [How to use Start Delay](#start-delay)
 
 ## How to develop with Signals {#signals}
 
@@ -953,3 +954,19 @@ public function run()
     }
 }
 ```
+
+
+## How to use Start Delay {#start-delay}
+
+Use the Workflow [Start Delay](/workflows#delay-workflow-execution) functionality if you need to delay the execution of the Workflow without the need for regular launches.
+Here you simply specify the time to wait before dispatching the first Workflow task.
+
+```php
+$workflow = $workflowClient->newWorkflowStub(
+    GreeterWorkflowInterface::class,
+    WorkflowOptions::new()
+        ->withWorkflowStartDelay(CarbonInterval::minutes(10)),
+);
+$workflowClient->start($workflow, 'Hello world!');
+```
+
