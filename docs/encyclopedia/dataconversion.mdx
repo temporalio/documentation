@@ -7,28 +7,34 @@ description: This guide provides an overview of data handling using a Data Conve
 slug: /dataconversion
 toc_max_heading_level: 4
 keywords:
-- encryption
-- explanation
-- keys
-- payloads
-- secrets
-- term
+  - encryption
+  - explanation
+  - keys
+  - payloads
+  - secrets
+  - term
 tags:
-- encryption
-- explanation
-- keys
-- payloads
-- secrets
-- term
+  - encryption
+  - explanation
+  - keys
+  - payloads
+  - secrets
+  - term
 ---
-
 
 This guide provides an overview of data handling using a Data Converter on the Temporal Platform.
 
 Data Converters in Temporal are SDK components that handle the serialization and encoding of data entering and exiting a Temporal Cluster.
 Workflow inputs and outputs need to be serialized and deserialized so they can be sent as JSON to a Temporal Cluster.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Data Converter encodes and decodes data</p></div><div class="tdiiw" height="1240"><img class="img_ev3q" src="/diagrams/default-data-converter.svg" alt="Data Converter encodes and decodes data" /></div></div>
+<div class="tdiw">
+  <div class="tditw">
+    <p class="tdit">Data Converter encodes and decodes data</p>
+  </div>
+  <div class="tdiiw" height="1240">
+    <img class="img_ev3q" src="/diagrams/default-data-converter.svg" alt="Data Converter encodes and decodes data" />
+  </div>
+</div>
 
 The Data Converter encodes data from your application to a [Payload](#payload) before it is sent to the Temporal Cluster in the Client call.
 When the Temporal Server sends the encoded data back to the Worker, the Data Converter decodes it for processing within your application.
@@ -205,7 +211,7 @@ The `temporal` CLI and the Web UI in turn provide built-in hooks to call the Cod
 
 You can perform some operations on your Workflow Execution using `temporal` and the Web UI, such as starting or sending a Signal to an active Workflow Execution using `temporal` or canceling a Workflow Execution from the Web UI, which might require inputs that contain sensitive data.
 
-To encode this data, [specify your Codec Server endpoints](#endpoints) with [`temporal`](/cli/cmd-options#codec-endpoint) and configure your Web UI to use the Codec Server endpoints.
+To encode this data, [specify your Codec Server endpoints](#codec-server) with [`temporal`](/cli/cmd-options#codec-endpoint) and configure your Web UI to use the Codec Server endpoints.
 
 #### Decoding data on the Web UI and CLI
 
@@ -282,4 +288,3 @@ You should design your Encode and Decode steps to accept all the necessary param
 ### Using Vault for Key Management
 
 [This repository](https://github.com/zboralski/codecserver) provides a robust and complete example of using Temporal with HashiCorp's [Vault](https://www.vaultproject.io/) secrets engine.
-

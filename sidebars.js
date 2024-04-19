@@ -90,9 +90,9 @@ module.exports = {
           items: [
             "dev-guide/phplang/foundations",
             "dev-guide/phplang/features",
-            "dev-guide/javalang/observability",
-            "dev-guide/javalang/testing",
-            "dev-guide/javalang/debugging",
+            "dev-guide/phplang/observability",
+            "dev-guide/phplang/testing",
+            "dev-guide/phplang/debugging",
           ],
         },
         {
