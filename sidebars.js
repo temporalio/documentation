@@ -9,7 +9,7 @@ module.exports = {
         type: "doc",
         id: "evaluate/index",
       },
-      items: ["evaluate/why-temporal", "evaluate/release-stages", "security"],
+      items: ["evaluate/why-temporal", "evaluate/major-components", "evaluate/release-stages", "security"],
     },
     {
       type: "link",
