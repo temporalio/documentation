@@ -7,54 +7,53 @@ description: Improve observability in your Go-based Temporal Workflows. View whi
 slug: /dev-guide/go/observability
 toc_max_heading_level: 4
 keywords:
-- api
-- context propagators
-- developer-guide-doc-type
-- go sdk
-- how-to-doc-type
-- interceptor
-- introduction-doc-type
-- list filter
-- list filters
-- logging and metrics
-- observability
-- search attributes
-- temporal client
-- tracing
-- visibility
-- workflow definition
-- workflow execution
-- workflow executions
-- workflows
+  - api
+  - context propagators
+  - developer-guide-doc-type
+  - go sdk
+  - how-to-doc-type
+  - interceptor
+  - introduction-doc-type
+  - list filter
+  - list filters
+  - logging and metrics
+  - observability
+  - search attributes
+  - temporal client
+  - tracing
+  - visibility
+  - workflow definition
+  - workflow execution
+  - workflow executions
+  - workflows
 tags:
-- api
-- context-propagators
-- developer-guide-doc-type
-- go-sdk
-- how-to-doc-type
-- interceptor
-- introduction-doc-type
-- list-filter
-- list-filters
-- logging-and-metrics
-- observability
-- search-attributes
-- temporal-client
-- tracing
-- visibility
-- workflow-definition
-- workflow-execution
-- workflow-executions
-- workflows
+  - api
+  - context-propagators
+  - developer-guide-doc-type
+  - go-sdk
+  - how-to-doc-type
+  - interceptor
+  - introduction-doc-type
+  - list-filter
+  - list-filters
+  - logging-and-metrics
+  - observability
+  - search-attributes
+  - temporal-client
+  - tracing
+  - visibility
+  - workflow-definition
+  - workflow-execution
+  - workflow-executions
+  - workflows
 ---
-
 
 The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
 
 This section covers features related to viewing the state of the application, including:
 
 - [Metrics](#metrics)
-- [Tracing](#tracing)
+- [Tracing](#tracing-and-context-propogation)
 - [Logging](#logging)
 - [Visibility](#visibility)
 
@@ -90,7 +89,7 @@ For more information, see the [Go sample for metrics](https://github.com/tempora
 
 ## Tracing and Context Propagation {#tracing-and-context-propogation}
 
-The Temporal Go SDK supports three tracing implementations: Datadog](https://pkg.go.dev/go.temporal.io/sdk/contrib/datadog), [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry), and [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing).
+The Temporal Go SDK supports three tracing implementations: [Datadog](https://pkg.go.dev/go.temporal.io/sdk/contrib/datadog), [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry), and [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing).
 
 Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
 
@@ -111,7 +110,7 @@ Temporal provides a standard way to propagate a custom context across a Workflow
 You can configure a context propagator in via the [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions).
 The context propagator extracts and passes on information present in `context.Context` and `workflow.Context` objects across the Workflow.
 Once a context propagator is configured, you should be able to access the required values in the context objects as you would normally do in Go.
-You can see how the Go SDK implements a [tracing context propagator](https://github.com/temporalio/sdk-go/blob/master/internal/tracer.go).
+You can see how the Go SDK implements a [tracing context propagator](https://github.com/temporalio/samples-go/tree/main/ctxpropagation).
 
 #### Server-Side Headers
 
@@ -164,7 +163,7 @@ type ContextPropagator interface {
 - `Extract` picks select headers and put their values into the [context.Context](https://golang.org/pkg/context/#Context) object.
 - `ExtractToWorkflow` operates similar to `Extract` but write to a [workflow.Context](https://pkg.go.dev/go.temporal.io/sdk/internal#Context) object.
 
-The [tracing context propagator](https://github.com/temporalio/sdk-go/blob/master/internal/tracer.go) shows a sample implementation of a context propagator.
+The [tracing context propagator](https://github.com/temporalio/samples-go/tree/main/ctxpropagation) shows a sample implementation of a context propagator.
 
 #### Is there a complete example?
 
@@ -423,4 +422,3 @@ To remove a Search Attribute that was previously set, set it to an empty array: 
 However, to achieve a similar effect, set the field to some placeholder value.
 For example, you could set `CustomKeywordField` to `impossibleVal`.
 Then searching `CustomKeywordField != 'impossibleVal'` will match Workflows with `CustomKeywordField` not equal to `impossibleVal`, which includes Workflows without the `CustomKeywordField` set.
-
