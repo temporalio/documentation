@@ -2007,7 +2007,7 @@
     },
     {
       "source": "/concepts:path*",
-      "destination": "/encylopedia"
+      "destination": "/encyclopedia"
     }
   ]
 }
