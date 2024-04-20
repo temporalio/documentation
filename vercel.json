@@ -2004,6 +2004,10 @@
     {
       "source": "/getting-started",
       "destination": "https://learn.temporal.io/getting_started/"
+    },
+    {
+      "source": "/concepts:path*",
+      "destination": "/encyclopedia"
     }
   ]
 }
