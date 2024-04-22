@@ -146,6 +146,21 @@ module.exports = {
             "dev-guide/tscript/versioning",
           ],
         },
+        {
+          type: "category",
+          label: ".NET SDK",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "develop/dotnet/index",
+          },
+          items: [
+            "develop/dotnet/core-application",
+            "develop/dotnet/testing-suite",
+            "develop/dotnet/message-passing",
+            "develop/dotnet/durable-timers",
+          ],
+        },
         "dev-guide/activity-retry-simulator",
         "dev-guide/worker-performance",
       ],
