@@ -9,7 +9,17 @@ module.exports = {
         type: "doc",
         id: "evaluate/index",
       },
-      items: ["evaluate/why-temporal", "evaluate/major-components", "evaluate/release-stages", "security"],
+      items: [
+        "evaluate/why-temporal",
+        "evaluate/major-components",
+        "security",
+        "evaluate/release-stages",
+        {
+          type: "link",
+          label: "Change-log",
+          href: "https://temporal.io/change-log",
+        },
+      ],
     },
     {
       type: "link",
