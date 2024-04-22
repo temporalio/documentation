@@ -277,6 +277,13 @@ This is helpful if you plan on stopping and re-starting the dev server.
 temporal server start-dev --db-filename temporal.db
 ```
 
+:::note
+
+The SQLite database is not guaranteed to remain compatible across Temporal CLI updates.
+The `temporal server` command is only intended for development environments.
+
+:::
+
 For the full list of dev server options use the `--help` flag:
 
 ```shell
