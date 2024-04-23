@@ -21,25 +21,25 @@
     ]
   },
   "dependencies": {
-    "@temporalio/activity": "^1.0.0",
-    "@temporalio/client": "^1.0.0",
-    "@temporalio/worker": "^1.6.0",
-    "@temporalio/workflow": "^1.0.0",
-    "nanoid": "3.x"
+    "@temporalio/activity": "^1.9.3",
+    "@temporalio/client": "^1.9.3",
+    "@temporalio/worker": "^1.9.3",
+    "@temporalio/workflow": "^1.9.3",
+    "nanoid": "3.3.7"
   },
   "devDependencies": {
-    "@tsconfig/node16": "^1.0.0",
-    "@temporalio/testing": "~1.8.0",
-    "@types/node": "^16.11.43",
-    "@types/mocha": "8.x",
-    "@typescript-eslint/eslint-plugin": "^5.0.0",
-    "@typescript-eslint/parser": "^5.0.0",
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-deprecation": "^1.2.1",
-    "nodemon": "^2.0.12",
-    "ts-node": "^10.8.1",
-    "typescript": "^4.4.2",
-    "mocha": "8.x"
+    "@tsconfig/node20": "^20.1.4",
+    "@temporalio/testing": "^1.9.3",
+    "@types/node": "^20.11.30",
+    "@types/mocha": "10.0.6",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-deprecation": "^2.0.0",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3",
+    "mocha": "^10.4.0"
   }
 }

@@ -1,0 +1,76 @@
+---
+id: major-components
+title: Temporal's major components
+description: Temporal's major components are a Temporal SDK, Temporal Service, Temporal UI, and Temporal CLI.
+sidebar_label: Major components
+tags:
+  - temporal-service
+  - temporal-cli
+  - temporal-ui
+  - temporal-sdk
+keywords:
+  - temporal service
+  - temporal cli
+  - temporal ui
+  - temporal sdk
+---
+
+Temporal has four major components:
+
+- **Temporal SDK** used to build applications and run applications.
+- **Temporal Service** that maintains the state of the applications.
+- **Temporal CLI** used to interact with the Temporal Service for a variety of purposes.
+- **Temporal UI** primary used to view the state of applications.
+
+## Temporal SDK
+
+**What is a Temporal SDK?**
+
+A Temporal SDK is a language-specific library that offers APIs to do the following:
+
+1. Interact with a Temporal Service with a [Temporal Client](/temporal#temporal-client)
+2. Develop [Workflow Definitions](/workflows#workflow-definition)
+3. Develop [Worker Programs](/workers#worker-program)
+
+A Temporal SDK enables you to write your application code using the full power of the programming language.
+
+Follow one of our [getting started tutorials](https://learn.temporal.io/getting_started/) to start learning how to use a Temporal SDK.
+
+Or jump straight into the SDK docs for your preferred language:
+
+- [Go SDK](/dev-guide/go)
+- [Java SDK](/dev-guide/java)
+- [PHP SDK](/dev-guide/php)
+- [Python SDK](/dev-guide/python)
+- [ypeScript SDK](/dev-guide/typescript)
+- [.NET SDK API reference](https://dotnet.temporal.io/)
+
+## Temporal Service
+
+**What is a Temporal Service?**
+
+A Temporal Service maintains the state of your application and ensures that your application resumes when failures are detected.
+
+There are three categories of Temporal Services, all derived from the [open-source Temporal Server software](https://github.com/temporalio/temporal).
+And a Temporal Application can switch between all three.
+
+- Development Temporal Service: Available in the Temporal CLI, this service is great for local development.
+- Self-hosted Temporal Service: We call a Temporal Service "Self-hosted" when someone runs and manages the Temporal Service and all of the dependencies on their own.
+- Temporal Cloud: This Temporal Technologies' proprietary instance a of a Temporal Service, completely managed by Temporal Technologies.
+
+## Temporal CLI
+
+**What is the Temporal CLI?**
+
+The Temporal CLI is a command-line interface that provides developers with direct access to a Temporal Service.
+
+It's a powerful tool for managing, monitoring, and debugging Temporal Applications.
+With the Temporal CLI, developers can start their applications, pass messages, cancel application steps, and more directly from their terminal.
+
+It also includes a distribution of the Temporal Service for local development purposes.
+
+## Temporal UI
+
+**What is the Temporal UI?**
+
+The Temporal UI is a browser-based user interface that provides access to application state and metadata for a variety of observational purposes.

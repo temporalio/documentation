@@ -6,7 +6,7 @@
 # terminal one
 poetry run python your_worker.py
 # terminal two
-poetry run python singal_dacx.py
+poetry run python signal_dacx.py
 ```
 
 ## Signal External Workflow
