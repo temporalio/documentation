@@ -34,7 +34,8 @@ tags:
 
 This guide provides a comprehensive overview of Temporal Workflows.
 
-A Temporal Workflow defines the overall flow of the application. Conceptually, a Workflow is a sequence of steps written in a general-purpose programming language.
+A Temporal Workflow defines the overall flow of the application.
+Conceptually, a Workflow is a sequence of steps written in a general-purpose programming language.
 With Temporal, those steps are defined by writing code, known as a Workflow Definition, and are carried out by running that code, which results in a Workflow Execution.
 
 In day-to-day conversations, the term _Workflow_ might refer to [Workflow Type](#workflow-type), a [Workflow Definition](#workflow-definition), or a [Workflow Execution](#workflow-execution).
@@ -42,8 +43,9 @@ Temporal documentation aims to be explicit and differentiate between them.
 
 ## What is a Workflow Definition? {#workflow-definition}
 
-A Workflow Definition is the code that defines the Workflow and written with a programming language and a corresponding Temporal SDK.
-A Workflow Definition defines the constraints of a Workflow Execution.
+A Workflow Definition is the code that defines the Workflow.
+It is written with a programming language and corresponding Temporal SDK.
+Depending on the programming language, it's typically a primary function or object method and specifies the end to end series of steps of a Temporal application.
 
 Below are different ways to develop a basic Workflow Definition.
 
