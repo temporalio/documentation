@@ -55,35 +55,35 @@ Below are different ways to develop a basic Workflow Definition.
 **Workflow Definition in Go**
 
 ```go
-package yourapp
-
-import (
-	"time"
-
-	"go.temporal.io/sdk/workflow"
-)
-// ...
-
-// YourSimpleWorkflowDefintiion is the most basic Workflow Defintion.
-func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
-	// ...
-	return nil
+func YourWorkflowDefinition(ctx workflow.Context) error {
+    // ...
+    return nil
 }
 ```
 
 </TabItem>
 <TabItem value="java" label="Java">
 
-**Workflow Definition in Java**
+**Workflow Definition in Java (Interface)**
 
 ```java
 // Workflow interface
 @WorkflowInterface
-public interface YourWorkflow {
+public interface YourBasicWorkflow {
 
     @WorkflowMethod
-    String yourWFMethod(Arguments args);
+    String workflowMethod(Arguments args);
 }
+```
+
+**Workflow Definition in Java (Implementation)**
+
+```java
+// Workflow implementation
+public class YourBasicWorkflowImpl implements YourBasicWorkflow {
+    // ...
+}
+
 ```
 
 </TabItem>
@@ -92,15 +92,18 @@ public interface YourWorkflow {
 **Workflow Definition in PHP**
 
 ```PHP
-use Temporal\Workflow\YourWorkflowInterface;
-use Temporal\Workflow\WorkflowMethod;
-
 #[WorkflowInterface]
-interface FileProcessingWorkflow
-{
+interface YourBasicWorkflow {
     #[WorkflowMethod]
-    public function processFile(Argument $args);
+    public function workflowMethod(Arguments args);
+}
+```
 
+**Workflow Definition in PHP (Implementation)**
+
+```PHP
+class YourBasicWorkflowImpl implements YourBasicWorkflow {
+    // ...
 }
 ```
 
@@ -110,18 +113,12 @@ interface FileProcessingWorkflow
 **Workflow Definition in Python**
 
 ```Python
-from temporalio import workflow
-# ...
-# ...
-@workflow.defn(name="YourWorkflow")
+@workflow.defn
 class YourWorkflow:
     @workflow.run
-    async def run(self, name: str) -> str:
-        return await workflow.execute_activity(
-            your_activity,
-            YourParams("Hello", name),
-            start_to_close_timeout=timedelta(seconds=10),
-        )
+    async def YourBasicWorkflow(self, input: str) -> str:
+        # ...
+
 ```
 
 </TabItem>
@@ -130,15 +127,14 @@ class YourWorkflow:
 **Workflow Definition in Typescript**
 
 ```Typescript
-type ExampleArgs = {
-  name: string;
+type BasicWorkflowArgs = {
+    name: string;
 };
 
-export async function example(
-  args: ExampleArgs,
+export async function WorkflowExample(
+    args: BasicWorkflowArgs
 ): Promise<{ greeting: string }> {
-  const greeting = await greet(args.name);
-  return { greeting };
+    // Workflow logic here
 }
 ```
 
@@ -148,17 +144,12 @@ export async function example(
 **Workflow Definition in C# and .NET**
 
 ```csharp
-using Temporalio.Workflows;
-
 [Workflow]
-public class YourWorkflow
-{
+public class YourWorkflow {
+
     [WorkflowRun]
-    public async Task<string> RunAsync(string name)
-    {
-        return await Workflow.ExecuteActivityAsync(
-            (MyActivities act) => act.SayHello(name),
-            new() { ScheduleToCloseTimeout = TimeSpan.FromMinutes(5) });
+    public async Task<string> workflowExample(string name) {
+        // ...
     }
 }
 ```
