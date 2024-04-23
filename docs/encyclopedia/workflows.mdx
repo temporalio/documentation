@@ -55,7 +55,7 @@ Below are different ways to develop a basic Workflow Definition.
 **[Workflow Definition in Go](/dev-guide/go/foundations#develop-workflows)**
 
 ```go
-func YourWorkflowDefinition(ctx workflow.Context) error {
+func YourBasicWorkflow(ctx workflow.Context) error {
     // ...
     return nil
 }
@@ -91,7 +91,7 @@ public class YourBasicWorkflowImpl implements YourBasicWorkflow {
 
 **[Workflow Definition in PHP (Interface)](/dev-guide/php/foundations#develop-workflows)**
 
-```PHP
+```php
 #[WorkflowInterface]
 interface YourBasicWorkflow {
     #[WorkflowMethod]
@@ -101,7 +101,7 @@ interface YourBasicWorkflow {
 
 **[Workflow Definition in PHP (Implementation)](/dev-guide/php/foundations#develop-workflows)**
 
-```PHP
+```php
 class YourBasicWorkflowImpl implements YourBasicWorkflow {
     // ...
 }
@@ -128,13 +128,13 @@ class YourWorkflow:
 
 ```Typescript
 type BasicWorkflowArgs = {
-    name: string;
+    param: string;
 };
 
 export async function WorkflowExample(
     args: BasicWorkflowArgs
-): Promise<{ greeting: string }> {
-    // Workflow logic here
+): Promise<{ result: string }> {
+    // ...
 }
 ```
 
@@ -145,10 +145,10 @@ export async function WorkflowExample(
 
 ```csharp
 [Workflow]
-public class YourWorkflow {
+public class YourBasicWorkflow {
 
     [WorkflowRun]
-    public async Task<string> workflowExample(string name) {
+    public async Task<string> workflowExample(string param) {
         // ...
     }
 }
