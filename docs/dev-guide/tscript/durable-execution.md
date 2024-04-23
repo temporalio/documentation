@@ -7,37 +7,36 @@ description: The Durable Execution section of the Temporal Developer's guide cov
 slug: /dev-guide/typescript/durable-execution
 toc_max_heading_level: 4
 keywords:
-- determinism
-- developer-guide
-- developer-guide-doc-type
-- durable execution
-- event history
-- introduction-doc-type
-- replay
-- sdk
-- static analysis
-- tests
-- typescript
-- typescript sdk
-- vscode debugger extension
+  - determinism
+  - developer-guide
+  - developer-guide-doc-type
+  - durable execution
+  - event history
+  - introduction-doc-type
+  - replay
+  - sdk
+  - static analysis
+  - tests
+  - typescript
+  - typescript sdk
+  - vscode debugger extension
 tags:
-- determinism
-- developer-guide
-- developer-guide-doc-type
-- durable-execution
-- event-history
-- introduction-doc-type
-- replay
-- sdk
-- static-analysis
-- tests
-- typescript
-- typescript-sdk
-- vscode-debugger-extension
+  - determinism
+  - developer-guide
+  - developer-guide-doc-type
+  - durable-execution
+  - event-history
+  - introduction-doc-type
+  - replay
+  - sdk
+  - static-analysis
+  - tests
+  - typescript
+  - typescript-sdk
+  - vscode-debugger-extension
 ---
 
-
-When it comes to the Temporal Platform's ability to durably execute code, the SDK's ability to [Replay](/dev-guide/sdks#replays) a Workflow Execution is a major aspect of that.
+When it comes to the Temporal Platform's ability to durably execute code, the SDK's ability to [Replay](/encyclopedia/temporal-sdks#replays) a Workflow Execution is a major aspect of that.
 This chapter introduces the development patterns which enable that.
 
 :::competency Develop for a Durable Execution
@@ -149,13 +148,13 @@ If replay fails for any other reason, [ReplayError](https://typescript.temporal.
 In the following example, a single Event History is loaded from a JSON file on disk (as obtained from the [Web UI](/web-ui) or the [Temporal CLI](/cli/workflow#show)):
 
 ```ts
-const filePath = './history_file.json';
-const history = await JSON.parse(fs.promises.readFile(filePath, 'utf8'));
+const filePath = "./history_file.json";
+const history = await JSON.parse(fs.promises.readFile(filePath, "utf8"));
 await Worker.runReplayHistory(
   {
-    workflowsPath: require.resolve('./your/workflows'),
+    workflowsPath: require.resolve("./your/workflows"),
   },
-  history,
+  history
 );
 ```
 
@@ -163,14 +162,14 @@ Alternatively, we can download the Event History programmatically using a Client
 
 ```ts
 const connection = await Connection.connect({ address });
-const client = new Client({ connection, namespace: 'your-namespace' });
-const handle = client.workflow.getHandle('your-workflow-id');
+const client = new Client({ connection, namespace: "your-namespace" });
+const handle = client.workflow.getHandle("your-workflow-id");
 const history = await handle.fetchHistory();
 await Worker.runReplayHistory(
   {
-    workflowsPath: require.resolve('./your/workflows'),
+    workflowsPath: require.resolve("./your/workflows"),
   },
-  history,
+  history
 );
 ```
 
@@ -187,13 +186,13 @@ const executions = client.workflow.list({
 const histories = executions.intoHistories();
 const results = Worker.runReplayHistories(
   {
-    workflowsPath: require.resolve('./your/workflows'),
+    workflowsPath: require.resolve("./your/workflows"),
   },
-  histories,
+  histories
 );
 for await (const result of results) {
   if (result.error) {
-    console.error('Replay failed', result);
+    console.error("Replay failed", result);
   }
 }
 ```
@@ -250,7 +249,6 @@ Here are some common sources of non-determinism:
 
 Adhering to these practices ensures that Workflows in the Temporal TypeScript SDK maintain deterministic behavior, crucial for predictable and reliable execution across multiple runs.
 
-
 One way to produce a non-deterministic error is to use a random number to determine whether to sleep inside the Workflow.
 
 Eventually, the way that sleep has been implemented here will produce a non-determinism error.
@@ -258,10 +256,8 @@ Eventually, the way that sleep has been implemented here will produce a non-dete
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_durable_execution/backgroundcheck_nondeterministic/src/workflow_dacx.ts">View the source code</a> in the context of the rest of the application code.</div>
 
 ```typescript
-
 import { proxyActivities, log, sleep } from "@temporalio/workflow";
 import type * as activities from "./activities";
-
 
 const { ssnTraceActivity } = proxyActivities<typeof activities>({
   startToCloseTimeout: "10 seconds",
@@ -290,7 +286,6 @@ function getRandomNumber(min: number, max: number) {
   return min + (seed % (max - min + 1));
 }
 ```
-
 
 The Worker logs will show something similar to the following:
 
@@ -501,19 +496,19 @@ Use the `sleep()` API to cause the Workflow to sleep for a minute before the cal
 By using Temporal's logging API, the Worker is able to suppress these log messages during replay so that log statements from the original execution aren't duplicated by the re-execution.
 
 ```typescript
-import { log } from '@temporalio/workflow';
-import { proxyActivities, sleep } from '@temporalio/workflow';
-import type * as activities from './activities'; // Assuming 'activities' is the file containing your activity definitions
+import { log } from "@temporalio/workflow";
+import { proxyActivities, sleep } from "@temporalio/workflow";
+import type * as activities from "./activities"; // Assuming 'activities' is the file containing your activity definitions
 
 const { ssnTraceActivity } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '10 seconds',
+  startToCloseTimeout: "10 seconds",
 });
 
 export async function backgroundCheckWorkflow(param: string): Promise<string> {
   // Sleep for 1 minute
-  log.info('Sleeping for 1 minute...');
+  log.info("Sleeping for 1 minute...");
   await sleep(60 * 1000); // sleep for 60 seconds
-  log.info('Finished sleeping');
+  log.info("Finished sleeping");
 
   // Execute the SSNTraceActivity synchronously
   try {
@@ -570,4 +565,3 @@ The following are a few examples of changes that do not lead to non-deterministi
 - Modifying non-Command generating statements in a Workflow Definition, such as logging statements
 - Changing attributes in the `ActivityOptions`
 - Modifying code inside of an Activity Definition
-

@@ -35,7 +35,6 @@ module.exports = {
         id: "dev-guide/index",
       },
       items: [
-        "dev-guide/sdks",
         {
           type: "category",
           label: "Go SDK",
@@ -56,16 +55,6 @@ module.exports = {
             "dev-guide/golang/debugging",
             "dev-guide/golang/versioning",
             "dev-guide/golang/converters",
-            {
-              type: "category",
-              label: "How it works",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "dev-guide/golang/how-it-works/index",
-              },
-              items: ["dev-guide/golang/how-it-works/multithreading"],
-            },
           ],
         },
         {
@@ -124,16 +113,6 @@ module.exports = {
             "dev-guide/python/debugging",
             "dev-guide/python/versioning",
             "dev-guide/python/converters",
-            {
-              type: "category",
-              label: "How it works",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "dev-guide/python/how-it-works/index",
-              },
-              items: ["dev-guide/python/how-it-works/async-vs-sync", "dev-guide/python/how-it-works/sandbox"],
-            },
           ],
         },
         {
@@ -364,6 +343,20 @@ module.exports = {
       },
       items: [
         "encyclopedia/temporal",
+        {
+          type: "category",
+          label: "Temporal SDKs",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "encyclopedia/temporal-sdks",
+          },
+          items: [
+            "encyclopedia/go-sdk-multithreading",
+            "encyclopedia/python-sdk-sandbox",
+            "encyclopedia/python-sdk-sync-vs-async",
+          ],
+        },
         "encyclopedia/workflows",
         "encyclopedia/activities",
         "encyclopedia/retry-policies",
