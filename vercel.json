@@ -2008,6 +2008,26 @@
     {
       "source": "/concepts:path*",
       "destination": "/encyclopedia"
+    },
+    {
+      "source": "/dev-guide/sdks",
+      "destination": "/encyclopedia/temporal-sdks"
+    },
+    {
+      "source": "/dev-guide/:path*/how-it-works",
+      "destination": "/encyclopedia/temporal-sdks"
+    },
+    {
+      "source": "/dev-guide/go/multithreading",
+      "destination": "/encyclopedia/go-sdk-multithreading"
+    },
+    {
+      "source": "/dev-guide/python/async-vs-sync",
+      "destination": "/encyclopedia/python-sdk-sync-vs-async"
+    },
+    {
+      "source": "/dev-guide/python/sandbox",
+      "destination": "/encyclopedia/python-sdk-sandbox"
     }
   ]
 }

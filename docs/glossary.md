@@ -509,7 +509,7 @@ The Temporal Platform consists of a Temporal Cluster and Worker Processes.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Temporal SDK](/temporal#temporal-sdk)
+#### [Temporal SDK](/encyclopedia/temporal-sdks)
 
 A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.
 
