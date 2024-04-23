@@ -7,19 +7,14 @@ description: Learn how to use the Temporal Go SDK.
 slug: /dev-guide/go
 toc_max_heading_level: 4
 keywords:
-- dev guide
-- go
+  - dev guide
+  - go
 tags:
-- dev-guide
-- go
+  - dev-guide
+  - go
 ---
 
-
 This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
-
-## Multithreading
-
-Describes how the Go SDK safely implements multithreading.
 
 ## Project-setup
 
@@ -125,4 +120,3 @@ The Converters and Codecs section of the Temporal Developer's guide provides gui
 - [How to use a custom Payload Codec in Go](/dev-guide/go/converters#custom-payload-codec): Create a custom `PayloadCodec` implementation and define your encryption/compression and decryption/decompression logic in the `Encode` and `Decode` functions.
 - [How to use custom payload conversion](/dev-guide/go/converters#custom-payload-conversion): Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.
 - [How to use a custom Payload Converter in Go](/dev-guide/go/converters#custom-payload-converter): Use a `CompositeDataConverter` to apply custom `PayloadConverter` in a specified order.
-
