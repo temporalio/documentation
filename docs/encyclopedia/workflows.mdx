@@ -52,7 +52,7 @@ Below are different ways to develop a basic Workflow Definition.
 <Tabs groupId="basic-workflow-definition" queryString>
 <TabItem value="go" label="Go">
 
-**Workflow Definition in Go**
+**[Workflow Definition in Go](/dev-guide/go/foundations#develop-workflows)**
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context) error {
@@ -64,7 +64,7 @@ func YourWorkflowDefinition(ctx workflow.Context) error {
 </TabItem>
 <TabItem value="java" label="Java">
 
-**Workflow Definition in Java (Interface)**
+**[Workflow Definition in Java (Interface)](/dev-guide/java/foundations#develop-workflows)**
 
 ```java
 // Workflow interface
@@ -76,7 +76,7 @@ public interface YourBasicWorkflow {
 }
 ```
 
-**Workflow Definition in Java (Implementation)**
+**[Workflow Definition in Java (Implementation)](/dev-guide/java/foundations#develop-workflows)**
 
 ```java
 // Workflow implementation
@@ -89,7 +89,7 @@ public class YourBasicWorkflowImpl implements YourBasicWorkflow {
 </TabItem>
 <TabItem value="php" label="PHP">
 
-**Workflow Definition in PHP**
+**[Workflow Definition in PHP (Interface)](/dev-guide/php/foundations#develop-workflows)**
 
 ```PHP
 #[WorkflowInterface]
@@ -99,7 +99,7 @@ interface YourBasicWorkflow {
 }
 ```
 
-**Workflow Definition in PHP (Implementation)**
+**[Workflow Definition in PHP (Implementation)](/dev-guide/php/foundations#develop-workflows)**
 
 ```PHP
 class YourBasicWorkflowImpl implements YourBasicWorkflow {
@@ -110,7 +110,7 @@ class YourBasicWorkflowImpl implements YourBasicWorkflow {
 </TabItem>
 <TabItem value="python" label="Python">
 
-**Workflow Definition in Python**
+**[Workflow Definition in Python](/dev-guide/python/foundations#develop-workflows)**
 
 ```Python
 @workflow.defn
@@ -124,7 +124,7 @@ class YourWorkflow:
 </TabItem>
 <TabItem value="typescript" label="Typescript">
 
-**Workflow Definition in Typescript**
+**[Workflow Definition in Typescript](/dev-guide/typescript/foundations#develop-workflows)**
 
 ```Typescript
 type BasicWorkflowArgs = {
@@ -141,7 +141,7 @@ export async function WorkflowExample(
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-**Workflow Definition in C# and .NET**
+**[Workflow Definition in C# and .NET](https://github.com/temporalio/sdk-dotnet?tab=readme-ov-file#implementing-a-workflow-and-activity)**
 
 ```csharp
 [Workflow]
@@ -157,12 +157,6 @@ public class YourWorkflow {
 </TabItem>
 
 </Tabs>
-
-- [How to develop a Workflow Definition using the Go SDK](/dev-guide/go/foundations#develop-workflows)
-- [How to develop a Workflow Definition using the Java SDK](/dev-guide/java/foundations#develop-workflows)
-- [How to develop a Workflow Definition using the PHP SDK](/dev-guide/php/foundations#develop-workflows)
-- [How to develop a Workflow Definition using the Python SDK](/dev-guide/python/foundations#develop-workflows)
-- [How to develop a Workflow Definition using the TypeScript SDK](/dev-guide/typescript/foundations#develop-workflows)
 
 A Workflow Definition may be also referred to as a Workflow Function.
 In Temporal's documentation, a Workflow Definition refers to the source for the instance of a Workflow Execution, while a Workflow Function refers to the source for the instance of a Workflow Function Execution.
