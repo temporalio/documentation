@@ -2014,7 +2014,7 @@
       "destination": "/encyclopedia/temporal-sdks"
     },
     {
-      "source": "/dev-guide/*/how-it-works",
+      "source": "/dev-guide/(*)/how-it-works",
       "destination": "/encyclopedia/temporal-sdks"
     },
     {
