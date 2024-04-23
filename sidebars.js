@@ -356,7 +356,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Encylopedia",
+      label: "Encyclopedia",
       collapsed: true,
       link: {
         type: "doc",
