@@ -58,7 +58,7 @@ This modifier is required unless the global `--namespace` modifier is specified 
 tctl namespace describe --namespace_id <id>
 ```
 
-Example results for a [Global Namespace](/namespaces#global-namespace)
+Example results for a [Multi-region Namespace](/namespaces#multi-region-namespace)
 
 ```bash
 $ tctl --ns canary-namespace n desc
@@ -101,7 +101,7 @@ The following modifiers control the behavior of the command.
 ### --active_cluster
 
 Specify the name of the active [Temporal Cluster](/clusters) when registering a [Namespace](/namespaces).
-This value changes for Global Namespaces when a failover occurs.
+This value changes for Multi-region Namespace when a failover occurs.
 
 **Example**
 
@@ -137,14 +137,14 @@ tctl namespace register --description <value>
 
 ### --global_namespace
 
-Specifies whether a [Namespace](/namespaces) is a [Global Namespace](/namespaces#global-namespace).
+Specifies whether a [Namespace](/namespaces) is a [Multi-region Namespace](/namespaces#multi-region-namespace).
 When enabled, it controls the creation of replication tasks on updates allowing the state to be replicated across Clusters.
 This is a read-only setting and cannot be changed.
 
 **Example**
 
 ```bash
-tctl namespace register --global_namespace <boolean>
+tctl namespace register --multi-region <boolean>
 ```
 
 ### --history_archival_state

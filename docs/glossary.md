@@ -209,12 +209,6 @@ Learn more about the General Availability release stage
 
 _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_
 
-#### [Global Namespace](/namespaces#global-namespace)
-
-A Global Namespace is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.
-
-_Tags: [term](/tags/term), [explanation](/tags/explanation)_
-
 #### [Heartbeat Timeout](/activities#heartbeat-timeout)
 
 A Heartbeat Timeout is the maximum time between Activity Heartbeats.
@@ -263,9 +257,9 @@ Multi-Cluster Replication is a feature which asynchronously replicates Workflow 
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Multi-Cluster Replication](/clusters#multi-cluster-replication)
+#### [Multi-region Namespace](/namespaces#multi-region-namespace)
 
-Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
+A Multi-region is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 

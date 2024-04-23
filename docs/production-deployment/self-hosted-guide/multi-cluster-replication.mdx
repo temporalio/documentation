@@ -25,13 +25,13 @@ When necessary, for higher availability, Cluster operators can failover to any o
 Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
 
 Temporal automatically forwards Start, Signal, and Query requests to the active Cluster.
-This feature must be enabled through a Dynamic Config flag per [Global Namespace](/namespaces#global-namespace).
+This feature must be enabled through a Dynamic Config flag per [Multi-region Namespace](/namespaces#multi-region-namespace).
 
 When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 
 All Visibility APIs can be used against active and standby Clusters.
-This enables [Temporal UI](https://docs.temporal.io/web-ui) to work seamlessly for Global Namespaces.
-Applications making API calls directly to the Temporal Visibility API continue to work even if a Global Namespace is in standby mode.
+This enables [Temporal UI](https://docs.temporal.io/web-ui) to work seamlessly for Multi-region Namespaces.
+Applications making API calls directly to the Temporal Visibility API continue to work even if a Multi-region Namespace is in standby mode.
 However, they might see a lag due to replication delay when querying the Workflow Execution state from a standby Cluster.
 
 #### Namespace Versions
