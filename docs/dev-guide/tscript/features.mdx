@@ -1076,7 +1076,7 @@ const handle = await client.workflow.start(scheduledWorkflow, {
 
 ## How to create and manage Namespaces {#namespaces}
 
-You can create, update, deprecate or delete your [Namespaces](/namespaces) using either tctl or SDK APIs.
+You can create, update, deprecate or delete your [Namespaces](/namespaces) using either temporal CLI or SDK APIs.
 
 Use Namespaces to isolate your Workflow Executions according to your needs.
 For example, you can use Namespaces to match the development lifecycle by having separate `dev` and `prod` Namespaces.
@@ -1084,7 +1084,7 @@ You could also use them to ensure Workflow Executions between different teams ne
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) to create and manage a Namespace from the UI, or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces from the command-line interface.
 
-On self-hosted Temporal Cluster, you can register and manage your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+On self-hosted Temporal Cluster, you can register and manage your Namespaces using temporal CLI (recommended) or programmatically using APIs. Note that these APIs and temporal CLI commands will not work with Temporal Cloud.
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
 
@@ -1096,7 +1096,7 @@ Registering a Namespace creates a Namespace on the Temporal Cluster or Temporal 
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create Namespaces.
 
-On self-hosted Temporal Cluster, you can register your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+On self-hosted Temporal Cluster, you can register your Namespaces using temporal CLI (recommended) or programmatically using APIs. Note that these APIs and temporal CLI commands will not work with Temporal Cloud.
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
 
@@ -1106,7 +1106,7 @@ You can get details for your Namespaces, update Namespace configuration, and dep
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces.
 
-On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+On self-hosted Temporal Cluster, you can manage your registered Namespaces using temporal CLI (recommended) or programmatically using APIs. Note that these APIs and temporal CLI commands will not work with Temporal Cloud.
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
 

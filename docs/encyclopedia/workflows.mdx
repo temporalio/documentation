@@ -307,7 +307,7 @@ While the Workflow Definition is the code that defines the Workflow, the Workflo
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
 It is the main unit of execution of a [Temporal Application](/temporal#temporal-application).
 
-- [How to start a Workflow Execution using tctl](/tctl-v1/workflow#start)
+- [How to start a Workflow Execution using temporal](/cli/workflow#start)
 - [How to start a Workflow Execution using the Go SDK](/dev-guide/go/foundations#start-workflow-execution)
 - [How to start a Workflow Execution using the Java SDK](/dev-guide/java/foundations#start-workflow-execution)
 - [How to start a Workflow Execution using the PHP SDK](/dev-guide/php/foundations#start-workflow-execution)
@@ -800,7 +800,7 @@ Memos shouldn't store data that's critical to the execution of a Workflow, for s
 
 A Signal is an asynchronous request to a [Workflow Execution](#workflow-execution).
 
-- [How to send a Signal using tctl](/tctl-v1/workflow#signal)
+- [How to send a Signal using temporal CLI](/cli/workflow#signal)
 - [How to develop, send, and handle Signals in Go](/dev-guide/go/features#signals)
 - [How to develop, send, and handle Signals in Java](/dev-guide/java/features#signals)
 - [How to develop, send, and handle Signals in PHP](/dev-guide/php/features#signals)
@@ -851,7 +851,7 @@ The state of a running Workflow Execution is constantly changing.
 You can use Queries to expose the internal Workflow Execution state to the external world.
 Queries are available for running or completed Workflows Executions only if the Worker is up and listening on the Task Queue.
 
-- [How to send a Query using tctl](/tctl-v1/workflow#query)
+- [How to send a Query using temporal CLI](/cli/workflow#query)
 - [How to send and handle Queries with the Go SDK](/dev-guide/go/features#queries)
 - [How to send and handle Queries with the Java SDK](/dev-guide/java/features#queries)
 - [How to send and handle Queries with the PHP SDK](/dev-guide/php/features#queries)
@@ -1146,7 +1146,7 @@ This is useful for starting Child Workflows asynchronously (see [relevant issue 
 
 - Is [Generally Available](https://docs.temporal.io/evaluate/release-stages#general-availability) as of Nov 2023
 - Introduced in Temporal Server version [1.17.0](https://github.com/temporalio/temporal/releases/tag/v1.17.0)
-- Available in Temporal CLI (and tctl v1.17)
+- Available in temporal CLI
 - Available in Temporal Cloud
 - Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) since [v1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
 - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
@@ -1163,7 +1163,7 @@ Schedules provide a more flexible and user-friendly approach than [Temporal Cron
 
 - [How to enable Schedules](#limitations)
 - [How to operate Schedules using the Temporal CLI](/cli/schedule)
-- [How to operate Schedules using tctl](/tctl-v1/schedule)
+- [How to operate Schedules using temporal CLI](/cli/schedule)
 
 A Schedule has an identity and is independent of a Workflow Execution.
 This differs from a Temporal Cron Job, which relies on a cron schedule as a property of the Workflow Execution.
@@ -1197,9 +1197,9 @@ There are two kinds of Schedule Spec:
 
 These two kinds have multiple representations, depending on the interface or SDK you're using, but they all support the same features.
 
-In tctl, for example, an interval is specified as a string like `45m` to mean every 45 minutes, or `6h/5h` to mean every 6 hours but at the start of the fifth hour within each period.
+In temporal CLI, for example, an interval is specified as a string like `45m` to mean every 45 minutes, or `6h/5h` to mean every 6 hours but at the start of the fifth hour within each period.
 
-In tctl, a calendar expression can be specified as either a traditional cron string with five (or six or seven) positional fields, or as JSON with named fields:
+In temporal CLI, a calendar expression can be specified as either a traditional cron string with five (or six or seven) positional fields, or as JSON with named fields:
 
 ```json
 {
@@ -1241,7 +1241,7 @@ Other Spec features:
 **Exclusions:** A Spec can contain exclusions in the form of zero or more calendar expressions.
 This can be used to express scheduling like "each Monday at noon except for holidays.
 You'll have to provide your own set of exclusions and include it in each schedule; there are no pre-defined sets.
-(This feature isn't currently exposed in tctl or the Temporal Web UI.)
+(This feature isn't currently exposed in temporal CLI or the Temporal Web UI.)
 
 **Jitter:** If given, a random offset between zero and the maximum jitter is added to each Action time (but bounded by the time until the next scheduled Action).
 
@@ -1251,13 +1251,13 @@ If you don't want to use UTC, you can provide the name of a time zone.
 The time zone definition is loaded on the Temporal Server Worker Service from either disk or the fallback embedded in the binary.
 
 For more operational control, embed the contents of the time zone database file in the Schedule Spec itself.
-(Note: this isn't currently exposed in tctl or the web UI.)
+(Note: this isn't currently exposed in temporal CLI or the web UI.)
 
 ### Pause
 
 A Schedule can be Paused.
 When a Schedule is Paused, the Spec has no effect.
-However, you can still force manual actions by using the [tctl schedule trigger](/tctl-v1/schedule#trigger) command.
+However, you can still force manual actions by using the [temporal schedule trigger](/cli/schedule#trigger) command.
 
 To assist communication among developers and operators, a “notes” field can be updated on pause or resume to store an explanation for the current state.
 

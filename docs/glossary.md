@@ -449,7 +449,7 @@ A Temporal Application is a set of Workflow Executions.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Temporal CLI](/cli)
+#### [Temporal CLI](/cli) {#cli}
 
 The Temporal CLI is the most recent version of Temporal's command-line tool.
 
@@ -653,8 +653,9 @@ A Workflow Type is a name that maps to a Workflow Definition.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [tctl](/tctl-v1)
+#### tctl (_deprecated_)
 
 tctl is a command-line tool that you can use to interact with a Temporal Cluster.
+It is superceded by the ['temporal' CLI utility](#cli)
 
 _Tags: [term](/tags/term), [tctl](/tags/tctl)_
