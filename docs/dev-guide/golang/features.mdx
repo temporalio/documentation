@@ -1401,7 +1401,7 @@ Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your
 
 Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) with the `NamespaceClient` interface to register a [Namespace](/namespaces) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
 
-You can also [register Namespaces using the temporal CLI command-line tool](/cli/operator#register).
+You can also [register Namespaces using the temporal CLI command-line tool](/cli/operator#create).
 
 ```go
 client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})

@@ -7,13 +7,12 @@ description: This guide provides a comprehensive overview of Namespaces.
 slug: /namespaces
 toc_max_heading_level: 4
 keywords:
-- explanation
-- term
+  - explanation
+  - term
 tags:
-- explanation
-- term
+  - explanation
+  - term
 ---
-
 
 This guide provides a comprehensive overview of Namespaces.
 
@@ -74,6 +73,7 @@ Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces) or [tcld commands](/cloud/tcld/namespace/) to manage Namespaces.
 
 On self-hosted Temporal Cluster, you can manage your registered Namespaces using temporal CLI (recommended) or programmatically using APIs.
+
 <!--Technically correct but is this confusing for people since you can do this for non-self-hosted:-->
 <!--Note that these APIs and temporal CLI commands will not work with Temporal Cloud.-->
 
@@ -115,7 +115,7 @@ If you do not set a Namespace, all Workflow Executions started using the Client 
 
 A Global Namespace is a [Namespace](/namespaces) that exists across Clusters when [Multi-Cluster Replication](/clusters#multi-cluster-replication) is set up.
 
-- [How to register a Global Namespace](/cli/operator#register)
+- [How to register a Global Namespace](/cli/operator#create)
 - [How to change the active Cluster for a Global Namespace](/cli/operator#update)
 
 The Global Namespace feature enables Workflow Executions to progress through another Cluster in the event of a failover.
@@ -133,4 +133,3 @@ Worker Processes on the standby Clusters are idle until a failover occurs and th
 
 Temporal Application API calls made to a non-active Cluster are rejected with a **NamespaceNotActiveError** which contains the name of the current active Cluster.
 It is the responsibility of the Temporal Application to call the Cluster that is currently active.
-

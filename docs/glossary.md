@@ -657,5 +657,3 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 tctl is a command-line tool that you can use to interact with a Temporal Cluster.
 It is superceded by the ['temporal' CLI utility](#cli)
-
-_Tags: [term](/tags/term), [tctl](/tags/tctl)_

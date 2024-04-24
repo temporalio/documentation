@@ -278,26 +278,6 @@ module.exports = {
     },
     {
       type: "category",
-      label: "CLI (tctl)",
-      collapsed: true,
-      link: {
-        type: "doc",
-        id: "tctl-v1/index",
-      },
-      items: [
-        "tctl-v1/activity",
-        "tctl-v1/admin",
-        "tctl-v1/batch",
-        "tctl-v1/cluster",
-        "tctl-v1/dataconverter",
-        "tctl-v1/namespace",
-        "tctl-v1/schedule",
-        "tctl-v1/taskqueue",
-        "tctl-v1/workflow",
-      ],
-    },
-    {
-      type: "category",
       label: "References",
       collapsed: true,
       link: {
