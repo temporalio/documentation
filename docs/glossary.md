@@ -209,6 +209,12 @@ Learn more about the General Availability release stage
 
 _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_
 
+#### [Global Namespace (_deprecated_)](/namespaces#multi-region-namespace)
+
+This term is deprecated and is now called a [Multi-region Namespace](#multi-region-namespace).
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
 #### [Heartbeat Timeout](/activities#heartbeat-timeout)
 
 A Heartbeat Timeout is the maximum time between Activity Heartbeats.
@@ -253,13 +259,14 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication)
 
-Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
+Multi-Cluster Replication is a feature that asynchronously replicates Workflow Executions from active Clusters to other passive Clusters.
+It is used for backup and state reconstruction.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Multi-region Namespace](/namespaces#multi-region-namespace)
+#### [Multi-region Namespace](/namespaces#multi-region-namespace) {#multi-region-namespace}
 
-A Multi-region is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.
+A Multi-region is a Namespace that exists across Clusters when Multi-Cluster Replication is enabled.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
