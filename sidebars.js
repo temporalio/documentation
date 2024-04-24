@@ -12,6 +12,7 @@ module.exports = {
       items: [
         "evaluate/why-temporal",
         "evaluate/major-components",
+        "evaluate/development-features/index",
         "security",
         "evaluate/release-stages",
         {
