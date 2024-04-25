@@ -49,7 +49,7 @@ openssl s_client -connect <namespace_grpc_endpoint> -showcerts -cert ~/certs/pat
 
 **Self-signed certificate**
 
-If you are using a self-signed certificate, run the following `temporal` command:
+If you are using a self-signed certificate, run the following Temporal CLI command:
 
 ```command
 temporal --namespace <namespace_id> --address <namespace_grpc_endpoint> --tls-cert-path <path-to-mTLS-pem-file> --tls-key-path <path-to-mTLS-key-file> namespace describe

@@ -173,7 +173,7 @@ Continue until the page token becomes `null`/`nil`.
 
 #### List Filter examples
 
-Here are examples of List Filters set with [`temporal`](/cli/workflow#list):
+Here are examples of List Filters set with the [Temporal CLI](/cli/workflow#list):
 
 ```
 WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00")
@@ -426,7 +426,7 @@ With Workflows you can do the following:
 - [How to manage Search Attributes using the Python SDK](/dev-guide/python/observability#visibility)
 - [How to manage Search Attributes using the TypeScript SDK](/dev-guide/typescript/observability#visibility)
 
-- To get a list of Search Attributes using `temporal`, issue `temporal operator search-attribute list`. See [Search Attributes](/visibility#search-attribute).
+- To get a list of Search Attributes using the Temporal CLI, issue `temporal operator search-attribute list`. See [Search Attributes](/visibility#search-attribute).
 
 After you add and set your Search Attributes, use your default or custom Search Attributes in a List Filter.
 
