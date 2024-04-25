@@ -1,17 +1,16 @@
 ---
 id: dynamic-configuration
-title: Temporal Cluster dynamic configuration reference
+title: Temporal Service dynamic configuration reference
 sidebar_label: Dynamic configuration
-description: Temporal Cluster provides dynamic configuration keys that you can update and apply to a running Cluster without restarting your services.
+description: Temporal Service provides dynamic configuration keys that you can update and apply to a running Cluster without restarting your services.
 toc_max_heading_level: 4
 keywords:
-- reference
+  - reference
 tags:
-- reference
+  - reference
 ---
 
-
-Temporal Cluster provides [dynamic configuration](/clusters#dynamic-configuration) keys that you can update and apply to a running Cluster without restarting your services.
+Temporal Service provides [dynamic configuration](/clusters#dynamic-configuration) keys that you can update and apply to a running Cluster without restarting your services.
 
 The dynamic configuration keys are set with default values when you create your Cluster configuration.
 You can override these values as you test your Cluster setup for optimal performance according to your workload requirements.
@@ -27,7 +26,7 @@ For the default values of dynamic configuration keys, check the following links:
 - [Worker Service](https://github.com/temporalio/temporal/blob/5783e781504d8ffac59f9848b830868f3139b980/service/worker/service.go#L193)
 
 Setting dynamic configuration is optional.
-Change these values only if you need to override the default values to achieve better performance on your Temporal Cluster.
+Change these values only if you need to override the default values to achieve better performance on your Temporal Service.
 Also, ensure that you test your changes before setting these in production.
 
 ## Format
@@ -125,10 +124,10 @@ For more examples on how dynamic configuration is set, see:
 
 ## Commonly used dynamic configuration keys
 
-The following table lists commonly used dynamic configuration keys that can be used for rate limiting requests to the Temporal Cluster.
+The following table lists commonly used dynamic configuration keys that can be used for rate limiting requests to the Temporal Service.
 
 Setting dynamic configuration keys is optional.
-If you choose to update these values for your Temporal Cluster, ensure that you are provisioning enough resources to handle the load.
+If you choose to update these values for your Temporal Service, ensure that you are provisioning enough resources to handle the load.
 
 All values listed here are for Temporal server v1.21.
 Check [server release notes](https://github.com/temporalio/temporal/releases) to verify any potential breaking changes when upgrading your versions.
@@ -217,11 +216,10 @@ For details on platform limits, see the [Temporal Platform limits sheet](/self-h
 
 ### Secondary Visibility settings
 
-Secondary Visibility configuration keys enable Dual Visibility on your Temporal Cluster.
+Secondary Visibility configuration keys enable Dual Visibility on your Temporal Service.
 This can be useful when migrating a Visibility database or creating a backup Visibility store.
 
 | Dynamic configuration key                  | Type    | Description                                                                                                                                                                                                                                                                                                                                                                                                          | Default value |
 | ------------------------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
 | `system.enableReadFromSecondaryVisibility` | Boolean | Enables reading from the [secondary Visibility store](/visibility#dual-visibility), and can be set per Namespace. Allowed values are `true` or `false`.                                                                                                                                                                                                                                                              | `false`       |
 | `system.secondaryVisibilityWritingMode`    |         | Enables writing Visibility data to the secondary Visibility store and can be set per Namespace. Setting this value to `on` disables write operations to the primary Visibility store. Allowed values:<br /> `off`: Enables writing to primary Visibility store only. <br /> `on`: Enables writing to secondary Visibility store only.<br /> `dual`: Enables writing to both primary and secondary Visibility stores. | `off`         |
-

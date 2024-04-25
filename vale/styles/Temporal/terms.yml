@@ -54,7 +54,7 @@ swap:
   start-to-close timeout: Start-To-Close Timeout
   state transition: State Transition
   temporal server: Temporal Server
-  temporal cluster: Temporal Cluster
+  Temporal Service: Temporal Service
   task: Task
   task queue: Task Queue
   task queues: Task Queues

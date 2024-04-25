@@ -399,7 +399,6 @@ var_dump($workflow->getCurrentState());
 
 Queries are sent from a Temporal Client.
 
-
 ## How to develop with Updates {#updates}
 
 An [Update](/workflows#update) is an operation that can mutate the state of a Workflow Execution and return a response.
@@ -513,7 +512,6 @@ $resultUuid = $stub->startUpdate(
  )->getResult();
 ```
 
-
 ## Workflow timeouts {#workflow-timeouts}
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
@@ -624,17 +622,17 @@ For an executable code sample, see [ActivityRetry sample](https://github.com/tem
 
 ## How to Heartbeat an Activity {#activity-heartbeats}
 
-An [Activity Heartbeat](/activities#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Cluster](/clusters).
-Each Heartbeat informs the Temporal Cluster that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
-If the Cluster does not receive a Heartbeat within a [Heartbeat Timeout](/activities#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/workers#activity-task-execution) may be scheduled according to the Retry Policy.
+An [Activity Heartbeat](/activities#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/clusters).
+Each Heartbeat informs the Temporal Service that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
+If the Temporal Service does not receive a Heartbeat within a [Heartbeat Timeout](/activities#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/workers#activity-task-execution) may be scheduled according to the Retry Policy.
 
-Heartbeats may not always be sent to the Cluster—they may be [throttled](/activities#throttling) by the Worker.
+Heartbeats may not always be sent to the Temporal Service—they may be [throttled](/activities#throttling) by the Worker.
 
-Activity Cancellations are delivered to Activities from the Cluster when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
+Activity Cancellations are delivered to Activities from the Temporal Service when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
 Heartbeat throttling may lead to Cancellation getting delivered later than expected.
 
 Heartbeats can contain a `details` field describing the Activity's current progress.
-If an Activity gets retried, the Activity can access the `details` from the last Heartbeat that was sent to the Cluster.
+If an Activity gets retried, the Activity can access the `details` from the last Heartbeat that was sent to the Temporal Service.
 
 Some Activities are long-running.
 To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()`, which lets the Temporal Server know that the Activity is still alive.
@@ -995,7 +993,7 @@ A Workflow can set a durable timer for a fixed time period.
 In some SDKs, the function is called `sleep()`, and in others, it's called `timer()`.
 
 A Workflow can sleep for months.
-Timers are persisted, so even if your Worker or Temporal Cluster is down when the time period completes, as soon as your Worker and Cluster are back up, the `sleep()` call will resolve and your code will continue executing.
+Timers are persisted, so even if your Worker or Temporal Service is down when the time period completes, as soon as your Worker and Temporal Service are back up, the `sleep()` call will resolve and your code will continue executing.
 
 Sleeping is a resource-light operation: it does not tie up the process, and you can run millions of Timers off a single Worker.
 
@@ -1073,7 +1071,6 @@ public function run()
 }
 ```
 
-
 ## How to use Start Delay {#start-delay}
 
 Use the Workflow [Start Delay](/workflows#delay-workflow-execution) functionality if you need to delay the execution of the Workflow without the need for regular launches.
@@ -1087,4 +1084,3 @@ $workflow = $workflowClient->newWorkflowStub(
 );
 $workflowClient->start($workflow, 'Hello world!');
 ```
-

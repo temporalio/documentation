@@ -2,7 +2,7 @@
 id: workflow
 title: tctl v1.17 workflow command reference
 sidebar_label: workflow
-description: Explore the wide range of tctl Workflow commands for efficient management of Workflow Executions in a Temporal Cluster.
+description: Explore the wide range of tctl Workflow commands for efficient management of Workflow Executions in a Temporal Service.
 toc_max_heading_level: 4
 keywords:
   - cli
@@ -396,7 +396,7 @@ tctl workflow list --status <value>
 
 **How to list and filter Workflow Executions with a [List Filter](/visibility#list-filter) using tctl.**
 
-The `--query` flag is supported only when [Advanced Visibility](/visibility#advanced-visibility) is configured with the Cluster.
+The `--query` flag is supported only when [Advanced Visibility](/visibility#advanced-visibility) is configured with the Temporal Service.
 
 Using the `--query` option causes tctl to ignore all other filter options, including `open`, `earliest_time`, `latest_time`, `workflow_id`, and `workflow_type`.
 

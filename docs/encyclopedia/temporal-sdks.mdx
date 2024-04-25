@@ -29,11 +29,11 @@ tags:
 
 Temporal SDKs (software development kits) are an open source collection of tools, libraries, and APIs that enable Temporal Application development.
 
-They offer a [Temporal Client](#temporal-client) to interact with the [Temporal Cluster](/clusters), APIs to develop your [Temporal Application](#temporal-application), and APIs to run horizontally scalable [Workers](/workers#worker).
+They offer a [Temporal Client](#temporal-client) to interact with the [Temporal Service](/clusters), APIs to develop your [Temporal Application](#temporal-application), and APIs to run horizontally scalable [Workers](/workers#worker).
 
 SDKs are more than just a development tool, however.
 The SDK APIs enable developers to write code in a particular pattern that mirrors real world processes.
-The SDK's internal implementation, working in collaboration with the Temporal Cluster, steps through that code, guaranteeing execution progression during application runtime.
+The SDK's internal implementation, working in collaboration with the Temporal Service, steps through that code, guaranteeing execution progression during application runtime.
 
 ## Temporal Applications {#temporal-application}
 
@@ -161,19 +161,19 @@ This capability stems from the SDK's ability to persist each step the program ta
 
 Temporal SDKs offer developers the following:
 
-- A Temporal Client to communicate with a Temporal Cluster
+- A Temporal Client to communicate with a Temporal Service
 - APIs to develop application code (Workflows & Activities)
 - APIs to configure and run Workers
 
 <div class="tdiw">
   <div class="tditw">
-    <p class="tdit">Temporal SDK components create a runtime across your environment and a Temporal Cluster</p>
+    <p class="tdit">Temporal SDK components create a runtime across your environment and a Temporal Service</p>
   </div>
   <div class="tdiiw" height="870">
     <img
       class="img_ev3q"
       src="/diagrams/temporal-sdk-components.svg"
-      alt="Temporal SDK components create a runtime across your environment and a Temporal Cluster"
+      alt="Temporal SDK components create a runtime across your environment and a Temporal Service"
     />
   </div>
 </div>
@@ -186,7 +186,7 @@ A Temporal Client acts as the bridge for communication between your applications
 The Client performs key functions that facilitate the execution of, management of, and communication with Workflows.
 
 The following code is an example using the Go SDK.
-It showcases how to initialize a Temporal Client, create a connection to a local Temporal Cluster, and start a Workflow Execution:
+It showcases how to initialize a Temporal Client, create a connection to a local Temporal Service, and start a Workflow Execution:
 
 :::caution Do not copy and use code
 
@@ -278,7 +278,7 @@ A Workflow executes Activities (other functions that interact with external syst
 This Workflow code, while executing, can be paused, resumed, and migrated across physical machines without losing state.
 
 When a Workflow calls the API to execute an Activity, the Worker sends a [Command](https://docs.temporal.io/references/commands) back to the Cluster. The Cluster creates Activity Tasks in response which the same or a different Worker can then pick up and begin executing. In this way, the Worker and Cluster work together to incrementally execute Workflow code in a reliable way.
-We discuss this more in detail in [The SDK and Temporal Cluster relationship](/encyclopedia/temporal-sdks#sdk-and-cluster-relationship) section.
+We discuss this more in detail in [The SDK and Temporal Service relationship](/encyclopedia/temporal-sdks#sdk-and-cluster-relationship) section.
 
 The SDK APIs also enable developers to write code that more genuinely maps to their process. This is because without a specialized SDK, developers might have to write a lot of boilerplate code. This can lead to code that's hard to maintain, difficult to understand, or that doesn't directly correspond to the underlying business process.
 
@@ -367,7 +367,7 @@ func main() {
 }
 ```
 
-The Worker polls on the specified Task Queue, processing those Tasks, and reporting the results back to the Temporal Cluster. They execute both the Workflows and Activities, and the SDK ensures that they perform these tasks efficiently and reliably.
+The Worker polls on the specified Task Queue, processing those Tasks, and reporting the results back to the Temporal Service. They execute both the Workflows and Activities, and the SDK ensures that they perform these tasks efficiently and reliably.
 
 ### APIs to customize Activity Execution behavior
 
@@ -418,13 +418,13 @@ func LoanCreditCheckActivity(ctx context.Context, loanAmount int) (string, error
 }
 ```
 
-## The SDK and Temporal Cluster relationship {#sdk-and-cluster-relationship}
+## The SDK and Temporal Service relationship {#sdk-and-cluster-relationship}
 
-**How do the Temporal SDKs work with the Temporal Cluster?**
+**How do the Temporal SDKs work with the Temporal Service?**
 
-The Temporal Cluster functions more as a choreographer than a conductor. Rather than directly assigning tasks to Workers, the Cluster arranges the Tasks into a Task Queue while Workers poll the Task Queue. Developers may create a fleet of Workers and tune them so that a Task is picked up as soon as it is available. If a Worker goes down, Tasks can wait until the next Worker is available.
+The Temporal Service functions more as a choreographer than a conductor. Rather than directly assigning tasks to Workers, the Cluster arranges the Tasks into a Task Queue while Workers poll the Task Queue. Developers may create a fleet of Workers and tune them so that a Task is picked up as soon as it is available. If a Worker goes down, Tasks can wait until the next Worker is available.
 
-A Workflow might request to execute an Activity, start a Timer, or start a Child Workflow, each of which translates into a Command, dispatched to the Temporal Cluster.
+A Workflow might request to execute an Activity, start a Timer, or start a Child Workflow, each of which translates into a Command, dispatched to the Temporal Service.
 In addition to acting on these Commands, the Cluster documents that interaction by appending their corresponding Events into to the Workflow Execution's Event History.
 
 Take for instance the call to execute an Activity. When a Workflow invokes it, the Worker doesn’t immediately execute that Activity code. Instead, it generates a ScheduleActivityTask Command, dispatching it to the Cluster. In response, the Cluster queues up a new Activity Task. Only when a Worker finds itself free, it collects the task and begins executing the Activity code.
@@ -489,7 +489,7 @@ We can use a Temporal Client (available in Temporal SDKs and the CLI) to start a
 
 Starting a Workflow Execution creates a new Event, WorkflowExecutionStarted, and adds it to the Workflow Execution's Event History.
 
-The Temporal Cluster then schedules a Workflow Task by adding it to the Task Queue.
+The Temporal Service then schedules a Workflow Task by adding it to the Task Queue.
 When the Worker has capacity, it picks up this Task, and begin executing code.
 
 Each step of the Task (e.g. Scheduled, Started, and Completed), gets recorded into the Event History.
@@ -498,7 +498,7 @@ Each step of the Task (e.g. Scheduled, Started, and Completed), gets recorded in
 - Started means that the Worker has dequeued the Task.
 - Completed means that the Worker finished executing the Task by responding to the Cluster.
 
-When the call to invoke the Activity is evaluated, the Worker suspends executing the code and sends a Command to the Temporal Cluster to schedule an Activity Task.
+When the call to invoke the Activity is evaluated, the Worker suspends executing the code and sends a Command to the Temporal Service to schedule an Activity Task.
 
 <div class="tdiw">
   <div class="tditw">

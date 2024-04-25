@@ -41,7 +41,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 - [How to install Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): How to install Temporal CLI and run a development Cluster.
 - [How to install a Temporal SDK](/dev-guide/python/foundations#install-a-temporal-sdk): A Temporal SDK provides a framework for Temporal Application development.
-- [How to connect a Temporal Client to a Temporal Cluster](/dev-guide/python/foundations#connect-to-a-dev-cluster): When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.
+- [How to connect a Temporal Client to a Temporal Service](/dev-guide/python/foundations#connect-to-a-dev-cluster): When connecting a Temporal Client to a Temporal Service, you must provide the address and port number of the Temporal Service.
 - [How to connect to Temporal Cloud](/dev-guide/python/foundations#connect-to-temporal-cloud): Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
 - [How to develop a basic Workflow](/dev-guide/python/foundations#develop-workflows): Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.
 - [How to develop a basic Activity](/dev-guide/python/foundations#develop-activities): One of the primary things that Workflows do is orchestrate the execution of Activities.
@@ -58,7 +58,7 @@ The Features section of the Temporal Developer's guide provides basic implementa
 - [What is a Dynamic Handler](/dev-guide/python/features#dynamic-handler): Dynamic Handlers are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named handler matches the call from the Server at runtime.
 - [Workflow timeouts](/dev-guide/python/features#workflow-timeouts): Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 - [How to set Activity timeouts](/dev-guide/python/features#activity-timeouts): Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
-- [How to Heartbeat an Activity](/dev-guide/python/features#activity-heartbeats): An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
+- [How to Heartbeat an Activity](/dev-guide/python/features#activity-heartbeats): An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Service.
 - [How to asynchronously complete an Activity](/dev-guide/python/features#asynchronous-activity-completion): Asynchronous Activity Completion enables the Activity Function to return without the Activity Execution completing.
 - [Cancel an Activity from a Workflow](/dev-guide/python/features#cancel-an-activity): An Activity can be canceled from within a Workflow if the Activity sends Heartbeats.
 - [How to interrupt a Workflow Execution](/dev-guide/python/features#interrupt-a-workflow-execution): You can interrupt a Workflow Execution by canceling it or terminating it.

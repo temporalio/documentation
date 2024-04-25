@@ -7,45 +7,44 @@ description: The project setup section of the Temporal Go SDK Developer's guide 
 slug: /dev-guide/go/project-setup
 toc_max_heading_level: 4
 keywords:
-- activity
-- cloud certificate
-- code sample
-- dev guide
-- developer guide
-- docker
-- go
-- go sdk
-- introduction
-- project setup
-- self-hosted
-- temporal cli
-- temporal client
-- temporal cloud
-- test framework
-- testing
-- worker
-- workflow
+  - activity
+  - cloud certificate
+  - code sample
+  - dev guide
+  - developer guide
+  - docker
+  - go
+  - go sdk
+  - introduction
+  - project setup
+  - self-hosted
+  - temporal cli
+  - temporal client
+  - temporal cloud
+  - test framework
+  - testing
+  - worker
+  - workflow
 tags:
-- activity
-- cloud-certificate
-- code-sample
-- dev-guide
-- developer-guide
-- docker
-- go
-- go-sdk
-- introduction
-- project-setup
-- self-hosted
-- temporal-cli
-- temporal-client
-- temporal-cloud
-- test-framework
-- testing
-- worker
-- workflow
+  - activity
+  - cloud-certificate
+  - code-sample
+  - dev-guide
+  - developer-guide
+  - docker
+  - go
+  - go-sdk
+  - introduction
+  - project-setup
+  - self-hosted
+  - temporal-cli
+  - temporal-client
+  - temporal-cloud
+  - test-framework
+  - testing
+  - worker
+  - workflow
 ---
-
 
 The first step to creating a new Temporal Application is to set up your development environment.
 This chapter walks through the steps to do that using the Go SDK.
@@ -75,13 +74,13 @@ There are three ways to follow this guide:
 - [Use Temporal Cloud](#temporal-cloud)
 - [Use a self-hosted environment such as Docker](#self-hosted-temporal-cluster)
 
-Read more in the [Choose a development Cluster](#choose-dev-cluster) section.
+Read more in the [Choose a development Temporal Service](#choose-dev-cluster) section.
 
 In this chapter you will do the following:
 
 1. Download the Temporal CLI.
-2. Choose your development Cluster.
-3. Create a Namespace on your development Cluster.
+2. Choose your development Temporal Service.
+3. Create a Namespace on your development Temporal Service.
 4. Copy boilerplate code into your IDE.
 5. Run your the Worker.
 6. Start the Workflow using the CLI.
@@ -164,19 +163,19 @@ Follow these instructions to install the Temporal CLI on Windows:
 
 3. Add the `temporal.exe` binary to your PATH.
 
-## Choose a development Cluster {#choose-dev-cluster}
+## Choose a development Temporal Service {#choose-dev-cluster}
 
-**Which development Cluster should you choose?**
+**Which development Temporal Service should you choose?**
 
 We recommend choosing a development environment based on your requirements.
 
-The source code for the Temporal Server (the orchestrating component of the Temporal Cluster) is licensed under the MIT open source license. So, in theory, anyone can take the Temporal Server code and run their Temporal Platform in any number of creative ways.
+The source code for the Temporal Server (the orchestrating component of the Temporal Service) is licensed under the MIT open source license. So, in theory, anyone can take the Temporal Server code and run their Temporal Platform in any number of creative ways.
 
 However, for most developers we recommend starting by choosing one of the following:
 
 - [Local development server](#local-dev-server)
 - [Temporal Cloud](#temporal-cloud)
-- [Self-hosted Temporal Cluster](#self-hosted-temporal-cluster)
+- [Self-hosted Temporal Service](#self-hosted-temporal-cluster)
 
 :::info Temporal does not directly run your code
 
@@ -195,7 +194,7 @@ We recommend using the local development server if you are new to Temporal, or w
 The Temporal CLI comes bundled with a development server and provides a fast way to start running Temporal Applications.
 
 However, the local development server does not emit any metrics.
-If you are eager to to set up Cluster-level metrics for performance tuning, we recommend using a self-hosted Cluster or Temporal Cloud.
+If you are eager to to set up Temporal Service-level metrics for performance tuning, we recommend using a self-hosted Temporal Service or Temporal Cloud.
 
 #### Start the dev server
 
@@ -237,7 +236,7 @@ If you do not have a Temporal Cloud Account, you can request one using the link 
 
 We recommend starting off with Temporal Cloud if you already have a production use case, or need to move a scalable proof of concept into production.
 
-In other words, Temporal Cloud is perfect if you are ready to run at scale and don’t want the overhead of managing your own self-hosted Cluster.
+In other words, Temporal Cloud is perfect if you are ready to run at scale and don’t want the overhead of managing your own self-hosted Temporal Service.
 
 To create a Namespace in Temporal Cloud, follow the instructions in [How to create a Namespace](/cloud/namespaces#create-a-namespace).
 
@@ -250,11 +249,11 @@ For more information on certificate requirements, see [How to manage certificate
 
 :::
 
-### Self-hosted Temporal Cluster
+### Self-hosted Temporal Service
 
 We recommend using a self-hosted environment if you are starting something new and need to scale with production-level features, but don’t yet need or want to pay for Temporal Cloud.
 
-For example, running a self-hosted Cluster lets you try different databases, view Cluster metrics, use custom [Search Attributes](/visibility#search-attribute), and even play with the [Archival](/clusters#archival) feature.
+For example, running a self-hosted Temporal Service lets you try different databases, view Temporal Service metrics, use custom [Search Attributes](/visibility#search-attribute), and even play with the [Archival](/clusters#archival) feature.
 
 For the purposes of this guide, we show how to use a self-hosted environment that runs completely out of Docker.
 We acknowledge that it takes a fair amount of experience to elevate from a self-hosted environment in Docker to something that can run at an enterprise production scale.
@@ -370,11 +369,15 @@ go get go.temporal.io/sdk
 
 ### Boilerplate Workflow code {#workflow-code}
 
-
 In the Temporal Go SDK programming model, a [Workflow Definition](/workflows#workflow-definition) is an exportable function.
 The `BackgroundCheck` function below is an example of a basic Workflow Definition.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/workflows/backgroundcheck.go">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/workflows/backgroundcheck.go">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
 
 ```go
 
@@ -408,8 +411,6 @@ func BackgroundCheck(ctx workflow.Context, param string) (string, error) {
 }
 ```
 
-
-
 The first parameter of a Go-based Workflow Definition must be of the [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context) type.
 It is used by the Temporal Go SDK to pass around Workflow Execution context, and virtually all the Go SDK APIs that are callable from the Workflow require it.
 It is acquired from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package.
@@ -433,11 +434,15 @@ For example, in a small project like this, it is still a best practice to have a
 
 ### Boilerplate Activity code {#activity-code}
 
-
 In the Temporal Go SDK programming model, an Activity is an exportable function or a `struct` method.
 Below is an example of an Activity defined as a function.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/activities/ssntraceactivity.go">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/activities/ssntraceactivity.go">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
 
 ```go
 
@@ -457,8 +462,6 @@ func SSNTraceActivity(ctx context.Context, param string) (*string, error) {
 }
 ```
 
-
-
 The first parameter of an Activity Definition is `context.Context`.
 This parameter is optional for an Activity Definition, though it is recommended, especially if the Activity is expected to use other Go SDK APIs.
 
@@ -467,7 +470,6 @@ However, all parameters must be serializable.
 For example, parameters can’t be channels, functions, variadic, or unsafe pointers.
 
 ### Run a dev server Worker {#dev-server-worker}
-
 
 To run a Worker Process with a local development server, define the following steps in code:
 
@@ -478,7 +480,12 @@ To run a Worker Process with a local development server, define the following st
 
 In regards to organization, we recommend keeping Worker code separate from Workflow and Activity code.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/dev_server_worker/main.go">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/dev_server_worker/main.go">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
 
 ```go
 
@@ -520,7 +527,6 @@ func main() {
 }
 ```
 
-
 :::info Auto restart worker when code changes
 
 Use [`gow`](https://github.com/mitranim/gow) to automatically restart the Worker Process whenever any of the Go code files in your project change.
@@ -534,14 +540,18 @@ gow worker/main.go # automatically restarts when the project files change
 
 ### Run a Temporal Cloud Worker {#cloud-worker}
 
-
 A Temporal Cloud Worker requires that you specify the following in the Client connection options:
 
 - Temporal Cloud Namespace
 - Temporal Cloud Address
 - Certificate and private key associated with the Namespace
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/cloud_worker/main.go">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/cloud_worker/main.go">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
 
 ```go
 
@@ -607,17 +617,15 @@ func main() {
 }
 ```
 
+To run a Temporal Cloud Worker, you'll change some parameters in your Client connection code, such as updating the namespace and gRPC endpoint.
+You'll use:
 
+- The [Temporal Cloud Namespace Id](https://docs.temporal.io/cloud/namespaces#temporal-cloud-namespace-id).
+- The [Namespace's gRPC endpoint](https://docs.temporal.io/cloud/namespaces#temporal-cloud-grpc-endpoint).
+  The endpoint uses this format `(namespace.unique_id.tmprl.cloud:port)`.
+- [Paths to the SSL certificate (.pem) and private key (.key)](https://docs.temporal.io/cloud/saml#integrate-saml-with-your-temporal-cloud-account) registered to your Namespace and stored on your Worker's file system.
 
- To run a Temporal Cloud Worker, you'll change some parameters in your Client connection code, such as updating the namespace and gRPC endpoint.
- You'll use:
- 
- - The [Temporal Cloud Namespace Id](https://docs.temporal.io/cloud/namespaces#temporal-cloud-namespace-id).
- - The [Namespace's gRPC endpoint](https://docs.temporal.io/cloud/namespaces#temporal-cloud-grpc-endpoint).
- The endpoint uses this format `(namespace.unique_id.tmprl.cloud:port)`.
- - [Paths to the SSL certificate (.pem) and private key (.key)](https://docs.temporal.io/cloud/saml#integrate-saml-with-your-temporal-cloud-account) registered to your Namespace and stored on your Worker's file system.
- 
- Copy the Namespace Id and the gRPC endpoint from the Namespace detail Web page on [Temporal Cloud Namespaces](https://cloud.temporal.io/namespaces). Click on a Namespace name to open the Namespace details.
+Copy the Namespace Id and the gRPC endpoint from the Namespace detail Web page on [Temporal Cloud Namespaces](https://cloud.temporal.io/namespaces). Click on a Namespace name to open the Namespace details.
 
 ### Run a Self-hosted Worker {#dockerfile}
 
@@ -685,10 +693,14 @@ Copy the IP address part.
 
 #### Customize Client options {#self-hosted-client-options}
 
-
 Set IP address, port, and Namespace in the Temporal Client options.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/self_hosted_worker/main.go">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/self_hosted_worker/main.go">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
 
 ```go
 
@@ -731,7 +743,6 @@ func main() {
 }
 ```
 
-
 #### Build and deploy Docker image {#dockerfile}
 
 Add a Docker file to the root of your Background Check application project.
@@ -764,7 +775,7 @@ Then build the Docker image using the following command:
 docker build . -t backgroundcheck-worker-image:latest
 ```
 
-Now run the Worker on the same network as the Temporal Cluster containers using the following command:
+Now run the Worker on the same network as the Temporal Service containers using the following command:
 
 ```shell
 docker run --network temporal-network backgroundcheck-worker-image:latest
@@ -831,7 +842,14 @@ When you visit for the first time, the Web UI directs you to [http://localhost:8
 
 Use the Namespace dropdown to select the project Namespace you created earlier.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Web UI Namespace selection</p></div><div class="tdiiw" height="1402"><img class="img_ev3q" src="/img/web-ui-namespace-selection.png" alt="Web UI Namespace selection" /></div></div>
+<div class="tdiw">
+  <div class="tditw">
+    <p class="tdit">Web UI Namespace selection</p>
+  </div>
+  <div class="tdiiw" height="1402">
+    <img class="img_ev3q" src="/img/web-ui-namespace-selection.png" alt="Web UI Namespace selection" />
+  </div>
+</div>
 
 You should now be at [http://localhost:8233/namespaces/backgroundcheck_namespace/workflows](http://localhost:8233/namespaces/backgroundcheck_namespace/workflows).
 
@@ -839,12 +857,30 @@ You should now be at [http://localhost:8233/namespaces/backgroundcheck_namespace
 
 If you ever want to confirm that a Worker is polling on the Task Queue that the Workflow started on, you can visit the Workflow Execution's details page and click on the Task Queue name.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Click on the Task Queue name to view polling Workers</p></div><div class="tdiiw" height="782"><img class="img_ev3q" src="/img/click-task-queue-name.png" alt="Click on the Task Queue name to view polling Workers" /></div></div>
+<div class="tdiw">
+  <div class="tditw">
+    <p class="tdit">Click on the Task Queue name to view polling Workers</p>
+  </div>
+  <div class="tdiiw" height="782">
+    <img
+      class="img_ev3q"
+      src="/img/click-task-queue-name.png"
+      alt="Click on the Task Queue name to view polling Workers"
+    />
+  </div>
+</div>
 
 This will direct you to a page where you can view the Workers polling that Task Queue.
 If there are none, the application won't run.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Confirm Workers polling Task Queue</p></div><div class="tdiiw" height="692"><img class="img_ev3q" src="/img/confirm-workers-polling-task-queue.png" alt="Confirm Workers polling Task Queue" /></div></div>
+<div class="tdiw">
+  <div class="tditw">
+    <p class="tdit">Confirm Workers polling Task Queue</p>
+  </div>
+  <div class="tdiiw" height="692">
+    <img class="img_ev3q" src="/img/confirm-workers-polling-task-queue.png" alt="Confirm Workers polling Task Queue" />
+  </div>
+</div>
 
 ### Temporal Cloud
 
@@ -914,11 +950,18 @@ The URL will look something like the following:
 https://cloud.temporal.io/namespaces/<namespace>.<account-id>/workflows
 ```
 
-<div class="tdiw"><div class="tditw"><p class="tdit">View Workflows in the Cloud UI</p></div><div class="tdiiw" height="578"><img class="img_ev3q" src="/img/cloud-view-workflows.png" alt="View Workflows in the Cloud UI" /></div></div>
+<div class="tdiw">
+  <div class="tditw">
+    <p class="tdit">View Workflows in the Cloud UI</p>
+  </div>
+  <div class="tdiiw" height="578">
+    <img class="img_ev3q" src="/img/cloud-view-workflows.png" alt="View Workflows in the Cloud UI" />
+  </div>
+</div>
 
 ### Self-hosted
 
-**How to start a Workflow with the Temporal CLI when using a Self-hosted Cluster**
+**How to start a Workflow with the Temporal CLI when using a Self-hosted Temporal Service**
 
 Use your Temporal CLI alias to run the `temporal workflow start` command and start your Workflow.
 
@@ -951,13 +994,17 @@ You should now be at [http://localhost:8080/namespaces/backgroundcheck_namespace
 
 ## Add a testing framework {#test-framework}
 
-
 **How to add a Testing Framework and Tests for the Workflow and Activity.**
 
 Each Temporal SDK has a testing suite that can be used in conjunction with a typical language specific testing framework.
-In the Temporal Go SDK, the `testsuite` package (https://pkg.go.dev/go.temporal.io/sdk/testsuite)  provides a test environment in which the Workflow and Activity code may be run for test purposes.
+In the Temporal Go SDK, the `testsuite` package (https://pkg.go.dev/go.temporal.io/sdk/testsuite) provides a test environment in which the Workflow and Activity code may be run for test purposes.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/tests/backgroundcheckboilerplate_test.go">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/tests/backgroundcheckboilerplate_test.go">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
 
 ```go
 
@@ -990,13 +1037,10 @@ func Test_BackgroundCheckApplication(t *testing.T) {
 }
 ```
 
-
-
 In this example, we use a custom struct that absorbs both the testing functionality from testify (https://pkg.go.dev/github.com/stretchr/testify/suite) via `suite.Suite` and the testing functionality from the Temporal test framework via `testsuite.WorkflowTestSuite`.
 Next we create a regular test function recognized by the `go test` command, and pass an instance of the struct to `suite.Run`.
 
 ### Add Workflow function tests {#test-workflow-code}
-
 
 We can test Workflow code for the following conditions:
 
@@ -1007,7 +1051,12 @@ We can test Workflow code for the following conditions:
 
 We can also perform a Workflow Replay test, and we'll provide detailed coverage of this topic in another section.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/tests/backgroundcheckboilerplate_test.go">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/tests/backgroundcheckboilerplate_test.go">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
 
 ```go
 
@@ -1037,8 +1086,6 @@ func (s *UnitTestSuite) Test_BackgroundCheckWorkflow() {
 }
 ```
 
-
-
 Calling `env.ExecuteWorkflow(...)` executes the Workflow logic and any invoked Activities inside the test process.
 The first parameter of `env.ExecuteWorkflow(...)` contains a reference to Workflow function and any parameters that the Workflow needs.
 
@@ -1051,14 +1098,18 @@ If our Workflow returned a value, we could have retrieved that value via a call 
 
 ### Add Activity function tests {#test-activity-code}
 
-
 We can test Activity code for the following conditions:
 
 - Error when invoking the Activity Execution.
 - Error when checking for the result of the Activity Execution.
 - Activity return values. Check to ensure the return value is expected.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/tests/backgroundcheckboilerplate_test.go">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/tests/backgroundcheckboilerplate_test.go">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
 
 ```go
 
@@ -1080,5 +1131,3 @@ func (s *UnitTestSuite) Test_SSNTraceActivity() {
 	s.Equal("pass", result)
 }
 ```
-
-

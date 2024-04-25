@@ -7,13 +7,12 @@ description: Learn how to use the Temporal TypeScript SDK.
 slug: /dev-guide/typescript
 toc_max_heading_level: 4
 keywords:
-- dev guide
-- typescript
+  - dev guide
+  - typescript
 tags:
-- dev-guide
-- typescript
+  - dev-guide
+  - typescript
 ---
-
 
 This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
 
@@ -22,7 +21,7 @@ This guide is meant to provide a comprehensive overview of the structures, primi
 The project setup section of the Temporal TypeScript SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in TypeScript—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 
 - [Install the Temporal CLI](/dev-guide/typescript/project-setup#install-cli): Download and install the Temporal CLI for Mac, Linux, or Windows.
-- [Choose a development Cluster](/dev-guide/typescript/project-setup#choose-dev-cluster): Discover which development Cluster you should choose
+- [Choose a development Temporal Service](/dev-guide/typescript/project-setup#choose-dev-cluster): Discover which development Temporal Service you should choose
 - [Boilerplate Temporal Application project code](/dev-guide/typescript/project-setup#boilerplate-project): Discover the minimum code you need to create a boilerplate Temporal Application with TypeScript
 - [Start Workflow using the CLI](/dev-guide/typescript/project-setup#start-workflow): Learn how to start a Temporal Workflow using the CLI
 - [Add a testing framework](/dev-guide/typescript/project-setup#test-framework): How to add a testing framework to your Temporal Application.
@@ -40,10 +39,10 @@ The Durable Execution section of the Temporal Developer's guide covers advanced 
 
 The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 
-- [How to install Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): How to install Temporal CLI and run a development Cluster.
+- [How to install Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): How to install Temporal CLI and run a development Temporal Service.
 - [How to install a Temporal SDK](/dev-guide/typescript/foundations#install-a-temporal-sdk): A Temporal SDK provides a framework for Temporal Application development.
 - [Linting and types in TypeScript](/dev-guide/typescript/foundations#linting-and-types): Set up linting and types in your TypeScript project.
-- [How to connect a Temporal Client to a Temporal Cluster](/dev-guide/typescript/foundations#connect-to-a-dev-cluster): When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.
+- [How to connect a Temporal Client to a Temporal Service](/dev-guide/typescript/foundations#connect-to-a-dev-cluster): When connecting a Temporal Client to a Temporal Service, you must provide the address and port number of the Temporal Service.
 - [How to connect to Temporal Cloud](/dev-guide/typescript/foundations#connect-to-temporal-cloud): Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
 - [How to develop a basic Workflow](/dev-guide/typescript/foundations#develop-workflows): Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.
 - [How to develop a basic Activity](/dev-guide/typescript/foundations#develop-activities): One of the primary things that Workflows do is orchestrate the execution of Activities.
@@ -64,7 +63,7 @@ The Features section of the Temporal Developer's guide provides basic implementa
 - [How to define Signals and Queries statically or dynamically](/dev-guide/typescript/features#static-and-dynamic-signals-and-queries): Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 - [Workflow timeouts](/dev-guide/typescript/features#workflow-timeouts): Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 - [How to set Activity timeouts](/dev-guide/typescript/features#activity-timeouts): Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
-- [How to Heartbeat an Activity](/dev-guide/typescript/features#activity-heartbeats): An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
+- [How to Heartbeat an Activity](/dev-guide/typescript/features#activity-heartbeats): An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Service.
 - [How to asynchronously complete an Activity](/dev-guide/typescript/features#asynchronous-activity-completion): Asynchronous Activity Completion enables the Activity Function to return without the Activity Execution completing.
 - [Local Activities](/dev-guide/typescript/features#local-activities): To call Local Activities in TypeScript, use proxyLocalActivities.
 - [Cancel an Activity from a Workflow](/dev-guide/typescript/features#cancel-an-activity): An Activity can be canceled from within a Workflow if the Activity sends Heartbeats.
@@ -85,7 +84,7 @@ Improve observability in your TypeScript-based Temporal Workflows. View which Wo
 - [How to emit metrics](/dev-guide/typescript/observability#metrics): Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 - [How to setup Tracing](/dev-guide/typescript/observability#tracing): Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
 - [How to log from a Workflow in TypeScript](/dev-guide/typescript/observability#logging): Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
-- [How to use Visibility APIs](/dev-guide/typescript/observability#visibility): The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
+- [How to use Visibility APIs](/dev-guide/typescript/observability#visibility): The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
 ## Testing
 
@@ -110,4 +109,3 @@ The Versioning section of the Temporal TypeScript SDK developer's guide explains
 
 - [How to patch Workflow code in TypeScript](/dev-guide/typescript/versioning#patching): The TypeScript SDK Patching API lets you change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 - [How to use Worker Versioning in TypeScript](/dev-guide/typescript/versioning#worker-versioning): Version your TypeScript Workers by using build ID-based versioning
-

@@ -2,7 +2,7 @@
 id: admin
 title: tctl v1.17 admin command reference
 sidebar_label: admin
-description: Explore the wide range of tctl admin commands that let you run admin operations on a Temporal Cluster.
+description: Explore the wide range of tctl admin commands that let you run admin operations on a Temporal Service.
 toc_max_heading_level: 4
 keywords:
   - cli
@@ -64,7 +64,7 @@ Custom Search Attributes can be used to make a Cluster more identifiable.
 Due to Elasticsearch limitations, you can only add new custom Search Attributes. Existing Search Attributes cannot be renamed or removed from the Elasticsearch index.
 :::
 
-Use this command to add custom Search Attributes to your Temporal Cluster:
+Use this command to add custom Search Attributes to your Temporal Service:
 
 ```bash
 tctl admin cluster add-search-attributes --name <SearchAttributeName> --type <SearchAttributeValueType>
@@ -598,7 +598,7 @@ The WorkflowId of the history host where we're getting the shardId.
 
 #### --number_of_shards
 
-The total amount of shards for the Temporal Cluster.
+The total amount of shards for the Temporal Service.
 
 Default: 0
 
@@ -669,7 +669,7 @@ The modifier below will change the behavior and output of the command.
 
 #### --shard_id value
 
-ShardId managed by the Temporal Cluster.
+ShardId managed by the Temporal Service.
 
 ### describe_task
 
@@ -765,7 +765,7 @@ Default: 0
 
 #### --target_cluster
 
-Temporal cluster for the shard to use.
+Temporal Service for the shard to use.
 
 Default: "active"
 
@@ -799,7 +799,7 @@ Default: 10
 
 #### --target_cluster value
 
-Temporal cluster to use.
+Temporal Service to use.
 Default: "active"
 
 #### --shard_id value

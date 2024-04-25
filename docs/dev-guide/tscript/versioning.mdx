@@ -7,19 +7,18 @@ description: The Versioning section of the Temporal TypeScript SDK developer's g
 slug: /dev-guide/typescript/versioning
 toc_max_heading_level: 4
 keywords:
-- how-to
-- patching
-- typescript
-- versioning
-- workflow code
+  - how-to
+  - patching
+  - typescript
+  - versioning
+  - workflow code
 tags:
-- how-to
-- patching
-- typescript
-- versioning
-- workflow-code
+  - how-to
+  - patching
+  - typescript
+  - versioning
+  - workflow-code
 ---
-
 
 The Temporal Platform requires that Workflow code is [deterministic](/workflows#deterministic-constraints).
 Because of that requirement, the Temporal TypeScript SDK offers two dedicated versioning features.
@@ -77,7 +76,7 @@ export async function yourWorkflow(value: number): Promise<number> {
 
 // to v2
 export async function yourWorkflow(value: number): Promise<number> {
-  await sleep('1 day');
+  await sleep("1 day");
 
   await runActivity();
   return 7;
@@ -91,17 +90,17 @@ Adding a Signal Handler for a Signal type that has never been sent before does n
 ```ts
 // from v1
 export async function yourWorkflow(value: number): Promise<number> {
-  await sleep('1 days');
+  await sleep("1 days");
   return value;
 }
 
 // to v2
-const updateValueSignal = defineSignal<[number]>('updateValue');
+const updateValueSignal = defineSignal<[number]>("updateValue");
 
 export async function yourWorkflow(value: number): Promise<number> {
   setHandler(updateValueSignal, (newValue) => (value = newValue));
 
-  await sleep('1 days');
+  await sleep("1 days");
   return value;
 }
 ```
@@ -148,7 +147,7 @@ Given an initial Workflow version `v1`:
 // v1
 export async function myWorkflow(): Promise<void> {
   await activityA();
-  await sleep('1 days'); // arbitrary long sleep to simulate a long running workflow we need to patch
+  await sleep("1 days"); // arbitrary long sleep to simulate a long running workflow we need to patch
   await activityThatMustRunAfterA();
 }
 ```
@@ -166,7 +165,7 @@ This is our desired end state, `vFinal`.
 // vFinal
 export async function myWorkflow(): Promise<void> {
   await activityB();
-  await sleep('1 days');
+  await sleep("1 days");
 }
 ```
 
@@ -196,14 +195,14 @@ During replay, when a Worker picks up a history with that marker it will fail th
 
 ```ts
 // v2
-import { patched } from '@temporalio/workflow';
+import { patched } from "@temporalio/workflow";
 export async function myWorkflow(): Promise<void> {
-  if (patched('my-change-id')) {
+  if (patched("my-change-id")) {
     await activityB();
-    await sleep('1 days');
+    await sleep("1 days");
   } else {
     await activityA();
-    await sleep('1 days');
+    await sleep("1 days");
     await activityThatMustRunAfterA();
   }
 }
@@ -226,12 +225,12 @@ If while we're deploying `v3` (below) there are still live Workers running `v2` 
 
 ```ts
 // v3
-import { deprecatePatch } from '@temporalio/workflow';
+import { deprecatePatch } from "@temporalio/workflow";
 
 export async function myWorkflow(): Promise<void> {
-  deprecatePatch('my-change-id');
+  deprecatePatch("my-change-id");
   await activityB();
-  await sleep('1 days');
+  await sleep("1 days");
 }
 ```
 
@@ -250,7 +249,7 @@ We recommended using a lock file (`package-lock.json` or `yarn.lock`) to fix Wor
 
 :::caution
 
-Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Cluster to enable Worker Versioning:
+Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Temporal Service to enable Worker Versioning:
 
 ```
 temporal server start-dev \
@@ -274,8 +273,8 @@ To assign it in your Worker code, assign the following Worker Options:
 ```typescript
 // ...
 const worker = await Worker.create({
-  taskQueue: 'your_task_queue_name',
-  buildId: 'deadbeef',
+  taskQueue: "your_task_queue_name",
+  buildId: "deadbeef",
   useVersioning: true,
   // ...
 });
@@ -293,9 +292,9 @@ You might want to do this as part of your CI deployment process.
 
 ```typescript
 // ...
-await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
-  operation: 'addNewIdInNewDefaultSet',
-  buildId: 'deadbeef',
+await client.taskQueue.updateBuildIdCompatibility("your_task_queue_name", {
+  operation: "addNewIdInNewDefaultSet",
+  buildId: "deadbeef",
 });
 ```
 
@@ -306,10 +305,10 @@ If, instead, you want to add the Build ID to an existing compatible set, you can
 
 ```typescript
 // ...
-await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
-  operation: 'addNewCompatibleVersion',
-  buildId: 'deadbeef',
-  existingCompatibleBuildId: 'some-existing-build-id',
+await client.taskQueue.updateBuildIdCompatibility("your_task_queue_name", {
+  operation: "addNewCompatibleVersion",
+  buildId: "deadbeef",
+  existingCompatibleBuildId: "some-existing-build-id",
 });
 ```
 
@@ -319,9 +318,9 @@ You can promote an existing Build ID in a set to be the default for that set:
 
 ```typescript
 // ...
-await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
-  operation: 'promoteBuildIdWithinSet',
-  buildId: 'deadbeef',
+await client.taskQueue.updateBuildIdCompatibility("your_task_queue_name", {
+  operation: "promoteBuildIdWithinSet",
+  buildId: "deadbeef",
 });
 ```
 
@@ -329,9 +328,9 @@ You can promote an entire set to become the default set for the queue. New Workf
 
 ```typescript
 // ...
-await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
-  operation: 'promoteSetByBuildId',
-  buildId: 'deadbeef',
+await client.taskQueue.updateBuildIdCompatibility("your_task_queue_name", {
+  operation: "promoteSetByBuildId",
+  buildId: "deadbeef",
 });
 ```
 
@@ -340,10 +339,10 @@ for the merged set.
 
 ```typescript
 // ...
-await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
-  operation: 'mergeSets',
-  primaryBuildId: 'deadbeef',
-  secondaryBuildId: 'some-existing-build-id',
+await client.taskQueue.updateBuildIdCompatibility("your_task_queue_name", {
+  operation: "mergeSets",
+  primaryBuildId: "deadbeef",
+  secondaryBuildId: "some-existing-build-id",
 });
 ```
 
@@ -363,9 +362,8 @@ so:
 ```typescript
 // ...
 const { echo } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '20s',
-  versioningIntent: 'DEFAULT',
+  startToCloseTimeout: "20s",
+  versioningIntent: "DEFAULT",
 });
 // ...
 ```
-

@@ -14,13 +14,13 @@ import (
 /*
 Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
 
-If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`, which is the port of the development Cluster.
+If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`, which is the port of the development Temporal Service.
 
 If you don't set a custom Namespace name in the Namespace field, the client connects to the default Namespace.
 */
 
 func main() {
-	// Create a Temporal Client to communicate with the Temporal Cluster.
+	// Create a Temporal Client to communicate with the Temporal Service.
 	// A Temporal Client is a heavyweight object that should be created just once per process.
 	temporalClient, err := client.Dial(client.Options{
 		HostPort: client.DefaultHostPort,
@@ -53,7 +53,7 @@ func startWorkflowHandler(w http.ResponseWriter, r *http.Request, temporalClient
 		WorkflowParamX: "Hello World!",
 		WorkflowParamY: 999,
 	}
-	// Make the call to the Temporal Cluster to start the Workflow Execution.
+	// Make the call to the Temporal Service to start the Workflow Execution.
 	workflowExecution, err := temporalClient.ExecuteWorkflow(
 		context.Background(),
 		workflowOptions,
@@ -81,9 +81,9 @@ func startWorkflowHandler(w http.ResponseWriter, r *http.Request, temporalClient
 
 /* @dacx
 id: how-to-connect-to-a-development-cluster-in-go
-title: How to connect to a Temporal dev Cluster in Go
-label: Connect to a dev Cluster
-description: Use the Dial() method on the Temporal Client and omit setting any client options. If there is a local dev Cluster running, the Client will connect to it.
+title: How to connect to a Temporal dev Temporal Service in Go
+label: Connect to a dev Temporal Service
+description: Use the Dial() method on the Temporal Client and omit setting any client options. If there is a local dev Temporal Service running, the Client will connect to it.
 tags:
 - go sdk
 - code sample

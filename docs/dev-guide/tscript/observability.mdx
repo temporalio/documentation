@@ -7,19 +7,18 @@ description: Improve observability in your TypeScript-based Temporal Workflows. 
 slug: /dev-guide/typescript/observability
 toc_max_heading_level: 3
 keywords:
-- client
-- developer-guide
-- guide-context
-- sdk
-- typescript
+  - client
+  - developer-guide
+  - guide-context
+  - sdk
+  - typescript
 tags:
-- client
-- developer-guide
-- guide-context
-- sdk
-- typescript
+  - client
+  - developer-guide
+  - guide-context
+  - sdk
+  - typescript
 ---
-
 
 The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
 
@@ -89,21 +88,13 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
 - At the top level of your Workflow code, add the following lines:
 
   ```js
-  import { propagation } from '@opentelemetry/api';
-  import {
-    CompositePropagator,
-    W3CBaggagePropagator,
-    W3CTraceContextPropagator,
-  } from '@opentelemetry/core';
-  import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
+  import { propagation } from "@opentelemetry/api";
+  import { CompositePropagator, W3CBaggagePropagator, W3CTraceContextPropagator } from "@opentelemetry/core";
+  import { JaegerPropagator } from "@opentelemetry/propagator-jaeger";
 
   propagation.setGlobalPropagator(
     new CompositePropagator({
-      propagators: [
-        new W3CTraceContextPropagator(),
-        new W3CBaggagePropagator(),
-        new JaegerPropagator(),
-      ],
+      propagators: [new W3CTraceContextPropagator(), new W3CBaggagePropagator(), new JaegerPropagator()],
     }),
   );
   ```
@@ -124,10 +115,10 @@ Using the Activity Context logger
 </summary>
 
 ```ts
-import { log } from '@temporalio/activity';
+import { log } from "@temporalio/activity";
 
 export async function greet(name: string): Promise<string> {
-  log.info('Log from activity', { name });
+  log.info("Log from activity", { name });
   return `Hello, ${name}!`;
 }
 ```
@@ -154,10 +145,10 @@ Using the Workflow Context logger
 </summary>
 
 ```ts
-import { log } from '@temporalio/workflow';
+import { log } from "@temporalio/workflow";
 
 export async function myWorkflow(name: string): Promise<string> {
-  log.info('Log from workflow', { name });
+  log.info("Log from workflow", { name });
   return `Hello, ${name}!`;
 }
 ```
@@ -198,14 +189,10 @@ To register a custom Runtime Logger, you must explicitely instanciate the Runtim
 For example:
 
 ```typescript
-import {
-  DefaultLogger,
-  makeTelemetryFilterString,
-  Runtime,
-} from '@temporalio/worker';
+import { DefaultLogger, makeTelemetryFilterString, Runtime } from "@temporalio/worker";
 
 // This is your custom Logger.
-const logger = new DefaultLogger('WARN', ({ level, message }) => {
+const logger = new DefaultLogger("WARN", ({ level, message }) => {
   console.log(`Custom logger: ${level} — ${message}`);
 });
 
@@ -217,7 +204,7 @@ Runtime.install({
   // Temporal Core SDK itself ("core"), and by other native libraries ("other").
   telemetryOptions: {
     logging: {
-      filter: makeTelemetryFilterString({ core: 'INFO', other: 'INFO' }),
+      filter: makeTelemetryFilterString({ core: "INFO", other: "INFO" }),
       forward: {},
     },
   },
@@ -228,17 +215,13 @@ A common use case for this is to write log mesages to a file to be picked up by 
 For example:
 
 ```typescript
-import {
-  DefaultLogger,
-  makeTelemetryFilterString,
-  Runtime,
-} from '@temporalio/worker';
-import winston from 'winston';
+import { DefaultLogger, makeTelemetryFilterString, Runtime } from "@temporalio/worker";
+import winston from "winston";
 
 const logger = winston.createLogger({
-  level: 'info',
+  level: "info",
   format: winston.format.json(),
-  transports: [new transports.File({ filename: '/path/to/worker.log' })],
+  transports: [new transports.File({ filename: "/path/to/worker.log" })],
 });
 
 Runtime.install({
@@ -249,7 +232,7 @@ Runtime.install({
   // Temporal Core SDK itself ("core"), and by other native libraries ("other").
   telemetryOptions: {
     logging: {
-      filter: makeTelemetryFilterString({ core: 'INFO', other: 'INFO' }),
+      filter: makeTelemetryFilterString({ core: "INFO", other: "INFO" }),
       forward: {},
     },
   },
@@ -286,7 +269,7 @@ Explicitly declaring a sink's interface is optional but is useful for ensuring t
 [sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/workflows.ts)
 
 ```ts
-import { log, proxySinks, Sinks } from '@temporalio/workflow';
+import { log, proxySinks, Sinks } from "@temporalio/workflow";
 
 export interface AlertSinks extends Sinks {
   alerter: {
@@ -310,15 +293,15 @@ Implement and inject the Sink function into a Worker
 [sinks/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/worker.ts)
 
 ```ts
-import { InjectedSinks, Worker } from '@temporalio/worker';
-import { MySinks } from './workflows';
+import { InjectedSinks, Worker } from "@temporalio/worker";
+import { MySinks } from "./workflows";
 
 async function main() {
   const sinks: InjectedSinks<MySinks> = {
     alerter: {
       alert: {
         fn(workflowInfo, message) {
-          console.log('sending SMS alert!', {
+          console.log("sending SMS alert!", {
             workflowId: workflowInfo.workflowId,
             workflowRunId: workflowInfo.runId,
             message,
@@ -329,12 +312,12 @@ async function main() {
     },
   };
   const worker = await Worker.create({
-    workflowsPath: require.resolve('./workflows'),
-    taskQueue: 'sinks',
+    workflowsPath: require.resolve("./workflows"),
+    taskQueue: "sinks",
     sinks,
   });
   await worker.run();
-  console.log('Worker gracefully shutdown');
+  console.log("Worker gracefully shutdown");
 }
 
 main().catch((err) => {
@@ -358,9 +341,9 @@ main().catch((err) => {
 const { alerter } = proxySinks<MySinks>();
 
 export async function sinkWorkflow(): Promise<string> {
-  log.info('Workflow Execution started');
-  alerter.alert('alerter: Workflow Execution started');
-  return 'Hello, Temporal!';
+  log.info("Workflow Execution started");
+  alerter.alert("alerter: Workflow Execution started");
+  return "Hello, Temporal!";
 }
 ```
 
@@ -393,9 +376,9 @@ The following [log levels](https://typescript.temporal.io/api/namespaces/worker#
 Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.DefaultLogger/) that implements the basic interface:
 
 ```ts
-import { DefaultLogger, Runtime } from '@temporalio/worker';
+import { DefaultLogger, Runtime } from "@temporalio/worker";
 
-const logger = new DefaultLogger('WARN', ({ level, message }) => {
+const logger = new DefaultLogger("WARN", ({ level, message }) => {
   console.log(`Custom logger: ${level} — ${message}`);
 });
 Runtime.install({ logger });
@@ -406,33 +389,33 @@ The previous code example sets the default logger to log only messages with leve
 #### Accumulate logs for testing and reporting
 
 ```ts
-import { DefaultLogger, LogEntry } from '@temporalio/worker';
+import { DefaultLogger, LogEntry } from "@temporalio/worker";
 
 const logs: LogEntry[] = [];
-const logger = new DefaultLogger('TRACE', (entry) => logs.push(entry));
-log.debug('hey', { a: 1 });
-log.info('ho');
-log.warn('lets', { a: 1 });
-log.error('go');
+const logger = new DefaultLogger("TRACE", (entry) => logs.push(entry));
+log.debug("hey", { a: 1 });
+log.info("ho");
+log.warn("lets", { a: 1 });
+log.error("go");
 ```
 
 A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 
 ```ts
-import { Runtime } from '@temporalio/worker';
-import winston from 'winston';
+import { Runtime } from "@temporalio/worker";
+import winston from "winston";
 
 const logger = winston.createLogger({
-  level: 'info',
+  level: "info",
   format: winston.format.json(),
-  transports: [new transports.File({ filename: '/path/to/worker.log' })],
+  transports: [new transports.File({ filename: "/path/to/worker.log" })],
 });
 Runtime.install({ logger });
 ```
 
 ## How to use Visibility APIs {#visibility}
 
-The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
+The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
 ### How to use Search Attributes {#search-attributes}
 
@@ -448,7 +431,7 @@ You can do this with [Search Attributes](/visibility#search-attribute).
 
 The steps to using custom Search Attributes are:
 
-- Create a new Search Attribute in your Cluster using `tctl search-attribute create` or the Cloud UI.
+- Create a new Search Attribute in your Temporal Service using `tctl search-attribute create` or the Cloud UI.
 - Set the value of the Search Attribute for a Workflow Execution:
   - On the Client by including it as an option when starting the Execution.
   - In the Workflow by calling `UpsertSearchAttributes`.
@@ -464,7 +447,7 @@ Here is how to query Workflow Executions:
 Use [`WorkflowService.listWorkflowExecutions`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#listworkflowexecutions):
 
 ```typescript
-import { Connection } from '@temporalio/client';
+import { Connection } from "@temporalio/client";
 
 const connection = await Connection.connect();
 const response = await connection.workflowService.listWorkflowExecutions({
@@ -476,7 +459,7 @@ where `query` is a [List Filter](/visibility#list-filter).
 
 ### How to set custom Search Attributes {#custom-search-attributes}
 
-After you've created custom Search Attributes in your Cluster (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+After you've created custom Search Attributes in your Temporal Service (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
 Use [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes).
 
@@ -486,15 +469,15 @@ Use [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/api/inte
 
 ```ts
 const handle = await client.workflow.start(example, {
-  taskQueue: 'search-attributes',
-  workflowId: 'search-attributes-example-0',
+  taskQueue: "search-attributes",
+  workflowId: "search-attributes-example-0",
   searchAttributes: {
     CustomIntField: [2],
-    CustomKeywordField: ['keywordA', 'keywordB'],
+    CustomKeywordField: ["keywordA", "keywordB"],
     CustomBoolField: [true],
     CustomDatetimeField: [new Date()],
     CustomStringField: [
-      'String field is for text. When queried, it will be tokenized for partial match. StringTypeField cannot be used in Order By',
+      "String field is for text. When queried, it will be tokenized for partial match. StringTypeField cannot be used in Order By",
     ],
   },
 });
@@ -518,8 +501,7 @@ Inside a Workflow, we can read from [`WorkflowInfo.searchAttributes`](https://ty
 
 ```ts
 export async function example(): Promise<SearchAttributes> {
-  const customInt =
-    (workflowInfo().searchAttributes.CustomIntField?.[0] as number) || 0;
+  const customInt = (workflowInfo().searchAttributes.CustomIntField?.[0] as number) || 0;
   upsertSearchAttributes({
     // overwrite the existing CustomIntField: [2]
     CustomIntField: [customInt + 1],
@@ -541,7 +523,7 @@ export async function example(): Promise<SearchAttributes> {
 To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
 
 ```typescript
-import { upsertSearchAttributes } from '@temporalio/workflow';
+import { upsertSearchAttributes } from "@temporalio/workflow";
 
 async function yourWorkflow() {
   upsertSearchAttributes({ CustomIntField: [1, 2, 3] });
@@ -550,4 +532,3 @@ async function yourWorkflow() {
   upsertSearchAttributes({ CustomIntField: [] });
 }
 ```
-

@@ -11,7 +11,7 @@ import io.temporal.worker.WorkerFactory;
 
 /*
 To run a Worker Process with a local development server, define the following steps in code:
-- Generate the gRPC stubs necessary to configure a connection to a Temporal Cluster running on localhost using the 'default' namespace
+- Generate the gRPC stubs necessary to configure a connection to a Temporal Service running on localhost using the 'default' namespace
 - Initialize a Temporal Client (`WorkflowClient`), passing in the gRPC stubs.
 - Initialize a WorkerFactory, passing in the Temporal Client (`WorkflowClient`)
 - Create a new Worker using the WorkerFactory, passing in the task queue the Worker should listen on.

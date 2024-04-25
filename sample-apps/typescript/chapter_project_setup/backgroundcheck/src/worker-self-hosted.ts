@@ -1,8 +1,8 @@
 /* dacx */
 /*
-To use a Worker with a self-hosted Temporal Cluster, set the IP address, port, and Namespace in the Temporal Client options.
+To use a Worker with a self-hosted Temporal Service, set the IP address, port, and Namespace in the Temporal Client options.
 
-Add the following code to `src/worker.ts` to define a worker process that communicates with a self-hosted Temporal cluster using a specific namespace and IP address:
+Add the following code to `src/worker.ts` to define a worker process that communicates with a self-hosted Temporal Service using a specific namespace and IP address:
 */
 import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from './activities';

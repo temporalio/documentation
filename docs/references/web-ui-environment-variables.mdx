@@ -5,17 +5,16 @@ sidebar_label: Web UI env vars
 description: How to set  environmental variables for Temporal Web UI.
 toc_max_heading_level: 4
 keywords:
-- docker
-- reference
-- ui server
-- webui
+  - docker
+  - reference
+  - ui server
+  - webui
 tags:
-- docker
-- reference
-- ui-server
-- webui
+  - docker
+  - reference
+  - ui-server
+  - webui
 ---
-
 
 You can use environment variables to dynamically alter the configuration of your Temporal Web UI.
 
@@ -45,7 +44,7 @@ The environment variables are defined in the [UI server configuration template f
 
 ## `TEMPORAL_ADDRESS`
 
-The [Frontend Service](/clusters#frontend-service) address for the Temporal Cluster.
+The [Frontend Service](/clusters#frontend-service) address for the Temporal Service.
 This environmental variable can be set [in the base configuration file](/references/web-ui-configuration#temporalgrpcaddress) using `temporalGrpcAddress`.
 
 This variable is required for setting other environmental variables.
@@ -101,7 +100,7 @@ Callback URLs are invoked by IDP after user has finished authenticating in IDP.
 
 ## `TEMPORAL_UI_ENABLED`
 
-Enables or disables the [browser UI](/references/web-ui-configuration#enableui) for the Temporal Cluster.
+Enables or disables the [browser UI](/references/web-ui-configuration#enableui) for the Temporal Service.
 
 Enabling the browser UI allows the Server to be accessed from your web browser.
 If disabled, the server cannot be viewed on the web, but the UI server APIs remain available for use.
@@ -111,7 +110,7 @@ If disabled, the server cannot be viewed on the web, but the UI server APIs rema
 Enables or disables OpenAPI features for the Temporal Web UI.
 
 This can be set initially with the [enableOpenAPI](/references/web-ui-configuration#enableopenapi) UI configuration.
-The documentation can be found at `/openapi/` on your Temporal Cluster.
+The documentation can be found at `/openapi/` on your Temporal Service.
 
 This variable requires `TEMPORAL_UI_ENABLED` to be set to 'true'.
 
@@ -127,7 +126,7 @@ If not specified, this variable defaults to the UI's GitHub Issue page.
 
 ## `TEMPORAL_NOTIFY_ON_NEW_VERSION`
 
-Enables or disables notifications that appear in the UI whenever a newer version of the Temporal Cluster is available.
+Enables or disables notifications that appear in the UI whenever a newer version of the Temporal Service is available.
 
 ## `TEMPORAL_CONFIG_REFRESH_INTERVAL`
 
@@ -200,4 +199,3 @@ Forward-specified HTTP headers to direct from HTTP API requests to the Temporal 
 ## `TEMPORAL_DISABLE_WRITE_ACTIONS`
 
 Disables any button in the UI that allows the user to modify Workflows or Activities.
-

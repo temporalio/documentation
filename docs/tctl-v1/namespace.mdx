@@ -2,7 +2,7 @@
 id: namespace
 title: tctl v1.17 namespace command reference
 sidebar_label: namespace
-description: Explore the tctl Namespace commands, which let you register, list, and update Namespaces in a Temporal Cluster
+description: Explore the tctl Namespace commands, which let you register, list, and update Namespaces in a Temporal Service
 toc_max_heading_level: 4
 keywords:
   - cli
@@ -100,7 +100,7 @@ The following modifiers control the behavior of the command.
 
 ### --active_cluster
 
-Specify the name of the active [Temporal Cluster](/clusters) when registering a [Namespace](/namespaces).
+Specify the name of the active [Temporal Service](/clusters) when registering a [Namespace](/namespaces).
 This value changes for Global Namespaces when a failover occurs.
 
 **Example**
@@ -111,7 +111,7 @@ tctl namespace register --active_cluster <name>
 
 ### --clusters
 
-Specify a list of [Temporal Clusters](/clusters) when registering a [Namespace](/namespaces).
+Specify a list of [Temporal Services](/clusters) when registering a [Namespace](/namespaces).
 
 The list contains the names of Clusters (separated by spaces) to which the Namespace can fail over.
 Make sure to include to the currently active Cluster.
@@ -233,7 +233,7 @@ The following modifiers control the behavior of the command.
 
 ### --active_cluster
 
-Specify the name of the active [Temporal Cluster](/clusters) when updating a [Namespace](/namespaces).
+Specify the name of the active [Temporal Service](/clusters) when updating a [Namespace](/namespaces).
 
 **Example**
 
@@ -256,7 +256,7 @@ tctl namespace update --add_bad_binary <value>
 
 ### --clusters
 
-Specify a list of [Temporal Clusters](/clusters) when updating a [Namespace](/namespaces).
+Specify a list of [Temporal Services](/clusters) when updating a [Namespace](/namespaces).
 
 The list contains the names of Clusters (separated by spaces) to which the Namespace can fail over.
 

@@ -2,16 +2,15 @@
 id: commands
 title: Temporal Commands reference
 sidebar_label: Commands
-description: A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.
+description: A Command is a requested action issued by a Worker to the Temporal Service after a Workflow Task Execution completes.
 toc_max_heading_level: 4
 keywords:
-- reference
+  - reference
 tags:
-- reference
+  - reference
 ---
 
-
-A [Command](/workflows#command) is a requested action issued by a [Worker](/workers#worker) to the [Temporal Cluster](/clusters) after a [Workflow Task Execution](/workers#workflow-task-execution) completes.
+A [Command](/workflows#command) is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/clusters) after a [Workflow Task Execution](/workers#workflow-task-execution) completes.
 
 The following is a complete list of possible Commands.
 
@@ -124,4 +123,3 @@ This Command helps guarantee ordering constraints for features such as Updates
 
 This Command points at the message from which the Event is created.
 Therefore, just from the Command, you can't predict the resulting Event type.
-

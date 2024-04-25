@@ -57,7 +57,7 @@ if __name__ == "__main__":
  
  For information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](https://docs.temporal.io/cloud/certificates#issue-certificates).
  
- For information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+ For information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
  
  ![Copy your gRPC endpoint from the UI](/img/copy-grpc-endpoint.png)
 dacx"""

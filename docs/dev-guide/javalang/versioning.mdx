@@ -7,19 +7,18 @@ description: The Versioning section of the Temporal Developer's guide covers how
 slug: /dev-guide/java/versioning
 toc_max_heading_level: 4
 keywords:
-- how-to
-- java
-- patching
-- versioning
-- workflow code
+  - how-to
+  - java
+  - patching
+  - versioning
+  - workflow code
 tags:
-- how-to
-- java
-- patching
-- versioning
-- workflow-code
+  - how-to
+  - java
+  - patching
+  - versioning
+  - workflow-code
 ---
-
 
 The Temporal Platform requires that Workflow code is [deterministic](/workflows#deterministic-constraints).
 Because of that requirement, the Temporal Java SDK offers two dedicated versioning features.
@@ -115,7 +114,7 @@ in none of them, then they have to share the Id.
 
 :::caution
 
-Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Cluster to enable Worker Versioning:
+Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Temporal Service to enable Worker Versioning:
 
 ```
 temporal server start-dev \
@@ -214,4 +213,3 @@ private final MyActivity activity =
     );
 // ...
 ```
-

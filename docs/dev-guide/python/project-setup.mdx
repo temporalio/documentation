@@ -149,13 +149,13 @@ Follow these instructions to install the Temporal CLI on Windows:
 
 We recommend choosing a development environment based on your requirements.
 
-The source code for the Temporal Server (the orchestrating component of the Temporal Cluster) is licensed under the MIT open source license. So, in theory, anyone can take the Temporal Server code and run their Temporal Platform in any number of creative ways.
+The source code for the Temporal Server (the orchestrating component of the Temporal Service) is licensed under the MIT open source license. So, in theory, anyone can take the Temporal Server code and run their Temporal Platform in any number of creative ways.
 
 However, for most developers we recommend starting by choosing one of the following:
 
 - [Local development server](#local-dev-server)
 - [Temporal Cloud](#temporal-cloud)
-- [Self-hosted Temporal Cluster](#self-hosted-temporal-cluster)
+- [Self-hosted Temporal Service](#self-hosted-temporal-cluster)
 
 :::info Temporal does not directly run your code
 
@@ -229,7 +229,7 @@ For more information on certificate requirements, see [How to manage certificate
 
 :::
 
-### Self-hosted Temporal Cluster
+### Self-hosted Temporal Service
 
 We recommend using a self-hosted environment if you are starting something new and need to scale with production-level features, but don’t yet need or want to pay for Temporal Cloud.
 
@@ -697,7 +697,7 @@ Then build the Docker image using the following command:
 docker build . -t backgroundcheck-worker-image:latest
 ```
 
-Now run the Worker on the same network as the Temporal Cluster containers using the following command:
+Now run the Worker on the same network as the Temporal Service containers using the following command:
 
 ```shell
 docker run --network temporal-network backgroundcheck-worker-image:latest

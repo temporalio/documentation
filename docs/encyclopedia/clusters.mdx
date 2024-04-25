@@ -1,27 +1,26 @@
 ---
 id: clusters
-title: What is a Temporal Cluster?
+title: What is a Temporal Service?
 sidebar_label: Clusters
 sidebar_position: 8
-description: This guide provides a comprehensive overview of Temporal Clusters.
+description: This guide provides a comprehensive overview of Temporal Services.
 slug: /clusters
 toc_max_heading_level: 4
 keywords:
-- explanation
-- term
+  - explanation
+  - term
 tags:
-- explanation
-- term
+  - explanation
+  - term
 ---
 
+This guide provides a comprehensive overview of Temporal Services.
 
-This guide provides a comprehensive overview of Temporal Clusters.
-
-A Temporal Cluster is the group of services, known as the [Temporal Server](#temporal-server), combined with [Persistence](#persistence) and [Visibility](#visibility) stores, that together act as a component of the Temporal Platform.
+A Temporal Service is the group of services, known as the [Temporal Server](#temporal-server), combined with [Persistence](#persistence) and [Visibility](#visibility) stores, that together act as a component of the Temporal Platform.
 
 - [Cluster deployment guide](/self-hosted-guide)
 
-![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
+![A Temporal Service (Server + persistence)](/diagrams/temporal-cluster.svg)
 
 ## What is the Temporal Server? {#temporal-server}
 
@@ -46,7 +45,7 @@ Each service is aware of the others, including scaled instances, through a membe
 All Temporal Server releases abide by the [Semantic Versioning Specification](https://semver.org/).
 
 We support upgrade paths from every version beginning with Temporal v1.7.0.
-For details on upgrading your Temporal Cluster, see [Upgrade Server](/self-hosted-guide/upgrade-server#upgrade-server).
+For details on upgrading your Temporal Service, see [Upgrade Server](/self-hosted-guide/upgrade-server#upgrade-server).
 
 We provide maintenance support for previously published minor and major versions by continuing to release critical bug fixes related to security, the prevention of data loss, and reliability, whenever they are found.
 
@@ -66,7 +65,14 @@ Temporal offers official support for, and is tested against, dependencies with t
 The Frontend Service is a stateless gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Frontend Service</p></div><div class="tdiiw" height="1040"><img class="img_ev3q" src="/diagrams/temporal-frontend-service.svg" alt="Frontend Service" /></div></div>
+<div class="tdiw">
+  <div class="tditw">
+    <p class="tdit">Frontend Service</p>
+  </div>
+  <div class="tdiiw" height="1040">
+    <img class="img_ev3q" src="/diagrams/temporal-frontend-service.svg" alt="Frontend Service" />
+  </div>
+</div>
 
 Types of inbound calls include the following:
 
@@ -95,7 +101,21 @@ The History Service is responsible for persisting Workflow Execution state to th
 When the Workflow Execution is able to progress, the History Service adds a Task with the Workflow's updated history to the Task Queue.
 From there, a Worker can poll for work, receive this updated history, and resume execution.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Block diagram of how the History Service relates to the other services of the Temporal Server and to a Temporal Cluster</p></div><div class="tdiiw" height="1040"><img class="img_ev3q" src="/diagrams/temporal-history-service.svg" alt="Block diagram of how the History Service relates to the other services of the Temporal Server and to a Temporal Cluster" /></div></div>
+<div class="tdiw">
+  <div class="tditw">
+    <p class="tdit">
+      Block diagram of how the History Service relates to the other services of the Temporal Server and to a Temporal
+      Service
+    </p>
+  </div>
+  <div class="tdiiw" height="1040">
+    <img
+      class="img_ev3q"
+      src="/diagrams/temporal-history-service.svg"
+      alt="Block diagram of how the History Service relates to the other services of the Temporal Server and to a Temporal Service"
+    />
+  </div>
+</div>
 
 The total number of History Service processes can be between 1 and the total number of [History Shards](#history-shard).
 An individual History Service can support many History Shards.
@@ -112,18 +132,18 @@ Ports are configurable in the Cluster configuration.
 
 #### What is a History Shard? {#history-shard}
 
-A History Shard is an important unit within a Temporal Cluster by which concurrent Workflow Execution throughput can be scaled.
+A History Shard is an important unit within a Temporal Service by which concurrent Workflow Execution throughput can be scaled.
 
 Each History Shard maps to a single persistence partition.
 A History Shard assumes that only one concurrent operation can be within a partition at a time.
 In essence, the number of History Shards represents the number of concurrent database operations that can occur for a Cluster.
-This means that the number of History Shards in a Temporal Cluster plays a significant role in the performance of your Temporal Application.
+This means that the number of History Shards in a Temporal Service plays a significant role in the performance of your Temporal Application.
 
-Before integrating a database, the total number of History Shards for the Temporal Cluster must be chosen and set in the Cluster's configuration (see [persistence](/references/configuration#persistence)).
+Before integrating a database, the total number of History Shards for the Temporal Service must be chosen and set in the Cluster's configuration (see [persistence](/references/configuration#persistence)).
 After the Shard count is configured and the database integrated, the total number of History Shards for the Cluster cannot be changed.
 
-In theory, a Temporal Cluster can operate with an unlimited number of History Shards, but each History Shard adds compute overhead to the Cluster.
-Temporal Clusters have operated successfully using anywhere from 1 to 128K History Shards, with each Shard responsible for tens of thousands of Workflow Executions.
+In theory, a Temporal Service can operate with an unlimited number of History Shards, but each History Shard adds compute overhead to the Cluster.
+Temporal Services have operated successfully using anywhere from 1 to 128K History Shards, with each Shard responsible for tens of thousands of Workflow Executions.
 One Shard is useful only in small scale setups designed for testing, while 128k Shards is useful only in very large scale production environments.
 The correct number of History Shards for any given Cluster depends entirely on the Temporal Application that it is supporting and the type of database.
 
@@ -144,7 +164,14 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
 
 The Matching Service is responsible for hosting user-facing [Task Queues](/workers#task-queue) for Task dispatching.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Matching Service</p></div><div class="tdiiw" height="980"><img class="img_ev3q" src="/diagrams/temporal-matching-service.svg" alt="Matching Service" /></div></div>
+<div class="tdiw">
+  <div class="tditw">
+    <p class="tdit">Matching Service</p>
+  </div>
+  <div class="tdiiw" height="980">
+    <img class="img_ev3q" src="/diagrams/temporal-matching-service.svg" alt="Matching Service" />
+  </div>
+</div>
 
 It is responsible for matching Workers to Tasks and routing new Tasks to the appropriate queue.
 This service can scale internally by having multiple instances.
@@ -160,7 +187,14 @@ Ports are configurable in the Cluster configuration.
 
 The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Worker Service</p></div><div class="tdiiw" height="740"><img class="img_ev3q" src="/diagrams/temporal-worker-service.svg" alt="Worker Service" /></div></div>
+<div class="tdiw">
+  <div class="tditw">
+    <p class="tdit">Worker Service</p>
+  </div>
+  <div class="tdiiw" height="740">
+    <img class="img_ev3q" src="/diagrams/temporal-worker-service.svg" alt="Worker Service" />
+  </div>
+</div>
 
 It talks to the Frontend Service.
 
@@ -170,7 +204,7 @@ Ports are configurable in the Cluster configuration.
 
 ### What is a Retention Period? {#retention-period}
 
-Retention Period is the duration for which the Temporal Cluster stores data associated with closed Workflow Executions on a Namespace in the Persistence store.
+Retention Period is the duration for which the Temporal Service stores data associated with closed Workflow Executions on a Namespace in the Persistence store.
 
 - [How to set the Retention Period for a Namespace](/tctl-v1/namespace#register)
 - [How to set the Retention Period for a Namespace using the Go SDK](/dev-guide/go/features#namespaces)
@@ -178,11 +212,11 @@ Retention Period is the duration for which the Temporal Cluster stores data asso
 
 A Retention Period applies to all closed Workflow Executions within a [Namespace](/namespaces) and is set when the Namespace is registered.
 
-The Temporal Cluster triggers a Timer task at the end of the Retention Period that cleans up the data associated with the closed Workflow Execution on that Namespace.
+The Temporal Service triggers a Timer task at the end of the Retention Period that cleans up the data associated with the closed Workflow Execution on that Namespace.
 
 The minimum Retention Period is 1 day.
-On Temporal Cluster version 1.18 and later, the maximum Retention Period value for Namespaces can be set to anything over the minimum requirement of 1 day. Ensure that your Persistence store has enough capacity for the storage.
-On Temporal Cluster versions 1.17 and earlier, the maximum Retention Period you can set is 30 days.
+On Temporal Service version 1.18 and later, the maximum Retention Period value for Namespaces can be set to anything over the minimum requirement of 1 day. Ensure that your Persistence store has enough capacity for the storage.
+On Temporal Service versions 1.17 and earlier, the maximum Retention Period you can set is 30 days.
 Setting the Retention Period to 0 results in the error _A valid retention period is not set on request_.
 
 If you don't set the Retention Period value when using the [`tctl namespace register`](/tctl-v1/namespace#register) command, it defaults to 3 days.
@@ -194,12 +228,19 @@ When changing the Retention Period, the new duration applies to Workflow Executi
 
 ## What is Persistence? {#persistence}
 
-The Temporal Persistence store is a database used by [Temporal Services](#temporal-server) to persist events generated and processed in your Temporal Cluster and SDK.
+The Temporal Persistence store is a database used by [Temporal Services](#temporal-server) to persist events generated and processed in your Temporal Service and SDK.
 
-A Temporal Cluster's only required dependency for basic operation is the Persistence database.
+A Temporal Service's only required dependency for basic operation is the Persistence database.
 Multiple types of databases are supported.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Persistence</p></div><div class="tdiiw" height="620"><img class="img_ev3q" src="/diagrams/temporal-database.svg" alt="Persistence" /></div></div>
+<div class="tdiw">
+  <div class="tditw">
+    <p class="tdit">Persistence</p>
+  </div>
+  <div class="tdiiw" height="620">
+    <img class="img_ev3q" src="/diagrams/temporal-database.svg" alt="Persistence" />
+  </div>
+</div>
 
 The database stores the following types of data:
 
@@ -234,15 +275,16 @@ You can verify supported databases in the [Temporal Server release notes](https:
 ## What is Visibility? {#visibility}
 
 :::tip Support, stability, and dependency info
+
 - For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
 - For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
-- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports Advanced Visibility features](/self-hosted-guide/visibility). The Visibility configuration for Temporal Clusters has been updated and Dual Visibility is enabled. For details, see [Visibility store setup](/self-hosted-guide/visibility).
+- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports Advanced Visibility features](/self-hosted-guide/visibility). The Visibility configuration for Temporal Services has been updated and Dual Visibility is enabled. For details, see [Visibility store setup](/self-hosted-guide/visibility).
 
 :::
 
 The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Cluster.
 
-The [Visibility store](/self-hosted-guide/visibility) in your Temporal Cluster stores persisted Workflow Execution Event History data and is set up as a part of your [Persistence store](#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
+The [Visibility store](/self-hosted-guide/visibility) in your Temporal Service stores persisted Workflow Execution Event History data and is set up as a part of your [Persistence store](#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Service.
 
 - [How to set up a Visibility store](/self-hosted-guide/visibility)
 
@@ -254,7 +296,7 @@ Support for separate standard and advanced Visibility setups will be deprecated 
 
 ## What is Archival? {#archival}
 
-Archival is a feature that automatically backs up [Event Histories](/workflows#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
+Archival is a feature that automatically backs up [Event Histories](/workflows#event-history) and Visibility records from Temporal Service persistence to a custom blob store.
 
 - [How to create a custom Archiver](/self-hosted-guide/archival#custom-archiver)
 - [How to set up Archival](/self-hosted-guide/archival#set-up-archival)
@@ -272,8 +314,8 @@ Archival is not supported when running Temporal through Docker and is disabled b
 
 ## What is Cluster configuration? {#cluster-configuration}
 
-Cluster configuration is the setup and configuration details of your self-hosted Temporal Cluster, defined using YAML.
-You must define your Cluster configuration when setting up your self-hosted Temporal Cluster.
+Cluster configuration is the setup and configuration details of your self-hosted Temporal Service, defined using YAML.
+You must define your Cluster configuration when setting up your self-hosted Temporal Service.
 
 For details on using Temporal Cloud, see [Temporal Cloud documentation](/cloud).
 
@@ -283,7 +325,7 @@ Cluster configuration is composed of two types of configuration: [Static configu
 
 Static configuration contains details of how the Cluster should be set up.
 The static configuration is read just once and used to configure service nodes at startup.
-Depending on how you want to deploy your self-hosted Temporal Cluster, your static configuration must contain details for setting up:
+Depending on how you want to deploy your self-hosted Temporal Service, your static configuration must contain details for setting up:
 
 - Temporal Services—Frontend, History, Matching, Worker
 - Membership ports for the Temporal Services
@@ -320,20 +362,20 @@ For dynamic configuration examples, see [https://github.com/temporalio/temporal/
 
 ### What is Cluster security configuration? {#temporal-cluster-security-configuration}
 
-Secure your Temporal Cluster (self-hosted and Temporal Cloud) by encrypting your network communication and setting authentication and authorization protocols for API calls.
+Secure your Temporal Service (self-hosted and Temporal Cloud) by encrypting your network communication and setting authentication and authorization protocols for API calls.
 
-For details on setting up your Temporal Cluster security, see [Temporal Platform security features](/security).
+For details on setting up your Temporal Service security, see [Temporal Platform security features](/security).
 
 #### mTLS encryption
 
-Temporal supports Mutual Transport Layer Security (mTLS) to encrypt network traffic between services within a Temporal Cluster, or between application processes and a Cluster.
+Temporal supports Mutual Transport Layer Security (mTLS) to encrypt network traffic between services within a Temporal Service, or between application processes and a Cluster.
 
-On self-hosted Temporal Clusters, configure mTLS in the `tls` section of the [Cluster configuration](/references/configuration#tls).
+On self-hosted Temporal Services, configure mTLS in the `tls` section of the [Cluster configuration](/references/configuration#tls).
 mTLS configuration is a [static configuration](#static-configuration) property.
 
-You can then use either the [`WithConfig`](/references/server-options#withconfig) or [`WithConfigLoader`](/references/server-options#withconfigloader) server option to start your Temporal Cluster with this configuration.
+You can then use either the [`WithConfig`](/references/server-options#withconfig) or [`WithConfigLoader`](/references/server-options#withconfigloader) server option to start your Temporal Service with this configuration.
 
-The mTLS configuration includes two sections that serve to separate communication within a Temporal Cluster and client calls made from your application to the Cluster.
+The mTLS configuration includes two sections that serve to separate communication within a Temporal Service and client calls made from your application to the Cluster.
 
 - `internode`: configuration for encrypting communication between nodes within the Cluster.
 - `frontend`: configuration for encrypting the public endpoints of the Frontend Service.
@@ -342,17 +384,17 @@ Setting mTLS for `internode` and `frontend` separately lets you use different ce
 
 #### Using certificates for Client connections
 
-Use CA certificates to authenticate client connections to your Temporal Cluster.
+Use CA certificates to authenticate client connections to your Temporal Service.
 
 On Temporal Cloud, you can [set your CA certificates in your Temporal Cloud settings](/cloud/certificates) and use the end-entity certificates in your client calls.
 
-On self-hosted Temporal Clusters, you can restrict access to Temporal Cluster endpoints by using the `clientCAFiles` or `clientCAData` property and the [`requireClientAuth`](/references/configuration#tls) property in your Cluster configuration.
+On self-hosted Temporal Services, you can restrict access to Temporal Service endpoints by using the `clientCAFiles` or `clientCAData` property and the [`requireClientAuth`](/references/configuration#tls) property in your Cluster configuration.
 These properties can be specified in both the `internode` and `frontend` sections of the [mTLS configuration](/references/configuration#tls).
 For details, see the [tls configuration reference](/references/configuration#tls).
 
 #### Server name specification
 
-On self-hosted Temporal Clusters, you can specify `serverName` in the `client` section of your mTLS configuration to prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack).
+On self-hosted Temporal Services, you can specify `serverName` in the `client` section of your mTLS configuration to prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack).
 
 Entering a value for `serverName` enables established connections to authenticate the endpoint.
 This ensures that the server certificate presented to any connected client has the specified server name in its CN property.
@@ -380,7 +422,7 @@ When plugins are provided, the Frontend Service invokes their implementation bef
 
 ### What is Cluster observability? {#monitoring-and-observation}
 
-You can monitor and observe performance with metrics emitted by your self-hosted Temporal Cluster or by Temporal Cloud.
+You can monitor and observe performance with metrics emitted by your self-hosted Temporal Service or by Temporal Cloud.
 
 Temporal emits metrics by default in a format that is supported by Prometheus.
 Any metrics software that supports the same format can be used.
@@ -396,12 +438,12 @@ For details on Cloud metrics and setup, see the following:
 - [Temporal Cloud metrics reference](/cloud/metrics/)
 - [Set up Grafana with Temporal Cloud observability to view metrics](/cloud/metrics/prometheus-grafana#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana)
 
-On self-hosted Temporal Clusters, expose Prometheus endpoints in your Cluster configuration and configure Prometheus to scrape metrics from the endpoints.
+On self-hosted Temporal Services, expose Prometheus endpoints in your Cluster configuration and configure Prometheus to scrape metrics from the endpoints.
 You can then set up your observability platform (such as Grafana) to use Prometheus as a data source.
 
 For details on self-hosted Cluster metrics and setup, see the following:
 
-- [Temporal Cluster OSS metrics reference](/references/cluster-metrics)
+- [Temporal Service OSS metrics reference](/references/cluster-metrics)
 - [Set up Prometheus and Grafana to view SDK and self-hosted Cluster metrics](/self-hosted-guide/monitoring)
 
 ## What is Multi-Cluster Replication? {#multi-cluster-replication}
@@ -588,7 +630,7 @@ View in both Cluster A & B
 
 </details>
 
-Since Temporal is AP, during failover (change of active Temporal Cluster Namespace), there can exist cases where more than one Cluster can modify a Workflow Execution, causing divergence of Workflow Execution History. Below shows how the version history will look like under such conditions.
+Since Temporal is AP, during failover (change of active Temporal Service Namespace), there can exist cases where more than one Cluster can modify a Workflow Execution, causing divergence of Workflow Execution History. Below shows how the version history will look like under such conditions.
 
 <details>
     <summary>
@@ -808,4 +850,3 @@ T = 2: task A is loaded.
 
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
 Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
-

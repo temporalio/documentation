@@ -4,7 +4,7 @@ from temporalio.client import Client
 from your_workflows_dacx import YourWorkflow
 
 """dacx
-Use the `connect()` method on the Client class to create and connect to a Temporal Client to the Temporal Cluster.
+Use the `connect()` method on the Client class to create and connect to a Temporal Client to the Temporal Service.
 dacx"""
 
 """dacx
@@ -41,9 +41,9 @@ if __name__ == "__main__":
 
 """ @dacx
 id: how-to-connect-to-a-cluster-in-python
-title: How to connect to a Temporal Cluster in Python
+title: How to connect to a Temporal Service in Python
 label: Connect a Temporal Client
-description: Connect a Temporal Client to a Cluster in the Python SDK.
+description: Connect a Temporal Client to a Temporal Service in the Python SDK.
 tags:
  - temporal client
  - cluster

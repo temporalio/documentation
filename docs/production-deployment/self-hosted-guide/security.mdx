@@ -7,21 +7,20 @@ description: This guide is an overview of the Temporal Platform security feature
 slug: /self-hosted-guide/security
 toc_max_heading_level: 4
 keywords:
-- auth
-- developer-guide
-- guide-context
-- java
-- security
-- term
+  - auth
+  - developer-guide
+  - guide-context
+  - java
+  - security
+  - term
 tags:
-- auth
-- developer-guide
-- guide-context
-- java
-- security
-- term
+  - auth
+  - developer-guide
+  - guide-context
+  - java
+  - security
+  - term
 ---
-
 
 :::info General company security
 
@@ -46,7 +45,7 @@ However users may also choose to design their own security architecture with rev
 
 The https://github.com/temporalio/samples-server repo offers two examples, which are further explained below:
 
-- **TLS:** how to configure Transport Layer Security (TLS) to secure network communication with and within a Temporal cluster.
+- **TLS:** how to configure Transport Layer Security (TLS) to secure network communication with and within a Temporal Service.
 - **Authorizer:** how to inject a low-level authorizer component that can control access to all API calls.
 
 ### Encryption in transit with mTLS
@@ -111,9 +110,9 @@ The default JWT `ClaimMapper` implementation can be used as is or as a base for 
 
 To enable SSO for the Temporal Web UI edit the web service's configuration per the [Temporal Web README](https://github.com/temporalio/web#configuring-authentication-optional).
 
-## Temporal Cluster plugins {#plugins}
+## Temporal Service plugins {#plugins}
 
-Temporal Clusters support some pluggable components.
+Temporal Services support some pluggable components.
 
 ### What is a ClaimMapper Plugin? {#claim-mapper}
 
@@ -293,7 +292,7 @@ WorkflowClient client = WorkflowClient.newInstance(service);
 
 Related read:
 
-- [How to secure a Temporal Cluster](/security)
+- [How to secure a Temporal Service](/security)
 
 ## Data Converter {#data-converter}
 
@@ -307,4 +306,3 @@ You can use a [Codec Server](/dataconversion#codec-server) with your custom Payl
 However, ensure that you consider all security implications of [remote data encoding](/dataconversion#remote-data-encoding) before using a Codec Server.
 
 For details on how to set up a Codec Server, see [Codec Server setup](/production-deployment/data-encryption#codec-server-setup).
-

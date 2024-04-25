@@ -6,7 +6,7 @@ The sample is intended to contain a great deal of information about Temporal cod
 
 # How to run
 
-1. Make sure you have a Temporal Cluster running or Temporal Cloud to connect to.
+1. Make sure you have a Temporal Service running or Temporal Cloud to connect to.
 See the [Dev guide](https://docs.temporal.io/application-development/foundations#run-a-development-cluster) for the most up-to-date development option.
 
 2. Start the Worker Process

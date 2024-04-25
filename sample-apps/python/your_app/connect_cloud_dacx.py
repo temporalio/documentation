@@ -4,8 +4,8 @@ from temporalio.client import Client, TLSConfig
 from your_workflows_dacx import YourWorkflow
 
 """dacx
-Use the `connect()` method on the Client class to create and connect to a Temporal Client to the Temporal Cluster.
-Then specify the [TLSConfig](https://python.temporal.io/temporalio.service.TLSConfig.html) arguments to connect to a Temporal Cluster with TLS enabled.
+Use the `connect()` method on the Client class to create and connect to a Temporal Client to the Temporal Service.
+Then specify the [TLSConfig](https://python.temporal.io/temporalio.service.TLSConfig.html) arguments to connect to a Temporal Service with TLS enabled.
 The `client_cert` must be combined with `client_private_key` to authenticate the Client.
 dacx"""
 
