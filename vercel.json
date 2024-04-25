@@ -1159,6 +1159,10 @@
       "destination": "/kb/all-the-ways-to-run-a-cluster"
     },
     {
+      "source": "/tctl-v1:path*",
+      "destination": "/cli"
+    },
+    {
       "source": "/tctl",
       "destination": "/cli"
     },
