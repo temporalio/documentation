@@ -43,6 +43,8 @@ These limits might apply specifically to each Workflow Execution and do not pert
   - Temporal warns at 256 KB: [Blob size exceeds limit.](https://github.com/temporalio/temporal/blob/fee1c43823699e90b330680a8efeb9d8dbee8cf3/common/util.go#L568)
   - Temporal errors at 2 MB: `ErrBlobSizeExceedsLimit: Blob data size exceeds limit.`
   - This is configurable with [BlobSizeLimitError and BlobSizeLimitWarn](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L378-L379), if you know what you are doing.
+- **Workflow Execution Update limits**:
+  - A single Workflow Execution can have a maximum of 10 in-flight Updates and 2000 total Updates in History. 
 - **History total size limit** (leading to a terminated Workflow Execution):
   - Temporal warns at 10 MB: [history size exceeds warn limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1238).
   - Temporal errors at 50 MB: [history size exceeds error limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204).
