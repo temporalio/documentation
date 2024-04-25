@@ -10,6 +10,11 @@
       "destination": "https://temporal.io/about"
     },
     {
+      "source": "/privacy-policy",
+      "destination": "https://temporal.io/global-privacy-policy",
+      "permanent": true
+    },
+    {
       "source": "/docs/:path*",
       "destination": "/:path*"
     },
