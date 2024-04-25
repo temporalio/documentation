@@ -41,14 +41,14 @@ The Foundations section of the Temporal Go SDK Developer's guide covers the mini
 
 - [How to install Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): How to install Temporal CLI and run a development Cluster.
 - [How to install a Temporal SDK](/dev-guide/go/foundations#install-a-temporal-sdk): A Temporal SDK provides a framework for Temporal Application development.
-- [How to connect a Temporal Client to a Temporal Cluster](/dev-guide/go/foundations#connect-to-a-dev-cluster): When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.
-- [How to connect to Temporal Cloud](/dev-guide/go/foundations#connect-to-temporal-cloud): Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
+- [How to connect a Temporal Client to a Temporal Cluster](/develop/go/temporal-client#connect-to-development-service): When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.
+- [How to connect to Temporal Cloud](/develop/go/temporal-client#connect-to-temporal-cloud): Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
 - [How to develop a basic Workflow](/dev-guide/go/foundations#develop-workflows): Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.
 - [How to develop an Activity Definition in Go](/dev-guide/go/foundations#activity-definition): In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
 - [How to start an Activity Execution](/dev-guide/go/foundations#activity-execution): Calls to spawn Activity Executions are written within a Workflow Definition.
 - [How to develop a Worker in Go](/dev-guide/go/foundations#develop-worker): Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.
 - [How to run a Temporal Cloud Worker](/dev-guide/go/foundations#run-a-temporal-cloud-worker): The Worker Process is where Workflow Functions and Activity Functions are executed.
-- [How to start a Workflow Execution](/dev-guide/go/foundations#start-workflow-execution): Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+- [How to start a Workflow Execution](/develop/go/temporal-client#start-workflow-execution): Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 ## Features
 

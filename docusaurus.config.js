@@ -43,7 +43,7 @@ module.exports = {
       // },
     },
     metadata: [{ name: "robots", content: "follow, index" }],
-    image: '/img/open-graph-shiny.png',
+    image: "/img/open-graph-shiny.png",
     prism: {
       //theme: require("prism-react-renderer/themes/nightOwlLight"),
       // darkTheme: require("prism-react-renderer/themes/dracula"),
@@ -210,7 +210,7 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           routeBasePath: "/",
-          exclude: ["**/php/**", "**/typescript/**", "**/go/**", "**/java/**", "**/clusters/**"], // do not render context content
+          exclude: ["**/php/**", "**/typescript/**", "**/java/**", "**/clusters/**"], // do not render context content
           editUrl: "https://github.com/temporalio/documentation/blob/master",
           /**
            * Whether to display the author who last updated the doc.
