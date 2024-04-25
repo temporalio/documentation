@@ -64,7 +64,9 @@ If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal
 If you don't set a custom Namespace name in the Namespace field, the client connects to the default Namespace.
 
 <!--SNIPSTART samples-apps-go-yourapp-gateway {"selectedLines": ["1-23", "32"]} -->
+
 [sample-apps/go/yourapp/gateway/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/gateway/main.go)
+
 ```go
 package main
 
@@ -92,6 +94,85 @@ func main() {
 // ...
 }
 ```
+
+<!--SNIPEND-->
+
+## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+
+**How to connect to Temporal Cloud using the Go SDK**
+
+When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
+
+- The [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
+- The [Namespace's gRPC endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint).
+  An endpoint listing is available at the [Temporal Cloud Website](https://cloud.temporal.io/namespaces) on each Namespace detail page.
+  The endpoint contains the Namespace Id and port.
+- mTLS CA certificate.
+- mTLS private key.
+
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
+
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+
+To connect to and run Workflows through Temporal Cloud, you need the following:
+
+- A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
+  See [certificate requirements](/cloud/certificates#certificate-requirements).
+- Your [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id), which includes your [Temporal Cloud Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name) and the unique five- or six-digit [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id) that is appended to it.
+  This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
+  Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
+
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
+
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+
+<!--SNIPSTART sample-apps-go-cloud-client {"selectedLines": ["1-38", "64"]} -->
+
+[sample-apps/go/cloud/client/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/cloud/client/main.go)
+
+```go
+package main
+
+import (
+	"context"
+	"crypto/tls"
+	"encoding/json"
+	"log"
+
+	"documentation-samples-go/cloud"
+
+	"go.temporal.io/sdk/client"
+)
+
+func main() {
+	// Get the key and cert from your env or local machine
+	clientKeyPath := "./secrets/yourkey.key"
+	clientCertPath := "./secrets/yourcert.pem"
+	// Specify the host and port of your Temporal Cloud Namespace
+	// Host and port format: namespace.unique_id.tmprl.cloud:port
+	hostPort := "<yournamespace>.<id>.tmprl.cloud:7233"
+	namespace := "<yournamespace>.<id>"
+	// Use the crypto/tls package to create a cert object
+	cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
+	if err != nil {
+		log.Fatalln("Unable to load cert and key pair.", err)
+	}
+	// Add the cert to the tls certificates in the ConnectionOptions of the Client
+	temporalClient, err := client.Dial(client.Options{
+		HostPort:  hostPort,
+		Namespace: namespace,
+		ConnectionOptions: client.ConnectionOptions{
+			TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
+		},
+	})
+	if err != nil {
+		log.Fatalln("Unable to connect to Temporal Cloud.", err)
+	}
+	defer temporalClient.Close()
+// ...
+}
+```
+
 <!--SNIPEND-->
 
 ## Start Workflow Execution {#start-workflow-execution}
@@ -101,9 +182,9 @@ func main() {
 [Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.
-To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](features#child-workflows) or External Workflow APIs.
+To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](/dev-guide/go/features#child-workflows) or External Workflow APIs.
 
-See the [Customize Workflow Type](#customize-workflow-type) section to see how to customize the name of the Workflow Type.
+See the [Customize Workflow Type](/dev-guide/go/foundations#customize-workflow-type) section to see how to customize the name of the Workflow Type.
 
 A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
 The Temporal Cluster then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
