@@ -504,7 +504,7 @@ clusterMetadata:
       rpcAddress: "127.0.0.1:8233"
 ```
 
-Then you can use the `temporal` CLI tool to add cluster connections. All operations should be executed in both Clusters.
+Then you can use the Temporal CLI tool to add cluster connections. All operations should be executed in both Clusters.
 
 <!--tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233"-->
 <!--tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233"-->
@@ -524,4 +524,3 @@ temporal operator cluster upsert --frontend_address="localhost:8233" --enable_co
 # Delete connections
 temporal operator cluster remove --name="someClusterName"
 ```
-
