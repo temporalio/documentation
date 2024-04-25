@@ -12,7 +12,16 @@ module.exports = {
       items: [
         "evaluate/why-temporal",
         "evaluate/major-components",
-        "evaluate/development-features/index",
+        {
+          type: "category",
+          label: "Development features",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "evaluate/development-features/index",
+          },
+          items: ["evaluate/development-features/temporal-client"],
+        },
         "security",
         "evaluate/release-stages",
         {
