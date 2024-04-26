@@ -2033,18 +2033,6 @@
     {
       "source": "/dev-guide/python/sandbox",
       "destination": "/encyclopedia/python-sdk-sandbox"
-    },
-    {
-      "source": "/temporal:path(#temporal-client)",
-      "destination": "/encyclopedia/temporal-sdks#temporal-client"
-    },
-    {
-      "source": "/workflows:path(#child-workflows)",
-      "destination": "/encyclopedia/child-workflows"
-    },
-    {
-      "source": "/workflows:path(#parent-close-policy)",
-      "destination": "/encyclopedia/child-workflows#parent-close-policy"
     }
   ]
 }
