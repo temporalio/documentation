@@ -1,0 +1,73 @@
+---
+id: cancellation
+title: Cancellation - .NET SDK feature guide
+sidebar_label: Cancellation
+sidebar_position: 6
+description: How to cancel a Workflow Execution and it's Activities using the Go SDK.
+slug: /develop/dotnet/cancellation
+toc_max_heading_level: 4
+keywords:
+  - cancellation
+  - dotnet sdk
+  - overview
+tags:
+  - cancellation
+  - dotnet-sdk
+  - overview
+---
+
+This pages shows the following:
+
+- How to handle a Cancellation request within a Workflow.
+- How to set an Activity Heartbeat Timeout.
+- How to listen for and handle a Cancellation request within an Activity.
+- How to send a Cancellation request from a Temporal Client.
+
+## Handle Cancellation in Workflow {#handle-cancellation-in-workflow}
+
+**How to handle a Cancellation in a Workflow in Go.**
+
+<!-- CONTENT-->
+
+## Handle Cancellation in an Activity {#handle-cancellation-in-an-activity}
+
+**How to handle a Cancellation in an Activity in Go.**
+
+<!-- CONTENT-->
+
+## Request Cancellation {#request-cancellation}
+
+**How to request Cancellation of a Workflow and Activities in Go.**
+
+<!-- CONTENT-->
+
+## How to interrupt a Workflow Execution {#interrupt-a-workflow-execution}
+
+You can interrupt a Workflow Execution in one of the following ways:
+
+- [Cancel](#cancel)
+- [Terminate](#terminate)
+
+The following are the main differences between canceling and terminating a Workflow in Temporal:
+
+##### Cancel
+
+Canceling a Workflow provides a graceful way to stop Workflow Execution.
+
+##### Terminate
+
+<!-- CONTENT-->
+
+### How to terminate a Workflow Execution in .NET {#terminate-a-workflow-execution}
+
+<!-- CONTENT-->
+
+##### Summary
+
+In summary:
+
+- Canceling provides a graceful way to stop the Workflow and allows it to handle cancelation logic.
+- Termination forcefully stops the Workflow and prevents any further events.
+
+In most cases, canceling is preferable because it allows the Workflow to finish gracefully.
+Terminate only if the Workflow is stuck and cannot be canceled normally.
