@@ -60,7 +60,7 @@ temporal server start-dev --namespace foo --namespace bar
 Register Namespaces with `namespace create`:
 
 ```shell
-temporal operator namespace create foo
+temporal operator namespace create -n foo
 ```
 
 ### Enable or disable Temporal UI
@@ -95,7 +95,6 @@ The following table lists and describes the environment variables you can set fo
 | `TEMPORAL_ADDRESS`                       | Host and port (formatted as host:port) for the Temporal Frontend Service. | --address                       |
 | `TEMPORAL_CODEC_AUTH`                    | Sets the authorization header for requests to Codec Server.               | --codec-auth                    |
 | `TEMPORAL_CODEC_ENDPOINT`                | Endpoint for remote Codec Server.                                         | --codec-endpoint                |
-| `TEMPORAL_CONTEXT_TIMEOUT`               | Optional timeout for RPC call context (in seconds). Default: 5.           | --context-timeout               |
 | `TEMPORAL_NAMESPACE`                     | Namespace in Temporal Workflow. Default: "default".                       | --namespace                     |
 | `TEMPORAL_TLS_CA`                        | Path to server CA certificate.                                            | --tls-ca-path                   |
 | `TEMPORAL_TLS_CERT`                      | Path to x509 certificate.                                                 | --tls-cert-path                 |
@@ -138,39 +137,49 @@ Enable auto-completion using the following commands.
 
 ### zsh auto-completion
 
-<!-- TODO: add more information about zsh to make comparable to bash section -->
+1. Add the following line to your `~/.zshrc` file:
 
-Add the following code snippet to your `~/.zshrc` file:
+   ```sh
+   eval "$(temporal completion zsh)"
+   ```
 
-```sh
-source <(temporal completion zsh)
-```
+2. Re-launch your shell or run:
 
-If you're running auto-completion from the terminal, run the following command:
-
-```sh
-echo 'source <(temporal completion zsh)' >> ~/.zshrc
-```
-
-After setting the variable, run the following command:
-
-`source ~/.zshrc`.
+   ```sh
+   source ~/.zshrc
+   ```
 
 ### Bash auto-completion
 
-Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to `~/.bash_profile`.
+1. Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to your `~/.bashrc`.
 
-To use aliases, add them to `~/.bash_profile` as needed.
+2. Add the following line to your `~/.bashrc` file:
 
-```bash
-alias t='temporal'
-alias tw='temporal workflow'
-alias ts='temporal server start-dev'
-alias tsdb='temporal server start-dev --db-filename ~/temporal.db'
+   ```sh
+   eval "$(temporal completion bash)"
+   ```
 
-# send process to background so you can continue using the terminal
-alias tsbg='temporal server start-dev &> /dev/null & disown'
-```
+3. Re-launch your shell or run:
+
+   ```sh
+   source ~/.bashrc
+   ```
+
+### Fish auto-completion
+
+1. Make sure there is a place to store custom completions for Fish:
+
+   ```fish
+   mkdir -p ~/.config/fish/completions
+   ```
+
+2. Arrange for the completions to be loaded when needed (note: the file name must be `temporal.fish` or the completions will not be found):
+
+   ```fish
+   echo 'eval "$(temporal completion fish)"' >~/.config/fish/completions/temporal.fish
+   ```
+
+3. Restart your shell to pick up the new completions.
 
 ## Install the Temporal CLI {#install}
 
@@ -190,12 +199,6 @@ Choose one of the following install methods to install the Temporal CLI on MacOS
 brew install temporal
 ```
 
-- Install the Temporal CLI with cURL.
-
-```shell
-curl -sSf https://temporal.download/cli.sh | sh
-```
-
 - Install the Temporal CLI from CDN.
 
   1. Select the platform and architecture needed.
@@ -213,12 +216,6 @@ curl -sSf https://temporal.download/cli.sh | sh
 
 Choose one of the following install methods to install the Temporal CLI on Linux:
 
-- Install the Temporal CLI with cURL.
-
-```shell
-curl -sSf https://temporal.download/cli.sh | sh
-```
-
 - Install the Temporal CLI from CDN.
 
   1. Select the platform and architecture needed.
@@ -235,14 +232,6 @@ curl -sSf https://temporal.download/cli.sh | sh
 **How to install the Temporal CLI on Windows**
 
 Choose one of the following methods to install the Temporal CLI on Windows:
-
-- Install the Temporal CLI with Scoop
-
-Run the following command to install Temporal CLI using Scoop on Windows:
-
-```shell
-scoop install temporal-cli
-```
 
 - Install the Temporal CLI from CDN.
 
