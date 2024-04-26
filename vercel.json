@@ -10,6 +10,11 @@
       "destination": "https://temporal.io/about"
     },
     {
+      "source": "/privacy-policy",
+      "destination": "https://temporal.io/global-privacy-policy",
+      "permanent": true
+    },
+    {
       "source": "/docs/:path*",
       "destination": "/:path*"
     },
@@ -1996,6 +2001,38 @@
     {
       "source": "/self-hosted-guide/data-encryption",
       "destination": "/production-deployment/data-encryption"
+    },
+    {
+      "source": "/temporal/release-stages",
+      "destination": "/evaluate/release-stages"
+    },
+    {
+      "source": "/getting-started",
+      "destination": "https://learn.temporal.io/getting_started/"
+    },
+    {
+      "source": "/concepts:path*",
+      "destination": "/encyclopedia"
+    },
+    {
+      "source": "/dev-guide/sdks",
+      "destination": "/encyclopedia/temporal-sdks"
+    },
+    {
+      "source": "/dev-guide/:path*/how-it-works",
+      "destination": "/encyclopedia/temporal-sdks"
+    },
+    {
+      "source": "/dev-guide/go/multithreading",
+      "destination": "/encyclopedia/go-sdk-multithreading"
+    },
+    {
+      "source": "/dev-guide/python/async-vs-sync",
+      "destination": "/encyclopedia/python-sdk-sync-vs-async"
+    },
+    {
+      "source": "/dev-guide/python/sandbox",
+      "destination": "/encyclopedia/python-sdk-sandbox"
     }
   ]
 }

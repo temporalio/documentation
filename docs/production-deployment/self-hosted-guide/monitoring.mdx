@@ -7,17 +7,16 @@ description: Learn how to monitor metrics and health check a self-hosted Tempora
 slug: /self-hosted-guide/monitoring
 toc_max_heading_level: 4
 keywords:
-- cluster
-- grafana
-- how-to
-- prometheus
+  - cluster
+  - grafana
+  - how-to
+  - prometheus
 tags:
-- cluster
-- grafana
-- how-to
-- prometheus
+  - cluster
+  - grafana
+  - how-to
+  - prometheus
 ---
-
 
 Learn how to monitor metrics and health check a self-hosted Temporal Platform.
 
@@ -46,7 +45,7 @@ To set up Prometheus and Grafana:
 2. [Configure Prometheus](#prometheus-configuration) to receive metrics data from your Cluster and SDK Clients.
    Make sure to test whether you are receiving metrics data on your Prometheus endpoint.
 3. [Set up Grafana](#grafana) to use Prometheus as a data source.
-4. Set up your [Grafana dashboard](#grafana-dashboard-setup) with Prometheus queries to display relevant data.
+4. Set up your [Grafana dashboard](#dashboard-setup) with Prometheus queries to display relevant data.
 
 The Temporal Cluster and SDKs emit all metrics by default.
 However, you must enable Prometheus in your application code (using the Temporal SDKs) and your Cluster configuration to collect the metrics emitted from your SDK and Cluster.
@@ -346,4 +345,3 @@ service {
     timeout      = "2s"
   }
 ```
-

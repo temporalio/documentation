@@ -91,7 +91,10 @@ Temporal Cloud limits each Namespace to a total of 32 KB or 16 certificates, whi
 
 **Is there a limit to concurrent Task pollers?**
 
-Temporal Cloud limits each Namespace to 2,000 concurrent Task pollers.
+Temporal Cloud limits each Namespace to 5,000 concurrent Task pollers, regardless of whether they are Activity or Workflow Task pollers.
+
+Each SDK offers a way to configure Workers for per-Worker maximum Activity and Workflow Task pollers.
+Those values do not affect the global Namespace limit.
 
 ### Default Retention Period
 
@@ -212,3 +215,8 @@ This reduces Workflow's Event History size and decreases the loading time in the
 A single Workflow Execution may receive up to 10,000 Signals.
 After that limit is reached, no more Signals will be processed for that Workflow Execution.
 
+### Per Workflow Execution Update limits
+
+**What is the maximum number of Updates for a single Workflow Execution?**
+
+A single Workflow Execution can have a maximum of 10 in-flight Updates and 2000 total Updates in History. 

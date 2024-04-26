@@ -1,21 +1,29 @@
 ---
-id: python-sandbox-environment
-title: Sandbox environment
-sidebar_label: Sandbox environment
-sidebar_position: 2
-description: Describes how the sandbox environment in the Temporal Python SDK works.
-slug: /dev-guide/python/sandbox
+id: python-sdk-sandbox
+title: Temporal Python SDK sandbox environment
+sidebar_label: Python SDK sandbox
+description: Discover the advanced features of the Temporal Python SDK and its unique sandbox environment designed to safeguard your Workflow code against non-determinism errors.
 toc_max_heading_level: 4
 keywords:
-- dev guide
-- python
-- sandbox environment
+  - temporal python sdk
+  - workflow sandbox
+  - non-determinism errors
+  - python sandbox environment
+  - global state isolation
+  - python workflow restrictions
+  - passthrough modules
+  - invalid module members
+  - sandbox_unrestricted
+  - unsandboxed workflow runner
+  - sandboxed workflow runner
+  - workflow determinism
+  - skip workflow sandboxing
+  - temporal workflow exceptions
+  - deterministic workflow execution
 tags:
-- dev-guide
-- python
-- sandbox-environment
+  - python-sdk
+  - sandbox-environment
 ---
-
 
 The Temporal Python SDK enables you to run Workflow code in a sandbox environment to help prevent non-determinism errors in your application.
 The Temporal Workflow Sandbox for Python is not completely isolated, and some libraries can internally mutate state, which can result in breaking determinism.
@@ -169,4 +177,3 @@ For more information on the Python sandbox, see the following resources.
 
 - [Python SDK README](https://github.com/temporalio/sdk-python)
 - [Python API docs](https://python.temporal.io/index.html)
-

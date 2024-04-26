@@ -43,11 +43,11 @@ module.exports = {
       // },
     },
     metadata: [{ name: "robots", content: "follow, index" }],
-    image: '/img/open-graph-shiny.png',
+    image: "/img/open-graph-shiny.png",
     prism: {
       //theme: require("prism-react-renderer/themes/nightOwlLight"),
       // darkTheme: require("prism-react-renderer/themes/dracula"),
-      additionalLanguages: ["java", "ruby", "php"],
+      additionalLanguages: ["java", "ruby", "php", "csharp"],
     },
     docs: {
       sidebar: {
@@ -178,7 +178,7 @@ module.exports = {
             },
             {
               label: "Privacy policy",
-              to: "/privacy-policy",
+              to: "https://temporal.io/global-privacy-policy",
             },
             {
               label: "Terms of service",
