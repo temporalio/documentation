@@ -2035,15 +2035,15 @@
       "destination": "/encyclopedia/python-sdk-sandbox"
     },
     {
-      "source": "/temporal#temporal-client",
+      "source": "/temporal:path(#temporal-client)",
       "destination": "/encyclopedia/temporal-sdks#temporal-client"
     },
     {
-      "source": "/workflows#child-workflows",
+      "source": "/workflows:path(#child-workflows)",
       "destination": "/encyclopedia/child-workflows"
     },
     {
-      "source": "/workflows#parent-close-policy",
+      "source": "/workflows:path(#parent-close-policy)",
       "destination": "/encyclopedia/child-workflows#parent-close-policy"
     }
   ]
