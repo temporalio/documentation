@@ -7,21 +7,20 @@ description: Create Namespaces, use Namespace endpoints for access, and obtain N
 slug: /cloud/namespaces
 toc_max_heading_level: 4
 keywords:
-- explanation
-- how-to
-- introduction
-- namespaces
-- temporal cloud
-- term
+  - explanation
+  - how-to
+  - introduction
+  - namespaces
+  - temporal cloud
+  - term
 tags:
-- explanation
-- how-to
-- introduction
-- namespaces
-- temporal-cloud
-- term
+  - explanation
+  - how-to
+  - introduction
+  - namespaces
+  - temporal-cloud
+  - term
 ---
-
 
 A Namespace is a unit of isolation within the Temporal Platform.
 
@@ -158,7 +157,14 @@ Follow these steps to find it:
    Just below that is a row of information including the completed Workflow retention policy, the Namespace region, the Actions-Per-Second limit, and the gRPC endpoint.
 5. Click the copy icon next to the gRPC address to copy it to your clipboard.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">gRPC endpoint</p></div><div class="tdiiw" height="207"><img class="img_ev3q" src="/img/grpc-endpoint.png" alt="gRPC endpoint" /></div></div>
+<div class="tdiw">
+  <div class="tditw">
+    <p class="tdit">gRPC endpoint</p>
+  </div>
+  <div class="tdiiw" height="207">
+    <img class="img_ev3q" src="/img/grpc-endpoint.png" alt="gRPC endpoint" />
+  </div>
+</div>
 
 ## How to create a Namespace in Temporal Cloud {#create-a-namespace}
 
@@ -276,9 +282,7 @@ We recommend using one Namespace for each use case and environment combination f
 
 Sample naming convention:
 
-<pre>
-&lt;use-case>_&lt;environment>
-</pre>
+<pre>&lt;use-case>_&lt;environment></pre>
 
 #### Example 2: Namespace per use case, service, and environment
 
@@ -286,28 +290,22 @@ We recommend using one Namespace for each use case, service, and environment com
 
 Sample naming convention:
 
-<pre>
-&lt;use-case>_&lt;service>_&lt;environment>
-</pre>
+<pre>&lt;use-case>_&lt;service>_&lt;environment></pre>
 
 #### Example 3: Namespace per use case, domain, and environment
 
-We recommend using one namespace per use case, domain, and environment combination when multiple services that are part of the same use case need to communicate with each another via [Signals](/workflows#signal) or by starting [Child Workflows](/workflows#child-workflow).
+We recommend using one namespace per use case, domain, and environment combination when multiple services that are part of the same use case need to communicate with each another via [Signals](/workflows#signal) or by starting [Child Workflows](/encyclopedia/child-workflows).
 In this case, though, you must be mindful about Workflow Id uniqueness by prefixing each Workflow Id with a service-specific string.
 The name of each Task Queue must also be unique.
 If multiple teams are involved, the domain could also represent a team boundary.
 
 Sample naming convention:
 
-<pre>
-&lt;use-case>_&lt;domain>_&lt;environment>
-</pre>
+<pre>&lt;use-case>_&lt;domain>_&lt;environment></pre>
 
 Sample workflowId convention:
 
-<pre>
-&lt;service-string>_&lt;workflow-id>
-</pre>
+<pre>&lt;service-string>_&lt;workflow-id></pre>
 
 ## How to access a Namespace in Temporal Cloud {#access-namespaces}
 
@@ -390,4 +388,3 @@ To delete a Namespace, a user must have Namespace Admin [permission](/cloud/user
 ### Delete a Namespace using tcld
 
 See the [tcld namespace delete](/cloud/tcld/namespace/#delete) command reference for details.
-
