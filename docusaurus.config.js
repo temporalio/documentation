@@ -178,7 +178,7 @@ module.exports = {
             },
             {
               label: "Privacy policy",
-              to: "/privacy-policy",
+              to: "https://temporal.io/global-privacy-policy",
             },
             {
               label: "Terms of service",
