@@ -455,7 +455,7 @@ The Temporal CLI is the most recent version of Temporal's command-line tool.
 
 _Tags: [term](/tags/term), [cli](/tags/cli)_
 
-#### [Temporal Client](/temporal#temporal-client)
+#### [Temporal Client](/encyclopedia/temporal-sdks#temporal-client)
 
 A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.
 
