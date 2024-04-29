@@ -228,7 +228,7 @@ There are four places where the name of the Task Queue can be set by the develop
 
 1. A Task Queue must be set when spawning a Workflow Execution:
 
-- [How to start a Workflow Execution using tctl](/tctl-v1/workflow#start)
+- [How to start a Workflow Execution using the Temporal CLI](/cli/workflow#start)
 - [How to start a Workflow Execution using the Go SDK](/dev-guide/go/foundations#start-workflow-execution)
 - [How to start a Workflow Execution using the Java SDK](/dev-guide/java/foundations#start-workflow-execution)
 - [How to start a Workflow Execution using the PHP SDK](/dev-guide/php/foundations#start-workflow-execution)
@@ -486,7 +486,7 @@ You also have the option to specify that the continued Workflow should start usi
 To use Worker Versioning, follow these steps:
 
 1. Define Worker build-identifier version sets for the Task Queue.
-   You can use either the `temporal` CLI or your choice of SDK.
+   You can use either the Temporal CLI or your choice of SDK.
 2. Enable the feature on your Worker by specifying a Build ID.
 
 #### Defining the version sets
@@ -611,7 +611,7 @@ temporal task-queue get-build-id-reachability
 ```
 
 The command determines, for each Task Queue, whether the Build ID in question is unreachable, only reachable by closed Workflows, or reachable by open and new Workflows.
-For example, this "2.0" Build ID is shown here by the CLI to be reachable by both new Workflows and some existing Workflows:
+For example, this "2.0" Build ID is shown here by the Temporal CLI to be reachable by both new Workflows and some existing Workflows:
 
 ```command
 temporal task-queue get-build-id-reachability --build-id "2.0"
