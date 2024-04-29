@@ -21,6 +21,7 @@ module.exports = {
             id: "evaluate/development-features/index",
           },
           items: [
+            "evaluate/development-features/core-application",
             "evaluate/development-features/temporal-client",
             "evaluate/development-features/throughput-composability",
           ],
