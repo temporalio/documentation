@@ -46,7 +46,7 @@ tags:
   - workflow
 ---
 
-This section covers how to use a terminal, a code editor, and a development Cluster to create a Namespace, write a single Activity Workflow, run a Worker that talks to your development Cluster, run a Workflow using the CLI, add a testing framework, and view Workflows in the Web UI.
+This section covers how to use a terminal, a code editor, and a development Cluster to create a Namespace, write a single Activity Workflow, run a Worker that talks to your development Cluster, run a Workflow using the temporal CLI, add a testing framework, and view Workflows in the Web UI.
 
 :::competency Construct a new Temporal Application project
 
@@ -703,9 +703,9 @@ Now run the Worker on the same network as the Temporal Cluster containers using 
 docker run --network temporal-network backgroundcheck-worker-image:latest
 ```
 
-## Start Workflow using the CLI {#start-workflow}
+## Start Workflow using the Temporal CLI {#start-workflow}
 
-**How to start a Workflow using the CLI**
+**How to start a Workflow using the Temporal CLI**
 
 You can use the Temporal CLI to start a Workflow whether you are using a local development server, Temporal Cloud, or are in a self-hosted environment.
 However, you need to provide additional options to the command when operating with the Temporal Cloud or self-hosted environments.
@@ -794,7 +794,7 @@ temporal env set cloud.tls-key-path ca.key
 temporal env set local.namespace <namespace>
 ```
 
-In this way, you can just provide a single `--env` command option when using the CLI rather than specifying each connection option in every command.
+In this way, you can just provide a single `--env` command option when using the Temporal CLI rather than specifying each connection option in every command.
 
 ```shell
 temporal workflow start \
