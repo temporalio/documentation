@@ -94,7 +94,7 @@ In practice, this often ends up looking like a state machine.
 
 Set up a mechanism to force your Workflow to Continue-As-New on demand.
 The easiest way to do this is to define a Signal handler that continues the Workflow when received.
-Be sure that all previously received Signals have been processed and that all running [Child Workflows](/workflows#child-workflow) have been waited on or otherwise dealt with.
+Be sure that all previously received Signals have been processed and that all running [Child Workflows](/encyclopedia/child-workflows) have been waited on or otherwise dealt with.
 
 The newly started Workflow then unpacks the state in the input and can "resume" the Workflow according to your business logic.
 

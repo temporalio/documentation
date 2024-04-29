@@ -98,18 +98,6 @@ A Temporal Workflow Execution is a Reentrant Process. A Reentrant Process is re
 
 Therefore, a Temporal Workflow Execution executes a [Temporal Workflow Definition](/workflows#workflow-definition), also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.
 
-### What is a Temporal Client? {#temporal-client}
-
-A Temporal Client is available in each SDK and provides a set of APIs to communicate with a [Temporal Cluster](/clusters).
-
-The most common operations that a Temporal Client enables you to perform are the following:
-
-- Get the result of Workflow Execution.
-- List Workflow Executions.
-- Query a Workflow Execution.
-- Signal a Workflow Execution.
-- Start a Workflow Execution.
-
 ## What is a Failure? {#failure}
 
 [Temporal Failures](/references/failures) are representations (in the SDKs and Event History) of various types of errors that occur in the system.
