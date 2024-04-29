@@ -3,7 +3,7 @@ id: index
 title: Temporal CLI command reference
 sidebar_label: Temporal CLI
 sidebar_position: 8
-description: Discover the Temporal Command Line Interface (CLI) documentation. Navigate, configure, and utilize Temporal CLI effectively.
+description: Discover the Temporal Command Line Interface (CLI) documentation. Navigate, configure, and utilize the Temporal CLI effectively.
 slug: /cli
 toc_max_heading_level: 4
 keywords:
@@ -20,13 +20,12 @@ tags:
   - term
 ---
 
-The Temporal CLI, evolving from its precursor `tctl`, provides developers with direct CLI access to a Temporal Service.
+The Temporal CLI provides direct access to a Temporal Service via the terminal.
 It's a powerful tool for managing, monitoring, and debugging Temporal Applications.
-With the Temporal CLI, developers can start Workflows, Signal or cancel them, and Query Workflow state, directly from their terminal.
-This interface also facilitates administrative tasks such as Namespace management.
+You can use it to start, stop, inspect and operate on Workflows and Activities, and perform administrative tasks such as Namespace, Schedule, and Task Queue management.
 
-The Temporal CLI encapsulates complex operations into simpler command-line inputs, making it an indispensable component of a developer’s toolkit when working with the Temporal ecosystem.
-Its design philosophy emphasizes ease of use and efficiency, catering to both quick inspections and more complex batch operations, thereby streamlining the development and operational processes for durable applications.
+The Temporal CLI also includes an embedded Temporal Cluster suitable for use in development and CI/CD.
+It includes the [Temporal Server](/clusters#temporal-server), SQLite persistence, and the [Temporal Web UI](/web-ui).
 
 :::note
 
@@ -34,9 +33,6 @@ When upgrading from `tctl` to the Temporal CLI, make sure to update your environ
 For details, see [CLI release notes](https://github.com/temporalio/cli/releases/).
 
 :::
-
-The Temporal CLI includes a distribution of a Temporal Cluster.
-It includes the [Temporal Server](/clusters#temporal-server), SQLite persistence, and the [Temporal Web UI](/web-ui).
 
 ### Command set
 
@@ -61,7 +57,7 @@ temporal server start-dev --namespace foo --namespace bar
 Register Namespaces with `namespace create`:
 
 ```shell
-temporal operator namespace create -n foo
+temporal operator namespace create --namespace foo
 ```
 
 ### Enable or disable Temporal UI
@@ -88,13 +84,12 @@ This setting makes created Search Attributes immediately available.
 
 ## Environment variables
 
-Configure system environment with the Temporal CLI environmental variables.
-The following table lists and describes the environment variables you can set for the Temporal CLI.
+The following table describes the environment variables you can set for the Temporal CLI.
 
 | Variable                                 | Definition                                                                | Client Option                   |
 | ---------------------------------------- | ------------------------------------------------------------------------- | ------------------------------- |
 | `TEMPORAL_ADDRESS`                       | Host and port (formatted as host:port) for the Temporal Frontend Service. | --address                       |
-| `TEMPORAL_CODEC_AUTH`                    | Sets the authorization header for requests to Codec Server.               | --codec-auth                    |
+| `TEMPORAL_CODEC_AUTH`                    | Authorization header for requests to Codec Server.               | --codec-auth                    |
 | `TEMPORAL_CODEC_ENDPOINT`                | Endpoint for remote Codec Server.                                         | --codec-endpoint                |
 | `TEMPORAL_NAMESPACE`                     | Namespace in Temporal Workflow. Default: "default".                       | --namespace                     |
 | `TEMPORAL_TLS_CA`                        | Path to server CA certificate.                                            | --tls-ca-path                   |
@@ -105,7 +100,7 @@ The following table lists and describes the environment variables you can set fo
 
 ## Proxy support
 
-Temporal CLI provides support for users who are operating behind a proxy.
+The Temporal CLI provides support for users who are operating behind a proxy.
 This feature ensures seamless communication even in network-restricted environments.
 
 #### Setting up proxy support
@@ -138,7 +133,7 @@ Enable auto-completion using the following commands.
 
 ### zsh auto-completion
 
-1. Add the following line to your `~/.zshrc` file:
+1. Add the following line to your `~/.zshrc` startup script:
 
    ```sh
    eval "$(temporal completion zsh)"
@@ -154,7 +149,7 @@ Enable auto-completion using the following commands.
 
 1. Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to your `~/.bashrc`.
 
-2. Add the following line to your `~/.bashrc` file:
+2. Add the following line to your `~/.bashrc` startup script:
 
    ```sh
    eval "$(temporal completion bash)"
@@ -166,21 +161,31 @@ Enable auto-completion using the following commands.
    source ~/.bashrc
    ```
 
+:::note
+
+If auto-completion fails with the error: `bash: _get_comp_words_by_ref: command not found`, you did not successfully install [bash-completion](https://github.com/scop/bash-completion#installation). This package must be loaded into your shell for `temporal` auto-completion to work.
+
+:::
+
 ### Fish auto-completion
 
-1. Make sure there is a place to store custom completions for Fish:
+1. Create the Fish custom completions directory if it does not already exist:
 
    ```fish
    mkdir -p ~/.config/fish/completions
    ```
 
-2. Arrange for the completions to be loaded when needed (note: the file name must be `temporal.fish` or the completions will not be found):
+2. Configure the completions to load when needed. Note: the file name must be `temporal.fish` or the completions will not be found:
 
    ```fish
    echo 'eval "$(temporal completion fish)"' >~/.config/fish/completions/temporal.fish
    ```
 
-3. Restart your shell to pick up the new completions.
+3. Re-launch your shell or run:
+
+   ```fish
+   source ~/.config/fish/completions/temporal.fish
+   ```
 
 ## Install the Temporal CLI {#install}
 
