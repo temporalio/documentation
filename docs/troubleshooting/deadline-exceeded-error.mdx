@@ -40,10 +40,10 @@ If you're using Temporal Cloud, create a [support ticket](/cloud/support#support
 [Frontend Service](/clusters#frontend-service) logs can show which parts of the Cluster aren't working.
 For the error to appear, a service pod or container must be up and running.
 
-OSS users can verify that the Frontend Service is connected and running by using `tctl`.
+OSS users can verify that the Frontend Service is connected and running by using the Temporal CLI.
 
 ```
-tctl --address frontendAddress:frontendPort cluster health
+temporal operator cluster health --address 127.0.0.1:7233
 ```
 
 Use [`grpc-health-probe`](https://github.com/grpc-ecosystem/grpc-health-probe) to check the Frontend Service, [Matching Service](/clusters#matching-service), and [History Service](/clusters#history-service).
@@ -89,10 +89,10 @@ In addition to the steps listed in the previous sections, check the areas mentio
 
 ### After enabling mTLS
 
-Check the health of the Cluster with `tctl cluster health`.
+Check the health of the Cluster with `temporal operator cluster health`.
 
 ```
-tctl --address [SERVER_ADDRESS] cluster health
+temporal operator cluster health --address [SERVER_ADDRESS]
 ```
 
 Add any missing [environment variables](/references/web-ui-environment-variables) to the configuration files, and correct any incorrect values.

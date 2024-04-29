@@ -307,8 +307,8 @@ While the Workflow Definition is the code that defines the Workflow, the Workflo
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
 It is the main unit of execution of a [Temporal Application](/temporal#temporal-application).
 
-- [How to start a Workflow Execution using tctl](/tctl-v1/workflow#start)
-- [How to start a Workflow Execution using the Go SDK](/dev-guide/go/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using temporal](/cli/workflow#start)
+- [How to start a Workflow Execution using the Go SDK](/develop/go/temporal-client#start-workflow-execution)
 - [How to start a Workflow Execution using the Java SDK](/dev-guide/java/foundations#start-workflow-execution)
 - [How to start a Workflow Execution using the PHP SDK](/dev-guide/php/foundations#start-workflow-execution)
 - [How to start a Workflow Execution using the Python SDK](/dev-guide/python/foundations#start-workflow-execution)
@@ -384,7 +384,7 @@ Awaitables are provided when using APIs for the following:
 - Awaiting: Progress can block using explicit "Await" APIs.
 - Requesting cancellation of another Workflow Execution: Progress can block on confirmation that the other Workflow Execution is cancelled.
 - Sending a [Signal](#signal): Progress can block on confirmation that the Signal sent.
-- Spawning a [Child Workflow Execution](#child-workflow): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
+- Spawning a [Child Workflow Execution](/encyclopedia/child-workflows): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
 - Spawning an [Activity Execution](/activities#activity-execution): Progress can block on the result of the Activity Execution.
 - Starting a Timer: Progress can block until the Timer fires.
 
@@ -640,7 +640,7 @@ For more information, see the following link.
 
 A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](#workflow-execution) that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
 
-- [How to set a Workflow Id](/dev-guide/go/foundations#workflow-id)
+- [How to set a Workflow Id](/develop/go/temporal-client#workflow-id)
 
 A Workflow Id is meant to be a business-process identifier such as customer identifier or order identifier.
 
@@ -800,7 +800,7 @@ Memos shouldn't store data that's critical to the execution of a Workflow, for s
 
 A Signal is an asynchronous request to a [Workflow Execution](#workflow-execution).
 
-- [How to send a Signal using tctl](/tctl-v1/workflow#signal)
+- [How to send a Signal using the Temporal CLI](/cli/workflow#signal)
 - [How to develop, send, and handle Signals in Go](/dev-guide/go/features#signals)
 - [How to develop, send, and handle Signals in Java](/dev-guide/java/features#signals)
 - [How to develop, send, and handle Signals in PHP](/dev-guide/php/features#signals)
@@ -851,7 +851,7 @@ The state of a running Workflow Execution is constantly changing.
 You can use Queries to expose the internal Workflow Execution state to the external world.
 Queries are available for running or completed Workflows Executions only if the Worker is up and listening on the Task Queue.
 
-- [How to send a Query using tctl](/tctl-v1/workflow#query)
+- [How to send a Query using the Temporal CLI](/cli/workflow#query)
 - [How to send and handle Queries with the Go SDK](/dev-guide/go/features#queries)
 - [How to send and handle Queries with the Java SDK](/dev-guide/java/features#queries)
 - [How to send and handle Queries with the PHP SDK](/dev-guide/php/features#queries)
@@ -950,7 +950,7 @@ Workflow Updates are currently disabled by default on Temporal Server.
 
 To enable the `UpdateWorkflowExecution` API, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config value to `true`.
 
-For example, to enable Workflow Updates with the Temporal CLI, pass the value when executing the `temporal` command:
+For example, to enable Workflow Updates with the Temporal CLI, pass the value when executing the Temporal CLI command:
 
 ```command
 temporal server start-dev --dynamic-config-value frontend.enableUpdateWorkflowExecution=true
@@ -1008,145 +1008,13 @@ A Side Effect does not re-execute upon replay, but instead returns the recorded 
 Do not ever have a Side Effect that could fail, because failure could result in the Side Effect function executing more than once.
 If there is any chance that the code provided to the Side Effect could fail, use an Activity.
 
-## What is a Child Workflow Execution? {#child-workflow}
-
-A Child Workflow Execution is a [Workflow Execution](#workflow-execution) that is spawned from within another Workflow in the same Namespace.
-
-- [How to start a Child Workflow Execution using the Go SDK](/dev-guide/go/features#child-workflows)
-- [How to start a Child Workflow Execution using the Java SDK](/dev-guide/java/features#child-workflows)
-- [How to start a Child Workflow Execution using the PHP SDK](/dev-guide/php/features#child-workflows)
-- [How to start a Child Workflow Execution using the Python SDK](/dev-guide/python/features#child-workflows)
-- [How to start a Child Workflow Execution using the TypeScript SDK](/dev-guide/typescript/features#child-workflows)
-
-A Workflow Execution can be both a Parent and a Child Workflow Execution because any Workflow can spawn another Workflow.
-
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Parent and Child Workflow Execution entity relationship</p>
-  </div>
-  <div class="tdiiw" height="600">
-    <img
-      class="img_ev3q"
-      src="/diagrams/parent-child-workflow-execution-relationship.svg"
-      alt="Parent and Child Workflow Execution entity relationship"
-    />
-  </div>
-</div>
-
-A Parent Workflow Execution must await on the Child Workflow Execution to spawn.
-The Parent can optionally await on the result of the Child Workflow Execution.
-Consider the Child's [Parent Close Policy](#parent-close-policy) if the Parent does not await on the result of the Child, which includes any use of Continue-As-New by the Parent.
-
-:::note
-
-Child Workflows do not carry over when the Parent uses [Continue-As-New](#continue-as-new).
-This means that if a Parent Workflow Execution utilizes Continue-As-New, any ongoing Child Workflow Executions will not be retained in the new continued instance of the Parent.
-
-:::
-
-When a Parent Workflow Execution reaches a Closed status, the Cluster propagates Cancellation Requests or Terminations to Child Workflow Executions depending on the Child's Parent Close Policy.
-
-If a Child Workflow Execution uses Continue-As-New, from the Parent Workflow Execution's perspective the entire chain of Runs is treated as a single execution.
-
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Parent and Child Workflow Execution entity relationship with Continue As New</p>
-  </div>
-  <div class="tdiiw" height="700">
-    <img
-      class="img_ev3q"
-      src="/diagrams/parent-child-workflow-execution-with-continue-as-new.svg"
-      alt="Parent and Child Workflow Execution entity relationship with Continue As New"
-    />
-  </div>
-</div>
-
-### When to use Child Workflows
-
-**Consider Workflow Execution Event History size limits.**
-
-An individual Workflow Execution has an [Event History](#event-history) size limit, which imposes a couple of considerations for using Child Workflows.
-
-On one hand, because Child Workflow Executions have their own Event Histories, they are often used to partition large workloads into smaller chunks.
-For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 [Activity Executions](/activities#activity-execution).
-But a Parent Workflow Execution can spawn 1,000 Child Workflow Executions that each spawn 1,000 Activity Executions to achieve a total of 1,000,000 Activity Executions.
-
-However, because a Parent Workflow Execution Event History contains [Events](#event) that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1,000 Child Workflow Executions.
-
-In general, however, Child Workflow Executions result in more overall Events recorded in Event Histories than Activities.
-Because each entry in an Event History is a _cost_ in terms of compute resources, this could become a factor in very large workloads.
-Therefore, we recommend starting with a single Workflow implementation that uses Activities until there is a clear need for Child Workflows.
-
-**Consider each Child Workflow Execution as a separate service.**
-
-Because a Child Workflow Execution can be processed by a completely separate set of [Workers](/workers#worker) than the Parent Workflow Execution, it can act as an entirely separate service.
-However, this also means that a Parent Workflow Execution and a Child Workflow Execution do not share any local state.
-As all Workflow Executions, they can communicate only via asynchronous [Signals](#signal).
-
-**Consider that a single Child Workflow Execution can represent a single resource.**
-
-As all Workflow Executions, a Child Workflow Execution can create a one to one mapping with a resource.
-For example, a Workflow that manages host upgrades could spawn a Child Workflow Execution per host.
-
-### When to use a Child Workflow versus an Activity
-
-Child Workflow Executions and Activity Executions are both started from Workflows, so you might feel confused about when to use which.
-Here are some important differences:
-
-- A Child Workflow has access to all Workflow APIs but is subject to the same [deterministic constraints](/workflows#deterministic-constraints) as other Workflows.
-  An Activity has the inverse pros and cons—no access to Workflow APIs but no Workflow constraints.
-- A Child Workflow Execution can continue on if its Parent is canceled with a [Parent Close Policy](#parent-close-policy) of `ABANDON`.
-  An Activity Execution is _always_ canceled when its Workflow Execution is canceled.
-  (It can react to a cancellation Signal for cleanup.)
-  The decision is roughly analogous to spawning a child process in a terminal to do work versus doing work in the same process.
-- Temporal tracks all state changes within a Child Workflow Execution in Event History.
-  Only the input, output, and retry attempts of an Activity Execution is tracked.
-
-A Workflow models composite operations that consist of multiple Activities or other Child Workflows.
-An Activity usually models a single operation on the external world.
-
-Our advice: **When in doubt, use an Activity.**
-
-### What is a Parent Close Policy? {#parent-close-policy}
-
-A Parent Close Policy determines what happens to a [Child Workflow Execution](#child-workflow) if its Parent changes to a Closed status (Completed, Failed, or Timed out).
-
-- [How to set a Parent Close Policy using the Go SDK](/dev-guide/go/features#parent-close-policy)
-- [How to set a Parent Close Policy using the Java SDK](/dev-guide/java/features#parent-close-policy)
-- [How to set a Parent Close Policy using the PHP SDK](/dev-guide/php/features#parent-close-policy)
-- [How to set a Parent Close Policy using the Python SDK](/dev-guide/python/features#parent-close-policy)
-- [How to set a Parent Close Policy using the TypeScript SDK](/dev-guide/typescript/features#parent-close-policy)
-
-There are three possible values:
-
-- **Abandon:** the Child Workflow Execution is not affected.
-- **Request Cancel:** a Cancellation request is sent to the Child Workflow Execution.
-- **Terminate** (default): the Child Workflow Execution is forcefully Terminated.
-
-[`ParentClosePolicy`](https://github.com/temporalio/api/blob/c1f04d0856a3ba2995e92717607f83536b5a44f5/temporal/api/enums/v1/workflow.proto#L44) proto definition.
-
-Each Child Workflow Execution may have its own Parent Close Policy.
-This policy applies only to Child Workflow Executions and has no effect otherwise.
-
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Parent Close Policy entity relationship</p>
-  </div>
-  <div class="tdiiw" height="543">
-    <img class="img_ev3q" src="/diagrams/parent-close-policy.svg" alt="Parent Close Policy entity relationship" />
-  </div>
-</div>
-
-You can set policies per child, which means you can opt out of propagating terminates / cancels on a per-child basis.
-This is useful for starting Child Workflows asynchronously (see [relevant issue here](https://community.temporal.io/t/best-way-to-create-an-async-child-workflow/114) or the corresponding SDK docs).
-
 ## What is a Schedule? {#schedule}
 
 :::tip Support, stability, and dependency info
 
 - Is [Generally Available](https://docs.temporal.io/evaluate/release-stages#general-availability) as of Nov 2023
 - Introduced in Temporal Server version [1.17.0](https://github.com/temporalio/temporal/releases/tag/v1.17.0)
-- Available in Temporal CLI (and tctl v1.17)
+- Available in the Temporal CLI
 - Available in Temporal Cloud
 - Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) since [v1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
 - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
@@ -1163,7 +1031,7 @@ Schedules provide a more flexible and user-friendly approach than [Temporal Cron
 
 - [How to enable Schedules](#limitations)
 - [How to operate Schedules using the Temporal CLI](/cli/schedule)
-- [How to operate Schedules using tctl](/tctl-v1/schedule)
+- [How to operate Schedules using the Temporal CLI](/cli/schedule)
 
 A Schedule has an identity and is independent of a Workflow Execution.
 This differs from a Temporal Cron Job, which relies on a cron schedule as a property of the Workflow Execution.
@@ -1197,9 +1065,9 @@ There are two kinds of Schedule Spec:
 
 These two kinds have multiple representations, depending on the interface or SDK you're using, but they all support the same features.
 
-In tctl, for example, an interval is specified as a string like `45m` to mean every 45 minutes, or `6h/5h` to mean every 6 hours but at the start of the fifth hour within each period.
+In the Temporal CLI, for example, an interval is specified as a string like `45m` to mean every 45 minutes, or `6h/5h` to mean every 6 hours but at the start of the fifth hour within each period.
 
-In tctl, a calendar expression can be specified as either a traditional cron string with five (or six or seven) positional fields, or as JSON with named fields:
+In the Temporal CLI, a calendar expression can be specified as either a traditional cron string with five (or six or seven) positional fields, or as JSON with named fields:
 
 ```json
 {
@@ -1241,7 +1109,7 @@ Other Spec features:
 **Exclusions:** A Spec can contain exclusions in the form of zero or more calendar expressions.
 This can be used to express scheduling like "each Monday at noon except for holidays.
 You'll have to provide your own set of exclusions and include it in each schedule; there are no pre-defined sets.
-(This feature isn't currently exposed in tctl or the Temporal Web UI.)
+(This feature isn't currently exposed in the Temporal CLI or the Temporal Web UI.)
 
 **Jitter:** If given, a random offset between zero and the maximum jitter is added to each Action time (but bounded by the time until the next scheduled Action).
 
@@ -1251,13 +1119,13 @@ If you don't want to use UTC, you can provide the name of a time zone.
 The time zone definition is loaded on the Temporal Server Worker Service from either disk or the fallback embedded in the binary.
 
 For more operational control, embed the contents of the time zone database file in the Schedule Spec itself.
-(Note: this isn't currently exposed in tctl or the web UI.)
+(Note: this isn't currently exposed in the Temporal CLI or the web UI.)
 
 ### Pause
 
 A Schedule can be Paused.
 When a Schedule is Paused, the Spec has no effect.
-However, you can still force manual actions by using the [tctl schedule trigger](/tctl-v1/schedule#trigger) command.
+However, you can still force manual actions by using the [temporal schedule trigger](/cli/schedule#trigger) command.
 
 To assist communication among developers and operators, a “notes” field can be updated on pause or resume to store an explanation for the current state.
 

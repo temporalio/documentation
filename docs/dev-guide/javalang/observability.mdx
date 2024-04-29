@@ -156,7 +156,7 @@ You can do this with [Search Attributes](/visibility#search-attribute).
 
 The steps to using custom Search Attributes are:
 
-- Create a new Search Attribute in your Cluster using `tctl search-attribute create` or the Cloud UI.
+- Create a new Search Attribute in your Cluster using `temporal operator search-attribute create` or the Cloud UI.
 - Set the value of the Search Attribute for a Workflow Execution:
   - On the Client by including it as an option when starting the Execution.
   - In the Workflow by calling `UpsertSearchAttributes`.
@@ -164,14 +164,14 @@ The steps to using custom Search Attributes are:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
 - Query Workflow Executions by the Search Attribute using a [List Filter](/visibility#list-filter):
-  - [In `tctl`](/tctl-v1/workflow#list).
+  - [In the Temporal CLI](/cli/workflow#list).
   - In code by calling `ListWorkflowExecutions`.
 
 Here is how to query Workflow Executions:
 
 ### How to set custom Search Attributes {#custom-search-attributes}
 
-After you've created custom Search Attributes in your Cluster (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+After you've created custom Search Attributes in your Cluster (using `temporal operator search-attribute create` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
 To set a custom Search Attribute, call the [`setSearchAttributes()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setSearchAttributes(java.util.Map)) method.
 

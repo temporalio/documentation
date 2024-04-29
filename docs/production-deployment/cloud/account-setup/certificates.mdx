@@ -7,19 +7,18 @@ description: Create certificates and use them to control access to Namespaces.
 slug: /cloud/certificates
 toc_max_heading_level: 4
 keywords:
-- certificates
-- explanation
-- how-to
-- introduction
-- temporal cloud
+  - certificates
+  - explanation
+  - how-to
+  - introduction
+  - temporal cloud
 tags:
-- certificates
-- explanation
-- how-to
-- introduction
-- temporal-cloud
+  - certificates
+  - explanation
+  - how-to
+  - introduction
+  - temporal-cloud
 ---
-
 
 [Temporal Cloud](https://temporal.io/cloud) requires security certificates for secure access and communication.
 
@@ -32,7 +31,7 @@ Temporal Cloud does not require an exchange of secrets; only the certificates pr
 
 An expired root CA certificate invalidates all downstream certificates.
 
-An expired end-entity certificate prevents a [Temporal Client](/temporal#temporal-client) from connecting to a Namespace or starting a Workflow Execution.
+An expired end-entity certificate prevents a [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) from connecting to a Namespace or starting a Workflow Execution.
 If the client is on a Worker, any current Workflow Executions that are processed by that Worker either run indefinitely without making progress until the Worker resumes or fail because of timeouts.
 
 To update certificates, see [How to add, update, and remove certificates in a Temporal Cloud Namespace](#manage-certificates).
@@ -402,4 +401,3 @@ To set or clear certificate filters, use the following [tcld](/cloud/tcld) comma
 - [tcld namespace certificate-filters clear](/cloud/tcld/namespace/#clear)
 
 To view the current certificate filters, use the [tcld namespace certificate-filters export](/cloud/tcld/namespace/#export) command.
-

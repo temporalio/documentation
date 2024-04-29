@@ -12,6 +12,20 @@ module.exports = {
       items: [
         "evaluate/why-temporal",
         "evaluate/major-components",
+        {
+          type: "category",
+          label: "Development features",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "evaluate/development-features/index",
+          },
+          items: [
+            "evaluate/development-features/core-application",
+            "evaluate/development-features/temporal-client",
+            "evaluate/development-features/throughput-composability",
+          ],
+        },
         "security",
         "evaluate/release-stages",
         {
@@ -48,6 +62,7 @@ module.exports = {
             "dev-guide/golang/project-setup",
             "dev-guide/golang/durable-execution",
             "dev-guide/golang/foundations",
+            "develop/go/temporal-client",
             "dev-guide/golang/features",
             "dev-guide/golang/cancellation",
             "dev-guide/golang/observability",
@@ -278,26 +293,6 @@ module.exports = {
     },
     {
       type: "category",
-      label: "CLI (tctl)",
-      collapsed: true,
-      link: {
-        type: "doc",
-        id: "tctl-v1/index",
-      },
-      items: [
-        "tctl-v1/activity",
-        "tctl-v1/admin",
-        "tctl-v1/batch",
-        "tctl-v1/cluster",
-        "tctl-v1/dataconverter",
-        "tctl-v1/namespace",
-        "tctl-v1/schedule",
-        "tctl-v1/taskqueue",
-        "tctl-v1/workflow",
-      ],
-    },
-    {
-      type: "category",
       label: "References",
       collapsed: true,
       link: {
@@ -361,6 +356,7 @@ module.exports = {
         "encyclopedia/activities",
         "encyclopedia/retry-policies",
         "encyclopedia/workers",
+        "encyclopedia/child-workflows",
         "encyclopedia/visibility",
         "encyclopedia/clusters",
         "encyclopedia/namespaces",
