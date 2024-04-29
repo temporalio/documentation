@@ -85,6 +85,7 @@ module.exports = {
             "dev-guide/javalang/project-setup",
             "dev-guide/javalang/durable-execution",
             "dev-guide/javalang/foundations",
+            "develop/java/temporal-client",
             "dev-guide/javalang/features",
             "dev-guide/javalang/observability",
             "dev-guide/javalang/testing",
