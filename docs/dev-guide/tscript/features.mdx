@@ -1320,9 +1320,9 @@ To serialize values as [Protocol Buffers](https://protobuf.dev/) (protobufs):
 
 - Patch `json-module.js`:
 
-    <!--SNIPSTART typescript-protobuf-root -->
+<!--SNIPSTART typescript-protobuf-root -->
 
-  [protobufs/protos/root.js](https://github.com/temporalio/samples-typescript/blob/main/protobufs/protos/root.js)
+[protobufs/protos/root.js](https://github.com/temporalio/samples-typescript/blob/main/protobufs/protos/root.js)
 
 ```js
 const { patchProtobufRoot } = require("@temporalio/common/lib/protobufs");
@@ -1340,9 +1340,9 @@ module.exports = patchProtobufRoot(unpatchedRoot);
 
 - Create a [`DefaultPayloadConverterWithProtobufs`](https://typescript.temporal.io/api/classes/protobufs.DefaultPayloadConverterWithProtobufs/):
 
-    <!--SNIPSTART typescript-protobuf-converter -->
+<!--SNIPSTART typescript-protobuf-converter -->
 
-  [protobufs/src/payload-converter.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/payload-converter.ts)
+[protobufs/src/payload-converter.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/payload-converter.ts)
 
 ```ts
 import { DefaultPayloadConverterWithProtobufs } from "@temporalio/common/lib/protobufs";
@@ -1385,9 +1385,9 @@ export const payloadConverter = new CompositePayloadConverter(
 
 - Provide it to the Worker:
 
-    <!--SNIPSTART typescript-protobuf-worker -->
+<!--SNIPSTART typescript-protobuf-worker -->
 
-  [protobufs/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/worker.ts)
+[protobufs/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/worker.ts)
 
 ```ts
 const worker = await Worker.create({
@@ -1404,9 +1404,9 @@ const worker = await Worker.create({
 
 - Provide it to the Client:
 
-    <!--SNIPSTART typescript-protobuf-client -->
+<!--SNIPSTART typescript-protobuf-client -->
 
-  [protobufs/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/client.ts)
+[protobufs/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/client.ts)
 
 ```ts
 import { Client } from "@temporalio/client";
@@ -1438,9 +1438,9 @@ async function run() {
 
 - Use protobufs in your Workflows and Activities:
 
-    <!--SNIPSTART typescript-protobuf-workflow -->
+<!--SNIPSTART typescript-protobuf-workflow -->
 
-  [protobufs/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/workflows.ts)
+[protobufs/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/workflows.ts)
 
 ```ts
 import { proxyActivities } from "@temporalio/workflow";

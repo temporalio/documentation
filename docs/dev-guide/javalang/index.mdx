@@ -7,13 +7,12 @@ description: Learn how to use Temporal Java SDK.
 slug: /dev-guide/java
 toc_max_heading_level: 4
 keywords:
-- dev guide
-- java
+  - dev guide
+  - java
 tags:
-- dev-guide
-- java
+  - dev-guide
+  - java
 ---
-
 
 This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
 
@@ -43,13 +42,13 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 - [How to install the Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): How to install Temporal CLI and run a development Cluster.
 - [How to install a Temporal SDK](/dev-guide/java/foundations#install-a-temporal-sdk): A Temporal SDK provides a framework for Temporal Application development.
-- [How to create a Temporal Client in Java](/dev-guide/java/foundations#connect-to-a-dev-cluster): To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
-- [How to connect to Temporal Cloud](/dev-guide/java/foundations#connect-to-temporal-cloud): Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
+- [How to create a Temporal Client in Java](/develop/java/temporal-client#connect-to-development-service): To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
+- [How to connect to Temporal Cloud](/develop/java/temporal-client#connect-to-temporal-cloud): Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
 - [How to develop a Workflow Definition in Java](/dev-guide/java/foundations#develop-workflows): In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.
 - [How to develop a basic Activity](/dev-guide/java/foundations#develop-activities): One of the primary things that Workflows do is orchestrate the execution of Activities.
 - [How to start an Activity Execution](/dev-guide/java/foundations#activity-execution): Calls to spawn Activity Executions are written within a Workflow Definition.
 - [How to develop a Worker Program in Java](/dev-guide/java/foundations#run-a-dev-worker): Use the `newWorker` method on an instance of a `WorkerFactory` to create a new Worker in Java.
-- [How to spawn a Workflow Execution in Java](/dev-guide/java/foundations#start-workflow-execution): Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
+- [How to spawn a Workflow Execution in Java](/develop/java/temporal-client#start-workflow-execution): Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
 
 ## Features
 
@@ -109,4 +108,3 @@ The Converters and Codecs section of the Temporal Developer's guide provides gui
 
 - [How to use a custom Payload Codec in Java](/dev-guide/java/converters#custom-payload-codec): Create a custom implementation of `PayloadCodec` and use it in `CodecDataConverter` to set a custom Data Converter.
 - [How to use custom Payload conversion](/dev-guide/java/converters#custom-payload-conversion): Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.
-
