@@ -57,7 +57,7 @@ You may get errors that make no sense to you because
 The biggest sign that this is happening is if you notice Temporal is acting non-deterministically: running the same Workflow twice gets different results.
 
 Stale workflows are usually a non-issue because the errors generated are just noise from code you no longer want to run.
-If you need to terminate old stale Workflows, you can do so with Temporal Web or Temporal CLI.
+If you need to terminate old stale Workflows, you can do so with Temporal Web or the Temporal CLI.
 
 ### Workflow/Activity registration errors
 
@@ -258,7 +258,7 @@ Log it out and make sure it is an exact match with what is expected (often, the 
 
 ### Resetting Workflows to deal with logical bugs
 
-You can "rewind time" using the Temporal CLI, resetting Workflow History to some previous point in time. You can read the CLI docs on:
+You can "rewind time" using the Temporal CLI, resetting Workflow History to some previous point in time. You can read the Temporal CLI docs on:
 
 - [Restarting and resetting Workflows by ID](/cli)
 - [Resetting all Workflows by binary checksum identifier](/cli)

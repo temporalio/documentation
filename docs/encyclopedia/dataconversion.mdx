@@ -209,15 +209,16 @@ The Temporal CLI and the Web UI in turn provide built-in hooks to call the Codec
 
 #### Encoding data on the Web UI and CLI
 
-You can perform some operations on your Workflow Execution using Temporal CLI and the Web UI, such as starting or sending a Signal to an active Workflow Execution using Temporal CLI or canceling a Workflow Execution from the Web UI, which might require inputs that contain sensitive data.
+You can perform some operations on your Workflow Execution using the Temporal CLI and the Web UI.
+For example. you can start or signal an active Workflow Execution from the Temporal CLI or cancel a Workflow Execution from the Web UI, which might require inputs that contain sensitive data.
 
-To encode this data, [specify your Codec Server endpoints](#codec-server) with [Temporal CLI](/cli/cmd-options#codec-endpoint) and configure your Web UI to use the Codec Server endpoints.
+To encode this data, [specify your Codec Server endpoints](#codec-server) with [the Temporal CLI](/cli/cmd-options#codec-endpoint) and configure your Web UI to use the Codec Server endpoints.
 
 #### Decoding data on the Web UI and CLI
 
 If you use custom encoding, Payload data handled by the Temporal Cluster is stored encoded. Since the Web UI uses the [Visibility](/clusters#visibility) database to show events and data stored on the Temporal Server, all data in the Workflow Execution History in your Web UI is displayed in the encoded format.
 
-To decode output when using the Web UI and Temporal CLI, use a [Codec Server](#codec-server).
+To decode output when using the Web UI and the Temporal CLI, use a [Codec Server](#codec-server).
 
 Note that a remote data encoder is a separate system with access to your encryption keys and exposes APIs to encode and decode any data.
 Evaluate and ensure that your remote data encoder endpoints are secured and only authorized users have access to them.
@@ -257,8 +258,8 @@ Most SDKs provide example Codec Server implementation samples, listed here:
 
 When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server. For details on what data is encoded, see [Securing your data](/production-deployment/data-encryption).
 
-To see decoded data when using the CLI or Web UI to perform some operations on a Workflow Execution, configure the Codec Server endpoint in the Web UI and CLI.
-When you configure the Codec Server endpoints, the CLI and Web UI send the encoded data to the Codec Server, and display the decoded data received from the Codec Server.
+To see decoded data when using the Temporal CLI or Web UI to perform some operations on a Workflow Execution, configure the Codec Server endpoint in the Web UI and the Temporal CLI.
+When you configure the Codec Server endpoints, the Temporal CLI and Web UI send the encoded data to the Codec Server, and display the decoded data received from the Codec Server.
 
 For details on creating your Codec Server, see [Codec Server Setup](/production-deployment/data-encryption#codec-server-setup).
 
