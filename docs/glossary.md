@@ -337,7 +337,7 @@ _Tags: [term](/tags/term), [resets](/tags/resets), [explanation](/tags/explanati
 
 #### [Retention Period](/clusters#retention-period)
 
-A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.
+A Retention Period is the amount of time a Workflow Execution Event History remains in the Temporal Service's persistence store.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -541,7 +541,7 @@ _Tags: [term](/tags/term), [updates](/tags/updates), [explanation](/tags/explana
 
 #### [Visibility](/clusters#visibility)
 
-The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
+The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
 _Tags: [term](/tags/term)_
 

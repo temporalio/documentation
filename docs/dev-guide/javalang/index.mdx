@@ -21,7 +21,7 @@ This guide is meant to provide a comprehensive overview of the structures, primi
 The project setup section of the Temporal Java SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in java—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 
 - [Install the Temporal CLI](/dev-guide/java/project-setup#install-cli): Download and install the Temporal CLI for Mac, Linux, or Windows.
-- [Choose a development Cluster](/dev-guide/java/project-setup#choose-dev-cluster): Discover which development Cluster you should choose
+- [Choose a development Temporal Service](/dev-guide/java/project-setup#choose-dev-cluster): Discover which development Temporal Service you should choose
 - [Boilerplate Temporal Application project code](/dev-guide/java/project-setup#boilerplate-project): Discover the minimum code I need to create a boilerplate Temporal Application.
 - [Start Workflow using the CLI](/dev-guide/java/project-setup#start-workflow): Learn how to start a Temporal Workflow using the CLI
 - [Add a testing framework](/dev-guide/java/project-setup#test-framework): Testing provides a framework to facilitate Workflow and integration testing.
@@ -40,7 +40,7 @@ The Durable Execution section of the Temporal Developer's guide covers advanced 
 
 The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 
-- [How to install Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): How to install Temporal CLI and run a development Cluster.
+- [How to install Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): How to install Temporal CLI and run a development Temporal Service.
 - [How to install a Temporal SDK](/dev-guide/java/foundations#install-a-temporal-sdk): A Temporal SDK provides a framework for Temporal Application development.
 - [How to create a Temporal Client in Java](/dev-guide/java/foundations#connect-to-a-dev-cluster): To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
 - [How to connect to Temporal Cloud](/dev-guide/java/foundations#connect-to-temporal-cloud): Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
@@ -77,7 +77,7 @@ Improve observability in your Java-based Temporal Workflows. View which Workflow
 - [How to emit metrics](/dev-guide/java/observability#metrics): Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 - [How to setup Tracing](/dev-guide/java/observability#tracing): Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
 - [How to log from a Workflow](/dev-guide/java/observability#logging): Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
-- [How to use Visibility APIs](/dev-guide/java/observability#visibility): The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
+- [How to use Visibility APIs](/dev-guide/java/observability#visibility): The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
 ## Testing
 

@@ -42,8 +42,8 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 In this section you can find the following:
 
-- [Run a development Cluster](/dev-guide/java/project-setup#install-cli)
-- [Connect to a dev Cluster](#connect-to-a-dev-cluster)
+- [Run a development Temporal Service](/dev-guide/java/project-setup#install-cli)
+- [Connect to a dev Temporal Service](#connect-to-a-dev-cluster)
 - [Develop a Workflow](#develop-workflows)
 - [Develop an Activity](#develop-activities)
 - [Start an Activity Execution](#activity-execution)
@@ -52,13 +52,13 @@ In this section you can find the following:
 
 ## How to install Temporal CLI and run a development server {#run-a-development-server}
 
-This section describes how to install the [Temporal CLI](/cli) and run a development Cluster.
-The local development Cluster comes packaged with the [Temporal Web UI](/web-ui).
+This section describes how to install the [Temporal CLI](/cli) and run a development Temporal Service.
+The local development Temporal Service comes packaged with the [Temporal Web UI](/web-ui).
 
-For information on deploying and running a self-hosted production Cluster, see the [Self-hosted guide](/self-hosted-guide), or sign up for [Temporal Cloud](/cloud) and let us run your production Cluster for you.
+For information on deploying and running a self-hosted production Temporal Service, see the [Self-hosted guide](/self-hosted-guide), or sign up for [Temporal Cloud](/cloud) and let us run your production Temporal Service for you.
 
 Temporal CLI is a tool for interacting with a Temporal Service from the command line and it includes a distribution of the Temporal Server and Web UI.
-This local development Cluster runs as a single process with zero runtime dependencies and it supports persistence to disk and in-memory mode through SQLite.
+This local development Temporal Service runs as a single process with zero runtime dependencies and it supports persistence to disk and in-memory mode through SQLite.
 
 **Install the Temporal CLI**
 
@@ -207,7 +207,7 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 
 :::
 
-When you are running a Cluster locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
+When you are running a Temporal Service locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
 Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
 
 To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with `@WorkflowMethod`).
@@ -594,7 +594,7 @@ Java Workflow reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/la
 
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
-An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Cluster.
+An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service.
 For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
 
 An [Activity Definition](/activities) is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.

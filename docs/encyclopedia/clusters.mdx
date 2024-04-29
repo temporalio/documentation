@@ -1,7 +1,7 @@
 ---
 id: clusters
 title: What is a Temporal Service?
-sidebar_label: Clusters
+sidebar_label: Temporal Service
 sidebar_position: 8
 description: This guide provides a comprehensive overview of Temporal Services.
 slug: /clusters
@@ -18,7 +18,7 @@ This guide provides a comprehensive overview of Temporal Services.
 
 A Temporal Service is the group of services, known as the [Temporal Server](#temporal-server), combined with [Persistence](#persistence) and [Visibility](#visibility) stores, that together act as a component of the Temporal Platform.
 
-- [Cluster deployment guide](/self-hosted-guide)
+- [Temporal Service deployment guide](/self-hosted-guide)
 
 ![A Temporal Service (Server + persistence)](/diagrams/temporal-cluster.svg)
 
@@ -35,7 +35,7 @@ For example, a real-life production deployment can have 5 Frontend, 15 History, 
 
 The Temporal Server services can run independently or be grouped together into shared processes on one or more physical or virtual machines.
 For live (production) environments, we recommend that each service runs independently, because each one has different scaling requirements and troubleshooting becomes easier.
-The History, Matching, and Worker Services can scale horizontally within a Cluster.
+The History, Matching, and Worker Services can scale horizontally within a Temporal Service.
 The Frontend Service scales differently than the others because it has no sharding or partitioning; it is just stateless.
 
 Each service is aware of the others, including scaled instances, through a membership protocol via [Ringpop](https://github.com/temporalio/ringpop-go).

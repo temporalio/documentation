@@ -57,14 +57,14 @@ To run an Operator command, run `temporal operator [command] [subcommand] [comma
 
 ## cluster
 
-Cluster commands enable actions on [Temporal Services](/clusters).
+Temporal Service commands enable actions on [Temporal Services](/clusters).
 
-Cluster commands follow this syntax:
+Temporal Service commands follow this syntax:
 `temporal operator [command] [subcommand] [command options]`.
 
 ### describe
 
-The `temporal operator cluster describe` command shows information about the [Cluster](/clusters).
+The `temporal operator cluster describe` command shows information about the [Temporal Service](/clusters).
 This information can include information about other connected services, such as a remote [Codec Server](/dataconversion#codec-server).
 
 Use the following options to change the output of this command.
@@ -104,7 +104,7 @@ Use the following options to change the output of this command.
 ### health
 
 The `temporal operator cluster health` command checks the health of the [Frontend Service](/clusters#frontend-service).
-A successful execution returns a list of [Cluster](/clusters) metrics.
+A successful execution returns a list of [Temporal Service](/clusters) metrics.
 
 Use the following options to change the behavior and output of this command.
 
@@ -186,7 +186,7 @@ Use the following options to change the command's behavior.
 
 ### remove
 
-The `temporal operator cluster remove` command removes a remote [Cluster](/clusters) from the system.
+The `temporal operator cluster remove` command removes a remote [Temporal Service](/clusters) from the system.
 
 `temporal operator cluster remove --name=SomeCluster`
 
@@ -224,7 +224,7 @@ Use the following options to change the command's behavior.
 
 ### system
 
-The `temporal operator cluster system` command provides information about the system the [Cluster](/clusters) is running on.
+The `temporal operator cluster system` command provides information about the system the [Temporal Service](/clusters) is running on.
 This information can be used to diagnose problems occurring in the [Temporal Server](/clusters#temporal-server).
 
 `temporal operator cluster system`
@@ -265,7 +265,7 @@ Use the following options to change this command's behavior.
 
 ### upsert
 
-The `temporal operator cluster upsert` command allows the user to add or update a remote [Cluster](/clusters).
+The `temporal operator cluster upsert` command allows the user to add or update a remote [Temporal Service](/clusters).
 `temporal operator cluster upsert --frontend-address="127.0.2.1"`
 
 Upserting can also be used to enable or disabled cross-cluster connection.
@@ -315,7 +315,7 @@ Namespace commands follow this syntax:
 ### create
 
 The `temporal operator namespace create` command creates a new [Namespace](/namespaces).
-The Namespace can be created on the active [Cluster](/clusters), or any named Cluster within the system.
+The Namespace can be created on the active [Temporal Service](/clusters), or any named Temporal Service within the system.
 `temporal operator namespace --cluster=MyCluster`
 
 Global Namespaces can also be created.
@@ -493,7 +493,7 @@ Use the following options to change this command's behavior.
 
 The `temporal operator namespace update` command updates a [Namespace](/namespaces).
 
-Namespaces can be assigned a different active [Cluster](/clusters).
+Namespaces can be assigned a different active [Temporal Service](/clusters).
 `temporal operator namespace update --active-cluster=NewActiveCluster`
 
 Namespaces can also be promoted to global Namespaces.

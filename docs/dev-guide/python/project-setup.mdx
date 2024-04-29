@@ -46,7 +46,7 @@ tags:
   - workflow
 ---
 
-This section covers how to use a terminal, a code editor, and a development Cluster to create a Namespace, write a single Activity Workflow, run a Worker that talks to your development Cluster, run a Workflow using the CLI, add a testing framework, and view Workflows in the Web UI.
+This section covers how to use a terminal, a code editor, and a development Temporal Service to create a Namespace, write a single Activity Workflow, run a Worker that talks to your development Temporal Service, run a Workflow using the CLI, add a testing framework, and view Workflows in the Web UI.
 
 :::competency Construct a new Temporal Application project
 
@@ -64,7 +64,7 @@ There are three ways to follow this guide:
 - [Use Temporal Cloud](#temporal-cloud)
 - [Use a self-hosted environment such as Docker](#self-hosted-temporal-cluster)
 
-Read more in the [Choose a development Cluster](#choose-dev-cluster) section on this page.
+Read more in the [Choose a development Temporal Service](#choose-dev-cluster) section on this page.
 
 :::
 
@@ -143,9 +143,9 @@ Follow these instructions to install the Temporal CLI on Windows:
 
 3. Add the `temporal.exe` binary to your PATH.
 
-## Choose a development Cluster {#choose-dev-cluster}
+## Choose a development Temporal Service {#choose-dev-cluster}
 
-**Which development Cluster should you choose?**
+**Which development Temporal Service should you choose?**
 
 We recommend choosing a development environment based on your requirements.
 
@@ -174,7 +174,7 @@ We recommend using the local development server if you are new to Temporal, or w
 The Temporal CLI comes bundled with a development server and provides a fast way to start running Temporal Applications.
 
 However, the local development server does not emit any metrics.
-If you are eager to to set up Cluster-level metrics for performance tuning, we recommend using a self-hosted Cluster or Temporal Cloud.
+If you are eager to to set up Temporal Service-level metrics for performance tuning, we recommend using a self-hosted Temporal Service or Temporal Cloud.
 
 #### Start the dev server
 
@@ -216,7 +216,7 @@ If you do not have a Temporal Cloud Account, you can request one using the link 
 
 We recommend starting off with Temporal Cloud if you already have a production use case, or need to move a scalable proof of concept into production.
 
-In other words, Temporal Cloud is perfect if you are ready to run at scale and don’t want the overhead of managing your own self-hosted Cluster.
+In other words, Temporal Cloud is perfect if you are ready to run at scale and don’t want the overhead of managing your own self-hosted Temporal Service.
 
 To create a Namespace in Temporal Cloud, follow the instructions in [How to create a Namespace](/cloud/namespaces#create-a-namespace).
 
@@ -233,7 +233,7 @@ For more information on certificate requirements, see [How to manage certificate
 
 We recommend using a self-hosted environment if you are starting something new and need to scale with production-level features, but don’t yet need or want to pay for Temporal Cloud.
 
-For example, running a self-hosted Cluster lets you try different databases, view Cluster metrics, use custom [Search Attributes](/visibility#search-attribute), and even play with the [Archival](/clusters#archival) feature.
+For example, running a self-hosted Temporal Service lets you try different databases, view Temporal Service metrics, use custom [Search Attributes](/visibility#search-attribute), and even play with the [Archival](/clusters#archival) feature.
 
 For the purposes of this guide, we show how to use a self-hosted environment that runs completely out of Docker.
 We acknowledge that it takes a fair amount of experience to elevate from a self-hosted environment in Docker to something that can run at an enterprise production scale.
@@ -837,7 +837,7 @@ https://cloud.temporal.io/namespaces/<namespace>.<account-id>/workflows
 
 ### Self-hosted
 
-**How to start a Workflow with the Temporal CLI when using a Self-hosted Cluster**
+**How to start a Workflow with the Temporal CLI when using a Self-hosted Temporal Service**
 
 Use your Temporal CLI alias to run the `temporal workflow start` command and start your Workflow.
 

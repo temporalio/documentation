@@ -390,7 +390,7 @@ Heartbeat throttling may lead to Cancellation getting delivered later than expec
 
 #### Throttling
 
-Heartbeats may not always be sent to the Cluster—they may be throttled by the Worker.
+Heartbeats may not always be sent to the Temporal Service—they may be throttled by the Worker.
 The throttle interval is the smaller of the following:
 
 - If `heartbeatTimeout` is provided, `heartbeatTimeout * 0.8`; otherwise, `defaultHeartbeatThrottleInterval`
