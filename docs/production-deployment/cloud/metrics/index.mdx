@@ -46,14 +46,14 @@ To view and manage third-party integration settings, your user account must have
 To assign a certificate and generate your metrics endpoint, follow these steps:
 
 1. In Temporal Cloud UI, click **Settings**.
-1. On the **Settings** page, click **Integrations**.
-1. In the **Connection** section, paste the URL that was generated in the Observability section on the Temporal Cloud UI.
-1. The **Authentication** section may be left as **No Authentication**.
-1. In the **TLS Settings** section, select **TLS Client Authentication**:
+2. On the **Settings** page, click **Integrations**.
+3. In the **Connection** section, paste the URL that was generated in the Observability section on the Temporal Cloud UI.
+4. The **Authentication** section may be left as **No Authentication**.
+5. In the **TLS Settings** section, select **TLS Client Authentication**:
   - Leave **ServerName** blank (this is not required).
   - Paste in your end-entity certificate and key.
-  - Note that the end-entity certificate used here must be part of the certificate chain with the root CA certificates used in your Temporal Cloud observability setup.
-1. Select **Save and test** to verify that the data source is working.
+  Note that the end-entity certificate used here must be part of the certificate chain with the root CA certificates used in your Temporal Cloud observability setup.
+6. Select **Save and test** to verify that the data source is working.
 
 
 After the page refreshes, the new metrics endpoint appears below **Endpoint**, in the form `https://<account-id>.tmprl.cloud/prometheus`.
