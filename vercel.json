@@ -10,6 +10,11 @@
       "destination": "https://temporal.io/about"
     },
     {
+      "source": "/privacy-policy",
+      "destination": "https://temporal.io/global-privacy-policy",
+      "permanent": true
+    },
+    {
       "source": "/docs/:path*",
       "destination": "/:path*"
     },
@@ -23,7 +28,7 @@
     },
     {
       "source": "/devtools/tctl",
-      "destination": "/tctl"
+      "destination": "/cli"
     },
     {
       "source": "/devtools/introduction",
@@ -1135,7 +1140,7 @@
     },
     {
       "source": "/content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl",
-      "destination": "/tctl-v1/how-to-remove-a-search-attribute-from-a-cluster-using-tctl"
+      "destination": "https://docs.temporal.io/dev-guide/go/observability#remove-search-attribute"
     },
     {
       "source": "/operation/how-to-tune-workers",
@@ -1154,44 +1159,48 @@
       "destination": "/kb/all-the-ways-to-run-a-cluster"
     },
     {
+      "source": "/tctl-v1:path*",
+      "destination": "/cli"
+    },
+    {
       "source": "/tctl",
-      "destination": "/tctl-v1"
+      "destination": "/cli"
     },
     {
       "source": "/tctl/workflow/:path*",
-      "destination": "/tctl-v1/workflow#:path*"
+      "destination": "/cli/workflow"
     },
     {
       "source": "/tctl/activity/:path*",
-      "destination": "/tctl-v1/activity#:path*"
+      "destination": "/cli/activity"
     },
     {
       "source": "/tctl/admin/:path*",
-      "destination": "/tctl-v1/admin#:path*"
+      "destination": "/cli/operator"
     },
     {
       "source": "/tctl/batch/:path*",
-      "destination": "/tctl-v1/batch#:path*"
+      "destination": "/cli/batch"
     },
     {
       "source": "/tctl/cluster/:path*",
-      "destination": "/tctl-v1/cluster#:path*"
+      "destination": "/cli/operator"
     },
     {
       "source": "/tctl/dataconverter/:path*",
-      "destination": "/tctl-v1/dataconverter#:path*"
+      "destination": "/cli/cmd-options"
     },
     {
       "source": "/tctl/namespace/:path*",
-      "destination": "/tctl-v1/namespace#:path*"
+      "destination": "/cli/operator#namespace"
     },
     {
       "source": "/tctl/schedule/:path*",
-      "destination": "/tctl-v1/schedule#:path*"
+      "destination": "/cli/schedule"
     },
     {
       "source": "/tctl/taskqueue/:path*",
-      "destination": "/tctl-v1/taskqueue#:path*"
+      "destination": "/cli/task-queue"
     },
     {
       "source": "/references/ui-configuration",
@@ -1739,11 +1748,11 @@
     },
     {
       "source": "/tctl-next/modifiers#--event-id",
-      "destination": "/cli/cmd-options#event-id"
+      "destination": "/cli/workflow#reset"
     },
     {
       "source": "/tctl-next/workflow#reset",
-      "destination": "/cli"
+      "destination": "/cli/workflow#reset"
     },
     {
       "source": "/java/quick-start",

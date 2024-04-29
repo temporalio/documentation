@@ -7,17 +7,16 @@ description: This guide provides a comprehensive overview to deploy and operate 
 slug: /self-hosted-guide/setup
 toc_max_heading_level: 4
 keywords:
-- cluster
-- guide-context
-- how-to
-- server
+  - cluster
+  - guide-context
+  - how-to
+  - server
 tags:
-- cluster
-- guide-context
-- how-to
-- server
+  - cluster
+  - guide-context
+  - how-to
+  - server
 ---
-
 
 There are many ways to self-host a [Temporal Cluster](/clusters).
 The right way for you depends entirely on your use case and where you plan to run it.
@@ -57,7 +56,7 @@ cd docker-compose
 docker compose up
 ```
 
-Local [Temporal Clients](/temporal#temporal-client) and [Workers](/workers) can connect to the Cluster running in Docker at 127.0.0.1:7233 (default connection for most SDKs) and the Temporal Web UI at 127.0.0.1:8080.
+Local [Temporal Clients](/encyclopedia/temporal-sdks#temporal-client) and [Workers](/workers) can connect to the Cluster running in Docker at 127.0.0.1:7233 (default connection for most SDKs) and the Temporal Web UI at 127.0.0.1:8080.
 
 To try other configurations (different dependencies and databases), or to try a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
 
@@ -101,4 +100,3 @@ We do maintain a Helm chart you can use as a reference, but you are responsible 
 The template in the `temporalio/helm-charts` repo is your starting point, but you can adjust it to fit your infrastructure needs.
 
 Keep in mind that the configuration can become very complex if you try to scale services or run many Workflows concurrently.
-
