@@ -43,7 +43,7 @@ For the error to appear, a service pod or container must be up and running.
 OSS users can verify that the Frontend Service is connected and running by using the Temporal CLI.
 
 ```
-temporal operator --address frontendAddress:frontendPort cluster health
+temporal operator cluster health --address 127.0.0.1:7233
 ```
 
 Use [`grpc-health-probe`](https://github.com/grpc-ecosystem/grpc-health-probe) to check the Frontend Service, [Matching Service](/clusters#matching-service), and [History Service](/clusters#history-service).
