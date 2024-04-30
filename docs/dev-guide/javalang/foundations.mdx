@@ -43,7 +43,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 In this section you can find the following:
 
 - [Run a development Temporal Service](/dev-guide/java/project-setup#install-cli)
-- [Connect to a dev Temporal Service](#connect-to-a-dev-cluster)
+- [Connect to a dev Temporal Service](#connect-to-a-dev-temporal-service)
 - [Develop a Workflow](#develop-workflows)
 - [Develop an Activity](#develop-activities)
 - [Start an Activity Execution](#activity-execution)
@@ -189,7 +189,7 @@ Additionally, several of the [Tutorials](https://learn.temporal.io) are backed b
   It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Java](https://learn.temporal.io/getting_started/java/first_program_in_java/).
 - [Subscription-style Workflow Definition in Java](https://github.com/temporalio/subscription-workflow-project-template-java): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
 
-## How to create a Temporal Client in Java {#connect-to-a-dev-cluster}
+## How to create a Temporal Client in Java {#connect-to-a-dev-temporal-service}
 
 A [Temporal Client](/temporal#temporal-client) enables you to communicate with the [Temporal Service](/clusters).
 Communication with a Temporal Service includes, but isn't limited to, the following:
@@ -1479,7 +1479,7 @@ You can use a typed or untyped `WorkflowStub` in the client code.
 - An untyped `WorkflowStub` does not use the Workflow interface, and is not type safe. It is more flexible because it has methods from the `WorkflowStub` interface, such as `start`, `signalWithStart`, `getResults` (sync and async), `query`, `signal`, `cancel` and `terminate`.
   Note that the Temporal Java SDK also provides typed `WorkflowStub` versions for these methods.
   When using untyped `WorkflowStub`, we rely on the Workflow Type, Activity Type, Child Workflow Type, as well as Query and Signal names.
-  For details, see [Temporal Client](#connect-to-a-dev-cluster).
+  For details, see [Temporal Client](#connect-to-a-dev-temporal-service).
 
 A Workflow Execution can be started either synchronously or asynchronously.
 

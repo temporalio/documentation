@@ -53,7 +53,7 @@ run().catch((err) => {
 /* @dacx
 id: backgroundcheck-boilerplate-run-a-dev-server-worker
 title: Run a dev server Worker
-description: Define the code needed to run a Worker Process in TypeScript that talks to your local dev cluster.
+description: Define the code needed to run a Worker Process in TypeScript that talks to your local dev Temporal Service.
 label: Dev server Worker
 lines: 2-51
 tags:

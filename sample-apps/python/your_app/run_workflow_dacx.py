@@ -46,7 +46,7 @@ label: Connect a Temporal Client
 description: Connect a Temporal Client to a Temporal Service in the Python SDK.
 tags:
  - temporal client
- - cluster
+ - Temporal Service
  - python sdk
  - code sample
 lines: 6-8, 25-39

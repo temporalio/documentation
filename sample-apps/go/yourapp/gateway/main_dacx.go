@@ -87,6 +87,6 @@ description: Use the Dial() method on the Temporal Client and omit setting any c
 tags:
 - go sdk
 - code sample
-- cluster
+- Temporal Service
 lines: 1-31, 40
 @dacx */

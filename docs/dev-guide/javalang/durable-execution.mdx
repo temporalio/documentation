@@ -328,7 +328,7 @@ Let's take a closer look:
 - `TimerStarted`: This Event schedules a durable timer and records it in the Event History.
 - `TimerFired`: After the time specified in the Timer has passed, the Timer fires, resuming execution.
 - `WorkflowTaskScheduled`: The Workflow resumes progress and records a `WorkflowTaskScheduled` event to drive progress forward.
-- `WorkflowTaskStarted`: The Workflow will continue executing when an available Worker polls the Temporal Service and picks up the task to be executed. Once the Worker has begun it issues a `WorkflowTaskStarted` command to the cluster.
+- `WorkflowTaskStarted`: The Workflow will continue executing when an available Worker polls the Temporal Service and picks up the task to be executed. Once the Worker has begun it issues a `WorkflowTaskStarted` command to the Temporal Service.
 - `WorkflowTaskCompleted`: The Workflow progresses until it reaches a line that issues a Command to the Temporal Service. The Workflow suspends execution as it made as much progress as it could.
 - `ActivityTaskScheduled`: This Event indicates that a request to execute an Activity was made, in this instance a call to the `SSNTraceActivity`, and the Worker sent the [`ScheduleActivityTask`](/references/commands#scheduleactivitytask) Command to the Server.
 - `ActivityTaskStarted`: This Event indicates that the Worker successfully polled the Activity Task and started evaluating Activity code.

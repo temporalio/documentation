@@ -1501,7 +1501,7 @@ On self-hosted Temporal Service, you can manage your registered Namespaces using
 
   ```go
   //...
-      namespace.Handler.ListNamespaces(context.Context(), &workflowservice.ListNamespacesRequest{ //lists 1 page (1-100) of namespaces on the active cluster. You can set a large PageSize or loop until NextPageToken is nil
+      namespace.Handler.ListNamespaces(context.Context(), &workflowservice.ListNamespacesRequest{ //lists 1 page (1-100) of namespaces on the active Temporal Service. You can set a large PageSize or loop until NextPageToken is nil
           //PageSize:        0,
           //NextPageToken:   nil,
           //NamespaceFilter: nil,
