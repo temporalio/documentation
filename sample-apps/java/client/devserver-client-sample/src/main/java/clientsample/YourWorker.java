@@ -7,12 +7,13 @@ import io.temporal.serviceclient.WorkflowServiceStubs;
 
 public class YourWorker {
     public static void initiateWorker(String[] args) {
+
         // Create a stub that accesses a Temporal Service on the local development machine
         WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 
         // The Worker uses the Client to communicate with the Temporal Service
         WorkflowClient client = WorkflowClient.newInstance(service);
-        
+
         // A WorkerFactory creates Workers
         WorkerFactory factory = WorkerFactory.newInstance(client);
 

@@ -192,7 +192,7 @@ Replay succeeds only if the [Workflow Definition](/workflows#workflow-definition
 When you test changes to your Workflow Definitions, we recommend doing the following as part of your CI checks:
 
 1. Determine which Workflow Types or Task Queues (or both) will be targeted by the Worker code under test.
-2. Download the Event Histories of a representative set of recent open and closed Workflows from each Task Queue, either programmatically using the SDK client or via `tctl`.
+2. Download the Event Histories of a representative set of recent open and closed Workflows from each Task Queue, either programmatically using the SDK client or via the Temporal CLI.
 3. Run the Event Histories through replay.
 4. Fail CI if any error is encountered during replay.
 
@@ -224,7 +224,7 @@ You can choose to wait until all histories have been replayed with `replay_workf
 
 :::note
 
-If the Workflow History is exported by [Temporal Web UI](/web-ui) or through [tctl](/tctl-v1), you can pass the JSON file history object as a JSON string or as a Python dictionary through the `json.load()` function, which takes a file object and returns the JSON object.
+If the Workflow History is exported by [Temporal Web UI](/web-ui) or through [Temporal CLI](/cli), you can pass the JSON file history object as a JSON string or as a Python dictionary through the `json.load()` function, which takes a file object and returns the JSON object.
 
 :::
 
