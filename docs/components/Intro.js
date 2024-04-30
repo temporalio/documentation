@@ -225,7 +225,7 @@ const slides = [
     title: "Temporal Service",
     description: "Provides reliable and scalable workflow orchestration.",
     content1: `A Temporal Service ensures that Workflows are resilient by saving each step the Workflow code takes. It also schedules retries whenever there are errors in your application’s code.`,
-    content2: `You can run it wherever you’d like and scale from a single laptop to thousands of machines, adding resources when and where you need them. And although you've just set up a lightweight Temporal Service for development, switching your code to point at a production Cluster only requires changing your connection parameters.`,
+    content2: `You can run it wherever you’d like and scale from a single laptop to thousands of machines, adding resources when and where you need them. And although you've just set up a lightweight Temporal Service for development, switching your code to point at a production Temporal Service only requires changing your connection parameters.`,
     giphy: "eePSFNBFv2W9owZ4Sh",
   },
   {

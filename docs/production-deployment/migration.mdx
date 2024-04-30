@@ -3,7 +3,7 @@ id: migration
 title: Migrate to Cloud
 sidebar_label: Migrate to Cloud
 sidebar_position: 3
-description: Migrate to Temporal Cloud from a Self-hosted Cluster.
+description: Migrate to Temporal Cloud from a Self-hosted Temporal Service.
 slug: /production-deployments/migration
 toc_max_heading_level: 4
 keywords:
@@ -16,7 +16,7 @@ tags:
   - temporal-cloud
 ---
 
-Migrating to Temporal Cloud from a self-hosted Cluster will have different requirements depending on your usage.
+Migrating to Temporal Cloud from a self-hosted Temporal Service will have different requirements depending on your usage.
 This guide provides some guidance based on our experience helping customers of all sizes successfully migrate.
 
 ### What to expect from a migration
@@ -27,7 +27,7 @@ Here’s a high-level overview of what you can expect:
 
 - **Introduce another Temporal Client to your Starter and Worker Processes:** Configure and deploy a new Temporal Client so that Temporal Cloud becomes responsible for new Workflow Executions.
 - **Migrate Workflow Executions:** There are different approaches for new, running, and completed Workflow Executions.
-  - **New Workflow Executions:** When you no longer need to send Signals or Queries to your self-hosted Cluster, you can deprecate your old Client code. Until then, your self-hosted Cluster can receive relevant traffic, while new Workflow Executions are sent to Temporal Cloud.
+  - **New Workflow Executions:** When you no longer need to send Signals or Queries to your self-hosted Temporal Service, you can deprecate your old Client code. Until then, your self-hosted Temporal Service can receive relevant traffic, while new Workflow Executions are sent to Temporal Cloud.
   - **Running Workflow Executions:** Short-running Workflows can often be drained and then started again on Temporal Cloud. Long-running Workflows that cannot be drained might require you to implement more code changes to pass the state of the currently running Workflow to Temporal Cloud.
   - **Completed Workflow Executions:** Completed Workflow Execution History cannot be automatically migrated to Temporal Cloud. Refer to [Multi-Cluster Replication](#multi-cluster-replication) for more information.
 
@@ -70,7 +70,7 @@ Also, the Query API loads the entire history of Workflows into Workers to comput
 That means that your self-hosted cluster Worker capacity will need to support having those executions in memory to serve those requests.
 The volume of these requests might be high to execute against all the matches to a `ListFilter`.
 
-### Considerations when resuming Workflows on a new Cluster or Namespace
+### Considerations when resuming Workflows on a new Temporal Service or Namespace
 
 - **Skipping Steps:** If your Workflow steps cannot guarantee idempotency, determine whether you need to skip those steps when resuming the execution in the target Namespace.
 - **Elapsed Time:** If your Workflow is “resuming sleep” when in the target Namespace, determine how you will calculate the delta for the sleep invocation in the new execution.

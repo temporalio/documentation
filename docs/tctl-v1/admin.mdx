@@ -43,7 +43,7 @@ Modifiers:
 
 ## cluster
 
-The `tctl admin cluster` command runs the administrator-level operations on a given Cluster.
+The `tctl admin cluster` command runs the administrator-level operations on a given Temporal Service.
 
 `tctl admin cluster command [command modifiers] [arguments...]`
 
@@ -57,8 +57,8 @@ The `tctl admin cluster` command runs the administrator-level operations on a gi
 
 ### add_search_attributes
 
-The `tctl admin cluster add-search-attributes` command allows Search Attributes to be added to a Cluster.
-Custom Search Attributes can be used to make a Cluster more identifiable.
+The `tctl admin cluster add-search-attributes` command allows Search Attributes to be added to a Temporal Service.
+Custom Search Attributes can be used to make a Temporal Service more identifiable.
 
 :::note
 Due to Elasticsearch limitations, you can only add new custom Search Attributes. Existing Search Attributes cannot be renamed or removed from the Elasticsearch index.
@@ -71,7 +71,7 @@ tctl admin cluster add-search-attributes --name <SearchAttributeName> --type <Se
 ```
 
 :::note
-If you are adding custom Search Attributes to a Cluster running from the `docker-compose-es.yml` file in the [temporalio/docker-compose](https://github.com/temporalio/docker-compose) repo, make sure to increase the Docker memory to more than 6 GB.
+If you are adding custom Search Attributes to a Temporal Service running from the `docker-compose-es.yml` file in the [temporalio/docker-compose](https://github.com/temporalio/docker-compose) repo, make sure to increase the Docker memory to more than 6 GB.
 :::
 
 #### --skip_schema_update
@@ -97,19 +97,19 @@ Values: Text, Keyword, Int, Double, Bool, Datetime
 
 ### describe
 
-The `tctl admin cluster describe` command provides information for the current Cluster.
+The `tctl admin cluster describe` command provides information for the current Temporal Service.
 
 The following modifier changes the behavior of the command:
 
 #### --cluster_value
 
-The name of the remote Cluster within the current Cluster.
+The name of the remote Temporal Service within the current Temporal Service.
 
-This modifier is optional, and can default to the return of current Cluster information.
+This modifier is optional, and can default to the return of current Temporal Service information.
 
 ### get_search_attributes
 
-The `tctl admin cluster get_search_attributes` command retrieves existing Search Attributes for a given Cluster.
+The `tctl admin cluster get_search_attributes` command retrieves existing Search Attributes for a given Temporal Service.
 
 The following modifier will change the behavior of the command:
 
@@ -119,7 +119,7 @@ Prints the existing search attributes in JSON format.
 
 ### list
 
-The `tctl admin cluster list` command lists Cluster information on the given Cluster.
+The `tctl admin cluster list` command lists Temporal Service information on the given Temporal Service.
 
 Default: 100
 
@@ -131,31 +131,31 @@ The size of the page that the list is printed on.
 
 ### remove_remote_cluster
 
-The `tctl admin cluster remove_remote_cluster` command removes remote Cluster information on the given Cluster.
+The `tctl admin cluster remove_remote_cluster` command removes remote Temporal Service information on the given Temporal Service.
 
 The modifier below changes the behavior of the operation:
 
 #### --cluster
 
-The name of the remote Cluster to remove.
+The name of the remote Temporal Service to remove.
 
 ### remove_search_attributes
 
 > The Temporal tctl documentation covers version 1.17 of the Temporal CLI.
 
-The `tctl admin cluster remove-search-attributes` command removes custom Search Attribute metadata from a Cluster.
+The `tctl admin cluster remove-search-attributes` command removes custom Search Attribute metadata from a Temporal Service.
 This operation has no effect on Elasticsearch index schema.
 
-Use the following command to remove a [Search Attribute](/visibility#search-attribute) from a Cluster's metadata:
+Use the following command to remove a [Search Attribute](/visibility#search-attribute) from a Temporal Service's metadata:
 
 ```bash
 tctl admin cluster remove-search-attributes --name <SearchAttributeKey>
 ```
 
-Only custom Search Attributes can be removed from a Cluster's metadata.
+Only custom Search Attributes can be removed from a Temporal Service's metadata.
 Default Search Attributes cannot be removed.
 
-Removing a Search Attribute removes it from the Cluster's metadata but does not remove it from the Elasticsearch index.
+Removing a Search Attribute removes it from the Temporal Service's metadata but does not remove it from the Elasticsearch index.
 This means that the Search Attribute can be added back later as the same type.
 After a Search Attribute has been added to the Elasticsearch index, it cannot be changed.
 
@@ -167,15 +167,15 @@ Name of the Search Attribute to remove.
 
 ### upsert_remote_cluster
 
-The `tctl admin cluster upsert_remote_cluster` command adds or updates remote Cluster information in the current Cluster.
+The `tctl admin cluster upsert_remote_cluster` command adds or updates remote Temporal Service information in the current Temporal Service.
 
 #### --frontend_address
 
-The remote Cluster frontend address.
+The remote Temporal Service frontend address.
 
 #### --enable_connection
 
-Enables remote Cluster connection.
+Enables remote Temporal Service connection.
 
 ## db
 
@@ -617,7 +617,7 @@ The `tctl admin membership` command allows admin operations to be run on members
 
 ### list_db
 
-The `tctl admin membership list_db` command lists the Cluster items in a targeted membership.
+The `tctl admin membership list_db` command lists the Temporal Service items in a targeted membership.
 
 The following modifiers change the behavior of the command.
 

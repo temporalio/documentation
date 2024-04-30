@@ -122,7 +122,7 @@ More formally, a Worker Process is any process that implements the Task Queue Pr
 
 **Worker Processes are external to a Temporal Service.**
 Temporal Application developers are responsible for developing [Worker Programs](#worker-program) and operating Worker Processes.
-Said another way, the [Temporal Service](/clusters) (including the Temporal Cloud) doesn't execute any of your code (Workflow and Activity Definitions) on Temporal Service machines. The Cluster is solely responsible for orchestrating [State Transitions](/workflows#state-transition) and providing Tasks to the next available [Worker Entity](#worker-entity).
+Said another way, the [Temporal Service](/clusters) (including the Temporal Cloud) doesn't execute any of your code (Workflow and Activity Definitions) on Temporal Service machines. The Temporal Service is solely responsible for orchestrating [State Transitions](/workflows#state-transition) and providing Tasks to the next available [Worker Entity](#worker-entity).
 
 While data transferred in Event Histories is [secured by mTLS](/self-hosted-guide/security#encryption-in-transit-with-mtls), by default, it is still readable at rest in the Temporal Service.
 
@@ -180,7 +180,7 @@ Either [ActivityTaskCompleted](/references/events#activitytaskcompleted) or one 
 
 The API to schedule an Activity Execution provides an "effectively once" experience, even though there may be several Activity Task Executions that take place to successfully complete an Activity.
 
-Once an Activity Task finishes execution, the Worker responds to the Cluster with a specific Event:
+Once an Activity Task finishes execution, the Worker responds to the Temporal Service with a specific Event:
 
 - ActivityTaskCanceled
 - ActivityTaskCompleted
@@ -300,7 +300,7 @@ A Sticky Execution occurs after a Worker Entity completes the first Workflow Tas
 
 The Worker Entity caches the Workflow in memory and begins polling the dedicated Task Queue for Workflow Tasks that contain updates, rather than the entire Event History.
 
-If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Cluster will resume Scheduling Workflow Tasks on the original Task Queue.
+If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Temporal Service will resume Scheduling Workflow Tasks on the original Task Queue.
 Another Worker Entity can then resume the Workflow Execution, and can set up its own Sticky Execution for future Workflow Tasks.
 
 - [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](/dev-guide/go/foundations#stickyscheduletostarttimeout)
@@ -405,7 +405,7 @@ It also includes features like concurrent session limitations and Worker failure
 
 :::caution
 
-Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Cluster to enable Worker Versioning:
+Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Temporal Service to enable Worker Versioning:
 
 ```
 temporal server start-dev \

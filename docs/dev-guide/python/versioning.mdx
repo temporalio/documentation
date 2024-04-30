@@ -7,37 +7,36 @@ description: The Versioning section of the Temporal Developer's guide covers how
 slug: /dev-guide/python/versioning
 toc_max_heading_level: 4
 keywords:
-- best practices
-- code sample
-- deployment
-- deployment safety
-- deprecated patches
-- how-to
-- patching
-- python
-- python sdk
-- version
-- versioning
-- workflow completion
-- workflow history
-- workflow transition
+  - best practices
+  - code sample
+  - deployment
+  - deployment safety
+  - deprecated patches
+  - how-to
+  - patching
+  - python
+  - python sdk
+  - version
+  - versioning
+  - workflow completion
+  - workflow history
+  - workflow transition
 tags:
-- best-practices
-- code-sample
-- deployment
-- deployment-safety
-- deprecated-patches
-- how-to
-- patching
-- python
-- python-sdk
-- version
-- versioning
-- workflow-completion
-- workflow-history
-- workflow-transition
+  - best-practices
+  - code-sample
+  - deployment
+  - deployment-safety
+  - deprecated-patches
+  - how-to
+  - patching
+  - python
+  - python-sdk
+  - version
+  - versioning
+  - workflow-completion
+  - workflow-history
+  - workflow-transition
 ---
-
 
 The definition code of a Temporal Workflow must be deterministic because Temporal uses event sourcing
 to reconstruct the Workflow state by replaying the saved history event data on the Workflow
@@ -49,7 +48,6 @@ a non-deterministic issue if not handled correctly.
 Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY)
 
 ## How to use the Python SDK Patching API {#python-sdk-patching-api}
-
 
 In principle, the Python SDK's patching mechanism operates similarly to other SDKs in a "feature-flag" fashion. However, the "versioning" API now uses the concept of "patching in" code.
 
@@ -63,7 +61,12 @@ Let's walk through this process in sequence.
 
 Suppose you have an initial Workflow version called `pre_patch_activity`:
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_1_initial_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_1_initial_dacx.py">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
 
 ```python
 
@@ -84,11 +87,14 @@ class MyWorkflow:
         )
 ```
 
-
-
 Now, you want to update your code to run `post_patch_activity` instead. This represents your desired end state.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
 
 ```python
 
@@ -109,8 +115,6 @@ class MyWorkflow:
         )
 ```
 
-
-
 **Problem: You cannot deploy `post_patch_activity` directly until you're certain there are no more running Workflows created using the `pre_patch_activity` code, otherwise you are likely to cause a non-deterministic error.**
 
 Instead, you'll need to deploy `post_patched_activity` and use the [patched](https://python.temporal.io/temporalio.workflow.html#patched) function to determine which version of the code to execute.
@@ -121,7 +125,12 @@ Implementing patching involves three steps:
 2. Remove the old code and apply [deprecate_patch](https://python.temporal.io/temporalio.workflow.html#deprecate_patch).
 3. Once you're confident that all old Workflows have finished executing, remove `deprecate_patch`.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
 
 ```python
 
@@ -136,9 +145,7 @@ class MyWorkflow:
         )
 ```
 
-
 ### Patching in new code {#using-patched-for-workflow-history-markers}
-
 
 Using `patched` inserts a marker into the Workflow History.
 
@@ -146,7 +153,12 @@ Using `patched` inserts a marker into the Workflow History.
 
 During replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case, `my-patch`). This ensures you can safely deploy code from `post_patch_activity` as a "feature flag" alongside the original version (`pre_patch_activity`).
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_2_patched_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_2_patched_dacx.py">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
 
 ```python
 
@@ -167,9 +179,7 @@ class MyWorkflow:
             )
 ```
 
-
 ### Understanding deprecated Patches in the Python SDK {#deprecated-patches}
-
 
 After ensuring that all Workflows started with `pre_patch_activity` code have finished, you can [deprecate the patch](https://python.temporal.io/temporalio.workflow.html#deprecate_patch).
 
@@ -177,7 +187,12 @@ Deprecated patches serve as a bridge between `pre_patch_activity` and `post_patc
 
 If, during the deployment of `post_patch_activity`, there are still live Workers running `pre_patch_activity` code and these Workers pick up Workflow histories generated by `post_patch_activity`, they will safely use the patched branch.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_3_patch_deprecated_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_3_patch_deprecated_dacx.py">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
 
 ```python
 
@@ -193,13 +208,16 @@ class MyWorkflow:
         )
 ```
 
-
 ### Safe Deployment of post_patch_activity {#deploy-new-code}
-
 
 You can safely deploy `post_patch_activity` once all Workflows labeled my-patch or earlier are finished, based on the previously mentioned assertion.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
 
 ```python
 
@@ -214,12 +232,11 @@ class MyWorkflow:
         )
 ```
 
-
 ## How to use Worker Versioning in Python {#worker-versioning}
 
 :::caution
 
-Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Cluster to enable Worker Versioning:
+Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Temporal Service to enable Worker Versioning:
 
 ```
 temporal server start-dev \
@@ -321,4 +338,3 @@ await workflow.execute_activity(
 )
 # ...
 ```
-

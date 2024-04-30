@@ -168,7 +168,7 @@ However, if your Codec Server is exposed to the internet at all, you will likely
 If you are already using an organization-wide authentication provider, you should integrate it with your Codec Server. Remember, a Codec Server is just a standalone HTTP server, so you can use existing libraries for OAuth, [Auth0](https://auth0.com/), or any other protocol.
 [This repository](https://github.com/pvsone/codec-cors-credentials) contains an example of using Auth0 to handle browser-based auth to a Codec Server.
 
-To enable authorization from the Web UI (for both a self-hosted Cluster and Temporal Cloud), your Codec Server must be an HTTPS Server.
+To enable authorization from the Web UI (for both a self-hosted Temporal Service and Temporal Cloud), your Codec Server must be an HTTPS Server.
 
 **Temporal Cloud**
 
@@ -270,7 +270,7 @@ To set a browser override for the Namespace-level endpoint, do the following.
 
 1. Navigate to **Workflows** in your Namespace.
 2. In the top-right corner, select **Configure Codec Server**.
-3. Select whether you want to use the Namespace-level (or Cluster-level for self-hosted Cluster) or the browser-level Codec Endpoint setting as the default for your browser.
+3. Select whether you want to use the Namespace-level (or Temporal Service-level for self-hosted Temporal Service) or the browser-level Codec Endpoint setting as the default for your browser.
    In Temporal Cloud:
    - **Use Namespace-level settings, where available. Otherwise, use my browser setting.**
      Uses the Namespace-level Codec Server endpoint by default.

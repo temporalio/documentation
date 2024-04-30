@@ -1,7 +1,7 @@
 ---
 id: configuration
 title: Temporal Service configuration reference
-sidebar_label: Cluster configuration
+sidebar_label: Temporal Service configuration
 description: Much of the behavior of a Temporal Service is configured using the `development.yaml` file.
 toc_max_heading_level: 4
 keywords:
@@ -52,14 +52,14 @@ Default is 10s.
 
 #### broadcastAddress
 
-Used by gossip protocol to communicate with other hosts in the same Cluster for membership info.
-Use IP address that is reachable by other hosts in the same Cluster.
-If there is only one host in the Cluster, you can use 127.0.0.1.
+Used by gossip protocol to communicate with other hosts in the same Temporal Service for membership info.
+Use IP address that is reachable by other hosts in the same Temporal Service.
+If there is only one host in the Temporal Service, you can use 127.0.0.1.
 Check `net.ParseIP` for supported syntax, only IPv4 is supported.
 
 ### metrics
 
-Configures the Cluster's metric subsystem.
+Configures the Temporal Service's metric subsystem.
 Specific provides are configured using provider names as the keys.
 
 - [`statsd`](#statsd)
@@ -207,7 +207,7 @@ global:
 ## persistence
 
 The `persistence` section holds configuration for the data store/persistence layer.
-The following example shows a minimal specification for a password-secured Cluster using Cassandra.
+The following example shows a minimal specification for a password-secured Temporal Service using Cassandra.
 
 ```yaml
 persistence:
@@ -242,10 +242,10 @@ The following top level configuration items are required:
 
 ### numHistoryShards
 
-_Required_ - The number of history shards to create when initializing the Cluster.
+_Required_ - The number of history shards to create when initializing the Temporal Service.
 
 **Warning:** This value is immutable and will be ignored after the first run.
-Please ensure you set this value appropriately high enough to scale with the worst case peak load for this Cluster.
+Please ensure you set this value appropriately high enough to scale with the worst case peak load for this Temporal Service.
 
 ### defaultStore
 
@@ -381,9 +381,9 @@ _Required_
 `rpc` contains settings related to the way a service interacts with other services. The following values are supported:
 
 - `grpcPort`: Port on which gRPC will listen.
-- `membershipPort`: Port used to communicate with other hosts in the same Cluster for membership info.
+- `membershipPort`: Port used to communicate with other hosts in the same Temporal Service for membership info.
   Each service should use different port.
-  If there are multiple Temporal Services in your environment (Kubernetes for example), and they have network access to each other, each Cluster should use a different membership port.
+  If there are multiple Temporal Services in your environment (Kubernetes for example), and they have network access to each other, each Temporal Service should use a different membership port.
 - `bindOnLocalHost`: Determines whether uses `127.0.0.1` as the listener address.
 - `bindOnIP`: Used to bind service on specific IP, or `0.0.0.0`.
   Check `net.ParseIP` for supported syntax, only IPv4 is supported, mutually exclusive with `BindOnLocalHost` option.
@@ -414,18 +414,18 @@ It can be enabled on `history` and `visibility` data.
 
 The following list describes supported values for each configuration on the `history` and `visibility` data.
 
-- `state`: State for Archival setting. Supported values are `enabled`, `disabled`. This value must be `enabled` to use Archival with any Namespace in your Cluster.
-  - `enabled`: Enables Archival in your Cluster setup. When set to `enabled`, `URI` and `namespaceDefaults` values must be provided.
-  - `disabled`: Disables Archival in your Cluster setup. When set to `disabled`, the `enableRead` value must be set to `false`, and under `namespaceDefaults`, `state` must be set to `disabled`, with no values set for `provider` and `URI` fields.
+- `state`: State for Archival setting. Supported values are `enabled`, `disabled`. This value must be `enabled` to use Archival with any Namespace in your Temporal Service.
+  - `enabled`: Enables Archival in your Temporal Service setup. When set to `enabled`, `URI` and `namespaceDefaults` values must be provided.
+  - `disabled`: Disables Archival in your Temporal Service setup. When set to `disabled`, the `enableRead` value must be set to `false`, and under `namespaceDefaults`, `state` must be set to `disabled`, with no values set for `provider` and `URI` fields.
 - `enableRead`: Supported values are `true` or `false`. Set to `true` to allow read operations from the archived Event History data.
 - `provider`: Location where data should be archived. Subprovider configs are `filestore`, `gstorage`, `s3`, or `your_custom_provider`. Default configuration specifies `filestore`.
 
 Example:
 
-- To enable Archival in your Cluster configuration:
+- To enable Archival in your Temporal Service configuration:
 
   ```yaml
-  # Cluster-level Archival config enabled
+  # Temporal Service-level Archival config enabled
   archival:
     # Event History configuration
     history:
@@ -450,10 +450,10 @@ Example:
           dirMode: "0766"
   ```
 
-- To disable Archival in your Cluster configuration:
+- To disable Archival in your Temporal Service configuration:
 
   ```yaml
-  # Cluster-level Archival config disabled
+  # Temporal Service-level Archival config disabled
   archival:
     history:
       state: "disabled"
@@ -510,14 +510,14 @@ Supported values:
 
 - `policy`: Supported values are `noop`, `selected-apis-forwarding`, and `all-apis-forwarding`.
   - `noop`: Not setting a value or setting `noop` means no redirection. This is the default value.
-  - `selected-apis-forwarding`: Sets up forwarding for the following APIs to the active Cluster based on the Namespace.
+  - `selected-apis-forwarding`: Sets up forwarding for the following APIs to the active Temporal Service based on the Namespace.
     - `StartWorkflowExecution`
     - `SignalWithStartWorkflowExecution`
     - `SignalWorkflowExecution`
     - `RequestCancelWorkflowExecution`
     - `TerminateWorkflowExecution`
     - `QueryWorkflow`
-  - `all-apis-forwarding`: Sets up forwarding for all APIs on the Namespace in the active Cluster.
+  - `all-apis-forwarding`: Sets up forwarding for all APIs on the Namespace in the active Temporal Service.
 
 Example:
 
@@ -532,7 +532,7 @@ dcRedirectionPolicy:
 
 _Optional_
 
-Configuration for setting up file-based [dynamic configuration](/clusters#dynamic-configuration) client for the Cluster.
+Configuration for setting up file-based [dynamic configuration](/clusters#dynamic-configuration) client for the Temporal Service.
 
 This setting is required if specifying dynamic configuration. Supported configuration values are as follows:
 

@@ -101,9 +101,9 @@ The Claim Mapper component is a pluggable component that extracts Claims from JS
 
 _Tags: [term](/tags/term)_
 
-#### [Cluster configuration](/clusters#cluster-configuration)
+#### [Temporal Service configuration](/clusters#cluster-configuration)
 
-Cluster Configuration is the setup and configuration details of your Temporal Service, defined using YAML.
+Temporal Service Configuration is the setup and configuration details of your Temporal Service, defined using YAML.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 

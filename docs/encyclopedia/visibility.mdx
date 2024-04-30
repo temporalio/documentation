@@ -28,7 +28,7 @@ This guide provides a comprehensive overview of Temporal Visibility.
 
 :::
 
-The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Cluster.
+The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Temporal Service.
 
 The [Visibility store](/self-hosted-guide/visibility) in your Temporal Service stores persisted Workflow Execution Event History data and is set up as a part of your [Persistence store](/clusters#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Service.
 
@@ -365,7 +365,7 @@ Note:
 
 #### Custom Search Attributes limits
 
-<!-- TODO - [How to configure maximum number of Search Attribute keys per Cluster](#) -->
+<!-- TODO - [How to configure maximum number of Search Attribute keys per Temporal Service](#) -->
 
 The following table lists the maximum number of custom Search Attributes you can create per Namespace by supported Visibility database.
 
@@ -406,7 +406,7 @@ For Temporal Cloud specific configurations, see the [Defaults, limits, and confi
 
 ### Usage
 
-Search Attributes available in your Visibility store can be used with Workflow Executions for that Cluster.
+Search Attributes available in your Visibility store can be used with Workflow Executions for that Temporal Service.
 To actually have results from the use of a [List Filter](#list-filter), Search Attributes must be added to a Workflow Execution as metadata.
 
 - To create custom Search Attributes in your Visibility store, see [Create custom Search Attributes](/self-hosted-guide/visibility#create-custom-search-attributes).

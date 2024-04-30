@@ -24,7 +24,7 @@ A single Namespace is still multi-tenant.
 
 Namespaces are created on the Temporal Service, and provide a range of controls to achieve isolation on Workflow Executions.
 
-- Namespaces are a mechanism for resource isolation. Heavy traffic from one Namespace will not impact other Namespaces running on the same Cluster.
+- Namespaces are a mechanism for resource isolation. Heavy traffic from one Namespace will not impact other Namespaces running on the same Temporal Service.
   For example, you can use Namespaces to match the development lifecycle by having separate `dev` and `prod` Namespaces.
 - If no other Namespace is specified, the Temporal Service uses the Namespace "default" for all Temporal SDKs and tctl.
   See the [Registration](#registration) section for details.
@@ -50,7 +50,7 @@ You must register your Namespace with the Temporal Service (or Temporal Cloud) b
 
 On self-hosted Temporal Services, you can register your Namespaces in the following ways:
 
-- In your Cluster setup, create your Namespaces, including the default, in your setup script.
+- In your Temporal Service setup, create your Namespaces, including the default, in your setup script.
   For example:
 
   - If deploying through Docker Compose or using the [auto-setup image](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) in a custom Docker Compose application, the Namespace "default" is created, through the auto-setup script.
@@ -106,7 +106,7 @@ If you do not set a Namespace, all Workflow Executions started using the Client 
 
 <!-- TODO add sample for this to link to -[How to set the Namespace for a Temporal Client](/) -->
 
-- [How to list Namespaces in a Cluster using tctl](/tctl-v1/namespace#list)
+- [How to list Namespaces in a Temporal Service using tctl](/tctl-v1/namespace#list)
 - [How to view (describe) Namespace metadata and details using tctl](/tctl-v1/namespace#describe)
 
 ## What is a Global Namespace? {#global-namespace}
@@ -114,20 +114,20 @@ If you do not set a Namespace, all Workflow Executions started using the Client 
 A Global Namespace is a [Namespace](/namespaces) that exists across Clusters when [Multi-Cluster Replication](/clusters#multi-cluster-replication) is set up.
 
 - [How to register a Global Namespace](/tctl-v1/namespace#register)
-- [How to change the active Cluster for a Global Namespace](/tctl-v1/namespace#update)
+- [How to change the active Temporal Service for a Global Namespace](/tctl-v1/namespace#update)
 
-The Global Namespace feature enables Workflow Executions to progress through another Cluster in the event of a failover.
+The Global Namespace feature enables Workflow Executions to progress through another Temporal Service in the event of a failover.
 
-A Global Namespace may be replicated to any number of Clusters, but is active in only one Cluster at any given time.
+A Global Namespace may be replicated to any number of Clusters, but is active in only one Temporal Service at any given time.
 
 For a failover to be successful, Worker Processes must be polling for Tasks for the Global Namespace on all Clusters.
 
 A Global Namespace has a failover version.
-Because a failover can be triggered from any Cluster, the failover version prevents certain conflicts from occurring if a failover is mistakenly triggered simultaneously on two Clusters.
+Because a failover can be triggered from any Temporal Service, the failover version prevents certain conflicts from occurring if a failover is mistakenly triggered simultaneously on two Clusters.
 
-Only the active Cluster dispatches [Tasks](/workers#task); however, certain conflicts are possible.
+Only the active Temporal Service dispatches [Tasks](/workers#task); however, certain conflicts are possible.
 Unlike regular Namespaces, which provide at-most-once semantics for an Activity Execution, Global Namespaces can support only at-least-once semantics (see [Conflict resolution](/clusters#conflict-resolution)).
-Worker Processes on the standby Clusters are idle until a failover occurs and their Cluster becomes active.
+Worker Processes on the standby Clusters are idle until a failover occurs and their Temporal Service becomes active.
 
-Temporal Application API calls made to a non-active Cluster are rejected with a **NamespaceNotActiveError** which contains the name of the current active Cluster.
-It is the responsibility of the Temporal Application to call the Cluster that is currently active.
+Temporal Application API calls made to a non-active Temporal Service are rejected with a **NamespaceNotActiveError** which contains the name of the current active Temporal Service.
+It is the responsibility of the Temporal Application to call the Temporal Service that is currently active.

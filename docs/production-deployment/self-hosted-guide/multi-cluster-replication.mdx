@@ -19,11 +19,11 @@ tags:
 ---
 
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
-When necessary, for higher availability, Cluster operators can failover to any of the backup Clusters.
+When necessary, for higher availability, Temporal Service operators can failover to any of the backup Clusters.
 
 Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
 
-Temporal automatically forwards Start, Signal, and Query requests to the active Cluster.
+Temporal automatically forwards Start, Signal, and Query requests to the active Temporal Service.
 This feature must be enabled through a Dynamic Config flag per [Global Namespace](/namespaces#global-namespace).
 
 When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
@@ -31,7 +31,7 @@ When the feature is enabled, Tasks are sent to the Parent Task Queue partition t
 All Visibility APIs can be used against active and standby Clusters.
 This enables [Temporal UI](https://docs.temporal.io/web-ui) to work seamlessly for Global Namespaces.
 Applications making API calls directly to the Temporal Visibility API continue to work even if a Global Namespace is in standby mode.
-However, they might see a lag due to replication delay when querying the Workflow Execution state from a standby Cluster.
+However, they might see a lag due to replication delay when querying the Workflow Execution state from a standby Temporal Service.
 
 #### Namespace Versions
 
@@ -46,7 +46,7 @@ All participating Clusters are pre-configured with a unique initial version and 
 
 - `initial version < shared version increment`
 
-When performing failover for a Namespace from one Cluster to another Cluster, the version attached to the Namespace will be changed by the following rule:
+When performing failover for a Namespace from one Temporal Service to another Temporal Service, the version attached to the Namespace will be changed by the following rule:
 
 - for all versions which follow `version % (shared version increment) == (active cluster's initial version)`, find the smallest version which has `version >= old version in namespace`
 
@@ -67,32 +67,32 @@ A cluster can mutate a Workflow Execution History only if the following is true:
 
 Assuming the following scenario:
 
-- Cluster A comes with initial version: 1
-- Cluster B comes with initial version: 2
+- Temporal Service A comes with initial version: 1
+- Temporal Service B comes with initial version: 2
 - Shared version increment: 10
 
-T = 0: Namespace α is registered, with active Cluster set to Cluster A
+T = 0: Namespace α is registered, with active Temporal Service set to Temporal Service A
 
 ```
 namespace α's version is 1
 all workflows events generated within this namespace, will come with version 1
 ```
 
-T = 1: namespace β is registered, with active Cluster set to Cluster B
+T = 1: namespace β is registered, with active Temporal Service set to Temporal Service B
 
 ```
 namespace β's version is 2
 all workflows events generated within this namespace, will come with version 2
 ```
 
-T = 2: Namespace α is updated to with active Cluster set to Cluster B
+T = 2: Namespace α is updated to with active Temporal Service set to Temporal Service B
 
 ```
 namespace α's version is 2
 all workflows events generated within this namespace, will come with version 2
 ```
 
-T = 3: Namespace β is updated to with active Cluster set to Cluster A
+T = 3: Namespace β is updated to with active Temporal Service set to Temporal Service A
 
 ```
 namespace β's version is 11
@@ -113,13 +113,13 @@ The Workflow Executions's mutable state will keep track of all history entries (
         Version history example (without data conflict)
     </summary>
 
-- Cluster A comes with initial version: 1
-- Cluster B comes with initial version: 2
+- Temporal Service A comes with initial version: 1
+- Temporal Service B comes with initial version: 2
 - Shared version increment: 10
 
 T = 0: adding event with event ID == 1 & version == 1
 
-View in both Cluster A & B
+View in both Temporal Service A & B
 
 ```
 | -------- | --------------- | --------------- | ------- |
@@ -133,7 +133,7 @@ View in both Cluster A & B
 
 T = 1: adding event with event ID == 2 & version == 1
 
-View in both Cluster A & B
+View in both Temporal Service A & B
 
 ```
 | -------- | --------------- | --------------- | ------- |
@@ -148,7 +148,7 @@ View in both Cluster A & B
 
 T = 2: adding event with event ID == 3 & version == 1
 
-View in both Cluster A & B
+View in both Temporal Service A & B
 
 ```
 | -------- | --------------- | --------------- | ------- |
@@ -165,7 +165,7 @@ View in both Cluster A & B
 T = 3: Namespace failover triggered, Namespace version is now 2
 adding event with event ID == 4 & version == 2
 
-View in both Cluster A & B
+View in both Temporal Service A & B
 
 ```
 | -------- | --------------- | --------------- | ------- |
@@ -182,7 +182,7 @@ View in both Cluster A & B
 
 T = 4: adding event with event ID == 5 & version == 2
 
-View in both Cluster A & B
+View in both Temporal Service A & B
 
 ```
 | -------- | --------------- | --------------- | ------- |
@@ -200,7 +200,7 @@ View in both Cluster A & B
 
 </details>
 
-Since Temporal is AP, during failover (change of active Temporal Service Namespace), there can exist cases where more than one Cluster can modify a Workflow Execution, causing divergence of Workflow Execution History. Below shows how the version history will look like under such conditions.
+Since Temporal is AP, during failover (change of active Temporal Service Namespace), there can exist cases where more than one Temporal Service can modify a Workflow Execution, causing divergence of Workflow Execution History. Below shows how the version history will look like under such conditions.
 
 <details>
     <summary>
@@ -209,14 +209,14 @@ Since Temporal is AP, during failover (change of active Temporal Service Namespa
 
 Below, shows version history of the same Workflow Execution in 2 different Clusters.
 
-- Cluster A comes with initial version: 1
-- Cluster B comes with initial version: 2
-- Cluster C comes with initial version: 3
+- Temporal Service A comes with initial version: 1
+- Temporal Service B comes with initial version: 2
+- Temporal Service C comes with initial version: 3
 - Shared version increment: 10
 
 T = 0:
 
-View in both Cluster B & C
+View in both Temporal Service B & C
 
 ```
 | -------- | --------------- | --------------- | ------- |
@@ -230,7 +230,7 @@ View in both Cluster B & C
 | -------- | -------------   | --------------- | ------- |
 ```
 
-T = 1: adding event with event ID == 4 & version == 2 in Cluster B
+T = 1: adding event with event ID == 4 & version == 2 in Temporal Service B
 
 ```
 | -------- | --------------- | --------------- | ------- |
@@ -245,7 +245,7 @@ T = 1: adding event with event ID == 4 & version == 2 in Cluster B
 | -------- | -------------   | --------------- | ------- |
 ```
 
-T = 1: namespace failover to Cluster C, adding event with event ID == 4 & version == 3 in Cluster C
+T = 1: namespace failover to Temporal Service C, adding event with event ID == 4 & version == 3 in Temporal Service C
 
 ```
 | -------- | --------------- | --------------- | ------- |
@@ -260,7 +260,7 @@ T = 1: namespace failover to Cluster C, adding event with event ID == 4 & versio
 | -------- | -------------   | --------------- | ------- |
 ```
 
-T = 2: replication task from Cluster C arrives in Cluster B
+T = 2: replication task from Temporal Service C arrives in Temporal Service B
 
 Note: below is a tree structures
 
@@ -301,7 +301,7 @@ Note: below is a tree structures
 | --- | --- || --------------- | ------- |
 ```
 
-T = 2: replication task from Cluster B arrives in Cluster C, same as above
+T = 2: replication task from Temporal Service B arrives in Temporal Service C, same as above
 
 </details>
 
@@ -315,15 +315,15 @@ Workflow Execution Histories that diverge will have more than one history branch
 Among all history branches, the history branch with the highest version is considered the `current branch` and the Workflow Execution's mutable state is a summary of the current branch.
 Whenever there is a switch between Workflow Execution History branches, a complete rebuild of the Workflow Execution's mutable state will occur.
 
-Temporal Multi-Cluster Replication relies on asynchronous replication of Events across Clusters, so in the case of a failover it is possible to have an Activity Task dispatched again to the newly active Cluster due to a replication task lag.
-This also means that whenever a Workflow Execution is updated after a failover by the new Cluster, any previous replication tasks for that Execution cannot be applied.
-This results in loss of some progress made by the Workflow Execution in the previous active Cluster.
+Temporal Multi-Cluster Replication relies on asynchronous replication of Events across Clusters, so in the case of a failover it is possible to have an Activity Task dispatched again to the newly active Temporal Service due to a replication task lag.
+This also means that whenever a Workflow Execution is updated after a failover by the new Temporal Service, any previous replication tasks for that Execution cannot be applied.
+This results in loss of some progress made by the Workflow Execution in the previous active Temporal Service.
 During such conflict resolution, Temporal re-injects any external Events like Signals in the new Event History before discarding replication tasks.
 Even though some progress could roll back during failovers, Temporal provides the guarantee that Workflow Executions won’t get stuck and will continue to make forward progress.
 
 Activity Execution completions are not forwarded across Clusters.
 Any outstanding Activities will eventually time out based on the configuration.
-Your application should have retry logic in place so that the Activity gets retried and dispatched again to a Worker after the failover to the new Cluster.
+Your application should have retry logic in place so that the Activity gets retried and dispatched again to a Worker after the failover to the new Temporal Service.
 Handling this is similar to handling an Activity Task timeout caused by a Worker restarting.
 
 #### Zombie Workflows
@@ -332,11 +332,11 @@ There is an existing contract that for any Namespace and Workflow Id combination
 
 Multi-cluster Replication aims to keep the Workflow Execution History as up-to-date as possible among all participating Clusters.
 
-Due to the nature of Multi-cluster Replication (for example, Workflow Execution History events are replicated asynchronously) different Runs (same Namespace and Workflow Id) can arrive at the target Cluster at different times, sometimes out of order, as shown below:
+Due to the nature of Multi-cluster Replication (for example, Workflow Execution History events are replicated asynchronously) different Runs (same Namespace and Workflow Id) can arrive at the target Temporal Service at different times, sometimes out of order, as shown below:
 
 ```
 | ------------- |          | ------------- |          | ------------- |
-| Cluster A |  | Network Layer |  | Cluster B |
+| Temporal Service A |  | Network Layer |  | Temporal Service B |
 | --------- || ------------- |          | ------------- |
         |                          |                          |
         | Run 1 Replication Events |                          |
@@ -354,12 +354,12 @@ Due to the nature of Multi-cluster Replication (for example, Workflow Execution 
         |                          | -----------------------> |
         |     |  |
         | --- || ------------- |          | ------------- |
-| Cluster A |  | Network Layer |  | Cluster B |
+| Temporal Service A |  | Network Layer |  | Temporal Service B |
 | --------- || ------------- |          | ------------- |
 ```
 
-Because Run 2 appears in Cluster B first, Run 1 cannot be replicated as "runnable" due to the rule `at most one Run open` (see above), thus the "zombie" Workflow Execution state is introduced.
-A "zombie" state is one in which a Workflow Execution which cannot be actively mutated by a Cluster (assuming the corresponding Namespace is active in this Cluster). A zombie Workflow Execution can only be changed by a replication Task.
+Because Run 2 appears in Temporal Service B first, Run 1 cannot be replicated as "runnable" due to the rule `at most one Run open` (see above), thus the "zombie" Workflow Execution state is introduced.
+A "zombie" state is one in which a Workflow Execution which cannot be actively mutated by a Temporal Service (assuming the corresponding Namespace is active in this Temporal Service). A zombie Workflow Execution can only be changed by a replication Task.
 
 Run 1 will be replicated similar to Run 2, except when Run 1's execution will become a "zombie" before Run 1 reaches completion.
 
@@ -425,7 +425,7 @@ The [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication) fe
 
 1. `enableGlobalNamespace` must be set to `true`.
 2. `failoverVersionIncrement` has to be equal across connected Clusters.
-3. `initialFailoverVersion` in each Cluster has to assign a different value.
+3. `initialFailoverVersion` in each Temporal Service has to assign a different value.
    No equal value is allowed across connected Clusters.
 
 After the above conditions are satisfied, you can start to configure a multi-cluster setup.

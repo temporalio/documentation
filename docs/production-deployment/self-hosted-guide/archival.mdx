@@ -3,7 +3,7 @@ id: archival
 title: Self-hosted Archival setup
 sidebar_label: Archival
 sidebar_position: 9
-description: Learn how to setup the self-hosted Cluster Archival feature.
+description: Learn how to setup the self-hosted Temporal Service Archival feature.
 slug: /self-hosted-guide/archival
 toc_max_heading_level: 4
 keywords:
@@ -22,7 +22,7 @@ Archival is a feature that automatically backs up [Event Histories](/workflows#e
 Workflow Execution Event Histories are backed up after the [Retention Period](/clusters#retention-period) is reached.
 Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.
 
-Archival enables Workflow Execution data to persist as long as needed, while not overwhelming the Cluster's persistence store.
+Archival enables Workflow Execution data to persist as long as needed, while not overwhelming the Temporal Service's persistence store.
 
 This feature is helpful for compliance and debugging.
 
@@ -61,7 +61,7 @@ Archival configuration is defined in the [`config/development.yaml`](https://git
 Let's look at an example configuration:
 
 ```yaml
-# Cluster level Archival config
+# Temporal Service level Archival config
 archival:
   # Event History configuration
   history:
@@ -114,7 +114,7 @@ The following table showcases acceptable values for each configuration and what 
 | `namespaceDefaults.archival.history.state`     | `enabled`, `disabled`                                                              | Default state of the Archival feature whenever a new Namespace is created without specifying the Archival state.             |
 | `namespaceDefaults.archival.history.URI`       | Valid URI                                                                          | Must be a URI of the file store location and match a schema that correlates to a provider.                                   |
 
-Additional resources: [Cluster configuration reference](/references/configuration).
+Additional resources: [Temporal Service configuration reference](/references/configuration).
 
 #### Namespace creation
 

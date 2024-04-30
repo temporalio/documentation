@@ -2,7 +2,7 @@
 id: dynamic-configuration
 title: Temporal Service dynamic configuration reference
 sidebar_label: Dynamic configuration
-description: Temporal Service provides dynamic configuration keys that you can update and apply to a running Cluster without restarting your services.
+description: Temporal Service provides dynamic configuration keys that you can update and apply to a running Temporal Service without restarting your services.
 toc_max_heading_level: 4
 keywords:
   - reference
@@ -10,10 +10,10 @@ tags:
   - reference
 ---
 
-Temporal Service provides [dynamic configuration](/clusters#dynamic-configuration) keys that you can update and apply to a running Cluster without restarting your services.
+Temporal Service provides [dynamic configuration](/clusters#dynamic-configuration) keys that you can update and apply to a running Temporal Service without restarting your services.
 
-The dynamic configuration keys are set with default values when you create your Cluster configuration.
-You can override these values as you test your Cluster setup for optimal performance according to your workload requirements.
+The dynamic configuration keys are set with default values when you create your Temporal Service configuration.
+You can override these values as you test your Temporal Service setup for optimal performance according to your workload requirements.
 
 For the complete list of dynamic configuration keys, see [https://github.com/temporalio/temporal/blob/master/common/dynamicconfig/constants.go](https://github.com/temporalio/temporal/blob/master/common/dynamicconfig/constants.go).
 Ensure that you check server release notes for any changes to these keys and values.
@@ -65,12 +65,12 @@ testGetMapPropertyKey:
 ### Constraints
 
 You can define constraints on some dynamic configuration keys to set specific values that apply on a Namespace or Task Queue level.
-Not defining constraints on a dynamic configuration key sets the values across the Cluster.
+Not defining constraints on a dynamic configuration key sets the values across the Temporal Service.
 
 - To set global values for the configuration key with no constraints, use the following:
 
   ```yaml
-  frontend.globalNamespaceRPS: # Total per-Namespace RPC rate limit applied across the Cluster.
+  frontend.globalNamespaceRPS: # Total per-Namespace RPC rate limit applied across the Temporal Service.
     - value: 5000
   ```
 
@@ -134,25 +134,25 @@ Check [server release notes](https://github.com/temporalio/temporal/releases) to
 
 ### Service-level RPS limits
 
-The Requests Per Second (RPS) dynamic configuration keys set the rate at which requests can be made to each service in your Cluster.
+The Requests Per Second (RPS) dynamic configuration keys set the rate at which requests can be made to each service in your Temporal Service.
 
 When scaling your services, tune the RPS to test your workload and set acceptable provisioning benchmarks.
 Exceeding these limits results in `ResourceExhaustedError`.
 
-| Dynamic configuration key              | Type | Description                                                                                                                                                                                                                                          | Default value |
-| -------------------------------------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| Frontend                               |      |                                                                                                                                                                                                                                                      |               |
-| `frontend.rps`                         | Int  | Rate limit (requests/second) for requests accepted by each Frontend Service host.                                                                                                                                                                    | 2400          |
-| `frontend.namespaceRPS`                | Int  | Rate limit (requests/second) for requests accepted by each Namespace on the Frontend Service.                                                                                                                                                        | 2400          |
-| `frontend.namespaceCount`              | Int  | Limit on the number of concurrent Task Queue polls per Namespace per Frontend Service host.                                                                                                                                                          | 1200          |
-| `frontend.globalNamespaceRPS`          | Int  | Rate limit (requests/second) for requests accepted per Namespace, applied across Cluster. The limit is evenly distributed among available Frontend Service instances. If this is set, it overrides the per-instance limit (`frontend.namespaceRPS`). | 0             |
-| `internal-frontend.globalNamespaceRPS` | Int  | Rate limit (requests/second) for requests accepted on each Internal-Frontend Service host applied across the Cluster.                                                                                                                                | 0             |
-| History                                |      |                                                                                                                                                                                                                                                      |               |
-| `history.rps`                          | Int  | Rate limit (requests/second) for requests accepted by each History Service host.                                                                                                                                                                     | 3000          |
-| Matching                               |      |                                                                                                                                                                                                                                                      |               |
-| `matching.rps`                         | Int  | Rate limit (requests/second) for requests accepted by each Matching Service host.                                                                                                                                                                    | 1200          |
-| `matching.numTaskqueueReadPartitions`  | Int  | Number of read partitions for a Task Queue. Must be set with `matching.numTaskqueueWritePartitions`.                                                                                                                                                 | 4             |
-| `matching.numTaskqueueWritePartitions` | Int  | Number of write partitions for a Task Queue.                                                                                                                                                                                                         | 4             |
+| Dynamic configuration key              | Type | Description                                                                                                                                                                                                                                                   | Default value |
+| -------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| Frontend                               |      |                                                                                                                                                                                                                                                               |               |
+| `frontend.rps`                         | Int  | Rate limit (requests/second) for requests accepted by each Frontend Service host.                                                                                                                                                                             | 2400          |
+| `frontend.namespaceRPS`                | Int  | Rate limit (requests/second) for requests accepted by each Namespace on the Frontend Service.                                                                                                                                                                 | 2400          |
+| `frontend.namespaceCount`              | Int  | Limit on the number of concurrent Task Queue polls per Namespace per Frontend Service host.                                                                                                                                                                   | 1200          |
+| `frontend.globalNamespaceRPS`          | Int  | Rate limit (requests/second) for requests accepted per Namespace, applied across Temporal Service. The limit is evenly distributed among available Frontend Service instances. If this is set, it overrides the per-instance limit (`frontend.namespaceRPS`). | 0             |
+| `internal-frontend.globalNamespaceRPS` | Int  | Rate limit (requests/second) for requests accepted on each Internal-Frontend Service host applied across the Temporal Service.                                                                                                                                | 0             |
+| History                                |      |                                                                                                                                                                                                                                                               |               |
+| `history.rps`                          | Int  | Rate limit (requests/second) for requests accepted by each History Service host.                                                                                                                                                                              | 3000          |
+| Matching                               |      |                                                                                                                                                                                                                                                               |               |
+| `matching.rps`                         | Int  | Rate limit (requests/second) for requests accepted by each Matching Service host.                                                                                                                                                                             | 1200          |
+| `matching.numTaskqueueReadPartitions`  | Int  | Number of read partitions for a Task Queue. Must be set with `matching.numTaskqueueWritePartitions`.                                                                                                                                                          | 4             |
+| `matching.numTaskqueueWritePartitions` | Int  | Number of write partitions for a Task Queue.                                                                                                                                                                                                                  | 4             |
 
 ### QPS limits for Persistence store
 
@@ -182,7 +182,7 @@ If the number of queries made to the Persistence store exceeds the dynamic confi
 
 ### Activity and Workflow default policy setting
 
-You can define default values for Activity and Workflow [Retry Policies](/retry-policies) at the Cluster level with the following dynamic configuration keys.
+You can define default values for Activity and Workflow [Retry Policies](/retry-policies) at the Temporal Service level with the following dynamic configuration keys.
 
 | Dynamic configuration key            | Type                          | Description                                                                                                       | Default value                                                                      |
 | ------------------------------------ | ----------------------------- | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
@@ -191,7 +191,7 @@ You can define default values for Activity and Workflow [Retry Policies](/retry-
 
 ### Size limit settings
 
-The Persistence store in the Cluster has default size limits set for optimal performance. The dynamic configuration keys relating to some of these are listed below.
+The Persistence store in the Temporal Service has default size limits set for optimal performance. The dynamic configuration keys relating to some of these are listed below.
 
 The default values on these keys are based on extensive testing.
 You can change these values, but ensure that you are provisioning enough database resources to handle the changed values.

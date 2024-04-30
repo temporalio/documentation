@@ -50,7 +50,7 @@ The https://github.com/temporalio/samples-server repo offers two examples, which
 
 ### Encryption in transit with mTLS
 
-Temporal supports Mutual Transport Layer Security (mTLS) as a way of encrypting network traffic between the services of a cluster and also between application processes and a Cluster.
+Temporal supports Mutual Transport Layer Security (mTLS) as a way of encrypting network traffic between the services of a cluster and also between application processes and a Temporal Service.
 Self-signed or properly minted certificates can be used for mTLS.
 mTLS is set in Temporal's [TLS configuration](/references/configuration#tls).
 The configuration includes two sections such that intra-Cluster and external traffic can be encrypted with different sets of certificates and settings:
