@@ -1,9 +1,7 @@
 ---
 id: multi-region
-
 slug: /cloud/multi-region
-
-title: Multi-region Namespaces.
+title: Multi-region Namespaces
 sidebar_label: Multi-region Namespaces
 sidebar_position: 5
 tags:
@@ -20,26 +18,24 @@ tags:
 
 :::
 
-* <span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Summary at the end of intro accurate?</span>
-
 Temporal Cloud's multi-region Namespace feature adds push-button high availability for your Temporal Service.
-This feature enables you to choose a standby region for a Temporal Namespace.
-The service handles the complexity of replicating data from the active region to the standby region and transfering control to the standby region when needed.
+This feature enables you to choose a standby region for a Temporal Cloud Namespace.
+The service handles the complexity of replicating data from the active region to the standby region and transferring control to the standby region when needed.
 
 This means your standby region is available and in sync with the active region.
-It's always ready to take over in the event of network service and performance issues in the active region.
-For these reasons, this feature provides Temporal Cloud's highest levels of regional service reliability.
+It's ready to take over in the event of network service and performance issues in the active region.
+For these reasons, this feature provides Temporal Cloud's highest levels of service availability.
 
 This feature guide covers the following topics:
 
-- [Why choose high availability multi-region Namespaces?](/cloud/multi-region#multi-region-intro)
+- [Why choose a multi-region Namespace?](/cloud/multi-region#multi-region-intro)
 - [Understanding failovers](/cloud/multi-region#failovers)
 - [Multi-region Namespace SLA](/cloud/multi-region#sla)
 - [Multi-region Namespace architecture overview](/cloud/multi-region#architecture)
 - [Pricing](/cloud/multi-region#pricing)
-- [Manage your multi-region Namespaces](/cloud/multi-region#management)
+- [Manage your multi-region Namespace](/cloud/multi-region#management)
 
-## Why choose multi-region Namespaces? {#multi-region-intro}
+## Why choose a multi-region Namespace? {#multi-region-intro}
 
 A high availability multi-region Namespace provides a single endpoint for a multi-region service.
 This option offers a single logical Namespace that runs in two physical regions, one active and one standby.
@@ -47,10 +43,10 @@ As Workflows progress in the active region, history events are asynchronously re
 
 In case of an incident or outage in the active region, Temporal Cloud will "failover" to the standby region.
 A failover means to switch the roles of the active and standby regions.
-Temporal's multi-region failovers enable existing Workflow Executions to keep running and new Executions to be initiated.
+These failovers enable existing Workflow Executions to keep running and new Executions to be initiated.
 
 In the traditional definition of active/active replication, multiple nodes serve requests and accept writes simultaneously with strong synchronous data consistency.
-Multi-region Namespaces in Temporal Cloud allow two replicated Namespaces (one active, one standby) to accept requests, but not simultaneously.
+A Temporal Cloud multi-region Namespace enables two replicated Namespaces (one active, one standby) to accept requests, but not simultaneously.
 Requests are accepted, and Workflow history events are written to the active region and then asynchronously replicated to the standby region.
 
 Before failover            |  After failover
@@ -58,20 +54,20 @@ Before failover            |  After failover
 ![Before failover](/img/multi-region/before-failover.png)  |  ![After failover](/img/multi-region/after-failover.png)
 
 For a single-region Namespace, Temporal Cloud provides 99.99% availability and its contractual service level agreement ([SLA](https://docs.temporal.io/cloud/sla)) offers a 99.9% guarantee against service errors.
-For many applications, this is sufficient availability.
-With this strategy, Temporal clients connect to a single Namespace in a single AWS region.
-This approach works well for workloads that need the availability provided by Temporal Cloud’s single-region Namespaces.
+For many applications, this provides sufficient availability.
+With this strategy, Temporal clients connect to a single Namespace in one deployment region.
+This approach works well for workloads that don't require stringent availability guarantees.
 
-Multi-region Namespaces support standby recovery.
-It is deployed using a simple Namespace setting.
-All back-end deployment is completed by Temporal Cloud.
-In the event of a regional failure, Temporal Cloud automatically fails over to the Namespace in the secondary region.
-When faced with network latency or other region-wide issues, failover can be deliberately triggered.
+A multi-region Namespace supports standby recovery.
+To enable this feature, simply add an additional region to a Namespace.
+Temporal Cloud takes care of the Namespace replication to your new standby region.
+In the event of a regional failure, Temporal Cloud automatically fails over the Namespace to the secondary region. 
+When faced with network latency or other region-wide issues, you can manually trigger a failover.
 
-Multi-region advantages:
+Advantages of using a Multi-region Namespace:
 
-* No manual deployment or configuration needed with push button operation.
-* Open workflows continue in a secondary region with minimal interruption and data loss.
+* No manual deployment or configuration needed, simple push button operation.
+* Open workflows continue in in the standby region with minimal interruption and data loss.
 * No changes required to workers and workflow starter code in setup and failover.
 * 99.99% Contractual SLA.
 
@@ -83,14 +79,14 @@ This operation shifts Workflow processing to a standby region, unaffected by the
 This allows both existing Workflows to progress and new Workflows to be created as the incident is addressed.
 
 :::info
-- Customers who wish to test the set-up of their multi-region Namespace can manually trigger failovers using the Web UI page, the 'tcld' CLI utility, or code their own solutions using our APIs.
+- Customers who wish to test the set-up of their multi-region Namespace can manually trigger failovers using the UI page, the 'tcld' CLI utility, or code their own solutions using our APIs.
 For most scenarios, we recommend you let Temporal handle failovers for you.
 
 :::
 
 ### Replication lag {#replication-lag}
 
-When using multi-region Namespaces, the replication between regions is asynchronous.
+When using a multi-region Namespace, the replication between regions is asynchronous.
 Updates to the workflow in the active region, and the history events associated with it, are applied to the standby region with a short delay.
 This delay is called the replication lag.
 Temporal Cloud aims to provide a P95 replication delay of less than 1 minute.
@@ -169,7 +165,7 @@ This redundancy, plus the added failover capability, provides measurable stabili
 
 A multi-region Namespace is normally in a single region at any moment.
 The passive region assumes a standby role.
-The only exception occurs in the event of a network partition.
+The only exception occurs in the event of a <a href="https://en.wikipedia.org/wiki/Network_partition">network partition</a>.
 
 In this event, an operator may elect to promote a standby region to active status.
 Be aware that this action will temporarily result in both regions being active.
@@ -192,8 +188,7 @@ This process ensures that all regions will eventually share a consistent and uni
 
 Certain Workflow operations are limited to the active region:
 
-* Workflows in a multi-region Namespace can only be updated and mutated in the active region.
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Q: Is there a better way to explain what "mutated" means?</span>
+* Workflows in a multi-region Namespace can only be updated in the active region.
 * Workflow Tasks and Activity Tasks are only dispatched from the active region, and thus forward progress will only be made there.
 
 These limits mean that certain requests, such as Start Workflow and Signal Workflow can only be processed in the active region.
@@ -218,13 +213,11 @@ This mechanism ensures consistency and reliability in the replication process ac
 Multi-region Namespaces rely on asynchronous event replication across Temporal regions.
 In the event of a non-graceful failover, replication lag may result in a temporary setback in workflow progress.
 
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Is there a good link for "at most once" and "at least once" semantics? A Kafka source? https://docs.confluent.io/kafka/design/delivery-semantics.html?</span>
-
 Single-region Namespaces, which can provide _at-most-once_ semantics for the execution of Activities (when [Maximum Attempts](https://docs.temporal.io/retry-policies#maximum-attempts) is set to 0).
 Multi-region Namespaces can only provide _at-least-once_ semantics for execution of Activities.
 Completed Activities _may_ be dispatched again in the newly active region, leading to repeated executions.
 
-When a Workflow Execution is updated in a new region following a failover, events from the previous cluster arriving after the failover cannot be directly applied.
+When a Workflow Execution is updated in a new region following a failover, any events from the previously active region that arrive after the failover can't be directly applied.
 At this point, Temporal Cloud has forked the Workflow History.
 
 It creates a new branch history for execution, and begins its conflict resolution process.
@@ -233,25 +226,25 @@ This capability is crucial for workflows to continue to make forward progress.
 
 ## Pricing {#pricing}
 
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>I did not include the pricing section; Should it be here?</span>
+For pricing details, please visit our [Pricing page](/cloud/pricing).
 
-## Manage your multi-region Namespaces {#management}
+## Manage your multi-region Namespace {#management}
 
-Temporal enables you to create and manage your multi-region Namespaces using the Temporal Cloud Web UI interface, the command line 'tcld' CLI utility, and by issuing API commands.
-Use the following capabilities to create, upgrade, and discontinue your multi-region Namespaces.
+Temporal enables you to create and manage your multi-region Namespace using the Temporal Cloud Web UI, the command line 'tcld' CLI utility, and by issuing API commands.
+Use the following capabilities to create, upgrade, and discontinue your multi-region Namespace.
 
-* [Create multi-region Namespaces](/cloud/multi-region#create)
-* [Upgrade single-region Namespaces to multi-region](/cloud/multi-region#add-regions)
+* [Create a multi-region Namespace](/cloud/multi-region#create)
+* [Upgrade a single-region Namespace to multi-region](/cloud/multi-region#add-regions)
 * [Discontinuing multi-region service](/cloud/multi-region#discontinuing)
 
 :::tip
 - While reading through this coverage, remember that pairing is limited to regions within the same continent.
 
 :::
-### Create multi-region Namespaces {#create}
+### Create a multi-region Namespace {#create}
 
-The following sections show how to create multi-region Namespaces.
-Multi-region provides multi-region deployment backed by Temporal's data replication and active-standby features.
+The following sections show how to create a multi-region Namespace.
+This provides multi-region deployment backed by Temporal's data replication and active-standby features.
 
 #### Temporal Cloud Web UI
 
@@ -296,7 +289,7 @@ Include a fully configured <span style={{ backgroundColor: 'rgb(255, 255, 102)',
 Specify the active and standby regions.
 The service returns <span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>no link `AddNamespaceRegionResponse `</span>.
 
-### Upgrade single-region Namespaces to multi-region {#add-regions}
+### Upgrade a single-region Namespace to multi-region {#add-regions}
 The following sections show you how to upgrade an existing Namespace to take advantage of multi-region's push-button high availability service.
 
 #### Temporal Cloud Web UI
@@ -357,7 +350,7 @@ See [`AddNamespaceRegion`](https://github.com/temporalio/api-cloud/pull/19)
 
 Disabling multi-region removes the high availability and automatic failover features that provide Temporal's highest level of regional service recovery.
 To disable the feature and end charges, users must contact Temporal directly.
-Charges will stop once this decomissioning procedure complete.
+Charges will stop once this decommissioning procedure complete.
 It is on our roadmap to automate this process.
 
 * When making this request you must let us know which region you want the Namespace to land in after it is de-globalized.
@@ -460,8 +453,7 @@ Clients resolving the Namespace’s DNS record are directed to a regional DNS re
 
 During a failover, we change the target of the Namespace DNS record from one region to another.
 
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Add TTL definition?</span>
-Using a CNAME record also allows us to support a lower TTL for the record (configured at 15 seconds).
+Using a CNAME record also allows us to support a lower <a href="https://en.wikipedia.org/wiki/Time_to_live">TTL</a> for the record (configured at 15 seconds).
 As a rule of thumb, DNS reconciliation is not expected to take more than twice (2x) the TTL, leading to at most a 30-second delay for clients to converge to the newly targeted region.
 
 #### For PrivateLink customers
@@ -486,4 +478,4 @@ Consider how you'll configure Workers to run in this scenario.
 You might set Workers to run in both regions at all times.
 Alternately, you could establish connectivity between the regions to redirect Workers once failover occurs.
 
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>ANY OTHER LINKS, READ MORE, etc?</span>
+If you have more questions or feedback about this feature, please reach out to <a href="mailto:product@temporal.io">the product team</a>.
