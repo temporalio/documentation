@@ -30,13 +30,41 @@ Workflow timeouts are set when [starting the Workflow Execution](#workflow-timeo
 - **[Workflow Run Timeout](/workflows#workflow-run-timeout):** restricts the maximum amount of time that a single Workflow Run can last.
 - **[Workflow Task Timeout](/workflows#workflow-task-timeout):** restricts the maximum amount of time that a Worker can execute a Workflow Task.
 
-<!-- CONTENT-->
+These values can be set in the `WorkflowOptions` when calling `StartWorkflowAsync` or `ExecuteWorkflowAsync`.
+
+Available timeouts are:
+
+- ExecutionTimeout
+- RunTimeout
+- TaskTimeout
+
+```csharp
+var result = await client.ExecuteWorkflowAsync(
+    (MyWorkflow wf) => wf.RunAsync(),
+    new(id: "my-workflow-id", taskQueue: "my-task-queue")
+    {
+        WorkflowExecutionTimeout = TimeSpan.FromMinutes(5),
+    });
+```
 
 ### Workflow retries {#workflow-retries}
 
 A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
-<!-- CONTENT-->
+Use a [Retry Policy](/retry-policies) to retry a Workflow Execution in the event of a failure.
+
+Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
+
+The `RetryPolicy` can be set in the `WorkflowOptions` when calling `StartWorkflowAsync` or `ExecuteWorkflowAsync`.
+
+```csharp
+var result = await client.ExecuteWorkflowAsync(
+    (MyWorkflow wf) => wf.RunAsync(),
+    new(id: "my-workflow-id", taskQueue: "my-task-queue")
+    {
+        RetryPolicy = new() { MaximumInterval = TimeSpan.FromSeconds(10) },
+    });
+```
 
 ## How to set Activity timeouts {#activity-timeouts}
 
@@ -48,8 +76,36 @@ The following timeouts are available in the Activity Options.
 - **[Start-To-Close Timeout](/activities#start-to-close-timeout):** is the maximum time allowed for a single [Activity Task Execution](/workers#activity-task-execution).
 - **[Schedule-To-Start Timeout](/activities#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/workers#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.
 
-<!-- CONTENT-->
+An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
+
+These values can be set in the `ActivityOptions` when calling `ExecuteActivityAsync`.
+
+Available timeouts are:
+
+- ScheduleToCloseTimeout
+- ScheduleToStartTimeout
+- StartToCloseTimeout
+
+```csharp
+return await Workflow.ExecuteActivityAsync(
+    (MyActivities a) => a.MyActivity(param),
+    new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
+```
 
 ### How to set an Activity Retry Policy {#activity-retries}
 
-<!-- CONTENT-->
+A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
+
+Activity Executions are automatically associated with a default [Retry Policy](/retry-policies) if a custom one is not provided.
+
+To create an Activity Retry Policy in .NET, set the `RetryPolicy` on the `ActivityOptions` when calling `ExecuteActivityAsync`.
+
+```csharp
+return await Workflow.ExecuteActivityAsync(
+    (MyActivities a) => a.MyActivity(param),
+    new()
+    {
+        StartToCloseTimeout = TimeSpan.FromMinutes(5),
+        RetryPolicy = new() { MaximumInterval = TimeSpan.FromSeconds(10) },
+    });
+```
