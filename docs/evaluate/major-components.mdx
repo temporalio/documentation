@@ -1,7 +1,7 @@
 ---
 id: major-components
 title: Temporal's major components
-description: Temporal's major components are a Temporal SDK, Temporal Service, Temporal UI, and Temporal CLI.
+description: Temporal's major components are a Temporal SDK, Temporal Service, Temporal UI, and the Temporal CLI.
 sidebar_label: Major components
 tags:
   - temporal-service
@@ -63,8 +63,45 @@ With the Temporal CLI, developers can start their applications, pass messages, c
 The Temporal CLI provides developers with direct access to a Temporal Service.
 It also includes a distribution of the Temporal Service for local development purposes.
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs
+defaultValue="macos"
+values={[
+{label: 'MacOS', value: 'macos'},
+{label: 'Windows', value: 'windows'},
+{label: 'Linux', value: 'linux'},
+]
+}>
+
+<TabItem value="macos">
+
+```shell
+brew install temporal && temporal server start-dev
+```
+
+</TabItem>
+<TabItem value="windows">
+
+```shell
+curl -sSf https://temporal.download/cli.sh | sh
+```
+
+</TabItem>
+<TabItem value="linux">
+
+```shell
+apt install temporal && temporal server start-dev
+```
+
+</TabItem>
+</Tabs>
+
 ## Temporal UI
 
 **What is the Temporal UI?**
 
 The Temporal UI is a browser-based user interface that provides access to application state and metadata for a variety of observational purposes.
+
+![Recent Workflows page](/img/recent-workflows.avif)

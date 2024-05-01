@@ -7,13 +7,12 @@ description: Learn how to use Temporal Java SDK.
 slug: /dev-guide/java
 toc_max_heading_level: 4
 keywords:
-- dev guide
-- java
+  - dev guide
+  - java
 tags:
-- dev-guide
-- java
+  - dev-guide
+  - java
 ---
-
 
 This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
 
@@ -24,7 +23,7 @@ The project setup section of the Temporal Java SDK Developer's guide covers the 
 - [Install the Temporal CLI](/dev-guide/java/project-setup#install-cli): Download and install the Temporal CLI for Mac, Linux, or Windows.
 - [Choose a development Cluster](/dev-guide/java/project-setup#choose-dev-cluster): Discover which development Cluster you should choose
 - [Boilerplate Temporal Application project code](/dev-guide/java/project-setup#boilerplate-project): Discover the minimum code I need to create a boilerplate Temporal Application.
-- [Start Workflow using the CLI](/dev-guide/java/project-setup#start-workflow): Learn how to start a Temporal Workflow using the CLI
+- [Start Workflow using the Temporal CLI](/dev-guide/java/project-setup#start-workflow): Learn how to start a Temporal Workflow using the Temporal CLI
 - [Add a testing framework](/dev-guide/java/project-setup#test-framework): Testing provides a framework to facilitate Workflow and integration testing.
 
 ## Durable-execution
@@ -41,15 +40,15 @@ The Durable Execution section of the Temporal Developer's guide covers advanced 
 
 The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 
-- [How to install Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): How to install Temporal CLI and run a development Cluster.
+- [How to install the Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): How to install Temporal CLI and run a development Cluster.
 - [How to install a Temporal SDK](/dev-guide/java/foundations#install-a-temporal-sdk): A Temporal SDK provides a framework for Temporal Application development.
-- [How to create a Temporal Client in Java](/dev-guide/java/foundations#connect-to-a-dev-cluster): To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
-- [How to connect to Temporal Cloud](/dev-guide/java/foundations#connect-to-temporal-cloud): Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
+- [How to create a Temporal Client in Java](/develop/java/temporal-client#connect-to-development-service): To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).
+- [How to connect to Temporal Cloud](/develop/java/temporal-client#connect-to-temporal-cloud): Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
 - [How to develop a Workflow Definition in Java](/dev-guide/java/foundations#develop-workflows): In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.
 - [How to develop a basic Activity](/dev-guide/java/foundations#develop-activities): One of the primary things that Workflows do is orchestrate the execution of Activities.
 - [How to start an Activity Execution](/dev-guide/java/foundations#activity-execution): Calls to spawn Activity Executions are written within a Workflow Definition.
 - [How to develop a Worker Program in Java](/dev-guide/java/foundations#run-a-dev-worker): Use the `newWorker` method on an instance of a `WorkerFactory` to create a new Worker in Java.
-- [How to spawn a Workflow Execution in Java](/dev-guide/java/foundations#start-workflow-execution): Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
+- [How to spawn a Workflow Execution in Java](/develop/java/temporal-client#start-workflow-execution): Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
 
 ## Features
 
@@ -69,7 +68,7 @@ The Features section of the Temporal Developer's guide provides basic implementa
 - [How to Schedule a Workflow](/dev-guide/java/features#schedule-a-workflow): Schedule a Workflow.
 - [How to set a Cron Schedule in Java](/dev-guide/java/features#cron-schedule): Set the Cron Schedule with the `WorkflowStub` instance in the Client code using [`WorkflowOptions.Builder.setCronSchedule`
 - [Side Effects](/dev-guide/java/features#side-effects): A Side Effect is used to produce non-deterministic code, such as generating a UUID or a random number.
-- [How to create and manage Namespaces](/dev-guide/java/features#namespaces): You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..
+- [How to create and manage Namespaces](/dev-guide/java/features#namespaces): You can create, update, deprecate or delete your Namespaces using either the Temporal CLI or SDK APIs.
 
 ## Observability
 
@@ -93,8 +92,8 @@ The Testing section of the Temporal Developer's guide covers the many ways to te
 
 The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.
 
-- [How to debug in a development environment](/dev-guide/java/debugging#debug-in-a-development-environment): In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the Web UI and tctl.
-- [How to debug in a production environment](/dev-guide/java/debugging#debug-in-a-production-environment): Debug production Workflows using the Web UI, tctl, Replays, Tracing, or Logging.
+- [How to debug in a development environment](/dev-guide/java/debugging#debug-in-a-development-environment): In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the Web UI and the Temporal CLI.
+- [How to debug in a production environment](/dev-guide/java/debugging#debug-in-a-production-environment): Debug production Workflows using the Web UI, the Temporal CLI, Replays, Tracing, or Logging.
 
 ## Versioning
 
@@ -109,4 +108,3 @@ The Converters and Codecs section of the Temporal Developer's guide provides gui
 
 - [How to use a custom Payload Codec in Java](/dev-guide/java/converters#custom-payload-codec): Create a custom implementation of `PayloadCodec` and use it in `CodecDataConverter` to set a custom Data Converter.
 - [How to use custom Payload conversion](/dev-guide/java/converters#custom-payload-conversion): Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.
-

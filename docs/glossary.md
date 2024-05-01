@@ -89,7 +89,7 @@ The `Authorizer` plugin contains a single `Authorize` method, which is invoked f
 
 _Tags: [term](/tags/term)_
 
-#### [Child Workflow](/workflows#child-workflow)
+#### [Child Workflow](/encyclopedia/child-workflows)
 
 A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.
 
@@ -263,19 +263,13 @@ Multi-Cluster Replication is a feature which asynchronously replicates Workflow 
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Multi-Cluster Replication](/clusters#multi-cluster-replication)
-
-Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
-
-_Tags: [term](/tags/term), [explanation](/tags/explanation)_
-
 #### [Namespace](/namespaces)
 
 A Namespace is a unit of isolation within the Temporal Platform
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Parent Close Policy](/workflows#parent-close-policy)
+#### [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy)
 
 If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).
 
@@ -449,13 +443,13 @@ A Temporal Application is a set of Workflow Executions.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Temporal CLI](/cli)
+#### [Temporal CLI](/cli) {#cli}
 
 The Temporal CLI is the most recent version of Temporal's command-line tool.
 
 _Tags: [term](/tags/term), [cli](/tags/cli)_
 
-#### [Temporal Client](/temporal#temporal-client)
+#### [Temporal Client](/encyclopedia/temporal-sdks#temporal-client)
 
 A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.
 
@@ -653,8 +647,7 @@ A Workflow Type is a name that maps to a Workflow Definition.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [tctl](/tctl-v1)
+#### tctl (_deprecated_)
 
 tctl is a command-line tool that you can use to interact with a Temporal Cluster.
-
-_Tags: [term](/tags/term), [tctl](/tags/tctl)_
+It is superceded by the [Temporal CLI utility](#cli)

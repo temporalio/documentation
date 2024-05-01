@@ -20,6 +20,11 @@ origins:
       owner: "temporalio"
       repo: "documentation"
       ref: "main"
+  - files:
+      pattern: "./sample-apps/**/*.java"
+      owner: "temporalio"
+      repo: "documentation"
+      ref: "main"
 
 targets:
   - docs

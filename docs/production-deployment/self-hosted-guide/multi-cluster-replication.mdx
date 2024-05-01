@@ -504,20 +504,23 @@ clusterMetadata:
       rpcAddress: "127.0.0.1:8233"
 ```
 
-Then you can use the `tctl admin` tool to add cluster connections. All operations should be executed in both Clusters.
+Then you can use the Temporal CLI tool to add cluster connections. All operations should be executed in both Clusters.
 
+<!--tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233"-->
+<!--tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233"-->
+<!--tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233" --enable_connection false
+tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233" --enable_connection false-->
+<!--tctl -address 127.0.0.1:7233 admin cluster remove-remote-cluster --cluster "clusterB"
+tctl -address 127.0.0.1:8233 admin cluster remove-remote-cluster --cluster "clusterA"-->
+
+<!--THIS MUST BE CHECKED FOR ACCURACY-->
 ```shell
-# Add cluster B connection into cluster A
-tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233"
-# Add cluster A connection into cluster B
-tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233"
+# Add a cluster
+temporal operator cluster upsert --frontend_address="127.0.2.1:8233"
 
 # Disable connections
-tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233" --enable_connection false
-tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233" --enable_connection false
+temporal operator cluster upsert --frontend_address="localhost:8233" --enable_connection false
 
 # Delete connections
-tctl -address 127.0.0.1:7233 admin cluster remove-remote-cluster --cluster "clusterB"
-tctl -address 127.0.0.1:8233 admin cluster remove-remote-cluster --cluster "clusterA"
+temporal operator cluster remove --name="someClusterName"
 ```
-

@@ -7,13 +7,12 @@ description: This guide provides a comprehensive overview of Temporal Clusters.
 slug: /clusters
 toc_max_heading_level: 4
 keywords:
-- explanation
-- term
+  - explanation
+  - term
 tags:
-- explanation
-- term
+  - explanation
+  - term
 ---
-
 
 This guide provides a comprehensive overview of Temporal Clusters.
 
@@ -66,7 +65,14 @@ Temporal offers official support for, and is tested against, dependencies with t
 The Frontend Service is a stateless gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Frontend Service</p></div><div class="tdiiw" height="1040"><img class="img_ev3q" src="/diagrams/temporal-frontend-service.svg" alt="Frontend Service" /></div></div>
+<div class="tdiw">
+  <div class="tditw">
+    <p class="tdit">Frontend Service</p>
+  </div>
+  <div class="tdiiw" height="1040">
+    <img class="img_ev3q" src="/diagrams/temporal-frontend-service.svg" alt="Frontend Service" />
+  </div>
+</div>
 
 Types of inbound calls include the following:
 
@@ -74,7 +80,7 @@ Types of inbound calls include the following:
 - External events
 - Worker polls
 - [Visibility](#visibility) requests
-- [tctl](/tctl-v1) (the Temporal CLI) operations
+- [Temporal CLI](/cli) (the Temporal CLI) operations
 - Calls from a remote Cluster related to [Multi-Cluster Replication](#multi-cluster-replication)
 
 Every inbound request related to a Workflow Execution must have a Workflow Id, which is hashed for routing purposes.
@@ -95,7 +101,21 @@ The History Service is responsible for persisting Workflow Execution state to th
 When the Workflow Execution is able to progress, the History Service adds a Task with the Workflow's updated history to the Task Queue.
 From there, a Worker can poll for work, receive this updated history, and resume execution.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Block diagram of how the History Service relates to the other services of the Temporal Server and to a Temporal Cluster</p></div><div class="tdiiw" height="1040"><img class="img_ev3q" src="/diagrams/temporal-history-service.svg" alt="Block diagram of how the History Service relates to the other services of the Temporal Server and to a Temporal Cluster" /></div></div>
+<div class="tdiw">
+  <div class="tditw">
+    <p class="tdit">
+      Block diagram of how the History Service relates to the other services of the Temporal Server and to a Temporal
+      Cluster
+    </p>
+  </div>
+  <div class="tdiiw" height="1040">
+    <img
+      class="img_ev3q"
+      src="/diagrams/temporal-history-service.svg"
+      alt="Block diagram of how the History Service relates to the other services of the Temporal Server and to a Temporal Cluster"
+    />
+  </div>
+</div>
 
 The total number of History Service processes can be between 1 and the total number of [History Shards](#history-shard).
 An individual History Service can support many History Shards.
@@ -144,7 +164,14 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
 
 The Matching Service is responsible for hosting user-facing [Task Queues](/workers#task-queue) for Task dispatching.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Matching Service</p></div><div class="tdiiw" height="980"><img class="img_ev3q" src="/diagrams/temporal-matching-service.svg" alt="Matching Service" /></div></div>
+<div class="tdiw">
+  <div class="tditw">
+    <p class="tdit">Matching Service</p>
+  </div>
+  <div class="tdiiw" height="980">
+    <img class="img_ev3q" src="/diagrams/temporal-matching-service.svg" alt="Matching Service" />
+  </div>
+</div>
 
 It is responsible for matching Workers to Tasks and routing new Tasks to the appropriate queue.
 This service can scale internally by having multiple instances.
@@ -160,7 +187,14 @@ Ports are configurable in the Cluster configuration.
 
 The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Worker Service</p></div><div class="tdiiw" height="740"><img class="img_ev3q" src="/diagrams/temporal-worker-service.svg" alt="Worker Service" /></div></div>
+<div class="tdiw">
+  <div class="tditw">
+    <p class="tdit">Worker Service</p>
+  </div>
+  <div class="tdiiw" height="740">
+    <img class="img_ev3q" src="/diagrams/temporal-worker-service.svg" alt="Worker Service" />
+  </div>
+</div>
 
 It talks to the Frontend Service.
 
@@ -172,7 +206,7 @@ Ports are configurable in the Cluster configuration.
 
 Retention Period is the duration for which the Temporal Cluster stores data associated with closed Workflow Executions on a Namespace in the Persistence store.
 
-- [How to set the Retention Period for a Namespace](/tctl-v1/namespace#register)
+- [How to set the Retention Period for a Namespace](/cli/operator#create)
 - [How to set the Retention Period for a Namespace using the Go SDK](/dev-guide/go/features#namespaces)
 - [How to set the Retention Period for a Namespace using the Java SDK](/dev-guide/java/features#namespaces)
 
@@ -185,7 +219,7 @@ On Temporal Cluster version 1.18 and later, the maximum Retention Period value f
 On Temporal Cluster versions 1.17 and earlier, the maximum Retention Period you can set is 30 days.
 Setting the Retention Period to 0 results in the error _A valid retention period is not set on request_.
 
-If you don't set the Retention Period value when using the [`tctl namespace register`](/tctl-v1/namespace#register) command, it defaults to 3 days.
+If you don't set the Retention Period value when using the [`temporal operator namespace create`](/cli/operator#create) command, it defaults to 3 days.
 If you don't set the Retention Period value when using the Register Namespace Request API, it returns an error.
 
 When changing the Retention Period, the new duration applies to Workflow Executions that close after the change is saved.
@@ -199,7 +233,14 @@ The Temporal Persistence store is a database used by [Temporal Services](#tempor
 A Temporal Cluster's only required dependency for basic operation is the Persistence database.
 Multiple types of databases are supported.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Persistence</p></div><div class="tdiiw" height="620"><img class="img_ev3q" src="/diagrams/temporal-database.svg" alt="Persistence" /></div></div>
+<div class="tdiw">
+  <div class="tditw">
+    <p class="tdit">Persistence</p>
+  </div>
+  <div class="tdiiw" height="620">
+    <img class="img_ev3q" src="/diagrams/temporal-database.svg" alt="Persistence" />
+  </div>
+</div>
 
 The database stores the following types of data:
 
@@ -234,6 +275,7 @@ You can verify supported databases in the [Temporal Server release notes](https:
 ## What is Visibility? {#visibility}
 
 :::tip Support, stability, and dependency info
+
 - For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
 - For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
 - In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports Advanced Visibility features](/self-hosted-guide/visibility). The Visibility configuration for Temporal Clusters has been updated and Dual Visibility is enabled. For details, see [Visibility store setup](/self-hosted-guide/visibility).
@@ -808,4 +850,3 @@ T = 2: task A is loaded.
 
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
 Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
-

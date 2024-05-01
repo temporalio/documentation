@@ -1,3 +1,4 @@
+// @@@SNIPSTART javasdk-build-caller-app-using-local-client
 package clientsample;
 
 import io.temporal.client.WorkflowClient;
@@ -10,11 +11,11 @@ public class YourCallerApp {
     public static void main(String[] args) {
         // Create an instance that connects to a Temporal Service running on the local
         // machine, using the default port (7233)
-        WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+        WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newLocalServiceStubs();
 
         // Initialize the Temporal Client
         // This application uses the Client to communicate with the local Temporal Service
-        WorkflowClient client = WorkflowClient.newInstance(service);
+        WorkflowClient client = WorkflowClient.newInstance(serviceStub);
 
         // Establish the Workflow Options
         WorkflowOptions options = WorkflowOptions
@@ -31,4 +32,4 @@ public class YourCallerApp {
         System.exit(0);
     }
 }
-
+// @@@SNIPEND

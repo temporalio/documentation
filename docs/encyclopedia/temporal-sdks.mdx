@@ -185,6 +185,14 @@ Let’s break down each one.
 A Temporal Client acts as the bridge for communication between your applications and the Cluster.
 The Client performs key functions that facilitate the execution of, management of, and communication with Workflows.
 
+The most common operations that a Temporal Client enables you to perform are the following:
+
+- Get the result of Workflow Execution.
+- List Workflow Executions.
+- Query a Workflow Execution.
+- Signal a Workflow Execution.
+- Start a Workflow Execution.
+
 The following code is an example using the Go SDK.
 It showcases how to initialize a Temporal Client, create a connection to a local Temporal Cluster, and start a Workflow Execution:
 
@@ -192,6 +200,12 @@ It showcases how to initialize a Temporal Client, create a connection to a local
 
 The following code is for example purposes only.
 For tested code samples and best practices, use your preferred language SDK's developer's guide.
+
+- [Go SDK Temporal Client feature guide](/develop/go/temporal-client)
+- [Java SDK Temporal Client feature guide](/develop/java/temporal-client)
+- [PHP SDK Temporal Client feature guide](/dev-guide/php/foundations#connect-to-a-dev-cluster)
+- [Python SDK Temporal Client feature guide](/dev-guide/python/foundations#connect-to-a-dev-cluster)
+- [TypeScript SDK Temporal Client feature guide](/dev-guide/typescript/foundations#connect-to-a-dev-cluster)
 
 :::
 
@@ -476,7 +490,7 @@ When you create a new Worker process, the Worker creates a long-lasting connecti
 </div>
 
 Although the Worker is now running, unless a Workflow is explicitly started, the Task Queue doesn't have any Tasks on it and so, no code executes.
-We can use a Temporal Client (available in Temporal SDKs and the CLI) to start a new Workflow.
+We can use a Temporal Client (available in Temporal SDKs and the Temporal CLI) to start a new Workflow.
 
 <div class="tdiw">
   <div class="tditw">
