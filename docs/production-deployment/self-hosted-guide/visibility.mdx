@@ -462,7 +462,7 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
   - [index privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-indices): `write`
 - **Custom Search Attributes**
   - [index privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-indices): `manage`
-  - [cluster privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-cluster): `monitor` or `manage`.
+  - [Temporal Service privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-cluster): `monitor` or `manage`.
 
 ## How to set up Dual Visibility {#dual-visibility}
 
@@ -671,7 +671,7 @@ Before you begin, verify [supported databases and versions](/self-hosted-guide/v
 
 The following steps describe how to migrate your Visibility database.
 
-After you make any changes to your [Temporal Service configuration](/clusters#cluster-configuration), ensure that you restart your services.
+After you make any changes to your [Temporal Service configuration](/clusters#temporal-service-configuration), ensure that you restart your services.
 
 #### Set up secondary Visibility store
 

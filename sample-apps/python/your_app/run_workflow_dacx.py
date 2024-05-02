@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
 
 """ @dacx
-id: how-to-connect-to-a-cluster-in-python
+id: how-to-connect-to-a-temporal-service-in-python
 title: How to connect to a Temporal Service in Python
 label: Connect a Temporal Client
 description: Connect a Temporal Client to a Temporal Service in the Python SDK.

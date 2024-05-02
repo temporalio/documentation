@@ -288,7 +288,7 @@ module.exports = {
         "tctl-v1/activity",
         "tctl-v1/admin",
         "tctl-v1/batch",
-        "tctl-v1/cluster",
+        "tctl-v1/temporal-service",
         "tctl-v1/dataconverter",
         "tctl-v1/namespace",
         "tctl-v1/schedule",
@@ -305,7 +305,7 @@ module.exports = {
         id: "references/index",
       },
       items: [
-        "references/cluster-metrics",
+        "references/temporal-service-metrics",
         "references/commands",
         "references/configuration",
         "references/dynamic-configuration",

@@ -67,7 +67,7 @@ Refer to [this repository](https://github.com/temporalio/migration-example/blob/
 When performing a live migration, make sure your Worker capacity can support the migration load.
 Both a [Signal](/workflows#signal) and a [Query](/workflows#query) will be executed during the course of the migration.
 Also, the Query API loads the entire history of Workflows into Workers to compute the result (if they are not already cached).
-That means that your self-hosted cluster Worker capacity will need to support having those executions in memory to serve those requests.
+That means that your self-hosted Temporal Service Worker capacity will need to support having those executions in memory to serve those requests.
 The volume of these requests might be high to execute against all the matches to a `ListFilter`.
 
 ### Considerations when resuming Workflows on a new Temporal Service or Namespace
@@ -85,7 +85,7 @@ The volume of these requests might be high to execute against all the matches to
 
 - Have you added an mTLS certificate to your Temporal Namespace? Review our [documentation for adding a certificate to your Temporal Cloud account](/cloud/certificates) for more information.
 - There are differences in how metrics are generated in self-hosted Temporal and Temporal Cloud. Review the [documentation on Temporal Cloud metrics](/cloud/metrics/) for more information.
-- Consider the implications for [security and access to your cluster](/cloud/security).
+- Consider the implications for [security and access to your Temporal Service](/cloud/security).
 - Review your current load (actions per second) and speak to your Account Executive and Solutions Architect so we can set appropriate [Namespace limits](/cloud/limits).
 
 ### Multi-Cluster Replication

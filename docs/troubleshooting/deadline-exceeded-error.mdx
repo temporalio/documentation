@@ -68,7 +68,7 @@ Use the following query to check for errors in `RpsLimit`, `ConcurrentLimit` and
 sum(rate(service_errors_resource_exhausted{}[1m])) by (resource_exhausted_cause)
 ```
 
-Look for high latencies, short timeouts, and other abnormal [Temporal Service metrics](/references/cluster-metrics).
+Look for high latencies, short timeouts, and other abnormal [Temporal Service metrics](/references/temporal-service-metrics).
 If the metrics come from a specific service (such as History Service), check the service's health and performance.
 
 ### Check Workflow logic

@@ -660,7 +660,7 @@ An [Activity Heartbeat](/activities#activity-heartbeat) is a ping from the [Work
 Each Heartbeat informs the Temporal Service that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
 If the Temporal Service does not receive a Heartbeat within a [Heartbeat Timeout](/activities#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/workers#activity-task-execution) may be scheduled according to the Retry Policy.
 
-Heartbeats may not always be sent to the Cluster—they may be [throttled](/activities#throttling) by the Worker.
+Heartbeats may not always be sent to the Temporal Service—they may be [throttled](/activities#throttling) by the Worker.
 
 Activity Cancellations are delivered to Activities from the Temporal Service when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
 Heartbeat throttling may lead to Cancellation getting delivered later than expected.

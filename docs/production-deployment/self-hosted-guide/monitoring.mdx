@@ -41,7 +41,7 @@ If you implement the examples, ensure that your local docker-compose is set up, 
 
 To set up Prometheus and Grafana:
 
-1. Set up Prometheus endpoints for your [Temporal Service metrics](#cluster-metrics-setup) and [SDK metrics](#sdk-metrics-setup).
+1. Set up Prometheus endpoints for your [Temporal Service metrics](#temporal-service-metrics-setup) and [SDK metrics](#sdk-metrics-setup).
 2. [Configure Prometheus](#prometheus-configuration) to receive metrics data from your Temporal Service and SDK Clients.
    Make sure to test whether you are receiving metrics data on your Prometheus endpoint.
 3. [Set up Grafana](#grafana) to use Prometheus as a data source.
@@ -297,13 +297,13 @@ After you update this configuration, restart your local docker-compose Temporal 
 To set up your dashboards in Grafana, either use the UI or configure them in your Grafana deployment on the Temporal Service, as done in this [dashboards](https://github.com/tsurdilo/my-temporal-dockercompose/tree/main/deployment/grafana/dashboards) example.
 
 In your Grafana dashboard, add your Prometheus query to call specific metrics.
-The [Temporal Service Metrics reference](/references/cluster-metrics) describes a few metrics and queries that you can get started with.
+The [Temporal Service Metrics reference](/references/temporal-service-metrics) describes a few metrics and queries that you can get started with.
 
 For example, to create a dashboard in your local Grafana UI at [localhost:8085](http://localhost:8085):
 
 1. Go to **Create > Dashboard**, and add an empty panel.
 2. On the **Panel configuration** page, in the **Query** tab, select **Temporal Prometheus** as the data source.
-3. In the **Metrics** field, use any of the queries listed in the [Temporal Service Metrics reference](/references/cluster-metrics).
+3. In the **Metrics** field, use any of the queries listed in the [Temporal Service Metrics reference](/references/temporal-service-metrics).
    For example, add `sum by (operation) (rate(service_requests{service_name="frontend"}[2m]))` to see all the Frontend Service requests on your local docker-compose Temporal Service.
 4. You should see the graph show metrics data for the Frontend Service from the docker-compose Temporal Service.
 5. When you start your Workflows (after setting up your SDK Metrics), you will see your SDK metrics in the graph as well.

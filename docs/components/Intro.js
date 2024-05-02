@@ -96,8 +96,8 @@ const references = [
     name: "SDK metrics",
   },
   {
-    path: "/references/cluster-metrics",
-    name: "Cluster metrics",
+    path: "/references/temporal-service-metrics",
+    name: "Temporal Service metrics",
   },
   {
     path: "/references/errors",
@@ -232,7 +232,7 @@ const slides = [
     title: "SDKs",
     description: "Write code in your programming language of choice.",
     content1:
-      "A Temporal SDK is a library you use in your code. Each SDK has two parts to its API: the Client and the Worker. The Worker is the long-running process that has your Workflow code. The Client is used to communicate with the Cluster—for instance, to start and interact with Workflows.",
+      "A Temporal SDK is a library you use in your code. Each SDK has two parts to its API: the Client and the Worker. The Worker is the long-running process that has your Workflow code. The Client is used to communicate with the Temporal Service—for instance, to start and interact with Workflows.",
     giphy: "6UFgdU9hirj1pAOJyN",
   },
   {

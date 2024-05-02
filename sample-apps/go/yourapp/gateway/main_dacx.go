@@ -80,7 +80,7 @@ func startWorkflowHandler(w http.ResponseWriter, r *http.Request, temporalClient
 }
 
 /* @dacx
-id: how-to-connect-to-a-development-cluster-in-go
+id: how-to-connect-to-a-development-temporal-service-in-go
 title: How to connect to a Temporal dev Temporal Service in Go
 label: Connect to a dev Temporal Service
 description: Use the Dial() method on the Temporal Client and omit setting any client options. If there is a local dev Temporal Service running, the Client will connect to it.

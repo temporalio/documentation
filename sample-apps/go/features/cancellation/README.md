@@ -1,6 +1,6 @@
 # Temporal Go SDK | Workflow Cancellation feature | example app
 
-To run this sample, make sure you have a [local development Temporal Service is running](https://docs.temporal.io/application-development/foundations#run-a-development-cluster).
+To run this sample, make sure you have a [local development Temporal Service is running](https://docs.temporal.io/application-development/foundations#run-a-development-temporal-service).
 
 From the root of this package, start a Worker:
 

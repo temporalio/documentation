@@ -31,7 +31,7 @@ The Temporal Server consists of four independently scalable services:
 - Matching subsystem: hosts Task Queues for dispatching.
 - Worker Service: for internal background Workflows.
 
-For example, a real-life production deployment can have 5 Frontend, 15 History, 17 Matching, and 3 Worker Services per cluster.
+For example, a real-life production deployment can have 5 Frontend, 15 History, 17 Matching, and 3 Worker Services per Temporal Service.
 
 The Temporal Server services can run independently or be grouped together into shared processes on one or more physical or virtual machines.
 For live (production) environments, we recommend that each service runs independently, because each one has different scaling requirements and troubleshooting becomes easier.
@@ -81,7 +81,7 @@ Types of inbound calls include the following:
 - Worker polls
 - [Visibility](#visibility) requests
 - [tctl](/tctl-v1) (the Temporal CLI) operations
-- Calls from a remote related to [Multi-Cluster Replication](#multi-cluster-replication)
+- Calls from a remote related to [Multi-Cluster Replication](#multiion)
 
 Every inbound request related to a Workflow Execution must have a Workflow Id, which is hashed for routing purposes.
 The Frontend Service has access to the hash rings that maintain service membership information, including how many nodes (instances of each service) are in the Temporal Service.
@@ -312,7 +312,7 @@ Temporal's Archival feature is considered **experimental** and not subject to no
 
 Archival is not supported when running Temporal through Docker and is disabled by default when installing the system manually and when deploying through [helm charts](https://github.com/temporalio/helm-charts/blob/master/templates/server-configmap.yaml) (but can be enabled in the [config](https://github.com/temporalio/temporal/blob/master/config/development.yaml)).
 
-## What is Temporal Service configuration? {#cluster-configuration}
+## What is Temporal Service configuration? {#temporal-service-configuration}
 
 Temporal Service configuration is the setup and configuration details of your self-hosted Temporal Service, defined using YAML.
 You must define your Temporal Service configuration when setting up your self-hosted Temporal Service.
@@ -360,7 +360,7 @@ For details on dynamic configuration keys, see [Dynamic configuration reference]
 
 For dynamic configuration examples, see [https://github.com/temporalio/temporal/tree/master/config/dynamicconfig](https://github.com/temporalio/temporal/tree/master/config/dynamicconfig).
 
-### What is Temporal Service security configuration? {#temporal-cluster-security-configuration}
+### What is Temporal Service security configuration? {#temporal-temporal-service-security-configuration}
 
 Secure your Temporal Service (self-hosted and Temporal Cloud) by encrypting your network communication and setting authentication and authorization protocols for API calls.
 
@@ -443,7 +443,7 @@ You can then set up your observability platform (such as Grafana) to use Prometh
 
 For details on self-hosted Temporal Service metrics and setup, see the following:
 
-- [Temporal Service OSS metrics reference](/references/cluster-metrics)
+- [Temporal Service OSS metrics reference](/references/temporal-service-metrics)
 - [Set up Prometheus and Grafana to view SDK and self-hosted Temporal Service metrics](/self-hosted-guide/monitoring)
 
 ## What is Multi-Cluster Replication? {#multi-cluster-replication}
@@ -482,10 +482,10 @@ When performing failover for a Namespace from one Temporal Service to another Te
 
 When there is a data conflict, a comparison will be made and Workflow Execution History entries with the highest version will be considered the source of truth.
 
-When a cluster is trying to mutate a Workflow Execution History, the version will be checked.
-A cluster can mutate a Workflow Execution History only if the following is true:
+When a Temporal Service is trying to mutate a Workflow Execution History, the version will be checked.
+A Temporal Service can mutate a Workflow Execution History only if the following is true:
 
-- The version in the Namespace belongs to this cluster, i.e.
+- The version in the Namespace belongs to this Temporal Service, i.e.
   `(version in namespace) % (shared version increment) == (this cluster's initial version)`
 - The version of this Workflow Execution History's last entry (event) is equal or less than the version in the Namespace, i.e.
   `(last event's version) <= (version in namespace)`

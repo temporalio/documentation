@@ -58,7 +58,7 @@
       "destination": "/workers:path*"
     },
     {
-      "source": "/cluster-deployment-guide:path*",
+      "source": "/temporal-service-deployment-guide:path*",
       "destination": "/self-hosted-guide"
     },
     {
@@ -1094,31 +1094,31 @@
       "destination": "/security"
     },
     {
-      "source": "/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development",
-      "destination": "/kb/all-the-ways-to-run-a-cluster#helm-charts"
+      "source": "/temporal-service/how-to-deploy-temporal-to-kubernetes-for-testing-and-development",
+      "destination": "/kb/all-the-ways-to-run-a-temporal-service#helm-charts"
     },
     {
-      "source": "/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose",
-      "destination": "/kb/all-the-ways-to-run-a-cluster#docker--docker-compose"
+      "source": "/temporal-service/how-to-quickly-install-the-temporal-temporal-service-using-docker-compose",
+      "destination": "/kb/all-the-ways-to-run-a-temporal-service#docker--docker-compose"
     },
     {
       "source": "/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development",
-      "destination": "/kb/all-the-ways-to-run-a-cluster#helm-charts"
+      "destination": "/kb/all-the-ways-to-run-a-temporal-service#helm-charts"
     },
     {
       "source": "/content/how-to-quickly-install-the-temporal-server",
-      "destination": "/kb/all-the-ways-to-run-a-cluster"
+      "destination": "/kb/all-the-ways-to-run-a-temporal-service"
     },
     {
-      "source": "/content/how-to-integrate-elasticsearch-into-a-temporal-cluster",
+      "source": "/content/how-to-integrate-elasticsearch-into-a-temporal-temporal-service",
       "destination": "/self-hosted-guide/visibility"
     },
     {
-      "source": "/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster",
+      "source": "/temporal-service/how-to-integrate-elasticsearch-into-a-temporal-temporal-service",
       "destination": "/self-hosted-guide/visibility"
     },
     {
-      "source": "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster",
+      "source": "/clusters/how-to-integrate-elasticsearch-into-a-temporal-temporal-service",
       "destination": "/self-hosted-guide/visibility"
     },
     {
@@ -1134,8 +1134,8 @@
       "destination": "/visibility"
     },
     {
-      "source": "/content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl",
-      "destination": "/tctl-v1/how-to-remove-a-search-attribute-from-a-cluster-using-tctl"
+      "source": "/content/how-to-remove-a-search-attribute-from-a-temporal-service-using-tctl",
+      "destination": "/tctl-v1/how-to-remove-a-search-attribute-from-a-temporal-service-using-tctl"
     },
     {
       "source": "/operation/how-to-tune-workers",
@@ -1146,12 +1146,12 @@
       "destination": "/kb/cadence-to-temporal"
     },
     {
-      "source": "/kb/install-temporal-cluster-for-development",
-      "destination": "/kb/all-the-ways-to-run-a-cluster"
+      "source": "/kb/install-temporal-temporal-service-for-development",
+      "destination": "/kb/all-the-ways-to-run-a-temporal-service"
     },
     {
-      "source": "/kb/install-temporal-cluster-for-development",
-      "destination": "/kb/all-the-ways-to-run-a-cluster"
+      "source": "/kb/install-temporal-temporal-service-for-development",
+      "destination": "/kb/all-the-ways-to-run-a-temporal-service"
     },
     {
       "source": "/tctl",
@@ -1174,8 +1174,8 @@
       "destination": "/tctl-v1/batch#:path*"
     },
     {
-      "source": "/tctl/cluster/:path*",
-      "destination": "/tctl-v1/cluster#:path*"
+      "source": "/tctl/temporal-service/:path*",
+      "destination": "/tctl-v1/temporal-service#:path*"
     },
     {
       "source": "/tctl/dataconverter/:path*",
@@ -1474,7 +1474,7 @@
       "destination": "/temporal#temporal-application"
     },
     {
-      "source": "/concepts/what-is-a-temporal-cluster",
+      "source": "/concepts/what-is-a-temporal-temporal-service",
       "destination": "/clusters"
     },
     {
@@ -1550,12 +1550,12 @@
       "destination": "/workflows#workflow-type"
     },
     {
-      "source": "/content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl",
+      "source": "/content/how-to-add-a-custom-search-attribute-to-a-temporal-service-using-tctl",
       "destination": "/self-hosted-guide/visibility"
     },
     {
       "source": "archive-data",
-      "destination": "/cluster-deployment-guide#archival"
+      "destination": "/temporal-service-deployment-guide#archival"
     },
     {
       "source": "/blog/airbyte-case-study/",
@@ -1579,7 +1579,7 @@
     },
     {
       "source": "/clusters/how-to-upgrade-the-temporal-server-version",
-      "destination": "/cluster-deployment-guide#upgrade-server"
+      "destination": "/temporal-service-deployment-guide#upgrade-server"
     },
     {
       "source": "/concepts/what-is-a-claimmapper-plugin",
@@ -1607,7 +1607,7 @@
     },
     {
       "source": "/archive-data#providers",
-      "destination": "/cluster-deployment-guide#provider"
+      "destination": "/temporal-service-deployment-guide#provider"
     },
     {
       "source": "/configure-temporal-server#membership---required",
@@ -1687,7 +1687,7 @@
     },
     {
       "source": "/server/elasticsearch-setup",
-      "destination": "/cluster-deployment-guide#elasticsearch"
+      "destination": "/temporal-service-deployment-guide#elasticsearch"
     },
     {
       "source": "/server/versions-and-dependencies",
@@ -1939,7 +1939,7 @@
     },
     {
       "source": "/archive-data#providers",
-      "destination": "/cluster-deployment-guide#providers"
+      "destination": "/temporal-service-deployment-guide#providers"
     },
     {
       "source": "/concepts/what-is-a-retention-period",
@@ -1947,7 +1947,7 @@
     },
     {
       "source": "/archive-data",
-      "destination": "/cluster-deployment-guide#archival"
+      "destination": "/temporal-service-deployment-guide#archival"
     },
     {
       "source": "/kb/non-determinism-issues-for-run-ids",
@@ -1970,7 +1970,7 @@
       "destination": "/self-hosted-guide/defaults"
     },
     {
-      "source": "/kb/all-the-ways-to-run-a-cluster",
+      "source": "/kb/all-the-ways-to-run-a-temporal-service",
       "destination": "/self-hosted-guide"
     },
     {

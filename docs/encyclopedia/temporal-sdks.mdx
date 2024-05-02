@@ -13,7 +13,7 @@ keywords:
   - replay
   - temporal application
   - temporal sdk
-  - temporal-temporal-service
+  - temporal-service
   - temporal-sdk
 tags:
   - components
@@ -23,7 +23,7 @@ tags:
   - replay
   - temporal-application
   - temporal-sdk
-  - temporal-temporal-service
+  - temporal-service
   - temporal-sdk
 ---
 
@@ -278,7 +278,7 @@ A Workflow executes Activities (other functions that interact with external syst
 This Workflow code, while executing, can be paused, resumed, and migrated across physical machines without losing state.
 
 When a Workflow calls the API to execute an Activity, the Worker sends a [Command](https://docs.temporal.io/references/commands) back to the Temporal Service. The Temporal Service creates Activity Tasks in response which the same or a different Worker can then pick up and begin executing. In this way, the Worker and Temporal Service work together to incrementally execute Workflow code in a reliable way.
-We discuss this more in detail in [The SDK and Temporal Service relationship](/encyclopedia/temporal-sdks#sdk-and-cluster-relationship) section.
+We discuss this more in detail in [The SDK and Temporal Service relationship](/encyclopedia/temporal-sdks#sdk-and-temporal-service-relationship) section.
 
 The SDK APIs also enable developers to write code that more genuinely maps to their process. This is because without a specialized SDK, developers might have to write a lot of boilerplate code. This can lead to code that's hard to maintain, difficult to understand, or that doesn't directly correspond to the underlying business process.
 
@@ -418,7 +418,7 @@ func LoanCreditCheckActivity(ctx context.Context, loanAmount int) (string, error
 }
 ```
 
-## The SDK and Temporal Service relationship {#sdk-and-cluster-relationship}
+## The SDK and Temporal Service relationship {#sdk-and-temporal-service-relationship}
 
 **How do the Temporal SDKs work with the Temporal Service?**
 

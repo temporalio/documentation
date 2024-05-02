@@ -52,11 +52,11 @@ When performing failover for a Namespace from one Temporal Service to another Te
 
 When there is a data conflict, a comparison will be made and Workflow Execution History entries with the highest version will be considered the source of truth.
 
-When a cluster is trying to mutate a Workflow Execution History, the version will be checked.
-A cluster can mutate a Workflow Execution History only if the following is true:
+When a Temporal Service is trying to mutate a Workflow Execution History, the version will be checked.
+A Temporal Service can mutate a Workflow Execution History only if the following is true:
 
-- The version in the Namespace belongs to this cluster, i.e.
-  `(version in namespace) % (shared version increment) == (this cluster's initial version)`
+- The version in the Namespace belongs to this Temporal Service, i.e.
+  `(version in namespace) % (shared version increment) == (this Temporal Service's initial version)`
 - The version of this Workflow Execution History's last entry (event) is equal or less than the version in the Namespace, i.e.
   `(last event's version) <= (version in namespace)`
 
@@ -438,7 +438,7 @@ Please reach out to us if you need to set this up.
 For example:
 
 ```yaml
-# cluster A
+# Temporal Service A
 clusterMetadata:
   enableGlobalNamespace: true
   failoverVersionIncrement: 100
@@ -454,7 +454,7 @@ clusterMetadata:
       initialFailoverVersion: 2
       rpcAddress: "127.0.0.1:8233"
 
-# cluster B
+# Temporal Service B
 clusterMetadata:
   enableGlobalNamespace: true
   failoverVersionIncrement: 100
