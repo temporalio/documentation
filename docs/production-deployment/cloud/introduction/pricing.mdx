@@ -7,27 +7,26 @@ description: Temporal Cloud pricing information
 slug: /cloud/pricing
 toc_max_heading_level: 4
 keywords:
-- explanation
-- faq
-- introduction
-- pricing
-- security
-- storage
-- support
-- temporal cloud
-- term
+  - explanation
+  - faq
+  - introduction
+  - pricing
+  - security
+  - storage
+  - support
+  - temporal cloud
+  - term
 tags:
-- explanation
-- faq
-- introduction
-- pricing
-- security
-- storage
-- support
-- temporal-cloud
-- term
+  - explanation
+  - faq
+  - introduction
+  - pricing
+  - security
+  - storage
+  - support
+  - temporal-cloud
+  - term
 ---
-
 
 Temporal Cloud is a consumption-based service; you pay only for what you need when you need it. Our [pricing](https://temporal.io/pricing) derives from your use of _actions_, _storage_, and _support_. Pricing is flexible, transparent, and predictable, so you know your costs and never pay for unused capacity.
 
@@ -93,7 +92,7 @@ The following operations result in Actions:
   Occurs each time an Activity is started or retried.
 - **Local Activity started.** Each [Local Activity](/activities#local-activity) associated with one Workflow Task will count as one Action. (Note: Each additional Workflow Task heartbeat after counts as an additional Action. Also, Local Activities retried following a Workflow Task heartbeat will count as one Action.
 - **Activity Heartbeat recorded.**
-  A Heartbeat call from Activity code counts as an Action only if it reaches the [Temporal Server](/clusters#temporal-server).
+  A Heartbeat call from Activity code counts as an Action only if it reaches the [Temporal Server](/temporal-service#temporal-server).
   Temporal SDKs throttle [Activity Heartbeats](/activities#activity-heartbeat).
   The default throttle is 80% of the [Heartbeat Timeout](/activities#heartbeat-timeout).
   Heartbeats don't apply to Local Activities.
@@ -205,4 +204,3 @@ To learn more about our private offer on the AWS Marketplace, contact our team a
 Yes.
 If you're part of a startup that has raised $30 million or less in funding and is not a current Temporal Cloud customer, you can apply for free Temporal Cloud credits.
 To learn more and apply, see [Temporal Cloud for Startups](https://temporal.io/startup).
-

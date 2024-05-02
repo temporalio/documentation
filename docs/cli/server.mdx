@@ -5,27 +5,26 @@ sidebar_label: server
 description: Effectively manage the Temporal Server by using the Temporal command-line interface (CLI). Explore documentation about administration and configuration.
 toc_max_heading_level: 4
 keywords:
-- cli reference
-- command-line-interface-cli
-- server
-- server start-dev
-- temporal cli
+  - cli reference
+  - command-line-interface-cli
+  - server
+  - server start-dev
+  - temporal cli
 tags:
-- cli-reference
-- command-line-interface-cli
-- server
-- server-start-dev
-- temporal-cli
+  - cli-reference
+  - command-line-interface-cli
+  - server
+  - server-start-dev
+  - temporal-cli
 ---
 
-
-Server commands allow you to start and manage the [Temporal Server](/clusters#temporal-server) from the command line.
+Server commands allow you to start and manage the [Temporal Server](/temporal-service#temporal-server) from the command line.
 
 Currently, `cli` server functionality extends to starting the Server.
 
 ## start-dev
 
-The `temporal server start-dev` command starts a local [Temporal Server](/clusters#temporal-server).
+The `temporal server start-dev` command starts a local [Temporal Server](/temporal-service#temporal-server).
 You can access the Web UI at http://localhost:8233.
 The default Frontend Service gRPC port used as a target endpoint for client calls is 7233.
 
@@ -58,4 +57,3 @@ Use the following options to change the behavior of this command.
 - [--ui-ip](/cli/cmd-options#ui-ip)
 
 - [--ui-port](/cli/cmd-options#ui-port)
-

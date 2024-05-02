@@ -1007,7 +1007,7 @@
     },
     {
       "source": "/server",
-      "destination": "/clusters/"
+      "destination": "/temporal-service/"
     },
     {
       "source": "/server/configuration",
@@ -1015,18 +1015,18 @@
     },
     {
       "source": "/server-archive-data",
-      "destination": "/clusters#"
+      "destination": "/temporal-service#"
     },
     {
       "source": "/server/archive-data",
-      "destination": "/clusters#archival"
+      "destination": "/temporal-service#archival"
     },
     {
-      "source": "/clusters/how-to-set-up-archival",
+      "source": "/temporal-service/how-to-set-up-archival",
       "destination": "/self-hosted-guide/archival"
     },
     {
-      "source": "/clusters/how-to-create-a-custom-archiver",
+      "source": "/temporal-service/how-to-create-a-custom-archiver",
       "destination": "/self-hosted-guide/archival"
     },
     {
@@ -1035,11 +1035,11 @@
     },
     {
       "source": "/server-introduction",
-      "destination": "/clusters"
+      "destination": "/temporal-service"
     },
     {
       "source": "/server/introduction",
-      "destination": "/clusters"
+      "destination": "/temporal-service"
     },
     {
       "source": "/server-namespaces",
@@ -1051,10 +1051,10 @@
     },
     {
       "source": "/server/multi-cluster",
-      "destination": "/clusters#multi-cluster-replication"
+      "destination": "/temporal-service#multi-cluster-replication"
     },
     {
-      "source": "/clusters/how-to-set-up-multi-cluster-replication",
+      "source": "/temporal-service/how-to-set-up-multi-cluster-replication",
       "destination": "/self-hosted-guide/multi-cluster-replication"
     },
     {
@@ -1086,7 +1086,7 @@
       "destination": "/dev-guide"
     },
     {
-      "source": "/clusters/quick-install",
+      "source": "/temporal-service/quick-install",
       "destination": "/dev-guide"
     },
     {
@@ -1098,7 +1098,7 @@
       "destination": "/kb/all-the-ways-to-run-a-temporal-service#helm-charts"
     },
     {
-      "source": "/temporal-service/how-to-quickly-install-the-temporal-temporal-service-using-docker-compose",
+      "source": "/temporal-service/how-to-quickly-install-the-temporal-service-using-docker-compose",
       "destination": "/kb/all-the-ways-to-run-a-temporal-service#docker--docker-compose"
     },
     {
@@ -1110,15 +1110,15 @@
       "destination": "/kb/all-the-ways-to-run-a-temporal-service"
     },
     {
-      "source": "/content/how-to-integrate-elasticsearch-into-a-temporal-temporal-service",
+      "source": "/content/how-to-integrate-elasticsearch-into-a-temporal-service",
       "destination": "/self-hosted-guide/visibility"
     },
     {
-      "source": "/temporal-service/how-to-integrate-elasticsearch-into-a-temporal-temporal-service",
+      "source": "/temporal-service/how-to-integrate-elasticsearch-into-a-temporal-service",
       "destination": "/self-hosted-guide/visibility"
     },
     {
-      "source": "/clusters/how-to-integrate-elasticsearch-into-a-temporal-temporal-service",
+      "source": "/temporal-service/how-to-integrate-elasticsearch-into-a-temporal-service",
       "destination": "/self-hosted-guide/visibility"
     },
     {
@@ -1127,7 +1127,7 @@
     },
     {
       "source": "/server-versions-and-dependencies",
-      "destination": "/clusters"
+      "destination": "/temporal-service"
     },
     {
       "source": "/server/workflow-search",
@@ -1146,11 +1146,11 @@
       "destination": "/kb/cadence-to-temporal"
     },
     {
-      "source": "/kb/install-temporal-temporal-service-for-development",
+      "source": "/kb/install-temporal-service-for-development",
       "destination": "/kb/all-the-ways-to-run-a-temporal-service"
     },
     {
-      "source": "/kb/install-temporal-temporal-service-for-development",
+      "source": "/kb/install-temporal-service-for-development",
       "destination": "/kb/all-the-ways-to-run-a-temporal-service"
     },
     {
@@ -1343,7 +1343,7 @@
     },
     {
       "source": "/concepts/what-is-archival",
-      "destination": "/clusters#archival"
+      "destination": "/temporal-service#archival"
     },
     {
       "source": "/concepts/what-is-a-child-workflow-execution",
@@ -1474,8 +1474,8 @@
       "destination": "/temporal#temporal-application"
     },
     {
-      "source": "/concepts/what-is-a-temporal-temporal-service",
-      "destination": "/clusters"
+      "source": "/concepts/what-is-a-temporal-service",
+      "destination": "/temporal-service"
     },
     {
       "source": "/concepts/what-is-a-temporal-cron-job",
@@ -1578,7 +1578,7 @@
       "destination": "https://temporal.io/case-studies/zebra-medical-case-study"
     },
     {
-      "source": "/clusters/how-to-upgrade-the-temporal-server-version",
+      "source": "/temporal-service/how-to-upgrade-the-temporal-server-version",
       "destination": "/temporal-service-deployment-guide#upgrade-server"
     },
     {
@@ -1591,11 +1591,11 @@
     },
     {
       "source": "/concepts/what-is-a-retention-period",
-      "destination": "clusters#retention-period"
+      "destination": "temporal-service#retention-period"
     },
     {
       "source": "/concepts/what-is-multi-cluster-replication",
-      "destination": "/clusters#multi-cluster-replication"
+      "destination": "/temporal-service#multi-cluster-replication"
     },
     {
       "source": "/configure-temporal-server",
@@ -1647,7 +1647,7 @@
     },
     {
       "source": "/install-temporal-server",
-      "destination": "/clusters#temporal-server"
+      "destination": "/temporal-service#temporal-server"
     },
     {
       "source": "/java-quick-start",
@@ -1659,7 +1659,7 @@
     },
     {
       "source": "/learn-archival",
-      "destination": "/clusters#archival"
+      "destination": "/temporal-service#archival"
     },
     {
       "source": "/learn-cli",
@@ -1691,7 +1691,7 @@
     },
     {
       "source": "/server/versions-and-dependencies",
-      "destination": "/clusters/#version-and-support"
+      "destination": "/temporal-service/#version-and-support"
     },
     {
       "source": "/shared/continue-as-new",
@@ -1943,7 +1943,7 @@
     },
     {
       "source": "/concepts/what-is-a-retention-period",
-      "destination": "/clusters#retention-period"
+      "destination": "/temporal-service#retention-period"
     },
     {
       "source": "/archive-data",

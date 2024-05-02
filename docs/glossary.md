@@ -65,7 +65,7 @@ An Activity Type is the mapping of a name to an Activity Definition.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Archival](/clusters#archival)
+#### [Archival](/temporal-service#archival)
 
 Archival is a feature that automatically backs up Event Histories from Temporal Service persistence to a custom blob store after the Closed Workflow Execution retention period is reached.
 
@@ -101,7 +101,7 @@ The Claim Mapper component is a pluggable component that extracts Claims from JS
 
 _Tags: [term](/tags/term)_
 
-#### [Temporal Service configuration](/clusters#temporal-service-configuration)
+#### [Temporal Service configuration](/temporal-service#temporal-service-configuration)
 
 Temporal Service Configuration is the setup and configuration details of your Temporal Service, defined using YAML.
 
@@ -197,7 +197,7 @@ A Failure is Temporal's representation of various types of errors that occur in 
 
 _Tags: [failure](/tags/failure), [explanation](/tags/explanation), [term](/tags/term)_
 
-#### [Frontend Service](/clusters#frontend-service)
+#### [Frontend Service](/temporal-service#frontend-service)
 
 The Frontend Service is a stateless gateway service that exposes a strongly typed Proto API. The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
 
@@ -221,13 +221,13 @@ A Heartbeat Timeout is the maximum time between Activity Heartbeats.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_
 
-#### [History Service](/clusters#history-service)
+#### [History Service](/temporal-service#history-service)
 
 The History Service is responsible for persisting Workflow Execution state and determining what to do next to progress the Workflow Execution through History Shards.
 
 _Tags: [term](/tags/term)_
 
-#### [History Shard](/clusters#history-shard)
+#### [History Shard](/temporal-service#history-shard)
 
 A History Shard is an important unit within a Temporal Service by which the scale of concurrent Workflow Execution throughput can be measured.
 
@@ -245,7 +245,7 @@ A Local Activity is an Activity Execution that executes in the same process as t
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Matching Service](/clusters#matching-service)
+#### [Matching Service](/temporal-service#matching-service)
 
 The Matching Service is responsible for hosting external Task Queues for Task dispatching.
 
@@ -263,7 +263,7 @@ Multi-Cluster Replication is a feature which asynchronously replicates Workflow 
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Multi-Cluster Replication](/clusters#multi-cluster-replication)
+#### [Multi-Cluster Replication](/temporal-service#multi-cluster-replication)
 
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 
@@ -299,7 +299,7 @@ A Payload Converter serializes data, converting objects or values to bytes and b
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Persistence](/clusters#persistence)
+#### [Persistence](/temporal-service#persistence)
 
 The Temporal Persistence store is a database used by Temporal Services to persist events generated and processed in the Temporal Service and SDK.
 
@@ -335,7 +335,7 @@ A Reset terminates a Workflow Execution, removes the progress in the Event Histo
 
 _Tags: [term](/tags/term), [resets](/tags/resets), [explanation](/tags/explanation)_
 
-#### [Retention Period](/clusters#retention-period)
+#### [Retention Period](/temporal-service#retention-period)
 
 A Retention Period is the amount of time a Workflow Execution Event History remains in the Temporal Service's persistence store.
 
@@ -491,7 +491,7 @@ A Cloud gRPC Endpoint is a Namespace-specific address used to access Temporal Cl
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Temporal Service](/clusters)
+#### [Temporal Service](/temporal-service)
 
 A Temporal Service is a Temporal Server paired with Persistence and Visibility stores.
 
@@ -515,7 +515,7 @@ A Temporal SDK is a language-specific library that offers APIs to construct and 
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Temporal Server](/clusters#temporal-server)
+#### [Temporal Server](/temporal-service#temporal-server)
 
 The Temporal Server is a grouping of four horizontally scalable services.
 
@@ -539,7 +539,7 @@ An Update is a request to and a response from Workflow Execution.
 
 _Tags: [term](/tags/term), [updates](/tags/updates), [explanation](/tags/explanation)_
 
-#### [Visibility](/clusters#visibility)
+#### [Visibility](/temporal-service#visibility)
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
@@ -569,7 +569,7 @@ A Worker Program is the static code that defines the constraints of the Worker P
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Worker Service](/clusters#worker-service)
+#### [Worker Service](/temporal-service#worker-service)
 
 The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 

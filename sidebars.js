@@ -362,7 +362,7 @@ module.exports = {
         "encyclopedia/retry-policies",
         "encyclopedia/workers",
         "encyclopedia/visibility",
-        "encyclopedia/clusters",
+        "encyclopedia/temporal-service",
         "encyclopedia/namespaces",
         "encyclopedia/dataconversion",
       ],

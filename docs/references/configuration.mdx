@@ -253,7 +253,7 @@ _Required_ - The name of the data store definition that should be used by the Te
 
 ### visibilityStore
 
-_Required_ - The name of the primary data store definition that should be used to set up [Visibility](/clusters#visibility) on the Temporal Service.
+_Required_ - The name of the primary data store definition that should be used to set up [Visibility](/temporal-service#visibility) on the Temporal Service.
 
 ### secondaryVisibilityStore
 
@@ -322,7 +322,7 @@ The `log` section is optional and contains the following possible values:
 
 ## clusterMetadata
 
-`clusterMetadata` contains the local Temporal Service information. The information is used in [Multi-Cluster Replication](/clusters#multi-cluster-replication).
+`clusterMetadata` contains the local Temporal Service information. The information is used in [Multi-Cluster Replication](/temporal-service#multi-cluster-replication).
 
 An example `clusterMetadata` section:
 
@@ -345,7 +345,7 @@ clusterMetadata:
 - `enableGlobalNamespace` - _Default:_ `false`.
 - `replicationConsumer` - determines which method to use to consume replication tasks. The type may be either `kafka` or `rpc`.
 - `failoverVersionIncrement` - the increment of each Temporal Service version when failover happens.
-- `masterClusterName` - the master Temporal Service name, only the master Temporal Service can register/update namespace. All clusters can do namespace failover.
+- `masterClusterName` - the master Temporal Service name, only the master Temporal Service can register/update namespace. All temporal-service can do namespace failover.
 - `clusterInformation` - contains the local Temporal Service name to `ClusterInformation` definition. The local Temporal Service name should be consistent with `currentClusterName`. `ClusterInformation` sections consist of:
   - `enabled` - _boolean_ - whether a remote Temporal Service is enabled for replication.
   - `initialFailoverVersion`
@@ -409,7 +409,7 @@ Use `dns:///` prefix to enable round-robin between IP address for DNS name.
 
 _Optional_
 
-Archival is an optional configuration needed to set up the [Archival store](/clusters#archival).
+Archival is an optional configuration needed to set up the [Archival store](/temporal-service#archival).
 It can be enabled on `history` and `visibility` data.
 
 The following list describes supported values for each configuration on the `history` and `visibility` data.
@@ -532,7 +532,7 @@ dcRedirectionPolicy:
 
 _Optional_
 
-Configuration for setting up file-based [dynamic configuration](/clusters#dynamic-configuration) client for the Temporal Service.
+Configuration for setting up file-based [dynamic configuration](/temporal-service#dynamic-configuration) client for the Temporal Service.
 
 This setting is required if specifying dynamic configuration. Supported configuration values are as follows:
 

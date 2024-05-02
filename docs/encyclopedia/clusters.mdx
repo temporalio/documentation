@@ -1,10 +1,10 @@
 ---
-id: clusters
+id: temporal-service
 title: What is a Temporal Service?
 sidebar_label: Temporal Service
 sidebar_position: 8
 description: This guide provides a comprehensive overview of Temporal Services.
-slug: /clusters
+slug: /temporal-service
 toc_max_heading_level: 4
 keywords:
   - explanation
@@ -308,11 +308,11 @@ Archival enables Workflow Execution data to persist as long as needed, while not
 
 This feature is helpful for compliance and debugging.
 
-Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters#versions-and-support).
+Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/temporal-service#versions-and-support).
 
 Archival is not supported when running Temporal through Docker and is disabled by default when installing the system manually and when deploying through [helm charts](https://github.com/temporalio/helm-charts/blob/master/templates/server-configmap.yaml) (but can be enabled in the [config](https://github.com/temporalio/temporal/blob/master/config/development.yaml)).
 
-## What is Temporal Service configuration? {#cluster-configuration}
+## What is Temporal Service configuration? {#temporal-service-configuration}
 
 Temporal Service configuration is the setup and configuration details of your self-hosted Temporal Service, defined using YAML.
 You must define your Temporal Service configuration when setting up your self-hosted Temporal Service.
@@ -443,7 +443,7 @@ You can then set up your observability platform (such as Grafana) to use Prometh
 
 For details on self-hosted Temporal Service metrics and setup, see the following:
 
-- [Temporal Service OSS metrics reference](/references/cluster-metrics)
+- [Temporal Service OSS metrics reference](/references/temporal-service-metrics)
 - [Set up Prometheus and Grafana to view SDK and self-hosted Temporal Service metrics](/self-hosted-guide/monitoring)
 
 ## What is Multi-Cluster Replication? {#multi-cluster-replication}
@@ -451,7 +451,7 @@ For details on self-hosted Temporal Service metrics and setup, see the following
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 When necessary, for higher availability, Temporal Service operators can failover to any of the backup Clusters.
 
-Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
+Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/temporal-service).
 
 Temporal automatically forwards Start, Signal, and Query requests to the active Temporal Service.
 This feature must be enabled through a Dynamic Config flag per [Global Namespace](/namespaces#global-namespace).
@@ -468,7 +468,7 @@ However, they might see a lag due to replication delay when querying the Workflo
 A _version_ is a concept in Multi-Cluster Replication that describes the chronological order of events per Namespace.
 
 With Multi-Cluster Replication, all Namespace change events and Workflow Execution History events are replicated asynchronously for high throughput.
-This means that data across clusters is **not** strongly consistent.
+This means that data across temporal-service is **not** strongly consistent.
 To guarantee that Namespace data and Workflow Execution data will achieve eventual consistency (especially when there is a data conflict during a failover), a **version** is introduced and attached to Namespaces.
 All Workflow Execution History entries generated in a Namespace will also come with the version attached to that Namespace.
 

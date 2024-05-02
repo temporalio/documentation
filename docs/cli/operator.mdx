@@ -50,21 +50,21 @@ tags:
   - update
 ---
 
-Operator commands enable actions on [Namespaces](/namespaces), [Search Attributes](/visibility#search-attribute), and [Temporal Services](/clusters).
+Operator commands enable actions on [Namespaces](/namespaces), [Search Attributes](/visibility#search-attribute), and [Temporal Services](/temporal-service).
 These actions are performed through subcommands.
 
 To run an Operator command, run `temporal operator [command] [subcommand] [command options]`.
 
 ## Temporal Service
 
-Temporal Service commands enable actions on [Temporal Services](/clusters).
+Temporal Service commands enable actions on [Temporal Services](/temporal-service).
 
 Temporal Service commands follow this syntax:
 `temporal operator [command] [subcommand] [command options]`.
 
 ### describe
 
-The `temporal operator cluster describe` command shows information about the [Temporal Service](/clusters).
+The `temporal operator cluster describe` command shows information about the [Temporal Service](/temporal-service).
 This information can include information about other connected services, such as a remote [Codec Server](/dataconversion#codec-server).
 
 Use the following options to change the output of this command.
@@ -103,8 +103,8 @@ Use the following options to change the output of this command.
 
 ### health
 
-The `temporal operator cluster health` command checks the health of the [Frontend Service](/clusters#frontend-service).
-A successful execution returns a list of [Temporal Service](/clusters) metrics.
+The `temporal operator cluster health` command checks the health of the [Frontend Service](/temporal-service#frontend-service).
+A successful execution returns a list of [Temporal Service](/temporal-service) metrics.
 
 Use the following options to change the behavior and output of this command.
 
@@ -138,7 +138,7 @@ Use the following options to change the behavior and output of this command.
 
 ### list
 
-The `temporal operator cluster list` command prints a list of all remote [Clusters](/clusters) on the system.
+The `temporal operator cluster list` command prints a list of all remote [Clusters](/temporal-service) on the system.
 
 `temporal operator cluster list`
 
@@ -186,7 +186,7 @@ Use the following options to change the command's behavior.
 
 ### remove
 
-The `temporal operator cluster remove` command removes a remote [Temporal Service](/clusters) from the system.
+The `temporal operator cluster remove` command removes a remote [Temporal Service](/temporal-service) from the system.
 
 `temporal operator cluster remove --name=SomeCluster`
 
@@ -224,8 +224,8 @@ Use the following options to change the command's behavior.
 
 ### system
 
-The `temporal operator cluster system` command provides information about the system the [Temporal Service](/clusters) is running on.
-This information can be used to diagnose problems occurring in the [Temporal Server](/clusters#temporal-server).
+The `temporal operator cluster system` command provides information about the system the [Temporal Service](/temporal-service) is running on.
+This information can be used to diagnose problems occurring in the [Temporal Server](/temporal-service#temporal-server).
 
 `temporal operator cluster system`
 
@@ -265,7 +265,7 @@ Use the following options to change this command's behavior.
 
 ### upsert
 
-The `temporal operator cluster upsert` command allows the user to add or update a remote [Temporal Service](/clusters).
+The `temporal operator cluster upsert` command allows the user to add or update a remote [Temporal Service](/temporal-service).
 `temporal operator cluster upsert --frontend-address="127.0.2.1"`
 
 Upserting can also be used to enable or disabled cross-cluster connection.
@@ -307,7 +307,7 @@ Use the following options to change the behavior of this command.
 
 ## namespace
 
-Namespace commands perform operations on [Namespaces](/namespaces) contained in the [Temporal Service](/clusters).
+Namespace commands perform operations on [Namespaces](/namespaces) contained in the [Temporal Service](/temporal-service).
 
 Namespace commands follow this syntax:
 `temporal operator namespace COMMAND [ARGS]`.
@@ -315,23 +315,23 @@ Namespace commands follow this syntax:
 ### create
 
 The `temporal operator namespace create` command creates a new [Namespace](/namespaces).
-The Namespace can be created on the active [Temporal Service](/clusters), or any named Temporal Service within the system.
+The Namespace can be created on the active [Temporal Service](/temporal-service), or any named Temporal Service within the system.
 `temporal operator namespace --cluster=MyCluster`
 
 Global Namespaces can also be created.
 `temporal operator namespace create --global`
 
-Other settings, such as [retention](/clusters#retention-period) and [Visibility Archival State](/clusters#visibility), can be configured according to the application's needs.
+Other settings, such as [retention](/temporal-service#retention-period) and [Visibility Archival State](/temporal-service#visibility), can be configured according to the application's needs.
 The Visibility Archive can be set on a separate URI.
 `temporal operator namespace create --retention=RetentionMyWorkflow --visibility-archival-state="enabled" --visibility-uri="some-uri"`
 
 Use the options listed below to change the command's behavior.
 
-- [--active-cluster](/cli/cmd-options#active-cluster)
+- [--active-cluster](/cli/cmd-options#active-temporal-service)
 
 - [--address](/cli/cmd-options#address)
 
-- [--cluster](/cli/cmd-options#cluster)
+- [--cluster](/cli/cmd-options#active-temporal-service)
 
 - [--codec-auth](/cli/cmd-options#codec-auth)
 
@@ -455,7 +455,7 @@ Use the following options to change the behavior of this command.
 
 ### list
 
-The `temporal operator namespace list` command lists all [Namespaces](/namespaces) on the [Server](/clusters#frontend-service).
+The `temporal operator namespace list` command lists all [Namespaces](/namespaces) on the [Server](/temporal-service#frontend-service).
 
 `temporal operator namespace list`
 
@@ -493,13 +493,13 @@ Use the following options to change this command's behavior.
 
 The `temporal operator namespace update` command updates a [Namespace](/namespaces).
 
-Namespaces can be assigned a different active [Temporal Service](/clusters).
+Namespaces can be assigned a different active [Temporal Service](/temporal-service).
 `temporal operator namespace update --active-cluster=NewActiveCluster`
 
 Namespaces can also be promoted to global Namespaces.
 `temporal operator namespace --promote-global=true`
 
-Any [Archives](/clusters#archival) that were previously enabled or disabled can be changed through this command.
+Any [Archives](/temporal-service#archival) that were previously enabled or disabled can be changed through this command.
 However, URI values for archival states cannot be changed after the states are enabled.
 `temporal operator namespace update --history-archival-state="enabled" --visibility-archival-state="disabled"`
 
@@ -512,11 +512,11 @@ For example, `temporal operator namespace update --retention 180 your_namespace`
 
 Use the options listed below to change the command's behavior.
 
-- [--active-cluster](/cli/cmd-options#active-cluster)
+- [--active-cluster](/cli/cmd-options#active-temporal-service)
 
 - [--address](/cli/cmd-options#address)
 
-- [--cluster](/cli/cmd-options#cluster)
+- [--cluster](/cli/cmd-options#active-temporal-service)
 
 - [--codec-auth](/cli/cmd-options#codec-auth)
 
