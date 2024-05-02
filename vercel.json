@@ -1159,48 +1159,8 @@
       "destination": "/kb/all-the-ways-to-run-a-cluster"
     },
     {
-      "source": "/tctl-v1:path*",
-      "destination": "/cli"
-    },
-    {
-      "source": "/tctl",
-      "destination": "/cli"
-    },
-    {
-      "source": "/tctl/workflow/:path*",
-      "destination": "/cli/workflow"
-    },
-    {
-      "source": "/tctl/activity/:path*",
-      "destination": "/cli/activity"
-    },
-    {
-      "source": "/tctl/admin/:path*",
-      "destination": "/cli/operator"
-    },
-    {
-      "source": "/tctl/batch/:path*",
-      "destination": "/cli/batch"
-    },
-    {
-      "source": "/tctl/cluster/:path*",
-      "destination": "/cli/operator"
-    },
-    {
-      "source": "/tctl/dataconverter/:path*",
-      "destination": "/cli/cmd-options"
-    },
-    {
-      "source": "/tctl/namespace/:path*",
-      "destination": "/cli/operator#namespace"
-    },
-    {
-      "source": "/tctl/schedule/:path*",
-      "destination": "/cli/schedule"
-    },
-    {
-      "source": "/tctl/taskqueue/:path*",
-      "destination": "/cli/task-queue"
+      "source": "/tctl:path*",
+      "destination": "/tctl-v1"
     },
     {
       "source": "/references/ui-configuration",
