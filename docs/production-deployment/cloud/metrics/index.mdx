@@ -50,11 +50,12 @@ To assign a certificate and generate your metrics endpoint, follow these steps:
 3. In the **Connection** section, paste the URL that was generated in the Observability section on the Temporal Cloud UI.
 4. The **Authentication** section may be left as **No Authentication**.
 5. In the **TLS Settings** section, select **TLS Client Authentication**:
-  - Leave **ServerName** blank (this is not required).
-  - Paste in your end-entity certificate and key.
-  Note that the end-entity certificate used here must be part of the certificate chain with the root CA certificates used in your Temporal Cloud observability setup.
-6. Select **Save and test** to verify that the data source is working.
 
+- Leave **ServerName** blank (this is not required).
+- Paste in your end-entity certificate and key.
+  Note that the end-entity certificate used here must be part of the certificate chain with the root CA certificates used in your Temporal Cloud observability setup.
+
+6. Select **Save and test** to verify that the data source is working.
 
 After the page refreshes, the new metrics endpoint appears below **Endpoint**, in the form `https://<account-id>.tmprl.cloud/prometheus`.
 Use the endpoint to configure your observability tool—for example, [Grafana](https://grafana.com/) with [this dashboard](https://github.com/temporalio/dashboards/blob/master/cloud/temporal_cloud.json).
@@ -105,59 +106,102 @@ For more information, see [tcld account metrics command](/cloud/tcld/account#met
 
 ## What metrics are emitted from Temporal Cloud? {#available-metrics}
 
-Temporal tracks the following metrics for your various Namespaces.
-
-- `temporal_cloud_v0_frontend_service_error_count`: gRPC errors returned aggregated by operation.
-
-- `temporal_cloud_v0_frontend_service_request_count`: gRPC requests received aggregated by operation.
-
-- `temporal_cloud_v0_poll_success_count`: Tasks that are successfully matched to a poller.
-
-- `temporal_cloud_v0_poll_success_sync_count`: Tasks that are successfully sync matched to a poller.
-
-- `temporal_cloud_v0_poll_timeout_count`: When no tasks are available for a poller before timing out.
-
-- `temporal_cloud_v0_resource_exhausted_error_count`: gRPC requests received that were rate-limited by Temporal Cloud, aggregated by cause.
-
-- `temporal_cloud_v0_schedule_action_success_count`: Successful execution of a Scheduled Workflow.
-
-- `temporal_cloud_v0_schedule_buffer_overruns_count`: When average schedule run length is greater than average schedule interval while a `buffer_all` overlap policy is configured.
-
-- `temporal_cloud_v0_schedule_missed_catchup_window_count`: Skipped Scheduled executions when Workflows were delayed longer than the catchup window.
-
-- `temporal_cloud_v0_schedule_rate_limited_count`: Workflows that were delayed due to exceeding a rate limit.
-
-- `temporal_cloud_v0_service_latency_bucket`: Latency for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
-
-- `temporal_cloud_v0_service_latency_count`: Count of latency observations for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
-
-- `temporal_cloud_v0_service_latency_sum` - Sum of latency observation time for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
-
-- `temporal_cloud_v0_state_transition_count`: Count of state transitions for each Namespace.
-
-- `temporal_cloud_v0_total_action_count`: Approximate count of Temporal Cloud Actions.
-
-- `temporal_cloud_v0_workflow_cancel_count`: Workflows canceled before completing execution.
-
-- `temporal_cloud_v0_workflow_continued_as_new_count`: Workflow Executions that were Continued-As-New from a past execution.
-
-- `temporal_cloud_v0_workflow_failed_count`: Workflows that failed before completion.
-
-- `temporal_cloud_v0_workflow_success_count`: Workflows that successfully completed.
-
-- `temporal_cloud_v0_workflow_terminate_count`: Workflows terminated before completing execution.
-
-- `temporal_cloud_v0_workflow_timeout_count`: Workflows that timed out before completing execution.
-
 Metrics for all Namespaces in your account are available from the metrics endpoint.
 
 Metrics lag real-time performance by about one minute.
 
 Temporal Cloud retains raw metrics for seven days.
 
-### Metric labels
+The following metrics are emitted for your various Namespaces.
 
-Metrics for all Namespaces in your account are available from the metrics endpoint. Use the following labels to filter metrics:
+### temporal_cloud_v0_frontend_service_error_count
+
+This is a count of gRPC errors returned aggregated by operation.
+
+### temporal_cloud_v0_frontend_service_request_count
+
+This is a count of gRPC requests received aggregated by operation.
+
+### temporal_cloud_v0_poll_success_count
+
+Tasks that are successfully matched to a poller.
+
+### temporal_cloud_v0_poll_success_sync_count
+
+Tasks that are successfully sync matched to a poller.
+
+### temporal_cloud_v0_poll_timeout_count
+
+When no tasks are available for a poller before timing out.
+
+### temporal_cloud_v0_resource_exhausted_error_count
+
+gRPC requests received that were rate-limited by Temporal Cloud, aggregated by cause.
+
+### temporal_cloud_v0_schedule_action_success_count
+
+Successful execution of a Scheduled Workflow.
+
+### temporal_cloud_v0_schedule_buffer_overruns_count
+
+When average schedule run length is greater than average schedule interval while a `buffer_all` overlap policy is configured.
+
+### temporal_cloud_v0_schedule_missed_catchup_window_count
+
+Skipped Scheduled executions when Workflows were delayed longer than the catchup window.
+
+### temporal_cloud_v0_schedule_rate_limited_count
+
+Workflows that were delayed due to exceeding a rate limit.
+
+### temporal_cloud_v0_service_latency_bucket
+
+Latency for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
+
+### temporal_cloud_v0_service_latency_count
+
+Count of latency observations for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
+
+### temporal_cloud_v0_service_latency_sum
+
+Sum of latency observation time for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
+
+### temporal_cloud_v0_state_transition_count
+
+Count of state transitions for each Namespace.
+
+### temporal_cloud_v0_total_action_count
+
+Approximate count of Temporal Cloud Actions.
+
+### temporal_cloud_v0_workflow_cancel_count
+
+Workflows canceled before completing execution.
+
+### temporal_cloud_v0_workflow_continued_as_new_count
+
+Workflow Executions that were Continued-As-New from a past execution.
+
+### temporal_cloud_v0_workflow_failed_count
+
+Workflows that failed before completion.
+
+### temporal_cloud_v0_workflow_success_count
+
+Workflows that successfully completed.
+
+### temporal_cloud_v0_workflow_terminate_count
+
+Workflows terminated before completing execution.
+
+### temporal_cloud_v0_workflow_timeout_count
+
+Workflows that timed out before completing execution.
+
+## Metric labels
+
+Metrics for all Namespaces in your account are available from the metrics endpoint.
+Use the following labels to filter metrics:
 
 | Label                      | Explanation                                                                                                                                                                                                                                                               |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
