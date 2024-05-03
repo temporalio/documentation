@@ -55,38 +55,23 @@ These alerts should be configured and understood first to gain intelligence into
 - Alert at \<90% for your p99 value
 - Plot \<95% for your p95 value
 
-4. Create monitors and alerts using [temporal_cloud_v0_service_latency_bucket Temporal Cloud Metric](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_service_latency_bucket).
+The following alerts build on the above to dive deeper into specific potential causes for Worker related issues you might be experiencing.
 
-- Alert the rate of errors at \<99.9%
-  See here for formulas to calculate this rate and to understand availability.
-
-5. Create monitors and alerts using temporal_cloud_v0_frontend_service_error_count Cloud Metric .
-
-- Alert the rate of errors at \<99.9%
-  See here for formulas to calculate this rate and to understand error count.
-
-6. Create monitors and alerts using request_failure SDK metric.
-
-- Alert the rate of errors at \<99.9%
-  See here for formulas to calculate this rate and to understand error count.
-
-The following alerts build on the above to dive deeper into specific potential causes for unfavorable conditions you might be experiencing.
-
-1. Create monitors and alerts for temporal_worker_task_slots_available SDK metric
+1. Create monitors and alerts for the [temporal_worker_task_slots_available](/references/sdk-metrics#temporal_worker_task_slots_available) SDK metric.
+   See the [Detect misconfigured Workers section] for appropriate responses based on the value.
 
 - Alert at 0 for your p99 value
-  See here for the responses you might choose based on this metric.
 
-2. Create monitors for temporal_sticky_cache_size SDK metric.
+2. Create monitors for the [temporal_sticky_cache_size](/references/sdk-metrics#temporal_sticky_cache_size) SDK metric.
+   See the [Configure Sticky Cache section](#configure-sticky-cache) for more details on this configuration.
 
 - Plot at \{value\} > \{WorkflowCacheSize.Value\}
-  See here for more details on this configuration.
 
-3. Create monitors for temporal_sticky_cache_total_forced_eviction SDK metric.
-   Java SDK only
+3. Create monitors for the [temporal_sticky_cache_total_forced_eviction](/references/sdk-metrics#temporal_sticky_cache_total_forced_eviction) SDK metric.
+   This metric is available in the Go SDK, and the Java SDK only.
+   See the [Configure Sticky Cache section](#configure-sticky-cache) for more details and appropriate responses.
 
 - Alert at >\{predetermined_high_number\}
-  See here for details and appropriate responses.
 
 ## Detect Task Backlog {#detect-task-backlog}
 
