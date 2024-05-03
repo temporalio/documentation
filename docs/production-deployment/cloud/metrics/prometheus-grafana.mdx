@@ -1,6 +1,6 @@
 ---
 id: prometheus-grafana
-title: Prometheus Grafana - Temporal Cloud feature guide
+title: Prometheus Grafana setup - Temporal Cloud feature guide
 sidebar_label: Prometheus Grafana
 sidebar_position: 2
 description: Configure and track performance metrics for Temporal Cloud.
@@ -18,7 +18,7 @@ tags:
   - temporal-cloud
 ---
 
-## How to set up Grafana with Temporal Cloud observability to view metrics {#prometheus-and-grafana-setup}
+**How to set up Grafana with Temporal Cloud observability to view metrics.**
 
 Temporal Cloud and SDKs generate metrics for monitoring performance and troubleshooting errors.
 
@@ -49,7 +49,7 @@ If you're following through with the examples provided here, ensure that you hav
 
 - Prometheus and Grafana installed.
 
-### Temporal Cloud metrics setup
+## Temporal Cloud metrics setup
 
 Before you set up your Temporal Cloud metrics, ensure that you have the following:
 
@@ -74,7 +74,7 @@ The following steps describe how to set up Observability on Temporal Cloud to ge
 This endpoint should be configured as a data source for Temporal Cloud metrics in Grafana.
 See [Data sources configuration for Temporal Cloud and SDK metrics in Grafana](#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana) for details.
 
-### SDK metrics setup
+## SDK metrics setup
 
 SDK metrics are emitted by SDK Clients used to start your Workers and to start, signal, or query your Workflow Executions.
 You must configure a Prometheus scrape endpoint for Prometheus to collect and aggregate your SDK metrics.
@@ -190,7 +190,9 @@ For more examples on setting metrics endpoints in other SDKs, see the metrics sa
 - [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics)
 - [Go SDK Samples](https://github.com/temporalio/samples-go/tree/main/metrics)
 
-### Prometheus configuration for SDK metrics
+## SDK metrics Prometheus Configuration {#prometheus-configuration}
+
+**How to configure Prometheus to ingest Temporal SDK metrics.**
 
 For Temporal SDKs, you must have Prometheus running and configured to listen on the scrape endpoints exposed in your application code.
 
@@ -225,7 +227,9 @@ The Prometheus configuration described here is for scraping metrics data on endp
 To check whether Prometheus is receiving metrics from your SDK target, go to [http://localhost:9090](http://localhost:9090) and navigate to **Status&nbsp;> Targets**.
 The status of your target endpoint defined in your configuration appears here.
 
-### Data sources configuration for Temporal Cloud and SDK metrics in Grafana
+## Grafana data sources configuration {#grafana-data-sources-configuration}
+
+**How to configure data sources for Temporal Cloud and SDK metrics in Grafana.**
 
 Depending on how you use Grafana, you can either install and run it locally, run it as a Docker container, or log in to Grafana Cloud to set up your data sources.
 
@@ -264,7 +268,7 @@ Verify your Prometheus configuration and restart Prometheus.
 If you’re running Grafana as a container, you can set your SDK metrics Prometheus data source in your Grafana configuration.
 See the example Grafana configuration described in the [Prometheus and Grafana setup for open-source Temporal Cluster](/self-hosted-guide/monitoring#grafana) article.
 
-#### Grafana dashboards setup
+### Grafana dashboards setup
 
 To set up your dashboards in Grafana, either use the UI or configure them in your Grafana deployment.
 
