@@ -1,7 +1,7 @@
 ---
 id: multi-region
 slug: /cloud/multi-region
-title: Multi-region Namespaces
+title: Multi-region Namespace- Temporal Cloud feature guide
 sidebar_label: Multi-region Namespaces
 sidebar_position: 5
 tags:
@@ -13,18 +13,26 @@ tags:
   - namespaces
 ---
 
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Updated page name as requested but left sidebar_label unchanged and plural per docs site standards; Does the new title work for you or would you like to reword?</span>
+
 :::tip Support, stability, and dependency info
 - Multi-region Namespaces are in [Public Preview](/temporal/release-stages#public-preview) for Temporal Cloud.
 
 :::
 
-Temporal Cloud's multi-region Namespace feature adds push-button high availability for your Temporal Service.
-This feature enables you to choose a standby region for a Temporal Cloud Namespace.
-The service handles the complexity of replicating data from the active region to the standby region and transferring control to the standby region when needed.
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Updated this section to incorporate text from Irina's writeup--please check.</span>
 
+Temporal Cloud's multi-region Namespace (MNS) feature adds push-button high availability for your Temporal Service.
+MNS add seamless failover capabilities to your production work, ensuring continuous operation without manual intervention​​.
+They offer simple deployment, operational continuity, while preserving data integrity during regional disruptions.
+
+Each multi-region Temporal Cloud Namespace enables you to choose a standby region.
+The service handles the complexity of replicating data from the active region to the standby region and transferring control to the standby region when needed.
 This means your standby region is available and in sync with the active region.
-It's ready to take over in the event of network service and performance issues in the active region.
-For these reasons, this feature provides Temporal Cloud's highest levels of service availability.
+
+In the event of network service and performance issues in the active region, the standby region is ready to take over.
+This feature provides Temporal Cloud's highest levels of service availability.
+
 
 This feature guide covers the following topics:
 
@@ -37,7 +45,7 @@ This feature guide covers the following topics:
 
 ## Why choose a multi-region Namespace? {#multi-region-intro}
 
-A high availability multi-region Namespace provides a single endpoint for a multi-region service.
+A high availability multi-region Namespace (MRN) provides a single endpoint for a multi-region service.
 This option offers a single logical Namespace that runs in two physical regions, one active and one standby.
 As Workflows progress in the active region, history events are asynchronously replicated to the standby region.
 
@@ -438,37 +446,45 @@ More details are available in the [Routing](/cloud/multi-region#routing) section
 
 ### Routing {#routing}
 
-Routing is completely transparent to multi-region customers unless they use PrivateLink.
+When you enable multi-region for a Namespace, we replace a Namespace's DNS record `<ns>.<acct>.<tmprl_domain>` with a CNAME to a regional DNS record in the format `<region>.region.<tmprl_domain>`.
 
-For non-PrivateLink use, you won’t need to make any changes on your end.
-When the multi-region Namespace feature is enabled, we replace the Namespace DNS record `<ns>.<acct>.<tmprl_domain>` with a CNAME to a regional DNS record in the format `<region>.region.<tmprl_domain>`.
-
-This regional DNS record will live in a subzone: 
+This regional DNS record lives in a subzone: 
 
 ```
 region.<tmprl_domain>
 ```
 
-Clients resolving the Namespace’s DNS record are directed to a regional DNS record.
+Clients resolving the Namespace’s DNS record are directed to the regional DNS record.
 
-During a failover, we change the target of the Namespace DNS record from one region to another.
+During failover, we change the target of the Namespace DNS record from one region to another.
+This should be at most a 30-second delay for clients to converge to the newly targeted region.
+Using a CNAME record supports a lower <a href="https://en.wikipedia.org/wiki/Time_to_live">TTL</a> for the record (configured at 15 seconds).
+As a rule of thumb, DNS reconciliation is not expected to take more than twice (2x) the TTL.
 
-Using a CNAME record also allows us to support a lower <a href="https://en.wikipedia.org/wiki/Time_to_live">TTL</a> for the record (configured at 15 seconds).
-As a rule of thumb, DNS reconciliation is not expected to take more than twice (2x) the TTL, leading to at most a 30-second delay for clients to converge to the newly targeted region.
 
-#### For PrivateLink customers
+### PrivateLink routing {#privatelink-routing}
+
+At failover, routing is completely transparent for multi-region customers unless you use PrivateLink.
+That is, you don’t need to make any changes on your end.
+If you are a PrivateLink customer, this section describes how to configure multi-region routing for multi-region Namespaces.
+
+#### Configuration
 
 Depending on your networking setup and use of PrivateLink, you may need to change certain configurations.
-These include but are not limited to setting override DNS and ensuring network connectivity between the two regions.
+These include but are not limited to:
+
+* setting override DNS; and 
+* ensuring network connectivity between the two regions.
 
 ![Customer side solution example](/img/multi-region/private-link.png)
 
-**How it works**: 
+#### DNS routing process
+
 The regional DNS needs to be reached through IP addresses local to your network.
 As the CNAME for the Namespace record is public, PrivateLink clients also know which region is currently active.
-Using a subzone for `region.<tmprl_domain>` you can override the regional DNS and make sure traffic is routed internally.
+By using a subzone for `region.<tmprl_domain>`, you can override the regional DNS to make sure traffic is routed internally.
 
-To set up the DNS override, you can override specific regions to target the relevant IP addresses (e.g. aws-us-west-1.region.tmprl.cloud to target 192.168.1.2).
+To set up the DNS override, you override specific regions to target the relevant IP addresses (e.g. aws-us-west-1.region.tmprl.cloud to target 192.168.1.2).
 Using AWS, this can be done using a private hosted zone in Route53 for `region.<tmprl_domain>`.
 Link to that private zone to the VPCs you use for Workers.
 
