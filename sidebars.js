@@ -370,4 +370,16 @@ module.exports = {
     //   dirName: "./dev-guide", // '.' means the current docs folder
     // },
   ],
+  tctl: [
+    "tctl-v1/index",
+    "tctl-v1/activity",
+    "tctl-v1/admin",
+    "tctl-v1/batch",
+    "tctl-v1/cluster",
+    "tctl-v1/dataconverter",
+    "tctl-v1/namespace",
+    "tctl-v1/schedule",
+    "tctl-v1/taskqueue",
+    "tctl-v1/workflow",
+  ],
 };
