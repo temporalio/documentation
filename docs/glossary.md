@@ -101,9 +101,9 @@ The Claim Mapper component is a pluggable component that extracts Claims from JS
 
 _Tags: [term](/tags/term)_
 
-#### [Cluster](/clusters) (_deprecated_)
+#### [Cluster](/clusters)
 
-A Cluster is a Temporal Server paired with Persistence and Visibility stores. _This term is deprecated and has been replaced by Temporal Service_
+A Cluster is a Temporal Server paired with Persistence and Visibility stores.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 

@@ -31,7 +31,7 @@ The Temporal Server consists of four independently scalable services:
 - Matching subsystem: hosts Task Queues for dispatching.
 - Worker Service: for internal background Workflows.
 
-For example, a real-life production deployment can have 5 Frontend, 15 History, 17 Matching, and 3 Worker Services per cluster.
+For example, a real-life production deployment can have 5 Frontend, 15 History, 17 Matching, and 3 Worker Services per Temporal Service.
 
 The Temporal Server services can run independently or be grouped together into shared processes on one or more physical or virtual machines.
 For live (production) environments, we recommend that each service runs independently, because each one has different scaling requirements and troubleshooting becomes easier.
@@ -104,8 +104,8 @@ From there, a Worker can poll for work, receive this updated history, and resume
 <div class="tdiw">
   <div class="tditw">
     <p class="tdit">
-      Block diagram of how the History Service relates to the other services of the Temporal Server and to a Temporal
-      Temporal Service
+      Block diagram of how the History Service relates to the other services of the Temporal Server and to the Temporal
+      Service
     </p>
   </div>
   <div class="tdiiw" height="1040">
@@ -228,7 +228,7 @@ When changing the Retention Period, the new duration applies to Workflow Executi
 
 ## What is Persistence? {#persistence}
 
-The Temporal Persistence store is a database used by [Temporal Services](#temporal-server) to persist events generated and processed in your Temporal Service and SDK.
+The Temporal Persistence store is a database used by the [Temporal Server](#temporal-server) to persist events generated and processed in your Temporal Service and SDK.
 
 A Temporal Service's only required dependency for basic operation is the Persistence database.
 Multiple types of databases are supported.
