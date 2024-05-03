@@ -28,9 +28,12 @@ tags:
   - term
 ---
 
-Temporal Cloud is a consumption-based service; you pay only for what you need when you need it. Our [pricing](https://temporal.io/pricing) derives from your use of _actions_, _storage_, and _support_. Pricing is flexible, transparent, and predictable, so you know your costs and never pay for unused capacity.
+Temporal Cloud is a consumption-based service; you pay only for what you need when you need it.
+Our [pricing](https://temporal.io/pricing) derives from your use of _actions_, _storage_, and _support_.
+Pricing is flexible, transparent, and predictable, so you know your costs and never pay for unused capacity.
 
-This page introduces the elements of Temporal Cloud pricing—[actions](#action), [storage](#storage), and [support](#support)—so that you can estimate costs for your implementation. To gain a reliable estimate, [contact our team](https://pages.temporal.io/contact-us).
+This page introduces the elements of Temporal Cloud pricing—[actions](#action), [storage](#storage), and [support](#support)—so that you can estimate costs for your implementation.
+To gain a reliable estimate, [contact our team](https://pages.temporal.io/contact-us).
 
 ## What is an Action? {#action}
 
@@ -38,13 +41,16 @@ Actions are the fundamental consumption pricing unit in Temporal Cloud.
 An Action in Temporal occurs as part of an execution of your Workflow.
 Each time you execute a Temporal Workflow (a Workflow Execution), the associated Actions are collected and ultimately represent the state and progress of your Temporal Application.
 
-Actions are collected and billed monthly for each Namespace. The base rate is $25 per one million Actions per month (across all Namespaces), and you are billed only for the prorated amount of Actions you use. If you use fewer than one million Actions per month, your bill for Actions will be less than $25 for that month.
+Actions are collected and billed monthly for each Namespace.
+The base rate is $25 per one million Actions per month (across all Namespaces), and you are billed only for the prorated amount of Actions you use.
+If you use fewer than one million Actions per month, your bill for Actions will be less than $25 for that month.
 
 | **Actions per month** | **Cost per 1M (USD)** |
 | --------------------- | --------------------- |
 | Any number            | $25.00 (prorated)     |
 
-Alternatively, Temporal also offers a credit system. Credits provide an additional discount schedule for both billable Actions and [storage](#storage).
+Alternatively, Temporal also offers a credit system.
+Credits provide an additional discount schedule for both billable Actions and [storage](#storage).
 Credits do not expire.
 The following table outlines cost estimates for the credits system.
 Please [reach out to the team](https://pages.temporal.io/contact-us) if you are interested in this option.
@@ -90,7 +96,9 @@ The following operations result in Actions:
 
 - **Activity started or retried.**
   Occurs each time an Activity is started or retried.
-- **Local Activity started.** Each [Local Activity](/activities#local-activity) associated with one Workflow Task will count as one Action. (Note: Each additional Workflow Task heartbeat after counts as an additional Action. Also, Local Activities retried following a Workflow Task heartbeat will count as one Action.
+- **Local Activity started.** Each [Local Activity](/activities#local-activity) associated with one Workflow Task will count as one Action.
+(Note: Each additional Workflow Task heartbeat after counts as an additional Action.
+Also, Local Activities retried following a Workflow Task heartbeat will count as one Action.
 - **Activity Heartbeat recorded.**
   A Heartbeat call from Activity code counts as an Action only if it reaches the [Temporal Server](/clusters#temporal-server).
   Temporal SDKs throttle [Activity Heartbeats](/activities#activity-heartbeat).
@@ -99,28 +107,38 @@ The following operations result in Actions:
 
 **Schedules**
 
-[Schedules](/workflows#schedule) allows you to "schedule" a Workflow to start at a particular time. Each execution of a Schedule will accrue three actions:
+[Schedules](/workflows#schedule) allows you to "schedule" a Workflow to start at a particular time.
+Each execution of a Schedule will accrue three actions:
 
-- **Schedule Start**. Will account for two actions
-- **Workflow started**. One action to start the target workflow
+- **Schedule Start**.
+Will account for two actions
+- **Workflow started**.
+One action to start the target workflow
 
 **Export**
 
 [Workflow History Export](/cloud/export) allows you to export closed Workflow Histories to a cloud storage sink of your choice.
 
-- **Workflow exported**. Each Workflow exported accrues a single action.
+- **Workflow exported**.
+Each Workflow exported accrues a single action.
 
 [Reach out to our team](https://pages.temporal.io/contact-us) to get more information or to help size your number of Actions.
 
 ## What are the Temporal Cloud storage prices? {#storage}
 
-An execution of a particular Workflow could exist for a few seconds, a day, month, or even forever. Temporal collects the Event History during this time and dispatches work when necessary. In this context, a Workflow Execution has only two states, open (active) or closed.
+An execution of a particular Workflow could exist for a few seconds, a day, month, or even forever.
+Temporal collects the Event History during this time and dispatches work when necessary.
+In this context, a Workflow Execution has only two states, open (active) or closed.
 
-Storage costs are measured in gigabyte-hours (GBh) and include charges for active Workflows, active storage, and the long-term, "retained" storage of Event Histories of closed Workflows. These are measured per Namespace.
+Storage costs are measured in gigabyte-hours (GBh) and include charges for active Workflows, active storage, and the long-term, "retained" storage of Event Histories of closed Workflows.
+These are measured per Namespace.
 
 _Active storage_ is a measure of the amount of storage used to store active Workflows.
 
-When the execution of a Workflow ends, Temporal Cloud stores Event History for a defined Retention Period, for historical use. This is _retained storage_. Typical uses include compliance, debugging, workload refresh, and business analytics. Both kinds of storage have fixed costs.
+When the execution of a Workflow ends, Temporal Cloud stores Event History for a defined Retention Period, for historical use.
+This is _retained storage_.
+Typical uses include compliance, debugging, workload refresh, and business analytics.
+Both kinds of storage have fixed costs.
 
 | **Storage** | **Cost per GBh (USD)** |
 | ----------- | ---------------------- |
@@ -140,13 +158,17 @@ If you purchase Temporal Cloud credits (as [outlined earlier](#action)), active 
 
 ## What kind of support do I get with Temporal Cloud? {#support}
 
-When signing up for Temporal Cloud, select a support plan—either Basic or Premium—and gain access to our support organization, which includes developer success engineers and solution architects. Our experts assist with a range of work streams, from Workflow design reviews to setting up observability, and from troubleshooting support to maintaining an agreed-upon set of SLAs.
+When signing up for Temporal Cloud, select a support plan—either Basic or Premium—and gain access to our support organization, which includes developer success engineers and solution architects.
+Our experts assist with a range of work streams, from Workflow design reviews to setting up observability, and from troubleshooting support to maintaining an agreed-upon set of SLAs.
 
-The Temporal Developer Success team brings a deep knowledge of how Temporal works and how you can optimize your deployment. This team is comprised of engineers who know Temporal inside and out, and continue to contribute to its development.
+The Temporal Developer Success team brings a deep knowledge of how Temporal works and how you can optimize your deployment.
+This team is comprised of engineers who know Temporal inside and out, and continue to contribute to its development.
 
-They also investigate your Workflows to optimize their environments and possibly reduce costs associated with Actions and storage. They ensure your instance is performance tuned and help with other ongoing maintenance, like upgrades of the Temporal software and maintenance of the platform.
+They also investigate your Workflows to optimize their environments and possibly reduce costs associated with Actions and storage.
+They ensure your instance is performance tuned and help with other ongoing maintenance, like upgrades of the Temporal software and maintenance of the platform.
 
-If an issue occurs, the team provides support through our [support portal](/cloud/support#support-ticket), [community forum](https://community.temporal.io/), and (with Premium support) a dedicated Slack channel. Temporal offers two levels of support defined by their availability and SLAs.
+If an issue occurs, the team provides support through our [support portal](/cloud/support#support-ticket), [community forum](https://community.temporal.io/), and (with Premium support) a dedicated Slack channel.
+Temporal offers two levels of support defined by their availability and SLAs.
 
 |                         | **Basic**                                                                                      | **Premium**                                                                               |
 | ----------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
@@ -179,7 +201,30 @@ We offer single sign-on (SSO) integration using SAML at a monthly fixed fee base
 
 ## How to estimate costs {#pricing-estimates}
 
-Temporal Cloud employs a consumption-based pricing model that's based on storage and execution, factors that vary from one Workflow to the next. You can estimate the cost of a specific Workflow by running it at a low volume and then using its storage and compute measurements to project your production-scale cost. Our team is happy to [help you estimate the cost](https://pages.temporal.io/contact-us) for your specific workloads.
+Temporal Cloud employs a consumption-based pricing model that's based on storage and execution, factors that vary from one Workflow to the next.
+You can estimate the cost of a specific Workflow by running it at a low volume and then using its storage and compute measurements to project your production-scale cost.
+Our team is happy to [help you estimate the cost](https://pages.temporal.io/contact-us) for your specific workloads.
+
+### Multi-region Namespace costs
+
+Multi-region Namespaces charges apply after the Namespace setup completes.
+To estimate your charges, apply a 2x multiplier to the cost of the Namespace’s Actions and storage.
+This roughly estimates your costs.
+You won't be charged until Workflows actually start running and data replication begins.
+
+In the case of a pre-existing Namespace, the following charges apply:
+
+* We do not charge for historical actions that completed prior to the Namespace becoming multi-region.
+* We charge 2x for Actions of all existing (ongoing) and new Workflows from the point of adding a new region onward.
+  These are actively replicated.
+* We charge 2x for storage of closed (historical), existing (ongoing), and new Workflows from the point of adding a new region onward.
+
+Invoices for multi-region Namespaces include:
+* An Actions row, showing the Action count from the active region.
+* A Replicated Actions row, showing the action count from the standby region.
+
+If multi-region Namespace adoption began mid-month, expect to see more Actions than Replicated Actions.
+We follow a similar structure for Replicated Storage.
 
 ## Pricing FAQ {#pricing-faq}
 
