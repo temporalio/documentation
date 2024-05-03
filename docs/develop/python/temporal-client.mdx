@@ -4,91 +4,9 @@ The pages shows how to do the following:
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Start a Workflow Execution](#start-workflow-execution)
 
-## How to install the Temporal CLI and run a development server {#run-a-development-server}
+## Connect to development Temporal Service {#connect-to-development-service}
 
-This section describes how to install the [Temporal CLI](/cli) and run a development Cluster.
-The local development Cluster comes packaged with the [Temporal Web UI](/web-ui).
-
-For information on deploying and running a self-hosted production Cluster, see the [Self-hosted guide](/self-hosted-guide), or sign up for [Temporal Cloud](/cloud) and let us run your production Cluster for you.
-
-Temporal CLI is a tool for interacting with a Temporal Cluster from the command line and it includes a distribution of the Temporal Server and Web UI.
-This local development Cluster runs as a single process with zero runtime dependencies and it supports persistence to disk and in-memory mode through SQLite.
-
-**Install the Temporal CLI**
-
-Choose one of the following install methods to install the Temporal CLI.
-
-<Tabs>
-<TabItem value="macOS" label="macOS">
-
-- Install the Temporal CLI with Homebrew.
-
-  ```bash
-  brew install temporal
-  ```
-
-- Install the Temporal CLI with cURL.
-
-  ```bash
-  curl -sSf https://temporal.download/cli.sh | sh
-  ```
-
-- Install the Temporal CLI from CDN.
-  1. Select the platform and architecture needed.
-     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64">Download for Darwin amd64</a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64">Download for Darwin arm64</a>
-  2. Extract the downloaded archive.
-  3. Add the `temporal` binary to your PATH.
-
-</TabItem>
-<TabItem value="Linux" label="Linux">
-
-- Install the Temporal CLI with cURL.
-
-  ```bash
-  curl -sSf https://temporal.download/cli.sh | sh
-  ```
-
-- Install the Temporal CLI from CDN.
-  1. Select the platform and architecture needed.
-     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">Download for Linux amd64</a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">Download for Linux arm64</a>
-  2. Extract the downloaded archive.
-  3. Add the `temporal` binary to your PATH.
-
-</TabItem>
-<TabItem value="Windows" label="Windows">
-
-- Install the Temporal CLI from CDN.
-  1. Select the platform and architecture needed and download the binary.
-     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">Download for Windows amd64</a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">Download for Windows arm64</a>
-  2. Extract the downloaded archive.
-  3. Add the `temporal.exe` binary to your PATH.
-
-</TabItem>
-</Tabs>
-
-**Start the Temporal Development Server**
-
-Start the Temporal Development Server by using the `server start-dev` command.
-
-```bash
-temporal server start-dev
-```
-
-This command automatically starts the Web UI, creates the default [Namespace](/namespaces), and uses an in-memory database.
-
-The Temporal Server should be available on `localhost:7233` and the Temporal Web UI should be accessible at [`http://localhost:8233`](http://localhost:8233/).
-
-The server's startup configuration can be customized using command line options.
-For a full list of options, run:
-
-```bash
-temporal server start-dev --help
-```
-
-## How to connect a Temporal Client to a Temporal Cluster {#connect-to-a-dev-cluster}
+**How to connect to the local Temporal CLI development Temporal Service using the Python SDK**
 
 A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Cluster](/clusters).
 Communication with a Temporal Cluster includes, but isn't limited to, the following:
@@ -140,6 +58,8 @@ if __name__ == "__main__":
 
 ## How to connect to Temporal Cloud {#connect-to-temporal-cloud}
 
+**How to connect to Temporal Cloud using the Python SDK**
+
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
 - The [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
@@ -184,4 +104,167 @@ async def main():
             # server_root_ca_cert=server_root_ca_cert, # ROOT CA to validate the server cert
         ),
     )
+```
+
+## How to start a Workflow Execution {#start-workflow-execution}
+
+**How to start a Workflow Execution using the Python SDK**
+
+[Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+
+In the examples below, all Workflow Executions are started using a Temporal Client.
+To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](features#child-workflows) or External Workflow APIs.
+
+See the [Customize Workflow Type](#workflow-type) section to see how to customize the name of the Workflow Type.
+
+A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
+The Temporal Cluster then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
+
+To start a Workflow Execution in Python, use either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods in the Client.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
+
+```python
+
+# ...
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    result = await client.execute_workflow(
+        YourWorkflow.run,
+        "your name",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
+
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+### How to set a Workflow's Task Queue {#set-task-queue}
+
+**How to set a Workflow's Task Queue using the Python SDK**
+
+In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/workers#task-queue).
+
+For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
+
+To set a Task Queue in Python, specify the `task_queue` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
+
+```python
+
+# ...
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    result = await client.execute_workflow(
+        YourWorkflow.run,
+        "your name",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
+
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+### How to set a Workflow Id {#workflow-id}
+
+**How to set a Workflow Id using the Python SDK**
+
+You must set a [Workflow Id](/workflows#workflow-id).
+
+When setting a Workflow Id, we recommended mapping it to a business process or business entity identifier, such as an order identifier or customer identifier.
+
+To set a Workflow Id in Python, specify the `id` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
+
+The `id` argument should be a unique identifier for the Workflow Execution.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
+
+```python
+
+# ...
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    result = await client.execute_workflow(
+        YourWorkflow.run,
+        "your name",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
+
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+### How to get the results of a Workflow Execution {#get-workflow-results}
+
+**How to get the results of a Workflow Execution using the Python SDK**
+
+If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
+
+The Workflow Id, Run Id, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its result.
+
+It's possible to both block progress on the result (synchronous execution) or get the result at some other point in time (asynchronous execution).
+
+In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
+
+Use [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle) to return a Workflow handle.
+Then use the [`result`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#result) method to await on the result of the Workflow.
+
+To get a handle for an existing Workflow by its Id, you can use [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle), or use [`get_workflow_handle_for()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle_for) for type safety.
+
+Then use [`describe()`](https://python.temporal.io/temporalio.client.workflowhandle#describe) to get the current status of the Workflow.
+If the Workflow does not exist, this call fails.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/get_workflow_results_dacx.py">
+    View the source code
+  </a>{" "}
+  in the context of the rest of the application code.
+</div>
+
+```python
+
+# ...
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    handle = client.get_workflow_handle(
+        workflow_id="your-workflow-id",
+    )
+    results = await handle.result()
+    print(f"Result: {results}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
