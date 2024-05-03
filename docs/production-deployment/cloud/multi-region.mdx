@@ -461,14 +461,12 @@ This should be at most a 30-second delay for clients to converge to the newly ta
 Using a CNAME record supports a lower <a href="https://en.wikipedia.org/wiki/Time_to_live">TTL</a> for the record (configured at 15 seconds).
 As a rule of thumb, DNS reconciliation is not expected to take more than twice (2x) the TTL.
 
-
-### PrivateLink routing {#privatelink-routing}
+#### PrivateLink routing {#privatelink-routing}
 
 At failover, routing is completely transparent for multi-region customers unless you use PrivateLink.
-That is, you don’t need to make any changes on your end.
 If you are a PrivateLink customer, this section describes how to configure multi-region routing for multi-region Namespaces.
 
-#### Configuration
+**Configuration:**
 
 Depending on your networking setup and use of PrivateLink, you may need to change certain configurations.
 These include but are not limited to:
@@ -478,7 +476,7 @@ These include but are not limited to:
 
 ![Customer side solution example](/img/multi-region/private-link.png)
 
-#### DNS routing process
+**DNS routing process:**
 
 The regional DNS needs to be reached through IP addresses local to your network.
 As the CNAME for the Namespace record is public, PrivateLink clients also know which region is currently active.
