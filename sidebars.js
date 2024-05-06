@@ -221,7 +221,7 @@ module.exports = {
                 "production-deployment/cloud/metrics/prometheus-grafana",
               ],
             },
-            "production-deployment/cloud/worker-tuning",
+            "production-deployment/cloud/worker-health",
             "production-deployment/cloud/saml",
             "production-deployment/cloud/operation-api",
             "production-deployment/cloud/terraform-provider",
