@@ -123,6 +123,7 @@ module.exports = {
             "dev-guide/python/project-setup",
             "dev-guide/python/durable-execution",
             "dev-guide/python/foundations",
+            "develop/python/temporal-client",
             "dev-guide/python/features",
             "dev-guide/python/observability",
             "dev-guide/python/testing",

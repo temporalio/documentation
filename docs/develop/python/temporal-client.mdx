@@ -1,3 +1,33 @@
+---
+id: temporal-client
+title: Temporal Client - Python SDK feature guide
+sidebar_label: Temporal Client
+toc_max_heading_level: 4
+description: Master the Temporal Python Client with our comprehensive guide that covers everything from initialization to Workflow Execution.
+keywords:
+  - temporal python client
+  - connect python client to temporal service
+  - initialize temporal client
+  - temporal SDK python guide
+  - start workflow execution python
+  - temporal cloud connection
+  - python client for temporal cli
+  - custom namespace configuration
+  - temporal workflow management
+  - temporal client setup
+  - python workflow execution
+  - temporal cloud integration
+  - temporal client options
+  - managing temporal namespaces
+tags:
+  - python
+  - python-sdk
+  - temporal-client
+---
+
+This guide introduces Temporal Clients.
+It explains the role and use of Clients and shows you how to configure your Python Client code to connect to the Temporal Service.
+
 The pages shows how to do the following:
 
 - [Connect to a local development Temporal Service](#connect-to-development-service)
@@ -113,7 +143,7 @@ async def main():
 [Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.
-To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](features#child-workflows) or External Workflow APIs.
+To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](#child-workflows) or External Workflow APIs.
 
 See the [Customize Workflow Type](#workflow-type) section to see how to customize the name of the Workflow Type.
 
