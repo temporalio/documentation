@@ -182,7 +182,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 <span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>When MRN goes live update this link from self-hosted-guide/multi-cluster-replication to cloud/multi-region</span>
 #### [Failover](/self-hosted-guide/multi-cluster-replication) <!--[Failover](/cloud/multi-region)-->
 
-A failover shifts Workflow Execution processing from an active Cluster to a standby [Cluster](#temporal-cluster) during outages or other incidents.
+A Failover shifts Workflow Execution processing from an active Temporal Service to a standby Temporal Service during outages or other incidents.
 Standby Clusters use [Multi-Cluster Replication](#multi-cluster-replication) to duplicate data and prevent data loss during failover.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
