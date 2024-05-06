@@ -1,0 +1,100 @@
+---
+id: general-setup
+title: General observability setup with metrics - Temporal Cloud feature guide
+sidebar_label: General setup
+description: Configure metrics endpoints in Temporal Cloud using the intuitive UI or the tcld CLI tool
+tags:
+  - observability
+  - metrics
+  - temporal-cloud
+keywords:
+  - temporal cloud metrics configuration
+  - configure metrics endpoint
+  - temporal cloud observability
+  - tcld CLI guide
+  - temporal cloud UI setup
+  - assign metrics certificate
+  - grafana temporal integration
+  - prometheus metrics endpoint
+  - observability tools integration
+  - manage temporal cloud settings
+  - tcld account metrics commands
+---
+
+This page shows how to do the following:
+
+- [How to configure an endpoint using the UI](#configure-via-ui)
+- [How to configure an endpoint using tcld](#configure-via-cli-tcld)
+
+## Configure using the UI {#configure-via-ui}
+
+**How to configure a metrics endpoint using Temporal Cloud UI**
+
+:::note
+
+To view and manage third-party integration settings, your user account must have the Global Admin [Role](/cloud/users#account-level-roles).
+
+:::
+
+To assign a certificate and generate your metrics endpoint, follow these steps:
+
+1. In Temporal Cloud UI, click **Settings**.
+2. On the **Settings** page, click **Integrations**.
+3. In the **Connection** section, paste the URL that was generated in the Observability section on the Temporal Cloud UI.
+4. The **Authentication** section may be left as **No Authentication**.
+5. In the **TLS Settings** section, select **TLS Client Authentication**:
+
+- Leave **ServerName** blank (this is not required).
+- Paste in your end-entity certificate and key.
+  Note that the end-entity certificate used here must be part of the certificate chain with the root CA certificates used in your Temporal Cloud observability setup.
+
+6. Select **Save and test** to verify that the data source is working.
+
+After the page refreshes, the new metrics endpoint appears below **Endpoint**, in the form `https://<account-id>.tmprl.cloud/prometheus`.
+Use the endpoint to configure your observability tool—for example, [Grafana](https://grafana.com/) with [this dashboard](https://github.com/temporalio/dashboards/blob/master/cloud/temporal_cloud.json).
+For more information, see [Set up Grafana with Temporal Cloud](/cloud/metrics/prometheus-grafana).
+
+You can also query via the [Prometheus HTTP API](https://prometheus.io/docs/prometheus/latest/querying/api/) at URLs like:
+
+```
+https://<account-id>.tmprl.cloud/prometheus/api/v1/query?query=temporal_cloud_v0_state_transition_count
+```
+
+For example:
+
+```
+$ curl --cert client.pem --key client-key.pem "https://<account-id>.tmprl.cloud/prometheus/api/v1/query?query=temporal_cloud_v0_state_transition_count" | jq .
+{
+  "status": "success",
+  "data": {
+    "resultType": "vector",
+    "result": [
+      {
+        "metric": {
+          "__name__": "temporal_cloud_v0_state_transition_count",
+          "__rollup__": "true",
+          "operation": "WorkflowContext",
+          "temporal_account": "your-account",
+          "temporal_namespace": "your-namespace.your-account-is",
+          "temporal_service_type": "history"
+        },
+        "value": [
+          1672347471.2,
+          "0"
+        ]
+      },
+      ...
+}
+```
+
+## Configure endpoint using tcld {#configure-via-cli-tcld}
+
+**How to configure a metrics endpoint using the tcld CLI.**
+
+To add a certificate to a metrics endpoint, use [`tcld account metrics accepted-client-ca add`](/cloud/tcld/account#add).
+
+To enable a metrics endpoint, use [`tcld account metrics enable`](/cloud/tcld/account#enable).
+
+To disable a metrics endpoint, use [`tcld account metrics disable`](/cloud/tcld/account#disable).
+
+For more information, see [tcld account metrics command](/cloud/tcld/account#metrics).

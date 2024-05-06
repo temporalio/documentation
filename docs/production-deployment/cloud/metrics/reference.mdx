@@ -1,0 +1,159 @@
+---
+id: reference
+title: Temporal Cloud available metrics reference
+sidebar_label: Available metrics
+description: Discover available metrics such as workflow successes, failures, and latencies to optimize your Temporal Cloud deployments.
+toc_max_heading_level: 4
+tags:
+  - temporal-cloud
+  - metrics
+  - observability
+keywords:
+  - temporal cloud metrics
+  - promql temporal metrics
+  - prometheus temporal monitoring
+  - temporal cloud observability
+  - workflow latency metrics
+  - workflow state transition metrics
+  - analyze temporal cloud metrics
+  - metric labels for temporal
+  - workflow execution metrics
+  - temporal cloud latency analysis
+  - temporal cloud promql
+  - histogram metrics analysis
+  - metric filtering with labels
+  - workflow success metrics
+  - gRPC error count
+---
+
+Most Temporal Cloud metrics are suffixed with `_count`.
+This indicates that they behave largely like a [Prometheus counter](https://prometheus.io/docs/concepts/metric_types/#counter).
+You'll want to use a function like `rate` or `increase` to calculate a per-second rate of increase, or an extrapolated total increase over a time period.
+
+```
+rate(temporal_cloud_v0_frontend_service_request_count[5m])
+```
+
+`temporal_cloud_v0_service_latency` has `_bucket`, `_count`, and `_sum` metrics. This is because it's a [Prometheus Histogram](https://prometheus.io/docs/concepts/metric_types/#histogram).
+You can use the `_count` and `_sum` metrics to calculate an average latency over a time period, or use the `_bucket` metric to calculate an approximate histogram quartile.
+
+```
+# the average latency observation over the last 5 minutes
+rate(temporal_cloud_v0_service_latency_sum[5m]) / rate(temporal_cloud_v0_service_latency_count[5m])
+
+# the approximate 99th percentile latency over the last 5 minutes, broken down by operation
+histogram_quantile(0.99, sum(rate(temporal_cloud_v0_service_latency_bucket[5m])) by (le, operation))
+```
+
+## Metric labels {#metric-labels}
+
+Metrics for all Namespaces in your account are available from the metrics endpoint.
+Use the following labels to filter metrics:
+
+| Label                      | Explanation                                                                                                                                                                                                                                                               |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `le`                       | Less than or equal to (`le`) is used in histograms to categorize observations into buckets based on their value being less than or equal to a predefined upper limit.                                                                                                     |
+| `operation`                | This includes operations such as:<ul><li>SignalWorkflowExecution</li><li>StartBatchOperation</li><li>StartWorkflowExecution</li><li>TaskQueueMgr</li><li>TerminateWorkflowExecution</li><li>UpdateNamespace</li><li>UpdateSchedule</li></ul> This list is non-exhaustive. |
+| `resource_exhausted_cause` | Cause for resource exhaustion.                                                                                                                                                                                                                                            |
+| `task_type`                | Activity or Workflow.                                                                                                                                                                                                                                                     |
+| `temporal_account`         | Temporal Account.                                                                                                                                                                                                                                                         |
+| `temporal_namespace`       | Temporal Namespace.                                                                                                                                                                                                                                                       |
+| `temporal_service_type`    | Frontend or Matching or History or Worker.                                                                                                                                                                                                                                |
+| `is_background`            | This label on `temporal_cloud_v0_total_action_count` indicates when actions are produced by a Temporal background job, for example: hourly Workflow Export.                                                                                                               |
+| `namespace_mode`           | This label on `temporal_cloud_v0_total_action_count` indicates if actions are produced by an active vs a passive Namespace. For a regular Namespace, `namespace_mode` will always be “active”.                                                                            |
+
+The following is an example of how you can filter metrics using labels:
+
+```text
+temporal_cloud_v0_poll_success_count{__rollup__="true", operation="TaskQueueMgr", task_type="Activity", temporal_account="12345", temporal_namespace="your_namespace.12345", temporal_service_type="matching"}
+```
+
+## Available metrics
+
+**What metrics are emitted from Temporal Cloud?**
+
+The following metrics are emitted for your various Namespaces.
+
+### temporal_cloud_v0_frontend_service_error_count
+
+This is a count of gRPC errors returned aggregated by operation.
+
+### temporal_cloud_v0_frontend_service_request_count
+
+This is a count of gRPC requests received aggregated by operation.
+
+### temporal_cloud_v0_poll_success_count
+
+Tasks that are successfully matched to a poller.
+
+### temporal_cloud_v0_poll_success_sync_count
+
+Tasks that are successfully sync matched to a poller.
+
+### temporal_cloud_v0_poll_timeout_count
+
+When no tasks are available for a poller before timing out.
+
+### temporal_cloud_v0_resource_exhausted_error_count
+
+gRPC requests received that were rate-limited by Temporal Cloud, aggregated by cause.
+
+### temporal_cloud_v0_schedule_action_success_count
+
+Successful execution of a Scheduled Workflow.
+
+### temporal_cloud_v0_schedule_buffer_overruns_count
+
+When average schedule run length is greater than average schedule interval while a `buffer_all` overlap policy is configured.
+
+### temporal_cloud_v0_schedule_missed_catchup_window_count
+
+Skipped Scheduled executions when Workflows were delayed longer than the catchup window.
+
+### temporal_cloud_v0_schedule_rate_limited_count
+
+Workflows that were delayed due to exceeding a rate limit.
+
+### temporal_cloud_v0_service_latency_bucket
+
+Latency for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
+
+### temporal_cloud_v0_service_latency_count
+
+Count of latency observations for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
+
+### temporal_cloud_v0_service_latency_sum
+
+Sum of latency observation time for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
+
+### temporal_cloud_v0_state_transition_count
+
+Count of state transitions for each Namespace.
+
+### temporal_cloud_v0_total_action_count
+
+Approximate count of Temporal Cloud Actions.
+
+### temporal_cloud_v0_workflow_cancel_count
+
+Workflows canceled before completing execution.
+
+### temporal_cloud_v0_workflow_continued_as_new_count
+
+Workflow Executions that were Continued-As-New from a past execution.
+
+### temporal_cloud_v0_workflow_failed_count
+
+Workflows that failed before completion.
+
+### temporal_cloud_v0_workflow_success_count
+
+Workflows that successfully completed.
+
+### temporal_cloud_v0_workflow_terminate_count
+
+Workflows terminated before completing execution.
+
+### temporal_cloud_v0_workflow_timeout_count
+
+Workflows that timed out before completing execution.
