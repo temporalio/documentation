@@ -29,7 +29,7 @@ It includes the [Temporal Server](/clusters#temporal-server), SQLite persistence
 
 :::note
 
-When upgrading from `tctl` to the Temporal CLI, make sure to update your environment variables and use updated commands.
+When upgrading from [tctl](/tctl-v1) to the Temporal CLI, make sure to update your environment variables and use updated commands.
 For details, see [CLI release notes](https://github.com/temporalio/cli/releases/).
 
 :::
@@ -89,7 +89,7 @@ The following table describes the environment variables you can set for the Temp
 | Variable                                 | Definition                                                                | Client Option                   |
 | ---------------------------------------- | ------------------------------------------------------------------------- | ------------------------------- |
 | `TEMPORAL_ADDRESS`                       | Host and port (formatted as host:port) for the Temporal Frontend Service. | --address                       |
-| `TEMPORAL_CODEC_AUTH`                    | Authorization header for requests to Codec Server.               | --codec-auth                    |
+| `TEMPORAL_CODEC_AUTH`                    | Authorization header for requests to Codec Server.                        | --codec-auth                    |
 | `TEMPORAL_CODEC_ENDPOINT`                | Endpoint for remote Codec Server.                                         | --codec-endpoint                |
 | `TEMPORAL_NAMESPACE`                     | Namespace in Temporal Workflow. Default: "default".                       | --namespace                     |
 | `TEMPORAL_TLS_CA`                        | Path to server CA certificate.                                            | --tls-ca-path                   |

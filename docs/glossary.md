@@ -263,12 +263,6 @@ Multi-Cluster Replication is a feature which asynchronously replicates Workflow 
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Multi-Cluster Replication](/clusters#multi-cluster-replication)
-
-Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
-
-_Tags: [term](/tags/term), [explanation](/tags/explanation)_
-
 #### [Namespace](/namespaces)
 
 A Namespace is a unit of isolation within the Temporal Platform
