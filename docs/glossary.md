@@ -103,12 +103,6 @@ The Claim Mapper component is a pluggable component that extracts Claims from JS
 
 _Tags: [term](/tags/term)_
 
-#### [Cluster](/clusters)
-
-A Cluster is a Temporal Server paired with Persistence and Visibility stores.
-
-_Tags: [term](/tags/term), [explanation](/tags/explanation)_
-
 #### [Codec Server](/dataconversion#codec-server)
 
 A Codec Server is an HTTP server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.
@@ -480,6 +474,10 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 A Cloud gRPC Endpoint is a Namespace-specific address used to access Temporal Cloud from your code.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### [Temporal Cluster](/clusters)
+The term "Temporal Cluster" is being phased out.
+Instead the term [Temporal Service](#temporal-service) is now being used.
 
 #### [Temporal Service](/clusters)
 
