@@ -183,7 +183,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 #### [Failover](/self-hosted-guide/multi-cluster-replication) <!--[Failover](/cloud/multi-region)-->
 
 A Failover shifts Workflow Execution processing from an active Temporal Service to a standby Temporal Service during outages or other incidents.
-Standby Clusters use [Multi-Cluster Replication](#multi-cluster-replication) to duplicate data and prevent data loss during failover.
+Standby Namespaces use replication to duplicate data and prevent data loss during Failover.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -221,7 +221,7 @@ _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term
 
 A Global Namespace is a Namespace that duplicates data from an active [Cluster](#temporal-cluster) to a standby Cluster using [Multi-Cluster Replication](#multi-cluster-replication), keeping both Namespaces in sync.
 Global Namespaces are designed to respond to service issues like network congestion.
-When service to the primary Cluster is compromised, a [failover](#failover) transfers control from the active to the standby cluster.
+When service to the primary Cluster is compromised, a [Failover](#failover) transfers control from the active to the standby cluster.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -278,10 +278,10 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 #### [Multi-region Namespace](/cloud)<!--/multi-region)-->
 
 A Multi-region Namespace (MRN) is a [Temporal Cloud](#temporal-cloud) Namespace that is configured to work across an active [region](/cloud/service-availability#regions) and a standby region located within the same continent.
-Each region is hosted on a separate Temporal Cloud [Cluster](#temporal-cluster). 
+Each Region corresponds to a dedicated Temporal Cloud Service. 
 Temporal Cloud automatically replicates Workflow Executions and metadata from the active to the standby region.
 MRNs are designed to respond to service issues like network congestion.
-When service to the primary Cluster is compromised, a [failover](#failover) transfers control from the active to the standby Cluster.
+In the event that the primary Service's performance is compromised, a [Failover](#failover) transfers control from the active to the standby Service.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
