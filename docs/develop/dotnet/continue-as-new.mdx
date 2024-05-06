@@ -1,6 +1,6 @@
 ---
 id: continue-as-new
-title: How to Continue-As-New in Dotnet
+title: How to Continue-As-New in .NET
 sidebar_label: Continue-As-New
 description: Continue-As-New
 keywords:
@@ -15,5 +15,11 @@ tags:
 
 ## How to Continue-As-New {#continue-as-new}
 
-<!-- CONTENT-->
-<!-- .NET specific example of continue-as-new-->
+[Continue-As-New](/workflows#continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
+The Workflow Execution spawned from the use of Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
+
+To Continue-As-New in .NET, throw an exception created by `CreateContinueAsNewException()` from inside your Workflow, which will stop the Workflow immediately and Continue-As-New.
+
+```csharp
+throw Workflow.CreateContinueAsNewException((MyWorkflow wf) => wf.RunAsync(myNewParam));
+```
