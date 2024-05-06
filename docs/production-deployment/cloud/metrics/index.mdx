@@ -1,6 +1,6 @@
 ---
 id: index
-title: Metrics - Temporal Cloud feature guide
+title: Temporal Cloud observability through metrics
 sidebar_label: Metrics
 sidebar_position: 5
 description: Configure and track performance metrics for Temporal Cloud.
@@ -27,6 +27,19 @@ tags:
   - tcld-cli
   - temporal-cloud
 ---
+
+Beyond the [metrics](/references/sdk-metrics) provided by the Temporal SDKs, some key metrics exist only in Temporal Cloud.
+You can use your own observability tool to query an endpoint and review Namespace metrics.
+
+Metrics for all Namespaces in your account are available from the metrics endpoint.
+
+Metrics lag real-time performance by about one minute.
+
+Temporal Cloud retains raw metrics for seven days.
+
+To ensure security of your metrics, a CA certificate dedicated to observability is required.
+Only clients that use certificates signed by that CA, or that chain up to the CA, can query the metrics endpoint.
+For more information about CA certificates in Temporal Cloud, see [Certificate requirements](/cloud/certificates#certificate-requirements).
 
 - [General setup](/production-deployment/cloud/metrics/general-setup)
 - [Available metrics](/production-deployment/cloud/metrics/reference)
