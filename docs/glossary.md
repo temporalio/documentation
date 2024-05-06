@@ -269,7 +269,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication)
 
-Multi-Cluster Replication asynchronously replicate Workflow Executions and metadata from an active [Cluster](#temporal-cluster) to a standby Cluster.
+Multi-Cluster Replication asynchronously replicates Workflow Executions and metadata from an active [Cluster](#temporal-cluster) to a standby Cluster.
 The replicated data is used for backup and state reconstruction.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
