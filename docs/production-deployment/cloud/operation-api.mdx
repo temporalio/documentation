@@ -71,9 +71,9 @@ Use [gRPC](https://grpc.io/docs/) to compile and generate code in your preferred
    ```python
    python -m grpc_tools.protoc -I./ --python_out=./ --grpc_python_out=./ *.proto
    ```
-   - `-I./` specifies the directory of the `.proto` files.
-   - `--python_out=./` sets the output directory for generated Python classes.
-   - `--grpc_python_out=./` sets the output directory for generated gRPC service classes.
+   - `-I` specifies the directory of the `.proto` files.
+   - `--python_out=` sets the output directory for generated Python classes.
+   - `--grpc_python_out=` sets the output directory for generated gRPC service classes.
    - `*.proto` processes all `.proto` files.
 
 ## Use the generated code
