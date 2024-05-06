@@ -199,32 +199,36 @@ We offer single sign-on (SSO) integration using SAML at a monthly fixed fee base
 | 26 to 50  | $300               |
 | 51+       | $500               |
 
+## What is the price for a multi-region Namespace?
+
+Temporal Cloud's multi-region Namespaces (MRNs) are an optional feature that provide higher Namespace availability promises.
+With MRNs, Temporal Cloud automatically replicates a Namespace's Workflow Executions and metadata from its active region to its standby region.
+In the event that the primary Service's performance is compromised, a "failover" transfers control to the standby region.
+
+Multi-region Namespace costs align with the volume of your workloads.
+These charges apply once your MRN deploys.
+After activation, the new MRN begins replicating data to the standby region.
+Due to this replication, MRNs double your current action and storage costs.
+
+For existing Namespaces:
+
+* Temporal Cloud does not charge for historical actions that were completed prior to upgrading to a multi-region Namespace.
+* Temporal Cloud will charge for all Actions of existing (ongoing) and new Workflows from the point of adding a new region onward.
+* Temporal Cloud will charge for storage of closed (historical), existing (ongoing), and new Workflows from the point of adding a new region and beginning MRN service.
+
+Invoices for multi-region Namespaces include:
+
+* An Actions row, showing the Action count from the active region.
+* A Replicated Actions row, showing the Action count from the standby region.
+
+If your multi-region Namespace adoption begins mid-month, expect to see more Actions than Replicated Actions.
+We follow a similar structure for Replicated Storage.
+
 ## How to estimate costs {#pricing-estimates}
 
 Temporal Cloud employs a consumption-based pricing model that's based on storage and execution, factors that vary from one Workflow to the next.
 You can estimate the cost of a specific Workflow by running it at a low volume and then using its storage and compute measurements to project your production-scale cost.
 Our team is happy to [help you estimate the cost](https://pages.temporal.io/contact-us) for your specific workloads.
-
-### Multi-region Namespace costs
-
-Multi-region Namespaces charges apply after the Namespace setup completes.
-To estimate your charges, apply a 2x multiplier to the cost of the Namespace’s Actions and storage.
-This roughly estimates your costs.
-You won't be charged until Workflows actually start running and data replication begins.
-
-In the case of a pre-existing Namespace, the following charges apply:
-
-* We do not charge for historical actions that completed prior to the Namespace becoming multi-region.
-* We charge 2x for Actions of all existing (ongoing) and new Workflows from the point of adding a new region onward.
-  These are actively replicated.
-* We charge 2x for storage of closed (historical), existing (ongoing), and new Workflows from the point of adding a new region onward.
-
-Invoices for multi-region Namespaces include:
-* An Actions row, showing the Action count from the active region.
-* A Replicated Actions row, showing the action count from the standby region.
-
-If multi-region Namespace adoption began mid-month, expect to see more Actions than Replicated Actions.
-We follow a similar structure for Replicated Storage.
 
 ## Pricing FAQ {#pricing-faq}
 
