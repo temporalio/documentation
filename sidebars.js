@@ -26,6 +26,29 @@ module.exports = {
             "evaluate/development-features/throughput-composability",
           ],
         },
+        {
+          type: "category",
+          label: "Production deployment features",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "evaluate/production-deployment-features/index",
+          },
+          items: [
+              {
+                type: "category",
+                label: "Temporal Cloud",
+                collapsed: true,
+                link: {
+                    type: "doc",
+                    id: "evaluate/production-deployment-features/cloud/index",
+                    },
+                items: [
+                    "evaluate/production-deployment-features/cloud/multi-region"
+                ],
+              },
+          ],
+        },
         "security",
         "evaluate/release-stages",
         {
