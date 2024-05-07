@@ -3,7 +3,7 @@ id: index
 title: Temporal CLI command reference
 sidebar_label: Temporal CLI
 sidebar_position: 8
-description: Discover the Temporal Command Line Interface (CLI) documentation. Navigate, configure, and utilize Temporal CLI effectively.
+description: Discover the Temporal Command Line Interface (CLI) documentation. Navigate, configure, and utilize the Temporal CLI effectively.
 slug: /cli
 toc_max_heading_level: 4
 keywords:
@@ -20,13 +20,12 @@ tags:
   - term
 ---
 
-The Temporal CLI, evolving from its precursor [tctl](/tctl-v1), provides developers with direct CLI access to a Temporal Service.
+The Temporal CLI provides direct access to a Temporal Service via the terminal.
 It's a powerful tool for managing, monitoring, and debugging Temporal Applications.
-With the Temporal CLI, developers can start Workflows, Signal or cancel them, and Query Workflow state, directly from their terminal.
-This interface also facilitates administrative tasks such as Namespace management.
+You can use it to start, stop, inspect and operate on Workflows and Activities, and perform administrative tasks such as Namespace, Schedule, and Task Queue management.
 
-The Temporal CLI encapsulates complex operations into simpler command-line inputs, making it an indispensable component of a developer’s toolkit when working with the Temporal ecosystem.
-Its design philosophy emphasizes ease of use and efficiency, catering to both quick inspections and more complex batch operations, thereby streamlining the development and operational processes for durable applications.
+The Temporal CLI also includes an embedded Temporal Service suitable for use in development and CI/CD.
+It includes the [Temporal Server](/clusters#temporal-server), SQLite persistence, and the [Temporal Web UI](/web-ui).
 
 :::note
 
@@ -34,9 +33,6 @@ When upgrading from [tctl](/tctl-v1) to the Temporal CLI, make sure to update yo
 For details, see [CLI release notes](https://github.com/temporalio/cli/releases/).
 
 :::
-
-The Temporal CLI includes a distribution of a Temporal Cluster.
-It includes the [Temporal Server](/clusters#temporal-server), SQLite persistence, and the [Temporal Web UI](/web-ui).
 
 ### Command set
 
@@ -61,7 +57,7 @@ temporal server start-dev --namespace foo --namespace bar
 Register Namespaces with `namespace create`:
 
 ```shell
-temporal operator namespace create foo
+temporal operator namespace create --namespace foo
 ```
 
 ### Enable or disable Temporal UI
@@ -88,15 +84,13 @@ This setting makes created Search Attributes immediately available.
 
 ## Environment variables
 
-Configure system environment with the Temporal CLI environmental variables.
-The following table lists and describes the environment variables you can set for the Temporal CLI.
+The following table describes the environment variables you can set for the Temporal CLI.
 
 | Variable                                 | Definition                                                                | Client Option                   |
 | ---------------------------------------- | ------------------------------------------------------------------------- | ------------------------------- |
 | `TEMPORAL_ADDRESS`                       | Host and port (formatted as host:port) for the Temporal Frontend Service. | --address                       |
-| `TEMPORAL_CODEC_AUTH`                    | Sets the authorization header for requests to Codec Server.               | --codec-auth                    |
+| `TEMPORAL_CODEC_AUTH`                    | Authorization header for requests to Codec Server.                        | --codec-auth                    |
 | `TEMPORAL_CODEC_ENDPOINT`                | Endpoint for remote Codec Server.                                         | --codec-endpoint                |
-| `TEMPORAL_CONTEXT_TIMEOUT`               | Optional timeout for RPC call context (in seconds). Default: 5.           | --context-timeout               |
 | `TEMPORAL_NAMESPACE`                     | Namespace in Temporal Workflow. Default: "default".                       | --namespace                     |
 | `TEMPORAL_TLS_CA`                        | Path to server CA certificate.                                            | --tls-ca-path                   |
 | `TEMPORAL_TLS_CERT`                      | Path to x509 certificate.                                                 | --tls-cert-path                 |
@@ -106,7 +100,7 @@ The following table lists and describes the environment variables you can set fo
 
 ## Proxy support
 
-Temporal CLI provides support for users who are operating behind a proxy.
+The Temporal CLI provides support for users who are operating behind a proxy.
 This feature ensures seamless communication even in network-restricted environments.
 
 #### Setting up proxy support
@@ -139,39 +133,59 @@ Enable auto-completion using the following commands.
 
 ### zsh auto-completion
 
-<!-- TODO: add more information about zsh to make comparable to bash section -->
+1. Add the following line to your `~/.zshrc` startup script:
 
-Add the following code snippet to your `~/.zshrc` file:
+   ```sh
+   eval "$(temporal completion zsh)"
+   ```
 
-```sh
-source <(temporal completion zsh)
-```
+2. Re-launch your shell or run:
 
-If you're running auto-completion from the terminal, run the following command:
-
-```sh
-echo 'source <(temporal completion zsh)' >> ~/.zshrc
-```
-
-After setting the variable, run the following command:
-
-`source ~/.zshrc`.
+   ```sh
+   source ~/.zshrc
+   ```
 
 ### Bash auto-completion
 
-Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to `~/.bash_profile`.
+1. Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to your `~/.bashrc`.
 
-To use aliases, add them to `~/.bash_profile` as needed.
+2. Add the following line to your `~/.bashrc` startup script:
 
-```bash
-alias t='temporal'
-alias tw='temporal workflow'
-alias ts='temporal server start-dev'
-alias tsdb='temporal server start-dev --db-filename ~/temporal.db'
+   ```sh
+   eval "$(temporal completion bash)"
+   ```
 
-# send process to background so you can continue using the terminal
-alias tsbg='temporal server start-dev &> /dev/null & disown'
-```
+3. Re-launch your shell or run:
+
+   ```sh
+   source ~/.bashrc
+   ```
+
+:::note
+
+If auto-completion fails with the error: `bash: _get_comp_words_by_ref: command not found`, you did not successfully install [bash-completion](https://github.com/scop/bash-completion#installation). This package must be loaded into your shell for `temporal` auto-completion to work.
+
+:::
+
+### Fish auto-completion
+
+1. Create the Fish custom completions directory if it does not already exist:
+
+   ```fish
+   mkdir -p ~/.config/fish/completions
+   ```
+
+2. Configure the completions to load when needed. Note: the file name must be `temporal.fish` or the completions will not be found:
+
+   ```fish
+   echo 'eval "$(temporal completion fish)"' >~/.config/fish/completions/temporal.fish
+   ```
+
+3. Re-launch your shell or run:
+
+   ```fish
+   source ~/.config/fish/completions/temporal.fish
+   ```
 
 ## Install the Temporal CLI {#install}
 
@@ -191,12 +205,6 @@ Choose one of the following install methods to install the Temporal CLI on MacOS
 brew install temporal
 ```
 
-- Install the Temporal CLI with cURL.
-
-```shell
-curl -sSf https://temporal.download/cli.sh | sh
-```
-
 - Install the Temporal CLI from CDN.
 
   1. Select the platform and architecture needed.
@@ -214,12 +222,6 @@ curl -sSf https://temporal.download/cli.sh | sh
 
 Choose one of the following install methods to install the Temporal CLI on Linux:
 
-- Install the Temporal CLI with cURL.
-
-```shell
-curl -sSf https://temporal.download/cli.sh | sh
-```
-
 - Install the Temporal CLI from CDN.
 
   1. Select the platform and architecture needed.
@@ -236,14 +238,6 @@ curl -sSf https://temporal.download/cli.sh | sh
 **How to install the Temporal CLI on Windows**
 
 Choose one of the following methods to install the Temporal CLI on Windows:
-
-- Install the Temporal CLI with Scoop
-
-Run the following command to install the Temporal CLI using Scoop on Windows:
-
-```shell
-scoop install temporal-cli
-```
 
 - Install the Temporal CLI from CDN.
 

@@ -215,10 +215,13 @@ module.exports = {
                 id: "production-deployment/cloud/metrics/index",
               },
               items: [
+                "production-deployment/cloud/metrics/general-setup",
+                "production-deployment/cloud/metrics/reference",
                 "production-deployment/cloud/metrics/datadog",
                 "production-deployment/cloud/metrics/prometheus-grafana",
               ],
             },
+            "production-deployment/cloud/worker-health",
             "production-deployment/cloud/saml",
             "production-deployment/cloud/operation-api",
             "production-deployment/cloud/terraform-provider",
