@@ -179,8 +179,7 @@ An append-only log of Events that represents the full state a Workflow Execution
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>When MRN goes live update this link from self-hosted-guide/multi-cluster-replication to cloud/multi-region</span>
-#### [Failover](/self-hosted-guide/multi-cluster-replication) <!--[Failover](/cloud/multi-region)-->
+#### [Failover](/cloud/multi-region)
 
 A Failover shifts Workflow Execution processing from an active Temporal Namespace to a standby Temporal Namespace during outages or other incidents.
 Standby Namespaces use replication to duplicate data and prevent data loss during Failover.
@@ -274,8 +273,7 @@ The replicated data is used for backup and state reconstruction.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>When MRN goes live update this link from cloud to cloud/multi-region</span>
-#### [Multi-region Namespace](/cloud)<!--/multi-region)-->
+#### [Multi-region Namespace](/cloud/multi-region)
 
 A Multi-region Namespace (MRN) is a [Temporal Cloud](#temporal-cloud) Namespace that is configured to work across an active [region](/cloud/service-availability#regions) and a standby region.
 Each region corresponds to a dedicated Temporal Cloud Service. 
