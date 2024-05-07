@@ -182,7 +182,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 <span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>When MRN goes live update this link from self-hosted-guide/multi-cluster-replication to cloud/multi-region</span>
 #### [Failover](/self-hosted-guide/multi-cluster-replication) <!--[Failover](/cloud/multi-region)-->
 
-A Failover shifts Workflow Execution processing from an active Temporal Service to a standby Temporal Service during outages or other incidents.
+A Failover shifts Workflow Execution processing from an active Temporal Namespace to a standby Temporal Namespace during outages or other incidents.
 Standby Namespaces use replication to duplicate data and prevent data loss during Failover.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -219,7 +219,7 @@ _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term
 
 #### [Global Namespace](/namespaces#global-namespace)
 
-A Global Namespace is a Namespace that duplicates data from an active [Cluster](#temporal-cluster) to a standby Cluster using [Multi-Cluster Replication](#multi-cluster-replication), keeping both Namespaces in sync.
+A Global Namespace is a Namespace that duplicates data from an active [Temporal Service](#temporal-cluster) to a standby Service using the replication to keep both Namespaces in sync.
 Global Namespaces are designed to respond to service issues like network congestion.
 When service to the primary Cluster is compromised, a [Failover](#failover) transfers control from the active to the standby cluster.
 
@@ -277,11 +277,11 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 <span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>When MRN goes live update this link from cloud to cloud/multi-region</span>
 #### [Multi-region Namespace](/cloud)<!--/multi-region)-->
 
-A Multi-region Namespace (MRN) is a [Temporal Cloud](#temporal-cloud) Namespace that is configured to work across an active [region](/cloud/service-availability#regions) and a standby region located within the same continent.
-Each Region corresponds to a dedicated Temporal Cloud Service. 
+A Multi-region Namespace (MRN) is a [Temporal Cloud](#temporal-cloud) Namespace that is configured to work across an active [region](/cloud/service-availability#regions) and a standby region.
+Each region corresponds to a dedicated Temporal Cloud Service. 
 Temporal Cloud automatically replicates Workflow Executions and metadata from the active to the standby region.
-MRNs are designed to respond to service issues like network congestion.
-In the event that the primary Service's performance is compromised, a [Failover](#failover) transfers control from the active to the standby Service.
+MRNs are designed to respond to service issues that may arise.
+In the event that the Namespace's performance is compromised, a [Failover](#failover) transfers control from the active to the standby region.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
