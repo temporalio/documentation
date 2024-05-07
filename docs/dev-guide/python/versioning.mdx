@@ -177,7 +177,7 @@ Once you're confident that your Workflows are no longer running the pre-patch co
 These Workers will be running the most up-to-date version of the Workflow code, which no longer requires the patch.
 The `deprecate_patch()` function works similarly to the `patched()` function by recording a marker in the Workflow history.
 This marker does not fail replay when Workflow code does not emit it.
-Deprecated patches serve as a bridge between the pre-patch code paths and the post-patch code paths, and are useful for avoiding errors resulting from patched code paths in your Workflow Execution History.
+Deprecated patches serve as a bridge between the pre-patch code paths and the post-patch code paths, and are useful for avoiding errors resulting from patched code paths in your Workflow history.
 
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_3_patch_deprecated_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
 
