@@ -22,8 +22,8 @@ tags:
 
 <span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Updated this section to incorporate text from Irina's writeup--please check.</span>
 
-Temporal Cloud's multi-region Namespace (MNS) feature adds push-button high availability for your Temporal Service.
-MNS add seamless failover capabilities to your production work, ensuring continuous operation without manual intervention​​.
+Temporal Cloud's multi-region Namespace (MRN) feature adds push-button high availability for your Temporal Service.
+MRN add seamless failover capabilities to your production work, ensuring continuous operation without manual intervention​​.
 They offer simple deployment, operational continuity, while preserving data integrity during regional disruptions.
 
 Each multi-region Temporal Cloud Namespace enables you to choose a standby region.
@@ -75,7 +75,7 @@ When faced with network latency or other region-wide issues, you can manually tr
 Advantages of using a Multi-region Namespace:
 
 * No manual deployment or configuration needed, simple push button operation.
-* Open workflows continue in in the standby region with minimal interruption and data loss.
+* Open workflows continue in the standby region with minimal interruption and data loss.
 * No changes required to workers and workflow starter code in setup and failover.
 * 99.99% Contractual SLA.
 
@@ -463,24 +463,24 @@ As a rule of thumb, DNS reconciliation is not expected to take more than twice (
 
 #### PrivateLink routing {#privatelink-routing}
 
-At failover, routing is completely transparent for multi-region customers unless you use PrivateLink.
-If you are a PrivateLink customer, this section describes how to configure multi-region routing for multi-region Namespaces.
+:::important
+- At failover, routing is completely transparent for multi-region customers _unless_ you use PrivateLink.
+  This section describes how to configure routing for multi-region Namespaces for PrivateLink customers only.
 
-**Configuration:**
+:::
 
-Depending on your networking setup and use of PrivateLink, you may need to change certain configurations.
-These include but are not limited to:
+PrivateLink customers may need to change certain configurations for multi-region Namespace use.
+Routing configuration depends on networking setup and use of PrivateLink.
+You may need to:
 
-* setting override DNS; and 
-* ensuring network connectivity between the two regions.
+* set an override DNS; and 
+* ensure the network connectivity between the two regions.
 
 ![Customer side solution example](/img/multi-region/private-link.png)
 
-**DNS routing process:**
-
-The regional DNS needs to be reached through IP addresses local to your network.
-As the CNAME for the Namespace record is public, PrivateLink clients also know which region is currently active.
-By using a subzone for `region.<tmprl_domain>`, you can override the regional DNS to make sure traffic is routed internally.
+Your regional DNS must be reachable through IP addresses local to your network.
+A subzone for `region.<tmprl_domain>` enables you to override the regional DNS to make sure traffic is routed internally.
+You can check the Namespace's active region using the Namespace record CNAME, which is public.
 
 To set up the DNS override, you override specific regions to target the relevant IP addresses (e.g. aws-us-west-1.region.tmprl.cloud to target 192.168.1.2).
 Using AWS, this can be done using a private hosted zone in Route53 for `region.<tmprl_domain>`.
@@ -492,4 +492,7 @@ Consider how you'll configure Workers to run in this scenario.
 You might set Workers to run in both regions at all times.
 Alternately, you could establish connectivity between the regions to redirect Workers once failover occurs.
 
-If you have more questions or feedback about this feature, please reach out to <a href="mailto:product@temporal.io">the product team</a>.
+:::tip
+- If you have more questions or feedback about this feature, please reach out to <a href="mailto:product@temporal.io">the product team</a>.
+
+:::
