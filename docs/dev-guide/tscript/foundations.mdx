@@ -398,7 +398,7 @@ In TypeScript, the Workflow Type is the Workflow function name and there isn't a
 
 In the following example, the Workflow Type is the name of the function, `helloWorld`.
 
-<!--SNIPSTART typescript-workflow-type -->
+{/*SNIPSTART typescript-workflow-type */}
 
 [snippets/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/workflows.ts)
 
@@ -408,7 +408,7 @@ export async function helloWorld(): Promise<string> {
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 ### How develop Workflow logic {#workflow-logic-requirements}
 
@@ -470,7 +470,7 @@ For the Workflow to be able to execute the Activity, we must define the [Activit
 
 Activities are _just functions_. The following is an Activity that accepts a string parameter and returns a string.
 
-<!--SNIPSTART typescript-activity-fn -->
+{/*SNIPSTART typescript-activity-fn */}
 
 [snippets/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/activities.ts)
 
@@ -480,7 +480,7 @@ export async function greet(name: string): Promise<string> {
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 ### How to develop Activity Parameters {#activity-parameters}
 
@@ -493,7 +493,7 @@ And the total size of a gRPC message, which includes all the arguments, is limit
 Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
 This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/workers#workflow-task).
 
-<!--TODO link to gRPC limit section when available -->
+{/*TODO link to gRPC limit section when available */}
 
 Some SDKs require that you pass context objects, others do not.
 When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.
@@ -501,7 +501,7 @@ This is so that you can change what data is passed to the Activity without break
 
 This Activity takes a single `name` parameter of type `string`.
 
-<!--SNIPSTART typescript-activity-fn -->
+{/*SNIPSTART typescript-activity-fn */}
 
 [snippets/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/activities.ts)
 
@@ -511,7 +511,7 @@ export async function greet(name: string): Promise<string> {
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 ### How to define Activity return values {#activity-return-values}
 
@@ -537,7 +537,7 @@ The following examples demonstrate how to set a custom name for your Activity Ty
 You can customize the name of the Activity when you register it with the Worker.
 In the following example, the Activity Name is `activityFoo`.
 
-<!--SNIPSTART typescript-custom-activity-type -->
+{/*SNIPSTART typescript-custom-activity-type */}
 
 [snippets/src/worker-activity-type-custom.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/worker-activity-type-custom.ts)
 
@@ -558,7 +558,7 @@ async function run() {
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 ### Important design patterns for Activities {#activity-design-patterns}
 
@@ -573,7 +573,7 @@ This is a helpful pattern for using closures to do the following:
 - Store expensive dependencies for sharing, such as database connections.
 - Inject secret keys (such as environment variables) from the Worker to the Activity.
 
-<!--SNIPSTART typescript-activity-with-deps-->
+{/*SNIPSTART typescript-activity-with-deps*/}
 
 [activities-dependency-injection/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/activities-dependency-injection/src/activities.ts)
 
@@ -594,14 +594,14 @@ export const createActivities = (db: DB) => ({
 });
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 <details>
   <summary>See full example</summary>
 
 When you register these in the Worker, pass your shared dependencies accordingly:
 
-<!--SNIPSTART typescript-activity-deps-worker {"enable_source_link": false}-->
+{/*SNIPSTART typescript-activity-deps-worker {"enable_source_link": false}*/}
 
 ```ts
 import { createActivities } from './activities';
@@ -629,11 +629,11 @@ run().catch((err) => {
 });
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 Because Activities are always referenced by name, inside the Workflow they can be proxied as normal, although the types need some adjustment:
 
-<!--SNIPSTART typescript-activity-deps-workflow-->
+{/*SNIPSTART typescript-activity-deps-workflow*/}
 
 [activities-dependency-injection/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/activities-dependency-injection/src/workflows.ts)
 
@@ -648,7 +648,7 @@ const { greet, greet_es } = proxyActivities<
 });
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 </details>
 
@@ -905,7 +905,7 @@ However, the failure of the Task does not cause the associated Workflow Executio
 
 In development, use [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#workflowspath):
 
-<!--SNIPSTART typescript-worker-create -->
+{/*SNIPSTART typescript-worker-create */}
 
 [snippets/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/worker.ts)
 
@@ -924,13 +924,13 @@ async function run() {
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 In this snippet, the Worker bundles the Workflow code at runtime.
 
 In production, you can improve your Worker's startup time by bundling in advance: as part of your production build, call `bundleWorkflowCode`:
 
-<!--SNIPSTART typescript-bundle-workflow -->
+{/*SNIPSTART typescript-bundle-workflow */}
 
 [production/src/scripts/build-workflow-bundle.ts](https://github.com/temporalio/samples-typescript/blob/main/production/src/scripts/build-workflow-bundle.ts)
 
@@ -950,11 +950,11 @@ async function bundle() {
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 Then the bundle can be passed to the Worker:
 
-<!--SNIPSTART typescript-production-worker-->
+{/*SNIPSTART typescript-production-worker*/}
 
 [production/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/production/src/worker.ts)
 
@@ -979,7 +979,7 @@ async function run() {
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 ## How to shut down a Worker and track its state {#shut-down-a-worker}
 
@@ -1236,7 +1236,7 @@ To simplify checking for cancellation, use the [isCancellation(err)](https://typ
 
 ### Internal cancellation example
 
-<!--SNIPSTART typescript-cancel-a-timer-from-workflow-->
+{/*SNIPSTART typescript-cancel-a-timer-from-workflow*/}
 
 [packages/test/src/workflows/cancel-timer-immediately.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-timer-immediately.ts)
 
@@ -1265,11 +1265,11 @@ export async function cancelTimer(): Promise<void> {
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 Alternatively, the preceding can be written as the following.
 
-<!--SNIPSTART typescript-cancel-a-timer-from-workflow-alternative-impl-->
+{/*SNIPSTART typescript-cancel-a-timer-from-workflow-alternative-impl*/}
 
 [packages/test/src/workflows/cancel-timer-immediately-alternative-impl.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-timer-immediately-alternative-impl.ts)
 
@@ -1296,15 +1296,15 @@ export async function cancelTimerAltImpl(): Promise<void> {
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 ### External cancellation example
 
 The following code shows how to handle Workflow cancellation by an external client while an Activity is running.
 
-<!-- TODO: add a sample here of how this Workflow could be cancelled using a WorkflowHandle -->
+{/* TODO: add a sample here of how this Workflow could be cancelled using a WorkflowHandle */}
 
-<!--SNIPSTART typescript-handle-external-workflow-cancellation-while-activity-running-->
+{/*SNIPSTART typescript-handle-external-workflow-cancellation-while-activity-running*/}
 
 [packages/test/src/workflows/handle-external-workflow-cancellation-while-activity-running.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/handle-external-workflow-cancellation-while-activity-running.ts)
 
@@ -1339,13 +1339,13 @@ export async function handleExternalWorkflowCancellationWhileActivityRunning(
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 ### nonCancellable example
 
 `CancellationScope.nonCancellable` prevents cancellation from propagating to children.
 
-<!--SNIPSTART typescript-non-cancellable-shields-children-->
+{/*SNIPSTART typescript-non-cancellable-shields-children*/}
 
 [packages/test/src/workflows/non-cancellable-shields-children.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/non-cancellable-shields-children.ts)
 
@@ -1364,14 +1364,14 @@ export async function nonCancellable(url: string): Promise<any> {
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 ### withTimeout example
 
 A common operation is to cancel one or more Activities if a deadline elapses.
 `withTimeout` creates a `CancellationScope` that is automatically cancelled after a timeout.
 
-<!--SNIPSTART typescript-multiple-activities-single-timeout-workflow-->
+{/*SNIPSTART typescript-multiple-activities-single-timeout-workflow*/}
 
 [packages/test/src/workflows/multiple-activities-single-timeout.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/multiple-activities-single-timeout.ts)
 
@@ -1395,13 +1395,13 @@ export function multipleActivitiesSingleTimeout(
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 ### scope.cancelRequested
 
 You can await `cancelRequested` to make a Workflow aware of cancellation while waiting on `nonCancellable` scopes.
 
-<!--SNIPSTART typescript-cancel-requested-with-non-cancellable-->
+{/*SNIPSTART typescript-cancel-requested-with-non-cancellable*/}
 
 [packages/test/src/workflows/cancel-requested-with-non-cancellable.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-requested-with-non-cancellable.ts)
 
@@ -1434,14 +1434,14 @@ export async function resumeAfterCancellation(url: string): Promise<any> {
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 ### Cancellation scopes and callbacks
 
 Callbacks are not particularly useful in Workflows because all meaningful asynchronous operations return promises.
 In the rare case that code uses callbacks and needs to handle cancellation, a callback can consume the `CancellationScope.cancelRequested` promise.
 
-<!--SNIPSTART typescript-cancellation-scopes-with-callbacks-->
+{/*SNIPSTART typescript-cancellation-scopes-with-callbacks*/}
 
 [packages/test/src/workflows/cancellation-scopes-with-callbacks.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancellation-scopes-with-callbacks.ts)
 
@@ -1460,13 +1460,13 @@ export async function cancellationScopesWithCallbacks(): Promise<void> {
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 ### Nesting cancellation scopes
 
 You can achieve complex flows by nesting cancellation scopes.
 
-<!--SNIPSTART typescript-nested-cancellation-scopes-->
+{/*SNIPSTART typescript-nested-cancellation-scopes*/}
 
 [packages/test/src/workflows/nested-cancellation.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/nested-cancellation.ts)
 
@@ -1500,14 +1500,14 @@ export async function nestedCancellation(url: string): Promise<void> {
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 ### Sharing promises between scopes
 
 Operations like Timers and Activities are cancelled by the cancellation scope they were created in.
 Promises returned by these operations can be awaited in different scopes.
 
-<!--SNIPSTART typescript-shared-promise-scopes-->
+{/*SNIPSTART typescript-shared-promise-scopes*/}
 
 [packages/test/src/workflows/shared-promise-scopes.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/shared-promise-scopes.ts)
 
@@ -1537,9 +1537,9 @@ export async function sharedScopes(): Promise<any> {
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
-<!--SNIPSTART typescript-shield-awaited-in-root-scope-->
+{/*SNIPSTART typescript-shield-awaited-in-root-scope*/}
 
 [packages/test/src/workflows/shield-awaited-in-root-scope.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/shield-awaited-in-root-scope.ts)
 
@@ -1562,4 +1562,4 @@ export async function shieldAwaitedInRootScope(): Promise<any> {
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}

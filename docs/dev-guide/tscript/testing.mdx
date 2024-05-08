@@ -367,7 +367,7 @@ Then, after the Workflow completes, we assert that `sendNotificationEmail` was c
 Workflow implementation
 </summary>
 
-<!--SNIPSTART typescript-timer-reminder-workflow-->
+{/*SNIPSTART typescript-timer-reminder-workflow*/}
 
 [timer-examples/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/timer-examples/src/workflows.ts)
 
@@ -400,11 +400,11 @@ export async function processOrderWorkflow({
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 </details>
 
-<!--SNIPSTART typescript-timer-reminder-test-->
+{/*SNIPSTART typescript-timer-reminder-test*/}
 
 [timer-examples/src/test/workflows.test.ts](https://github.com/temporalio/samples-typescript/blob/main/timer-examples/src/test/workflows.test.ts)
 
@@ -446,7 +446,7 @@ it('sends reminder email if processOrder does not complete in time', async () =>
 });
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 ### Test functions in Workflow context {#workflow-context}
 

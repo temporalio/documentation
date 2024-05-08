@@ -33,7 +33,7 @@ In the Workflow Definition, there is a special Activity that handles clean up sh
 If the Workflow receives a Cancellation Request, but all Activities gracefully handle the Cancellation, and/or no Activities are skipped then the Workflow status will be Complete.
 It is completely up to the needs of the business process and your use case which determines whether you want to return the Cancellation error to show a Canceled status or Complete status regardless of whether a Cancellation has propagated to and/or skipped Activities.
 
-<!--SNIPSTART go-features-cancellation-workflow {"selectedLines": ["14-15", "18", "20-38", "41", "43-45", "47-50"]}-->
+{/*SNIPSTART go-features-cancellation-workflow {"selectedLines": ["14-15", "18", "20-38", "41", "43-45", "47-50"]}*/}
 
 [sample-apps/go/features/cancellation/workflow.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/cancellation/workflow.go)
 
@@ -76,7 +76,7 @@ func YourWorkflow(ctx workflow.Context) error {
 }
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 ## Handle Cancellation in an Activity {#handle-cancellation-in-an-activity}
 

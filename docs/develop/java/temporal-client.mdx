@@ -49,7 +49,7 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 
 :::
 
-<!--SNIPSTART javasdk-build-caller-app-using-local-client {"selectedLines": ["11-17"]}-->
+{/*SNIPSTART javasdk-build-caller-app-using-local-client {"selectedLines": ["11-17"]}*/}
 
 [sample-apps/java/client/devserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/devserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
 
@@ -64,7 +64,7 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
         WorkflowClient client = WorkflowClient.newInstance(serviceStub);
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 The Namespace is assumed to be 'default' unless otherwise specified.
 
@@ -75,7 +75,7 @@ The Namespace is assumed to be 'default' unless otherwise specified.
 Custom Namespaces on local development systems let you to build out new features while isolating Workflow Executions.
 Namespaces are established by setting a Client's options to configure the new instance.
 
-<!--SNIPSTART javasdk-build-caller-app-using-local-client-custom-namespace {"selectedLines": ["23-31"]}-->
+{/*SNIPSTART javasdk-build-caller-app-using-local-client-custom-namespace {"selectedLines": ["23-31"]}*/}
 
 [sample-apps/java/client/devserver-namespace-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/devserver-namespace-client-sample/src/main/java/clientsample/YourCallerApp.java)
 
@@ -92,7 +92,7 @@ Namespaces are established by setting a Client's options to configure the new in
         WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
 
@@ -101,7 +101,7 @@ Namespaces are established by setting a Client's options to configure the new in
 When you use a remote service, you don't use the `newLocalServicesStubs` convenience method.
 Instead, set your connection details as stub configuration options:
 
-<!--SNIPSTART javasdk-build-caller-app-using-temporal-cloud {"selectedLines": ["46-54"]}-->
+{/*SNIPSTART javasdk-build-caller-app-using-temporal-cloud {"selectedLines": ["46-54"]}*/}
 
 [sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
 
@@ -118,7 +118,7 @@ Instead, set your connection details as stub configuration options:
             WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 Each Temporal Cloud service Client has four prerequisites.
 
@@ -133,7 +133,7 @@ The following sample generates an SSL context from the mTLS .pem and .key files.
 Along with the gRPC endpoint, this information configures a service stub for Temporal Cloud.
 Add the Namespace to your Client build options and initialize the new Client:
 
-<!--SNIPSTART javasdk-build-caller-app-using-temporal-cloud {"selectedLines": ["41-64"]}-->
+{/*SNIPSTART javasdk-build-caller-app-using-temporal-cloud {"selectedLines": ["41-64"]}*/}
 
 [sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
 
@@ -165,7 +165,7 @@ Add the Namespace to your Client build options and initialize the new Client:
             WorkflowClient client = WorkflowClient.newInstance(serviceStub, clientOptions);
 ```
 
-<!--SNIPEND-->
+{/*SNIPEND*/}
 
 ## Start a Workflow Execution {#start-workflow-execution}
 
