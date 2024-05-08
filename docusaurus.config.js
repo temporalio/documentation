@@ -1,6 +1,4 @@
 //@ts-check
-const path = require("path");
-const visit = require("unist-util-visit");
 const FontPreloadPlugin = require("webpack-font-preload-plugin");
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
@@ -11,6 +9,7 @@ module.exports = async function createConfigAsync() {
     tagline: "Build invincible applications",
     url: "https://docs.temporal.io",
     baseUrl: "/",
+    onBrokenAnchors: "throw",
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "throw",
     favicon: "img/favicon.svg",
