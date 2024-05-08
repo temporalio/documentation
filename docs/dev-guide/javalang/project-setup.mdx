@@ -412,17 +412,12 @@ In the Temporal Java SDK programming model, a [Workflow Definition](/workflows#w
 
 #### Boilerplate Workflow Interface {#workflow-code}
 
-<<<<<<< HEAD
-
-# <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/java/backgroundcheck-replay/src/main/java/backgroundcheckreplay/BackgroundCheckReplayNonDeterministicWorkflow.java">View the source code</a> in the context of the rest of the application code.</div>
-
 <div class="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/java/backgroundcheck-replay/src/main/java/backgroundcheckreplay/BackgroundCheckReplayNonDeterministicWorkflow.java">
     View the source code
   </a>{' '}
   in the context of the rest of the application code.
 </div>
->>>>>>> main
 
 ```java
 
@@ -747,19 +742,6 @@ public class CloudWorker {
 ```
 
 To run a Temporal Cloud Worker, you'll change some parameters in your Client connection code, such as updating the namespace and gRPC endpoint.
-<<<<<<< HEAD
-You'll use:
-
-- The [Temporal Cloud Namespace Id](https://docs.temporal.io/cloud/namespaces#temporal-cloud-namespace-id).
-- The [Namespace's gRPC endpoint](https://docs.temporal.io/cloud/namespaces#temporal-cloud-grpc-endpoint).
-  The endpoint uses this format `(namespace.unique_id.tmprl.cloud:port)`.
-- [Paths to the SSL certificate (.pem) and private key (.key)](https://docs.temporal.io/cloud/saml#integrate-saml-with-your-temporal-cloud-account) registered to your Namespace and stored on your Worker's file system.
-
-Copy the Namespace Id and the gRPC endpoint from the Namespace detail Web page on [Temporal Cloud Namespaces](https://cloud.temporal.io/namespaces). Click on a Namespace name to open the Namespace details.
-
-For information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](https://docs.temporal.io/cloud/certificates#issue-certificates).
-
-# For information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 You'll use:
 
@@ -771,10 +753,6 @@ You'll use:
 Copy the Namespace Id and the gRPC endpoint from the Namespace detail Web page on [Temporal Cloud Namespaces](https://cloud.temporal.io/namespaces). Click on a Namespace name to open the Namespace details.
 
 For information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](https://docs.temporal.io/cloud/certificates#issue-certificates).
-
-For information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
-
-> > > > > > > main
 
 #### Run a Self-hosted Worker {#dockerfile}
 
@@ -840,13 +818,7 @@ Example output:
 
 Copy the IP address part.
 
-<<<<<<< HEAD
-Set IP address and port in the Service Stubs Options and the Namespace in the
-=======
-Set IP address and port in the Service Stubs Options and the Namespace in the
-
-> > > > > > > main
-> > > > > > > Temporal Client options.
+Set IP address and port in the Service Stubs Options and the Namespace in the Temporal Client options.
 
 <div class="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/java/backgroundcheck-replay/src/main/java/backgroundcheckreplay/workers/SelfHostedWorker.java">
@@ -1223,22 +1195,10 @@ public class BackgroundCheckBoilerplateActivitiesTest {
 }
 ```
 
-<<<<<<< HEAD
 Temporal provides the `TestActivityExtension` class to simplify the creation of
 the test environment. Using this extension you provide your Activity
 to register with a Worker created by the testing framework to be used during testing.
 The extension provides a a stubbed Activity object to each test as well as
-=======
-Temporal provides the `TestActivityExtension` class to simplify the creation of
-the test environment. Using this extension you provide your Activity
-to register with a Worker created by the testing framework to be used during testing.
-The extension provides a a stubbed Activity object to each test as well as
-
-> > > > > > > main
-> > > > > > > manage the lifecycle of the test environment.
-> > > > > > > If you require more granular control of the test environments, you can manually create
-> > > > > > > and destroy all these parts in methods annotated with `@BeforeEach` and `@AfterEach`
-> > > > > > > as defined by JUnit.
 
 You annotate the method with @Test and test the results of the Activity via assertions.
 
