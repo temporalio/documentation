@@ -249,56 +249,32 @@ Use the following capabilities to create, upgrade, and discontinue your multi-re
 - While reading through this coverage, remember that pairing is limited to regions within the same continent.
 
 :::
+
 ### Create a multi-region Namespace {#create}
 
-The following sections show how to create a multi-region Namespace.
-This provides multi-region deployment backed by Temporal's data replication and active-standby features.
+The following sections explain how to create a new multi-region Namespace (MRN).
+MRNs provides multi-region deployment backed by Temporal's data replication and active-standby features.
 
 #### Temporal Cloud Web UI
 
-During Namespace creation, specify the first region for the Namespace to be created in.
-Then select the “upgrade to a multi-region Namespace” option.
-
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Question: Will there be a confirmation step? If so, should this be presented as a numbered or bulleted task list? Another question: the original write-up still refers to multi-region; Will the WebUI be updated?</span>
+During Namespace creation, specify the first region for the Namespace.
+Next, select the “Add an additional region” option.
+Adding a second region enables multi-region Namespace capabilities.
 
 #### Temporal 'tcld' CLI
 
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Correct? Does the order matter? Will the first region always be the primary/active one?</span>
-
-Enter the following command at your command line.
-Include both regions to add by specifying the [region codes](/cloud/service-availability).
+Start with the following command to create the new multi-region Namespace:
 
 ```
-tcld namespace create --region <region list> 
+tcld namespace create --namespace <namespace_id> --region <region> --region <region> 
 ```
 
-The utility responds:
+Include both regions by specifying the [region codes](/cloud/service-availability) as arguments to the `--region` flags.
+Before pressing return, add your authentication credentials. For example, `--ca-certificate-file <path-to-pem-file>`.
 
-```
-[y/n] Adding a standby region improves availability and increases the cost.
-Do you want to proceed?
-```
-
-Confirm with "y" to continue.
-
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Then what happens? Guessing here:</span>
-
-Temporal cloud will establish the new multi-region Namespace and confirm its details:
-
-```
-[detail information that does not yet exist]
-```
-
-#### API calls
-
-Use [`AddNamespaceRegion`](https://github.com/temporalio/api-cloud/pull/19) to add additional Namespace regions to an existing Namespace.
-
-Include a fully configured <span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>no link `AddNamespaceRegionRequest`</span>.
-Specify the active and standby regions.
-The service returns <span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>no link `AddNamespaceRegionResponse `</span>.
-
-### Upgrade a single-region Namespace to multi-region {#add-regions}
-The following sections show you how to upgrade an existing Namespace to take advantage of multi-region's push-button high availability service.
+### Upgrade an existing single-region Namespace to multi-region  functionality {#add-regions}
+You can upgrade an existing single-region Namespace to a multi-region Namespace by adding a standby region.
+The following sections show you how.
 
 #### Temporal Cloud Web UI
 
@@ -306,53 +282,26 @@ To upgrade an existing Namespace to a multi-region Namespace:
 
 1. Visit Temporal Cloud [Namespaces](https://cloud.temporal.io/namespaces) in your Web browser
 1. Navigate to the Namespace details page
-1. Select the “Upgrade Namespace” button
+1. Select the “Add an additional region” button. 
 1. Select the standby region you want to add to this Namespace
-
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Screen shots? More specific wording and feedback? Probably a last second update when the details are more stable; plus they can be follow-up ticketed</span>
 
 You will see an estimated time for replication.
 This time is based on your selection and the size and scale of Workflows in your Namespace, 
 
-After you trigger the upgrade process, you can monitor the status of the globalization process in the UI.
-The timestamp indicates how much time is left remaining for replication to complete.
-The time can range between a few minutes to a few days (at the extreme).
-
-You don’t need to monitor this in real-time.
-Once your multi-region Namespace is ready, you will receive an email alerting you.
-All global admins are notified this way.
+Once your multi-region Namespace is ready, all account admins will receive an email alert.
 
 #### Temporal 'tcld' CLI
 
 At the command line, enter:
 
 ```
-tcld namespace add --region <region list>
+tcld namespace add-region --namespace <namespace_id> --region <region>
 ```
 
-The utility responds:
+Specify the region code for the new region to add.
+Before pressing return, add your authentication credentials. For example, `--ca-certificate-file <path-to-pem-file>`.
 
-```
-[y/n] Adding a standby region improves availability and increases the cost.
-It will take an estimated <x amount of time> for this operation.
-Do you still want to proceed?
-```
-
-Confirm with "y".
-
-To check the status of your upgrade, issue the following command.
-This command returns the status of the multi-region Namespace and how much time remains for globalization to complete.
-
-```
-tcld namespace get --namespace <namespace_id>
-```
-
-As with WebUI upgrades, once your multi-region Namespace is ready, all global admins will receive an email update.
-
-#### API calls
-
-See [`AddNamespaceRegion`](https://github.com/temporalio/api-cloud/pull/19)
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Fill this in like the API section in 'create';</span>
+Once your multi-region Namespace is ready, all admins will receive an email update.
 
 ### Discontinuing multi-region service {#discontinuing}
 
@@ -364,7 +313,7 @@ It is on our roadmap to automate this process.
 * When making this request you must let us know which region you want the Namespace to land in after it is de-globalized.
 * If you cease services in the middle of the month, your Namespace removes multi-region features within 1 business day.
 * Temporal won't retain replicated data in the standby region once multi-region has been disabled.
-* After disabling multi-region, a wait time of 7 days applies before we can re-enable the feature for a given Namespace.
+* After disabling multi-region, we cannot re-enable the feature for a given Namespace for seven days.
 
 ## Operations
 
