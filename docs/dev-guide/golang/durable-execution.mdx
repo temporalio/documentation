@@ -2,7 +2,6 @@
 id: durable-execution
 title: Develop code that durably executes - Go SDK dev guide
 sidebar_label: Develop for durability
-sidebar_position: 3
 description: The Durable Execution section of the Temporal Developer's guide covers advanced beginner concepts for working with Temporal, including testing your code, reviewing workflow event history, adding timers, and understanding determinism. Developing for durable execution is a core aspect of Temporal.
 slug: /dev-guide/go/durable-execution
 toc_max_heading_level: 4
@@ -180,7 +179,6 @@ If the Workflow Definition and the Event History are incompatible then the test 
 
 ```go
 
-
 // TestReplayWorkflowHistoryFromFile tests for Event History compatibility.
 func (s *UnitTestSuite) TestReplayWorkflowHistoryFromFile() {
 	// Create a new Replayer
@@ -254,7 +252,6 @@ import (
 
 	"documentation-samples-go/dev-guide/chapters/durability/activities"
 )
-
 
 // BackgroundCheckNonDeterministic is an anti-pattern Workflow Definition
 func BackgroundCheckNonDeterministic(ctx workflow.Context, param string) (string, error) {
@@ -457,7 +454,6 @@ import (
 
 	"documentation-samples-go/dev-guide/chapters/durability/activities"
 )
-
 
 // BackgroundCheck is your custom Workflow Definition.
 func BackgroundCheck(ctx workflow.Context, param string) (string, error) {

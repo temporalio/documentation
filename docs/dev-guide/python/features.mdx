@@ -2,7 +2,6 @@
 id: features
 title: Features - Python SDK feature guide
 sidebar_label: Features
-sidebar_position: 5
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 toc_max_heading_level: 5
 keywords:
@@ -313,7 +312,6 @@ To send a Query to the Workflow, use the [`query`](https://python.temporal.io/te
 </div>
 
 ```python
-
 
 # ...
     result = await handle.query(GreetingWorkflow.greeting)
@@ -768,7 +766,6 @@ async def cancellable_activity(input: ComposeArgsInput) -> NoReturn:
         print("Activity cancelled")
         raise
 
-
 @activity.defn
 async def run_activity(input: ComposeArgsInput):
     print("Executing activity")
@@ -894,7 +891,6 @@ class ComposeGreetingWorkflow:
     async def run(self, input: ComposeGreetingInput) -> str:
         return f"{input.greeting}, {input.name}!"
 
-
 @workflow.defn
 class GreetingWorkflow:
     @workflow.run
@@ -932,7 +928,6 @@ class ComposeGreetingWorkflow:
     @workflow.run
     async def run(self, input: ComposeGreetingInput) -> str:
         return f"{input.greeting}, {input.name}!"
-
 
 @workflow.defn
 class GreetingWorkflow:
@@ -1066,8 +1061,6 @@ from datetime import datetime, timedelta
 
 from temporalio.client import Client, ScheduleBackfill, ScheduleOverlapPolicy
 
-
-
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
@@ -1099,8 +1092,6 @@ To delete a Scheduled Workflow Execution in Python, use the [delete()](https://p
 </div>
 
 ```python
-
-
 
 async def main():
     client = await Client.connect("localhost:7233")
@@ -1285,7 +1276,6 @@ async def main():
     )
 
     print(f"Result: {result}")
-
 
 if __name__ == "__main__":
     asyncio.run(main())

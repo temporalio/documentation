@@ -2,7 +2,6 @@
 id: versioning
 title: Versioning - Python SDK feature guide
 sidebar_label: Versioning
-sidebar_position: 9
 description: The Versioning section of the Temporal Developer's guide covers how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 slug: /dev-guide/python/versioning
 toc_max_heading_level: 4
@@ -38,7 +37,6 @@ tags:
 - workflow-transition
 ---
 
-
 The definition code of a Temporal Workflow must be deterministic because Temporal uses event sourcing
 to reconstruct the Workflow state by replaying the saved history event data on the Workflow
 definition code. This means that any incompatible update to the Workflow Definition code could cause
@@ -49,7 +47,6 @@ a non-deterministic issue if not handled correctly.
 Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY)
 
 ## How to use the Python SDK Patching API {#python-sdk-patching-api}
-
 
 In principle, the Python SDK's patching mechanism operates similarly to other SDKs in a "feature-flag" fashion. However, the "versioning" API now uses the concept of "patching in" code.
 
@@ -84,8 +81,6 @@ class MyWorkflow:
         )
 ```
 
-
-
 Now, you want to update your code to run `post_patch_activity` instead. This represents your desired end state.
 
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
@@ -108,8 +103,6 @@ class MyWorkflow:
             schedule_to_close_timeout=timedelta(minutes=5),
         )
 ```
-
-
 
 **Problem: You cannot deploy `post_patch_activity` directly until you're certain there are no more running Workflows created using the `pre_patch_activity` code, otherwise you are likely to cause a non-deterministic error.**
 
@@ -136,9 +129,7 @@ class MyWorkflow:
         )
 ```
 
-
 ### Patching in new code {#using-patched-for-workflow-history-markers}
-
 
 Using `patched` inserts a marker into the Workflow History.
 
@@ -167,9 +158,7 @@ class MyWorkflow:
             )
 ```
 
-
 ### Understanding deprecated Patches in the Python SDK {#deprecated-patches}
-
 
 After ensuring that all Workflows started with `pre_patch_activity` code have finished, you can [deprecate the patch](https://python.temporal.io/temporalio.workflow.html#deprecate_patch).
 
@@ -193,9 +182,7 @@ class MyWorkflow:
         )
 ```
 
-
 ### Safe Deployment of post_patch_activity {#deploy-new-code}
-
 
 You can safely deploy `post_patch_activity` once all Workflows labeled my-patch or earlier are finished, based on the previously mentioned assertion.
 
@@ -213,7 +200,6 @@ class MyWorkflow:
             schedule_to_close_timeout=timedelta(minutes=5),
         )
 ```
-
 
 ## How to use Worker Versioning in Python {#worker-versioning}
 

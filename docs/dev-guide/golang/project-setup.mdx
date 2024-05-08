@@ -2,7 +2,6 @@
 id: project-setup
 title: Set up a Temporal Application project - Go SDK dev guide
 sidebar_label: Project setup
-sidebar_position: 2
 description: The project setup section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/go/project-setup
 toc_max_heading_level: 4
@@ -45,7 +44,6 @@ tags:
 - worker
 - workflow
 ---
-
 
 The first step to creating a new Temporal Application is to set up your development environment.
 This chapter walks through the steps to do that using the Go SDK.
@@ -370,7 +368,6 @@ go get go.temporal.io/sdk
 
 ### Boilerplate Workflow code {#workflow-code}
 
-
 In the Temporal Go SDK programming model, a [Workflow Definition](/workflows#workflow-definition) is an exportable function.
 The `BackgroundCheck` function below is an example of a basic Workflow Definition.
 
@@ -387,7 +384,6 @@ import (
 
 	"documentation-samples-go/dev-guide/chapters/setup/activities"
 )
-
 
 // BackgroundCheck is your custom Workflow Definition.
 func BackgroundCheck(ctx workflow.Context, param string) (string, error) {
@@ -407,8 +403,6 @@ func BackgroundCheck(ctx workflow.Context, param string) (string, error) {
 	return ssnTraceResult, nil
 }
 ```
-
-
 
 The first parameter of a Go-based Workflow Definition must be of the [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context) type.
 It is used by the Temporal Go SDK to pass around Workflow Execution context, and virtually all the Go SDK APIs that are callable from the Workflow require it.
@@ -433,7 +427,6 @@ For example, in a small project like this, it is still a best practice to have a
 
 ### Boilerplate Activity code {#activity-code}
 
-
 In the Temporal Go SDK programming model, an Activity is an exportable function or a `struct` method.
 Below is an example of an Activity defined as a function.
 
@@ -447,7 +440,6 @@ import (
 	"context"
 )
 
-
 // SSNTraceActivity is your custom Activity Definition.
 func SSNTraceActivity(ctx context.Context, param string) (*string, error) {
 	// This is where a call to another service is made
@@ -457,8 +449,6 @@ func SSNTraceActivity(ctx context.Context, param string) (*string, error) {
 }
 ```
 
-
-
 The first parameter of an Activity Definition is `context.Context`.
 This parameter is optional for an Activity Definition, though it is recommended, especially if the Activity is expected to use other Go SDK APIs.
 
@@ -467,7 +457,6 @@ However, all parameters must be serializable.
 For example, parameters can’t be channels, functions, variadic, or unsafe pointers.
 
 ### Run a dev server Worker {#dev-server-worker}
-
 
 To run a Worker Process with a local development server, define the following steps in code:
 
@@ -494,7 +483,6 @@ import (
 	"documentation-samples-go/dev-guide/chapters/setup/workflows"
 )
 
-
 func main() {
 	// Initialize a Temporal Client
 	// Specify the Namespace in the Client options
@@ -520,7 +508,6 @@ func main() {
 }
 ```
 
-
 :::info Auto restart worker when code changes
 
 Use [`gow`](https://github.com/mitranim/gow) to automatically restart the Worker Process whenever any of the Go code files in your project change.
@@ -533,7 +520,6 @@ gow worker/main.go # automatically restarts when the project files change
 :::
 
 ### Run a Temporal Cloud Worker {#cloud-worker}
-
 
 A Temporal Cloud Worker requires that you specify the following in the Client connection options:
 
@@ -560,7 +546,6 @@ import (
 	"documentation-samples-go/dev-guide/chapters/setup/activities"
 	"documentation-samples-go/dev-guide/chapters/setup/workflows"
 )
-
 
 func main() {
 	err := godotenv.Load(".env")
@@ -607,16 +592,14 @@ func main() {
 }
 ```
 
-
-
  To run a Temporal Cloud Worker, you'll change some parameters in your Client connection code, such as updating the namespace and gRPC endpoint.
  You'll use:
- 
+
  - The [Temporal Cloud Namespace Id](https://docs.temporal.io/cloud/namespaces#temporal-cloud-namespace-id).
  - The [Namespace's gRPC endpoint](https://docs.temporal.io/cloud/namespaces#temporal-cloud-grpc-endpoint).
  The endpoint uses this format `(namespace.unique_id.tmprl.cloud:port)`.
  - [Paths to the SSL certificate (.pem) and private key (.key)](https://docs.temporal.io/cloud/saml#integrate-saml-with-your-temporal-cloud-account) registered to your Namespace and stored on your Worker's file system.
- 
+
  Copy the Namespace Id and the gRPC endpoint from the Namespace detail Web page on [Temporal Cloud Namespaces](https://cloud.temporal.io/namespaces). Click on a Namespace name to open the Namespace details.
 
 ### Run a Self-hosted Worker {#dockerfile}
@@ -685,7 +668,6 @@ Copy the IP address part.
 
 #### Customize Client options {#self-hosted-client-options}
 
-
 Set IP address, port, and Namespace in the Temporal Client options.
 
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/self_hosted_worker/main.go">View the source code</a> in the context of the rest of the application code.</div>
@@ -703,7 +685,6 @@ import (
 	"documentation-samples-go/dev-guide/chapters/setup/activities"
 	"documentation-samples-go/dev-guide/chapters/setup/workflows"
 )
-
 
 func main() {
 	// Initialize a Temporal Client
@@ -730,7 +711,6 @@ func main() {
 	}
 }
 ```
-
 
 #### Build and deploy Docker image {#dockerfile}
 
@@ -951,7 +931,6 @@ You should now be at [http://localhost:8080/namespaces/backgroundcheck_namespace
 
 ## Add a testing framework {#test-framework}
 
-
 **How to add a Testing Framework and Tests for the Workflow and Activity.**
 
 Each Temporal SDK has a testing suite that can be used in conjunction with a typical language specific testing framework.
@@ -974,7 +953,6 @@ import (
 	"documentation-samples-go/dev-guide/chapters/setup/workflows"
 )
 
-
 // UnitTestSuite is a struct that wraps around the testing suites
 type UnitTestSuite struct {
 	// Add testify test suite package
@@ -990,13 +968,10 @@ func Test_BackgroundCheckApplication(t *testing.T) {
 }
 ```
 
-
-
 In this example, we use a custom struct that absorbs both the testing functionality from testify (https://pkg.go.dev/github.com/stretchr/testify/suite) via `suite.Suite` and the testing functionality from the Temporal test framework via `testsuite.WorkflowTestSuite`.
 Next we create a regular test function recognized by the `go test` command, and pass an instance of the struct to `suite.Run`.
 
 ### Add Workflow function tests {#test-workflow-code}
-
 
 We can test Workflow code for the following conditions:
 
@@ -1010,7 +985,6 @@ We can also perform a Workflow Replay test, and we'll provide detailed coverage 
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/tests/backgroundcheckboilerplate_test.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
-
 
 const ssn string = "555-55-5555"
 
@@ -1037,8 +1011,6 @@ func (s *UnitTestSuite) Test_BackgroundCheckWorkflow() {
 }
 ```
 
-
-
 Calling `env.ExecuteWorkflow(...)` executes the Workflow logic and any invoked Activities inside the test process.
 The first parameter of `env.ExecuteWorkflow(...)` contains a reference to Workflow function and any parameters that the Workflow needs.
 
@@ -1051,7 +1023,6 @@ If our Workflow returned a value, we could have retrieved that value via a call 
 
 ### Add Activity function tests {#test-activity-code}
 
-
 We can test Activity code for the following conditions:
 
 - Error when invoking the Activity Execution.
@@ -1061,7 +1032,6 @@ We can test Activity code for the following conditions:
 <div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/setup/tests/backgroundcheckboilerplate_test.go">View the source code</a> in the context of the rest of the application code.</div>
 
 ```go
-
 
 // Test_SSNTraceActivity tests the SSNTraceActivity function
 func (s *UnitTestSuite) Test_SSNTraceActivity() {
@@ -1080,5 +1050,4 @@ func (s *UnitTestSuite) Test_SSNTraceActivity() {
 	s.Equal("pass", result)
 }
 ```
-
 

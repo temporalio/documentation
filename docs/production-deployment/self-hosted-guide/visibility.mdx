@@ -2,7 +2,6 @@
 id: visibility
 title: Self-hosted Visibility feature setup
 sidebar_label: Visibility
-sidebar_position: 6
 description: Learn how to set up the Temporal self-hosted Cluster Visibility feature.
 slug: /self-hosted-guide/visibility
 toc_max_heading_level: 4
@@ -17,7 +16,6 @@ tags:
 - operation-guide
 - visibility
 ---
-
 
 A [Visibility](/clusters#visibility) store is set up as a part of your [Persistence store](/clusters#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
 
@@ -896,5 +894,4 @@ Removing this custom Search Attribute removes the mapping with the database fiel
 If you remove a custom Search Attribute and add a new one, the new custom Search Attribute might be mapped to the database field of the one that was recently removed.
 This might cause unexpected results when you use the List API to retrieve results using the new custom Search Attribute.
 These constraints do not apply if you use Elasticsearch.
-
 

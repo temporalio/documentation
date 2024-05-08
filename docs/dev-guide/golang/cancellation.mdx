@@ -2,7 +2,6 @@
 id: cancellation
 title: Cancellation - Go SDK feature guide
 sidebar_label: Cancellation
-sidebar_position: 6
 description: How to cancel a Workflow Execution and it's Activities using the Go SDK.
 slug: /dev-guide/go/cancellation
 toc_max_heading_level: 4
@@ -77,7 +76,6 @@ func YourWorkflow(ctx workflow.Context) error {
 
 ## Handle Cancellation in an Activity {#handle-cancellation-in-an-activity}
 
-
 **How to handle a Cancellation in an Activity in Go.**
 
 Ensure that the Activity is Heartbeating to receive the Cancellation request and stop execution.
@@ -111,7 +109,6 @@ func (a *Activities) ActivityToBeCanceled(ctx context.Context) (string, error) {
 ```
 
 ## Request Cancellation {#request-cancellation}
-
 
 **How to request Cancellation of a Workflow and Activities in Go.**
 
