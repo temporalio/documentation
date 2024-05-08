@@ -93,7 +93,7 @@ When [Cancellation](/activities#cancellation) of a Workflow or Activity is reque
 For example, in TypeScript, in some cases a Cancelled Failure is thrown directly by a Workflow API function, and in other cases the Cancelled Failure is wrapped in a different Failure.
 To check both types of cases, TypeScript has the [isCancellation](https://typescript.temporal.io/api/namespaces/workflow#iscancellation) helper.
 
-<!-- TODO also link to Workflow Cancellation concept -->
+{/* TODO also link to Workflow Cancellation concept */}
 
 When a Workflow or Activity is successfully Cancelled, a Cancelled Failure is the `cause` field of the Activity Failure or "Workflow failed" error.
 
