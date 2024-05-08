@@ -13,14 +13,10 @@ tags:
   - namespaces
 ---
 
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Updated page name as requested but left sidebar_label unchanged and plural per docs site standards; Does the new title work for you or would you like to reword?</span>
-
 :::tip Support, stability, and dependency info
 - Multi-region Namespaces are in [Public Preview](/temporal/release-stages#public-preview) for Temporal Cloud.
 
 :::
-
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Updated this section to incorporate text from Irina's writeup--please check.</span>
 
 Temporal Cloud's multi-region Namespace (MRN) feature adds push-button high availability for your Temporal Service.
 MRN add seamless failover capabilities to your production work, ensuring continuous operation without manual intervention​​.
@@ -288,7 +284,7 @@ To upgrade an existing Namespace to a multi-region Namespace:
 You will see an estimated time for replication.
 This time is based on your selection and the size and scale of Workflows in your Namespace, 
 
-Once your multi-region Namespace is ready, all account admins will receive an email alert.
+Once your multi-region Namespace is ready, you'll receive an email alert.
 
 #### Temporal 'tcld' CLI
 
@@ -301,7 +297,7 @@ tcld namespace add-region --namespace <namespace_id> --region <region>
 Specify the region code for the new region to add.
 Before pressing return, add your authentication credentials. For example, `--ca-certificate-file <path-to-pem-file>`.
 
-Once your multi-region Namespace is ready, all admins will receive an email update.
+Once your multi-region Namespace is ready, you'll receive an email update.
 
 ### Discontinuing multi-region service {#discontinuing}
 
@@ -324,37 +320,38 @@ This section provides how-to instructions for the following operations tasks:
 
 ### Triggering failovers {#triggering-failovers}
 
-At times, you may face issues of network latency
-Under this and other region-specific pressures you can decide to manually  trigger a failover.
-The following sections show you how to perform this action and move your active Namespace to the standby region.
+Temporal is responsible for detecting and triggering a failover for a multi-region namespace in the event of an outage or a disaster.
+Users also can trigger a failover for testing purposes. 
+
+The following sections show you how to perform this action, moving your active Namespace to the standby region.
 You'll also read about what to expect after a failover.
+
+:::warning Check Your Replication Lag
+- Always check the metric replication lag before initiating a failover.
+  A forced failover when there is a large replication lag has a higher likelihood of rolling back workflow progress.
+
+:::
 
 #### Temporal Cloud Web UI
 
 Visit the [Namespace WebUI page](https://cloud.temporal.io/namespaces).
-Navigate to the Namespace details page and click the menu option to “Trigger a failover”.
-
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>More details; screenshot maybe? Specific wording?</span>
+Navigate to the Namespace details page and select the menu option to “Trigger a failover”.
+After confirming the operation, the failover is initiated.
 
 #### Temporal 'tcld' CLI
 
 To manually trigger a fall-over, issue the following from your command line:
 
 ```
-tcld namespace failover --namespace <namespace_id> --target_region <region>
+tcld namespace failover --namespace <namespace_id> --region <target_region> 
 ```
 
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Response? Specific wording? tcld command to fetch details to confirm new active and standby settings?</span>
+Before pressing return, add your authentication credentials. For example, `--ca-certificate-file <path-to-pem-file>`.
 
-#### API calls
-
-[`GetNamespaceFailoverHistory`](https://github.com/temporalio/api-cloud/pull/19)
-
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>To be filled in</span>
-#### After the failover
+#### After failover
 After any failover, whether triggered by you or by Temporal, information about the event appears in both the [Temporal Cloud WebUI](https://cloud.temporal.io/namespaces) on the Namespace detail page and in your audit logs.
-You don’t need to monitor this in real-time.
-Whenever there is a failover event, all global admins receive an alert email.
+You need not monitor this in real-time.
+Whenever there is a failover event, you'll receive an alert email.
 
 More information is available in [Monitoring and Observability](/cloud/multi-region#observability).
 
