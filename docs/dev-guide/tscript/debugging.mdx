@@ -112,9 +112,9 @@ Some common examples that will **not** work in the Workflow isolate:
 :::danger Antipattern
 
 ```ts
-import fs from "fs";
+import fs from 'fs';
 
-const config = fs.readFileSync("config.json", "utf8");
+const config = fs.readFileSync('config.json', 'utf8');
 ```
 
 :::
@@ -141,10 +141,10 @@ You'll typically see an error in this form in the Webpack output:
 :::danger Antipattern
 
 ```ts
-import { makeHTTPRequest } from "./activities";
+import { makeHTTPRequest } from './activities';
 
 export async function yourWorkflow(): Promise<string> {
-  return await makeHTTPRequest("https://temporal.io");
+  return await makeHTTPRequest('https://temporal.io');
 }
 ```
 
@@ -173,13 +173,13 @@ You'll typically see an error in this form in the Webpack output:
 To properly call your Activities from Workflow code use `proxyActivities` and make sure to only import the Activity types.
 
 ```ts
-import { proxyActivities } from "@temporalio/workflow";
+import { proxyActivities } from '@temporalio/workflow';
 
-import type * as activities from "./activities";
+import type * as activities from './activities';
 const { makeHTTPRequest } = proxyActivities<typeof activities>();
 
 export async function yourWorkflow(): Promise<string> {
-  return await makeHTTPRequest("https://temporal.io");
+  return await makeHTTPRequest('https://temporal.io');
 }
 ```
 
@@ -199,8 +199,8 @@ Error: 3 INVALID_ARGUMENT: WorkflowType is not set on request.
 
 This is due to your bundler stripping out Workflow function names, which we rely on to set the "Workflow Type" in Temporal. Turn it off and it should work.
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 <Tabs
 defaultValue="webpackterser"
@@ -232,11 +232,11 @@ module.exports = {
 <TabItem value="esbuild">
 
 ```js
-require("esbuild").buildSync({
-  entryPoints: ["app.js"],
+require('esbuild').buildSync({
+  entryPoints: ['app.js'],
   minify: true,
   keepNames: true,
-  outfile: "out.js",
+  outfile: 'out.js',
 });
 ```
 

@@ -32,8 +32,7 @@
     "useTabs": false
   },
   "includes": [
-    "docs-src/**/*.{md}",
-    "website/docs/dev-guide/**/*.md",
+    "docs/**/*.{mdx}",
     "vercel.json"
   ],
   "excludes": [
