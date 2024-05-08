@@ -158,7 +158,7 @@ We aim to reduce this RTO in the future.
 Multi-region Namespaces are available in all existing [Temporal Cloud regions](/cloud/service-availability#regions).
 
 :::tip
-- Namespace pairing is limited to regions within the same continent.
+- Namespace pairing is currently limited to regions within the same continent.
 South America is excluded as only one region is available.
 :::
 
@@ -299,15 +299,14 @@ Before pressing return, add your authentication credentials. For example, `--ca-
 
 Once your multi-region Namespace is ready, you'll receive an email update.
 
-### Discontinuing multi-region service {#discontinuing}
+### Discontinuing multi-region availability {#discontinuing}
 
-Disabling multi-region removes the high availability and automatic failover features that provide Temporal's highest level of regional service recovery.
-To disable the feature and end charges, users must contact Temporal directly.
-Charges will stop once this decommissioning procedure complete.
-It is on our roadmap to automate this process.
+Disabling multi-region removes the high availability and automatic failover features that provide Temporal's highest service level agreement.
+To disable the feature and end charges, users must contact [Temporal Support](https://support.temporal.io) directly.
+MRN-specific charges for replication will stop once this decommissioning procedure completes.
 
-* When making this request you must let us know which region you want the Namespace to land in after it is de-globalized.
-* If you cease services in the middle of the month, your Namespace removes multi-region features within 1 business day.
+* When making this request you must let us know which region you want the Namespace to land in after removing the secondary region.
+* If you cease services in the middle of the month, your Namespace will be converted to a single region Namespace within 1 business day.
 * Temporal won't retain replicated data in the standby region once multi-region has been disabled.
 * After disabling multi-region, we cannot re-enable the feature for a given Namespace for seven days.
 
