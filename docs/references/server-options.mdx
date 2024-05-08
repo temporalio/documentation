@@ -5,13 +5,12 @@ sidebar_label: Server options
 description: You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.
 toc_max_heading_level: 4
 keywords:
-- reference
-- web-ui
+  - reference
+  - web-ui
 tags:
-- reference
-- web-ui
+  - reference
+  - web-ui
 ---
-
 
 You can run the [Temporal Server](/clusters#temporal-server) as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.
 
@@ -123,4 +122,3 @@ s := temporal.NewServer(
 ```
 
 You can see the [Uber tally docs on custom reporter](https://github.com/uber-go/tally#report-your-metrics) and see a community implementation of [a reporter for Datadog's `dogstatsd` format](https://github.com/temporalio/temporal/pull/998#issuecomment-857884983).
-
