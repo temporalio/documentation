@@ -2,7 +2,6 @@
 id: child-workflows
 title: Child Workflows
 sidebar_label: Child Workflows
-sidebar_position: 15
 description: Spawn a new Workflow from within another Workflow, with options for Parent Close Policy and handling Child Workflow Events.
 slug: /dev-guide/python/child_workflows
 toc_max_heading_level: 2
@@ -12,7 +11,9 @@ tags:
   - child-workflows
 ---
 
-## How to start a Child Workflow Execution {#child-workflows}
+## Start a Child Workflow Execution {#child-workflows}
+
+**How to start a Child Workflow Execution**
 
 A [Child Workflow Execution](/encyclopedia/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
@@ -64,7 +65,9 @@ class GreetingWorkflow:
         )
 ```
 
-#### How to set a Parent Close Policy {#parent-close-policy}
+#### Set a Parent Close Policy {#parent-close-policy}
+
+**How to set a Parent Close Policy**
 
 A [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 

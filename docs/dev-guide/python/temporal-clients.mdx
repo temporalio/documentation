@@ -1,18 +1,42 @@
 ---
 id: temporal-clients
-title: Temporal Clients
-sidebar_label: Temporal Clients
-sidebar_position: 2
-description: Explore how to utilize Temporal Clients to connect to and interact with Temporal, including initiating Workflow Executions and handling Workflow results, with specific instructions for both local and Temporal Cloud environments.
-slug: /dev-guide/python/temporal_clients
-toc_max_heading_level: 2
+title: Temporal Client - Python SDK feature guide
+sidebar_label: Temporal Client
+toc_max_heading_level: 4
+description: Master the Temporal Python Client with our comprehensive guide that covers everything from initialization to Workflow Execution.
 keywords:
-  - temporal-clients
+  - temporal python client
+  - connect python client to temporal service
+  - initialize temporal client
+  - temporal SDK python guide
+  - start workflow execution python
+  - temporal cloud connection
+  - python client for temporal cli
+  - custom namespace configuration
+  - temporal workflow management
+  - temporal client setup
+  - python workflow execution
+  - temporal cloud integration
+  - temporal client options
+  - managing temporal namespaces
 tags:
-  - temporal-clients
+  - python
+  - python-sdk
+  - temporal-client
 ---
 
-## How to connect a Temporal Client to a Temporal Cluster {#connect-to-a-dev-cluster}
+This guide introduces Temporal Clients.
+It explains the role and use of Clients and shows you how to configure your Python Client code to connect to the Temporal Service.
+
+The pages shows how to do the following:
+
+- [Connect to a local development Temporal Service](#connect-to-development-service)
+- [Connect to Temporal Cloud](#connect-to-temporal-cloud)
+- [Start a Workflow Execution](#start-workflow-execution)
+
+## Connect to development Temporal Service {#connect-to-development-service}
+
+**How to connect to the local Temporal CLI development Temporal Service using the Python SDK**
 
 A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Cluster](/clusters).
 Communication with a Temporal Cluster includes, but isn't limited to, the following:
@@ -62,7 +86,9 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-## How to connect to Temporal Cloud {#connect-to-temporal-cloud}
+## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+
+**How to connect to Temporal Cloud using the Python SDK**
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
@@ -110,13 +136,14 @@ async def main():
     )
 ```
 
+## Start a Workflow Execution {#start-workflow-execution}
 
-## How to start a Workflow Execution {#start-workflow-execution}
+**How to start a Workflow Execution using the Python SDK**
 
 [Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.
-To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](features#child-workflows) or External Workflow APIs.
+To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](#child-workflows) or External Workflow APIs.
 
 See the [Customize Workflow Type](#workflow-type) section to see how to customize the name of the Workflow Type.
 
@@ -152,7 +179,9 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### How to set a Workflow's Task Queue {#set-task-queue}
+### Set a Workflow's Task Queue {#set-task-queue}
+
+**How to set a Workflow's Task Queue using the Python SDK**
 
 In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/workers#task-queue).
 
@@ -187,7 +216,9 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### How to set a Workflow Id {#workflow-id}
+### Set a Workflow Id {#workflow-id}
+
+**How to set a Workflow Id using the Python SDK**
 
 You must set a [Workflow Id](/workflows#workflow-id).
 
@@ -224,7 +255,9 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### How to get the results of a Workflow Execution {#get-workflow-results}
+### Get the results of a Workflow Execution {#get-workflow-results}
+
+**How to get the results of a Workflow Execution using the Python SDK**
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 

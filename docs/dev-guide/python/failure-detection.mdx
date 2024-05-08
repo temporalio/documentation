@@ -2,7 +2,6 @@
 id: failure-detection
 title: Failure detection
 sidebar_label: Failure detection
-sidebar_position: 4
 Description: Guidance on setting timeouts, retries, and heartbeat functionality for Workflows and Activities in Python with Temporal.
 slug: /dev-guide/python/failure_detection
 toc_max_heading_level: 2
@@ -81,7 +80,9 @@ Set the Retry Policy to either the [`start_workflow()`](https://python.temporal.
     )
 ```
 
-## How to set Activity timeouts {#activity-timeouts}
+## Set Activity timeouts {#activity-timeouts}
+
+**How to set an Activity Execution Timeout**
 
 Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 
@@ -121,7 +122,9 @@ Available timeouts are:
         )
 ```
 
-### How to set an Activity Retry Policy {#activity-retries}
+### Set an Activity Retry Policy {#activity-retries}
+
+**How to set an Activity Retry Policy**
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -157,7 +160,9 @@ from temporalio.common import RetryPolicy
 
 
 
-## How to Heartbeat an Activity {#activity-heartbeats}
+## Heartbeat an Activity {#activity-heartbeats}
+
+**How to Heartbeat an Activity**
 
 An [Activity Heartbeat](/activities#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Cluster](/clusters).
 Each Heartbeat informs the Temporal Cluster that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
@@ -182,7 +187,9 @@ async def your_activity_definition() -> str:
 In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity retry.
 If an Activity calls `heartbeat(123, 456)` and then fails and is retried, `heartbeat_details` returns an iterable containing `123` and `456` on the next Run.
 
-#### How to set a Heartbeat Timeout {#heartbeat-timeout}
+#### Set a Heartbeat Timeout {#heartbeat-timeout}
+
+**How to set a Heartbeat Timeout**
 
 A [Heartbeat Timeout](/activities#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/activities#activity-heartbeat).
 

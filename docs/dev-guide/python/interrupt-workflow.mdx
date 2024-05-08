@@ -2,7 +2,6 @@
 id: interrupt-a-workflow-execution
 title: Interrupt a Workflow Execution
 sidebar_label: Interrupt a Workflow Execution
-sidebar_position: 18
 description: Learn how to interrupt a workflow execution by canceling or terminating, including the differences and use cases for each method.
 slug: /dev-guide/python/interrupt_a_workflow_execution
 toc_max_heading_level: 2
@@ -12,7 +11,9 @@ tags:
   - interrupt-a-workflow-execution
 ---
 
-## How to interrupt a Workflow Execution {#interrupt-a-workflow-execution}
+## Interrupt a Workflow Execution {#interrupt-a-workflow-execution}
+
+**How to interrupt a Workflow Execution**
 
 You can interrupt a Workflow Execution in one of the following ways:
 
@@ -55,7 +56,9 @@ In summary:
 In most cases, canceling is preferable because it allows the Workflow to finish gracefully.
 Terminate only if the Workflow is stuck and cannot be canceled normally.
 
-### How to cancel a Workflow Execution in Python {#cancel-a-workflow-execution}
+### Cancel a Workflow Execution {#cancel-a-workflow-execution}
+
+**How to cancel a Workflow Execution**
 
 To cancel a Workflow Execution in Python, use the [cancel()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#cancel) function on the Workflow handle.
 
@@ -63,7 +66,9 @@ To cancel a Workflow Execution in Python, use the [cancel()](https://python.temp
 await client.get_workflow_handle("your_workflow_id").cancel()
 ```
 
-### How to terminate a Workflow Execution in Python {#terminate-a-workflow-execution}
+### Terminate a Workflow Execution {#terminate-a-workflow-execution}
+
+**How to terminate a Workflow Execution**
 
 To terminate a Workflow Execution in Python, use the [terminate()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#terminate) function on the Workflow handle.
 
