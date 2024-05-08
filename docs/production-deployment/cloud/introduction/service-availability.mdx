@@ -62,7 +62,17 @@ Your throughput limit will never fall below this default value.
 
 When your Action rate exceeds your quota, Temporal Cloud throttles Actions until the rate matches your quota.
 Throttling means limiting the rate at which Actions are performed to prevent the Namespace from exceeding its APS limit.
-Even when throttled, Actions like Start or Signal Workflow Execution always receive higher priority than other Actions.
+
+Critical calls to external events, such starting or Signaling a Workflow, are always prioritized and never throttled.
+There are four priority levels for Temporal Cloud API calls:
+1. External events
+2. Workflow progress updates
+3. Visibility API calls
+4. Cloud operations such as Namespace creation
+
+When you exceed your APS limits, you might receive warnings about throttling.
+However, requests are never dropped, and high-priority calls are never delayed.
+Workers might take longer to complete Workflows.
 
 If your usage grows slowly, your throughput limit grows with your usage.
 At times, you may hit a maximum throughput threshold and need to switch to a higher consumption tier.
