@@ -5,29 +5,29 @@ sidebar_label: Observability
 description: Improve observability in your Python-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
 toc_max_heading_level: 4
 keywords:
-- client
-- code sample
-- developer-guide
-- guide-context
-- how-to
-- logging
-- python
-- python sdk
-- sdk
-- search attribute
-- workflow
+  - client
+  - code sample
+  - developer-guide
+  - guide-context
+  - how-to
+  - logging
+  - python
+  - python sdk
+  - sdk
+  - search attribute
+  - workflow
 tags:
-- client
-- code-sample
-- developer-guide
-- guide-context
-- how-to
-- logging
-- python
-- python-sdk
-- sdk
-- search-attribute
-- workflow
+  - client
+  - code-sample
+  - developer-guide
+  - guide-context
+  - how-to
+  - logging
+  - python
+  - python-sdk
+  - sdk
+  - search-attribute
+  - workflow
 ---
 
 The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
@@ -103,7 +103,12 @@ logging.basicConfig(level=logging.INFO)
 
 Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio.workflow.html#logger) and level on the Workflow. The following example logs the Workflow.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_loggers/your_workflow_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_loggers/your_workflow_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
 
 ```python
 
@@ -153,7 +158,12 @@ Here is how to query Workflow Executions:
 
 Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.html#list_workflows) method on the Client handle and pass a [List Filter](/visibility#list-filter) as an argument to filter the listed Workflows.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
 
 ```python
 
@@ -168,7 +178,12 @@ After you've created custom Search Attributes in your Cluster (using `temporal o
 
 To set custom Search Attributes, use the `search_attributes` parameter of the ['start_workflow()'](https://python.temporal.io/temporalio.client.Client.html#start_workflow) method.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
 
 ```python
 
@@ -189,7 +204,12 @@ To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https
 
 The keys are added to or replace the existing Search Attributes, similar to [`dict.update()`](https://docs.python.org/3/library/stdtypes.html#dict.update).
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
 
 ```python
 
@@ -203,7 +223,12 @@ To remove a Search Attribute that was previously set, set it to an empty array: 
 
 To remove a Search Attribute, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) function with an empty list as its value.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
 
 ```python
 
@@ -211,3 +236,8 @@ To remove a Search Attribute, use the [`upsert_search_attributes()`](https://pyt
         workflow.upsert_search_attributes({"CustomKeywordField": []})
 ```
 
+<<<<<<< HEAD
+
+=======
+
+> > > > > > > main
