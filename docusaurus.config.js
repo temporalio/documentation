@@ -13,6 +13,7 @@ module.exports = async function createConfigAsync() {
     baseUrl: "/",
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "throw",
+    onBrokenAnchors: "throw",
     favicon: "img/favicon.svg",
     organizationName: "temporalio", // Usually your GitHub org/user name.
     projectName: "temporal-documentation", // Usually your repo name.

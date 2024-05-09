@@ -145,6 +145,7 @@ module.exports = {
             "dev-guide/tscript/durable-execution",
             "dev-guide/tscript/foundations",
             "dev-guide/tscript/features",
+            "dev-guide/tscript/messages",
             "dev-guide/tscript/observability",
             "dev-guide/tscript/testing",
             "dev-guide/tscript/debugging",
