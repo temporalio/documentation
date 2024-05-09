@@ -17,6 +17,7 @@ The `tcld namespace` commands enable [Namespace](/namespaces) operations in Temp
 
 Alias: `n`
 
+- [tcld namespace add-region](#add-region)
 - [tcld namespace create](#create)
 - [tcld namespace delete](#delete)
 - [tcld namespace get](#get)
@@ -27,6 +28,55 @@ Alias: `n`
 - [tcld namespace search-attributes](#search-attributes)
 - [tcld namespace retention](#retention)
 - [tcld namespace update-codec-server](#update-codec-server)
+
+## add-region
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Add multi-region link once that is available; for now it will break Vercel.</span>
+
+Use `tcld namespace add-region` to add a standby region to an existing Temporal Cloud [Namespace](/namespaces).
+Enrolling a second region upgrades the Namespace to multi-region (MRN). <!--[multi-region](/cloud/multi-region)-->
+Once provisioned, MRN enables Temporal Cloud to start replicating Workflow Execution data from the active to the passive region and trigger failover during adverse conditions.
+
+`tcld namespace add-region`
+
+Alias: _none_
+
+:::caution 
+`tcld` cannot be used to end multi-region service by removing a region.
+To disable the feature and end charges, users must contact [Temporal Support](https://support.temporal.io) directly.
+
+:::
+
+The following modifiers control the behavior of the command.
+
+#### --ca-certificate
+
+_Required modifier unless `--ca-certificate-file` is specified_
+
+A base64-encoded CA certificate.
+
+If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca-certificate` is used.
+
+Alias: `-c`
+
+#### --namespace
+
+_Required modifier_
+
+Specify the name of the Namespace to create.
+
+Alias: `-n`
+
+#### --region
+
+_Required modifier_
+
+The region to add to the existing Namespace.
+
+Valid options: `ap-northeast-1` | `ap-southeast-1` | `ap-southeast-2` | `ca-central-1` | `eu-central-1` | `eu-west-1` | `eu-west-2` | `us-east-1` | `us-west-2`
+
+Alias: `--re`
+
 
 ## create
 
@@ -69,9 +119,24 @@ _Required modifier_
 
 The region to create the Namespace in.
 
+When one `--region` flag is used, `tcld` provisions a single-region namespace.
+In single-region use, Temporal clients connect to a single Namespace in one deployment region.
+
+<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Add multi-region link once that is available; for now it will break Vercel.</span>
+
+When two `--region` flags are provided, your Namespace is provisioned to use Temporal Cloud multi-region service (MRN).<!--[multi-region](/cloud/multi-region)-->
+Once provisioned, MRN enables Temporal Cloud to start replicating Workflow Execution data from the active to the passive region and trigger failover during adverse conditions.
+
+
 Valid options: `ap-northeast-1` | `ap-southeast-1` | `ap-southeast-2` | `ca-central-1` | `eu-central-1` | `eu-west-1` | `eu-west-2` | `us-east-1` | `us-west-2`
 
 Alias: `--re`
+
+:::caution 
+`tcld` cannot be used to end multi-region service by removing a region.
+  To disable the feature and end charges, users must contact [Temporal Support](https://support.temporal.io) directly.
+
+:::
 
 #### --retention-days
 
