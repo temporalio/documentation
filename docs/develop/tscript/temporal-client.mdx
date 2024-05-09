@@ -36,9 +36,7 @@ The pages shows how to do the following:
 
 ## Connect to development Temporal Service {#connect-to-development-service}
 
-**How to connect to the local Temporal CLI development Temporal Service using the Go SDK**
-
-## Connect a Temporal Client to a Temporal Cluster {#connect-to-a-dev-cluster}
+**How to connect to the local Temporal CLI development Temporal Service using the Typescript SDK**
 
 A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Cluster](/clusters).
 Communication with a Temporal Cluster includes, but isn't limited to, the following:
@@ -80,7 +78,9 @@ run().catch((err) => {
 });
 ```
 
-## How to connect to Temporal Cloud {#connect-to-temporal-cloud}
+## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+
+**How to connect to Temporal Cloud using the Typescript SDK**
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
@@ -139,7 +139,9 @@ run().catch((err) => {
 });
 ```
 
-## Start a Workflow Execution {#start-workflow-execution}
+## Start Workflow Execution {#start-workflow-execution}
+
+**How to start a Workflow Execution using the Typescript SDK**
 
 [Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
