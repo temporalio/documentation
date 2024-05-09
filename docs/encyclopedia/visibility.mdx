@@ -35,9 +35,9 @@ The [Visibility store](/self-hosted-guide/visibility) in your Temporal Cluster s
 
 With Temporal Server v1.21, you can set up [Dual Visibility](#dual-visibility) to migrate your Visibility store from one database to another.
 
-<!-- A Visibility store can be configured to provide [atandard Visibility](/visibility#standard-visibility) and [advanced Visibility](/visibility#advanced-visibility) features.
+{/* A Visibility store can be configured to provide [atandard Visibility](/visibility#standard-visibility) and [advanced Visibility](/visibility#advanced-visibility) features.
 
-Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted-guide/visibility) for updates. -->
+Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted-guide/visibility) for updates. */}
 
 ## What is standard Visibility? {#standard-visibility}
 
@@ -111,13 +111,13 @@ List Filters support the following operators:
 - **`IN`**
 - **STARTS_WITH**
 
-<!-- - **ORDER BY** -->
+{/* - **ORDER BY** */}
 
-<!-- The **ORDER BY** operator is supported only when Elasticsearch is used as the Visibility store.
+{/* The **ORDER BY** operator is supported only when Elasticsearch is used as the Visibility store.
 
 The **ORDER BY** operator is currently not supported in Temporal Cloud.
 
-Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses. -->
+Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses. */}
 
 ### Partial string match
 
@@ -198,9 +198,9 @@ WorkflowId = '<workflow-id>' or WorkflowId = '<another-workflow-id>'
 WorkflowId IN ('<workflow-id>', '<another-workflow-id>')
 ```
 
-<!-- ```sql
+{/* ```sql
 WorkflowId = '<workflow-id>' order by StartTime desc
-``` -->
+``` */}
 
 ```sql
 WorkflowId = '<workflow-id>' and ExecutionStatus = 'Running'
@@ -226,7 +226,7 @@ ExecutionTime < '2021-08-28T15:04:05+00:00' or ExecutionTime > '2021-08-22T15:04
 WorkflowType STARTS_WITH '<workflow-type-prefix>'
 ```
 
-<!-- ```sql
+{/* ```sql
 order by ExecutionTime
 ```
 
@@ -236,7 +236,7 @@ order by StartTime desc, CloseTime asc
 
 ```sql
 order by CustomIntField asc
-``` -->
+``` */}
 
 ## What is a Search Attribute? {#search-attribute}
 
@@ -364,7 +364,7 @@ Note:
 
 #### Custom Search Attributes limits
 
-<!-- TODO - [How to configure maximum number of Search Attribute keys per Cluster](#) -->
+{/* TODO - [How to configure maximum number of Search Attribute keys per Cluster](#) */}
 
 The following table lists the maximum number of custom Search Attributes you can create per Namespace by supported Visibility database.
 
@@ -383,23 +383,23 @@ Custom Search Attributes are an advanced Visibility feature and are not supporte
 
 Size limits for a custom Search Attribute:
 
-<!--
+{/*
 _This refers to the SA key you create in the visibility store with `tctl search-attribute create`. this value is no longer applicable so commenting out for ref later_
-Default total maximum number of Search Attribute **keys** per Temporal Cluster is 100.-->
+Default total maximum number of Search Attribute **keys** per Temporal Cluster is 100.*/}
 
 - The default single Search Attribute **value** size limit is 2 KB.
 
-<!-- TODO - [How to configure Search Attribute value size limit](#) -->
+{/* TODO - [How to configure Search Attribute value size limit](#) */}
 
 - The maximum total Search Attribute size is 40 KB.
 
-<!-- TODO - [How to configure total Search Attribute size limite](#) -->
+{/* TODO - [How to configure total Search Attribute size limite](#) */}
 
 - The maximum total characters per Search Attribute value is 255.
 
-<!-- temp keeping for reference
+{/* temp keeping for reference
 This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
--->
+*/}
 
 For Temporal Cloud specific configurations, see the [Defaults, limits, and configurable settings -Temporal Cloud](/cloud/limits#number-of-custom-search-attributes) guide.
 
@@ -429,7 +429,7 @@ With Workflows you can do the following:
 
 After you add and set your Search Attributes, use your default or custom Search Attributes in a List Filter.
 
-<!-- commenting out this part. added this detail in how to create a custom search attribute under clusters.
+{/* commenting out this part. added this detail in how to create a custom search attribute under clusters.
 The [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image uses a pre-defined set of custom Search Attributes that are handy for testing.
 Their names indicate their types:
 
@@ -439,4 +439,4 @@ Their names indicate their types:
 - CustomIntField
 - CustomKeywordField
 - CustomTextField
--->
+*/}
