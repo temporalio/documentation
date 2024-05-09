@@ -144,6 +144,7 @@ module.exports = {
             "dev-guide/tscript/project-setup",
             "dev-guide/tscript/durable-execution",
             "dev-guide/tscript/foundations",
+            "develop/tscript/temporal-client",
             "dev-guide/tscript/features",
             "dev-guide/tscript/observability",
             "dev-guide/tscript/testing",
