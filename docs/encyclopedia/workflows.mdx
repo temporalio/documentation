@@ -109,7 +109,7 @@ class YourBasicWorkflowImpl implements YourBasicWorkflow {
 </TabItem>
 <TabItem value="python" label="Python">
 
-**[Workflow Definition in Python](/dev-guide/python/foundations#develop-workflows)**
+**[Workflow Definition in Python](/dev-guide/python/core-application#develop-workflows)**
 
 ```Python
 @workflow.defn
@@ -313,7 +313,7 @@ It is the main unit of execution of a [Temporal Application](/temporal#temporal-
 - [How to start a Workflow Execution using the Go SDK](/develop/go/temporal-client#start-workflow-execution)
 - [How to start a Workflow Execution using the Java SDK](/develop/java/temporal-client#start-workflow-execution)
 - [How to start a Workflow Execution using the PHP SDK](/dev-guide/php/foundations#start-workflow-execution)
-- [How to start a Workflow Execution using the Python SDK](/dev-guide/python/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using the Python SDK](/dev-guide/python/temporal-clients#start-workflow-execution)
 - [How to start a Workflow Execution using the TypeScript SDK](/dev-guide/typescript/foundations#start-workflow-execution)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
@@ -599,7 +599,7 @@ In the case of [Temporal Cron Jobs](#temporal-cron-job), Continue-As-New is actu
 - [How to Continue-As-New using the Go SDK](/dev-guide/go/features#continue-as-new)
 - [How to Continue-As-New using the Java SDK](/dev-guide/java/features#continue-as-new)
 - [How to Continue-As-New using the PHP SDK](/dev-guide/php/features#continue-as-new)
-- [How to Continue-As-New using the Python SDK](/dev-guide/python/features#continue-as-new)
+- [How to Continue-As-New using the Python SDK](/dev-guide/python/continue-as-new)
 - [How to Continue-As-New using the TypeScript SDK](/dev-guide/typescript/features#continue-as-new)
 
 ### What is a Reset? {#reset}
@@ -702,7 +702,7 @@ A Workflow Execution Timeout is the maximum time that a Workflow Execution can b
 - [How to set a Workflow Execution Timeout using the Go SDK](/dev-guide/go/features#workflow-timeouts)
 - [How to set a Workflow Execution Timeout using the Java SDK](/dev-guide/java/features#workflow-timeouts)
 - [How to set a Workflow Execution Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
-- [How to set a Workflow Execution Timeout using the Python SDK](/dev-guide/python/features#workflow-timeouts)
+- [How to set a Workflow Execution Timeout using the Python SDK](/dev-guide/python/failure-detection#workflow-timeouts)
 - [How to set a Workflow Execution Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
 
 <div class="tdiw">
@@ -730,7 +730,7 @@ A Workflow Run Timeout is the maximum amount of time that a single Workflow Run 
 - [How to set a Workflow Run Timeout using the Go SDK](/dev-guide/go/features#workflow-timeouts)
 - [How to set a Workflow Run Timeout using the Java SDK](/dev-guide/java/features#workflow-timeouts)
 - [How to set a Workflow Run Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
-- [How to set a Workflow Run Timeout using the Python SDK](/dev-guide/python/features#workflow-timeouts)
+- [How to set a Workflow Run Timeout using the Python SDK](/dev-guide/python/failure-detection#workflow-timeouts)
 - [How to set a Workflow Run Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
 
 <div class="tdiw">
@@ -758,7 +758,7 @@ A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/wo
 - [How to set a Workflow Task Timeout using the Go SDK](/dev-guide/go/features#workflow-timeouts)
 - [How to set a Workflow Task Timeout using the Java SDK](/dev-guide/java/features#workflow-timeouts)
 - [How to set a Workflow Task Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
-- [How to set a Workflow Task Timeout using the Python SDK](/dev-guide/python/features#workflow-timeouts)
+- [How to set a Workflow Task Timeout using the Python SDK](/dev-guide/python/failure-detection#workflow-timeouts)
 - [How to set a Workflow Task Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
 
 <div class="tdiw">
@@ -990,7 +990,7 @@ Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
 Currently, the Temporal SDKs that support Dynamic Handlers are:
 
 - [Java](/dev-guide/java/features#dynamic-handler)
-- [Python](/dev-guide/messages/features#dynamic-handler)
+- [Python](/dev-guide/python/messages#dynamic-handler)
 - .NET
 
 The Go SDK supports Dynamic Signals through the [GetUnhandledSignalNames](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetUnhandledSignalNames) function.
@@ -1266,7 +1266,7 @@ A Temporal Cron Job is the series of Workflow Executions that occur when a Cron 
 - [How to set a Cron Schedule using the Go SDK](/dev-guide/go/features#temporal-cron-jobs)
 - [How to set a Cron Schedule using the Java SDK](/dev-guide/java/features#cron-schedule)
 - [How to set a Cron Schedule using the PHP SDK](/dev-guide/php/features#temporal-cron-jobs)
-- [How to set a Cron Schedule using the Python SDK](/dev-guide/python/timers#temporal-cron-jobs)
+- [How to set a Cron Schedule using the Python SDK](/dev-guide/python/schedules#temporal-cron-jobs)
 - [How to set a Cron Schedule using the TypeScript SDK](/dev-guide/typescript/features#temporal-cron-jobs)
 
 <div class="tdiw">
