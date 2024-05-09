@@ -25,8 +25,14 @@ tags:
   - temporal-client
 ---
 
-This guide introduces Temporal Clients.
-It explains the role and use of Clients and shows you how to configure your Typescript Client code to connect to the Temporal Service.
+The Temporal Client is a key part of a Temporal SDK that allows you to communicate with the Temporal Service.
+
+You create Temporal Workflows by writing code in your programming language of choice, such as using the Typescript SDK.
+This code interacts with Temporal's APIs through the Temporal Client.
+
+The Temporal Client is crucial to starting, executing, monitoring, and managing Workflows ensuring they are durable and recover from failures seamlessly.
+
+Particularly for long running and complex Workflows, it acts as the bridge for communication between your applications and the Temporal Service.
 
 The pages shows how to do the following:
 
@@ -38,8 +44,8 @@ The pages shows how to do the following:
 
 **How to connect to the local Temporal CLI development Temporal Service using the Typescript SDK**
 
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Cluster](/clusters).
-Communication with a Temporal Cluster includes, but isn't limited to, the following:
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/clusters).
+Communication with a Temporal Service includes, but isn't limited to, the following:
 
 - Starting Workflow Executions.
 - Sending Signals to Workflow Executions.
@@ -50,14 +56,14 @@ Communication with a Temporal Cluster includes, but isn't limited to, the follow
 :::caution
 
 A Temporal Client cannot be initialized and used inside a Workflow.
-However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Cluster.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Service.
 
 :::
 
-When you are running a Cluster locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
+When you are running a Temporal Service locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
 Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
 
-Creating a [Connection](https://typescript.temporal.io/api/classes/client.Connection) connects to the Temporal Cluster, and you can pass the `Connection` instance when creating the [Client](https://typescript.temporal.io/api/classes/client.Client#connection).
+Creating a [Connection](https://typescript.temporal.io/api/classes/client.Connection) connects to the Temporal Service, and you can pass the `Connection` instance when creating the [Client](https://typescript.temporal.io/api/classes/client.Client#connection).
 
 If you omit the `Connection` and just create a `new Client()`, it will connect to `localhost:7233`.
 
@@ -93,7 +99,7 @@ When you connect to [Temporal Cloud](/cloud), you need to provide additional con
 
 For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
 
-For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 Create a [`Connection`](https://typescript.temporal.io/api/classes/client.Connection) with a [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) object that has your Cloud namespace and client certificate.
 
@@ -150,8 +156,8 @@ To spawn Workflow Executions from within another Workflow Execution, use either 
 
 See the [Customize Workflow Type](#workflow-type) section to see how to customize the name of the Workflow Type.
 
-A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
-The Temporal Cluster then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
+A request to spawn a Workflow Execution causes the Temporal Service to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
+The Temporal Service then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
 
 When you have a Client, you can schedule the start of a Workflow with `client.workflow.start()`, specifying `workflowId`, `taskQueue`, and `args` and returning a Workflow handle immediately after the Server acknowledges the receipt.
 
