@@ -9,7 +9,6 @@ module.exports = async function createConfigAsync() {
     tagline: "Build invincible applications",
     url: "https://docs.temporal.io",
     baseUrl: "/",
-    onBrokenAnchors: "throw",
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "throw",
     favicon: "img/favicon.svg",
