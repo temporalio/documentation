@@ -25,16 +25,18 @@ tags:
   - temporal-client
 ---
 
-The Temporal Client is a key part of a Temporal SDK that allows you to communicate with the Temporal Service.
+The Temporal Client, provided by the Temporal SDK, allows you to communicate with the Temporal Service.
 
 You create Temporal Workflows by writing code in your programming language of choice, such as using the Typescript SDK.
 This code interacts with Temporal's APIs through the Temporal Client.
 
 The Temporal Client is crucial to starting, executing, monitoring, and managing Workflows ensuring they are durable and recover from failures seamlessly.
 
-Particularly for long running and complex Workflows, it acts as the bridge for communication between your applications and the Temporal Service.
+It acts as the bridge for communication between your applications and the Temporal Service.
 
-The pages shows how to do the following:
+For long running Workflows, the Temporal Client is essential for maintaining and managing the state of these processes over time, regardless of disruptions or downtime.
+
+The following page shows how to:
 
 - [Connect to a local development Temporal Service](#connect-to-development-service)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
@@ -44,8 +46,7 @@ The pages shows how to do the following:
 
 **How to connect to the local Temporal CLI development Temporal Service using the Typescript SDK**
 
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/clusters).
-Communication with a Temporal Service includes, but isn't limited to, the following:
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) facilitates communication with the [Temporal Service](/clusters), allowing you to perform a variety of actions, such as:
 
 - Starting Workflow Executions.
 - Sending Signals to Workflow Executions.
@@ -60,12 +61,8 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 
 :::
 
-When you are running a Temporal Service locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
-Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
-
-Creating a [Connection](https://typescript.temporal.io/api/classes/client.Connection) connects to the Temporal Service, and you can pass the `Connection` instance when creating the [Client](https://typescript.temporal.io/api/classes/client.Client#connection).
-
-If you omit the `Connection` and just create a `new Client()`, it will connect to `localhost:7233`.
+Running a Temporal Service locally, like through the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev), requires minimal connection configurations.
+Many of the SDKs automatically use the default local address and port (127.0.0.1:7233) that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) use.
 
 ```ts
 import { Client } from "@temporalio/client";
@@ -83,6 +80,10 @@ run().catch((err) => {
   process.exit(1);
 });
 ```
+
+To connect to the Temporal Service, you create a [Connection](https://typescript.temporal.io/api/classes/client.Connection). You then use this Connection when setting up the Client. You can pass the `Connection` instance when creating the [Client](https://typescript.temporal.io/api/classes/client.Client#connection).
+
+If you omit the `Connection` and just create a `new Client()`, it will connect to `localhost:7233`.
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
 
