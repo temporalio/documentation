@@ -28,10 +28,14 @@ tags:
   - dynamic-handlers
 ---
 
+## What is a Signal {#what-is-a-signal}
+A [Signal](/workflows#signal) is a message sent asynchronously to a running Workflow Execution which can be used to change the state and control the flow of a Workflow Execution.
+It can only deliver data to a Workflow Execution that has not already closed. 
+
 
 ## How to develop with Signals {#signals}
 
-A [Signal](/workflows#signal) is a message sent to a running Workflow Execution.
+A Signal is a message sent to a running Workflow Execution.
 
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
@@ -40,8 +44,10 @@ Signals can be sent to Workflow Executions from a Temporal Client or from anothe
 
 A Signal has a name and can have arguments.
 
-- The name, also called a Signal type, is a string.
+- The name, also called a Signal type, is a case-sensitive string.
+- The name is used to identify the Signal when the Client communicates with the Temporal Service.
 - The arguments must be [serializable](/dataconversion).
+- A given Workflow Definition can support multiple Signals.
 
 [`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal)
 
@@ -55,12 +61,15 @@ interface JoinInput {
 
 export const joinSignal = defineSignal<[JoinInput]>('join');
 ```
+In the above example, the defined Signal - `joinSignal` - can now be used to pass on information about users joining groups.
+The Signal type is `join`. When `joinSignal` is received by the Workflow, it will carry with it the `userId` and `groupId` data, allowing the Workflow to react accordingly (e.g., updating its state to reflect that a specific user has joined a specific group).
 
 ### How to handle a Signal {#handle-signal}
 
 Workflows listen for Signals by the Signal's name.
 
-[`setHandler`](https://typescript.temporal.io/api/namespaces/workflow/#sethandler)
+Signal handlers are functions defined in the Workflow that listen for incoming Signals of a given type.
+These handlers define how a Workflow should react when it receives a specific type of Signal. In order to implement a Signal handler, you will need to use the [`setHandler`](https://typescript.temporal.io/api/namespaces/workflow/#sethandler) function provided by the TypeScript SDK API.
 
 ```ts
 import { setHandler } from '@temporalio/workflow';
@@ -78,6 +87,12 @@ export async function yourWorkflow() {
   });
 }
 ```
+
+When the Workflow Execution is running and it receives `joinSignal`, the Signal handler function above is invoked.
+Since the `joinSignalHandler` handler defines what should happen when `joinSignal` is received, the function updates the `groups` map to reflect the new state: either adding a user to an existing group or creating a new group with the user.
+Through this mechanism, the Workflow dynamically reacts to external events without interrupting its execution flow.
+
+There can be only one handler for any signal type; calling `setHandler` multiple times for the same Signal type overwrites the existing handler. For example, if you first set Handler A for a given Signal, and then later in the Workflow Definition set Handler B for the same Signal, then only Handler B will be invoked upon receiving this Signal.
 
 ### How to send a Signal from a Temporal Client {#send-signal-from-client}
 
