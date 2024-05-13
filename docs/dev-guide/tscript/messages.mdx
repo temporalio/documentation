@@ -37,14 +37,19 @@ You define Signals in your code.
 They are handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
 
-## How to develop with Signals {#signals}
+## Add Signal support {#signals}
 
-There are two steps for adding support for a Signal to your Workflow code:
+<!--Jwahir suggest updating this for better fluency. Patrick reminds: this is reference material, why can be surfaced somewhere else. The engineers will maintain. Why content from Angela in Slack. When adding net new content, the review from Engineers will be substantial.-->
+Two steps enable you to define and handle your Signal so it works with your Workflow code.
 
 1. **[Define the Signal](#define-signal)** - You specify the name and data structure used by Temporal Clients when sending the Signal.
 1. **[Handle the Signal](#handle-signal)** - You write code that will be invoked when the Signal is received from a Temporal Client.
 
 After developing a Signal, the next step is to [send a Signal from a Temporal Client](#send-signal-from-client) or [from another Workflow Execution](#send-signal-from-workflow).
+
+A Temporal Client can use [Signal with Start](#signal-with-start) to kick off a Workflow Execution.
+
+See also: [Common problems with Signals and their Workarounds](https://github.com/temporalio/edu-interacting-with-workflows-typescript-content/blob/main/signaling-your-workflows/common-issues-with-signals.md)
 
 ### How to define a Signal {#define-signal}
 
@@ -67,11 +72,6 @@ interface JoinInput {
 
 export const joinSignal = defineSignal<[JoinInput]>('join');
 ```
-
-In the above example, the defined Signal - `joinSignal` - can now be used to pass on information about users joining groups.
-The Signal type is `join`.
-When `joinSignal` is received by the Workflow, it will carry with it the `userId` and `groupId` data, allowing the Workflow to react accordingly.
-As an example, you might update a Signal's state to reflect that a specific user has joined a specific group.
 
 ### How to handle a Signal {#handle-signal}
 
@@ -97,10 +97,7 @@ export async function yourWorkflow() {
 }
 ```
 
-When the Workflow Execution is running and it receives `joinSignal`, the Signal handler function above is invoked.
-Since the `joinSignalHandler` handler defines what should happen when `joinSignal` is received, the function updates the `groups` map to reflect the new state: either adding a user to an existing group or creating a new group with the user.
-Through this mechanism, the Workflow dynamically reacts to external events without interrupting its execution flow.
-
+The Workflow dynamically reacts to external events without interrupting its execution flow.
 There can be only one handler for any Signal type; calling `setHandler` multiple times for the same Signal type overwrites the existing handler.
 For example, if you first set Handler A for a given Signal, and then later in the Workflow Definition set Handler B for the same Signal, then only Handler B will be invoked upon receiving this Signal.
 
@@ -110,7 +107,8 @@ For example, if you first set Handler A for a given Signal, and then later in th
 
 When a Signal is sent successfully from the Temporal Client, the [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
 
-[`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal)
+<!--come back and review this and reword-->
+The [`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal) method synchronously awaits the signal sending?
 
 ```typescript
 import { Client } from '@temporalio/client';
@@ -123,6 +121,8 @@ const handle = client.workflow.getHandle('workflow-id-123');
 await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
 ```
 
+The getHandle method is used to obtain a reference, or a "handle", to a specific Workflow Execution, which will be used to interact with that Workflow.
+
 ### Send a Signal from a Workflow {#send-signal-from-workflow}
 
 **How to send a Signal from a Workflow**
@@ -134,12 +134,11 @@ When an External Signal is sent:
 - A [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated) Event appears in the sender's Event History.
 - A [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the recipient's Event History.
 
-The following method retrieves a handle of another Workflow using its Workflow ID.
-This example uses this method to send a Signal from within a Workflow.
-Another reason we use the [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle) method is to ensure that Workflows remain deterministic.
-One aspect of deterministic Workflows means not directly making network calls from the Workflow.
+<!--Reword for we voice-->
+Another reason we use the getExternalWorkflowHandle method is to ensure that Workflows remain deterministic.
+Recall that one aspect of deterministic Workflows means not directly making network calls from the Workflow.
 This means that developers cannot use a Temporal Client directly within the Workflow code to send Signals or start other Workflows.
-Instead, to communicate between Workflows, we use `getExternalWorkflowHandle` to both ensure that Workflows remain deterministic and also that these interactions are recorded as Events in the Workflow's Event History.
+Instead, to communicate between Workflows, we use getExternalWorkflowHandle to both ensure that Workflows remain deterministic and also that these interactions are recorded as Events in the Workflow's Event History.
 
 ```typescript
 import { getExternalWorkflowHandle } from '@temporalio/workflow';
@@ -151,16 +150,28 @@ export async function yourWorkflowThatSignals() {
 }
 ```
 
-The code above communicates between Workflows by sending a Signal named `joinSignal` from the current Workflow to another Workflow identified as workflow-id-123.
-The `joinSignal` Signal carries data - `{ userId: "user-1", groupId: "group-1" }` - to be used by the receiving Workflow to perform the action specified in the `setHandler` function for `joinSignal`.
-
-Another important note about `getExternalWorkflowHandle` that may surprise some users is that both this method, as well as getHandle, do not check if the target Workflow exists.
-For example, in the code snippet above, if there is no running Workflow whose ID is workflow-id-123, it is the Signal call that will fail, not getExternalWorkflowHandle.
-
 ### How to Signal-With-Start {#signal-with-start}
 
-Signal-With-Start is used from the Client.
-It takes a Workflow Id, Workflow arguments, a Signal name, and Signal arguments.
+In some cases, you might need to send a Signal, but aren't sure whether the Workflow Execution is running yet.
+The Signal-with-Start feature in Temporal provides a solution for this.
+Temporal provides a solution for this.
+This feature checks if there is currently a running Workflow Execution with the given Workflow ID.
+If the Workflow ID exists, then it will be signaled.
+Otherwise, a new Workflow Execution is started and immediately sent the Signal.
+
+This feature is useful in scenarios where you want to ensure that a Workflow is running and that it receives specific information right from the beginning.
+
+<!--In the reference guide, reference any primitives (for example, the encyclopedia). Try to add links to each of these terms in this (long list)-->
+Signal-With-Start is a Client method that takes the following arguments:
+* Workflow type
+* A Workflow ID
+* Workflow input
+* A Signal type
+* Signal input
+* Task Queue
+
+Invoking Signal-With-Start is limited to Client use.
+It cannot be called from a Workflow.
 
 If there's a Workflow running with the given Workflow Id, it will be signaled. If there isn't, a new Workflow will be started and immediately signaled.
 
