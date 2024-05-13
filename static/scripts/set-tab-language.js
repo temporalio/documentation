@@ -1,5 +1,4 @@
 (function () {
-  if (typeof window === "undefined" || !window) return;
   const querystring = window.location.search;
   if (!querystring) {
     return;
