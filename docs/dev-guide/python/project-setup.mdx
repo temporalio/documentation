@@ -355,7 +355,7 @@ Remember to always activate the virtual environment when working on this project
 In the Temporal Python SDK programming model, a Workflow Definition is defined as a class.
 The `BackgroundCheck class` below is an example of a basic Workflow Definition.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_boilerplate/workflows/backgroundcheck_dacx.py">
     View the source code
   </a>{' '}
@@ -400,7 +400,7 @@ You can use asynchronous, synchronous multithreaded, and synchronous multiproces
 
 Below is an example of an Activity defined as a function.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_boilerplate/activities/ssntraceactivity_dacx.py">
     View the source code
   </a>{' '}
@@ -451,7 +451,7 @@ To run a Worker Process with a local development server, define the following st
 
 In regards to organization, we recommend keeping Worker code separate from Workflow and Activity code.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_boilerplate/dev_server_worker/main_dacx.py">
     View the source code
   </a>{' '}
@@ -496,7 +496,7 @@ A Temporal Cloud Worker requires that you specify the following in the Client co
 - Temporal Cloud Address
 - Certificate and private key associated with the Namespace
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_boilerplate/cloud_worker/main_dacx.py">
     View the source code
   </a>{' '}
@@ -622,7 +622,7 @@ Copy the IP address part.
 
 Set IP address, port, and Namespace in the Temporal Client options.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_boilerplate/self_hosted_worker/main_dacx.py">
     View the source code
   </a>{' '}
@@ -748,13 +748,13 @@ When you visit for the first time, the Web UI directs you to [http://localhost:8
 
 Use the Namespace dropdown to select the project Namespace you created earlier.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Web UI Namespace selection</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Web UI Namespace selection</p>
   </div>
-  <div class="tdiiw" height="1402">
+  <div className="tdiiw" height="1402">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/web-ui-namespace-selection.png"
       alt="Web UI Namespace selection"
     />
@@ -830,13 +830,13 @@ The URL will look something like the following:
 https://cloud.temporal.io/namespaces/<namespace>.<account-id>/workflows
 ```
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">View Workflows in the Cloud UI</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">View Workflows in the Cloud UI</p>
   </div>
-  <div class="tdiiw" height="578">
+  <div className="tdiiw" height="578">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/cloud-view-workflows.png"
       alt="View Workflows in the Cloud UI"
     />
@@ -902,7 +902,7 @@ Then, it executes the `BackgroundCheck.run` method with a social security number
 
 The test is marked with `@pytest.mark.asyncio` to indicate that it is an asynchronous test.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_boilerplate/tests/workflow_dacx_test.py">
     View the source code
   </a>{' '}
@@ -946,7 +946,7 @@ It tests the `ssn_trace_activity` function from the activities module.
 The function takes a social security number as input and returns a string indicating whether the SSN is valid or not.
 The test checks if the function returns "pass" when given the SSN "55-55-555".
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_boilerplate/tests/activity_dacx_test.py">
     View the source code
   </a>{' '}
