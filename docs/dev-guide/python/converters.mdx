@@ -176,7 +176,7 @@ class IPv4AddressPayloadConverter(CompositePayloadConverter):
 
 my_data_converter = dataclasses.replace(
     DataConverter.default,
-    payload_converter_class=IPv4AddressPayloadConverter,
+    payload_converter_className=IPv4AddressPayloadConverter,
 )
 ```
 
@@ -217,7 +217,7 @@ class IPv4AddressPayloadConverter(CompositePayloadConverter):
 
 my_data_converter = dataclasses.replace(
     DataConverter.default,
-    payload_converter_class=IPv4AddressPayloadConverter,
+    payload_converter_className=IPv4AddressPayloadConverter,
 )
 ```
 
