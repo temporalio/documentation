@@ -2,7 +2,6 @@
 id: project-setup
 title: Set up a Temporal Application project - Go SDK dev guide
 sidebar_label: Project setup
-sidebar_position: 2
 description: The project setup section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/go/project-setup
 toc_max_heading_level: 4
@@ -391,7 +390,6 @@ import (
 	"documentation-samples-go/dev-guide/chapters/setup/activities"
 )
 
-
 // BackgroundCheck is your custom Workflow Definition.
 func BackgroundCheck(ctx workflow.Context, param string) (string, error) {
 	// Define the Activity Execution options
@@ -452,7 +450,6 @@ import (
 	"context"
 )
 
-
 // SSNTraceActivity is your custom Activity Definition.
 func SSNTraceActivity(ctx context.Context, param string) (*string, error) {
 	// This is where a call to another service is made
@@ -500,7 +497,6 @@ import (
 	"documentation-samples-go/dev-guide/chapters/setup/activities"
 	"documentation-samples-go/dev-guide/chapters/setup/workflows"
 )
-
 
 func main() {
 	// Initialize a Temporal Client
@@ -571,7 +567,6 @@ import (
 	"documentation-samples-go/dev-guide/chapters/setup/workflows"
 )
 
-
 func main() {
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -624,8 +619,6 @@ You'll use:
 - The [Namespace's gRPC endpoint](https://docs.temporal.io/cloud/namespaces#temporal-cloud-grpc-endpoint).
   The endpoint uses this format `(namespace.unique_id.tmprl.cloud:port)`.
 - [Paths to the SSL certificate (.pem) and private key (.key)](https://docs.temporal.io/cloud/saml#integrate-saml-with-your-temporal-cloud-account) registered to your Namespace and stored on your Worker's file system.
-
-Copy the Namespace Id and the gRPC endpoint from the Namespace detail Web page on [Temporal Cloud Namespaces](https://cloud.temporal.io/namespaces). Click on a Namespace name to open the Namespace details.
 
 ### Run a Self-hosted Worker {#dockerfile}
 
@@ -715,7 +708,6 @@ import (
 	"documentation-samples-go/dev-guide/chapters/setup/activities"
 	"documentation-samples-go/dev-guide/chapters/setup/workflows"
 )
-
 
 func main() {
 	// Initialize a Temporal Client
@@ -1033,7 +1025,6 @@ import (
 	"documentation-samples-go/dev-guide/chapters/setup/workflows"
 )
 
-
 // UnitTestSuite is a struct that wraps around the testing suites
 type UnitTestSuite struct {
 	// Add testify test suite package
@@ -1071,7 +1062,6 @@ We can also perform a Workflow Replay test, and we'll provide detailed coverage 
 </div>
 
 ```go
-
 
 const ssn string = "555-55-5555"
 
@@ -1124,7 +1114,6 @@ We can test Activity code for the following conditions:
 </div>
 
 ```go
-
 
 // Test_SSNTraceActivity tests the SSNTraceActivity function
 func (s *UnitTestSuite) Test_SSNTraceActivity() {

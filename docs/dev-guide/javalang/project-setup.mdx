@@ -2,7 +2,6 @@
 id: project-setup
 title: Set up a Temporal Application project - Java SDK dev guide
 sidebar_label: Project setup
-sidebar_position: 2
 description: The project setup section of the Temporal Java SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in java—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/java/project-setup
 toc_max_heading_level: 4
@@ -425,7 +424,6 @@ In the Temporal Java SDK programming model, a [Workflow Definition](/workflows#w
 import io.temporal.workflow.WorkflowInterface;
 import io.temporal.workflow.WorkflowMethod;
 
-
 // BackgroundCheckReplayWorkflowNonDeterministic is an anti-pattern Workflow Definition
 @WorkflowInterface
 public interface BackgroundCheckReplayNonDeterministicWorkflow {
@@ -460,7 +458,6 @@ import io.temporal.activity.ActivityOptions;
 import io.temporal.workflow.Workflow;
 
 import java.time.Duration;
-
 
 public class BackgroundCheckBoilerplateWorkflowImpl implements BackgroundCheckBoilerplateWorkflow {
 
@@ -527,7 +524,6 @@ The `BackgroundCheckActivity` interface below is an example of a the first part 
 
 import io.temporal.activity.ActivityInterface;
 
-
 // Activity Interfaces must be annotated with @ActivityInterface
 @ActivityInterface
 // BackgroundCheckActivities is the interface that contains your Activity Definitions
@@ -557,7 +553,6 @@ Now that you've defined your Activity Interface you can define its implementatio
 </div>
 
 ```java
-
 
 public class BackgroundCheckBoilerplateActivitiesImpl implements BackgroundCheckBoilerplateActivities{
 
@@ -631,7 +626,6 @@ import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.worker.Worker;
 import io.temporal.worker.WorkerFactory;
 
-
 public class DevServerWorker {
   public static void main(String[] args) {
 
@@ -692,7 +686,6 @@ import backgroundcheckboilerplate.BackgroundCheckBoilerplateActivitiesImpl;
 import backgroundcheckboilerplate.BackgroundCheckBoilerplateWorkflowImpl;
 import java.io.IOException;
 
-
 public class CloudWorker {
   public static void main(String[] args) throws IOException{
 
@@ -749,6 +742,7 @@ public class CloudWorker {
 ```
 
 To run a Temporal Cloud Worker, you'll change some parameters in your Client connection code, such as updating the namespace and gRPC endpoint.
+
 You'll use:
 
 - The [Temporal Cloud Namespace Id](https://docs.temporal.io/cloud/namespaces#temporal-cloud-namespace-id).
@@ -826,8 +820,7 @@ Example output:
 
 Copy the IP address part.
 
-Set IP address and port in the Service Stubs Options and the Namespace in the
-Temporal Client options.
+Set IP address and port in the Service Stubs Options and the Namespace in the Temporal Client options.
 
 <div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/java/backgroundcheck-replay/src/main/java/backgroundcheckreplay/workers/SelfHostedWorker.java">
@@ -847,7 +840,6 @@ import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.serviceclient.WorkflowServiceStubsOptions;
 import io.temporal.worker.Worker;
 import io.temporal.worker.WorkerFactory;
-
 
 public class SelfHostedWorker {
   public static void main(String[] args) {
@@ -1181,8 +1173,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import io.temporal.testing.TestActivityExtension;
 
-
-
 public class BackgroundCheckBoilerplateActivitiesTest {
 
   // Use JUnit Extensions to simplify the creation of the test environment.
@@ -1210,11 +1200,11 @@ public class BackgroundCheckBoilerplateActivitiesTest {
 Temporal provides the `TestActivityExtension` class to simplify the creation of
 the test environment. Using this extension you provide your Activity
 to register with a Worker created by the testing framework to be used during testing.
-The extension provides a a stubbed Activity object to each test as well as
 manage the lifecycle of the test environment.
 If you require more granular control of the test environments, you can manually create
 and destroy all these parts in methods annotated with `@BeforeEach` and `@AfterEach`
 as defined by JUnit.
+
 
 You annotate the method with @Test and test the results of the Activity via assertions.
 
@@ -1260,7 +1250,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import io.temporal.testing.TestWorkflowEnvironment;
 import io.temporal.testing.TestWorkflowExtension;
 import io.temporal.worker.Worker;
-
 
 public class BackgroundCheckBoilerplateWorkflowTest {
 
@@ -1350,8 +1339,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import io.temporal.testing.TestWorkflowEnvironment;
 import io.temporal.testing.TestWorkflowExtension;
 import io.temporal.worker.Worker;
-
-
 
 public class BackgroundCheckBoilerplateWorkflowIntegrationTest {
 

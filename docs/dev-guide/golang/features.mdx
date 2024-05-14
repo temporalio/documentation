@@ -2,7 +2,6 @@
 id: features
 title: Features - Go SDK feature guide
 sidebar_label: Features
-sidebar_position: 5
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 slug: /dev-guide/go/features
 toc_max_heading_level: 4
@@ -421,7 +420,6 @@ Ensure that every Workflow listening to the same Update name can handle the same
 
 ```go
 
-
 // YourUpdateName holds a string value used to correlate Updates.
 const YourUpdateName = "your_update_name"
 // ...
@@ -454,7 +452,6 @@ Update handlers, unlike Query handlers, can change Workflow state.
 </div>
 
 ```go
-
 
 // ...
 func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error) {
@@ -492,7 +489,6 @@ The platform treats a panic in the Validator function as a rejection of the Upda
 </div>
 
 ```go
-
 
 // UpdatableWorkflowWithValidator is a Workflow Definition.
 // This Workflow Definition has an Update handler that uses the isPositive() validator function.
@@ -544,7 +540,6 @@ If you supply only the Workflow Id (and provide an empty string as the Run Id pa
 </div>
 
 ```go
-
 
 func main() {
 // ...
