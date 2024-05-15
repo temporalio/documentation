@@ -140,7 +140,7 @@ When an External Signal is sent:
  The corresponding Command to this Event is `SignalExternalWorkflowExecution`.
 - A [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the recipient's Event History.
   This Event type indicates the Workflow has received a Signal Event.
-  The Event type contains the Signal name as well as a Signal payload
+The Event type contains the Signal name as well as a Signal payload.
 
 The `getExternalWorkflowHandle` method helps ensure that Workflows remain deterministic.
 Recall that one aspect of deterministic Workflows means not directly making network calls from the Workflow.
