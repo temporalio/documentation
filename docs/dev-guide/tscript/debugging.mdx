@@ -190,13 +190,20 @@ The two main sources of dev-prod discrepancies are in bundling and connecting.
 
 #### Production bundling
 
+You may experience your Client sending stripped names as the Workflow "Type" when scheduling a Workflow.
 If you are getting errors like this:
 
 ```
 Error: 3 INVALID_ARGUMENT: WorkflowType is not set on request.
 ```
 
-This is due to your bundler stripping out Workflow function names, which we rely on to set the "Workflow Type" in Temporal. Turn it off and it should work.
+Or, if you are seeing stripped-down Workflow types in the Temporal Service's Web UI like this:
+
+![Temporal Web UI showing stripped "Workflow Type" entries, in this case the single letter 's'](/img/stripped_workflow_types_in_webui.png)
+
+It can be due to your bundler stripping out Workflow function names.
+Temporal relies on those names to set the "Workflow Type" in the Service Web UI.
+Disable that by configuring webpack (in webpack.config.js) and it should work.
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -219,7 +226,7 @@ module.exports = {
     minimizer: [
       new TerserPlugin({
         terserOptions: {
-          keep_fnames: true, // don't strip funciton names in production
+          keep_fnames: true, // don't strip function names in production
         },
       }),
     ],
@@ -239,8 +246,7 @@ require('esbuild').buildSync({
 });
 ```
 
-See esbuild docs: https://esbuild.github.io/api/#keep-names
-
+See [esbuild docs](https://esbuild.github.io/api/#keep-names) for more information: https://esbuild.github.io/api/#keep-names
 </TabItem>
 </Tabs>
 
