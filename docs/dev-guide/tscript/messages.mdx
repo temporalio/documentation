@@ -106,15 +106,14 @@ export async function yourWorkflow() {
 ```
 
 The Workflow dynamically reacts to external events without interrupting its execution flow.
-There can be only one handler for any Signal type. Calling `setHandler` multiple times for the same Signal type overwrites the existing handler.
+There can be only one handler for any Signal type.
+Calling `setHandler` multiple times for the same Signal type overwrites the existing handler.
 For example, if you first set Handler A for a given Signal, and then later in the Workflow Definition set Handler B for the same Signal, then only Handler B will be invoked upon receiving this Signal.
 
 ### Send a Signal from a Temporal Client {#send-signal-from-client}
 
 When a Signal is sent successfully from the Temporal Client, the [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
-
-<!--come back and review this and reword-->
-The [`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal) method synchronously awaits the signal sending?
+The [WorkflowHandle.signal](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal) method sends the Signal to the handle of the Workflow.
 
 ```typescript
 import { Client } from '@temporalio/client';
@@ -128,6 +127,7 @@ await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
 ```
 
 The `getHandle` method is used to obtain a reference, or a "handle", to a specific Workflow Execution, which will be used to interact with that Workflow.
+The [`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal) method synchronously awaits the signal.
 
 ### Send a Signal from a Workflow {#send-signal-from-workflow}
 
@@ -136,13 +136,16 @@ A Workflow can send a Signal to another Workflow, in which case it's called an _
 When an External Signal is sent:
 
 - A [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated) Event appears in the sender's Event History.
+ The `SignalExternalWorkflowExecutionInitiated` Event contains the Signal name as well as a Signal payload.
+ The corresponding Command to this Event is `SignalExternalWorkflowExecution`.
 - A [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the recipient's Event History.
+  This Event type indicates the Workflow has received a Signal Event.
+  The Event type contains the Signal name as well as a Signal payload
 
-<!--Reword for we voice-->
-Another reason we use the getExternalWorkflowHandle method is to ensure that Workflows remain deterministic.
+The `getExternalWorkflowHandle` method helps ensure that Workflows remain deterministic.
 Recall that one aspect of deterministic Workflows means not directly making network calls from the Workflow.
 This means that developers cannot use a Temporal Client directly within the Workflow code to send Signals or start other Workflows.
-Instead, to communicate between Workflows, we use getExternalWorkflowHandle to both ensure that Workflows remain deterministic and also that these interactions are recorded as Events in the Workflow's Event History.
+Instead, to communicate between Workflows, we use `getExternalWorkflowHandle` to both ensure that Workflows remain deterministic and also that these interactions are recorded as Events in the Workflow's Event History.
 
 ```typescript
 import { getExternalWorkflowHandle } from '@temporalio/workflow';
@@ -158,7 +161,6 @@ export async function yourWorkflowThatSignals() {
 
 In some cases, you might need to send a Signal, but aren't sure whether the Workflow Execution is running yet.
 The Signal-with-Start feature in Temporal provides a solution for this.
-Temporal provides a solution for this.
 This feature checks if there is currently a running Workflow Execution with the given Workflow ID.
 If the Workflow ID exists, then it will be signaled.
 Otherwise, a new Workflow Execution is started and immediately sent the Signal.
