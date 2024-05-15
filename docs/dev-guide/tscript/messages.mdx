@@ -106,7 +106,7 @@ export async function yourWorkflow() {
 ```
 
 The Workflow dynamically reacts to external events without interrupting its execution flow.
-There can be only one handler for any Signal type; calling `setHandler` multiple times for the same Signal type overwrites the existing handler.
+There can be only one handler for any Signal type. Calling `setHandler` multiple times for the same Signal type overwrites the existing handler.
 For example, if you first set Handler A for a given Signal, and then later in the Workflow Definition set Handler B for the same Signal, then only Handler B will be invoked upon receiving this Signal.
 
 ### Send a Signal from a Temporal Client {#send-signal-from-client}
