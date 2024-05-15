@@ -1,0 +1,118 @@
+---
+id: how-it-works
+title: How Temporal Works
+sidebar_label: How It Works
+description: This guide provides a short overview of How Temporal Works.
+toc_max_heading_level: 4
+keywords:
+  - temporal
+  - evaluate-temporal
+  - how-temporal-works
+
+tags:
+  - temporal
+  - evaluate-temporal
+  - how-temporal-works
+---
+
+# How Temporal Works
+
+Temporal provides a comprehensive platform for building distributed applications with a focus on durability and reliability. 
+
+## Durable Execution 
+
+### Durable and fault tolerant applications by default.
+Durable Execution let's you code as if failures don't exist. 
+This includes minor issues like brief network outages and more significant problems such as unexpected reboots or hardware failures. 
+
+By offloading the responsibility of failure management from the application to the platform, developers are freed from extensive coding, testing, and maintenance tasks - reducing the complexity developers need to handle themselves. 
+This shift both simplifies the development process and allows your application to seamlessly recover from disruptions. 
+It does so by automatically reconstructing its previous state. 
+Your business logic can be recovered, replayed, or paused from any previous point in the application process.
+Overall, Durable Execution can make your applications more reliable, faster to develop, and easier to maintain.
+
+### Start Coding  
+Temporal consists of two components, an SDK and a server. 
+
+It takes two main steps to start coding with Temporal. 
+
+**1. Install the SDK.** You can code in your favorite language using the SDK which is available in Go, Java, Python, .NET and Typescript. 
+Temporal gives you the flexibility to use your preferred IDE, libraries, and tools. 
+
+**2. Install the Temporal CLI.** The Temporal CLI (command-line interface available for macOS, Windows, and Linux) enables you to start and run the Temporal Service from your terminal. 
+The Temporal Service contains the server that runs on your infrastructure. The server logs state and progress of your application. It also ensures that your process executes completely or fails elegantly.
+The CLI includes crucial tools for debugging and overseeing operations, which are key to effectively managing the lifecycle of your Temporal applications.
+
+## Workflow as Code
+
+### Temporal Workflows are resilient.
+
+Temporal is the platform that allows you to write durable application code through Workflow and Activities. 
+Workflows are defined as code: either a function or an object method, depending on the language. 
+
+
+A Temporal Workflow defines your overall business logic. 
+That business logic might involve moving money between bank accounts, processing orders, deploying cloud infrastructure, training an AI model, or something else entirely. 
+No matter the use case, Temporal will oversee its execution, ensuring that it runs correctly and reliably. 
+
+### Long-running Workflows
+
+A Temporal Workflow is basically a process or sequence of events you want to make sure will execute reliably. 
+They can run—and keep running—for years, even if the underlying infrastructure fails. 
+If the execution of your Workflow code crashes, Temporal automatically recreates its pre-crash state, allowing the Workflow to continue execution as if it never even happened. 
+
+
+The Workflow code uses Temporal SDK APIs to orchestrate the steps of the application. 
+A Workflow executes Activities (other functions that interact with external systems), handles and sends messages (Queries, Signals, Updates), and interacts with other Workflows. 
+This Workflow code, while executing, can be paused, resumed, and even migrated across physical machines without losing state.
+
+## Example
+{/* insert scrollycode/codehike */}
+
+In the most basic sense, building a Temporal Application involves these essential steps:
+
+    1. Write the Workflow code.
+
+This outlines the main steps and logic of your application. Think of this as the master plan for your application. It maps out what needs to happen and when.
+
+    2. Write the Activity code.
+
+This handles specific tasks, like talking to other systems that may be more failure-prone. 
+
+    3. Set up a Worker program.
+
+This is a program that listens for instructions and carries out the Workflow and Activities. You can consider it to be your app’s on-the-ground team. It listens for tasks assigned by the Temporal Server and makes sure your Workflow and Activities get done.
+
+    4. Create the Client code. 
+
+This establishes your application's direct link to the Temporal Server, enabling it to send commands and manage Workflows efficiently.
+
+    5. Run your application! 
+
+With the Temporal Server running, your app will connect to the Temporal Server and ensure everything runs smoothly and recovers gracefully even if there are  hiccups.
+
+
+## Deploy Your Way
+
+### Use your own tools and existing infrastructure.
+SDKs integrates seamlessly with your chosen development environment. Build, deploy, and run the application wherever and however you choose. 
+You have the freedom to deploy and run your application across various environments according to your operational needs or preferences.
+
+
+
+## Use Cases 
+
+Temporal serves a diverse range of use cases; for example, ensuring that e-commerce orders and financial transactions execute reliably.
+The end users of these applications aren't developers and are probably unaware of Temporal, yet their actions trigger Workflow Executions. 
+
+A practical example of usage of a Temporal SDK is a bank loan application. 
+The developer can write the business logic of a bank loan, using the Temporal SDK. The Temporal SDK uses a Workflow to define the overall business logic such as verifying the applicant’s information, but any step that involves interacting with an external system such as credit checks, loan approval, notifying the applicant are Activities. 
+
+The Temporal SDK ensures that these steps progress in a reliable way, because any step that fails can be retried. 
+This end-to-end process can all be done with the Temporal SDK, because the SDK can be used to initialize the Temporal Client, send and receive messages, manage state, manage the Activities and Workers, and start the Workflow. 
+
+A sample of customers who have unlocked developer productivity gains: Yum! Brands (Taco Bell, KFC, Pizza Hut) say their developers are 10 times more productive using Temporal for their order management system. 
+ANZ Bank in Australia say using Temporal enabled their developers to build a new loan origination app 30 times faster.
+
+
+
