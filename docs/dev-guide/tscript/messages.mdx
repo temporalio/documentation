@@ -28,7 +28,15 @@ tags:
   - dynamic-handlers
 ---
 
-## What is a Signal {#what-is-a-signal}
+Interact with running Workflows by messaging them using Signals and Queries.
+
+* [Develop with Signals](#what-is-a-signal)
+* [Develop with Queries](#what-are-queries)
+* [Defining Signals and Queries statically and dynamically](#static-and-dynamic-signals-and-queries)
+
+## Develop with Signals {#what-is-a-signal}
+
+**What is a Signal?**
 
 A [Signal](/workflows#signal) is a message sent asynchronously to a running Workflow Execution which can be used to change the state and control the flow of a Workflow Execution.
 It can only deliver data to a Workflow Execution that has not already closed. 
@@ -37,9 +45,9 @@ You define Signals in your code.
 They are handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
 
-## Add Signal support {#signals}
+### Add Signal support {#signals}
 
-<!--Jwahir suggest updating this for better fluency. Patrick reminds: this is reference material, why can be surfaced somewhere else. The engineers will maintain. Why content from Angela in Slack. When adding net new content, the review from Engineers will be substantial.-->
+<!--Jwahir suggests updating this for better fluency. Patrick reminds: this is reference material, why can be surfaced somewhere else. The engineers will maintain. Why content from Angela in Slack. When adding net new content, the review from Engineers will be substantial.-->
 Two steps enable you to define and handle your Signal so it works with your Workflow code.
 
 1. **[Define the Signal](#define-signal)** - You specify the name and data structure used by Temporal Clients when sending the Signal.
@@ -51,7 +59,7 @@ A Temporal Client can use [Signal with Start](#signal-with-start) to kick off a 
 
 See also: [Common problems with Signals and their Workarounds](https://github.com/temporalio/edu-interacting-with-workflows-typescript-content/blob/main/signaling-your-workflows/common-issues-with-signals.md)
 
-### How to define a Signal {#define-signal}
+### Define a Signal {#define-signal}
 
 A Signal has a name and can have arguments.
 
@@ -73,7 +81,7 @@ interface JoinInput {
 export const joinSignal = defineSignal<[JoinInput]>('join');
 ```
 
-### How to handle a Signal {#handle-signal}
+### Handle a Signal {#handle-signal}
 
 Workflows listen for Signals by the Signal's name.
 Signal handlers are functions defined in the Workflow that listen for incoming Signals of a given type.
@@ -125,8 +133,6 @@ The getHandle method is used to obtain a reference, or a "handle", to a specific
 
 ### Send a Signal from a Workflow {#send-signal-from-workflow}
 
-**How to send a Signal from a Workflow**
-
 A Workflow can send a Signal to another Workflow, in which case it's called an _External Signal_.
 
 When an External Signal is sent:
@@ -150,7 +156,7 @@ export async function yourWorkflowThatSignals() {
 }
 ```
 
-### How to Signal-With-Start {#signal-with-start}
+### Signal-With-Start {#signal-with-start}
 
 In some cases, you might need to send a Signal, but aren't sure whether the Workflow Execution is running yet.
 The Signal-with-Start feature in Temporal provides a solution for this.
@@ -192,11 +198,33 @@ await client.workflow.signalWithStart(yourWorkflow, {
 });
 ```
 
-## How to develop with Queries {#queries}
+## Develop with Queries {#queries}
+
+**How to develop with Queries**
 
 A [Query](/workflows#query) is a synchronous operation that is used to get the state of a Workflow Execution.
 
-### How to define a Query {#define-query}
+* [Define a Query](#define-query)
+* [Handle a Query](#handle-query)
+* [Send a Query](#send-query)
+
+Unlike Signals, Queries may not mutate the state of the Workflow Execution.
+They must not change the value of variables that may later affect the execution of the Workflow, or execute any Workflow command such as timers, Activities, local Activities, Child Workflows, etc. 
+Queries are read-only and must complete synchronously. 
+A Query handler may not return a Promise.
+
+Queries are typically used to access the state of an open (running) Workflow Execution.
+It is also possible to send a Query to a closed Workflow Execution.
+In both cases, you must have access to at least one running Worker for the Task Queue that the Workflow belongs to.
+
+The Query is identified at both ends by a Query Type.
+The Workflow requires a Query handler to process the Query and provide data representing the requested information.
+Queries return the most recent state of the Workflow Execution.
+The returned data reflects the state of all confirmed Events before the Query was sent.
+An Event is confirmed if the call creating the Event returned a success.
+If an Event is created while the Query is underway, it may not be reflected in the Query results.
+
+### Define a Query {#define-query}
 
 A Query has a name and can have arguments.
 
@@ -204,6 +232,9 @@ A Query has a name and can have arguments.
 - The arguments must be [serializable](/dataconversion).
 
 Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) to define the name, parameters, and return value of a Query.
+This returns a `QueryDefinition` object.
+It carries the Query's signature. 
+This includes the Query Type, the input parameters types, and the Query's return type.
 
 <!--SNIPSTART typescript-define-query -->
 
@@ -219,7 +250,7 @@ export const getValueQuery = defineQuery<number | undefined, [string]>(
 
 <!--SNIPEND-->
 
-### How to handle a Query {#handle-query}
+### Handle a Query {#handle-query}
 
 Queries are handled by your Workflow.
 
@@ -245,7 +276,7 @@ export async function trackState(): Promise<void> {
 
 <!--SNIPEND-->
 
-### How to send a Query {#send-query}
+### Send a Query {#send-query}
 
 Queries are sent from a Temporal Client.
 
@@ -269,12 +300,15 @@ async function run(): Promise<void> {
 
 <!--SNIPEND-->
 
-## How to define Signals and Queries statically or dynamically {#static-and-dynamic-signals-and-queries}
+## Define Signals and Queries statically or dynamically {#static-and-dynamic-signals-and-queries}
 
 - Handlers for both Signals and Queries can take arguments, which can be used inside `setHandler` logic.
 - Only Signal Handlers can mutate state, and only Query Handlers can return values.
 
-### Define Signals and Queries statically
+* [Define Signals and Queries statically](#static-signals-and-queries)
+* [Define Signals and Queries dynamically](#dynamic-signals-and-queries)
+
+### Define Signals and Queries statically {#static-signals-and-queries}
 
 If you know the name of your Signals and Queries upfront, we recommend declaring them outside the Workflow Definition.
 
@@ -309,7 +343,7 @@ export async function unblockOrCancel(): Promise<void> {
 
 This technique helps provide type safety because you can export the type signature of the Signal or Query to be called by the Client.
 
-### Define Signals and Queries dynamically
+### Define Signals and Queries dynamically {#dynamic-signals-and-queries}
 
 For more flexible use cases, you might want a dynamic Signal (such as a generated ID).
 You can handle it in two ways:
