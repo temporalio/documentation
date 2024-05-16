@@ -53,43 +53,15 @@ Temporal clients connect to a single namespace in a single AWS region.
 With High Availability you avoid stalled workflows during recovery and blocked workflow initiation during downtime.
 
 
-## Multi-region Namespaces
-
-*What are multi-region Namespaces*?
+### Multi-region Namespaces
 
 A high availability multi-region Namespace (MRN) provides a single endpoint for a multi-region service.
-This option offers a single logical Namespace that runs in two physical regions, one active and one standby.
+This offers a single logical Namespace that runs in two physical regions, one active and one standby.
 As Workflows progress in the active region, history events are asynchronously replicated to the standby region.
-
 In case of an incident or outage in the active region, Temporal Cloud will "failover" to the standby region.
 A failover means to switch the roles of the active and standby regions.
-These failovers enable existing Workflow Executions to keep running and new Executions to be initiated.
 
-In the traditional definition of active/active replication, multiple nodes serve requests and accept writes simultaneously with strong synchronous data consistency.
-A Temporal Cloud multi-region Namespace enables two replicated Namespaces (one active, one standby) to accept requests, but not simultaneously.
-Requests are accepted, and Workflow history events are written to the active region and then asynchronously replicated to the standby region.
-
-Before failover            |  After failover
-:-------------------------:|:-------------------------:
-![Before failover](/img/multi-region/before-failover.png)  |  ![After failover](/img/multi-region/after-failover.png)
-
-For a single-region Namespace, Temporal Cloud provides 99.99% availability and its contractual service level agreement ([SLA](https://docs.temporal.io/cloud/sla)) offers a 99.9% guarantee against service errors.
-For many applications, this provides sufficient availability.
-With this strategy, Temporal clients connect to a single Namespace in one deployment region.
-This approach works well for workloads that don't require stringent availability guarantees.
-
-A multi-region Namespace supports standby recovery.
-To enable this feature, simply add an additional region to a Namespace.
-Temporal Cloud takes care of the Namespace replication to your new standby region.
-In the event of a regional failure, Temporal Cloud automatically fails over the Namespace to the secondary region. 
-When faced with network latency or other region-wide issues, you can manually trigger a failover.
-
-
-## The High Availability Advantage
-
-*Explore the advantages of High Availability*
-
-Advantages of using a Multi-region Namespace:
+## Advantages of using a Multi-region Namespace:
 
 * No manual deployment or configuration needed, simple push button operation.
 * Fault tolerant. Open workflows continue in the standby region with minimal interruption and data loss.
