@@ -2,26 +2,26 @@
 id: go-sdk-multithreading
 title: Temporal Go SDK multithreading
 sidebar_label: Go SDK multithreading
-description: Unlock the potential of parallel processing in your Temporal Workflows with the Temporal Go SDK. Learn how to safely create additional goroutines using workflow.Go() without risking determinism errors.
+description: "Temporal Go SDK enables asynchronous execution of workflows and child workflows, ensuring determinism and minimizing race conditions through a deterministic runner that controls thread execution, eliminating the need for locks or mutexes."
 toc_max_heading_level: 4
 keywords:
-  - temporal go sdk
-  - go multithreading
-  - deterministic runner
-  - parallel processing in go
-  - go asynchronous workflows
-  - race conditions in go
-  - mutex in go workflows
-  - go threading best practices
-  - temporalio samples
-  - go particle swarm operation sample
-  - go await signal sample
-  - managing concurrency in go
-  - workflow code threading
-  - go deterministic execution
+- temporal go sdk
+- go multithreading
+- deterministic runner
+- parallel processing in go
+- go asynchronous workflows
+- race conditions in go
+- mutex in go workflows
+- go threading best practices
+- temporalio samples
+- go particle swarm operation sample
+- go await signal sample
+- managing concurrency in go
+- workflow code threading
+- go deterministic execution
 tags:
-  - go-sdk
-  - multithreading
+- go-sdk
+- multithreading
 ---
 
 The Temporal Go SDK allows you to create additional goroutines (threads) in your Workflows by calling `workflow.Go()`.
