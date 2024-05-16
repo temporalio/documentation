@@ -48,6 +48,12 @@ During a failover, the roles of the active and standby regions reverse and the s
 * **No code changes**.
   Workers and Workflow starter code don't need to be updated to take advantage of multi-region setup or to respond to failover conditions.
 * **MRNs provide our highest level of contractual service level agreement**. We offer a 4-9s (99.99%) ([SLA](https://docs.temporal.io/cloud/sla)). <!--update to point to multi-region SLA-->
+* **20 minute or less RTO (Recovery Time Objective)**.
+  This is the target time for restoration of service after an outage, determining maximum acceptable downtime.
+  Example: An RTO of 4 hours aims for service restoration within 4 hours post-incident.
+* **Near-zero RPO (Recovery Point Objective)**.
+  This is the maximum time period for potential data loss due to an incident, guiding data backup frequency.
+  Example: An RPO of 1 hour requires data backups every hour to minimize data loss. 
 
 ### Explore
 
@@ -98,9 +104,13 @@ Signals, queries, and Updates to the namespaces in the failed region must be fai
 
 ### Advantages of multi-region Service
 
-* **Limited Workflow Execution stalls**. Regional failures affect only a fraction (normally half) of ongoing Workflow traffic.
-* **Redirection enables new Workflow Executions to start**. New work can be routed to the surviving region to begin execution.
-* **Our 99.9% SLA**. We provide 99.99% availability and a contractual service level agreement of 99.9% guarantee against service errors. Read more on our [SLA](https://docs.temporal.io/cloud/sla) page.
+* **Limited Workflow Execution stalls**.
+  Regional failures affect only a fraction (normally half) of ongoing Workflow traffic.
+* **Redirection enables new Workflow Executions to start**.
+  New work can be routed to the surviving region to begin execution.
+* **Our 99.9% SLA**.
+  We provide 99.99% availability and a contractual service level agreement of 99.9% guarantee against service errors.
+  Read more on our [SLA](https://docs.temporal.io/cloud/sla) page.
 
 ### Disadvantages of multi-region Service
 
