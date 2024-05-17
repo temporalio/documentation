@@ -70,7 +70,7 @@ func (s *UnitTestSuite) Test_BackgroundCheckWorkflow() {
 	// And check for the expected value of the Workflow result
 	var result string
 	s.NoError(env.GetWorkflowResult(&result))
-	s.Equal(result, ssnTraceResult)
+	s.Equal(ssnTraceResult, result)
 }
 
 /*
