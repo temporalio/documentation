@@ -203,7 +203,7 @@ Or, if you are seeing stripped-down Workflow types in the Temporal Service's Web
 
 It can be due to your bundler stripping out Workflow function names.
 Temporal relies on those names to set the "Workflow Type" in the Service Web UI.
-Disable that by configuring webpack (in webpack.config.js) and it should work.
+To prevent the build process from removing Workflow function names,  modify the webpack configuration file ( `webpack.config.js`) by setting `keep_fnames` to `true` in the `TerserPlugin` configuration section:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
