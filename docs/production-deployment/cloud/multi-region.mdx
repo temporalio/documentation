@@ -348,8 +348,12 @@ tcld namespace failover --namespace <namespace_id> --region <target_region>
 Before pressing return, add your authentication credentials. For example, `--ca-certificate-file <path-to-pem-file>`.
 
 #### After failover
-After any failover, whether triggered by you or by Temporal, information about the event appears in both the [Temporal Cloud Web UI](https://cloud.temporal.io/namespaces) on the Namespace detail page and in your audit logs.
-You need not monitor this in real-time.
+
+After any failover, whether triggered by you or by Temporal, event information appears in both the [Temporal Cloud Web UI](https://cloud.temporal.io/namespaces) (on the Namespace detail page) and in your audit logs.
+The audit log entry for Failover uses the `"operation": FailoverNamespaces"` event.
+After failover, the namespace is active in the new region.
+
+You needn't monitor Temporal Cloud's failover response in real-time.
 Whenever there is a failover event, you'll receive an alert email.
 
 More information is available in [Monitoring and Observability](/cloud/multi-region#observability).
