@@ -12,7 +12,7 @@ tags:
   - troubleshooting
 ---
 
-All requests made to the [Temporal Cluster](/clusters) by the Client or Worker are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
+All requests made to the [Temporal Service](/clusters) by the Client or Worker are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
 Sometimes, when these frontend requests can't be completed, you'll see this particular error message: `Context: deadline exceeded`.
 Network interruptions, timeouts, server overload, and Query errors are some of the causes of this error.
 
@@ -20,11 +20,11 @@ The following sections discuss the nature of this error and how to troubleshoot 
 
 ### Check system clocks
 
-Timing skew can cause the system clock on a Worker to drift behind the system clock of the Temporal Cluster.
+Timing skew can cause the system clock on a Worker to drift behind the system clock of the Temporal Service.
 If the difference between the two clocks exceeds an Activity's Start-To-Close Timeout, an `Activity complete after timeout` error occurs.
 
-If you receive an `Activity complete after timeout` error alongside `Context: deadline exceeded`, check the clocks on the Temporal Cluster's system and the system of the Worker sending that error.
-If the Worker's clock doesn't match the Temporal Cluster, synchronize all clocks to an NTP server.
+If you receive an `Activity complete after timeout` error alongside `Context: deadline exceeded`, check the clocks on the Temporal Service's system and the system of the Worker sending that error.
+If the Worker's clock doesn't match the Temporal Service, synchronize all clocks to an NTP server.
 
 ### Check Frontend Service logs
 
@@ -36,7 +36,7 @@ If you're using Temporal Cloud, create a [support ticket](/cloud/support#support
 
 :::
 
-[Frontend Service](/clusters#frontend-service) logs can show which parts of the Cluster aren't working.
+[Frontend Service](/clusters#frontend-service) logs can show which parts of the Temporal Service aren't working.
 For the error to appear, a service pod or container must be up and running.
 
 OSS users can verify that the Frontend Service is connected and running by using the Temporal CLI.
@@ -57,9 +57,9 @@ Use [`grpc-health-probe`](https://github.com/grpc-ecosystem/grpc-health-probe) t
 
 Logs can also be used to find failed Client [Query](/workflows#query) requests.
 
-### Check your Cluster metrics
+### Check your Temporal Service metrics
 
-Cluster metrics can be used to detect issues (such as `resource exhausted`) that impact Cluster health.
+Temporal Service metrics can be used to detect issues (such as `resource exhausted`) that impact Temporal Service health.
 A `resource exhausted` error can cause your client request to fail, which prompts the `deadline exceeded` error.
 
 Use the following query to check for errors in `RpsLimit`, `ConcurrentLimit` and `SystemOverloaded` on your metrics dashboard.
@@ -68,7 +68,7 @@ Use the following query to check for errors in `RpsLimit`, `ConcurrentLimit` and
 sum(rate(service_errors_resource_exhausted{}[1m])) by (resource_exhausted_cause)
 ```
 
-Look for high latencies, short timeouts, and other abnormal [Cluster metrics](/references/cluster-metrics).
+Look for high latencies, short timeouts, and other abnormal [Temporal Service metrics](/references/cluster-metrics).
 If the metrics come from a specific service (such as History Service), check the service's health and performance.
 
 ### Check Workflow logic
@@ -88,7 +88,7 @@ In addition to the steps listed in the previous sections, check the areas mentio
 
 ### After enabling mTLS
 
-Check the health of the Cluster with `temporal operator cluster health`.
+Check the health of the Temporal Service with `temporal operator cluster health`.
 
 ```
 temporal operator cluster health --address [SERVER_ADDRESS]
@@ -97,9 +97,9 @@ temporal operator cluster health --address [SERVER_ADDRESS]
 Add any missing [environment variables](/references/web-ui-environment-variables) to the configuration files, and correct any incorrect values.
 Server names and certificates must match between Frontend and internode.
 
-### After restarting the Temporal Cluster
+### After restarting the Temporal Service
 
-You might not be giving the Cluster enough time to respond and reconnect.
+You might not be giving the Temporal Service enough time to respond and reconnect.
 Restart the Server, wait, and then check all services for connectivity and further errors.
 
 If the error persists, review your Workflow Execution History and server logs for more specific causes before continuing to troubleshoot.
