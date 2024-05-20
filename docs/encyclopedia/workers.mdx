@@ -112,7 +112,7 @@ Here are some approaches:
   </div>
 </div>
 
-A Worker Process is responsible for polling a [Task Queue](#task-queue), dequeueing a [Task](#task), executing your code in response to a Task, and responding to the [Temporal Cluster](/clusters) with the results.
+A Worker Process is responsible for polling a [Task Queue](#task-queue), dequeueing a [Task](#task), executing your code in response to a Task, and responding to the [Temporal Service](/clusters) with the results.
 
 More formally, a Worker Process is any process that implements the Task Queue Protocol and the Task Execution Protocol.
 
@@ -121,16 +121,16 @@ More formally, a Worker Process is any process that implements the Task Queue Pr
 - A Worker Process is an Activity Worker Process if the process implements the Activity Task Queue Protocol and executes the Activity Task Processing Protocol to make progress on an Activity Execution.
   An Activity Worker Process can listen on an arbitrary number of Activity Task Queues and can execute an arbitrary number of Activity Tasks.
 
-**Worker Processes are external to a Temporal Cluster.**
+**Worker Processes are external to a Temporal Service.**
 Temporal Application developers are responsible for developing [Worker Programs](#worker-program) and operating Worker Processes.
-Said another way, the [Temporal Cluster](/clusters) (including the Temporal Cloud) doesn't execute any of your code (Workflow and Activity Definitions) on Temporal Cluster machines. The Cluster is solely responsible for orchestrating [State Transitions](/workflows#state-transition) and providing Tasks to the next available [Worker Entity](#worker-entity).
+Said another way, the [Temporal Service](/clusters) (including the Temporal Cloud) doesn't execute any of your code (Workflow and Activity Definitions) on Temporal Service machines. The Temporal Service is solely responsible for orchestrating [State Transitions](/workflows#state-transition) and providing Tasks to the next available [Worker Entity](#worker-entity).
 
-While data transferred in Event Histories is [secured by mTLS](/self-hosted-guide/security#encryption-in-transit-with-mtls), by default, it is still readable at rest in the Temporal Cluster.
+While data transferred in Event Histories is [secured by mTLS](/self-hosted-guide/security#encryption-in-transit-with-mtls), by default, it is still readable at rest in the Temporal Service.
 
-To solve this, Temporal SDKs offer a [Data Converter API](/dataconversion) that you can use to customize the serialization of data going out of and coming back in to a Worker Entity, with the net effect of guaranteeing that the Temporal Cluster cannot read sensitive business data.
+To solve this, Temporal SDKs offer a [Data Converter API](/dataconversion) that you can use to customize the serialization of data going out of and coming back in to a Worker Entity, with the net effect of guaranteeing that the Temporal Service cannot read sensitive business data.
 
-In many of our tutorials, we show you how to run both a Temporal Cluster and one Worker on the same machine for local development.
-However, a production-grade Temporal Application typically has a _fleet_ of Worker Processes, all running on hosts external to the Temporal Cluster.
+In many of our tutorials, we show you how to run both a Temporal Service and one Worker on the same machine for local development.
+However, a production-grade Temporal Application typically has a _fleet_ of Worker Processes, all running on hosts external to the Temporal Service.
 A Temporal Application can have as many Worker Processes as needed.
 
 A Worker Process can be both a Workflow Worker Process and an Activity Worker Process.
@@ -147,7 +147,7 @@ Worker Processes executing Activity Tasks must have access to any resources need
 - Credentials for infrastructure provisioning.
 - Specialized GPUs for machine learning utilities.
 
-The Temporal Cluster itself has [internal workers](https://temporal.io/blog/workflow-engine-principles/#system-workflows-1910) for system Workflow Executions.
+The Temporal Service itself has [internal workers](https://temporal.io/blog/workflow-engine-principles/#system-workflows-1910) for system Workflow Executions.
 However, these internal workers are not visible to the developer.
 
 ## What is a Workflow Task? {#workflow-task}
@@ -173,15 +173,15 @@ If Heartbeat data is being passed, an Activity Task will also contain the latest
 
 An Activity Task Execution occurs when a [Worker](#worker-entity) uses the context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/activities#activity-definition) (also known as the Activity Function).
 
-The [ActivityTaskScheduled Event](/references/events#activitytaskscheduled) corresponds to when the Temporal Cluster puts the Activity Task into the Task Queue.
+The [ActivityTaskScheduled Event](/references/events#activitytaskscheduled) corresponds to when the Temporal Service puts the Activity Task into the Task Queue.
 
 The [ActivityTaskStarted Event](/references/events#activitytaskstarted) corresponds to when the Worker picks up the Activity Task from the Task Queue.
 
-Either [ActivityTaskCompleted](/references/events#activitytaskcompleted) or one of the other Closed Activity Task Events corresponds to when the Worker has yielded back to the Temporal Cluster.
+Either [ActivityTaskCompleted](/references/events#activitytaskcompleted) or one of the other Closed Activity Task Events corresponds to when the Worker has yielded back to the Temporal Service.
 
 The API to schedule an Activity Execution provides an "effectively once" experience, even though there may be several Activity Task Executions that take place to successfully complete an Activity.
 
-Once an Activity Task finishes execution, the Worker responds to the Cluster with a specific Event:
+Once an Activity Task finishes execution, the Worker responds to the Temporal Service with a specific Event:
 
 - ActivityTaskCanceled
 - ActivityTaskCompleted
@@ -211,7 +211,7 @@ There are two types of Task Queues, Activity Task Queues and Workflow Task Queue
 Task Queues are very lightweight components.
 Task Queues do not require explicit registration but instead are created on demand when a Workflow Execution or Activity spawns or when a Worker Process subscribes to it.
 When a Task Queue is created, both a Workflow Task Queue and an Activity Task Queue are created under the same name.
-There is no limit to the number of Task Queues a Temporal Application can use or a Temporal Cluster can maintain.
+There is no limit to the number of Task Queues a Temporal Application can use or a Temporal Service can maintain.
 
 Workers poll for Tasks in Task Queues via synchronous RPC.
 This implementation offers several benefits:
@@ -305,7 +305,7 @@ A Sticky Execution occurs after a Worker Entity completes the first Workflow Tas
 
 The Worker Entity caches the Workflow in memory and begins polling the dedicated Task Queue for Workflow Tasks that contain updates, rather than the entire Event History.
 
-If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Cluster will resume Scheduling Workflow Tasks on the original Task Queue.
+If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Temporal Service will resume Scheduling Workflow Tasks on the original Task Queue.
 Another Worker Entity can then resume the Workflow Execution, and can set up its own Sticky Execution for future Workflow Tasks.
 
 - [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](/dev-guide/go/foundations#stickyscheduletostarttimeout)
@@ -410,7 +410,7 @@ It also includes features like concurrent session limitations and Worker failure
 
 :::caution
 
-Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Cluster to enable Worker Versioning:
+Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Temporal Service to enable Worker Versioning:
 
 ```
 temporal server start-dev \
