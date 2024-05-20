@@ -1,13 +1,27 @@
 ---
 id: child-workflows
-title: Child Workflows in .NET
+title: Child Workflows - .NET SDK feature guide
 sidebar_label: Child Workflows
-description: Spawn a child workflow execution
+description: Start a Child Workflow Execution using the Temporal .NET SDK. This guide covers the usage of ExecuteChildWorkflowAsync() and StartChildWorkflowAsync() methods, logging Child Workflow related events, and setting Parent Close Policies.
 keywords:
-  - developer guide
-  - sdk
-  - dotnet
-  - child workflow
+  - start child workflow execution
+  - temporal .net sdk
+  - child workflow api
+  - child workflow events
+  - startchildworkflowexecutioninitiated
+  - childworkflowexecutionstarted
+  - childworkflowexecutioncompleted
+  - workflow execution event history
+  - parent close policy
+  - executechildworkflowasync
+  - startchildworkflowasync
+  - workflow run id
+  - signal child workflow
+  - temporal .net examples
+  - manage child workflows
+  - child workflow options
+  - parentclosepolicy
+  - child workflow in .net
 tags:
   - developer-guide
   - sdk
@@ -15,7 +29,7 @@ tags:
   - child-workflow
 ---
 
-## How to start a Child Workflow Execution {#child-workflows}
+**How to start a Child Workflow Execution using the Temporal .NET SDK.**
 
 A [Child Workflow Execution](/workflows#child-workflow) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
@@ -38,7 +52,9 @@ This is useful if you want to do something after it has only started, or to get 
 await Workflow.ExecuteChildWorkflowAsync((MyChildWorkflow wf) => wf.RunAsync());
 ```
 
-#### How to set a Parent Close Policy {#parent-close-policy}
+## Set Parent Close Policy {#parent-close-policy}
+
+**How to set a Parent Close Policy using the Temporal .NET SDK.**
 
 A [Parent Close Policy](/workflows#parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 

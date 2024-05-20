@@ -2,27 +2,61 @@
 id: cancellation
 title: Cancellation - .NET SDK feature guide
 sidebar_label: Cancellation
-description: How to cancel a Workflow Execution and it's Activities using the .NET SDK.
-slug: /develop/dotnet/cancellation
+description: Cancel a Workflow Execution and its Activities using the .NET SDK.
 toc_max_heading_level: 4
 keywords:
-  - cancellation
-  - dotnet sdk
-  - overview
+  - interrupt workflow execution
+  - cancel workflow
+  - terminate workflow
+  - temporal cancellation
+  - temporal termination
+  - workflow execution
+  - temporal client
+  - activity heartbeat timeout
+  - cancellation request
+  - workflow cancellationtoken
+  - cancellation in .net
+  - terminateasync
+  - cancelasync
+  - workflow handle
+  - temporal .net
+  - workflow management
+  - handle cancellation in workflow
+  - handle cancellation in activity
+  - request cancellation
+  - workflow code examples
 tags:
   - cancellation
   - dotnet-sdk
   - overview
 ---
 
-This pages shows the following:
+This page shows how to interrupt a Workflow Execution.
 
-- How to handle a Cancellation request within a Workflow.
-- How to set an Activity Heartbeat Timeout.
-- How to listen for and handle a Cancellation request within an Activity.
-- How to send a Cancellation request from a Temporal Client.
+You can interrupt a Workflow Execution in one of the following ways:
 
-## Handle Cancellation in Workflow {#handle-cancellation-in-workflow}
+- [Cancel](#cancellation): Canceling a Workflow provides a graceful way to stop Workflow Execution.
+- [Terminate](#terminate): Terminating a Workflow forcefully stops Workflow Execution.
+  Terminating a Workflow forcefully stops Workflow Execution.
+  This action resembles killing a process.
+  - The system records a `WorkflowExecutionTerminated` event in the Workflow History.
+  - The termination forcefully and immediately stops the Workflow Execution.
+  - The Workflow code gets no chance to handle termination.
+  - A Workflow Task doesn't get scheduled.
+
+In most cases, canceling is preferable because it allows the Workflow to finish gracefully.
+Terminate only if the Workflow is stuck and cannot be canceled normally.
+
+## Cancellation
+
+To give a Workflow and its Activities the ability to be cancelled, do the following:
+
+- Handle a Cancellation request within a Workflow.
+- Set Activity Heartbeat Timeouts.
+- Listen for and handle a Cancellation request within an Activity.
+- Send a Cancellation request from a Temporal Client.
+
+### Handle Cancellation in Workflow {#handle-cancellation-in-workflow}
 
 **How to handle a Cancellation in a Workflow in .NET.**
 
@@ -70,7 +104,7 @@ public async Task RunAsync()
 }
 ```
 
-## Handle Cancellation in an Activity {#handle-cancellation-in-an-activity}
+### Handle Cancellation in an Activity {#handle-cancellation-in-an-activity}
 
 **How to handle a Cancellation in an Activity in .NET.**
 
@@ -95,7 +129,7 @@ public async Task MyActivityAsync()
 }
 ```
 
-## Request Cancellation {#request-cancellation}
+### Request Cancellation {#request-cancellation}
 
 **How to request Cancellation of a Workflow in .NET.**
 
@@ -146,32 +180,9 @@ public async Task RunAsync()
 }
 ```
 
-## How to interrupt a Workflow Execution {#interrupt-a-workflow-execution}
+## Termination
 
-You can interrupt a Workflow Execution in one of the following ways:
-
-- [Cancel](#cancel)
-- [Terminate](#terminate)
-
-The following are the main differences between canceling and terminating a Workflow in Temporal:
-
-##### Cancel
-
-Canceling a Workflow provides a graceful way to stop Workflow Execution.
-
-##### Terminate
-
-Terminating a Workflow forcefully stops Workflow Execution.
-This action resembles killing a process.
-
-- The system records a `WorkflowExecutionTerminated` event in the Workflow History.
-- The termination forcefully and immediately stops the Workflow Execution.
-- The Workflow code gets no chance to handle termination.
-- A Workflow Task doesn't get scheduled.
-
-For more information, see [How to terminate a Workflow Execution](#terminate-a-workflow-execution).
-
-### How to terminate a Workflow Execution in .NET {#terminate-a-workflow-execution}
+**How to terminate a Workflow Execution in .NET.**
 
 To terminate a Workflow Execution in .NET, use the [TerminateAsync()](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_TerminateAsync_System_String_Temporalio_Client_WorkflowTerminateOptions_) method on the Workflow handle.
 
@@ -183,13 +194,3 @@ var handle = myClient.GetWorkflowHandle("my-workflow-id");
 // Terminate
 await handle.TerminateAsync();
 ```
-
-##### Summary
-
-In summary:
-
-- Canceling provides a graceful way to stop the Workflow and allows it to handle cancelation logic.
-- Termination forcefully stops the Workflow and prevents any further events.
-
-In most cases, canceling is preferable because it allows the Workflow to finish gracefully.
-Terminate only if the Workflow is stuck and cannot be canceled normally.
