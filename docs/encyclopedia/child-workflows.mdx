@@ -60,7 +60,7 @@ This means that if a Parent Workflow Execution utilizes Continue-As-New, any ong
 
 :::
 
-When a Parent Workflow Execution reaches a Closed status, the Cluster propagates Cancellation Requests or Terminations to Child Workflow Executions depending on the Child's [Parent Close Policy](#parent-close-policy).
+When a Parent Workflow Execution reaches a Closed status, the Temporal Service propagates Cancellation Requests or Terminations to Child Workflow Executions depending on the Child's [Parent Close Policy](#parent-close-policy).
 
 If a Child Workflow Execution uses Continue-As-New, from the Parent Workflow Execution's perspective the entire chain of Runs is treated as a single execution.
 
