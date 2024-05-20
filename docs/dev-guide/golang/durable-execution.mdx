@@ -2,7 +2,6 @@
 id: durable-execution
 title: Develop code that durably executes - Go SDK dev guide
 sidebar_label: Develop for durability
-sidebar_position: 3
 description: The Durable Execution section of the Temporal Developer's guide covers advanced beginner concepts for working with Temporal, including testing your code, reviewing workflow event history, adding timers, and understanding determinism. Developing for durable execution is a core aspect of Temporal.
 slug: /dev-guide/go/durable-execution
 toc_max_heading_level: 4
@@ -134,13 +133,13 @@ A Workflow Execution's Event History is also available in the Web UI.
 
 Navigate to the Workflows page in the UI and select the Workflow Execution.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Select a Workflow Execution from the Workflows page</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Select a Workflow Execution from the Workflows page</p>
   </div>
-  <div class="tdiiw" height="870">
+  <div className="tdiiw" height="870">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/select-workflow-execution-in-ui.png"
       alt="Select a Workflow Execution from the Workflows page"
     />
@@ -149,13 +148,13 @@ Navigate to the Workflows page in the UI and select the Workflow Execution.
 
 From the Workflow details page you can copy the Event History from the JSON tab and paste it into the `backgroundcheck_workflow_history.json` file.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Copy Event History JSON object from the Web UI</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Copy Event History JSON object from the Web UI</p>
   </div>
-  <div class="tdiiw" height="768">
+  <div className="tdiiw" height="768">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/copy-events-from-workflow-details-page.png"
       alt="Copy Event History JSON object from the Web UI"
     />
@@ -171,7 +170,7 @@ Register the Workflow Definition and then specify an existing Event History to c
 Run the tests in the test directory (`go test`).
 If the Workflow Definition and the Event History are incompatible then the test fails.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/durability/tests/backgroundcheck_test.go">
     View the source code
   </a>{' '}
@@ -179,7 +178,6 @@ If the Workflow Definition and the Event History are incompatible then the test 
 </div>
 
 ```go
-
 
 // TestReplayWorkflowHistoryFromFile tests for Event History compatibility.
 func (s *UnitTestSuite) TestReplayWorkflowHistoryFromFile() {
@@ -235,7 +233,7 @@ The following are some common operations that **can't** be done inside of a Work
 
 One way to produce a non-deterministic error is to use a random number to determine whether to sleep inside the Workflow.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/durability/workflows/backgroundcheck_non_deterministic_code.go">
     View the source code
   </a>{' '}
@@ -254,7 +252,6 @@ import (
 
 	"documentation-samples-go/dev-guide/chapters/durability/activities"
 )
-
 
 // BackgroundCheckNonDeterministic is an anti-pattern Workflow Definition
 func BackgroundCheckNonDeterministic(ctx workflow.Context, param string) (string, error) {
@@ -292,13 +289,13 @@ go.temporal.io/sdk/internal.panicIllegalState(...)
 
 And you will see information about the failure in the Web UI as well.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Web UI view of a non-determinism error</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Web UI view of a non-determinism error</p>
   </div>
-  <div class="tdiiw" height="317">
+  <div className="tdiiw" height="317">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/non-deterministic-workflow-task-failure.png"
       alt="Web UI view of a non-determinism error"
     />
@@ -439,7 +436,7 @@ The Temporal SDK offers both a `workflow.StartTimer()` API, and a `workflow.Slee
 
 Use the `workflow.GetLogger` API to log from Workflows to avoid seeing repeated logs from the Replay of the Workflow code.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/dev-guide/chapters/durability/workflows/backgroundcheck.go">
     View the source code
   </a>{' '}
@@ -457,7 +454,6 @@ import (
 
 	"documentation-samples-go/dev-guide/chapters/durability/activities"
 )
-
 
 // BackgroundCheck is your custom Workflow Definition.
 func BackgroundCheck(ctx workflow.Context, param string) (string, error) {

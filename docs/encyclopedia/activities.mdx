@@ -2,7 +2,6 @@
 id: activities
 title: What is a Temporal Activity?
 sidebar_label: Activities
-sidebar_position: 3
 description: This guide provides a comprehensive overview of Temporal Activities.
 slug: /activities
 toc_max_heading_level: 4
@@ -48,13 +47,13 @@ Therefore, the terms Activity Function and Activity Method refer to the source o
 
 Activity Definitions are named and referenced in code by their [Activity Type](#activity-type).
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Activity Definition</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Activity Definition</p>
   </div>
-  <div class="tdiiw" height="680">
+  <div className="tdiiw" height="680">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/activity-definition.svg"
       alt="Activity Definition"
     />
@@ -127,13 +126,13 @@ An Activity Execution is the full chain of [Activity Task Executions](/workers#a
 - [How to start an Activity Execution using the Python SDK](/dev-guide/python/foundations#activity-execution)
 - [How to start an Activity Execution using the TypeScript SDK](/dev-guide/typescript/foundations#activity-execution)
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Activity Execution</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Activity Execution</p>
   </div>
-  <div class="tdiiw" height="1780">
+  <div className="tdiiw" height="1780">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/activity-execution.svg"
       alt="Activity Execution"
     />
@@ -213,13 +212,13 @@ In other words, it's a limit for how long an Activity Task can be enqueued.
 The moment that the Task is picked by the Worker from the Task Queue is considered to be the start of the Activity Task for the purposes of the Schedule-To-Start Timeout and associated metrics.
 This definition of "Start" avoids issues that a clock difference between the Temporal Cluster and a Worker might create.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Schedule-To-Start Timeout period</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Schedule-To-Start Timeout period</p>
   </div>
-  <div class="tdiiw" height="666">
+  <div className="tdiiw" height="666">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/schedule-to-start-timeout.svg"
       alt="Schedule-To-Start Timeout period"
     />
@@ -234,13 +233,13 @@ Thus, "Schedule" in Schedule-To-Start refers to the scheduling moment of _every_
 
 A [Retry Policy](/retry-policies) attached to an Activity Execution retries an Activity Task.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Start-To-Close Timeout period with retries</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Start-To-Close Timeout period with retries</p>
   </div>
-  <div class="tdiiw" height="1246">
+  <div className="tdiiw" height="1246">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/schedule-to-start-timeout-with-retry.svg"
       alt="Start-To-Close Timeout period with retries"
     />
@@ -287,13 +286,13 @@ Therefore, the Temporal Server relies on the Start-To-Close Timeout to force Act
 
 The main use case for the Start-To-Close timeout is to detect when a Worker crashes after it has started executing an Activity Task.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Start-To-Close Timeout period</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Start-To-Close Timeout period</p>
   </div>
-  <div class="tdiiw" height="666">
+  <div className="tdiiw" height="666">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/start-to-close-timeout.svg"
       alt="Start-To-Close Timeout period"
     />
@@ -305,13 +304,13 @@ Thus, the Start-To-Close Timeout is applied to each Activity Task Execution with
 
 If the first Activity Task Execution returns an error the first time, then the full Activity Execution might look like this:
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Start-To-Close Timeout period with retries</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Start-To-Close Timeout period with retries</p>
   </div>
-  <div class="tdiiw" height="1246">
+  <div className="tdiiw" height="1246">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/start-to-close-timeout-with-retry.svg"
       alt="Start-To-Close Timeout period with retries"
     />
@@ -335,13 +334,13 @@ A Schedule-To-Close Timeout is the maximum amount of time allowed for the overal
 - [How to set a Schedule-To-Close Timeout using the Python SDK](/dev-guide/go/features#activity-timeouts)
 - [How to set a Schedule-To-Close Timeout using the TypeScript SDK](/dev-guide/typescript/features#activity-timeouts)
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Schedule-To-Close Timeout period</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Schedule-To-Close Timeout period</p>
   </div>
-  <div class="tdiiw" height="666">
+  <div className="tdiiw" height="666">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/schedule-to-close-timeout.svg"
       alt="Schedule-To-Close Timeout period"
     />
@@ -350,13 +349,13 @@ A Schedule-To-Close Timeout is the maximum amount of time allowed for the overal
 
 Example Schedule-To-Close Timeout period for an Activity Execution that has a chain Activity Task Executions:
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Schedule-To-Close Timeout period with a retry</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Schedule-To-Close Timeout period with a retry</p>
   </div>
-  <div class="tdiiw" height="1246">
+  <div className="tdiiw" height="1246">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/schedule-to-close-timeout-with-retry.svg"
       alt="Schedule-To-Close Timeout period with a retry"
     />
@@ -461,13 +460,13 @@ A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-
 - [How to set a Heartbeat Timeout using the Python SDK](/dev-guide/python/features#heartbeat-timeout)
 - [How to set a Heartbeat Timeout using the TypeScript SDK](/dev-guide/typescript/features#heartbeat-timeout)
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Heartbeat Timeout periods</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Heartbeat Timeout periods</p>
   </div>
-  <div class="tdiiw" height="866">
+  <div className="tdiiw" height="866">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/heartbeat-timeout.svg"
       alt="Heartbeat Timeout periods"
     />
