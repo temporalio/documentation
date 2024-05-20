@@ -2,7 +2,6 @@
 id: observability
 title: Observability - Python SDK feature guide
 sidebar_label: Observability
-sidebar_position: 8
 description: Improve observability in your Python-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
 toc_max_heading_level: 4
 keywords:
@@ -104,7 +103,7 @@ logging.basicConfig(level=logging.INFO)
 
 Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio.workflow.html#logger) and level on the Workflow. The following example logs the Workflow.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_loggers/your_workflow_dacx.py">
     View the source code
   </a>{' '}
@@ -159,7 +158,7 @@ Here is how to query Workflow Executions:
 
 Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.html#list_workflows) method on the Client handle and pass a [List Filter](/visibility#list-filter) as an argument to filter the listed Workflows.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py">
     View the source code
   </a>{' '}
@@ -179,7 +178,7 @@ After you've created custom Search Attributes in your Cluster (using `temporal o
 
 To set custom Search Attributes, use the `search_attributes` parameter of the ['start_workflow()'](https://python.temporal.io/temporalio.client.Client.html#start_workflow) method.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py">
     View the source code
   </a>{' '}
@@ -205,7 +204,7 @@ To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https
 
 The keys are added to or replace the existing Search Attributes, similar to [`dict.update()`](https://docs.python.org/3/library/stdtypes.html#dict.update).
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">
     View the source code
   </a>{' '}
@@ -224,7 +223,7 @@ To remove a Search Attribute that was previously set, set it to an empty array: 
 
 To remove a Search Attribute, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) function with an empty list as its value.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">
     View the source code
   </a>{' '}

@@ -2,7 +2,6 @@
 id: debugging
 title: Debugging - TypeScript SDK feature guide
 sidebar_label: Debugging
-sidebar_position: 7
 description: The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.
 slug: /dev-guide/typescript/debugging
 toc_max_heading_level: 4
@@ -191,13 +190,24 @@ The two main sources of dev-prod discrepancies are in bundling and connecting.
 
 #### Production bundling
 
-If you are getting errors like this:
+You may experience your Client sending stripped names as the Workflow "Type" when scheduling a Workflow.
+Webpack can change the Workflow's function name to something shorter.
+Temporal won't know how to handle the mismatch between the shorter name and the expect Workflow type.
+
+You may experience errors like this:
 
 ```
 Error: 3 INVALID_ARGUMENT: WorkflowType is not set on request.
 ```
 
-This is due to your bundler stripping out Workflow function names, which we rely on to set the "Workflow Type" in Temporal. Turn it off and it should work.
+Or you may see shorter names in the Temporal Service's Web UI when Webpack changed the Workflow's function name to something shorter, in this case the single letter 's':
+
+![Temporal Web UI showing stripped "Workflow Type" entries, in this case the single letter 's'](/img/stripped_workflow_types_in_webui.png)
+
+This issue can happen when your bundler strips out Workflow function names.
+Temporal relies on those names to set the "Workflow Type" in the Service Web UI.
+To prevent the build process from shortening Workflow function names,  modify the webpack configuration file ( `webpack.config.js`) to set the Boolean that retains the original names in the `TerserPlugin` configuration section.
+Setting the option (`keep_fnames`) to `true` prevents name stripping.
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -220,7 +230,7 @@ module.exports = {
     minimizer: [
       new TerserPlugin({
         terserOptions: {
-          keep_fnames: true, // don't strip funciton names in production
+          keep_fnames: true, // don't strip function names in production
         },
       }),
     ],
@@ -240,8 +250,7 @@ require('esbuild').buildSync({
 });
 ```
 
-See esbuild docs: https://esbuild.github.io/api/#keep-names
-
+See the [esbuild docs](https://esbuild.github.io/api/#keep-names) for more information.
 </TabItem>
 </Tabs>
 
