@@ -1,6 +1,6 @@
 ---
 id: index
-title: Temporal Python SDK development documentation
+title: Temporal Python SDK Development Documentation
 sidebar_label: Python SDK
 description: Learn how to use the Temporal Python SDK.
 slug: /dev-guide/python
@@ -14,145 +14,122 @@ tags:
   - python
 ---
 
-This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
+This guide provides a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
 
-## Core application
+## Core Application
 
-Develop basic Temporal application with Workflows and Activities in Python using Temporal SDK.
+The Core Application section of the Temporal Python SDK Developer's Guide covers the essential concepts and implementation details needed to build and run a Temporal Application.
 
-- [Develop a basic Workflow](/dev-guide/python/core-application#develop-workflows)
-- [Develop a basic Activity](/dev-guide/python/core-application#develop-activities)
+- [Develop a Basic Workflow](/dev-guide/python/core-application#develop-workflows)
+- [Develop a Basic Activity](/dev-guide/python/core-application#develop-activities)
 - [Start an Activity Execution](/dev-guide/python/core-application#activity-execution)
-- [Run a Worker Processes](/dev-guide/python/core-application#run-a-dev-worker)
-
+- [Run Worker Processes](/dev-guide/python/core-application#run-a-dev-worker)
 
 ## Temporal Client
 
-Master the Temporal Python Client with our comprehensive guide that covers everything from initialization to Workflow Execution.
+The Temporal Client section of the Temporal Python SDK Developer's Guide describes how to use the Temporal Client to connect and start a Workflow Execution.
 
-- [Connect to development Temporal Service](/dev-guide/python/temporal-clients#connect-to-development-service)
+- [Connect to Development Temporal Service](/dev-guide/python/temporal-clients#connect-to-development-service)
 - [Connect a Temporal Client to a Temporal Cluster](/dev-guide/python/temporal-clients#connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](/dev-guide/python/temporal-clients#connect-to-temporal-cloud)
 - [Start a Workflow Execution](/dev-guide/python/temporal-clients#start-workflow-execution)
 
+## Test Suites
 
+The Testing section of the Temporal Python SDK Developer's Guide describes how to test your Temporal Application.
 
-## Test suites
-
-The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
-
-- [Test frameworks](/dev-guide/python/test-suites#test-frameworks)
+- [Test Frameworks](/dev-guide/python/test-suites#test-frameworks)
 - [Testing Activities](/dev-guide/python/test-suites#test-activities)
 - [Testing Workflows](/dev-guide/python/test-suites#test-workflows)
 - [How to Replay a Workflow Execution](/dev-guide/python/test-suites#replay)
 
+## Failure Detection
 
-## Failure detection
+The Failure Detection section of the Temporal Python SDK Developer's Guide describes how to configure timeouts and heartbeat intervals for Activities and Workflows.
 
-- [Workflow timeouts](/dev-guide/python/failure-detection#workflow-timeouts)
-- [Set Activity timeouts](/dev-guide/python/failure-detection#activity-timeouts)
+- [Workflow Timeouts](/dev-guide/python/failure-detection#workflow-timeouts)
+- [Set Activity Timeouts](/dev-guide/python/failure-detection#activity-timeouts)
 - [Heartbeat an Activity](/dev-guide/python/failure-detection#activity-heartbeats)
-
-
 
 ## Messages
 
-Explore using Signals in Temporal Python to send messages to Workflows, with details on defining, sending, and handling Signals, including customization options.
+The Messages section of the Temporal Python SDK Developer's Guide describes how to use the Temporal Client to send messages to a Workflow Execution.
 
 - [Develop with Signals](/dev-guide/python/messages#signals)
 - [Develop with Queries](/dev-guide/python/messages#queries)
 - [Develop with Updates](/dev-guide/python/messages#updates)
 - [What is a Dynamic Handler](/dev-guide/python/messages#dynamic-handler)
 
-
-
-
 ## Cancellation
 
-Cancel an Activity from a Workflow, sending Heartbeats and setting a Heartbeat Timeout, and handling cancellation errors.
+The Cancellation section of the Temporal Python SDK Developer's Guide describes how to cancel a Workflow Execution.
 
 - [Cancel an Activity from a Workflow](/dev-guide/python/cancellation#cancel-an-activity)
 
-
-
 ## Asynchronous Activity Completion
 
-Complete an Activity without waiting for execution to finish, using Temporal Client and Activity Function.
+The Asynchronous Activity Completion section of the Temporal Python SDK Developer's Guide describes how to complete Activities asynchronously.
 
-- [Asynchronously complete an Activity](/dev-guide/python/asynchronous-activity-completion#asynchronously-complete-an-activity)
-
-
+- [Asynchronously Complete an Activity](/dev-guide/python/asynchronous-activity-completion#asynchronously-complete-an-activity)
 
 ## Versioning
 
-The Versioning section of the Temporal Developer's guide covers how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
+The Versioning section of the Temporal Developer's Guide covers how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 
 - [Introduction to Versioning](/dev-guide/python/versioning#introduction-to-versioning)
-- [How to use the Patching API](/dev-guide/python/versioning#python-sdk-patching-api)
-- [How to use Worker Versioning](/dev-guide/python/versioning#worker-versioning)
-
-
+- [How to Use the Patching API](/dev-guide/python/versioning#python-sdk-patching-api)
+- [How to Use Worker Versioning](/dev-guide/python/versioning#worker-versioning)
 
 ## Observability
 
-Learn about observability tools for Temporal applications, covering metrics, tracing, logging, and visibility to monitor and troubleshoot Workflows.
+The Observability section of the Temporal Developer's Guide covers how to configure and use the Temporal Observability APIs.
 
-- [Emit metrics](/dev-guide/python/observability#metrics)
+- [Emit Metrics](/dev-guide/python/observability#metrics)
 - [Setup Tracing](/dev-guide/python/observability#tracing)
 - [Log from a Workflow](/dev-guide/python/observability#logging)
 - [Use Visibility APIs](/dev-guide/python/observability#visibility)
 
 ## Debugging
 
-The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.
+The Debugging section of the Temporal Developer's Guide covers the various ways to debug your application.
 
 - [Debugging](/dev-guide/python/debugging#debug)
 
-
 ## Schedules
 
-Discover how to effectively Schedule Workflows in Temporal Python, covering creation, management, and operations like backfilling, deleting, and triggering Scheduled Workflows for precise automation timing.
+The Schedules section of the Temporal Python SDK Developer's Guide covers how to schedule Workflows, run Workflows on a Cron, and configure Workflows to run on a delay.
 
 - [Schedule a Workflow](/dev-guide/python/schedules#schedule-a-workflow)
 - [Temporal Cron Jobs](/dev-guide/python/schedules#temporal-cron-jobs)
 - [Start Delay](/dev-guide/python/schedules#start-delay)
 
+## Data Encryption
 
-
-## Data encryption
-
-The Converters and Codecs section of the Temporal Developer's guide provides guidance on how to support compression, encryption, and other special data handling by implementing custom converters and codecs.
+The Converters and Codecs section of the Temporal Developer's Guide provides guidance on how to support compression, encryption, and other special data handling by implementing custom converters and codecs.
 
 - [Custom Payload Codec](/dev-guide/python/data-encryption#custom-payload-codec)
-- [Payload conversion](/dev-guide/python/data-encryption#payload-conversion)
-
+- [Payload Conversion](/dev-guide/python/data-encryption#payload-conversion)
 
 ## Child Workflows
 
-Spawn a new Workflow from within another Workflow, with options for Parent Close Policy and handling Child Workflow Events.
+The Child Workflows section of the Temporal Python SDK Developer's Guide covers how to spawn a Child Workflow Execution and handle Child Workflow Events.
 
 - [Start a Child Workflow Execution](/dev-guide/python/child-workflows)
 
-
-
 ## Continue-As-New
 
-Close a Workflow Execution and create a new one with the same Workflow ID, new Run ID, and fresh Event History.
+The Continue-As-New section of the Temporal Python SDK Developer's Guide covers how to create a new Workflow Execution using the same Workflow ID as an existing Workflow Execution.
 
 - [Continue-As-New](/dev-guide/python/continue-as-new)
 
-
 ## Timers
 
-Learn how to use timers within Temporal Workflows to delay execution, enabling durable and long-term scheduling of tasks that can persist even if the worker or cluster goes down.
+The Timers section of the Temporal Python SDK Developer's Guide covers how to use timers and sleeps within Workflows.
 
 - [What is a Timer](/dev-guide/python/timers)
 
-
-
 ## Interrupt a Workflow Execution
 
-Learn how to interrupt a workflow execution by canceling or terminating, including the differences and use cases for each method.
+The Interrupt a Workflow Execution section of the Temporal Python SDK Developer's Guide covers how to interrupt a Workflow Execution with a Cancel or Terminate action.
 
 - [Interrupt a Workflow Execution](/dev-guide/python/interrupt-a-workflow-execution)
-
