@@ -29,9 +29,14 @@ tags:
   - workflow-return-values
 ---
 
-<!-- What is on this page-->
+This pages shows how to do the following:
 
-## Workflows
+- [Develop a basic Workflow Definition](#develop-workflow)
+- [Develop a basic Activity Definition](#develop-activity)
+- [Start an Activity from a Workflow](#start-activity-execution)
+- [Run a Worker Process](#run-worker-process)
+
+## Develop Workflow
 
 **How to develop a basic Workflow using the Temporal .NET SDK**
 
@@ -181,7 +186,7 @@ public class MyWorkflow
 }
 ```
 
-## Activities
+## Develop Activity
 
 **How to develop a basic Activity using the Temporal .NET SDK**
 
@@ -272,7 +277,7 @@ These values are set in the Activity Options.
 
 The Activity result is the returned in the task from the `ExecuteActivityAsync` call.
 
-## Worker Processes
+## Run Worker Process
 
 **How to create and run a Worker Process using the Temporal .NET SDK**
 
