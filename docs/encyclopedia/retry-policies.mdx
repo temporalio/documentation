@@ -55,7 +55,7 @@ A Retry Policy is a collection of attributes that instructs the Temporal Server 
   The intention is that a Workflow Definition should be written to never fail due to intermittent issues; an Activity is designed to handle such issues.
 
 - **Activity Execution:** When an Activity Execution is spawned, it is associated with a default Retry Policy, and thus Activity Task Executions are retried by default.
-  When an Activity Task Execution is retried, the Cluster places a new [Activity Task](/workers#activity-task) into its respective [Activity Task Queue](/workers#task-queue), which results in a new Activity Task Execution.
+  When an Activity Task Execution is retried, the Temporal Service places a new [Activity Task](/workers#activity-task) into its respective [Activity Task Queue](/workers#task-queue), which results in a new Activity Task Execution.
 
 ## Custom Retry Policy
 
