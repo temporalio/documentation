@@ -366,7 +366,9 @@ var host = Host.CreateDefaultBuilder(args)
 await host.RunAsync();
 ```
 
-### How to set a Dynamic Workflow {#set-a-dynamic-workflow}
+### Set a Dynamic Workflow {#set-a-dynamic-workflow}
+
+**How to set a Dynamic Workflow using the Temporal .NET SDK**
 
 A Dynamic Workflow in Temporal is a Workflow that is invoked dynamically at runtime if no other Workflow with the same name is registered.
 A Workflow can be made dynamic by setting `Dynamic` as `true` on the `[Workflow]` attribute.
@@ -392,7 +394,10 @@ public class DynamicWorkflow
 }
 ```
 
-### How to set a Dynamic Activity {#set-a-dynamic-activity}
+### Set a Dynamic Activity {#set-a-dynamic-activity}
+
+**How to set a Dynamic Activity using the Temporal .NET SDK**
+
 
 A Dynamic Activity in Temporal is an Activity that is invoked dynamically at runtime if no other Activity with the same name is registered.
 An Activity can be made dynamic by setting `Dynamic` as `true` on the `[Activity]` attribute.

@@ -17,7 +17,9 @@ tags:
   - heartbeat-timeout
 ---
 
-## How to Heartbeat an Activity {#Activity-heartbeats}
+## Heartbeat an Activity {#Activity-heartbeats}
+
+**How to Heartbeat an Activity using the Temporal .NET SDK**
 
 An [Activity Heartbeat](/activities#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Cluster](/clusters).
 Each Heartbeat informs the Temporal Cluster that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
@@ -51,7 +53,9 @@ public async Task MyActivityAsync()
 In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity retry.
 If an Activity calls `Heartbeat(123, 456)` and then fails and is retried, `HeartbeatDetails` on the `ActivityInfo` returns an collection containing `123` and `456` on the next Run.
 
-#### How to set a Heartbeat Timeout {#heartbeat-timeout}
+#### Set a Heartbeat Timeout {#heartbeat-timeout}
+
+**How to set a Heartbeat Timeout using the Temporal .NET SDK**
 
 A [Heartbeat Timeout](/activities#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/activities#activity-heartbeat).
 

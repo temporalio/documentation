@@ -105,7 +105,9 @@ options.SignalWithStart((MyWorkflow wf) => wf.DoSomethingAsync(param));
 await client.StartWorkflowAsync((MyWorkflow wf) => wf.RunAsync(), options);
 ```
 
-### How to set a Dynamic Signal {#set-a-dynamic-signal}
+### Set a Dynamic Signal {#set-a-dynamic-signal}
+
+**How to set a Dynamic Signal using the Temporal .NET SDK**
 
 A Dynamic Signal in Temporal is a Signal that is invoked dynamically at runtime if no other Signal with the same input is registered.
 A Signal can be made dynamic by setting `Dynamic` to `true` on the `[WorkflowSignal]` attribute.
@@ -171,7 +173,9 @@ var handle = await client.StartWorkflowAsync(
 var status = await handle.QueryAsync(wf => wf.MyStatus);
 ```
 
-### How to set a Dynamic Query {#set-a-dynamic-query}
+### Set a Dynamic Query {#set-a-dynamic-query}
+
+**How to set a Dynamic Query using the Temporal .NET SDK**
 
 A Dynamic Query in Temporal is a Query method that is invoked dynamically at runtime if no other Query with the same name is registered.
 A Query can be made dynamic by setting `Dynamic` to `true` on the `[WorkflowQuery]` attribute.

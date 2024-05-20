@@ -18,9 +18,9 @@ tags:
   - failure-detection
 ---
 
-## Failure Detection {#failure-detection}
-
 ## Workflow timeouts {#workflow-timeouts}
+
+**How to set Workflow timeouts using the Temporal .NET SDK**
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 
@@ -49,6 +49,8 @@ var result = await client.ExecuteWorkflowAsync(
 
 ### Workflow retries {#workflow-retries}
 
+**How to set Workflow retries using the Temporal .NET SDK**
+
 A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
 Use a [Retry Policy](/retry-policies) to retry a Workflow Execution in the event of a failure.
@@ -66,7 +68,9 @@ var result = await client.ExecuteWorkflowAsync(
     });
 ```
 
-## How to set Activity timeouts {#activity-timeouts}
+## Activity timeouts {#activity-timeouts}
+
+**How to set Activity timeouts using the Temporal .NET SDK**
 
 Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 
@@ -92,7 +96,9 @@ return await Workflow.ExecuteActivityAsync(
     new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
 ```
 
-### How to set an Activity Retry Policy {#activity-retries}
+### Set an Activity Retry Policy {#activity-retries}
+
+**How to an Activity Retry Policy using the Temporal .NET SDK**
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 

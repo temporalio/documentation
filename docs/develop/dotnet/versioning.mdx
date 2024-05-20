@@ -40,7 +40,9 @@ tags:
 
 Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY)
 
-## How to use the .NET SDK Patching API {#.NET-sdk-patching-api}
+## Use the .NET SDK Patching API {#.NET-sdk-patching-api}
+
+**How to use the .NET SDK Patching API using the Temporal .NET SDK** 
 
 In principle, the .NET SDK's patching mechanism operates similarly to other SDKs in a "feature-flag" fashion. However, the "versioning" API now uses the concept of "patching in" code.
 
@@ -51,8 +53,6 @@ To understand this, you can break it down into three steps, which reflect three 
 - Running only the `PostPatchActivity` code.
 
 Let's walk through this process in sequence.
-
-**Steps involved in implementing patching using the Temporal .NET SDK**
 
 Suppose you have an initial Workflow version called `PrePatchActivity`:
 

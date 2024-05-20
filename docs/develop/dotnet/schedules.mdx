@@ -13,13 +13,17 @@ tags:
   - schedules
 ---
 
-## How to Schedule a Workflow {#schedule-a-workflow}
+## Schedule a Workflow {#schedule-a-workflow}
+
+**How to Schedule a Workflow using the Temporal .NET SDK**
 
 Scheduling Workflows is a crucial aspect of any automation process, especially when dealing with time-sensitive tasks. By scheduling a Workflow, you can automate repetitive tasks, reduce the need for manual intervention, and ensure timely execution of your business processes
 
 Use any of the following action to help Schedule a Workflow Execution and take control over your automation process.
 
-### How to Create a Scheduled Workflow {#create}
+### Create a Scheduled Workflow {#create-a-workflow}
+
+**How to Create a Scheduled Workflow using the Temporal .NET SDK**
 
 The create action enables you to create a new Schedule. When you create a new Schedule, a unique Schedule ID is generated, which you can use to reference the Schedule in other Schedule commands.
 
@@ -46,7 +50,9 @@ var handle = await client.CreateScheduleAsync(
         }));
 ```
 
-### How to Backfill a Scheduled Workflow {#backfill}
+### Backfill a Scheduled Workflow {#backfill-a-scheduled-workflow}
+
+**How to Backfill a Scheduled Workflow using the Temporal .NET SDK**
 
 The backfill action executes Actions ahead of their specified time range. This command is useful when you need to execute a missed or delayed Action, or when you want to test the Workflow before its scheduled time.
 
@@ -70,7 +76,9 @@ await handle.BackfillAsync(new List<ScheduleBackfill>
 });
 ```
 
-### How to Delete a Scheduled Workflow {#delete}
+### Delete a Scheduled Workflow {#delete-a-scheduled-workflow}
+
+**How to Delete a Scheduled Workflow using the Temporal .NET SDK**
 
 The delete action enables you to delete a Schedule. When you delete a Schedule, it does not affect any Workflows that were started by the Schedule.
 
@@ -86,7 +94,9 @@ var handle = client.GetScheduleHandle("my-schedule-id");
 await handle.DeleteAsync();
 ```
 
-### How to Describe a Scheduled Workflow {#describe}
+### Describe a Scheduled Workflow {#describe-a-scheduled-workflow}
+
+**How to Describe a Scheduled Workflow using the Temporal .NET SDK**
 
 The describe action shows the current Schedule configuration, including information about past, current, and future Workflow Runs. This command is helpful when you want to get a detailed view of the Schedule and its associated Workflow Runs.
 
@@ -103,7 +113,9 @@ var desc = await handle.DescribeAsync();
 Console.WriteLine("Schedule info: {0}", desc.Info);
 ```
 
-### How to List a Scheduled Workflow {#list}
+### List a Scheduled Workflow {#list-a-scheduled-workflow}
+
+**How to List a Scheduled Workflow using the Temporal .NET SDK**
 
 The list action lists all the available Schedules. This command is useful when you want to view a list of all the Schedules and their respective Schedule IDs.
 
@@ -122,7 +134,9 @@ await foreach (var desc in client.ListSchedulesAsync())
 }
 ```
 
-### How to Pause a Scheduled Workflow {#pause}
+### Pause a Scheduled Workflow {#pause-a-scheduled-workflow}
+
+**How to Pause a Scheduled Workflow using the Temporal .NET SDK**
 
 The pause action enables you to pause and unpause a Schedule. When you pause a Schedule, all the future Workflow Runs associated with the Schedule are temporarily stopped. This command is useful when you want to temporarily halt a Workflow due to maintenance or any other reason.
 
@@ -139,7 +153,9 @@ var handle = client.GetScheduleHandle("my-schedule-id");
 await handle.PauseAsync("Pausing the schedule for now");
 ```
 
-### How to Trigger a Scheduled Workflow {#trigger}
+### Trigger a Scheduled Workflow {#trigger-a-scheduled-workflow}
+
+**How to Trigger a Scheduled Workflow using the Temporal .NET SDK**
 
 The trigger action triggers an immediate action with a given Schedule. By default, this action is subject to the Overlap Policy of the Schedule. This command is helpful when you want to execute a Workflow outside of its scheduled time.
 
@@ -155,7 +171,9 @@ var handle = client.GetScheduleHandle("my-schedule-id");
 await handle.TriggerAsync();
 ```
 
-### How to Update a Scheduled Workflow {#update}
+### Update a Scheduled Workflow {#update-a-scheduled-workflow}
+
+**How to Update a Scheduled Workflow using the Temporal .NET SDK**
 
 The update action enables you to update an existing Schedule. This command is useful when you need to modify the Schedule's configuration, such as changing the start time, end time, or interval.
 
@@ -179,7 +197,9 @@ await handle.UpdateAsync(input =>
 });
 ```
 
-## How to use Start Delay {#start-delay}
+## Use Start Delay {#start-delay}
+
+**How to use Start Delay using the Temporal .NET SDK**
 
 Use the `StartDelay` to schedule a Workflow Execution at a specific one-time future point rather than on a recurring schedule.
 
