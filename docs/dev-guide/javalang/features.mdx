@@ -42,6 +42,7 @@ In this section you can find the following:
 - [How to develop Signals](#signals)
 - [How to develop Queries](#queries)
 - [How to start a Child Workflow Execution](#child-workflows)
+- [How to Schedule a Workflow](#schedule-a-workflow)
 - [How to start a Temporal Cron Job](#cron-schedule)
 - [How to use Continue-As-New](#continue-as-new)
 - [How to set Workflow timeouts & retries](#workflow-timeouts)
@@ -1222,7 +1223,7 @@ ScheduleHandle handle = client.getHandle("schedule-id")
 ScheduleDescription description = handle.describe();
 ```
 
-### How to describe a Schedule in Java {#describe-schedule}
+### How to List a Scheduled Workflow in Java {#list-schedule}
 
 The list action lists all the available Schedules. This command is useful when you want to view a list of all the Schedules and their respective Schedule IDs.
 
