@@ -50,8 +50,9 @@ Metrics are defined in the following locations.
 
 The unit of measurement for metrics can vary based on which SDK they are being reported from:
 
-**Core-based SDKs:** Metrics of the type Histogram are measured in _milliseconds_.
-This includes SDKs like TypeScript, Python, and .NET which are defined in the Core SDK.
+**Core-based SDKs:** Metrics of the type Histogram are measured in _milliseconds_ by default.
+This can be customized to use seconds for SDKs using [Core SDK](/glossary#core-sdk).
+The Core SDK is a shared common core library used by several Temporal SDKs, including TypeScript, Python, and .NET.
 
 **Java and Go SDKs:** Metrics of the type Histogram are measured in _seconds_.
 

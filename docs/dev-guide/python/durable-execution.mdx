@@ -2,7 +2,6 @@
 id: durable-execution
 title: Develop code that durably executes - Python SDK dev guide
 sidebar_label: Develop for durability
-sidebar_position: 3
 description: The Durable Execution section of the Temporal Developer's guide covers advanced beginner concepts for working with Temporal, including testing your code, reviewing workflow event history, adding timers, and understanding determinism. Developing for durable execution is a core aspect of Temporal.
 slug: /dev-guide/python/durable-execution
 toc_max_heading_level: 4
@@ -142,13 +141,13 @@ A Workflow Execution's Event History is also available in the Web UI.
 
 Navigate to the Workflows page in the UI and select the Workflow Execution.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Select a Workflow Execution from the Workflows page</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Select a Workflow Execution from the Workflows page</p>
   </div>
-  <div class="tdiiw" height="870">
+  <div className="tdiiw" height="870">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/select-workflow-execution-in-ui.png"
       alt="Select a Workflow Execution from the Workflows page"
     />
@@ -157,13 +156,13 @@ Navigate to the Workflows page in the UI and select the Workflow Execution.
 
 From the Workflow details page you can copy the Event History from the JSON tab and paste it into the `backgroundcheck_workflow_history.json` file.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Copy Event History JSON object from the Web UI</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Copy Event History JSON object from the Web UI</p>
   </div>
-  <div class="tdiiw" height="768">
+  <div className="tdiiw" height="768">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/copy-events-from-workflow-details-page.png"
       alt="Copy Event History JSON object from the Web UI"
     />
@@ -179,7 +178,7 @@ Register the Workflow Definition and then specify an existing Event History to c
 Run the tests in the test directory (pytest).
 If the Workflow Definition and the Event History are incompatible, then the test fails.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_replay/tests/replay_dacx_test.py">
     View the source code
   </a>{' '}
@@ -187,10 +186,6 @@ If the Workflow Definition and the Event History are incompatible, then the test
 </div>
 
 ```python
-
-
-
-
 
 @pytest.mark.asyncio
 async def test_replay_workflow_history_from_file():
@@ -326,7 +321,7 @@ The Temporal Python SDK offers deterministic implementations to the following AP
 
 Use the `workflow.logger` API to log from Workflows to avoid seeing repeated logs from the Replay of the Workflow code.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/backgroundcheck_replay/backgroundcheck_dacx.py">
     View the source code
   </a>{' '}
