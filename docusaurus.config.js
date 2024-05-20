@@ -279,6 +279,7 @@ module.exports = async function createConfigAsync() {
           "How do Signals work?",
         ],
         async: true,
+        defer: true,
       },
       {
         src: "/scripts/copycode-notice.js",

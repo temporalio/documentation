@@ -36,13 +36,13 @@ A Retry Policy is a collection of attributes that instructs the Temporal Server 
 - [How to set a Retry Policy for a Workflow in Python](/dev-guide/python/failure-detection#workflow-retries)
 - [How to set a Retry Policy for a Workflow in TypeScript](/dev-guide/typescript/features#workflow-retries)
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Diagram that shows the retry interval and its formula</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Diagram that shows the retry interval and its formula</p>
   </div>
-  <div class="tdiiw" height="233">
+  <div className="tdiiw" height="233">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/retry-interval-diagram.png"
       alt="Diagram that shows the retry interval and its formula"
     />
@@ -55,7 +55,7 @@ A Retry Policy is a collection of attributes that instructs the Temporal Server 
   The intention is that a Workflow Definition should be written to never fail due to intermittent issues; an Activity is designed to handle such issues.
 
 - **Activity Execution:** When an Activity Execution is spawned, it is associated with a default Retry Policy, and thus Activity Task Executions are retried by default.
-  When an Activity Task Execution is retried, the Cluster places a new [Activity Task](/workers#activity-task) into its respective [Activity Task Queue](/workers#task-queue), which results in a new Activity Task Execution.
+  When an Activity Task Execution is retried, the Temporal Service places a new [Activity Task](/workers#activity-task) into its respective [Activity Task Queue](/workers#task-queue), which results in a new Activity Task Execution.
 
 ## Custom Retry Policy
 

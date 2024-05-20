@@ -353,7 +353,6 @@ List<WorkflowExecutionHistory> histories =
             })
         .collect(Collectors.toList());
 
-
 WorkflowReplayer.replayWorkflowExecutions(
     histories, true, WorkflowA.class, WorkflowB.class, WorkflowC.class);
 ```

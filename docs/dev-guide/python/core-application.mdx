@@ -26,6 +26,25 @@ tags:
  - core-application
 ---
 
+In this section you can find the following:
+
+
+- [Develop a basic Workflow](#develop-workflows)
+- [Define Workflow parameters](#workflow-parameters)
+- [Define Workflow return parameters](#workflow-return-values)
+- [Customize your Workflow Type](#workflow-type)
+- [Develop Workflow logic](#workflow-logic-requirements)
+- [Develop a basic Activity](#develop-activities)
+- [Develop Activity Parameters](#activity-parameters)
+- [Define Activity return values](#activity-return-values)
+- [Customize your Activity Type](#activity-type)
+- [Start an Activity Execution](#activity-execution)
+- [Set the required Activity Timeouts](#required-timeout)
+- [Get the results of an Activity Execution](#get-activity-results)
+- [Run a Worker Process](#run-a-dev-worker)
+- [Register types](#register-types)
+
+
 ## Develop a basic Workflow {#develop-workflows}
 
 **How to develop a basic Workflow**
@@ -38,7 +57,7 @@ Specify the `@workflow.defn` decorator on the Workflow class to identify a Workf
 
 Use the `@workflow.run` to mark the entry point method to be invoked. This must be set on one asynchronous method defined on the same class as `@workflow.defn`. Run methods have positional parameters.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">
     View the source code
   </a>{' '}
@@ -73,7 +92,7 @@ Workflow parameters are the method parameters of the singular method decorated w
 These can be any data type Temporal can convert, including [`dataclasses`](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
 Technically this can be multiple parameters, but Temporal strongly encourages a single `dataclass` parameter containing all input fields.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_dataobject_dacx.py">
     View the source code
   </a>{' '}
@@ -103,7 +122,7 @@ To return a value of the Workflow, use `return` to return an object.
 
 To return the results of a Workflow Execution, use either `start_workflow()` or `execute_workflow()` asynchronous methods.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">
     View the source code
   </a>{' '}
@@ -134,9 +153,9 @@ Workflows have a Type that are referred to as the Workflow name.
 
 The following examples demonstrate how to set a custom name for your Workflow Type.
 
-You can customize the Workflow name with a custom name in the decorator argument. For example, `@workflow.defn(name="your-workflow-name")`. If the name parameter is not specified, the Workflow name defaults to the function name.
+You can customize the Workflow name with a custom name in the decorator argument. For example, `@workflow.defn(name="your-workflow-name")`. If the name parameter is not specified, the Workflow name defaults to the unqualified class name.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">
     View the source code
   </a>{' '}
@@ -208,7 +227,7 @@ If you must use a blocking library, consider using a synchronous Activity instea
 
 :::
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">
     View the source code
   </a>{' '}
@@ -248,7 +267,7 @@ Activity parameters are the function parameters of the function decorated with `
 These can be any data type Temporal can convert, including dataclasses when properly type-annotated.
 Technically this can be multiple parameters, but Temporal strongly encourages a single dataclass parameter containing all input fields.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">
     View the source code
   </a>{' '}
@@ -279,7 +298,7 @@ An Activity Execution can return inputs and other Activity values.
 
 The following example defines an Activity that takes a string as input and returns a string.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">
     View the source code
   </a>{' '}
@@ -304,7 +323,7 @@ The following examples demonstrate how to set a custom name for your Activity Ty
 You can customize the Activity name with a custom name in the decorator argument. For example, `@activity.defn(name="your-activity")`.
 If the name parameter is not specified, the Activity name defaults to the function name.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py">
     View the source code
   </a>{' '}
@@ -346,7 +365,7 @@ In most cases, use `execute_activity()` unless advanced task capabilities are ne
 
 A single argument to the Activity is positional. Multiple arguments are not supported in the type-safe form of `start_activity()` or `execute_activity()` and must be supplied by the `args` keyword argument.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">
     View the source code
   </a>{' '}
@@ -385,7 +404,7 @@ Available timeouts are:
 - schedule_to_start_timeout
 - start_to_close_timeout
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/activity_timeouts_retires/your_workflows_dacx.py">
     View the source code
   </a>{' '}
@@ -418,7 +437,7 @@ You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
 `execute_activity()` is a shortcut for `await start_activity()`. An asynchronous `execute_activity()` helper is provided which takes the same arguments as `start_activity()` and `await`s on the result. `execute_activity()` should be used in most cases unless advanced task capabilities are needed.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">
     View the source code
   </a>{' '}
@@ -462,7 +481,7 @@ To develop a Worker, use the `Worker()` constructor and add your Client, Task Qu
 The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
 When a Worker is created, it accepts a list of Workflows in the workflows parameter, a list of Activities in the activities parameter, or both.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_worker_dacx.py">
     View the source code
   </a>{' '}
@@ -485,7 +504,6 @@ async def main():
     )
     await worker.run()
 
-
 if __name__ == "__main__":
     asyncio.run(main())
 ```
@@ -501,7 +519,7 @@ However, the failure of the Task does not cause the associated Workflow Executio
 
 When a `Worker` is created, it accepts a list of Workflows in the `workflows` parameter, a list of Activities in the `activities` parameter, or both.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_worker_dacx.py">
     View the source code
   </a>{' '}
@@ -520,7 +538,6 @@ async def main():
         activities=[your_activity],
     )
     await worker.run()
-
 
 if __name__ == "__main__":
     asyncio.run(main())
