@@ -5,15 +5,14 @@ sidebar_label: SDK metrics
 description: The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.
 toc_max_heading_level: 4
 keywords:
-- reference
+  - reference
 tags:
-- reference
+  - reference
 ---
-
 
 :::info SDK metrics
 
-The information on this page is relevant to [Temporal SDKs](/temporal#temporal-sdk).
+The information on this page is relevant to [Temporal SDKs](/encyclopedia/temporal-sdks).
 
 See [Cloud metrics](/cloud/metrics/) for metrics emitted by [Temporal Cloud](/cloud/overview).
 
@@ -51,8 +50,9 @@ Metrics are defined in the following locations.
 
 The unit of measurement for metrics can vary based on which SDK they are being reported from:
 
-**Core-based SDKs:** Metrics of the type Histogram are measured in _milliseconds_.
-This includes SDKs like TypeScript, Python, and .NET which are defined in the Core SDK.
+**Core-based SDKs:** Metrics of the type Histogram are measured in _milliseconds_ by default.
+This can be customized to use seconds for SDKs using [Core SDK](/glossary#core-sdk).
+The Core SDK is a shared common core library used by several Temporal SDKs, including TypeScript, Python, and .NET.
 
 **Java and Go SDKs:** Metrics of the type Histogram are measured in _seconds_.
 
@@ -436,4 +436,3 @@ The Schedule-To-Start time of a Workflow Task.
 - Type: Histogram
 - Available in: Core, Go, Java
 - Tags: `namespace`, `task_queue`
-

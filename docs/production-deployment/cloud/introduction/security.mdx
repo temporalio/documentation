@@ -2,20 +2,18 @@
 id: security
 title: Security model - Temporal Cloud
 sidebar_label: Security model
-sidebar_position: 2
 description: The security model of Temporal Cloud encompasses applications, data, and the Temporal Cloud platform.
 slug: /cloud/security
 toc_max_heading_level: 4
 keywords:
-- introduction
-- security
-- temporal cloud
+  - introduction
+  - security
+  - temporal cloud
 tags:
-- introduction
-- security
-- temporal-cloud
+  - introduction
+  - security
+  - temporal-cloud
 ---
-
 
 **What kind of security does Temporal Cloud provide?**
 
@@ -34,14 +32,14 @@ For information about the general security features of Temporal, see our [Platfo
 ### Code execution boundaries
 
 Temporal Cloud provides the capabilities of Temporal Server as a managed service; it does not manage your applications or [Workers](/workers#worker).
-Applications and services written using [Temporal SDKs](/temporal#temporal-sdk) run in your computing environment, such as containers (Docker, Kubernetes) or virtual machines (in any hosting environment).
+Applications and services written using [Temporal SDKs](/encyclopedia/temporal-sdks) run in your computing environment, such as containers (Docker, Kubernetes) or virtual machines (in any hosting environment).
 You have full control over how you secure your applications and services.
 
 ### Data Converter: Client-side encryption
 
 The optional [Data Conversion](/dataconversion) capability of the Temporal Platform lets you transparently encrypt data before it's sent to Temporal Cloud and decrypt it when it comes out.
 
-Data Conversion runs on your Temporal Workers and [Clients](/temporal#temporal-client); Temporal Cloud cannot see or decrypt your data.
+Data Conversion runs on your Temporal Workers and [Clients](/encyclopedia/temporal-sdks#temporal-client); Temporal Cloud cannot see or decrypt your data.
 If you use this feature, data stored in Temporal Cloud remains encrypted even if the service itself is compromised.
 
 By deploying a [Codec Server](/production-deployment/data-encryption) you can securely decrypt data in the [Temporal Web UI](/web-ui) without sharing encryption keys with Temporal.
@@ -87,7 +85,7 @@ To set up PrivateLink connectivity with Temporal Cloud, you'll need to perform t
 Once set up, you can test your PrivateLink connectivity using:
 
 1. Non-Temporal tools like cURL (useful for testing from environments that restrict tool usage).
-2. Temporal CLI: by setting the [--tls-server-name](/cli/cmd-options#tls-server-name) parameter to the PrivateLink endpoint.
+2. The Temporal CLI: by setting the [--tls-server-name](/cli/cmd-options#tls-server-name) parameter to the PrivateLink endpoint.
 3. Temporal SDKs: by setting the server name argument to the PrivateLink endpoint.
 
 ### Encryption
@@ -138,4 +136,3 @@ Access grants are reviewed quarterly.
 
 Temporal Technologies is SOC 2 Type 2 certified and compliant with GDPR and HIPAA regulations.
 Compliance audits are available by request through our [Contact](https://pages.temporal.io/contact-us) page.
-

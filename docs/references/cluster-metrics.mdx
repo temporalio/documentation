@@ -5,11 +5,10 @@ sidebar_label: Cluster metrics
 description: The Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and set up alerts.
 toc_max_heading_level: 4
 keywords:
-- reference
+  - reference
 tags:
-- reference
+  - reference
 ---
-
 
 :::info OSS Cluster metrics
 
@@ -17,7 +16,7 @@ The information on this page is relevant to open source [Temporal Cluster deploy
 
 See [Cloud metrics](/cloud/metrics/) for metrics emitted by [Temporal Cloud](/cloud/overview).
 
-See [SDK metrics](/references/sdk-metrics) for metrics emitted by the [SDKs](/temporal#temporal-sdk).
+See [SDK metrics](/references/sdk-metrics) for metrics emitted by the [SDKs](/encyclopedia/temporal-sdks).
 
 :::
 
@@ -240,4 +239,3 @@ This metric is confirms that Workflows are running as expected without delays or
 Example: To track the success rate of Scheduled Workflow Executions.
 
 `sum(rate(schedule_action_success{namespace="$namespace"}[5m]))`
-

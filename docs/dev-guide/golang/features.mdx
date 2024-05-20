@@ -2,7 +2,6 @@
 id: features
 title: Features - Go SDK feature guide
 sidebar_label: Features
-sidebar_position: 5
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 slug: /dev-guide/go/features
 toc_max_heading_level: 4
@@ -412,15 +411,14 @@ When sending and receiving the Update, use the Update name as an identifier.
 The name does not link to the data type(s) sent with the Update.
 Ensure that every Workflow listening to the same Update name can handle the same Update arguments.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/your_updatable_workflow.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```go
-
 
 // YourUpdateName holds a string value used to correlate Updates.
 const YourUpdateName = "your_update_name"
@@ -446,15 +444,14 @@ WorkflowPanicPolicy is set in the Worker Options.
 
 Update handlers, unlike Query handlers, can change Workflow state.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/your_updatable_workflow.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```go
-
 
 // ...
 func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error) {
@@ -484,15 +481,14 @@ The Validator function, unlike the Update Handler, can not change the state of t
 
 The platform treats a panic in the Validator function as a rejection of the Update."
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/your_updatable_workflow.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```go
-
 
 // UpdatableWorkflowWithValidator is a Workflow Definition.
 // This Workflow Definition has an Update handler that uses the isPositive() validator function.
@@ -536,15 +532,14 @@ Invoke the UpdateWorkflow() method on an instance of the [Go SDK Temporal Client
 You must provide the Workflow Id, but specifying a Run Id is optional.
 If you supply only the Workflow Id (and provide an empty string as the Run Id param), the currently running Workflow Execution receives the Update.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/update/main.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```go
-
 
 func main() {
 // ...
@@ -851,18 +846,18 @@ client.CompleteActivity(context.Background(), taskToken, nil, err)
 
 ## How to start a Child Workflow Execution {#child-workflows}
 
-A [Child Workflow Execution](/workflows#child-workflow) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
+A [Child Workflow Execution](/encyclopedia/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
 When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History.
 
 Always block progress until the [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started.
-After that, Child Workflow Executions may be abandoned using the default _Abandon_ [Parent Close Policy](/workflows#parent-close-policy) set in the Child Workflow Options.
+After that, Child Workflow Executions may be abandoned using the default _Abandon_ [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy) set in the Child Workflow Options.
 
 To be sure that the Child Workflow Execution has started, first call the Child Workflow Execution method on the instance of Child Workflow future, which returns a different future.
 
 Then get the value of an object that acts as a proxy for a result that is initially unknown, which is what waits until the Child Workflow Execution has spawned.
 
-To spawn a [Child Workflow Execution](/workflows#child-workflow) in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API, which is available from the `go.temporal.io/sdk/workflow` package.
+To spawn a [Child Workflow Execution](/encyclopedia/child-workflows) in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API, which is available from the `go.temporal.io/sdk/workflow` package.
 
 The `ExecuteChildWorkflow` call requires an instance of [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context), with an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions) applied to it, the Workflow Type, and any parameters that should be passed to the Child Workflow Execution.
 
@@ -935,7 +930,7 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
 
 #### How to set a Parent Close Policy {#parent-close-policy}
 
-A [Parent Close Policy](/workflows#parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
+A [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 
 The default Parent Close Policy option is set to terminate the Child Workflow Execution.
 
@@ -1033,13 +1028,13 @@ Use any of the following action to help Schedule a Workflow Execution and take c
 Schedules are initiated with the `create` call.
 The user generates a unique Schedule ID for each new Schedule.
 
-To create a Schedule in Go, use `Create()` on the [Client](/temporal#temporal-client).
+To create a Schedule in Go, use `Create()` on the [Client](/encyclopedia/temporal-sdks#temporal-client).
 Schedules must be initialized with a Schedule ID, [Spec](/workflows#spec), and [Action](/workflows#action) in `client.ScheduleOptions{}`.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/create/main.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
@@ -1072,10 +1067,10 @@ This is useful for executing a missed or delayed Action, or for testing the Work
 To backfill a Schedule in Go, use `Backfill()` on `ScheduleHandle`.
 Specify the start and end times to execute the Workflow, along with the overlap policy.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/backfill/main.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
@@ -1112,10 +1107,10 @@ Deletion does not affect any Workflows started by the Schedule.
 
 To delete a Schedule, use `Delete()` on the `ScheduleHandle`.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/delete/main.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
@@ -1140,10 +1135,10 @@ This can include details about the Schedule Spec (such as Intervals), CronExpres
 
 To describe a Schedule, use `Describe()` on the ScheduleHandle.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/describe/main.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
@@ -1161,10 +1156,10 @@ The `List` action returns all available Schedules and their respective Schedule 
 
 To return information on all Schedules, use `ScheduleClient.List()`.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/list/main.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
@@ -1192,10 +1187,10 @@ Pausing can be enabled by setting `State.Paused` to `true`, or by using `Pause()
 Unpausing a Schedule allows the Workflow to execute as planned.
 To unpause a Schedule, use `Unpause()` on `ScheduleHandle`.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/pause/main.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
@@ -1219,10 +1214,10 @@ By default, `trigger` is subject to the Overlap Policy.
 
 To trigger a Scheduled Workflow Execution, use `trigger()` on `ScheduleHandle`.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/trigger/main.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
@@ -1246,10 +1241,10 @@ These changes can be made to Workflow Actions, Action parameters, Memos, and the
 
 Use `Update()` on the ScheduleHandle to modify a Schedule.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/update/main.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
@@ -1375,7 +1370,7 @@ if err := workflow.MutableSideEffect(ctx, "configureNumber", get, eq).Get(&numbe
 
 ## How to create and manage Namespaces {#namespaces}
 
-You can create, update, deprecate or delete your [Namespaces](/namespaces) using either tctl or SDK APIs.
+You can create, update, deprecate, or delete your [Namespaces](/namespaces) using either the Temporal CLI or SDK APIs.
 
 Use Namespaces to isolate your Workflow Executions according to your needs.
 For example, you can use Namespaces to match the development lifecycle by having separate `dev` and `prod` Namespaces.
@@ -1383,7 +1378,8 @@ You could also use them to ensure Workflow Executions between different teams ne
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) to create and manage a Namespace from the UI, or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces from the command-line interface.
 
-On self-hosted Temporal Cluster, you can register and manage your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+On self-hosted Temporal Cluster, you can register and manage your Namespaces using the Temporal CLI (recommended) or programmatically using APIs.
+Note that these APIs and Temporal CLI commands will not work with Temporal Cloud.
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
 
@@ -1395,13 +1391,14 @@ Registering a Namespace creates a Namespace on the Temporal Cluster or Temporal 
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create Namespaces.
 
-On self-hosted Temporal Cluster, you can register your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+On self-hosted Temporal Cluster, you can register your Namespaces using the Temporal CLI (recommended) or programmatically using APIs.
+Note that these APIs and Temporal CLI commands will not work with Temporal Cloud.
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
 
 Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) with the `NamespaceClient` interface to register a [Namespace](/namespaces) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
 
-You can also [register Namespaces using the tctl command-line tool](/tctl-v1/namespace#register).
+You can also [register Namespaces using the Temporal CLI command-line tool](/cli/operator#create).
 
 ```go
 client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
@@ -1416,14 +1413,14 @@ The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandato
 The minimum value you can set for this period is 1 day.
 
 Once registered, set Namespace using `Dial` in a Workflow Client to run your Workflow Executions within that Namespace.
-See [how to set Namespace in a Client in Go](/dev-guide/go/foundations#connect-to-temporal-cloud) for details.
+See [how to set Namespace in a Client in Go](/develop/go/temporal-client#connect-to-temporal-cloud) for details.
 
 Note that Namespace registration using this API takes up to 10 seconds to complete.
 Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
 
 To update your Namespace, use the [`Update` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) with the `NamespaceClient`.
 
-To update your Namespace using tctl, use the [tctl namespace update](/tctl-v1/namespace#update) command.
+To update your Namespace using the Temporal CLI, use the [temporal operator namespace update](/cli/operator#update) command.
 
 ### How to manage Namespaces {#manage-namespaces}
 
@@ -1431,7 +1428,8 @@ You can get details for your Namespaces, update Namespace configuration, and dep
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces.
 
-On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+On self-hosted Temporal Cluster, you can manage your registered Namespaces using the Temporal CLI (recommended) or programmatically using APIs.
+Note that these APIs and Temporal CLI commands will not work with Temporal Cloud.
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
 
@@ -1439,11 +1437,12 @@ You must register a Namespace with the Temporal Cluster before setting it in the
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces) or [tcld commands](/cloud/tcld/namespace/) to manage Namespaces.
 
-On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+On self-hosted Temporal Cluster, you can manage your registered Namespaces using the Temporal CLI (recommended) or programmatically using APIs.
+Note that these APIs and Temporal CLI commands will not work with Temporal Cloud.
 
 - Update information and configuration for a registered Namespace on your Temporal Cluster:
 
-  - With tctl: [`tctl namespace update`](/tctl-v1/namespace#update)
+  - With the Temporal CLI: [`temporal operator namespace update`](/cli/operator#update)
     Example
   - Use the [`UpdateNamespace` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) to update configuration on a Namespace.
     Example
@@ -1481,7 +1480,7 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 
 - Get details for a registered Namespace on your Temporal Cluster:
 
-  - With tctl: [`tctl namespace describe`](/tctl-v1/namespace#describe)
+  - With the Temporal CLI: [`temporal operator namespace describe`](/cli/operator#describe)
   - Use the [`DescribeNamespace` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) to return information and configuration details for a registered Namespace.
     Example
 
@@ -1495,7 +1494,7 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 
 - Get details for all registered Namespaces on your Temporal Cluster:
 
-  - With tctl: [`tctl namespace list`](/tctl-v1/namespace#list)
+  - With the Temporal CLI: [`temporal operator namespace list`](/cli/operator#list)
   - Use the [`ListNamespace` API](https://github.com/temporalio/api/blob/f0350f8032ad2f0c60c539b3b61ea37f412f1cf7/temporal/api/operatorservice/v1/service.proto) to return information and configuration details for all registered Namespaces on your Temporal Cluster.
     Example
 
@@ -1534,10 +1533,10 @@ Enable the Worker to use Sessions.
 
 Set `EnableSessionWorker` to `true` in the Worker options.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/worker/main.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
@@ -1569,10 +1568,10 @@ By default, this field is set to a very large value, so there's no need to manua
 If a Worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed.
 If the session can't be created within `CreationTimeout`, `CreateSession()` returns an error .
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/worker/main.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
@@ -1617,10 +1616,10 @@ It is safe to call `CompleteSession()` on a failed Session, meaning that you can
 If the Worker goes down between Activities, any scheduled Activities meant for the Session Worker are canceled.
 If not, you get a `workflow.ErrSessionFailed` error when the next call of `workflow.ExecuteActivity()` is made from that Workflow.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/workflow.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 

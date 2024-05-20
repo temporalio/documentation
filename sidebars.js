@@ -9,7 +9,31 @@ module.exports = {
         type: "doc",
         id: "evaluate/index",
       },
-      items: ["evaluate/why-temporal", "evaluate/release-stages", "security"],
+      items: [
+        "evaluate/why-temporal",
+        "evaluate/major-components",
+        {
+          type: "category",
+          label: "Development features",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "evaluate/development-features/index",
+          },
+          items: [
+            "evaluate/development-features/core-application",
+            "evaluate/development-features/temporal-client",
+            "evaluate/development-features/throughput-composability",
+          ],
+        },
+        "security",
+        "evaluate/release-stages",
+        {
+          type: "link",
+          label: "Change-log",
+          href: "https://temporal.io/change-log",
+        },
+      ],
     },
     {
       type: "link",
@@ -25,7 +49,6 @@ module.exports = {
         id: "dev-guide/index",
       },
       items: [
-        "dev-guide/sdks",
         {
           type: "category",
           label: "Go SDK",
@@ -39,6 +62,7 @@ module.exports = {
             "dev-guide/golang/project-setup",
             "dev-guide/golang/durable-execution",
             "dev-guide/golang/foundations",
+            "develop/go/temporal-client",
             "dev-guide/golang/features",
             "dev-guide/golang/cancellation",
             "dev-guide/golang/observability",
@@ -46,16 +70,6 @@ module.exports = {
             "dev-guide/golang/debugging",
             "dev-guide/golang/versioning",
             "dev-guide/golang/converters",
-            {
-              type: "category",
-              label: "How it works",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "dev-guide/golang/how-it-works/index",
-              },
-              items: ["dev-guide/golang/how-it-works/multithreading"],
-            },
           ],
         },
         {
@@ -71,6 +85,7 @@ module.exports = {
             "dev-guide/javalang/project-setup",
             "dev-guide/javalang/durable-execution",
             "dev-guide/javalang/foundations",
+            "develop/java/temporal-client",
             "dev-guide/javalang/features",
             "dev-guide/javalang/observability",
             "dev-guide/javalang/testing",
@@ -114,16 +129,6 @@ module.exports = {
             "dev-guide/python/debugging",
             "dev-guide/python/versioning",
             "dev-guide/python/converters",
-            {
-              type: "category",
-              label: "How it works",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "dev-guide/python/how-it-works/index",
-              },
-              items: ["dev-guide/python/how-it-works/async-vs-sync", "dev-guide/python/how-it-works/sandbox"],
-            },
           ],
         },
         {
@@ -237,10 +242,13 @@ module.exports = {
                 id: "production-deployment/cloud/metrics/index",
               },
               items: [
+                "production-deployment/cloud/metrics/general-setup",
+                "production-deployment/cloud/metrics/reference",
                 "production-deployment/cloud/metrics/datadog",
                 "production-deployment/cloud/metrics/prometheus-grafana",
               ],
             },
+            "production-deployment/cloud/worker-health",
             "production-deployment/cloud/saml",
             "production-deployment/cloud/operation-api",
             "production-deployment/cloud/terraform-provider",
@@ -316,26 +324,6 @@ module.exports = {
     },
     {
       type: "category",
-      label: "CLI (tctl)",
-      collapsed: true,
-      link: {
-        type: "doc",
-        id: "tctl-v1/index",
-      },
-      items: [
-        "tctl-v1/activity",
-        "tctl-v1/admin",
-        "tctl-v1/batch",
-        "tctl-v1/cluster",
-        "tctl-v1/dataconverter",
-        "tctl-v1/namespace",
-        "tctl-v1/schedule",
-        "tctl-v1/taskqueue",
-        "tctl-v1/workflow",
-      ],
-    },
-    {
-      type: "category",
       label: "References",
       collapsed: true,
       link: {
@@ -373,7 +361,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Encylopedia",
+      label: "Encyclopedia",
       collapsed: true,
       link: {
         type: "doc",
@@ -381,10 +369,25 @@ module.exports = {
       },
       items: [
         "encyclopedia/temporal",
+        {
+          type: "category",
+          label: "Temporal SDKs",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "encyclopedia/temporal-sdks",
+          },
+          items: [
+            "encyclopedia/go-sdk-multithreading",
+            "encyclopedia/python-sdk-sandbox",
+            "encyclopedia/python-sdk-sync-vs-async",
+          ],
+        },
         "encyclopedia/workflows",
         "encyclopedia/activities",
         "encyclopedia/retry-policies",
         "encyclopedia/workers",
+        "encyclopedia/child-workflows",
         "encyclopedia/visibility",
         "encyclopedia/clusters",
         "encyclopedia/namespaces",
@@ -396,5 +399,17 @@ module.exports = {
     //   type: "autogenerated",
     //   dirName: "./dev-guide", // '.' means the current docs folder
     // },
+  ],
+  tctl: [
+    "tctl-v1/index",
+    "tctl-v1/activity",
+    "tctl-v1/admin",
+    "tctl-v1/batch",
+    "tctl-v1/cluster",
+    "tctl-v1/dataconverter",
+    "tctl-v1/namespace",
+    "tctl-v1/schedule",
+    "tctl-v1/taskqueue",
+    "tctl-v1/workflow",
   ],
 };

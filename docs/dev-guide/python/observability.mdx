@@ -2,35 +2,33 @@
 id: observability
 title: Observability - Python SDK feature guide
 sidebar_label: Observability
-sidebar_position: 8
 description: Improve observability in your Python-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
 toc_max_heading_level: 4
 keywords:
-- client
-- code sample
-- developer-guide
-- guide-context
-- how-to
-- logging
-- python
-- python sdk
-- sdk
-- search attribute
-- workflow
+  - client
+  - code sample
+  - developer-guide
+  - guide-context
+  - how-to
+  - logging
+  - python
+  - python sdk
+  - sdk
+  - search attribute
+  - workflow
 tags:
-- client
-- code-sample
-- developer-guide
-- guide-context
-- how-to
-- logging
-- python
-- python-sdk
-- sdk
-- search-attribute
-- workflow
+  - client
+  - code-sample
+  - developer-guide
+  - guide-context
+  - how-to
+  - logging
+  - python
+  - python-sdk
+  - sdk
+  - search-attribute
+  - workflow
 ---
-
 
 The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
 
@@ -76,8 +74,6 @@ Tracing allows you to view the call graph of a Workflow along with its Activitie
 
 Temporal Web's tracing capabilities mainly track Activity Execution within a Temporal context. If you need custom tracing specific for your use case, you should make use of context propagation to add tracing logic accordingly.
 
-For information about how to configure exporters and instrument your code, see [Tracing Temporal Services with OTEL](https://github.com/temporalio/temporal/blob/master/develop/docs/tracing.md).
-
 To configure tracing in Python, install the `opentelemetry` dependencies.
 
 ```bash
@@ -96,7 +92,6 @@ Send logs and errors to a logging service, so that when things go wrong, you can
 
 The SDK core uses `WARN` for its default logging level.
 
-
 You can log from a Workflow using Python's standard library, by importing the logging module `logging`.
 
 Set your logging configuration to a level you want to expose logs to.
@@ -108,14 +103,18 @@ logging.basicConfig(level=logging.INFO)
 
 Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio.workflow.html#logger) and level on the Workflow. The following example logs the Workflow.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_loggers/your_workflow_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_loggers/your_workflow_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
 
 ```python
 
 # ...
         workflow.logger.info("Workflow input parameter: %s" % name)
 ```
-
 
 ### How to provide a custom logger {#custom-logger}
 
@@ -141,7 +140,7 @@ You can do this with [Search Attributes](/visibility#search-attribute).
 
 The steps to using custom Search Attributes are:
 
-- Create a new Search Attribute in your Cluster in the CLI or Web UI.
+- Create a new Search Attribute in your Cluster in the Temporal CLI or Web UI.
   - For example: `temporal operator search-attribute create --name CustomKeywordField --type Text`
     - Replace `CustomKeywordField` with the name of your Search Attribute.
     - Replace `Text` with a type value associated with your Search Attribute: `Text` | `Keyword` | `Int` | `Double` | `Bool` | `Datetime` | `KeywordList`
@@ -157,10 +156,14 @@ The steps to using custom Search Attributes are:
 
 Here is how to query Workflow Executions:
 
-
 Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.html#list_workflows) method on the Client handle and pass a [List Filter](/visibility#list-filter) as an argument to filter the listed Workflows.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
 
 ```python
 
@@ -169,15 +172,18 @@ Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.h
         print(f"Workflow: {workflow.id}")
 ```
 
-
 ### How to set custom Search Attributes {#custom-search-attributes}
 
-After you've created custom Search Attributes in your Cluster (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
-
+After you've created custom Search Attributes in your Cluster (using `temporal operator search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
 To set custom Search Attributes, use the `search_attributes` parameter of the ['start_workflow()'](https://python.temporal.io/temporalio.client.Client.html#start_workflow) method.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
 
 ```python
 
@@ -190,17 +196,20 @@ To set custom Search Attributes, use the `search_attributes` parameter of the ['
     )
 ```
 
-
 ### How to upsert Search Attributes {#upsert-search-attributes}
 
 You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
-
 
 To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) method.
 
 The keys are added to or replace the existing Search Attributes, similar to [`dict.update()`](https://docs.python.org/3/library/stdtypes.html#dict.update).
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
 
 ```python
 
@@ -208,20 +217,21 @@ The keys are added to or replace the existing Search Attributes, similar to [`di
         workflow.upsert_search_attributes({"CustomKeywordField": ["new-value"]})
 ```
 
-
 ### How to remove a Search Attribute from a Workflow {#remove-search-attribute}
 
 To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
 
-
 To remove a Search Attribute, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) function with an empty list as its value.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">View the source code</a> in the context of the rest of the application code.</div>
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
 
 ```python
 
 # ...
         workflow.upsert_search_attributes({"CustomKeywordField": []})
 ```
-
-

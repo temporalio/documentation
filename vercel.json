@@ -10,6 +10,11 @@
       "destination": "https://temporal.io/about"
     },
     {
+      "source": "/privacy-policy",
+      "destination": "https://temporal.io/global-privacy-policy",
+      "permanent": true
+    },
+    {
       "source": "/docs/:path*",
       "destination": "/:path*"
     },
@@ -23,7 +28,7 @@
     },
     {
       "source": "/devtools/tctl",
-      "destination": "/tctl"
+      "destination": "/cli"
     },
     {
       "source": "/devtools/introduction",
@@ -1135,7 +1140,7 @@
     },
     {
       "source": "/content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl",
-      "destination": "/tctl-v1/how-to-remove-a-search-attribute-from-a-cluster-using-tctl"
+      "destination": "https://docs.temporal.io/dev-guide/go/observability#remove-search-attribute"
     },
     {
       "source": "/operation/how-to-tune-workers",
@@ -1156,42 +1161,6 @@
     {
       "source": "/tctl",
       "destination": "/tctl-v1"
-    },
-    {
-      "source": "/tctl/workflow/:path*",
-      "destination": "/tctl-v1/workflow#:path*"
-    },
-    {
-      "source": "/tctl/activity/:path*",
-      "destination": "/tctl-v1/activity#:path*"
-    },
-    {
-      "source": "/tctl/admin/:path*",
-      "destination": "/tctl-v1/admin#:path*"
-    },
-    {
-      "source": "/tctl/batch/:path*",
-      "destination": "/tctl-v1/batch#:path*"
-    },
-    {
-      "source": "/tctl/cluster/:path*",
-      "destination": "/tctl-v1/cluster#:path*"
-    },
-    {
-      "source": "/tctl/dataconverter/:path*",
-      "destination": "/tctl-v1/dataconverter#:path*"
-    },
-    {
-      "source": "/tctl/namespace/:path*",
-      "destination": "/tctl-v1/namespace#:path*"
-    },
-    {
-      "source": "/tctl/schedule/:path*",
-      "destination": "/tctl-v1/schedule#:path*"
-    },
-    {
-      "source": "/tctl/taskqueue/:path*",
-      "destination": "/tctl-v1/taskqueue#:path*"
     },
     {
       "source": "/references/ui-configuration",
@@ -1739,11 +1708,11 @@
     },
     {
       "source": "/tctl-next/modifiers#--event-id",
-      "destination": "/cli/cmd-options#event-id"
+      "destination": "/cli/workflow#reset"
     },
     {
       "source": "/tctl-next/workflow#reset",
-      "destination": "/cli"
+      "destination": "/cli/workflow#reset"
     },
     {
       "source": "/java/quick-start",
@@ -2008,6 +1977,26 @@
     {
       "source": "/concepts:path*",
       "destination": "/encyclopedia"
+    },
+    {
+      "source": "/dev-guide/sdks",
+      "destination": "/encyclopedia/temporal-sdks"
+    },
+    {
+      "source": "/dev-guide/:path*/how-it-works",
+      "destination": "/encyclopedia/temporal-sdks"
+    },
+    {
+      "source": "/dev-guide/go/multithreading",
+      "destination": "/encyclopedia/go-sdk-multithreading"
+    },
+    {
+      "source": "/dev-guide/python/async-vs-sync",
+      "destination": "/encyclopedia/python-sdk-sync-vs-async"
+    },
+    {
+      "source": "/dev-guide/python/sandbox",
+      "destination": "/encyclopedia/python-sdk-sandbox"
     }
   ]
 }

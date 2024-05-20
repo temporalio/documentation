@@ -2,7 +2,6 @@
 id: observability
 title: Observability - Go SDK feature guide
 sidebar_label: Observability
-sidebar_position: 7
 description: Improve observability in your Go-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
 slug: /dev-guide/go/observability
 toc_max_heading_level: 4
@@ -179,7 +178,7 @@ Yes. Multiple context propagators help to structure code with each propagator ha
 - [Passing Context with Temporal](https://spiralscout.com/blog/passing-context-with-temporal) by SpiralScout
 
 The [Go SDK](https://github.com/temporalio/sdk-go) provides support for distributed tracing with **_Interceptors_**.
-Interceptors uses Temporal headers to create a call graph of a [Workflow](/workflows), along with its [Activities](/activities) and [Child Workflows](/workflows#child-workflow).
+Interceptors uses Temporal headers to create a call graph of a [Workflow](/workflows), along with its [Activities](/activities) and [Child Workflows](/encyclopedia/child-workflows).
 
 There are several tracing implementations supported by the Temporal Go SDK.
 For an [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing) Interceptor, use `opentracing.NewInterceptor(opentracing.TracerOptions{})` to create a `TracingInterceptor`.
@@ -248,7 +247,6 @@ workflow.WithActivityOptions(ctx, ao)
 		"name": name,
 	}
 
-
 	logger.Info("Compressed Payloads workflow completed.", "result", result)
 
 	return result, nil
@@ -305,7 +303,7 @@ You can do this with [Search Attributes](/visibility#search-attribute).
 
 The steps to using custom Search Attributes are:
 
-- Create a new Search Attribute in your Cluster using `tctl search-attribute create` or the Cloud UI.
+- Create a new Search Attribute in your Cluster using `temporal operator search-attribute create` or the Cloud UI.
 - Set the value of the Search Attribute for a Workflow Execution:
   - On the Client by including it as an option when starting the Execution.
   - In the Workflow by calling `UpsertSearchAttributes`.
@@ -313,7 +311,7 @@ The steps to using custom Search Attributes are:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
 - Query Workflow Executions by the Search Attribute using a [List Filter](/visibility#list-filter):
-  - [In `tctl`](/tctl-v1/workflow#list).
+  - [In the Temporal CLI](/cli/workflow#list).
   - In code by calling `ListWorkflowExecutions`.
 
 Here is how to query Workflow Executions:
@@ -344,7 +342,7 @@ for _, exec := range resp.Executions {
 
 ### How to set custom Search Attributes {#custom-search-attributes}
 
-After you've created custom Search Attributes in your Cluster (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+After you've created custom Search Attributes in your Cluster (using the `temporal operator search-attribute create` command or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
 Provide key-value pairs in [`StartWorkflowOptions.SearchAttributes`](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
 

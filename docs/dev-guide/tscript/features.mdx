@@ -2,32 +2,30 @@
 id: features
 title: Features - TypeScript SDK feature guide
 sidebar_label: Features
-sidebar_position: 4
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 slug: /dev-guide/typescript/features
 toc_max_heading_level: 3
 keywords:
-- activity retry policy
-- developer-guide
-- guide-context
-- how-to
-- retry policy
-- sdk
-- sleep
-- timers
-- typescript
+  - activity retry policy
+  - developer-guide
+  - guide-context
+  - how-to
+  - retry policy
+  - sdk
+  - sleep
+  - timers
+  - typescript
 tags:
-- activity-retry-policy
-- developer-guide
-- guide-context
-- how-to
-- retry-policy
-- sdk
-- sleep
-- timers
-- typescript
+  - activity-retry-policy
+  - developer-guide
+  - guide-context
+  - how-to
+  - retry-policy
+  - sdk
+  - sleep
+  - timers
+  - typescript
 ---
-
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
@@ -172,13 +170,13 @@ Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#defi
 
 <!--SNIPSTART typescript-define-query -->
 
-[state/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/workflows.ts)
+[state/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/state/src/workflows.ts)
 
 ```ts
 import { defineQuery } from '@temporalio/workflow';
 
 export const getValueQuery = defineQuery<number | undefined, [string]>(
-  'getValue',
+  'getValue'
 );
 ```
 
@@ -197,7 +195,7 @@ You make a Query with `handle.query(query, ...args)`. A Query needs a return val
 
 <!--SNIPSTART typescript-handle-query -->
 
-[state/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/workflows.ts)
+[state/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/state/src/workflows.ts)
 
 ```ts
 export async function trackState(): Promise<void> {
@@ -218,7 +216,7 @@ Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/clien
 
 <!--SNIPSTART typescript-send-query -->
 
-[state/src/query-workflow.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/query-workflow.ts)
+[state/src/query-workflow.ts](https://github.com/temporalio/samples-typescript/blob/main/state/src/query-workflow.ts)
 
 ```ts
 import { Client } from '@temporalio/client';
@@ -245,7 +243,7 @@ If you know the name of your Signals and Queries upfront, we recommend declaring
 
 <!--SNIPSTART typescript-blocked-workflow-->
 
-[signals-queries/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/signals-queries/src/workflows.ts)
+[signals-queries/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/signals-queries/src/workflows.ts)
 
 ```ts
 import * as wf from '@temporalio/workflow';
@@ -331,7 +329,7 @@ The following is their [entire source code](https://github.com/temporalio/sdk-ty
  * Define a signal method for a Workflow.
  */
 export function defineSignal<Args extends any[] = []>(
-  name: string,
+  name: string
 ): SignalDefinition<Args> {
   return {
     type: 'signal',
@@ -343,7 +341,7 @@ export function defineSignal<Args extends any[] = []>(
  * Define a query method for a Workflow.
  */
 export function defineQuery<Ret, Args extends any[] = []>(
-  name: string,
+  name: string
 ): QueryDefinition<Ret, Args> {
   return {
     type: 'query',
@@ -390,7 +388,7 @@ Available timeouts are:
 
 <!--SNIPSTART typescript-execution-timeout -->
 
-[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/client.ts)
 
 ```ts
 await client.workflow.start(example, {
@@ -404,7 +402,7 @@ await client.workflow.start(example, {
 
 <!--SNIPSTART typescript-run-timeout -->
 
-[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/client.ts)
 
 ```ts
 await client.workflow.start(example, {
@@ -418,7 +416,7 @@ await client.workflow.start(example, {
 
 <!--SNIPSTART typescript-task-timeout -->
 
-[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/client.ts)
 
 ```ts
 await client.workflow.start(example, {
@@ -442,7 +440,7 @@ Create an instance of the Retry Policy, known as [`retry`](https://typescript.te
 
 <!--SNIPSTART typescript-retry-workflow -->
 
-[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/snippets/src/client.ts)
 
 ```ts
 const handle = await client.workflow.start(example, {
@@ -606,10 +604,10 @@ To asynchronously complete an Activity, call [`AsyncCompletionClient.complete`](
 
 <!--SNIPSTART typescript-activity-complete-async -->
 
-[activities-examples/src/activities/async-completion.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-examples/src/activities/async-completion.ts)
+[activities-examples/src/activities/async-completion.ts](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/activities/async-completion.ts)
 
 ```ts
-import { activityInfo, CompleteAsyncError } from '@temporalio/activity';
+import { CompleteAsyncError, activityInfo } from '@temporalio/activity';
 import { AsyncCompletionClient } from '@temporalio/client';
 
 export async function doSomethingAsync(): Promise<string> {
@@ -622,7 +620,7 @@ export async function doSomethingAsync(): Promise<string> {
 async function doSomeWork(taskToken: Uint8Array): Promise<void> {
   const client = new AsyncCompletionClient();
   // does some work...
-  await client.complete(taskToken, 'Job\'s done!');
+  await client.complete(taskToken, "Job's done!");
 }
 ```
 
@@ -666,12 +664,12 @@ Local Activities are handled locally, and all the information needed to handle t
 
 ## How to start a Child Workflow Execution {#child-workflows}
 
-A [Child Workflow Execution](/workflows#child-workflow) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
+A [Child Workflow Execution](/encyclopedia/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
 When using a Child Workflow API, Child Workflow–related Events (such as [StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), and [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted)) are logged in the Event History of the Child Workflow Execution.
 
 Always block progress until the [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started.
-After that, Child Workflow Executions can be abandoned by using the default `Abandon` [Parent Close Policy](/workflows#parent-close-policy) set in the Child Workflow Options.
+After that, Child Workflow Executions can be abandoned by using the default `Abandon` [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy) set in the Child Workflow Options.
 
 To be sure that the Child Workflow Execution has started, first call the Child Workflow Execution method on the instance of Child Workflow future, which returns a different future.
 
@@ -703,7 +701,7 @@ By default, a child is scheduled on the same Task Queue as the parent.
 
 <!--SNIPSTART typescript-child-workflow -->
 
-[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/child-workflows/src/workflows.ts)
+[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/child-workflows/src/workflows.ts)
 
 ```ts
 import { executeChild } from '@temporalio/workflow';
@@ -718,7 +716,7 @@ export async function parentWorkflow(...names: string[]): Promise<string> {
         // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
         // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
       })
-    ),
+    )
   );
   return responseArray.join('\n');
 }
@@ -749,7 +747,7 @@ A Child Workflow Execution is automatically cancelled when its containing scope 
 
 ### How to set a Parent Close Policy {#parent-close-policy}
 
-A [Parent Close Policy](/workflows#parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
+A [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 
 The default Parent Close Policy option is set to terminate the Child Workflow Execution.
 
@@ -757,7 +755,7 @@ To specify how a Child Workflow reacts to a Parent Workflow reaching a Closed st
 
 <!--SNIPSTART typescript-child-workflow -->
 
-[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/child-workflows/src/workflows.ts)
+[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/child-workflows/src/workflows.ts)
 
 ```ts
 import { executeChild } from '@temporalio/workflow';
@@ -772,7 +770,7 @@ export async function parentWorkflow(...names: string[]): Promise<string> {
         // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
         // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
       })
-    ),
+    )
   );
   return responseArray.join('\n');
 }
@@ -789,10 +787,10 @@ To cause a Workflow Execution to [Continue-As-New](/workflows#continue-as-new), 
 
 <!--SNIPSTART typescript-continue-as-new-workflow -->
 
-[continue-as-new/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/continue-as-new/src/workflows.ts)
+[continue-as-new/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/continue-as-new/src/workflows.ts)
 
 ```ts
-import { continueAsNew, log, sleep } from '@temporalio/workflow';
+import { continueAsNew, sleep, log } from '@temporalio/workflow';
 
 export async function loopingWorkflow(iteration = 0): Promise<void> {
   if (iteration === 10) {
@@ -825,7 +823,7 @@ const MAX_ITERATIONS = 1;
 
 export async function entityWorkflow(
   input: Input,
-  isNew = true,
+  isNew = true
 ): Promise<void> {
   try {
     const pendingUpdates = Array<Update>();
@@ -1031,7 +1029,7 @@ export class UpdatableTimer implements PromiseLike<void> {
       if (
         !(await wf.condition(
           () => this.deadlineUpdated,
-          this.#deadline - Date.now(),
+          this.#deadline - Date.now()
         ))
       ) {
         break;
@@ -1041,7 +1039,7 @@ export class UpdatableTimer implements PromiseLike<void> {
 
   then<TResult1 = void, TResult2 = never>(
     onfulfilled?: (value: void) => TResult1 | PromiseLike<TResult1>,
-    onrejected?: (reason: any) => TResult2 | PromiseLike<TResult2>,
+    onrejected?: (reason: any) => TResult2 | PromiseLike<TResult2>
   ): PromiseLike<TResult1 | TResult2> {
     return this.run().then(onfulfilled, onrejected);
   }
@@ -1076,7 +1074,7 @@ const handle = await client.workflow.start(scheduledWorkflow, {
 
 ## How to create and manage Namespaces {#namespaces}
 
-You can create, update, deprecate or delete your [Namespaces](/namespaces) using either tctl or SDK APIs.
+You can create, update, deprecate or delete your [Namespaces](/namespaces) using either the Temporal CLI or SDK APIs.
 
 Use Namespaces to isolate your Workflow Executions according to your needs.
 For example, you can use Namespaces to match the development lifecycle by having separate `dev` and `prod` Namespaces.
@@ -1084,7 +1082,8 @@ You could also use them to ensure Workflow Executions between different teams ne
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) to create and manage a Namespace from the UI, or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces from the command-line interface.
 
-On self-hosted Temporal Cluster, you can register and manage your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+On self-hosted Temporal Cluster, you can register and manage your Namespaces using the Temporal CLI (recommended) or programmatically using APIs.
+Note that these APIs and Temporal CLI commands will not work with Temporal Cloud.
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
 
@@ -1096,7 +1095,8 @@ Registering a Namespace creates a Namespace on the Temporal Cluster or Temporal 
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create Namespaces.
 
-On self-hosted Temporal Cluster, you can register your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+On self-hosted Temporal Cluster, you can register your Namespaces using the Temporal CLI (recommended) or programmatically using APIs.
+Note that these APIs and Temporal CLI commands will not work with Temporal Cloud.
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
 
@@ -1106,7 +1106,8 @@ You can get details for your Namespaces, update Namespace configuration, and dep
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces.
 
-On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+On self-hosted Temporal Cluster, you can manage your registered Namespaces using the Temporal CLI (recommended) or programmatically using APIs.
+Note that these APIs and Temporal CLI commands will not work with Temporal Cloud.
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
 
@@ -1173,18 +1174,18 @@ It implements `PayloadConverterWithEncoding` instead of `PayloadConverter` so th
 
 <!--SNIPSTART typescript-ejson-converter-impl -->
 
-[ejson/src/ejson-payload-converter.ts](https://github.com/temporalio/samples-typescript/blob/master/ejson/src/ejson-payload-converter.ts)
+[ejson/src/ejson-payload-converter.ts](https://github.com/temporalio/samples-typescript/blob/main/ejson/src/ejson-payload-converter.ts)
 
 ```ts
 import {
   EncodingType,
   METADATA_ENCODING_KEY,
   Payload,
-  PayloadConverterError,
   PayloadConverterWithEncoding,
+  PayloadConverterError,
 } from '@temporalio/common';
-import { decode, encode } from '@temporalio/common/lib/encoding';
 import EJSON from 'ejson';
+import { decode, encode } from '@temporalio/common/lib/encoding';
 
 /**
  * Converts between values and [EJSON](https://docs.meteor.com/api/ejson.html) Payloads.
@@ -1200,12 +1201,10 @@ export class EjsonPayloadConverter implements PayloadConverterWithEncoding {
       ejson = EJSON.stringify(value);
     } catch (e) {
       throw new UnsupportedEjsonTypeError(
-        `Can't run EJSON.stringify on this value: ${value}. Either convert it (or its properties) to EJSON-serializable values (see https://docs.meteor.com/api/ejson.html ), or create a custom data converter. EJSON.stringify error message: ${
-          errorMessage(
-            e,
-          )
-        }`,
-        e as Error,
+        `Can't run EJSON.stringify on this value: ${value}. Either convert it (or its properties) to EJSON-serializable values (see https://docs.meteor.com/api/ejson.html ), or create a custom data converter. EJSON.stringify error message: ${errorMessage(
+          e
+        )}`,
+        e as Error
       );
     }
 
@@ -1227,7 +1226,10 @@ export class EjsonPayloadConverter implements PayloadConverterWithEncoding {
 export class UnsupportedEjsonTypeError extends PayloadConverterError {
   public readonly name: string = 'UnsupportedJsonTypeError';
 
-  constructor(message: string | undefined, public readonly cause?: Error) {
+  constructor(
+    message: string | undefined,
+    public readonly cause?: Error
+  ) {
     super(message ?? undefined);
   }
 }
@@ -1239,7 +1241,7 @@ Then we instantiate one and export it:
 
 <!--SNIPSTART typescript-ejson-converter -->
 
-[ejson/src/payload-converter.ts](https://github.com/temporalio/samples-typescript/blob/master/ejson/src/payload-converter.ts)
+[ejson/src/payload-converter.ts](https://github.com/temporalio/samples-typescript/blob/main/ejson/src/payload-converter.ts)
 
 ```ts
 import {
@@ -1250,7 +1252,7 @@ import { EjsonPayloadConverter } from './ejson-payload-converter';
 
 export const payloadConverter = new CompositePayloadConverter(
   new UndefinedPayloadConverter(),
-  new EjsonPayloadConverter(),
+  new EjsonPayloadConverter()
 );
 ```
 
@@ -1260,7 +1262,7 @@ We provide it to the Worker and Client:
 
 <!--SNIPSTART typescript-ejson-worker -->
 
-[ejson/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/ejson/src/worker.ts)
+[ejson/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/ejson/src/worker.ts)
 
 ```ts
 const worker = await Worker.create({
@@ -1276,7 +1278,7 @@ const worker = await Worker.create({
 
 <!--SNIPSTART typescript-ejson-client-setup -->
 
-[ejson/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/ejson/src/client.ts)
+[ejson/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/ejson/src/client.ts)
 
 ```ts
 const client = new Client({
@@ -1292,7 +1294,7 @@ Then we can use supported data types in arguments:
 
 <!--SNIPSTART typescript-ejson-client -->
 
-[ejson/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/ejson/src/client.ts)
+[ejson/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/ejson/src/client.ts)
 
 ```ts
 const user: User = {
@@ -1317,16 +1319,17 @@ And they get parsed correctly for the Workflow:
 
 <!--SNIPSTART typescript-ejson-workflow -->
 
-[ejson/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/ejson/src/workflows.ts)
+[ejson/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/ejson/src/workflows.ts)
 
 ```ts
 import type { Result, User } from './types';
 
 export async function example(user: User): Promise<Result> {
-  const success = user.createdAt.getTime() < Date.now()
-    && user.hp > 50
-    && user.matcher.test('Kaladin Stormblessed')
-    && user.token instanceof Uint8Array;
+  const success =
+    user.createdAt.getTime() < Date.now() &&
+    user.hp > 50 &&
+    user.matcher.test('Kaladin Stormblessed') &&
+    user.token instanceof Uint8Array;
   return { success, at: new Date() };
 }
 ```
@@ -1342,14 +1345,14 @@ To serialize values as [Protocol Buffers](https://protobuf.dev/) (protobufs):
 - Generate `json-module.js` with a command like the following:
 
   ```sh
-  pbjs -t json-module -w commonjs -o protos/json-module.js protos/*.proto
+  pbjs -t json-module --workflow-id commonjs -o protos/json-module.js protos/*.proto
   ```
 
 - Patch `json-module.js`:
 
-  <!--SNIPSTART typescript-protobuf-root -->
+<!--SNIPSTART typescript-protobuf-root -->
 
-[protobufs/protos/root.js](https://github.com/temporalio/samples-typescript/blob/master/protobufs/protos/root.js)
+[protobufs/protos/root.js](https://github.com/temporalio/samples-typescript/blob/main/protobufs/protos/root.js)
 
 ```js
 const { patchProtobufRoot } = require('@temporalio/common/lib/protobufs');
@@ -1367,9 +1370,9 @@ module.exports = patchProtobufRoot(unpatchedRoot);
 
 - Create a [`DefaultPayloadConverterWithProtobufs`](https://typescript.temporal.io/api/classes/protobufs.DefaultPayloadConverterWithProtobufs/):
 
-  <!--SNIPSTART typescript-protobuf-converter -->
+<!--SNIPSTART typescript-protobuf-converter -->
 
-[protobufs/src/payload-converter.ts](https://github.com/temporalio/samples-typescript/blob/master/protobufs/src/payload-converter.ts)
+[protobufs/src/payload-converter.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/payload-converter.ts)
 
 ```ts
 import { DefaultPayloadConverterWithProtobufs } from '@temporalio/common/lib/protobufs';
@@ -1408,15 +1411,15 @@ export const payloadConverter = new CompositePayloadConverter(
   new UndefinedPayloadConverter(),
   new BinaryPayloadConverter(),
   new ProtobufBinaryPayloadConverter(root),
-  new JsonPayloadConverter(),
+  new JsonPayloadConverter()
 );
 ```
 
 - Provide it to the Worker:
 
-  <!--SNIPSTART typescript-protobuf-worker -->
+<!--SNIPSTART typescript-protobuf-worker -->
 
-[protobufs/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/protobufs/src/worker.ts)
+[protobufs/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/worker.ts)
 
 ```ts
 const worker = await Worker.create({
@@ -1435,9 +1438,9 @@ const worker = await Worker.create({
 
 - Provide it to the Client:
 
-  <!--SNIPSTART typescript-protobuf-client -->
+<!--SNIPSTART typescript-protobuf-client -->
 
-[protobufs/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/protobufs/src/client.ts)
+[protobufs/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/client.ts)
 
 ```ts
 import { Client } from '@temporalio/client';
@@ -1471,9 +1474,9 @@ async function run() {
 
 - Use protobufs in your Workflows and Activities:
 
-  <!--SNIPSTART typescript-protobuf-workflow -->
+<!--SNIPSTART typescript-protobuf-workflow -->
 
-[protobufs/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/protobufs/src/workflows.ts)
+[protobufs/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/workflows.ts)
 
 ```ts
 import { proxyActivities } from '@temporalio/workflow';
@@ -1494,13 +1497,13 @@ export async function example(input: foo.bar.ProtoInput): Promise<ProtoResult> {
 
 <!--SNIPSTART typescript-protobuf-activity -->
 
-[protobufs/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/protobufs/src/activities.ts)
+[protobufs/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/activities.ts)
 
 ```ts
 import { foo, ProtoResult } from '../protos/root';
 
 export async function protoActivity(
-  input: foo.bar.ProtoInput,
+  input: foo.bar.ProtoInput
 ): Promise<ProtoResult> {
   return ProtoResult.create({
     sentence: `${input.name} is ${input.age} years old.`,
@@ -1539,18 +1542,18 @@ The following is an example class that implements the `PayloadCodec` interface:
 
 <!--SNIPSTART typescript-encryption-codec -->
 
-[encryption/src/encryption-codec.ts](https://github.com/temporalio/samples-typescript/blob/master/encryption/src/encryption-codec.ts)
+[encryption/src/encryption-codec.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/encryption-codec.ts)
 
 ```ts
+import { webcrypto as crypto } from 'node:crypto';
 import {
   METADATA_ENCODING_KEY,
   Payload,
   PayloadCodec,
   ValueError,
 } from '@temporalio/common';
-import { decode, encode } from '@temporalio/common/lib/encoding';
 import { temporal } from '@temporalio/proto';
-import { webcrypto as crypto } from 'node:crypto';
+import { decode, encode } from '@temporalio/common/lib/encoding';
 import { decrypt, encrypt } from './crypto';
 
 const ENCODING = 'binary/encrypted';
@@ -1559,7 +1562,7 @@ const METADATA_ENCRYPTION_KEY_ID = 'encryption-key-id';
 export class EncryptionCodec implements PayloadCodec {
   constructor(
     protected readonly keys: Map<string, crypto.CryptoKey>,
-    protected readonly defaultKeyId: string,
+    protected readonly defaultKeyId: string
   ) {}
 
   static async create(keyId: string): Promise<EncryptionCodec> {
@@ -1578,9 +1581,9 @@ export class EncryptionCodec implements PayloadCodec {
         // Encrypt entire payload, preserving metadata
         data: await encrypt(
           temporal.api.common.v1.Payload.encode(payload).finish(),
-          this.keys.get(this.defaultKeyId)!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+          this.keys.get(this.defaultKeyId)! // eslint-disable-line @typescript-eslint/no-non-null-assertion
         ),
-      })),
+      }))
     );
   }
 
@@ -1588,8 +1591,8 @@ export class EncryptionCodec implements PayloadCodec {
     return Promise.all(
       payloads.map(async (payload) => {
         if (
-          !payload.metadata
-          || decode(payload.metadata[METADATA_ENCODING_KEY]) !== ENCODING
+          !payload.metadata ||
+          decode(payload.metadata[METADATA_ENCODING_KEY]) !== ENCODING
         ) {
           return payload;
         }
@@ -1600,7 +1603,7 @@ export class EncryptionCodec implements PayloadCodec {
         const keyIdBytes = payload.metadata[METADATA_ENCRYPTION_KEY_ID];
         if (!keyIdBytes) {
           throw new ValueError(
-            'Unable to decrypt Payload without encryption key id',
+            'Unable to decrypt Payload without encryption key id'
           );
         }
 
@@ -1613,7 +1616,7 @@ export class EncryptionCodec implements PayloadCodec {
         const decryptedPayloadBytes = await decrypt(payload.data, key);
         console.log('Decrypting payload.data:', payload.data);
         return temporal.api.common.v1.Payload.decode(decryptedPayloadBytes);
-      }),
+      })
     );
   }
 }
@@ -1629,7 +1632,7 @@ async function fetchKey(_keyId: string): Promise<crypto.CryptoKey> {
       name: 'AES-GCM',
     },
     true,
-    ['encrypt', 'decrypt'],
+    ['encrypt', 'decrypt']
   );
 
   return cryptoKey;
@@ -1645,7 +1648,7 @@ As before, we provide a custom Data Converter to the Client and Worker:
 
 <!--SNIPSTART typescript-encryption-client -->
 
-[encryption/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/encryption/src/client.ts)
+[encryption/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/client.ts)
 
 ```ts
 const client = new Client({
@@ -1666,7 +1669,7 @@ console.log(await handle.result());
 
 <!--SNIPSTART typescript-encryption-worker -->
 
-[encryption/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/encryption/src/worker.ts)
+[encryption/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/worker.ts)
 
 ```ts
 const worker = await Worker.create({
@@ -1684,7 +1687,7 @@ When it returns that longer string, the string gets encrypted by the Worker and 
 
 <!--SNIPSTART typescript-encryption-workflow -->
 
-[encryption/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/encryption/src/workflows.ts)
+[encryption/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/workflows.ts)
 
 ```ts
 export async function example(message: string): Promise<string> {
@@ -1718,7 +1721,7 @@ All interceptor methods are optional—it's up to the implementor to choose whic
 
 ### Interceptor examples
 
-<!--TODO use snipsync-->
+{/*TODO use snipsync*/}
 
 **Log start and completion of Activities**
 
@@ -1736,7 +1739,7 @@ export class ActivityLogInterceptor
 
   async scheduleActivity(
     input: ActivityInput,
-    next: Next<WorkflowOutboundCallsInterceptor, 'scheduleActivity'>,
+    next: Next<WorkflowOutboundCallsInterceptor, 'scheduleActivity'>
   ): Promise<unknown> {
     console.log('Starting activity', { activityType: input.activityType });
     try {
@@ -1772,7 +1775,7 @@ export class DumbWorkflowAuthInterceptor
 {
   public async execute(
     input: WorkflowInput,
-    next: Next<WorkflowInboundCallsInterceptor, 'execute'>,
+    next: Next<WorkflowInboundCallsInterceptor, 'execute'>
   ): Promise<unknown> {
     const authHeader = input.headers.auth;
     const { user, password } = authHeader
@@ -1827,4 +1830,3 @@ const worker = await Worker.create({
   },
 });
 ```
-

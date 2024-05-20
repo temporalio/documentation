@@ -1,21 +1,27 @@
 ---
-id: async-vs-sync
-title: Synchronous vs. asynchronous Activity implementations - Python SDK
-sidebar_label: Sync vs. async Activities
-sidebar_position: 1
-description: Describes the implementation of asynchronous and synchronous activities in the Temporal Python SDK.
-slug: /dev-guide/python/async-vs-sync
+id: python-sdk-sync-vs-async
+title: Temporal Python SDK synchronous vs. asynchronous Activity implementations
+sidebar_label: Python SDK sync vs async
+description: Master the implementation of Activities with the Temporal Python SDK. Learn how to effectively utilize asyncio, ThreadPoolExecutor, and ProcessPoolExecutor for asynchronous and synchronous Activities in your applications.
 toc_max_heading_level: 4
 keywords:
-- async-vs-sync
-- guide-context
+  - temporal python sdk
+  - asynchronous activities
+  - synchronous activities
+  - asyncio python
+  - multiprocessing.managers.syncmanager
+  - python async event loop
+  - blocking calls in python
+  - aiohttp vs requests
+  - python multithreading
+  - python multiprocessing
+  - async safe http library
+  - http requests in python activities
+  - activity implementation in temporal
 tags:
-- async-vs-sync
-- guide-context
+  - python-sdk
+  - async-vs-sync
 ---
-
-
-<!-- https://github.com/temporalio/edu-101-python-content/blob/main/developing-an-activity/async-vs-sync-activities.md -->
 
 The Temporal Python SDK supports multiple ways of implementing an Activity:
 
@@ -87,7 +93,6 @@ import aiohttp
 import urllib.parse
 from temporalio import activity
 
-
 class TranslateActivities:
     def __init__(self, session: aiohttp.ClientSession):
         self.session = session
@@ -126,7 +131,6 @@ synchronous Activities.
 import urllib.parse
 import requests
 from temporalio import activity
-
 
 class TranslateActivities:
 
@@ -178,4 +182,3 @@ using asynchronous Activities _only_ when you are certain that your Activities
 are async safe and don't make blocking calls.
 
 If you experience bugs that you think may be a result of an unsafe call being made in an asynchronous Activity, convert it to a synchronous Activity and see if the issue resolves.
-

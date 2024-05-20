@@ -2,24 +2,22 @@
 id: versioning
 title: Versioning - Java SDK feature guide
 sidebar_label: Versioning
-sidebar_position: 9
 description: The Versioning section of the Temporal Developer's guide covers how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 slug: /dev-guide/java/versioning
 toc_max_heading_level: 4
 keywords:
-- how-to
-- java
-- patching
-- versioning
-- workflow code
+  - how-to
+  - java
+  - patching
+  - versioning
+  - workflow code
 tags:
-- how-to
-- java
-- patching
-- versioning
-- workflow-code
+  - how-to
+  - java
+  - patching
+  - versioning
+  - workflow-code
 ---
-
 
 The Temporal Platform requires that Workflow code is [deterministic](/workflows#deterministic-constraints).
 Because of that requirement, the Temporal Java SDK offers two dedicated versioning features.
@@ -197,7 +195,7 @@ By default, Activities, Child Workflows, and Continue-as-New use the same compat
 
 If you want to override this behavior, you can specify your intent via the `setVersioningIntent` method on the `ActivityOptions`, `ChildWorkflowOptions`, or `ContinueAsNewOptions` objects.
 
-<!-- For more information refer to the [conceptual documentation](/workers#worker-versioning). -->
+{/* For more information refer to the [conceptual documentation](/workers#worker-versioning). */}
 
 For example, if you want to use the latest default version for an Activity, you can define your Activity Options like this:
 
@@ -214,4 +212,3 @@ private final MyActivity activity =
     );
 // ...
 ```
-

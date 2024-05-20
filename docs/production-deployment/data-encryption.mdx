@@ -2,29 +2,27 @@
 id: data-encryption
 title: Codec Server - Temporal Platform feature guide
 sidebar_label: Codecs and Encryption
-sidebar_position: 3
 description: This guide explains how to create and deploy a Codec Server to encrypt data with Temporal.
 slug: /production-deployment/data-encryption
 toc_max_heading_level: 4
 keywords:
-- guide-context
-- how-to
-- production-readiness
-- security
+  - guide-context
+  - how-to
+  - production-readiness
+  - security
 tags:
-- guide-context
-- how-to
-- production-readiness
-- security
+  - guide-context
+  - how-to
+  - production-readiness
+  - security
 ---
-
 
 Temporal Server stores and persists the data handled in your Workflow Execution.
 Encrypting this data ensures that any sensitive application data is secure when handled by the Temporal Server.
 
 For example, if you have sensitive information passed in the following objects that are persisted in the Workflow Execution Event History, use encryption to secure it:
 
-- Inputs and outputs/results in your [Workflow](/workflows#workflow-execution), [Activity](/activities#activity-execution), and [Child Workflow](/workflows#child-workflow)
+- Inputs and outputs/results in your [Workflow](/workflows#workflow-execution), [Activity](/activities#activity-execution), and [Child Workflow](/encyclopedia/child-workflows)
 - [Signal](/workflows#signal) inputs
 - [Memo](/workflows#memo)
 - Headers (verify if applicable to your SDK)
@@ -41,7 +39,18 @@ To encrypt your Payload, configure your custom encryption logic with a [Payload 
 
 A Payload Codec does byte-to-byte conversion to transform your Payload (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the Client and the [Payload Converter](/dataconversion#payload-converter):
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Remote data encoding architecture</p></div><div class="tdiiw" height="1183"><img class="img_ev3q" src="/diagrams/remote-data-encoding.svg" alt="Remote data encoding architecture" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Remote data encoding architecture</p>
+  </div>
+  <div className="tdiiw" height="1183">
+    <img
+      className="img_ev3q"
+      src="/diagrams/remote-data-encoding.svg"
+      alt="Remote data encoding architecture"
+    />
+  </div>
+</div>
 
 You can run your Payload Codec with a [Codec Server](/dataconversion#codec-server) and use the Codec Server endpoints in the Web UI and CLI to decode your encrypted Payload locally.
 For details on how to set up a Codec Server, see [Codec Server setup](#codec-server-setup).
@@ -66,7 +75,7 @@ Use a Codec Server to programmatically decode your encoded [payloads](/dataconve
 
 A Codec Server is an HTTP server that uses your custom Codec logic to decode your data remotely.
 The Codec Server is independent of the Temporal Cluster and decodes your encrypted payloads through predefined endpoints. You create, operate, and manage access to your Codec Server in your own environment.
-The `temporal` CLI and the Web UI in turn provide built-in hooks to call the Codec Server to decode encrypted payloads on demand.
+The Temporal CLI and the Web UI in turn provide built-in hooks to call the Codec Server to decode encrypted payloads on demand.
 
 The Codec Server is independent of the Temporal Server and decodes your encrypted payloads through endpoints.
 When you configure a Codec Server endpoint in the Temporal Web UI or CLI, the Web UI and CLI use the remote endpoint to receive decoded payloads from the Codec Server.
@@ -174,8 +183,8 @@ Enabling this option in the Temporal Cloud UI adds an authorization header to ea
 
 In your Codec Server implementation, verify the signature on this access token (in your authorization header) against [our JWKS endpoint](https://login.tmprl.cloud/.well-known/jwks.json).
 
-<!-- Commenting this for now.-->
-<!--If you want to unpack the claims in your token to add additional checks on whether the user has valid access to the Namespace and payloads they are trying to access, you can implement it using Auth0 SDKs, middleware, or one of the third-party libraries at JWT.io.-->
+{/* Commenting this for now.*/}
+{/*If you want to unpack the claims in your token to add additional checks on whether the user has valid access to the Namespace and payloads they are trying to access, you can implement it using Auth0 SDKs, middleware, or one of the third-party libraries at JWT.io.*/}
 
 The token provided from Temporal Cloud UI contains the email identifier of the person requesting access to the payloads.
 Based on the permissions you have provided to the user in your access control systems, set conditions in your Codec Server whether to return decoded payloads or just return the original encoded payloads.
@@ -229,7 +238,18 @@ After you create your Codec Server and expose the requisite endpoints, set the e
 
 On Temporal Cloud and self-hosted Temporal Clusters, you can configure a Codec Server endpoint to be used for a Namespace in the Web UI.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Codec Server endpoint Namespace setting</p></div><div class="tdiiw" height="840"><img class="img_ev3q" src="/img/set-codec-endpoint-form.png" alt="Codec Server endpoint Namespace setting" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Codec Server endpoint Namespace setting</p>
+  </div>
+  <div className="tdiiw" height="840">
+    <img
+      className="img_ev3q"
+      src="/img/set-codec-endpoint-form.png"
+      alt="Codec Server endpoint Namespace setting"
+    />
+  </div>
+</div>
 
 To set a Codec Server endpoint on a Namespace, do the following.
 
@@ -244,7 +264,18 @@ Setting a Codec Server endpoint on a self-hosted cluster enables it for the enti
 
 You can also override the global Codec Server setting at the browser level. This can be useful when developing, testing, or troubleshooting encoding functionality.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Codec Server endpoint browser setting</p></div><div class="tdiiw" height="333"><img class="img_ev3q" src="/img/data-encoder-button.png" alt="Codec Server endpoint browser setting" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Codec Server endpoint browser setting</p>
+  </div>
+  <div className="tdiiw" height="333">
+    <img
+      className="img_ev3q"
+      src="/img/data-encoder-button.png"
+      alt="Codec Server endpoint browser setting"
+    />
+  </div>
+</div>
 
 To set a browser override for the Namespace-level endpoint, do the following.
 
@@ -270,7 +301,7 @@ codec:
 
 #### CLI
 
-You can configure a Codec Server endpoint with the `temporal` CLI using the `--codec_endpoint` flag.
+You can configure a Codec Server endpoint with the Temporal CLI using the `--codec_endpoint` flag.
 
 For example, if you are running your Codec Server on `http://localhost:8888`, you can use `env set` to set the endpoint globally:
 
@@ -287,12 +318,12 @@ temporal --codec-endpoint "http://localhost:8888" --namespace "yourNamespace" wo
 
 For details, see the [CLI reference](/cli/).
 
-If your Codec Server requires authentication, the `temporal` CLI will also accept a `--codec-auth` parameter to supply an
+If your Codec Server requires authentication, the Temporal CLI will also accept a `--codec-auth` parameter to supply an
 authorization header:
 
 ```shell
 temporal workflow show \
-   -w converters_workflowID \
+   --workflow-id converters_workflowID \
    --codec-endpoint 'http://localhost:8081/{namespace}' \
    --codec-auth 'auth-header'
 ```
@@ -305,4 +336,3 @@ Codec Server behavior is left up to implementers -- they can also call external 
 By default, Temporal limits payload size to 4MB.
 If this limitation is problematic for your use case, you could implement a codec that persists your payloads to an S3 bucket outside of workflow histories.
 An example implementation is available from [DataDog](https://github.com/DataDog/temporal-large-payload-codec).
-

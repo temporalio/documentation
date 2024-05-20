@@ -2,22 +2,20 @@
 id: service-availability
 title: Service availability - Temporal Cloud
 sidebar_label: Availability
-sidebar_position: 3
 description: The operating envelope of Temporal Cloud includes availability, regions, throughput, and latency.
 slug: /cloud/service-availability
 toc_max_heading_level: 4
 keywords:
-- explanation
-- operations
-- temporal cloud
-- throughput
+  - explanation
+  - operations
+  - temporal cloud
+  - throughput
 tags:
-- explanation
-- operations
-- temporal-cloud
-- throughput
+  - explanation
+  - operations
+  - temporal-cloud
+  - throughput
 ---
-
 
 The operating envelope of Temporal Cloud includes availability, regions, throughput, latency, and limits.
 If you need more details, [contact us](https://pages.temporal.io/contact-us).
@@ -62,7 +60,18 @@ Your throughput limit will never fall below this default value.
 
 When your Action rate exceeds your quota, Temporal Cloud throttles Actions until the rate matches your quota.
 Throttling means limiting the rate at which Actions are performed to prevent the Namespace from exceeding its APS limit.
-Even when throttled, Actions like Start or Signal Workflow Execution always receive higher priority than other Actions.
+
+Critical calls to external events, such starting or Signaling a Workflow, are always prioritized and never throttled.
+There are four priority levels for Temporal Cloud API calls:
+
+1. External events
+2. Workflow progress updates
+3. Visibility API calls
+4. Cloud operations such as Namespace creation
+
+When you exceed your APS limits, you might receive warnings about throttling.
+However, requests are never dropped, and high-priority calls are never delayed.
+Workers might take longer to complete Workflows.
 
 If your usage grows slowly, your throughput limit grows with your usage.
 At times, you may hit a maximum throughput threshold and need to switch to a higher consumption tier.
@@ -87,4 +96,3 @@ As Temporal continues working on improving latencies, these numbers will progres
 
 Latency observed from the Temporal Client is influenced by other system components like the Codec Server, egress proxy, and the network itself.
 Also, concurrent operations on the same Workflow Execution may result in higher latency.
-

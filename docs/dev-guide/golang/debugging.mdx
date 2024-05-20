@@ -2,40 +2,38 @@
 id: debugging
 title: Debugging - Go SDK feature guide
 sidebar_label: Debugging
-sidebar_position: 9
 description: The Debugging section of the Temporal Go SDK Developer's guide covers the many ways to debug your application.
 slug: /dev-guide/go/debugging
 toc_max_heading_level: 4
 keywords:
-- debugging
-- developer-guide-doc-type
-- go sdk
-- how-to-doc-type
-- introduction-doc-type
-- logging and metrics
-- production
-- tctl
-- testing
-- web ui
-- workflow
-- workflow definition
-- workflows
+  - debugging
+  - developer-guide-doc-type
+  - go sdk
+  - how-to-doc-type
+  - introduction-doc-type
+  - logging and metrics
+  - production
+  - temporal cli
+  - testing
+  - web ui
+  - workflow
+  - workflow definition
+  - workflows
 tags:
-- debugging
-- developer-guide-doc-type
-- go-sdk
-- how-to-doc-type
-- introduction-doc-type
-- logging-and-metrics
-- production
-- tctl
-- testing
-- web-ui
-- workflow
-- workflow-definition
-- workflows
+  - debugging
+  - developer-guide-doc-type
+  - go-sdk
+  - how-to-doc-type
+  - introduction-doc-type
+  - logging-and-metrics
+  - production
+  - temporal CLI
+  - testing
+  - web-ui
+  - workflow
+  - workflow-definition
+  - workflows
 ---
-
 
 You can use a debugger tool provided by your favorite IDE to debug your Workflow Definitions prior to testing or executing them.
 
@@ -52,14 +50,14 @@ Make sure to set `TEMPORAL_DEBUG` to true only during debugging.
 
 ## How to debug in a development environment {#debug-in-a-development-environment}
 
-In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the [Web UI](/web-ui) or [`tctl`](/tctl-v1).
+In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the [Web UI](/web-ui) or [Temporal CLI](/cli).
 
 ## How to debug in a production environment {#debug-in-a-production-environment}
 
 You can debug production Workflows using:
 
 - [Web UI](/web-ui)
-- [tctl](/tctl-v1)
+- [Temporal CLI](/cli)
 - [Replay](/dev-guide/go/testing#replay)
 - [Tracing](/dev-guide/go/observability#tracing-and-context-propogation)
 - [Logging](/dev-guide/go/observability#logging)
@@ -336,4 +334,3 @@ To alleviate this issue, you can set the `TEMPORAL_DEBUG` environment variable t
 Make sure to set `TEMPORAL_DEBUG` to true only during debugging.
 
 :::
-

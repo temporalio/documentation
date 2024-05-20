@@ -5,15 +5,14 @@ sidebar_label: Failures
 description: A Failure is Temporal's representation of various types of errors that occur in the system.
 toc_max_heading_level: 4
 keywords:
-- explanation
-- failure
-- term
+  - explanation
+  - failure
+  - term
 tags:
-- explanation
-- failure
-- term
+  - explanation
+  - failure
+  - term
 ---
-
 
 A Failure is Temporal's representation of various types of errors that occur in the system.
 
@@ -94,7 +93,7 @@ When [Cancellation](/activities#cancellation) of a Workflow or Activity is reque
 For example, in TypeScript, in some cases a Cancelled Failure is thrown directly by a Workflow API function, and in other cases the Cancelled Failure is wrapped in a different Failure.
 To check both types of cases, TypeScript has the [isCancellation](https://typescript.temporal.io/api/namespaces/workflow#iscancellation) helper.
 
-<!-- TODO also link to Workflow Cancellation concept -->
+{/* TODO also link to Workflow Cancellation concept */}
 
 When a Workflow or Activity is successfully Cancelled, a Cancelled Failure is the `cause` field of the Activity Failure or "Workflow failed" error.
 
@@ -165,4 +164,3 @@ A Server Failure is used for errors that originate in the Cluster.
 - Go: [ServerError](https://pkg.go.dev/go.temporal.io/sdk/temporal#ServerError)
 - Python: [ServerError](https://python.temporal.io/temporalio.exceptions.ServerError.html)
 - Proto: [ServerFailureInfo](https://api-docs.temporal.io/#temporal.api.failure.v1.ServerFailureInfo) and [Failure](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)
-

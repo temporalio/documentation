@@ -1,3 +1,4 @@
+// @@@SNIPSTART javasdk-build-caller-app-using-local-client-custom-namespace
 package clientsample;
 
 import io.temporal.client.WorkflowClient;
@@ -45,4 +46,4 @@ public class YourCallerApp {
         System.exit(0);
     }
 }
-
+// @@@SNIPEND

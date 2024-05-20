@@ -2,24 +2,22 @@
 id: observability
 title: Observability - Java SDK feature guide
 sidebar_label: Observability
-sidebar_position: 7
 description: Improve observability in your Java-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
 slug: /dev-guide/java/observability
 toc_max_heading_level: 4
 keywords:
-- developer-guide
-- guide-context
-- how-to
-- java
-- sdk
+  - developer-guide
+  - guide-context
+  - how-to
+  - java
+  - sdk
 tags:
-- developer-guide
-- guide-context
-- how-to
-- java
-- sdk
+  - developer-guide
+  - guide-context
+  - how-to
+  - java
+  - sdk
 ---
-
 
 The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
 
@@ -78,8 +76,6 @@ Tracing allows you to view the call graph of a Workflow along with its Activitie
 
 Temporal Web's tracing capabilities mainly track Activity Execution within a Temporal context. If you need custom tracing specific for your use case, you should make use of context propagation to add tracing logic accordingly.
 
-For information about how to configure exporters and instrument your code, see [Tracing Temporal Services with OTEL](https://github.com/temporalio/temporal/blob/master/develop/docs/tracing.md).
-
 To configure tracing in Java, register the `OpenTracingClientInterceptor()` interceptor.
 You can register the interceptors on both the Temporal Client side and the Worker side.
 
@@ -132,7 +128,7 @@ To get a standard `slf4j` logger in your Workflow code, use the [`Workflow.getLo
 private static final Logger logger = Workflow.getLogger(DynamicDslWorkflow.class);
 ```
 
-Logs in replay mode are omitted unless the [`WorkerFactoryOptions.Builder.setEnableLoggingInReplay(boolean)`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactoryOptions.Builder.html#setEnableLoggingInReplay(boolean)) method is set to true.
+Logs in replay mode are omitted unless the [`WorkerFactoryOptions.Builder.setEnableLoggingInReplay(boolean)`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactoryOptions.Builder.html#setEnableLoggingInReplay(boolean)>) method is set to true.
 
 ### How to provide a custom logger {#custom-logger}
 
@@ -158,7 +154,7 @@ You can do this with [Search Attributes](/visibility#search-attribute).
 
 The steps to using custom Search Attributes are:
 
-- Create a new Search Attribute in your Cluster using `tctl search-attribute create` or the Cloud UI.
+- Create a new Search Attribute in your Cluster using `temporal operator search-attribute create` or the Cloud UI.
 - Set the value of the Search Attribute for a Workflow Execution:
   - On the Client by including it as an option when starting the Execution.
   - In the Workflow by calling `UpsertSearchAttributes`.
@@ -166,16 +162,16 @@ The steps to using custom Search Attributes are:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
 - Query Workflow Executions by the Search Attribute using a [List Filter](/visibility#list-filter):
-  - [In `tctl`](/tctl-v1/workflow#list).
+  - [In the Temporal CLI](/cli/workflow#list).
   - In code by calling `ListWorkflowExecutions`.
 
 Here is how to query Workflow Executions:
 
 ### How to set custom Search Attributes {#custom-search-attributes}
 
-After you've created custom Search Attributes in your Cluster (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+After you've created custom Search Attributes in your Cluster (using `temporal operator search-attribute create` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
-To set a custom Search Attribute, call the [`setSearchAttributes()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setSearchAttributes(java.util.Map)) method.
+To set a custom Search Attribute, call the [`setSearchAttributes()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setSearchAttributes(java.util.Map)>) method.
 
 ```java
 WorkflowOptions workflowOptions =
@@ -197,7 +193,7 @@ WorkflowOptions workflowOptions =
 
 You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
 
-In your Workflow code, call the [`upsertSearchAttributes(Map<String, ?> searchAttributes)`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertSearchAttributes(java.util.Map)) method.
+In your Workflow code, call the [`upsertSearchAttributes(Map<String, ?> searchAttributes)`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertSearchAttributes(java.util.Map)>) method.
 
 ```java
  Map<String, Object> attr1 = new HashMap<>();
@@ -226,4 +222,3 @@ The results of `upsertSearchAttributes()` output the following search attributes
 To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
 
 To remove a Search Attribute, call the `upsertSearchAttributes()` method and set it to an empty map.
-

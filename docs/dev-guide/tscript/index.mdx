@@ -2,18 +2,16 @@
 id: index
 title: Temporal TypeScript SDK development documentation
 sidebar_label: TypeScript SDK
-sidebar_position: 6
 description: Learn how to use the Temporal TypeScript SDK.
 slug: /dev-guide/typescript
 toc_max_heading_level: 4
 keywords:
-- dev guide
-- typescript
+  - dev guide
+  - typescript
 tags:
-- dev-guide
-- typescript
+  - dev-guide
+  - typescript
 ---
-
 
 This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
 
@@ -24,7 +22,7 @@ The project setup section of the Temporal TypeScript SDK Developer's guide cover
 - [Install the Temporal CLI](/dev-guide/typescript/project-setup#install-cli): Download and install the Temporal CLI for Mac, Linux, or Windows.
 - [Choose a development Cluster](/dev-guide/typescript/project-setup#choose-dev-cluster): Discover which development Cluster you should choose
 - [Boilerplate Temporal Application project code](/dev-guide/typescript/project-setup#boilerplate-project): Discover the minimum code you need to create a boilerplate Temporal Application with TypeScript
-- [Start Workflow using the CLI](/dev-guide/typescript/project-setup#start-workflow): Learn how to start a Temporal Workflow using the CLI
+- [Start Workflow using the Temporal CLI](/dev-guide/typescript/project-setup#start-workflow): Learn how to start a Temporal Workflow using the Temporal CLI
 - [Add a testing framework](/dev-guide/typescript/project-setup#test-framework): How to add a testing framework to your Temporal Application.
 - [Conclusion](/dev-guide/typescript/project-setup#conclusion): Wrap up and review of concepts
 
@@ -40,7 +38,7 @@ The Durable Execution section of the Temporal Developer's guide covers advanced 
 
 The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 
-- [How to install Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): How to install Temporal CLI and run a development Cluster.
+- [How to install the Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): Run the development service on your local system.
 - [How to install a Temporal SDK](/dev-guide/typescript/foundations#install-a-temporal-sdk): A Temporal SDK provides a framework for Temporal Application development.
 - [Linting and types in TypeScript](/dev-guide/typescript/foundations#linting-and-types): Set up linting and types in your TypeScript project.
 - [How to connect a Temporal Client to a Temporal Cluster](/dev-guide/typescript/foundations#connect-to-a-dev-cluster): When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.
@@ -74,7 +72,7 @@ The Features section of the Temporal Developer's guide provides basic implementa
 - [What is a Timer?](/dev-guide/typescript/features#timers): A Timer lets a Workflow sleep for a fixed time period.
 - [Asynchronous design patterns in TypeScript](/dev-guide/typescript/features#asynchronous-design-patterns): Examples that demonstrate how to use `sleep` and `condition` to model asynchronous business logic.
 - [How to use Temporal Cron Jobs](/dev-guide/typescript/features#temporal-cron-jobs): A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
-- [How to create and manage Namespaces](/dev-guide/typescript/features#namespaces): You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..
+- [How to create and manage Namespaces](/dev-guide/typescript/features#namespaces): You can create, update, deprecate or delete your Namespaces using either the Temporal CLI or SDK APIs.
 - [How to use a custom payload converter in TypeScript](/dev-guide/typescript/features#custom-payload-conversion): Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.
 - [How to implement interceptors in TypeScript](/dev-guide/typescript/features#interceptors): Interceptors are a mechanism for modifying inbound and outbound SDK calls, commonly used to add tracing and authorization.
 
@@ -100,8 +98,8 @@ The Testing section of the Temporal Developer's guide covers the many ways to te
 
 The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.
 
-- [How to debug in a development environment](/dev-guide/typescript/debugging#debug-in-a-development-environment): In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the Web UI and tctl.
-- [How to debug in a production environment](/dev-guide/typescript/debugging#debug-in-a-production-environment): Debug production Workflows using the Web UI, tctl, Replays, Tracing, or Logging.
+- [How to debug in a development environment](/dev-guide/typescript/debugging#debug-in-a-development-environment): In addition to the normal development tools of logging and a debugger, you can also inspect your Workflow with the Web UI and the Temporal CLI.
+- [How to debug in a production environment](/dev-guide/typescript/debugging#debug-in-a-production-environment): Debug production Workflows using the Web UI, the Temporal CLI, Replays, Tracing, or Logging.
 - [How to troubleshoot common issues in the TypeScript SDK](/dev-guide/typescript/debugging#troubleshoot-common-issues): This guide helps you troubleshoot various common issues with code that uses the TypeScript SDK.
 
 ## Versioning
@@ -110,4 +108,3 @@ The Versioning section of the Temporal TypeScript SDK developer's guide explains
 
 - [How to patch Workflow code in TypeScript](/dev-guide/typescript/versioning#patching): The TypeScript SDK Patching API lets you change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 - [How to use Worker Versioning in TypeScript](/dev-guide/typescript/versioning#worker-versioning): Version your TypeScript Workers by using build ID-based versioning
-

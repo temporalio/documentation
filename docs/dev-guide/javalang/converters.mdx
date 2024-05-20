@@ -2,20 +2,18 @@
 id: converters
 title: Converters and Codecs - Java SDK feature guide
 sidebar_label: Converters and Codecs
-sidebar_position: 10
 description: The Converters and Codecs section of the Temporal Developer's guide provides guidance on how to support compression, encryption, and other special data handling by implementing custom converters and codecs.
 slug: /dev-guide/java/converters
 toc_max_heading_level: 4
 keywords:
-- Java
-- developer-guide
-- guide-context
+  - Java
+  - developer-guide
+  - guide-context
 tags:
-- java
-- developer-guide
-- guide-context
+  - java
+  - developer-guide
+  - guide-context
 ---
-
 
 ## How to use a custom Payload Codec in Java {#custom-payload-codec}
 
@@ -205,7 +203,7 @@ private static JacksonJsonPayloadConverter yourCustomJacksonJsonPayloadConverter
 //...
 ```
 
-To set your custom Payload Converter, use it with [withPayloadConverterOverrides](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DefaultDataConverter.html#withPayloadConverterOverrides(io.temporal.common.converter.PayloadConverter...)) with a new instance of `DefaultDataConverter` in your `WorkflowClient` options that you use in your Worker process and to start your Workflow Executions.
+To set your custom Payload Converter, use it with [withPayloadConverterOverrides](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DefaultDataConverter.html#withPayloadConverterOverrides(io.temporal.common.converter.PayloadConverter...)>) with a new instance of `DefaultDataConverter` in your `WorkflowClient` options that you use in your Worker process and to start your Workflow Executions.
 
 The following example shows how to set a custom `YourCustomPayloadConverter` Payload Converter.
 
@@ -219,4 +217,3 @@ DefaultDataConverter ddc =
         WorkflowClientOptions.newBuilder().setDataConverter(ddc).build();
 //...
 ```
-
