@@ -121,6 +121,14 @@ Continue-As-New is the mechanism by which all relevant state is passed to a new 
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [continue-as-new](/tags/continue-as-new)_
 
+#### [Core SDK](https://temporal.io/blog/why-rust-powers-core-sdk)
+
+The Core SDK is a shared common core library used by several Temporal SDKs.
+Written in Rust, the Core SDK provides complex concurrency management and state machine logic among its standout features.
+Centralizing development enables the Core SDK to support quick and reliable deployment of new features to existing SDKs, and to more easily add new SDK languages to the Temporal ecosystem.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation), [continue-as-new](/tags/continue-as-new)_
+
 #### [Custom Data Converter](/dataconversion#custom-data-converter)
 
 A custom Data Converter extends the default Data Converter with custom logic for Payload conversion or Payload encryption.

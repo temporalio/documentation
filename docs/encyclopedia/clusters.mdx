@@ -2,7 +2,6 @@
 id: clusters
 title: What is a Temporal Service?
 sidebar_label: Temporal Service
-sidebar_position: 8
 description: This guide provides a comprehensive overview of the Temporal Service.
 slug: /clusters
 toc_max_heading_level: 4
@@ -71,13 +70,13 @@ Temporal offers official support for, and is tested against, dependencies with t
 The Frontend Service is a stateless gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Frontend Service</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Frontend Service</p>
   </div>
-  <div class="tdiiw" height="1040">
+  <div className="tdiiw" height="1040">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/temporal-frontend-service.svg"
       alt="Frontend Service"
     />
@@ -111,16 +110,16 @@ The History Service is responsible for persisting Workflow Execution state to th
 When the Workflow Execution is able to progress, the History Service adds a Task with the Workflow's updated history to the Task Queue.
 From there, a Worker can poll for work, receive this updated history, and resume execution.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">
       Block diagram of how the History Service relates to the other services of
       the Temporal Server and to the Temporal Service
     </p>
   </div>
-  <div class="tdiiw" height="1040">
+  <div className="tdiiw" height="1040">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/temporal-history-service.svg"
       alt="Block diagram of how the History Service relates to the other services of the Temporal Server and to a Temporal Service"
     />
@@ -174,13 +173,13 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
 
 The Matching Service is responsible for hosting user-facing [Task Queues](/workers#task-queue) for Task dispatching.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Matching Service</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Matching Service</p>
   </div>
-  <div class="tdiiw" height="980">
+  <div className="tdiiw" height="980">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/temporal-matching-service.svg"
       alt="Matching Service"
     />
@@ -201,13 +200,13 @@ Ports are configurable in the Temporal Service configuration.
 
 The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Worker Service</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Worker Service</p>
   </div>
-  <div class="tdiiw" height="740">
+  <div className="tdiiw" height="740">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/temporal-worker-service.svg"
       alt="Worker Service"
     />
@@ -251,13 +250,13 @@ The Temporal Persistence store is a database used by the [Temporal Server](#temp
 A Temporal Service's only required dependency for basic operation is the Persistence database.
 Multiple types of databases are supported.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Persistence</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Persistence</p>
   </div>
-  <div class="tdiiw" height="620">
+  <div className="tdiiw" height="620">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/temporal-database.svg"
       alt="Persistence"
     />

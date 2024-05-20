@@ -2,7 +2,6 @@
 id: dataconversion
 title: How does Temporal handle application data?
 sidebar_label: Data conversion
-sidebar_position: 10
 description: This guide provides an overview of data handling using a Data Converter on the Temporal Platform.
 slug: /dataconversion
 toc_max_heading_level: 4
@@ -24,31 +23,31 @@ tags:
 
 This guide provides an overview of data handling using a Data Converter on the Temporal Platform.
 
-Data Converters in Temporal are SDK components that handle the serialization and encoding of data entering and exiting a Temporal Cluster.
-Workflow inputs and outputs need to be serialized and deserialized so they can be sent as JSON to a Temporal Cluster.
+Data Converters in Temporal are SDK components that handle the serialization and encoding of data entering and exiting a Temporal Service.
+Workflow inputs and outputs need to be serialized and deserialized so they can be sent as JSON to a Temporal Service.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Data Converter encodes and decodes data</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Data Converter encodes and decodes data</p>
   </div>
-  <div class="tdiiw" height="1240">
+  <div className="tdiiw" height="1240">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/default-data-converter.svg"
       alt="Data Converter encodes and decodes data"
     />
   </div>
 </div>
 
-The Data Converter encodes data from your application to a [Payload](#payload) before it is sent to the Temporal Cluster in the Client call.
+The Data Converter encodes data from your application to a [Payload](#payload) before it is sent to the Temporal Service in the Client call.
 When the Temporal Server sends the encoded data back to the Worker, the Data Converter decodes it for processing within your application.
 This ensures that all your sensitive data exists in its original format only on hosts that you control.
 
-Data Converter steps are followed when data is sent to a Temporal Cluster (as input to a Workflow) and when it is returned from a Workflow (as output).
+Data Converter steps are followed when data is sent to a Temporal Service (as input to a Workflow) and when it is returned from a Workflow (as output).
 Due to how Temporal provides access to Workflow output, this implementation is asymmetric:
 
-- Data encoding is performed automatically using the default converter provided by Temporal or your custom Data Converter when passing input to a Temporal Cluster. For example, plain text input is usually serialized into a JSON object.
-- Data decoding may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Cluster. Instead, they are stored encoded on the Cluster, and you need to provide an additional parameter when using [`temporal workflow show`](/cli/workflow#show) or when browsing the Web UI to view output.
+- Data encoding is performed automatically using the default converter provided by Temporal or your custom Data Converter when passing input to a Temporal Service. For example, plain text input is usually serialized into a JSON object.
+- Data decoding may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Service. Instead, they are stored encoded on the Temporal Service, and you need to provide an additional parameter when using [`temporal workflow show`](/cli/workflow#show) or when browsing the Web UI to view output.
 
 Each piece of data (like a single argument or return value) is encoded as a [Payload](#payload), which consists of binary data and key-value metadata.
 
@@ -207,7 +206,7 @@ Remote data encoding is exposing your Payload Codec via HTTP endpoints to suppor
 Running your encoding remotely allows you to use it with the [Temporal CLI](/cli) to encode/decode data for several commands including `temporal workflow show` and with Temporal Web UI to decode data in your Workflow Execution details view.
 
 To run data encoding/decoding remotely, use a [Codec Server](#codec-server). A Codec Server is an HTTP server that uses your custom Codec logic to decode your data remotely.
-The Codec Server is independent of the Temporal Cluster and decodes your encrypted payloads through predefined endpoints.
+The Codec Server is independent of the Temporal Service and decodes your encrypted payloads through predefined endpoints.
 You create, operate, and manage access to your Codec Server in your own environment.
 The Temporal CLI and the Web UI in turn provide built-in hooks to call the Codec Server to decode encrypted payloads on demand.
 
@@ -220,7 +219,7 @@ To encode this data, [specify your Codec Server endpoints](#codec-server) with [
 
 #### Decoding data on the Web UI and CLI
 
-If you use custom encoding, Payload data handled by the Temporal Cluster is stored encoded. Since the Web UI uses the [Visibility](/clusters#visibility) database to show events and data stored on the Temporal Server, all data in the Workflow Execution History in your Web UI is displayed in the encoded format.
+If you use custom encoding, Payload data handled by the Temporal Service is stored encoded. Since the Web UI uses the [Visibility](/clusters#visibility) database to show events and data stored on the Temporal Server, all data in the Workflow Execution History in your Web UI is displayed in the encoded format.
 
 To decode output when using the Web UI and the Temporal CLI, use a [Codec Server](#codec-server).
 

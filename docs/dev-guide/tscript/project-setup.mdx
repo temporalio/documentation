@@ -2,7 +2,6 @@
 id: project-setup
 title: Set up a Temporal Application project - TypeScript SDK dev guide
 sidebar_label: Project setup
-sidebar_position: 2
 description: The project setup section of the Temporal TypeScript SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in TypeScript—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/typescript/project-setup
 toc_max_heading_level: 4
@@ -425,7 +424,7 @@ To define a Workflow, import the Activity types and the `@temporalio/workflow` l
 Define the Activity Execution options. `StartToCloseTimeout` or `ScheduleToCloseTimeout` must be set:
 The `backgroundCheck` function that follows is an example of a basic Workflow Definition.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/workflows.ts">
     View the source code
   </a>{' '}
@@ -487,7 +486,7 @@ You'll define your Activities in this file.
 
 Add the following code to define your Activity:
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/activities.ts">
     View the source code
   </a>{' '}
@@ -523,7 +522,7 @@ In regards to organization, we recommend keeping Worker code separate from Workf
 
 Add the following code to `src/worker.ts` to define a worker process that communicates with a local development server:
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/worker.ts">
     View the source code
   </a>{' '}
@@ -592,7 +591,7 @@ A Temporal Cloud Worker requires that you specify the following in the Client co
 Add the following code to `src/worker.ts` to define a worker process that communicates with Temporal Cloud using an mTLS connection, using
 configuration provided via environment variables:
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/worker-cloud.ts">
     View the source code
   </a>{' '}
@@ -762,7 +761,7 @@ To use a Worker with a self-hosted Temporal Cluster, set the IP address, port, a
 
 Add the following code to `src/worker.ts` to define a worker process that communicates with a self-hosted Temporal cluster using a specific namespace and IP address:
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/worker-self-hosted.ts">
     View the source code
   </a>{' '}
@@ -827,7 +826,6 @@ RUN npm run build
 RUN npm ci --omit dev
 
 FROM gcr.io/distroless/nodejs20-debian11
-
 
 COPY --from=build /app/node_modules /app/node_modules
 COPY --from=build /app/lib /app/lib
@@ -906,13 +904,13 @@ When you visit for the first time, the Web UI directs you to [http://localhost:8
 
 Use the Namespace dropdown to select the project Namespace you created earlier.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Web UI Namespace selection</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Web UI Namespace selection</p>
   </div>
-  <div class="tdiiw" height="1402">
+  <div className="tdiiw" height="1402">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/web-ui-namespace-selection.png"
       alt="Web UI Namespace selection"
     />
@@ -925,13 +923,13 @@ You should now be at [http://localhost:8233/namespaces/backgroundcheck_namespace
 
 If you ever want to confirm that a Worker is polling on the Task Queue that the Workflow started on, you can visit the Workflow Execution's details page and click on the Task Queue name.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Click on the Task Queue name to view polling Workers</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Click on the Task Queue name to view polling Workers</p>
   </div>
-  <div class="tdiiw" height="782">
+  <div className="tdiiw" height="782">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/click-task-queue-name.png"
       alt="Click on the Task Queue name to view polling Workers"
     />
@@ -941,13 +939,13 @@ If you ever want to confirm that a Worker is polling on the Task Queue that the 
 This will direct you to a page where you can view the Workers polling that Task Queue.
 If there are none, the application won't run.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Confirm Workers polling Task Queue</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Confirm Workers polling Task Queue</p>
   </div>
-  <div class="tdiiw" height="692">
+  <div className="tdiiw" height="692">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/confirm-workers-polling-task-queue.png"
       alt="Confirm Workers polling Task Queue"
     />
@@ -1022,13 +1020,13 @@ The URL will look something like the following:
 https://cloud.temporal.io/namespaces/<namespace>.<account-id>/workflows
 ```
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">View Workflows in the Cloud UI</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">View Workflows in the Cloud UI</p>
   </div>
-  <div class="tdiiw" height="578">
+  <div className="tdiiw" height="578">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/cloud-view-workflows.png"
       alt="View Workflows in the Cloud UI"
     />
@@ -1086,7 +1084,7 @@ You can test Workflow code for the following conditions:
 
 Add the following code to `src/mocha/backgroundcheck.test.ts` to test that the Workflow executes successfully.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/mocha/backgroundcheck.test.ts">
     View the source code
   </a>{' '}
@@ -1161,7 +1159,7 @@ You can test Activity code for the following conditions:
 Add the following code to `src/mocha/ssntrace.test.ts` to test the `ssnTrace`
 Activity and ensure it returns the expected value:
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/mocha/ssntrace.test.ts">
     View the source code
   </a>{' '}

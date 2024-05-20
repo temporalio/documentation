@@ -2,7 +2,6 @@
 id: foundations
 title: Foundations - Go SDK feature guide
 sidebar_label: Foundations
-sidebar_position: 4
 description: The Foundations section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/go/foundations
 toc_max_heading_level: 4
@@ -249,7 +248,7 @@ Workflows are the fundamental unit of a Temporal Application, and it all starts 
 In the Temporal Go SDK programming model, a [Workflow Definition](/workflows#workflow-definition) is an exportable function.
 Below is an example of a basic Workflow Definition.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">
     View the source code
   </a>{' '}
@@ -294,7 +293,7 @@ However, the best practice is to pass a single parameter that is of a `struct` t
 
 All Workflow Definition parameters must be serializable and can't be channels, functions, variadic, or unsafe pointers.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">
     View the source code
   </a>{' '}
@@ -310,7 +309,6 @@ import (
 
 	"go.temporal.io/sdk/workflow"
 )
-
 
 // YourWorkflowParam is the object passed to the Workflow.
 type YourWorkflowParam struct {
@@ -337,7 +335,7 @@ However, it's not possible to receive both a custom value and an error in the ca
 The caller will receive either one or the other.
 Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be terminated, and any custom return values will be ignored by the system.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">
     View the source code
   </a>{' '}
@@ -383,7 +381,7 @@ In Go, by default, the Workflow Type name is the same as the function name.
 
 To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/worker/main_dacx.go">
     View the source code
   </a>{' '}
@@ -460,7 +458,7 @@ Activities written as struct methods can use shared struct variables, such as:
 
 Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_activity_definition_dacx.go">
     View the source code
   </a>{' '}
@@ -521,7 +519,7 @@ This parameter is optional for an Activity Definition, though it is recommended,
 An Activity Definition can support as many other custom parameters as needed.
 However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_activity_definition_dacx.go">
     View the source code
   </a>{' '}
@@ -529,7 +527,6 @@ However, all parameters must be serializable (parameters can’t be channels, fu
 </div>
 
 ```go
-
 
 // YourActivityParam is the struct passed to your Activity.
 // Use a struct so that your function signature remains compatible if fields change.
@@ -552,7 +549,7 @@ There is no explicit limit to the amount of data that can be returned by an Acti
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_activity_definition_dacx.go">
     View the source code
   </a>{' '}
@@ -560,7 +557,6 @@ You may wish to use a `struct` type to hold all custom values, just keep in mind
 </div>
 
 ```go
-
 
 // YourActivityResultObject is the struct returned from your Activity.
 // Use a struct so that you can return multiple values of different types.
@@ -586,7 +582,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 
 To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/worker/main_dacx.go">
     View the source code
   </a>{' '}
@@ -634,7 +630,7 @@ Otherwise, no additional limitations exist on Activity implementations.
            The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
            The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">
     View the source code
   </a>{' '}
@@ -971,7 +967,7 @@ gow run worker/main.go # automatically reloads when file changes
 
 :::
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/worker/main_dacx.go">
     View the source code
   </a>{' '}
@@ -992,7 +988,6 @@ import (
 
 	"documentation-samples-go/yourapp"
 )
-
 
 func main() {
 	// Create a Temporal Client
@@ -1483,7 +1478,7 @@ For more information about managing and generating client certificates for Tempo
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/cloud/worker/main_dacx.go">
     View the source code
   </a>{' '}
@@ -1503,7 +1498,6 @@ import (
 
 	"documentation-samples-go/cloud"
 )
-
 
 func main() {
 	// Get the key and cert from your env or local machine
