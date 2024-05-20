@@ -80,13 +80,13 @@ If you are interested in leveraging AWS PrivateLink in your Namespaces, [create 
 To set up PrivateLink connectivity with Temporal Cloud, you'll need to perform the following high-level steps:
 
 1. Add a VPC Endpoint Interface in your AWS VPC.
-2. Configure security groups to allow TCP egress traffic to port `7233` (for gRPC communication).
+1. Configure security groups to allow TCP ingress traffic to port `7233` (for gRPC communication).
 
 Once set up, you can test your PrivateLink connectivity using:
 
 1. Non-Temporal tools like cURL (useful for testing from environments that restrict tool usage).
-2. The Temporal CLI: by setting the [--tls-server-name](/cli/cmd-options#tls-server-name) parameter to the PrivateLink endpoint.
-3. Temporal SDKs: by setting the server name argument to the PrivateLink endpoint.
+1. The Temporal CLI: by setting the [--tls-server-name](/cli/cmd-options#tls-server-name) parameter to the PrivateLink endpoint.
+1. Temporal SDKs: by setting the server name argument to the PrivateLink endpoint.
 
 ### Encryption
 
