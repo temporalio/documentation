@@ -9,12 +9,10 @@ tags:
   - self-hosted-temporal
 ---
 
-<span style={{ backgroundColor: 'rgb(255, 255, 102)', fontWeight: 'bold' }}>Content to be developed here</span>
-
 A Global Namespace is a Namespace that exists across Clusters.
 It uses Multi-Cluster Replication to automatically replicate metadata and Workflow state from an active Cluster to a standby Cluster.
 In the case of operational issues, a failover allows responsibility to pass from the active to the standby Cluster.
-This automatic approach, where there's always one or more standby Clusters waiting to take over, is called **High Availability**.
+This automatic approach, where there's always one or more standby Clusters waiting to take over, is called High Availability.
 
 A Global Namespace may be replicated to any number of Clusters, but is active in only one Cluster at any given time.
 
