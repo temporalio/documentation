@@ -223,7 +223,7 @@
           "value": "python"
         }
       ],
-      "destination": "/dev-guide/python/foundations:path*",
+      "destination": "/develop/python/foundations:path*",
       "permanent": false
     },
     {
@@ -235,7 +235,7 @@
           "value": "python"
         }
       ],
-      "destination": "/dev-guide/python/features:path*",
+      "destination": "/develop/python/features:path*",
       "permanent": false
     },
     {
@@ -247,7 +247,7 @@
           "value": "python"
         }
       ],
-      "destination": "/dev-guide/python/observability:path*",
+      "destination": "/develop/python/observability:path*",
       "permanent": false
     },
     {
@@ -259,7 +259,7 @@
           "value": "python"
         }
       ],
-      "destination": "/dev-guide/python/testing:path*",
+      "destination": "/develop/python/testing:path*",
       "permanent": false
     },
     {
@@ -1991,11 +1991,11 @@
       "destination": "/encyclopedia/go-sdk-multithreading"
     },
     {
-      "source": "/dev-guide/python/async-vs-sync",
+      "source": "/develop/python/async-vs-sync",
       "destination": "/encyclopedia/python-sdk-sync-vs-async"
     },
     {
-      "source": "/dev-guide/python/sandbox",
+      "source": "/develop/python/sandbox",
       "destination": "/encyclopedia/python-sdk-sandbox"
     }
   ]

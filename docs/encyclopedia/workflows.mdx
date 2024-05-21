@@ -109,7 +109,7 @@ class YourBasicWorkflowImpl implements YourBasicWorkflow {
 </TabItem>
 <TabItem value="python" label="Python">
 
-**[Workflow Definition in Python](/dev-guide/python/core-application#develop-workflows)**
+**[Workflow Definition in Python](/develop/python/core-application#develop-workflows)**
 
 ```Python
 @workflow.defn
@@ -259,7 +259,7 @@ This feature is useful for Workflow Definition logic that needs to be updated bu
 
 - [How to patch Workflow code in Go](/dev-guide/go/versioning#patching)
 - [How to patch Workflow code in Java](/dev-guide/java/versioning#patching)
-- [How to patch Workflow code in Python](/dev-guide/python/versioning#python-sdk-patching-api)
+- [How to patch Workflow code in Python](/develop/python/versioning#python-sdk-patching-api)
 - [How to patch Workflow code in TypeScript](/dev-guide/typescript/versioning#patching)
 
 #### Worker Build Ids
@@ -268,7 +268,7 @@ Temporal [Worker Build Id-based versioning](/workers#worker-versioning) lets you
 
 - [How to version Workers in Go](/dev-guide/go/versioning#worker-versioning)
 - [How to version Workers in Java](/dev-guide/java/versioning#worker-versioning)
-- [How to version Workers in Python](/dev-guide/python/versioning#worker-versioning)
+- [How to version Workers in Python](/develop/python/versioning#worker-versioning)
 - [How to version Workers in TypeScript](/dev-guide/typescript/versioning#worker-versioning)
 
 ### Handling unreliable Worker Processes
@@ -313,7 +313,7 @@ It is the main unit of execution of a [Temporal Application](/temporal#temporal-
 - [How to start a Workflow Execution using the Go SDK](/develop/go/temporal-client#start-workflow-execution)
 - [How to start a Workflow Execution using the Java SDK](/develop/java/temporal-client#start-workflow-execution)
 - [How to start a Workflow Execution using the PHP SDK](/dev-guide/php/foundations#start-workflow-execution)
-- [How to start a Workflow Execution using the Python SDK](/dev-guide/python/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the Python SDK](/develop/python/temporal-clients#start-workflow-execution)
 - [How to start a Workflow Execution using the TypeScript SDK](/dev-guide/typescript/foundations#start-workflow-execution)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
@@ -350,7 +350,7 @@ If a failure occurs, the Workflow Execution picks up where the last recorded eve
 
 - [How to use Replay APIs using the Go SDK](/dev-guide/go/testing#replay)
 - [How to use Replay APIs using the Java SDK](/dev-guide/java/testing#replay)
-- [How to use Replay APIs using the Python SDK](/dev-guide/python/test-suites#replay)
+- [How to use Replay APIs using the Python SDK](/develop/python/test-suites#replay)
 - [How to use Replay APIs using the TypeScript SDK](/dev-guide/typescript/testing#replay)
 
 ### Commands and awaitables
@@ -599,7 +599,7 @@ In the case of [Temporal Cron Jobs](#temporal-cron-job), Continue-As-New is actu
 - [How to Continue-As-New using the Go SDK](/dev-guide/go/features#continue-as-new)
 - [How to Continue-As-New using the Java SDK](/dev-guide/java/features#continue-as-new)
 - [How to Continue-As-New using the PHP SDK](/dev-guide/php/features#continue-as-new)
-- [How to Continue-As-New using the Python SDK](/dev-guide/python/continue-as-new)
+- [How to Continue-As-New using the Python SDK](/develop/python/continue-as-new)
 - [How to Continue-As-New using the TypeScript SDK](/dev-guide/typescript/features#continue-as-new)
 
 ### What is a Reset? {#reset}
@@ -702,7 +702,7 @@ A Workflow Execution Timeout is the maximum time that a Workflow Execution can b
 - [How to set a Workflow Execution Timeout using the Go SDK](/dev-guide/go/features#workflow-timeouts)
 - [How to set a Workflow Execution Timeout using the Java SDK](/dev-guide/java/features#workflow-timeouts)
 - [How to set a Workflow Execution Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
-- [How to set a Workflow Execution Timeout using the Python SDK](/dev-guide/python/failure-detection#workflow-timeouts)
+- [How to set a Workflow Execution Timeout using the Python SDK](/develop/python/failure-detection#workflow-timeouts)
 - [How to set a Workflow Execution Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
 
 <div className="tdiw">
@@ -730,7 +730,7 @@ A Workflow Run Timeout is the maximum amount of time that a single Workflow Run 
 - [How to set a Workflow Run Timeout using the Go SDK](/dev-guide/go/features#workflow-timeouts)
 - [How to set a Workflow Run Timeout using the Java SDK](/dev-guide/java/features#workflow-timeouts)
 - [How to set a Workflow Run Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
-- [How to set a Workflow Run Timeout using the Python SDK](/dev-guide/python/failure-detection#workflow-timeouts)
+- [How to set a Workflow Run Timeout using the Python SDK](/develop/python/failure-detection#workflow-timeouts)
 - [How to set a Workflow Run Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
 
 <div className="tdiw">
@@ -758,7 +758,7 @@ A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/wo
 - [How to set a Workflow Task Timeout using the Go SDK](/dev-guide/go/features#workflow-timeouts)
 - [How to set a Workflow Task Timeout using the Java SDK](/dev-guide/java/features#workflow-timeouts)
 - [How to set a Workflow Task Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
-- [How to set a Workflow Task Timeout using the Python SDK](/dev-guide/python/failure-detection#workflow-timeouts)
+- [How to set a Workflow Task Timeout using the Python SDK](/develop/python/failure-detection#workflow-timeouts)
 - [How to set a Workflow Task Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
 
 <div className="tdiw">
@@ -790,7 +790,7 @@ Workers consume no additional resources while waiting for a Timer to fire, so a 
 - [How to set Timers in Go](/dev-guide/go/features#timers)
 - [How to set Timers in Java](/dev-guide/java/features#timers)
 - [How to set Timers in PHP](/dev-guide/php/features#timers)
-- [How to set Timers in Python](/dev-guide/python/timers)
+- [How to set Timers in Python](/develop/python/timers)
 - [How to set Timers in TypeScript](/dev-guide/typescript/features#timers)
 
 The duration of a Timer is fixed, and your Workflow might specify a value as short as one second or as long as several years.
@@ -827,7 +827,7 @@ A Signal is an asynchronous request to a [Workflow Execution](#workflow-executio
 - [How to develop, send, and handle Signals in Go](/dev-guide/go/features#signals)
 - [How to develop, send, and handle Signals in Java](/dev-guide/java/features#signals)
 - [How to develop, send, and handle Signals in PHP](/dev-guide/php/features#signals)
-- [How to develop, send, and handle Signals in Python](/dev-guide/python/messages#signals)
+- [How to develop, send, and handle Signals in Python](/develop/python/messages#signals)
 - [How to develop, send, and handle Signals in TypeScript](/dev-guide/typescript/features#signals)
 
 A Signal delivers data to a running Workflow Execution.
@@ -864,7 +864,7 @@ How to Signal-With-Start in:
 - [How to Signal-With-Start in Go](/dev-guide/go/features#signal-with-start)
 - [How to Signal-With-Start in Java](/dev-guide/java/features#signal-with-start)
 - [How to Signal-With-Start in PHP](/dev-guide/php/features#signal-with-start)
-- [How to Signal-With-Start in Python](/dev-guide/python/messages#signal-with-start)
+- [How to Signal-With-Start in Python](/develop/python/messages#signal-with-start)
 - [How to Signal-With-Start in TypeScript](/dev-guide/typescript/features#signal-with-start)
 
 ## What is a Query? {#query}
@@ -878,7 +878,7 @@ Queries are available for running or completed Workflows Executions only if the 
 - [How to send and handle Queries with the Go SDK](/dev-guide/go/features#queries)
 - [How to send and handle Queries with the Java SDK](/dev-guide/java/features#queries)
 - [How to send and handle Queries with the PHP SDK](/dev-guide/php/features#queries)
-- [How to send and handle Queries with the Python SDK](/dev-guide/python/messages#queries)
+- [How to send and handle Queries with the Python SDK](/develop/python/messages#queries)
 - [How to send and handle Queries with the TypeScript SDK](/dev-guide/typescript/features#queries)
 
 Queries are sent from a Temporal Client to a Workflow Execution.
@@ -920,7 +920,7 @@ Stack Trace Queries are available only for running Workflow Executions.
 - Introduced in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
 - Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.23.1/client#Client.UpdateWorkflowWithOptions) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
 - Available in [Java SDK](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)>) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
-- Available in [Python SDK](https://docs.temporal.io/dev-guide/python/messages#updates) since [v1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
+- Available in [Python SDK](https://docs.temporal.io/develop/python/messages#updates) since [v1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
 - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_ExecuteUpdateAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowUpdateOptions_) since [v0.1.0-beta2](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta2)
 - Available in [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#executeupdate) since [v1.9.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0)
 - Available in [PHP SDK](https://php.temporal.io/classes/Temporal-Client-WorkflowStubInterface.html#method_startUpdate) since [v2.8.0](https://github.com/temporalio/sdk-php/releases/tag/v2.8.0)
@@ -930,7 +930,7 @@ Stack Trace Queries are available only for running Workflow Executions.
 An Update is a request and response from a Temporal Client to a [Workflow Execution](#workflow-execution).
 
 - [How to develop, send, and handle Updates in Go](/dev-guide/go/features#updates)
-- [How to develop, and send Updates in Python](/dev-guide/python/messages#updates)
+- [How to develop, and send Updates in Python](/develop/python/messages#updates)
 - [How to develop, send, and handle Updates in Java](/dev-guide/java/features#updates)
 - [How to develop, send, and handle Updates in PHP](/dev-guide/php/features#updates)
 
@@ -990,7 +990,7 @@ Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
 Currently, the Temporal SDKs that support Dynamic Handlers are:
 
 - [Java](/dev-guide/java/features#dynamic-handler)
-- [Python](/dev-guide/python/messages#dynamic-handler)
+- [Python](/develop/python/messages#dynamic-handler)
 - .NET
 
 The Go SDK supports Dynamic Signals through the [GetUnhandledSignalNames](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetUnhandledSignalNames) function.
@@ -1041,7 +1041,7 @@ If there is any chance that the code provided to the Side Effect could fail, use
 - Available in Temporal Cloud
 - Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) since [v1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
 - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
-- Available in [Python SDK](/dev-guide/python/schedules#schedule-a-workflow) since [v1.1.0](https://github.com/temporalio/sdk-python/releases/tag/1.1.0)
+- Available in [Python SDK](/develop/python/schedules#schedule-a-workflow) since [v1.1.0](https://github.com/temporalio/sdk-python/releases/tag/1.1.0)
 - Available in [TypeScript SDK](https://github.com/temporalio/samples-typescript/tree/main/schedules#schedules) since [v1.5.0](https://github.com/temporalio/sdk-typescript/blob/main/CHANGELOG.md#150---2022-12-07)
 - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.Schedules.html) since [v0.1.0](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-alpha4)
 - Available in [PHP SDK](https://php.temporal.io/classes/Temporal-Client-ScheduleClient.html) since [v2.7.0](https://github.com/temporalio/sdk-php/releases/tag/v2.7.0)
@@ -1265,7 +1265,7 @@ A Temporal Cron Job is the series of Workflow Executions that occur when a Cron 
 - [How to set a Cron Schedule using the Go SDK](/dev-guide/go/features#temporal-cron-jobs)
 - [How to set a Cron Schedule using the Java SDK](/dev-guide/java/features#cron-schedule)
 - [How to set a Cron Schedule using the PHP SDK](/dev-guide/php/features#temporal-cron-jobs)
-- [How to set a Cron Schedule using the Python SDK](/dev-guide/python/schedules#temporal-cron-jobs)
+- [How to set a Cron Schedule using the Python SDK](/develop/python/schedules#temporal-cron-jobs)
 - [How to set a Cron Schedule using the TypeScript SDK](/dev-guide/typescript/features#temporal-cron-jobs)
 
 <div className="tdiw">
