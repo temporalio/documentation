@@ -16,7 +16,24 @@ tags:
   - updates
 ---
 
-<!-- What is on this page-->
+This page shows how to do the following:
+
+Signals
+- [Define Signal](#define-a-signal)
+- [Send a Signal from a Temporal Client](#send-signal-from-client)
+- [Send a Signal from a Workflow](#send-signal-from-workflow)
+- [Signal-With-Start](#signal-with-start)
+- [Set a Dynamic Signal](#set-a-dynamic-signal)
+
+Queries
+- [Define a Query](#define-query)
+- [Send Queries](#send-query)
+- [Set a Dynamic Query](#set-a-dynamic-query)
+
+Updates
+- [Define an Update](#define-update)
+- [Send an Update](#send-update)
+
 
 ## Signals
 
@@ -27,7 +44,7 @@ A [Signal](/workflows#signal) is a message sent to a running Workflow Execution.
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
 
-### Define Signal
+### Define Signal {#define-a-signal}
 
 **How to define a Signal using the Temporal .NET SDK**
 
@@ -224,7 +241,7 @@ public async Task<string> UpdateStatusAsync(Status status)
 }
 ```
 
-### Send an Update
+### Send an Update {#send-update}
 
 **How to send an Update from a Temporal Client using the Temporal .NET SDK**
 

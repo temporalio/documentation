@@ -15,6 +15,14 @@ tags:
   - temporal-client
 ---
 
+This page shows how to do the following:
+
+- [Create a Temporal Client](#create-a-client)
+- [Connect to Temporal Cloud](#connect-to-temporal-cloud)
+- [Start a Workflow](#start-workflow)
+- [Get Workflow results](#get-workflow-results)
+
+
 ## Create a Temporal Client {#create-a-client}
 
 **How to create a Temporal Client using the Temporal .NET SDK**
@@ -76,7 +84,7 @@ var client = await TemporalClient.ConnectAsync(new("my-namespace.a1b2c.tmprl.clo
 });
 ```
 
-## Start a Workflow {#start-worklow}
+## Start a Workflow {#start-workflow}
 
 **How to start a Workflow using the Temporal .NET SDK**
 
@@ -95,7 +103,7 @@ var result = await client.ExecuteWorkflowAsync(
 Console.WriteLine("Result: {0}", result);
 ```
 
-## Get Workflow results
+## Get Workflow results {#get-workflow-results}
 
 **How to get the results of a Workflow Execution using the Temporal .NET SDK**
 

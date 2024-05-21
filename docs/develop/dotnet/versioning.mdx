@@ -36,11 +36,19 @@ tags:
   - workflow-transition
 ---
 
+This page shows how to do the following:
+
+- [Use the .NET SDK Patching API](#dotnet-sdk-patching-api)
+- [Patching in new code](#using-patched-for-workflow-history-markers)
+- [Understanding deprecated Patches in the .NET SDK](#deprecated-patches)
+- [Safe Deployment of PostPatchActivity](#deploy-postpatchactivity)
+
+
 ## Introduction to Versioning
 
 Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY)
 
-## Use the .NET SDK Patching API {#.NET-sdk-patching-api}
+## Use the .NET SDK Patching API {#dotnet-sdk-patching-api}
 
 **How to use the .NET SDK Patching API using the Temporal .NET SDK** 
 
@@ -156,7 +164,7 @@ public class MyWorkflow
 }
 ```
 
-### Safe Deployment of PostPatchActivity {#deploy-new-code}
+### Safe Deployment of PostPatchActivity {#deploy-postpatchactivity}
 
 You can safely deploy `PostPatchActivity` once all Workflows labeled my-patch or earlier are finished, based on the previously mentioned assertion.
 
