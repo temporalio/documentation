@@ -2,7 +2,6 @@
 id: converters
 title: Converters and Codecs - Python SDK feature guide
 sidebar_label: Converters and Codecs
-sidebar_position: 10
 description: The Converters and Codecs section of the Temporal Developer's guide provides guidance on how to support compression, encryption, and other special data handling by implementing custom converters and codecs.
 slug: /dev-guide/python/converters
 toc_max_heading_level: 4
@@ -36,10 +35,10 @@ This page shows the following:
 **How to use a custom Payload Codec in Python.**
 
 Custom Data Converters can change the default Temporal Data Conversion behavior by adding hooks, sending payloads to external storage, or performing different encoding steps.
-If you only need to change the encoding performed on your payloads -- by adding compression or encryption -- you can override the default Data Converter using by creating a new `PayloadCodec`.
+If you only need to change the encoding performed on your payloads -- by adding compression or encryption -- you can override the default Data Converter by creating a new `PayloadCodec`.
 
 The `PayloadCodec` needs to implement `encode()` and `decode()` functions at a minimum.
-These should loop through all of a Workflow's payloads, perform all of your necessary marshalling, compression, or encryption steps in order, and set an `"encoding"` metadata field.
+These should loop through all of a Workflow's payloads, perform all of your necessary marshaling, compression, or encryption steps in order, and set an `"encoding"` metadata field.
 Here is an example that marshals and then compresses a payload using Python's [cramjam](https://github.com/milesgranger/cramjam/tree/master/cramjam-python) library to provide `snappy` compression:
 
 ```python
@@ -102,7 +101,7 @@ Temporal SDKs provide a default [Payload Converter](/dataconversion#payload-conv
 
 ### Conversion sequence {#conversion-sequence}
 
-The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
+The order in which your encoding Payload Converters are applied depends on the order given to the Data Converter.
 You can set multiple encoding Payload Converters to run your conversions.
 When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.
 
@@ -177,7 +176,7 @@ class IPv4AddressPayloadConverter(CompositePayloadConverter):
 
 my_data_converter = dataclasses.replace(
     DataConverter.default,
-    payload_converter_class=IPv4AddressPayloadConverter,
+    payload_converter_className=IPv4AddressPayloadConverter,
 )
 ```
 
@@ -218,7 +217,7 @@ class IPv4AddressPayloadConverter(CompositePayloadConverter):
 
 my_data_converter = dataclasses.replace(
     DataConverter.default,
-    payload_converter_class=IPv4AddressPayloadConverter,
+    payload_converter_className=IPv4AddressPayloadConverter,
 )
 ```
 

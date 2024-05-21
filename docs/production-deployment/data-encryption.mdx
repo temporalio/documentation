@@ -2,7 +2,6 @@
 id: data-encryption
 title: Codec Server - Temporal Platform feature guide
 sidebar_label: Codecs and Encryption
-sidebar_position: 3
 description: This guide explains how to create and deploy a Codec Server to encrypt data with Temporal.
 slug: /production-deployment/data-encryption
 toc_max_heading_level: 4
@@ -40,13 +39,13 @@ To encrypt your Payload, configure your custom encryption logic with a [Payload 
 
 A Payload Codec does byte-to-byte conversion to transform your Payload (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the Client and the [Payload Converter](/dataconversion#payload-converter):
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Remote data encoding architecture</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Remote data encoding architecture</p>
   </div>
-  <div class="tdiiw" height="1183">
+  <div className="tdiiw" height="1183">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/remote-data-encoding.svg"
       alt="Remote data encoding architecture"
     />
@@ -239,13 +238,13 @@ After you create your Codec Server and expose the requisite endpoints, set the e
 
 On Temporal Cloud and self-hosted Temporal Clusters, you can configure a Codec Server endpoint to be used for a Namespace in the Web UI.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Codec Server endpoint Namespace setting</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Codec Server endpoint Namespace setting</p>
   </div>
-  <div class="tdiiw" height="840">
+  <div className="tdiiw" height="840">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/set-codec-endpoint-form.png"
       alt="Codec Server endpoint Namespace setting"
     />
@@ -265,13 +264,13 @@ Setting a Codec Server endpoint on a self-hosted cluster enables it for the enti
 
 You can also override the global Codec Server setting at the browser level. This can be useful when developing, testing, or troubleshooting encoding functionality.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Codec Server endpoint browser setting</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Codec Server endpoint browser setting</p>
   </div>
-  <div class="tdiiw" height="333">
+  <div className="tdiiw" height="333">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/data-encoder-button.png"
       alt="Codec Server endpoint browser setting"
     />

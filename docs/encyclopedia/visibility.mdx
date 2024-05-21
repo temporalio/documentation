@@ -2,7 +2,6 @@
 id: visibility
 title: What is the Temporal Visibility feature?
 sidebar_label: Visibility
-sidebar_position: 7
 description: This guide provides a comprehensive overview of Temporal Visibility.
 slug: /visibility
 toc_max_heading_level: 4
@@ -24,13 +23,13 @@ This guide provides a comprehensive overview of Temporal Visibility.
 
 - For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
 - For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
-- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports Advanced Visibility features](/self-hosted-guide/visibility). The Visibility configuration for Temporal Clusters has been updated and Dual Visibility is enabled. For details, see [Visibility store setup](/self-hosted-guide/visibility).
+- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports Advanced Visibility features](/self-hosted-guide/visibility). The Visibility configuration for the Temporal Service has been updated and Dual Visibility is enabled. For details, see [Visibility store setup](/self-hosted-guide/visibility).
 
 :::
 
-The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Cluster.
+The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Temporal Service.
 
-The [Visibility store](/self-hosted-guide/visibility) in your Temporal Cluster stores persisted Workflow Execution Event History data and is set up as a part of your [Persistence store](/clusters#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
+The [Visibility store](/self-hosted-guide/visibility) in your Temporal Service stores persisted Workflow Execution Event History data and is set up as a part of your [Persistence store](/clusters#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Service.
 
 - [How to set up a Visibility store](/self-hosted-guide/visibility)
 
@@ -57,23 +56,23 @@ For updates, check [Supported databases](/self-hosted-guide/visibility).
 
 Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of [Workflow Executions](/workflows#workflow-execution) through a custom SQL-like [List Filter](#list-filter).
 
-- In Temporal Cluster version 1.20 and later, advanced Visibility is available on SQL databases like MySQL (version 8.0.17 and later) and PostgreSQL (version 12 and later), in addition to support for Elasticsearch.
+- In Temporal Service version 1.20 and later, advanced Visibility is available on SQL databases like MySQL (version 8.0.17 and later) and PostgreSQL (version 12 and later), in addition to support for Elasticsearch.
 - For Temporal Server versions 1.19.1 and earlier, you must [integrate with ElasticSearch](/self-hosted-guide/visibility#elasticsearch) to use advanced Visibility.
   Elasticsearch takes on the Visibility request load, relieving potential performance issues.
-  We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
+  We highly recommend operating a Temporal Service with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
 - On Temporal Cloud, [advanced Visibility is enabled by default for all users](/cloud/users#invite-users).
 
 ## What is Dual Visibility? {#dual-visibility}
 
-Dual Visibility is a feature that lets you set a secondary Visibility store in addition to a primary store in your Temporal Cluster.
+Dual Visibility is a feature that lets you set a secondary Visibility store in addition to a primary store in your Temporal Service.
 Setting up Dual Visibility is optional and can be used to [migrate your Visibility database](/self-hosted-guide/visibility#migrating-visibility-database) or create a backup Visibility store.
 
 For example, if you have Cassandra configured as your Visibility database, you can set up a supported SQL database as your secondary Visibility store and gradually migrate your data to the secondary store before deprecating your primary one.
 
 A Dual Visibility setup requires two Visibility store configurations:
 
-- **Primary Visibility:** The primary Visibility store where Visibility data is written to and read from by default. The primary Visibility store is set with the `visibilityStore` configuration key in your Temporal Cluster.
-- **Secondary Visibility:** A secondary storage for your Visibility data. The secondary Visibility store is set with the `secondaryVisibilityStore` configuration key in your Temporal Cluster.
+- **Primary Visibility:** The primary Visibility store where Visibility data is written to and read from by default. The primary Visibility store is set with the `visibilityStore` configuration key in your Temporal Service.
+- **Secondary Visibility:** A secondary storage for your Visibility data. The secondary Visibility store is set with the `secondaryVisibilityStore` configuration key in your Temporal Service.
 
 For configuration details, see [Dual Visibility setup](/self-hosted-guide/visibility#dual-visibility).
 
@@ -85,7 +84,7 @@ The following combinations are allowed in a Dual Visibility setting.
 | Advanced (SQL)              | Advanced (SQL)                  |
 | Advanced (Elasticsearch)    | Advanced (Elasticsearch)        |
 
-With Dual Visibility, you can read from only one Visibility store at a time, but can configure your Temporal Cluster to write to primary only, secondary only, or to both primary and secondary Visibility stores.
+With Dual Visibility, you can read from only one Visibility store at a time, but can configure your Temporal Service to write to primary only, secondary only, or to both primary and secondary Visibility stores.
 When migrating from one Visibility store database to another, set up the database you want to migrate to as your secondary Visibility store.
 
 You can plan your migration using specific dynamic configuration keys that help you transition your read and write operations from the primary to the secondary Visibility store.
@@ -269,7 +268,7 @@ You might experience lag due to time passing between the Workflow's state change
 
 ### Default Search Attributes
 
-A Temporal Cluster has a set of default Search Attributes already available.
+A Temporal Service has a set of default Search Attributes already available.
 Default Search Attributes are set globally in any Namespace.
 These Search Attributes are created when the initial index is created.
 
@@ -386,7 +385,7 @@ Size limits for a custom Search Attribute:
 
 {/*
 _This refers to the SA key you create in the visibility store with `tctl search-attribute create`. this value is no longer applicable so commenting out for ref later_
-Default total maximum number of Search Attribute **keys** per Temporal Cluster is 100.*/}
+Default total maximum number of Search Attribute **keys** per Temporal Service is 100.*/}
 
 - The default single Search Attribute **value** size limit is 2 KB.
 
@@ -406,7 +405,7 @@ For Temporal Cloud specific configurations, see the [Defaults, limits, and confi
 
 ### Usage
 
-Search Attributes available in your Visibility store can be used with Workflow Executions for that Cluster.
+Search Attributes available in your Visibility store can be used with Workflow Executions for the Temporal Service.
 To actually have results from the use of a [List Filter](#list-filter), Search Attributes must be added to a Workflow Execution as metadata.
 
 - To create custom Search Attributes in your Visibility store, see [Create custom Search Attributes](/self-hosted-guide/visibility#create-custom-search-attributes).

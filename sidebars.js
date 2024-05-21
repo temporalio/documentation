@@ -24,6 +24,7 @@ module.exports = {
             "evaluate/development-features/core-application",
             "evaluate/development-features/temporal-client",
             "evaluate/development-features/throughput-composability",
+            "evaluate/development-features/application-message-passing",
           ],
         },
         "security",
