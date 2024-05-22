@@ -19,9 +19,9 @@ This section contains the following feature guidance for the Temporal Go SDK.
 
 The Foundations section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 
-- [How to install Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): How to install the Temporal CLI and run a development Cluster.
+- [How to install Temporal CLI and run a development server](/dev-guide/typescript/foundations#run-a-development-server): How to install the Temporal CLI and run a development Temporal Service.
 - [How to install a Temporal SDK](/dev-guide/go/foundations#install-a-temporal-sdk): A Temporal SDK provides a framework for Temporal Application development.
-- [How to connect a Temporal Client to a Temporal Cluster](/develop/go/temporal-client#connect-to-development-service): When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.
+- [How to connect a Temporal Client to a Temporal Service](/develop/go/temporal-client#connect-to-development-service): When connecting a Temporal Client to a Temporal Service, you must provide the address and port number of the Temporal Service.
 - [How to connect to Temporal Cloud](/develop/go/temporal-client#connect-to-temporal-cloud): Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.
 - [How to develop a basic Workflow](/dev-guide/go/foundations#develop-workflows): Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.
 - [How to develop an Activity Definition in Go](/dev-guide/go/foundations#activity-definition): In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
@@ -39,7 +39,7 @@ The Features section of the Temporal Developer's guide provides basic implementa
 - [How to develop with Updates](/dev-guide/go/features#updates): An Update is an operation that can mutate the state of a Workflow Execution and return a response.
 - [Workflow timeouts](/dev-guide/go/features#workflow-timeouts): Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 - [How to set Activity timeouts](/dev-guide/go/features#activity-timeouts): Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
-- [How to Heartbeat an Activity](/dev-guide/go/features#activity-heartbeats): An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
+- [How to Heartbeat an Activity](/dev-guide/go/features#activity-heartbeats): An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Service.
 - [How to asynchronously complete an Activity](/dev-guide/go/features#asynchronous-activity-completion): Asynchronous Activity Completion enables the Activity Function to return without the Activity Execution completing.
 - [How to start a Child Workflow Execution](/dev-guide/go/features#child-workflows): A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 - [How to Continue-As-New](/dev-guide/go/features#continue-as-new): Continue-As-New enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
@@ -67,7 +67,7 @@ Improve observability in your Go-based Temporal Workflows. View which Workflow E
 - [How to emit metrics](/dev-guide/go/observability#metrics): Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 - [Tracing and Context Propagation](/dev-guide/go/observability#tracing-and-context-propogation): Explains how the Go SDK supports tracing and custom context propogation.
 - [How to log from a Workflow](/dev-guide/go/observability#logging): Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
-- [How to use Visibility APIs](/dev-guide/go/observability#visibility): The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
+- [How to use Visibility APIs](/dev-guide/go/observability#visibility): The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
 ## Testing
 
