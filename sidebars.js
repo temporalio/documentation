@@ -88,6 +88,7 @@ module.exports = {
             "dev-guide/javalang/foundations",
             "develop/java/temporal-client",
             "dev-guide/javalang/features",
+            "dev-guide/javalang/messages",
             "dev-guide/javalang/observability",
             "dev-guide/javalang/testing",
             "dev-guide/javalang/debugging",
