@@ -65,6 +65,7 @@ module.exports = {
             "dev-guide/golang/foundations",
             "develop/go/temporal-client",
             "dev-guide/golang/features",
+            "dev-guide/golang/messages",
             "dev-guide/golang/cancellation",
             "dev-guide/golang/observability",
             "dev-guide/golang/testing",
