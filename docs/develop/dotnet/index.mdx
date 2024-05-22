@@ -15,3 +15,119 @@ tags:
 ---
 
 <!-- .NET SDK feature guidance landing page-->
+
+This section contains the following feature guidance for the Temporal .NET SDK.
+
+## Core Application
+
+- [Develop a basic Workflow Definition](/develop/dotnet/core-application#develop-workflow): Develop a basic Workflow with the Temporal .NET SDK 
+- [Develop a basic Activity Definition](/develop/dotnet/core-application#develop-activity): Create a basic Activity with the .NET SDK, and understand their role in Workflows
+- [Start an Activity from a Workflow](/develop/dotnet/core-application#activity-execution): Learn to start an Activity from a Workflow.
+- [Run a Worker Process](/develop/dotnet/core-application#run-worker-process): Create and run a Worker Process effectively. 
+- [Set a Dynamic Workflow](/develop/dotnet/core-application#set-a-dynamic-workflow): Set a workflow that can be invoked dynamically at runtime 
+- [Set a Dynamic Activity](/develop/dotnet/core-application#set-a-dynamic-activity): Set an Activity that can be invoked dynamically at runtime 
+
+## Temporal Client
+- [Create a Temporal Client](/develop/dotnet/temporal-client#create-a-client): Learn to instantiate and configure a client to interact with the Temporal Service.
+- [Connect to Temporal Cloud](/develop/dotnet/temporal-client#connect-to-temporal-cloud): Securely connect to the Temporal Cloud for a fully managed service.
+- [Start a Workflow](/develop/dotnet/temporal-client#start-workflow): Initiate Workflows seamlessly via the .NET SDK.
+- [Get Workflow results](/develop/dotnet/temporal-client#get-workflow-results): Retrieve and process the results of your Workflows efficiently. 
+
+## Testing
+- [Test frameworks] (/develop/dotnet/testing-suite#test-frameworks)
+- [Testing Workflows] (/develop/dotnet/testing-suite#testing-workflows)
+- [Testing Activities] (/develop/dotnet/testing-suite#test-activities)
+- [Replay test] (/develop/dotnet/testing-suite#replay-test)
+
+## Failure Detection
+
+- [Workflow timeouts](/develop/dotnet/failure-detection#workflow-timeouts)
+- [Workflow retries](/develop/dotnet/failure-detection#workflow-retries)
+- [Activity timeouts ](/develop/dotnet/failure-detection#activity-timeouts)
+- [Set an Activity Retry Policy](/develop/dotnet/failure-detection#activity-retries)
+
+## Message Passing
+Signals
+- [Define Signal](/develop/dotnet/message-passing#define-a-signal)
+- [Send a Signal from a Temporal Client](/develop/dotnet/message-passing#send-signal-from-client)
+- [Send a Signal from a Workflow](/develop/dotnet/message-passing#send-signal-from-workflow)
+- [Signal-With-Start](/develop/dotnet/message-passing#signal-with-start)
+- [Set a Dynamic Signal](/develop/dotnet/message-passing#set-a-dynamic-signal)
+
+Queries
+- [Define a Query](/develop/dotnet/message-passing#define-query)
+- [Send Queries](/develop/dotnet/message-passing#send-query)
+- [Set a Dynamic Query](/develop/dotnet/message-passing#set-a-dynamic-query)
+
+Updates
+- [Define an Update](/develop/dotnet/message-passing#define-update)
+- [Send an Update](/develop/dotnet/message-passing#send-update)
+
+## Interrupt a Workflow
+
+- [Cancel a Workflow](/develop/dotnet/cancellation#cancellation): Interrupt a Workflow Execution and its Activities through Workflow cancellation.
+- [Terminate a Workflow](/develop/dotnet/cancellation#termination): Interrupt a Workflow Execution and its Activities through Workflow termination.
+
+## Versioning
+
+- [Use the .NET SDK Patching API](/develop/dotnet/versioning#dotnet-sdk-patching-api)
+- [Patching in new code](/develop/dotnet/versioning#using-patched-for-workflow-history-markers)
+- [Understanding deprecated Patches in the .NET SDK](/develop/dotnet/versioning#deprecated-patches)
+- [Safe Deployment of PostPatchActivity](/develop/dotnet/versioning#deploy-postpatchactivity)
+
+
+## Observability
+
+- [Emit Metrics](/develop/dotnet/observability#metrics)
+- [Set up Tracing](/develop/dotnet/observability#tracing)
+- [Log from a Workflow](/develop/dotnet/observability#logging)
+- [Use Visibility APIs](/develop/dotnet/observability#visibility)
+
+## Debugging
+- [Debug in a development environment](/develop/dotnet/debugging#debug-in-a-development-environment)
+- [Debug in a development production ](/develop/dotnet/debugging#debug-in-a-development-production)
+
+## Schedules
+- [Schedule a Workflow](/develop/dotnet/schedules#schedule-a-workflow)
+- [Create a Scheduled Workflow](/develop/dotnet/schedules#create-a-workflow)
+- [Backfill a Scheduled Workflow](/develop/dotnet/schedules#backfill-a-scheduled-workflow)
+- [Delete a Scheduled Workflow](/develop/dotnet/schedules#delete-a-scheduled-workflow)
+- [Describe a Scheduled Workflow](/develop/dotnet/schedules#describe-a-scheduled-workflow)
+- [List a Scheduled Workflow](/develop/dotnet/schedules#list-a-scheduled-workflow)
+- [Pause a Scheduled Workflow](/develop/dotnet/schedules#pause-a-scheduled-workflow)
+- [Trigger a Scheduled Workflow](/develop/dotnet/schedules#trigger-a-scheduled-workflow)
+- [Update a Scheduled Workflow](/develop/dotnet/schedules#update-a-scheduled-workflow)
+- [Use Start Delay](/develop/dotnet/schedules#start-delay)
+
+## Data Encryption
+
+- [How to use a custom Payload Codec](/develop/dotnet/data-encryption#custom-payload-codec)
+- [How to use a custom Payload Converter](/develop/dotnet/data-encryption#custom-payload-converter)
+
+## Durable Timers
+
+- [Sleep](/develop/dotnet/durable-timers)
+
+## Continue-As-New
+
+- [Continue-As-New](/develop/dotnet/continue-as-new)
+
+## Child Workflows
+
+- [Child Workflows](/develop/dotnet/child-workflows)
+
+## Asynchronous Activity
+
+- [Asynchronous Activity](/develop/dotnet/asynchronous-activity)
+
+
+
+
+
+
+
+- Test Frameworks:** Leverage framework tools for workflow and integration testing.
+- **Testing Activities:** Test Activities independently to ensure isolated functionality.
+- **Testing Workflows:** Ensure workflows execute as expected using mock data.
+- **Replay Workflow Execution:** Recreate exact Workflow Execution states with Replay.
+

@@ -1,8 +1,8 @@
 ---
 id: cancellation
-title: Cancellation - .NET SDK feature guide
-sidebar_label: Cancellation
-description: Cancel a Workflow Execution and its Activities using the .NET SDK.
+title: Cancellation and Termination - .NET SDK feature guide
+sidebar_label: Interrupt a Workflow
+description: Cancel and Terminate a Workflow Execution and its Activities using the .NET SDK.
 toc_max_heading_level: 4
 keywords:
   - interrupt workflow execution
@@ -47,7 +47,7 @@ You can interrupt a Workflow Execution in one of the following ways:
 In most cases, canceling is preferable because it allows the Workflow to finish gracefully.
 Terminate only if the Workflow is stuck and cannot be canceled normally.
 
-## Cancellation
+## Cancellation {#cancellation}
 
 To give a Workflow and its Activities the ability to be cancelled, do the following:
 
@@ -180,7 +180,7 @@ public async Task RunAsync()
 }
 ```
 
-## Termination
+## Termination {#termination}
 
 **How to terminate a Workflow Execution in .NET.**
 

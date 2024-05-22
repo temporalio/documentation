@@ -29,14 +29,15 @@ tags:
   - workflow-return-values
 ---
 
-This page shows how to do the following:
-
+This page shows how to do the following: 
 - [Develop a basic Workflow Definition](#develop-workflow)
 - [Develop a basic Activity Definition](#develop-activity)
 - [Start an Activity from a Workflow](#activity-execution)
 - [Run a Worker Process](#run-worker-process)
+- [Set a Dynamic Workflow](#set-a-dynamic-workflow)
+- [Set a Dynamic Activity](#set-a-dynamic-activity)
 
-## Develop Workflow
+## Develop Workflow {#develop-workflow}
 
 **How to develop a basic Workflow using the Temporal .NET SDK**
 
@@ -366,7 +367,7 @@ var host = Host.CreateDefaultBuilder(args)
 await host.RunAsync();
 ```
 
-### Set a Dynamic Workflow {#set-a-dynamic-workflow}
+## Set a Dynamic Workflow {#set-a-dynamic-workflow}
 
 **How to set a Dynamic Workflow using the Temporal .NET SDK**
 
@@ -394,7 +395,7 @@ public class DynamicWorkflow
 }
 ```
 
-### Set a Dynamic Activity {#set-a-dynamic-activity}
+## Set a Dynamic Activity {#set-a-dynamic-activity}
 
 **How to set a Dynamic Activity using the Temporal .NET SDK**
 
