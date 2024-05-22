@@ -39,18 +39,7 @@ To encrypt your Payload, configure your custom encryption logic with a [Payload 
 
 A Payload Codec does byte-to-byte conversion to transform your Payload (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the Client and the [Payload Converter](/dataconversion#payload-converter):
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Remote data encoding architecture</p>
-  </div>
-  <div className="tdiiw" height="1183">
-    <img
-      className="img_ev3q"
-      src="/diagrams/remote-data-encoding.svg"
-      alt="Remote data encoding architecture"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/remote-data-encoding.svg" title="Remote data encoding architecture" />
 
 You can run your Payload Codec with a [Codec Server](/dataconversion#codec-server) and use the Codec Server endpoints in the Web UI and CLI to decode your encrypted Payload locally.
 For details on how to set up a Codec Server, see [Codec Server setup](#codec-server-setup).
