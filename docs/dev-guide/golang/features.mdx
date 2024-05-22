@@ -2,7 +2,6 @@
 id: features
 title: Features - Go SDK feature guide
 sidebar_label: Features
-sidebar_position: 5
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 slug: /dev-guide/go/features
 toc_max_heading_level: 4
@@ -139,6 +138,427 @@ In this section you can find the following:
 - [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
 - [How to register Namespaces](#namespaces)
 
+## How to develop with Signals {#signals}
+
+A [Signal](/workflows#signal) is a message sent to a running Workflow Execution.
+
+Signals are defined in your code and handled in your Workflow Definition.
+Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
+
+### How to define a Signal {#define-signal}
+
+A Signal has a name and can have arguments.
+
+- The name, also called a Signal type, is a string.
+- The arguments must be [serializable](/dataconversion).
+
+Structs should be used to define Signals and carry data, as long as the struct is [serializable via the Data Converter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter.ToPayload).
+The `Receive()` method on the Data Converter decodes the data into the Struct within the Workflow.
+Only public fields are serializable.
+
+```go
+MySignal struct {
+	Message string // serializable
+	message string // not serializable
+}
+```
+
+### How to handle a Signal {#handle-signal}
+
+Workflows listen for Signals by the Signal's name.
+
+Use the `GetSignalChannel()` API from the `go.temporal.io/sdk/workflow` package to get the Signal Channel.
+
+A common use-case is to block a Workflow while waiting for a Signal, like in the following snippet:
+
+```go
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
+  // ...
+  var signal MySignal
+  signalChan := workflow.GetSignalChannel(ctx, "your-signal-name")
+  signalChan.Receive(ctx, &signal)
+  if len(signal.Message) > 0 && signal.Message != "SOME_VALUE" {
+      return errors.New("signal")
+  }
+  // ...
+}
+```
+
+Alternatively, you might want the Workflow to proceed and still be capable of handling external Signals.
+
+```go
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
+   var signal MySignal
+   signalChan := workflow.GetSignalChannel(ctx, "your-signal-name")
+ 	workflow.Go(ctx, func(ctx workflow.Context) {
+ 		for {
+ 			selector := workflow.NewSelector(ctx)
+ 			selector.AddReceive(signalChan, func(c workflow.ReceiveChannel, more bool) {
+ 				c.Receive(ctx, &mySignal)
+ 			})
+ 			selector.Select(ctx)
+ 		}
+ 	})
+   // submit activity one
+   // signal can be received while activity one is pending
+
+ }
+```
+
+In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
+
+Before completing the Workflow or using [Continue-As-New](#continue-as-new), make sure to do an asynchronous drain on the Signal channel.
+Otherwise, the Signals will be lost.
+
+### How to send a Signal from a Temporal Client {#send-signal-from-client}
+
+When a Signal is sent successfully from the Temporal Client, the [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
+
+Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a [Signal](/workflows#signal) to a [Workflow Execution](/workflows#workflow-execution).
+
+Pass in both the [Workflow Id](/workflows#workflow-id) and [Run Id](/workflows#run-id) to uniquely identify the Workflow Execution.
+If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is Running receives the Signal.
+
+```go
+// ...
+signal := MySignal {
+  Message: "Some important data",
+}
+err = temporalClient.SignalWorkflow(context.Background(), "your-workflow-id", runID, "your-signal-name", signal)
+if err != nil {
+	log.Fatalln("Error sending the Signal", err)
+	return
+}
+// ...
+```
+
+Possible errors:
+
+- `serviceerror.NotFound`
+- `serviceerror.Internal`
+- `serviceerror.Unavailable`
+
+### How to send a Signal from a Workflow {#send-signal-from-workflow}
+
+A Workflow can send a Signal to another Workflow, in which case it's called an _External Signal_.
+
+When an External Signal is sent:
+
+- A [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated) Event appears in the sender's Event History.
+- A [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the recipient's Event History.
+
+A Signal can be sent from within a Workflow to a different Workflow Execution using the [`SignalExternalWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SignalExternalWorkflow) API from the `go.temporal.io/sdk/workflow` package.
+
+```go
+// ...
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
+  //...
+  signal := MySignal {
+    Message: "Some important data",
+  }
+  err :=  workflow.SignalExternalWorkflow(ctx, "some-workflow-id", "", "your-signal-name", signal).Get(ctx, nil)
+  if err != nil {
+    // ...
+  }
+// ...
+}
+```
+
+### How to Signal-With-Start {#signal-with-start}
+
+Signal-With-Start is used from the Client.
+It takes a Workflow Id, Workflow arguments, a Signal name, and Signal arguments.
+
+If there's a Workflow running with the given Workflow Id, it will be signaled. If there isn't, a new Workflow will be started and immediately signaled.
+
+Use the `SignalWithStartWorkflow()` API on the Go SDK Temporal Client to start a Workflow Execution (if not already running) and pass it the Signal at the same time.
+
+Because the Workflow Execution might not exist, this API does not take a Run ID as a parameter
+
+```go
+// ...
+signal := MySignal {
+  Message: "Some important data",
+}
+err = temporalClient.SignalWithStartWorkflow(context.Background(), "your-workflow-id", "your-signal-name", signal)
+if err != nil {
+	log.Fatalln("Error sending the Signal", err)
+	return
+}
+```
+
+## How to develop with Queries {#queries}
+
+A [Query](/workflows#query) is a synchronous operation that is used to get the state of a Workflow Execution.
+
+### How to define a Query {#define-query}
+
+A Query has a name and can have arguments.
+
+- The name, also called a Query type, is a string.
+- The arguments must be [serializable](/dataconversion).
+
+In Go, a Query type, also called a Query name, is a `string` value.
+
+```go
+queryType := "your_query_name"
+```
+
+### How to handle a Query {#handle-query}
+
+Queries are handled by your Workflow.
+
+Don’t include any logic that causes [Command](/workflows#command) generation within a Query handler (such as executing Activities).
+Including such logic causes unexpected behavior.
+
+Use the `SetQueryHandler` API from the `go.temporal.io/sdk/workflow` package to set a Query Handler that listens for a Query by name.
+
+The handler must be a function that returns two values:
+
+1. A serializable result
+2. An error
+
+The handler function can receive any number of input parameters, but all input parameters must be serializable.
+The following sample code sets up a Query Handler that handles the `current_state` Query type:
+
+```go
+func YourWorkflow(ctx workflow.Context, input string) error {
+  currentState := "started" // This could be any serializable struct.
+  queryType := "current_state"
+  err := workflow.SetQueryHandler(ctx, queryType, func() (string, error) {
+    return currentState, nil
+  })
+  if err != nil {
+    currentState = "failed to register query handler"
+    return err
+  }
+  // Your normal Workflow code begins here, and you update the currentState as the code makes progress.
+  currentState = "waiting timer"
+  err = NewTimer(ctx, time.Hour).Get(ctx, nil)
+  if err != nil {
+    currentState = "timer failed"
+    return err
+  }
+  currentState = "waiting activity"
+  ctx = WithActivityOptions(ctx, yourActivityOptions)
+  err = ExecuteActivity(ctx, YourActivity, "your_input").Get(ctx, nil)
+  if err != nil {
+    currentState = "activity failed"
+    return err
+  }
+  currentState = "done"
+  return nil
+}
+```
+
+For example, suppose your query handler function takes two parameters:
+
+```go
+err := workflow.SetQueryHandler(ctx, "current_state", func(prefix string, suffix string) (string, error) {
+    return prefix + currentState + suffix, nil
+})
+```
+
+### How to send a Query {#send-query}
+
+Queries are sent from a Temporal Client.
+
+Use the `QueryWorkflow()` API or the `QueryWorkflowWithOptions` API on the Temporal Client to send a Query to a Workflow Execution.
+
+```go
+// ...
+response, err := temporalClient.QueryWorkflow(context.Background(), workflowID, runID, queryType)
+if err != nil {
+  // ...
+}
+// ...
+```
+
+You can pass an arbitrary number of arguments to the `QueryWorkflow()` function.
+
+```go
+// ...
+response, err := temporalClient.QueryWorkflow(context.Background(), workflowID, runID, queryType, "foo", "baz")
+if err != nil {
+  // ...
+}
+// ...
+```
+
+The value of `response` returned by the Query needs to be decoded into `result`.
+Because this is a future, use `Get()` on `response` to get the result, such as a string in this example.
+
+```go
+var result string
+if err != response.Get(&result); err != nil {
+  // ...
+}
+log.Println("Received Query result. Result: " + result)
+```
+
+## How to develop with Updates {#updates}
+
+An [Update](/workflows#update) is an operation that can mutate the state of a Workflow Execution and return a response.
+
+### How to define an Update in Go {#define-update}
+
+In Go, you define an Update type, also known as an Update name, as a `string` value.
+You must ensure the arguments and result are [serializable](/dataconversion).
+When sending and receiving the Update, use the Update name as an identifier.
+The name does not link to the data type(s) sent with the Update.
+Ensure that every Workflow listening to the same Update name can handle the same Update arguments.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/your_updatable_workflow.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+
+// YourUpdateName holds a string value used to correlate Updates.
+const YourUpdateName = "your_update_name"
+// ...
+func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error) {
+// ...
+	err := workflow.SetUpdateHandler(ctx, YourUpdateName, func(ctx workflow.Context, arg YourUpdateArg) (YourUpdateResult, error) {
+// ...
+	}
+// ...
+}
+```
+
+### How to handle an Update in Go {#handle-update}
+
+Register an Update handler for a given name using the [SetUpdateHandler](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandler) API from the `go.temporal.io/sdk/workflow` package.
+The handler function can accept multiple serializable input parameters, but we recommend using only a single parameter.
+This practice enables you to add fields in future versions while maintaining backward compatibility.
+You can optionally include a `workflow.Context` parameter in the first position of the function.
+The function can return either a serializable value with an error or just an error.
+The Workflow's WorkflowPanicPolicy configuration determines how panics are handled inside the Handler function.
+WorkflowPanicPolicy is set in the Worker Options.
+
+Update handlers, unlike Query handlers, can change Workflow state.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/your_updatable_workflow.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+
+// ...
+func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error) {
+	counter := param.StartCount
+	err := workflow.SetUpdateHandler(ctx, YourUpdateName, func(ctx workflow.Context, arg YourUpdateArg) (YourUpdateResult, error) {
+		counter += arg.Add
+		result := YourUpdateResult{
+			Total: counter,
+		}
+		return result, nil
+	})
+// ...
+}
+```
+
+#### How to set an Update validator function in go {#validator-function}
+
+Validate certain aspects of the data sent to the Workflow using an Update validator function.
+For instance, a counter Workflow might never want to accept a non-positive number.
+Invoke the `SetUpdateHandlerWithOptions` API and define a validator function as one of the options.
+
+When you use a Validator function, the Worker receives the Update first, before any Events are written to the Event History.
+If the Update is rejected, it's not recorded in the Event History.
+If it's accepted, the `WorkflowExecutionUpdateAccepted` Event occurs.
+Afterwards, the Worker executes the accepted Update and, upon completion, a `WorkflowExecutionUpdateCompleted` Event gets written into the Event History.
+The Validator function, unlike the Update Handler, can not change the state of the Workflow.
+
+The platform treats a panic in the Validator function as a rejection of the Update."
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/your_updatable_workflow.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+
+// UpdatableWorkflowWithValidator is a Workflow Definition.
+// This Workflow Definition has an Update handler that uses the isPositive() validator function.
+// After setting the Update hanlder it sleeps for 1 minutue.
+// Updates can be sent to the Workflow during this time.
+func UpdatableWorkflowWithValidator(ctx workflow.Context, param WFParam) (WFResult, error) {
+	counter := param.StartCount
+	err := workflow.SetUpdateHandlerWithOptions(
+		ctx, YourValidatedUpdateName,
+		func(ctx workflow.Context, arg YourUpdateArg) (YourUpdateResult, error) {
+// ...
+		},
+		// Set the isPositive validator.
+		workflow.UpdateHandlerOptions{Validator: isPositive},
+	)
+	if err != nil {
+		return WFResult{}, err
+	}
+// ...
+}
+
+// isPositive is a validator function.
+// It returns an error if the int value is below 1.
+// This function can not change the state of the Workflow.
+// workflow.Context can be used to log
+func isPositive(ctx workflow.Context, u YourUpdateArg) error {
+	log := workflow.GetLogger(ctx)
+	if u.Add < 1 {
+		log.Debug("Rejecting non-positive number, positive integers only", "UpdateValue", u.Add)
+		return fmt.Errorf("addend must be a positive integer (%v)", u.Add)
+	}
+	log.Debug("Accepting Update", "UpdateValue", u.Add)
+	return nil
+}
+```
+
+### How to send an Update from a Temporal Client in Go {#send-update-from-client}
+
+Invoke the UpdateWorkflow() method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to dispatch an [Update](/workflows#update) to a Workflow Execution.
+
+You must provide the Workflow Id, but specifying a Run Id is optional.
+If you supply only the Workflow Id (and provide an empty string as the Run Id param), the currently running Workflow Execution receives the Update.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/update/main.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+
+func main() {
+// ...
+	// Set the Update argument values.
+	updateArg := updates.YourUpdateArg{
+		Add: n,
+	}
+	// Call the UpdateWorkflow API.
+	// A blank RunID means that the Update is routed to the most recent Workflow Run of the specified Workflow ID.
+	updateHandle, err := temporalClient.UpdateWorkflow(context.Background(), updates.YourUpdateWFID, "", updates.YourUpdateName, updateArg)
+	if err != nil {
+		log.Fatalln("Error issuing Update request", err)
+	}
+	// Get the result of the Update.
+	var updateResult updates.YourUpdateResult
+	err = updateHandle.Get(context.Background(), &updateResult)
+	if err != nil {
+		log.Fatalln("Update encountered an error", err)
+	}
+	log.Println("Update succeeded, new total: ", updateResult.Total)
+}
+```
 
 ## Workflow timeouts {#workflow-timeouts}
 
@@ -608,7 +1028,7 @@ The user generates a unique Schedule ID for each new Schedule.
 To create a Schedule in Go, use `Create()` on the [Client](/encyclopedia/temporal-sdks#temporal-client).
 Schedules must be initialized with a Schedule ID, [Spec](/workflows#spec), and [Action](/workflows#action) in `client.ScheduleOptions{}`.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/create/main.go">
     View the source code
   </a>{' '}
@@ -644,7 +1064,7 @@ This is useful for executing a missed or delayed Action, or for testing the Work
 To backfill a Schedule in Go, use `Backfill()` on `ScheduleHandle`.
 Specify the start and end times to execute the Workflow, along with the overlap policy.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/backfill/main.go">
     View the source code
   </a>{' '}
@@ -684,7 +1104,7 @@ Deletion does not affect any Workflows started by the Schedule.
 
 To delete a Schedule, use `Delete()` on the `ScheduleHandle`.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/delete/main.go">
     View the source code
   </a>{' '}
@@ -712,7 +1132,7 @@ This can include details about the Schedule Spec (such as Intervals), CronExpres
 
 To describe a Schedule, use `Describe()` on the ScheduleHandle.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/describe/main.go">
     View the source code
   </a>{' '}
@@ -733,7 +1153,7 @@ The `List` action returns all available Schedules and their respective Schedule 
 
 To return information on all Schedules, use `ScheduleClient.List()`.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/list/main.go">
     View the source code
   </a>{' '}
@@ -764,7 +1184,7 @@ Pausing can be enabled by setting `State.Paused` to `true`, or by using `Pause()
 Unpausing a Schedule allows the Workflow to execute as planned.
 To unpause a Schedule, use `Unpause()` on `ScheduleHandle`.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/pause/main.go">
     View the source code
   </a>{' '}
@@ -791,7 +1211,7 @@ By default, `trigger` is subject to the Overlap Policy.
 
 To trigger a Scheduled Workflow Execution, use `trigger()` on `ScheduleHandle`.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/trigger/main.go">
     View the source code
   </a>{' '}
@@ -818,7 +1238,7 @@ These changes can be made to Workflow Actions, Action parameters, Memos, and the
 
 Use `Update()` on the ScheduleHandle to modify a Schedule.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/update/main.go">
     View the source code
   </a>{' '}
@@ -1110,7 +1530,7 @@ Enable the Worker to use Sessions.
 
 Set `EnableSessionWorker` to `true` in the Worker options.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/worker/main.go">
     View the source code
   </a>{' '}
@@ -1145,7 +1565,7 @@ By default, this field is set to a very large value, so there's no need to manua
 If a Worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed.
 If the session can't be created within `CreationTimeout`, `CreateSession()` returns an error .
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/worker/main.go">
     View the source code
   </a>{' '}
@@ -1193,7 +1613,7 @@ It is safe to call `CompleteSession()` on a failed Session, meaning that you can
 If the Worker goes down between Activities, any scheduled Activities meant for the Session Worker are canceled.
 If not, you get a `workflow.ErrSessionFailed` error when the next call of `workflow.ExecuteActivity()` is made from that Workflow.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/workflow.go">
     View the source code
   </a>{' '}

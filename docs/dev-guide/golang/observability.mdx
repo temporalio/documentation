@@ -2,7 +2,6 @@
 id: observability
 title: Observability - Go SDK feature guide
 sidebar_label: Observability
-sidebar_position: 7
 description: Improve observability in your Go-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
 slug: /dev-guide/go/observability
 toc_max_heading_level: 4
@@ -247,7 +246,6 @@ workflow.WithActivityOptions(ctx, ao)
 	info := map[string]string{
 		"name": name,
 	}
-
 
 	logger.Info("Compressed Payloads workflow completed.", "result", result)
 

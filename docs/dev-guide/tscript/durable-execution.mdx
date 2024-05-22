@@ -132,11 +132,11 @@ A Workflow Execution's Event History is also available in the Web UI.
 
 Navigate to the Workflows page in the UI and select the Workflow Execution.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Select a Workflow Execution from the Workflows page</p></div><div class="tdiiw" height="870"><img class="img_ev3q" src="/img/select-workflow-execution-in-ui.png" alt="Select a Workflow Execution from the Workflows page" /></div></div>
+<div className="tdiw"><div className="tditw"><p className="tdit">Select a Workflow Execution from the Workflows page</p></div><div className="tdiiw" height="870"><img className="img_ev3q" src="/img/select-workflow-execution-in-ui.png" alt="Select a Workflow Execution from the Workflows page" /></div></div>
 
 From the Workflow details page you can copy the Event History from the JSON tab and paste it into the `backgroundcheck_workflow_history.json` file.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Copy Event History JSON object from the Web UI</p></div><div class="tdiiw" height="768"><img class="img_ev3q" src="/img/copy-events-from-workflow-details-page.png" alt="Copy Event History JSON object from the Web UI" /></div></div>
+<div className="tdiw"><div className="tditw"><p className="tdit">Copy Event History JSON object from the Web UI</p></div><div className="tdiiw" height="768"><img className="img_ev3q" src="/img/copy-events-from-workflow-details-page.png" alt="Copy Event History JSON object from the Web UI" /></div></div>
 
 ## How to replay a Workflow Execution in TypeScript {#replay-a-workflow-execution}
 
@@ -253,7 +253,7 @@ One way to produce a non-deterministic error is to use a random number to determ
 
 Eventually, the way that sleep has been implemented here will produce a non-determinism error.
 
-<div class="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_durable_execution/backgroundcheck_nondeterministic/src/workflow_dacx.ts">View the source code</a> in the context of the rest of the application code.</div>
+<div className="copycode-notice-container"><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_durable_execution/backgroundcheck_nondeterministic/src/workflow_dacx.ts">View the source code</a> in the context of the rest of the application code.</div>
 
 ```typescript
 import { proxyActivities, log, sleep } from "@temporalio/workflow";
@@ -296,7 +296,7 @@ go.temporal.io/sdk/internal.panicIllegalState(...)
 
 And you will see information about the failure in the Web UI as well.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Web UI view of a non-determinism error</p></div><div class="tdiiw" height="317"><img class="img_ev3q" src="/img/non-deterministic-workflow-task-failure.png" alt="Web UI view of a non-determinism error" /></div></div>
+<div className="tdiw"><div className="tditw"><p className="tdit">Web UI view of a non-determinism error</p></div><div className="tdiiw" height="317"><img className="img_ev3q" src="/img/non-deterministic-workflow-task-failure.png" alt="Web UI view of a non-determinism error" /></div></div>
 
 To inspect the Workflow Task failure using the Temporal CLI, you can use the `long` value for the `--fields` command option with the `temporal workflow show` command.
 
@@ -362,7 +362,7 @@ go.temporal.io/sdk/internal.panicIllegalState(...)
 
 And you will see information about the failure in the Web UI as well.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Web UI view of a non-determinism error</p></div><div class="tdiiw" height="317"><img class="img_ev3q" src="/img/non-deterministic-workflow-task-failure.png" alt="Web UI view of a non-determinism error" /></div></div>
+<div className="tdiw"><div className="tditw"><p className="tdit">Web UI view of a non-determinism error</p></div><div className="tdiiw" height="317"><img className="img_ev3q" src="/img/non-deterministic-workflow-task-failure.png" alt="Web UI view of a non-determinism error" /></div></div>
 
 To inspect the Workflow Task failure using the Temporal CLI, you can use the `long` value for the `--fields` command option with the `temporal workflow show` command.
 

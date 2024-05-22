@@ -2,7 +2,6 @@
 id: temporal-sdks
 title: About Temporal SDKs
 sidebar_label: About the SDKs
-sidebar_position: 1
 description: Explore the components that make up a Temporal SDK and how they work to create a durable execution.
 toc_max_heading_level: 4
 keywords:
@@ -137,15 +136,15 @@ func LoanApplicationWorkflow {
 
 Another quality of the SDKs lies in their ability to replay Workflow Executions, a complex operation that contributes significantly to the Platform's promised reliability.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">
       The SDKs Replay code execution to continue from the last step
     </p>
   </div>
-  <div class="tdiiw" height="338">
+  <div className="tdiiw" height="338">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/replay-basic.svg"
       alt="The SDKs Replay code execution to continue from the last step"
     />
@@ -167,16 +166,16 @@ Temporal SDKs offer developers the following:
 - APIs to develop application code (Workflows & Activities)
 - APIs to configure and run Workers
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">
       Temporal SDK components create a runtime across your environment and a
       Temporal Cluster
     </p>
   </div>
-  <div class="tdiiw" height="870">
+  <div className="tdiiw" height="870">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/temporal-sdk-components.svg"
       alt="Temporal SDK components create a runtime across your environment and a Temporal Cluster"
     />
@@ -485,13 +484,13 @@ The Activity above is performing a single call to an external API. Since the cal
 
 When you create a new Worker process, the Worker creates a long-lasting connection to the Cluster, polling a Task Queue for Tasks that related to the code it is capable of executing.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">A Worker long polls for Tasks</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">A Worker long polls for Tasks</p>
   </div>
-  <div class="tdiiw" height="661">
+  <div className="tdiiw" height="661">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/how-sdk-works-1.svg"
       alt="A Worker long polls for Tasks"
     />
@@ -501,13 +500,13 @@ When you create a new Worker process, the Worker creates a long-lasting connecti
 Although the Worker is now running, unless a Workflow is explicitly started, the Task Queue doesn't have any Tasks on it and so, no code executes.
 We can use a Temporal Client (available in Temporal SDKs and the Temporal CLI) to start a new Workflow.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Start a Workflow using a Temporal Client</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Start a Workflow using a Temporal Client</p>
   </div>
-  <div class="tdiiw" height="901">
+  <div className="tdiiw" height="901">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/how-sdk-works-2.svg"
       alt="Start a Workflow using a Temporal Client"
     />
@@ -527,15 +526,15 @@ Each step of the Task (e.g. Scheduled, Started, and Completed), gets recorded in
 
 When the call to invoke the Activity is evaluated, the Worker suspends executing the code and sends a Command to the Temporal Cluster to schedule an Activity Task.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">
       Worker suspends code execution and sends a Command to the Cluster
     </p>
   </div>
-  <div class="tdiiw" height="661">
+  <div className="tdiiw" height="661">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/how-sdk-works-3.svg"
       alt="Worker suspends code execution and sends a Command to the Cluster"
     />
@@ -548,13 +547,13 @@ If the Activity fails, say the API goes down, Temporal will automatically retry 
 
 In the case where the calls succeeds, and the code completes, the Worker tells the Cluster the Activity Task completed.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">The Worker reports that the Activity Execution completed</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">The Worker reports that the Activity Execution completed</p>
   </div>
-  <div class="tdiiw" height="661">
+  <div className="tdiiw" height="661">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/how-sdk-works-activity.svg"
       alt="The Worker reports that the Activity Execution completed"
     />
@@ -565,13 +564,13 @@ Included is any data that was returned from the Activity (results of the API cal
 
 The Cluster creates a new Workflow Task which the Worker picks up.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">The Worker picks up the new Task</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">The Worker picks up the new Task</p>
   </div>
-  <div class="tdiiw" height="661">
+  <div className="tdiiw" height="661">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/how-sdk-works-1.svg"
       alt="The Worker picks up the new Task"
     />
@@ -586,15 +585,15 @@ Assuming the Activity Execution is successful, the Workflow now has the result o
 
 The result of the Workflow can now be retrieved using a Temporal Client.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">
       The Temporal Client can now access the result of the Workflow
     </p>
   </div>
-  <div class="tdiiw" height="901">
+  <div className="tdiiw" height="901">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/how-sdk-works-4.svg"
       alt="The Temporal Client can now access the result of the Workflow"
     />
