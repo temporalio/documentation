@@ -339,6 +339,7 @@ MRN-specific charges for replication will stop once this decommissioning procedu
 This section provides how-to instructions for the following operations tasks:
 
 * [Trigger failovers](/cloud/multi-region#triggering-failovers)
+* [Metrics](/cloud/multi-region#metrics-operations)
 * [Monitoring and observability](/cloud/multi-region#observability)
 
 ### Triggering failovers {#triggering-failovers}
@@ -381,6 +382,36 @@ You needn't monitor Temporal Cloud's failover response in real-time.
 Whenever there is a failover event, you'll receive an alert email.
 
 More information is available in [Monitoring and Observability](/cloud/multi-region#observability).
+
+### Metrics {#metrics-operations}
+
+Replication lag refers to the transmission delay of Workflow updates and history events from the active region to the standby region.
+Temporal cloud emits three replication lag-specific metrics.
+These are:
+
+* `temporal_cloud_v0_replication_lag_bucket`: the bucketed replication lag histogram over a time interval
+* `temporal_cloud_v0_replication_lag_sum`: the total replication lag over a time interval
+* `temporal_cloud_v0_replication_lag_count`: the number of lag incidents over a time interval
+
+The following samples demonstrate how you can use these metrics to explore replication lag.
+
+**Per-second rate of change**
+
+This sample calculates the 99th percentile of per-second rate of change in replication lag over the last minute by Namespace:
+
+```
+histogram_quantile(0.99, sum(rate(temporal_cloud_v0_replication_lag_bucket[1m])) by (temporal_namespace, le))
+```
+
+**Average replication lag**
+
+This sample calculates the average replication lag per operation over the last minute, for each Namespace:
+
+```
+sum(rate(temporal_cloud_v0_replication_lag_sum[1m])) by (temporal_namespace)
+/
+sum(rate(temporal_cloud_v0_replication_lag_count[1m])) by (temporal_namespace)
+```
 
 ### Monitoring and observability {#observability}
 
