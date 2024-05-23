@@ -1947,16 +1947,8 @@
       "destination": "/self-hosted-guide/monitoring"
     },
     {
-      "source": "/kb/python-sandbox-environment",
-      "destination": "/python/python-sandbox-environment"
-    },
-    {
       "source": "production-readiness/:path*",
       "destination": "/self-hosted-guide"
-    },
-    {
-      "source": "/kb/python-sandbox-environment",
-      "destination": "/python/python-sandbox-environment"
     },
     {
       "source": "/kb/cadence-to-temporal",
@@ -1991,11 +1983,15 @@
       "destination": "/encyclopedia/go-sdk-multithreading"
     },
     {
-      "source": "/develop/python/async-vs-sync",
+      "source": "/dev-guide/python/async-vs-sync",
       "destination": "/encyclopedia/python-sdk-sync-vs-async"
     },
     {
-      "source": "/develop/python/sandbox",
+      "source": "/kb/python-sandbox-environment",
+      "destination": "/encyclopedia/python-sdk-sandbox"
+    },
+    {
+      "source": "/dev-guide/python/sandbox",
       "destination": "/encyclopedia/python-sdk-sandbox"
     },
     {
