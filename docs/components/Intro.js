@@ -32,8 +32,8 @@ const appDevGuideLinks = [
     name: "Java SDK developer's guide",
   },
   {
-    path: "/dev-guide/python",
-    name: "Python SDK developer's guide",
+    path: "/develop/python",
+    name: "Python SDK feature guides",
   },
   {
     path: "/dev-guide/typescript",
