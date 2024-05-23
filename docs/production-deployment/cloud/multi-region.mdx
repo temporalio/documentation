@@ -374,7 +374,7 @@ Before pressing return, add your authentication credentials. For example, `--ca-
 #### After failover
 
 After any failover, whether triggered by you or by Temporal, event information appears in both the [Temporal Cloud Web UI](https://cloud.temporal.io/namespaces) (on the Namespace detail page) and in your audit logs.
-The audit log entry for Failover uses the `"operation": FailoverNamespaces"` event.
+The audit log entry for Failover uses the `"operation": FailoverNamespace"` event.
 After failover, the namespace is active in the new region.
 
 You needn't monitor Temporal Cloud's failover response in real-time.
@@ -399,7 +399,7 @@ Errors--if any--will also surface in the Namespace Web UI.
 Temporal Cloud provides several ways to audit events:
 
 * When Temporal triggers failovers, the audit log updates with details.
-  Look specifically for `"operation": "FailoverNamespaces"` in the logs.
+  Look specifically for `"operation": "FailoverNamespace"` in the logs.
 * You can set alerts for Temporal-initiated failover events.
 * After a failover, you can check that the Namespace is active in the new region using the Temporal Cloud Web UI.
 
