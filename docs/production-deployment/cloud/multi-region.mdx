@@ -32,19 +32,20 @@ Our Service Level Agreement ([SLA](https://docs.temporal.io/cloud/sla)) provides
 
 This feature guide covers the following topics:
 
-- [Why choose a multi-region Namespace?](/cloud/multi-region#multi-region-intro)
-- [Understanding failovers](/cloud/multi-region#failovers)
+- [Choosing multi-region](/cloud/multi-region#multi-region-intro)
+- [Failovers](/cloud/multi-region#failovers)
 - [Multi-region Namespace SLA](/cloud/multi-region#sla)
-- [Multi-region Namespace architecture overview](/cloud/multi-region#architecture)
+- [Architecture](/cloud/multi-region#architecture)
 - [Pricing](/cloud/multi-region#pricing)
-- [Manage your multi-region Namespace](/cloud/multi-region#management)
+- [Operations](/cloud/multi-region#operations)
 
-## Why choose a multi-region Namespace? {#multi-region-intro}
+## Choosing multi-region {#multi-region-intro}
+
+**Why choose a multi-region Namespace?**
 
 A high-availability multi-region Namespace (MRN) creates a single logical Namespace that operates across two physical regions: one active and one standby.
 MRNs streamline access for both regions to a unified Namespace endpoint.
 As Workflows progress in the active region, history events asynchronously replicate to the standby region, ensuring continuity and data integrity.
-
 
 In the event of an incident or outage in the active region, Temporal Cloud will seamlessly failover to your standby region.
 After failover, the roles of the active and standby regions switch.
@@ -86,7 +87,9 @@ Once provisioned, Temporal Cloud automatically begins data replication for your 
 * No changes needed for Worker and Workflow code during setup or failover.
 * 99.99% Contractual SLA.
 
-## Understanding failovers {#failovers}
+## Failovers {#failovers}
+
+**What happens during the failover process?***
 
 Consider an incident or outage that elevates error rates or latency in the active region of a multi-region Namespace.
 Under these circumstances, Temporal Cloud will initiate a Namespace failover.
@@ -147,7 +150,9 @@ This strategy balances consistency and availability requirements.
 
 See the sections on [triggering a failover](/cloud/multi-region#triggering-failovers), [Worker deployment](/cloud/multi-region#worker-deployment), and [routing](/cloud/multi-region#routing) for more information.
 
-## Multi-region Namespace SLA {#multi-region-sla}
+## Multi-region Namespace SLA {#sla}
+
+**What guarantees does Temporal offer for multi-region Namespaces?**
 
 Multi-region Namespaces offer 99.99% availability.
 This is enforced by an SLA on [service error rates](https://docs.temporal.io/cloud/sla).
@@ -174,7 +179,9 @@ Multi-region Namespaces are available in all existing [Temporal Cloud regions](/
 South America is excluded as only one region is available.
 :::
 
-## Multi-region Namespace architecture overview {#architecture}
+## Architecture {#architecture}
+
+**How do multi-region Namespaces work?**
 
 Multi-region Namespaces replicate Namespace metadata and Workflow Executions across connected regions.
 This redundancy, plus the added failover capability, provides measurable stability when dealing with outages.
@@ -241,9 +248,13 @@ This capability is crucial for Workflow Executions to continue their forward pro
 
 ## Pricing {#pricing}
 
+**How does adding a multi-region Namespace affect my costs?**
+
 For pricing details, please visit our [Pricing page](/cloud/pricing).
 
 ## Manage your multi-region Namespace {#management}
+
+**How do you create, enable, and manage my multi-region Namespace?**
 
 Temporal enables you to create and manage your multi-region Namespace using the Temporal Cloud Web UI and the command line 'tcld' CLI utility.
 Use these tools to create, upgrade, and discontinue your multi-region Namespace.
@@ -321,7 +332,9 @@ MRN-specific charges for replication will stop once this decommissioning procedu
 * Temporal won't retain replicated data in the standby region once multi-region has been disabled.
 * After disabling multi-region, we cannot re-enable the feature for a given Namespace for seven days.
 
-## Operations
+## Operations {#operations}
+
+**How do you trigger failovers and observe Workflow Executions?**
 
 This section provides how-to instructions for the following operations tasks:
 
