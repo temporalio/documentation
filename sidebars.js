@@ -118,7 +118,7 @@ module.exports = {
           items: [
             "develop/python/core-application",
             "develop/python/temporal-clients",
-            "develop/python/test-suites",
+            "develop/python/testing-suite",
             "develop/python/failure-detection",
             "develop/python/messages",
             "develop/python/cancellation",
