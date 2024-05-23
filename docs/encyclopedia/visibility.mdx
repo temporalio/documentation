@@ -36,7 +36,7 @@ The [Visibility store](/self-hosted-guide/visibility) in your Temporal Service s
 
 With Temporal Server v1.21, you can set up [Dual Visibility](#dual-visibility) to migrate your Visibility store from one database to another.
 
-Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted-guide/visibility) for updates. \*/}
+Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted-guide/visibility) for updates.
 
 ## What is standard Visibility? {#standard-visibility}
 
@@ -114,7 +114,7 @@ List Filters support the following operators:
 
 The **ORDER BY** operator is currently not supported in Temporal Cloud.
 
-Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses. \*/}
+Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses.
 
 ### Partial string match
 
@@ -197,7 +197,7 @@ WorkflowId IN ('<workflow-id>', '<another-workflow-id>')
 
 ```sql
 WorkflowId = '<workflow-id>' and ExecutionStatus = 'Running'
-````
+```
 
 ```sql
 WorkflowId = '<workflow-id>' or ExecutionStatus = 'Running'
@@ -221,11 +221,11 @@ WorkflowType STARTS_WITH '<workflow-type-prefix>'
 
 ```sql
 order by StartTime desc, CloseTime asc
-````
+```
 
-````sql
+```sql
 order by CustomIntField asc
-``` */}
+```
 
 ## What is a Search Attribute? {#search-attribute}
 
