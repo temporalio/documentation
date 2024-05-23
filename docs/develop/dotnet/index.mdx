@@ -16,9 +16,11 @@ tags:
 
 <!-- .NET SDK feature guidance landing page-->
 
-This section contains the following feature guidance for the Temporal .NET SDK.
+The following Temporal .NET SDK feature guides aim to show how to use Temporal features when developing [Temporal Applications](/temporal#temporal-application).
 
 ## Core Application
+
+The [Core Application feature guide](/develop/dotnet/core-application) shows how to use the basic building blocks of a Temporal Application (Workflows, Activities, and Workers).
 
 - [Develop a basic Workflow Definition](/develop/dotnet/core-application#develop-workflow): Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.
 - [Develop a basic Activity Definition](/develop/dotnet/core-application#develop-activity): One of the primary things that Workflows do is orchestrate the execution of Activities.
@@ -28,25 +30,36 @@ This section contains the following feature guidance for the Temporal .NET SDK.
 - [Set a Dynamic Activity](/develop/dotnet/core-application#set-a-dynamic-activity): Set an Activity that can be invoked dynamically at runtime.
 
 ## Temporal Client
+
+The [Temporal Client feature guide](/develop/dotnet/temporal-client) shows how to connect to a Temporal Service and start a Workflow Execution.
+
 - [Create a Temporal Client](/develop/dotnet/temporal-client#create-a-client): Learn to instantiate and configure a client to interact with the Temporal Service.
 - [Connect to Temporal Cloud](/develop/dotnet/temporal-client#connect-to-temporal-cloud): Securely connect to the Temporal Cloud for a fully managed service.
 - [Start a Workflow](/develop/dotnet/temporal-client#start-workflow): Initiate Workflows seamlessly via the .NET SDK.
 - [Get Workflow results](/develop/dotnet/temporal-client#get-workflow-results): Retrieve and process the results of your Workflows efficiently. 
 
-## Testing
+## Testing suite
+
+The [Testing suite feature guide](/develop/dotnet/testing-suite) shows how to setup the testing suite and test Workflows and Activities.
+
 - [Test frameworks](/develop/dotnet/testing-suite#test-frameworks): Testing provides a framework to facilitate Workflow and integration testing.
 - [Testing Workflows](/develop/dotnet/testing-suite#testing-workflows): Ensure the functionality and reliability of your Workflows.
 - [Testing Activities](/develop/dotnet/testing-suite#test-activities): Validate the execution and outcomes of your Activities.
 - [Replay test](/develop/dotnet/testing-suite#replay-test): Replay recreates the exact state of a Workflow Execution.
 
-## Failure Detection
+## Failure detection
+
+The [Failure detection feature guide](/develop/dotnet/failure-detection) shows how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
 
 - [Workflow timeouts](/develop/dotnet/failure-detection#workflow-timeouts): Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 - [Workflow retries](/develop/dotnet/failure-detection#workflow-retries): A Workflow Retry Policy can be used to retry a Workflow Execution in the event of a failure.
 - [Activity timeouts ](/develop/dotnet/failure-detection#activity-timeouts): Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 - [Set an Activity Retry Policy](/develop/dotnet/failure-detection#activity-retries): Define retry logic for Activities to handle failures.
 
-## Message Passing
+## Message passing
+
+The [Application messages feature guide](/develop/dotnet/message-passing) shows how to send messages to and read the state of Workflow Executions.
+
 **Signals**
 - [Define Signal](/develop/dotnet/message-passing#define-a-signal): A Signal is a message sent to a running Workflow Execution.
 - [Send a Signal from a Temporal Client](/develop/dotnet/message-passing#send-signal-from-client): Send a Signal to a Workflow from a Temporal Client.
@@ -63,20 +76,29 @@ This section contains the following feature guidance for the Temporal .NET SDK.
 - [Define an Update](/develop/dotnet/message-passing#define-update): An Update is an operation that can mutate the state of a Workflow Execution and return a response.
 - [Send an Update](/develop/dotnet/message-passing#send-update): An Update is sent from the Temporal Client. 
 
-## Cancel and Terminate
+## Interrupt a Workflow
+
+The [Interrupt a Workflow feature guide](/develop/dotnet/cancellation) shows how to interrupt a Workflow Execution with a Cancel or Terminate action.
 
 - [Cancel a Workflow](/develop/dotnet/cancellation#cancellation): Interrupt a Workflow Execution and its Activities through Workflow cancellation.
 - [Terminate a Workflow](/develop/dotnet/cancellation#termination): Interrupt a Workflow Execution and its Activities through Workflow termination.
 
 ## Heartbeat
-- [Heartbeat an Activity](#activity-heartbeats): An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
-- [Set a Heartbeat Timeout](#heartbeat-timeout): A Heartbeat Timeout works in conjunction with Activity Heartbeats. 
+
+The [Heartbeat feature guide](/develop/dotnet/heartbeat) shows how to Heartbeat an Activity and set an Heartbeat Timeout.
+
+- [Heartbeat an Activity](/develop/dotnet/heartbeat#activity-heartbeat): An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
+- [Set a Heartbeat Timeout](/develop/dotnet/heartbeat#heartbeat-timeout): A Heartbeat Timeout works in conjunction with Activity Heartbeats. 
 
 ## Versioning
+
+The [Versioning feature guide](/develop/dotnet/versioning) shows how to change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 
 - [Use the .NET SDK Patching API](/develop/dotnet/versioning#dotnet-sdk-patching-api): Patching Workflows using the .NET SDK. 
 
 ## Observability
+
+The [Observability feature guide](/develop/dotnet/observability) shows how to configure and use the Temporal Observability APIs.
 
 - [Emit Metrics](/develop/dotnet/observability#metrics): Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 - [Set up Tracing](/develop/dotnet/observability#tracing): Explains how the Go SDK supports tracing and custom context propogation.
@@ -84,10 +106,16 @@ This section contains the following feature guidance for the Temporal .NET SDK.
 - [Use Visibility APIs](/develop/dotnet/observability#visibility): The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Terminal Service. 
 
 ## Debugging
+
+The [Debugging feature guide](/develop/dotnet/debugging) covers the various ways to debug your application.
+
 - [Debug in a development environment](/develop/dotnet/debugging#debug-in-a-development-environment): In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the Web UI and the Temporal CLI.
 - [Debug in a development production ](/develop/dotnet/debugging#debug-in-a-development-production): Debug production Workflows using the Web UI, the Temporal CLI, Replays, Tracing, or Logging.
 
 ## Schedules
+
+The [Schedules feature guide](/develop/dotnet/schedules) shows how to schedule Workflows and to delay the start of a Workflow.
+
 - [Schedule a Workflow](/develop/dotnet/schedules#schedule-a-workflow): 
 - [Create a Scheduled Workflow](/develop/dotnet/schedules#create-a-workflow): Create a new schedule for a scheduled Workflow. 
 - [Backfill a Scheduled Workflow](/develop/dotnet/schedules#backfill-a-scheduled-workflow): Backfills a past time range of actions for a scheduled Workflow. 
@@ -99,25 +127,34 @@ This section contains the following feature guidance for the Temporal .NET SDK.
 - [Update a Scheduled Workflow](/develop/dotnet/schedules#update-a-scheduled-workflow): Updates a schedule with a new definition for a scheduled Workflow. 
 - [Use Start Delay](/develop/dotnet/schedules#start-delay): Start delay functionality if you need to delay the execution of the Workflow without the need for regular launches. 
 
-## Data Encryption
+## Data encryption
+
+The [Data encryption feature guide](/develop/dotnet/data-encryption) provides guidance on how to support compression, encryption, and other data handling by implementing custom converters and codecs.
 
 - [How to use a custom Payload Codec](/develop/dotnet/data-encryption#custom-payload-codec): Create a custom PayloadCodec implementation and define your encryption/compression and decryption/decompression logic.
 - [How to use a custom Payload Converter](/develop/dotnet/data-encryption#custom-payload-converter): A custom data converter can be set via the `DataConverter` option when creating a client. 
 
 ## Durable Timers
 
+The [Durable Timers feature guide](/develop/dotnet/durable-timers) shows how to use Timers and sleep within Workflows.
+
 - [Sleep](/develop/dotnet/durable-timers): A Timer lets a Workflow sleep for a fixed time period.
 
-
 ## Continue-As-New
+
+The [Continue-As-New feature guide](/develop/dotnet/continue-as-new) shows how to continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
 
 - [Continue-As-New](/develop/dotnet/continue-as-new): Continue-As-New enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
 
 ## Child Workflows
 
+The [Child Workflows feature guide](/develop/dotnet/child-workflows) shows how to spawn a Child Workflow Execution and handle Child Workflow Events.
+
 - [Child Workflows](/develop/dotnet/child-workflows): A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
 ## Asynchronous Activity
+
+The [Asynchronous Activity feature guide](/develop/dotnet/asynchronous-activity) shows how to complete Activities asynchronously.
 
 - [Asynchronous Activity](/develop/dotnet/asynchronous-activity): Asynchronous Activity Completion enables the Activity Function to return without the Activity Execution completing.
 
