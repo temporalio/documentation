@@ -17,8 +17,10 @@ The `tcld namespace` commands enable [Namespace](/namespaces) operations in Temp
 
 Alias: `n`
 
+- [tcld namespace add-region](#add-region)
 - [tcld namespace create](#create)
 - [tcld namespace delete](#delete)
+- [tcld namespace failover](#failover)
 - [tcld namespace get](#get)
 - [tcld namespace list](#list)
 - [tcld namespace export](#export)
@@ -27,6 +29,57 @@ Alias: `n`
 - [tcld namespace search-attributes](#search-attributes)
 - [tcld namespace retention](#retention)
 - [tcld namespace update-codec-server](#update-codec-server)
+
+## add-region
+
+Use `tcld namespace add-region` to add a standby region to an existing Temporal Cloud [Namespace](/namespaces).
+Enrolling a second region upgrades the Namespace to [multi-region](/cloud/multi-region).
+Once provisioned, the multi-region Namespace enables Temporal Cloud to start replicating Workflow Execution data from the active to the standby region and trigger failover during adverse conditions.
+
+`tcld namespace add-region`
+
+Alias: _none_
+
+:::caution
+
+To end multi-region service and discontinue replication charges, contact [Temporal Support](https://support.temporal.io) directly.
+You can't use `tcld` to remove a region from a namespace.
+
+:::
+
+The following modifiers control the behavior of the command.
+
+#### --ca-certificate
+
+_Required modifier unless `--ca-certificate-file` is specified_
+
+A base64-encoded CA certificate.
+
+If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca-certificate` is used.
+
+Alias: `-c`
+
+#### --namespace
+
+Specify a Namespace hosted on Temporal Cloud.
+If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+
+Alias: `-n`
+
+_Required modifier_
+
+#### --region
+
+The region to add to the existing Namespace.
+
+Valid options: `ap-northeast-1` | `ap-northeast-2` | `ap-south-1` | `ap-southeast-1` | `ap-southeast-2` | `eu-central-1` | `eu-west-1` | `eu-west-2` | `ca-central-1` | `us-east-1` | `us-east-2` | `us-west-2`
+
+See [Service Availability](/cloud/service-availability). 
+The `sa-east-1` region is not supported at this time.
+
+Alias: `--re`
+
+_Required modifier_
 
 ## create
 
@@ -57,21 +110,35 @@ Alias: `-c`
 
 #### --namespace
 
-_Required modifier_
-
-Specify the name of the Namespace to create.
+Specify a Namespace hosted on Temporal Cloud.
+If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
-#### --region
-
 _Required modifier_
 
+#### --region
+
 The region to create the Namespace in.
+
+When one `--region` flag is used, `tcld` provisions a single-region namespace.
+In single-region use, Temporal clients connect to a single Namespace in one deployment region.
+
+When two `--region` flags are provided, your Namespace is provisioned to use Temporal Cloud [multi-region Namespace](/cloud/multi-region) (MRN) service.
+Once provisioned, MRN enables Temporal Cloud to start replicating Workflow Execution data from the active to the standby region and trigger failover during adverse conditions.
 
 Valid options: `ap-northeast-1` | `ap-southeast-1` | `ap-southeast-2` | `ca-central-1` | `eu-central-1` | `eu-west-1` | `eu-west-2` | `us-east-1` | `us-west-2`
 
 Alias: `--re`
+
+_Required modifier_
+
+:::caution
+
+To end multi-region service and end charges, contact [Temporal Support](https://support.temporal.io) directly.
+You can't use `tcld` to remove a region from a namespace.
+
+:::
 
 #### --retention-days
 
@@ -171,11 +238,11 @@ The following modifiers control the behavior of the command.
 
 #### --namespace
 
-_Required modifier_
-
 Specify the Namespace hosted on Temporal Cloud to be deleted.
 
 Alias: `-n`
+
+_Required modifier_
 
 #### --request-id
 
@@ -196,6 +263,56 @@ Alias: `-v`
 ```bash
 tcld namespace delete --namespace <namespace_id>
 ```
+
+## failover
+
+Failover a temporal namespace.
+A failover switches a Namespace region from the active region to the standby region.
+
+#### --request-id
+
+Specify a request identifier to use for the asynchronous operation.
+If not specified, the server assigns a request identifier.
+
+Alias: `-r`
+
+#### --namespace
+
+Specify a Namespace hosted on Temporal Cloud.
+If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+
+Alias: `-n`
+
+_Required modifier_
+
+#### --region
+
+The region to failover _to_.
+
+Valid options: `ap-northeast-1` | `ap-northeast-2` | `ap-south-1` | `ap-southeast-1` | `ap-southeast-2` | `eu-central-1` | `eu-west-1` | `eu-west-2` | `ca-central-1` | `us-east-1` | `us-east-2` | `us-west-2`
+
+See [Service Availability](/cloud/service-availability). 
+The `sa-east-1` region is not supported at this time.
+
+Alias: `--re`
+
+_Required modifier_
+
+#### --ca-certificate
+
+_Required modifier unless `--ca-certificate-file` is specified_
+
+A base64-encoded CA certificate.
+
+If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca-certificate` is used.
+
+Alias: `-c`
+
+#### --cloud-provider
+
+The cloud provider of the region to failover to.
+
+Default: aws (default: "aws")
 
 ## get
 
