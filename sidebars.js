@@ -218,6 +218,7 @@ module.exports = {
                 "production-deployment/cloud/metrics/prometheus-grafana",
               ],
             },
+            "production-deployment/cloud/multi-region",
             "production-deployment/cloud/worker-health",
             "production-deployment/cloud/saml",
             "production-deployment/cloud/operation-api",
