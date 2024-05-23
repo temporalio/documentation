@@ -21,9 +21,7 @@ tags:
   - cancellation
 ---
 
-## Cancel an Activity from a Workflow {#cancel-an-activity}
-
-**How to cancel an Activity from a Workflow**
+**How to cancel an Activity from a Workflow using the Temporal Python SDK.**
 
 Canceling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat Timeout.
 If the Heartbeat is not invoked, the Activity cannot receive a cancellation request.

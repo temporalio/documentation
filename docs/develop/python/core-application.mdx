@@ -26,8 +26,7 @@ tags:
  - core-application
 ---
 
-In this section you can find the following:
-
+This page shows how to do the following:
 
 - [Develop a basic Workflow](#develop-workflows)
 - [Define Workflow parameters](#workflow-parameters)
@@ -47,7 +46,7 @@ In this section you can find the following:
 
 ## Develop a basic Workflow {#develop-workflows}
 
-**How to develop a basic Workflow**
+**How to develop a basic Workflow using the Temporal Python SDK.**
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definition).
 
@@ -82,7 +81,7 @@ class YourWorkflow:
 
 ### Define Workflow parameters {#workflow-parameters}
 
-**How to define Workflow parameters**
+**How to define Workflow parameters using the Temporal Python SDK.**
 
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
@@ -112,7 +111,7 @@ class YourParams:
 
 ### Define Workflow return parameters {#workflow-return-values}
 
-**How to define Workflow return parameters**
+**How to define Workflow return parameters using the Temporal Python SDK.**
 
 Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
@@ -147,7 +146,7 @@ class YourWorkflow:
 
 ### Customize your Workflow Type {#workflow-type}
 
-**How to customize your Workflow Type**
+**How to customize your Workflow Type using the Temporal Python SDK.**
 
 Workflows have a Type that are referred to as the Workflow name.
 
@@ -180,7 +179,7 @@ class YourWorkflow:
 
 ### Develop Workflow logic {#workflow-logic-requirements}
 
-**How to develop Workflow logic**
+**How to develop Workflow logic using the Temporal Python SDK.**
 
 Workflow logic is constrained by [deterministic execution requirements](/workflows#deterministic-constraints).
 Therefore, each language is limited to the use of certain idiomatic techniques.
@@ -199,7 +198,7 @@ All API safe for Workflows used in the [`temporalio.workflow`](https://python.te
 
 ## Develop a basic Activity {#develop-activities}
 
-**How to develop a basic Activity**
+**How to develop a basic Activity using the Temporal Python SDK.**
 
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
@@ -246,7 +245,7 @@ async def your_activity(input: YourParams) -> str:
 
 ### Develop Activity Parameters {#activity-parameters}
 
-**How to develop Activity Parameters**
+**How to develop Activity Parameters using the Temporal Python SDK.**
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
@@ -288,7 +287,7 @@ async def your_activity(input: YourParams) -> str:
 
 ### Define Activity return values {#activity-return-values}
 
-**How to define Activity return values**
+**How to define Activity return values using the Temporal Python SDK.**
 
 All data returned from an Activity must be serializable.
 
@@ -340,7 +339,7 @@ async def your_activity(input: YourParams) -> str:
 
 ## Start an Activity Execution {#activity-execution}
 
-**How to start an Activity Execution**
+**How to start an Activity Execution using the Temporal Python SDK.**
 
 Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
@@ -390,7 +389,7 @@ class YourWorkflow:
 
 ### Set the required Activity Timeouts {#required-timeout}
 
-**How to set the required Activity Timeouts**
+**How to set the required Activity Timeouts using the Temporal Python SDK.**
 
 Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a [Schedule-To-Close Timeout](/activities#start-to-close-timeout) or a [Start-To-Close Timeout](/activities#start-to-close-timeout).
@@ -426,7 +425,7 @@ Available timeouts are:
 
 ### Get the results of an Activity Execution {#get-activity-results}
 
-**How to get the results of an Activity Execution**
+**How to get the results of an Activity Execution using the Temporal Python SDK.**
 
 The call to spawn an [Activity Execution](/activities#activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
@@ -462,7 +461,7 @@ class YourWorkflow:
 
 ## Run a Worker Processes {#run-a-dev-worker}
 
-**How to run a Worker Process**
+**How to run a Worker Process using the Temporal Python SDK.**
 
 The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
 
@@ -510,7 +509,7 @@ if __name__ == "__main__":
 
 ### Register types {#register-types}
 
-**How to register types**
+**How to register types using the Temporal Python SDK.**
 
 All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 

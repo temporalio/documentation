@@ -23,17 +23,17 @@ tags:
   - heartbeats
 ---
 
-In this section you can find the following:
+This page shows how to do the following:
 
-### Table of Contents
-
-- [Workflow timeouts](#workflow-timeouts)
-- [Workflow retries](#workflow-retries)
+- [Set Workflow timeouts](#workflow-timeouts)
+- [set Workflow retries](#workflow-retries)
 - [Set Activity timeouts](#activity-timeouts)
 - [Set an Activity Retry Policy](#activity-retries)
 - [Heartbeat an Activity](#activity-heartbeats)
 
 ## Workflow timeouts {#workflow-timeouts}
+
+**How to set Workflow timeouts using the Temporal Python SDK.**
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 
@@ -75,6 +75,8 @@ Available timeouts are:
 
 ### Workflow retries {#workflow-retries}
 
+**How to set a Workflow Retry Policy using the Temporal Python SDK.**
+
 A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
 Use a [Retry Policy](/retry-policies) to retry a Workflow Execution in the event of a failure.
@@ -104,7 +106,7 @@ Set the Retry Policy to either the [`start_workflow()`](https://python.temporal.
 
 ## Set Activity timeouts {#activity-timeouts}
 
-**How to set an Activity Execution Timeout**
+**How to set an Activity Execution Timeout using the Temporal Python SDK.**
 
 Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 
@@ -146,7 +148,7 @@ Available timeouts are:
 
 ### Set an Activity Retry Policy {#activity-retries}
 
-**How to set an Activity Retry Policy**
+**How to set an Activity Retry Policy using the Temporal Python SDK.**
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -182,7 +184,7 @@ from temporalio.common import RetryPolicy
 
 ## Heartbeat an Activity {#activity-heartbeats}
 
-**How to Heartbeat an Activity**
+**How to Heartbeat an Activity using the Temporal Python SDK.**
 
 An [Activity Heartbeat](/activities#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Cluster](/clusters).
 Each Heartbeat informs the Temporal Cluster that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
@@ -209,7 +211,7 @@ If an Activity calls `heartbeat(123, 456)` and then fails and is retried, `heart
 
 #### Set a Heartbeat Timeout {#heartbeat-timeout}
 
-**How to set a Heartbeat Timeout**
+**How to set a Heartbeat Timeout using the Temporal Python SDK.**
 
 A [Heartbeat Timeout](/activities#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/activities#activity-heartbeat).
 
