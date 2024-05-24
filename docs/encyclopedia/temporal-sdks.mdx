@@ -26,6 +26,8 @@ tags:
   - temporal-sdk
 ---
 
+import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
+
 Temporal SDKs (software development kits) are an open source collection of tools, libraries, and APIs that enable Temporal Application development.
 
 They offer a [Temporal Client](#temporal-client) to interact with the [Temporal Service](/clusters), APIs to develop your [Temporal Application](#temporal-application), and APIs to run horizontally scalable [Workers](/workers#worker).
@@ -136,20 +138,7 @@ func LoanApplicationWorkflow {
 
 Another quality of the SDKs lies in their ability to replay Workflow Executions, a complex operation that contributes significantly to the Platform's promised reliability.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">
-      The SDKs Replay code execution to continue from the last step
-    </p>
-  </div>
-  <div className="tdiiw" height="338">
-    <img
-      className="img_ev3q"
-      src="/diagrams/replay-basic.svg"
-      alt="The SDKs Replay code execution to continue from the last step"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/replay-basic.svg" title="The SDKs Replay code execution to continue from the last step" />
 
 We will delve into this idea more later, but for now, it signifies that the SDKs can automatically continue a process from the point of interruption, should a failure occur.
 This capability stems from the SDK's ability to persist each step the program takes.
@@ -168,21 +157,7 @@ Temporal SDKs offer developers the following:
 - APIs to develop application code (Workflows & Activities)
 - APIs to configure and run Workers
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">
-      Temporal SDK components create a runtime across your environment and a
-      Temporal Service
-    </p>
-  </div>
-  <div className="tdiiw" height="870">
-    <img
-      className="img_ev3q"
-      src="/diagrams/temporal-sdk-components.svg"
-      alt="Temporal SDK components create a runtime across your environment and a Temporal Service"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/temporal-sdk-components.svg" title="Temporal SDK components create a runtime across your environment and a Temporal Service" />
 
 Let’s break down each one.
 
@@ -486,34 +461,12 @@ The Activity above is performing a single call to an external API. Since the cal
 
 When you create a new Worker process, the Worker creates a long-lasting connection to the Temporal Service, polling a Task Queue for Tasks that related to the code it is capable of executing.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">A Worker long polls for Tasks</p>
-  </div>
-  <div className="tdiiw" height="661">
-    <img
-      className="img_ev3q"
-      src="/diagrams/how-sdk-works-1.svg"
-      alt="A Worker long polls for Tasks"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/how-sdk-works-1.svg" title="A Worker long polls for Tasks" />
 
 Although the Worker is now running, unless a Workflow is explicitly started, the Task Queue doesn't have any Tasks on it and so, no code executes.
 We can use a Temporal Client (available in Temporal SDKs and the Temporal CLI) to start a new Workflow.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Start a Workflow using a Temporal Client</p>
-  </div>
-  <div className="tdiiw" height="901">
-    <img
-      className="img_ev3q"
-      src="/diagrams/how-sdk-works-2.svg"
-      alt="Start a Workflow using a Temporal Client"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/how-sdk-works-2.svg" title="Start a Workflow using a Temporal Client" />
 
 Starting a Workflow Execution creates a new Event, WorkflowExecutionStarted, and adds it to the Workflow Execution's Event History.
 
@@ -528,20 +481,7 @@ Each step of the Task (e.g. Scheduled, Started, and Completed), gets recorded in
 
 When the call to invoke the Activity is evaluated, the Worker suspends executing the code and sends a Command to the Temporal Service to schedule an Activity Task.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">
-      Worker suspends code execution and sends a Command to the Temporal Service
-    </p>
-  </div>
-  <div className="tdiiw" height="661">
-    <img
-      className="img_ev3q"
-      src="/diagrams/how-sdk-works-3.svg"
-      alt="Worker suspends code execution and sends a Command to the Temporal Service"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/how-sdk-works-3.svg" title="Worker suspends code execution and sends a Command to the Temporal Service" />
 
 When the Worker process can perform more work, it picks up the Activity Task and begins executing the Activity code, which includes the call to the external API.
 
@@ -549,35 +489,13 @@ If the Activity fails, say the API goes down, Temporal will automatically retry 
 
 In the case where the calls succeeds, and the code completes, the Worker tells the Temporal Service the Activity Task completed.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">The Worker reports that the Activity Execution completed</p>
-  </div>
-  <div className="tdiiw" height="661">
-    <img
-      className="img_ev3q"
-      src="/diagrams/how-sdk-works-activity.svg"
-      alt="The Worker reports that the Activity Execution completed"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/how-sdk-works-activity.svg" title="The Worker reports that the Activity Execution completed" />
 
 Included is any data that was returned from the Activity (results of the API call), which is then persisted in the Workflow Execution Event History, and is now accessible to the Workflow code.
 
 The Temporal Service creates a new Workflow Task which the Worker picks up.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">The Worker picks up the new Task</p>
-  </div>
-  <div className="tdiiw" height="661">
-    <img
-      className="img_ev3q"
-      src="/diagrams/how-sdk-works-1.svg"
-      alt="The Worker picks up the new Task"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/how-sdk-works-1.svg" title="The Worker picks up the new Task" />
 
 This is when the SDK Worker Replays the Workflow code, uses the Event History as guidance on what to expect. If the Replay encounters an Event that doesn’t match up with what is expected from the code, a [non-determinism](/references/errors#non-deterministic-error) error gets thrown.
 
@@ -587,20 +505,7 @@ Assuming the Activity Execution is successful, the Workflow now has the result o
 
 The result of the Workflow can now be retrieved using a Temporal Client.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">
-      The Temporal Client can now access the result of the Workflow
-    </p>
-  </div>
-  <div className="tdiiw" height="901">
-    <img
-      className="img_ev3q"
-      src="/diagrams/how-sdk-works-4.svg"
-      alt="The Temporal Client can now access the result of the Workflow"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/how-sdk-works-4.svg" title="The Temporal Client can now access the result of the Workflow" />
 
 And that’s how a Temporal Worker and Temporal Service work together.
 
