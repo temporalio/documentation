@@ -209,8 +209,8 @@ The Replay test executes the same steps as the SDK and verifies compatibility.
 
 Workflow code becomes non-deterministic primarily through two main avenues:
 
-1. **[Intrinsic non-deterministic logic](/dev-guide/go/durable-execution#intrinsic-non-deterministic-logic):** This occurs when Workflow state or branching logic within the Workflow gets determined by factors beyond the SDK's control.
-2. **[Non-deterministic code changes](/dev-guide/go/durable-execution#durability-through-replays):** When you change your Workflow code and deploy those changes while there are still active Workflow Executions relying on older code versions.
+1. **[Intrinsic non-deterministic logic](/dev-guide/typescript/durable-execution#intrinsic-non-deterministic-logic):** This occurs when Workflow state or branching logic within the Workflow gets determined by factors beyond the SDK's control.
+2. **[Non-deterministic code changes](/dev-guide/typescript/durable-execution#durability-through-replays):** When you change your Workflow code and deploy those changes while there are still active Workflow Executions relying on older code versions.
 
 ## Intrinsic non-deterministic logic {#intrinsic-non-deterministic-logic}
 
@@ -530,7 +530,7 @@ This is because the code we added creates new Events and alters the Event Histor
 To get this test to pass, we must get an updated Event History JSON file.
 
 <!--
-[Start a new Workflow](/dev-guide/go/project-setup#start-workflow) and after it is complete [download the Event History as a JSON object](/dev-guide/go/durable-execution#retrieve-event-history).
+[Start a new Workflow](/dev-guide/go/project-setup#start-workflow) and after it is complete [download the Event History as a JSON object](/dev-guide/typescript/durable-execution#retrieve-event-history).
 -->
 
 :::info Double check Task Queue names

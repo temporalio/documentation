@@ -31,6 +31,8 @@ tags:
   - updates
 ---
 
+import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
+
 This guide provides a comprehensive overview of Temporal Workflows.
 
 A Temporal Workflow defines the overall flow of the application.
@@ -170,7 +172,7 @@ A critical aspect of developing Workflow Definitions is ensuring they exhibit ce
 
 The execution semantics of a Workflow Execution include the re-execution of a Workflow Function, which is called a [Replay](#replays).
 The use of Workflow APIs in the function is what generates [Commands](#command).
-Commands tell the Cluster which Events to create and add to the Workflow Execution's [Event History](#event-history).
+Commands tell the Temporal Service which Events to create and add to the Workflow Execution's [Event History](#event-history).
 When a Workflow Function executes, the Commands that are emitted are compared with the existing Event History.
 If a corresponding Event already exists within the Event History that maps to the generation of that Command in the same sequence, and some specific metadata of that Command matches with some specific metadata of the Event, then the Function Execution progresses.
 
@@ -276,7 +278,7 @@ Temporal [Worker Build Id-based versioning](/workers#worker-versioning) lets you
 You do not handle Worker Process failure or restarts in a Workflow Definition.
 
 Workflow Function Executions are completely oblivious to the Worker Process in terms of failures or downtime.
-The Temporal Platform ensures that the state of a Workflow Execution is recovered and progress resumes if there is an outage of either Worker Processes or the Temporal Cluster itself.
+The Temporal Platform ensures that the state of a Workflow Execution is recovered and progress resumes if there is an outage of either Worker Processes or the Temporal Service itself.
 The only reason a Workflow Execution might fail is due to the code throwing an error or exception, not because of underlying infrastructure outages.
 
 ### What is a Workflow Type? {#workflow-type}
@@ -287,21 +289,7 @@ A Workflow Type is a name that maps to a Workflow Definition.
 - A Workflow Type is scoped by a Task Queue.
   It is acceptable to have the same Workflow Type name map to different Workflow Definitions if they are using completely different Workers.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">
-      Workflow Type cardinality with Workflow Definitions and Workflow
-      Executions
-    </p>
-  </div>
-  <div className="tdiiw" height="440">
-    <img
-      className="img_ev3q"
-      src="/diagrams/workflow-type-cardinality.svg"
-      alt="Workflow Type cardinality with Workflow Definitions and Workflow Executions"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/workflow-type-cardinality.svg" title="Workflow Type cardinality with Workflow Definitions and Workflow Executions" />
 
 ## What is a Workflow Execution? {#workflow-execution}
 
@@ -338,7 +326,7 @@ The Temporal Platform ensures the state of the Workflow Execution persists in th
 Scalability is responsiveness in the presence of load.
 
 A single Workflow Execution is limited in size and throughput but is scalable because it can [Continue-As-New](#continue-as-new) in response to load.
-A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the [Temporal Cluster](/clusters) and [Worker Processes](/workers#worker-process).
+A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the [Temporal Service](/clusters) and [Worker Processes](/workers#worker-process).
 
 ### Replays
 
@@ -360,25 +348,14 @@ A Workflow Execution does two things:
 1. Issue [Commands](#command).
 2. Wait on an Awaitables (often called Futures).
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Command generation and waiting</p>
-  </div>
-  <div className="tdiiw" height="440">
-    <img
-      className="img_ev3q"
-      src="/diagrams/workflow-execution-progession-simple.svg"
-      alt="Command generation and waiting"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/workflow-execution-progession-simple.svg" title="Command generation and waiting" />
 
 Commands are issued and Awaitables are provided by the use of Workflow APIs in the [Workflow Definition](#workflow-definition).
 
 Commands are generated whenever the Workflow Function is executed.
 The Worker Process supervises the Command generation and makes sure that it maps to the current Event History.
 (For more information, see [Deterministic constraints](#deterministic-constraints).)
-The Worker Process batches the Commands and then suspends progress to send the Commands to the Cluster whenever the Workflow Function reaches a place where it can no longer progress without a result from an Awaitable.
+The Worker Process batches the Commands and then suspends progress to send the Commands to the Temporal Service whenever the Workflow Function reaches a place where it can no longer progress without a result from an Awaitable.
 
 A Workflow Execution may only ever block progress on an Awaitable that is provided through a Temporal SDK API.
 Awaitables are provided when using APIs for the following:
@@ -394,18 +371,7 @@ Awaitables are provided when using APIs for the following:
 
 A Workflow Execution can be either _Open_ or _Closed_.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Workflow Execution statuses</p>
-  </div>
-  <div className="tdiiw" height="524">
-    <img
-      className="img_ev3q"
-      src="/diagrams/workflow-execution-statuses.svg"
-      alt="Workflow Execution statuses"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/workflow-execution-statuses.svg" title="Workflow Execution statuses" />
 
 #### Open
 
@@ -443,20 +409,9 @@ The [Workflow Run Timeout](#workflow-run-timeout) applies to a single Workflow E
 ### Event loop
 
 A Workflow Execution is made up of a sequence of [Events](#event) called an [Event History](#event-history).
-Events are created by the Temporal Cluster in response to either Commands or actions requested by a Temporal Client (such as a request to spawn a Workflow Execution).
+Events are created by the Temporal Service in response to either Commands or actions requested by a Temporal Client (such as a request to spawn a Workflow Execution).
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Workflow Execution</p>
-  </div>
-  <div className="tdiiw" height="1246">
-    <img
-      className="img_ev3q"
-      src="/diagrams/workflow-execution-swim-lane-01.svg"
-      alt="Workflow Execution"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/workflow-execution-swim-lane-01.svg" title="Workflow Execution" />
 
 ### Time constraints
 
@@ -465,8 +420,8 @@ Events are created by the Temporal Cluster in response to either Commands or act
 No, there is no time constraint on how long a Workflow Execution can be Running.
 
 However, Workflow Executions intended to run indefinitely should be written with some care.
-The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
-The Temporal Cluster logs a warning after 10Ki (10,240) Events and periodically logs additional warnings as new Events are added.
+The Temporal Service stores the complete Event History for the entire lifecycle of a Workflow Execution.
+The Temporal Service logs a warning after 10Ki (10,240) Events and periodically logs additional warnings as new Events are added.
 If the Event History exceeds 50Ki (51,200) Events, the Workflow Execution is terminated.
 
 To prevent _runaway_ Workflow Executions, you can use the Workflow Execution Timeout, the Workflow Run Timeout, or both.
@@ -502,35 +457,22 @@ These limits are set with the following [dynamic configuration keys](https://git
 
 ### What is a Command? {#command}
 
-A Command is a requested action issued by a [Worker](/workers#worker) to the [Temporal Cluster](/clusters) after a [Workflow Task Execution](/workers#workflow-task-execution) completes.
+A Command is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/clusters) after a [Workflow Task Execution](/workers#workflow-task-execution) completes.
 
-The action that the Cluster takes is recorded in the [Workflow Execution's](#workflow-execution) [Event History](#event-history) as an [Event](#event).
+The action that the Temporal Service takes is recorded in the [Workflow Execution's](#workflow-execution) [Event History](#event-history) as an [Event](#event).
 The Workflow Execution can await on some of the Events that come as a result from some of the Commands.
 
 Commands are generated by the use of Workflow APIs in your code. During a Workflow Task Execution there may be several Commands that are generated.
-The Commands are batched and sent to the Cluster as part of the Workflow Task Execution completion request, after the Workflow Task has progressed as far as it can with the Workflow function.
+The Commands are batched and sent to the Temporal Service as part of the Workflow Task Execution completion request, after the Workflow Task has progressed as far as it can with the Workflow function.
 There will always be [WorkflowTaskStarted](/references/events#workflowtaskstarted) and [WorkflowTaskCompleted](/references/events#workflowtaskcompleted) Events in the Event History when there is a Workflow Task Execution completion request.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">
-      Commands are generated by the use of Workflow APIs in your code
-    </p>
-  </div>
-  <div className="tdiiw" height="1480">
-    <img
-      className="img_ev3q"
-      src="/diagrams/commands.svg"
-      alt="Commands are generated by the use of Workflow APIs in your code"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/commands.svg" title="Commands are generated by the use of Workflow APIs in your code" />
 
 Commands are described in the [Command reference](/references/commands) and are defined in the [Temporal gRPC API](https://github.com/temporalio/api/blob/master/temporal/api/command/v1/message.proto).
 
 ### What is an Event? {#event}
 
-Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution. Each Event corresponds to an `enum` that is defined in the [Server API](https://github.com/temporalio/api/blob/master/temporal/api/enums/v1/event_type.proto).
+Events are created by the Temporal Service in response to external occurrences and Commands generated by a Workflow Execution. Each Event corresponds to an `enum` that is defined in the [Server API](https://github.com/temporalio/api/blob/master/temporal/api/enums/v1/event_type.proto).
 
 All Events are recorded in the [Event History](#event-history).
 
@@ -540,15 +482,15 @@ A list of all possible Events that could appear in a Workflow Execution Event Hi
 
 Seven Activity-related Events are added to Event History at various points in an Activity Execution:
 
-- After a [Workflow Task Execution](/workers#activity-task-execution) reaches a line of code that starts/executes an Activity, the Worker sends the Activity Type and arguments to the Temporal Cluster, and the Cluster adds an [ActivityTaskScheduled](/references/events#activitytaskscheduled) Event to Event History.
-- When `ActivityTaskScheduled` is added to History, the Cluster adds a corresponding Activity Task to the Task Queue.
+- After a [Workflow Task Execution](/workers#activity-task-execution) reaches a line of code that starts/executes an Activity, the Worker sends the Activity Type and arguments to the Temporal Service, and the Temporal Service adds an [ActivityTaskScheduled](/references/events#activitytaskscheduled) Event to Event History.
+- When `ActivityTaskScheduled` is added to History, the Temporal Service adds a corresponding Activity Task to the Task Queue.
 - A Worker polling that Task Queue picks up the Activity Task and runs the Activity function or method.
-- If the Activity function returns, the Worker reports completion to the Cluster, and the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskCompleted](/references/events#activitytaskcompleted) to Event History.
-- If the Activity function throws a [non-retryable Failure](/references/failures#non-retryable), the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to Event History.
-- If the Activity function throws an error or retryable Failure, the Cluster schedules an Activity Task retry to be added to the Task Queue (unless you’ve reached the Maximum Attempts value of the [Retry Policy](/retry-policies), in which case the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to Event History).
-- If the Activity’s [Start-to-Close Timeout](/activities#start-to-close-timeout) passes before the Activity function returns or throws, the Cluster schedules a retry.
-- If the Activity’s [Schedule-to-Close Timeout](/activities#schedule-to-close-timeout) passes before Activity Execution is complete, or if [Schedule-to-Start Timeout](/activities#schedule-to-start-timeout) passes before a Worker gets the Activity Task, the Cluster writes [ActivityTaskTimedOut](/references/events#activitytasktimedout) to Event History.
-- If the Activity is [canceled](/activities#cancellation), the Cluster writes [ActivityTaskCancelRequested](/references/events#activitytaskcancelrequested) to Event History, and if the Activity accepts cancellation, the Cluster writes [ActivityTaskCanceled](/references/events#activitytaskcanceled).
+- If the Activity function returns, the Worker reports completion to the Temporal Service, and the Temporal Service adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskCompleted](/references/events#activitytaskcompleted) to Event History.
+- If the Activity function throws a [non-retryable Failure](/references/failures#non-retryable), the Temporal Service adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to Event History.
+- If the Activity function throws an error or retryable Failure, the Temporal Service schedules an Activity Task retry to be added to the Task Queue (unless you’ve reached the Maximum Attempts value of the [Retry Policy](/retry-policies), in which case the Temporal Service adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to Event History).
+- If the Activity’s [Start-to-Close Timeout](/activities#start-to-close-timeout) passes before the Activity function returns or throws, the Temporal Service schedules a retry.
+- If the Activity’s [Schedule-to-Close Timeout](/activities#schedule-to-close-timeout) passes before Activity Execution is complete, or if [Schedule-to-Start Timeout](/activities#schedule-to-start-timeout) passes before a Worker gets the Activity Task, the Temporal Service writes [ActivityTaskTimedOut](/references/events#activitytasktimedout) to Event History.
+- If the Activity is [canceled](/activities#cancellation), the Temporal Service writes [ActivityTaskCancelRequested](/references/events#activitytaskcancelrequested) to Event History, and if the Activity accepts cancellation, the Temporal Service writes [ActivityTaskCanceled](/references/events#activitytaskcanceled).
 
 :::note
 
@@ -565,9 +507,9 @@ An append-only log of [Events](#event) for your application.
 
 **Event History limits**
 
-The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
+The Temporal Service stores the complete Event History for the entire lifecycle of a Workflow Execution.
 
-The Temporal Cluster logs a [warning after 10Ki (10,240) Events](/workflows#limits) and periodically logs additional warnings as new Events are added.
+The Temporal Service logs a [warning after 10Ki (10,240) Events](/workflows#limits) and periodically logs additional warnings as new Events are added.
 If the Event History exceeds 50Ki (51,200) Events, the Workflow Execution is terminated.
 
 #### What is Continue-As-New? {#continue-as-new}
@@ -583,11 +525,11 @@ As a precautionary measure, the Workflow Execution's Event History is limited to
 To prevent a Workflow Execution Event History from exceeding this limit and failing, use Continue-As-New to start a new Workflow Execution with a fresh Event History.
 
 All values passed to a Workflow Execution through parameters or returned through a result value are recorded into the Event History.
-A Temporal Cluster stores the full Event History of a Workflow Execution for the duration of a Namespace's retention period.
+The Temporal Service stores the full Event History of a Workflow Execution for the duration of a Namespace's retention period.
 A Workflow Execution that periodically executes many Activities has the potential of hitting the size limit.
 
 A very large Event History can adversely affect the performance of a Workflow Execution.
-For example, in the case of a Workflow Worker failure, the full Event History must be pulled from the Temporal Cluster and given to another Worker via a Workflow Task.
+For example, in the case of a Workflow Worker failure, the full Event History must be pulled from the Temporal Service and given to another Worker via a Workflow Task.
 If the Event history is very large, it may take some time to load it.
 
 The Continue-As-New feature enables developers to complete the current Workflow Execution and start a new one atomically.
@@ -705,18 +647,7 @@ A Workflow Execution Timeout is the maximum time that a Workflow Execution can b
 - [How to set a Workflow Execution Timeout using the Python SDK](/dev-guide/python/features#workflow-timeouts)
 - [How to set a Workflow Execution Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Workflow Execution Timeout period</p>
-  </div>
-  <div className="tdiiw" height="1886">
-    <img
-      className="img_ev3q"
-      src="/diagrams/workflow-execution-timeout.svg"
-      alt="Workflow Execution Timeout period"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/workflow-execution-timeout.svg" title="Workflow Execution Timeout period" />
 
 **The default value is ∞ (infinite).**
 If this timeout is reached, the Workflow Execution changes to a Timed Out status.
@@ -733,18 +664,7 @@ A Workflow Run Timeout is the maximum amount of time that a single Workflow Run 
 - [How to set a Workflow Run Timeout using the Python SDK](/dev-guide/python/features#workflow-timeouts)
 - [How to set a Workflow Run Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Workflow Run Timeout period</p>
-  </div>
-  <div className="tdiiw" height="1047">
-    <img
-      className="img_ev3q"
-      src="/diagrams/workflow-run-timeout.svg"
-      alt="Workflow Run Timeout period"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/workflow-run-timeout.svg" title="Workflow Run Timeout period" />
 
 **The default is set to the same value as the [Workflow Execution Timeout](#workflow-execution-timeout).**
 This timeout is most commonly used to limit the execution time of a single [Temporal Cron Job Execution](#temporal-cron-job).
@@ -761,18 +681,7 @@ A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/wo
 - [How to set a Workflow Task Timeout using the Python SDK](/dev-guide/python/features#workflow-timeouts)
 - [How to set a Workflow Task Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Workflow Task Timeout period</p>
-  </div>
-  <div className="tdiiw" height="1047">
-    <img
-      className="img_ev3q"
-      src="/diagrams/workflow-task-timeout.svg"
-      alt="Workflow Task Timeout period"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/workflow-task-timeout.svg" title="Workflow Task Timeout period" />
 
 **The default value is 10 seconds.**
 This timeout is primarily available to recognize whether a Worker has gone down so that the Workflow Execution can be recovered on a different Worker.
@@ -783,7 +692,7 @@ It's worth mentioning that although you can extend the timeout up to the maximum
 
 Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in their handling of time values.
 
-Timers in Temporal are persisted, meaning that even if your Worker or Temporal Cluster is down when the time period completes, as soon as your Worker and Cluster become available, the call that is awaiting the Timer in your Workflow code will resolve, causing execution to proceed
+Timers in Temporal are persisted, meaning that even if your Worker or Temporal Service is down when the time period completes, as soon as your Worker and Temporal Service become available, the call that is awaiting the Timer in your Workflow code will resolve, causing execution to proceed
 Timers are reliable and efficient.
 Workers consume no additional resources while waiting for a Timer to fire, so a single Worker can await millions of Timers concurrently.
 
@@ -835,18 +744,18 @@ A Signal delivers data to a running Workflow Execution.
 It cannot return data to the caller; to do so, use a [Query](#query) instead.
 The Workflow code that handles a Signal can mutate Workflow state.
 A Signal can be sent from a Temporal Client or a Workflow.
-When a Signal is sent, it is received by the Cluster and recorded as an Event to the Workflow Execution [Event History](#event-history).
-A successful response from the Cluster means that the Signal has been persisted and will be delivered at least once to the Workflow Execution.[^1]
+When a Signal is sent, it is received by the Temporal Service and recorded as an Event to the Workflow Execution [Event History](#event-history).
+A successful response from the Temporal Service means that the Signal has been persisted and will be delivered at least once to the Workflow Execution.[^1]
 The next scheduled Workflow Task will contain the Signal Event.
 
 A Signal must include a destination (Namespace and Workflow Id) and name.
 It can include a list of arguments.
 
 Signal handlers are Workflow functions that listen for Signals by the Signal name.
-Signals are delivered in the order they are received by the Cluster and written to History.
+Signals are delivered in the order they are received by the Temporal Service and written to History.
 If multiple deliveries of a Signal would be a problem for your Workflow, add idempotency logic to your Signal handler that checks for duplicates.
 
-[^1]: The Cluster usually deduplicates Signals, but does not guarantee deduplication: During shard migration, two Signal Events (and therefore two deliveries to the Workflow Execution) can be recorded for a single Signal because the deduping info is stored only in memory.
+[^1]: The Temporal Service usually deduplicates Signals, but does not guarantee deduplication: During shard migration, two Signal Events (and therefore two deliveries to the Workflow Execution) can be recorded for a single Signal because the deduping info is stored only in memory.
 
 ### What is Signal-With-Start? {#signal-with-start}
 
@@ -951,7 +860,7 @@ When there is the potential for multiple Updates to cause a duplication problem,
 
 An Update has four phases.
 
-1. **Admission.** The Temporal Cluster first validates Update submissions against the configured resource usage limits.
+1. **Admission.** The Temporal Service first validates Update submissions against the configured resource usage limits.
    For example, limits apply to concurrent requests and requests per second.
    For more details, see the [Temporal Platform defaults](/self-hosted-guide/defaults).
    When this phase is complete, the Platform changes the status of the Update to **Admitted**.
@@ -1186,7 +1095,7 @@ The following options are available:
 
 #### Catchup Window
 
-The Temporal Cluster might be down or unavailable at the time when a Schedule should take an Action.
+The Temporal Service might be down or unavailable at the time when a Schedule should take an Action.
 When it comes back up, the Catchup Window controls which missed Actions should be taken at that point.
 The default is one year, meaning Actions will be taken unless over one year late.
 If your Actions are more time-sensitive, you can set the Catchup Window to a smaller value (minimum ten seconds), accepting that an outage longer than the window could lead to missed Actions.
@@ -1269,18 +1178,7 @@ A Temporal Cron Job is the series of Workflow Executions that occur when a Cron 
 - [How to set a Cron Schedule using the Python SDK](/dev-guide/python/features#temporal-cron-jobs)
 - [How to set a Cron Schedule using the TypeScript SDK](/dev-guide/typescript/features#temporal-cron-jobs)
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Temporal Cron Job timeline</p>
-  </div>
-  <div className="tdiiw" height="1113">
-    <img
-      className="img_ev3q"
-      src="/diagrams/temporal-cron-job.svg"
-      alt="Temporal Cron Job timeline"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/temporal-cron-job.svg" title="Temporal Cron Job timeline" />
 
 A Temporal Cron Job is similar to a classic unix cron job.
 Just as a unix cron job accepts a command and a schedule on which to execute that command, a Cron Schedule can be provided with the call to spawn a Workflow Execution.
@@ -1303,18 +1201,7 @@ The start time for this new Run and the Cron definitions are used to calculate t
 A [Workflow Execution Timeout](#workflow-execution-timeout) is used to limit how long a Workflow can be executing (have an Open status), including retries and any usage of Continue As New.
 The Cron Schedule runs until the Workflow Execution Timeout is reached or you terminate the Workflow.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Temporal Cron Job Run Failure with a Retry Policy</p>
-  </div>
-  <div className="tdiiw" height="1203">
-    <img
-      className="img_ev3q"
-      src="/diagrams/temporal-cron-job-failure-with-retry.svg"
-      alt="Temporal Cron Job Run Failure with a Retry Policy"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/temporal-cron-job-failure-with-retry.svg" title="Temporal Cron Job Run Failure with a Retry Policy" />
 
 ### Cron Schedules
 
@@ -1376,8 +1263,8 @@ If you need to use time zones, here are a few edge cases to keep in mind:
 - **Beware Daylight Saving Time:** If a Temporal Cron Job is scheduled around the time when daylight saving time (DST) begins or ends (for example, `30 2 * * *`), **it might run zero, one, or two times in a day**! The Cron library that we use does not do any special handling of DST transitions. Avoid schedules that include times that fall within DST transition periods.
   - For example, in the US, DST begins at 2 AM. When you "fall back," the clock goes `1:59 … 1:00 … 1:01 … 1:59 … 2:00 … 2:01 AM` and any Cron jobs that fall in that 1 AM hour are fired again. The inverse happens when clocks "spring forward" for DST, and Cron jobs that fall in the 2 AM hour are skipped.
   - In other time zones like Chile and Iran, DST "spring forward" is at midnight. 11:59 PM is followed by 1 AM, which means `00:00:00` never happens.
-- **Self Hosting note:** If you manage your own Temporal Cluster, you are responsible for ensuring that it has access to current `tzdata` files. The official Docker images are built with [tzdata](https://docs.w3cub.com/go/time/tzdata/index) installed (provided by Alpine Linux), but ultimately you should be aware of how tzdata is deployed and updated in your infrastructure.
-- **Updating Temporal:** If you use the official Docker images, note that an upgrade of the Temporal Cluster may include an update to the tzdata files, which may change the meaning of your Cron Schedule. You should be aware of upcoming changes to the definitions of the time zones you use, particularly around daylight saving time start/end dates.
+- **Self Hosting note:** If you manage your own Temporal Service, you are responsible for ensuring that it has access to current `tzdata` files. The official Docker images are built with [tzdata](https://docs.w3cub.com/go/time/tzdata/index) installed (provided by Alpine Linux), but ultimately you should be aware of how tzdata is deployed and updated in your infrastructure.
+- **Updating Temporal:** If you use the official Docker images, note that an upgrade of the Temporal Service may include an update to the tzdata files, which may change the meaning of your Cron Schedule. You should be aware of upcoming changes to the definitions of the time zones you use, particularly around daylight saving time start/end dates.
 - **Absolute Time Fixed at Start:** The absolute start time of the next Run is computed and stored in the database when the previous Run completes, and is not recomputed. This means that if you have a Cron Schedule that runs very infrequently, and the definition of the time zone changes between one Run and the next, the Run might happen at the wrong time. For example, `CRON_TZ=America/Los_Angeles 0 12 11 11 *` means "noon in Los Angeles on November 11" (normally not in DST). If at some point the government makes any changes (for example, move the end of DST one week later, or stay on permanent DST year-round), the meaning of that specification changes. In that first year, the Run happens at the wrong time, because it was computed using the older definition.
 
 ### How to stop a Temporal Cron Job

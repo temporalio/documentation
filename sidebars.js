@@ -58,9 +58,6 @@ module.exports = {
             id: "dev-guide/golang/index",
           },
           items: [
-            "dev-guide/golang/introduction",
-            "dev-guide/golang/project-setup",
-            "dev-guide/golang/durable-execution",
             "dev-guide/golang/foundations",
             "develop/go/temporal-client",
             "dev-guide/golang/features",

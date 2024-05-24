@@ -1,1 +1,0 @@
-# Go SDK developer's guide | Develop for durability example app
