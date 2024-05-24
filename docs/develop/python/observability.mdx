@@ -118,7 +118,6 @@ Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio
 </div>
 
 ```python
-
 # ...
         workflow.logger.info("Workflow input parameter: %s" % name)
 ```
@@ -173,7 +172,6 @@ Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.h
 </div>
 
 ```python
-
 # ...
     async for workflow in client.list_workflows('WorkflowType="GreetingWorkflow"'):
         print(f"Workflow: {workflow.id}")
@@ -193,7 +191,6 @@ To set custom Search Attributes, use the `search_attributes` parameter of the ['
 </div>
 
 ```python
-
 # ...
     handle = await client.start_workflow(
         GreetingWorkflow.run,
@@ -219,7 +216,6 @@ The keys are added to or replace the existing Search Attributes, similar to [`di
 </div>
 
 ```python
-
 # ...
         workflow.upsert_search_attributes({"CustomKeywordField": ["new-value"]})
 ```
@@ -238,7 +234,6 @@ To remove a Search Attribute, use the [`upsert_search_attributes()`](https://pyt
 </div>
 
 ```python
-
 # ...
         workflow.upsert_search_attributes({"CustomKeywordField": []})
 ```

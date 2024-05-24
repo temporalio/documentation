@@ -361,7 +361,6 @@ The `BackgroundCheck class` below is an example of a basic Workflow Definition.
 </div>
 
 ```python
-
 from datetime import timedelta
 
 from temporalio import workflow
@@ -404,7 +403,6 @@ Below is an example of an Activity defined as a function.
 </div>
 
 ```python
-
 from temporalio import activity
 
 @activity.defn
@@ -453,7 +451,6 @@ In regards to organization, we recommend keeping Worker code separate from Workf
 </div>
 
 ```python
-
 import asyncio
 
 from temporalio.client import Client
@@ -495,7 +492,6 @@ A Temporal Cloud Worker requires that you specify the following in the Client co
 </div>
 
 ```python
-
 import asyncio
 import os
 
@@ -531,7 +527,6 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-
 ```
 
 To run a Temporal Cloud Worker, you'll change some parameters in your Client connection code, such as updating the namespace and gRPC endpoint.
@@ -618,7 +613,6 @@ Set IP address, port, and Namespace in the Temporal Client options.
 </div>
 
 ```python
-
 import asyncio
 
 from temporalio.client import Client
@@ -895,7 +889,6 @@ The test is marked with `@pytest.mark.asyncio` to indicate that it is an asynchr
 </div>
 
 ```python
-
 import uuid
 
 import pytest
@@ -939,7 +932,6 @@ The test checks if the function returns "pass" when given the SSN "55-55-555".
 </div>
 
 ```python
-
 import pytest
 from temporalio.testing import ActivityEnvironment
 from activities.ssntraceactivity_dacx import ssn_trace_activity

@@ -601,7 +601,7 @@ configuration provided via environment variables:
 ```typescript
 import fs from 'fs/promises';
 
-import { Worker, NativeConnection } from '@temporalio/worker';
+import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from './activities';
 
 // Note that serverNameOverride and serverRootCACertificate are optional.
@@ -1093,10 +1093,10 @@ Add the following code to `src/mocha/backgroundcheck.test.ts` to test that the W
 
 ```typescript
 import { TestWorkflowEnvironment } from '@temporalio/testing';
-import { before, describe, it } from 'mocha';
 import { Worker } from '@temporalio/worker';
-import { backgroundCheck } from '../workflows';
 import assert from 'assert';
+import { before, describe, it } from 'mocha';
+import { backgroundCheck } from '../workflows';
 
 describe('Background check workflow', () => {
   let testEnv: TestWorkflowEnvironment;
@@ -1128,7 +1128,7 @@ describe('Background check workflow', () => {
         args: [ssn],
         workflowId: 'background-check-test',
         taskQueue,
-      })
+      }),
     );
     assert.equal(result, 'pass');
   });
@@ -1168,9 +1168,9 @@ Activity and ensure it returns the expected value:
 
 ```typescript
 import { MockActivityEnvironment } from '@temporalio/testing';
+import assert from 'assert';
 import { describe, it } from 'mocha';
 import * as activities from '../activities';
-import assert from 'assert';
 
 describe('ssnTrace activity', async () => {
   it('successfully passes the ssn trace', async () => {

@@ -95,7 +95,6 @@ Now, you want to update your code to run `post_patch_activity` instead. This rep
 </div>
 
 ```python
-
 from datetime import timedelta
 
 from temporalio import workflow
@@ -131,7 +130,6 @@ Implementing patching involves three steps:
 </div>
 
 ```python
-
 # ...
 @workflow.defn
 class MyWorkflow:
@@ -159,7 +157,6 @@ During replay, if a Worker encounters a history with that marker, it will fail t
 </div>
 
 ```python
-
 # ...
 @workflow.defn
 class MyWorkflow:
@@ -193,7 +190,6 @@ If, during the deployment of `post_patch_activity`, there are still live Workers
 </div>
 
 ```python
-
 # ...
 @workflow.defn
 class MyWorkflow:
@@ -218,7 +214,6 @@ You can safely deploy `post_patch_activity` once all Workflows labeled my-patch 
 </div>
 
 ```python
-
 # ...
 @workflow.defn
 class MyWorkflow:
