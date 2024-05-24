@@ -825,12 +825,12 @@ The following code demonstrates how to complete the Activity successfully using 
 [app/src/AsyncActivityCompletion/CompleteCommand.php](https://github.com/temporalio/samples-php/blob/main/app/src/AsyncActivityCompletion/CompleteCommand.php)
 
 ```php
-        $client = $this->workflowClient->newActivityCompletionClient();
-        // Complete the Activity.
-        $client->completeByToken(
-            base64_decode($input->getArgument('token')),
-            $input->getArgument('message')
-        );
+$client = $this->workflowClient->newActivityCompletionClient();
+// Complete the Activity.
+$client->completeByToken(
+    base64_decode($input->getArgument('token')),
+    $input->getArgument('message')
+);
 ```
 
 <!--SNIPEND-->

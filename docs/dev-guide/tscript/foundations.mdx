@@ -325,7 +325,7 @@ type ExampleArgs = {
 };
 
 export async function example(
-  args: ExampleArgs
+  args: ExampleArgs,
 ): Promise<{ greeting: string }> {
   const greeting = await greet(args.name);
   return { greeting };
@@ -492,7 +492,7 @@ And the total size of a gRPC message, which includes all the arguments, is limit
 Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
 This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/workers#workflow-task).
 
-{/*TODO link to gRPC limit section when available */}
+{/* TODO link to gRPC limit section when available */}
 
 Some SDKs require that you pass context objects, others do not.
 When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.
@@ -961,10 +961,10 @@ Then the bundle can be passed to the Worker:
 const workflowOption = () =>
   process.env.NODE_ENV === 'production'
     ? {
-        workflowBundle: {
-          codePath: require.resolve('../workflow-bundle.js'),
-        },
-      }
+      workflowBundle: {
+        codePath: require.resolve('../workflow-bundle.js'),
+      },
+    }
     : { workflowsPath: require.resolve('./workflows') };
 
 async function run() {
@@ -1151,10 +1151,10 @@ To return the results of a Workflow Execution:
 
 ```typescript
 return (
-  'Completed ' +
-  wf.workflowInfo().workflowId +
-  ', Total Charged: ' +
-  totalCharged
+  'Completed '
+  + wf.workflowInfo().workflowId
+  + ', Total Charged: '
+  + totalCharged
 );
 ```
 
@@ -1241,8 +1241,8 @@ To simplify checking for cancellation, use the [isCancellation(err)](https://typ
 
 ```ts
 import {
-  CancelledFailure,
   CancellationScope,
+  CancelledFailure,
   sleep,
 } from '@temporalio/workflow';
 
@@ -1274,8 +1274,8 @@ Alternatively, the preceding can be written as the following.
 
 ```ts
 import {
-  CancelledFailure,
   CancellationScope,
+  CancelledFailure,
   sleep,
 } from '@temporalio/workflow';
 
@@ -1310,8 +1310,8 @@ The following code shows how to handle Workflow cancellation by an external clie
 ```ts
 import {
   CancellationScope,
-  proxyActivities,
   isCancellation,
+  proxyActivities,
 } from '@temporalio/workflow';
 import type * as activities from '../activities';
 
@@ -1321,7 +1321,7 @@ const { httpPostJSON, cleanup } = proxyActivities<typeof activities>({
 
 export async function handleExternalWorkflowCancellationWhileActivityRunning(
   url: string,
-  data: any
+  data: any,
 ): Promise<void> {
   try {
     await httpPostJSON(url, data);
@@ -1380,7 +1380,7 @@ import type * as activities from '../activities';
 
 export function multipleActivitiesSingleTimeout(
   urls: string[],
-  timeoutMs: number
+  timeoutMs: number,
 ): Promise<any> {
   const { httpGetJSON } = proxyActivities<typeof activities>({
     startToCloseTimeout: timeoutMs,
@@ -1388,8 +1388,9 @@ export function multipleActivitiesSingleTimeout(
 
   // If timeout triggers before all activities complete
   // the Workflow will fail with a CancelledError.
-  return CancellationScope.withTimeout(timeoutMs, () =>
-    Promise.all(urls.map((url) => httpGetJSON(url)))
+  return CancellationScope.withTimeout(
+    timeoutMs,
+    () => Promise.all(urls.map((url) => httpGetJSON(url))),
   );
 }
 ```
@@ -1472,8 +1473,8 @@ You can achieve complex flows by nesting cancellation scopes.
 ```ts
 import {
   CancellationScope,
-  proxyActivities,
   isCancellation,
+  proxyActivities,
 } from '@temporalio/workflow';
 
 import type * as activities from '../activities';
@@ -1486,8 +1487,9 @@ export async function nestedCancellation(url: string): Promise<void> {
   await CancellationScope.cancellable(async () => {
     await CancellationScope.nonCancellable(() => setup());
     try {
-      await CancellationScope.withTimeout(1000, () =>
-        httpPostJSON(url, { some: 'data' })
+      await CancellationScope.withTimeout(
+        1000,
+        () => httpPostJSON(url, { some: 'data' }),
       );
     } catch (err) {
       if (isCancellation(err)) {

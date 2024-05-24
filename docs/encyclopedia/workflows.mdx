@@ -31,7 +31,7 @@ tags:
   - updates
 ---
 
-import PrettyImage from '@site/src/components/PrettyImage/PrettyImage';
+import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
 
 This guide provides a comprehensive overview of Temporal Workflows.
 
@@ -84,7 +84,6 @@ public interface YourBasicWorkflow {
 public class YourBasicWorkflowImpl implements YourBasicWorkflow {
     // ...
 }
-
 ```
 
 </TabItem>
@@ -119,7 +118,6 @@ class YourWorkflow:
     @workflow.run
     async def YourBasicWorkflow(self, input: str) -> str:
         # ...
-
 ```
 
 </TabItem>
@@ -129,13 +127,13 @@ class YourWorkflow:
 
 ```Typescript
 type BasicWorkflowArgs = {
-    param: string;
+  param: string;
 };
 
 export async function WorkflowExample(
-    args: BasicWorkflowArgs
+  args: BasicWorkflowArgs,
 ): Promise<{ result: string }> {
-    // ...
+  // ...
 }
 ```
 
@@ -829,7 +827,7 @@ Stack Trace Queries are available only for running Workflow Executions.
 - In [Pre-release](/evaluate/release-stages#pre-release) (API is subject to change)
 - Introduced in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
 - Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.23.1/client#Client.UpdateWorkflowWithOptions) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
-- Available in [Java SDK](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)>) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+- Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
 - Available in [Python SDK](https://docs.temporal.io/dev-guide/python/features#updates) since [v1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
 - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_ExecuteUpdateAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowUpdateOptions_) since [v0.1.0-beta2](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta2)
 - Available in [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#executeupdate) since [v1.9.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0)
@@ -1281,7 +1279,7 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 
 - In [Public Preview](/evaluate/release-stages#public-preview)
 - Available in the [Go SDK](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions.StartDelay) since [v1.25.0](https://github.com/temporalio/sdk-go/releases/tag/v1.25.0)
-- Available in the [Java SDK](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setStartDelay(java.time.Duration)>) since [v1.25.0](https://github.com/temporalio/sdk-java/releases/tag/v1.22.1)
+- Available in the [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setStartDelay(java.time.Duration)) since [v1.25.0](https://github.com/temporalio/sdk-java/releases/tag/v1.22.1)
 - Available in the [Python SDK](https://python.temporal.io/temporalio.client.Client.html#start_workflow) since [v1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
 - Available in the [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowOptions.html#Temporalio_Client_WorkflowOptions_StartDelay) since [v1.0.0](https://github.com/temporalio/sdk-dotnet/releases/tag/1.0.0)
 - Available in the [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#startdelay) since [v1.9.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0)
