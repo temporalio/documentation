@@ -1,0 +1,224 @@
+---
+id: observability
+title: Observability
+sidebar_label: Observability
+slug: /develop/java/observability
+description: Improve observability in your Java-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
+toc_max_heading_level: 4
+keywords:
+  - developer-guide
+  - guide-context
+  - how-to
+  - java
+  - sdk
+tags:
+  - developer-guide
+  - guide-context
+  - how-to
+  - java
+  - sdk
+---
+
+The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
+
+This section covers features related to viewing the state of the application, including:
+
+- [Metrics](#metrics)
+- [Tracing](#tracing)
+- [Logging](#logging)
+- [Visibility](#visibility)
+
+## How to emit metrics {#metrics}
+
+Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
+For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
+
+Metrics can be scraped and stored in time series databases, such as:
+
+- [Prometheus](https://prometheus.io/docs/introduction/overview/)
+- [M3db](https://m3db.io/docs/)
+- [statsd](https://github.com/statsd/statsd)
+
+Temporal also provides a dashboard you can integrate with graphing services like [Grafana](https://grafana.com/docs/). For more information, see:
+
+- Temporal's implementation of the [Grafana dashboard](https://github.com/temporalio/dashboards)
+- [How to export metrics in Grafana](https://github.com/temporalio/helm-charts#exploring-metrics-via-grafana)
+
+To emit metrics with the Java SDK, use the[`MicrometerClientStatsReporter`](https://github.com/temporalio/sdk-java/blob/55ee7894aec427d7e384c3519732bdd61119961a/src/main/java/io/temporal/common/reporter/MicrometerClientStatsReporter.java#L34) class to integrate with Micrometer MeterRegistry configured for your metrics backend.
+[Micrometer](https://micrometer.io/docs) is a popular Java framework that provides integration with Prometheus and other backends.
+
+The following example shows how to use `MicrometerClientStatsReporter` to define the metrics scope and set it with the `WorkflowServiceStubsOptions`.
+
+```java
+//...
+   // see the Micrometer documentation for configuration details on other supported monitoring systems.
+   // in this example shows how to set up Prometheus registry and stats reported.
+   PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+   StatsReporter reporter = new MicrometerClientStatsReporter(registry);
+    // set up a new scope, report every 10 seconds
+     Scope scope = new RootScopeBuilder()
+             .reporter(reporter)
+             .reportEvery(com.uber.m3.util.Duration.ofSeconds(10));
+   // for Prometheus collection, expose a scrape endpoint.
+   //...
+   // add metrics scope to WorkflowServiceStub options
+   WorkflowServiceStubsOptions stubOptions =
+       WorkflowServiceStubsOptions.newBuilder().setMetricsScope(scope).build();
+//...
+```
+
+For more details, see the [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics).
+For details on configuring a Prometheus scrape endpoint with Micrometer, see the [Micrometer Prometheus Configuring](https://micrometer.io/docs/registry/prometheus#_configuring) documentation.
+
+## How to setup Tracing {#tracing}
+
+Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
+
+Temporal Web's tracing capabilities mainly track Activity Execution within a Temporal context. If you need custom tracing specific for your use case, you should make use of context propagation to add tracing logic accordingly.
+
+To configure tracing in Java, register the `OpenTracingClientInterceptor()` interceptor.
+You can register the interceptors on both the Temporal Client side and the Worker side.
+
+The following code examples demonstrate the `OpenTracingClientInterceptor()` on the Temporal Client.
+
+```java
+WorkflowClientOptions.newBuilder()
+   //...
+   .setInterceptors(new OpenTracingClientInterceptor())
+   .build();
+```
+
+```java
+WorkflowClientOptions clientOptions =
+    WorkflowClientOptions.newBuilder()
+        .setInterceptors(new OpenTracingClientInterceptor(JaegerUtils.getJaegerOptions(type)))
+        .build();
+WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
+```
+
+The following code examples demonstrate the `OpenTracingClientInterceptor()` on the Worker.
+
+```java
+WorkerFactoryOptions.newBuilder()
+   //...
+   .setWorkerInterceptors(new OpenTracingWorkerInterceptor())
+   .build();
+```
+
+```java
+WorkerFactoryOptions factoryOptions =
+    WorkerFactoryOptions.newBuilder()
+        .setWorkerInterceptors(
+            new OpenTracingWorkerInterceptor(JaegerUtils.getJaegerOptions(type)))
+        .build();
+WorkerFactory factory = WorkerFactory.newInstance(client, factoryOptions);
+```
+
+For more information, see the Temporal [OpenTracing module](https://github.com/temporalio/sdk-java/blob/master/temporal-opentracing/README.md).
+
+## How to log from a Workflow {#logging}
+
+Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
+
+The SDK core uses `WARN` for its default logging level.
+
+To get a standard `slf4j` logger in your Workflow code, use the [`Workflow.getLogger`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html) method.
+
+```java
+private static final Logger logger = Workflow.getLogger(DynamicDslWorkflow.class);
+```
+
+Logs in replay mode are omitted unless the [`WorkerFactoryOptions.Builder.setEnableLoggingInReplay(boolean)`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactoryOptions.Builder.html#setEnableLoggingInReplay(boolean)>) method is set to true.
+
+### How to provide a custom logger {#custom-logger}
+
+Use a custom logger for logging.
+
+To set a custom logger, supply your own logging implementation and configuration details the same way you would in any other Java application.
+
+## How to use Visibility APIs {#visibility}
+
+The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
+
+### How to use Search Attributes {#search-attributes}
+
+The typical method of retrieving a Workflow Execution is by its Workflow Id.
+
+However, sometimes you'll want to retrieve one or more Workflow Executions based on another property. For example, imagine you want to get all Workflow Executions of a certain type that have failed within a time range, so that you can start new ones with the same arguments.
+
+You can do this with [Search Attributes](/visibility#search-attribute).
+
+- [Default Search Attributes](/visibility#default-search-attributes) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
+- _Custom Search Attributes_ can contain their own domain-specific data (like `customerId` or `numItems`).
+  - A few [generic Custom Search Attributes](/visibility#custom-search-attributes) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](https://github.com/temporalio/docker-compose).
+
+The steps to using custom Search Attributes are:
+
+- Create a new Search Attribute in your Cluster using `temporal operator search-attribute create` or the Cloud UI.
+- Set the value of the Search Attribute for a Workflow Execution:
+  - On the Client by including it as an option when starting the Execution.
+  - In the Workflow by calling `UpsertSearchAttributes`.
+- Read the value of the Search Attribute:
+  - On the Client by calling `DescribeWorkflow`.
+  - In the Workflow by looking at `WorkflowInfo`.
+- Query Workflow Executions by the Search Attribute using a [List Filter](/visibility#list-filter):
+  - [In the Temporal CLI](/cli/workflow#list).
+  - In code by calling `ListWorkflowExecutions`.
+
+Here is how to query Workflow Executions:
+
+### How to set custom Search Attributes {#custom-search-attributes}
+
+After you've created custom Search Attributes in your Cluster (using `temporal operator search-attribute create` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+
+To set a custom Search Attribute, call the [`setSearchAttributes()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setSearchAttributes(java.util.Map)>) method.
+
+```java
+WorkflowOptions workflowOptions =
+    WorkflowOptions.newBuilder()
+        .setSearchAttributes(generateSearchAttributes())
+        .build();
+```
+
+`generateSearchAttributes()` is a `Map<String, ?>` from the Search Attribute used as the key to a value of one of the following types.
+
+- `String`
+- `Long`
+- `Integer`
+- `Boolean`
+- `Double`
+- `OffsetDateTime`
+
+### How to upsert Search Attributes {#upsert-search-attributes}
+
+You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
+
+In your Workflow code, call the [`upsertSearchAttributes(Map<String, ?> searchAttributes)`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertSearchAttributes(java.util.Map)>) method.
+
+```java
+ Map<String, Object> attr1 = new HashMap<>();
+     attr1.put("CustomIntField", 1);
+     attr1.put("CustomBoolField", true);
+     Workflow.upsertSearchAttributes(attr1);
+
+     Map<String, Object> attr2 = new HashMap<>();
+     attr2.put("CustomIntField", Lists.newArrayList(1, 2));
+     attr2.put("CustomKeywordField", "Seattle");
+     Workflow.upsertSearchAttributes(attr2);
+```
+
+The results of `upsertSearchAttributes()` output the following search attributes.
+
+```json
+{
+    "CustomIntField": 1, 2,
+    "CustomBoolField": true,
+    "CustomKeywordField": "Seattle",
+  }
+```
+
+### How to remove a Search Attribute from a Workflow {#remove-search-attribute}
+
+To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
+
+To remove a Search Attribute, call the `upsertSearchAttributes()` method and set it to an empty map.

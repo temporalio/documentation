@@ -56,11 +56,11 @@ Hence, a Temporal Application can run for seconds or years in the presence of ar
 
 Each Temporal SDK targets a specific programming language.
 
-- [Go SDK developer's guide](/dev-guide/go/introduction)
-- [Java SDK developer's guide](/dev-guide/java/introduction)
-- [PHP SDK developer's guide](/dev-guide/php)
-- [Python SDK developer's guide](/dev-guide/python/introduction)
-- [TypeScript SDK developer's guide](/dev-guide/typescript/introduction)
+- [Go SDK developer's guide](/develop/go)
+- [Java SDK developer's guide](/develop/java)
+- [PHP SDK developer's guide](/develop/php)
+- [Python SDK developer's guide](/dev-guide/python/)
+- [TypeScript SDK developer's guide](/develop/typescript/)
 - [.NET SDK API reference](https://dotnet.temporal.io/)
 
 Despite supporting multiple languages, and supporting many features, Temporal SDKs aim to make developers feel at home in their language.
@@ -154,7 +154,7 @@ Another quality of the SDKs lies in their ability to replay Workflow Executions,
 We will delve into this idea more later, but for now, it signifies that the SDKs can automatically continue a process from the point of interruption, should a failure occur.
 This capability stems from the SDK's ability to persist each step the program takes.
 
-- [Developing for Durable Execution using the Go SDK](/dev-guide/go/durable-execution)
+- [Developing for Durable Execution using the Go SDK](/develop/go/durable-execution)
 
 ## Temporal SDKs major components {#major-components}
 
@@ -182,7 +182,7 @@ Temporal SDKs offer developers the following:
   </div>
 </div>
 
-Let’s break down each one.
+Let's break down each one.
 
 ### Temporal Client
 
@@ -205,11 +205,11 @@ It showcases how to initialize a Temporal Client, create a connection to a local
 The following code is for example purposes only.
 For tested code samples and best practices, use your preferred language SDK's developer's guide.
 
-- [Go SDK Temporal Client feature guide](/develop/go/temporal-client)
-- [Java SDK Temporal Client feature guide](/develop/java/temporal-client)
-- [PHP SDK Temporal Client feature guide](/dev-guide/php/foundations#connect-to-a-dev-cluster)
-- [Python SDK Temporal Client feature guide](/dev-guide/python/foundations#connect-to-a-dev-cluster)
-- [TypeScript SDK Temporal Client feature guide](/dev-guide/typescript/foundations#connect-to-a-dev-cluster)
+- [Go SDK Temporal Client feature guide](/develop/go/temporal-clients)
+- [Java SDK Temporal Client feature guide](/develop/java/temporal-clients)
+- [PHP SDK Temporal Client feature guide](/develop/php/core-application#connect-to-a-dev-cluster)
+- [Python SDK Temporal Client feature guide](/develop/python/core-application#connect-to-a-dev-cluster)
+- [TypeScript SDK Temporal Client feature guide](/develop/typescript/core-application#connect-to-a-dev-cluster)
 
 :::
 
@@ -350,7 +350,7 @@ Additionally, the state of the Workflow is automatically persisted so if a failu
 ### APIs to create and manage Worker Processes
 
 Workers are responsible for executing Workflow and Activity code (application code). The SDK provides APIs for configuring and starting Workers, enabling developers to control how the code is executed.
-Workers are horizontally scalable, often run with systems like Kubernetes, and configured according to the application’s needs.
+Workers are horizontally scalable, often run with systems like Kubernetes, and configured according to the application's needs.
 
 Here is an example of how you could initialize a Worker using the Go SDK.
 
@@ -445,13 +445,13 @@ The Temporal Cluster functions more as a choreographer than a conductor. Rather 
 A Workflow might request to execute an Activity, start a Timer, or start a Child Workflow, each of which translates into a Command, dispatched to the Temporal Cluster.
 In addition to acting on these Commands, the Cluster documents that interaction by appending their corresponding Events into to the Workflow Execution's Event History.
 
-Take for instance the call to execute an Activity. When a Workflow invokes it, the Worker doesn’t immediately execute that Activity code. Instead, it generates a ScheduleActivityTask Command, dispatching it to the Cluster. In response, the Cluster queues up a new Activity Task. Only when a Worker finds itself free, it collects the task and begins executing the Activity code.
+Take for instance the call to execute an Activity. When a Workflow invokes it, the Worker doesn't immediately execute that Activity code. Instead, it generates a ScheduleActivityTask Command, dispatching it to the Cluster. In response, the Cluster queues up a new Activity Task. Only when a Worker finds itself free, it collects the task and begins executing the Activity code.
 
 The Cluster persists Workflow Execution Event History, so that if there is a failure, the SDK Worker is able to Replay the execution and resume where it left off.
 
 This is where the deterministic constraints of the Workflow code comes into play, requiring the use of Activities to create side effects and interact with the outside world.
 
-Let’s look at an example Workflow with a single Activity.
+Let's look at an example Workflow with a single Activity.
 
 ```go
 func LoanApplication(ctx workflow.Context, input *LoanApplicationWorkflowInput) (*LoanApplicationWorkflowResult, error) {
@@ -577,7 +577,7 @@ The Cluster creates a new Workflow Task which the Worker picks up.
   </div>
 </div>
 
-This is when the SDK Worker Replays the Workflow code, uses the Event History as guidance on what to expect. If the Replay encounters an Event that doesn’t match up with what is expected from the code, a [non-determinism](/references/errors#non-deterministic-error) error gets thrown.
+This is when the SDK Worker Replays the Workflow code, uses the Event History as guidance on what to expect. If the Replay encounters an Event that doesn't match up with what is expected from the code, a [non-determinism](/references/errors#non-deterministic-error) error gets thrown.
 
 If there is alignment, the Worker continues evaluating code.
 
@@ -600,7 +600,7 @@ The result of the Workflow can now be retrieved using a Temporal Client.
   </div>
 </div>
 
-And that’s how a Temporal Worker and Cluster work together.
+And that's how a Temporal Worker and Cluster work together.
 
 ## Language specific details
 

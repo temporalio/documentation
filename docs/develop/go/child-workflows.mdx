@@ -1,0 +1,138 @@
+---
+id: child-workflows
+title: Child Workflows
+sidebar_label: Child Workflows
+slug: /develop/go/child-workflows
+toc_max_heading_level: 2
+keywords:
+  - child-workflows
+tags:
+  - child-workflows
+---
+
+
+
+## How to start a Child Workflow Execution {#child-workflows}
+
+A [Child Workflow Execution](/encyclopedia/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
+
+When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History.
+
+Always block progress until the [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started.
+After that, Child Workflow Executions may be abandoned using the default _Abandon_ [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy) set in the Child Workflow Options.
+
+To be sure that the Child Workflow Execution has started, first call the Child Workflow Execution method on the instance of Child Workflow future, which returns a different future.
+
+Then get the value of an object that acts as a proxy for a result that is initially unknown, which is what waits until the Child Workflow Execution has spawned.
+
+To spawn a [Child Workflow Execution](/encyclopedia/child-workflows) in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API, which is available from the `go.temporal.io/sdk/workflow` package.
+
+The `ExecuteChildWorkflow` call requires an instance of [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context), with an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions) applied to it, the Workflow Type, and any parameters that should be passed to the Child Workflow Execution.
+
+`workflow.ChildWorkflowOptions` contain the same fields as `client.StartWorkflowOptions`.
+Workflow Option fields automatically inherit their values from the Parent Workflow Options if they are not explicitly set.
+If a custom `WorkflowID` is not set, one is generated when the Child Workflow Execution is spawned.
+Use the [`WithChildOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#WithChildOptions) API to apply Child Workflow Options to the instance of `workflow.Context`.
+
+The `ExecuteChildWorkflow` call returns an instance of a [`ChildWorkflowFuture`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowFuture).
+
+Call the `.Get()` method on the instance of `ChildWorkflowFuture` to wait for the result.
+
+```go
+func YourWorkflowDefinition(ctx workflow.Context, params ParentParams) (ParentResp, error) {
+
+  childWorkflowOptions := workflow.ChildWorkflowOptions{}
+  ctx = workflow.WithChildOptions(ctx, childWorkflowOptions)
+
+  var result ChildResp
+  err := workflow.ExecuteChildWorkflow(ctx, YourOtherWorkflowDefinition, ChildParams{}).Get(ctx, &result)
+  if err != nil {
+    // ...
+  }
+  // ...
+  return resp, nil
+}
+
+func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (ChildResp, error) {
+  // ...
+  return resp, nil
+}
+```
+
+To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an "Abandon" Parent Close Policy set in the Child Workflow Options.
+Additionally, the Parent Workflow Execution must wait for the `ChildWorkflowExecutionStarted` Event to appear in its Event History before it completes.
+
+If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution does not spawn.
+
+To be sure that the Child Workflow Execution has started, first call the `GetChildWorkflowExecution` method on the instance of the `ChildWorkflowFuture`, which will return a different Future.
+Then call the `Get()` method on that Future, which is what will wait until the Child Workflow Execution has spawned.
+
+```go
+import (
+  // ...
+  "go.temporal.io/api/enums/v1"
+)
+
+func YourWorkflowDefinition(ctx workflow.Context, params ParentParams) (ParentResp, error) {
+
+  childWorkflowOptions := workflow.ChildWorkflowOptions{
+    ParentClosePolicy: enums.PARENT_CLOSE_POLICY_ABANDON,
+  }
+  ctx = workflow.WithChildOptions(ctx, childWorkflowOptions)
+
+  childWorkflowFuture := workflow.ExecuteChildWorkflow(ctx, YourOtherWorkflowDefinition, ChildParams{})
+  // Wait for the Child Workflow Execution to spawn
+  var childWE workflow.Execution
+  if err := childWorkflowFuture.GetChildWorkflowExecution().Get(ctx, &childWE); err != nil {
+     return err
+  }
+  // ...
+  return resp, nil
+}
+
+func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (ChildResp, error) {
+  // ...
+  return resp, nil
+}
+```
+
+#### How to set a Parent Close Policy {#parent-close-policy}
+
+A [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
+
+The default Parent Close Policy option is set to terminate the Child Workflow Execution.
+
+In Go, a Parent Close Policy is set on the `ParentClosePolicy` field of an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions).
+The possible values can be obtained from the [`go.temporal.io/api/enums/v1`](https://pkg.go.dev/go.temporal.io/api/enums/v1#ParentClosePolicy) package.
+
+- `PARENT_CLOSE_POLICY_ABANDON`
+- `PARENT_CLOSE_POLICY_TERMINATE`
+- `PARENT_CLOSE_POLICY_REQUEST_CANCEL`
+
+The Child Workflow Options are then applied to the instance of `workflow.Context` by using the `WithChildOptions` API, which is then passed to the `ExecuteChildWorkflow()` call.
+
+- Type: [`ParentClosePolicy`](https://pkg.go.dev/go.temporal.io/api/enums/v1#ParentClosePolicy)
+- Default: `PARENT_CLOSE_POLICY_TERMINATE`
+
+```go
+import (
+  // ...
+  "go.temporal.io/api/enums/v1"
+)
+
+func YourWorkflowDefinition(ctx workflow.Context, params ParentParams) (ParentResp, error) {
+  // ...
+  childWorkflowOptions := workflow.ChildWorkflowOptions{
+    // ...
+    ParentClosePolicy: enums.PARENT_CLOSE_POLICY_ABANDON,
+  }
+  ctx = workflow.WithChildOptions(ctx, childWorkflowOptions)
+  childWorkflowFuture := workflow.ExecuteChildWorkflow(ctx, YourOtherWorkflowDefinition, ChildParams{})
+  // ...
+}
+
+func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (ChildResp, error) {
+  // ...
+  return resp, nil
+}
+```

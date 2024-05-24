@@ -11,5 +11,6 @@
       "scope": "workspace"
     }
   },
-  "docwriter.style": "Auto-detect"
+  "docwriter.style": "Auto-detect",
+  "java.compile.nullAnalysis.mode": "automatic"
 }

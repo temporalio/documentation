@@ -224,8 +224,8 @@ Ports are configurable in the Temporal Service configuration.
 Retention Period is the duration for which the Temporal Service stores data associated with closed Workflow Executions on a Namespace in the Persistence store.
 
 - [How to set the Retention Period for a Namespace](/cli/operator#create)
-- [How to set the Retention Period for a Namespace using the Go SDK](/dev-guide/go/features#namespaces)
-- [How to set the Retention Period for a Namespace using the Java SDK](/dev-guide/java/features#namespaces)
+- [How to set the Retention Period for a Namespace using the Go SDK](/develop/go/namespaces)
+- [How to set the Retention Period for a Namespace using the Java SDK](/develop/java/namespaces)
 
 A Retention Period applies to all closed Workflow Executions within a [Namespace](/namespaces) and is set when the Namespace is registered.
 
@@ -770,7 +770,7 @@ Temporal Multi-Cluster Replication relies on asynchronous replication of Events 
 This also means that whenever a Workflow Execution is updated after a failover by the new Cluster, any previous replication tasks for that Execution cannot be applied.
 This results in loss of some progress made by the Workflow Execution in the previous active Cluster.
 During such conflict resolution, Temporal re-injects any external Events like Signals in the new Event History before discarding replication tasks.
-Even though some progress could roll back during failovers, Temporal provides the guarantee that Workflow Executions won’t get stuck and will continue to make forward progress.
+Even though some progress could roll back during failovers, Temporal provides the guarantee that Workflow Executions won't get stuck and will continue to make forward progress.
 
 Activity Execution completions are not forwarded across Clusters.
 Any outstanding Activities will eventually time out based on the configuration.

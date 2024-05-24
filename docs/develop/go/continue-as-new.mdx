@@ -1,0 +1,34 @@
+---
+id: continue-as-new
+title: Continue-As-New
+sidebar_label: Continue-As-New
+slug: /develop/go/continue-as-new
+toc_max_heading_level: 2
+keywords:
+  - continue-as-new
+tags:
+  - continue-as-new
+---
+
+## How to Continue-As-New {#continue-as-new}
+
+[Continue-As-New](/workflows#continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
+The Workflow Execution spawned from the use of Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
+
+To cause a Workflow Execution to [Continue-As-New](/workflows#continue-as-new), the Workflow API should return the result of the [`NewContinueAsNewError()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewContinueAsNewError) function available from the `go.temporal.io/sdk/workflow` package.
+
+```go
+func SimpleWorkflow(ctx workflow.Context, value string) error {
+    ...
+    return workflow.NewContinueAsNewError(ctx, SimpleWorkflow, value)
+}
+```
+
+To check whether a Workflow Execution was spawned as a result of Continue-As-New, you can check if `workflow.GetInfo(ctx).ContinuedExecutionRunID` is not empty (i.e. `""`).
+
+**Notes**
+
+- To prevent Signal loss, be sure to perform an asynchronous drain on the Signal channel.
+  Failure to do so can result in buffered Signals being ignored and lost.
+- Make sure that the previous Workflow and the Continue-As-New Workflow are referenced by the same alias.
+  Failure to do so can cause the Workflow to Continue-As-New on an entirely different Workflow.

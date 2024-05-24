@@ -1,0 +1,32 @@
+---
+id: timers
+title: Timers
+sidebar_label: Timers
+slug: /develop/php/timers
+toc_max_heading_level: 2
+keywords:
+  - timers
+tags:
+  - timers
+---
+
+
+## What is a Timer? {#timers}
+
+A Workflow can set a durable timer for a fixed time period.
+In some SDKs, the function is called `sleep()`, and in others, it's called `timer()`.
+
+A Workflow can sleep for months.
+Timers are persisted, so even if your Worker or Temporal Cluster is down when the time period completes, as soon as your Worker and Cluster are back up, the `sleep()` call will resolve and your code will continue executing.
+
+Sleeping is a resource-light operation: it does not tie up the process, and you can run millions of Timers off a single Worker.
+
+To set a Timer in PHP, use `Workflow::timer()` and pass the number of seconds you want to wait before continuing.
+
+The following example yields a sleep method for 5 minutes.
+
+```php
+yield Workflow::timer(300); // sleep for 5 minutes
+```
+
+You cannot set a Timer invocation inside the `await` or `awaitWithTimeout` methods.

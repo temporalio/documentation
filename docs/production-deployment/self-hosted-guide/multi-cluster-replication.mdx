@@ -316,7 +316,7 @@ Temporal Multi-Cluster Replication relies on asynchronous replication of Events 
 This also means that whenever a Workflow Execution is updated after a failover by the new Cluster, any previous replication tasks for that Execution cannot be applied.
 This results in loss of some progress made by the Workflow Execution in the previous active Cluster.
 During such conflict resolution, Temporal re-injects any external Events like Signals in the new Event History before discarding replication tasks.
-Even though some progress could roll back during failovers, Temporal provides the guarantee that Workflow Executions won’t get stuck and will continue to make forward progress.
+Even though some progress could roll back during failovers, Temporal provides the guarantee that Workflow Executions won't get stuck and will continue to make forward progress.
 
 Activity Execution completions are not forwarded across Clusters.
 Any outstanding Activities will eventually time out based on the configuration.

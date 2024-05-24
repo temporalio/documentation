@@ -299,7 +299,7 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 
 Queries are handled by your Workflow.
 
-Don’t include any logic that causes [Command](/workflows#command) generation within a Query handler (such as executing Activities).
+Don't include any logic that causes [Command](/workflows#command) generation within a Query handler (such as executing Activities).
 Including such logic causes unexpected behavior.
 
 To send a Query to the Workflow, use the [`query`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#query) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.WorkflowHandle.html) class.

@@ -35,14 +35,14 @@ There are two types of Tasks:
 
 A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.
 
-- [How to run a development Worker using the Go SDK](/dev-guide/go/foundations#develop-worker)
-- [How to run a development Worker using the Java SDK](/dev-guide/java/foundations#run-a-dev-worker)
-- [How to run a development Worker using the PHP SDK](/dev-guide/php/foundations#run-a-dev-worker)
-- [How to run a development Worker using the Python SDK](/dev-guide/python/foundations#run-a-dev-worker)
-- [How to run a development Worker using the TypeScript SDK](/dev-guide/typescript/foundations#run-a-dev-worker)
+- [How to run a development Worker using the Go SDK](/develop/go/core-application#develop-worker)
+- [How to run a development Worker using the Java SDK](/develop/java/core-application#run-a-dev-worker)
+- [How to run a development Worker using the PHP SDK](/develop/php/core-application#run-a-dev-worker)
+- [How to run a development Worker using the Python SDK](/develop/python/core-application#run-a-dev-worker)
+- [How to run a development Worker using the TypeScript SDK](/develop/typescript/core-application#run-a-dev-worker)
 
-- [How to run a Temporal Cloud Worker using the Go SDK](/dev-guide/go/foundations#run-a-temporal-cloud-worker)
-- [How to run a Temporal Cloud Worker using the TypeScript SDK](/dev-guide/typescript/foundations#run-a-temporal-cloud-worker)
+- [How to run a Temporal Cloud Worker using the Go SDK](/develop/go/core-application#run-a-temporal-cloud-worker)
+- [How to run a Temporal Cloud Worker using the TypeScript SDK](/develop/typescript/core-application#run-a-temporal-cloud-worker)
 
 ## What is a Worker Entity? {#worker-entity}
 
@@ -234,22 +234,22 @@ There are four places where the name of the Task Queue can be set by the develop
 1. A Task Queue must be set when spawning a Workflow Execution:
 
 - [How to start a Workflow Execution using the Temporal CLI](/cli/workflow#start)
-- [How to start a Workflow Execution using the Go SDK](/develop/go/temporal-client#start-workflow-execution)
-- [How to start a Workflow Execution using the Java SDK](/develop/java/temporal-client#start-workflow-execution)
-- [How to start a Workflow Execution using the PHP SDK](/dev-guide/php/foundations#start-workflow-execution)
-- [How to start a Workflow Execution using the Python SDK](/dev-guide/python/foundations#start-workflow-execution)
-- [How to start a Workflow Execution using the TypeScript SDK](/dev-guide/typescript/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using the Go SDK](/develop/go/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the Java SDK](/develop/java/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the PHP SDK](/develop/php/core-application#start-workflow-execution)
+- [How to start a Workflow Execution using the Python SDK](/develop/python/core-application#start-workflow-execution)
+- [How to start a Workflow Execution using the TypeScript SDK](/develop/typescript/core-application#start-workflow-execution)
 
 2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
 
-- [How to run a development Worker using the Go SDK](/dev-guide/go/foundations#develop-worker)
-- [How to run a development Worker using the Java SDK](/dev-guide/java/foundations#run-a-dev-worker)
-- [How to run a development Worker using the PHP SDK](/dev-guide/php/foundations#run-a-dev-worker)
-- [How to run a development Worker using the Python SDK](/dev-guide/python/foundations#run-a-dev-worker)
-- [How to run a development Worker using the TypeScript SDK](/dev-guide/typescript/foundations#run-a-dev-worker)
+- [How to run a development Worker using the Go SDK](/develop/go/core-application#develop-worker)
+- [How to run a development Worker using the Java SDK](/develop/java/core-application#run-a-dev-worker)
+- [How to run a development Worker using the PHP SDK](/develop/php/core-application#run-a-dev-worker)
+- [How to run a development Worker using the Python SDK](/develop/python/core-application#run-a-dev-worker)
+- [How to run a development Worker using the TypeScript SDK](/develop/typescript/core-application#run-a-dev-worker)
 
-- [How to run a Temporal Cloud Worker using the Go SDK](/dev-guide/go/foundations#run-a-temporal-cloud-worker)
-- [How to run a Temporal Cloud Worker using the TypeScript SDK](/dev-guide/typescript/foundations#run-a-temporal-cloud-worker)
+- [How to run a Temporal Cloud Worker using the Go SDK](/develop/go/core-application#run-a-temporal-cloud-worker)
+- [How to run a Temporal Cloud Worker using the TypeScript SDK](/develop/typescript/core-application#run-a-temporal-cloud-worker)
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -261,22 +261,22 @@ However, the failure of the Task will not cause the associated Workflow Executio
 This is optional.
 An Activity Execution inherits the Task Queue name from its Workflow Execution if one is not provided.
 
-- [How to start an Activity Execution using the Go SDK](/dev-guide/go/foundations#activity-execution)
-- [How to start an Activity Execution using the Java SDK](/dev-guide/java/foundations#activity-execution)
-- [How to start an Activity Execution using the PHP SDK](/dev-guide/php/foundations#activity-execution)
-- [How to start an Activity Execution using the Python SDK](/dev-guide/python/foundations#activity-execution)
-- [How to start an Activity Execution using the TypeScript SDK](/dev-guide/typescript/foundations#activity-execution)
+- [How to start an Activity Execution using the Go SDK](/develop/go/core-application#activity-execution)
+- [How to start an Activity Execution using the Java SDK](/develop/java/core-application#activity-execution)
+- [How to start an Activity Execution using the PHP SDK](/develop/php/core-application#activity-execution)
+- [How to start an Activity Execution using the Python SDK](/develop/python/core-application#activity-execution)
+- [How to start an Activity Execution using the TypeScript SDK](/develop/typescript/core-application#activity-execution)
 
 4. A Task Queue name can be provided when spawning a Child Workflow Execution:
 
 This is optional.
 A Child Workflow Execution inherits the Task Queue name from its Parent Workflow Execution if one is not provided.
 
-- [How to start a Child Workflow Execution using the Go SDK](/dev-guide/go/features#child-workflows)
-- [How to start a Child Workflow Execution using the Java SDK](/dev-guide/java/features#child-workflows)
-- [How to start a Child Workflow Execution using the PHP SDK](/dev-guide/php/features#child-workflows)
+- [How to start a Child Workflow Execution using the Go SDK](/develop/go/child-workflows)
+- [How to start a Child Workflow Execution using the Java SDK](/develop/java/child-workflows)
+- [How to start a Child Workflow Execution using the PHP SDK](/develop/php/continue-as-new)
 - [How to start a Child Workflow Execution using the Python SDK](/dev-guide/python/features#child-workflows)
-- [How to start a Child Workflow Execution using the TypeScript SDK](/dev-guide/typescript/features#child-workflows)
+- [How to start a Child Workflow Execution using the TypeScript SDK](/develop/typescript/child-workflows)
 
 #### Task ordering
 
@@ -308,7 +308,7 @@ The Worker Entity caches the Workflow in memory and begins polling the dedicated
 If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Temporal Service will resume Scheduling Workflow Tasks on the original Task Queue.
 Another Worker Entity can then resume the Workflow Execution, and can set up its own Sticky Execution for future Workflow Tasks.
 
-- [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](/dev-guide/go/foundations#stickyscheduletostarttimeout)
+- [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](/develop/go/core-application#stickyscheduletostarttimeout)
 
 Sticky Executions are the default behavior of the Temporal Platform.
 
@@ -390,7 +390,7 @@ If you have a new backward-incompatible Activity Definition, start by using a di
 A Worker Session is a feature provided by some SDKs that provides a straightforward API for [Task Routing](#task-routing) to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 It also includes features like concurrent session limitations and Worker failure detection.
 
-- [How to use Worker Sessions](/dev-guide/go/features#worker-sessions)
+- [How to use Worker Sessions](/develop/go/sessions#worker-sessions)
 
 ## What is Worker Versioning? {#worker-versioning}
 
@@ -399,9 +399,9 @@ It also includes features like concurrent session limitations and Worker failure
 - In [Pre-release](/evaluate/release-stages#pre-release)
 - Introduced in Temporal Server version [1.21.0](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
 - Available in CLI version [0.10.0](https://github.com/temporalio/cli/releases/tag/v0.10.0)
-- Available in [Go SDK](/dev-guide/go/versioning#worker-versioning) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
-- Available in [Java SDK](/dev-guide/java/versioning#worker-versioning) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
-- Available in [TypeScript SDK](/dev-guide/typescript/versioning#worker-versioning) since [v1.8.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.8.0)
+- Available in [Go SDK](/develop/go/versioning#worker-versioning) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
+- Available in [Java SDK](/develop/java/versioning#worker-versioning) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+- Available in [TypeScript SDK](/develop/typescript/versioning#worker-versioning) since [v1.8.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.8.0)
 - Available in [Python SDK](https://python.temporal.io/temporalio.worker.Worker.html) since [v1.3.0](https://github.com/temporalio/sdk-python/releases/tag/1.3.0)
 - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Worker.TemporalWorkerOptions.html#Temporalio_Worker_TemporalWorkerOptions_UseWorkerVersioning) since [v0.1.0-beta1](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta1)
 - Not yet available in Temporal Cloud

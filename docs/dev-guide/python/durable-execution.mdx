@@ -222,11 +222,11 @@ Luckily, for Python developers, the Python SDK employs a sort of “Sandbox” e
 
 Calls that are disallowed will cause a Workflow Task to fail with a "Restricted Workflow Access" error, necessitating code modification for the Workflow to proceed.
 
-Calls such as `random.randint()` are actually caught by the SDK, so that the resulting number persists and doesn’t cause deterministic issues.
+Calls such as `random.randint()` are actually caught by the SDK, so that the resulting number persists and doesn't cause deterministic issues.
 
 However the sandbox is not foolproof and non-deterministic issues can still occur.
 
-Developers are encouraged to use the SDK’s APIs when possible and avoid potentially intrinsically non-deterministic code:
+Developers are encouraged to use the SDK's APIs when possible and avoid potentially intrinsically non-deterministic code:
 
 - **Random Number Generation:**
   - Replace `random.randint()` with `workflow.random().randint()`.
