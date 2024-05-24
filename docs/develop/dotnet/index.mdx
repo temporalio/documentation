@@ -18,9 +18,9 @@ tags:
 
 The following Temporal .NET SDK feature guides aim to show how to use Temporal features when developing [Temporal Applications](/temporal#temporal-application).
 
-## Core Application
+## Core application
 
-The [Core Application feature guide](/develop/dotnet/core-application) shows how to use the basic building blocks of a Temporal Application (Workflows, Activities, and Workers).
+The [Core application feature guide](/develop/dotnet/core-application) shows how to use the basic building blocks of a Temporal Application (Workflows, Activities, and Workers).
 
 - [Develop a basic Workflow Definition](/develop/dotnet/core-application#develop-workflow): Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.
 - [Develop a basic Activity Definition](/develop/dotnet/core-application#develop-activity): One of the primary things that Workflows do is orchestrate the execution of Activities.
@@ -83,13 +83,6 @@ The [Interrupt a Workflow feature guide](/develop/dotnet/cancellation) shows how
 - [Cancel a Workflow](/develop/dotnet/cancellation#cancellation): Interrupt a Workflow Execution and its Activities through Workflow cancellation.
 - [Terminate a Workflow](/develop/dotnet/cancellation#termination): Interrupt a Workflow Execution and its Activities through Workflow termination.
 
-## Heartbeat
-
-The [Heartbeat feature guide](/develop/dotnet/heartbeat) shows how to Heartbeat an Activity and set an Heartbeat Timeout.
-
-- [Heartbeat an Activity](/develop/dotnet/heartbeat#activity-heartbeat): An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
-- [Set a Heartbeat Timeout](/develop/dotnet/heartbeat#heartbeat-timeout): A Heartbeat Timeout works in conjunction with Activity Heartbeats. 
-
 ## Versioning
 
 The [Versioning feature guide](/develop/dotnet/versioning) shows how to change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
@@ -116,15 +109,15 @@ The [Debugging feature guide](/develop/dotnet/debugging) covers the various ways
 
 The [Schedules feature guide](/develop/dotnet/schedules) shows how to schedule Workflows and to delay the start of a Workflow.
 
-- [Schedule a Workflow](/develop/dotnet/schedules#schedule-a-workflow): 
-- [Create a Scheduled Workflow](/develop/dotnet/schedules#create-a-workflow): Create a new schedule for a scheduled Workflow. 
-- [Backfill a Scheduled Workflow](/develop/dotnet/schedules#backfill-a-scheduled-workflow): Backfills a past time range of actions for a scheduled Workflow. 
-- [Delete a Scheduled Workflow](/develop/dotnet/schedules#delete-a-scheduled-workflow): Deletes a schedule for a scheduled Workflow. 
-- [Describe a Scheduled Workflow](/develop/dotnet/schedules#describe-a-scheduled-workflow): Get schedule configuration and current state for a scheduled Workflow. 
-- [List a Scheduled Workflow](/develop/dotnet/schedules#list-a-scheduled-workflow): List a schedule for a scheduled Workflow.
-- [Pause a Scheduled Workflow](/develop/dotnet/schedules#pause-a-scheduled-workflow): Pause a schedule for a scheduled Workflow. 
-- [Trigger a Scheduled Workflow](/develop/dotnet/schedules#trigger-a-scheduled-workflow): Triggers an immediate action for a scheduled Workflow. 
-- [Update a Scheduled Workflow](/develop/dotnet/schedules#update-a-scheduled-workflow): Updates a schedule with a new definition for a scheduled Workflow. 
+- [Schedule a Workflow](/develop/dotnet/schedules#schedule-a-workflow)
+  - [Create a Scheduled Workflow](/develop/dotnet/schedules#create-a-workflow): Create a new schedule for a scheduled Workflow. 
+  - [Backfill a Scheduled Workflow](/develop/dotnet/schedules#backfill-a-scheduled-workflow): Backfills a past time range of actions for a scheduled Workflow. 
+  - [Delete a Scheduled Workflow](/develop/dotnet/schedules#delete-a-scheduled-workflow): Deletes a schedule for a scheduled Workflow. 
+  - [Describe a Scheduled Workflow](/develop/dotnet/schedules#describe-a-scheduled-workflow): Get schedule configuration and current state for a scheduled Workflow. 
+  - [List a Scheduled Workflow](/develop/dotnet/schedules#list-a-scheduled-workflow): List a schedule for a scheduled Workflow.
+  - [Pause a Scheduled Workflow](/develop/dotnet/schedules#pause-a-scheduled-workflow): Pause a schedule for a scheduled Workflow. 
+  - [Trigger a Scheduled Workflow](/develop/dotnet/schedules#trigger-a-scheduled-workflow): Triggers an immediate action for a scheduled Workflow. 
+  - [Update a Scheduled Workflow](/develop/dotnet/schedules#update-a-scheduled-workflow): Updates a schedule with a new definition for a scheduled Workflow. 
 - [Use Start Delay](/develop/dotnet/schedules#start-delay): Start delay functionality if you need to delay the execution of the Workflow without the need for regular launches. 
 
 ## Data encryption

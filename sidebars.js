@@ -166,7 +166,6 @@ module.exports = {
             "develop/dotnet/failure-detection",
             "develop/dotnet/message-passing",
             "develop/dotnet/cancellation",
-            "develop/dotnet/heartbeat",
             "develop/dotnet/versioning",
             "develop/dotnet/observability",
             "develop/dotnet/debugging",
