@@ -62,10 +62,11 @@ Namespaces do not share data processing or data storage across regional boundari
 
 #### PrivateLink
 
-[AWS PrivateLink](https://aws.amazon.com/privatelink/) allows you to establish a private connection between your Amazon Virtual Private Cloud (VPC) and Temporal Cloud, without routing traffic over the internet.
-This ensures that your communication with Temporal Cloud remains within the AWS network, providing an extra layer of security and privacy.
-It's important to note that PrivateLink enables a one-way connection from your VPC to Temporal Cloud.
-Temporal Cloud does not gain peering access to your VPC or any resources within it.
+[AWS PrivateLink](https://aws.amazon.com/privatelink/) allows you to open a path to Temporal without opening a public egress.
+It establishes a private connection between your Amazon Virtual Private Cloud (VPC) and Temporal Cloud.
+This one-way connection means Temporal cannot establish a connection back to your service.
+This is useful if normally you block traffic egress as part of your security protocols.
+If you use a private environment that does not allow external connectivity, you will remain isolated.
 
 :::note
 
@@ -80,13 +81,13 @@ If you are interested in leveraging AWS PrivateLink in your Namespaces, [create 
 To set up PrivateLink connectivity with Temporal Cloud, you'll need to perform the following high-level steps:
 
 1. Add a VPC Endpoint Interface in your AWS VPC.
-2. Configure security groups to allow TCP egress traffic to port `7233` (for gRPC communication).
+1. Configure security groups to allow TCP ingress traffic to port `7233` (for gRPC communication).
 
 Once set up, you can test your PrivateLink connectivity using:
 
 1. Non-Temporal tools like cURL (useful for testing from environments that restrict tool usage).
-2. The Temporal CLI: by setting the [--tls-server-name](/cli/cmd-options#tls-server-name) parameter to the PrivateLink endpoint.
-3. Temporal SDKs: by setting the server name argument to the PrivateLink endpoint.
+1. The Temporal CLI: by setting the [--tls-server-name](/cli/cmd-options#tls-server-name) parameter to the PrivateLink endpoint.
+1. Temporal SDKs: by setting the server name argument to the PrivateLink endpoint.
 
 ### Encryption
 

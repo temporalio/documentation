@@ -10,6 +10,285 @@ tags:
   - core-application
 ---
 
+The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](#develop-workflows) that executes an [Activity](#develop-activities).
+
+In this section you can find the following:
+
+- [Run a development Cluster](#run-a-development-server)
+- [Connect to a dev Cluster](#connect-to-a-dev-cluster)
+- [Connect to Temporal Cloud](#connect-to-temporal-cloud)
+- [Develop a Workflow](#develop-workflows)
+- [Develop an Activity](#develop-activities)
+- [Start an Activity Execution](#activity-execution)
+- [Run a dev Worker](#run-a-dev-worker)
+- [Run a Worker on Docker](#run-a-worker-on-docker)
+- [Run a Temporal Cloud Worker](#run-a-dev-worker)
+- [Start a Workflow Execution](#start-workflow-execution)
+
+## How to install the Temporal CLI and run a development server {#run-a-development-server}
+
+This section describes how to install the [Temporal CLI](/cli) and run a development Cluster.
+The local development Cluster comes packaged with the [Temporal Web UI](/web-ui).
+
+For information on deploying and running a self-hosted production Cluster, see the [Self-hosted guide](/self-hosted-guide), or sign up for [Temporal Cloud](/cloud) and let us run your production Cluster for you.
+
+Temporal CLI is a tool for interacting with a Temporal Cluster from the command line and it includes a distribution of the Temporal Server and Web UI.
+This local development Cluster runs as a single process with zero runtime dependencies and it supports persistence to disk and in-memory mode through SQLite.
+
+**Install the Temporal CLI**
+
+Choose one of the following install methods to install the Temporal CLI.
+
+<Tabs>
+<TabItem value="macOS" label="macOS">
+
+- Install the Temporal CLI with Homebrew.
+
+  ```bash
+  brew install temporal
+  ```
+
+- Install the Temporal CLI with cURL.
+
+  ```bash
+  curl -sSf https://temporal.download/cli.sh | sh
+  ```
+
+- Install the Temporal CLI from CDN.
+  1. Select the platform and architecture needed.
+     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64">
+         Download for Darwin amd64
+       </a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64">
+         Download for Darwin arm64
+       </a>
+  2. Extract the downloaded archive.
+  3. Add the `temporal` binary to your PATH.
+
+</TabItem>
+<TabItem value="Linux" label="Linux">
+
+- Install the Temporal CLI with cURL.
+
+  ```bash
+  curl -sSf https://temporal.download/cli.sh | sh
+  ```
+
+- Install the Temporal CLI from CDN.
+  1. Select the platform and architecture needed.
+     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">
+         Download for Linux amd64
+       </a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">
+         Download for Linux arm64
+       </a>
+  2. Extract the downloaded archive.
+  3. Add the `temporal` binary to your PATH.
+
+</TabItem>
+<TabItem value="Windows" label="Windows">
+
+- Install the Temporal CLI from CDN.
+  1. Select the platform and architecture needed and download the binary.
+     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">
+         Download for Windows amd64
+       </a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">
+         Download for Windows arm64
+       </a>
+  2. Extract the downloaded archive.
+  3. Add the `temporal.exe` binary to your PATH.
+
+</TabItem>
+</Tabs>
+
+**Start the Temporal Development Server**
+
+Start the Temporal Development Server by using the `server start-dev` command.
+
+```bash
+temporal server start-dev
+```
+
+This command automatically starts the Web UI, creates the default [Namespace](/namespaces), and uses an in-memory database.
+
+The Temporal Server should be available on `localhost:7233` and the Temporal Web UI should be accessible at [`http://localhost:8233`](http://localhost:8233/).
+
+The server's startup configuration can be customized using command line options.
+For a full list of options, run:
+
+```bash
+temporal server start-dev --help
+```
+
+## How to install a Temporal SDK {#install-a-temporal-sdk}
+
+A [Temporal SDK](/encyclopedia/temporal-sdks) provides a framework for [Temporal Application](/temporal#temporal-application) development.
+
+An SDK provides you with the following:
+
+- A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) to communicate with a [Temporal Cluster](/clusters).
+- APIs to develop [Workflows](/workflows).
+- APIs to create and manage [Worker Processes](/workers#worker).
+- APIs to author [Activities](/activities#activity-definition).
+
+[![NPM](https://img.shields.io/npm/v/temporalio.svg?style=for-the-badge)](https://www.npmjs.com/search?q=author%3Atemporal-sdk-team)
+
+This project requires Node.js 16.15 or later.
+
+**Create a project**
+
+```bash
+npx @temporalio/create@latest ./your-app
+```
+
+**Add to an existing project**
+
+```bash
+npm install @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity @temporalio/common
+```
+
+:::note
+
+The TypeScript SDK is designed with TypeScript-first developer experience in mind, but it works equally well with JavaScript.
+
+:::
+
+### How to find the TypeScript SDK API reference {#api-reference}
+
+The Temporal TypeScript SDK API reference is published to [typescript.temporal.io](https://typescript.temporal.io).
+
+### Where are SDK-specific code examples? {#code-samples}
+
+You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio?q=samples-&type=all&language=&sort=).
+
+Additionally, several of the [Tutorials](https://learn.temporal.io) are backed by a fully executable template application.
+
+Use the [TypeScript samples library](https://github.com/temporalio/samples-typescript) stored on GitHub to demonstrate various capabilities of Temporal.
+
+**Where can I find video demos?**
+
+[Temporal TypeScript YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb).
+
+### How to import an ECMAScript module {#ecmascript-modules}
+
+The JavaScript ecosystem is quickly moving toward publishing ECMAScript modules (ESM) instead of CommonJS modules.
+For example, `node-fetch@3` is ESM, but `node-fetch@2` is CommonJS.
+
+For more information about importing a pure ESM dependency, see our [Fetch ESM](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm) sample for the necessary configuration changes:
+
+- `package.json` must have include the `"type": "module"` attribute.
+- `tsconfig.json` should output in `esnext` format.
+- Imports must include the `.js` file extension.
+
+## Linting and types in TypeScript {#linting-and-types}
+
+If you started your project with `@temporalio/create`, you already have our recommended TypeScript and ESLint configurations.
+
+If you incrementally added Temporal to an existing app, we do recommend setting up linting and types because they help catch bugs well before you ship them to production, and they improve your development feedback loop.
+Take a look at our recommended [.eslintrc](https://github.com/temporalio/samples-typescript/blob/main/.shared/.eslintrc.js) file and tweak to suit your needs.
+
+## How to connect a Temporal Client to a Temporal Cluster {#connect-to-a-dev-cluster}
+
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Cluster](/clusters).
+Communication with a Temporal Cluster includes, but isn't limited to, the following:
+
+- Starting Workflow Executions.
+- Sending Signals to Workflow Executions.
+- Sending Queries to Workflow Executions.
+- Getting the results of a Workflow Execution.
+- Providing an Activity Task Token.
+
+:::caution
+
+A Temporal Client cannot be initialized and used inside a Workflow.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Cluster.
+
+:::
+
+When you are running a Cluster locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
+Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
+
+Creating a [Connection](https://typescript.temporal.io/api/classes/client.Connection) connects to the Temporal Cluster, and you can pass the `Connection` instance when creating the [Client](https://typescript.temporal.io/api/classes/client.Client#connection).
+
+If you omit the `Connection` and just create a `new Client()`, it will connect to `localhost:7233`.
+
+```ts
+import { Client } from '@temporalio/client';
+
+async function run() {
+  const client = new Client();
+
+  // . . .
+
+  await client.connection.close();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+## How to connect to Temporal Cloud {#connect-to-temporal-cloud}
+
+When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
+
+- The [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
+- The [Namespace's gRPC endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint).
+  An endpoint listing is available at the [Temporal Cloud Website](https://cloud.temporal.io/namespaces) on each Namespace detail page.
+  The endpoint contains the Namespace Id and port.
+- mTLS CA certificate.
+- mTLS private key.
+
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
+
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+
+Create a [`Connection`](https://typescript.temporal.io/api/classes/client.Connection) with a [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) object that has your Cloud namespace and client certificate.
+
+```ts
+import { Client, Connection } from '@temporalio/client';
+import fs from 'fs-extra';
+
+const { NODE_ENV = 'development' } = process.env;
+const isDeployed = ['production', 'staging'].includes(NODE_ENV);
+
+async function run() {
+  const cert = await fs.readFile('./path-to/your.pem');
+  const key = await fs.readFile('./path-to/your.key');
+
+  let connectionOptions = {};
+  if (isDeployed) {
+    connectionOptions = {
+      address: 'your-namespace.tmprl.cloud:7233',
+      tls: {
+        clientCertPair: {
+          crt: cert,
+          key,
+        },
+      },
+    };
+
+    const connection = await Connection.connect(connectionOptions);
+
+    const client = new Client({
+      connection,
+      namespace: 'your-namespace',
+    });
+
+    // . . .
+
+    await client.connection.close();
+  }
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
 ## How to develop a basic Workflow {#develop-workflows}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definition).
@@ -25,7 +304,7 @@ type ExampleArgs = {
 };
 
 export async function example(
-  args: ExampleArgs
+  args: ExampleArgs,
 ): Promise<{ greeting: string }> {
   const greeting = await greet(args.name);
   return { greeting };
@@ -192,7 +471,7 @@ And the total size of a gRPC message, which includes all the arguments, is limit
 Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
 This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/workers#workflow-task).
 
-{/*TODO link to gRPC limit section when available */}
+{/* TODO link to gRPC limit section when available */}
 
 Some SDKs require that you pass context objects, others do not.
 When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.
@@ -661,10 +940,10 @@ Then the bundle can be passed to the Worker:
 const workflowOption = () =>
   process.env.NODE_ENV === 'production'
     ? {
-        workflowBundle: {
-          codePath: require.resolve('../workflow-bundle.js'),
-        },
-      }
+      workflowBundle: {
+        codePath: require.resolve('../workflow-bundle.js'),
+      },
+    }
     : { workflowsPath: require.resolve('./workflows') };
 
 async function run() {
@@ -851,10 +1130,10 @@ To return the results of a Workflow Execution:
 
 ```typescript
 return (
-  'Completed ' +
-  wf.workflowInfo().workflowId +
-  ', Total Charged: ' +
-  totalCharged
+  'Completed '
+  + wf.workflowInfo().workflowId
+  + ', Total Charged: '
+  + totalCharged
 );
 ```
 
@@ -891,3 +1170,376 @@ try {
   }
 }
 ```
+
+## Cancellation scopes in Typescript {#cancellation-scopes}
+
+In the TypeScript SDK, Workflows are represented internally by a tree of cancellation scopes, each with cancellation behaviors you can specify.
+By default, everything runs in the "root" scope.
+
+Scopes are created using the [CancellationScope](https://typescript.temporal.io/api/classes/workflow.CancellationScope) constructor or one of three static helpers:
+
+- [cancellable(fn)](https://typescript.temporal.io/api/classes/workflow.CancellationScope#cancellable-1): Children are automatically cancelled when their containing scope is cancelled.
+  - Equivalent to `new CancellationScope().run(fn)`.
+- [nonCancellable(fn)](https://typescript.temporal.io/api/classes/workflow.CancellationScope#noncancellable): Cancellation does not propagate to children.
+  - Equivalent to `new CancellationScope({ cancellable: false }).run(fn)`.
+- [withTimeout(timeoutMs, fn)](https://typescript.temporal.io/api/classes/workflow.CancellationScope#withtimeout): If a timeout triggers before `fn` resolves, the scope is cancelled, triggering cancellation of any enclosed operations, such as Activities and Timers.
+  - Equivalent to `new CancellationScope({ cancellable: true, timeout: timeoutMs }).run(fn)`.
+
+Cancellations are applied to cancellation scopes, which can encompass an entire Workflow or just part of one.
+Scopes can be nested, and cancellation propagates from outer scopes to inner ones.
+A Workflow's `main` function runs in the outermost scope.
+Cancellations are handled by catching `CancelledFailure`s thrown by cancelable operations.
+
+`CancellationScope.run()` and the static helpers mentioned earlier return native JavaScript promises, so you can use the familiar Promise APIs like `Promise.all` and `Promise.race` to model your asynchronous logic.
+You can also use the following APIs:
+
+- `CancellationScope.current()`: Get the current scope.
+- `scope.cancel()`: Cancel all operations inside a `scope`.
+- `scope.run(fn)`: Run an async function within a `scope` and return the result of `fn`.
+- `scope.cancelRequested`: A promise that resolves when a scope cancellation is requested, such as when Workflow code calls `cancel()` or the entire Workflow is cancelled by an external client.
+
+When a `CancellationScope` is cancelled, it propagates cancellation in any child scopes and of any cancelable operations created within it, such as the following:
+
+- Activities
+- Timers (created with the [sleep](https://typescript.temporal.io/api/namespaces/workflow#sleep) function)
+- [Triggers](https://typescript.temporal.io/api/classes/workflow.Trigger)
+
+### CancelledFailure
+
+Timers and triggers throw [CancelledFailure](https://typescript.temporal.io/api/classes/common.CancelledFailure) when cancelled; Activities and Child Workflows throw `ActivityFailure` and `ChildWorkflowFailure` with cause set to `CancelledFailure`.
+One exception is when an Activity or Child Workflow is scheduled in an already cancelled scope (or Workflow).
+In this case, they propagate the `CancelledFailure` that was thrown to cancel the scope.
+
+To simplify checking for cancellation, use the [isCancellation(err)](https://typescript.temporal.io/api/namespaces/workflow#iscancellation) function.
+
+### Internal cancellation example
+
+<!--SNIPSTART typescript-cancel-a-timer-from-workflow-->
+
+[packages/test/src/workflows/cancel-timer-immediately.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-timer-immediately.ts)
+
+```ts
+import {
+  CancellationScope,
+  CancelledFailure,
+  sleep,
+} from '@temporalio/workflow';
+
+export async function cancelTimer(): Promise<void> {
+  // Timers and Activities are automatically cancelled when their containing scope is cancelled.
+  try {
+    await CancellationScope.cancellable(async () => {
+      const promise = sleep(1); // <-- Will be cancelled because it is attached to this closure's scope
+      CancellationScope.current().cancel();
+      await promise; // <-- Promise must be awaited in order for `cancellable` to throw
+    });
+  } catch (e) {
+    if (e instanceof CancelledFailure) {
+      console.log('Timer cancelled 👍');
+    } else {
+      throw e; // <-- Fail the workflow
+    }
+  }
+}
+```
+
+<!--SNIPEND-->
+
+Alternatively, the preceding can be written as the following.
+
+<!--SNIPSTART typescript-cancel-a-timer-from-workflow-alternative-impl-->
+
+[packages/test/src/workflows/cancel-timer-immediately-alternative-impl.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-timer-immediately-alternative-impl.ts)
+
+```ts
+import {
+  CancellationScope,
+  CancelledFailure,
+  sleep,
+} from '@temporalio/workflow';
+
+export async function cancelTimerAltImpl(): Promise<void> {
+  try {
+    const scope = new CancellationScope();
+    const promise = scope.run(() => sleep(1));
+    scope.cancel(); // <-- Cancel the timer created in scope
+    await promise; // <-- Throws CancelledFailure
+  } catch (e) {
+    if (e instanceof CancelledFailure) {
+      console.log('Timer cancelled 👍');
+    } else {
+      throw e; // <-- Fail the workflow
+    }
+  }
+}
+```
+
+<!--SNIPEND-->
+
+### External cancellation example
+
+The following code shows how to handle Workflow cancellation by an external client while an Activity is running.
+
+{/* TODO: add a sample here of how this Workflow could be cancelled using a WorkflowHandle */}
+
+<!--SNIPSTART typescript-handle-external-workflow-cancellation-while-activity-running-->
+
+[packages/test/src/workflows/handle-external-workflow-cancellation-while-activity-running.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/handle-external-workflow-cancellation-while-activity-running.ts)
+
+```ts
+import {
+  CancellationScope,
+  isCancellation,
+  proxyActivities,
+} from '@temporalio/workflow';
+import type * as activities from '../activities';
+
+const { httpPostJSON, cleanup } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '10m',
+});
+
+export async function handleExternalWorkflowCancellationWhileActivityRunning(
+  url: string,
+  data: any,
+): Promise<void> {
+  try {
+    await httpPostJSON(url, data);
+  } catch (err) {
+    if (isCancellation(err)) {
+      console.log('Workflow cancelled');
+      // Cleanup logic must be in a nonCancellable scope
+      // If we'd run cleanup outside of a nonCancellable scope it would've been cancelled
+      // before being started because the Workflow's root scope is cancelled.
+      await CancellationScope.nonCancellable(() => cleanup(url));
+    }
+    throw err; // <-- Fail the Workflow
+  }
+}
+```
+
+<!--SNIPEND-->
+
+### nonCancellable example
+
+`CancellationScope.nonCancellable` prevents cancellation from propagating to children.
+
+<!--SNIPSTART typescript-non-cancellable-shields-children-->
+
+[packages/test/src/workflows/non-cancellable-shields-children.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/non-cancellable-shields-children.ts)
+
+```ts
+import { CancellationScope, proxyActivities } from '@temporalio/workflow';
+import type * as activities from '../activities';
+
+const { httpGetJSON } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '10m',
+});
+
+export async function nonCancellable(url: string): Promise<any> {
+  // Prevent Activity from being cancelled and await completion.
+  // Note that the Workflow is completely oblivious and impervious to cancellation in this example.
+  return CancellationScope.nonCancellable(() => httpGetJSON(url));
+}
+```
+
+<!--SNIPEND-->
+
+### withTimeout example
+
+A common operation is to cancel one or more Activities if a deadline elapses.
+`withTimeout` creates a `CancellationScope` that is automatically cancelled after a timeout.
+
+<!--SNIPSTART typescript-multiple-activities-single-timeout-workflow-->
+
+[packages/test/src/workflows/multiple-activities-single-timeout.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/multiple-activities-single-timeout.ts)
+
+```ts
+import { CancellationScope, proxyActivities } from '@temporalio/workflow';
+import type * as activities from '../activities';
+
+export function multipleActivitiesSingleTimeout(
+  urls: string[],
+  timeoutMs: number,
+): Promise<any> {
+  const { httpGetJSON } = proxyActivities<typeof activities>({
+    startToCloseTimeout: timeoutMs,
+  });
+
+  // If timeout triggers before all activities complete
+  // the Workflow will fail with a CancelledError.
+  return CancellationScope.withTimeout(
+    timeoutMs,
+    () => Promise.all(urls.map((url) => httpGetJSON(url))),
+  );
+}
+```
+
+<!--SNIPEND-->
+
+### scope.cancelRequested
+
+You can await `cancelRequested` to make a Workflow aware of cancellation while waiting on `nonCancellable` scopes.
+
+<!--SNIPSTART typescript-cancel-requested-with-non-cancellable-->
+
+[packages/test/src/workflows/cancel-requested-with-non-cancellable.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-requested-with-non-cancellable.ts)
+
+```ts
+import {
+  CancellationScope,
+  CancelledFailure,
+  proxyActivities,
+} from '@temporalio/workflow';
+import type * as activities from '../activities';
+
+const { httpGetJSON } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '10m',
+});
+
+export async function resumeAfterCancellation(url: string): Promise<any> {
+  let result: any = undefined;
+  const scope = new CancellationScope({ cancellable: false });
+  const promise = scope.run(() => httpGetJSON(url));
+  try {
+    result = await Promise.race([scope.cancelRequested, promise]);
+  } catch (err) {
+    if (!(err instanceof CancelledFailure)) {
+      throw err;
+    }
+    // Prevent Workflow from completing so Activity can complete
+    result = await promise;
+  }
+  return result;
+}
+```
+
+<!--SNIPEND-->
+
+### Cancellation scopes and callbacks
+
+Callbacks are not particularly useful in Workflows because all meaningful asynchronous operations return promises.
+In the rare case that code uses callbacks and needs to handle cancellation, a callback can consume the `CancellationScope.cancelRequested` promise.
+
+<!--SNIPSTART typescript-cancellation-scopes-with-callbacks-->
+
+[packages/test/src/workflows/cancellation-scopes-with-callbacks.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancellation-scopes-with-callbacks.ts)
+
+```ts
+import { CancellationScope } from '@temporalio/workflow';
+
+function doSomething(callback: () => any) {
+  setTimeout(callback, 10);
+}
+
+export async function cancellationScopesWithCallbacks(): Promise<void> {
+  await new Promise<void>((resolve, reject) => {
+    doSomething(resolve);
+    CancellationScope.current().cancelRequested.catch(reject);
+  });
+}
+```
+
+<!--SNIPEND-->
+
+### Nesting cancellation scopes
+
+You can achieve complex flows by nesting cancellation scopes.
+
+<!--SNIPSTART typescript-nested-cancellation-scopes-->
+
+[packages/test/src/workflows/nested-cancellation.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/nested-cancellation.ts)
+
+```ts
+import {
+  CancellationScope,
+  isCancellation,
+  proxyActivities,
+} from '@temporalio/workflow';
+
+import type * as activities from '../activities';
+
+const { setup, httpPostJSON, cleanup } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '10m',
+});
+
+export async function nestedCancellation(url: string): Promise<void> {
+  await CancellationScope.cancellable(async () => {
+    await CancellationScope.nonCancellable(() => setup());
+    try {
+      await CancellationScope.withTimeout(
+        1000,
+        () => httpPostJSON(url, { some: 'data' }),
+      );
+    } catch (err) {
+      if (isCancellation(err)) {
+        await CancellationScope.nonCancellable(() => cleanup(url));
+      }
+      throw err;
+    }
+  });
+}
+```
+
+<!--SNIPEND-->
+
+### Sharing promises between scopes
+
+Operations like Timers and Activities are cancelled by the cancellation scope they were created in.
+Promises returned by these operations can be awaited in different scopes.
+
+<!--SNIPSTART typescript-shared-promise-scopes-->
+
+[packages/test/src/workflows/shared-promise-scopes.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/shared-promise-scopes.ts)
+
+```ts
+import { CancellationScope, proxyActivities } from '@temporalio/workflow';
+import type * as activities from '../activities';
+
+const { httpGetJSON } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '10m',
+});
+
+export async function sharedScopes(): Promise<any> {
+  // Start activities in the root scope
+  const p1 = httpGetJSON('http://url1.ninja');
+  const p2 = httpGetJSON('http://url2.ninja');
+
+  const scopePromise = CancellationScope.cancellable(async () => {
+    const first = await Promise.race([p1, p2]);
+    // Does not cancel activity1 or activity2 as they're linked to the root scope
+    CancellationScope.current().cancel();
+    return first;
+  });
+  return await scopePromise;
+  // The Activity that did not complete will effectively be cancelled when
+  // Workflow completes unless the Activity is awaited:
+  // await Promise.all([p1, p2]);
+}
+```
+
+<!--SNIPEND-->
+
+<!--SNIPSTART typescript-shield-awaited-in-root-scope-->
+
+[packages/test/src/workflows/shield-awaited-in-root-scope.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/shield-awaited-in-root-scope.ts)
+
+```ts
+import { CancellationScope, proxyActivities } from '@temporalio/workflow';
+import type * as activities from '../activities';
+
+const { httpGetJSON } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '10m',
+});
+
+export async function shieldAwaitedInRootScope(): Promise<any> {
+  let p: Promise<any> | undefined = undefined;
+
+  await CancellationScope.nonCancellable(async () => {
+    p = httpGetJSON('http://example.com'); // <-- Start activity in nonCancellable scope without awaiting completion
+  });
+  // Activity is shielded from cancellation even though it is awaited in the cancellable root scope
+  return p;
+}
+```
+
+<!--SNIPEND-->

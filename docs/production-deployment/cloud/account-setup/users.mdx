@@ -64,7 +64,7 @@ Each user can be assigned permissions for individual Namespaces.
 - [Account-level Roles](#account-level-roles)
 - [Namespace-level permissions](#namespace-level-permissions)
 
-{/*- How to invite users to your Temporal Cloud account using Web UI -*/}
+{/* How to invite users to your Temporal Cloud account using Web UI */}
 
 ### How to invite users using Web UI
 
@@ -81,7 +81,7 @@ Each user can be assigned permissions for individual Namespaces.
 Temporal sends an email message to each user.
 To join Temporal Cloud, a user must select **Accept Invite** in the message.
 
-{/*- How to invite a user to your Temporal Cloud account using tcld -*/}
+{/* How to invite a user to your Temporal Cloud account using tcld */}
 
 ### How to invite a user using tcld
 
@@ -94,7 +94,7 @@ To join Temporal Cloud, the user must select **Accept Invite** in the message.
 
 You can invite users pragmatically using the Cloud Ops API.
 
-1. Create a connection to your Temporal Cluster using the Cloud Operations API.
+1. Create a connection to your Temporal Service using the Cloud Operations API.
 2. Use the [CreateUser service](https://github.com/temporalio/api-cloud/blob/main/temporal/api/cloud/cloudservice/v1/service.proto) to create a user.
 
 ## What are the account-level Roles for users in Temporal Cloud? {#account-level-roles}
@@ -229,52 +229,52 @@ This table provides API-level details for the permissions granted to a user thro
 
 | Permission                     | Read-only | Developer | Global Admin |
 | ------------------------------ | --------- | --------- | ------------ |
-| CountIdentities                | ✔        | ✔        | ✔           |
-| CreateAPIKey                   | ✔        | ✔        | ✔           |
-| CreateNamespace                |           | ✔        | ✔           |
-| CreateServiceAccount           |           |           | ✔           |
-| CreateServiceAccountAPIKey     |           |           | ✔           |
-| CreateUser                     |           |           | ✔           |
-| DeleteAPIKey                   | ✔        | ✔        | ✔           |
-| DeleteServiceAccount           |           |           | ✔           |
-| DeleteUser                     |           |           | ✔           |
-| GetAccount                     | ✔        | ✔        | ✔           |
-| GetAccountFeatureFlags         | ✔        | ✔        | ✔           |
-| GetAccountLimits               | ✔        | ✔        | ✔           |
-| GetAccountSettings             | ✔        | ✔        | ✔           |
-| GetAccountUsage                |           |           | ✔           |
-| GetAPIKey                      | ✔        | ✔        | ✔           |
-| GetAPIKeys                     | ✔        | ✔        | ✔           |
-| GetAsyncOperation              | ✔        | ✔        | ✔           |
-| GetDecodedCertificate          | ✔        | ✔        | ✔           |
-| GetIdentities                  | ✔        | ✔        | ✔           |
-| GetIdentity                    | ✔        | ✔        | ✔           |
-| GetNamespaces                  | ✔        | ✔        | ✔           |
-| GetNamespacesUsage             |           |           | ✔           |
-| GetRegion                      | ✔        | ✔        | ✔           |
-| GetRegions                     | ✔        | ✔        | ✔           |
-| GetRequestStatus               | ✔        | ✔        | ✔           |
-| GetRequestStatuses             |           |           | ✔           |
-| GetRequestStatusesForNamespace | ✔        | ✔        | ✔           |
-| GetRequestStatusesForUser      | ✔        | ✔        | ✔           |
-| GetRoles                       | ✔        | ✔        | ✔           |
-| GetRolesByPermissions          | ✔        | ✔        | ✔           |
-| GetServiceAccount              | ✔        | ✔        | ✔           |
-| GetServiceAccounts             | ✔        | ✔        | ✔           |
-| GetUser                        | ✔        | ✔        | ✔           |
-| GetUsers                       | ✔        | ✔        | ✔           |
-| GetUsersWithAccountRoles       | ✔        | ✔        | ✔           |
-| InviteUsers                    |           |           | ✔           |
-| ListCreditLedgerEntries        |           |           | ✔           |
-| ListGrants                     |           |           | ✔           |
-| ListNamespaces                 | ✔        | ✔        | ✔           |
-| ResendUserInvite               |           |           | ✔           |
-| SetAccountSettings             |           |           | ✔           |
-| SyncCurrentUserInvite          | ✔        | ✔        | ✔           |
-| UpdateAccount                  |           |           | ✔           |
-| UpdateAPIKey                   | ✔        | ✔        | ✔           |
-| UpdateServiceAccount           |           |           | ✔           |
-| UpdateUser                     |           |           | ✔           |
+| CountIdentities                | ✔         | ✔         | ✔            |
+| CreateAPIKey                   | ✔         | ✔         | ✔            |
+| CreateNamespace                |           | ✔         | ✔            |
+| CreateServiceAccount           |           |           | ✔            |
+| CreateServiceAccountAPIKey     |           |           | ✔            |
+| CreateUser                     |           |           | ✔            |
+| DeleteAPIKey                   | ✔         | ✔         | ✔            |
+| DeleteServiceAccount           |           |           | ✔            |
+| DeleteUser                     |           |           | ✔            |
+| GetAccount                     | ✔         | ✔         | ✔            |
+| GetAccountFeatureFlags         | ✔         | ✔         | ✔            |
+| GetAccountLimits               | ✔         | ✔         | ✔            |
+| GetAccountSettings             | ✔         | ✔         | ✔            |
+| GetAccountUsage                |           |           | ✔            |
+| GetAPIKey                      | ✔         | ✔         | ✔            |
+| GetAPIKeys                     | ✔         | ✔         | ✔            |
+| GetAsyncOperation              | ✔         | ✔         | ✔            |
+| GetDecodedCertificate          | ✔         | ✔         | ✔            |
+| GetIdentities                  | ✔         | ✔         | ✔            |
+| GetIdentity                    | ✔         | ✔         | ✔            |
+| GetNamespaces                  | ✔         | ✔         | ✔            |
+| GetNamespacesUsage             |           |           | ✔            |
+| GetRegion                      | ✔         | ✔         | ✔            |
+| GetRegions                     | ✔         | ✔         | ✔            |
+| GetRequestStatus               | ✔         | ✔         | ✔            |
+| GetRequestStatuses             |           |           | ✔            |
+| GetRequestStatusesForNamespace | ✔         | ✔         | ✔            |
+| GetRequestStatusesForUser      | ✔         | ✔         | ✔            |
+| GetRoles                       | ✔         | ✔         | ✔            |
+| GetRolesByPermissions          | ✔         | ✔         | ✔            |
+| GetServiceAccount              | ✔         | ✔         | ✔            |
+| GetServiceAccounts             | ✔         | ✔         | ✔            |
+| GetUser                        | ✔         | ✔         | ✔            |
+| GetUsers                       | ✔         | ✔         | ✔            |
+| GetUsersWithAccountRoles       | ✔         | ✔         | ✔            |
+| InviteUsers                    |           |           | ✔            |
+| ListCreditLedgerEntries        |           |           | ✔            |
+| ListGrants                     |           |           | ✔            |
+| ListNamespaces                 | ✔         | ✔         | ✔            |
+| ResendUserInvite               |           |           | ✔            |
+| SetAccountSettings             |           |           | ✔            |
+| SyncCurrentUserInvite          | ✔         | ✔         | ✔            |
+| UpdateAccount                  |           |           | ✔            |
+| UpdateAPIKey                   | ✔         | ✔         | ✔            |
+| UpdateServiceAccount           |           |           | ✔            |
+| UpdateUser                     |           |           | ✔            |
 
 #### Namespace-level permissions details
 
@@ -282,69 +282,69 @@ This table provides API-level details for the permissions granted to a user thro
 
 | Permission                         | Read | Write | Namespace Admin |
 | ---------------------------------- | ---- | ----- | --------------- |
-| CountWorkflowExecutions            | ✔   | ✔    | ✔              |
-| CreateExportSink                   |      | ✔    | ✔              |
-| CreateSchedule                     |      | ✔    | ✔              |
-| DeleteExportSink                   |      | ✔    | ✔              |
-| DeleteNamespace                    |      | ✔    | ✔              |
-| DeleteSchedule                     |      | ✔    | ✔              |
-| DescribeBatchOperation             | ✔   | ✔    | ✔              |
-| DescribeNamespace                  | ✔   | ✔    | ✔              |
-| DescribeSchedule                   | ✔   | ✔    | ✔              |
-| DescribeTaskQueue                  | ✔   | ✔    | ✔              |
-| DescribeWorkflowExecution          | ✔   | ✔    | ✔              |
-| FailoverNamespace                  |      |       | ✔              |
-| GetExportSink                      | ✔   | ✔    | ✔              |
-| GetExportSinks                     | ✔   | ✔    | ✔              |
-| GetNamespace                       | ✔   | ✔    | ✔              |
-| GetNamespaceUsage                  | ✔   | ✔    | ✔              |
-| GetReplicationStatus               | ✔   | ✔    | ✔              |
-| GetSearchAttributes                | ✔   | ✔    | ✔              |
-| GetUsersForNamespace               | ✔   | ✔    | ✔              |
-| GetWorkerBuildIdCompatibility      | ✔   | ✔    | ✔              |
-| GetWorkerTaskReachability          | ✔   | ✔    | ✔              |
-| GetWorkflowExecutionHistory        | ✔   | ✔    | ✔              |
-| GetWorkflowExecutionHistoryReverse | ✔   | ✔    | ✔              |
-| GlobalizeNamespace                 |      |       | ✔              |
-| ListBatchOperations                | ✔   | ✔    | ✔              |
-| ListClosedWorkflowExecutions       | ✔   | ✔    | ✔              |
-| ListExportSinks                    | ✔   | ✔    | ✔              |
-| ListFailoverHistoryByNamespace     | ✔   | ✔    | ✔              |
-| ListOpenWorkflowExecutions         | ✔   | ✔    | ✔              |
-| ListReplicaStatus                  | ✔   | ✔    | ✔              |
-| ListScheduleMatchingTimes          | ✔   | ✔    | ✔              |
-| ListSchedules                      | ✔   | ✔    | ✔              |
-| ListTaskQueuePartitions            | ✔   | ✔    | ✔              |
-| ListWorkflowExecutions             | ✔   | ✔    | ✔              |
-| PatchSchedule                      |      | ✔    | ✔              |
-| PollActivityTaskQueue              |      | ✔    | ✔              |
-| PollWorkflowTaskQueue              |      | ✔    | ✔              |
-| QueryWorkflow                      | ✔   | ✔    | ✔              |
-| RecordActivityTaskHeartbeat        |      | ✔    | ✔              |
-| RecordActivityTaskHeartbeatById    |      | ✔    | ✔              |
-| RenameCustomSearchAttribute        |      | ✔    | ✔              |
-| RequestCancelWorkflowExecution     |      | ✔    | ✔              |
-| ResetStickyTaskQueue               |      | ✔    | ✔              |
-| ResetWorkflowExecution             |      | ✔    | ✔              |
-| RespondActivityTaskCanceled        |      | ✔    | ✔              |
-| RespondActivityTaskCanceledById    |      | ✔    | ✔              |
-| RespondActivityTaskCompleted       |      | ✔    | ✔              |
-| RespondActivityTaskCompletedById   |      | ✔    | ✔              |
-| RespondActivityTaskFailed          |      | ✔    | ✔              |
-| RespondActivityTaskFailedById      |      | ✔    | ✔              |
-| RespondQueryTaskCompleted          |      | ✔    | ✔              |
-| RespondWorkflowTaskCompleted       |      | ✔    | ✔              |
-| RespondWorkflowTaskFailed          |      | ✔    | ✔              |
-| SetUserNamespaceAccess             |      |       | ✔              |
-| SignalWithStartWorkflowExecution   |      | ✔    | ✔              |
-| SignalWorkflowExecution            |      | ✔    | ✔              |
-| StartBatchOperation                |      | ✔    | ✔              |
-| StartWorkflowExecution             |      | ✔    | ✔              |
-| StopBatchOperation                 |      | ✔    | ✔              |
-| TerminateWorkflowExecution         |      | ✔    | ✔              |
-| UpdateExportSink                   |      | ✔    | ✔              |
-| UpdateNamespace                    |      | ✔    | ✔              |
-| UpdateSchedule                     |      | ✔    | ✔              |
-| UpdateUserNamespacePermissions     |      |       | ✔              |
-| ValidateExportSink                 |      | ✔    | ✔              |
-| ValidateGlobalizeNamespace         |      |       | ✔              |
+| CountWorkflowExecutions            | ✔    | ✔     | ✔               |
+| CreateExportSink                   |      | ✔     | ✔               |
+| CreateSchedule                     |      | ✔     | ✔               |
+| DeleteExportSink                   |      | ✔     | ✔               |
+| DeleteNamespace                    |      | ✔     | ✔               |
+| DeleteSchedule                     |      | ✔     | ✔               |
+| DescribeBatchOperation             | ✔    | ✔     | ✔               |
+| DescribeNamespace                  | ✔    | ✔     | ✔               |
+| DescribeSchedule                   | ✔    | ✔     | ✔               |
+| DescribeTaskQueue                  | ✔    | ✔     | ✔               |
+| DescribeWorkflowExecution          | ✔    | ✔     | ✔               |
+| FailoverNamespace                  |      |       | ✔               |
+| GetExportSink                      | ✔    | ✔     | ✔               |
+| GetExportSinks                     | ✔    | ✔     | ✔               |
+| GetNamespace                       | ✔    | ✔     | ✔               |
+| GetNamespaceUsage                  | ✔    | ✔     | ✔               |
+| GetReplicationStatus               | ✔    | ✔     | ✔               |
+| GetSearchAttributes                | ✔    | ✔     | ✔               |
+| GetUsersForNamespace               | ✔    | ✔     | ✔               |
+| GetWorkerBuildIdCompatibility      | ✔    | ✔     | ✔               |
+| GetWorkerTaskReachability          | ✔    | ✔     | ✔               |
+| GetWorkflowExecutionHistory        | ✔    | ✔     | ✔               |
+| GetWorkflowExecutionHistoryReverse | ✔    | ✔     | ✔               |
+| GlobalizeNamespace                 |      |       | ✔               |
+| ListBatchOperations                | ✔    | ✔     | ✔               |
+| ListClosedWorkflowExecutions       | ✔    | ✔     | ✔               |
+| ListExportSinks                    | ✔    | ✔     | ✔               |
+| ListFailoverHistoryByNamespace     | ✔    | ✔     | ✔               |
+| ListOpenWorkflowExecutions         | ✔    | ✔     | ✔               |
+| ListReplicaStatus                  | ✔    | ✔     | ✔               |
+| ListScheduleMatchingTimes          | ✔    | ✔     | ✔               |
+| ListSchedules                      | ✔    | ✔     | ✔               |
+| ListTaskQueuePartitions            | ✔    | ✔     | ✔               |
+| ListWorkflowExecutions             | ✔    | ✔     | ✔               |
+| PatchSchedule                      |      | ✔     | ✔               |
+| PollActivityTaskQueue              |      | ✔     | ✔               |
+| PollWorkflowTaskQueue              |      | ✔     | ✔               |
+| QueryWorkflow                      | ✔    | ✔     | ✔               |
+| RecordActivityTaskHeartbeat        |      | ✔     | ✔               |
+| RecordActivityTaskHeartbeatById    |      | ✔     | ✔               |
+| RenameCustomSearchAttribute        |      | ✔     | ✔               |
+| RequestCancelWorkflowExecution     |      | ✔     | ✔               |
+| ResetStickyTaskQueue               |      | ✔     | ✔               |
+| ResetWorkflowExecution             |      | ✔     | ✔               |
+| RespondActivityTaskCanceled        |      | ✔     | ✔               |
+| RespondActivityTaskCanceledById    |      | ✔     | ✔               |
+| RespondActivityTaskCompleted       |      | ✔     | ✔               |
+| RespondActivityTaskCompletedById   |      | ✔     | ✔               |
+| RespondActivityTaskFailed          |      | ✔     | ✔               |
+| RespondActivityTaskFailedById      |      | ✔     | ✔               |
+| RespondQueryTaskCompleted          |      | ✔     | ✔               |
+| RespondWorkflowTaskCompleted       |      | ✔     | ✔               |
+| RespondWorkflowTaskFailed          |      | ✔     | ✔               |
+| SetUserNamespaceAccess             |      |       | ✔               |
+| SignalWithStartWorkflowExecution   |      | ✔     | ✔               |
+| SignalWorkflowExecution            |      | ✔     | ✔               |
+| StartBatchOperation                |      | ✔     | ✔               |
+| StartWorkflowExecution             |      | ✔     | ✔               |
+| StopBatchOperation                 |      | ✔     | ✔               |
+| TerminateWorkflowExecution         |      | ✔     | ✔               |
+| UpdateExportSink                   |      | ✔     | ✔               |
+| UpdateNamespace                    |      | ✔     | ✔               |
+| UpdateSchedule                     |      | ✔     | ✔               |
+| UpdateUserNamespacePermissions     |      |       | ✔               |
+| ValidateExportSink                 |      | ✔     | ✔               |
+| ValidateGlobalizeNamespace         |      |       | ✔               |

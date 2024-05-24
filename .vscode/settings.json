@@ -1,16 +1,4 @@
 {
-  "prettier.singleQuote": true,
-  "prettier.jsxSingleQuote": true,
   "editor.formatOnSave": true,
-  "cSpell.words": ["upsert"],
-  "cSpell.customDictionaries": {
-    "custom-dictionary-workspace": {
-      "name": "custom-dictionary-workspace",
-      "path": "${workspaceFolder:documentation}/.cspell/custom-dictionary-workspace.txt",
-      "addWords": true,
-      "scope": "workspace"
-    }
-  },
-  "docwriter.style": "Auto-detect",
-  "java.compile.nullAnalysis.mode": "automatic"
+  "editor.defaultFormatter": "dprint.dprint"
 }

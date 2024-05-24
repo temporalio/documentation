@@ -100,7 +100,7 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
         new W3CBaggagePropagator(),
         new JaegerPropagator(),
       ],
-    })
+    }),
   );
   ```
 
@@ -131,7 +131,9 @@ export async function greet(name: string): Promise<string> {
 </details>
 
 {/*
+
 #### Customizing Activity logging with `ActivityOutboundCallsInterceptor`
+
 FIXME(JWH): Quick introduction to `ActivityOutboundCallsInterceptor.getLogAttributes()`.
 */}
 
@@ -163,7 +165,9 @@ export async function myWorkflow(name: string): Promise<string> {
 The Workflow Context Logger tries to avoid reemitting log messages on Workflow Replays.
 
 {/*
+
 #### Customizing Workflow logging using `WorkflowOutboundCallsInterceptor`
+
 FIXME(JWH): Quick introduction to `WorkflowOutboundCallsInterceptor.getLogAttributes()`.
 */}
 

@@ -128,7 +128,7 @@ To get a standard `slf4j` logger in your Workflow code, use the [`Workflow.getLo
 private static final Logger logger = Workflow.getLogger(DynamicDslWorkflow.class);
 ```
 
-Logs in replay mode are omitted unless the [`WorkerFactoryOptions.Builder.setEnableLoggingInReplay(boolean)`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactoryOptions.Builder.html#setEnableLoggingInReplay(boolean)>) method is set to true.
+Logs in replay mode are omitted unless the [`WorkerFactoryOptions.Builder.setEnableLoggingInReplay(boolean)`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactoryOptions.Builder.html#setEnableLoggingInReplay(boolean)) method is set to true.
 
 ### How to provide a custom logger {#custom-logger}
 
@@ -171,7 +171,7 @@ Here is how to query Workflow Executions:
 
 After you've created custom Search Attributes in your Cluster (using `temporal operator search-attribute create` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
-To set a custom Search Attribute, call the [`setSearchAttributes()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setSearchAttributes(java.util.Map)>) method.
+To set a custom Search Attribute, call the [`setSearchAttributes()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setSearchAttributes(java.util.Map)) method.
 
 ```java
 WorkflowOptions workflowOptions =
@@ -193,7 +193,7 @@ WorkflowOptions workflowOptions =
 
 You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
 
-In your Workflow code, call the [`upsertSearchAttributes(Map<String, ?> searchAttributes)`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertSearchAttributes(java.util.Map)>) method.
+In your Workflow code, call the [`upsertSearchAttributes(Map<String, ?> searchAttributes)`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertSearchAttributes(java.util.Map)) method.
 
 ```java
  Map<String, Object> attr1 = new HashMap<>();

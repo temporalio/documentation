@@ -289,7 +289,7 @@ The following versions are used in our test pipelines and actively tested before
 You can verify supported databases in the [Temporal Server release notes](https://github.com/temporalio/temporal/releases).
 
 - Because Temporal Server primarily relies on core database functionality, we do not expect compatibility to break often.
-  {/*Temporal has no opinions on database upgrade paths; as long as you can upgrade your database according to each project's specifications, Temporal should work with any version within supported ranges.*/}
+  {/* Temporal has no opinions on database upgrade paths; as long as you can upgrade your database according to each project's specifications, Temporal should work with any version within supported ranges. */}
 - We do not run tests with vendors like Vitess and CockroachDB.
 - Temporal also supports SQLite v3.x persistence, but this is meant only for development and testing, not production usage.
 
@@ -427,7 +427,7 @@ For more information on mTLS configuration, see [tls configuration reference](/r
 #### Authentication and authorization
 
 {/* commenting this very generic explanation out. Can include it back in if everyone feels strongly.
- **Authentication** is the process of verifying users who want to access your application are actually the users you want accessing it.
+**Authentication** is the process of verifying users who want to access your application are actually the users you want accessing it.
 **Authorization** is the verification of applications and data that a user on your Temporal Service or application has access to. */}
 
 Temporal provides authentication interfaces that can be set to restrict access to your data.

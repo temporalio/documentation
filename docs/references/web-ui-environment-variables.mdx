@@ -21,25 +21,28 @@ You can use environment variables to dynamically alter the configuration of your
 These can be used in many environments such as Docker.
 For example:
 
-{/* ```
-docker run \
-    -e TEMPORAL_ADDRESS=127.0.0.1:7233 \
-    -e TEMPORAL_UI_PORT=8080 \
-    -e TEMPORAL_AUTH_ENABLED=true \
-    -e TEMPORAL_AUTH_PROVIDER_URL=https://accounts.google.com \
-    -e TEMPORAL_AUTH_CLIENT_ID=xxxxx-xxxx.apps.googleusercontent.com \
-    -e TEMPORAL_AUTH_CLIENT_SECRET=xxxxxxxxxxxxxxx \
-    -e TEMPORAL_AUTH_CALLBACK_URL=https://xxxx.com:8080/auth/sso/callback \
-    -e TEMPORAL_UI_ENABLED=true \
-    -e TEMPORAL_OPENAPI_ENABLED=true \
-    -e TEMPORAL_TLS_CA=../ca.cert \
-    -e TEMPORAL_TLS_CERT=../cluster.pem \
-    -e TEMPORAL_TLS_KEY=../cluster.key \
-    -e TEMPORAL_TLS_ENABLE_HOST_VERIFICATION=true \
-    -e TEMPORAL_TLS_SERVER_NAME=tls-server \
-    temporalio/ui:<tag>
-``` */}
+{/*
 
+```
+docker run\
+-e TEMPORAL_ADDRESS=127.0.0.1:7233\
+-e TEMPORAL_UI_PORT=8080\
+-e TEMPORAL_AUTH_ENABLED=true\
+-e TEMPORAL_AUTH_PROVIDER_URL=https://accounts.google.com\
+-e TEMPORAL_AUTH_CLIENT_ID=xxxxx-xxxx.apps.googleusercontent.com\
+-e TEMPORAL_AUTH_CLIENT_SECRET=xxxxxxxxxxxxxxx\
+-e TEMPORAL_AUTH_CALLBACK_URL=https://xxxx.com:8080/auth/sso/callback\
+-e TEMPORAL_UI_ENABLED=true\
+-e TEMPORAL_OPENAPI_ENABLED=true\
+-e TEMPORAL_TLS_CA=../ca.cert\
+-e TEMPORAL_TLS_CERT=../cluster.pem\
+-e TEMPORAL_TLS_KEY=../cluster.key\
+-e TEMPORAL_TLS_ENABLE_HOST_VERIFICATION=true\
+-e TEMPORAL_TLS_SERVER_NAME=tls-server\
+temporalio/ui:<tag>
+```
+
+*/}
 The environment variables are defined in the [UI server configuration template file](https://github.com/temporalio/ui-server/blob/main/docker/config_template.yaml) and described in more detail below.
 
 ## `TEMPORAL_ADDRESS`

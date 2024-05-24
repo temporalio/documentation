@@ -198,9 +198,13 @@ WorkflowId = '<workflow-id>' or WorkflowId = '<another-workflow-id>'
 WorkflowId IN ('<workflow-id>', '<another-workflow-id>')
 ```
 
-{/* ```sql
+{/*
+
+```sql
 WorkflowId = '<workflow-id>' order by StartTime desc
-``` */}
+```
+
+*/}
 
 ```sql
 WorkflowId = '<workflow-id>' and ExecutionStatus = 'Running'
@@ -226,7 +230,9 @@ ExecutionTime < '2021-08-28T15:04:05+00:00' or ExecutionTime > '2021-08-22T15:04
 WorkflowType STARTS_WITH '<workflow-type-prefix>'
 ```
 
-{/* ```sql
+{/*
+
+```sql
 order by ExecutionTime
 ```
 
@@ -236,7 +242,9 @@ order by StartTime desc, CloseTime asc
 
 ```sql
 order by CustomIntField asc
-``` */}
+```
+
+*/}
 
 ## What is a Search Attribute? {#search-attribute}
 
@@ -385,7 +393,7 @@ Size limits for a custom Search Attribute:
 
 {/*
 _This refers to the SA key you create in the visibility store with `tctl search-attribute create`. this value is no longer applicable so commenting out for ref later_
-Default total maximum number of Search Attribute **keys** per Temporal Service is 100.*/}
+Default total maximum number of Search Attribute **keys** per Temporal Service is 100. */}
 
 - The default single Search Attribute **value** size limit is 2 KB.
 
@@ -439,4 +447,4 @@ Their names indicate their types:
 - CustomIntField
 - CustomKeywordField
 - CustomTextField
-*/}
+  */}

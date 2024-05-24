@@ -1,0 +1,1193 @@
+---
+id: project-setup
+title: Set up a Temporal Application project - TypeScript SDK dev guide
+sidebar_label: Project setup
+description: The project setup section of the Temporal TypeScript SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in TypeScript—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+slug: /dev-guide/typescript/project-setup
+toc_max_heading_level: 4
+keywords:
+  - activity
+  - cloud certificate
+  - code sample
+  - dev guide
+  - developer guide
+  - developer-guide
+  - docker
+  - introduction
+  - project setup
+  - sdk
+  - self-hosted
+  - temporal cli
+  - temporal client
+  - temporal cloud
+  - testing
+  - typescript
+  - typescript sdk
+  - worker
+  - workflow
+tags:
+  - activity
+  - cloud-certificate
+  - code-sample
+  - dev-guide
+  - developer-guide
+  - developer-guide
+  - docker
+  - introduction
+  - project-setup
+  - sdk
+  - self-hosted
+  - temporal-cli
+  - temporal-client
+  - temporal-cloud
+  - testing
+  - typescript
+  - typescript-sdk
+  - worker
+  - workflow
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The first step to creating a new Temporal Application is to set up your development environment.
+This chapter walks through the steps to do that using the TypeScript SDK.
+
+:::competency Construct a new Temporal Application project
+
+This chapter of the Temporal TypeScript SDK developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application using TypeScript.
+
+By the end of this section you will know how to construct a new Temporal Application project.
+
+Learning objectives:
+
+- Describe the tools available and recommended to develop Workflows.
+- Describe the code that actually forms a Temporal application.
+- Implement an appropriate testing framework.
+
+Much of the information in this chapter is also covered in the [Temporal 101 course](https://learn.temporal.io/courses/temporal_101/)
+
+:::
+
+This chapter introduces the [Background Check use case](https://learn.temporal.io/examples/go/background-checks/#what-is-the-real-life-use-case) and a sample application as a means to contextualize the information.
+Future developer guide chapters build on this use case and sample application.
+
+There are three ways to follow this guide:
+
+- [Use a local dev server](#local-dev-server)
+- [Use Temporal Cloud](#temporal-cloud)
+- [Use a self-hosted environment such as Docker](#self-hosted-temporal-cluster)
+
+Read more in the [Choose a development Cluster](#choose-dev-cluster) section.
+
+In this chapter you will do the following:
+
+1. Download the Temporal CLI.
+2. Choose your development Cluster.
+3. Create a Namespace on your development Cluster.
+4. Copy boilerplate code into your IDE.
+5. Run your the Worker.
+6. Start the Workflow using the Temporal CLI.
+7. Explore the Web UI to view the status of the Workflow and confirm polling Workers.
+8. Add a testing framework and unit tests to the application
+9. Run the application unit tests
+
+## Install the Temporal CLI {#install-cli}
+
+**How to download and install the Temporal CLI**
+
+The Temporal CLI is available on MacOS, Windows, and Linux.
+
+### MacOS
+
+**How to install the Temporal CLI on Mac OS**
+
+Choose one of the following install methods to install the Temporal CLI on MacOS:
+
+**Install the Temporal CLI with Homebrew**
+
+```bash
+brew install temporal
+```
+
+**Install the Temporal CLI with cURL**
+
+```bash
+curl -sSf https://temporal.download/cli.sh | sh
+```
+
+**Install the Temporal CLI from CDN**
+
+1. Select the platform and architecture needed.
+
+Download for Darwin amd64: https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64
+
+2. Extract the downloaded archive.
+
+3. Add the `temporal` binary to your PATH.
+
+### Linux
+
+**How to install the Temporal CLI on Linux**
+
+Choose one of the following install methods to install the Temporal CLI on Linux:
+
+**Install the Temporal CLI with cURL**
+
+```bash
+curl -sSf https://temporal.download/cli.sh | sh
+```
+
+### Windows
+
+**How to install the Temporal CLI on Windows**
+
+Follow these instructions to install the Temporal CLI on Windows:
+
+**Install the Temporal CLI from CDN**
+
+1. Select the platform and architecture needed and download the binary.
+
+Download for Windows amd64: https://temporal.download/cli/archive/latest?platform=windows&arch=amd64
+
+2. Extract the downloaded archive.
+
+3. Add the `temporal.exe` binary to your PATH.
+
+## Choose a development Cluster {#choose-dev-cluster}
+
+**Which development Cluster should you choose?**
+
+We recommend choosing a development environment based on your requirements.
+
+The source code for the Temporal Server (the orchestrating component of the Temporal Cluster) is licensed under the MIT open source license. So, in theory, anyone can take the Temporal Server code and run their Temporal Platform in any number of creative ways.
+
+However, for most developers we recommend starting by choosing one of the following:
+
+- [Local development server](#local-dev-server)
+- [Temporal Cloud](#temporal-cloud)
+- [Self-hosted Temporal Cluster](#self-hosted-temporal-cluster)
+
+:::info Temporal does not directly run your code
+
+Keep in mind that in every scenario, the “Temporal Platform” does not host and run your Workers (application code).
+It is up to you, the developer, to host your application code.
+The Temporal Platform ensures that properly written code durably executes in the face of platform-level failures.
+
+:::
+
+### Local dev server
+
+**When to use a local development server?**
+
+We recommend using the local development server if you are new to Temporal, or want to start something from scratch and don’t have a self-hosted environment ready or want to pay for a Temporal Cloud account.
+
+The Temporal CLI comes bundled with a development server and provides a fast way to start running Temporal Applications.
+
+However, the local development server does not emit any metrics.
+If you are eager to to set up Cluster-level metrics for performance tuning, we recommend using a self-hosted Cluster or Temporal Cloud.
+
+#### Start the dev server
+
+**How to start a local development server**
+
+If you have successfully installed the Temporal CLI, open a new terminal and run the following command:
+
+```bash
+temporal server start-dev
+```
+
+This command automatically starts the Temporal Web UI, creates a default Namespace, and creates an in-memory database.
+
+The Temporal Web UI serves to [http://localhost:8233](http://localhost:8233/).
+
+For more command details and options, see the [CLI reference](/cli/server#start-dev)
+
+#### Create a custom Namespace
+
+**How to create a Namespace on the development server**
+
+The development server does automatically create a default Namespace (named "default") when it starts up.
+However, you will create a custom one for our application.
+Since this is something recommended at a production level, it's recommend practicing it with the development server.
+
+Use the `temporal operator namespace create` command using the Temporal CLI to create a Namespace on the development server.
+
+```bash
+temporal operator namespace create backgroundcheck_namespace
+```
+
+For command details and options, see the [CLI reference](/cli/operator#create).
+
+### Temporal Cloud
+
+**When to use Temporal Cloud**
+
+If you do not have a Temporal Cloud Account, you can request one using the link on the [Get started with Temporal Cloud](https://docs.temporal.io/cloud/get-started) guide.
+
+We recommend starting off with Temporal Cloud if you already have a production use case, or need to move a scalable proof of concept into production.
+
+In other words, Temporal Cloud is perfect if you are ready to run at scale and don’t want the overhead of managing your own self-hosted Cluster.
+
+To create a Namespace in Temporal Cloud, follow the instructions in [How to create a Namespace](/cloud/namespaces#create-a-namespace).
+
+:::info Safely store your certificate and private key
+
+Store certificates and private keys generated for your Namespace as files or environment variables in your project.
+You need access to your certificate and key to run your Workers and start Workflows.
+
+For more information on certificate requirements, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
+
+:::
+
+### Self-hosted Temporal Cluster
+
+We recommend using a self-hosted environment if you are starting something new and need to scale with production-level features, but don’t yet need or want to pay for Temporal Cloud.
+
+For example, running a self-hosted Cluster lets you try different databases, view Cluster metrics, use custom [Search Attributes](/visibility#search-attribute), and even play with the [Archival](/clusters#archival) feature.
+
+For the purposes of this guide, we show how to use a self-hosted environment that runs completely out of Docker.
+We acknowledge that it takes a fair amount of experience to elevate from a self-hosted environment in Docker to something that can run at an enterprise production scale.
+The self-hosted information in this guide should help you make more informed decisions.
+
+To follow along with self-hosted parts of this guide, install the following:
+
+- [Docker](https://docs.docker.com/engine/install)
+- [Docker Compose](https://docs.docker.com/compose/install).
+
+Then, clone the [temporalio/docker-compose](https://github.com/temporalio/docker-compose.git) repository.
+
+Change directory into the root of the project.
+
+Run the `docker compose up` command.
+
+```shell
+git clone https://github.com/temporalio/docker-compose.git
+cd docker-compose
+docker compose up
+```
+
+Create a command alias for the Temporal CLI:
+
+```shell
+alias temporal_docker="docker exec temporal-admin-tools temporal"
+```
+
+Create a Namespace.
+
+```shell
+temporal_docker operator namespace create backgroundcheck_namespace
+```
+
+## Boilerplate Temporal Application project code {#boilerplate-project}
+
+**What is the minimum code I need to create a boilerplate Temporal Application?**
+
+Let’s start with a single Workflow and register that function with a Worker.
+
+After you get the Worker running and have started a Workflow Execution, you will add a testing framework.
+
+### Project structure
+
+You can organize Temporal Application code to suit various needs in a way that aligns with the idiomatic style of the language you are working in.
+This includes structuring your files according to your organization's best practices.
+
+However, there are some general ways to think about organizing code.
+
+The best practice is to group Workflows together, Activities together, and separate your Worker process into a standalone file.
+Often this happens respectively per use case, business process, or domain.
+
+For monorepo-style organizational techniques, consider a designated Workflow directory for each use case and place each Workflow in its own file, but also maintain a dedicated place for shared Activities.
+
+For example, your project structure could look like this:
+
+```text
+monorepo/
+├── backgroundcheck
+│   ├── activities
+│   ├── tests
+│   │   ├── backgroundcheck.tests.ts
+│   │   └── ssntracen.tests.ts
+│   ├── worker.ts
+│   └── workflows
+│       └── backgroundcheck.ts
+├── loanapplication
+│   ├── activities
+│   │   └── creditcheck.ts
+│   ├── tests
+│   │   ├── creditcheck.tests.ts
+│   │   └── loanapplication.tests.ts
+│   ├── worker.ts
+│   └── workflows
+│       └── loanapplication.ts
+├── shared_activities
+│   ├── payment.ts
+│   └── send_email.ts
+└── shared_tests
+    └── tests.ts
+```
+
+Your project will look like this when you've finished this chapter:
+
+```text
+├── README.md
+├── package-lock.json
+├── package.json
+├── src
+│   ├── activities.ts
+│   ├── client.ts
+│   ├── mocha
+│   │   ├── backgroundcheck.test.ts
+│   │   └── ssntrace.test.ts
+│   ├── worker.ts
+│   └── workflows.ts
+└── tsconfig.json
+```
+
+### Initialize TypeScript project dependency framework
+
+The TypeScript SDK offers a project creation tool you can use to scaffold your project. You'll use this tool to create a project folder and set up dependencies.
+
+Run the following command in your shell:
+
+```shell
+npx @temporalio/create --sample empty backgroundcheck
+```
+
+:::note
+
+The Temporal TypeScript SDK is dropping support for Node.js 16 due to its end-of-life status.
+
+The [Temporal TypeScript SDK 1.10 version](https://github.com/temporalio/sdk-typescript/releases/tag/v1.10.0) is the last minor release supporting Node.js 16.
+
+Update your deployments to supported Node.js versions to ensure continued compatibility and security updates.
+
+:::
+
+You'll see the following output as the project generator downloads the project template and installs dependencies, including the TypeScript SDK:
+
+```
+Creating a new Temporal project in /Users/brianhogan/dev/documentation-samples-typescript/backgroundcheck/
+
+Downloading files for sample empty. This might take a moment.
+
+Installing packages. This might take a couple of minutes.
+```
+
+Once the dependencies install, the tool asks you if you'd like to initialize a Git repository for your project, which you should do. The tool then confirms your project is created:
+
+```
+Success! Created project backgroundcheck at:
+
+~/backgroundcheck/
+```
+
+Switch to the `backgroundcheck` folder.
+
+```
+cd backgroundcheck
+```
+
+The project generator created the following directory structure for you:
+
+```
+├── README.md
+├── node_modules
+├── package-lock.json
+├── package.json
+├── src
+│   ├── activities.ts
+│   ├── client.ts
+│   ├── mocha
+│   ├── worker.ts
+│   └── workflows.ts
+└── tsconfig.json
+```
+
+- The `package.json` file holds the project dependencies and a handful of scripts you'll use to run Workflows, Workflows, tests, and other tasks like linting and formatting your code.
+- The `tsconfig.json` file holds the TypeScript configuration designed for working with Temporal's SDK.
+- The `src/activities.ts` file is where you can define Activities.
+- The `src/client.ts` file has the code for a small CLI program to execute a Workflow. You won't use this directly in this guide.
+- The `src/mocha` folder is where you'll place your tests. We recommend using Mocha to test your Temporal Workflows and Activities.
+- The `src/workflows.ts` file is where you can define Workflows.
+- The `src/worker.ts` file has the code to configure and run your Worker process, which executes your Workflows and Activities.
+
+In addition, you'll find configuration files for ESLint and Prettier.
+
+### Boilerplate Workflow code {#workflow-code}
+
+In the Temporal TypeScript SDK programming model, a [Workflow Definition](/workflows#workflow-definition) is an exportable function.
+
+Open the `src/workflows.ts` file in your editor. You'll place your Workflow Definition in this file.
+
+To define a Workflow, import the Activity types and the `@temporalio/workflow` libraries:
+Define the Activity Execution options. `StartToCloseTimeout` or `ScheduleToCloseTimeout` must be set:
+The `backgroundCheck` function that follows is an example of a basic Workflow Definition.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/workflows.ts">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```typescript
+import * as workflow from '@temporalio/workflow';
+import type * as activities from './activities';
+
+const { ssnTrace } = workflow.proxyActivities<typeof activities>({
+  startToCloseTimeout: '10 seconds',
+});
+
+export async function backgroundCheck(ssn: string): Promise<string> {
+  return await ssnTrace(ssn);
+}
+```
+
+Temporal Workflows may have any number of custom parameters. However, we
+strongly recommend that you use objects as parameters, so that the object's
+individual fields may be altered without changing the signature of the
+Workflow. All Workflow Definition parameters must be serializable.
+
+Workflow return values must also be serializable. Returning results, returning
+errors, or throwing exceptions is fairly idiomatic in each language that is
+supported. However, Temporal APIs that must be used to get the result of a
+Workflow Execution will only ever receive one of either the result or the
+error.
+
+To return a value of the Workflow function, use `Promise<something>`. The
+Promise is used to make asynchronous calls and comes with guarantees.
+
+Workflow logic is constrained by [deterministic execution requirements](/workflows#deterministic-constraints).
+Therefore, each language is limited to the use of certain idiomatic techniques.
+However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
+
+In the Temporal TypeScript SDK, Workflows run in a deterministic sandboxed environment.
+The code is bundled on Worker creation using Webpack, and can import any package as long as it does not reference Node.js or DOM APIs.
+
+:::note
+
+If you **must** use a library that references a Node.js or DOM API and you are certain that those APIs are not used at runtime, add that module to the [ignoreModules](https://typescript.temporal.io/api/interfaces/worker.BundleOptions#ignoremodules) list.
+
+:::
+
+In the TypeScript SDK, you can safely use non-deterministic methods and rely on the sandbox to replace non-deterministic code with deterministic versions. However side effects and access to external state must be done through Activities because Activity outputs are recorded in the Event History and can read deterministically by the Workflow.
+
+This limitation also means that Workflow code cannot directly import the [Activity Definition](/activities#activity-definition).
+[Activity Types](/activities#activity-type) can be imported, so they can be invoked in a type-safe manner.
+
+To make the Workflow runtime deterministic, functions like `Math.random()`, `Date`, and `setTimeout()` are replaced by deterministic versions.
+
+### Boilerplate Activity code {#activity-code}
+
+In the Temporal TypeScript SDK programming model, an Activity is an exportable async function.
+
+You'll define your Activities in this file.
+
+Add the following code to define your Activity:
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/activities.ts">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```typescript
+export async function ssnTrace(param: string): Promise<string> {
+  // This is where a call to another service is made
+  // Here we are pretending that the service that does SSNTrace returned "pass"
+  return 'pass';
+}
+```
+
+This Activity definition uses a single input parameter and returns a string.
+
+An Activity Definition can support as many other custom parameters as needed.
+However, all parameters must be serializable.
+
+We recommend creating an Interface and using a single input parameter rather
+than using multiple input parameters.
+
+### Run a dev server Worker {#dev-server-worker}
+
+To run a Worker Process with a local development server, define the following steps in code:
+
+- Initialize a connection with the Temporal server.
+- Create a new Worker by passing the Client to creation call.
+- Register the application's Workflow and Activity functions.
+- Call `run()` on the Worker.
+
+In regards to organization, we recommend keeping Worker code separate from Workflow and Activity code.
+
+Add the following code to `src/worker.ts` to define a worker process that communicates with a local development server:
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/worker.ts">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```typescript
+import { NativeConnection, Worker } from '@temporalio/worker';
+import * as activities from './activities';
+
+async function run() {
+  // Step 1: Establish a connection with Temporal server.
+  //
+  // Worker code uses `@temporalio/worker.NativeConnection`.
+  // (But in your application code it's `@temporalio/client.Connection`.)
+  const connection = await NativeConnection.connect({
+    address: 'localhost:7233',
+    // TLS and gRPC metadata configuration goes here.
+  });
+  // Step 2: Register Workflows and Activities with the Worker and specify your
+  // namespace and Task Queue.
+  const worker = await Worker.create({
+    connection,
+    namespace: 'default',
+    taskQueue: 'background-check',
+    // Workflows are registered using a path as they run in a separate JS context.
+    workflowsPath: require.resolve('./workflows'),
+    activities,
+  });
+
+  // Step 3: Start accepting tasks on the `background-check` queue
+  //
+  // The worker runs until it encounters an unexepected error or the process receives a shutdown signal registered on
+  // the SDK Runtime object.
+  //
+  // By default, worker logs are written via the Runtime logger to STDERR at INFO level.
+  //
+  // See https://typescript.temporal.io/api/classes/worker.Runtime#install to customize these defaults.
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+:::info Auto restart Worker when code changes
+
+Use [`nodemon`](https://www.npmjs.com/package/nodemon) to automatically restart the Worker Process whenever any of the code files in your project change. This is automatically configured for your projects when you use the `@temporalio/create` command to build your project.
+
+```shell
+npm run start.watch
+```
+
+:::
+
+### Run a Temporal Cloud Worker {#cloud-worker}
+
+A Temporal Cloud Worker requires that you specify the following in the Client connection options:
+
+- Temporal Cloud Namespace
+- Temporal Cloud Address
+- Certificate and private key associated with the Namespace
+
+Add the following code to `src/worker.ts` to define a worker process that communicates with Temporal Cloud using an mTLS connection, using
+configuration provided via environment variables:
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/worker-cloud.ts">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```typescript
+import fs from 'fs/promises';
+
+import { NativeConnection, Worker } from '@temporalio/worker';
+import * as activities from './activities';
+
+// Note that serverNameOverride and serverRootCACertificate are optional.
+async function run({
+  address,
+  namespace,
+  clientCertPath,
+  clientKeyPath,
+  serverNameOverride,
+  serverRootCACertificatePath,
+  taskQueue,
+}: Env) {
+  let serverRootCACertificate: Buffer | undefined = undefined;
+  if (serverRootCACertificatePath) {
+    serverRootCACertificate = await fs.readFile(serverRootCACertificatePath);
+  }
+
+  const connection = await NativeConnection.connect({
+    address,
+    tls: {
+      serverNameOverride,
+      serverRootCACertificate,
+      clientCertPair: {
+        crt: await fs.readFile(clientCertPath),
+        key: await fs.readFile(clientKeyPath),
+      },
+    },
+  });
+
+  const worker = await Worker.create({
+    connection,
+    namespace,
+    workflowsPath: require.resolve('./workflows'),
+    activities,
+    taskQueue,
+  });
+  console.log('Worker connection successfully established');
+
+  await worker.run();
+  await connection.close();
+}
+
+run(getEnv()).catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+
+// Helpers for configuring the mTLS client and worker samples
+function requiredEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new ReferenceError(`${name} environment variable is not defined`);
+  }
+  return value;
+}
+
+export interface Env {
+  address: string;
+  namespace: string;
+  clientCertPath: string;
+  clientKeyPath: string;
+  serverNameOverride?: string;
+  serverRootCACertificatePath?: string;
+  taskQueue: string;
+}
+
+export function getEnv(): Env {
+  return {
+    address: requiredEnv('TEMPORAL_ADDRESS'),
+    namespace: requiredEnv('TEMPORAL_NAMESPACE'),
+    clientCertPath: requiredEnv('TEMPORAL_CLIENT_CERT_PATH'),
+    clientKeyPath: requiredEnv('TEMPORAL_CLIENT_KEY_PATH'),
+    serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
+    serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls',
+  };
+}
+```
+
+To run a Temporal Cloud Worker, you'll change some parameters in your Client connection code, such as updating the namespace and gRPC endpoint.
+You'll use:
+
+- The [Temporal Cloud Namespace Id](https://docs.temporal.io/cloud/namespaces#temporal-cloud-namespace-id).
+- The [Namespace's gRPC endpoint](https://docs.temporal.io/cloud/namespaces#temporal-cloud-grpc-endpoint).
+  The endpoint uses this format `(namespace.unique_id.tmprl.cloud:port)`.
+- [Paths to the SSL certificate (.pem) and private key (.key)](https://docs.temporal.io/cloud/saml#integrate-saml-with-your-temporal-cloud-account) registered to your Namespace and stored on your Worker's file system.
+
+Copy the Namespace Id and the gRPC endpoint from the Namespace detail Web page on [Temporal Cloud Namespaces](https://cloud.temporal.io/namespaces). Click on a Namespace name to open the Namespace details.
+
+### Run a Self-hosted Worker {#dockerfile}
+
+To deploy a self-hosted Worker to your Docker environment, you need to configure your Worker with the appropriate IP address and port.
+
+#### Confirm network
+
+The default `docker-compose.yml` file in the `temporalio/docker-compose` repo has the Temporal Server exposed on port 7233 on the `temporal-network`.
+
+```yml
+services:
+  # ...
+  temporal:
+    container_name: temporal
+    # ...
+    networks:
+      - temporal-network
+    ports:
+      - 7233:7233
+    # ...
+  # ...
+```
+
+If you are using a different or customized docker compose file, you can see the available networks by using the following command:
+
+```shell
+docker network ls
+```
+
+#### Confirm IP address
+
+Get the IP address of the Docker network that the containers are using.
+
+To do that, first inspect the network:
+
+```shell
+docker network inspect temporal-network
+```
+
+Look for the container named `temporal`.
+
+Example output:
+
+```json
+[
+  {
+    "Name": "temporal-network",
+    // ...
+    "Containers": {
+      // ...
+      "53cf62f0cc6cfd2a9627a2b5a4c9f48ffe5a858f0ef7b2eaa51bf7ea8fd0e86f": {
+        "Name": "temporal",
+        // ...
+        "IPv4Address": "172.18.0.4/16"
+        // ...
+      }
+      // ...
+    }
+    // ...
+  }
+]
+```
+
+Copy the IP address part.
+
+#### Customize Client options {#self-hosted-client-options}
+
+To use a Worker with a self-hosted Temporal Cluster, set the IP address, port, and Namespace in the Temporal Client options.
+
+Add the following code to `src/worker.ts` to define a worker process that communicates with a self-hosted Temporal cluster using a specific namespace and IP address:
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/worker-self-hosted.ts">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```typescript
+import { NativeConnection, Worker } from '@temporalio/worker';
+import * as activities from './activities';
+
+async function run() {
+  // Step 1: Establish a connection with Temporal server.
+  //
+  // Worker code uses `@temporalio/worker.NativeConnection`.
+  // (But in your application code it's `@temporalio/client.Connection`.)
+  const connection = await NativeConnection.connect({
+    address: '172.18.0.4:7233',
+    // TLS and gRPC metadata configuration goes here.
+  });
+  // Step 2: Register Workflows and Activities with the Worker and specify your
+  // namespace and Task Queue.
+  const worker = await Worker.create({
+    connection,
+    namespace: 'backgroundcheck_namespace',
+    taskQueue: 'hello-world',
+    // Workflows are registered using a path as they run in a separate JS context.
+    workflowsPath: require.resolve('./workflows'),
+    activities,
+  });
+
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+#### Build and deploy Docker image {#dockerfile}
+
+Add a Docker file to the root of your Background Check application project.
+
+Name the file `dockerfile`, with no extensions, and add the following configuration:
+
+```dockerfile
+FROM node:20 as build
+
+WORKDIR /app
+
+COPY package.json /app
+COPY package-lock.json /app
+
+RUN npm ci
+
+COPY tsconfig.json /app/
+COPY src /app/src
+
+RUN npm run build
+
+# Reinstall without dev dependencies now that the application is built
+RUN npm ci --omit dev
+
+FROM gcr.io/distroless/nodejs20-debian11
+
+COPY --from=build /app/node_modules /app/node_modules
+COPY --from=build /app/lib /app/lib
+
+CMD ["/app/lib/worker.js"]
+```
+
+Then build the Docker image using the following command:
+
+```shell
+docker build . -t backgroundcheck-worker-image:latest
+```
+
+Now run the Worker on the same network as the Temporal Cluster containers using the following command:
+
+```shell
+docker run --network temporal-network backgroundcheck-worker-image:latest
+```
+
+## Start Workflow using the Temporal CLI {#start-workflow}
+
+**How to start a Workflow using the Temporal CLI**
+
+You can use the Temporal CLI to start a Workflow whether you are using a local development server, Temporal Cloud, or are in a self-hosted environment.
+However, you need to provide additional options to the command when operating with the Temporal Cloud or self-hosted environments.
+
+### Local dev Server
+
+**How to start a Workflow with the Temporal CLI while using the local development server**
+
+Use the Temporal CLI `temporal workflow start` command to start your Workflow.
+
+```shell
+temporal workflow start \
+ --task-queue backgroundcheck-boilerplate-task-queue-local \
+ --type backgroundCheck \
+ --input '"555-55-5555"' \
+ --namespace backgroundcheck_namespace \
+ --workflow-id backgroundcheck_workflow
+```
+
+**Parameters breakdown**
+
+- `--task-queue`: The name of the Task Queue for all the Workflow Execution's Tasks.
+  Unless otherwise specified, Activity Executions use the Workflow Execution's Task Queue name by default.
+- `--type`: This is the Workflow Type name.
+  By default, this is the function name.
+- `--input`: This must be a valid JSON object that can be unmarshaled into the parameter(s) that the Workflow function accepts.
+  Read more about how the Temporal Platform handles your application data in the [Data conversion](/dataconversion) guide.
+- `--namespace`: This is the Namespace that you want to run your Temporal Application in.
+- `--workflow-id`: A [Workflow Id](/workflows#workflow-id) is a custom identifier provided by you.
+  We highly recommend supplying your own Workflow Id with your own naming convention.
+  A [Workflow Id Reuse Policy](/workflows#workflow-id-reuse-policy) enables fine controls over whether Workflow Ids can be reused in the Platform within the Retention Period.
+
+For more details, see the [temporal workflow start](/cli/workflow#start) command API reference.
+
+After you start the Workflow, you can see it in the Temporal Platform.
+Use the Temporal CLI or the Temporal Web UI to monitor the Workflow's progress.
+
+#### List Workflows
+
+Use the `temporal workflow list` command to list all of the Workflows in the Namespace:
+
+```shell
+temporal workflow list \
+ --namespace backgroundcheck_namespace
+```
+
+#### View in Web UI
+
+You can also use the Web UI to see the Workflows associated with the Namespace.
+
+The local development server starts the Web UI at [http://localhost:8233](http://localhost:8233).
+
+When you visit for the first time, the Web UI directs you to [http://localhost:8233/namespaces/default/workflows](http://localhost:8233/namespaces/default/workflows).
+
+Use the Namespace dropdown to select the project Namespace you created earlier.
+
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Web UI Namespace selection</p>
+  </div>
+  <div className="tdiiw" height="1402">
+    <img
+      className="img_ev3q"
+      src="/img/web-ui-namespace-selection.png"
+      alt="Web UI Namespace selection"
+    />
+  </div>
+</div>
+
+You should now be at [http://localhost:8233/namespaces/backgroundcheck_namespace/workflows](http://localhost:8233/namespaces/backgroundcheck_namespace/workflows).
+
+#### Confirm polling Worker
+
+If you ever want to confirm that a Worker is polling on the Task Queue that the Workflow started on, you can visit the Workflow Execution's details page and click on the Task Queue name.
+
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Click on the Task Queue name to view polling Workers</p>
+  </div>
+  <div className="tdiiw" height="782">
+    <img
+      className="img_ev3q"
+      src="/img/click-task-queue-name.png"
+      alt="Click on the Task Queue name to view polling Workers"
+    />
+  </div>
+</div>
+
+This will direct you to a page where you can view the Workers polling that Task Queue.
+If there are none, the application won't run.
+
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Confirm Workers polling Task Queue</p>
+  </div>
+  <div className="tdiiw" height="692">
+    <img
+      className="img_ev3q"
+      src="/img/confirm-workers-polling-task-queue.png"
+      alt="Confirm Workers polling Task Queue"
+    />
+  </div>
+</div>
+
+### Temporal Cloud
+
+**How to start a Workflow with the Temporal CLI when using Temporal Cloud**
+
+Run the `temporal workflow start` command, and make sure to specify the certificate and private key arguments.
+
+```shell
+temporal workflow start \
+ --task-queue backgroundcheck-boilerplate-task-queue-cloud \
+ --type backgroundCheck \
+ --input '"555-55-5555"' \
+ --namespace <namespace>.<account-id> \
+ --workflow-id backgroundcheck_workflow \
+ --address <namespace>.<account-id>.tmprl.cloud:<port> \
+ --tls-cert-path ca.pem \
+ --tls-key-path ca.key
+```
+
+Make sure that the certificate path, private key path, Namespace, and address argument values match your project.
+
+:::info Use environment variables
+
+Use [environment variables](/cli#environment-variables) as a way to quickly switch between a local dev server and Temporal Cloud, for example.
+
+You can customize the environment names to be anything you want.
+
+```shell
+# set Cloud env variables
+temporal env set cloud.namespace <namespace>.<account-id>
+temporal env set cloud.address <namespace>.<account-id>.tmprl.cloud:<port>
+temporal env set cloud.tls-cert-path ca.pem
+temporal env set cloud.tls-key-path ca.key
+# set local env variables
+temporal env set local.namespace <namespace>
+```
+
+In this way, you can provide a single `--env` command option when using the Temporal CLI rather than specifying each connection option in every command.
+
+```shell
+temporal workflow start \
+ # ...
+ --env cloud \
+ # ...
+```
+
+:::
+
+#### List Workflows
+
+Run the `temporal workflow list` command, and make sure to specify the certificate and private key arguments.
+
+```shell
+temporal workflow list \
+ --tls-cert-path ca.pem \
+ --tls-key-path ca.key \
+ --namespace <namespace>.<account-id> \
+ --address <namespace>.<account-id>.tmprl.cloud:<port>
+```
+
+#### View in Web UI
+
+Visit the Workflows page of your Cloud Namespace.
+The URL will look something like the following:
+
+```text
+https://cloud.temporal.io/namespaces/<namespace>.<account-id>/workflows
+```
+
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">View Workflows in the Cloud UI</p>
+  </div>
+  <div className="tdiiw" height="578">
+    <img
+      className="img_ev3q"
+      src="/img/cloud-view-workflows.png"
+      alt="View Workflows in the Cloud UI"
+    />
+  </div>
+</div>
+
+### Self-hosted
+
+**How to start a Workflow with the Temporal CLI when using a Self-hosted Cluster**
+
+Use your Temporal CLI alias to run the `temporal workflow start` command and start your Workflow.
+
+```shell
+temporal_docker workflow start \
+ --task-queue backgroundcheck-boilerplate-task-queue-self-hosted \
+ --type backgroundCheck \
+ --input '"555-55-5555"' \
+ --namespace backgroundcheck_namespace \
+ --workflow-id backgroundcheck_workflow
+```
+
+#### List Workflows
+
+Using your Temporal CLI alias, run the `temporal workflow list` command.
+This command lists the Workflows Executions within the Namespace:
+
+```shell
+temporal_docker workflow list \
+ --namespace backgroundcheck_namespace
+```
+
+#### View in the Web UI
+
+When you visit for the first time, the Web UI directs you to [http://localhost:8233/namespaces/default/workflows](http://localhost:8080/namespaces/default/workflows).
+
+Use the Namespace dropdown to select the project Namespace you created earlier.
+
+You should now be at [http://localhost:8080/namespaces/backgroundcheck_namespace/workflows](http://localhost:8080/namespaces/backgroundcheck_namespace/workflows).
+
+## Add a testing framework {#test-framework}
+
+**How to add a Testing Framework and Tests for the Workflow and Activity.**
+
+Each Temporal SDK has a testing suite that can be used in conjunction with a typical language specific testing framework.
+In the TypeScript SDK, you'll use the [Mocha](https://mochajs.org/) library to write your tests, and the `@temporalio/testing` package to access
+helpers to test Workflows and Activities.
+
+### Add Workflow function tests {#test-workflow-code}
+
+You can test Workflow code for the following conditions:
+
+- Workflow status. For example, did the Workflow reach a completed status?
+- Error when checking for a result of a Workflow. Is there an error in getting the result returned by the Workflow?
+- Workflow return value. If the Workflow did return something other than an error, is it what you expected it to be?
+
+Add the following code to `src/mocha/backgroundcheck.test.ts` to test that the Workflow executes successfully.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/mocha/backgroundcheck.test.ts">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```typescript
+import { TestWorkflowEnvironment } from '@temporalio/testing';
+import { Worker } from '@temporalio/worker';
+import assert from 'assert';
+import { before, describe, it } from 'mocha';
+import { backgroundCheck } from '../workflows';
+
+describe('Background check workflow', () => {
+  let testEnv: TestWorkflowEnvironment;
+
+  before(async () => {
+    testEnv = await TestWorkflowEnvironment.createLocal();
+  });
+
+  after(async () => {
+    await testEnv?.teardown();
+  });
+
+  it('successfully completes the Workflow', async () => {
+    const ssn = '111-22-3333';
+    const { client, nativeConnection } = testEnv;
+    const taskQueue = 'testing';
+
+    const worker = await Worker.create({
+      connection: nativeConnection,
+      taskQueue,
+      workflowsPath: require.resolve('../workflows'),
+      activities: {
+        ssnTrace: async () => 'pass',
+      },
+    });
+
+    const result = await worker.runUntil(
+      client.workflow.execute(backgroundCheck, {
+        args: [ssn],
+        workflowId: 'background-check-test',
+        taskQueue,
+      }),
+    );
+    assert.equal(result, 'pass');
+  });
+});
+```
+
+This test uses a local testing server that ships with the Temporal TypeScript SDK.
+This server becomes the environment that runs the Worker. This example uses the `before` and `after` hooks
+to set up and tear down the test environment.
+
+In the body of the test case, you create an instance of a Worker and register the Workflow and Activities.
+In this example, the Activity is mocked out and replaced with a function that returns a specific result..
+This ensures that the Workflow test doesn't invoke the actual Activity.
+
+Calling `client.workflow.execute(...)` executes the Workflow logic and any invoked Activities inside the test process.
+The first parameter of `env.ExecuteWorkflow(...)` contains a reference to the
+Workflow function. The second parameter contains an object that specifices the arguments for the Workflow, the Workflow ID,
+and a Task Queue name.
+
+### Add Activity function tests {#test-activity-code}
+
+You can test Activity code for the following conditions:
+
+- Error when invoking the Activity Execution.
+- Error when checking for the result of the Activity Execution.
+- Activity return values. Check to ensure the return value is expected.
+
+Add the following code to `src/mocha/ssntrace.test.ts` to test the `ssnTrace`
+Activity and ensure it returns the expected value:
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/mocha/ssntrace.test.ts">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```typescript
+import { MockActivityEnvironment } from '@temporalio/testing';
+import assert from 'assert';
+import { describe, it } from 'mocha';
+import * as activities from '../activities';
+
+describe('ssnTrace activity', async () => {
+  it('successfully passes the ssn trace', async () => {
+    const env = new MockActivityEnvironment();
+    const ssn = '111-22-3333';
+    const result = await env.run(activities.ssnTrace, ssn);
+    assert.equal(result, 'pass');
+  });
+});
+```
+
+## Conclusion {#conclusion}
+
+In this section, you created a project with TypeScript, created your first Workflow and Activity definitions, configured a Worker, and wrote tests.
+
+You can now do the following things:
+
+- Describe the tools available and recommended to develop Workflows.
+- Describe the code that actually forms a Temporal application.
+- Implement an appropriate testing framework.

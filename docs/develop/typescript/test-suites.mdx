@@ -65,15 +65,9 @@ The constructor accepts an optional partial Activity [`Info`](https://typescript
 Then use [`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) to run a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.Context).
 
 ```ts
-<<<<<<< HEAD:websites/docs.temporal.io/docs/dev-guide/tscript/testing.mdx
 import { activityInfo } from '@temporalio/activity';
 import { MockActivityEnvironment } from '@temporalio/testing';
 import assert from 'assert';
-=======
-import { Context } from "@temporalio/activity";
-import { MockActivityEnvironment } from "@temporalio/testing";
-import assert from "assert";
->>>>>>> main:docs/dev-guide/tscript/testing.mdx
 
 // A function that takes two numbers and returns a promise that resolves to the sum of the two numbers
 // and the current attempt.
@@ -98,9 +92,8 @@ When an Activity is run by a Worker, Heartbeats are throttled to avoid overloadi
 `MockActivityEnvironment`, however, does not throttle Heartbeats.
 
 ```ts
-import { Context } from "@temporalio/activity";
-import { MockActivityEnvironment } from "@temporalio/testing";
-import assert from "assert";
+import { heartbeat } from '@temporalio/activity';
+import assert from 'assert';
 
 async function activityFoo(): Promise<void> {
   heartbeat(6);
@@ -108,7 +101,7 @@ async function activityFoo(): Promise<void> {
 
 const env = new MockActivityEnvironment();
 
-env.on("heartbeat", (d: unknown) => {
+env.on('heartbeat', (d: unknown) => {
   assert(d === 6);
 });
 
@@ -122,9 +115,9 @@ If an Activity is supposed to react to a Cancellation, you can test whether it r
 [`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment) exposes a [`.cancel()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#cancel) method that cancels the Activity Context.
 
 ```ts
-import { CancelledFailure, Context } from "@temporalio/activity";
-import { MockActivityEnvironment } from "@temporalio/testing";
-import assert from "assert";
+import { CancelledFailure, heatbeat, sleep } from '@temporalio/activity';
+import { MockActivityEnvironment } from '@temporalio/testing';
+import assert from 'assert';
 
 async function activityFoo(): Promise<void> {
   heartbeat(6);
@@ -135,7 +128,7 @@ async function activityFoo(): Promise<void> {
 
 const env = new MockActivityEnvironment();
 
-env.on("heartbeat", (d: unknown) => {
+env.on('heartbeat', (d: unknown) => {
   assert(d === 6);
 });
 
@@ -272,7 +265,7 @@ test('sleep completes almost immediately', async () => {
     testEnv.client.workflow.execute(sleeperWorkflow, {
       workflowId: uuid(),
       taskQueue: 'test',
-    })
+    }),
   );
 });
 ```
@@ -369,7 +362,7 @@ export async function processOrderWorkflow({
   const { processOrder } = proxyActivities<ReturnType<typeof createActivities>>(
     {
       startToCloseTimeout: orderProcessingMS,
-    }
+    },
   );
 
   const processOrderPromise = processOrder().then(() => {
@@ -428,7 +421,7 @@ it('sends reminder email if processOrder does not complete in time', async () =>
           sendDelayedEmailTimeoutMS: ms('1 day'),
         },
       ],
-    })
+    }),
   );
   assert.ok(emailSent);
 });
@@ -467,12 +460,12 @@ export async function functionToTest(): Promise<number> {
 const worker = await Worker.create({
   connection: testEnv.nativeConnection,
   workflowsPath: require.resolve(
-    './workflows/file-with-workflow-function-to-test'
+    './workflows/file-with-workflow-function-to-test',
   ),
 });
 
 const result = await worker.runUntil(
-  testEnv.client.workflow.execute(functionToTest, workflowOptions)
+  testEnv.client.workflow.execute(functionToTest, workflowOptions),
 );
 
 assert.equal(result, 42);
@@ -529,12 +522,12 @@ const worker = await Worker.create({
     workflowModules: workflowInterceptorModules,
   },
   workflowsPath: require.resolve(
-    './workflows/file-with-workflow-function-to-test'
+    './workflows/file-with-workflow-function-to-test',
   ),
 });
 
 await worker.runUntil(
-  testEnv.client.workflow.execute(functionToTest, workflowOptions) // throws WorkflowFailedError
+  testEnv.client.workflow.execute(functionToTest, workflowOptions), // throws WorkflowFailedError
 );
 ```
 
@@ -568,7 +561,7 @@ await Worker.runReplayHistory(
   {
     workflowsPath: require.resolve('./your/workflows'),
   },
-  history
+  history,
 );
 ```
 
@@ -583,7 +576,7 @@ await Worker.runReplayHistory(
   {
     workflowsPath: require.resolve('./your/workflows'),
   },
-  history
+  history,
 );
 ```
 
@@ -602,7 +595,7 @@ const results = Worker.runReplayHistories(
   {
     workflowsPath: require.resolve('./your/workflows'),
   },
-  histories
+  histories,
 );
 for await (const result of results) {
   if (result.error) {

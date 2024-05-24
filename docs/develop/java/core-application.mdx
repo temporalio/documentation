@@ -324,7 +324,7 @@ And the total size of a gRPC message, which includes all the arguments, is limit
 Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
 This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/workers#workflow-task).
 
-{/*TODO link to gRPC limit section when available */}
+{/* TODO link to gRPC limit section when available */}
 
 Some SDKs require that you pass context objects, others do not.
 When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.
