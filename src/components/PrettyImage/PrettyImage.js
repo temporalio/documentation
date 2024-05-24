@@ -1,4 +1,4 @@
-// src/components/PrettyImage/PrettyImage.js
+// src/components/pretty-image/PrettyImage.js
 import React from "react";
 import styles from "./PrettyImage.module.css";
 
