@@ -231,7 +231,6 @@ Use the `connect()` method on the Client class to create and connect to a Tempor
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -276,7 +275,6 @@ The `client_cert` must be combined with `client_private_key` to authenticate the
 </div>
 
 ```python
-
 from temporalio.client import Client, TLSConfig
 # ...
 # ...
@@ -315,7 +313,6 @@ Use the `@workflow.run` to mark the entry point method to be invoked. This must 
 </div>
 
 ```python
-
 from temporalio import workflow
 # ...
 # ...
@@ -348,7 +345,6 @@ Technically this can be multiple parameters, but Temporal strongly encourages a 
 </div>
 
 ```python
-
 from dataclasses import dataclass
 # ...
 # ...
@@ -376,7 +372,6 @@ To return the results of a Workflow Execution, use either `start_workflow()` or 
 </div>
 
 ```python
-
 from temporalio import workflow
 # ...
 # ...
@@ -407,7 +402,6 @@ You can customize the Workflow name with a custom name in the decorator argument
 </div>
 
 ```python
-
 from temporalio import workflow
 # ...
 # ...
@@ -475,7 +469,6 @@ If you must use a blocking library, consider using a synchronous Activity instea
 </div>
 
 ```python
-
 from temporalio import activity
 # ...
 # ...
@@ -495,7 +488,7 @@ And the total size of a gRPC message, which includes all the arguments, is limit
 Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
 This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/workers#workflow-task).
 
-{/*TODO link to gRPC limit section when available */}
+{/* TODO link to gRPC limit section when available */}
 
 Some SDKs require that you pass context objects, others do not.
 When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.
@@ -513,7 +506,6 @@ Technically this can be multiple parameters, but Temporal strongly encourages a 
 </div>
 
 ```python
-
 from temporalio import activity
 from your_dataobject_dacx import YourParams
 
@@ -542,7 +534,6 @@ The following example defines an Activity that takes a string as input and retur
 </div>
 
 ```python
-
 # ...
 @activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
@@ -565,7 +556,6 @@ If the name parameter is not specified, the Activity name defaults to the functi
 </div>
 
 ```python
-
 # ...
 @activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
@@ -605,7 +595,6 @@ A single argument to the Activity is positional. Multiple arguments are not supp
 </div>
 
 ```python
-
 from temporalio import workflow
 # ...
 # ...
@@ -642,7 +631,6 @@ Available timeouts are:
 </div>
 
 ```python
-
 # ...
         activity_timeout_result = await workflow.execute_activity(
             your_activity,
@@ -673,7 +661,6 @@ You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 </div>
 
 ```python
-
 from temporalio import workflow
 # ...
 # ...
@@ -715,7 +702,6 @@ When a Worker is created, it accepts a list of Workflows in the workflows parame
 </div>
 
 ```python
-
 from temporalio.client import Client
 from temporalio.worker import Worker
 # ...
@@ -751,7 +737,6 @@ When a `Worker` is created, it accepts a list of Workflows in the `workflows` pa
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -789,7 +774,6 @@ To start a Workflow Execution in Python, use either the [`start_workflow()`](htt
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -823,7 +807,6 @@ To set a Task Queue in Python, specify the `task_queue` argument when executing 
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -859,7 +842,6 @@ The `id` argument should be a unique identifier for the Workflow Execution.
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -903,7 +885,6 @@ If the Workflow does not exist, this call fails.
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
