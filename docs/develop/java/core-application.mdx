@@ -1,0 +1,1130 @@
+---
+id: core-application
+title: Core application
+sidebar_label: Core application
+slug: /develop/java/core-application
+description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+toc_max_heading_level: 2
+keywords:
+  - Java
+  - api reference
+  - cli
+  - cli-feature
+  - code samples
+  - developer-guide
+  - developer-guide-doc-type
+  - guide-context
+  - how-to
+  - how-to-doc-type
+  - java
+  - options
+  - workers
+  - workflow
+tags:
+  - java
+  - api-reference
+  - cli
+  - cli-feature
+  - code-samples
+  - developer-guide
+  - developer-guide-doc-type
+  - guide-context
+  - how-to
+  - how-to-doc-type
+  - java
+  - options
+  - workers
+  - workflow
+---
+
+## How to develop a Workflow Definition in Java {#develop-workflows}
+
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definition).
+
+In the Temporal Java SDK programming model, a Workflow Definition comprises a Workflow interface annotated with `@WorkflowInterface` and a Workflow implementation that implements the Workflow interface.
+
+The Workflow interface is a Java interface and is annotated with `@WorkflowInterface`.
+Each Workflow interface must have only one method annotated with `@WorkflowMethod`.
+
+```java
+// Workflow interface
+@WorkflowInterface
+public interface YourWorkflow {
+
+    @WorkflowMethod
+    String yourWFMethod(Arguments args);
+}
+```
+
+However, when using dynamic Workflows, do not specify a `@WorkflowMethod`, and implement the `DynamicWorkflow` directly in the Workflow implementation code.
+
+The `@WorkflowMethod` identifies the method that is the starting point of the Workflow Execution.
+The Workflow Execution completes when this method completes.
+
+You can create [interface inheritance hierarchies](#interface-inheritance) to reuse components across other Workflow interfaces.
+The interface inheritance approach does not apply to `@WorkflowMethod` annotations.
+
+A Workflow implementation implements a Workflow interface.
+
+```java
+// Define the Workflow implementation which implements our getGreeting Workflow method.
+  public static class GreetingWorkflowImpl implements GreetingWorkflow {
+      ...
+    }
+  }
+```
+
+To call Activities in your Workflow, call the Activity implementation.
+
+Use `ExternalWorkflowStub` to start or send Signals from within a Workflow to other running Workflow Executions.
+
+You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition.
+
+### Workflow interface inheritance {#interface-inheritance}
+
+Workflow interfaces can form inheritance hierarchies.
+It may be useful for creating reusable components across multiple
+Workflow interfaces.
+For example imagine a UI or CLI button that allows a `retryNow` Signal on any Workflow. To implement this feature you can redesign an interface like the following:
+
+```java
+public interface Retryable {
+    @SignalMethod
+    void retryNow();
+}
+
+@WorkflowInterface
+public interface FileProcessingWorkflow extends Retryable {
+
+    @WorkflowMethod
+    String processFile(Arguments args);
+
+    @QueryMethod(name="history")
+    List<String> getHistory();
+
+    @QueryMethod
+    String getStatus();
+
+    @SignalMethod
+    void abandon();
+}
+```
+
+Then some other Workflow interface can extend just `Retryable`, for example:
+
+```java
+@WorkflowInterface
+public interface MediaProcessingWorkflow extends Retryable {
+
+    @WorkflowMethod
+    String processBlob(Arguments args);
+}
+```
+
+Now if we have two running Workflows, one that implements the `FileProcessingWorkflow` interface and another that implements the `MediaProcessingWorkflow` interface, we can Signal to both using their common interface and knowing their WorkflowIds, for example:
+
+```java
+Retryable r1 = client.newWorkflowStub(Retryable.class, firstWorkflowId);
+Retryable r2 = client.newWorkflowStub(Retryable.class, secondWorkflowId);
+r1.retryNow();
+r2.retryNow();
+```
+
+The same technique can be used to query Workflows using a base Workflow interface.
+
+Note that this approach does not apply to `@WorkflowMethod` annotations, meaning that when using a base interface, it should not include any `@WorkflowMethod` methods.
+To illustrate this, lets' say that we define the following **invalid** code:
+
+```java
+// INVALID CODE!
+public interface BaseWorkflow {
+    @WorkflowMethod
+    void retryNow();
+}
+
+@WorkflowInterface
+public interface Workflow1 extends BaseWorkflow {}
+
+@WorkflowInterface
+public interface Workflow2 extends BaseWorkflow {}
+```
+
+Any attempt to register both implementations with the Worker will fail.
+Let's say that we have:
+
+```java
+worker.registerWorkflowImplementationTypes(
+        Workflow1Impl.class, Workflow2Impl.class);
+```
+
+This registration will fail with:
+
+```text
+java.lang.IllegalStateException: BaseWorkflow workflow type is already registered with the worker
+```
+
+### How to define Workflow parameters {#workflow-parameters}
+
+Temporal Workflows may have any number of custom parameters.
+However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
+All Workflow Definition parameters must be serializable.
+
+A method annotated with `@WorkflowMethod` can have any number of parameters.
+
+We recommend passing a single parameter that contains all the input fields to allow for adding fields in a backward-compatible manner.
+
+Note that all inputs should be serializable by the default Jackson JSON Payload Converter.
+
+You can create a custom object and pass it to the Workflow method, as shown in the following example.
+
+```java
+//...
+@WorkflowInterface
+public interface YourWorkflow {
+    @WorkflowMethod
+    String yourWFMethod(CustomObj customobj);
+// ...
+}
+```
+
+### How to define Workflow return parameters {#workflow-return-values}
+
+Workflow return values must also be serializable.
+Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
+However, Temporal APIs that must be used to get the result of a Workflow Execution will only ever receive one of either the result or the error.
+
+Workflow method arguments and return values must be serializable and deserializable using the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.17.0/io/temporal/common/converter/DataConverter.html).
+
+The `execute` method for `DynamicWorkflow` can return type Object.
+Ensure that your Client can handle an Object type return or is able to convert the Object type response.
+
+Related references:
+
+- [Data Converter](/dataconversion)
+- Java DataConverter reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
+
+### How to customize your Workflow Type {#workflow-type}
+
+Workflows have a Type that are referred to as the Workflow name.
+
+The following examples demonstrate how to set a custom name for your Workflow Type.
+
+The Workflow Type defaults to the short name of the Workflow interface.
+In the following example, the Workflow Type defaults to `NotifyUserAccounts`.
+
+```java
+  @WorkflowInterface
+
+  public interface NotifyUserAccounts {
+    @WorkflowMethod
+    void notify(String[] accountIds);
+}
+```
+
+To overwrite this default naming and assign a custom Workflow Type, use the `@WorkflowMethod` annotation with the `name` parameter.
+In the following example, the Workflow Type is set to `your-workflow`.
+
+```java
+@WorkflowInterface
+
+  public interface NotifyUserAccounts {
+  @WorkflowMethod(name = "your-workflow")
+  void notify(String[] accountIds);
+  }
+```
+
+When you set the Workflow Type this way, the value of the `name` parameter does not have to start with an uppercase letter.
+
+### How develop Workflow logic {#workflow-logic-requirements}
+
+Workflow logic is constrained by [deterministic execution requirements](/workflows#deterministic-constraints).
+Therefore, each language is limited to the use of certain idiomatic techniques.
+However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
+
+When defining Workflows using the Temporal Java SDK, the Workflow code must be written to execute effectively once and to completion.
+
+The following constraints apply when writing Workflow Definitions:
+
+- Do not use mutable global variables in your Workflow implementations.
+  This will ensure that multiple Workflow instances are fully isolated.
+- Your Workflow code must be deterministic.
+  Do not call non-deterministic functions (such as non-seeded random or `UUID.randomUUID()`) directly from the Workflow code.
+  The Temporal SDK provides specific API for calling non-deterministic code in your Workflows.
+- Do not use programming language constructs that rely on system time.
+  For example, only use `Workflow.currentTimeMillis()` to get the current time inside a Workflow.
+- Do not use native Java `Thread` or any other multi-threaded classes like `ThreadPoolExecutor`.
+  Use `Async.function` or `Async.procedure`, provided by the Temporal SDK, to execute code asynchronously.
+- Do not use synchronization, locks, or other standard Java blocking concurrency-related classes besides those provided by the Workflow class.
+  There is no need for explicit synchronization because multi-threaded code inside a Workflow is executed one thread at a time and under a global lock.
+  - Call `Workflow.sleep` instead of `Thread.sleep`.
+  - Use `Promise` and `CompletablePromise` instead of `Future` and `CompletableFuture`.
+  - Use `WorkflowQueue` instead of `BlockingQueue`.
+- Use `Workflow.getVersion` when making any changes to the Workflow code.
+  Without this, any deployment of updated Workflow code might break already running Workflows.
+- Do not access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow Execution path.
+  Pass it as an argument to a Workflow function or use an Activity to load it.
+- Use `DynamicWorkflow` when you need a default Workflow that can handle all Workflow Types that are not registered with a Worker.
+  A single implementation can implement a Workflow Type which by definition is dynamically loaded from some external source.
+  All standard `WorkflowOptions` and determinism rules apply to Dynamic Workflow implementations.
+
+Java Workflow reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html)
+
+## How to develop a basic Activity {#develop-activities}
+
+One of the primary things that Workflows do is orchestrate the execution of Activities.
+An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
+An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Cluster.
+For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
+
+An [Activity Definition](/activities) is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
+
+An Activity interface is annotated with `@ActivityInterface` and an Activity implementation implements this Activity interface.
+To handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
+
+```java
+@ActivityInterface
+public interface GreetingActivities {
+    String composeGreeting(String greeting, String language);
+}
+```
+
+Each method defined in the Activity interface defines a separate Activity method.
+You can annotate each method in the Activity interface with the `@ActivityMethod` annotation, but this is completely optional.
+The following example uses the `@ActivityMethod` annotation for the method defined in the previous example.
+
+```java
+@ActivityInterface
+public interface GreetingActivities {
+    @ActivityMethod
+    String composeGreeting(String greeting, String language);
+}
+```
+
+An Activity implementation is a Java class that implements an Activity annotated interface.
+
+```java
+// Implementation for the GreetingActivities interface example from in the previous section
+ static class GreetingActivitiesImpl implements GreetingActivities {
+    @Override
+    public String composeGreeting(String greeting, String name) {
+      return greeting + " " + name + "!";
+    }
+  }
+```
+
+### How to develop Activity Parameters {#activity-parameters}
+
+There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
+However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
+
+A single argument is limited to a maximum size of 2 MB.
+And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
+
+Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
+This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/workers#workflow-task).
+
+{/* TODO link to gRPC limit section when available */}
+
+Some SDKs require that you pass context objects, others do not.
+When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.
+This is so that you can change what data is passed to the Activity without breaking a function or method signature.
+
+An Activity interface can have any number of parameters.
+All inputs should be serializable by the default Jackson JSON Payload Converter.
+
+When implementing Activities, be mindful of the amount of data that you transfer using the Activity invocation parameters or return values as these are recorded in the Workflow Execution Events History.
+Large Events Histories can adversely impact performance.
+
+You can create a custom object, and pass it to the Activity interface, as shown in the following example.
+
+```java
+@ActivityInterface
+public interface YourActivities {
+    String getCustomObject(CustomObj customobj);
+    void sendCustomObject(CustomObj customobj, String abc);
+}
+```
+
+The `execute` method in the dynamic Activity interface implementation takes in `EncodedValues` that are inputs to the Activity Execution, as shown in the following example.
+
+```java
+// Dynamic Activity implementation
+ public static class DynamicActivityImpl implements DynamicActivity {
+   @Override
+   public Object execute(EncodedValues args) {
+     String activityType = Activity.getExecutionContext().getInfo().getActivityType();
+     return activityType
+         + ": "
+         + args.get(0, String.class)
+         + " "
+         + args.get(1, String.class)
+         + " from: "
+         + args.get(2, String.class);
+   }
+ }
+```
+
+For more details, see [Dynamic Activity Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/DynamicActivity.html).
+
+### How to define Activity return values {#activity-return-values}
+
+All data returned from an Activity must be serializable.
+
+There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflows#event-history).
+
+Activity return values must be serializable and deserializable by the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.17.0/io/temporal/common/converter/DataConverter.html).
+
+The `execute` method for `DynamicActivity` can return type Object.
+Ensure that your Workflow or Client can handle an Object type return or is able to convert the Object type response.
+
+- [Data Converter](/dataconversion)
+- Java DataConverter reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
+
+### How to customize your Activity Type {#activity-type}
+
+Activities have a Type that are referred to as the Activity name.
+The following examples demonstrate how to set a custom name for your Activity Type.
+
+The Activity Type defaults to method name, with the first letter of the method name capitalized, and can be customized using `namePrefix()` or `{ActivityMethod.name()}` to ensure they are distinct.
+
+In the following example, the Activity Type defaults to `ComposeGreeting`.
+
+```java
+@ActivityInterface
+public interface GreetingActivities {
+    @ActivityMethod
+    String composeGreeting(String greeting, String language);
+}
+```
+
+To overwrite this default naming and assign a custom Activity Type, use the `@ActivityMethod` annotation with the `name` parameter.
+In the following example, the Activity Type is set to "greet".
+
+```java
+@ActivityInterface
+public interface GreetingActivities {
+    @ActivityMethod(name = "greet")
+    String composeGreeting(String greeting, String language);
+}
+```
+
+You can also define a prefix for all of your Activity Types using the `namePrefix` parameter with the `@ActivityInterface` annotation.
+The following example shows a `namePrefix` parameter applied to the `@ActivityInterface`, and two Activity methods, of which one is defined using the `@ActivityMethod` annotation.
+
+```java
+@ActivityInterface(namePrefix = "A_")
+Public interface GreetingActivities {
+    String sendGreeting(String input);
+
+  @ActivityMethod(name = "abc")
+  String composeGreeting(String greeting, String language);
+}
+```
+
+In this example, the Activity type for the first method is set to `A_SendGreeting`.
+The Activity type for the method annotated with `@ActivityMethod` is set to `A_abc`.
+
+## How to start an Activity Execution {#activity-execution}
+
+Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
+The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
+This results in the set of three [Activity Task](/workers#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+
+A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
+Activity implementation code should be _idempotent_.
+
+The values passed to Activities through invocation parameters or returned through a result value are recorded in the Execution history.
+The entire Execution history is transferred from the Temporal service to Workflow Workers when a Workflow state needs to recover.
+A large Execution history can thus adversely impact the performance of your Workflow.
+
+Therefore, be mindful of the amount of data you transfer through Activity invocation parameters or Return Values.
+Otherwise, no additional limitations exist on Activity implementations.
+
+Activities are remote procedure calls that must be invoked from within a Workflow using `ActivityStub`.
+Activities are not executable on their own. You cannot start an Activity Execution by itself.
+
+Note that before an Activity Execution is invoked:
+
+- Activity options (either [`setStartToCloseTimeout`](/activities#start-to-close-timeout) or [`ScheduleToCloseTimeout`](/activities#schedule-to-close-timeout) are required) must be set for the Activity.
+  For details, see [How to set Activity timeouts](/develop/java/failure-detection).
+- The Activity must be registered with a Worker.
+  See [Worker Program](#run-a-dev-worker)
+- Activity code must be thread-safe.
+
+Activities should only be instantiated using stubs from within a Workflow.
+An `ActivityStub` returns a client-side stub that implements an Activity interface.
+You can invoke Activities using `Workflow.newActivityStub`(type-safe) or `Workflow.newUntypedActivityStub` (untyped).
+
+Calling a method on the Activity interface schedules the Activity invocation with the Temporal service, and generates an [`ActivityTaskScheduled` Event](/references/events#activitytaskscheduled).
+
+Activities can be invoked synchronously or asynchronously.
+
+**Invoking Activities Synchronously**
+
+In the following example, we use the type-safe `Workflow.newActivityStub` within the "FileProcessingWorkflow" Workflow implementation to create a client-side stub of the `FileProcessingActivities` class. We also define `ActivityOptions` and set `setStartToCloseTimeout` option to one hour.
+
+```java
+public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
+
+    private final FileProcessingActivities activities;
+
+    public FileProcessingWorkflowImpl() {
+        this.activities = Workflow.newActivityStub(
+                FileProcessingActivities.class,
+                ActivityOptions.newBuilder()
+                        .setStartToCloseTimeout(Duration.ofHours(1))
+                        .build());
+    }
+
+    @Override
+    public void processFile(Arguments args) {
+        String localName = null;
+        String processedName = null;
+        try {
+            localName = activities.download(args.getSourceBucketName(), args.getSourceFilename());
+            processedName = activities.processFile(localName);
+            activities.upload(args.getTargetBucketName(), args.getTargetFilename(), processedName);
+        } finally {
+            if (localName != null) {
+                activities.deleteLocalFile(localName);
+            }
+            if (processedName != null) {
+                activities.deleteLocalFile(processedName);
+            }
+        }
+    }
+    // ...
+}
+```
+
+A Workflow can have multiple Activity stubs. Each Activity stub can have its own `ActivityOptions` defined.
+The following example shows a Workflow implementation with two typed Activity stubs.
+
+```java
+public FileProcessingWorkflowImpl() {
+    ActivityOptions options1 = ActivityOptions.newBuilder()
+             .setTaskQueue("taskQueue1")
+             .setStartToCloseTimeout(Duration.ofMinutes(10))
+             .build();
+    this.store1 = Workflow.newActivityStub(FileProcessingActivities.class, options1);
+
+    ActivityOptions options2 = ActivityOptions.newBuilder()
+             .setTaskQueue("taskQueue2")
+             .setStartToCloseTimeout(Duration.ofMinutes(5))
+             .build();
+    this.store2 = Workflow.newActivityStub(FileProcessingActivities.class, options2);
+}
+```
+
+To invoke Activities inside Workflows without referencing the interface it implements, use an untyped Activity stub `Workflow.newUntypedActivityStub`.
+This is useful when the Activity type is not known at compile time, or to invoke Activities implemented in different programming languages.
+
+```java
+   // Workflow code
+    ActivityOptions activityOptions =
+        ActivityOptions.newBuilder()
+        .setStartToCloseTimeout(Duration.ofSeconds(3))
+        .setTaskQueue("simple-queue-node")
+        .build();
+
+    ActivityStub activity = Workflow.newUntypedActivityStub(activityOptions);
+    activity.execute("ComposeGreeting", String.class, "Hello World" , "Spanish");
+```
+
+**Invoking Activities Asynchronously**
+
+Sometimes Workflows need to perform certain operations in parallel.
+The Temporal Java SDK provides the `Async` class which includes static methods used to invoke any Activity asynchronously.
+The calls return a result of type `Promise` which is similar to the Java `Future` and `CompletionStage`.
+When invoking Activities, use `Async.function` for Activities that return a result, and `Async.procedure` for Activities that return void.
+
+In the following asynchronous Activity invocation, the method reference is passed to `Async.function` followed by Activity arguments.
+
+```java
+Promise<String> localNamePromise = Async.function(activities::download, sourceBucket, sourceFile);
+```
+
+The following example shows how to call two Activity methods, "download" and "upload", in parallel on multiple files.
+
+```java
+  public void processFile(Arguments args) {
+    List<Promise<String>> localNamePromises = new ArrayList<>();
+    List<String> processedNames = null;
+    try {
+      // Download all files in parallel.
+      for (String sourceFilename : args.getSourceFilenames()) {
+        Promise<String> localName =
+            Async.function(activities::download, args.getSourceBucketName(), sourceFilename);
+        localNamePromises.add(localName);
+      }
+      List<String> localNames = new ArrayList<>();
+      for (Promise<String> localName : localNamePromises) {
+        localNames.add(localName.get());
+      }
+      processedNames = activities.processFiles(localNames);
+
+      // Upload all results in parallel.
+      List<Promise<Void>> uploadedList = new ArrayList<>();
+      for (String processedName : processedNames) {
+        Promise<Void> uploaded =
+            Async.procedure(
+                activities::upload,
+                args.getTargetBucketName(),
+                args.getTargetFilename(),
+                processedName);
+        uploadedList.add(uploaded);
+      }
+      // Wait for all uploads to complete.
+      Promise.allOf(uploadedList).get();
+    } finally {
+      for (Promise<String> localNamePromise : localNamePromises) {
+        // Skip files that haven't completed downloading.
+        if (localNamePromise.isCompleted()) {
+          activities.deleteLocalFile(localNamePromise.get());
+        }
+      }
+      if (processedNames != null) {
+        for (String processedName : processedNames) {
+          activities.deleteLocalFile(processedName);
+        }
+      }
+    }
+  }
+```
+
+**Activity Execution Context**
+
+`ActivityExecutionContext` is a context object passed to each Activity implementation by default.
+You can access it in your Activity implementations via `Activity.getExecutionContext()`.
+
+It provides getters to access information about the Workflow that invoked the Activity.
+Note that the Activity context information is stored in a thread-local variable.
+Therefore, calls to `getExecutionContext()` succeed only within the thread that invoked the Activity function.
+
+Following is an example of using the `ActivityExecutionContext`:
+
+```java
+public class FileProcessingActivitiesImpl implements FileProcessingActivities {
+
+  @Override
+  public String download(String bucketName, String remoteName, String localName) {
+
+    ActivityExecutionContext ctx = Activity.getExecutionContext();
+    ActivityInfo info = ctx.getInfo();
+
+    log.info("namespace=" +  info.getActivityNamespace());
+    log.info("workflowId=" + info.getWorkflowId());
+    log.info("runId=" + info.getRunId());
+    log.info("activityId=" + info.getActivityId());
+    log.info("activityTimeout=" + info.getStartToCloseTimeout();
+
+    return downloadFileFromS3(bucketName, remoteName, localDirectory + localName);
+  }
+    ...
+}
+```
+
+For details on getting the results of an Activity Execution, see [Activity Execution Result](#activity-execution-result).
+
+### How to set the required Activity Timeouts {#required-timeout}
+
+Activity Execution semantics rely on several parameters.
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/activities#start-to-close-timeout) or a [Start-To-Close Timeout](/activities#start-to-close-timeout).
+These values are set in the Activity Options.
+
+Set your Activity Timeout from the [`ActivityOptions.Builder`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) class.
+
+Available timeouts are:
+
+- ScheduleToCloseTimeout()
+- ScheduleToStartTimeout()
+- StartToCloseTimeout()
+
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+
+The following uses `ActivityStub`.
+
+```java
+GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+                ActivityOptions.newBuilder()
+                        .setScheduleToCloseTimeout(Duration.ofSeconds(5))
+                        // .setStartToCloseTimeout(Duration.ofSeconds(2)
+                        // .setScheduletoCloseTimeout(Duration.ofSeconds(20))
+                        .build());
+```
+
+The following uses `WorkflowImplementationOptions`.
+
+```java
+WorkflowImplementationOptions options =
+            WorkflowImplementationOptions.newBuilder()
+                    .setActivityOptions(
+                            ImmutableMap.of(
+                                    "GetCustomerGreeting",
+                                    // Set Activity Execution timeout
+                                    ActivityOptions.newBuilder()
+                                        .setScheduleToCloseTimeout(Duration.ofSeconds(5))
+                                        // .setStartToCloseTimeout(Duration.ofSeconds(2))
+                                        // .setScheduleToStartTimeout(Duration.ofSeconds(5))
+                                        .build()))
+                    .build();
+```
+
+:::note
+
+If you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+:::
+
+### Java ActivityOptions reference {#activity-options-reference}
+
+Use [`ActivityOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) to configure how to invoke an Activity Execution.
+
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+The following table lists all `ActivityOptions` that can be configured for an Activity invocation.
+
+| Option                                                 | Required                                           | Type                     |
+| ------------------------------------------------------ | -------------------------------------------------- | ------------------------ |
+| [`setScheduleToCloseTimeout`](#scheduletoclosetimeout) | Yes (if `StartToCloseTimeout` is not specified)    | Duration                 |
+| [`setScheduleToStartTimeout`](#scheduletostarttimeout) | No                                                 | Duration                 |
+| [`setStartToCloseTimeout`](#starttoclosetimeout)       | Yes (if `ScheduleToCloseTimeout` is not specified) | Duration                 |
+| [`setHeartbeatTimeout`](#heartbeattimeout)             | No                                                 | Duration                 |
+| [`setTaskQueue`](#taskqueue)                           | No                                                 | String                   |
+| [`setRetryOptions`](#retryoptions)                     | No                                                 | RetryOptions             |
+| [`setCancellationType`](#setcancellationtype)          | No                                                 | ActivityCancellationType |
+
+#### ScheduleToCloseTimeout
+
+To set a [Schedule-To-Close Timeout](/activities#schedule-to-close-timeout), use [`ActivityOptions.newBuilder.setScheduleToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+
+This or `StartToCloseTimeout` must be set.
+
+- Type: `Duration`
+- Default: Unlimited.
+  Note that if `WorkflowRunTimeout` and/or `WorkflowExecutionTimeout` are defined in the Workflow, all Activity retries will stop when either or both of these timeouts are reached.
+
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+- With `ActivityStub`
+
+  ```java
+  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+                  ActivityOptions.newBuilder()
+                          .setScheduleToCloseTimeout(Duration.ofSeconds(5))
+                          .build());
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+              WorkflowImplementationOptions.newBuilder()
+                      .setActivityOptions(
+                              ImmutableMap.of(
+                                      "GetCustomerGreeting",
+                                      ActivityOptions.newBuilder()
+                                          .setScheduleToCloseTimeout(Duration.ofSeconds(5))
+                                          .build()))
+                      .build();
+  ```
+
+#### ScheduleToStartTimeout
+
+To set a [Schedule-To-Start Timeout](/activities#schedule-to-start-timeout), use [`ActivityOptions.newBuilder.setScheduleToStartTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+
+- Type: `Duration`
+- Default: Unlimited. This timeout is non-retryable.
+
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+- With `ActivityStub`
+
+  ```java
+  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+                  ActivityOptions.newBuilder()
+                          .setScheduleToStartTimeout(Duration.ofSeconds(5))
+                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                          // required when setting Activity options.
+                          .setScheduletoCloseTimeout(Duration.ofSeconds(20))
+                          .build());
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+             WorkflowImplementationOptions.newBuilder()
+                      .setActivityOptions(
+                              ImmutableMap.of(
+                                "GetCustomerGreeting",
+                                ActivityOptions.newBuilder()
+                                    .setScheduleToStartTimeout(Duration.ofSeconds(5))
+                                    .build()))
+                      .build();
+  ```
+
+#### StartToCloseTimeout
+
+To set a [Start-To-Close Timeout](/activities#start-to-close-timeout), use [`ActivityOptions.newBuilder.setStartToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+
+This or `ScheduleToClose` must be set.
+
+- Type: `Duration`
+- Default: Defaults to [`ScheduleToCloseTimeout`](#scheduletoclosetimeout) value
+
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+- With `ActivityStub`
+
+  ```java
+  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+              ActivityOptions.newBuilder()
+                      .setStartToCloseTimeout(Duration.ofSeconds(2))
+                      .build());
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+              WorkflowImplementationOptions.newBuilder()
+                      .setActivityOptions(
+                              ImmutableMap.of(
+                                "EmailCustomerGreeting",
+                                      ActivityOptions.newBuilder()
+                                            // Set Activity Execution timeout (single run)
+                                            .setStartToCloseTimeout(Duration.ofSeconds(2))
+                                            .build()))
+                      .build();
+  ```
+
+#### HeartbeatTimeout
+
+To set a [Heartbeat Timeout](/activities#heartbeat-timeout), use [`ActivityOptions.newBuilder.setHeartbeatTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+
+- Type: `Duration`
+- Default: None
+
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+- With `ActivityStub`
+
+  ```java
+  private final GreetingActivities activities =
+      Workflow.newActivityStub(
+          GreetingActivities.class,
+          ActivityOptions.newBuilder()
+              // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+              // required when setting Activity options.
+              .setStartToCloseTimeout(Duration.ofSeconds(5))
+              .setHeartbeatTimeout(Duration.ofSeconds(2))
+              .build());
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+              WorkflowImplementationOptions.newBuilder()
+                      .setActivityOptions(
+                              ImmutableMap.of(
+                                "EmailCustomerGreeting",
+                                      ActivityOptions.newBuilder()
+                                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                                          // required when setting Activity options.
+                                            .setStartToCloseTimeout(Duration.ofSeconds(5))
+                                            .setHeartbeatTimeout(Duration.ofSeconds(2))
+                                            .build()))
+                      .build();
+  ```
+
+#### TaskQueue
+
+- Type: `String`
+- Default: Defaults to the Task Queue that the Workflow was started with.
+
+- With `ActivityStub`
+
+  ```java
+  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+                  ActivityOptions.newBuilder()
+                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are required when
+                          // setting Activity options.
+                          .setStartToCloseTimeout(Duration.ofSeconds(5))
+                          .setTaskQueue("yourTaskQueue")
+                          .build());
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+              WorkflowImplementationOptions.newBuilder()
+                      .setActivityOptions(
+                              ImmutableMap.of(
+                                "EmailCustomerGreeting",
+                                      ActivityOptions.newBuilder()
+                                            // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                                            // required when setting Activity options.
+                                            .setStartToCloseTimeout(Duration.ofSeconds(5))
+                                            .setTaskQueue("yourTaskQueue")
+                                            .build()))
+                      .build();
+  ```
+
+See [Task Queue](/workers#task-queue)
+
+#### RetryOptions
+
+To set a Retry Policy, known as the [Retry Options](/retry-policies) in Java, use [`ActivityOptions.newBuilder.setRetryOptions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+
+- Type: `RetryOptions`
+- Default: Server-defined Activity Retry policy.
+
+- With `ActivityStub`
+
+  ```java
+  private final ActivityOptions options =
+      ActivityOptions.newBuilder()
+          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+          // required when setting Activity options.
+          .setStartToCloseTimeout(Duration.ofSeconds(5))
+          .setRetryOptions(
+              RetryOptions.newBuilder()
+                  .setInitialInterval(Duration.ofSeconds(1))
+                  .setMaximumInterval(Duration.ofSeconds(10))
+                  .build())
+          .build();
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+          WorkflowImplementationOptions.newBuilder()
+                 .setActivityOptions(
+                      ImmutableMap.of(
+                          "EmailCustomerGreeting",
+                          ActivityOptions.newBuilder()
+                                // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                                // required when setting Activity options.
+                                .setStartToCloseTimeout(Duration.ofSeconds(5))
+                                .setRetryOptions(
+                                      RetryOptions.newBuilder()
+                                          .setDoNotRetry(NullPointerException.class.getName())
+                                          .build())
+                                .build()))
+                .build();
+  ```
+
+#### setCancellationType
+
+- Type: `ActivityCancellationType`
+- Default: `ActivityCancellationType.TRY_CANCEL`
+
+- With `ActivityStub`
+
+  ```java
+  private final GreetingActivities activities =
+    Workflow.newActivityStub(
+        GreetingActivities.class,
+        ActivityOptions.newBuilder()
+            .setCancellationType(ActivityCancellationType.WAIT_CANCELLATION_COMPLETED)
+            .build());
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+          WorkflowImplementationOptions.newBuilder()
+                 .setActivityOptions(
+                      ImmutableMap.of(
+                          "EmailCustomerGreeting",
+                          ActivityOptions.newBuilder()
+                                .setCancellationType(ActivityCancellationType.WAIT_CANCELLATION_COMPLETED)
+                                .build()))
+                .build();
+  ```
+
+### How to get the result of an Activity Execution {#activity-execution-result}
+
+The call to spawn an [Activity Execution](/activities#activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
+Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
+
+To get the results of an asynchronously invoked Activity method, use the `Promise` `get` method to block until the Activity method result is available.
+
+Sometimes an Activity Execution lifecycle goes beyond a synchronous method invocation.
+For example, a request can be put in a queue and later a reply comes and is picked up by a different Worker process.
+The whole request-reply interaction can be modeled as a single Activity.
+
+To indicate that an Activity should not be completed upon its method return, call `ActivityExecutionContext.doNotCompleteOnReturn()` from the original Activity thread.
+
+Then later, when replies come, complete the Activity using the `ActivityCompletionClient`.
+To correlate Activity invocation with completion, use either a `TaskToken` or Workflow and Activity Ids.
+
+Following is an example of using `ActivityExecutionContext.doNotCompleteOnReturn()`:
+
+```java
+public class FileProcessingActivitiesImpl implements FileProcessingActivities {
+
+  public String download(String bucketName, String remoteName, String localName) {
+
+    ActivityExecutionContext ctx = Activity.getExecutionContext();
+
+    // Used to correlate reply
+    byte[] taskToken = ctx.getInfo().getTaskToken();
+
+    asyncDownloadFileFromS3(taskToken, bucketName, remoteName, localDirectory + localName);
+    ctx.doNotCompleteOnReturn();
+
+    // Return value is ignored when doNotCompleteOnReturn was called.
+    return "ignored";
+  }
+  ...
+}
+```
+
+When the download is complete, the download service potentially can complete the Activity, or fail it from a different process, for example:
+
+```java
+  public <R> void completeActivity(byte[] taskToken, R result) {
+    completionClient.complete(taskToken, result);
+  }
+
+  public void failActivity(byte[] taskToken, Exception failure) {
+    completionClient.completeExceptionally(taskToken, failure);
+  }
+```
+
+## How to develop a Worker Program in Java {#run-a-dev-worker}
+
+The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
+
+- Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
+- Each Worker Entity must also associate itself with exactly one [Task Queue](/workers#task-queue).
+- Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
+
+A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
+
+Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
+For more information, see the [Worker tuning guide](/dev-guide/worker-performance).
+
+A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
+
+Use the `newWorker` method on an instance of a [`WorkerFactory`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactory.html) to create a new Worker in Java.
+
+A single Worker Entity can contain many Worker Objects.
+Call the `start()` method on the instance of the `WorkerFactory` to start all the Workers created in this process.
+
+```java
+// ...
+import io.temporal.client.WorkflowClient;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.worker.Worker;
+import io.temporal.worker.WorkerFactory;
+
+public class YourWorker {
+
+  public static void main(String[] args) {
+
+    WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+    WorkflowClient client = WorkflowClient.newInstance(service);
+    WorkerFactory factory = WorkerFactory.newInstance(client);
+    Worker yourWorker = factory.newWorker("your_task_queue");
+
+    // Register Workflow
+    // and/or register Activities
+
+    factory.start();
+  }
+}
+```
+
+After creating the Worker entity, register all Workflow Types and all Activity Types that the Worker can execute.
+A Worker can be registered with just Workflows, just Activities, or both.
+
+**Operation guides:**
+
+- [How to tune Workers](/dev-guide/worker-performance)
+
+### How to register types {#register-types}
+
+All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
+
+If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task.
+However, the failure of the Task does not cause the associated Workflow Execution to fail.
+
+Use `worker.registerWorkflowImplementationTypes` to register Workflow Type and `worker.registerActivitiesImplementations` to register Activity implementation with Workers.
+
+For Workflows, the Workflow Type is registered with a Worker.
+A Workflow Type can be registered only once per Worker entity.
+If you define multiple Workflow implementations of the same type, you get an exception at the time of registration.
+
+For Activities, Activity implementation instances are registered with a Worker because they are stateless and thread-safe.
+You can pass any number of dependencies in the Activity implementation constructor, such as the database connections, services, etc.
+
+The following example shows how to register a Workflow and an Activity with a Worker.
+
+```java
+Worker worker = workerFactory.newWorker("your_task_queue");
+...
+// Register Workflow
+worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
+// Register Activity
+worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
+```
+
+When you register a single instance of an Activity, you can have multiple instances of Workflow Executions calling the same Activity.
+Activity code must be thread-safe because the same instance of the Activity code is run for every Workflow Execution that calls it.
+
+For `DynamicWorkflow`, only one Workflow implementation that extends `DynamicWorkflow` can be registered with a Worker.
+The following example shows how to register the `DynamicWorkflow` and `DynamicActivity` implementation with a Worker.
+
+```java
+  public static void main(String[] arg) {
+
+    WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
+    WorkflowClient client = WorkflowClient.newInstance(service);
+    WorkerFactory factory = WorkerFactory.newInstance(client);
+    Worker worker = factory.newWorker(TASK_QUEUE);
+
+    /* Register the Dynamic Workflow implementation with the Worker. Workflow implementations
+    ** must be known to the Worker at runtime to dispatch Workflow Tasks.
+    */
+    worker.registerWorkflowImplementationTypes(DynamicGreetingWorkflowImpl.class);
+
+    // Start all the Workers that are in this process.
+    factory.start();
+
+    /* Create the Workflow stub. Note that the Workflow Type is not explicitly registered with the Worker. */
+    WorkflowOptions workflowOptions =
+        WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
+    WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
+    /**
+     * Register Dynamic Activity implementation with the Worker. Since Activities are stateless
+     * and thread-safe, we need to register a shared instance.
+    */
+    worker.registerActivitiesImplementations(new DynamicGreetingActivityImpl());
+
+    /* Start Workflow Execution and immmediately send Signal. Pass in the Workflow args and Signal args. */
+    workflow.signalWithStart("greetingSignal", new Object[] {"John"}, new Object[] {"Hello"});
+
+    // Wait for the Workflow to finish getting the results.
+    String result = workflow.getResult(String.class);
+
+    System.out.println(result);
+
+    System.exit(0);
+  }
+}
+```
+
+You can register multiple type-specific Workflow implementations alongside a single `DynamicWorkflow` implementation.
+You can register only one Activity instance that implements `DynamicActivity` with a Worker.

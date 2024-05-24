@@ -1,0 +1,48 @@
+---
+id: continue-as-new
+title: Continue-As-New
+sidebar_label: Continue-As-New
+slug: /develop/java/continue-as-new
+toc_max_heading_level: 2
+keywords:
+  - continue-as-new
+tags:
+  - continue-as-new
+---
+
+## How to Continue-As-New {#continue-as-new}
+
+[Continue-As-New](/workflows#continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
+The Workflow Execution spawned from the use of Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
+
+Temporal SDK allows you to use [Continue-As-New](/workflows#continue-as-new) in various ways.
+
+To continue execution of the same Workflow that is currently running, use:
+
+```java
+Workflow.continueAsNew(input1, ...);
+```
+
+To continue execution of a currently running Workflow as a completely different Workflow Type, use `Workflow.newContinueAsNewStub()`.
+For example, in a Workflow class called `YourWorkflow`, we can create a Workflow stub with a different type, and call its Workflow method to continue execution as that type:
+
+```java
+MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.class);
+coninueAsNew.greet(input);
+```
+
+To provide `ContinueAsNewOptions` options in `Workflow.newContinueAsNewStub()` use:
+
+```java
+ContinueAsNewOptions options = ContinueAsNewOptions.newBuilder()
+        .setTaskQueue("newTaskQueueName")
+        .build();
+
+MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.class, options);
+// ...
+continueAsNew.greet(input);
+```
+
+Providing these options allows you to continue Workflow Execution as a new Workflow run, with a different Workflow Type, and on a different Task Queue.
+
+Java Workflow reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html)

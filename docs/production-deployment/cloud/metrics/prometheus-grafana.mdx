@@ -52,11 +52,11 @@ If you're following through with the examples provided here, ensure that you hav
 - Root CA certificates and end-entity certificates. See [Certificate requirements](/cloud/certificates#certificate-requirements) for details.
 - Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See Connect to a Temporal Service for details.
 
-  - [Go](/develop/go/temporal-client#connect-to-temporal-cloud)
-  - [Java](/dev-guide/java/project-setup#cloud-worker)
-  - [PHP](/dev-guide/php/foundations#connect-to-a-dev-cluster)
-  - [Python](/develop/python/temporal-clients#connect-to-temporal-cloud)
-  - [TypeScript](/dev-guide/typescript/foundations#connect-to-temporal-cloud)
+  - [Go](/develop/go/temporal-clients#connect-to-temporal-cloud)
+  - [Java](/develop/java/temporal-clients#connect-to-temporal-cloud)
+  - [PHP](/develop/php/core-application#connect-to-a-dev-cluster)
+  - [Python](/develop/python/core-application#connect-to-temporal-cloud)
+  - [TypeScript](/develop/typescript/core-application#connect-to-temporal-cloud)
 
 - Prometheus and Grafana installed.
 
@@ -72,7 +72,7 @@ The following steps describe how to set up Observability on Temporal Cloud to ge
 
 1. Log in to Temporal Cloud UI as a Global Admin.
 2. Go to **Settings** and select **Integrations**.
-3. Select **Configure Observability** (if you’re setting it up for the first time) or click **Edit** in the Observability section (if it was already configured before).
+3. Select **Configure Observability** (if you're setting it up for the first time) or click **Edit** in the Observability section (if it was already configured before).
 4. Add your root CA certificate (.pem) and save it.
    Note that if an observability endpoint is already set up, you can append your root CA certificate here to use the generated observability endpoint with your instance of Grafana.
 5. To test your endpoint, run the following command on your host:
@@ -91,16 +91,16 @@ SDK metrics are emitted by SDK Clients used to start your Workers and to start, 
 You must configure a Prometheus scrape endpoint for Prometheus to collect and aggregate your SDK metrics.
 Each language development guide has details on how to set this up.
 
-- [Go SDK](/dev-guide/go/observability#metrics)
-- [Java SDK](/dev-guide/java/observability#metrics)
-- [TypeScript SDK](/dev-guide/typescript/observability#metrics)
+- [Go SDK](/develop/go/observability#metrics)
+- [Java SDK](/develop/java/observability#metrics)
+- [TypeScript SDK](/develop/typescript/observability#metrics)
 - [Python](/develop/python/observability#metrics)
 
 The following example uses the Java SDK to set the Prometheus registry and Micrometer stats reporter, set the scope, and expose an endpoint from which Prometheus can scrape the SDK metrics.
 
 ```java
 //You need the following packages to set up metrics in Java.
-//See the Developer’s guide for packages required for other SDKs.
+//See the Developer's guide for packages required for other SDKs.
 
 //…
 import com.sun.net.httpserver.HttpServer;
@@ -272,12 +272,12 @@ To add the SDK metrics Prometheus endpoint that we configured in the [SDK metric
 6. Click **Save and test** to verify that the data source is working.
 
 If you see issues in setting this data source, check whether the endpoints set in your SDKs are showing metrics.
-If you don’t see your SDK metrics at the scrape endpoints defined, check whether your Workers and Workflow Executions are running.
+If you don't see your SDK metrics at the scrape endpoints defined, check whether your Workers and Workflow Executions are running.
 If you see metrics on the scrape endpoints, but Prometheus shows your targets are down, then there is an issue with connecting to the targets set in your SDKs.
 Verify your Prometheus configuration and restart Prometheus.
 
-If you’re running Grafana as a container, you can set your SDK metrics Prometheus data source in your Grafana configuration.
-See the example Grafana configuration described in the [Prometheus and Grafana setup for open-source Temporal Service](/self-hosted-guide/monitoring#grafana) article.
+If you're running Grafana as a container, you can set your SDK metrics Prometheus data source in your Grafana configuration.
+See the example Grafana configuration described in the [Prometheus and Grafana setup for open-source Temporal Cluster](/self-hosted-guide/monitoring#grafana) article.
 
 ### Grafana dashboards setup
 

@@ -174,8 +174,8 @@ Enabling this option in the Temporal Cloud UI adds an authorization header to ea
 
 In your Codec Server implementation, verify the signature on this access token (in your authorization header) against [our JWKS endpoint](https://login.tmprl.cloud/.well-known/jwks.json).
 
-{/* Commenting this for now. */}
-{/* If you want to unpack the claims in your token to add additional checks on whether the user has valid access to the Namespace and payloads they are trying to access, you can implement it using Auth0 SDKs, middleware, or one of the third-party libraries at JWT.io. */}
+{/* Commenting this for now. _/}
+{/_ If you want to unpack the claims in your token to add additional checks on whether the user has valid access to the Namespace and payloads they are trying to access, you can implement it using Auth0 SDKs, middleware, or one of the third-party libraries at JWT.io. */}
 
 The token provided from Temporal Cloud UI contains the email identifier of the person requesting access to the payloads.
 Based on the permissions you have provided to the user in your access control systems, set conditions in your Codec Server whether to return decoded payloads or just return the original encoded payloads.

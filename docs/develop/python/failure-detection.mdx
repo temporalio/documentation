@@ -59,7 +59,6 @@ Available timeouts are:
 </div>
 
 ```python
-
 # ...
     result = await client.execute_workflow(
         YourWorkflow.run,
@@ -93,7 +92,6 @@ Set the Retry Policy to either the [`start_workflow()`](https://python.temporal.
 </div>
 
 ```python
-
 # ...
     handle = await client.execute_workflow(
         YourWorkflow.run,
@@ -134,7 +132,6 @@ Available timeouts are:
 </div>
 
 ```python
-
 # ...
         activity_timeout_result = await workflow.execute_activity(
             your_activity,
@@ -164,7 +161,6 @@ To create an Activity Retry Policy in Python, set the [RetryPolicy](https://pyth
 </div>
 
 ```python
-
 from temporalio.common import RetryPolicy
 # ...
         activity_result = await workflow.execute_activity(

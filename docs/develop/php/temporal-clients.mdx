@@ -1,0 +1,78 @@
+---
+id: temporal-clients
+title: Temporal Clients
+sidebar_label: Temporal Clients
+slug: /develop/php/temporal-clients
+toc_max_heading_level: 2
+keywords:
+  - temporal-clients
+tags:
+  - temporal-clients
+---
+
+## How to connect a Temporal Client to a Temporal Cluster {#connect-to-a-dev-cluster}
+
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Cluster](/clusters).
+Communication with a Temporal Cluster includes, but isn't limited to, the following:
+
+- Starting Workflow Executions.
+- Sending Signals to Workflow Executions.
+- Sending Queries to Workflow Executions.
+- Getting the results of a Workflow Execution.
+- Providing an Activity Task Token.
+
+:::caution
+
+A Temporal Client cannot be initialized and used inside a Workflow.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Cluster.
+
+:::
+
+When you are running a Cluster locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
+Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
+
+Create an instance of the `$workflowClient` class and use the `create()` method to connect a Temporal Client to a Temporal Cluster.
+
+Specify the target host, `localhost:7223`, parameter as a string and provide the TLS configuration for connecting to a Temporal Cluster.
+
+```php
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowOptions;
+# . . .
+$workflowClient = Temporal\Client\WorkflowClient::create(
+     ServiceClient::createSSL(
+         'localhost:7233',
+         'certs/ca.cert',
+         'certs/client.key',
+         'certs/client.pem',
+         'tls-sample',
+     ),
+ );
+```
+
+To provide the client options as an environmental variable, add the `tls` option to the RoadRunner configuration file and pass the path to the file.
+
+```yml
+temporal:
+  # . . .
+  tls:
+    key: 'certs/client.key'
+    cert: 'certs/client.pem'
+    root_ca: 'certs/ca.cert'
+    client_auth_type: require_and_verify_client_cert
+    server_name: 'tls-sample'
+```
+
+Then update your application and use the SSL connection for `ServiceClient`.
+
+```php
+$workflowClient = Temporal\Client\WorkflowClient::create(
+     ServiceClient::createSSL(
+         'localhost:7233',
+         getenv('TEMPORAL_SERVER_ROOT_CA_CERT_PATH'),
+         getenv('TEMPORAL_CLIENT_KEY_PATH'),
+         getenv('TEMPORAL_CLIENT_CERT_PATH'),
+         getenv('TEMPORAL_SERVER_NAME_OVERRIDE')
+     ),
+ );
+```

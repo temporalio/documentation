@@ -1,0 +1,421 @@
+---
+id: observability
+title: Observability
+sidebar_label: Observability
+slug: /develop/go/observability
+toc_max_heading_level: 4
+keywords:
+  - api
+  - context propagators
+  - developer-guide-doc-type
+  - go sdk
+  - how-to-doc-type
+  - interceptor
+  - introduction-doc-type
+  - list filter
+  - list filters
+  - logging and metrics
+  - observability
+  - search attributes
+  - temporal client
+  - tracing
+  - visibility
+  - workflow definition
+  - workflow execution
+  - workflow executions
+  - workflows
+tags:
+  - api
+  - context-propagators
+  - developer-guide-doc-type
+  - go-sdk
+  - how-to-doc-type
+  - interceptor
+  - introduction-doc-type
+  - list-filter
+  - list-filters
+  - logging-and-metrics
+  - observability
+  - search-attributes
+  - temporal-client
+  - tracing
+  - visibility
+  - workflow-definition
+  - workflow-execution
+  - workflow-executions
+  - workflows
+---
+
+The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
+
+This section covers features related to viewing the state of the application, including:
+
+- [Metrics](#metrics)
+- [Tracing](#tracing-and-context-propogation)
+- [Logging](#logging)
+- [Visibility](#visibility)
+
+## How to emit metrics {#metrics}
+
+Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
+For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
+
+Metrics can be scraped and stored in time series databases, such as:
+
+- [Prometheus](https://prometheus.io/docs/introduction/overview/)
+- [M3db](https://m3db.io/docs/)
+- [statsd](https://github.com/statsd/statsd)
+
+Temporal also provides a dashboard you can integrate with graphing services like [Grafana](https://grafana.com/docs/). For more information, see:
+
+- Temporal's implementation of the [Grafana dashboard](https://github.com/temporalio/dashboards)
+- [How to export metrics in Grafana](https://github.com/temporalio/helm-charts#exploring-metrics-via-grafana)
+
+To emit metrics from the Temporal Client in Go, create a [metrics handler](https://pkg.go.dev/go.temporal.io/sdk/internal/common/metrics#Handler) from the [Client Options](https://pkg.go.dev/go.temporal.io/sdk@v1.15.0/internal#ClientOptions) and specify a listener address to be used by Prometheus.
+
+```go
+client.Options{
+		MetricsHandler: sdktally.NewMetricsHandler(newPrometheusScope(prometheus.Configuration{
+			ListenAddress: "0.0.0.0:9090",
+			TimerType:     "histogram",
+		}
+```
+
+The Go SDK currently supports the [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) library; however, Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the [`WithCustomMetricsReporter`](/references/server-options#withcustommetricsreporter) API.
+
+For more information, see the [Go sample for metrics](https://github.com/temporalio/samples-go/tree/main/metrics).
+
+## Tracing and Context Propagation {#tracing-and-context-propogation}
+
+The Temporal Go SDK supports three tracing implementations: [Datadog](https://pkg.go.dev/go.temporal.io/sdk/contrib/datadog), [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry), and [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing).
+
+Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
+
+Tracing can be configured by providing a tracer implementation in [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) during client instantiation.
+
+For details on how to configure and leverage tracing, see the respective documentation:
+
+- [Datadog](https://www.datadoghq.com/)
+- [OpenTelemetry](https://opentelemetry.io)
+- [OpenTracing](https://opentracing.io/)
+
+The OpenTracing support has been validated using Jaeger, but other implementations should also work.
+Tracing functionality utilizes generic context propagation provided by the client.
+
+### Context Propagation
+
+Temporal provides a standard way to propagate a custom context across a Workflow.
+You can configure a context propagator in via the [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions).
+The context propagator extracts and passes on information present in `context.Context` and `workflow.Context` objects across the Workflow.
+Once a context propagator is configured, you should be able to access the required values in the context objects as you would normally do in Go.
+You can see how the Go SDK implements a [tracing context propagator](https://github.com/temporalio/samples-go/tree/main/ctxpropagation).
+
+#### Server-Side Headers
+
+On the server side, Temporal provides a mechanism for propagating context across Workflow transitions called headers.
+
+```proto
+message Header {
+    map<string, Payload> fields = 1;
+}
+```
+
+`Client` leverages headers to pass around additional context information.
+[HeaderReader](https://pkg.go.dev/go.temporal.io/sdk/internal#HeaderReader) and [HeaderWriter](https://pkg.go.dev/go.temporal.io/sdk/internal#HeaderWriter) are interfaces that allow reading and writing to the Temporal Server headers.
+The SDK includes [implementations](https://github.com/temporalio/sdk-go/blob/master/internal/headers.go) for these interfaces.
+`HeaderWriter` sets a value for a header.
+Headers are held as a map, so setting a value for the same key will overwrite its previous value.
+`HeaderReader` gets a value of a header.
+It also can iterate through all headers and execute the provided handler function on each header, so that your code can operate on select headers you need.
+
+```go
+type HeaderWriter interface {
+	Set(string, *commonpb.Payload)
+}
+
+type HeaderReader interface {
+	Get(string) (*commonpb.Payload, bool)
+	ForEachKey(handler func(string, *commonpb.Payload) error) error
+}
+```
+
+#### Context Propagators
+
+You can propagate additional context through Workflow Execution by using a context propagator.
+A context propagator needs to implement the `ContextPropagator` interface that includes the following four methods:
+
+```go
+type ContextPropagator interface {
+  Inject(context.Context, HeaderWriter) error
+
+  Extract(context.Context, HeaderReader) (context.Context, error)
+
+  InjectFromWorkflow(Context, HeaderWriter) error
+
+  ExtractToWorkflow(Context, HeaderReader) (Context, error)
+}
+```
+
+- `Inject` reads select context keys from a Go [context.Context](https://golang.org/pkg/context/#Context) object and writes them into the headers using the [HeaderWriter](https://pkg.go.dev/go.temporal.io/sdk/internal#HeaderWriter) interface.
+- `InjectFromWorkflow` operates similar to `Inject` but reads from a [workflow.Context](https://pkg.go.dev/go.temporal.io/sdk/internal#Context) object.
+- `Extract` picks select headers and put their values into the [context.Context](https://golang.org/pkg/context/#Context) object.
+- `ExtractToWorkflow` operates similar to `Extract` but write to a [workflow.Context](https://pkg.go.dev/go.temporal.io/sdk/internal#Context) object.
+
+The [tracing context propagator](https://github.com/temporalio/samples-go/tree/main/ctxpropagation) shows a sample implementation of a context propagator.
+
+#### Is there a complete example?
+
+The [context propagation sample](https://github.com/temporalio/samples-go/blob/master/ctxpropagation/) configures a custom context propagator and shows context propagation of custom keys across a Workflow and an Activity.
+It also uses Jaeger for tracing.
+
+#### Can I configure multiple context propagators?
+
+Yes. Multiple context propagators help to structure code with each propagator having its own scope of responsibility.
+
+### Useful Resources
+
+- [Passing Context with Temporal](https://spiralscout.com/blog/passing-context-with-temporal) by SpiralScout
+
+The [Go SDK](https://github.com/temporalio/sdk-go) provides support for distributed tracing with **_Interceptors_**.
+Interceptors uses Temporal headers to create a call graph of a [Workflow](/workflows), along with its [Activities](/activities) and [Child Workflows](/encyclopedia/child-workflows).
+
+There are several tracing implementations supported by the Temporal Go SDK.
+For an [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing) Interceptor, use `opentracing.NewInterceptor(opentracing.TracerOptions{})` to create a `TracingInterceptor`.
+
+```go
+// create Interceptor
+tracingInterceptor, err := opentracing.NewInterceptor(opentracing.TracerOptions{})
+```
+
+For an [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry) Interceptor, use `opentelemetry.NewTracingInterceptor(opentelemetry.TracerOptions{})`.
+
+```go
+// create Interceptor
+tracingInterceptor, err := opentelemetry.NewTracingInterceptor(opentelemetry.TracerOptions{})
+```
+
+For a [Datadog](https://pkg.go.dev/go.temporal.io/sdk/contrib/datadog/tracing) Interceptor, use `tracing.NewTracingInterceptor(tracing.TracerOptions{})`.
+
+```go
+// create Interceptor
+tracingInterceptor, err := tracing.NewTracingInterceptor(tracing.TracerOptions{})
+```
+
+Pass the newly created Interceptor to [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) to enable tracing.
+
+```go
+c, err := client.Dial(client.Options{
+  Interceptors:       []interceptor.ClientInterceptor{tracingInterceptor},
+})
+```
+
+OpenTracing and OpenTelemetry are natively supported by [Jaeger](https://www.jaegertracing.io/docs/1.46/features/#native-support-for-opentracing-and-opentelemetry).
+For more information on configuring and using tracing, see the documentation provided by [OpenTracing](https://opentracing.io), [OpenTelemetry](https://opentelemetry.io/), and [Datadog](https://docs.datadoghq.com/tracing/).
+
+## How to log from a Workflow {#logging}
+
+Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
+
+The SDK core uses `WARN` for its default logging level.
+
+In Workflow Definitions you can use [`workflow.GetLogger(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLogger) to write logs.
+
+```go
+import (
+	"context"
+	"time"
+
+	"go.temporal.io/sdk/activity"
+	"go.temporal.io/sdk/workflow"
+)
+
+// Workflow is a standard workflow definition.
+// Note that the Workflow and Activity don't need to care that
+// their inputs/results are being compressed.
+func Workflow(ctx workflow.Context, name string) (string, error) {
+// ...
+
+workflow.WithActivityOptions(ctx, ao)
+
+// Getting the logger from the context.
+	logger := workflow.GetLogger(ctx)
+// Logging a message with the key value pair `name` and `name`
+	logger.Info("Compressed Payloads workflow started", "name", name)
+
+	info := map[string]string{
+		"name": name,
+	}
+
+	logger.Info("Compressed Payloads workflow completed.", "result", result)
+
+	return result, nil
+}
+```
+
+### How to provide a custom logger {#custom-logger}
+
+Use a custom logger for logging.
+
+This field sets a custom Logger that is used for all logging actions of the instance of the Temporal Client.
+
+Although the Go SDK does not support most third-party logging solutions natively, [our friends at Banzai Cloud](https://github.com/sagikazarmark) built the adapter package [logur](https://github.com/logur/logur) which makes it possible to use third party loggers with minimal overhead.
+Most of the popular logging solutions have existing adapters in Logur, but you can find a full list [in the Logur Github project](https://github.com/logur?q=adapter-).
+
+Here is an example of using Logur to support [Logrus](https://github.com/sirupsen/logrus):
+
+```go
+package main
+import (
+  "go.temporal.io/sdk/client"
+
+	"github.com/sirupsen/logrus"
+	logrusadapter "logur.dev/adapter/logrus"
+	"logur.dev/logur"
+)
+
+func main() {
+  // ...
+  logger := logur.LoggerToKV(logrusadapter.New(logrus.New()))
+  clientOptions := client.Options{
+    Logger: logger,
+  }
+  temporalClient, err := client.Dial(clientOptions)
+  // ...
+}
+```
+
+## How to use Visibility APIs {#visibility}
+
+The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
+
+### How to use Search Attributes {#search-attributes}
+
+The typical method of retrieving a Workflow Execution is by its Workflow Id.
+
+However, sometimes you'll want to retrieve one or more Workflow Executions based on another property. For example, imagine you want to get all Workflow Executions of a certain type that have failed within a time range, so that you can start new ones with the same arguments.
+
+You can do this with [Search Attributes](/visibility#search-attribute).
+
+- [Default Search Attributes](/visibility#default-search-attributes) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
+- _Custom Search Attributes_ can contain their own domain-specific data (like `customerId` or `numItems`).
+  - A few [generic Custom Search Attributes](/visibility#custom-search-attributes) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](https://github.com/temporalio/docker-compose).
+
+The steps to using custom Search Attributes are:
+
+- Create a new Search Attribute in your Cluster using `temporal operator search-attribute create` or the Cloud UI.
+- Set the value of the Search Attribute for a Workflow Execution:
+  - On the Client by including it as an option when starting the Execution.
+  - In the Workflow by calling `UpsertSearchAttributes`.
+- Read the value of the Search Attribute:
+  - On the Client by calling `DescribeWorkflow`.
+  - In the Workflow by looking at `WorkflowInfo`.
+- Query Workflow Executions by the Search Attribute using a [List Filter](/visibility#list-filter):
+  - [In the Temporal CLI](/cli/workflow#list).
+  - In code by calling `ListWorkflowExecutions`.
+
+Here is how to query Workflow Executions:
+
+The [ListWorkflow()](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) function retrieves a list of [Workflow Executions](/workflows#workflow-execution) that match the [Search Attributes](/visibility#search-attribute) of a given [List Filter](/visibility#list-filter).
+The metadata returned from the [Visibility](/clusters#visibility) store can be used to get a Workflow Execution's history and details from the [Persistence](/clusters#persistence) store.
+
+Use a List Filter to define a `request` to pass into `ListWorkflow()`.
+
+```go
+request := &workflowservice.ListWorkflowExecutionsRequest{ Query: "CloseTime = missing" }
+```
+
+This `request` value returns only open Workflows.
+For more List Filter examples, see the [examples provided for List Filters in the Temporal Visibility guide.](/visibility#list-filter-examples)
+
+```go
+resp, err := temporalClient.ListWorkflow(ctx.Background(), request)
+if err != nil {
+  return err
+}
+
+fmt.Println("First page of results:")
+for _, exec := range resp.Executions {
+  fmt.Printf("Workflow ID %v\n", exec.Execution.WorkflowId)
+}
+```
+
+### How to set custom Search Attributes {#custom-search-attributes}
+
+After you've created custom Search Attributes in your Cluster (using the `temporal operator search-attribute create` command or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+
+Provide key-value pairs in [`StartWorkflowOptions.SearchAttributes`](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
+
+Search Attributes are represented as `map[string]interface{}`.
+The values in the map must correspond to the [Search Attribute's value type](/visibility#supported-types):
+
+- Bool = `bool`
+- Datetime = `time.Time`
+- Double = `float64`
+- Int = `int64`
+- Keyword = `string`
+- Text = `string`
+
+If you had custom Search Attributes `CustomerId` of type Keyword and `MiscData` of type Text, you would provide `string` values:
+
+```go
+func (c *Client) CallYourWorkflow(ctx context.Context, workflowID string, payload map[string]interface{}) error {
+    // ...
+    searchAttributes := map[string]interface{}{
+        "CustomerId": payload["customer"],
+        "MiscData": payload["miscData"]
+    }
+    options := client.StartWorkflowOptions{
+        SearchAttributes:   searchAttributes
+        // ...
+    }
+    we, err := c.Client.ExecuteWorkflow(ctx, options, app.YourWorkflow, payload)
+    // ...
+}
+```
+
+### How to upsert Search Attributes {#upsert-search-attributes}
+
+You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
+
+In advanced cases, you may want to dynamically update these attributes as the Workflow progresses.
+[UpsertSearchAttributes](https://pkg.go.dev/go.temporal.io/sdk/workflow#UpsertSearchAttributes) is used to add or update Search Attributes from within Workflow code.
+
+`UpsertSearchAttributes` will merge attributes to the existing map in the Workflow.
+Consider this example Workflow code:
+
+```go
+func YourWorkflow(ctx workflow.Context, input string) error {
+
+    attr1 := map[string]interface{}{
+        "CustomIntField": 1,
+        "CustomBoolField": true,
+    }
+    workflow.UpsertSearchAttributes(ctx, attr1)
+
+    attr2 := map[string]interface{}{
+        "CustomIntField": 2,
+        "CustomKeywordField": "seattle",
+    }
+    workflow.UpsertSearchAttributes(ctx, attr2)
+}
+```
+
+After the second call to `UpsertSearchAttributes`, the map will contain:
+
+```go
+map[string]interface{}{
+    "CustomIntField": 2, // last update wins
+    "CustomBoolField": true,
+    "CustomKeywordField": "seattle",
+}
+```
+
+### How to remove a Search Attribute from a Workflow {#remove-search-attribute}
+
+To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
+
+**There is no support for removing a field.**
+
+However, to achieve a similar effect, set the field to some placeholder value.
+For example, you could set `CustomKeywordField` to `impossibleVal`.
+Then searching `CustomKeywordField != 'impossibleVal'` will match Workflows with `CustomKeywordField` not equal to `impossibleVal`, which includes Workflows without the `CustomKeywordField` set.

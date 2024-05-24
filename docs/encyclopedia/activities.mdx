@@ -36,11 +36,11 @@ For other Activity-related Events, see [Activity Events](/workflows#activity-eve
 
 An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/workers#activity-task-execution).
 
-- [How to develop an Activity Definition using the Go SDK](/dev-guide/go/foundations#activity-definition)
-- [How to develop an Activity Definition using the Java SDK](/dev-guide/java/foundations#develop-activities)
-- [How to develop an Activity Definition using the PHP SDK](/dev-guide/php/foundations#develop-activities)
+- [How to develop an Activity Definition using the Go SDK](/develop/go/core-application#activity-definition)
+- [How to develop an Activity Definition using the Java SDK](/develop/java/core-application#develop-activities)
+- [How to develop an Activity Definition using the PHP SDK](/develop/php/core-application#develop-activities)
 - [How to develop an Activity Definition using the Python SDK](/develop/python/core-application#develop-activities)
-- [How to develop an Activity Definition using the TypeScript SDK](/dev-guide/typescript/foundations#develop-activities)
+- [How to develop an Activity Definition using the TypeScript SDK](/develop/typescript/core-application#develop-activities)
 
 The term 'Activity Definition' is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition——the method or function that is invoked for an [Activity Task Execution](/workers#activity-task-execution).
 Therefore, the terms Activity Function and Activity Method refer to the source of an instance of an execution.
@@ -69,7 +69,7 @@ In the context of Temporal, Activities should be designed to be safely executed 
 
 :::info
 
-By design, completed Activities will not re-execute as part of a [Workflow Replay](/workflows#replays). However, Activities won’t record to the [Event History](/retry-policies#event-history) until they return or produce an error. If an Activity fails to report to the server at all, it will be retried. Designing for idempotence, especially if you have a [Global Namespace](/namespaces#global-namespace), will improve reusability and reliability.
+By design, completed Activities will not re-execute as part of a [Workflow Replay](/workflows#replays). However, Activities won't record to the [Event History](/retry-policies#event-history) until they return or produce an error. If an Activity fails to report to the server at all, it will be retried. Designing for idempotence, especially if you have a [Global Namespace](/namespaces#global-namespace), will improve reusability and reliability.
 
 :::
 
@@ -81,7 +81,7 @@ The lack of idempotency might affect the correctness of your application but doe
 In other words, lack of idempotency doesn't lead to a platform error.
 
 In some cases, whether something is idempotent doesn't affect the correctness of an application.
-For example, if you have a monotonically incrementing counter, you might not care that retries increment the counter because you don’t care about the actual value, only that the current value is greater than a previous value.
+For example, if you have a monotonically incrementing counter, you might not care that retries increment the counter because you don't care about the actual value, only that the current value is greater than a previous value.
 
 For more information about idempotency in Temporal, see the following post:
 
@@ -120,11 +120,11 @@ Activity Types are scoped through Task Queues.
 
 An Activity Execution is the full chain of [Activity Task Executions](/workers#activity-task-execution).
 
-- [How to start an Activity Execution using the Go SDK](/dev-guide/go/foundations#activity-execution)
-- [How to start an Activity Execution using the Java SDK](/dev-guide/java/foundations#activity-execution)
-- [How to start an Activity Execution using the PHP SDK](/dev-guide/php/foundations#activity-execution)
+- [How to start an Activity Execution using the Go SDK](/develop/go/core-application#activity-execution)
+- [How to start an Activity Execution using the Java SDK](/develop/java/core-application#activity-execution)
+- [How to start an Activity Execution using the PHP SDK](/develop/php/core-application#activity-execution)
 - [How to start an Activity Execution using the Python SDK](/develop/python/core-application#activity-execution)
-- [How to start an Activity Execution using the TypeScript SDK](/dev-guide/typescript/foundations#activity-execution)
+- [How to start an Activity Execution using the TypeScript SDK](/develop/typescript/core-application#activity-execution)
 
 <div className="tdiw">
   <div className="tditw">
@@ -203,11 +203,11 @@ An Activity Id can be used to [complete the Activity asynchronously](#asynchrono
 A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an [Activity Task](/workers#activity-task) is scheduled (that is, placed in a Task Queue) to when a [Worker](/workers#worker) starts (that is, picks up from the Task Queue) that Activity Task.
 In other words, it's a limit for how long an Activity Task can be enqueued.
 
-- [How to set a Schedule-To-Start Timeout using the Go SDK](/dev-guide/go/features#activity-timeouts)
-- [How to set a Schedule-To-Start Timeout using the Java SDK](/dev-guide/java/features#activity-timeouts)
-- [How to set a Schedule-To-Start Timeout using the PHP SDK](/dev-guide/php/features#activity-timeouts)
+- [How to set a Schedule-To-Start Timeout using the Go SDK](/develop/go/failure-detection)
+- [How to set a Schedule-To-Start Timeout using the Java SDK](/develop/java/failure-detection)
+- [How to set a Schedule-To-Start Timeout using the PHP SDK](/develop/php/failure-detection#activity-timeouts)
 - [How to set a Schedule-To-Start Timeout using the Python SDK](/develop/python/failure-detection#activity-timeouts)
-- [How to set a Schedule-To-Start Timeout using the TypeScript SDK](/dev-guide/typescript/features#activity-timeouts)
+- [How to set a Schedule-To-Start Timeout using the TypeScript SDK](/develop/typescript/failure-detection)
 
 The moment that the Task is picked by the Worker from the Task Queue is considered to be the start of the Activity Task for the purposes of the Schedule-To-Start Timeout and associated metrics.
 This definition of "Start" avoids issues that a clock difference between the Temporal Service and a Worker might create.
@@ -263,11 +263,11 @@ In most cases, we recommend monitoring the `temporal_activity_schedule_to_start_
 
 A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/workers#activity-task-execution).
 
-- [How to set a Start-To-Close Timeout using the Go SDK](/dev-guide/go/features#activity-timeouts)
-- [How to set a Start-To-Close Timeout using the Java SDK](/dev-guide/java/features#activity-timeouts)
-- [How to set a Start-To-Close Timeout using the PHP SDK](/dev-guide/php/features#activity-timeouts)
+- [How to set a Start-To-Close Timeout using the Go SDK](/develop/go/failure-detection)
+- [How to set a Start-To-Close Timeout using the Java SDK](/develop/java/failure-detection)
+- [How to set a Start-To-Close Timeout using the PHP SDK](/develop/php/failure-detection#activity-timeouts)
 - [How to set a Start-To-Close Timeout using the Python SDK](/develop/python/failure-detection#activity-timeouts)
-- [How to set a Start-To-Close Timeout using the TypeScript SDK](/dev-guide/typescript/features#activity-timeouts)
+- [How to set a Start-To-Close Timeout using the TypeScript SDK](/develop/typescript/failure-detection)
 
 **The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](#schedule-to-close-timeout).**
 
@@ -328,11 +328,11 @@ If this timeout is reached, the following actions occur:
 
 A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall [Activity Execution](#activity-execution), from when the first [Activity Task](/workers#activity-task) is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
 
-- [How to set a Schedule-To-Close Timeout using the Go SDK](/dev-guide/go/features#activity-timeouts)
-- [How to set a Schedule-To-Close Timeout using the Java SDK](/dev-guide/java/features#activity-timeouts)
-- [How to set a Schedule-To-Close Timeout using the PHP SDK](/dev-guide/go/features#activity-timeouts)
-- [How to set a Schedule-To-Close Timeout using the Python SDK](/dev-guide/go/features#activity-timeouts)
-- [How to set a Schedule-To-Close Timeout using the TypeScript SDK](/dev-guide/typescript/features#activity-timeouts)
+- [How to set a Schedule-To-Close Timeout using the Go SDK](/develop/go/failure-detection)
+- [How to set a Schedule-To-Close Timeout using the Java SDK](/develop/java/failure-detection)
+- [How to set a Schedule-To-Close Timeout using the PHP SDK](/develop/go/failure-detection)
+- [How to set a Schedule-To-Close Timeout using the Python SDK](/develop/go/failure-detection)
+- [How to set a Schedule-To-Close Timeout using the TypeScript SDK](/develop/typescript/failure-detection)
 
 <div className="tdiw">
   <div className="tditw">
@@ -381,11 +381,11 @@ Therefore, the Temporal Server relies on the Start-To-Close Timeout to force Act
 An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Service.
 Each ping informs the Temporal Service that the Activity Execution is making progress and the Worker has not crashed.
 
-- [How to Heartbeat an Activity using the Go SDK](/dev-guide/go/features#activity-heartbeats)
-- [How to Heartbeat an Activity using the Java SDK](/dev-guide/java/features#activity-heartbeats)
-- [How to Heartbeat an Activity using the PHP SDK](/dev-guide/php/features#activity-heartbeats)
+- [How to Heartbeat an Activity using the Go SDK](/develop/go/failure-detection#activity-heartbeats)
+- [How to Heartbeat an Activity using the Java SDK](/develop/java/failure-detection#activity-heartbeats)
+- [How to Heartbeat an Activity using the PHP SDK](/develop/php/failure-detection#activity-heartbeats)
 - [How to Heartbeat an Activity using the Python SDK](/develop/python/failure-detection#activity-heartbeats)
-- [How to Heartbeat an Activity using the TypeScript SDK](/dev-guide/typescript/features#activity-heartbeats)
+- [How to Heartbeat an Activity using the TypeScript SDK](/develop/typescript/failure-detection#activity-heartbeats)
 
 Activity Heartbeats work in conjunction with a [Heartbeat Timeout](#heartbeat-timeout).
 
@@ -454,11 +454,11 @@ And the following scenarios are not suitable for Heartbeating:
 
 A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-heartbeat).
 
-- [How to set a Heartbeat Timeout using the Go SDK](/dev-guide/go/features#heartbeat-timeout)
-- [How to set a Heartbeat Timeout using the Java SDK](/dev-guide/java/features#heartbeat-timeout)
-- [How to set a Heartbeat Timeout using the PHP SDK](/dev-guide/php/features#heartbeat-timeout)
+- [How to set a Heartbeat Timeout using the Go SDK](/develop/go/failure-detection#heartbeat-timeout)
+- [How to set a Heartbeat Timeout using the Java SDK](/develop/go/failure-detection#heartbeat-timeout)
+- [How to set a Heartbeat Timeout using the PHP SDK](/develop/php/failure-detection#heartbeat-timeout)
 - [How to set a Heartbeat Timeout using the Python SDK](/develop/python/failure-detection#heartbeat-timeout)
-- [How to set a Heartbeat Timeout using the TypeScript SDK](/dev-guide/typescript/features#heartbeat-timeout)
+- [How to set a Heartbeat Timeout using the TypeScript SDK](/develop/typescript/failure-detection#heartbeat-timeout)
 
 <div className="tdiw">
   <div className="tditw">
@@ -482,11 +482,11 @@ The Temporal Client can then be used from anywhere to both Heartbeat Activity Ex
 
 How to complete an Activity Asynchronously in:
 
-- [Go](/dev-guide/go/features#asynchronous-activity-completion)
-- [Java](/dev-guide/java/features#asynchronous-activity-completion)
-- [PHP](/dev-guide/php/features#asynchronous-activity-completion)
+- [Go](/develop/go/asynchronous-activity-completion)
+- [Java](/develop/java/asynchronous-activity-completion)
+- [PHP](/develop/php/asynchronous-activity-completion)
 - [Python](/develop/python/asynchronous-activity-completion)
-- [TypeScript](/dev-guide/typescript/features#asynchronous-activity-completion)
+- [TypeScript](/develop/typescript/asynchronous-activity-completion)
 
 #### When to use Async Completion
 

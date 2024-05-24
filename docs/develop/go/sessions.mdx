@@ -1,0 +1,207 @@
+---
+id: sessions
+title: Worker Sessions
+sidebar_label: Sessions
+slug: /develop/go/sessions
+toc_max_heading_level: 2
+keywords:
+  - sessions
+tags:
+  - sessions
+---
+
+## How to use Worker Session APIs {#worker-sessions}
+
+:::tip Support, stability, and dependency info
+
+- This feature is currently available only in the Go SDK.
+
+:::
+
+A Worker Session is a feature that provides a straightforward API for [Task Routing](/workers#task-routing) to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
+
+### How to enable Worker Sessions {#enable-sessions}
+
+Enable the Worker to use Sessions.
+
+Set `EnableSessionWorker` to `true` in the Worker options.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/worker/main.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+// ...
+func main() {
+// ...
+	// Enable Sessions for this Worker.
+	workerOptions := worker.Options{
+		EnableSessionWorker: true,
+// ...
+	}
+	w := worker.New(temporalClient, "fileprocessing", workerOptions)
+	w.RegisterWorkflow(sessions.SomeFileProcessingWorkflow)
+	w.RegisterActivity(&sessions.FileActivities{})
+	err = w.Run(worker.InterruptCh())
+// ...
+}
+```
+
+#### How to change the maximum concurrent Sessions of a Worker. {#max-concurrent-sessions}
+
+You can adjust the maximum concurrent Sessions of a Worker.
+
+To limit the number of concurrent Sessions running on a Worker, set the `MaxConcurrentSessionExecutionSize` field of `worker.Options` to the desired value.
+By default, this field is set to a very large value, so there's no need to manually set it if no limitation is needed.
+
+If a Worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed.
+If the session can't be created within `CreationTimeout`, `CreateSession()` returns an error .
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/worker/main.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+func main() {
+// ...
+	workerOptions := worker.Options{
+// ...
+		// This configures the maximum allowed concurrent sessions.
+		// Customize this value only if you need to.
+		MaxConcurrentSessionExecutionSize: 1000,
+// ...
+}
+// ...
+```
+
+### How to create a Worker Session {#create-a-session}
+
+Within the Workflow code use the Workflow APIs to create a Session with whichever Worker picks up the first Activity Task.
+
+Use the [`CreateSession`](https://pkg.go.dev/go.temporal.io/sdk/workflow#CreateSession) API to create a Context object that can be passed to calls to spawn Activity Executions.
+
+Pass an instance of `workflow.Context` and [`SessionOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SessionOptions) to the `CreateSession` API call and get a Session Context that contains metadata information of the Session.
+
+Use the Session Context to spawn all Activity Executions that should belong to the Session.
+All associated Activity Tasks are then processed by the same Worker Entity.
+When the `CreateSession` API is called, the Task Queue name that is specified in `ActivityOptions` (or in `StartWorkflowOptions` if the Task Queue name is not specified in `ActivityOptions`) is used, and a Session is created with one of the Workers polling that Task Queue.
+
+The Session Context is cancelled if the Worker executing this Session dies or `CompleteSession()` is called.
+When using the returned Session Context to spawn Activity Executions, a `workflow.ErrSessionFailed` error is returned if the Session framework detects that the Worker executing this Session has died.
+The failure of Activity Executions won't affect the state of the Session, so you still need to handle the errors returned from your Activities and call `CompleteSession()` if necessary.
+
+If the context passed in already contains an open Session, `CreateSession()` returns an error.
+If all the Workers are currently busy and unable to handle a new Session, the framework keeps retrying until the `CreationTimeout` period you specified in `SessionOptions` has passed before returning an error.
+(For more details, check the "Concurrent Session Limitation" section.)
+
+`CompleteSession()` releases the resources reserved on the Worker, so it's important to call it as soon as you no longer need the Session.
+It cancels the session context and therefore all the Activity Executions using that Session Context.
+It is safe to call `CompleteSession()` on a failed Session, meaning that you can call it from a `defer` function after the Session is successfully created.
+
+If the Worker goes down between Activities, any scheduled Activities meant for the Session Worker are canceled.
+If not, you get a `workflow.ErrSessionFailed` error when the next call of `workflow.ExecuteActivity()` is made from that Workflow.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/sessions/workflow.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+package sessions
+
+import (
+	"time"
+
+	"go.temporal.io/sdk/workflow"
+)
+
+// ...
+// SomeFileProcessingWorkflow is a Workflow Definition.
+func SomeFileProcessingWorkflow(ctx workflow.Context, param FileProcessingWFParam) error {
+	activityOptions := workflow.ActivityOptions{
+		StartToCloseTimeout: time.Minute,
+	}
+	ctx = workflow.WithActivityOptions(ctx, activityOptions)
+// ...
+	sessionOptions := &workflow.SessionOptions{
+		CreationTimeout:  time.Minute,
+		ExecutionTimeout: time.Minute,
+	}
+	// Create a Session with the Worker so that all Activities execute with the same Worker.
+	sessionCtx, err := workflow.CreateSession(ctx, sessionOptions)
+	if err != nil {
+		return err
+	}
+	defer workflow.CompleteSession(sessionCtx)
+// ...
+	err = workflow.ExecuteActivity(sessionCtx, a.DownloadFile, param).Get(sessionCtx, &downloadResult)
+// ...
+	err = workflow.ExecuteActivity(sessionCtx, a.ProcessFile, processParam).Get(sessionCtx, &processResult)
+// ...
+	err = workflow.ExecuteActivity(sessionCtx, a.UploadFile, uploadParam).Get(sessionCtx, nil)
+// ...
+}
+```
+
+### Additional Session usage information {#session-metadata}
+
+```go
+type SessionInfo struct {
+ // A unique Id for the session
+ SessionID         string
+ // The hostname of the worker that is executing the session
+ HostName          string
+ // ... other unexported fields
+}
+
+func GetSessionInfo(ctx Context) *SessionInfo
+```
+
+The Session Context also stores some Session metadata, which can be retrieved by the `GetSessionInfo()` API.
+If the Context passed in doesn't contain any Session metadata, this API will return a `nil` pointer.
+
+### Recreate Session
+
+For long-running Sessions, you may want to use the `ContinueAsNew` feature to split the Workflow into multiple runs when all Activities need to be executed by the same Worker.
+The `RecreateSession()` API is designed for such a use case.
+
+```go
+func RecreateSession(ctx Context, recreateToken []byte, sessionOptions *SessionOptions) (Context, error)
+```
+
+Its usage is the same as `CreateSession()` except that it also takes in a `recreateToken`, which is needed to create a new Session on the same Worker as the previous one.
+You can get the token by calling the `GetRecreateToken()` method of the `SessionInfo` object.
+
+```go
+token := workflow.GetSessionInfo(sessionCtx).GetRecreateToken()
+```
+
+**Is there a complete example?**
+
+Yes, the [file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing) in the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo has been updated to use the session framework.
+
+**What happens to my Activity if the Worker dies?**
+
+If your Activity has already been scheduled, it will be canceled.
+If not, you will get a `workflow.ErrSessionFailed` error when you call `workflow.ExecuteActivity()`.
+
+**Is the concurrent session limitation per process or per host?**
+
+It's per Worker Process, so make sure there's only one Worker Process running on the host if you plan to use this feature.
+
+**Future Work**
+
+- Right now, a Session is considered failed if the Worker Process dies.
+  However, for some use cases, you may only care whether the Worker host is alive or not.
+  For these use cases, the Session should be automatically re-established if the Worker Process is restarted.
+
+- The current implementation assumes that all Sessions are consuming the same type of resource and there's only one global limitation.
+  Our plan is to allow you to specify what type of resource your Session will consume and enforce different limitations on different types of resources.

@@ -1,0 +1,122 @@
+---
+id: index
+title: Temporal PHP SDK development documentation
+sidebar_label: PHP SDK
+description: Learn how to use the Temporal PHP SDK.
+toc_max_heading_level: 4
+keywords:
+  - dev guide
+  - php
+  - introduction
+tags:
+  - dev-guide
+  - php
+---
+
+These Temporal PHP SDK feature guides aim to show how to use Temporal features when developing [Temporal Applications](/temporal#temporal-application).
+
+## Core application
+
+The [Core Application feature guide](/develop/php/core-application) shows how to use the basic building blocks of a Temporal Application (Workflows, Activities, and Workers).
+
+- [How to develop a basic Workflow](/develop/php/core-application#how-to-develop-a-basic-workflow)
+- [How to develop a basic Activity](/develop/php/core-application#how-to-develop-a-basic-activity)
+- [How to start an Activity Execution](/develop/php/core-application#how-to-start-an-activity-execution)
+- [How to run Worker Processes](/develop/php/core-application#how-to-run-worker-processes)
+
+## Temporal Clients
+
+The [Temporal Client feature guide](/develop/php/temporal-clients) shows how to connect to a Temporal Service and start a Workflow Execution.
+
+- [How to connect a Temporal Client to a Temporal Cluster](/develop/php/temporal-clients#how-to-connect-a-temporal-client-to-a-temporal-cluster)
+
+## Testing suites
+
+The [Testing suite feature guide](/develop/php/test-suites) shows how to set up the testing suite and test Workflows and Activities.
+
+- [Testing Activities](/develop/php/test-suites#testing-activities)
+- [Testing Workflows](/develop/php/test-suites#testing-workflows)
+- [How to Replay a Workflow Execution](/develop/php/test-suites#how-to-replay-a-workflow-execution)
+
+## Failure detection
+
+The [Failure detection feature guide](/develop/php/failure-detection) shows how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
+
+- [Workflow timeouts](/develop/php/failure-detection#workflow-timeouts)
+- [How to set Activity timeouts](/develop/php/failure-detection#how-to-set-activity-timeouts)
+- [How to Heartbeat an Activity](/develop/php/failure-detection#how-to-heartbeat-an-activity)
+
+## Messages
+
+The [Application messages feature guide](/develop/php/messages) shows how to send messages to and read the state of Workflow Executions.
+
+- [How to develop with Signals](/develop/php/messages#how-to-develop-with-signals)
+- [How to develop with Queries](/develop/php/messages#how-to-develop-with-queries)
+- [How to develop with Updates](/develop/php/messages#how-to-develop-with-updates)
+
+## Cancellation
+
+The [Cancellation feature guide](/develop/php/cancellation) shows how to cancel a Workflow Execution.
+
+- [Cancel an Activity from a Workflow](/develop/php/cancellation#cancel-an-activity-from-a-workflow)
+
+## Asynchronous Activity Completion
+
+The [Asynchronous Activity Completion feature guide](/develop/php/asynchronous-activity-completion) shows how to complete Activities asynchronously.
+
+- [How to asynchronously complete an Activity](/develop/php/asynchronous-activity-completion#how-to-asynchronously-complete-an-activity)
+
+## Versioning
+
+The [Versioning feature guide](/develop/php/versioning) shows how to change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
+
+## Observability
+
+The [Observability feature guide](/develop/php/observability) shows how to configure and use the Temporal Observability APIs.
+
+- [How to use Visibility APIs](/develop/php/observability#how-to-use-visibility-apis)
+
+## Debugging
+
+The [Debugging feature guide](/develop/php/debugging) covers the various ways to debug your application.
+
+- [Debugging](/develop/php/debugging#debugging)
+
+## Schedules
+
+The [Schedules feature guide](/develop/php/schedules) shows how to schedule Workflows, run Workflows on a Cron, and to delay the start of a Workflow.
+
+- [How to use Start Delay](/develop/php/schedules#how-to-use-start-delay)
+- [How to use Temporal Cron Jobs](/develop/php/schedules#how-to-use-temporal-cron-jobs)
+
+## Data encryption
+
+The [Data encryption feature guide](/develop/php/data-encryption) provides guidance on how to support compression, encryption, and other data handling by implementing custom converters and codecs.
+
+## Child Workflows
+
+The [Child Workflows feature guide](/develop/php/child-workflows) shows how to spawn a Child Workflow Execution and handle Child Workflow Events.
+
+- [How to start a Child Workflow Execution](/develop/php/child-workflows#how-to-start-a-child-workflow-execution)
+
+## Continue-As-New
+
+The [Continue-As-New feature guide](/develop/php/continue-as-new) shows how to continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
+
+- [How to Continue-As-New](/develop/php/continue-as-new#how-to-continue-as-new)
+
+## Timers
+
+The [Durable Timers feature guide](/develop/php/timers) shows how to use Timers and sleep within Workflows.
+
+- [What is a Timer?](/develop/php/timers#what-is-a-timer)
+
+## Interrupt a Workflow Execution
+
+The [Interrupt a Workflow feature guide](/develop/php/interrupt-a-workflow-execution) shows how to interrupt a Workflow Execution with a Cancel or Terminate action.
+
+## Side Effects
+
+The [Side Effects feature guide](/develop/php/side-effects) covers how to use Side Effects in Workflows.
+
+- [How to use Side Effects in PHP](/develop/php/side-effects#how-to-use-side-effects-in-php)

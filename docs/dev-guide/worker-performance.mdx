@@ -29,7 +29,7 @@ The following options are defined on `WorkerOptions` and are applicable for each
 1. `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecutionSize` define the number of total available slots for that Worker.
 2. `maxConcurrentWorkflowTaskPollers` (JavaSDK: `workflowPollThreadCount`) and `maxConcurrentActivityTaskPollers` (JavaSDK: `activityPollThreadCount`) define the number of pollers performing poll requests waiting on Workflow / Activity task queue and delivering the tasks to the executors.
 
-The Workflow Cache is created and shared between all the workers. It’s designed to limit the amount of resources used by the cache for the whole host/process. So the options are defined on `WorkerFactoryOptions` in JavaSDK and in `worker` package in GoSDK:
+The Workflow Cache is created and shared between all the workers. It's designed to limit the amount of resources used by the cache for the whole host/process. So the options are defined on `WorkerFactoryOptions` in JavaSDK and in `worker` package in GoSDK:
 
 1. `WorkerFactoryOptions#workflowCacheSize` (GoSDK: `worker.setStickyWorkflowCacheSize`) defines the maximum number of cached Workflows Executions. Each cached Workflow contains at least one Workflow thread and its resources (memory, etc).
 2. `maxWorkflowThreadCount` defines the maximum number of Workflow threads.
@@ -73,7 +73,7 @@ Increase the maximum number of working slots by adjusting `maxConcurrentWorkflow
 ### Poller count
 
 :::note
-Adjustments to pollers are rarely needed and rarely make a difference. Please consider this step only after adjusting Worker slots in the previous step. The only scenario in which the pollers’ adjustment makes sense is when there is a significant network latency between the Workers and Temporal Server.
+Adjustments to pollers are rarely needed and rarely make a difference. Please consider this step only after adjusting Worker slots in the previous step. The only scenario in which the pollers' adjustment makes sense is when there is a significant network latency between the Workers and Temporal Server.
 :::
 
 If:
@@ -88,8 +88,8 @@ then consider increasing the number of pollers by adjusting `maxConcurrentWorkfl
 
 If, after adjusting the poller and executors count as specified earlier, you still observe an elevated `schedule_to_start`, underutilized Worker hosts, or high `worker_task_slots_available`, you might want to check the following:
 
-- If server-side rate limiting per Task Queue is set by `WorkerOptions#maxTaskQueueActivitiesPerSecond`, remove the limit or adjust the value up. (See [Go](/dev-guide/go/foundations#taskqueueactivitiespersecond) and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
-- If Worker-side rate limiting per Worker is set by `WorkerOptions#maxWorkerActivitiesPerSecond`, remove the limit. (See [Go](/dev-guide/go/foundations#workeractivitiespersecond), [TypeScript](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#maxconcurrentactivitytaskexecutions), and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
+- If server-side rate limiting per Task Queue is set by `WorkerOptions#maxTaskQueueActivitiesPerSecond`, remove the limit or adjust the value up. (See [Go](/develop/go/core-application#taskqueueactivitiespersecond) and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
+- If Worker-side rate limiting per Worker is set by `WorkerOptions#maxWorkerActivitiesPerSecond`, remove the limit. (See [Go](/develop/go/core-application#workeractivitiespersecond), [TypeScript](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#maxconcurrentactivitytaskexecutions), and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
 
 ## Workflow Cache Tuning
 
@@ -109,14 +109,14 @@ In CoreSDK based SDKs, like TypeScript, this metric works differently and should
 
 ## Invariants
 
-These properties should always be true for a Worker’s configuration.
+These properties should always be true for a Worker's configuration.
 
 _These are applicable to JavaSDK only._
 
 Perform this sanity check after the adjustments to Worker settings.
 
 1. `workflowCacheSize` should be ≤ `maxWorkflowThreadCount`. Each Workflow has at least one Workflow thread.
-2. `maxConcurrentWorkflowTaskExecutionSize` should be ≤ `maxWorkflowThreadCount`. Having more Worker slots than the Workflow cache size will lead to resource contention/stealing between executors and unpredictable delays. It’s recommended that `maxWorkflowThreadCount` be at least 2x of `maxConcurrentWorkflowTaskExecutionSize`.
+2. `maxConcurrentWorkflowTaskExecutionSize` should be ≤ `maxWorkflowThreadCount`. Having more Worker slots than the Workflow cache size will lead to resource contention/stealing between executors and unpredictable delays. It's recommended that `maxWorkflowThreadCount` be at least 2x of `maxConcurrentWorkflowTaskExecutionSize`.
 3. `maxConcurrentWorkflowTaskPollers` should be significantly ≤ `maxConcurrentWorkflowTaskExecutionSize`. And `maxConcurrentActivityTaskPollers` should be significantly ≤ `maxConcurrentActivityExecutionSize`. The number of pollers should always be lower than the number of executors.
 
 ## Drawbacks of putting just "large values everywhere"
