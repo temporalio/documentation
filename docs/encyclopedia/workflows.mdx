@@ -298,9 +298,9 @@ It is the main unit of execution of a [Temporal Application](/temporal#temporal-
 - [How to start a Workflow Execution using temporal](/cli/workflow#start)
 - [How to start a Workflow Execution using the Go SDK](/develop/go/temporal-clients#start-workflow-execution)
 - [How to start a Workflow Execution using the Java SDK](/develop/java/temporal-clients#start-workflow-execution)
-- [How to start a Workflow Execution using the PHP SDK](/develop/php/core-application#start-workflow-execution)
-- [How to start a Workflow Execution using the Python SDK](/develop/python/core-application#start-workflow-execution)
-- [How to start a Workflow Execution using the TypeScript SDK](/develop/typescript/core-application#start-workflow-execution)
+- [How to start a Workflow Execution using the PHP SDK](/develop/php/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the Python SDK](/develop/python/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the TypeScript SDK](/develop/typescript/temporal-clients#start-workflow-execution)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
 It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](#signal) and the environment through [Activities](/activities).
@@ -639,11 +639,11 @@ If there is an attempt to spawn a Workflow Execution with a Workflow Id Reuse Po
 
 A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
-- [How to set a Workflow Execution Timeout using the Go SDK](/develop/go/failure-detection#workflow-timeout)
-- [How to set a Workflow Execution Timeout using the Java SDK](/develop/java/failure-detection#workflow-timeout)
+- [How to set a Workflow Execution Timeout using the Go SDK](/develop/go/failure-detection#workflow-timeouts)
+- [How to set a Workflow Execution Timeout using the Java SDK](/develop/java/failure-detection#workflow-timeouts)
 - [How to set a Workflow Execution Timeout using the PHP SDK](/develop/php/failure-detection#workflow-timeouts)
 - [How to set a Workflow Execution Timeout using the Python SDK](/develop/python/failure-detection#workflow-timeouts)
-- [How to set a Workflow Execution Timeout using the TypeScript SDK](/develop/typescript/failure-detection#workflow-timeout)
+- [How to set a Workflow Execution Timeout using the TypeScript SDK](/develop/typescript/failure-detection#workflow-timeouts)
 
 <PrettyImage src="/diagrams/workflow-execution-timeout.svg" title="Workflow Execution Timeout period" />
 
@@ -656,11 +656,11 @@ This timeout is most commonly used for stopping the execution of a [Temporal Cro
 
 A Workflow Run Timeout is the maximum amount of time that a single Workflow Run is restricted to.
 
-- [How to set a Workflow Run Timeout using the Go SDK](/develop/go/failure-detection#workflow-timeout)
-- [How to set a Workflow Run Timeout using the Java SDK](/develop/java/failure-detection#workflow-timeout)
+- [How to set a Workflow Run Timeout using the Go SDK](/develop/go/failure-detection#workflow-timeouts)
+- [How to set a Workflow Run Timeout using the Java SDK](/develop/java/failure-detection#workflow-timeouts)
 - [How to set a Workflow Run Timeout using the PHP SDK](/develop/php/failure-detection#workflow-timeouts)
 - [How to set a Workflow Run Timeout using the Python SDK](/develop/python/failure-detection#workflow-timeouts)
-- [How to set a Workflow Run Timeout using the TypeScript SDK](/develop/typescript/failure-detection#workflow-timeout)
+- [How to set a Workflow Run Timeout using the TypeScript SDK](/develop/typescript/failure-detection#workflow-timeouts)
 
 <PrettyImage src="/diagrams/workflow-run-timeout.svg" title="Workflow Run Timeout period" />
 
@@ -673,11 +673,11 @@ If the Workflow Run Timeout is reached, the Workflow Execution will be Timed Out
 
 A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/workers#worker) to execute a [Workflow Task](/workers#workflow-task) after the Worker has pulled that Workflow Task from the [Task Queue](/workers#task-queue).
 
-- [How to set a Workflow Task Timeout using the Go SDK](/develop/go/failure-detection#workflow-timeout)
-- [How to set a Workflow Task Timeout using the Java SDK](/develop/java/failure-detection#workflow-timeout)
+- [How to set a Workflow Task Timeout using the Go SDK](/develop/go/failure-detection#workflow-timeouts)
+- [How to set a Workflow Task Timeout using the Java SDK](/develop/java/failure-detection#workflow-timeouts)
 - [How to set a Workflow Task Timeout using the PHP SDK](/develop/php/failure-detection#workflow-timeouts)
 - [How to set a Workflow Task Timeout using the Python SDK](/develop/python/failure-detection#workflow-timeouts)
-- [How to set a Workflow Task Timeout using the TypeScript SDK](/develop/typescript/failure-detection#workflow-timeout)
+- [How to set a Workflow Task Timeout using the TypeScript SDK](/develop/typescript/failure-detection#workflow-timeouts)
 
 <PrettyImage src="/diagrams/workflow-task-timeout.svg" title="Workflow Task Timeout period" />
 
@@ -733,7 +733,7 @@ A Signal is an asynchronous request to a [Workflow Execution](#workflow-executio
 - [How to develop, send, and handle Signals in Go](/develop/go/messages#signals)
 - [How to develop, send, and handle Signals in Java](/develop/java/messages)
 - [How to develop, send, and handle Signals in PHP](/develop/php/messages#signals)
-- [How to develop, send, and handle Signals in Python](/develop/python/messages#signalst)
+- [How to develop, send, and handle Signals in Python](/develop/python/messages#signals)
 - [How to develop, send, and handle Signals in TypeScript](/develop/typescript/messages#signals)
 
 A Signal delivers data to a running Workflow Execution.
