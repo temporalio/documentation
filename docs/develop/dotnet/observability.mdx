@@ -62,6 +62,8 @@ Temporal also provides a dashboard you can integrate with graphing services like
 
 Metrics in .NET are configured on the `Metrics` property of the `Telemetry` property on the `TemporalRuntime`. That object should be created globally and should be used for all clients; therefore, you should configure this before any other Temporal code.
 
+### Set a Prometheus endpoint 
+
 **How to set a Prometheus endpoint using the .NET SDK**
 
 The following example exposes a Prometheus endpoint on port `9000`.
@@ -77,7 +79,9 @@ var runtime = new TemporalRuntime(new()
 var client = await Temporalio.ConnectAsync(new("localhost:7233") { Runtime = runtime });
 ```
 
-**How to reuse the .NET metric meter using the Temporal .NET SDK
+### Set a custom metric meter  
+
+**How to reuse the .NET metric meter using the Temporal .NET SDK**
 
 A custom metric meter can be set on the telemetry options to handle metrics programmatically.
 The [Temporalio.Extensions.DiagnosticSource](https://github.com/temporalio/sdk-dotnet/tree/main/src/Temporalio.Extensions.DiagnosticSource) extension provides a custom metric meter implementation that sends all metrics to a [System.Diagnostics.Metrics.Meter](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.meter) instance.
@@ -148,7 +152,7 @@ Workflow.Logger.LogInformation("Given name: {Name}", name);
 
 **How to use Visibility APIs using the Temporal .NET SDK**
 
-The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
+The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
 ### Use Search Attributes {#search-attributes}
 
@@ -162,11 +166,11 @@ You can do this with [Search Attributes](/visibility#search-attribute).
 
 - [Default Search Attributes](/visibility#default-search-attributes) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
 - _Custom Search Attributes_ can contain their own domain-specific data (like `customerId` or `numItems`).
-  - A few [generic Custom Search Attributes](/visibility#custom-search-attributes) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](https://github.com/temporalio/docker-compose).
+- A few [generic Custom Search Attributes](/visibility#custom-search-attributes) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](https://github.com/temporalio/docker-compose).
 
 The steps to using custom Search Attributes are:
 
-- Create a new Search Attribute in your Cluster in the CLI or Web UI.
+- Create a new Search Attribute in your Temporal Service in the CLI or Web UI.
   - For example: `temporal operator search-attribute create --name CustomKeywordField --type Text`
     - Replace `CustomKeywordField` with the name of your Search Attribute.
     - Replace `Text` with a type value associated with your Search Attribute: `Text` | `Keyword` | `Int` | `Double` | `Bool` | `Datetime` | `KeywordList`
@@ -179,6 +183,8 @@ The steps to using custom Search Attributes are:
 - Query Workflow Executions by the Search Attribute using a [List Filter](/visibility#list-filter):
   - [In the Temporal CLI](/cli/operator#list-2)
   - In code by calling `ListWorkflowsAsync`.
+
+### Query Workflow Executions
 
 **How to query Workflow Executions using the .NET SDK**
 
@@ -196,7 +202,7 @@ await foreach (var wf in client.ListWorkflowsAsync("WorkflowType='GreetingWorkfl
 
 **How to use custom Search Attributes using the Temporal .NET SDK**
 
-After you've created custom Search Attributes in your Cluster (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+After you've created custom Search Attributes in your Temporal Service (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
 To set custom Search Attributes, use the `TypedSearchAttributes` property on `WorkflowOptions` for `StartWorkflowAsync` or `ExecuteWorkflowAsync`.
 Typed search attributes are a `SearchAttributeCollection` created with a builder.

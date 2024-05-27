@@ -130,17 +130,17 @@ return await Workflow.ExecuteActivityAsync(
 
 **How to Heartbeat an Activity using the Temporal .NET SDK**
 
-An [Activity Heartbeat](/activities#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Cluster](/clusters).
-Each Heartbeat informs the Temporal Cluster that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
-If the Cluster does not receive a Heartbeat within a [Heartbeat Timeout](/activities#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/workers#activity-task-execution) may be scheduled according to the Retry Policy.
+An [Activity Heartbeat](/activities#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/clusters).
+Each Heartbeat informs the Temporal Service that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
+If the Temporal Service does not receive a Heartbeat within a [Heartbeat Timeout](/activities#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/workers#activity-task-execution) may be scheduled according to the Retry Policy.
 
-Heartbeats may not always be sent to the Cluster—they may be [throttled](/activities#throttling) by the Worker.
+Heartbeats may not always be sent to the Temporal Service—they may be [throttled](/activities#throttling) by the Worker.
 
-Activity Cancellations are delivered to Activities from the Cluster when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
+Activity Cancellations are delivered to Activities from the Temporal Service when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
 Heartbeat throttling may lead to Cancellation getting delivered later than expected.
 
 Heartbeats can contain a `Details` field describing the Activity's current progress.
-If an Activity gets retried, the Activity can access the `Details` from the last Heartbeat that was sent to the Cluster.
+If an Activity gets retried, the Activity can access the `Details` from the last Heartbeat that was sent to the Temporal Service.
 
 To Heartbeat an Activity Execution in .NET, use the [`Heartbeat()`](https://dotnet.temporal.io/api/Temporalio.Activities.ActivityExecutionContext.html#Temporalio_Activities_ActivityExecutionContext_Heartbeat_System_Object___) method on the `ActivityExecutionContext`.
 
