@@ -2,8 +2,9 @@
 id: observability
 title: Observability - Python SDK feature guide
 sidebar_label: Observability
-description: Improve observability in your Python-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
-toc_max_heading_level: 4
+description: Learn about observability tools for Temporal applications, covering metrics, tracing, logging, and visibility to monitor and troubleshoot Workflows.
+slug: /develop/python/observability
+toc_max_heading_level: 2
 keywords:
   - client
   - code sample
@@ -39,7 +40,9 @@ This section covers features related to viewing the state of the application, in
 - [Logging](#logging)
 - [Visibility](#visibility)
 
-## How to emit metrics {#metrics}
+## Emit metrics {#metrics}
+
+**How to emit metrics**
 
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
@@ -68,7 +71,9 @@ new_runtime = Runtime(telemetry=TelemetryConfig(metrics=PrometheusConfig(bind_ad
 my_client = await Client.connect("my.temporal.host:7233", runtime=new_runtime)
 ```
 
-## How to setup Tracing {#tracing}
+## Setup Tracing {#tracing}
+
+**How to setup Tracing**
 
 Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
 
@@ -86,7 +91,9 @@ Then the [`temporalio.contrib.opentelemetry.TracingInterceptor`](https://python.
 When your Client is connected, spans are created for all Client calls, Activities, and Workflow invocations on the Worker.
 Spans are created and serialized through the server to give one trace for a Workflow Execution.
 
-## How to log from a Workflow {#logging}
+## Log from a Workflow {#logging}
+
+**How to log from a Workflow**
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
 
@@ -111,22 +118,21 @@ Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio
 </div>
 
 ```python
-
 # ...
         workflow.logger.info("Workflow input parameter: %s" % name)
 ```
 
-### How to provide a custom logger {#custom-logger}
+### Custom logger {#custom-logger}
 
 Use a custom logger for logging.
 
 Use the built-in [Logging facility for Python](https://docs.python.org/3/library/logging.html) to set a custom logger.
 
-## How to use Visibility APIs {#visibility}
+## Visibility APIs {#visibility}
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
 
-### How to use Search Attributes {#search-attributes}
+### Use Search Attributes {#search-attributes}
 
 The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
@@ -166,7 +172,6 @@ Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.h
 </div>
 
 ```python
-
 # ...
     async for workflow in client.list_workflows('WorkflowType="GreetingWorkflow"'):
         print(f"Workflow: {workflow.id}")
@@ -186,7 +191,6 @@ To set custom Search Attributes, use the `search_attributes` parameter of the ['
 </div>
 
 ```python
-
 # ...
     handle = await client.start_workflow(
         GreetingWorkflow.run,
@@ -196,7 +200,7 @@ To set custom Search Attributes, use the `search_attributes` parameter of the ['
     )
 ```
 
-### How to upsert Search Attributes {#upsert-search-attributes}
+### Upsert Search Attributes {#upsert-search-attributes}
 
 You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
 
@@ -212,12 +216,11 @@ The keys are added to or replace the existing Search Attributes, similar to [`di
 </div>
 
 ```python
-
 # ...
         workflow.upsert_search_attributes({"CustomKeywordField": ["new-value"]})
 ```
 
-### How to remove a Search Attribute from a Workflow {#remove-search-attribute}
+### Remove a Search Attribute from a Workflow {#remove-search-attribute}
 
 To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
 
@@ -231,7 +234,6 @@ To remove a Search Attribute, use the [`upsert_search_attributes()`](https://pyt
 </div>
 
 ```python
-
 # ...
         workflow.upsert_search_attributes({"CustomKeywordField": []})
 ```

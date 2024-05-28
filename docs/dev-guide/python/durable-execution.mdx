@@ -3,7 +3,6 @@ id: durable-execution
 title: Develop code that durably executes - Python SDK dev guide
 sidebar_label: Develop for durability
 description: The Durable Execution section of the Temporal Developer's guide covers advanced beginner concepts for working with Temporal, including testing your code, reviewing workflow event history, adding timers, and understanding determinism. Developing for durable execution is a core aspect of Temporal.
-slug: /dev-guide/python/durable-execution
 toc_max_heading_level: 4
 keywords:
   - determinism
@@ -186,7 +185,6 @@ If the Workflow Definition and the Event History are incompatible, then the test
 </div>
 
 ```python
-
 @pytest.mark.asyncio
 async def test_replay_workflow_history_from_file():
     async with await WorkflowEnvironment.start_time_skipping():
@@ -252,7 +250,7 @@ The most important thing to take away from the section is to make sure you have 
 
 Versioning APIs and versioning strategies are covered in other parts of the developer's guide, this chapter sets the stage to understand why and how to approach those strategies.
 
-{/*TODO ^ update with links to those places */}
+{/* TODO ^ update with links to those places */}
 
 ### The Event History
 
@@ -329,7 +327,6 @@ Use the `workflow.logger` API to log from Workflows to avoid seeing repeated log
 </div>
 
 ```python
-
 import asyncio
 from datetime import timedelta
 

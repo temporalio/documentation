@@ -420,7 +420,6 @@ In the Temporal Java SDK programming model, a [Workflow Definition](/workflows#w
 </div>
 
 ```java
-
 import io.temporal.workflow.WorkflowInterface;
 import io.temporal.workflow.WorkflowMethod;
 
@@ -453,7 +452,6 @@ Now that you've defined your Workflow Interface you can define its implementatio
 </div>
 
 ```java
-
 import io.temporal.activity.ActivityOptions;
 import io.temporal.workflow.Workflow;
 
@@ -521,7 +519,6 @@ The `BackgroundCheckActivity` interface below is an example of a the first part 
 </div>
 
 ```java
-
 import io.temporal.activity.ActivityInterface;
 
 // Activity Interfaces must be annotated with @ActivityInterface
@@ -553,7 +550,6 @@ Now that you've defined your Activity Interface you can define its implementatio
 </div>
 
 ```java
-
 public class BackgroundCheckBoilerplateActivitiesImpl implements BackgroundCheckBoilerplateActivities{
 
   @Override
@@ -617,7 +613,6 @@ Temporal recommends keeping Worker code separate from Workflow and Activity code
 </div>
 
 ```java
-
 import backgroundcheckreplay.BackgroundCheckReplayActivitiesImpl;
 import backgroundcheckreplay.BackgroundCheckReplayWorkflowImpl;
 import backgroundcheckreplay.BackgroundCheckReplayNonDeterministicWorkflowImpl;
@@ -668,7 +663,6 @@ A Temporal Cloud Worker requires that you specify the following in the Client co
 </div>
 
 ```java
-
 package backgroundcheckboilerplate.workers;
 
 import java.io.FileInputStream;
@@ -830,7 +824,6 @@ Set IP address and port in the Service Stubs Options and the Namespace in the Te
 </div>
 
 ```java
-
 import backgroundcheckreplay.BackgroundCheckReplayActivitiesImpl;
 import backgroundcheckreplay.BackgroundCheckReplayWorkflowImpl;
 import backgroundcheckreplay.BackgroundCheckReplayNonDeterministicWorkflowImpl;
@@ -1167,7 +1160,6 @@ This example asserts that the expected value was returned by the invocation of t
 </div>
 
 ```java
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -1205,7 +1197,6 @@ If you require more granular control of the test environments, you can manually 
 and destroy all these parts in methods annotated with `@BeforeEach` and `@AfterEach`
 as defined by JUnit.
 
-
 You annotate the method with @Test and test the results of the Activity via assertions.
 
 ### Testing Workflows {#test-framework-details}
@@ -1240,7 +1231,6 @@ We can also perform a Workflow Replay test, and we'll provide detailed coverage 
 </div>
 
 ```java
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -1332,7 +1322,6 @@ We can also perform a Workflow Replay test, and we'll provide detailed coverage 
 </div>
 
 ```java
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;

@@ -79,14 +79,12 @@ It encodes values in the following order:
 - Protobuf JSON
 - JSON
 
-{/* commenting this out but include this in the TS how-to.
 In SDKs that cannot determine parameter types at runtime (for example, TypeScript), Protobufs aren't included in the default converter.
-Also, Chad: This is only true by default on converting from payloads, but not on converting to payloads. And we have documented how to fix it for converting from payloads: https://legacy-documentation-sdks.temporal.io/typescript/data-converters#protobufs.*/}
 
 For example:
 
 - If a value is an instance of a Protobuf message, it is encoded with [proto3 JSON](https://developers.google.com/protocol-buffers/docs/proto3#json).
-- If a value isn't null, binary, or a Protobuf, it is encoded as JSON. Most common input types — including strings, integers, floating point numbers, and booleans — are serializable as JSON. If any part of it is not serializable as JSON, {/*(for example, a Date—see JSON data types)*/} an error is thrown.
+- If a value isn't null, binary, or a Protobuf, it is encoded as JSON. Most common input types — including strings, integers, floating point numbers, and booleans — are serializable as JSON. If any part of it is not serializable as JSON, {/* (for example, a Date—see JSON data types) */} an error is thrown.
 
 The default Data Converter serializes objects based on their root type, rather than nested types.
 The JSON serializers of some SDKs cannot process lists with Protobuf children objects without implementing a [custom Data Converter](#custom-data-converter).
@@ -237,7 +235,7 @@ Samples:
 
 A Codec Server is an HTTP/HTTPS server that uses a [custom Payload Codec](/production-deployment/data-encryption) to decode your data remotely through endpoints.
 
-{/*This should not have changed with tctl-to-temporal*/}
+{/* This should not have changed with tctl-to-temporal */}
 
 ![](/diagrams/tctl-diagram-codec-server.svg)
 
