@@ -14,7 +14,7 @@ const supportedTech = [
     class: "w-7 h-7",
   },
   {
-    link: "/dev-guide/python",
+    link: "/develop/python",
     image: "/img/python.svg",
     alt: "Python logo",
     class: "w-7 h-7",

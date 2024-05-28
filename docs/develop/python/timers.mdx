@@ -1,0 +1,42 @@
+---
+id: timers
+title: Timers - Python SDK feature guide
+sidebar_label: Timers
+description: Learn how to use timers within Temporal Workflows to delay execution, enabling durable and long-term scheduling of tasks that can persist even if the worker or cluster goes down.
+slug: /develop/python/timers
+toc_max_heading_level: 2
+keywords:
+  - temporal workflow timers
+  - delay workflow execution
+  - durable scheduling
+  - long-term task scheduling
+  - sleep in workflow
+tags:
+  - python
+  - python-sdk
+  - workflows
+  - timers
+---
+
+A Workflow can set a durable timer for a fixed time period.
+In some SDKs, the function is called `sleep()`, and in others, it's called `timer()`.
+
+A Workflow can sleep for months.
+Timers are persisted, so even if your Worker or Temporal Cluster is down when the time period completes, as soon as your Worker and Cluster are back up, the `sleep()` call will resolve and your code will continue executing.
+
+Sleeping is a resource-light operation: it does not tie up the process, and you can run millions of Timers off a single Worker.
+
+To set a Timer in Python, call the [`asyncio.sleep()`](https://docs.python.org/3/library/asyncio-task.html#sleeping) function and pass the duration in seconds you want to wait before continuing.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/continue_as_new/your_workflows_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+
+# ...
+        await asyncio.sleep(10)
+```

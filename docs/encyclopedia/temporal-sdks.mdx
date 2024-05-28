@@ -12,7 +12,7 @@ keywords:
   - replay
   - temporal application
   - temporal sdk
-  - temporal-cluster
+  - temporal-service
   - temporal-sdk
 tags:
   - components
@@ -22,17 +22,19 @@ tags:
   - replay
   - temporal-application
   - temporal-sdk
-  - temporal-cluster
+  - temporal-service
   - temporal-sdk
 ---
 
+import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
+
 Temporal SDKs (software development kits) are an open source collection of tools, libraries, and APIs that enable Temporal Application development.
 
-They offer a [Temporal Client](#temporal-client) to interact with the [Temporal Cluster](/clusters), APIs to develop your [Temporal Application](#temporal-application), and APIs to run horizontally scalable [Workers](/workers#worker).
+They offer a [Temporal Client](#temporal-client) to interact with the [Temporal Service](/clusters), APIs to develop your [Temporal Application](#temporal-application), and APIs to run horizontally scalable [Workers](/workers#worker).
 
 SDKs are more than just a development tool, however.
 The SDK APIs enable developers to write code in a particular pattern that mirrors real world processes.
-The SDK's internal implementation, working in collaboration with the Temporal Cluster, steps through that code, guaranteeing execution progression during application runtime.
+The SDK's internal implementation, working in collaboration with the Temporal Service, steps through that code, guaranteeing execution progression during application runtime.
 
 ## Temporal Applications {#temporal-application}
 
@@ -56,10 +58,10 @@ Hence, a Temporal Application can run for seconds or years in the presence of ar
 
 Each Temporal SDK targets a specific programming language.
 
-- [Go SDK developer's guide](/dev-guide/go/introduction)
+- [Go SDK developer's guide](/dev-guide/go/)
 - [Java SDK developer's guide](/dev-guide/java/introduction)
 - [PHP SDK developer's guide](/dev-guide/php)
-- [Python SDK developer's guide](/dev-guide/python/introduction)
+- [Python SDK developer's guide](/develop/python)
 - [TypeScript SDK developer's guide](/dev-guide/typescript/introduction)
 - [.NET SDK API reference](https://dotnet.temporal.io/)
 
@@ -136,25 +138,14 @@ func LoanApplicationWorkflow {
 
 Another quality of the SDKs lies in their ability to replay Workflow Executions, a complex operation that contributes significantly to the Platform's promised reliability.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">
-      The SDKs Replay code execution to continue from the last step
-    </p>
-  </div>
-  <div className="tdiiw" height="338">
-    <img
-      className="img_ev3q"
-      src="/diagrams/replay-basic.svg"
-      alt="The SDKs Replay code execution to continue from the last step"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/replay-basic.svg" title="The SDKs Replay code execution to continue from the last step" />
 
 We will delve into this idea more later, but for now, it signifies that the SDKs can automatically continue a process from the point of interruption, should a failure occur.
 This capability stems from the SDK's ability to persist each step the program takes.
 
-- [Developing for Durable Execution using the Go SDK](/dev-guide/go/durable-execution)
+The "Developing for Durable Execution" chapter of the Background Check tutorials covers this concept in more detail.
+
+- [Go SDK Background Check tutorial](https://learn.temporal.io/tutorials/go/background-check/durable-execution/)
 
 ## Temporal SDKs major components {#major-components}
 
@@ -162,31 +153,17 @@ This capability stems from the SDK's ability to persist each step the program ta
 
 Temporal SDKs offer developers the following:
 
-- A Temporal Client to communicate with a Temporal Cluster
+- A Temporal Client to communicate with a Temporal Service
 - APIs to develop application code (Workflows & Activities)
 - APIs to configure and run Workers
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">
-      Temporal SDK components create a runtime across your environment and a
-      Temporal Cluster
-    </p>
-  </div>
-  <div className="tdiiw" height="870">
-    <img
-      className="img_ev3q"
-      src="/diagrams/temporal-sdk-components.svg"
-      alt="Temporal SDK components create a runtime across your environment and a Temporal Cluster"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/temporal-sdk-components.svg" title="Temporal SDK components create a runtime across your environment and a Temporal Service" />
 
 Let’s break down each one.
 
 ### Temporal Client
 
-A Temporal Client acts as the bridge for communication between your applications and the Cluster.
+A Temporal Client acts as the bridge for communication between your applications and the Temporal Service.
 The Client performs key functions that facilitate the execution of, management of, and communication with Workflows.
 
 The most common operations that a Temporal Client enables you to perform are the following:
@@ -198,7 +175,7 @@ The most common operations that a Temporal Client enables you to perform are the
 - Start a Workflow Execution.
 
 The following code is an example using the Go SDK.
-It showcases how to initialize a Temporal Client, create a connection to a local Temporal Cluster, and start a Workflow Execution:
+It showcases how to initialize a Temporal Client, create a connection to a local Temporal Service, and start a Workflow Execution:
 
 :::caution Do not copy and use code
 
@@ -208,7 +185,7 @@ For tested code samples and best practices, use your preferred language SDK's de
 - [Go SDK Temporal Client feature guide](/develop/go/temporal-client)
 - [Java SDK Temporal Client feature guide](/develop/java/temporal-client)
 - [PHP SDK Temporal Client feature guide](/dev-guide/php/foundations#connect-to-a-dev-cluster)
-- [Python SDK Temporal Client feature guide](/dev-guide/python/foundations#connect-to-a-dev-cluster)
+- [Python SDK Temporal Client feature guide](/develop/python/temporal-clients#connect-to-a-dev-cluster)
 - [TypeScript SDK Temporal Client feature guide](/dev-guide/typescript/foundations#connect-to-a-dev-cluster)
 
 :::
@@ -295,8 +272,8 @@ A Workflow executes Activities (other functions that interact with external syst
 
 This Workflow code, while executing, can be paused, resumed, and migrated across physical machines without losing state.
 
-When a Workflow calls the API to execute an Activity, the Worker sends a [Command](https://docs.temporal.io/references/commands) back to the Cluster. The Cluster creates Activity Tasks in response which the same or a different Worker can then pick up and begin executing. In this way, the Worker and Cluster work together to incrementally execute Workflow code in a reliable way.
-We discuss this more in detail in [The SDK and Temporal Cluster relationship](/encyclopedia/temporal-sdks#sdk-and-cluster-relationship) section.
+When a Workflow calls the API to execute an Activity, the Worker sends a [Command](https://docs.temporal.io/references/commands) back to the Temporal Service. The Temporal Service creates Activity Tasks in response which the same or a different Worker can then pick up and begin executing. In this way, the Worker and Temporal Service work together to incrementally execute Workflow code in a reliable way.
+We discuss this more in detail in [The SDK and Temporal Service relationship](/encyclopedia/temporal-sdks#sdk-and-cluster-relationship) section.
 
 The SDK APIs also enable developers to write code that more genuinely maps to their process. This is because without a specialized SDK, developers might have to write a lot of boilerplate code. This can lead to code that's hard to maintain, difficult to understand, or that doesn't directly correspond to the underlying business process.
 
@@ -385,7 +362,7 @@ func main() {
 }
 ```
 
-The Worker polls on the specified Task Queue, processing those Tasks, and reporting the results back to the Temporal Cluster. They execute both the Workflows and Activities, and the SDK ensures that they perform these tasks efficiently and reliably.
+The Worker polls on the specified Task Queue, processing those Tasks, and reporting the results back to the Temporal Service. They execute both the Workflows and Activities, and the SDK ensures that they perform these tasks efficiently and reliably.
 
 ### APIs to customize Activity Execution behavior
 
@@ -436,18 +413,18 @@ func LoanCreditCheckActivity(ctx context.Context, loanAmount int) (string, error
 }
 ```
 
-## The SDK and Temporal Cluster relationship {#sdk-and-cluster-relationship}
+## The SDK and Temporal Service relationship {#sdk-and-cluster-relationship}
 
-**How do the Temporal SDKs work with the Temporal Cluster?**
+**How do the Temporal SDKs work with the Temporal Service?**
 
-The Temporal Cluster functions more as a choreographer than a conductor. Rather than directly assigning tasks to Workers, the Cluster arranges the Tasks into a Task Queue while Workers poll the Task Queue. Developers may create a fleet of Workers and tune them so that a Task is picked up as soon as it is available. If a Worker goes down, Tasks can wait until the next Worker is available.
+The Temporal Service functions more as a choreographer than a conductor. Rather than directly assigning tasks to Workers, the Temporal Service arranges the Tasks into a Task Queue while Workers poll the Task Queue. Developers may create a fleet of Workers and tune them so that a Task is picked up as soon as it is available. If a Worker goes down, Tasks can wait until the next Worker is available.
 
-A Workflow might request to execute an Activity, start a Timer, or start a Child Workflow, each of which translates into a Command, dispatched to the Temporal Cluster.
-In addition to acting on these Commands, the Cluster documents that interaction by appending their corresponding Events into to the Workflow Execution's Event History.
+A Workflow might request to execute an Activity, start a Timer, or start a Child Workflow, each of which translates into a Command, dispatched to the Temporal Service.
+In addition to acting on these Commands, the Temporal Service documents that interaction by appending their corresponding Events into to the Workflow Execution's Event History.
 
-Take for instance the call to execute an Activity. When a Workflow invokes it, the Worker doesn’t immediately execute that Activity code. Instead, it generates a ScheduleActivityTask Command, dispatching it to the Cluster. In response, the Cluster queues up a new Activity Task. Only when a Worker finds itself free, it collects the task and begins executing the Activity code.
+Take for instance the call to execute an Activity. When a Workflow invokes it, the Worker doesn’t immediately execute that Activity code. Instead, it generates a ScheduleActivityTask Command, dispatching it to the Temporal Service. In response, the Temporal Service queues up a new Activity Task. Only when a Worker finds itself free, it collects the task and begins executing the Activity code.
 
-The Cluster persists Workflow Execution Event History, so that if there is a failure, the SDK Worker is able to Replay the execution and resume where it left off.
+The Temporal Service persists Workflow Execution Event History, so that if there is a failure, the SDK Worker is able to Replay the execution and resume where it left off.
 
 This is where the deterministic constraints of the Workflow code comes into play, requiring the use of Activities to create side effects and interact with the outside world.
 
@@ -482,125 +459,55 @@ func (a *Activities) NotifyApplicantActivity(ctx context.Context, input *NotifyA
 
 The Activity above is performing a single call to an external API. Since the call can fail due to transient issues, we define it outside of the Workflow and provide it with retry options.
 
-When you create a new Worker process, the Worker creates a long-lasting connection to the Cluster, polling a Task Queue for Tasks that related to the code it is capable of executing.
+When you create a new Worker process, the Worker creates a long-lasting connection to the Temporal Service, polling a Task Queue for Tasks that related to the code it is capable of executing.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">A Worker long polls for Tasks</p>
-  </div>
-  <div className="tdiiw" height="661">
-    <img
-      className="img_ev3q"
-      src="/diagrams/how-sdk-works-1.svg"
-      alt="A Worker long polls for Tasks"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/how-sdk-works-1.svg" title="A Worker long polls for Tasks" />
 
 Although the Worker is now running, unless a Workflow is explicitly started, the Task Queue doesn't have any Tasks on it and so, no code executes.
 We can use a Temporal Client (available in Temporal SDKs and the Temporal CLI) to start a new Workflow.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Start a Workflow using a Temporal Client</p>
-  </div>
-  <div className="tdiiw" height="901">
-    <img
-      className="img_ev3q"
-      src="/diagrams/how-sdk-works-2.svg"
-      alt="Start a Workflow using a Temporal Client"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/how-sdk-works-2.svg" title="Start a Workflow using a Temporal Client" />
 
 Starting a Workflow Execution creates a new Event, WorkflowExecutionStarted, and adds it to the Workflow Execution's Event History.
 
-The Temporal Cluster then schedules a Workflow Task by adding it to the Task Queue.
+The Temporal Service then schedules a Workflow Task by adding it to the Task Queue.
 When the Worker has capacity, it picks up this Task, and begin executing code.
 
 Each step of the Task (e.g. Scheduled, Started, and Completed), gets recorded into the Event History.
 
-- Scheduled means that the Cluster has added a Task to the Task Queue.
+- Scheduled means that the Temporal Service has added a Task to the Task Queue.
 - Started means that the Worker has dequeued the Task.
-- Completed means that the Worker finished executing the Task by responding to the Cluster.
+- Completed means that the Worker finished executing the Task by responding to the Temporal Service.
 
-When the call to invoke the Activity is evaluated, the Worker suspends executing the code and sends a Command to the Temporal Cluster to schedule an Activity Task.
+When the call to invoke the Activity is evaluated, the Worker suspends executing the code and sends a Command to the Temporal Service to schedule an Activity Task.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">
-      Worker suspends code execution and sends a Command to the Cluster
-    </p>
-  </div>
-  <div className="tdiiw" height="661">
-    <img
-      className="img_ev3q"
-      src="/diagrams/how-sdk-works-3.svg"
-      alt="Worker suspends code execution and sends a Command to the Cluster"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/how-sdk-works-3.svg" title="Worker suspends code execution and sends a Command to the Temporal Service" />
 
 When the Worker process can perform more work, it picks up the Activity Task and begins executing the Activity code, which includes the call to the external API.
 
 If the Activity fails, say the API goes down, Temporal will automatically retry the Activity with one second between intervals, as the configurations have defined, an infinite amount of times until the Activity succeeds or is canceled.
 
-In the case where the calls succeeds, and the code completes, the Worker tells the Cluster the Activity Task completed.
+In the case where the calls succeeds, and the code completes, the Worker tells the Temporal Service the Activity Task completed.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">The Worker reports that the Activity Execution completed</p>
-  </div>
-  <div className="tdiiw" height="661">
-    <img
-      className="img_ev3q"
-      src="/diagrams/how-sdk-works-activity.svg"
-      alt="The Worker reports that the Activity Execution completed"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/how-sdk-works-activity.svg" title="The Worker reports that the Activity Execution completed" />
 
 Included is any data that was returned from the Activity (results of the API call), which is then persisted in the Workflow Execution Event History, and is now accessible to the Workflow code.
 
-The Cluster creates a new Workflow Task which the Worker picks up.
+The Temporal Service creates a new Workflow Task which the Worker picks up.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">The Worker picks up the new Task</p>
-  </div>
-  <div className="tdiiw" height="661">
-    <img
-      className="img_ev3q"
-      src="/diagrams/how-sdk-works-1.svg"
-      alt="The Worker picks up the new Task"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/how-sdk-works-1.svg" title="The Worker picks up the new Task" />
 
 This is when the SDK Worker Replays the Workflow code, uses the Event History as guidance on what to expect. If the Replay encounters an Event that doesn’t match up with what is expected from the code, a [non-determinism](/references/errors#non-deterministic-error) error gets thrown.
 
 If there is alignment, the Worker continues evaluating code.
 
-Assuming the Activity Execution is successful, the Workflow now has the result of the Activity and the Worker is able to finish evaluating and executing the Workflow code, responding to the Cluster when complete.
+Assuming the Activity Execution is successful, the Workflow now has the result of the Activity and the Worker is able to finish evaluating and executing the Workflow code, responding to the Temporal Service when complete.
 
 The result of the Workflow can now be retrieved using a Temporal Client.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">
-      The Temporal Client can now access the result of the Workflow
-    </p>
-  </div>
-  <div className="tdiiw" height="901">
-    <img
-      className="img_ev3q"
-      src="/diagrams/how-sdk-works-4.svg"
-      alt="The Temporal Client can now access the result of the Workflow"
-    />
-  </div>
-</div>
+<PrettyImage src="/diagrams/how-sdk-works-4.svg" title="The Temporal Client can now access the result of the Workflow" />
 
-And that’s how a Temporal Worker and Cluster work together.
+And that’s how a Temporal Worker and Temporal Service work together.
 
 ## Language specific details
 

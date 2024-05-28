@@ -223,7 +223,7 @@
           "value": "python"
         }
       ],
-      "destination": "/dev-guide/python/foundations:path*",
+      "destination": "/develop/python/foundations:path*",
       "permanent": false
     },
     {
@@ -235,7 +235,7 @@
           "value": "python"
         }
       ],
-      "destination": "/dev-guide/python/features:path*",
+      "destination": "/develop/python/features:path*",
       "permanent": false
     },
     {
@@ -247,7 +247,7 @@
           "value": "python"
         }
       ],
-      "destination": "/dev-guide/python/observability:path*",
+      "destination": "/develop/python/observability:path*",
       "permanent": false
     },
     {
@@ -259,7 +259,7 @@
           "value": "python"
         }
       ],
-      "destination": "/dev-guide/python/testing:path*",
+      "destination": "/develop/python/testing:path*",
       "permanent": false
     },
     {
@@ -1947,16 +1947,8 @@
       "destination": "/self-hosted-guide/monitoring"
     },
     {
-      "source": "/kb/python-sandbox-environment",
-      "destination": "/python/python-sandbox-environment"
-    },
-    {
       "source": "production-readiness/:path*",
       "destination": "/self-hosted-guide"
-    },
-    {
-      "source": "/kb/python-sandbox-environment",
-      "destination": "/python/python-sandbox-environment"
     },
     {
       "source": "/kb/cadence-to-temporal",
@@ -1995,8 +1987,24 @@
       "destination": "/encyclopedia/python-sdk-sync-vs-async"
     },
     {
+      "source": "/kb/python-sandbox-environment",
+      "destination": "/encyclopedia/python-sdk-sandbox"
+    },
+    {
       "source": "/dev-guide/python/sandbox",
       "destination": "/encyclopedia/python-sdk-sandbox"
+    },
+    {
+      "source": "/dev-guide/go/introduction",
+      "destination": "https://learn.temporal.io/tutorials/go/background-check/introduction/"
+    },
+    {
+      "source": "/dev-guide/go/project-setup",
+      "destination": "https://learn.temporal.io/tutorials/go/background-check/project-setup/"
+    },
+    {
+      "source": "/dev-guide/go/durable-execution",
+      "destination": "https://learn.temporal.io/tutorials/go/background-check/durable-execution/"
     }
   ]
 }

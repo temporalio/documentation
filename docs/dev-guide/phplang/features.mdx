@@ -57,6 +57,7 @@ In this section you can find the following:
 - [How to develop Queries](#queries)
 - [How to develop with Updates](#updates)
 - [How to start a Child Workflow Execution](#child-workflows)
+- [How to Schedule a Workflow](#schedule-a-workflow)
 - [How to start a Temporal Cron Job](#temporal-cron-jobs)
 - [How to use Continue-As-New](#continue-as-new)
 - [How to set Workflow timeouts & retries](#workflow-timeouts)
@@ -491,7 +492,7 @@ use Temporal\Client\Update\UpdateOptions;
 use Temporal\Client\Update\WaitPolicy;
 use Temporal\Client\Update\LifecycleStage;
 
-// Create a typed Workflow stub for GreetingsWorkflow
+// Create an untyped Workflow stub for GreetingsWorkflow
 $stub = $client->newUntypedWorkflowStub('GreetingWorkflow', $workflowOptions);
 
 // Start the Workflow
@@ -824,12 +825,12 @@ The following code demonstrates how to complete the Activity successfully using 
 [app/src/AsyncActivityCompletion/CompleteCommand.php](https://github.com/temporalio/samples-php/blob/main/app/src/AsyncActivityCompletion/CompleteCommand.php)
 
 ```php
-        $client = $this->workflowClient->newActivityCompletionClient();
-        // Complete the Activity.
-        $client->completeByToken(
-            base64_decode($input->getArgument('token')),
-            $input->getArgument('message')
-        );
+$client = $this->workflowClient->newActivityCompletionClient();
+// Complete the Activity.
+$client->completeByToken(
+    base64_decode($input->getArgument('token')),
+    $input->getArgument('message')
+);
 ```
 
 <!--SNIPEND-->
@@ -1005,6 +1006,148 @@ yield Workflow::timer(300); // sleep for 5 minutes
 ```
 
 You cannot set a Timer invocation inside the `await` or `awaitWithTimeout` methods.
+
+## How to Schedule a Workflow {#schedule-a-workflow}
+
+Scheduling Workflows is a crucial aspect of any automation process, especially when dealing with time-sensitive tasks. By scheduling a Workflow, you can automate repetitive tasks, reduce the need for manual intervention, and ensure timely execution of your business processes
+
+Use any of the following action to help Schedule a Workflow Execution and take control over your automation process.
+
+### How to create a Schedule in PHP {#create-schedule}
+
+The create action enables you to create a new Schedule. When you create a new Schedule, a unique Schedule ID is generated, which you can use to reference the Schedule in other Schedule commands.
+
+To create a Scheduled Workflow Execution in PHP, use the `createSchedule()` method on the `ScheduleClient`. Schedules must be initialized with a Schedule ID,
+
+```php
+use Temporal\Client\Schedule;
+
+/** @var \Temporal\Client\ScheduleClient $scheduleClient */
+
+// Create a Schedule
+$handle = $scheduleClient->createSchedule(
+    Schedule\Schedule::new()->withAction(
+        Schedule\Action\StartWorkflowAction::new('GreetingWorkflow')
+            ->withInput(['World'])
+            ->withTaskQueue('TaskQueue')
+            ->withWorkflowExecutionTimeout('4 minutes')
+    )->withSpec(
+        Schedule\Spec\ScheduleSpec::new()
+            ->withIntervalList(5 * 60) // every 5 minutes
+            ->withJitter(60) // with jitter of 1 minute
+    ),
+    scheduleId: 'my-schedule-id',
+);
+```
+
+### How to backfill a Schedule in PHP {#backfill-schedule}
+
+The backfill action executes Actions ahead of their specified time range. This command is useful when you need to execute a missed or delayed Action, or when you want to test the Workflow before its scheduled time.
+
+To Backfill a Scheduled Workflow Execution in PHP, use the `backfill()` method on the `ScheduleHandle`.
+
+```php
+use Temporal\Client\Schedule;
+
+/** @var \Temporal\Client\ScheduleClient $scheduleClient */
+
+$handle = $scheduleClient->getHandle('my-schedule-id');
+
+$now = new DateTimeImmutable();
+$handle->backfill([
+    Schedule\BackfillPeriod::new($now->modify('-5000ms'), $now->modify('-2500ms')),
+    Schedule\BackfillPeriod::new($now->modify('-2500ms'), $now),
+]);
+```
+
+### How to delete a Schedule in PHP {#delete-schedule}
+
+The delete action enables you to delete a Schedule. When you delete a Schedule, it does not affect any Workflows that were started by the Schedule.
+
+To delete a Scheduled Workflow Execution in PHP, use the `delete()` method on the `Schedule Handle`.
+
+```php
+/** @var \Temporal\Client\ScheduleClient $scheduleClient */
+
+$handle = $scheduleClient->getHandle('my-schedule-id');
+$handle->delete();
+```
+
+### How to describe a Schedule in PHP {#describe-schedule}
+
+The describe action shows the current Schedule configuration, including information about past, current, and future Workflow Runs. This command is helpful when you want to get a detailed view of the Schedule and its associated Workflow Runs.
+
+To describe a Scheduled Workflow Execution in PHP, use the `describe()` method on the `ScheduleHandle`.
+
+```php
+/** @var \Temporal\Client\ScheduleClient $scheduleClient */
+
+$handle = $scheduleClient->getHandle('my-schedule-id');
+$description = $handle->describe();
+```
+
+### How to List a Scheduled Workflow in PHP {#list-schedule}
+
+The list action lists all the available Schedules. This command is useful when you want to view a list of all the Schedules and their respective Schedule IDs.
+
+To list all schedules, use the `listSchedules()` asynchronous method on the `ScheduleClient`.
+If a schedule is added or deleted, it may not be available in the list immediately.
+
+```php
+/** @var \Temporal\Client\ScheduleClient $scheduleClient */
+
+$schedules = $scheduleClient->listSchedules();
+```
+
+### How to pause a Schedule in PHP {#pause-schedule}
+
+The pause action enables you to pause and unpause a Schedule. When you pause a Schedule, all the future Workflow Runs associated with the Schedule are temporarily stopped. This command is useful when you want to temporarily halt a Workflow due to maintenance or any other reason.
+
+To pause a Scheduled Workflow Execution in PHP, use the `pause()` method on the `ScheduleHandle`.
+You can pass a `note` to the `pause()` method to provide a reason for pausing the schedule.
+
+```php
+/** @var \Temporal\Client\ScheduleClient $scheduleClient */
+
+$handle = $scheduleClient->getHandle('my-schedule-id');
+$handle->pause("Pausing the schedule for now");
+```
+
+### How to trigger a Schedule in PHP {#trigger-schedule}
+
+The trigger action triggers an immediate action with a given Schedule. By default, this action is subject to the Overlap Policy of the Schedule. This command is helpful when you want to execute a Workflow outside of its scheduled time.
+
+To trigger a Scheduled Workflow Execution in PHP, use the `trigger()` method on the `ScheduleHandle`.
+
+```php
+/** @var \Temporal\Client\ScheduleClient $scheduleClient */
+
+$handle = $scheduleClient->getHandle('my-schedule-id');
+$handle->trigger();
+```
+
+### How to update a Schedule in PHP {#update-schedule}
+
+The update action enables you to update an existing Schedule. This command is useful when you need to modify the Schedule's configuration, such as changing the start time, end time, or interval.
+
+Create a function that takes `ScheduleUpdateInput` and returns `ScheduleUpdate`.
+To update a Schedule, use a callback to build the update from the description.
+The following example updates the Schedule to set a limited number of actions.
+
+```php
+use Temporal\Client\Schedule;
+/** @var \Temporal\Client\ScheduleClient $scheduleClient */
+
+$handle = $scheduleClient->getHandle('my-schedule-id');
+$handle->update(
+    Schedule\Schedule::new()
+        ->withState(
+           Schedule\Spec\ScheduleState::new()
+                ->withLimitedActions(true)
+                ->withRemainingActions(10)
+        )
+);
+```
 
 ## How to use Temporal Cron Jobs {#temporal-cron-jobs}
 
