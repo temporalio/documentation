@@ -845,7 +845,7 @@ Note that this script has been updated for Temporal Server v1.20, which requires
 
 For Temporal Server v1.19 and earlier, or if using Elasticsearch for advanced Visibility, you can create custom Search Attributes without a Namespace association, as shown in the following example.
 
-{/*CHECK FOR ACCURACY*/}
+{/* CHECK FOR ACCURACY */}
 
 ```bash
 add_custom_search_attributes() {
@@ -870,7 +870,7 @@ Removing Search Attributes is not supported on Temporal Cloud.
 
 For example, if using Elasticsearch for advanced Visibility, to remove a custom Search Attribute called `CustomSA` of type Keyword use the following command:
 
-{/*CHECK FOR ACCURACY*/}
+{/* CHECK FOR ACCURACY */}
 
 ```
 temporal attribute search-attribute remove --name="CustomSA"
@@ -878,7 +878,7 @@ temporal attribute search-attribute remove --name="CustomSA"
 
 With Temporal Server v1.20, if using a SQL database for advanced Visibility, you need to specify the Namespace in your command, as shown in the following command:
 
-{/*CHECK FOR ACCURACY*/}
+{/* CHECK FOR ACCURACY */}
 
 ```
 temporal attribute search-attribute remove --name="CustomSA" --namespace="SomeNamespace"

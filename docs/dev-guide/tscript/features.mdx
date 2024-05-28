@@ -176,7 +176,7 @@ Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#defi
 import { defineQuery } from '@temporalio/workflow';
 
 export const getValueQuery = defineQuery<number | undefined, [string]>(
-  'getValue'
+  'getValue',
 );
 ```
 
@@ -329,7 +329,7 @@ The following is their [entire source code](https://github.com/temporalio/sdk-ty
  * Define a signal method for a Workflow.
  */
 export function defineSignal<Args extends any[] = []>(
-  name: string
+  name: string,
 ): SignalDefinition<Args> {
   return {
     type: 'signal',
@@ -341,7 +341,7 @@ export function defineSignal<Args extends any[] = []>(
  * Define a query method for a Workflow.
  */
 export function defineQuery<Ret, Args extends any[] = []>(
-  name: string
+  name: string,
 ): QueryDefinition<Ret, Args> {
   return {
     type: 'query',
@@ -607,7 +607,7 @@ To asynchronously complete an Activity, call [`AsyncCompletionClient.complete`](
 [activities-examples/src/activities/async-completion.ts](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/activities/async-completion.ts)
 
 ```ts
-import { CompleteAsyncError, activityInfo } from '@temporalio/activity';
+import { activityInfo, CompleteAsyncError } from '@temporalio/activity';
 import { AsyncCompletionClient } from '@temporalio/client';
 
 export async function doSomethingAsync(): Promise<string> {
@@ -620,7 +620,7 @@ export async function doSomethingAsync(): Promise<string> {
 async function doSomeWork(taskToken: Uint8Array): Promise<void> {
   const client = new AsyncCompletionClient();
   // does some work...
-  await client.complete(taskToken, "Job's done!");
+  await client.complete(taskToken, 'Job\'s done!');
 }
 ```
 
@@ -716,7 +716,7 @@ export async function parentWorkflow(...names: string[]): Promise<string> {
         // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
         // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
       })
-    )
+    ),
   );
   return responseArray.join('\n');
 }
@@ -770,7 +770,7 @@ export async function parentWorkflow(...names: string[]): Promise<string> {
         // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
         // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
       })
-    )
+    ),
   );
   return responseArray.join('\n');
 }
@@ -790,7 +790,7 @@ To cause a Workflow Execution to [Continue-As-New](/workflows#continue-as-new), 
 [continue-as-new/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/continue-as-new/src/workflows.ts)
 
 ```ts
-import { continueAsNew, sleep, log } from '@temporalio/workflow';
+import { continueAsNew, log, sleep } from '@temporalio/workflow';
 
 export async function loopingWorkflow(iteration = 0): Promise<void> {
   if (iteration === 10) {
@@ -823,7 +823,7 @@ const MAX_ITERATIONS = 1;
 
 export async function entityWorkflow(
   input: Input,
-  isNew = true
+  isNew = true,
 ): Promise<void> {
   try {
     const pendingUpdates = Array<Update>();
@@ -1029,7 +1029,7 @@ export class UpdatableTimer implements PromiseLike<void> {
       if (
         !(await wf.condition(
           () => this.deadlineUpdated,
-          this.#deadline - Date.now()
+          this.#deadline - Date.now(),
         ))
       ) {
         break;
@@ -1039,7 +1039,7 @@ export class UpdatableTimer implements PromiseLike<void> {
 
   then<TResult1 = void, TResult2 = never>(
     onfulfilled?: (value: void) => TResult1 | PromiseLike<TResult1>,
-    onrejected?: (reason: any) => TResult2 | PromiseLike<TResult2>
+    onrejected?: (reason: any) => TResult2 | PromiseLike<TResult2>,
   ): PromiseLike<TResult1 | TResult2> {
     return this.run().then(onfulfilled, onrejected);
   }
@@ -1181,11 +1181,11 @@ import {
   EncodingType,
   METADATA_ENCODING_KEY,
   Payload,
-  PayloadConverterWithEncoding,
   PayloadConverterError,
+  PayloadConverterWithEncoding,
 } from '@temporalio/common';
-import EJSON from 'ejson';
 import { decode, encode } from '@temporalio/common/lib/encoding';
+import EJSON from 'ejson';
 
 /**
  * Converts between values and [EJSON](https://docs.meteor.com/api/ejson.html) Payloads.
@@ -1201,10 +1201,12 @@ export class EjsonPayloadConverter implements PayloadConverterWithEncoding {
       ejson = EJSON.stringify(value);
     } catch (e) {
       throw new UnsupportedEjsonTypeError(
-        `Can't run EJSON.stringify on this value: ${value}. Either convert it (or its properties) to EJSON-serializable values (see https://docs.meteor.com/api/ejson.html ), or create a custom data converter. EJSON.stringify error message: ${errorMessage(
-          e
-        )}`,
-        e as Error
+        `Can't run EJSON.stringify on this value: ${value}. Either convert it (or its properties) to EJSON-serializable values (see https://docs.meteor.com/api/ejson.html ), or create a custom data converter. EJSON.stringify error message: ${
+          errorMessage(
+            e,
+          )
+        }`,
+        e as Error,
       );
     }
 
@@ -1228,7 +1230,7 @@ export class UnsupportedEjsonTypeError extends PayloadConverterError {
 
   constructor(
     message: string | undefined,
-    public readonly cause?: Error
+    public readonly cause?: Error,
   ) {
     super(message ?? undefined);
   }
@@ -1252,7 +1254,7 @@ import { EjsonPayloadConverter } from './ejson-payload-converter';
 
 export const payloadConverter = new CompositePayloadConverter(
   new UndefinedPayloadConverter(),
-  new EjsonPayloadConverter()
+  new EjsonPayloadConverter(),
 );
 ```
 
@@ -1325,11 +1327,10 @@ And they get parsed correctly for the Workflow:
 import type { Result, User } from './types';
 
 export async function example(user: User): Promise<Result> {
-  const success =
-    user.createdAt.getTime() < Date.now() &&
-    user.hp > 50 &&
-    user.matcher.test('Kaladin Stormblessed') &&
-    user.token instanceof Uint8Array;
+  const success = user.createdAt.getTime() < Date.now()
+    && user.hp > 50
+    && user.matcher.test('Kaladin Stormblessed')
+    && user.token instanceof Uint8Array;
   return { success, at: new Date() };
 }
 ```
@@ -1411,7 +1412,7 @@ export const payloadConverter = new CompositePayloadConverter(
   new UndefinedPayloadConverter(),
   new BinaryPayloadConverter(),
   new ProtobufBinaryPayloadConverter(root),
-  new JsonPayloadConverter()
+  new JsonPayloadConverter(),
 );
 ```
 
@@ -1503,7 +1504,7 @@ export async function example(input: foo.bar.ProtoInput): Promise<ProtoResult> {
 import { foo, ProtoResult } from '../protos/root';
 
 export async function protoActivity(
-  input: foo.bar.ProtoInput
+  input: foo.bar.ProtoInput,
 ): Promise<ProtoResult> {
   return ProtoResult.create({
     sentence: `${input.name} is ${input.age} years old.`,
@@ -1545,15 +1546,15 @@ The following is an example class that implements the `PayloadCodec` interface:
 [encryption/src/encryption-codec.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/encryption-codec.ts)
 
 ```ts
-import { webcrypto as crypto } from 'node:crypto';
 import {
   METADATA_ENCODING_KEY,
   Payload,
   PayloadCodec,
   ValueError,
 } from '@temporalio/common';
-import { temporal } from '@temporalio/proto';
 import { decode, encode } from '@temporalio/common/lib/encoding';
+import { temporal } from '@temporalio/proto';
+import { webcrypto as crypto } from 'node:crypto';
 import { decrypt, encrypt } from './crypto';
 
 const ENCODING = 'binary/encrypted';
@@ -1562,7 +1563,7 @@ const METADATA_ENCRYPTION_KEY_ID = 'encryption-key-id';
 export class EncryptionCodec implements PayloadCodec {
   constructor(
     protected readonly keys: Map<string, crypto.CryptoKey>,
-    protected readonly defaultKeyId: string
+    protected readonly defaultKeyId: string,
   ) {}
 
   static async create(keyId: string): Promise<EncryptionCodec> {
@@ -1581,9 +1582,9 @@ export class EncryptionCodec implements PayloadCodec {
         // Encrypt entire payload, preserving metadata
         data: await encrypt(
           temporal.api.common.v1.Payload.encode(payload).finish(),
-          this.keys.get(this.defaultKeyId)! // eslint-disable-line @typescript-eslint/no-non-null-assertion
+          this.keys.get(this.defaultKeyId)!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
         ),
-      }))
+      })),
     );
   }
 
@@ -1591,8 +1592,8 @@ export class EncryptionCodec implements PayloadCodec {
     return Promise.all(
       payloads.map(async (payload) => {
         if (
-          !payload.metadata ||
-          decode(payload.metadata[METADATA_ENCODING_KEY]) !== ENCODING
+          !payload.metadata
+          || decode(payload.metadata[METADATA_ENCODING_KEY]) !== ENCODING
         ) {
           return payload;
         }
@@ -1603,7 +1604,7 @@ export class EncryptionCodec implements PayloadCodec {
         const keyIdBytes = payload.metadata[METADATA_ENCRYPTION_KEY_ID];
         if (!keyIdBytes) {
           throw new ValueError(
-            'Unable to decrypt Payload without encryption key id'
+            'Unable to decrypt Payload without encryption key id',
           );
         }
 
@@ -1616,7 +1617,7 @@ export class EncryptionCodec implements PayloadCodec {
         const decryptedPayloadBytes = await decrypt(payload.data, key);
         console.log('Decrypting payload.data:', payload.data);
         return temporal.api.common.v1.Payload.decode(decryptedPayloadBytes);
-      })
+      }),
     );
   }
 }
@@ -1632,7 +1633,7 @@ async function fetchKey(_keyId: string): Promise<crypto.CryptoKey> {
       name: 'AES-GCM',
     },
     true,
-    ['encrypt', 'decrypt']
+    ['encrypt', 'decrypt'],
   );
 
   return cryptoKey;
@@ -1721,7 +1722,7 @@ All interceptor methods are optional—it's up to the implementor to choose whic
 
 ### Interceptor examples
 
-{/*TODO use snipsync*/}
+{/* TODO use snipsync */}
 
 **Log start and completion of Activities**
 
@@ -1739,7 +1740,7 @@ export class ActivityLogInterceptor
 
   async scheduleActivity(
     input: ActivityInput,
-    next: Next<WorkflowOutboundCallsInterceptor, 'scheduleActivity'>
+    next: Next<WorkflowOutboundCallsInterceptor, 'scheduleActivity'>,
   ): Promise<unknown> {
     console.log('Starting activity', { activityType: input.activityType });
     try {
@@ -1775,7 +1776,7 @@ export class DumbWorkflowAuthInterceptor
 {
   public async execute(
     input: WorkflowInput,
-    next: Next<WorkflowInboundCallsInterceptor, 'execute'>
+    next: Next<WorkflowInboundCallsInterceptor, 'execute'>,
   ): Promise<unknown> {
     const authHeader = input.headers.auth;
     const { user, password } = authHeader
