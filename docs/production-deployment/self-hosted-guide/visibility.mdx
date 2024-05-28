@@ -387,14 +387,6 @@ We recommend using Elasticsearch for large-scale operations on the Temporal Clus
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file to add Elasticsearch as the `visibilityStore`, and run the index schema setup commands.
 
-{/* :::note
-
-The following steps are needed only if you have a "plain" [Temporal Server Docker image](https://hub.docker.com/r/temporalio/server).
-
-If you operate a Temporal Cluster using our [Helm charts](https://github.com/temporalio/helm-charts) or
-[Docker Compose](https://github.com/temporalio/docker-compose), the Elasticsearch index schema and index are created automatically using the [auto-setup Docker image](https://hub.docker.com/r/temporalio/auto-setup).
-
-::: */}
 
 **Persistence configuration**
 
