@@ -1,0 +1,130 @@
+---
+id: temporal-client
+title: Temporal Client - .NET SDK feature guide
+sidebar_label: Temporal Client
+description: Use a Temporal Client to connect to a Temporal Service.
+keywords:
+  - developer guide
+  - sdk
+  - dotnet
+  - temporal client
+tags:
+  - developer-guide
+  - sdk
+  - dotnet
+  - temporal-client
+---
+
+This page shows how to do the following:
+
+- [Create a Temporal Client](#create-a-client)
+- [Connect to Temporal Cloud](#connect-to-temporal-cloud)
+- [Start a Workflow](#start-workflow)
+- [Get Workflow results](#get-workflow-results)
+
+
+## Create a Temporal Client {#create-a-client}
+
+**How to create a Temporal Client using the Temporal .NET SDK**
+
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/clusters).
+Communication with a Temporal Service includes, but isn't limited to, the following:
+
+- Starting Workflow Executions.
+- Sending Signals to Workflow Executions.
+- Sending Queries to Workflow Executions.
+- Getting the results of a Workflow Execution.
+- Providing an Activity Task Token.
+
+:::caution
+
+A Temporal Client cannot be initialized and used inside a Workflow.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Service.
+
+:::
+
+When you are running a Temporal Service locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
+Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
+
+Use the `ConnectAsync()` static method on the `Temporalio.Client.TemporalClient` class to create and connect to a Temporal Client to the Temporal Service.
+
+```csharp
+var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
+```
+
+## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+
+**How to connect to Temporal Cloud using the Temporal .NET SDK**
+
+When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
+
+- The [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
+- The [Namespace's gRPC endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint).
+  An endpoint listing is available at the [Temporal Cloud Website](https://cloud.temporal.io/namespaces) on each Namespace detail page.
+  The endpoint contains the Namespace Id and port.
+- mTLS CA certificate.
+- mTLS private key.
+
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
+
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+
+Use the `ConnectAsync()` static method on the `Temporalio.Client.TemporalClient` class to create and connect to a Temporal Client to the Temporal Service.
+Specify the `Tls` property of the connection options to connect to a Temporal Service with TLS enabled.
+
+```csharp
+var client = await TemporalClient.ConnectAsync(new("my-namespace.a1b2c.tmprl.cloud:7233")
+{
+    Namespace = "my-namespace.a1b2c",
+    Tls = new()
+    {
+        ClientCert = await File.ReadAllBytesAsync("my-cert.pem"),
+        ClientPrivateKey = await File.ReadAllBytesAsync("my-key.pem"),
+    },
+});
+```
+
+## Start a Workflow {#start-workflow}
+
+**How to start a Workflow using the Temporal .NET SDK**
+
+[Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+
+A request to spawn a Workflow Execution causes the Temporal Service to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
+The Temporal Service then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
+
+To start a Workflow Execution in .NET, use either the `StartWorkflowAsync()` or `ExecuteWorkflowAsync()` methods in the Client.
+You must set a [Workflow Id](/workflows#workflow-id) and [Task Queue](/workers#task-queue) in the `WorkflowOptions` given to the method.
+
+```csharp
+var result = await client.ExecuteWorkflowAsync(
+    (MyWorkflow wf) => wf.RunAsync(),
+    new(id: "my-workflow-id", taskQueue: "my-task-queue");
+Console.WriteLine("Result: {0}", result);
+```
+
+## Get Workflow results {#get-workflow-results}
+
+**How to get the results of a Workflow Execution using the Temporal .NET SDK**
+
+If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
+
+The Workflow Id, Run Id, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its result.
+
+It's possible to both block progress on the result (synchronous execution) or get the result at some other point in time (asynchronous execution).
+
+In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
+
+Use `StartWorkflowAsync()` or `GetWorkflowHandle()` to return a Workflow handle.
+Then use the `GetResultAsync()` method to await on the result of the Workflow.
+
+To get a handle for an existing Workflow by its Id, you can use `GetWorkflowHandle()`.
+
+Then use [`DescribeAsync()`](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_DescribeAsync_Temporalio_Client_WorkflowDescribeOptions_) to get the current status of the Workflow.
+If the Workflow does not exist, this call fails.
+
+```csharp
+var handle = client.GetWorkflowHandle("my-workflow-id");
+var result = await client.GetResultAsync<string>();
+Console.WriteLine("Result: {0}", result);
+```

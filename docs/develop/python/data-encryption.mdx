@@ -1,38 +1,32 @@
 ---
-id: converters
-title: Converters and Codecs - Python SDK feature guide
-sidebar_label: Converters and Codecs
+id: data-encryption
+title: Data encryption
+sidebar_label: Data encryption
 description: The Converters and Codecs section of the Temporal Developer's guide provides guidance on how to support compression, encryption, and other special data handling by implementing custom converters and codecs.
-slug: /dev-guide/python/converters
-toc_max_heading_level: 4
+toc_max_heading_level: 2
 keywords:
-  - data converter
-  - developer-guide
-  - developer-guide-doc-type
-  - how-to-doc-type
-  - payload conversion
-  - payload converter
-  - python
-  - python sdk
+  - temporal python data encryption
+  - custom payload codec
+  - custom data converter
+  - payload conversion sequence
+  - custom payload converter
+  - converting custom types
+  - custom json encoding
 tags:
-  - data-converter
-  - developer-guide
-  - developer-guide-doc-type
-  - how-to-doc-type
-  - payload-conversion
-  - payload-converter
   - python
   - python-sdk
+  - data-encryption
+  - data-conversion
 ---
 
 This page shows the following:
 
-- How to use a custom Payload Codec
-- How to use a custom Payload Converter
+- [How to use a custom Payload Codec](#custom-payload-codec)
+- [How to use a custom Payload Converter](#custom-payload-converter)
 
 ## Custom Payload Codec {#custom-payload-codec}
 
-**How to use a custom Payload Codec in Python.**
+**How to use a custom Payload Codec using Python with the Temporal Python SDK.**
 
 Custom Data Converters can change the default Temporal Data Conversion behavior by adding hooks, sending payloads to external storage, or performing different encoding steps.
 If you only need to change the encoding performed on your payloads -- by adding compression or encryption -- you can override the default Data Converter by creating a new `PayloadCodec`.
@@ -107,7 +101,7 @@ When the Data Converter receives a value for conversion, it passes through each 
 
 ### Custom Payload Converter {#custom-payload-converter}
 
-**How to use a custom Payload Converter in Python.**
+**How to use a custom Payload Converter using the Temporal Python SDK.**
 
 Data Converters convert raw Temporal payloads to/from actual Python types.
 A custom Data Converter of type `temporalio.converter.DataConverter` can be set via the `data_converter` client parameter.

@@ -91,7 +91,6 @@ Ensure that the Activity is Heartbeating to receive the Cancellation request and
 </div>
 
 ```go
-
 // ActivityToBeCanceled is the Activity that will respond to the Cancellation Request
 func (a *Activities) ActivityToBeCanceled(ctx context.Context) (string, error) {
 // ...
@@ -125,7 +124,6 @@ Use the `CancelWorkflow` API to cancel a Workflow Execution using its Id.
 </div>
 
 ```go
-
 func main() {
 // ...
 	// Call the CancelWorkflow API to cancel a Workflow
@@ -137,5 +135,4 @@ func main() {
 	}
 // ...
 }
-
 ```
