@@ -223,7 +223,7 @@
           "value": "python"
         }
       ],
-      "destination": "/dev-guide/python/foundations:path*",
+      "destination": "/develop/python/foundations:path*",
       "permanent": false
     },
     {
@@ -235,7 +235,7 @@
           "value": "python"
         }
       ],
-      "destination": "/dev-guide/python/features:path*",
+      "destination": "/develop/python/features:path*",
       "permanent": false
     },
     {
@@ -247,7 +247,7 @@
           "value": "python"
         }
       ],
-      "destination": "/dev-guide/python/observability:path*",
+      "destination": "/develop/python/observability:path*",
       "permanent": false
     },
     {
@@ -259,7 +259,7 @@
           "value": "python"
         }
       ],
-      "destination": "/dev-guide/python/testing:path*",
+      "destination": "/develop/python/testing:path*",
       "permanent": false
     },
     {
@@ -1947,16 +1947,8 @@
       "destination": "/self-hosted-guide/monitoring"
     },
     {
-      "source": "/kb/python-sandbox-environment",
-      "destination": "/python/python-sandbox-environment"
-    },
-    {
       "source": "production-readiness/:path*",
       "destination": "/self-hosted-guide"
-    },
-    {
-      "source": "/kb/python-sandbox-environment",
-      "destination": "/python/python-sandbox-environment"
     },
     {
       "source": "/kb/cadence-to-temporal",
@@ -1993,6 +1985,10 @@
     {
       "source": "/dev-guide/python/async-vs-sync",
       "destination": "/encyclopedia/python-sdk-sync-vs-async"
+    },
+    {
+      "source": "/kb/python-sandbox-environment",
+      "destination": "/encyclopedia/python-sdk-sandbox"
     },
     {
       "source": "/dev-guide/python/sandbox",

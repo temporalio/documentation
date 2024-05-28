@@ -121,7 +121,6 @@ You can have a name parameter to customize the Signal's name, otherwise it defau
 </div>
 
 ```python
-
 from temporalio import workflow
 # ...
 # ...
@@ -149,7 +148,6 @@ To send a Signal to the Workflow, use the [signal](https://python.temporal.io/te
 </div>
 
 ```python
-
 from temporalio.client import Client
 # ...
 # ...
@@ -176,7 +174,6 @@ To get the Workflow handle, you can use any of the following options.
 </div>
 
 ```python
-
 from temporalio.client import Client
 # ...
 # ...
@@ -215,7 +212,6 @@ The Workflow Type passed is only for type annotations and not for validation.
 </div>
 
 ```python
-
 # ...
 @workflow.defn
 class WorkflowB:
@@ -242,7 +238,6 @@ To send a Signal-With-Start in Python, use the [`start_workflow()`](https://pyth
 </div>
 
 ```python
-
 from temporalio.client import Client
 # ...
 # ...
@@ -288,7 +283,6 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 </div>
 
 ```python
-
 # ...
     @workflow.query
     def greeting(self) -> str:
@@ -312,7 +306,6 @@ To send a Query to the Workflow, use the [`query`](https://python.temporal.io/te
 </div>
 
 ```python
-
 # ...
     result = await handle.query(GreetingWorkflow.greeting)
 ```
@@ -331,7 +324,6 @@ To send a Query to a Workflow Execution from Client code, use the `query()` meth
 </div>
 
 ```python
-
 # ...
     result = await handle.query(GreetingWorkflow.greeting)
 ```
@@ -412,7 +404,6 @@ The [payload_converter()](https://python.temporal.io/temporalio.workflow.html#pa
 </div>
 
 ```python
-
 # ...
 @workflow.defn(dynamic=True)
 class DynamicWorkflow:
@@ -443,7 +434,6 @@ The [payload_converter()](https://python.temporal.io/temporalio.activity.html#pa
 </div>
 
 ```python
-
 # ...
 @activity.defn(dynamic=True)
 async def dynamic_greeting(args: Sequence[RawValue]) -> str:
@@ -479,7 +469,6 @@ The [payload_converter()](https://python.temporal.io/temporalio.workflow.html#pa
 </div>
 
 ```python
-
 # ...
     @workflow.signal(dynamic=True)
     async def dynamic_signal(self, name: str, args: Sequence[RawValue]) -> None:
@@ -502,7 +491,6 @@ The [payload_converter()](https://python.temporal.io/temporalio.workflow.html#pa
 </div>
 
 ```python
-
 # ...
     @workflow.query(dynamic=True)
     def dynamic_query(self, input: str, args: Sequence[RawValue]) -> str:
@@ -535,7 +523,6 @@ Available timeouts are:
 </div>
 
 ```python
-
 # ...
     result = await client.execute_workflow(
         YourWorkflow.run,
@@ -567,7 +554,6 @@ Set the Retry Policy to either the [`start_workflow()`](https://python.temporal.
 </div>
 
 ```python
-
 # ...
     handle = await client.execute_workflow(
         YourWorkflow.run,
@@ -606,7 +592,6 @@ Available timeouts are:
 </div>
 
 ```python
-
 # ...
         activity_timeout_result = await workflow.execute_activity(
             your_activity,
@@ -634,7 +619,6 @@ To create an Activity Retry Policy in Python, set the [RetryPolicy](https://pyth
 </div>
 
 ```python
-
 from temporalio.common import RetryPolicy
 # ...
         activity_result = await workflow.execute_activity(
@@ -883,7 +867,6 @@ This is useful if you want to do something after it has only started, or to get 
 </div>
 
 ```python
-
 # ...
 @workflow.defn
 class ComposeGreetingWorkflow:
@@ -919,7 +902,6 @@ Set the `parent_close_policy` parameter inside the [`start_child_workflow`](http
 </div>
 
 ```python
-
 from temporalio.workflow import ParentClosePolicy
 # ...
 # ...
@@ -956,7 +938,6 @@ To Continue-As-New in Python, call the [`continue_as_new()`](https://python.temp
 </div>
 
 ```python
-
 # ...
 @workflow.defn
 class LoopingWorkflow:
@@ -988,7 +969,6 @@ To set a Timer in Python, call the [`asyncio.sleep()`](https://docs.python.org/3
 </div>
 
 ```python
-
 # ...
         await asyncio.sleep(10)
 ```
@@ -1018,7 +998,6 @@ Other options include: `cron_expressions`, `skip`, `start_at`, and `jitter`.
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -1055,7 +1034,6 @@ method on the Schedule Handle.
 </div>
 
 ```python
-
 import asyncio
 from datetime import datetime, timedelta
 
@@ -1092,7 +1070,6 @@ To delete a Scheduled Workflow Execution in Python, use the [delete()](https://p
 </div>
 
 ```python
-
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
@@ -1117,7 +1094,6 @@ You can get a complete list of the attributes of the Scheduled Workflow Executio
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -1145,7 +1121,6 @@ If a schedule is added or deleted, it may not be available in the list immediate
 </div>
 
 ```python
-
 # ...
 async def main() -> None:
     client = await Client.connect("localhost:7233")
@@ -1168,7 +1143,6 @@ You can pass a `note` to the `pause()` method to provide a reason for pausing th
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -1193,7 +1167,6 @@ To trigger a Scheduled Workflow Execution in Python, use the [trigger()](https:/
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -1220,7 +1193,6 @@ The following example updates the Schedule to use a new argument.
 </div>
 
 ```python
-
 # ...
     async def update_schedule_simple(input: ScheduleUpdateInput) -> ScheduleUpdate:
         schedule_action = input.description.schedule.action
@@ -1246,7 +1218,6 @@ You can set each Workflow to repeat on a schedule with the `cron_schedule` optio
 </div>
 
 ```python
-
 # ...
     result = await client.execute_workflow(
         CronWorkflow.run,

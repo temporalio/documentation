@@ -17,6 +17,7 @@ tags:
   - visibility
 ---
 
+
 This guide provides a comprehensive overview of Temporal Visibility.
 
 :::tip Support, stability, and dependency info
@@ -35,9 +36,7 @@ The [Visibility store](/self-hosted-guide/visibility) in your Temporal Service s
 
 With Temporal Server v1.21, you can set up [Dual Visibility](#dual-visibility) to migrate your Visibility store from one database to another.
 
-{/* A Visibility store can be configured to provide [atandard Visibility](/visibility#standard-visibility) and [advanced Visibility](/visibility#advanced-visibility) features.
-
-Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted-guide/visibility) for updates. */}
+Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted-guide/visibility) for updates.
 
 ## What is standard Visibility? {#standard-visibility}
 
@@ -113,11 +112,9 @@ List Filters support the following operators:
 
 {/* - **ORDER BY** */}
 
-{/* The **ORDER BY** operator is supported only when Elasticsearch is used as the Visibility store.
-
 The **ORDER BY** operator is currently not supported in Temporal Cloud.
 
-Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses. */}
+Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses.
 
 ### Partial string match
 
@@ -198,10 +195,6 @@ WorkflowId = '<workflow-id>' or WorkflowId = '<another-workflow-id>'
 WorkflowId IN ('<workflow-id>', '<another-workflow-id>')
 ```
 
-{/* ```sql
-WorkflowId = '<workflow-id>' order by StartTime desc
-``` */}
-
 ```sql
 WorkflowId = '<workflow-id>' and ExecutionStatus = 'Running'
 ```
@@ -226,7 +219,9 @@ ExecutionTime < '2021-08-28T15:04:05+00:00' or ExecutionTime > '2021-08-22T15:04
 WorkflowType STARTS_WITH '<workflow-type-prefix>'
 ```
 
-{/* ```sql
+{/*
+
+```sql
 order by ExecutionTime
 ```
 
@@ -236,7 +231,9 @@ order by StartTime desc, CloseTime asc
 
 ```sql
 order by CustomIntField asc
-``` */}
+```
+
+*/}
 
 ## What is a Search Attribute? {#search-attribute}
 
@@ -385,7 +382,7 @@ Size limits for a custom Search Attribute:
 
 {/*
 _This refers to the SA key you create in the visibility store with `tctl search-attribute create`. this value is no longer applicable so commenting out for ref later_
-Default total maximum number of Search Attribute **keys** per Temporal Service is 100.*/}
+Default total maximum number of Search Attribute **keys** per Temporal Service is 100. */}
 
 - The default single Search Attribute **value** size limit is 2 KB.
 
@@ -422,7 +419,7 @@ With Workflows you can do the following:
 - [How to manage Search Attributes using the Go SDK](/dev-guide/go/observability#visibility)
 - [How to manage Search Attributes using the Java SDK](/dev-guide/java/observability#visibility)
 - [How to manage Search Attributes using the PHP SDK](/dev-guide/php/observability#visibility)
-- [How to manage Search Attributes using the Python SDK](/dev-guide/python/observability#visibility)
+- [How to manage Search Attributes using the Python SDK](/develop/python/observability#visibility)
 - [How to manage Search Attributes using the TypeScript SDK](/dev-guide/typescript/observability#visibility)
 
 - To get a list of Search Attributes using the Temporal CLI, issue `temporal operator search-attribute list`. See [Search Attributes](/visibility#search-attribute).
@@ -439,4 +436,9 @@ Their names indicate their types:
 - CustomIntField
 - CustomKeywordField
 - CustomTextField
+<<<<<<< HEAD
 */}
+````
+=======
+  */}
+>>>>>>> main

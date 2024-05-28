@@ -5,6 +5,7 @@
   },
   "json": {},
   "markdown": {
+    "associations": ["**/*.mdx", "**/*.md"],
     "newLineKind": "lf",
     "textWrap": "maintain",
     "emphasisKind": "underscores",
@@ -14,10 +15,7 @@
     "ignoreStartDirective": "dprint-ignore-start",
     "ignoreEndDirective": "dprint-ignore-end"
   },
-  "includes": [
-    "docs/**/*.{mdx}",
-    "vercel.json"
-  ],
+  "includes": ["docs/**/*.mdx", "vercel.json"],
   "excludes": [
     "website/docs/components",
     "**/node_modules",
@@ -30,6 +28,6 @@
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.88.8.wasm",
     "https://plugins.dprint.dev/json-0.19.1.wasm",
-    "https://plugins.dprint.dev/markdown-0.16.3.wasm",
+    "https://plugins.dprint.dev/markdown-0.16.3.wasm"
   ]
 }

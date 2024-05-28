@@ -28,7 +28,7 @@ The Temporal Go SDK allows you to create additional goroutines (threads) in your
 Native Go threading is never allowed in Workflow code, as it would create determinism errors.
 
 You might sometimes need to execute multiple Activities or Child Workflows in parallel and then await the result of all of them.
-Normally, this would require a lock or [mutex](<https://en.wikipedia.org/wiki/Lock_(computer_science)>) around some shared data structure to avoid race conditions that could occur when multiple asynchronous operations try to modify the data structure.
+Normally, this would require a lock or [mutex](https://en.wikipedia.org/wiki/Lock_(computer_science)) around some shared data structure to avoid race conditions that could occur when multiple asynchronous operations try to modify the data structure.
 
 Although Temporal Workflows run Asynchronously in Go, there is a control in place that ensures only one thread can access at the time.
 
