@@ -1,8 +1,8 @@
 ---
 id: setup
-title: Introduction to the Self-hosted Temporal Cluster deployment guide
+title: Introduction to the Self-hosted Temporal Service deployment guide
 sidebar_label: Setup
-description: This guide provides a comprehensive overview to deploy and operate a Temporal Cluster in a live environment.
+description: This guide provides a comprehensive overview to deploy and operate a Temporal Service in a live environment.
 slug: /self-hosted-guide/setup
 toc_max_heading_level: 4
 keywords:
@@ -17,7 +17,7 @@ tags:
   - server
 ---
 
-There are many ways to self-host a [Temporal Cluster](/clusters).
+There are many ways to self-host a [Temporal Service](/clusters).
 The right way for you depends entirely on your use case and where you plan to run it.
 
 ### Minimum requirements
@@ -33,7 +33,7 @@ Supported databases include the following:
 
 ### Docker & Docker Compose
 
-You can easily run a Temporal Cluster in [Docker](https://docs.docker.com/engine/install) containers using [Docker Compose](https://docs.docker.com/compose/install).
+You can easily run a Temporal Service in [Docker](https://docs.docker.com/engine/install) containers using [Docker Compose](https://docs.docker.com/compose/install).
 
 If you have Docker and Docker Compose installed, all you need to do is clone the [temporalio/docker-compose](https://github.com/temporalio/docker-compose) repo and run the `docker compose up` command from its root.
 
@@ -43,11 +43,11 @@ The Docker images in this repo are produced using the Temporal Server [auto-setu
 This script defaults to creating images that run all the Temporal Server services in a single process.
 You can use this script as a starting point for producing your own images.
 
-Running your Cluster in Docker is convenient and enables you to play with features.
+Running your Temporal Service in Docker is convenient and enables you to play with features.
 However, on your local machine, it usually does not offer the same performance as Temporalite in terms of Workflow Executions per second.
 Granted, you would notice this limitation only if you run hundreds of Workflows concurrently.
 
-The following commands start and run a Temporal Cluster in Docker using the default configuration (docker-compose.yml):
+The following commands start and run a Temporal Service in Docker using the default configuration (docker-compose.yml):
 
 ```bash
 git clone https://github.com/temporalio/docker-compose.git
@@ -55,7 +55,7 @@ cd docker-compose
 docker compose up
 ```
 
-Local [Temporal Clients](/encyclopedia/temporal-sdks#temporal-client) and [Workers](/workers) can connect to the Cluster running in Docker at 127.0.0.1:7233 (default connection for most SDKs) and the Temporal Web UI at 127.0.0.1:8080.
+Local [Temporal Clients](/encyclopedia/temporal-sdks#temporal-client) and [Workers](/workers) can connect to the Temporal Service running in Docker at 127.0.0.1:7233 (default connection for most SDKs) and the Temporal Web UI at 127.0.0.1:8080.
 
 To try other configurations (different dependencies and databases), or to try a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
 
@@ -94,7 +94,7 @@ You should familiarize yourself with [what auto-setup does](https://temporal.io/
 
 We do maintain a Helm chart you can use as a reference, but you are responsible for customizing it to your needs.
 
-[Temporal Helm charts](https://github.com/temporalio/helm-charts) enables you to get a Cluster running on [Kubernetes](https://kubernetes.io/) by deploying the Temporal Server services to individual pods and connecting them to your existing database and Elasticsearch instances.
+[Temporal Helm charts](https://github.com/temporalio/helm-charts) enables you to get a Temporal Service running on [Kubernetes](https://kubernetes.io/) by deploying the Temporal Server services to individual pods and connecting them to your existing database and Elasticsearch instances.
 
 The template in the `temporalio/helm-charts` repo is your starting point, but you can adjust it to fit your infrastructure needs.
 
