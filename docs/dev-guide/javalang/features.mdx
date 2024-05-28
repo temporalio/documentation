@@ -51,6 +51,7 @@ In this section you can find the following:
 - [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
 - [How to register Namespaces](#namespaces)
 - [How to develop with Updates](#updates)
+- [How to use Start Delay](#start-delay)
 
 ## How to develop with Signals {#signals}
 
@@ -1534,3 +1535,24 @@ Note that these APIs and Temporal CLI commands will not work with Temporal Cloud
       .deleteNamespace(DeleteNamespaceRequest.newBuilder().setNamespace("your-namespace-name").build());
   //...
   ```
+
+## Start Delay {#start-delay}
+
+**How to delay the start of a Workflow Execution using Start Delay with the Temporal Java SDK.**
+
+Use the `StartDelay` to schedule a Workflow Execution at a specific one-time future point rather than on a recurring schedule.
+
+Create an instance of [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) in the Client code and set `StartDelay` using `setStartDelay`.
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("YourWorkflow")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                // Start the workflow in 12 hours
+                .setStartDelay(Duration.ofHours(12))
+                .build());
+```
