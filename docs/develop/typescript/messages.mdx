@@ -30,9 +30,9 @@ tags:
 
 Interact with running Workflows by messaging them using Signals and Queries.
 
-- [Develop with Signals](#what-is-a-signal)
-- [Develop with Queries](#what-are-queries)
-- [Defining Signals and Queries statically and dynamically](#static-and-dynamic-signals-and-queries)
+- [Develop with Signals](#signals)
+- [Develop with Queries](#queries)
+- [Defining Signals and Queries statically and dynamically](#dynamic-handler)
 
 ## Develop with Signals {#what-is-a-signal}
 
@@ -299,7 +299,7 @@ async function run(): Promise<void> {
 
 <!--SNIPEND-->
 
-## Define Signals and Queries statically or dynamically {#static-and-dynamic-signals-and-queries}
+## Define Signals and Queries statically or dynamically {#dynamic-handler}
 
 - Handlers for both Signals and Queries can take arguments, which can be used inside `setHandler` logic.
 - Only Signal Handlers can mutate state, and only Query Handlers can return values.
