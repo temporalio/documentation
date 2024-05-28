@@ -109,8 +109,9 @@ The following operations result in Actions:
 - **Activity started or retried.**
   Occurs each time an Activity is started or retried.
 - **Local Activity started.** Each [Local Activity](/activities#local-activity) associated with one Workflow Task will count as one Action.
-(Note: Each additional Workflow Task heartbeat after counts as an additional Action.)
-Also, Local Activities retried following a Workflow Task heartbeat will count as one Action.
+  Please note:
+    * Each additional Workflow Task heartbeat after counts as an additional Action.
+    * Local Activities retried following a Workflow Task heartbeat will count as one Action.
 - **Activity Heartbeat recorded.**
   A Heartbeat call from Activity code counts as an Action only if it reaches the [Temporal Server](/clusters#temporal-server).
   Temporal SDKs throttle [Activity Heartbeats](/activities#activity-heartbeat).
