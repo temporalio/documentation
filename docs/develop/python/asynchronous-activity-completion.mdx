@@ -1,0 +1,52 @@
+---
+id: asynchronous-activity-completion
+title: Asynchronous Activity Completion - Python SDK feature guide
+sidebar_label: Asynchronous Activity Completion
+description: Complete an Activity without waiting for execution to finish, using Temporal Client and Activity Function.
+toc_max_heading_level: 2
+keywords:
+  - asynchronous activity completion
+  - temporal python activities
+  - async activity execution
+  - temporal task token
+  - temporal activity heartbeat
+  - async activity updates
+  - temporal client for activities
+  - activity function async completion
+tags:
+  - python
+  - python-sdk
+  - activities
+  - asynchronous-completion
+---
+
+**How to Asynchronously complete an Activity using the Temporal Python SDK.**
+
+[Asynchronous Activity Completion](/activities#asynchronous-activity-completion) enables the Activity Function to return without the Activity Execution completing.
+
+There are three steps to follow:
+
+1. The Activity provides the external system with identifying information needed to complete the Activity Execution.
+   Identifying information can be a [Task Token](/activities#task-token), or a combination of Namespace, Workflow Id, and Activity Id.
+2. The Activity Function completes in a way that identifies it as waiting to be completed by an external system.
+3. The Temporal Client is used to Heartbeat and complete the Activity.
+
+To mark an Activity as completing asynchronously, do the following inside the Activity.
+
+```python
+# Capture token for later completion
+captured_token = activity.info().task_token
+activity.raise_complete_async()
+```
+
+To update an Activity outside the Activity, use the [get_async_activity_handle()](https://python.temporal.io/temporalio.client.Client.html#get_async_activity_handle) method to get the handle of the Activity.
+
+```python
+handle = my_client.get_async_activity_handle(task_token=captured_token)
+```
+
+Then, on that handle, you can call the results of the Activity, `heartbeat`, `complete`, `fail`, or `report_cancellation` method to update the Activity.
+
+```python
+await handle.complete("Completion value.")
+```

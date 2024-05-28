@@ -3,8 +3,8 @@ id: versioning
 title: Versioning - Python SDK feature guide
 sidebar_label: Versioning
 description: The Versioning section of the Temporal Developer's guide covers how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
-slug: /dev-guide/python/versioning
-toc_max_heading_level: 4
+slug: /develop/python/versioning
+toc_max_heading_level: 2
 keywords:
   - best practices
   - code sample
@@ -68,7 +68,6 @@ Suppose you have an initial Workflow version called `pre_patch_activity`:
 </div>
 
 ```python
-
 from datetime import timedelta
 
 from temporalio import workflow
@@ -96,7 +95,6 @@ Now, you want to update your code to run `post_patch_activity` instead. This rep
 </div>
 
 ```python
-
 from datetime import timedelta
 
 from temporalio import workflow
@@ -132,7 +130,6 @@ Implementing patching involves three steps:
 </div>
 
 ```python
-
 # ...
 @workflow.defn
 class MyWorkflow:
@@ -160,7 +157,6 @@ During replay, if a Worker encounters a history with that marker, it will fail t
 </div>
 
 ```python
-
 # ...
 @workflow.defn
 class MyWorkflow:
@@ -194,7 +190,6 @@ If, during the deployment of `post_patch_activity`, there are still live Workers
 </div>
 
 ```python
-
 # ...
 @workflow.defn
 class MyWorkflow:
@@ -219,7 +214,6 @@ You can safely deploy `post_patch_activity` once all Workflows labeled my-patch 
 </div>
 
 ```python
-
 # ...
 @workflow.defn
 class MyWorkflow:

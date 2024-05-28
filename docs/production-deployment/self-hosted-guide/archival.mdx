@@ -136,7 +136,7 @@ To test Archival locally, start by running a Temporal server:
 
 Then register a new Namespace with Archival enabled.
 
-{/*./tctl --ns samples-namespace namespace register --gd false --history_archival_state enabled --retention 3*/}
+{/* ./tctl --ns samples-namespace namespace register --gd false --history_archival_state enabled --retention 3 */}
 
 ```bash
 ./temporal operator namespace create --namespace="my-namespace" --global false --history-archival-state="enabled" --retention="4d"
@@ -160,7 +160,7 @@ When execution is finished, Archival occurs.
 
 You can retrieve archived Event Histories by copying the `workflowId` and `runId` of the completed Workflow from the log output and running the following command:
 
-{/*./tctl --ns samples-namespace wf show --wid <workflowId> --rid <runId>*/}
+{/* ./tctl --ns samples-namespace wf show --wid <workflowId> --rid <runId> */}
 
 ```bash
 ./temporal workflow show --workflow-id="my-workflow-id" --run-id="my-run-id" --namespace="my-namespace"

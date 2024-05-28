@@ -1,0 +1,134 @@
+---
+id: data-encryption
+title: Data encryption - .NET SDK feature guide
+sidebar_label: Data encryption
+description: Data encryption
+keywords:
+  - sdk
+  - dotnet
+  - data encryption
+  - codec server
+  - converter
+tags:
+  - sdk
+  - dotnet
+  - data encryption
+  - codec server
+  - converter
+---
+
+This page shows the following:
+
+- [Use a custom Payload Codec](#custom-payload-codec)
+- [Use a custom Payload Converter](#custom-payload-converter)
+
+## Custom Payload Codec {#custom-payload-codec}
+
+**How to use a custom Payload Codec using the .NET SDK**
+
+Custom Data Converters can change the default Temporal Data Conversion behavior by adding hooks, sending payloads to external storage, or performing different encoding steps.
+If you only need to change the encoding performed on your payloads -- by adding compression or encryption -- you can override the default Data Converter to use a new `PayloadCodec`.
+
+The `IPayloadCodec` needs to implement `EncodeAsync()` and `DecodeAsync()` methods.
+These should convert the given payloads as needed into new payloads, using the `"encoding"` metadata field.
+Do not mutate the existing payloads.
+Here is an example of an encryption codec that just uses base64 in each direction:
+
+```csharp
+public class EncryptionCodec : IPayloadCodec
+{
+    public Task<IReadOnlyCollection<Payload>> EncodeAsync(IReadOnlyCollection<Payload> payloads) =>
+        Task.FromResult<IReadOnlyCollection<Payload>>(payloads.Select(p =>
+        {
+            return new Payload()
+            {
+                // Set our specific encoding. We may also want to add a key ID in here for use by
+                // the decode side
+                Metadata = { ["encoding"] = "binary/my-payload-encoding" },
+                Data = ByteString.CopyFrom(Encrypt(p.ToByteArray())),
+            };
+        }).ToList());
+
+    public Task<IReadOnlyCollection<Payload>> DecodeAsync(IReadOnlyCollection<Payload> payloads) =>
+        Task.FromResult<IReadOnlyCollection<Payload>>(payloads.Select(p =>
+        {
+            // Ignore if it doesn't have our expected encoding
+            if (p.Metadata.GetValueOrDefault("encoding") != "binary/my-payload-encoding")
+            {
+                return p;
+            }
+            // Decrypt
+            return Payload.Parser.ParseFrom(Decrypt(p.Data.ToByteArray()));
+        }).ToList());
+
+    private byte[] Encrypt(byte[] data) => Encoding.ASCII.GetBytes(Convert.ToBase64String(data));
+
+    private byte[] Decrypt(byte[] data) => Convert.FromBase64String(Encoding.ASCII.GetString(data));
+}
+```
+
+**Set Data Converter to use custom Payload Codec**
+
+When creating a client, the default `DataConverter` can be updated with the payload codec like so:
+
+```csharp
+var myClient = await TemporalClient.ConnectAsync(new("localhost:7233")
+{
+    DataConverter = DataConverter.Default with { PayloadCodec = new EncryptionCodec() },
+});
+```
+
+## Payload conversion
+
+Temporal SDKs provide a default [Payload Converter](/dataconversion#payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
+
+### Conversion sequence {#conversion-sequence}
+
+The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
+You can set multiple encoding Payload Converters to run your conversions.
+When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.
+
+### Custom Payload Converter {#custom-payload-converter}
+
+**How to use a custom Payload Converter with the .NET SDK.**
+
+Data converters are used to convert raw Temporal payloads to/from actual .NET types.
+A custom data converter can be set via the `DataConverter` option when creating a client. Data converters are a combination of payload converters, payload codecs, and failure converters.
+Payload converters convert .NET values to/from serialized bytes. Payload codecs convert bytes to bytes (e.g. for compression or encryption). Failure converters convert exceptions to/from serialized failures.
+
+Data converters are in the `Temporalio.Converters` namespace.
+The default data converter uses a default payload converter, which supports the following types:
+
+- `null`
+- `byte[]`
+- `Google.Protobuf.IMessage` instances
+- Anything that `System.Text.Json` supports
+- `IRawValue` as unconverted raw payloads
+
+Custom converters can be created for all uses. For example, to create client with a data converter that converts all C#
+property names to camel case, you would:
+
+```csharp
+using System.Text.Json;
+using Temporalio.Client;
+using Temporalio.Converters;
+
+public class CamelCasePayloadConverter : DefaultPayloadConverter
+{
+    public CamelCasePayloadConverter()
+      : base(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
+    {
+    }
+}
+
+var client = await TemporalClient.ConnectAsync(new()
+{
+    TargetHost = "localhost:7233",
+    Namespace = "my-namespace",
+    DataConverter = DataConverter.Default with { PayloadConverter = new CamelCasePayloadConverter() },
+});
+```
+
+
+
+<!--  ### Custom Type Data Conversion TODO(cretz): Develop https://github.com/temporalio/samples-dotnet/issues/38 first -->

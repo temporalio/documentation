@@ -104,9 +104,6 @@ One downside compared to [command line](#with-command-line) is it doesn't show e
   </div>
 </div>
 
-{/*
-TODO redo this section when we publish a stable HTTP API
-
 ## HTTP API
 
 The Web UI uses [`temporalio/ui-server`](https://github.com/temporalio/ui-server), an HTTP proxy for the gRPC API.
@@ -117,13 +114,13 @@ As soon as [this HTTP API proposal](https://github.com/temporalio/proposals/pull
 
 :::
 
-To view the API docs, run [`temporal server start-dev`](/cli/#starting-the-temporal-server) and open:
+To view the API docs, run [`temporal server start-dev`](/cli#start-dev-server) and open:
 
 [`localhost:8233/openapi/`](http://localhost:8233/openapi/)
 
 To make a request, run:
 
-```sh
+````sh
 $ curl localhost:8233/api/v1/namespaces/default/workflows
 
 {
@@ -142,4 +139,6 @@ $ curl localhost:8233/api/v1/namespaces/default/workflows
   ],
   "nextPageToken": null
 }
-``` */}
+```
+
+*/}

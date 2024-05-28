@@ -23,7 +23,7 @@ tags:
   - versioning
 ---
 
-Consider the following when running a production level Temporal Cluster.
+Consider the following when running a production level Temporal Service.
 
 ## Scaling and Metrics {#scaling-and-metrics}
 
@@ -65,7 +65,7 @@ export async function myWorkflow(foo: string): Promise<string>;
 type MyWorkflowInput = { foo: string };
 type MyWorkflowOuptut = { result: string };
 export async function myWorkflow(
-  foo: MyWorkflowInput
+  foo: MyWorkflowInput,
 ): Promise<MyWorkflowOutput>;
 ```
 

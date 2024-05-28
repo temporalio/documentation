@@ -1,0 +1,61 @@
+---
+id: asynchronous-activity
+title: Asynchronous Activity - .NET SDK feature guide
+sidebar_label: Asynchronous Activity
+description: Asynchronously complete an Activity using the Temporal .NET SDK by following three simple steps.
+toc_max_heading_level: 4
+keywords:
+  - asynchronous activity completion
+  - temporal
+  - activity function
+  - task token
+  - workflow id
+  - activity id
+  - temporal client
+  - heartbeatasync
+  - completeasync
+  - failasync
+  - reportcancellationasync
+  - csharp code examples
+  - external system completion
+  - activity execution
+  - completeasyncexception
+  - getasyncactivityhandle
+tags:
+  - asynchronous-activity
+  - dotnet-sdk
+  - overview
+---
+
+This page describes how to asynchronously complete an Activity.
+
+[Asynchronous Activity Completion](/activities#asynchronous-activity-completion) enables the Activity Function to return without the Activity Execution completing.
+
+There are three steps to follow:
+
+1. The Activity provides the external system with identifying information needed to complete the Activity Execution.
+   Identifying information can be a [Task Token](/activities#task-token), or a combination of Namespace, Workflow Id, and Activity Id.
+2. The Activity Function completes in a way that identifies it as waiting to be completed by an external system.
+3. The Temporal Client is used to Heartbeat and complete the Activity.
+
+To mark an Activity as completing asynchronously, do the following inside the Activity.
+
+```csharp
+// Capture token for later completion
+capturedToken = ActivityExecutionContext.Current.Info.TaskToken;
+
+// Throw special exception that says an activity will be completed somewhere else
+throw new CompleteAsyncException();
+```
+
+To update an Activity outside the Activity, use the [GetAsyncActivityHandle()](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClient.html#Temporalio_Client_ITemporalClient_GetAsyncActivityHandle_System_Byte___) method to get the handle of the Activity.
+
+```csharp
+var handle = myClient.GetAsyncActivityHandle(capturedToken);
+```
+
+Then, on that handle, you can call the results of the Activity, `HeartbeatAsync`, `CompleteAsync`, `FailAsync`, or `ReportCancellationAsync` method to update the Activity.
+
+```csharp
+await handle.CompleteAsync("Completion value.");
+```
