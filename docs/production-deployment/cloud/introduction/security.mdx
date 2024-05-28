@@ -85,9 +85,19 @@ To set up PrivateLink connectivity with Temporal Cloud, you'll need to perform t
 
 Once set up, you can test your PrivateLink connectivity using:
 
-1. Non-Temporal tools like cURL (useful for testing from environments that restrict tool usage).
-1. The Temporal CLI: by setting the [--tls-server-name](/cli/cmd-options#tls-server-name) parameter to the PrivateLink endpoint.
-1. Temporal SDKs: by setting the server name argument to the PrivateLink endpoint.
+* Non-Temporal tools like grpcURL, useful for testing from environments that restrict tool usage. For example:
+
+  ```
+  grpcurl -servername <name>.<account>.tmprl.cloud -cert <cert-path> -key <key-path> vpce-XXXXXXXXX.vpce.amazonaws.com:7233 temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
+  ```
+
+* The Temporal CLI, by setting the [`--tls-server-name`](/cli/cmd-options#tls-server-name) parameter to the Namespace address (`<namespace>.<account>.tmprl.cloud`). For example:
+
+  ```
+  temporal workflow count --address <DNS associated with vpc endpoint>:7233 --tls-cert-path <cert.pem> --tls-key-path <cert.key> --tls-server-name <namespace>.<account>.tmprl.cloud --namespace <namespace>
+  ```
+
+* Temporal SDKs: by setting the endpoint server address argument to the PrivateLink endpoint (`<DNS associated with VPC endpoint>:7233`).
 
 ### Encryption
 
