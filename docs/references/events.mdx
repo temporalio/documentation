@@ -38,7 +38,7 @@ It indicates that the Cluster received a request to spawn the Workflow Execution
 | first_execution_run_id             | The first [Run Id](/workflows#run-id), along the chain of [Continue-As-New](/workflows#continue-as-new) Runs and Reset.                                        |
 | retry_policy                       | The amount of retries as determined by the service's dynamic configuration. Retries will happen until 'schedule_to_close_timeout' is reached.                  |
 | attempt                            | The number of attempts that have been made to complete this Task.                                                                                              |
-| workflow_execution_expiration_time | The absolute time at which the Workflow Execution will [time out](/workflows#workflow-execution-timeout).                                                      |
+| workflow_execution_expiration_time | The absolute time at which the Workflow Execution will [time out](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout).                                                      |
 | cron_schedule                      | Displays the Workflow's [Cron Schedule](/workflows#temporal-cron-job), if applicable.                                                                          |
 | first_workflow_task_backoff        | Contains the amount of time between when this iteration of the Workflow was scheduled, and when it should run next. Applies to Cron Scheduling.                |
 | memo                               | Non-indexed information to show in the Workflow.                                                                                                               |
@@ -65,16 +65,16 @@ This [Event](/workflows#event) indicates that the [Workflow Execution](/workflow
 | failure                          | Serialized result of a [Workflow](/workflows) failure.                                                                   |
 | retry_state                      | The reason provided for whether the [Task](/workers#task) should or shouldn't be retried.                                |
 | workflow_task_completed_event_id | The [Run Id](/workflows#run-id) of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with. |
-| new_execution_run_id             | The [Run Id](/workflows#run-id) of the new Workflow started by Cron or [Retry](/retry-policies).                         |
+| new_execution_run_id             | The [Run Id](/workflows#run-id) of the new Workflow started by Cron or [Retry](/encyclopedia/retry-policies).                         |
 
 ### WorkflowExecutionTimedOut
 
-This [Event](/workflows#event) type indicates that the [Workflow Execution](/workflows#workflow-execution) has timed out by the [Temporal Server](/clusters#temporal-server) due to the [Workflow](/workflows) having not been completed within [timeout](/workflows#workflow-execution-timeout) settings.
+This [Event](/workflows#event) type indicates that the [Workflow Execution](/workflows#workflow-execution) has timed out by the [Temporal Server](/clusters#temporal-server) due to the [Workflow](/workflows) having not been completed within [timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout) settings.
 
 | Field                | Description                                                                                      |
 | -------------------- | ------------------------------------------------------------------------------------------------ |
 | retry_state          | The reason provided for whether the [Task](/workers#task) should or shouldn't be retried.        |
-| new_execution_run_id | The [Run Id](/workflows#run-id) of the new Workflow started by Cron or [Retry](/retry-policies). |
+| new_execution_run_id | The [Run Id](/workflows#run-id) of the new Workflow started by Cron or [Retry](/encyclopedia/retry-policies). |
 
 ### WorkflowExecutionCancelRequested
 
@@ -189,7 +189,7 @@ It is possible for the following events to still occur:
 
 ### WorkflowTaskTimedOut
 
-This [Event](/workflows#event) type indicates that the [Workflow Task](/workers#workflow-task) encountered a [timeout](/workflows#workflow-task-timeout).
+This [Event](/workflows#event) type indicates that the [Workflow Task](/workers#workflow-task) encountered a [timeout](/encyclopedia/detecting-workflow-failures#workflow-task-timeout).
 Either an SDK client with a local cache was not available at the time, or it took too long for the SDK client to process the Task.
 
 | Field              | Description                                                                                                 |
@@ -278,7 +278,7 @@ This Event type contains [Activity Execution](/activities#activity-execution) er
 
 ### ActivityTaskTimedOut
 
-This [Event](/workflows#event) type indicates that the Activity has timed out according to the [Temporal Server](/clusters#temporal-server), due to one of these [Activity](/activities) timeouts: [Schedule-to-Close Timeout](/activities#schedule-to-close-timeout) and [Schedule-to-Start Timeout](/activities#schedule-to-start-timeout).
+This [Event](/workflows#event) type indicates that the Activity has timed out according to the [Temporal Server](/clusters#temporal-server), due to one of these [Activity](/activities) timeouts: [Schedule-to-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) and [Schedule-to-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout).
 
 | Field              | Description                                                                                                 |
 | ------------------ | ----------------------------------------------------------------------------------------------------------- |

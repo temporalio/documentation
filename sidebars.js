@@ -23,6 +23,7 @@ module.exports = {
           items: [
             "evaluate/development-features/core-application",
             "evaluate/development-features/temporal-client",
+            "evaluate/development-features/failure-detection",
             "evaluate/development-features/throughput-composability",
           ],
         },
@@ -355,7 +356,20 @@ module.exports = {
         },
         "encyclopedia/workflows",
         "encyclopedia/activities",
-        "encyclopedia/retry-policies",
+        {
+          type: "category",
+          label: "Detecting application failures",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "encyclopedia/detecting-application-failures",
+          },
+          items: [
+            "encyclopedia/detecting-activity-failures",
+            "encyclopedia/detecting-workflow-failures",
+            "encyclopedia/retry-policies",
+          ],
+        },
         "encyclopedia/workers",
         "encyclopedia/child-workflows",
         "encyclopedia/visibility",

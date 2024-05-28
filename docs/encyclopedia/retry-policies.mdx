@@ -3,7 +3,6 @@ id: retry-policies
 title: What is a Temporal Retry Policy?
 sidebar_label: Retry Policies
 description: A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
-slug: /retry-policies
 toc_max_heading_level: 4
 keywords:
   - explanation
@@ -13,41 +12,34 @@ tags:
   - term
 ---
 
+import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
 A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](/workflows#workflow-execution) or an [Activity Task Execution](/workers#activity-task-execution).
 (Retry Policies do not apply to [Workflow Task Executions](/workers#workflow-task-execution), which always retry indefinitely.)
 
-- [Activity retry simulator](/dev-guide/activity-retry-simulator)
+Try out the [Activity retry simulator](/dev-guide/activity-retry-simulator) to visiualize how a Retry Policy works.
 
 ---
 
-- [How to set a custom Retry Policy for an Activity in Go](/dev-guide/go/features#activity-retries)
-- [How to set a custom Retry Policy for an Activity in Java](/dev-guide/java/features#activity-retries)
-- [How to set a custom Retry Policy for an Activity in PHP](/dev-guide/php/features#activity-retries)
-- [How to set a custom Retry Policy for an Activity in Python](/dev-guide/python/features#activity-retries)
-- [How to set a custom Retry Policy for an Activity in TypeScript](/dev-guide/typescript/features#activity-retries)
-
+<RelatedReadContainer>
+  <RelatedReadItem path="/dev-guide/go/features#activity-retries" text="Set a custom Retry Policy for an Activity in Go" archetype="feature-guide" />
+  <RelatedReadItem path="/dev-guide/java/features#activity-retries" text="Set a custom Retry Policy for an Activity in Java" archetype="feature-guide" />
+  <RelatedReadItem path="/dev-guide/php/features#activity-retries" text="Set a custom Retry Policy for an Activity in PHP" archetype="feature-guide" />
+  <RelatedReadItem path="/dev-guide/python/features#activity-retries" text="Set a custom Retry Policy for an Activity in Python" archetype="feature-guide" />
+  <RelatedReadItem path="/dev-guide/typescript/features#activity-retries" text="Set a custom Retry Policy for an Activity in TypeScript" archetype="feature-guide" />
+</RelatedReadContainer>
 ---
 
-- [How to set a Retry Policy for a Workflow in Go](/dev-guide/go/features#workflow-retries)
-- [How to set a Retry Policy for a Workflow in Java](/dev-guide/java/features#workflow-retries)
-- [How to set a Retry Policy for a Workflow in PHP](/dev-guide/php/features#workflow-retries)
-- [How to set a Retry Policy for a Workflow in Python](/dev-guide/python/features#workflow-retries)
-- [How to set a Retry Policy for a Workflow in TypeScript](/dev-guide/typescript/features#workflow-retries)
-
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Diagram that shows the retry interval and its formula</p>
-  </div>
-  <div className="tdiiw" height="233">
-    <img
-      className="img_ev3q"
-      src="/img/retry-interval-diagram.png"
-      alt="Diagram that shows the retry interval and its formula"
-    />
-  </div>
-</div>
+<RelatedReadContainer>
+  <RelatedReadItem path="/dev-guide/go/features#workflow-retries" text="Set a Retry Policy for a Workflow in Go" archetype="feature-guide" />
+  <RelatedReadItem path="/dev-guide/java/features#workflow-retries" text="Set a Retry Policy for a Workflow in Java" archetype="feature-guide" />
+  <RelatedReadItem path="/dev-guide/php/features#workflow-retries" text="Set a Retry Policy for a Workflow in PHP" archetype="feature-guide" />
+  <RelatedReadItem path="/dev-guide/python/features#workflow-retries" text="Set a Retry Policy for a Workflow in Python" archetype="feature-guide" />
+  <RelatedReadItem path="/dev-guide/typescript/features#workflow-retries" text="Set a Retry Policy for a Workflow in TypeScript" archetype="feature-guide" />
+</RelatedReadContainer>
 
 ## Default behavior
 
@@ -123,6 +115,8 @@ The wait time before a retry is the _retry interval_. A retry interval is the sm
 
 - The [Initial Interval](#initial-interval) multiplied by the [Backoff Coefficient](#backoff-coefficient) raised to the power of the number of retries.
 - The [Maximum Interval](#maximum-interval).
+
+<PrettyImage src="/img/retry-interval-diagram.png" title="Diagram that shows the retry interval and its formula" />
 
 ## Event History
 
