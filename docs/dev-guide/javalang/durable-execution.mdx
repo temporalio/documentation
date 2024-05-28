@@ -170,7 +170,6 @@ From the Workflow details page you can copy the Event History from the JSON tab 
 </div>
 
 ```java
-
   @Test
   public void testSuccessfulReplayFromFile(TestWorkflowEnvironment testEnv, Worker worker,
       BackgroundCheckReplayWorkflow workflow) throws Exception {
@@ -227,7 +226,6 @@ One way to produce a non-deterministic error is to use a random number to determ
 </div>
 
 ```java
-
 import io.temporal.activity.ActivityOptions;
 import io.temporal.workflow.Workflow;
 import org.slf4j.Logger;
@@ -274,7 +272,7 @@ The most important thing to take away from the section is to make sure you have 
 
 Versioning APIs and versioning strategies are covered in other parts of the developer's guide, this chapter sets the stage to understand why and how to approach those strategies.
 
-{/*TODO ^ update with links to those places */}
+{/* TODO ^ update with links to those places */}
 
 ### The Event History
 
@@ -355,7 +353,6 @@ Use the `Workflow.getLogger` API to log from Workflows to suppress repeated logs
 </div>
 
 ```java
-
 package backgroundcheckreplay;
 
 import io.temporal.activity.ActivityOptions;
