@@ -89,7 +89,7 @@ The Foundations section of the Temporal Developer's guide covers the minimum set
 
 In this section you can find the following:
 
-- [Run a development Cluster](#run-a-development-server)
+- [Run a development Temporal Service](#run-a-development-server)
 - [Develop a Workflow](#develop-workflows)
 - [Develop an Activity](#activity-definition)
 - [Start an Activity Execution](#activity-execution)
@@ -98,13 +98,13 @@ In this section you can find the following:
 
 ## How to install the Temporal CLI and run a development server {#run-a-development-server}
 
-This section describes how to install the [Temporal CLI](/cli) and run a development Cluster.
-The local development Cluster comes packaged with the [Temporal Web UI](/web-ui).
+This section describes how to install the [Temporal CLI](/cli) and run a development Temporal Service.
+The local development Temporal Service comes packaged with the [Temporal Web UI](/web-ui).
 
-For information on deploying and running a self-hosted production Cluster, see the [Self-hosted guide](/self-hosted-guide), or sign up for [Temporal Cloud](/cloud) and let us run your production Cluster for you.
+For information on deploying and running a self-hosted production Temporal Service, see the [Self-hosted guide](/self-hosted-guide), or sign up for [Temporal Cloud](/cloud) and let us run your production Temporal Service for you.
 
-The Temporal CLI is a tool for interacting with a Temporal Cluster from the command line and it includes a distribution of the Temporal Server and Web UI.
-This local development Cluster runs as a single process with zero runtime dependencies and it supports persistence to disk and in-memory mode through SQLite.
+The Temporal CLI is a tool for interacting with a Temporal Service from the command line and it includes a distribution of the Temporal Server and Web UI.
+This local development Temporal Service runs as a single process with zero runtime dependencies and it supports persistence to disk and in-memory mode through SQLite.
 
 **Install the Temporal CLI**
 
@@ -198,7 +198,7 @@ A [Temporal SDK](/encyclopedia/temporal-sdks) provides a framework for [Temporal
 
 An SDK provides you with the following:
 
-- A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) to communicate with a [Temporal Cluster](/clusters).
+- A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) to communicate with a [Temporal Service](/clusters).
 - APIs to develop [Workflows](/workflows).
 - APIs to create and manage [Worker Processes](/workers#worker).
 - APIs to author [Activities](/activities#activity-definition).
@@ -604,7 +604,7 @@ A single instance of the Activities implementation is shared across multiple sim
 Activity implementation code should be _idempotent_.
 
 The values passed to Activities through invocation parameters or returned through a result value are recorded in the Execution history.
-The entire Execution history is transferred from the Temporal service to Workflow Workers when a Workflow state needs to recover.
+The entire Execution history is transferred from the Temporal Service to Workflow Workers when a Workflow state needs to recover.
 A large Execution history can thus adversely impact the performance of your Workflow.
 
 Therefore, be mindful of the amount of data you transfer through Activity invocation parameters or Return Values.
@@ -1132,7 +1132,7 @@ Rate limits the number of Activity Executions that can be started per second.
 
 A value of `0` sets to the default value.
 
-This rate is managed by the Temporal Cluster and limits the Activity Tasks per second for the entire Task Queue. This is in contrast to [`WorkerActivityTasksPerSecond`](#workeractivitiespersecond) controls Activities only per Worker.
+This rate is managed by the Temporal Service and limits the Activity Tasks per second for the entire Task Queue. This is in contrast to [`WorkerActivityTasksPerSecond`](#workeractivitiespersecond) controls Activities only per Worker.
 
 Notice that the number is represented in float, so that you can set it to less than 1 if needed.
 For example, set the number to 0.1 means you want your Activity to be executed once for every 10 seconds.
@@ -1246,7 +1246,7 @@ Sticky Execution runs Workflow Tasks of a Workflow Execution on same host (could
 This is an optimization for Workflow Executions.
 When sticky execution is enabled, Worker keeps the Workflow state in memory.
 New Workflow Task contains the new history events will be dispatched to the same Worker.
-If this Worker crashes, the sticky Workflow Task will timeout after `StickyScheduleToStartTimeout`, and Temporal Cluster will clear the stickiness for that Workflow Execution and automatically reschedule a new Workflow Task that is available for any Worker to pick up and resume the progress.
+If this Worker crashes, the sticky Workflow Task will timeout after `StickyScheduleToStartTimeout`, and Temporal Service will clear the stickiness for that Workflow Execution and automatically reschedule a new Workflow Task that is available for any Worker to pick up and resume the progress.
 
 ```go
 // ...
@@ -1449,7 +1449,7 @@ To run a Worker that uses [Temporal Cloud](/cloud), you need to provide addition
 
 For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
 
-For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 To run a Worker that talks to Temporal Cloud, you need the following:
 
@@ -1461,7 +1461,7 @@ To run a Worker that talks to Temporal Cloud, you need the following:
 
 For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
 
-For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 <div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/cloud/worker/main_dacx.go">

@@ -84,7 +84,7 @@ module.exports = async function createConfigAsync() {
           },
           {
             label: "Start building",
-            href: "/dev-guide",
+            href: "/develop",
             right: "left",
           },
           {

@@ -47,7 +47,7 @@ module.exports = {
       collapsed: false,
       link: {
         type: "doc",
-        id: "dev-guide/index",
+        id: "develop/index",
       },
       items: [
         {
@@ -187,8 +187,34 @@ module.exports = {
             "develop/typescript/timers",
           ],
         },
-        "dev-guide/activity-retry-simulator",
-        "dev-guide/worker-performance",
+        {
+          type: "category",
+          label: ".NET SDK",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "develop/dotnet/index",
+          },
+          items: [
+            "develop/dotnet/core-application",
+            "develop/dotnet/temporal-client",
+            "develop/dotnet/testing-suite",
+            "develop/dotnet/failure-detection",
+            "develop/dotnet/message-passing",
+            "develop/dotnet/cancellation",
+            "develop/dotnet/versioning",
+            "develop/dotnet/observability",
+            "develop/dotnet/debugging",
+            "develop/dotnet/schedules",
+            "develop/dotnet/data-encryption",
+            "develop/dotnet/durable-timers",
+            "develop/dotnet/continue-as-new",
+            "develop/dotnet/child-workflows",
+            "develop/dotnet/asynchronous-activity",
+          ],
+        },
+        "develop/activity-retry-simulator",
+        "develop/worker-performance",
       ],
     },
     {
