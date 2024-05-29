@@ -109,7 +109,7 @@ The following operations result in Actions:
 - **Activity started or retried.**
   Occurs each time an Activity is started or retried.
 - **Local Activity started.**
-  Each [Local Activity](/activities#local-activity) associated with one Workflow Task counts as one Action.
+  All [Local Activities](/activities#local-activity) associated with one Workflow Task counts as a single Action.
   That's because Temporal Cloud counts all [RecordMarkers](https://docs.temporal.io/references/commands#recordmarker) from each Workflow Task as one action, and not _N_ actions.
   Please note:
     * Each additional Workflow Task heartbeat after counts as an additional Action.
