@@ -18,7 +18,7 @@ tags:
 **What is Temporal Cloud's Service Level Agreement? SLA?**
 
 Two levels of availability are defined for Temporal Cloud: the [service availability](https://en.wikipedia.org/wiki/Reliability,_availability_and_serviceability) and the contractual [service level agreement](https://en.wikipedia.org/wiki/Service-level_agreement) (SLA).
-These levels are set by the deployment service you use.
+These levels are set by your deployment mode:
 
 * **Temporal Cloud with standard single region deployment**:
   Standard Temporal Cloud deployment provides 99.99% availability and a contractual service level agreement (SLA) of 99.9% guarantee against service errors. 
@@ -31,8 +31,7 @@ For each Namespace, we calculate the service-error rate as 1 - (count of errors 
 Rates are averaged per month and reset quarterly.
 
 Errors are recorded against the SLA are service errors, such as the `UNAVAILABLE` [gRPC status code](https://grpc.github.io/grpc/core/md_doc_statuscodes.html).
-
-Errors that aren't counted against the SLA include the following:
+The following errors are _not_ counted against the SLA:
 
 - `ClientVersionNotSupported`
 - `InvalidArgument`
