@@ -10,7 +10,14 @@ tags:
   - child-workflows
 ---
 
-## How to start a Child Workflow Execution {#child-workflows}
+This page shows how to do the following:
+
+- [Start a Child Workflow Execution](#child-workflows)
+- [Set a Parent Close Policy](#parent-close-policy)
+
+## Start a Child Workflow Execution {#child-workflows}
+
+**How to start a Child Workflow Execution using the Go SDK.**
 
 A [Child Workflow Execution](/encyclopedia/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
@@ -94,7 +101,9 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
 }
 ```
 
-#### How to set a Parent Close Policy {#parent-close-policy}
+#### Set a Parent Close Policy {#parent-close-policy}
+
+**How to set a Parent Close Policy for a Child Workflow Execution using the Go SDK.**
 
 A [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 

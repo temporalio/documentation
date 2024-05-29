@@ -25,9 +25,17 @@ tags:
   - payload-converter
 ---
 
-## How to use a custom Payload Codec in Go {#custom-payload-codec}
+This page shows how to do the following:
 
-**Create a custom Payload Codec**
+- [Use a custom Payload Codec](#custom-payload-codec)
+- [Use custom payload conversion](#custom-payload-conversion)
+- [Use a custom Payload Converter](#custom-payload-converter)
+
+## Use a custom Payload Codec in Go {#custom-payload-codec}
+
+**How to use a custom Payload Codec using the Go SDK.**
+
+**Step 1: Create a custom Payload Codec**
 
 Create a custom [PayloadCodec](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec) implementation and define your encryption/compression and decryption/decompression logic in the `Encode` and `Decode` functions.
 
@@ -101,7 +109,7 @@ func (Codec) Decode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
 }
 ```
 
-**Set Data Converter to use custom Payload Codec**
+**Step 2: Set Data Converter to use custom Payload Codec.**
 
 Set your custom `PayloadCodec` with an instance of `DataConverter` in your `Dial` client options that you use to create the client.
 
@@ -122,7 +130,9 @@ For reference, see the following samples:
 - [Codec server](https://github.com/temporalio/samples-go/tree/main/codec-server)
 - [Encryption](https://github.com/temporalio/samples-go/tree/main/encryption)
 
-## How to use custom payload conversion {#custom-payload-conversion}
+## Use custom payload conversion {#custom-payload-conversion}
+
+**How to customize the conversion of a payload using the Go SDK.**
 
 Temporal SDKs provide a default [Payload Converter](/dataconversion#payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
 
@@ -131,6 +141,8 @@ You can set multiple encoding Payload Converters to run your conversions.
 When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.
 
 ## How to use a custom Payload Converter in Go {#custom-payload-converter}
+
+**How to use a custom Payload Converter using the Go SDK.**
 
 Use a [Composite Data Converter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter) to apply custom, type-specific Payload Converters in a specified order.
 Defining a new Composite Data Converter is not always necessary to implement custom data handling.

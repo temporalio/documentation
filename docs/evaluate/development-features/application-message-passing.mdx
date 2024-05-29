@@ -1,6 +1,6 @@
 ---
 id: application-message-passing
-title: Application Message Passing - Temporal development feature
+title: Application message passing - Temporal development feature
 description: Enhance your Workflows with Signals and Queries, allowing dynamic responses to external events and real-time state access for comprehensive monitoring and tracking.
 sidebar_label: Application Message Passing
 tags:
@@ -28,18 +28,28 @@ keywords:
   - queries
 ---
 
-Integrating Signals and Queries is an essential skill to build responsive applications. Signals allow Workflows to react to events at runtime, while Queries enable on-demand data retrieval from ongoing Workflows without disrupting their execution.
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
 
-**Signals**: Signals allow you to send messages asynchronously to running Workflow Executions, enabling you to change their state and control their flow in real-time. This feature is particularly useful in scenarios where Workflows must react to external events or user interactions.
+Need a responsive application?
+Temporal provides **Signals**, **Queries**, and **Updates** as a means to send data into and get data out of your running application.
+Signals enable your application to asynchronously react to events at runtime, Queries enable on-demand data retrieval from ongoing Workflows without disrupting their execution, and Updates enable you to change the state of a running application.
 
-**Queries**: Queries provide a way to access and monitor the internal state of your Workflow Executions in real-time. This is essential for monitoring the progress of long-running Workflows and retrieving their results.
+**Signals**: Signals allow you to send messages asynchronously to running Workflow Executions, enabling you to change their state and control their flow in real-time.
+This feature is particularly useful in scenarios where Workflows must react to external events or user interactions.
 
-See the SDK feature guides for implementation details:
+**Queries**: Queries provide a way to access and monitor the internal state of your Workflow Executions in real-time.
+This is essential for monitoring the progress of long-running Workflows and retrieving their results.
 
-- [Go SDK application message passing feature guide](/develop/go/messages)
-- [Java SDK application message passing feature guide](/develop/java/messages)
-- [Python SDK application message passing feature guide](/develop/python/messages)
-- [TypeScript application message passing feature guide](/develop/typescript/messages)
-- [.NET SDK application message passing feature guide](/develop/typescript/messages)
+**Updates**: An Update is a synchronous, blocking call that could replace both a Signal and a Query.
 
-For a deep dive into Application Message Passing, enroll in one of [our courses](https://learn.temporal.io/courses/interacting_with_workflows).
+See the SDK feature guides for implementation details.
+
+<RelatedReadContainer>
+  <RelatedReadItem path="/develop/go/message-passing" text="Go SDK application message passing feature guide" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/java/message-passing" text="Java SDK application message passing feature guide" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/python/message-passing" text="Python SDK application message passing feature guide" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/typescript/message-passing" text="TypeScript SDK application message passing feature guide" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/dotnet/message-passing" text=".NET SDK application message passing feature guide" archetype="feature-guide" />
+</RelatedReadContainer>
+
+For a deep dive into Application message passing, enroll in one of [our courses](https://learn.temporal.io/courses/interacting_with_workflows).
