@@ -27,8 +27,8 @@ This means your standby region is always available and synchronized with the act
 In the event of network service and performance issues in the active region, your standby region is ready to take over.
 When necessary, Temporal Cloud smoothly transitions control from the active to the standby region using a process called "failover".
 
-Temporal Cloud's multi-region Namespace feature provides our highest levels of service availability, with 4 9s.
-Our Service Level Agreement ([SLA](https://docs.temporal.io/cloud/sla)) provides 99.99% availability and 99.9% guarantee against service errors.
+Temporal Cloud's multi-region Namespace feature provides our highest levels of service availability and error guarantees.
+Our MRN Service Level Agreement ([SLA](https://docs.temporal.io/cloud/sla)) provides 99.99% availability and 99.99% guarantee against service errors.
 
 This feature guide covers the following topics:
 
@@ -68,7 +68,7 @@ It depends on your availability requirements:
 
 In single-region use, Temporal clients connect to a single Namespace in one deployment region.
 Single-region Temporal Cloud Namespaces offer 99.99% availability.
-Our contractual Service Level Agreement ([SLA](https://docs.temporal.io/cloud/sla)) provides a 99.99% guarantee against service errors.
+Our standard contractual Service Level Agreement ([SLA](https://docs.temporal.io/cloud/sla)) provides a 99.9% guarantee against service errors.
 For many applications, this provides sufficient availability.
 
 In comparison, our multi-region Namespaces support standby recovery for even higher availability, providing a 99.99% guarantee against service errors.
@@ -154,8 +154,7 @@ See the sections on [triggering a failover](/cloud/multi-region#triggering-failo
 
 **What guarantees does Temporal offer for multi-region Namespaces?**
 
-Multi-region Namespaces offer 99.99% availability.
-This is enforced by an SLA on [service error rates](https://docs.temporal.io/cloud/sla).
+Multi-region Namespaces offer 99.99% availability, enforced by our [service error rates SLA](https://docs.temporal.io/cloud/sla).
 Our system is designed to limit data loss after recovery when the incident triggering the failover is resolved.
 
 Our recovery point objective ([RPO](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Point_Objective)) is near-zero.
