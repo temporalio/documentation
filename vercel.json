@@ -1736,7 +1736,11 @@
     },
     {
       "source": "/python/:path*",
-      "destination": "/dev-guide/python"
+      "destination": "/develop/python"
+    },
+    {
+      "source": "/dev-guide/python:path*",
+      "destination": "/develop/python"
     },
     {
       "source": "/concepts/what-is-a-retry-policy",
