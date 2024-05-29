@@ -31,18 +31,18 @@ A Child Workflow Execution is a [Workflow Execution](/workflows#workflow-executi
 - [Go SDK Child Workflow feature guide](/dev-guide/go/features#child-workflows)
 - [Java SDK Child Workflow feature guide](/dev-guide/java/features#child-workflows)
 - [PHP SDK Child Workflow feature guide](/dev-guide/php/features#child-workflows)
-- [Python SDK Child Workflow feature guide](/dev-guide/python/features#child-workflows)
+- [Python SDK Child Workflow feature guide](//develop/python/child-workflows)
 - [TypeScript SDK Child Workflow feature guide](/dev-guide/typescript/features#child-workflows)
 
 A Workflow Execution can be both a Parent and a Child Workflow Execution because any Workflow can spawn another Workflow.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Parent and Child Workflow Execution entity relationship</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Parent and Child Workflow Execution entity relationship</p>
   </div>
-  <div class="tdiiw" height="600">
+  <div className="tdiiw" height="600">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/parent-child-workflow-execution-relationship.svg"
       alt="Parent and Child Workflow Execution entity relationship"
     />
@@ -60,17 +60,20 @@ This means that if a Parent Workflow Execution utilizes Continue-As-New, any ong
 
 :::
 
-When a Parent Workflow Execution reaches a Closed status, the Cluster propagates Cancellation Requests or Terminations to Child Workflow Executions depending on the Child's [Parent Close Policy](#parent-close-policy).
+When a Parent Workflow Execution reaches a Closed status, the Temporal Service propagates Cancellation Requests or Terminations to Child Workflow Executions depending on the Child's [Parent Close Policy](#parent-close-policy).
 
 If a Child Workflow Execution uses Continue-As-New, from the Parent Workflow Execution's perspective the entire chain of Runs is treated as a single execution.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Parent and Child Workflow Execution entity relationship with Continue As New</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">
+      Parent and Child Workflow Execution entity relationship with Continue As
+      New
+    </p>
   </div>
-  <div class="tdiiw" height="700">
+  <div className="tdiiw" height="700">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/parent-child-workflow-execution-with-continue-as-new.svg"
       alt="Parent and Child Workflow Execution entity relationship with Continue As New"
     />
@@ -146,7 +149,7 @@ A Parent Close Policy determines what happens to a Child Workflow Execution if i
 - [How to set a Parent Close Policy using the Go SDK](/dev-guide/go/features#parent-close-policy)
 - [How to set a Parent Close Policy using the Java SDK](/dev-guide/java/features#parent-close-policy)
 - [How to set a Parent Close Policy using the PHP SDK](/dev-guide/php/features#parent-close-policy)
-- [How to set a Parent Close Policy using the Python SDK](/dev-guide/python/features#parent-close-policy)
+- [How to set a Parent Close Policy using the Python SDK](/develop/python/child-workflows#parent-close-policy)
 - [How to set a Parent Close Policy using the TypeScript SDK](/dev-guide/typescript/features#parent-close-policy)
 
 There are three possible values:
@@ -160,12 +163,16 @@ There are three possible values:
 Each Child Workflow Execution may have its own Parent Close Policy.
 This policy applies only to Child Workflow Executions and has no effect otherwise.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Parent Close Policy entity relationship</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Parent Close Policy entity relationship</p>
   </div>
-  <div class="tdiiw" height="543">
-    <img class="img_ev3q" src="/diagrams/parent-close-policy.svg" alt="Parent Close Policy entity relationship" />
+  <div className="tdiiw" height="543">
+    <img
+      className="img_ev3q"
+      src="/diagrams/parent-close-policy.svg"
+      alt="Parent Close Policy entity relationship"
+    />
   </div>
 </div>
 

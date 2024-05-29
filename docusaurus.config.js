@@ -1,6 +1,4 @@
 //@ts-check
-const path = require("path");
-const visit = require("unist-util-visit");
 const FontPreloadPlugin = require("webpack-font-preload-plugin");
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
@@ -12,7 +10,6 @@ module.exports = async function createConfigAsync() {
     url: "https://docs.temporal.io",
     baseUrl: "/",
     onBrokenLinks: "throw",
-    onBrokenMarkdownLinks: "throw",
     favicon: "img/favicon.svg",
     organizationName: "temporalio", // Usually your GitHub org/user name.
     projectName: "temporal-documentation", // Usually your repo name.
@@ -282,6 +279,7 @@ module.exports = async function createConfigAsync() {
           "How do Signals work?",
         ],
         async: true,
+        defer: true,
       },
       {
         src: "/scripts/copycode-notice.js",

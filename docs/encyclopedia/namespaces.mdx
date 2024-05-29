@@ -2,7 +2,6 @@
 id: namespaces
 title: What is a Temporal Namespace?
 sidebar_label: Namespaces
-sidebar_position: 9
 description: This guide provides a comprehensive overview of Namespaces.
 slug: /namespaces
 toc_max_heading_level: 4
@@ -74,8 +73,8 @@ On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces) or [tcld comma
 
 On self-hosted Temporal Cluster, you can manage your registered Namespaces using the Temporal CLI (recommended) or programmatically using APIs.
 
-<!--Technically correct but is this confusing for people since you can do this for non-self-hosted:-->
-<!--Note that these APIs and temporal CLI commands will not work with Temporal Cloud.-->
+{/* Technically correct but is this confusing for people since you can do this for non-self-hosted: */}
+{/* Note that these APIs and temporal CLI commands will not work with Temporal Cloud. */}
 
 - [How to manage Namespaces using the Go SDK](/dev-guide/go/features#manage-namespaces)
 - [How to manage Namespaces using the Java SDK](/dev-guide/java/features#manage-namespaces)
@@ -106,7 +105,7 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 Set Namespaces in your SDK Client to isolate your Workflow Executions to the Namespace.
 If you do not set a Namespace, all Workflow Executions started using the Client will be associated with the "default" Namespace. This means, you must have a default Namespace called "default" registered with your Temporal Cluster. See [Registration](#registration) for details.
 
-<!-- TODO add sample for this to link to -[How to set the Namespace for a Temporal Client](/) -->
+{/* TODO add sample for this to link to -[How to set the Namespace for a Temporal Client](/) */}
 
 - [How to list Namespaces in a Cluster using the Temporal CLI](/cli/operator#list)
 - [How to view (describe) Namespace metadata and details using the Temporal CLI](/cli/operator#describe)

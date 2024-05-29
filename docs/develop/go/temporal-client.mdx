@@ -64,7 +64,9 @@ If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal
 If you don't set a custom Namespace name in the Namespace field, the client connects to the default Namespace.
 
 <!--SNIPSTART samples-apps-go-yourapp-gateway {"selectedLines": ["1-23", "32"]} -->
+
 [sample-apps/go/yourapp/gateway/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/gateway/main.go)
+
 ```go
 package main
 
@@ -92,6 +94,7 @@ func main() {
 // ...
 }
 ```
+
 <!--SNIPEND-->
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
@@ -124,7 +127,9 @@ For more information about managing and generating client certificates for Tempo
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 <!--SNIPSTART sample-apps-go-cloud-client {"selectedLines": ["1-38", "64"]} -->
+
 [sample-apps/go/cloud/client/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/cloud/client/main.go)
+
 ```go
 package main
 
@@ -167,6 +172,7 @@ func main() {
 // ...
 }
 ```
+
 <!--SNIPEND-->
 
 ## Start Workflow Execution {#start-workflow-execution}
@@ -568,7 +574,7 @@ All that is needed is the [Workflow Id](#).
 (A [Run Id](#) is optional if more than one closed Workflow Execution has the same Workflow Id.)
 The result of the Workflow Execution is available for as long as the Workflow Execution Event History remains in the system.
 
-<!-- TODO (See [How long do Workflow Execution Histories persist](#)). -->
+{/* TODO (See [How long do Workflow Execution Histories persist](#)). */}
 
 Call the `GetWorkflow()` method on an instance of the Go SDK Client and pass it the Workflow Id used to spawn the Workflow Execution.
 Then call the `Get()` method on the instance of `WorkflowRun` that is returned, passing it a pointer to populate the result.

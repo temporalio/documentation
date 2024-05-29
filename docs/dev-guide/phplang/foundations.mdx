@@ -2,7 +2,6 @@
 id: foundations
 title: Foundations - PHP SDK feature guide
 sidebar_label: Foundations
-sidebar_position: 1
 description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/php/foundations
 toc_max_heading_level: 4
@@ -111,8 +110,12 @@ Choose one of the following install methods to install the Temporal CLI.
 
 - Install the Temporal CLI from CDN.
   1. Select the platform and architecture needed.
-     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64">Download for Darwin amd64</a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64">Download for Darwin arm64</a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64">
+         Download for Darwin amd64
+       </a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64">
+         Download for Darwin arm64
+       </a>
   2. Extract the downloaded archive.
   3. Add the `temporal` binary to your PATH.
 
@@ -127,8 +130,12 @@ Choose one of the following install methods to install the Temporal CLI.
 
 - Install the Temporal CLI from CDN.
   1. Select the platform and architecture needed.
-     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">Download for Linux amd64</a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">Download for Linux arm64</a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">
+         Download for Linux amd64
+       </a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">
+         Download for Linux arm64
+       </a>
   2. Extract the downloaded archive.
   3. Add the `temporal` binary to your PATH.
 
@@ -137,8 +144,12 @@ Choose one of the following install methods to install the Temporal CLI.
 
 - Install the Temporal CLI from CDN.
   1. Select the platform and architecture needed and download the binary.
-     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">Download for Windows amd64</a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">Download for Windows arm64</a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">
+         Download for Windows amd64
+       </a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">
+         Download for Windows arm64
+       </a>
   2. Extract the downloaded archive.
   3. Add the `temporal.exe` binary to your PATH.
 
@@ -252,11 +263,11 @@ To provide the client options as an environmental variable, add the `tls` option
 temporal:
   # . . .
   tls:
-    key: "certs/client.key"
-    cert: "certs/client.pem"
-    root_ca: "certs/ca.cert"
+    key: 'certs/client.key'
+    cert: 'certs/client.pem'
+    root_ca: 'certs/ca.cert'
     client_auth_type: require_and_verify_client_cert
-    server_name: "tls-sample"
+    server_name: 'tls-sample'
 ```
 
 Then update your application and use the SSL connection for `ServiceClient`.
@@ -434,7 +445,7 @@ And the total size of a gRPC message, which includes all the arguments, is limit
 Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
 This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/workers#workflow-task).
 
-<!--TODO link to gRPC limit section when available -->
+{/* TODO link to gRPC limit section when available */}
 
 Some SDKs require that you pass context objects, others do not.
 When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.
@@ -712,10 +723,10 @@ rpc:
   listen: tcp://127.0.0.1:6001
 
 server:
-  command: "php worker.php"
+  command: 'php worker.php'
 
 temporal:
-  address: "temporal:7233"
+  address: 'temporal:7233'
   activities:
     num_workers: 10
 ```

@@ -2,7 +2,6 @@
 id: project-setup
 title: Set up a Temporal Application project - TypeScript SDK dev guide
 sidebar_label: Project setup
-sidebar_position: 2
 description: The project setup section of the Temporal TypeScript SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in TypeScript—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/typescript/project-setup
 toc_max_heading_level: 4
@@ -48,8 +47,8 @@ tags:
   - workflow
 ---
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 The first step to creating a new Temporal Application is to set up your development environment.
 This chapter walks through the steps to do that using the TypeScript SDK.
@@ -357,9 +356,9 @@ npx @temporalio/create --sample empty backgroundcheck
 
 :::note
 
-The Temporal TypeScript SDK is dropping support for Node.js 14 and Node.js 16 due to their end-of-life status.
+The Temporal TypeScript SDK is dropping support for Node.js 16 due to its end-of-life status.
 
-The [Temporal TypeScript SDK 1.9 version](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0) is the last minor release supporting Node.js 14, and version 1.10 may be the last supporting Node.js 16.
+The [Temporal TypeScript SDK 1.10 version](https://github.com/temporalio/sdk-typescript/releases/tag/v1.10.0) is the last minor release supporting Node.js 16.
 
 Update your deployments to supported Node.js versions to ensure continued compatibility and security updates.
 
@@ -425,19 +424,19 @@ To define a Workflow, import the Activity types and the `@temporalio/workflow` l
 Define the Activity Execution options. `StartToCloseTimeout` or `ScheduleToCloseTimeout` must be set:
 The `backgroundCheck` function that follows is an example of a basic Workflow Definition.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/workflows.ts">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```typescript
-import * as workflow from "@temporalio/workflow";
-import type * as activities from "./activities";
+import * as workflow from '@temporalio/workflow';
+import type * as activities from './activities';
 
 const { ssnTrace } = workflow.proxyActivities<typeof activities>({
-  startToCloseTimeout: "10 seconds",
+  startToCloseTimeout: '10 seconds',
 });
 
 export async function backgroundCheck(ssn: string): Promise<string> {
@@ -487,10 +486,10 @@ You'll define your Activities in this file.
 
 Add the following code to define your Activity:
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/activities.ts">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
@@ -498,7 +497,7 @@ Add the following code to define your Activity:
 export async function ssnTrace(param: string): Promise<string> {
   // This is where a call to another service is made
   // Here we are pretending that the service that does SSNTrace returned "pass"
-  return "pass";
+  return 'pass';
 }
 ```
 
@@ -523,16 +522,16 @@ In regards to organization, we recommend keeping Worker code separate from Workf
 
 Add the following code to `src/worker.ts` to define a worker process that communicates with a local development server:
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/worker.ts">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```typescript
-import { NativeConnection, Worker } from "@temporalio/worker";
-import * as activities from "./activities";
+import { NativeConnection, Worker } from '@temporalio/worker';
+import * as activities from './activities';
 
 async function run() {
   // Step 1: Establish a connection with Temporal server.
@@ -540,17 +539,17 @@ async function run() {
   // Worker code uses `@temporalio/worker.NativeConnection`.
   // (But in your application code it's `@temporalio/client.Connection`.)
   const connection = await NativeConnection.connect({
-    address: "localhost:7233",
+    address: 'localhost:7233',
     // TLS and gRPC metadata configuration goes here.
   });
   // Step 2: Register Workflows and Activities with the Worker and specify your
   // namespace and Task Queue.
   const worker = await Worker.create({
     connection,
-    namespace: "default",
-    taskQueue: "background-check",
+    namespace: 'default',
+    taskQueue: 'background-check',
     // Workflows are registered using a path as they run in a separate JS context.
-    workflowsPath: require.resolve("./workflows"),
+    workflowsPath: require.resolve('./workflows'),
     activities,
   });
 
@@ -592,18 +591,18 @@ A Temporal Cloud Worker requires that you specify the following in the Client co
 Add the following code to `src/worker.ts` to define a worker process that communicates with Temporal Cloud using an mTLS connection, using
 configuration provided via environment variables:
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/worker-cloud.ts">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```typescript
-import fs from "fs/promises";
+import fs from 'fs/promises';
 
-import { Worker, NativeConnection } from "@temporalio/worker";
-import * as activities from "./activities";
+import { NativeConnection, Worker } from '@temporalio/worker';
+import * as activities from './activities';
 
 // Note that serverNameOverride and serverRootCACertificate are optional.
 async function run({
@@ -635,11 +634,11 @@ async function run({
   const worker = await Worker.create({
     connection,
     namespace,
-    workflowsPath: require.resolve("./workflows"),
+    workflowsPath: require.resolve('./workflows'),
     activities,
     taskQueue,
   });
-  console.log("Worker connection successfully established");
+  console.log('Worker connection successfully established');
 
   await worker.run();
   await connection.close();
@@ -671,13 +670,13 @@ export interface Env {
 
 export function getEnv(): Env {
   return {
-    address: requiredEnv("TEMPORAL_ADDRESS"),
-    namespace: requiredEnv("TEMPORAL_NAMESPACE"),
-    clientCertPath: requiredEnv("TEMPORAL_CLIENT_CERT_PATH"),
-    clientKeyPath: requiredEnv("TEMPORAL_CLIENT_KEY_PATH"),
+    address: requiredEnv('TEMPORAL_ADDRESS'),
+    namespace: requiredEnv('TEMPORAL_NAMESPACE'),
+    clientCertPath: requiredEnv('TEMPORAL_CLIENT_CERT_PATH'),
+    clientKeyPath: requiredEnv('TEMPORAL_CLIENT_KEY_PATH'),
     serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
     serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
-    taskQueue: process.env.TEMPORAL_TASK_QUEUE || "hello-world-mtls",
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls',
   };
 }
 ```
@@ -762,16 +761,16 @@ To use a Worker with a self-hosted Temporal Cluster, set the IP address, port, a
 
 Add the following code to `src/worker.ts` to define a worker process that communicates with a self-hosted Temporal cluster using a specific namespace and IP address:
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/worker-self-hosted.ts">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```typescript
-import { NativeConnection, Worker } from "@temporalio/worker";
-import * as activities from "./activities";
+import { NativeConnection, Worker } from '@temporalio/worker';
+import * as activities from './activities';
 
 async function run() {
   // Step 1: Establish a connection with Temporal server.
@@ -779,17 +778,17 @@ async function run() {
   // Worker code uses `@temporalio/worker.NativeConnection`.
   // (But in your application code it's `@temporalio/client.Connection`.)
   const connection = await NativeConnection.connect({
-    address: "172.18.0.4:7233",
+    address: '172.18.0.4:7233',
     // TLS and gRPC metadata configuration goes here.
   });
   // Step 2: Register Workflows and Activities with the Worker and specify your
   // namespace and Task Queue.
   const worker = await Worker.create({
     connection,
-    namespace: "backgroundcheck_namespace",
-    taskQueue: "hello-world",
+    namespace: 'backgroundcheck_namespace',
+    taskQueue: 'hello-world',
     // Workflows are registered using a path as they run in a separate JS context.
-    workflowsPath: require.resolve("./workflows"),
+    workflowsPath: require.resolve('./workflows'),
     activities,
   });
 
@@ -827,7 +826,6 @@ RUN npm run build
 RUN npm ci --omit dev
 
 FROM gcr.io/distroless/nodejs20-debian11
-
 
 COPY --from=build /app/node_modules /app/node_modules
 COPY --from=build /app/lib /app/lib
@@ -906,12 +904,16 @@ When you visit for the first time, the Web UI directs you to [http://localhost:8
 
 Use the Namespace dropdown to select the project Namespace you created earlier.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Web UI Namespace selection</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Web UI Namespace selection</p>
   </div>
-  <div class="tdiiw" height="1402">
-    <img class="img_ev3q" src="/img/web-ui-namespace-selection.png" alt="Web UI Namespace selection" />
+  <div className="tdiiw" height="1402">
+    <img
+      className="img_ev3q"
+      src="/img/web-ui-namespace-selection.png"
+      alt="Web UI Namespace selection"
+    />
   </div>
 </div>
 
@@ -921,13 +923,13 @@ You should now be at [http://localhost:8233/namespaces/backgroundcheck_namespace
 
 If you ever want to confirm that a Worker is polling on the Task Queue that the Workflow started on, you can visit the Workflow Execution's details page and click on the Task Queue name.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Click on the Task Queue name to view polling Workers</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Click on the Task Queue name to view polling Workers</p>
   </div>
-  <div class="tdiiw" height="782">
+  <div className="tdiiw" height="782">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/click-task-queue-name.png"
       alt="Click on the Task Queue name to view polling Workers"
     />
@@ -937,12 +939,16 @@ If you ever want to confirm that a Worker is polling on the Task Queue that the 
 This will direct you to a page where you can view the Workers polling that Task Queue.
 If there are none, the application won't run.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Confirm Workers polling Task Queue</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Confirm Workers polling Task Queue</p>
   </div>
-  <div class="tdiiw" height="692">
-    <img class="img_ev3q" src="/img/confirm-workers-polling-task-queue.png" alt="Confirm Workers polling Task Queue" />
+  <div className="tdiiw" height="692">
+    <img
+      className="img_ev3q"
+      src="/img/confirm-workers-polling-task-queue.png"
+      alt="Confirm Workers polling Task Queue"
+    />
   </div>
 </div>
 
@@ -1014,12 +1020,16 @@ The URL will look something like the following:
 https://cloud.temporal.io/namespaces/<namespace>.<account-id>/workflows
 ```
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">View Workflows in the Cloud UI</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">View Workflows in the Cloud UI</p>
   </div>
-  <div class="tdiiw" height="578">
-    <img class="img_ev3q" src="/img/cloud-view-workflows.png" alt="View Workflows in the Cloud UI" />
+  <div className="tdiiw" height="578">
+    <img
+      className="img_ev3q"
+      src="/img/cloud-view-workflows.png"
+      alt="View Workflows in the Cloud UI"
+    />
   </div>
 </div>
 
@@ -1074,21 +1084,21 @@ You can test Workflow code for the following conditions:
 
 Add the following code to `src/mocha/backgroundcheck.test.ts` to test that the Workflow executes successfully.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/mocha/backgroundcheck.test.ts">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```typescript
-import { TestWorkflowEnvironment } from "@temporalio/testing";
-import { before, describe, it } from "mocha";
-import { Worker } from "@temporalio/worker";
-import { backgroundCheck } from "../workflows";
-import assert from "assert";
+import { TestWorkflowEnvironment } from '@temporalio/testing';
+import { Worker } from '@temporalio/worker';
+import assert from 'assert';
+import { before, describe, it } from 'mocha';
+import { backgroundCheck } from '../workflows';
 
-describe("Background check workflow", () => {
+describe('Background check workflow', () => {
   let testEnv: TestWorkflowEnvironment;
 
   before(async () => {
@@ -1099,28 +1109,28 @@ describe("Background check workflow", () => {
     await testEnv?.teardown();
   });
 
-  it("successfully completes the Workflow", async () => {
-    const ssn = "111-22-3333";
+  it('successfully completes the Workflow', async () => {
+    const ssn = '111-22-3333';
     const { client, nativeConnection } = testEnv;
-    const taskQueue = "testing";
+    const taskQueue = 'testing';
 
     const worker = await Worker.create({
       connection: nativeConnection,
       taskQueue,
-      workflowsPath: require.resolve("../workflows"),
+      workflowsPath: require.resolve('../workflows'),
       activities: {
-        ssnTrace: async () => "pass",
+        ssnTrace: async () => 'pass',
       },
     });
 
     const result = await worker.runUntil(
       client.workflow.execute(backgroundCheck, {
         args: [ssn],
-        workflowId: "background-check-test",
+        workflowId: 'background-check-test',
         taskQueue,
-      })
+      }),
     );
-    assert.equal(result, "pass");
+    assert.equal(result, 'pass');
   });
 });
 ```
@@ -1149,25 +1159,25 @@ You can test Activity code for the following conditions:
 Add the following code to `src/mocha/ssntrace.test.ts` to test the `ssnTrace`
 Activity and ensure it returns the expected value:
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/typescript/chapter_project_setup/backgroundcheck/src/mocha/ssntrace.test.ts">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```typescript
-import { MockActivityEnvironment } from "@temporalio/testing";
-import { describe, it } from "mocha";
-import * as activities from "../activities";
-import assert from "assert";
+import { MockActivityEnvironment } from '@temporalio/testing';
+import assert from 'assert';
+import { describe, it } from 'mocha';
+import * as activities from '../activities';
 
-describe("ssnTrace activity", async () => {
-  it("successfully passes the ssn trace", async () => {
+describe('ssnTrace activity', async () => {
+  it('successfully passes the ssn trace', async () => {
     const env = new MockActivityEnvironment();
-    const ssn = "111-22-3333";
+    const ssn = '111-22-3333';
     const result = await env.run(activities.ssnTrace, ssn);
-    assert.equal(result, "pass");
+    assert.equal(result, 'pass');
   });
 });
 ```

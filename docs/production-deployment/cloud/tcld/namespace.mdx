@@ -6,13 +6,12 @@ description: The Temporal Cloud CLI (tcld) Namespace commands let you create, co
 slug: /cloud/tcld/namespace/
 toc_max_heading_level: 4
 keywords:
-- cli reference
-- tcld
+  - cli reference
+  - tcld
 tags:
-- cli-reference
-- tcld
+  - cli-reference
+  - tcld
 ---
-
 
 The `tcld namespace` commands enable [Namespace](/namespaces) operations in Temporal Cloud.
 
@@ -723,7 +722,7 @@ The `tcld namespace accepted-client-ca set` command sets the client CA certifica
 
 Alias: `s`
 
-<!--- How to rollover accepted client CA certificates in Temporal Cloud using tcld --->
+{/* How to rollover accepted client CA certificates in Temporal Cloud using tcld */}
 
 When updating CA certificates, it's important to follow a rollover process.
 Doing so enables your Namespace to serve both CA certificates for a period of time until traffic to your old CA certificate ceases.
@@ -1371,4 +1370,3 @@ Alias: `--ic`
 ```bash
 tcld namespace update-codec-server --namespace <namespace_id> --endpoint <https_url> --include-credentials true
 ```
-

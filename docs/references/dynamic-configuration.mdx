@@ -5,11 +5,10 @@ sidebar_label: Dynamic configuration
 description: Temporal Cluster provides dynamic configuration keys that you can update and apply to a running Cluster without restarting your services.
 toc_max_heading_level: 4
 keywords:
-- reference
+  - reference
 tags:
-- reference
+  - reference
 ---
-
 
 Temporal Cluster provides [dynamic configuration](/clusters#dynamic-configuration) keys that you can update and apply to a running Cluster without restarting your services.
 
@@ -40,23 +39,23 @@ testGetBoolPropertyKey:
   - value: false
   - value: true
     constraints:
-      namespace: "your-namespace"
+      namespace: 'your-namespace'
   - value: false
     constraints:
-      namespace: "your-other-namespace"
+      namespace: 'your-other-namespace'
 testGetDurationPropertyKey:
-  - value: "1m"
+  - value: '1m'
     constraints:
-      namespace: "your-namespace"
-      taskQueueName: "longIdleTimeTaskqueue"
+      namespace: 'your-namespace'
+      taskQueueName: 'longIdleTimeTaskqueue'
 testGetFloat64PropertyKey:
   - value: 12.0
     constraints:
-      namespace: "your-namespace"
+      namespace: 'your-namespace'
 testGetMapPropertyKey:
   - value:
       key1: 1
-      key2: "value 2"
+      key2: 'value 2'
       key3:
         - false
         - key4: true
@@ -82,9 +81,9 @@ Not defining constraints on a dynamic configuration key sets the values across t
   frontend.persistenceNamespaceMaxQPS: # Rate limit on the number of queries the Frontend sends to the Persistence store.
     - constraints: {} # Sets default value that applies to all Namespaces
       value: 2000 # The default value for this key is 0.
-    - constraints: { namespace: "namespace1" } # Sets limit on number of queries that can be sent from "namespace1" Namespace to the Persistence store.
+    - constraints: { namespace: 'namespace1' } # Sets limit on number of queries that can be sent from "namespace1" Namespace to the Persistence store.
       value: 4000
-    - constraints: { namespace: "namespace2" }
+    - constraints: { namespace: 'namespace2' }
       value: 1000
   ```
 
@@ -97,26 +96,34 @@ Not defining constraints on a dynamic configuration key sets the values across t
 
   ```yaml
   matching.numTaskqueueReadPartitions: # Number of Task Queue partitions for read operations.
-    - constraints: { namespace: "namespace1", taskQueueName: "tq" } # Applies to the "tq" Task Queue for both Workflows and Activities.
+    - constraints: { namespace: 'namespace1', taskQueueName: 'tq' } # Applies to the "tq" Task Queue for both Workflows and Activities.
       value: 8 # The default value for this key is 4. Task Queues that need to support high traffic require higher number of partitions. Set these values in accordance to your poller count.
-    - constraints: { namespace: "namespace1", taskQueueName: "other-tq", taskType: "Activity" } # Applies to the "other_tq" Task Queue for Activities specifically.
+    - constraints: {
+          namespace: 'namespace1',
+          taskQueueName: 'other-tq',
+          taskType: 'Activity',
+        } # Applies to the "other_tq" Task Queue for Activities specifically.
       value: 20
-    - constraints: { namespace: "namespace2" } # Applies to all task queues in "namespace2".
+    - constraints: { namespace: 'namespace2' } # Applies to all task queues in "namespace2".
       value: 10
     - constraints: {} # Applies to all other task queues in "namespace1" and all other Namespaces.
       value: 16
   matching.numTaskqueueWritePartitions: # Number of Task Queue partitions for write operations.
-    - constraints: { namespace: "namespace1", taskQueueName: "tq" } # Applies to the "tq" Task Queue for both Workflows and Activities.
+    - constraints: { namespace: 'namespace1', taskQueueName: 'tq' } # Applies to the "tq" Task Queue for both Workflows and Activities.
       value: 8 # The default value for this key is 4. Task Queues that need to support high traffic require higher number of partitions. Set these values in accordance to your poller count.
-    - constraints: { namespace: "namespace1", taskQueueName: "other-tq", taskType: "Activity" } # Applies to the "other_tq" Task Queue for Activities specifically.
+    - constraints: {
+          namespace: 'namespace1',
+          taskQueueName: 'other-tq',
+          taskType: 'Activity',
+        } # Applies to the "other_tq" Task Queue for Activities specifically.
       value: 20
-    - constraints: { namespace: "namespace2" } # Applies to all task queues in "namespace2".
+    - constraints: { namespace: 'namespace2' } # Applies to all task queues in "namespace2".
       value: 10
     - constraints: {} # Applies to all other task queues in "namespace1" and all other Namespaces.
       value: 16
   ```
 
-<!-- Note that the values set with most constraints take priority over values that are set with fewer constraints, regardless of the order in which they are set in the dynamic configuration key. -->
+{/* Note that the values set with most constraints take priority over values that are set with fewer constraints, regardless of the order in which they are set in the dynamic configuration key. */}
 
 For more examples on how dynamic configuration is set, see:
 
@@ -224,4 +231,3 @@ This can be useful when migrating a Visibility database or creating a backup Vis
 | ------------------------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
 | `system.enableReadFromSecondaryVisibility` | Boolean | Enables reading from the [secondary Visibility store](/visibility#dual-visibility), and can be set per Namespace. Allowed values are `true` or `false`.                                                                                                                                                                                                                                                              | `false`       |
 | `system.secondaryVisibilityWritingMode`    |         | Enables writing Visibility data to the secondary Visibility store and can be set per Namespace. Setting this value to `on` disables write operations to the primary Visibility store. Allowed values:<br /> `off`: Enables writing to primary Visibility store only. <br /> `on`: Enables writing to secondary Visibility store only.<br /> `dual`: Enables writing to both primary and secondary Visibility stores. | `off`         |
-

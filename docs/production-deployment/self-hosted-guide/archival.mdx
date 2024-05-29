@@ -2,18 +2,16 @@
 id: archival
 title: Self-hosted Archival setup
 sidebar_label: Archival
-sidebar_position: 9
 description: Learn how to setup the self-hosted Cluster Archival feature.
 slug: /self-hosted-guide/archival
 toc_max_heading_level: 4
 keywords:
-- explanation
-- how-to
+  - explanation
+  - how-to
 tags:
-- explanation
-- how-to
+  - explanation
+  - how-to
 ---
-
 
 Archival is a feature that automatically backs up [Event Histories](/workflows#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
 
@@ -67,15 +65,15 @@ archival:
   # Event History configuration
   history:
     # Archival is enabled at the cluster level
-    state: "enabled"
+    state: 'enabled'
     enableRead: true
     # Namespaces can use either the local filestore provider or the Google Cloud provider
     provider:
       filestore:
-        fileMode: "0666"
-        dirMode: "0766"
+        fileMode: '0666'
+        dirMode: '0766'
       gstorage:
-        credentialsPath: "/tmp/gcloud/keyfile.json"
+        credentialsPath: '/tmp/gcloud/keyfile.json'
 
 # Default values for a Namespace if none are provided at creation
 namespaceDefaults:
@@ -83,9 +81,9 @@ namespaceDefaults:
   archival:
     # Event History defaults
     history:
-      state: "enabled"
+      state: 'enabled'
       # New Namespaces will default to the local provider
-      URI: "file:///tmp/temporal_archival/development"
+      URI: 'file:///tmp/temporal_archival/development'
 ```
 
 You can disable Archival by setting `archival.history.state` and `namespaceDefaults.archival.history.state` to `"disabled"`.
@@ -95,12 +93,12 @@ Example:
 ```yaml
 archival:
   history:
-    state: "disabled"
+    state: 'disabled'
 
 namespaceDefaults:
   archival:
     history:
-      state: "disabled"
+      state: 'disabled'
 ```
 
 The following table showcases acceptable values for each configuration and what purpose they serve.
@@ -138,7 +136,8 @@ To test Archival locally, start by running a Temporal server:
 
 Then register a new Namespace with Archival enabled.
 
-<!--./tctl --ns samples-namespace namespace register --gd false --history_archival_state enabled --retention 3-->
+{/* ./tctl --ns samples-namespace namespace register --gd false --history_archival_state enabled --retention 3 */}
+
 ```bash
 ./temporal operator namespace create --namespace="my-namespace" --global false --history-archival-state="enabled" --retention="4d"
 ```
@@ -161,7 +160,7 @@ When execution is finished, Archival occurs.
 
 You can retrieve archived Event Histories by copying the `workflowId` and `runId` of the completed Workflow from the log output and running the following command:
 
-<!--./tctl --ns samples-namespace wf show --wid <workflowId> --rid <runId>-->
+{/* ./tctl --ns samples-namespace wf show --wid <workflowId> --rid <runId> */}
 
 ```bash
 ./temporal workflow show --workflow-id="my-workflow-id" --run-id="my-run-id" --namespace="my-namespace"
@@ -271,4 +270,3 @@ As for now, try to make your syntax similar to the one used by our advanced list
 
 - [s3store](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store#visibility-query-syntax)
 - [gcloud](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud#visibility-query-syntax)
-

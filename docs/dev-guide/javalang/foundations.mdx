@@ -2,7 +2,6 @@
 id: foundations
 title: Foundations - Java SDK feature guide
 sidebar_label: Foundations
-sidebar_position: 4
 description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/java/foundations
 toc_max_heading_level: 4
@@ -79,8 +78,12 @@ Choose one of the following install methods to install the Temporal CLI.
 
 - Install the Temporal CLI from CDN.
   1. Select the platform and architecture needed.
-     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64">Download for Darwin amd64</a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64">Download for Darwin arm64</a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64">
+         Download for Darwin amd64
+       </a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64">
+         Download for Darwin arm64
+       </a>
   2. Extract the downloaded archive.
   3. Add the `temporal` binary to your PATH.
 
@@ -95,8 +98,12 @@ Choose one of the following install methods to install the Temporal CLI.
 
 - Install the Temporal CLI from CDN.
   1. Select the platform and architecture needed.
-     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">Download for Linux amd64</a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">Download for Linux arm64</a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">
+         Download for Linux amd64
+       </a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">
+         Download for Linux arm64
+       </a>
   2. Extract the downloaded archive.
   3. Add the `temporal` binary to your PATH.
 
@@ -105,8 +112,12 @@ Choose one of the following install methods to install the Temporal CLI.
 
 - Install the Temporal CLI from CDN.
   1. Select the platform and architecture needed and download the binary.
-     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">Download for Windows amd64</a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">Download for Windows arm64</a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">
+         Download for Windows amd64
+       </a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">
+         Download for Windows arm64
+       </a>
   2. Extract the downloaded archive.
   3. Add the `temporal.exe` binary to your PATH.
 
@@ -473,7 +484,7 @@ And the total size of a gRPC message, which includes all the arguments, is limit
 Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
 This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/workers#workflow-task).
 
-<!--TODO link to gRPC limit section when available -->
+{/* TODO link to gRPC limit section when available */}
 
 Some SDKs require that you pass context objects, others do not.
 When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.

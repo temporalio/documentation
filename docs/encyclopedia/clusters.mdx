@@ -2,7 +2,6 @@
 id: clusters
 title: What is a Temporal Service?
 sidebar_label: Temporal Service
-sidebar_position: 8
 description: This guide provides a comprehensive overview of the Temporal Service.
 slug: /clusters
 toc_max_heading_level: 4
@@ -71,12 +70,16 @@ Temporal offers official support for, and is tested against, dependencies with t
 The Frontend Service is a stateless gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Frontend Service</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Frontend Service</p>
   </div>
-  <div class="tdiiw" height="1040">
-    <img class="img_ev3q" src="/diagrams/temporal-frontend-service.svg" alt="Frontend Service" />
+  <div className="tdiiw" height="1040">
+    <img
+      className="img_ev3q"
+      src="/diagrams/temporal-frontend-service.svg"
+      alt="Frontend Service"
+    />
   </div>
 </div>
 
@@ -107,16 +110,16 @@ The History Service is responsible for persisting Workflow Execution state to th
 When the Workflow Execution is able to progress, the History Service adds a Task with the Workflow's updated history to the Task Queue.
 From there, a Worker can poll for work, receive this updated history, and resume execution.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">
-      Block diagram of how the History Service relates to the other services of the Temporal Server and to the Temporal
-      Service
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">
+      Block diagram of how the History Service relates to the other services of
+      the Temporal Server and to the Temporal Service
     </p>
   </div>
-  <div class="tdiiw" height="1040">
+  <div className="tdiiw" height="1040">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/temporal-history-service.svg"
       alt="Block diagram of how the History Service relates to the other services of the Temporal Server and to a Temporal Service"
     />
@@ -170,12 +173,16 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
 
 The Matching Service is responsible for hosting user-facing [Task Queues](/workers#task-queue) for Task dispatching.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Matching Service</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Matching Service</p>
   </div>
-  <div class="tdiiw" height="980">
-    <img class="img_ev3q" src="/diagrams/temporal-matching-service.svg" alt="Matching Service" />
+  <div className="tdiiw" height="980">
+    <img
+      className="img_ev3q"
+      src="/diagrams/temporal-matching-service.svg"
+      alt="Matching Service"
+    />
   </div>
 </div>
 
@@ -193,12 +200,16 @@ Ports are configurable in the Temporal Service configuration.
 
 The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Worker Service</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Worker Service</p>
   </div>
-  <div class="tdiiw" height="740">
-    <img class="img_ev3q" src="/diagrams/temporal-worker-service.svg" alt="Worker Service" />
+  <div className="tdiiw" height="740">
+    <img
+      className="img_ev3q"
+      src="/diagrams/temporal-worker-service.svg"
+      alt="Worker Service"
+    />
   </div>
 </div>
 
@@ -230,7 +241,7 @@ If you don't set the Retention Period value when using the Register Namespace Re
 
 When changing the Retention Period, the new duration applies to Workflow Executions that close after the change is saved.
 
-<!-- TODO link up to working API usage examples -->
+{/* TODO link up to working API usage examples */}
 
 ## What is Persistence? {#persistence}
 
@@ -239,12 +250,16 @@ The Temporal Persistence store is a database used by the [Temporal Server](#temp
 A Temporal Service's only required dependency for basic operation is the Persistence database.
 Multiple types of databases are supported.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Persistence</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Persistence</p>
   </div>
-  <div class="tdiiw" height="620">
-    <img class="img_ev3q" src="/diagrams/temporal-database.svg" alt="Persistence" />
+  <div className="tdiiw" height="620">
+    <img
+      className="img_ev3q"
+      src="/diagrams/temporal-database.svg"
+      alt="Persistence"
+    />
   </div>
 </div>
 
@@ -274,7 +289,7 @@ The following versions are used in our test pipelines and actively tested before
 You can verify supported databases in the [Temporal Server release notes](https://github.com/temporalio/temporal/releases).
 
 - Because Temporal Server primarily relies on core database functionality, we do not expect compatibility to break often.
-  <!--Temporal has no opinions on database upgrade paths; as long as you can upgrade your database according to each project's specifications, Temporal should work with any version within supported ranges.-->
+  {/* Temporal has no opinions on database upgrade paths; as long as you can upgrade your database according to each project's specifications, Temporal should work with any version within supported ranges. */}
 - We do not run tests with vendors like Vitess and CockroachDB.
 - Temporal also supports SQLite v3.x persistence, but this is meant only for development and testing, not production usage.
 
@@ -296,9 +311,7 @@ The [Visibility store](/self-hosted-guide/visibility) in your Temporal Service s
 
 With Temporal Server v1.21, you can set up [Dual Visibility](/visibility#dual-visibility) to migrate your Visibility store from one database to another.
 
-<!-- A Visibility store can be configured to provide [atandard Visibility](/visibility#standard-visibility) and [advanced Visibility](/visibility#advanced-visibility) features.
-
-Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted-guide/visibility) for updates. -->
+Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted-guide/visibility) for updates. \*/}
 
 ## What is Archival? {#archival}
 
@@ -411,9 +424,9 @@ For more information on mTLS configuration, see [tls configuration reference](/r
 
 #### Authentication and authorization
 
-<!-- commenting this very generic explanation out. Can include it back in if everyone feels strongly.
- **Authentication** is the process of verifying users who want to access your application are actually the users you want accessing it.
-**Authorization** is the verification of applications and data that a user on your Temporal Service or application has access to. -->
+{/* commenting this very generic explanation out. Can include it back in if everyone feels strongly.
+**Authentication** is the process of verifying users who want to access your application are actually the users you want accessing it.
+**Authorization** is the verification of applications and data that a user on your Temporal Service or application has access to. */}
 
 Temporal provides authentication interfaces that can be set to restrict access to your data.
 These protocols address three areas: servers, client connections, and users.

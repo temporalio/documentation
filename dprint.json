@@ -5,6 +5,7 @@
   },
   "json": {},
   "markdown": {
+    "associations": ["**/*.mdx", "**/*.md"],
     "newLineKind": "lf",
     "textWrap": "maintain",
     "emphasisKind": "underscores",
@@ -14,28 +15,7 @@
     "ignoreStartDirective": "dprint-ignore-start",
     "ignoreEndDirective": "dprint-ignore-end"
   },
-  "prettier": {
-    "arrowParens": "always",
-    "bracketSpacing": true,
-    "embeddedLanguageFormatting": "auto",
-    "htmlWhitespaceSensitivity": "css",
-    "insertPragma": false,
-    "jsxBracketSameLine": false,
-    "jsxSingleQuote": false,
-    "proseWrap": "preserve",
-    "quoteProps": "as-needed",
-    "requirePragma": false,
-    "semi": true,
-    "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "es5",
-    "useTabs": false
-  },
-  "includes": [
-    "docs-src/**/*.{md}",
-    "website/docs/dev-guide/**/*.md",
-    "vercel.json"
-  ],
+  "includes": ["docs/**/*.mdx", "vercel.json"],
   "excludes": [
     "website/docs/components",
     "**/node_modules",
@@ -48,7 +28,6 @@
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.88.8.wasm",
     "https://plugins.dprint.dev/json-0.19.1.wasm",
-    "https://plugins.dprint.dev/markdown-0.16.3.wasm",
-    "https://plugins.dprint.dev/prettier-0.32.1.json@19aa403ef0862ba8c41164e3dc6f84c0b7a66c2b11e42726b23dd25e6302ada9"
+    "https://plugins.dprint.dev/markdown-0.16.3.wasm"
   ]
 }

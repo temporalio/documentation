@@ -24,7 +24,7 @@ Each of the below errors corresponds with a [WorkflowTaskFailedCause](https://ap
 
 This error indicates that the [Workflow Task](/workers#workflow-task) failed while attempting to cancel a Timer.
 
-<!-- TODO add Timer term definition and link to it -->
+{/* TODO add Timer term definition and link to it */}
 
 Check your Timer attributes for a missing Timer Id value.
 Add a valid Timer Id and redeploy the code.
@@ -133,7 +133,7 @@ Make sure that [Search Attribute](/visibility#search-attribute) validation is pe
 
 This error indicates that the scheduled [Event](/workflows#event) is missing a Timer Id.
 
-<!-- TODO add Timer Id as anchor for term and link to it -->
+{/* TODO add Timer Id as anchor for term and link to it */}
 
 Set a valid Timer Id and retry the [Workflow Task](/workers#workflow-task).
 
@@ -141,11 +141,11 @@ Set a valid Timer Id and retry the [Workflow Task](/workers#workflow-task).
 
 This error indicates that the [Worker](/workers) deployment returned a bad binary checksum.
 
-<!-- TODO: get more information about binary -->
+{/* TODO: get more information about binary */}
 
 ## Cause Bad Update {#cause-bad-update}
 
-<!--TODO: add link to Workflow Update page when written -->
+{/* TODO: add link to Workflow Update page when written */}
 
 This error indicates that a [Workflow Execution](/workflows#workflow-execution) tried to complete before receiving an Update.
 
@@ -179,20 +179,20 @@ If you see this error, examine your Workflow Definition.
 This error indicates that a [Namespace](/namespaces) failover forced the [Workflow Task](/workers#workflow-task) to close.
 The system automatically schedules a retry when this error occurs.
 
-<!--TODO: troubleshooting -->
+{/* TODO: troubleshooting */}
 
 ## Force Close Command {#force-close-command}
 
 This error indicates that the [Workflow Task](/workers#workflow-task) was forced to close.
 A retry will be scheduled if the error is recoverable.
 
-<!-- TODO: more info-->
+{/* TODO: more info */}
 
 ## Non-Deterministic Error {#non-deterministic-error}
 
 The [Workflow Task](/workers#workflow-task) failed due to a [nondeterministic error](/workflows#non-deterministic-change).
 
-<!-- TODO: info -->
+{/* TODO: info */}
 
 ## Pending Activities Limit Exceeded {#pending-activities-limit-exceeded}
 
@@ -233,7 +233,7 @@ The system will retry automatically.
 
 This error indicates that the concurrent [poller count](/dev-guide/worker-performance#poller-count) has been exhausted.
 
-<!--TODO: more info needed -->
+{/* TODO: more info needed */}
 
 Adjust the poller count per [Worker](/workers).
 
@@ -241,25 +241,25 @@ Adjust the poller count per [Worker](/workers).
 
 This error indicates that the persistence rate limit has been reached.
 
-<!--TODO: more info needed -->
+{/* TODO: more info needed */}
 
 ## Resource Exhausted Cause RPS Limit {#resource-exhausted-cause-rps-limit}
 
 This error indicates that the [Workflow](/workflows) has exhausted its RPS limit.
 
-<!--TODO: more info needed -->
+{/* TODO: more info needed */}
 
 ## Resource Exhausted Cause System Overload {#resource-exhausted-cause-system-overload}
 
 This error indicates that the system is overloaded and cannot allocate further resources to [Workflow Tasks](/workers#workflow-task).
 
-<!--TODO: more info needed -->
+{/* TODO: more info needed */}
 
 ## Resource Exhausted Cause Unspecified {#resource-exhausted-cause-unspecified}
 
 This error indicates that an unknown cause is preventing resources from being allocated to further [Workflow Tasks](/workers#workflow-task).
 
-<!--TODO: more info needed -->
+{/* TODO: more info needed */}
 
 ## Schedule Activity Duplicate Id {#schedule-activity-duplicate-id}
 
@@ -272,7 +272,7 @@ Enter another Activity Id, and try running the Workflow Task again.
 
 This error indicates that a Timer with the given Timer Id has already started.
 
-<!-- TODO link to Timer term when exists -->
+{/* TODO link to Timer term when exists */}
 
 Try entering a different Timer Id, and retry the [Workflow Task](/workers#workflow-task).
 
@@ -293,4 +293,4 @@ The Workflow may have been picked up by a different [Worker](/workers#worker).
 
 This error indicates that the [Workflow Task](/workers#workflow-task) encountered an unhandled failure from the [Workflow Definition](/workflows#workflow-definition).
 
-<!--TODO: more info needed -->
+{/* TODO: more info needed */}

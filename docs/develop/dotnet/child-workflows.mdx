@@ -1,0 +1,76 @@
+---
+id: child-workflows
+title: Child Workflows - .NET SDK feature guide
+sidebar_label: Child Workflows
+description: Start a Child Workflow Execution using the Temporal .NET SDK. This guide covers the usage of ExecuteChildWorkflowAsync() and StartChildWorkflowAsync() methods, logging Child Workflow related events, and setting Parent Close Policies.
+keywords:
+  - start child workflow execution
+  - temporal .net sdk
+  - child workflow api
+  - child workflow events
+  - startchildworkflowexecutioninitiated
+  - childworkflowexecutionstarted
+  - childworkflowexecutioncompleted
+  - workflow execution event history
+  - parent close policy
+  - executechildworkflowasync
+  - startchildworkflowasync
+  - workflow run id
+  - signal child workflow
+  - temporal .net examples
+  - manage child workflows
+  - child workflow options
+  - parentclosepolicy
+  - child workflow in .net
+tags:
+  - developer-guide
+  - sdk
+  - dotnet
+  - child-workflow
+---
+
+
+This page shows how to do the following: 
+- [Start a Child Workflow Execution](#child-workflows)
+- [Set a Parent Close Policy](#parent-close-policy)
+
+## Start a Child Workflow Execution {#child-workflows}
+
+**How to start a Child Workflow Execution using the Temporal .NET SDK**
+
+A [Child Workflow Execution](/encyclopedia/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
+
+When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History.
+
+Always block progress until the [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started.
+After that, Child Workflow Executions may be abandoned using the default _Abandon_ [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy) set in the Child Workflow Options.
+
+To spawn a Child Workflow Execution in .NET, use the `ExecuteChildWorkflowAsync()` method which starts the Child Workflow and waits for completion or
+use the `StartChildWorkflowAsync()` method to start a Child Workflow and return its handle.
+This is useful if you want to do something after it has only started, or to get the Workflow/Run ID, or to be able to signal it while running.
+
+:::note
+
+`ExecuteChildWorkflowAsync()` is a helper method for `StartChildWorkflowAsync()` plus `await handle.GetResultAsync()`.
+
+:::
+
+```csharp
+await Workflow.ExecuteChildWorkflowAsync((MyChildWorkflow wf) => wf.RunAsync());
+```
+
+## Set a Parent Close Policy {#parent-close-policy}
+
+**How to set a Parent Close Policy using the Temporal .NET SDK**
+
+A [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
+
+The default Parent Close Policy option is set to terminate the Child Workflow Execution.
+
+Set the `ParentClosePolicy` property inside the [`ChildWorkflowOptions`](https://dotnet.temporal.io/api/Temporalio.Workflows.ChildWorkflowOptions.html) for `ExecuteChildWorkflowAsync` or `StartChildWorkflowAsync` to specify the behavior of the Child Workflow when the Parent Workflow closes.
+
+```csharp
+await Workflow.ExecuteChildWorkflowAsync(
+  (MyChildWorkflow wf) => wf.RunAsync(),
+  new() { ParentClosePolicy = ParentClosePolicy.Abandon });
+```

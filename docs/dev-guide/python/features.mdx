@@ -2,7 +2,6 @@
 id: features
 title: Features - Python SDK feature guide
 sidebar_label: Features
-sidebar_position: 5
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 toc_max_heading_level: 5
 keywords:
@@ -114,15 +113,14 @@ Return values from Signal methods are ignored.
 
 You can have a name parameter to customize the Signal's name, otherwise it defaults to the name of the Signal method.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/signal_your_workflow/wf_signal_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 from temporalio import workflow
 # ...
 # ...
@@ -142,15 +140,14 @@ Workflows listen for Signals by the Signal's name.
 
 To send a Signal to the Workflow, use the [signal](https://python.temporal.io/temporalio.client.WorkflowHandle.html#signal) method from the [WorkflowHandle](https://python.temporal.io/temporalio.client.WorkflowHandle.html) class.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/signal_your_workflow/signal_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 from temporalio.client import Client
 # ...
 # ...
@@ -169,15 +166,14 @@ To get the Workflow handle, you can use any of the following options.
 - Use the [get_workflow_handle_for()](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle_for) method to get a type-safe Workflow handle by its Workflow Id.
 - Use the [start_workflow()](https://python.temporal.io/temporalio.client.Client.html#start_workflow) to start a Workflow and return its handle.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/signal_your_workflow/signal_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 from temporalio.client import Client
 # ...
 # ...
@@ -208,15 +204,14 @@ The Workflow Type passed is only for type annotations and not for validation.
 
 :::
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/signal_your_workflow/signal_external_wf_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
 @workflow.defn
 class WorkflowB:
@@ -235,15 +230,14 @@ If there's a Workflow running with the given Workflow Id, it will be signaled. I
 
 To send a Signal-With-Start in Python, use the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) method and pass the `start_signal` argument with the name of your Signal.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/signal_your_workflow/signal_with_start_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 from temporalio.client import Client
 # ...
 # ...
@@ -281,15 +275,14 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 
 :::
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/query_your_workflow/wf_query_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
     @workflow.query
     def greeting(self) -> str:
@@ -305,16 +298,14 @@ Including such logic causes unexpected behavior.
 
 To send a Query to the Workflow, use the [`query`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#query) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.WorkflowHandle.html) class.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/query_your_workflow/query_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
-
 # ...
     result = await handle.query(GreetingWorkflow.greeting)
 ```
@@ -325,15 +316,14 @@ Queries are sent from a Temporal Client.
 
 To send a Query to a Workflow Execution from Client code, use the `query()` method on the Workflow handle.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/query_your_workflow/query_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
     result = await handle.query(GreetingWorkflow.greeting)
 ```
@@ -406,15 +396,14 @@ You must register the Workflow with the [Worker](https://python.temporal.io/temp
 The Workflow Definition must then accept a single argument of type `Sequence[temporalio.common.RawValue]`.
 The [payload_converter()](https://python.temporal.io/temporalio.workflow.html#payload_converter) function is used to convert a `RawValue` object to the desired type.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/dynamic_handlers/your_dynamic_workflow_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
 @workflow.defn(dynamic=True)
 class DynamicWorkflow:
@@ -437,15 +426,14 @@ You must register the Activity with the [Worker](https://python.temporal.io/temp
 The Activity Definition must then accept a single argument of type `Sequence[temporalio.common.RawValue]`.
 The [payload_converter()](https://python.temporal.io/temporalio.activity.html#payload_converter) function is used to convert a `RawValue` object to the desired type.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/dynamic_handlers/your_dynamic_activity_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
 @activity.defn(dynamic=True)
 async def dynamic_greeting(args: Sequence[RawValue]) -> str:
@@ -473,15 +461,14 @@ A Signal can be made dynamic by adding `dynamic=True` to the `@signal.defn` deco
 The Signal Handler should accept `self`, a string input, and a `Sequence[temporalio.common.RawValue]`.
 The [payload_converter()](https://python.temporal.io/temporalio.workflow.html#payload_converter) function is used to convert a `RawValue` object to the desired type.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/dynamic_handlers/your_dynamic_signal_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
     @workflow.signal(dynamic=True)
     async def dynamic_signal(self, name: str, args: Sequence[RawValue]) -> None:
@@ -496,15 +483,14 @@ A Query can be made dynamic by adding `dynamic=True` to the `@query.defn` decora
 The Query Handler should accept `self`, a string name, and a `Sequence[temporalio.common.RawValue]`.
 The [payload_converter()](https://python.temporal.io/temporalio.workflow.html#payload_converter) function is used to convert a `RawValue` object to the desired type.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/dynamic_handlers/your_dynamic_query_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
     @workflow.query(dynamic=True)
     def dynamic_query(self, input: str, args: Sequence[RawValue]) -> str:
@@ -529,15 +515,14 @@ Available timeouts are:
 - `run_timeout`
 - `task_timeout`
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/workflow_timeouts_retries/workflows_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
     result = await client.execute_workflow(
         YourWorkflow.run,
@@ -561,15 +546,14 @@ Workflow Executions do not retry by default, and Retry Policies should be used w
 
 Set the Retry Policy to either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/workflow_timeouts_retries/workflows_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
     handle = await client.execute_workflow(
         YourWorkflow.run,
@@ -600,15 +584,14 @@ Available timeouts are:
 - schedule_to_start_timeout
 - start_to_close_timeout
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/activity_timeouts_retires/your_workflows_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
         activity_timeout_result = await workflow.execute_activity(
             your_activity,
@@ -628,15 +611,14 @@ Activity Executions are automatically associated with a default [Retry Policy](/
 
 To create an Activity Retry Policy in Python, set the [RetryPolicy](https://python.temporal.io/temporalio.common.RetryPolicy.html) class within the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) or [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) function.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/activity_timeouts_retires/your_workflows_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 from temporalio.common import RetryPolicy
 # ...
         activity_result = await workflow.execute_activity(
@@ -768,7 +750,6 @@ async def cancellable_activity(input: ComposeArgsInput) -> NoReturn:
         print("Activity cancelled")
         raise
 
-
 @activity.defn
 async def run_activity(input: ComposeArgsInput):
     print("Executing activity")
@@ -878,22 +859,20 @@ This is useful if you want to do something after it has only started, or to get 
 
 :::
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_child_workflow/your_child_workflow_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
 @workflow.defn
 class ComposeGreetingWorkflow:
     @workflow.run
     async def run(self, input: ComposeGreetingInput) -> str:
         return f"{input.greeting}, {input.name}!"
-
 
 @workflow.defn
 class GreetingWorkflow:
@@ -915,15 +894,14 @@ The default Parent Close Policy option is set to terminate the Child Workflow Ex
 
 Set the `parent_close_policy` parameter inside the [`start_child_workflow`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function or the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function to specify the behavior of the Child Workflow when the Parent Workflow closes.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_child_workflow/your_child_workflow_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 from temporalio.workflow import ParentClosePolicy
 # ...
 # ...
@@ -932,7 +910,6 @@ class ComposeGreetingWorkflow:
     @workflow.run
     async def run(self, input: ComposeGreetingInput) -> str:
         return f"{input.greeting}, {input.name}!"
-
 
 @workflow.defn
 class GreetingWorkflow:
@@ -953,15 +930,14 @@ The Workflow Execution spawned from the use of Continue-As-New has the same Work
 
 To Continue-As-New in Python, call the [`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) function from inside your Workflow, which will stop the Workflow immediately and Continue-As-New.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/continue_as_new/your_workflows_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
 @workflow.defn
 class LoopingWorkflow:
@@ -985,15 +961,14 @@ Sleeping is a resource-light operation: it does not tie up the process, and you 
 
 To set a Timer in Python, call the [`asyncio.sleep()`](https://docs.python.org/3/library/asyncio-task.html#sleeping) function and pass the duration in seconds you want to wait before continuing.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/continue_as_new/your_workflows_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
         await asyncio.sleep(10)
 ```
@@ -1015,15 +990,14 @@ Set the `action` parameter to `ScheduleActionStartWorkflow` to start a Workflow 
 Optionally, you can set the `spec` parameter to `ScheduleSpec` to specify the schedule or set the `intervals` parameter to `ScheduleIntervalSpec` to specify the interval.
 Other options include: `cron_expressions`, `skip`, `start_at`, and `jitter`.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/start_schedule_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -1052,21 +1026,18 @@ The backfill action executes Actions ahead of their specified time range. This c
 To Backfill a Scheduled Workflow Execution in Python, use the [backfill()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#backfill) asynchronous
 method on the Schedule Handle.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/backfill_schedule_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 import asyncio
 from datetime import datetime, timedelta
 
 from temporalio.client import Client, ScheduleBackfill, ScheduleOverlapPolicy
-
-
 
 async def main():
     client = await Client.connect("localhost:7233")
@@ -1091,17 +1062,14 @@ The delete action enables you to delete a Schedule. When you delete a Schedule, 
 
 To delete a Scheduled Workflow Execution in Python, use the [delete()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#delete) asynchronous method on the Schedule Handle.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/delete_schedule_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
-
-
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
@@ -1118,15 +1086,14 @@ The describe action shows the current Schedule configuration, including informat
 To describe a Scheduled Workflow Execution in Python, use the [describe()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#delete) asynchronous method on the Schedule Handle.
 You can get a complete list of the attributes of the Scheduled Workflow Execution from the [ScheduleDescription](https://python.temporal.io/temporalio.client.ScheduleDescription.html) class.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/describe_schedule_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -1146,15 +1113,14 @@ The list action lists all the available Schedules. This command is useful when y
 To list all schedules, use the [list_schedules()](https://python.temporal.io/temporalio.client.Client.html#list_schedules) asynchronous method on the Client.
 If a schedule is added or deleted, it may not be available in the list immediately.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/list_schedule_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
 async def main() -> None:
     client = await Client.connect("localhost:7233")
@@ -1169,15 +1135,14 @@ The pause action enables you to pause and unpause a Schedule. When you pause a S
 To pause a Scheduled Workflow Execution in Python, use the [pause()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#pause) asynchronous method on the Schedule Handle.
 You can pass a `note` to the `pause()` method to provide a reason for pausing the schedule.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/pause_schedule_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -1194,15 +1159,14 @@ The trigger action triggers an immediate action with a given Schedule. By defaul
 
 To trigger a Scheduled Workflow Execution in Python, use the [trigger()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#trigger) asynchronous method on the Schedule Handle.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/trigger_schedule_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -1221,15 +1185,14 @@ Create a function that takes `ScheduleUpdateInput` and returns `ScheduleUpdate`.
 To update a Schedule, use a callback to build the update from the description.
 The following example updates the Schedule to use a new argument.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/update_schedule_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
     async def update_schedule_simple(input: ScheduleUpdateInput) -> ScheduleUpdate:
         schedule_action = input.description.schedule.action
@@ -1247,15 +1210,14 @@ A Cron Schedule is provided as an option when the call to spawn a Workflow Execu
 
 You can set each Workflow to repeat on a schedule with the `cron_schedule` option from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_cron_job/your_cron_dacx.py">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```python
-
 # ...
     result = await client.execute_workflow(
         CronWorkflow.run,
@@ -1285,7 +1247,6 @@ async def main():
     )
 
     print(f"Result: {result}")
-
 
 if __name__ == "__main__":
     asyncio.run(main())

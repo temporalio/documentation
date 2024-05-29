@@ -2,20 +2,18 @@
 id: activities
 title: What is a Temporal Activity?
 sidebar_label: Activities
-sidebar_position: 3
 description: This guide provides a comprehensive overview of Temporal Activities.
 slug: /activities
 toc_max_heading_level: 4
 keywords:
-- explanation
-- term
-- timeouts
+  - explanation
+  - term
+  - timeouts
 tags:
-- explanation
-- term
-- timeouts
+  - explanation
+  - term
+  - timeouts
 ---
-
 
 This guide provides a comprehensive overview of Temporal Activities.
 
@@ -30,7 +28,7 @@ Workflow code orchestrates the execution of Activities, persisting the results.
 If an Activity Function Execution fails, any future execution starts from initial state (except [Heartbeats](#activity-heartbeat)).
 
 Activity Functions are executed by Worker Processes.
-When the Activity Function returns, the Worker sends the results back to the Temporal Cluster as part of the [ActivityTaskCompleted](/references/events#activitytaskcompleted) Event.
+When the Activity Function returns, the Worker sends the results back to the Temporal Service as part of the [ActivityTaskCompleted](/references/events#activitytaskcompleted) Event.
 The Event is added to the Workflow Execution's Event History.
 For other Activity-related Events, see [Activity Events](/workflows#activity-events).
 
@@ -41,7 +39,7 @@ An Activity Definition is the code that defines the constraints of an [Activity 
 - [How to develop an Activity Definition using the Go SDK](/dev-guide/go/foundations#activity-definition)
 - [How to develop an Activity Definition using the Java SDK](/dev-guide/java/foundations#develop-activities)
 - [How to develop an Activity Definition using the PHP SDK](/dev-guide/php/foundations#develop-activities)
-- [How to develop an Activity Definition using the Python SDK](/dev-guide/python/foundations#develop-activities)
+- [How to develop an Activity Definition using the Python SDK](/develop/python/core-application#develop-activities)
 - [How to develop an Activity Definition using the TypeScript SDK](/dev-guide/typescript/foundations#develop-activities)
 
 The term 'Activity Definition' is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition——the method or function that is invoked for an [Activity Task Execution](/workers#activity-task-execution).
@@ -49,7 +47,18 @@ Therefore, the terms Activity Function and Activity Method refer to the source o
 
 Activity Definitions are named and referenced in code by their [Activity Type](#activity-type).
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Activity Definition</p></div><div class="tdiiw" height="680"><img class="img_ev3q" src="/diagrams/activity-definition.svg" alt="Activity Definition" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Activity Definition</p>
+  </div>
+  <div className="tdiiw" height="680">
+    <img
+      className="img_ev3q"
+      src="/diagrams/activity-definition.svg"
+      alt="Activity Definition"
+    />
+  </div>
+</div>
 
 #### Idempotency
 
@@ -96,7 +105,7 @@ Return values are also captured in the Event History for the calling Workflow Ex
 Activity Definitions must contain the following parameters:
 
 - Context: an optional parameter that provides Activity context within multiple APIs.
-- Heartbeat: a notification from the Worker to the Temporal Cluster that the Activity Execution is progressing. Cancelations are allowed only if the Activity Definition permits Heartbeating.
+- Heartbeat: a notification from the Worker to the Temporal Service that the Activity Execution is progressing. Cancelations are allowed only if the Activity Definition permits Heartbeating.
 - Timeouts: intervals that control the execution and retrying of Activity Task Executions.
 
 Other parameters, such as [Retry Policies](/retry-policies) and return values, can be seen in the implementation guides, listed in the next section.
@@ -114,10 +123,21 @@ An Activity Execution is the full chain of [Activity Task Executions](/workers#a
 - [How to start an Activity Execution using the Go SDK](/dev-guide/go/foundations#activity-execution)
 - [How to start an Activity Execution using the Java SDK](/dev-guide/java/foundations#activity-execution)
 - [How to start an Activity Execution using the PHP SDK](/dev-guide/php/foundations#activity-execution)
-- [How to start an Activity Execution using the Python SDK](/dev-guide/python/foundations#activity-execution)
+- [How to start an Activity Execution using the Python SDK](/develop/python/core-application#activity-execution)
 - [How to start an Activity Execution using the TypeScript SDK](/dev-guide/typescript/foundations#activity-execution)
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Activity Execution</p></div><div class="tdiiw" height="1780"><img class="img_ev3q" src="/diagrams/activity-execution.svg" alt="Activity Execution" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Activity Execution</p>
+  </div>
+  <div className="tdiiw" height="1780">
+    <img
+      className="img_ev3q"
+      src="/diagrams/activity-execution.svg"
+      alt="Activity Execution"
+    />
+  </div>
+</div>
 
 You can customize [Activity Execution timeouts](#start-to-close-timeout) and [retry policies](/retry-policies).
 
@@ -148,7 +168,7 @@ Activities must heartbeat to receive cancellations from a Temporal Service.
 
 An Activity may receive Cancellation if:
 
-- The Activity was requested to be Cancelled. This can often cascade from Workflow Cancellation, but not always—SDKs have ways to stop Cancellation from cascading. <!-- TODO link to workflow cancellation -->
+- The Activity was requested to be Cancelled. This can often cascade from Workflow Cancellation, but not always—SDKs have ways to stop Cancellation from cascading. {/* TODO link to workflow cancellation */}
 - The Activity was considered failed by the Server because any of the Activity timeouts have triggered (for example, the Server didn't receive a heartbeat within the Activity's Heartbeat timeout). The [Cancelled Failure](/references/failures#cancelled-failure) that the Activity receives will have `message: 'TIMED_OUT'`.
 - The Workflow Run reached a [Closed state](/workflows#status), in which case the Cancelled Failure will have `message: 'NOT_FOUND'`.
 - In some SDKs:
@@ -156,7 +176,7 @@ An Activity may receive Cancellation if:
   - An Activity sends a Heartbeat but the Heartbeat details can't be converted by the Worker's configured [Data Converter](/dataconversion). This fails the Activity Task Execution with an Application Failure.
   - The Activity timed out on the Worker side and is not Heartbeating or the Temporal Service hasn't relayed a Cancellation.
 
-There are different ways to receive Cancellation depending on the SDK. <!-- TODO link to dev guide -->
+There are different ways to receive Cancellation depending on the SDK. {/* TODO link to dev guide */}
 An Activity may accept or ignore Cancellation:
 
 - To allow Cancellation to happen, let the Cancellation Failure propagate.
@@ -186,13 +206,24 @@ In other words, it's a limit for how long an Activity Task can be enqueued.
 - [How to set a Schedule-To-Start Timeout using the Go SDK](/dev-guide/go/features#activity-timeouts)
 - [How to set a Schedule-To-Start Timeout using the Java SDK](/dev-guide/java/features#activity-timeouts)
 - [How to set a Schedule-To-Start Timeout using the PHP SDK](/dev-guide/php/features#activity-timeouts)
-- [How to set a Schedule-To-Start Timeout using the Python SDK](/dev-guide/python/features#activity-timeouts)
+- [How to set a Schedule-To-Start Timeout using the Python SDK](/develop/python/failure-detection#activity-timeouts)
 - [How to set a Schedule-To-Start Timeout using the TypeScript SDK](/dev-guide/typescript/features#activity-timeouts)
 
 The moment that the Task is picked by the Worker from the Task Queue is considered to be the start of the Activity Task for the purposes of the Schedule-To-Start Timeout and associated metrics.
-This definition of "Start" avoids issues that a clock difference between the Temporal Cluster and a Worker might create.
+This definition of "Start" avoids issues that a clock difference between the Temporal Service and a Worker might create.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Schedule-To-Start Timeout period</p></div><div class="tdiiw" height="666"><img class="img_ev3q" src="/diagrams/schedule-to-start-timeout.svg" alt="Schedule-To-Start Timeout period" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Schedule-To-Start Timeout period</p>
+  </div>
+  <div className="tdiiw" height="666">
+    <img
+      className="img_ev3q"
+      src="/diagrams/schedule-to-start-timeout.svg"
+      alt="Schedule-To-Start Timeout period"
+    />
+  </div>
+</div>
 
 "Schedule" in Schedule-To-Start and Schedule-To-Close have different frequency guarantees.
 
@@ -202,7 +233,18 @@ Thus, "Schedule" in Schedule-To-Start refers to the scheduling moment of _every_
 
 A [Retry Policy](/retry-policies) attached to an Activity Execution retries an Activity Task.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Start-To-Close Timeout period with retries</p></div><div class="tdiiw" height="1246"><img class="img_ev3q" src="/diagrams/schedule-to-start-timeout-with-retry.svg" alt="Start-To-Close Timeout period with retries" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Start-To-Close Timeout period with retries</p>
+  </div>
+  <div className="tdiiw" height="1246">
+    <img
+      className="img_ev3q"
+      src="/diagrams/schedule-to-start-timeout-with-retry.svg"
+      alt="Start-To-Close Timeout period with retries"
+    />
+  </div>
+</div>
 
 This timeout has two primary use cases:
 
@@ -224,7 +266,7 @@ A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task
 - [How to set a Start-To-Close Timeout using the Go SDK](/dev-guide/go/features#activity-timeouts)
 - [How to set a Start-To-Close Timeout using the Java SDK](/dev-guide/java/features#activity-timeouts)
 - [How to set a Start-To-Close Timeout using the PHP SDK](/dev-guide/php/features#activity-timeouts)
-- [How to set a Start-To-Close Timeout using the Python SDK](/dev-guide/python/features#activity-timeouts)
+- [How to set a Start-To-Close Timeout using the Python SDK](/develop/python/failure-detection#activity-timeouts)
 - [How to set a Start-To-Close Timeout using the TypeScript SDK](/dev-guide/typescript/features#activity-timeouts)
 
 **The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](#schedule-to-close-timeout).**
@@ -244,19 +286,41 @@ Therefore, the Temporal Server relies on the Start-To-Close Timeout to force Act
 
 The main use case for the Start-To-Close timeout is to detect when a Worker crashes after it has started executing an Activity Task.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Start-To-Close Timeout period</p></div><div class="tdiiw" height="666"><img class="img_ev3q" src="/diagrams/start-to-close-timeout.svg" alt="Start-To-Close Timeout period" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Start-To-Close Timeout period</p>
+  </div>
+  <div className="tdiiw" height="666">
+    <img
+      className="img_ev3q"
+      src="/diagrams/start-to-close-timeout.svg"
+      alt="Start-To-Close Timeout period"
+    />
+  </div>
+</div>
 
 A [Retry Policy](/retry-policies) attached to an Activity Execution retries an Activity Task Execution.
 Thus, the Start-To-Close Timeout is applied to each Activity Task Execution within an Activity Execution.
 
 If the first Activity Task Execution returns an error the first time, then the full Activity Execution might look like this:
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Start-To-Close Timeout period with retries</p></div><div class="tdiiw" height="1246"><img class="img_ev3q" src="/diagrams/start-to-close-timeout-with-retry.svg" alt="Start-To-Close Timeout period with retries" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Start-To-Close Timeout period with retries</p>
+  </div>
+  <div className="tdiiw" height="1246">
+    <img
+      className="img_ev3q"
+      src="/diagrams/start-to-close-timeout-with-retry.svg"
+      alt="Start-To-Close Timeout period with retries"
+    />
+  </div>
+</div>
 
 If this timeout is reached, the following actions occur:
 
 - An [ActivityTaskTimedOut](/references/events#activitytasktimedout) Event is written to the Workflow Execution's mutable state.
-- If a Retry Policy dictates a retry, the Temporal Cluster schedules another Activity Task.
+- If a Retry Policy dictates a retry, the Temporal Service schedules another Activity Task.
   - The attempt count increments by 1 in the Workflow Execution's mutable state.
   - The Start-To-Close Timeout timer is reset.
 
@@ -270,11 +334,33 @@ A Schedule-To-Close Timeout is the maximum amount of time allowed for the overal
 - [How to set a Schedule-To-Close Timeout using the Python SDK](/dev-guide/go/features#activity-timeouts)
 - [How to set a Schedule-To-Close Timeout using the TypeScript SDK](/dev-guide/typescript/features#activity-timeouts)
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Schedule-To-Close Timeout period</p></div><div class="tdiiw" height="666"><img class="img_ev3q" src="/diagrams/schedule-to-close-timeout.svg" alt="Schedule-To-Close Timeout period" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Schedule-To-Close Timeout period</p>
+  </div>
+  <div className="tdiiw" height="666">
+    <img
+      className="img_ev3q"
+      src="/diagrams/schedule-to-close-timeout.svg"
+      alt="Schedule-To-Close Timeout period"
+    />
+  </div>
+</div>
 
 Example Schedule-To-Close Timeout period for an Activity Execution that has a chain Activity Task Executions:
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Schedule-To-Close Timeout period with a retry</p></div><div class="tdiiw" height="1246"><img class="img_ev3q" src="/diagrams/schedule-to-close-timeout-with-retry.svg" alt="Schedule-To-Close Timeout period with a retry" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Schedule-To-Close Timeout period with a retry</p>
+  </div>
+  <div className="tdiiw" height="1246">
+    <img
+      className="img_ev3q"
+      src="/diagrams/schedule-to-close-timeout-with-retry.svg"
+      alt="Schedule-To-Close Timeout period with a retry"
+    />
+  </div>
+</div>
 
 **The default Schedule-To-Close Timeout is ∞ (infinity).**
 
@@ -292,13 +378,13 @@ Therefore, the Temporal Server relies on the Start-To-Close Timeout to force Act
 
 ### What is an Activity Heartbeat? {#activity-heartbeat}
 
-An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
-Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
+An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Service.
+Each ping informs the Temporal Service that the Activity Execution is making progress and the Worker has not crashed.
 
 - [How to Heartbeat an Activity using the Go SDK](/dev-guide/go/features#activity-heartbeats)
 - [How to Heartbeat an Activity using the Java SDK](/dev-guide/java/features#activity-heartbeats)
 - [How to Heartbeat an Activity using the PHP SDK](/dev-guide/php/features#activity-heartbeats)
-- [How to Heartbeat an Activity using the Python SDK](/dev-guide/python/features#activity-heartbeats)
+- [How to Heartbeat an Activity using the Python SDK](/develop/python/failure-detection#activity-heartbeats)
 - [How to Heartbeat an Activity using the TypeScript SDK](/dev-guide/typescript/features#activity-heartbeats)
 
 Activity Heartbeats work in conjunction with a [Heartbeat Timeout](#heartbeat-timeout).
@@ -308,7 +394,7 @@ Custom progress information can be included in the Heartbeat which can then be u
 
 An Activity Heartbeat can be recorded as often as needed (e.g. once a minute or every loop iteration).
 It is often a good practice to Heartbeat on anything but the shortest Activity Function Execution.
-Temporal SDKs control the rate at which Heartbeats are sent to the Cluster.
+Temporal SDKs control the rate at which Heartbeats are sent to the Temporal Service.
 
 Heartbeating is not required from [Local Activities](#local-activity), and does nothing.
 
@@ -318,12 +404,12 @@ That way if a Worker fails it can be handled in a timely manner.
 A Heartbeat can include an application layer payload that can be used to _save_ Activity Execution progress.
 If an [Activity Task Execution](/workers#activity-task-execution) times out due to a missed Heartbeat, the next Activity Task can access and continue with that payload.
 
-Activity Cancellations are delivered to Activities from the Cluster when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
+Activity Cancellations are delivered to Activities from the Temporal Service when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
 Heartbeat throttling may lead to Cancellation getting delivered later than expected.
 
 #### Throttling
 
-Heartbeats may not always be sent to the Cluster—they may be throttled by the Worker.
+Heartbeats may not always be sent to the Temporal Service—they may be throttled by the Worker.
 The throttle interval is the smaller of the following:
 
 - If `heartbeatTimeout` is provided, `heartbeatTimeout * 0.8`; otherwise, `defaultHeartbeatThrottleInterval`
@@ -371,10 +457,21 @@ A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-
 - [How to set a Heartbeat Timeout using the Go SDK](/dev-guide/go/features#heartbeat-timeout)
 - [How to set a Heartbeat Timeout using the Java SDK](/dev-guide/java/features#heartbeat-timeout)
 - [How to set a Heartbeat Timeout using the PHP SDK](/dev-guide/php/features#heartbeat-timeout)
-- [How to set a Heartbeat Timeout using the Python SDK](/dev-guide/python/features#heartbeat-timeout)
+- [How to set a Heartbeat Timeout using the Python SDK](/develop/python/failure-detection#heartbeat-timeout)
 - [How to set a Heartbeat Timeout using the TypeScript SDK](/dev-guide/typescript/features#heartbeat-timeout)
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Heartbeat Timeout periods</p></div><div class="tdiiw" height="866"><img class="img_ev3q" src="/diagrams/heartbeat-timeout.svg" alt="Heartbeat Timeout periods" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Heartbeat Timeout periods</p>
+  </div>
+  <div className="tdiiw" height="866">
+    <img
+      className="img_ev3q"
+      src="/diagrams/heartbeat-timeout.svg"
+      alt="Heartbeat Timeout periods"
+    />
+  </div>
+</div>
 
 If this timeout is reached, the Activity Task fails and a retry occurs if a [Retry Policy](/retry-policies) dictates it.
 
@@ -388,7 +485,7 @@ How to complete an Activity Asynchronously in:
 - [Go](/dev-guide/go/features#asynchronous-activity-completion)
 - [Java](/dev-guide/java/features#asynchronous-activity-completion)
 - [PHP](/dev-guide/php/features#asynchronous-activity-completion)
-- [Python](/dev-guide/python/features#asynchronous-activity-completion)
+- [Python](/develop/python/asynchronous-activity-completion)
 - [TypeScript](/dev-guide/typescript/features#asynchronous-activity-completion)
 
 #### When to use Async Completion
@@ -449,7 +546,7 @@ A Local Activity is an [Activity Execution](#activity-execution) that executes i
 Some Activity Executions are very short-living and do not need the queuing semantic, flow control, rate limiting, and routing capabilities.
 For this case, Temporal supports the Local Activity feature.
 
-The main benefit of Local Activities is that they use less Temporal Cluster resources (for example, fewer History events) and have much lower latency overhead (because no need to roundtrip to the Cluster) compared to normal Activity Executions.
+The main benefit of Local Activities is that they use less Temporal Service resources (for example, fewer History events) and have much lower latency overhead (because no need to roundtrip to the Temporal Service) compared to normal Activity Executions.
 However, Local Activities are subject to shorter durations and a lack of rate limiting.
 
 Consider using Local Activities for functions that are the following:
@@ -459,16 +556,15 @@ Consider using Local Activities for functions that are the following:
 - do not require routing to a specific Worker or Worker pool.
 - no longer than a few seconds, inclusive of retries.
 
-If it takes longer than 80% of the Workflow Task Timeout (which is 10 seconds by default), the Worker will ask the Cluster to create a new Workflow Task to extend the "lease" for processing the Local Activity.
+If it takes longer than 80% of the Workflow Task Timeout (which is 10 seconds by default), the Worker will ask the Temporal Service to create a new Workflow Task to extend the "lease" for processing the Local Activity.
 The Worker will continue doing so until the Local Activity has completed.
 This is called Workflow Task Heartbeating.
 The drawbacks of long-running Local Activities are:
 
 - Each new Workflow Task results in 3 more Events in History.
 - The Workflow won't get notified of new events like Signals and completions until the next Workflow Task Heartbeat.
-- New Commands created by the Workflow concurrently with the Local Activity will not be sent to the Cluster until either the Local Activity completes or the next Workflow Task Heartbeat.
+- New Commands created by the Workflow concurrently with the Local Activity will not be sent to the Temporal Service until either the Local Activity completes or the next Workflow Task Heartbeat.
 
 Using a Local Activity without understanding its limitations can cause various production issues.
 **We recommend using regular Activities unless your use case requires very high throughput and large Activity fan outs of very short-lived Activities.**
 More guidance in choosing between [Local Activity vs Activity](https://community.temporal.io/t/local-activity-vs-activity/290/3) is available in our forums.
-

@@ -1,0 +1,421 @@
+---
+id: core-application
+title: Core application - .NET SDK feature guide
+sidebar_label: Core application
+description: Temporal's core application primitives include Workflows, Activities, and Workers.
+toc_max_heading_level: 4
+keywords:
+  - activity
+  - activity definition
+  - activity execution
+  - dotnet
+  - dotnet sdk
+  - worker
+  - workflow
+  - workflow execution
+  - workflow parameters
+  - workflow return values
+tags:
+  - activity
+  - activity-definition
+  - activity-execution
+  - code-samples
+  - dotnet
+  - dotnet-sdk
+  - worker
+  - workflow
+  - workflow-execution
+  - workflow-parameters
+  - workflow-return-values
+---
+
+This page shows how to do the following: 
+- [Develop a basic Workflow Definition](#develop-workflow)
+- [Develop a basic Activity Definition](#develop-activity)
+- [Start an Activity from a Workflow](#activity-execution)
+- [Run a Worker Process](#run-worker-process)
+- [Set a Dynamic Workflow](#set-a-dynamic-workflow)
+- [Set a Dynamic Activity](#set-a-dynamic-activity)
+
+## Develop a Workflow {#develop-workflow}
+
+**How to develop a basic Workflow using the Temporal .NET SDK**
+
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definition).
+
+In the Temporal .NET SDK programming model, Workflows are defined as classes.
+
+Specify the `[Workflow]` attribute from the `Temporalio.Workflows` namespace on the Workflow class to identify a Workflow.
+
+Use the `[WorkflowRun]` attribute to mark the entry point method to be invoked. This must be set on one asynchronous method defined on the same class as `[Workflow]`.
+
+```csharp
+using Temporalio.Workflows;
+
+[Workflow]
+public class MyWorkflow
+{
+    public async Task<string> RunAsync(string name)
+    {
+        var param = MyActivityParams("Hello", name);
+        return await Workflow.ExecuteActivityAsync(
+            (MyActivities a) => a.MyActivity(param),
+            new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
+    }
+}
+```
+
+Temporal Workflows may have any number of custom parameters.
+However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
+All Workflow Definition parameters must be serializable.
+
+### Workflow logic requirements {#workflow-logic-requirements}
+
+Workflow logic is constrained by [deterministic execution requirements](/workflows#deterministic-constraints).
+Therefore, each language is limited to the use of certain idiomatic techniques.
+However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
+
+This means there are several things Workflows cannot do such as:
+
+- Perform IO (network, disk, stdio, etc)
+- Access/alter external mutable state
+- Do any threading
+- Do anything using the system clock (e.g. `DateTime.Now`)
+  - This includes .NET timers (e.g. `Task.Delay` or `Thread.Sleep`)
+- Make any random calls
+- Make any not-guaranteed-deterministic calls (e.g. iterating over a dictionary)
+
+#### .NET Task Determinism
+
+Some calls in .NET do unsuspecting non-deterministic things and are easy to accidentally use.
+This is especially true with `Task`s.
+Temporal requires that the deterministic `TaskScheduler.Current` is used, but many .NET async calls will use `TaskScheduler.Default` implicitly (and some analyzers even encourage this).
+Here are some known gotchas to avoid with .NET tasks inside of Workflows:
+
+- Do not use `Task.Run` - this uses the default scheduler and puts work on the thread pool.
+  - Use `Task.Factory.StartNew` or instantiate the `Task` and run `Task.Start` on it.
+- Do not use `Task.ConfigureAwait(false)` - this will not use the current context.
+  - If you must use `Task.ConfigureAwait`, use `Task.ConfigureAwait(true)`.
+  - There is no significant performance benefit to `Task.ConfigureAwait` in workflows anyways due to how the scheduler works.
+- Do not use anything that defaults to the default task scheduler.
+- Do not use `Task.Delay`, `Task.Wait`, timeout-based `CancellationTokenSource`, or anything that uses .NET built-in timers.
+  - `Workflow.DelayAsync`, `Workflow.WaitConditionAsync`, or non-timeout-based cancellation token source is suggested.
+- Do not use `Task.WhenAny`.
+  - Use `Workflow.WhenAnyAsync` instead.
+  - Technically this only applies to an enumerable set of tasks with results or more than 2 tasks with results. Other
+    uses are safe. See [this issue](https://github.com/dotnet/runtime/issues/87481).
+- Be wary of additional libraries' implicit use of the default scheduler.
+  - For example, while there are articles for `Dataflow` about [using a specific scheduler](https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/how-to-specify-a-task-scheduler-in-a-dataflow-block), there are hidden implicit uses of `TaskScheduler.Default`. For example, see [this bug](https://github.com/dotnet/runtime/issues/83159).
+
+In order to help catch wrong scheduler use, by default the Temporal .NET SDK adds an event source listener for info-level task events.
+While this technically receives events from all uses of tasks in the process, we make sure to ignore anything that is not running in a Workflow in a high performant way (basically one thread local check).
+For code that does run in a Workflow and accidentally starts a task in another scheduler, an `InvalidWorkflowOperationException` will be thrown which "pauses" the Workflow (fails the Workflow Rask which continually retries until the code is fixed).
+This is unfortunately a runtime-only check, but can help catch mistakes early. If this needs to be turned off for any reason, set `DisableWorkflowTracingEventListener` to `true` in Worker options.
+
+#### Workflow .editorconfig
+
+Since Workflow code follows some different logic rules than regular C# code, there are some common analyzer rules that developers may want to disable.
+To ensure these are only disabled for Workflows, current recommendation is to use the `.workflow.cs` extension for files containing Workflows.
+
+Here are the rules to disable:
+
+- [CA1024](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1024) - This encourages properties instead of methods that look like getters. However for reflection reasons we cannot use property getters for queries, so it is very normal to have
+
+  ```csharp
+  [WorkflowQuery]
+  public string GetSomeThing() => someThing;
+  ```
+
+- [CA1822](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1822) - This encourages static methods when methods don't access instance state. Workflows however use instance methods for run, Signals, Queries, or Updates even if they could be static.
+- [CA2007](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2007) - This encourages users to use `ConfigureAwait` instead of directly waiting on a task. But in Workflows, there is no benefit to this and it just adds noise (and if used, needs to be `ConfigureAwait(true)` not `ConfigureAwait(false)`).
+- [CA2008](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2008) - This encourages users to always apply an explicit task scheduler because the default of `TaskScheduler.Current` is bad. But for Workflows, the default of `TaskScheduler.Current` is good/required.
+- [CA5394](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5394) - This discourages use of non-crypto random. But deterministic Workflows, via `Workflow.Random` intentionally provide a deterministic non-crypto random instance.
+- `CS1998` - This discourages use of `async` on async methods that don't `await`. But Workflows handlers like Signals are often easier to write in one-line form this way, e.g. `public async Task SignalSomethingAsync(string value) => this.value = value;`.
+- [VSTHRD105](https://github.com/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD105.md) - This is similar to `CA2008` above in that use of implicit current scheduler is discouraged. That does not apply to Workflows where it is encouraged/required.
+
+Here is the `.editorconfig` snippet for the above which may frequently change as more analyzers need to be adjusted:
+
+```ini
+##### Configuration specific for Temporal workflows #####
+[*.workflow.cs]
+
+# We use getters for queries, they cannot be properties
+dotnet_diagnostic.CA1024.severity = none
+
+# Don't force workflows to have static methods
+dotnet_diagnostic.CA1822.severity = none
+
+# Do not need ConfigureAwait for workflows
+dotnet_diagnostic.CA2007.severity = none
+
+# Do not need task scheduler for workflows
+dotnet_diagnostic.CA2008.severity = none
+
+# Workflow randomness is intentionally deterministic
+dotnet_diagnostic.CA5394.severity = none
+
+# Allow async methods to not have await in them
+dotnet_diagnostic.CS1998.severity = none
+
+# Don't avoid, but rather encourage things using TaskScheduler.Current in workflows
+dotnet_diagnostic.VSTHRD105.severity = none
+```
+
+### Customize Workflow Type {#workflow-type}
+
+**How to customize your Workflow Type name using the Temporal .NET SDK**
+
+Workflows have a Type that are referred to as the Workflow name.
+
+The following examples demonstrate how to set a custom name for your Workflow Type.
+
+You can customize the Workflow name with a custom name in the attribute. For example, `[Workflow("my-workflow-name")]`. If the name parameter is not specified, the Workflow name defaults to the unqualified class name.
+
+```csharp
+using Temporalio.Workflows;
+
+[Workflow("MyDifferentWorkflowName")]
+public class MyWorkflow
+{
+    public async Task<string> RunAsync(string name)
+    {
+        var param = MyActivityParams("Hello", name);
+        return await Workflow.ExecuteActivityAsync(
+            (MyActivities a) => a.MyActivity(param),
+            new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
+    }
+}
+```
+
+## Develop an Activity {#develop-activity}
+
+**How to develop a basic Activity using the Temporal .NET SDK**
+
+One of the primary things that Workflows do is orchestrate the execution of Activities.
+An Activity is a normal method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
+An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service.
+For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
+
+You can develop an Activity Definition by using the `[Activity]` attribute from the `Temporalio.Activities` namespace on the method.
+To register a method as an Activity with a custom name, use an attribute parameter, for example `[Activity("your-activity")]`.
+Otherwise, the activity name is the unqualified method name (sans an "Async" suffix if the method is async).
+
+Activities can be asynchronous or synchronous.
+
+```csharp
+using Temporalio.Activities;
+
+public class MyActivities
+{
+    // Activities can be async and/or static too. We just demonstrate instance methods since many
+    // use them that way.
+    [Activity]
+    public string MyActivity(MyActivityParams input) =>
+        $"{input.Greeting}, {input.Name}!";
+}
+```
+
+There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
+However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
+
+A single argument is limited to a maximum size of 2 MB.
+And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
+
+Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
+This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/workers#workflow-task).
+
+Some SDKs require that you pass context objects, others do not.
+When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.
+This is so that you can change what data is passed to the Activity without breaking a method signature.
+
+Activity parameters are the method parameters of the method with the `[Activity]` attribute.
+These can be any data type Temporal can convert, including records.
+Technically this can be multiple parameters, but Temporal strongly encourages a single parameter containing all input fields.
+
+## Start Activity Execution {#activity-execution}
+
+**How to start an Activity Execution using the Temporal .NET SDK**
+
+Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
+The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
+This results in the set of three [Activity Task](/workers#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+
+A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
+Activity implementation code should be _idempotent_.
+
+The values passed to Activities through invocation parameters or returned through a result value are recorded in the Execution history.
+The entire Execution history is transferred from the Temporal service to Workflow Workers when a Workflow state needs to recover.
+A large Execution history can thus adversely impact the performance of your Workflow.
+
+Therefore, be mindful of the amount of data you transfer through Activity invocation parameters or Return Values.
+Otherwise, no additional limitations exist on Activity implementations.
+
+To spawn an Activity Execution, use the `ExecuteActivityAsync` operation from within your Workflow Definition.
+
+```csharp
+using Temporalio.Workflows;
+
+[Workflow]
+public class MyWorkflow
+{
+    public async Task<string> RunAsync(string name)
+    {
+        var param = MyActivityParams("Hello", name);
+        return await Workflow.ExecuteActivityAsync(
+            (MyActivities a) => a.MyActivity(param),
+            new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
+    }
+}
+```
+
+Activity Execution semantics rely on several parameters.
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/activities#start-to-close-timeout) or a [Start-To-Close Timeout](/activities#start-to-close-timeout).
+These values are set in the Activity Options.
+
+### Get Activity Execution results {#get-activity-results}
+
+**How to get the results of an Activity Execution using the Temporal .NET SDK**
+
+The Activity result is the returned in the task from the `ExecuteActivityAsync` call.
+
+## Run Worker Process
+
+**How to create and run a Worker Process using the Temporal .NET SDK**
+
+The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
+
+- Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
+- Each Worker Entity must also associate itself with exactly one [Task Queue](/workers#task-queue).
+- Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
+
+A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
+
+Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
+For more information, see the [Worker tuning guide](/dev-guide/worker-performance).
+
+A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
+
+To develop a Worker, create a new `Temporalio.Worker.TemporalWorker` providing the Client and worker options which include Task Queue, Workflows, and Activities and more.
+The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
+When a Worker is created, it accepts a list of Workflows, a list of Activities, or both.
+
+```csharp
+// Create a client to localhost on default namespace
+var client = await TemporalClient.ConnectAsync(new("localhost:7233")
+{
+    LoggerFactory = LoggerFactory.Create(builder =>
+        builder.
+            AddSimpleConsole(options => options.TimestampFormat = "[HH:mm:ss] ").
+            SetMinimumLevel(LogLevel.Information)),
+});
+
+// Cancellation token cancelled on ctrl+c
+using var tokenSource = new CancellationTokenSource();
+Console.CancelKeyPress += (_, eventArgs) =>
+{
+    tokenSource.Cancel();
+    eventArgs.Cancel = true;
+};
+
+// Create an activity instance with some state
+var activities = new MyActivities();
+
+// Run worker until cancelled
+Console.WriteLine("Running worker");
+using var worker = new TemporalWorker(
+    client,
+    new TemporalWorkerOptions(taskQueue: "my-task-queue").
+        AddAllActivities(activities).
+        AddWorkflow<MyWorkflow>());
+try
+{
+    await worker.ExecuteAsync(tokenSource.Token);
+}
+catch (OperationCanceledException)
+{
+    Console.WriteLine("Worker cancelled");
+}
+```
+
+All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
+
+If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task.
+However, the failure of the Task does not cause the associated Workflow Execution to fail.
+
+### Worker Processes with host builder and dependency injection
+
+The [Temporalio.Extensions.Hosting](https://github.com/temporalio/sdk-dotnet/tree/main/src/Temporalio.Extensions.Hosting) extension exists for .NET developers to support HostBuilder and Dependency Injection approaches.
+
+To create the same worker as before using this approach:
+
+```csharp
+var host = Host.CreateDefaultBuilder(args)
+    .ConfigureLogging(ctx => ctx.AddSimpleConsole().SetMinimumLevel(LogLevel.Information))
+    .ConfigureServices(ctx =>
+        ctx.
+            // Add the database client at the scoped level
+            AddScoped<IMyDatabaseClient, MyDatabaseClient>().
+            // Add the worker
+            AddHostedTemporalWorker(
+                clientTargetHost: "localhost:7233",
+                clientNamespace: "default",
+                taskQueue: "my-task-queue").
+            // Add the activities class at the scoped level
+            AddScopedActivities<MyActivities>().
+            AddWorkflow<MyWorkflow>())
+    .Build();
+await host.RunAsync();
+```
+
+## Set a Dynamic Workflow {#set-a-dynamic-workflow}
+
+**How to set a Dynamic Workflow using the Temporal .NET SDK**
+
+A Dynamic Workflow in Temporal is a Workflow that is invoked dynamically at runtime if no other Workflow with the same name is registered.
+A Workflow can be made dynamic by setting `Dynamic` as `true` on the `[Workflow]` attribute.
+You must register the Workflow with the Worker before it can be invoked.
+Only one Dynamic Workflow can be present on a Worker.
+
+The Workflow Definition must then accept a single argument of type `Temporalio.Converters.IRawValue[]`.
+The [Workflow.PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_PayloadConverter) property is used to convert an `IRawValue` object to the desired type using extension methods in the `Temporalio.Converters` namespace.
+
+```csharp
+[Workflow(Dynamic = true)]
+public class DynamicWorkflow
+{
+    [WorkflowRun]
+    public async Task<string> RunAsync(IRawValue[] args)
+    {
+        var name = Workflow.PayloadConverter.ToValue<string>(args.Single());
+        var param = MyActivityParams("Hello", name);
+        return await Workflow.ExecuteActivityAsync(
+            (MyActivities a) => a.MyActivity(param),
+            new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
+    }
+}
+```
+
+## Set a Dynamic Activity {#set-a-dynamic-activity}
+
+**How to set a Dynamic Activity using the Temporal .NET SDK**
+
+
+A Dynamic Activity in Temporal is an Activity that is invoked dynamically at runtime if no other Activity with the same name is registered.
+An Activity can be made dynamic by setting `Dynamic` as `true` on the `[Activity]` attribute.
+You must register the Activity with the Worker before it can be invoked.
+Only one Dynamic Activity can be present on a Worker.
+
+The Activity Definition must then accept a single argument of type `Temporalio.Converters.IRawValue[]`.
+The [PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Activities.ActivityExecutionContext.html#Temporalio_Activities_ActivityExecutionContext_PayloadConverter) property on the `ActivityExecutionContext` is used to convert an `IRawValue` object to the desired type using extension methods in the `Temporalio.Converters` namespace.
+
+```csharp
+public class MyActivities
+{
+    [Activity(Dynamic = true)]
+    public string DynamicActivity(IRawValue[] args)
+    {
+        var input = ActivityExecutionContext.Current.PayloadConverter.ToValue<MyActivityParams>(args.Single());
+        return $"{input.Greeting}, {input.Name}!";
+    }
+}
+```

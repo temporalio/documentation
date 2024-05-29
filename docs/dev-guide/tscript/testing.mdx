@@ -2,7 +2,6 @@
 id: testing
 title: Testing - TypeScript SDK feature guide
 sidebar_label: Testing
-sidebar_position: 6
 description: The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 slug: /dev-guide/typescript/testing
 toc_max_heading_level: 4
@@ -17,7 +16,6 @@ tags:
   - sdk
   - typescript
 ---
-
 
 The Testing section of the Temporal Application development guide describes the frameworks that facilitate Workflow and integration testing.
 
@@ -66,15 +64,9 @@ The constructor accepts an optional partial Activity [`Info`](https://typescript
 Then use [`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) to run a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.Context).
 
 ```ts
-<<<<<<< HEAD:websites/docs.temporal.io/docs/dev-guide/tscript/testing.mdx
 import { activityInfo } from '@temporalio/activity';
 import { MockActivityEnvironment } from '@temporalio/testing';
 import assert from 'assert';
-=======
-import { Context } from "@temporalio/activity";
-import { MockActivityEnvironment } from "@temporalio/testing";
-import assert from "assert";
->>>>>>> main:docs/dev-guide/tscript/testing.mdx
 
 // A function that takes two numbers and returns a promise that resolves to the sum of the two numbers
 // and the current attempt.
@@ -99,15 +91,8 @@ When an Activity is run by a Worker, Heartbeats are throttled to avoid overloadi
 `MockActivityEnvironment`, however, does not throttle Heartbeats.
 
 ```ts
-<<<<<<< HEAD:websites/docs.temporal.io/docs/dev-guide/tscript/testing.mdx
 import { heartbeat } from '@temporalio/activity';
-import { MockActivityEnvironment } from '@temporalio/testing';
 import assert from 'assert';
-=======
-import { Context } from "@temporalio/activity";
-import { MockActivityEnvironment } from "@temporalio/testing";
-import assert from "assert";
->>>>>>> main:docs/dev-guide/tscript/testing.mdx
 
 async function activityFoo(): Promise<void> {
   heartbeat(6);
@@ -115,7 +100,7 @@ async function activityFoo(): Promise<void> {
 
 const env = new MockActivityEnvironment();
 
-env.on("heartbeat", (d: unknown) => {
+env.on('heartbeat', (d: unknown) => {
   assert(d === 6);
 });
 
@@ -129,15 +114,9 @@ If an Activity is supposed to react to a Cancellation, you can test whether it r
 [`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment) exposes a [`.cancel()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#cancel) method that cancels the Activity Context.
 
 ```ts
-<<<<<<< HEAD:websites/docs.temporal.io/docs/dev-guide/tscript/testing.mdx
 import { CancelledFailure, heatbeat, sleep } from '@temporalio/activity';
 import { MockActivityEnvironment } from '@temporalio/testing';
 import assert from 'assert';
-=======
-import { CancelledFailure, Context } from "@temporalio/activity";
-import { MockActivityEnvironment } from "@temporalio/testing";
-import assert from "assert";
->>>>>>> main:docs/dev-guide/tscript/testing.mdx
 
 async function activityFoo(): Promise<void> {
   heartbeat(6);
@@ -148,7 +127,7 @@ async function activityFoo(): Promise<void> {
 
 const env = new MockActivityEnvironment();
 
-env.on("heartbeat", (d: unknown) => {
+env.on('heartbeat', (d: unknown) => {
   assert(d === 6);
 });
 
@@ -168,11 +147,11 @@ When integration testing Workflows with a Worker, you can mock Activities by pro
 Implement only the relevant Activities for the Workflow being tested.
 
 ```ts
-import type * as activities from "./activities";
+import type * as activities from './activities';
 
 // Creating a mock object of the activities.
 const mockActivities: Partial<typeof activities> = {
-  makeHTTPRequest: async () => "99",
+  makeHTTPRequest: async () => '99',
 };
 
 // Creating a worker with the mocked activities.
@@ -209,7 +188,7 @@ The `@temporalio/testing` package downloads the test server and exports [`TestWo
 A typical test suite should set up a single instance of the test environment to be reused in all tests (for example, in a [Jest](https://jestjs.io/) `beforeAll` hook or a [Mocha](https://mochajs.org/) `before()` hook).
 
 ```typescript
-import { TestWorkflowEnvironment } from "@temporalio/testing";
+import { TestWorkflowEnvironment } from '@temporalio/testing';
 
 let testEnv: TestWorkflowEnvironment;
 
@@ -262,30 +241,30 @@ In "skipped" mode, timers (`sleep()` calls and `condition()` timeouts) are fast-
 `workflows.ts`
 
 ```ts
-import { sleep } from "@temporalio/workflow";
+import { sleep } from '@temporalio/workflow';
 
 export async function sleeperWorkflow() {
-  await sleep("1 day");
+  await sleep('1 day');
 }
 ```
 
 `test.ts`
 
 ```ts
-import { sleeperWorkflow } from "./workflows";
+import { sleeperWorkflow } from './workflows';
 
-test("sleep completes almost immediately", async () => {
+test('sleep completes almost immediately', async () => {
   const worker = await Worker.create({
     connection: testEnv.nativeConnection,
-    taskQueue: "test",
-    workflowsPath: require.resolve("./workflows"),
+    taskQueue: 'test',
+    workflowsPath: require.resolve('./workflows'),
   });
   // Does not wait an entire day
   await worker.runUntil(
     testEnv.client.workflow.execute(sleeperWorkflow, {
       workflowId: uuid(),
-      taskQueue: "test",
-    })
+      taskQueue: 'test',
+    }),
   );
 });
 ```
@@ -301,10 +280,10 @@ However, to use `testEnv.sleep()`, you need to avoid automatic time skipping by 
 `workflow.ts`
 
 ```ts
-import { sleep } from "@temporalio/workflow";
-import { defineQuery, setHandler } from "@temporalio/workflow";
+import { sleep } from '@temporalio/workflow';
+import { defineQuery, setHandler } from '@temporalio/workflow';
 
-export const daysQuery = defineQuery("days");
+export const daysQuery = defineQuery('days');
 
 export async function sleeperWorkflow() {
   let numDays = 0;
@@ -312,7 +291,7 @@ export async function sleeperWorkflow() {
   setHandler(daysQuery, () => numDays);
 
   for (let i = 0; i < 100; i++) {
-    await sleep("1 day");
+    await sleep('1 day');
     numDays++;
   }
 }
@@ -321,11 +300,11 @@ export async function sleeperWorkflow() {
 `test.ts`
 
 ```ts
-test("sleeperWorkflow counts days correctly", async () => {
+test('sleeperWorkflow counts days correctly', async () => {
   const worker = await Worker.create({
     connection: testEnv.nativeConnection,
-    taskQueue: "test",
-    workflowsPath: require.resolve("./workflows"),
+    taskQueue: 'test',
+    workflowsPath: require.resolve('./workflows'),
   });
 
   // `start()` starts the test server in "normal" mode, not skipped time mode.
@@ -342,11 +321,11 @@ test("sleeperWorkflow counts days correctly", async () => {
   assert.equal(numDays, 0);
 
   // Advance the test server's time by 25 hours
-  await testEnv.sleep("25 hours");
+  await testEnv.sleep('25 hours');
   numDays = await handle.query(daysQuery);
   assert.equal(numDays, 1);
 
-  await testEnv.sleep("25 hours");
+  await testEnv.sleep('25 hours');
   numDays = await handle.query(daysQuery);
   assert.equal(numDays, 2);
 });
@@ -369,7 +348,9 @@ Workflow implementation
 </summary>
 
 <!--SNIPSTART typescript-timer-reminder-workflow-->
+
 [timer-examples/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/timer-examples/src/workflows.ts)
+
 ```ts
 export async function processOrderWorkflow({
   orderProcessingMS,
@@ -377,9 +358,11 @@ export async function processOrderWorkflow({
 }: ProcessOrderOptions): Promise<string> {
   let processing = true;
   // Dynamically define the timeout based on given input
-  const { processOrder } = proxyActivities<ReturnType<typeof createActivities>>({
-    startToCloseTimeout: orderProcessingMS,
-  });
+  const { processOrder } = proxyActivities<ReturnType<typeof createActivities>>(
+    {
+      startToCloseTimeout: orderProcessingMS,
+    },
+  );
 
   const processOrderPromise = processOrder().then(() => {
     processing = false;
@@ -396,44 +379,53 @@ export async function processOrderWorkflow({
   return 'Order completed!';
 }
 ```
+
 <!--SNIPEND-->
 
 </details>
 
 <!--SNIPSTART typescript-timer-reminder-test-->
+
 [timer-examples/src/test/workflows.test.ts](https://github.com/temporalio/samples-typescript/blob/main/timer-examples/src/test/workflows.test.ts)
+
 ```ts
-  it('sends reminder email if processOrder does not complete in time', async () => {
-    // This test doesn't actually take days to complete: the TestWorkflowEnvironment starts the
-    // Test Server, which automatically skips time when there are no running Activities.
-    let emailSent = false;
-    const mockActivities: ReturnType<typeof createActivities> = {
-      async processOrder() {
-        // Test server switches to "normal" time while an Activity is executing.
-        // Call `env.sleep` to skip ahead 2 days, by which time sendNotificationEmail
-        // should have been called.
-        await env.sleep('2 days');
-      },
-      async sendNotificationEmail() {
-        emailSent = true;
-      },
-    };
-    const worker = await Worker.create({
-      connection: env.nativeConnection,
-      taskQueue: 'test',
-      workflowsPath: require.resolve('../workflows'),
-      activities: mockActivities,
-    });
-    await worker.runUntil(
-      env.client.workflow.execute(processOrderWorkflow, {
-        workflowId: uuid(),
-        taskQueue: 'test',
-        args: [{ orderProcessingMS: ms('3 days'), sendDelayedEmailTimeoutMS: ms('1 day') }],
-      })
-    );
-    assert.ok(emailSent);
+it('sends reminder email if processOrder does not complete in time', async () => {
+  // This test doesn't actually take days to complete: the TestWorkflowEnvironment starts the
+  // Test Server, which automatically skips time when there are no running Activities.
+  let emailSent = false;
+  const mockActivities: ReturnType<typeof createActivities> = {
+    async processOrder() {
+      // Test server switches to "normal" time while an Activity is executing.
+      // Call `env.sleep` to skip ahead 2 days, by which time sendNotificationEmail
+      // should have been called.
+      await env.sleep('2 days');
+    },
+    async sendNotificationEmail() {
+      emailSent = true;
+    },
+  };
+  const worker = await Worker.create({
+    connection: env.nativeConnection,
+    taskQueue: 'test',
+    workflowsPath: require.resolve('../workflows'),
+    activities: mockActivities,
   });
+  await worker.runUntil(
+    env.client.workflow.execute(processOrderWorkflow, {
+      workflowId: uuid(),
+      taskQueue: 'test',
+      args: [
+        {
+          orderProcessingMS: ms('3 days'),
+          sendDelayedEmailTimeoutMS: ms('1 day'),
+        },
+      ],
+    }),
+  );
+  assert.ok(emailSent);
+});
 ```
+
 <!--SNIPEND-->
 
 ### Test functions in Workflow context {#workflow-context}
@@ -453,10 +445,10 @@ Then execute the function as if it were a Workflow:
 `workflows/file-with-workflow-function-to-test.ts`
 
 ```ts
-import { sleep } from "@temporalio/workflow";
+import { sleep } from '@temporalio/workflow';
 
 export async function functionToTest(): Promise<number> {
-  await sleep("1 day");
+  await sleep('1 day');
   return 42;
 }
 ```
@@ -466,10 +458,14 @@ export async function functionToTest(): Promise<number> {
 ```ts
 const worker = await Worker.create({
   connection: testEnv.nativeConnection,
-  workflowsPath: require.resolve("./workflows/file-with-workflow-function-to-test"),
+  workflowsPath: require.resolve(
+    './workflows/file-with-workflow-function-to-test',
+  ),
 });
 
-const result = await worker.runUntil(testEnv.client.workflow.execute(functionToTest, workflowOptions));
+const result = await worker.runUntil(
+  testEnv.client.workflow.execute(functionToTest, workflowOptions),
+);
 
 assert.equal(result, 42);
 ```
@@ -477,8 +473,8 @@ assert.equal(result, 42);
 If `functionToTest` starts a Child Workflow, that Workflow must be exported from the same file (so that the Worker knows about it):
 
 ```ts
-import { sleep } from "@temporalio/workflow";
-import { someWorkflowToRunAsChild } from "./some-workflow";
+import { sleep } from '@temporalio/workflow';
+import { someWorkflowToRunAsChild } from './some-workflow';
 
 export { someWorkflowToRunAsChild };
 
@@ -504,7 +500,7 @@ These interceptors catch an `AssertionError` and turn it into an `ApplicationFai
 `workflows/file-with-workflow-function-to-test.ts`
 
 ```ts
-import assert from "assert";
+import assert from 'assert';
 
 export async function functionToTest() {
   assert.ok(false);
@@ -514,18 +510,23 @@ export async function functionToTest() {
 `test.ts`
 
 ```ts
-import { TestWorkflowEnvironment, workflowInterceptorModules } from "@temporalio/testing";
+import {
+  TestWorkflowEnvironment,
+  workflowInterceptorModules,
+} from '@temporalio/testing';
 
 const worker = await Worker.create({
   connection: testEnv.nativeConnection,
   interceptors: {
     workflowModules: workflowInterceptorModules,
   },
-  workflowsPath: require.resolve("./workflows/file-with-workflow-function-to-test"),
+  workflowsPath: require.resolve(
+    './workflows/file-with-workflow-function-to-test',
+  ),
 });
 
 await worker.runUntil(
-  testEnv.client.workflow.execute(functionToTest, workflowOptions) // throws WorkflowFailedError
+  testEnv.client.workflow.execute(functionToTest, workflowOptions), // throws WorkflowFailedError
 );
 ```
 
@@ -553,13 +554,13 @@ If replay fails for any other reason, [ReplayError](https://typescript.temporal.
 In the following example, a single Event History is loaded from a JSON file on disk (as obtained from the [Web UI](/web-ui) or the [Temporal CLI](/cli/workflow#show)):
 
 ```ts
-const filePath = "./history_file.json";
-const history = await JSON.parse(fs.promises.readFile(filePath, "utf8"));
+const filePath = './history_file.json';
+const history = await JSON.parse(fs.promises.readFile(filePath, 'utf8'));
 await Worker.runReplayHistory(
   {
-    workflowsPath: require.resolve("./your/workflows"),
+    workflowsPath: require.resolve('./your/workflows'),
   },
-  history
+  history,
 );
 ```
 
@@ -567,14 +568,14 @@ Alternatively, we can download the Event History programmatically using a Client
 
 ```ts
 const connection = await Connection.connect({ address });
-const client = new Client({ connection, namespace: "your-namespace" });
-const handle = client.workflow.getHandle("your-workflow-id");
+const client = new Client({ connection, namespace: 'your-namespace' });
+const handle = client.workflow.getHandle('your-workflow-id');
 const history = await handle.fetchHistory();
 await Worker.runReplayHistory(
   {
-    workflowsPath: require.resolve("./your/workflows"),
+    workflowsPath: require.resolve('./your/workflows'),
   },
-  history
+  history,
 );
 ```
 
@@ -591,13 +592,13 @@ const executions = client.workflow.list({
 const histories = executions.intoHistories();
 const results = Worker.runReplayHistories(
   {
-    workflowsPath: require.resolve("./your/workflows"),
+    workflowsPath: require.resolve('./your/workflows'),
   },
-  histories
+  histories,
 );
 for await (const result of results) {
   if (result.error) {
-    console.error("Replay failed", result);
+    console.error('Replay failed', result);
   }
 }
 ```

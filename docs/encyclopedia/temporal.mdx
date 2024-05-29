@@ -2,7 +2,6 @@
 id: temporal
 title: What is Temporal?
 sidebar_label: Temporal
-sidebar_position: 1
 description: Discover the Temporal Platform, a runtime for durable executions that consists of a Temporal Cluster and Worker Processes, plus SDKs in multiple languages.
 slug: /temporal
 toc_max_heading_level: 4
@@ -26,12 +25,16 @@ It enables you to develop as if failures don't even exist.
 Your application will run reliably even if it encounters problems, such as network outages or server crashes, which would be catastrophic for a typical application.
 The Temporal Platform handles these types of problems, allowing you to focus on the business logic, instead of writing application code to detect and recover from failures.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">The Temporal System</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">The Temporal System</p>
   </div>
-  <div class="tdiiw" height="740">
-    <img class="img_ev3q" src="/diagrams/temporal-system-simple.svg" alt="The Temporal System" />
+  <div className="tdiiw" height="740">
+    <img
+      className="img_ev3q"
+      src="/diagrams/temporal-system-simple.svg"
+      alt="The Temporal System"
+    />
   </div>
 </div>
 
@@ -45,34 +48,38 @@ It enables application code to execute effectively once and to completion, regar
 
 ## What is the Temporal Platform? {#temporal-platform}
 
-The Temporal Platform consists of a [Temporal Cluster](/clusters) and [Worker Processes](/workers#worker-process).
+The Temporal Platform consists of a [Temporal Service](/clusters) and [Worker Processes](/workers#worker-process).
 Together these components create a runtime for Workflow Executions.
 
-The Temporal Platform consists of a supervising software typically called a [Temporal Cluster](/clusters) and application code bundled as Worker Processes.
+The Temporal Platform consists of a supervising software typically called the [Temporal Service](/clusters) and application code bundled as Worker Processes.
 Together these components create a runtime for your application.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">The Temporal Platform</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">The Temporal Platform</p>
   </div>
-  <div class="tdiiw" height="740">
-    <img class="img_ev3q" src="/diagrams/temporal-platform-simple.svg" alt="The Temporal Platform" />
+  <div className="tdiiw" height="740">
+    <img
+      className="img_ev3q"
+      src="/diagrams/temporal-platform-simple.svg"
+      alt="The Temporal Platform"
+    />
   </div>
 </div>
 
-A Temporal Cluster consists of the Temporal Server and a database.
+A Temporal Service consists of the Temporal Server and a database.
 
-Our software as a service (SaaS) offering, Temporal Cloud, offers an alternative to hosting a Temporal Cluster yourself.
+Our software as a service (SaaS) offering, Temporal Cloud, offers an alternative to hosting the Temporal Service yourself.
 
 Worker Processes are hosted and operated by you and execute your code. Workers run using one of our SDKs.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Basic component topology of the Temporal Platform</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Basic component topology of the Temporal Platform</p>
   </div>
-  <div class="tdiiw" height="1121">
+  <div className="tdiiw" height="1121">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/temporal-platform-component-topology.svg"
       alt="Basic component topology of the Temporal Platform"
     />

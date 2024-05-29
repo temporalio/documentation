@@ -2,7 +2,6 @@
 id: observability
 title: Observability - Go SDK feature guide
 sidebar_label: Observability
-sidebar_position: 7
 description: Improve observability in your Go-based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
 slug: /dev-guide/go/observability
 toc_max_heading_level: 4
@@ -248,7 +247,6 @@ workflow.WithActivityOptions(ctx, ao)
 		"name": name,
 	}
 
-
 	logger.Info("Compressed Payloads workflow completed.", "result", result)
 
 	return result, nil
@@ -289,7 +287,7 @@ func main() {
 
 ## How to use Visibility APIs {#visibility}
 
-The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
+The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
 ### How to use Search Attributes {#search-attributes}
 
@@ -305,7 +303,7 @@ You can do this with [Search Attributes](/visibility#search-attribute).
 
 The steps to using custom Search Attributes are:
 
-- Create a new Search Attribute in your Cluster using `temporal operator search-attribute create` or the Cloud UI.
+- Create a new Search Attribute in your Temporal Service using `temporal operator search-attribute create` or the Cloud UI.
 - Set the value of the Search Attribute for a Workflow Execution:
   - On the Client by including it as an option when starting the Execution.
   - In the Workflow by calling `UpsertSearchAttributes`.
@@ -344,7 +342,7 @@ for _, exec := range resp.Executions {
 
 ### How to set custom Search Attributes {#custom-search-attributes}
 
-After you've created custom Search Attributes in your Cluster (using the `temporal operator search-attribute create` command or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+After you've created custom Search Attributes in your Temporal Service (using the `temporal operator search-attribute create` command or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
 Provide key-value pairs in [`StartWorkflowOptions.SearchAttributes`](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
 

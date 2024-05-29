@@ -2,30 +2,28 @@
 id: users
 title: User management - Temporal Cloud feature guide
 sidebar_label: Users
-sidebar_position: 3
 description: Invite users, set account level roles, and set Namespace-level positions for users.
 slug: /cloud/users
 toc_max_heading_level: 4
 keywords:
-- explanation
-- how-to
-- introduction
-- namespace
-- namespaces
-- temporal cloud
-- temporal cloud account
-- users
+  - explanation
+  - how-to
+  - introduction
+  - namespace
+  - namespaces
+  - temporal cloud
+  - temporal cloud account
+  - users
 tags:
-- explanation
-- how-to
-- introduction
-- namespace
-- namespaces
-- temporal-cloud
-- temporal-cloud-account
-- users
+  - explanation
+  - how-to
+  - introduction
+  - namespace
+  - namespaces
+  - temporal-cloud
+  - temporal-cloud-account
+  - users
 ---
-
 
 - [How to invite users to your Temporal Cloud account](#invite-users)
 - [What are the account-level roles?](#account-level-roles)
@@ -66,7 +64,7 @@ Each user can be assigned permissions for individual Namespaces.
 - [Account-level Roles](#account-level-roles)
 - [Namespace-level permissions](#namespace-level-permissions)
 
-<!--- How to invite users to your Temporal Cloud account using Web UI --->
+{/* How to invite users to your Temporal Cloud account using Web UI */}
 
 ### How to invite users using Web UI
 
@@ -83,7 +81,7 @@ Each user can be assigned permissions for individual Namespaces.
 Temporal sends an email message to each user.
 To join Temporal Cloud, a user must select **Accept Invite** in the message.
 
-<!--- How to invite a user to your Temporal Cloud account using tcld --->
+{/* How to invite a user to your Temporal Cloud account using tcld */}
 
 ### How to invite a user using tcld
 
@@ -96,7 +94,7 @@ To join Temporal Cloud, the user must select **Accept Invite** in the message.
 
 You can invite users pragmatically using the Cloud Ops API.
 
-1. Create a connection to your Temporal Cluster using the Cloud Operations API.
+1. Create a connection to your Temporal Service using the Cloud Operations API.
 2. Use the [CreateUser service](https://github.com/temporalio/api-cloud/blob/main/temporal/api/cloud/cloudservice/v1/service.proto) to create a user.
 
 ## What are the account-level Roles for users in Temporal Cloud? {#account-level-roles}
@@ -132,7 +130,7 @@ To update an account-level Role, a user must have the Global Admin account-level
 
 :::
 
-<!-- How to update an account-level Role in Temporal Cloud using Web UI -->
+{/* How to update an account-level Role in Temporal Cloud using Web UI */}
 
 ### How to update an account-level Role using Web UI
 
@@ -142,7 +140,7 @@ To update an account-level Role, a user must have the Global Admin account-level
 1. On the **Edit User** page in **Account Level Role**, select the Role.
 1. Select **Save**.
 
-<!-- How to update an account-level Role in Temporal Cloud using tcld -->
+{/* How to update an account-level Role in Temporal Cloud using tcld */}
 
 ### How to update an account-level Role using tcld
 
@@ -152,7 +150,7 @@ For details, see the [tcld user set-account-role](/cloud/tcld/user/#set-account-
 
 You can update Namespace-level [permissions](#namespace-level-permissions) by using either Web UI or tcld.
 
-<!-- How to update Namespace-level permissions for a Namespace in Temporal Cloud using Web UI -->
+{/* How to update Namespace-level permissions for a Namespace in Temporal Cloud using Web UI */}
 
 ### How to use the Web UI to update a user's permissions across multiple Namespaces
 
@@ -163,7 +161,7 @@ You can update Namespace-level [permissions](#namespace-level-permissions) by us
 1. On the Namespace page in **Account Level Role**, select the Role.
 1. Select **Save**.
 
-<!-- How to update Namespace-level permissions for a user in Temporal Cloud using Web UI -->
+{/* How to update Namespace-level permissions for a user in Temporal Cloud using Web UI */}
 
 ### How to use the Web UI to update permissions for multiple users within a single Namespace
 
@@ -179,7 +177,7 @@ A user who has the Global Admin account-level [Role](#account-level-roles) has N
 1. On the **Edit User** page in **Namespace permissions**, change the permissions for one or more Namespaces.
 1. Select **Save**.
 
-<!-- How to update an account-level Role in Temporal Cloud using tcld -->
+{/* How to update an account-level Role in Temporal Cloud using tcld */}
 
 ### How to use tcld to update Namespace-level permissions
 
@@ -195,7 +193,7 @@ To delete a user, a user must have the Global Admin account-level [Role](#accoun
 
 :::
 
-<!-- How to delete a user from your Temporal Cloud account using Web UI -->
+{/* How to delete a user from your Temporal Cloud account using Web UI */}
 
 ### How to update an account-level Role using Web UI
 
@@ -208,7 +206,7 @@ You can delete a user in two other ways in Web UI:
 - User profile page: Select the down arrow next to **Edit User** and then select **Delete**.
 - **Edit User** page: Select **Delete User**.
 
-<!-- How to delete a user from your Temporal Cloud account using tcld -->
+{/* How to delete a user from your Temporal Cloud account using tcld */}
 
 ### How to update an account-level Role using tcld
 
@@ -350,4 +348,3 @@ This table provides API-level details for the permissions granted to a user thro
 | UpdateUserNamespacePermissions     |      |       | ✔               |
 | ValidateExportSink                 |      | ✔     | ✔               |
 | ValidateGlobalizeNamespace         |      |       | ✔               |
-

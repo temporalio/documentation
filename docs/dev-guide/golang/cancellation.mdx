@@ -2,7 +2,6 @@
 id: cancellation
 title: Cancellation - Go SDK feature guide
 sidebar_label: Cancellation
-sidebar_position: 6
 description: How to cancel a Workflow Execution and it's Activities using the Go SDK.
 slug: /dev-guide/go/cancellation
 toc_max_heading_level: 4
@@ -34,7 +33,9 @@ If the Workflow receives a Cancellation Request, but all Activities gracefully h
 It is completely up to the needs of the business process and your use case which determines whether you want to return the Cancellation error to show a Canceled status or Complete status regardless of whether a Cancellation has propagated to and/or skipped Activities.
 
 <!--SNIPSTART go-features-cancellation-workflow {"selectedLines": ["14-15", "18", "20-38", "41", "43-45", "47-50"]}-->
+
 [sample-apps/go/features/cancellation/workflow.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/cancellation/workflow.go)
+
 ```go
 // ...
 // YourWorkflow is a Workflow Definition that shows how it can be canceled.
@@ -73,24 +74,23 @@ func YourWorkflow(ctx workflow.Context) error {
 	return err
 }
 ```
+
 <!--SNIPEND-->
 
 ## Handle Cancellation in an Activity {#handle-cancellation-in-an-activity}
-
 
 **How to handle a Cancellation in an Activity in Go.**
 
 Ensure that the Activity is Heartbeating to receive the Cancellation request and stop execution.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/cancellation/activity.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```go
-
 // ActivityToBeCanceled is the Activity that will respond to the Cancellation Request
 func (a *Activities) ActivityToBeCanceled(ctx context.Context) (string, error) {
 // ...
@@ -112,20 +112,18 @@ func (a *Activities) ActivityToBeCanceled(ctx context.Context) (string, error) {
 
 ## Request Cancellation {#request-cancellation}
 
-
 **How to request Cancellation of a Workflow and Activities in Go.**
 
 Use the `CancelWorkflow` API to cancel a Workflow Execution using its Id.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/cancellation/cancel/main.go">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```go
-
 func main() {
 // ...
 	// Call the CancelWorkflow API to cancel a Workflow
@@ -137,5 +135,4 @@ func main() {
 	}
 // ...
 }
-
 ```

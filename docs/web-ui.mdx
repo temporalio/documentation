@@ -2,17 +2,15 @@
 id: web-ui
 title: Temporal Web UI
 sidebar_label: Web UI
-sidebar_position: 9
 description: Explore the intuitive web user interface (Web UI) for Temporal. Seamlessly monitor and manage your Namespaces, Workflows, Schedules, and other settings.
 toc_max_heading_level: 4
 keywords:
-- term
-- web-ui
+  - term
+  - web-ui
 tags:
-- term
-- web-ui
+  - term
+  - web-ui
 ---
-
 
 The Temporal Web UI provides users with Workflow Execution state and metadata for debugging purposes.
 It ships with every [Temporal CLI](/cli) release and [Docker Compose](https://github.com/temporalio/docker-compose) update and is available with [Temporal Cloud](/cloud).
@@ -126,19 +124,6 @@ Click **Settings** to see and manage the list of users in your account and to se
 
 On self-hosted Temporal Clusters, manage your users, metrics, and logging in your [server configuration](/references/configuration).
 
-<!--
-AB: Commenting because this is redundant now? Also this needs to be updated for self-hosted clusters.
-Displays the following information:
-
-- Description of the Namespace.
-- Owner: Namespace owner.
-- Global?: Whether the Namespace is a Global Namespace
-- Retention Period: Namespace Retention Period
-- History Archival: Whether History Archival is enabled
-- Visibility Archival: Whether Visibility Archival is enabled
-- Failover Version: Namespace Failover Version
-- Clusters: Cluster information -->
-
 ### Archive
 
 On self-hosted Temporal Clusters, Archive shows [Archived](/clusters#archival) data of your Workflow Executions on the Namespace.
@@ -161,4 +146,3 @@ The Web UI provides a "labs" mode for users to try out upcoming, production-read
 When off, users will experience the current UI.
 Features will move in and out of labs mode according to demand and feedback.
 Labs mode can be turned on or off at any time in the left navigation bar via the Labs icon.
-

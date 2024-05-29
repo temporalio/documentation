@@ -2,22 +2,20 @@
 id: visibility
 title: Self-hosted Visibility feature setup
 sidebar_label: Visibility
-sidebar_position: 6
 description: Learn how to set up the Temporal self-hosted Cluster Visibility feature.
 slug: /self-hosted-guide/visibility
 toc_max_heading_level: 4
 keywords:
-- filtered-lists
-- guide-context
-- operation-guide
-- visibility
+  - filtered-lists
+  - guide-context
+  - operation-guide
+  - visibility
 tags:
-- filtered-lists
-- guide-context
-- operation-guide
-- visibility
+  - filtered-lists
+  - guide-context
+  - operation-guide
+  - visibility
 ---
-
 
 A [Visibility](/clusters#visibility) store is set up as a part of your [Persistence store](/clusters#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
 
@@ -62,6 +60,7 @@ For updates, check [Server release notes](https://github.com/temporalio/temporal
 ## How to set up MySQL Visibility store {#mysql}
 
 :::tip Support, stability, and dependency info
+
 - MySQL v5.7 and later.
 - Support for MySQL v5.7 will be deprecated for all Temporal Server versions after v1.20.
 - With Temporal Server version 1.20 and later, advanced Visibility is available on MySQL v8.0.17 and later.
@@ -90,15 +89,15 @@ persistence:
       #...
     mysql-visibility:
       sql:
-        pluginName: "mysql8" # For MySQL v8.0.17 and later. For earlier versions, use "mysql" plugin.
-        databaseName: "temporal_visibility"
-        connectAddr: " " # Remote address of this database; for example, 127.0.0.0:3306
-        connectProtocol: " " # Protocol example: tcp
-        user: "username_for_auth"
-        password: "password_for_auth"
+        pluginName: 'mysql8' # For MySQL v8.0.17 and later. For earlier versions, use "mysql" plugin.
+        databaseName: 'temporal_visibility'
+        connectAddr: ' ' # Remote address of this database; for example, 127.0.0.0:3306
+        connectProtocol: ' ' # Protocol example: tcp
+        user: 'username_for_auth'
+        password: 'password_for_auth'
         maxConns: 2
         maxIdleConns: 2
-        maxConnLifetime: "1h"
+        maxConnLifetime: '1h'
 #...
 ```
 
@@ -151,6 +150,7 @@ Note that the script uses [temporal-sql-tool](https://github.com/temporalio/temp
 ## How to set up PostgreSQL Visibility store {#postgresql}
 
 :::tip Support, stability, and dependency info
+
 - PostgreSQL v9.6 and later.
 - With Temporal Cluster version 1.20 and later, advanced Visibility is available on PostgreSQL v12 and later.
 - Support for PostgreSQL v9.6 through v11 will be deprecated for all Temporal Server versions after v1.20; we recommend upgrading to PostgreSQL 12 or later.
@@ -179,15 +179,15 @@ persistence:
     #...
     postgres-visibility:
       sql:
-        pluginName: "postgres12" # For PostgreSQL v12 and later. For earlier versions, use "postgres" plugin.
-        databaseName: "temporal_visibility"
-        connectAddr: " " # remote address of this database; for example, 127.0.0.0:5432
-        connectProtocol: " " # protocol example: tcp
-        user: "username_for_auth"
-        password: "password_for_auth"
+        pluginName: 'postgres12' # For PostgreSQL v12 and later. For earlier versions, use "postgres" plugin.
+        databaseName: 'temporal_visibility'
+        connectAddr: ' ' # remote address of this database; for example, 127.0.0.0:5432
+        connectProtocol: ' ' # protocol example: tcp
+        user: 'username_for_auth'
+        password: 'password_for_auth'
         maxConns: 2
         maxIdleConns: 2
-        maxConnLifetime: "1h"
+        maxConnLifetime: '1h'
 #...
 ```
 
@@ -233,6 +233,7 @@ Note that the script uses [temporal-sql-tool](https://github.com/temporalio/temp
 ## How to set up SQLite Visibility store {#sqlite}
 
 :::tip Support, stability, and dependency info
+
 - SQLite v3.31.0 and later.
 
 :::
@@ -262,25 +263,25 @@ persistence:
     # ...
     sqlite-visibility:
       sql:
-        user: "username_for_auth"
-        password: "password_for_auth"
-        pluginName: "sqlite"
-        databaseName: "default"
-        connectAddr: "localhost"
-        connectProtocol: "tcp"
+        user: 'username_for_auth'
+        password: 'password_for_auth'
+        pluginName: 'sqlite'
+        databaseName: 'default'
+        connectAddr: 'localhost'
+        connectProtocol: 'tcp'
         connectAttributes:
-          mode: "memory"
-          cache: "private"
+          mode: 'memory'
+          cache: 'private'
         maxConns: 1
         maxIdleConns: 1
-        maxConnLifetime: "1h"
+        maxConnLifetime: '1h'
         tls:
           enabled: false
-          caFile: ""
-          certFile: ""
-          keyFile: ""
+          caFile: ''
+          certFile: ''
+          keyFile: ''
           enableHostVerification: false
-          serverName: ""
+          serverName: ''
 ```
 
 SQLite (v3.31.0 and later) has advanced Visibility enabled by default.
@@ -294,6 +295,7 @@ For an example of setting up the SQLite schema, see [Temporalite](https://github
 ## How to set up Cassandra Visibility store {#cassandra}
 
 :::tip Support, stability, and dependency info
+
 - Support for Cassandra as a Visibility database is deprecated beginning with Temporal Server v1.21. For updates, check the [Temporal Server release notes](https://github.com/temporalio/temporal/releases).
 - We recommend migrating from Cassandra to any of the other supported databases for Visibility.
 
@@ -326,8 +328,8 @@ persistence:
     #...
     cass-visibility:
       cassandra:
-        hosts: "127.0.0.1"
-        keyspace: "temporal_visibility"
+        hosts: '127.0.0.1'
+        keyspace: 'temporal_visibility'
 #...
 ```
 
@@ -372,6 +374,7 @@ setup_cassandra_schema() {
 ## How to integrate Elasticsearch into a Temporal Cluster {#elasticsearch}
 
 :::tip Support, stability, and dependency info
+
 - Elasticsearch v8 is supported beginning with Temporal Server version 1.18.0.
 - Elasticsearch v7.10 is supported beginning with Temporal Server version 1.17.0.
 - Elasticsearch v6.8 is supported through Temporal Server version 1.17._x_.
@@ -384,14 +387,6 @@ We recommend using Elasticsearch for large-scale operations on the Temporal Clus
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file to add Elasticsearch as the `visibilityStore`, and run the index schema setup commands.
 
-<!-- :::note
-
-The following steps are needed only if you have a "plain" [Temporal Server Docker image](https://hub.docker.com/r/temporalio/server).
-
-If you operate a Temporal Cluster using our [Helm charts](https://github.com/temporalio/helm-charts) or
-[Docker Compose](https://github.com/temporalio/docker-compose), the Elasticsearch index schema and index are created automatically using the [auto-setup Docker image](https://hub.docker.com/r/temporalio/auto-setup).
-
-::: -->
 
 **Persistence configuration**
 
@@ -463,6 +458,7 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
 ## How to set up Dual Visibility {#dual-visibility}
 
 :::tip Support, stability, and dependency info
+
 - Supported from Temporal Server v1.21 onwards.
 
 :::
@@ -488,16 +484,16 @@ persistence:
   datastores:
     cass-visibility:
       cassandra:
-        hosts: "127.0.0.1"
-        keyspace: "temporal_primary_visibility"
+        hosts: '127.0.0.1'
+        keyspace: 'temporal_primary_visibility'
     mysql-visibility:
       sql:
-        pluginName: "mysql8" # Verify supported versions. Use a version of SQL that supports advanced Visibility.
-        databaseName: "temporal_secondary_visibility"
-        connectAddr: "127.0.0.1:3306"
-        connectProtocol: "tcp"
-        user: "temporal"
-        password: "temporal"
+        pluginName: 'mysql8' # Verify supported versions. Use a version of SQL that supports advanced Visibility.
+        databaseName: 'temporal_secondary_visibility'
+        connectAddr: '127.0.0.1:3306'
+        connectProtocol: 'tcp'
+        user: 'temporal'
+        password: 'temporal'
 ```
 
 To configure Elasticsearch as both your primary and secondary store, use the configuration key `elasticsearch.indices.secondary_visibility`, as shown in the following example.
@@ -508,11 +504,11 @@ persistence:
   datastores:
     es-visibility:
       elasticsearch:
-        version: "v7"
-        logLevel: "error"
+        version: 'v7'
+        logLevel: 'error'
         url:
-          scheme: "http"
-          host: "127.0.0.1:9200"
+          scheme: 'http'
+          host: '127.0.0.1:9200'
         indices:
           visibility: temporal_visibility_v1
           secondary_visibility: temporal_visibility_v1_new
@@ -638,7 +634,7 @@ For example, to enable write operations to both primary and secondary stores, bu
 
 ```yaml
 system.secondaryVisibilityWritingMode:
-  - value: "dual"
+  - value: 'dual'
     constraints: {}
 system.enableReadFromSecondaryVisibility:
   - value: false
@@ -653,6 +649,7 @@ For details on the configuration options, see:
 ## How to migrate Visibility database {#migrating-visibility-database}
 
 :::tip Support, stability, and dependency info
+
 - Supported beginning with Temporal Server v1.21.
 
 :::
@@ -681,15 +678,15 @@ After you make any changes to your [Cluster configuration](/clusters#cluster-con
    datastores:
      cass-visibility:
      cassandra:
-       hosts: "127.0.0.1"
-       keyspace: "temporal_visibility"
+       hosts: '127.0.0.1'
+       keyspace: 'temporal_visibility'
      es-visibility:
      elasticsearch:
-       version: "v7"
-       logLevel: "error"
+       version: 'v7'
+       logLevel: 'error'
        url:
-       scheme: "http"
-       host: "127.0.0.1:9200"
+       scheme: 'http'
+       host: '127.0.0.1:9200'
        indices:
        visibility: temporal_visibility_v1_dev
        closeIdleConnectionsInterval: 15s
@@ -758,11 +755,11 @@ When you are ready to deprecate your primary store, follow these steps.
    datastores:
      es-visibility:
      elasticsearch:
-       version: "v7"
-       logLevel: "error"
+       version: 'v7'
+       logLevel: 'error'
        url:
-       scheme: "http"
-       host: "127.0.0.1:9200"
+       scheme: 'http'
+       host: '127.0.0.1:9200'
        indices:
        visibility: temporal_visibility_v1_dev
        closeIdleConnectionsInterval: 15s
@@ -805,7 +802,7 @@ temporal operator search-attribute create --name="CustomSA" --type="Keyword"`
 ```
 
 Note that if you use a SQL database with advanced Visibility capabilities, you are required to specify a Namespace when creating a custom Search Attribute.
-For example: 
+For example:
 
 ```
 temporal operator search-attribute create --name="CustomSA" --type="Keyword" --namespace="yournamespace"
@@ -840,7 +837,8 @@ Note that this script has been updated for Temporal Server v1.20, which requires
 
 For Temporal Server v1.19 and earlier, or if using Elasticsearch for advanced Visibility, you can create custom Search Attributes without a Namespace association, as shown in the following example.
 
-<!--CHECK FOR ACCURACY-->
+{/* CHECK FOR ACCURACY */}
+
 ```bash
 add_custom_search_attributes() {
        echo "Adding Custom*Field search attributes."
@@ -864,19 +862,21 @@ Removing Search Attributes is not supported on Temporal Cloud.
 
 For example, if using Elasticsearch for advanced Visibility, to remove a custom Search Attribute called `CustomSA` of type Keyword use the following command:
 
-<!--CHECK FOR ACCURACY-->
+{/* CHECK FOR ACCURACY */}
+
 ```
 temporal attribute search-attribute remove --name="CustomSA"
 ```
 
 With Temporal Server v1.20, if using a SQL database for advanced Visibility, you need to specify the Namespace in your command, as shown in the following command:
 
-<!--CHECK FOR ACCURACY-->
-````
-temporal attribute search-attribute remove --name="CustomSA" --namespace="SomeNamespace"
-````
+{/* CHECK FOR ACCURACY */}
 
-To check whether the Search Attribute was removed, run 
+```
+temporal attribute search-attribute remove --name="CustomSA" --namespace="SomeNamespace"
+```
+
+To check whether the Search Attribute was removed, run
 
 ```
 temporal operator search-attribute list
@@ -885,7 +885,7 @@ temporal operator search-attribute list
 and check the list.
 
 If you're on Temporal Server v1.20 and later, specify the Namespace from which you removed the Search Attribute.
-For example, 
+For example,
 
 ```
 temporal search-attribute list --namespace="yournamespace"
@@ -896,5 +896,3 @@ Removing this custom Search Attribute removes the mapping with the database fiel
 If you remove a custom Search Attribute and add a new one, the new custom Search Attribute might be mapped to the database field of the one that was recently removed.
 This might cause unexpected results when you use the List API to retrieve results using the new custom Search Attribute.
 These constraints do not apply if you use Elasticsearch.
-
-

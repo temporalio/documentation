@@ -2,7 +2,6 @@
 id: durable-execution
 title: Develop code that durably executes - Java SDK dev guide
 sidebar_label: Develop for durability
-sidebar_position: 3
 description: The Durable Execution section of the Temporal Developer's guide covers advanced beginner concepts for working with Temporal, including testing your code, reviewing workflow event history, adding timers, and understanding determinism. Developing for durable execution is a core aspect of Temporal.
 slug: /dev-guide/java/durable-execution
 toc_max_heading_level: 4
@@ -133,13 +132,13 @@ A Workflow Execution's Event History is also available in the Web UI.
 
 Navigate to the Workflows page in the UI and select the Workflow Execution.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Select a Workflow Execution from the Workflows page</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Select a Workflow Execution from the Workflows page</p>
   </div>
-  <div class="tdiiw" height="1058">
+  <div className="tdiiw" height="1058">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/java/select-workflow-execution-in-ui.png"
       alt="Select a Workflow Execution from the Workflows page"
     />
@@ -148,13 +147,13 @@ Navigate to the Workflows page in the UI and select the Workflow Execution.
 
 From the Workflow details page you can copy the Event History from the JSON tab and paste it into the `backgroundcheck_workflow_history.json` file.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Copy Event History JSON object from the Web UI</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Copy Event History JSON object from the Web UI</p>
   </div>
-  <div class="tdiiw" height="1178">
+  <div className="tdiiw" height="1178">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/java/copy-events-from-workflow-details-page.png"
       alt="Copy Event History JSON object from the Web UI"
     />
@@ -163,15 +162,14 @@ From the Workflow details page you can copy the Event History from the JSON tab 
 
 ## Add a Replay test {#add-replay-test}
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/java/backgroundcheck-replay/src/test/java/backgroundcheckreplay/BackgroundCheckReplayWorkflowTest.java">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```java
-
   @Test
   public void testSuccessfulReplayFromFile(TestWorkflowEnvironment testEnv, Worker worker,
       BackgroundCheckReplayWorkflow workflow) throws Exception {
@@ -220,23 +218,20 @@ The following are some common operations that **can't** be done inside of a Work
 
 One way to produce a non-deterministic error is to use a random number to determine whether to sleep inside the Workflow.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/java/backgroundcheck-replay/src/main/java/backgroundcheckreplay/BackgroundCheckReplayNonDeterministicWorkflowImpl.java">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```java
-
 import io.temporal.activity.ActivityOptions;
 import io.temporal.workflow.Workflow;
 import org.slf4j.Logger;
 
 import java.time.Duration;
 import java.util.Random;
-
-
 
 public class BackgroundCheckReplayNonDeterministicWorkflowImpl implements BackgroundCheckReplayNonDeterministicWorkflow {
 
@@ -277,7 +272,7 @@ The most important thing to take away from the section is to make sure you have 
 
 Versioning APIs and versioning strategies are covered in other parts of the developer's guide, this chapter sets the stage to understand why and how to approach those strategies.
 
-<!--TODO ^ update with links to those places -->
+{/* TODO ^ update with links to those places */}
 
 ### The Event History
 
@@ -350,15 +345,14 @@ The Temporal SDK offers both a `Workflow.newTimer()` API, and a `Workflow.sleep(
 
 Use the `Workflow.getLogger` API to log from Workflows to suppress repeated logs from the Replay of the Workflow code.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/java/backgroundcheck-replay/src/main/java/backgroundcheckreplay/BackgroundCheckReplayWorkflowImpl.java">
     View the source code
-  </a>{" "}
+  </a>{' '}
   in the context of the rest of the application code.
 </div>
 
 ```java
-
 package backgroundcheckreplay;
 
 import io.temporal.activity.ActivityOptions;
@@ -366,7 +360,6 @@ import io.temporal.workflow.Workflow;
 import org.slf4j.Logger;
 
 import java.time.Duration;
-
 
 public class BackgroundCheckReplayWorkflowImpl implements BackgroundCheckReplayWorkflow {
 
@@ -458,12 +451,16 @@ decided to delete it. Once you have deployed your change, you would go to
 the currently blocked Workflow in the Web-UI and select **Reset** from the dropdown
 in the top right.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Select the Workflow Reset Option</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Select the Workflow Reset Option</p>
   </div>
-  <div class="tdiiw" height="1036">
-    <img class="img_ev3q" src="/img/java/select-reset-web-ui.png" alt="Select the Workflow Reset Option" />
+  <div className="tdiiw" height="1036">
+    <img
+      className="img_ev3q"
+      src="/img/java/select-reset-web-ui.png"
+      alt="Select the Workflow Reset Option"
+    />
   </div>
 </div>
 
@@ -474,12 +471,16 @@ always include a reason why you are resetting this event. The reason will be
 persisted in the Event History and may be useful to others who inspect why the
 Workflow was reset.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Workflow Reset Points</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Workflow Reset Points</p>
   </div>
-  <div class="tdiiw" height="938">
-    <img class="img_ev3q" src="/img/java/select-event-reset-web-ui.png" alt="Workflow Reset Points" />
+  <div className="tdiiw" height="938">
+    <img
+      className="img_ev3q"
+      src="/img/java/select-event-reset-web-ui.png"
+      alt="Workflow Reset Points"
+    />
   </div>
 </div>
 
@@ -487,12 +488,16 @@ Once you've reset the Workflow you'll notice that the Workflow terminated and
 the Web UI provided a link to a new Workflow execution. The Event History up until
 the point you chose was copied over and executed.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Workflow Terminated and Reset</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Workflow Terminated and Reset</p>
   </div>
-  <div class="tdiiw" height="1250">
-    <img class="img_ev3q" src="/img/java/event-terminated-and-reset.png" alt="Workflow Terminated and Reset" />
+  <div className="tdiiw" height="1250">
+    <img
+      className="img_ev3q"
+      src="/img/java/event-terminated-and-reset.png"
+      alt="Workflow Terminated and Reset"
+    />
   </div>
 </div>
 
@@ -501,13 +506,13 @@ more errors. If you scroll down in the Web UI you'll see the new Event History,
 including the `WorkflowTaskFailed` event that was used as the reset point, along
 with the reason you reset the workflow.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">New Event History Success with Reset</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">New Event History Success with Reset</p>
   </div>
-  <div class="tdiiw" height="1716">
+  <div className="tdiiw" height="1716">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/java/new-event-history-success-with-reset.png"
       alt="New Event History Success with Reset"
     />
@@ -538,13 +543,13 @@ io.temporal.worker.NonDeterministicException: Failure handling event 5 of type '
 
 And you will see information about the failure in the Web UI as well.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Web UI view of a non-determinism error</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Web UI view of a non-determinism error</p>
   </div>
-  <div class="tdiiw" height="622">
+  <div className="tdiiw" height="622">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/img/java/non-deterministic-workflow-task-failure-java.png"
       alt="Web UI view of a non-determinism error"
     />

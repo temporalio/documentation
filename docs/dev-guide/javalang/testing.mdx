@@ -2,22 +2,20 @@
 id: testing
 title: Testing - Java SDK feature guide
 sidebar_label: Testing
-sidebar_position: 8
 description: The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 slug: /dev-guide/java/testing
 toc_max_heading_level: 4
 keywords:
-- developer-guide
-- guide-context
-- java
-- sdk
+  - developer-guide
+  - guide-context
+  - java
+  - sdk
 tags:
-- developer-guide
-- guide-context
-- java
-- sdk
+  - developer-guide
+  - guide-context
+  - java
+  - sdk
 ---
-
 
 The Testing section of the Temporal Application development guide describes the frameworks that facilitate Workflow and integration testing.
 
@@ -272,8 +270,6 @@ Activity cancellation lets Activities know they don't need to continue work and 
 
 ## Testing Workflows {#test-workflows}
 
-
-
 ### How to mock Activities {#mock-activities}
 
 Mock the Activity invocation when unit testing your Workflows.
@@ -357,7 +353,6 @@ List<WorkflowExecutionHistory> histories =
             })
         .collect(Collectors.toList());
 
-
 WorkflowReplayer.replayWorkflowExecutions(
     histories, true, WorkflowA.class, WorkflowB.class, WorkflowC.class);
 ```
@@ -371,4 +366,3 @@ WorkflowReplayer.replayWorkflowExecution(file, MyWorkflow.class);
 
 In both examples, if Event History is non-deterministic, an error is thrown.
 You can choose to wait until all histories have been replayed with `replayWorkflowExecutions` by setting the `failFast` argument to `false`.
-

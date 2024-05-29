@@ -2,7 +2,6 @@
 id: features
 title: Features - Java SDK feature guide
 sidebar_label: Features
-sidebar_position: 6
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 slug: /dev-guide/java/features
 toc_max_heading_level: 4
@@ -43,6 +42,7 @@ In this section you can find the following:
 - [How to develop Signals](#signals)
 - [How to develop Queries](#queries)
 - [How to start a Child Workflow Execution](#child-workflows)
+- [How to Schedule a Workflow](#schedule-a-workflow)
 - [How to start a Temporal Cron Job](#cron-schedule)
 - [How to use Continue-As-New](#continue-as-new)
 - [How to set Workflow timeouts & retries](#workflow-timeouts)
@@ -51,6 +51,7 @@ In this section you can find the following:
 - [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
 - [How to register Namespaces](#namespaces)
 - [How to develop with Updates](#updates)
+- [How to use Start Delay](#start-delay)
 
 ## How to develop with Signals {#signals}
 
@@ -634,9 +635,9 @@ Create an instance of [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/te
 
 Available timeouts are:
 
-- [setWorkflowExecutionTimeout()](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowExecutionTimeout(java.time.Duration)>)
-- [setWorkflowRunTimeout()](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowRunTimeout(java.time.Duration)>)
-- [setWorkflowTaskTimeout()](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowTaskTimeout(java.time.Duration)>)
+- [setWorkflowExecutionTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowExecutionTimeout(java.time.Duration))
+- [setWorkflowRunTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowRunTimeout(java.time.Duration))
+- [setWorkflowTaskTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowTaskTimeout(java.time.Duration))
 
 ```java
 //create Workflow stub for YourWorkflowInterface
@@ -908,7 +909,7 @@ To complete an Activity asynchronously, set the [`ActivityCompletionClient`](htt
   }
 ```
 
-Alternatively, set the [`doNotCompleteOnReturn()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityExecutionContext.html#doNotCompleteOnReturn()>) method during an Activity Execution.
+Alternatively, set the [`doNotCompleteOnReturn()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityExecutionContext.html#doNotCompleteOnReturn()) method during an Activity Execution.
 
 ```java
     @Override
@@ -1223,7 +1224,7 @@ ScheduleHandle handle = client.getHandle("schedule-id")
 ScheduleDescription description = handle.describe();
 ```
 
-### How to describe a Schedule in Java {#describe-schedule}
+### How to List a Scheduled Workflow in Java {#list-schedule}
 
 The list action lists all the available Schedules. This command is useful when you want to view a list of all the Schedules and their respective Schedule IDs.
 
@@ -1325,7 +1326,7 @@ You shouldn’t modify the Workflow state inside a Side Effect function, because
 
 :::
 
-To use a Side Effect in Java, set the [`sideEffect()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)>) function in your Workflow Execution and return the non-deterministic code.
+To use a Side Effect in Java, set the [`sideEffect()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)) function in your Workflow Execution and return the non-deterministic code.
 
 ```java
 int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));
@@ -1358,7 +1359,7 @@ public void execute() {
 
 Java also provides a deterministic method to generate random numbers or random UUIDs.
 
-To generate random numbers in a deterministic method, use [`newRandom()`](<https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()>)
+To generate random numbers in a deterministic method, use [`newRandom()`](https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom())
 
 ```java
 // implementation of the @WorkflowMethod
@@ -1368,7 +1369,7 @@ public void execute() {
 }
 ```
 
-To generate a random UUID in a deterministic method, use [`randomUUID()`](<https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()>).
+To generate a random UUID in a deterministic method, use [`randomUUID()`](https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()).
 
 ```java
 // implementation of the @WorkflowMethod
@@ -1534,3 +1535,24 @@ Note that these APIs and Temporal CLI commands will not work with Temporal Cloud
       .deleteNamespace(DeleteNamespaceRequest.newBuilder().setNamespace("your-namespace-name").build());
   //...
   ```
+
+## Start Delay {#start-delay}
+
+**How to delay the start of a Workflow Execution using Start Delay with the Temporal Java SDK.**
+
+Use the `StartDelay` to schedule a Workflow Execution at a specific one-time future point rather than on a recurring schedule.
+
+Create an instance of [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) in the Client code and set `StartDelay` using `setStartDelay`.
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("YourWorkflow")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                // Start the workflow in 12 hours
+                .setStartDelay(Duration.ofHours(12))
+                .build());
+```

@@ -8,7 +8,7 @@ tags:
   - workers
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
+import RelatedReadList from '../components/RelatedReadList.js';
 
 _Note: All metrics in this article are prepended with the “temporal\_” prefix. The prefix is omitted in this article to make the names more descriptive._
 
@@ -69,7 +69,6 @@ Increase the maximum number of working slots by adjusting `maxConcurrentWorkflow
 
 1. The Worker hosts are underutilized (no bottlenecks on CPU, load average, etc.).
 2. The `worker_task_slots_available` metric from the corresponding Worker type frequently shows a depleted number of available Worker slots.
-
 
 ### Poller count
 

@@ -2,7 +2,6 @@
 id: namespaces
 title: Namespace management - Temporal Cloud feature guide
 sidebar_label: Namespaces
-sidebar_position: 2
 description: Create Namespaces, use Namespace endpoints for access, and obtain Namespace information.
 slug: /cloud/namespaces
 toc_max_heading_level: 4
@@ -157,12 +156,12 @@ Follow these steps to find it:
    Just below that is a row of information including the completed Workflow retention policy, the Namespace region, the Actions-Per-Second limit, and the gRPC endpoint.
 5. Click the copy icon next to the gRPC address to copy it to your clipboard.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">gRPC endpoint</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">gRPC endpoint</p>
   </div>
-  <div class="tdiiw" height="207">
-    <img class="img_ev3q" src="/img/grpc-endpoint.png" alt="gRPC endpoint" />
+  <div className="tdiiw" height="207">
+    <img className="img_ev3q" src="/img/grpc-endpoint.png" alt="gRPC endpoint" />
   </div>
 </div>
 
@@ -186,7 +185,7 @@ You can request further increases beyond the 100 Namespace limit by opening a [s
 
 :::
 
-<!--- What information do I need to create a Namespace in Temporal Cloud? --->
+{/* What information do I need to create a Namespace in Temporal Cloud? */}
 
 ### Information needed to create a Namespace
 
@@ -198,7 +197,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 - [Codec Server endpoint](/production-deployment/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/production-deployment/data-encryption).
 - [Permissions](/cloud/users#namespace-level-permissions) for each user.
 
-<!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
+{/* How to create a Namespace in Temporal Cloud using Temporal Cloud UI */}
 
 ### Create a Namespace using Temporal Cloud UI
 
@@ -218,7 +217,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
    For details, see [Hosting your Codec Server](/production-deployment/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli).
 1. Click **Create Namespace**.
 
-<!--- How to create a Namespace in Temporal Cloud using tcld --->
+{/* How to create a Namespace in Temporal Cloud using tcld */}
 
 ### Create a Namespace using tcld
 
@@ -309,7 +308,7 @@ Sample workflowId convention:
 
 ## How to access a Namespace in Temporal Cloud {#access-namespaces}
 
-<!--- How to access a Namespace in Temporal Cloud --->
+{/* How to access a Namespace in Temporal Cloud */}
 
 Each Namespace in Temporal Cloud has two unique endpoints, both of which include the [Namespace Id](#temporal-cloud-namespace-id).
 
@@ -325,7 +324,7 @@ However, for enhanced protection, you have additional options:
 
 ## How to manage Namespaces in Temporal Cloud {#manage-namespaces}
 
-<!--- How to manage Namespaces in Temporal Cloud using Temporal Cloud UI --->
+{/* How to manage Namespaces in Temporal Cloud using Temporal Cloud UI */}
 
 ### Manage Namespaces in Temporal Cloud using Temporal Cloud UI
 
@@ -352,7 +351,7 @@ To add a user to a Namespace, scroll to the bottom of the page and select **Add 
 
 After you make changes, select **Save** in the top-right or bottom-left portion of the page.
 
-<!--- How to manage Namespaces in Temporal Cloud using tcld --->
+{/* How to manage Namespaces in Temporal Cloud using tcld */}
 
 ### Manage Namespaces in Temporal Cloud using tcld
 
