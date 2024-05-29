@@ -314,6 +314,12 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities {
 }
 ```
 
+### How to set the required Activity Timeouts {#required-timeout}
+
+Activity Execution semantics rely on several parameters.
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
+These values are set in the Activity Options.
+
 ### How to get the results of an Activity Execution {#get-activity-results}
 
 The call to spawn an [Activity Execution](/activities#activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.

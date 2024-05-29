@@ -479,18 +479,6 @@
       "destination": "/workers"
     },
     {
-      "source": "/concepts/what-is-a-retry-policy/#visualizing-retry-policies",
-      "destination": "/dev-guide/activity-retry-simulator"
-    },
-    {
-      "source": "/retry-policies/#visualizing-retry-policies",
-      "destination": "/dev-guide/activity-retry-simulator"
-    },
-    {
-      "source": "/application-development/features#activity-retry-simulator",
-      "destination": "/dev-guide/activity-retry-simulator"
-    },
-    {
       "source": "/temporal-explained/introduction",
       "destination": "/temporal"
     },
@@ -509,10 +497,6 @@
     {
       "source": "/temporal-explained/signals-and-queries",
       "destination": "/workflows#signals"
-    },
-    {
-      "source": "/temporal-explained/timeouts-and-retries",
-      "destination": "/retry-policies"
     },
     {
       "source": "/temporal-explained/visibility",
@@ -668,7 +652,7 @@
     },
     {
       "source": "/go/how-to-heartbeat-an-activity-in-go",
-      "destination": "/dev-guide/go/features#activity-heartbeats"
+      "destination": "/develop/go/failure-detection#activity-heartbeats"
     },
     {
       "source": "/go/child-workflows",
@@ -728,7 +712,7 @@
     },
     {
       "source": "/go/retries",
-      "destination": "/dev-guide/go/features#activity-timeouts"
+      "destination": "/develop/go/failure-detection#activity-timeouts"
     },
     {
       "source": "/go-run-your-first-app",
@@ -1288,7 +1272,7 @@
     },
     {
       "source": "/concepts/what-is-an-activity-heartbeat",
-      "destination": "/activities#activity-heartbeat"
+      "destination": "/encyclopedia/detecting-activity-failures#activity-heartbeat"
     },
     {
       "source": "/concepts/what-is-an-activity-id",
@@ -1348,7 +1332,7 @@
     },
     {
       "source": "/concepts/what-is-a-heartbeat-timeout",
-      "destination": "/activities#heartbeat-timeout"
+      "destination": "/encyclopedia/detecting-activity-failures#heartbeat-timeout"
     },
     {
       "source": "/concepts/what-is-a-list-filter",
@@ -1380,11 +1364,11 @@
     },
     {
       "source": "/concepts/what-is-a-schedule-to-close-timeout",
-      "destination": "/activities#schedule-to-close-timeout"
+      "destination": "/encyclopedia/detecting-activity-failures#schedule-to-close-timeout"
     },
     {
       "source": "/concepts/what-is-a-schedule-to-start-timeout",
-      "destination": "/activities#schedule-to-start-timeout"
+      "destination": "/encyclopedia/detecting-activity-failures#schedule-to-start-timeout"
     },
     {
       "source": "/concepts/what-is-a-run-id",
@@ -1408,11 +1392,11 @@
     },
     {
       "source": "/concepts/what-is-a-start-to-close-timeout",
-      "destination": "/activities#start-to-close-timeout"
+      "destination": "/encyclopedia/detecting-activity-failures#start-to-close-timeout"
     },
     {
       "source": "/concepts/what-is-a-start-to-close-timeout",
-      "destination": "/activities#start-to-close-timeout"
+      "destination": "/encyclopedia/detecting-activity-failures#start-to-close-timeout"
     },
     {
       "source": "/concepts/what-is-a-sticky-execution",
@@ -1488,7 +1472,7 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-execution-timeout",
-      "destination": "/workflows#workflow-execution-timeout"
+      "destination": "/encyclopedia/detecting-workflow-failures#workflow-execution-timeout"
     },
     {
       "source": "/concepts/what-is-a-workflow-id-reuse-policy",
@@ -1500,11 +1484,11 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-run-timeout",
-      "destination": "/workflows#workflow-run-timeout"
+      "destination": "/encyclopedia/detecting-workflow-failures#workflow-run-timeout"
     },
     {
       "source": "/concepts/what-is-a-workflow-task",
-      "destination": "/workflows#workflow-task-timeout"
+      "destination": "/encyclopedia/detecting-workflow-failures#workflow-task-timeout"
     },
     {
       "source": "/concepts/what-is-a-workflow-task-execution",
@@ -1512,7 +1496,7 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-task-timeout",
-      "destination": "/workflows#workflow-task-timeout"
+      "destination": "/encyclopedia/detecting-workflow-failures#workflow-task-timeout"
     },
     {
       "source": "/concepts/what-is-a-workflow-type",
@@ -1744,7 +1728,11 @@
     },
     {
       "source": "/concepts/what-is-a-retry-policy",
-      "destination": "/retry-policies"
+      "destination": "/encyclopedia/retry-policies"
+    },
+    {
+      "source": "/retry-policies",
+      "destination": "/encyclopedia/retry-policies"
     },
     {
       "source": "/php/introduction",

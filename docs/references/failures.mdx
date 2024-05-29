@@ -84,7 +84,7 @@ When an [Activity Execution](/activities#activity-execution) fails, the Applicat
 
 ### Non-retryable
 
-When an Activity or Workflow throws an Application Failure, the Failure's `type` field is matched against a Retry Policy's list of [non-retryable errors](/retry-policies#non-retryable-errors) to determine whether to retry the Activity or Workflow.
+When an Activity or Workflow throws an Application Failure, the Failure's `type` field is matched against a Retry Policy's list of [non-retryable errors](/encyclopedia/retry-policies#non-retryable-errors) to determine whether to retry the Activity or Workflow.
 Activities and Workflow can also avoid retrying by setting an Application Failure's `non_retryable` flag to `true`.
 
 ## Cancelled Failure

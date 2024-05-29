@@ -37,7 +37,7 @@ Workflow Interface.
 To have a Workflow call Activities, you'll instantiate an object representing
 those Activities. There are various options that can be passed in during creation
 time, but Temporal requires that you set _either_ `StartToCloseTimeout` or `ScheduleToCloseTimeout`
-when creating your Activities stub. You can read more about these options [in our documentation](/activities#start-to-close-timeout)
+when creating your Activities stub. You can read more about these options [in our documentation](/encyclopedia/detecting-activity-failures#start-to-close-timeout)
 
 As with regular Java methods, Workflow Methods support the passing of parameters.
 However, all Workflow Definition parameters must be serializable (using the Jackson JSON 

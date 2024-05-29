@@ -16,9 +16,9 @@ Each Workflow timeout controls the maximum duration of a different aspect of a W
 
 Workflow timeouts are set when [starting the Workflow Execution](#workflow-timeouts).
 
-- **[Workflow Execution Timeout](/workflows#workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
-- **[Workflow Run Timeout](/workflows#workflow-run-timeout):** restricts the maximum amount of time that a single Workflow Run can last.
-- **[Workflow Task Timeout](/workflows#workflow-task-timeout):** restricts the maximum amount of time that a Worker can execute a Workflow Task.
+- **[Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
+- **[Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout):** restricts the maximum amount of time that a single Workflow Run can last.
+- **[Workflow Task Timeout](/encyclopedia/detecting-workflow-failures#workflow-task-timeout):** restricts the maximum amount of time that a Worker can execute a Workflow Task.
 
 Create an instance of `WorkflowOptions` in the Client code and set your timeout.
 
@@ -45,7 +45,7 @@ $workflow = $this->workflowClient->newWorkflowStub(
 
 A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
-Use a [Retry Policy](/retry-policies) to retry a Workflow Execution in the event of a failure.
+Use a [Retry Policy](/encyclopedia/retry-policies) to retry a Workflow Execution in the event of a failure.
 
 Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
 
@@ -67,9 +67,9 @@ Each Activity timeout controls the maximum duration of a different aspect of an 
 
 The following timeouts are available in the Activity Options.
 
-- **[Schedule-To-Close Timeout](/activities#schedule-to-close-timeout):** is the maximum amount of time allowed for the overall [Activity Execution](/activities#activity-execution).
-- **[Start-To-Close Timeout](/activities#start-to-close-timeout):** is the maximum time allowed for a single [Activity Task Execution](/workers#activity-task-execution).
-- **[Schedule-To-Start Timeout](/activities#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/workers#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.
+- **[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout):** is the maximum amount of time allowed for the overall [Activity Execution](/activities#activity-execution).
+- **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout):** is the maximum time allowed for a single [Activity Task Execution](/workers#activity-task-execution).
+- **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/workers#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.
 
 An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
 
@@ -96,7 +96,7 @@ $this->greetingActivity = Workflow::newActivityStub(
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
-Activity Executions are automatically associated with a default [Retry Policy](/retry-policies) if a custom one is not provided.
+Activity Executions are automatically associated with a default [Retry Policy](/encyclopedia/retry-policies) if a custom one is not provided.
 
 To set an Activity Retry, set `{@link RetryOptions}` on `{@link ActivityOptions}`.
 The follow example creates a new Activity with the given options.
@@ -121,16 +121,16 @@ For an executable code sample, see [ActivityRetry sample](https://github.com/tem
 ### How to set the required Activity Timeouts {#required-timeout}
 
 Activity Execution semantics rely on several parameters.
-The only required value that needs to be set is either a [Schedule-To-Close Timeout](/activities#start-to-close-timeout) or a [Start-To-Close Timeout](/activities#start-to-close-timeout).
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
 
 ## How to Heartbeat an Activity {#activity-heartbeats}
 
-An [Activity Heartbeat](/activities#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Cluster](/clusters).
+An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Cluster](/clusters).
 Each Heartbeat informs the Temporal Cluster that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
-If the Cluster does not receive a Heartbeat within a [Heartbeat Timeout](/activities#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/workers#activity-task-execution) may be scheduled according to the Retry Policy.
+If the Cluster does not receive a Heartbeat within a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/workers#activity-task-execution) may be scheduled according to the Retry Policy.
 
-Heartbeats may not always be sent to the Cluster—they may be [throttled](/activities#throttling) by the Worker.
+Heartbeats may not always be sent to the Cluster—they may be [throttled](/encyclopedia/detecting-activity-failures#throttling) by the Worker.
 
 Activity Cancellations are delivered to Activities from the Cluster when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
 Heartbeat throttling may lead to Cancellation getting delivered later than expected.
@@ -181,7 +181,7 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
 
 #### How to set a Heartbeat Timeout {#heartbeat-timeout}
 
-A [Heartbeat Timeout](/activities#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/activities#activity-heartbeat).
+A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
 
 Some Activities are long-running.
 To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()`, which lets the Temporal Server know that the Activity is still alive.
