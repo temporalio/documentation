@@ -429,6 +429,8 @@ $count = $workflow->addGreeting("World");
 
 In Workflow Update methods, all Workflow features are available, such as executing Activities and child Workflows, and waiting on timers/conditions.
 In cases where it's known that the update will take a long time to execute, or you are not interested in the outcome of its execution, you can use the stub method [`startUpdate`](https://php.temporal.io/classes/Temporal-Client-WorkflowStubInterface.html#method_startUpdate) and move on immediately after receiving the validation result.
+Note that the processing Workflow Worker must be available.
+Otherwise, the request may block indefinitely or fail due to a timeout.
 
 ```php
 use Ramsey\Uuid\UuidInterface;
@@ -436,7 +438,7 @@ use Temporal\Client\Update\UpdateOptions;
 use Temporal\Client\Update\WaitPolicy;
 use Temporal\Client\Update\LifecycleStage;
 
-// Create a typed Workflow stub for GreetingsWorkflow
+// Create an untyped Workflow stub for GreetingsWorkflow
 $stub = $client->newUntypedWorkflowStub('GreetingWorkflow', $workflowOptions);
 
 // Start the Workflow
@@ -450,8 +452,7 @@ $result = $handle->getResult(timeout: 2.5);
 
 // You can get more control using UpdateOptions
 $resultUuid = $stub->startUpdate(
-    UpdateOptions::new('storeGreetings')
-        ->withWaitPolicy(WaitPolicy::new()->withLifecycleStage(LifecycleStage::StageCompleted))
+    UpdateOptions::new('storeGreetings', LifecycleStage::StageCompleted)
         ->withResultType(UuidInterface::class)
  )->getResult();
 ```
