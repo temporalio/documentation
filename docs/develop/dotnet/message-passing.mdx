@@ -18,24 +18,11 @@ tags:
 
 This page shows how to do the following:
 
-Signal
-- [Define Signal](#define-a-signal)
-- [Send a Signal from a Temporal Client](#send-signal-from-client)
-- [Send a Signal from a Workflow](#send-signal-from-workflow)
-- [Signal-With-Start](#signal-with-start)
-- [Set a Dynamic Signal](#set-a-dynamic-signal)
+- [Develop with Signals](#signals)
+- [Develop with Queries](#queries)
+- [Develop with Updates](#updates)
 
-Query
-- [Define a Query](#define-query)
-- [Send Queries](#send-query)
-- [Set a Dynamic Query](#set-a-dynamic-query)
-
-Update
-- [Define an Update](#define-update)
-- [Send an Update](#send-update)
-
-
-## Signals
+## Develop with Signals {#signals}
 
 **How to develop with Signals using the Temporal .NET SDK**
 
@@ -122,6 +109,29 @@ options.SignalWithStart((MyWorkflow wf) => wf.DoSomethingAsync(param));
 await client.StartWorkflowAsync((MyWorkflow wf) => wf.RunAsync(), options);
 ```
 
+### Dynamic Handler {#dynamic-handler}
+
+**How to set a Dynamic Handler**
+
+Temporal supports Dynamic Signals, Queries, Workflows, and Activities,
+These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
+
+Dynamic Handlers provide flexibility to handle cases where the names of Signals, Queries, Workflows, or Activities, aren't known at run time.
+
+:::caution
+
+Dynamic Handlers should be used judiciously as a fallback mechanism rather than the primary approach.
+Overusing them can lead to maintainability and debugging issues down the line.
+
+Instead, Signals, Queries, Workflows, or Activities should be defined statically whenever possible, with clear names that indicate their purpose.
+Use static definitions as the primary way of structuring your Workflows.
+
+Reserve Dynamic Handlers for cases where the handler names are not known at compile time and need to be looked up dynamically at runtime.
+They are meant to handle edge cases and act as a catch-all, not as the main way of invoking logic.
+
+:::
+
+
 ### Set a Dynamic Signal {#set-a-dynamic-signal}
 
 **How to set a Dynamic Signal using the Temporal .NET SDK**
@@ -142,7 +152,7 @@ public async Task DynamicSignalAsync(string signalName, IRawValue[] args)
 }
 ```
 
-## Queries
+## Develop with Queries {#queries}
 
 A [Query](/workflows#query) is a synchronous operation that is used to get the state of a Workflow Execution.
 
@@ -210,7 +220,7 @@ public string DynamicQueryAsync(string queryName, IRawValue[] args)
 }
 ```
 
-## Updates
+## Develop with Updates {#updates}
 
 **How to develop with Updates using the Temporal .NET SDK**
 
