@@ -2009,6 +2009,10 @@
     {
       "source": "/dev-guide/go/durable-execution",
       "destination": "https://learn.temporal.io/tutorials/go/background-check/durable-execution/"
-    }
+    },
+    {
+      "source": "/dev-guide/python",
+      "destination": "https://docs.temporal.io/develop/python/"
+    },
   ]
 }
