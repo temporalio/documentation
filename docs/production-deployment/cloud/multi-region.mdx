@@ -30,9 +30,6 @@ When necessary, Temporal Cloud smoothly transitions control from the active to t
 Temporal Cloud's multi-region Namespace feature includes a 99.99% contractual Service Level Agreement ([SLA](https://docs.temporal.io/cloud/sla)).
 It provides 99.99% availability and 99.99% guarantee against service errors.
 
-Temporal Cloud's multi-region Namespace feature provides our most stringent Service Level Agreement ([SLA](https://docs.temporal.io/cloud/sla)).
-MRNs provide 99.99% availability and 99.99% guarantee against service errors.
-
 This feature guide covers the following topics:
 
 - [Choosing multi-region](/cloud/multi-region#multi-region-intro)
@@ -66,17 +63,14 @@ Before failover            |  After failover
 Should you be using multi-region Namespaces? 
 It depends on your availability requirements:
 
-* Multi-region Namespaces offer a 99.99% contractual SLA for workloads requiring high availability.
-* Single-region Namespaces work best for workloads that don't require stringent availability guarantees.
+* Multi-region Namespaces offer a 99.99% contractual SLA for workloads with strict high-availability requirements.
+  Multi-region Namespaces (MRNs) use two Namespaces in two deployment regions, to support standby recovery.
+  In the event of a regional failure, Temporal Cloud automatically fails over the MRN Namespace to the secondary region. 
+* Single-region Namespaces offer a 99.9% contractual Service Level Agreement ([SLA](/cloud/sla)).
+  In single-region use, Temporal clients connect to a single Namespace in one deployment region.
+  For many applications, this provides sufficient availability.
 
-In single-region use, Temporal clients connect to a single Namespace in one deployment region.
-Single-region Temporal Cloud Namespaces offer 99.99% availability.
-Our standard contractual Service Level Agreement ([SLA](https://docs.temporal.io/cloud/sla)) provides a 99.9% guarantee against service errors.
-For many applications, this provides sufficient availability.
-
-In comparison, our multi-region Namespaces support standby recovery for even higher availability, providing a 99.99% guarantee against service errors.
-In the event of a regional failure, Temporal Cloud automatically fails over the Namespace to the secondary region. 
-When faced with network latency or other region-wide issues, you can manually trigger a failover.
+Even though our contractual SLA for single-region Namespaces is 99.9%, Temporal Cloud provides 99.99% service availability for _all_ Namespaces, both single- and multi-region.
 
 **Upgrading to multi-region:**
 
