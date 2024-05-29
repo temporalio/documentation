@@ -27,8 +27,11 @@ This means your standby region is always available and synchronized with the act
 In the event of network service and performance issues in the active region, your standby region is ready to take over.
 When necessary, Temporal Cloud smoothly transitions control from the active to the standby region using a process called "failover".
 
-Temporal Cloud's multi-region Namespace feature provides our highest levels of service availability and error guarantees.
-Our MRN Service Level Agreement ([SLA](https://docs.temporal.io/cloud/sla)) provides 99.99% availability and 99.99% guarantee against service errors.
+Temporal Cloud's multi-region Namespace feature includes a 99.99% contractual Service Level Agreement ([SLA](https://docs.temporal.io/cloud/sla)).
+It provides 99.99% availability and 99.99% guarantee against service errors.
+
+Temporal Cloud's multi-region Namespace feature provides our most stringent Service Level Agreement ([SLA](https://docs.temporal.io/cloud/sla)).
+MRNs provide 99.99% availability and 99.99% guarantee against service errors.
 
 This feature guide covers the following topics:
 
@@ -63,7 +66,7 @@ Before failover            |  After failover
 Should you be using multi-region Namespaces? 
 It depends on your availability requirements:
 
-* Multi-region Namespaces provide our highest level of availability.
+* Multi-region Namespaces offer a 99.99% contractual SLA for workloads requiring high availability.
 * Single-region Namespaces work best for workloads that don't require stringent availability guarantees.
 
 In single-region use, Temporal clients connect to a single Namespace in one deployment region.
