@@ -65,12 +65,13 @@ It depends on your availability requirements:
 
 * Multi-region Namespaces offer a 99.99% contractual SLA for workloads with strict high-availability requirements.
   Multi-region Namespaces (MRNs) use two Namespaces in two deployment regions, to support standby recovery.
-  In the event of a regional failure, Temporal Cloud automatically fails over the MRN Namespace to the secondary region. 
+  In the event of a regional failure, Temporal Cloud automatically fails over the MRN Namespace to the standby region. 
 * Single-region Namespaces offer a 99.9% contractual Service Level Agreement ([SLA](/cloud/sla)).
   In single-region use, Temporal clients connect to a single Namespace in one deployment region.
   For many applications, this provides sufficient availability.
 
-Even though our contractual SLA for single-region Namespaces is 99.9%, Temporal Cloud provides 99.99% service availability for _all_ Namespaces, both single- and multi-region.
+Even though Temporal's contractual SLA for single-region Namespaces is 99.9%, Temporal Cloud itself provides the highest level of availability. 
+Temporal Cloud provides 99.99% service availability for all Namespaces, both single-region and multi-region.
 
 **Upgrading to multi-region:**
 
@@ -86,7 +87,7 @@ Once provisioned, Temporal Cloud automatically begins data replication for your 
 
 ## Failovers {#failovers}
 
-**What happens during the failover process?***
+**What happens during the failover process?**
 
 Consider an incident or outage that elevates error rates or latency in the active region of a multi-region Namespace.
 Under these circumstances, Temporal Cloud will initiate a Namespace failover.
@@ -151,7 +152,7 @@ See the sections on [triggering a failover](/cloud/multi-region#triggering-failo
 
 **What guarantees does Temporal offer for multi-region Namespaces?**
 
-Multi-region Namespaces offer 99.99% availability, enforced by our [service error rates SLA](https://docs.temporal.io/cloud/sla).
+Multi-region Namespaces offer 99.99% availability, enforced by Temporal Cloud's [service error rates SLA](https://docs.temporal.io/cloud/sla).
 Our system is designed to limit data loss after recovery when the incident triggering the failover is resolved.
 
 Our recovery point objective ([RPO](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Point_Objective)) is near-zero.
@@ -246,21 +247,21 @@ This capability is crucial for Workflow Executions to continue their forward pro
 
 **How does adding a multi-region Namespace affect my costs?**
 
-For pricing details, please visit our [Pricing page](/cloud/pricing).
+For pricing details, please visit Temporal Cloud's [Pricing page](/cloud/pricing).
 
 ## Manage your multi-region Namespace {#management}
 
-**How do you create, enable, and manage my multi-region Namespace?**
+**How do you create, enable, and manage your multi-region Namespace?**
 
-Temporal enables you to create and manage your multi-region Namespace using the Temporal Cloud Web UI and the command line 'tcld' CLI utility.
+Temporal enables you to create and manage your multi-region Namespace using the Temporal Cloud Web UI, the command line 'tcld' CLI utility, and the [Cloud Ops API](/ops).
 Use these tools to create, upgrade, and discontinue your multi-region Namespace.
 
 * [Create a multi-region Namespace](/cloud/multi-region#create)
 * [Upgrade a single-region Namespace to multi-region](/cloud/multi-region#add-regions)
 * [Discontinuing multi-region service](/cloud/multi-region#discontinuing)
 
-:::tip
-- While reading through this coverage, remember that pairing is currently limited to regions within the same continent.
+:::warning
+- Only [Global Admins](https://docs.temporal.io/cloud/users#account-level-roles) and [Namespace Admins](https://docs.temporal.io/cloud/users#namespace-level-permissions) may create an multi-region Namespace (MRN), upgrade an existing namespace to MRN, or trigger an MRN failover.
 
 :::
 
@@ -268,6 +269,11 @@ Use these tools to create, upgrade, and discontinue your multi-region Namespace.
 
 The following sections explain how to create a new multi-region Namespace (MRN).
 MRNs provide multi-region deployment backed by Temporal's data replication and active-standby features.
+
+:::tip
+- While reading through this coverage, remember that pairing is currently limited to regions within the same continent.
+
+:::
 
 #### Temporal Cloud Web UI
 
@@ -323,10 +329,10 @@ Disabling multi-region removes the high availability and automatic failover feat
 To disable the feature and end charges, users must contact [Temporal Support](https://support.temporal.io) directly.
 MRN-specific charges for replication will stop once this decommissioning procedure completes.
 
-* When making your request you must let us know which region you want the Namespace to land in after removing the secondary region.
+* When making your request you must let us know which region you want the Namespace to land in after removing the standby region.
 * If you cease services in the middle of the month, your Namespace will be converted to a single region Namespace within 1 business day.
 * Temporal won't retain replicated data in the standby region once multi-region has been disabled.
-* After disabling multi-region, we cannot re-enable the feature for a given Namespace for seven days.
+* After disabling multi-region, Temporal Cloud cannot re-enable the feature for a given Namespace for seven days.
 
 ## Operations {#operations}
 
@@ -382,6 +388,7 @@ More information is available in [Monitoring and Observability](/cloud/multi-reg
 ### Metrics {#metrics-operations}
 
 Replication lag refers to the transmission delay of Workflow updates and history events from the active region to the standby region.
+A forced failover when there is a large replication lag has a higher likelihood of rolling back Workflow progress, so always check the metric replication lag before initiating a failover.
 Temporal Cloud emits three replication lag-specific [metrics](https://temporal-documentation-clljyhxqv.preview.thundergun.io/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket).
 The following samples demonstrate how you can use these metrics to explore replication lag.
 
@@ -401,7 +408,7 @@ sum(rate(temporal_cloud_v0_replication_lag_count[1m])) by (temporal_namespace)
 
 ### Monitoring and observability {#observability}
 
-You can view and alert on key cloud metrics using the Web UI, the 'tcld' CLI utility, and our Cloud APIs.
+You can view and alert on key cloud metrics using the Web UI, the 'tcld' CLI utility, and Temporal Cloud APIs.
 For example, during the process of adding a region to a Namespace, you can see the progress of Workflow replication.
 Errors--if any--will also surface in the Namespace Web UI.
 
