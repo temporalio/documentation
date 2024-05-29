@@ -301,6 +301,7 @@ It is the main unit of execution of a [Temporal Application](/temporal#temporal-
 - [How to start a Workflow Execution using the PHP SDK](/dev-guide/php/foundations#start-workflow-execution)
 - [How to start a Workflow Execution using the Python SDK](/develop/python/temporal-clients#start-workflow-execution)
 - [How to start a Workflow Execution using the TypeScript SDK](/dev-guide/typescript/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using the .NET SDK](/develop/dotnet/temporal-client#start-workflow)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
 It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](#signal) and the environment through [Activities](/activities).
@@ -338,6 +339,7 @@ If a failure occurs, the Workflow Execution picks up where the last recorded eve
 - [How to use Replay APIs using the Java SDK](/dev-guide/java/testing#replay)
 - [How to use Replay APIs using the Python SDK](/develop/python/testing-suite#replay)
 - [How to use Replay APIs using the TypeScript SDK](/dev-guide/typescript/testing#replay)
+- [How to use Replay APIs using the .NET SDK](/develop/dotnet/testing-suite#replay-test)
 
 ### Commands and awaitables
 
@@ -541,6 +543,8 @@ In the case of [Temporal Cron Jobs](#temporal-cron-job), Continue-As-New is actu
 - [How to Continue-As-New using the PHP SDK](/dev-guide/php/features#continue-as-new)
 - [How to Continue-As-New using the Python SDK](/develop/python/continue-as-new)
 - [How to Continue-As-New using the TypeScript SDK](/dev-guide/typescript/features#continue-as-new)
+- [How to Continue-As-New using the .NET SDK](/develop/dotnet/continue-as-new)
+
 
 ### What is a Reset? {#reset}
 
@@ -644,6 +648,7 @@ A Workflow Execution Timeout is the maximum time that a Workflow Execution can b
 - [How to set a Workflow Execution Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
 - [How to set a Workflow Execution Timeout using the Python SDK](/develop/python/failure-detection#workflow-timeouts)
 - [How to set a Workflow Execution Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
+- [How to set a Workflow Execution Timeout using the .NET SDK](/develop/dotnet/failure-detection#workflow-timeouts)
 
 <PrettyImage src="/diagrams/workflow-execution-timeout.svg" title="Workflow Execution Timeout period" />
 
@@ -661,6 +666,7 @@ A Workflow Run Timeout is the maximum amount of time that a single Workflow Run 
 - [How to set a Workflow Run Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
 - [How to set a Workflow Run Timeout using the Python SDK](/develop/python/failure-detection#workflow-timeouts)
 - [How to set a Workflow Run Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
+- [How to set a Workflow Run Timeout using the .NET SDK](/develop/dotnet/failure-detection#workflow-timeouts)
 
 <PrettyImage src="/diagrams/workflow-run-timeout.svg" title="Workflow Run Timeout period" />
 
@@ -678,6 +684,7 @@ A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/wo
 - [How to set a Workflow Task Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
 - [How to set a Workflow Task Timeout using the Python SDK](/develop/python/failure-detection#workflow-timeouts)
 - [How to set a Workflow Task Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
+- [How to set a Workflow Task Timeout using the .NET SDK](/develop/dotnet/failure-detection#workflow-timeouts)
 
 <PrettyImage src="/diagrams/workflow-task-timeout.svg" title="Workflow Task Timeout period" />
 
@@ -699,6 +706,7 @@ Workers consume no additional resources while waiting for a Timer to fire, so a 
 - [How to set Timers in PHP](/dev-guide/php/features#timers)
 - [How to set Timers in Python](/develop/python/timers)
 - [How to set Timers in TypeScript](/dev-guide/typescript/features#timers)
+- [How to set Timers in .NET](/develop/dotnet/durable-timers)
 
 The duration of a Timer is fixed, and your Workflow might specify a value as short as one second or as long as several years.
 Although it's possible to specify an extremely precise duration, such as 36 milliseconds or 15.072 minutes, your Workflows should not rely on sub-second accuracy for Timers.
@@ -736,6 +744,7 @@ A Signal is an asynchronous request to a [Workflow Execution](#workflow-executio
 - [How to develop, send, and handle Signals in PHP](/dev-guide/php/features#signals)
 - [How to develop, send, and handle Signals in Python](/develop/python/messages#signals)
 - [How to develop, send, and handle Signals in TypeScript](/dev-guide/typescript/features#signals)
+- [How to develop, send, and handle Signals in .NET](/develop/dotnet/message-passing#define-a-signal)
 
 A Signal delivers data to a running Workflow Execution.
 It cannot return data to the caller; to do so, use a [Query](#query) instead.
@@ -773,6 +782,7 @@ How to Signal-With-Start in:
 - [How to Signal-With-Start in PHP](/dev-guide/php/features#signal-with-start)
 - [How to Signal-With-Start in Python](/develop/python/messages#signal-with-start)
 - [How to Signal-With-Start in TypeScript](/dev-guide/typescript/features#signal-with-start)
+- [How to Signal-With-Start in .NET](/develop/dotnet/message-passing#signal-with-start)
 
 ## What is a Query? {#query}
 
@@ -781,12 +791,13 @@ The state of a running Workflow Execution is constantly changing.
 You can use Queries to expose the internal Workflow Execution state to the external world.
 Queries are available for running or completed Workflows Executions only if the Worker is up and listening on the Task Queue.
 
-- [How to send a Query using the Temporal CLI](/cli/workflow#query)
+- [How to send a Query using the Temporal CLI](/cli/workflow#query)
 - [How to send and handle Queries with the Go SDK](/dev-guide/go/features#queries)
 - [How to send and handle Queries with the Java SDK](/dev-guide/java/features#queries)
 - [How to send and handle Queries with the PHP SDK](/dev-guide/php/features#queries)
 - [How to send and handle Queries with the Python SDK](/develop/python/messages#queries)
 - [How to send and handle Queries with the TypeScript SDK](/dev-guide/typescript/features#queries)
+- [How to send and handle Queries with the .NET SDK](/develop/dotnet/message-passing#define-query)
 
 Queries are sent from a Temporal Client to a Workflow Execution.
 The API call is synchronous.
