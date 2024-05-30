@@ -184,7 +184,7 @@ The steps to using custom Search Attributes are:
   - [In the Temporal CLI](/cli/operator#list-2)
   - In code by calling `ListWorkflowsAsync`.
 
-### List Workflow Executions
+### List Workflow Executions {#list-workflow-executions}
 
 **How to list Workflow Executions using the .NET SDK**
 
@@ -202,7 +202,7 @@ await foreach (var wf in client.ListWorkflowsAsync("WorkflowType='GreetingWorkfl
 
 **How to use custom Search Attributes using the Temporal .NET SDK**
 
-After you've created custom Search Attributes in your Temporal Service (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
 To set custom Search Attributes, use the `TypedSearchAttributes` property on `WorkflowOptions` for `StartWorkflowAsync` or `ExecuteWorkflowAsync`.
 Typed search attributes are a `SearchAttributeCollection` created with a builder.
