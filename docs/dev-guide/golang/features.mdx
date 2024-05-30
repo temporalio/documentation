@@ -140,6 +140,7 @@ In this section you can find the following:
 - [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
 - [How to register Namespaces](#namespaces)
 - [How to develop with Updates](#updates)
+- [How to use Start Delay](#start-delay)
 
 ## How to develop with Signals {#signals}
 
@@ -1907,3 +1908,24 @@ Usage of Selectors is best learned by example:
 - Receiving information in a Channel ([Mutex example](https://github.com/temporalio/samples-go/blob/14980b3792cc3a8447318fefe9a73fe0a580d4b9/mutex/mutex_workflow.go))
 - Looping through a list of work and scheduling them all in parallel ([DSL example](https://github.com/temporalio/samples-go/blob/14980b3792cc3a8447318fefe9a73fe0a580d4b9/dsl/workflow.go))
 - Executing activities in parallel, pick the first result, cancel remainder ([Pick First example](https://github.com/temporalio/samples-go/blob/14980b3792cc3a8447318fefe9a73fe0a580d4b9/pickfirst/pickfirst_workflow.go))
+
+## Start Delay {#start-delay}
+
+**How to delay the start of a Workflow Execution using Start Delay with the Temporal Go SDK.**
+
+Use `StartDelay` to schedule a Workflow Execution at a specific one-time future point rather than on a recurring schedule.
+
+Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `StartDelay` field, and pass the instance to the `ExecuteWorkflow` call.
+
+```go
+workflowOptions := client.StartWorkflowOptions{
+  // ...
+  // Start the workflow in 12 hours
+  StartDelay: time.Hours * 12,
+  // ...
+}
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```
