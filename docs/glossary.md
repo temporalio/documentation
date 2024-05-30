@@ -281,7 +281,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 A multi-region Namespace (MRN) is a [Temporal Cloud](#temporal-cloud) Namespace that is configured to work across an active [region](/cloud/service-availability#regions) and a standby region.
 Each region corresponds to a dedicated Temporal Cloud Service. 
 Temporal Cloud automatically replicates Workflow Executions and metadata from the active to the standby region.
-MRNs are designed to respond to service issues that may arise.
+MRNs are designed to respond to service issues as they arise.
 In the event that the Namespace's performance is compromised, a [Failover](#failover) transfers control from the active to the standby region.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
