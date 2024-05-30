@@ -1,16 +1,19 @@
 ---
 id: sessions
-title: Worker Sessions
+title: Worker Sessions - Temporal Go SDK feature guide
 sidebar_label: Sessions
-slug: /develop/go/sessions
-toc_max_heading_level: 2
+toc_max_heading_level: 4
 keywords:
   - sessions
 tags:
   - sessions
 ---
 
-## How to use Worker Session APIs {#worker-sessions}
+This page shows how to do the following:
+
+- [Enable Worker Sessions](#enable-sessions)
+- [Change the maximum concurrent Sessions of a Worker](#max-concurrent-sessions)
+- [Create a Worker Session](#create-a-session)
 
 :::tip Support, stability, and dependency info
 
@@ -20,9 +23,9 @@ tags:
 
 A Worker Session is a feature that provides a straightforward API for [Task Routing](/workers#task-routing) to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 
-### How to enable Worker Sessions {#enable-sessions}
+## Enable Worker Sessions {#enable-sessions}
 
-Enable the Worker to use Sessions.
+**How to enable Worker Sessions using the Go SDK.**
 
 Set `EnableSessionWorker` to `true` in the Worker options.
 
@@ -50,7 +53,9 @@ func main() {
 }
 ```
 
-#### How to change the maximum concurrent Sessions of a Worker. {#max-concurrent-sessions}
+### Change the maximum concurrent Sessions of a Worker. {#max-concurrent-sessions}
+
+**How to change the maximum concurrent Sessions of a Worker using the Go SDK.**
 
 You can adjust the maximum concurrent Sessions of a Worker.
 
@@ -80,7 +85,9 @@ func main() {
 // ...
 ```
 
-### How to create a Worker Session {#create-a-session}
+## Create a Worker Session {#create-a-session}
+
+**How to create a Worker Session using the Go SDK.**
 
 Within the Workflow code use the Workflow APIs to create a Session with whichever Worker picks up the first Activity Task.
 
@@ -151,7 +158,7 @@ func SomeFileProcessingWorkflow(ctx workflow.Context, param FileProcessingWFPara
 }
 ```
 
-### Additional Session usage information {#session-metadata}
+## Additional Session usage information {#session-metadata}
 
 ```go
 type SessionInfo struct {

@@ -1,16 +1,24 @@
 ---
 id: failure-detection
-title: Failure detection
+title: Failure detection - Temporal Go SDK feature guide
 sidebar_label: Failure detection
-slug: /develop/go/failure-detection
-toc_max_heading_level: 2
+toc_max_heading_level: 4
 keywords:
   - failure-detection
 tags:
   - failure-detection
 ---
 
+This page shows how to do the following:
+
+- [Set Workflow timeouts](#workflow-timeouts)
+- [Set a Workflow Retry Policy](#workflow-retries)
+- [Set Activity timeouts](#activity-timeouts)
+- [Set a custom Activity Retry Policy](#activity-retries)
+
 ## Workflow timeouts {#workflow-timeouts}
+
+**How to set Workflow timeouts using the Temporal Go SDK**
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 
@@ -43,7 +51,9 @@ if err != nil {
 }
 ```
 
-### Workflow retries {#workflow-retries}
+### Workflow Retry Policy {#workflow-retries}
+
+**How to set a Workflow Retry Polciy using the Go SDK.**
 
 A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -73,6 +83,8 @@ if err != nil {
 ```
 
 ## How to set Activity timeouts {#activity-timeouts}
+
+**How to set Activity timeouts using the Go SDK.**
 
 Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 
@@ -107,7 +119,9 @@ if err != nil {
 }
 ```
 
-### How to set an Activity Retry Policy {#activity-retries}
+### Set a custom Activity Retry Policy {#activity-retries}
+
+**How to set a custom Activity Retry Policy using the Go SDK.**
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -148,7 +162,9 @@ if err != nil {
 }
 ```
 
-## How to Heartbeat an Activity {#activity-heartbeats}
+## Activity Heartbeats {#activity-heartbeats}
+
+**How to Heartbeat an Activity using the Go SDK.**
 
 An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Cluster](/clusters).
 Each Heartbeat informs the Temporal Cluster that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
@@ -217,7 +233,9 @@ func SampleActivity(ctx context.Context, inputArg InputParams) error {
 }
 ```
 
-#### How to set a Heartbeat Timeout {#heartbeat-timeout}
+### Set a Heartbeat Timeout {#heartbeat-timeout}
+
+**How to set a Heartbeat Timeout for an Activity using the Go SDK.**
 
 A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
 

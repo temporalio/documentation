@@ -1,9 +1,9 @@
 ---
 id: message-passing
-title: Messages
+title: Application message passing - Temporal Java SDK feature guide
 sidebar_label: Messages
 description: Explore using Signals in Temporal Java to send messages to Workflows, with details on defining, sending, and handling Signals, including customization options.
-toc_max_heading_level: 2
+toc_max_heading_level: 4
 keywords:
   - temporal java signals
   - send signal from client
@@ -27,14 +27,16 @@ tags:
   - dynamic-handlers
 ---
 
-## How to develop with Signals {#signals}
+## Signals {#signals}
 
 A [Signal](/workflows#signal) is a message sent to a running Workflow Execution.
 
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
 
-### How to define a Signal {#define-signal}
+### Define a Signal {#define-signal}
+
+**How to define a Signal using the Java SDK.**
 
 A Signal has a name and can have arguments.
 
@@ -64,7 +66,9 @@ Things to consider when defining Signals:
   In some cases, Signal method implementation might require some initialization to be performed by the Workflow method code first—for example, when the Signal processing depends on, and is defined by the Workflow input.
   In this case, you can use a flag to determine whether the Workflow method is already triggered; if not, persist the Signal data into a collection for delayed processing by the Workflow method.
 
-### How to handle Signals in a Workflow in Java {#handle-signals}
+### Handle Signals in a Workflow in Java {#handle-signals}
+
+**How to handle Signals in a Workflow using the Java SDK.**
 
 Workflows listen for Signals by the Signal's name.
 
@@ -140,7 +144,9 @@ public class HelloWorldImpl implements HelloWorld {
 
 This Workflow completes when the Signal updates the greeting to `Bye`.
 
-### How to send a Signal from a Temporal Client {#send-signal-from-client}
+### Send a Signal from a Temporal Client {#send-signal-from-client}
+
+**How to send a Signal to a Workflow Execution from a Temporal Client using the Java SDK.**
 
 When a Signal is sent successfully from the Temporal Client, the [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
 
@@ -167,7 +173,9 @@ workflow.addCustomer(customer); //addCustomer is the Signal method defined in th
 
 See [Handle Signals](#handle-signals) for details on how to handle Signals in a Workflow.
 
-### How to send a Signal from a Workflow {#send-signal-from-workflow}
+### Send a Signal from a Workflow {#send-signal-from-workflow}
+
+**How to send a Signal to a Workflow Execution from another Workflow Execution using the Java SDK.**
 
 A Workflow can send a Signal to another Workflow, in which case it's called an _External Signal_.
 
@@ -196,7 +204,9 @@ public String sendGreeting(String name) {
 }
 ```
 
-### How to send a Signal-with-Start in Java {#signal-with-start}
+### Signal-with-Start in Java {#signal-with-start}
+
+**How to use Signal-With-Start in Java using the Temporal Java SDK.**
 
 Signal-With-Start is used from the Client.
 It takes a Workflow Id, Workflow arguments, a Signal name, and Signal arguments.
@@ -257,11 +267,13 @@ public interface GreetingWorkflow {
 
 Note that the Signal handler `setCustomer` is executed before the `@WorkflowMethod` `greet` is called.
 
-## How to develop with Queries {#queries}
+## Queries {#queries}
 
 A [Query](/workflows#query) is a synchronous operation that is used to get the state of a Workflow Execution.
 
-### How to define a Query {#define-query}
+### Define a Query {#define-query}
+
+**How to define a Query using the Java SDK.**
 
 A Query has a name and can have arguments.
 
@@ -286,7 +298,9 @@ Use the Query method names to send and receive Queries.
 
 Query methods must never change any Workflow state including starting Activities or blocking threads in any way.
 
-### How to handle a Query {#handle-query}
+### Handle a Query {#handle-query}
+
+**How to handle a Query in a Workflow using the Java SDK.**
 
 Queries are handled by your Workflow.
 
@@ -360,7 +374,9 @@ public static class HelloWorldImpl implements HelloWorld {
 }
 ```
 
-### How to send a Query {#send-query}
+### Send a Query {#send-query}
+
+**How to send a Query to a Workflow Execution from a Temporal Client using the Java SDK.**
 
 Queries are sent from a Temporal Client.
 
@@ -385,7 +401,9 @@ For example, the following Client code calls a Query method `queryGreeting()` de
  System.out.println(workflow.queryGreeting());
 ```
 
-## What is a Dynamic Handler? {#dynamic-handler}
+## Dynamic Handlers {#dynamic-handler}
+
+**What is a Dynamic Handler in Temporal Java SDK?**
 
 Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
 These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
@@ -405,7 +423,7 @@ They are meant to handle edge cases and act as a catch-all, not as the main way 
 
 :::
 
-### How to set a Dynamic Workflow {#set-a-dynamic-workflow}
+### Set a Dynamic Workflow {#set-a-dynamic-workflow}
 
 Use [`DynamicWorkflow`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html) to implement Workflow Types dynamically.
 Register a Workflow implementation type that extends `DynamicWorkflow` to implement any Workflow Type that is not explicitly registered with the Worker.
@@ -481,11 +499,13 @@ When registered, any Queries sent to the Workflow without a defined handler will
 Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
 `DynamicQueryHandler` can be implemented in both regular and dynamic Workflow implementations.
 
-## How to develop with Updates {#updates}
+## Updates {#updates}
 
 An [Update](/workflows#update) is an operation that can mutate the state of a Workflow Execution and return a response.
 
-### How to define Updates {#define-update}
+### Define Update {#define-update}
+
+**How to define an Update using the Java SDK.**
 
 An Update handler has a name, arguments, response, and an optional validator.
 
@@ -499,7 +519,9 @@ The `@UpdateMethod` annotation indicates that the method is used to handle and r
 String myUpdate(String updateName);
 ```
 
-### How to handle Updates in a Workflow {#handle-updates}
+### Handle Update {#handle-update}
+
+**How to handle Updates in a Workflow using the Java SDK.**
 
 Workflows listen for Updates by the update's name.
 
@@ -554,7 +576,9 @@ When registered, any Updates sent to the Workflow without a defined handler will
 You can only register one `Workflow.registerListener(Object)` per Workflow Execution.
 `DynamicUpdateHandler` can be implemented in both regular and dynamic Workflow implementations.
 
-### How to validate an Update in a Workflow {#validate-an-update}
+### Validate Update {#validate-update}
+
+**How to validate Updates in a Workflow using the Java SDK.**
 
 Validate certain aspects of the data sent to the Workflow using an Update Validator method.
 For instance, a counter Workflow might never want to accept a non-positive number.
@@ -575,7 +599,9 @@ public interface GreetingWorkflow {
 }
 ```
 
-### How to send an Update from a Client {#send-update-from-client}
+### Send Update from a Client {#send-update-from-client}
+
+**How to send an Update to a Workflow Execution from a Temporal Client using the Java SDK.**
 
 To send an Update to a Workflow Execution from a Client, call the Update method, annotated with `@UpdateMethod` in the Workflow interface, from the Client code.
 
@@ -594,7 +620,4 @@ WorkflowClient.start(workflow::getGreetings);
 // Send an update to the Workflow. addGreeting returns
 // the number of greetings our workflow has received.
 int count = workflow.addGreeting("World");
-```
-
-```
 ```

@@ -1,22 +1,29 @@
 ---
 id: schedules
-title: Schedules
+title: Schedules - Temporal Go SDK feature guide
 sidebar_label: Schedules
-slug: /develop/go/schedules
-toc_max_heading_level: 2
+toc_max_heading_level: 4
 keywords:
   - schedules
 tags:
   - schedules
 ---
 
-## How to Schedule a Workflow {#schedule-a-workflow}
+This page shows how to do the following:
+
+- [Schedule a Workflow](#schedule-a-workflow)
+- [Start a Workflow with a delay](#start-delay)
+- [Start a Workflow as a Temporal Cron Job (legacy)](#temporal-cron-jobs)
+
+## Scheduled Workflows {#schedule-a-workflow}
 
 Scheduling Workflows is a crucial aspect of any automation process, especially when dealing with time-sensitive tasks. By scheduling a Workflow, you can automate repetitive tasks, reduce the need for manual intervention, and ensure timely execution of your business processes
 
 Use any of the following action to help Schedule a Workflow Execution and take control over your automation process.
 
-### How to create a Schedule in Go {#create-schedule}
+### Create a Schedule {#create-schedule}
+
+**How to create a Schedule for a Workflow using the Go SDK.**
 
 Schedules are initiated with the `create` call.
 The user generates a unique Schedule ID for each new Schedule.
@@ -51,7 +58,9 @@ func main() {
 // ...
 ```
 
-### How to backfill a Schedule in Go {#backfill-schedule}
+### Backfill a Schedule {#backfill-schedule}
+
+**How to Backfill a Schedule for a Workflow using the Go SDK.**
 
 Backfilling a Schedule executes [Workflow Tasks](/workers#workflow-task) ahead of the Schedule's specified time range.
 This is useful for executing a missed or delayed Action, or for testing the Workflow ahead of time.
@@ -91,7 +100,9 @@ func main() {
 // ...
 ```
 
-### How to delete a Schedule in Go {#delete-schedule}
+### Delete a Schedule {#delete-schedule}
+
+**How to delete a Schedule for a Workflow using the Go SDK.**
 
 Deleting a Schedule erases a Schedule.
 Deletion does not affect any Workflows started by the Schedule.
@@ -118,7 +129,9 @@ func main() {
 // ...
 ```
 
-### How to describe a Schedule in Go {#describe-schedule}
+### Describe a Schedule {#describe-schedule}
+
+**How to describe a Schedule for a Workflow using the Go SDK.**
 
 `Describe` retrieves information about the current Schedule configuration.
 This can include details about the Schedule Spec (such as Intervals), CronExpressions, and Schedule State.
@@ -139,7 +152,9 @@ func main() {
 // ...
 ```
 
-### How to list a Schedule in Go {#list-schedules}
+### List a Schedules {#list-schedules}
+
+**How to list all Schedules for Workflows using the Go SDK.**
 
 The `List` action returns all available Schedules and their respective Schedule IDs.
 
@@ -165,7 +180,9 @@ func main() {
 // ...
 ```
 
-### How to pause a Schedule in Go {#pause-schedule}
+### Pause a Schedule {#pause-schedule}\
+
+**How to pause and unpause a Schedule for a Workflow using the Go SDK.**
 
 `Pause` and `Unpause` enable the start or stop of all future Workflow Runs on a given Schedule.
 
@@ -194,7 +211,9 @@ func main() {
 	})
 ```
 
-### How to trigger a Schedule in Go {#trigger-schedule}
+### Trigger a Schedule {#trigger-schedule}
+
+**How to trigger a Schedule for a Workflow using the Go SDK.**
 
 Triggering a Schedule immediately executes an Action defined in that Schedule.
 By default, `trigger` is subject to the Overlap Policy.
@@ -220,7 +239,9 @@ func main() {
 // ...
 ```
 
-### How to update a Schedule in Go {#update-schedule}
+### Update a Schedule {#update-schedule}
+
+**How to update a Schedule for a Workflow using the Go SDK.**
 
 Updating a Schedule changes the configuration of an existing Schedule.
 These changes can be made to Workflow Actions, Action parameters, Memos, and the Workflow's Cancellation Policy.
@@ -271,7 +292,9 @@ if err != nil {
 }
 ```
 
-## How to use Temporal Cron Jobs {#temporal-cron-jobs}
+## Temporal Cron Jobs {#temporal-cron-jobs}
+
+**How to start a Workflow Execution as a Temporal Cron Job using the Go SDK.**
 
 A [Temporal Cron Job](/workflows#temporal-cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 

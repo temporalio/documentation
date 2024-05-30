@@ -1,18 +1,16 @@
 ---
 id: side-effects
-title: Side Effects
+title: Side Effects - Temporal Go SDK feature guide
 sidebar_label: Side Effects
-slug: /develop/go/side-effects
-toc_max_heading_level: 2
+toc_max_heading_level: 4
 keywords:
   - side-effects
 tags:
   - side-effects
 ---
 
-## Side Effects {#side-effects}
-
-Side Effects are used to execute non-deterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow. This is done by storing the non-deterministic results of the Side Effect into the Workflow [Event History](/workflows#event-history).
+Side Effects are used to execute non-deterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow.
+This is done by storing the non-deterministic results of the Side Effect into the Workflow [Event History](/workflows#event-history).
 
 A Side Effect does not re-execute during a Replay. Instead, it returns the recorded result from the Workflow Execution Event History.
 
@@ -66,7 +64,7 @@ workflow.SideEffect(func(ctx workflow.Context) interface{} {
 
 On replay the provided function is not executed, the random number will always be 0, and the Workflow Execution could take a different path, breaking determinism.
 
-### Mutable Side Effects {#mutable-side-effects}
+## Mutable Side Effects {#mutable-side-effects}
 
 Mutable Side Effects execute the provided function once, and then it looks up the History of the value with the given Workflow ID.
 

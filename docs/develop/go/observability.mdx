@@ -1,8 +1,7 @@
 ---
 id: observability
-title: Observability
+title: Observability - Temporal Go SDK feature guide
 sidebar_label: Observability
-slug: /develop/go/observability
 toc_max_heading_level: 4
 keywords:
   - api
@@ -46,7 +45,7 @@ tags:
   - workflows
 ---
 
-The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
+This page covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
 
 This section covers features related to viewing the state of the application, including:
 
@@ -56,6 +55,8 @@ This section covers features related to viewing the state of the application, in
 - [Visibility](#visibility)
 
 ## How to emit metrics {#metrics}
+
+**How to application metrics using the Temporal Go SDK.**
 
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
@@ -212,7 +213,9 @@ c, err := client.Dial(client.Options{
 OpenTracing and OpenTelemetry are natively supported by [Jaeger](https://www.jaegertracing.io/docs/1.46/features/#native-support-for-opentracing-and-opentelemetry).
 For more information on configuring and using tracing, see the documentation provided by [OpenTracing](https://opentracing.io), [OpenTelemetry](https://opentelemetry.io/), and [Datadog](https://docs.datadoghq.com/tracing/).
 
-## How to log from a Workflow {#logging}
+## Log from a Workflow {#logging}
+
+**How to log from a Workflow using the Go SDK.**
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
 
@@ -252,9 +255,9 @@ workflow.WithActivityOptions(ctx, ao)
 }
 ```
 
-### How to provide a custom logger {#custom-logger}
+### Provide a custom logger {#custom-logger}
 
-Use a custom logger for logging.
+**How to provide a custom logger to the Temporal Client using the Go SDK.**
 
 This field sets a custom Logger that is used for all logging actions of the instance of the Temporal Client.
 
@@ -284,11 +287,13 @@ func main() {
 }
 ```
 
-## How to use Visibility APIs {#visibility}
+## Visibility APIs {#visibility}
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
-### How to use Search Attributes {#search-attributes}
+### Search Attributes {#search-attributes}
+
+**How to use Search Attributes using the Go SDK.**
 
 The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
@@ -339,7 +344,9 @@ for _, exec := range resp.Executions {
 }
 ```
 
-### How to set custom Search Attributes {#custom-search-attributes}
+### Set custom Search Attributes {#custom-search-attributes}
+
+**How to set custom Search Attributes using the Go SDK.**
 
 After you've created custom Search Attributes in your Temporal Service (using the `temporal operator search-attribute create` command or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
@@ -373,7 +380,9 @@ func (c *Client) CallYourWorkflow(ctx context.Context, workflowID string, payloa
 }
 ```
 
-### How to upsert Search Attributes {#upsert-search-attributes}
+### Upsert Search Attributes {#upsert-search-attributes}
+
+**How to upsert Search Attributes using the Go SDK.**
 
 You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
 
@@ -410,7 +419,9 @@ map[string]interface{}{
 }
 ```
 
-### How to remove a Search Attribute from a Workflow {#remove-search-attribute}
+### Remove a Search Attribute from a Workflow {#remove-search-attribute}
+
+**How to remove a Search Attribute from a Workflow using the Go SDK.**
 
 To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
 

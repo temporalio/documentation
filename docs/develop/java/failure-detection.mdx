@@ -1,16 +1,26 @@
 ---
 id: failure-detection
-title: Failure detection
+title: Failure detection - Temporal Java SDK feature guide
 sidebar_label: Failure detection
-slug: /develop/java/failure-detection
-toc_max_heading_level: 2
+toc_max_heading_level: 4
 keywords:
   - failure-detection
 tags:
   - failure-detection
 ---
 
+This page shows how to do the following:
+
+- [Set Workflow timeouts](#workflow-timeouts)
+- [Set a Workflow Retry Policy](#workflow-retries)
+- [Set Activity timeouts](#activity-timeouts)
+- [Set a custom Activity Retry Policy](#activity-retries)
+- [Heartbeat an Activity](#activity-heartbeats)
+- [Set a Heartbeat Timeout](#heartbeat-timeout)
+
 ## Workflow timeouts {#workflow-timeouts}
+
+**How to set Workflow timeouts using the Java SDK.**
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 
@@ -43,7 +53,9 @@ YourWorkflowInterface workflow1 =
                 .build());
 ```
 
-### Workflow retries {#workflow-retries}
+### Workflow Retry Policy {#workflow-retries}
+
+**How to set a Workflow Retry Policy in Java.**
 
 A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -69,7 +81,9 @@ GreetWorkflowInterface workflow1 =
                 .build());
 ```
 
-## How to set Activity timeouts {#activity-timeouts}
+## Activity timeouts {#activity-timeouts}
+
+**How to set Activity timeouts using the Java SDK.**
 
 Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 
@@ -125,7 +139,9 @@ If you define options per-Activity Type options with `WorkflowImplementationOpti
 
 :::
 
-### How to set an Activity Retry Policy {#activity-retries}
+### Custom Activity Retry Policy {#activity-retries}
+
+**How to set a custom Activity Retry Policy in Java.**
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -172,7 +188,9 @@ To set a Retry Policy, known as the [Retry Options](/encyclopedia/retry-policies
                 .build();
   ```
 
-## How to Heartbeat an Activity {#activity-heartbeats}
+## Heartbeat an Activity {#activity-heartbeats}
+
+**How to Heartbeat an Activity using the Java SDK.**
 
 An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Cluster](/clusters).
 Each Heartbeat informs the Temporal Cluster that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
@@ -209,7 +227,9 @@ The Workflow can then use the `details` information to pass to the next Activity
 
 In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last failed attempt by using `Activity.getExecutionContext().getHeartbeatDetails(Class<V> detailsClass)`
 
-#### How to set a Heartbeat Timeout {#heartbeat-timeout}
+### Heartbeat Timeout {#heartbeat-timeout}
+
+**How to set a Heartbeat Timeout using the Java SDK.**
 
 A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
 
@@ -251,40 +271,3 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
                                             .build()))
                       .build();
   ```
-
-#### How to set a Parent Close Policy {#parent-close-policy}
-
-A [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
-
-The default Parent Close Policy option is set to terminate the Child Workflow Execution.
-
-Set [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy) on an instance of `ChildWorkflowOptions` using [`ChildWorkflowOptions.newBuilder().setParentClosePolicy`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/ChildWorkflowOptions.Builder.html).
-
-- Type: `ChildWorkflowOptions.Builder`
-- Default: `PARENT_CLOSE_POLICY_TERMINATE`
-
-```java
- public void parentWorkflow() {
-     ChildWorkflowOptions options =
-        ChildWorkflowOptions.newBuilder()
-            .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
-            .build();
-     MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
-     Async.procedure(child::<workflowMethod>, <args>...);
-     Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
-     // Wait for child to start
-     childExecution.get()
-}
-```
-
-In this example, we are:
-
-1. Setting `ChildWorkflowOptions.ParentClosePolicy` to `ABANDON` when creating a Child Workflow stub.
-2. Starting Child Workflow Execution asynchronously using `Async.function` or `Async.procedure`.
-3. Calling `Workflow.getWorkflowExecution(…)` on the child stub.
-4. Waiting for the `Promise` returned by `getWorkflowExecution` to complete.
-   This indicates whether the Child Workflow started successfully (or failed).
-5. Completing parent Workflow Execution asynchronously.
-
-Steps 3 and 4 are needed to ensure that a Child Workflow Execution starts before the parent closes.
-If the parent initiates a Child Workflow Execution and then completes immediately after, the Child Workflow will never execute.

@@ -1,10 +1,9 @@
 ---
 id: core-application
-title: Core application
+title: Core application - Temporal Java SDK feature guide
 sidebar_label: Core application
-slug: /develop/java/core-application
 description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
-toc_max_heading_level: 2
+toc_max_heading_level: 4
 keywords:
   - Java
   - api reference
@@ -37,7 +36,16 @@ tags:
   - workflow
 ---
 
-## How to develop a Workflow Definition in Java {#develop-workflows}
+This page shows how to do the following:
+
+- [Develop a Workflow Definition](#develop-workflows)
+- [Develop a basic Activity](#develop-activities)
+- [Start an Activity Execution](#activity-execution)
+- [Run a Development Worker](#run-a-dev-worker)
+
+## Develop a Workflow Definition {#develop-workflows}
+
+**How to develop a Workflow Definition using the Java SDK.**
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definition).
 
@@ -163,7 +171,9 @@ This registration will fail with:
 java.lang.IllegalStateException: BaseWorkflow workflow type is already registered with the worker
 ```
 
-### How to define Workflow parameters {#workflow-parameters}
+### Define Workflow parameters {#workflow-parameters}
+
+**How to define Workflow parameters using the Java SDK.**
 
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
@@ -187,7 +197,9 @@ public interface YourWorkflow {
 }
 ```
 
-### How to define Workflow return parameters {#workflow-return-values}
+### Define Workflow return parameters {#workflow-return-values}
+
+**How to define Workflow return parameters using the Java SDK.**
 
 Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
@@ -203,7 +215,9 @@ Related references:
 - [Data Converter](/dataconversion)
 - Java DataConverter reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
 
-### How to customize your Workflow Type {#workflow-type}
+### Customize your Workflow Type {#workflow-type}
+
+**How to customize your Workflow Type using the Java SDK.**
 
 Workflows have a Type that are referred to as the Workflow name.
 
@@ -235,7 +249,7 @@ In the following example, the Workflow Type is set to `your-workflow`.
 
 When you set the Workflow Type this way, the value of the `name` parameter does not have to start with an uppercase letter.
 
-### How develop Workflow logic {#workflow-logic-requirements}
+### Workflow logic requirements {#workflow-logic-requirements}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflows#deterministic-constraints).
 Therefore, each language is limited to the use of certain idiomatic techniques.
@@ -269,7 +283,9 @@ The following constraints apply when writing Workflow Definitions:
 
 Java Workflow reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html)
 
-## How to develop a basic Activity {#develop-activities}
+## Develop a basic Activity {#develop-activities}
+
+**How to develop a basic Activity using the Java SDK.**
 
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
@@ -312,7 +328,9 @@ An Activity implementation is a Java class that implements an Activity annotated
   }
 ```
 
-### How to develop Activity Parameters {#activity-parameters}
+### Define Activity parameters {#activity-parameters}
+
+**How to define Activity parameters using the Java SDK.**
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
@@ -366,7 +384,9 @@ The `execute` method in the dynamic Activity interface implementation takes in `
 
 For more details, see [Dynamic Activity Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/DynamicActivity.html).
 
-### How to define Activity return values {#activity-return-values}
+### Define Activity return values {#activity-return-values}
+
+**How to define Activity return values using the Java SDK.**
 
 All data returned from an Activity must be serializable.
 
@@ -380,7 +400,9 @@ Ensure that your Workflow or Client can handle an Object type return or is able 
 - [Data Converter](/dataconversion)
 - Java DataConverter reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
 
-### How to customize your Activity Type {#activity-type}
+### Customize your Activity Type {#activity-type}
+
+**How to customize your Activity Type using the Java SDK.**
 
 Activities have a Type that are referred to as the Activity name.
 The following examples demonstrate how to set a custom name for your Activity Type.
@@ -424,7 +446,9 @@ Public interface GreetingActivities {
 In this example, the Activity type for the first method is set to `A_SendGreeting`.
 The Activity type for the method annotated with `@ActivityMethod` is set to `A_abc`.
 
-## How to start an Activity Execution {#activity-execution}
+## Start an Activity Execution {#activity-execution}
+
+**How to start an Activity Execution using the Java SDK.**
 
 Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
@@ -626,7 +650,9 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
 For details on getting the results of an Activity Execution, see [Activity Execution Result](#activity-execution-result).
 
-### How to set the required Activity Timeouts {#required-timeout}
+### Set required Activity Timeouts {#required-timeout}
+
+**How to set required Activity Timeouts using the Java SDK.**
 
 Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
@@ -953,7 +979,9 @@ To set a Retry Policy, known as the [Retry Options](/encyclopedia/retry-policies
                 .build();
   ```
 
-### How to get the result of an Activity Execution {#activity-execution-result}
+### Get the result of an Activity Execution {#activity-execution-result}
+
+**How to get the result of an Activity Execution using the Java SDK.**
 
 The call to spawn an [Activity Execution](/activities#activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
@@ -1003,7 +1031,9 @@ When the download is complete, the download service potentially can complete the
   }
 ```
 
-## How to develop a Worker Program in Java {#run-a-dev-worker}
+## Develop a Worker Program in Java {#run-a-dev-worker}
+
+**How to develop a Worker Program using the Java SDK.**
 
 The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
 
@@ -1055,6 +1085,8 @@ A Worker can be registered with just Workflows, just Activities, or both.
 - [How to tune Workers](/develop/worker-performance)
 
 ### How to register types {#register-types}
+
+**How to register Workflow and Activity Types with a Worker using the Java SDK.**
 
 All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 

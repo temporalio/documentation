@@ -1,8 +1,7 @@
 ---
 id: data-encryption
-title: Data encryption
+title: Data encryption - Temporal Java SDK feature guide
 sidebar_label: Data encryption
-slug: /develop/java/data-encryption
 description: The Converters and Codecs section of the Temporal Developer's guide provides guidance on how to support compression, encryption, and other special data handling by implementing custom converters and codecs.
 toc_max_heading_level: 4
 keywords:
@@ -15,9 +14,14 @@ tags:
   - guide-context
 ---
 
-## How to use a custom Payload Codec in Java {#custom-payload-codec}
+This page shows how to do the following:
 
-**Create a custom Payload Codec**
+- [Use a custom Payload Codec in Java](#custom-payload-codec)
+- [Do custom Payload conversion in Java](#custom-payload-conversion)
+
+## Custom Payload Codec in Java {#custom-payload-codec}
+
+**How to create a custom Payload Codec using the Java SDK.**
 
 Create a custom implementation of [`PayloadCodec`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/payload/codec/PayloadCodec.html) and use it in [`CodecDataConverter`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/CodecDataConverter.html) to set a custom Data Converter.
 
@@ -148,7 +152,9 @@ For example implementations, see the following samples:
 - [Encrypted Payloads](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads)
 - [Remote Data Encoder and Codec Server](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)
 
-## How to use custom Payload conversion {#custom-payload-conversion}
+## Custom Payload conversion {#custom-payload-conversion}
+
+**How to do custom Payload conversion using the Java SDK.**
 
 Temporal SDKs provide a [Payload Converter](/dataconversion#payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
 

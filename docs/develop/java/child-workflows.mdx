@@ -1,16 +1,22 @@
 ---
 id: child-workflows
-title: Child Workflows
+title: Child Workflows - Temporal Java SDK feature guide
 sidebar_label: Child Workflows
-slug: /develop/java/child-workflows
-toc_max_heading_level: 2
+toc_max_heading_level: 4
 keywords:
   - child-workflows
 tags:
   - child-workflows
 ---
 
-## How to start a Child Workflow Execution {#child-workflows}
+This page shows how to do the following:
+
+- [Start a Child Workflow Execution](#start-a-child-workflow-execution)
+- [Set a Parent Close Policy](#parent-close-policy)
+
+## Start a Child Workflow Execution
+
+**How to start a Child Workflow Execution using the Java SDK.**
 
 A [Child Workflow Execution](/encyclopedia/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
@@ -52,7 +58,7 @@ String result = greeting.get();
 
 The following examples show how to spawn a Child Workflow:
 
-- Spawn a Child Workflow from a Workflow:
+- Spawn a Child Workflow from a Workflow
 
   ```java
   // Child Workflow interface
@@ -135,3 +141,42 @@ Related reads:
 - [How to develop a Workflow Definition](/develop/java/core-application#develop-workflows)
 
 - Java Workflow reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html)
+
+## Parent Close Policy {#parent-close-policy}
+
+**How to set a Parent Close Policy for a Child Workflow using the Java SDK.**
+
+A [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
+
+The default Parent Close Policy option is set to terminate the Child Workflow Execution.
+
+Set [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy) on an instance of `ChildWorkflowOptions` using [`ChildWorkflowOptions.newBuilder().setParentClosePolicy`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/ChildWorkflowOptions.Builder.html).
+
+- Type: `ChildWorkflowOptions.Builder`
+- Default: `PARENT_CLOSE_POLICY_TERMINATE`
+
+```java
+ public void parentWorkflow() {
+     ChildWorkflowOptions options =
+        ChildWorkflowOptions.newBuilder()
+            .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
+            .build();
+     MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
+     Async.procedure(child::<workflowMethod>, <args>...);
+     Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
+     // Wait for child to start
+     childExecution.get()
+}
+```
+
+In this example, we are:
+
+1. Setting `ChildWorkflowOptions.ParentClosePolicy` to `ABANDON` when creating a Child Workflow stub.
+2. Starting Child Workflow Execution asynchronously using `Async.function` or `Async.procedure`.
+3. Calling `Workflow.getWorkflowExecution(…)` on the child stub.
+4. Waiting for the `Promise` returned by `getWorkflowExecution` to complete.
+   This indicates whether the Child Workflow started successfully (or failed).
+5. Completing parent Workflow Execution asynchronously.
+
+Steps 3 and 4 are needed to ensure that a Child Workflow Execution starts before the parent closes.
+If the parent initiates a Child Workflow Execution and then completes immediately after, the Child Workflow will never execute.

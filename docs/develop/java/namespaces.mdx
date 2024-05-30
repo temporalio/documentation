@@ -1,16 +1,18 @@
 ---
 id: namespaces
-title: Manage Namespaces
+title: Namespaces - Temporal Java SDK feature guide
 sidebar_label: Namespaces
-slug: /develop/java/namespaces
-toc_max_heading_level: 2
+toc_max_heading_level: 4
 keywords:
   - namespaces
 tags:
   - namespaces
 ---
 
-## How to create and manage Namespaces {#namespaces}
+This page shows how to do the following:
+
+- [Register a Namespace](#register-namespace)
+- [Manage Namespaces](#manage-namespaces)
 
 You can create, update, deprecate or delete your [Namespaces](/namespaces) using either the Temporal CLI or SDK APIs.
 
@@ -27,7 +29,9 @@ Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your
 
 You must register a Namespace with the Temporal Cluster before setting it in the Temporal Client.
 
-### How to register Namespaces {#register-namespace}
+## Register a Namespace {#register-namespace}
+
+**How to register a Namespace using the Java SDK.**
 
 Registering a Namespace creates a Namespace on the Temporal Cluster or Temporal Cloud.
 
@@ -67,7 +71,9 @@ Ensure that you wait for this registration to complete before starting the Workf
 
 To update your Namespace use the [UpdateNamespace API](#manage-namespaces) with the NamespaceClient.
 
-### How to manage Namespaces {#manage-namespaces}
+## Manage Namespaces {#manage-namespaces}
+
+**How to manage Namespaces using the Java SDK.**
 
 You can get details for your Namespaces, update Namespace configuration, and deprecate or delete your Namespaces.
 
