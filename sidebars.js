@@ -94,7 +94,7 @@ module.exports = {
             "develop/go/core-application",
             "develop/go/temporal-clients",
             "develop/go/namespaces",
-            "develop/go/test-suites",
+            "develop/go/testing-suite",
             "develop/go/failure-detection",
             "develop/go/message-passing",
             "develop/go/cancellation",
