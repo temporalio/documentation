@@ -28,6 +28,37 @@ module.exports = {
             "evaluate/development-features/application-message-passing",
           ],
         },
+        {
+          type: "category",
+          label: "Production features",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "evaluate/production-features/index",
+          },
+          items: [
+            {
+              type: "category",
+              label: "Temporal Cloud",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "evaluate/production-features/temporal-cloud/index",
+              },
+              items: ["evaluate/production-features/temporal-cloud/high-availability"],
+            },
+            {
+              type: "category",
+              label: "Self-hosted",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "evaluate/production-features/self-hosted/index",
+              },
+              items: ["evaluate/production-features/self-hosted/high-availability"],
+            },
+          ],
+        },
         "security",
         "evaluate/release-stages",
         {
@@ -284,6 +315,7 @@ module.exports = {
                 "production-deployment/cloud/metrics/prometheus-grafana",
               ],
             },
+            "production-deployment/cloud/multi-region",
             "production-deployment/cloud/worker-health",
             "production-deployment/cloud/saml",
             "production-deployment/cloud/operation-api",

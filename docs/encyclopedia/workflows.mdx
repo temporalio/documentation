@@ -261,6 +261,7 @@ This feature is useful for Workflow Definition logic that needs to be updated bu
 - [How to patch Workflow code in Java](/develop/java/versioning#patching)
 - [How to patch Workflow code in Python](/develop/python/versioning#python-sdk-patching-api)
 - [How to patch Workflow code in TypeScript](/develop/typescript/versioning#patching)
+- [How to patch Workflow code in .NET](/develop/dotnet/versioning#dotnet-sdk-patching-api)
 
 #### Worker Build Ids
 
@@ -301,6 +302,7 @@ It is the main unit of execution of a [Temporal Application](/temporal#temporal-
 - [How to start a Workflow Execution using the PHP SDK](/develop/php/temporal-clients#start-workflow-execution)
 - [How to start a Workflow Execution using the Python SDK](/develop/python/temporal-clients#start-workflow-execution)
 - [How to start a Workflow Execution using the TypeScript SDK](/develop/typescript/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the .NET SDK](/develop/dotnet/temporal-client#start-workflow)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
 It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](#signal) and the environment through [Activities](/activities).
@@ -338,6 +340,7 @@ If a failure occurs, the Workflow Execution picks up where the last recorded eve
 - [How to use Replay APIs using the Java SDK](/develop/java/test-suites#replay)
 - [How to use Replay APIs using the Python SDK](/develop/python/testing-suite#replay)
 - [How to use Replay APIs using the TypeScript SDK](/develop/typescript/test-suites#replay)
+- [How to use Replay APIs using the .NET SDK](/develop/dotnet/testing-suite#replay-test)
 
 ### Commands and awaitables
 
@@ -541,6 +544,7 @@ In the case of [Temporal Cron Jobs](#temporal-cron-job), Continue-As-New is actu
 - [How to Continue-As-New using the PHP SDK](/develop/php/continue-as-new)
 - [How to Continue-As-New using the Python SDK](/develop/python/continue-as-new)
 - [How to Continue-As-New using the TypeScript SDK](/develop/typescript/continue-as-new)
+- [How to Continue-As-New using the .NET SDK](/develop/dotnet/continue-as-new)
 
 ### What is a Reset? {#reset}
 
@@ -648,6 +652,7 @@ Workers consume no additional resources while waiting for a Timer to fire, so a 
 - [How to set Timers in PHP](/develop/php/timers)
 - [How to set Timers in Python](/develop/python/timers)
 - [How to set Timers in TypeScript](/develop/typescript/timers)
+- [How to set Timers in .NET](/develop/dotnet/durable-timers)
 
 The duration of a Timer is fixed, and your Workflow might specify a value as short as one second or as long as several years.
 Although it's possible to specify an extremely precise duration, such as 36 milliseconds or 15.072 minutes, your Workflows should not rely on sub-second accuracy for Timers.
@@ -682,6 +687,7 @@ A Signal is an asynchronous request to a [Workflow Execution](#workflow-executio
 - [How to develop, send, and handle Signals in PHP](/develop/php/message-passing#signals)
 - [How to develop, send, and handle Signals in Python](/develop/python/message-passing#signals)
 - [How to develop, send, and handle Signals in TypeScript](/develop/typescript/message-passing#signals)
+- [How to develop, send, and handle Signals in .NET](/develop/dotnet/message-passing#define-a-signal)
 
 A Signal delivers data to a running Workflow Execution.
 It cannot return data to the caller; to do so, use a [Query](#query) instead.
@@ -719,6 +725,7 @@ How to Signal-With-Start in:
 - [How to Signal-With-Start in PHP](/develop/php/message-passing#signal-with-start)
 - [How to Signal-With-Start in Python](/develop/python/message-passing#signal-with-start)
 - [How to Signal-With-Start in TypeScript](/develop/typescript/message-passing#signal-with-start)
+- [How to Signal-With-Start in .NET](/develop/dotnet/message-passing#signal-with-start)
 
 ## What is a Query? {#query}
 
@@ -733,6 +740,7 @@ Queries are available for running or completed Workflows Executions only if the 
 - [How to send and handle Queries with the PHP SDK](/develop/php/message-passing#queries)
 - [How to send and handle Queries with the Python SDK](/develop/python/message-passing#queries)
 - [How to send and handle Queries with the TypeScript SDK](/develop/typescript/message-passing#queries)
+- [How to send and handle Queries with the .NET SDK](/develop/dotnet/message-passing#define-query)
 
 Queries are sent from a Temporal Client to a Workflow Execution.
 The API call is synchronous.
@@ -786,6 +794,7 @@ An Update is a request and response from a Temporal Client to a [Workflow Execut
 - [How to develop, send, and handle Updates in Java](/develop/java/message-passing#updates)
 - [How to develop, send, and handle Updates in PHP](/develop/php/message-passing#updates)
 - [How to develop, send, and handle Updates in Python](/develop/go/message-passing#updates)
+- [How to develop, send, and handle Updates in .NET](/develop/dotnet/message-passing#updates)
 
 You can think of an Update as a synchronous, blocking call that could replace both a Signal and a Query. An update is:
 
@@ -844,7 +853,7 @@ Currently, the Temporal SDKs that support Dynamic Handlers are:
 
 - [Java](/develop/java/message-passing#dynamic-handler)
 - [Python](/develop/python/message-passing#dynamic-handler)
-- .NET
+- [.NET](/develop/dotnet/message-passing#dynamic-handler)
 
 The Go SDK supports Dynamic Signals through the [GetUnhandledSignalNames](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetUnhandledSignalNames) function.
 

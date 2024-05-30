@@ -183,6 +183,13 @@ An append-only log of Events that represents the full state a Workflow Execution
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
+#### [Failover](/cloud/multi-region)
+
+A Failover shifts Workflow Execution processing from an active Temporal Namespace to a standby Temporal Namespace during outages or other incidents.
+Standby Namespaces use replication to duplicate data and prevent data loss during Failover.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
 #### [Failure](/temporal#failure)
 
 Temporal Failures are representations of various types of errors that occur in the system.
@@ -215,7 +222,9 @@ _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term
 
 #### [Global Namespace](/namespaces#global-namespace)
 
-A Global Namespace is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.
+A Global Namespace is a Namespace that duplicates data from an active [Temporal Service](#temporal-cluster) to a standby Service using the replication to keep both Namespaces in sync.
+Global Namespaces are designed to respond to service issues like network congestion.
+When service to the primary Cluster is compromised, a [Failover](#failover) transfers control from the active to the standby cluster.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -264,6 +273,16 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 #### [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication)
 
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### [Multi-region Namespace](/cloud/multi-region)
+
+A multi-region Namespace (MRN) is a [Temporal Cloud](#temporal-cloud) Namespace that is configured to work across an active [region](/cloud/service-availability#regions) and a standby region.
+Each region corresponds to a dedicated Temporal Cloud Service. 
+Temporal Cloud automatically replicates Workflow Executions and metadata from the active to the standby region.
+MRNs are designed to respond to service issues as they arise.
+In the event that the Namespace's performance is compromised, a [Failover](#failover) transfers control from the active to the standby region.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
