@@ -619,12 +619,12 @@
       "source": "/dev-guide/go/foundations:path*",
       "destination": "/develop/go/core-application",
       "permanent": true
-    }
+    },
     {
       "source": "/dev-guide/go/features:path*",
       "destination": "/develop/go",
       "permanent": true
-    }
+    },
     {
       "source": "/java/introduction",
       "destination": "/java"
@@ -721,12 +721,12 @@
       "source": "/dev-guide/java/foundations:path*",
       "destination": "/develop/java/core-application",
       "permanent": true
-    }
+    },
     {
       "source": "/dev-guide/java/features:path*",
       "destination": "/develop/java",
       "permanent": true
-    }
+    },
     {
       "source": "/php",
       "destination": "/dev-guide/php"
@@ -839,12 +839,12 @@
       "source": "/dev-guide/php/foundations:path*",
       "destination": "/develop/php/core-application",
       "permanent": true
-    }
+    },
     {
       "source": "/dev-guide/php/features:path*",
       "destination": "/develop/php",
       "permanent": true
-    }
+    },
     {
       "source": "/server",
       "destination": "/clusters/"
@@ -1562,7 +1562,7 @@
       "source": "/dev-guide/typescript/features:path*",
       "destination": "/develop/typescript",
       "permanent": true
-    }
+    },
     {
       "source": "/dev-guide/typescript/:path*",
       "destination": "/develop/typescript",
