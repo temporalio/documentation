@@ -40,8 +40,8 @@ const appDevGuideLinks = [
     name: "TypeScript SDK developer's guide",
   },
   {
-    path: "https://github.com/temporalio/sdk-dotnet#readme",
-    name: ".NET SDK readme",
+    path: "/develop/dotnet",
+    name: ".NET SDK developer's guide",
   },
   {
     path: "/dev-guide/php",
