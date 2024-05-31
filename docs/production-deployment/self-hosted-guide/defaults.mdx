@@ -1,8 +1,8 @@
 ---
 id: defaults
-title: Self-hosted Temporal Cluster defaults
+title: Self-hosted Temporal Service defaults
 sidebar_label: Defaults
-description: Learn about the default limits for self-hosted Temporal Clusters.
+description: Learn about the default limits for a self-hosted Temporal Service.
 slug: /self-hosted-guide/defaults
 toc_max_heading_level: 4
 keywords:
@@ -60,7 +60,7 @@ These limits might apply specifically to each Workflow Execution and do not pert
   - These will fail if the concurrent pending count exceeds 2,000.
     For optimal performance, limit concurrent operations to 500 or fewer.
     This reduces Workflow's Event History size and decreases the loading time in the Web UI.
-  - As of v1.21, the open source Temporal Cluster has a default limit of 2,000 pending Activities, Child Workflows, Signals, or Workflow cancellation requests, but you can override the limits in the dynamic configuration using these variables:
+  - As of v1.21, the open source Temporal Service has a default limit of 2,000 pending Activities, Child Workflows, Signals, or Workflow cancellation requests, but you can override the limits in the dynamic configuration using these variables:
     - `limit.numPendingActivities.error`
     - `limit.numPendingSignals.error`
     - `limit.numPendingCancelRequests.error`
