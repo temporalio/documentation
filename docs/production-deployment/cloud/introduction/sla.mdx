@@ -2,7 +2,7 @@
 id: sla
 title: Service Level Agreement (SLA) - Temporal Cloud
 sidebar_label: SLA
-description: Learn more about Temporal Cloud's Service Level Agreement (SLA).
+description: Temporal Cloud offers two availability levels; 99.99% uptime for standard and multi-region deployments, with SLAs guaranteeing 99.9% and 99.99% against service errors, respectively.
 slug: /cloud/sla
 toc_max_heading_level: 4
 keywords:
@@ -20,10 +20,10 @@ tags:
 Temporal Cloud provides two availability levels: the [service availability](https://en.wikipedia.org/wiki/Reliability,_availability_and_serviceability) and the contractual [service level agreement](https://en.wikipedia.org/wiki/Service-level_agreement) (SLA).
 These levels are set by your deployment mode:
 
-* **Temporal Cloud with standard single-region deployment**:
-  Standard Temporal Cloud deployment provides 99.99% availability and a contractual service level agreement (SLA) of 99.9% guarantee against service errors. 
-* **Temporal Cloud with multi-region Namespace deployment**:
-  Temporal Cloud Namespaces that use the multi-region feature provide 99.99% availability and contractual service level agreement (SLA) of 99.99% guarantee against service errors. 
+- **Temporal Cloud with standard single-region deployment**:
+  Standard Temporal Cloud deployment provides 99.99% availability and a contractual service level agreement (SLA) of 99.9% guarantee against service errors.
+- **Temporal Cloud with multi-region Namespace deployment**:
+  Temporal Cloud Namespaces that use the multi-region feature provide 99.99% availability and contractual service level agreement (SLA) of 99.99% guarantee against service errors.
 
 To calculate the service-error rate, Temporal Cloud captures all requests that arrive in a Namespace during a five-minute interval.
 We record the number of gRPC service errors that occurred.

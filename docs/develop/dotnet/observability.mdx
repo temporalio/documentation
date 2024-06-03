@@ -2,7 +2,7 @@
 id: observability
 title: Observability - .NET SDK feature guide
 sidebar_label: Observability
-description: Improve observability in your .NET based Temporal Workflows. View which Workflow Executions are tracked by the Temporal Platform and the state of any Workflow Execution.
+description: Explore Temporal SDK observability features for Metrics, Tracing, Logging, and Visibility. Learn to track Workflow Executions, set up Prometheus endpoints, customize metrics, configure tracing, and more.
 toc_max_heading_level: 4
 keywords:
   - client
@@ -39,7 +39,7 @@ This page covers features related to viewing the state of the application, inclu
 - [Logging](#logging)
 - [Visibility](#visibility)
 
-The observability feature guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application). 
+The observability feature guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application).
 This includes the ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
 
 ## Emit metrics {#metrics}
@@ -62,7 +62,7 @@ Temporal also provides a dashboard you can integrate with graphing services like
 
 Metrics in .NET are configured on the `Metrics` property of the `Telemetry` property on the `TemporalRuntime`. That object should be created globally and should be used for all clients; therefore, you should configure this before any other Temporal code.
 
-### Set a Prometheus endpoint 
+### Set a Prometheus endpoint
 
 **How to set a Prometheus endpoint using the .NET SDK**
 
@@ -79,7 +79,7 @@ var runtime = new TemporalRuntime(new()
 var client = await Temporalio.ConnectAsync(new("localhost:7233") { Runtime = runtime });
 ```
 
-### Set a custom metric meter  
+### Set a custom metric meter
 
 **How to reuse the .NET metric meter using the Temporal .NET SDK**
 

@@ -1,7 +1,7 @@
 ---
 id: high-availability
 title: High availability - Temporal Cloud production feature
-description: Add push-button high availability for your Temporal Service to ensure continuous reliable operation.
+description: Temporal Cloud's Multi-region Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
 sidebar_label: High availability
 tags:
   - production-deployment
@@ -21,6 +21,7 @@ keywords:
 ---
 
 :::tip Support, stability, and dependency info
+
 - Multi-region Namespaces are in [Public Preview](/evaluate/release-stages#public-preview) for Temporal Cloud.
 
 :::
@@ -48,20 +49,20 @@ The standby takes over as the primary region.
 
 **Why choose a multi-region Namespace (MRN)?**
 
-* **Reduce Risk**:
+- **Reduce Risk**:
   MRN's protects your operations from unexpected regional outages.
   Its automated disaster recovery features ensure that workloads remain available and continue execution.
-* **Minimize Operational Disruption**:
+- **Minimize Operational Disruption**:
   Seamless failovers shift Workflow Executions to a secondary region during outages.
   MRNs maintain service availability without needing manual synchronization between Namespaces.
   Real-time alerts during failover events keep you informed.
-* **No manual deployment or configuration needed:**
+- **No manual deployment or configuration needed:**
   Temporal Cloud simplifies deployment with push-button operation.
   This eliminates the need for manual deployment or configuration.
-* **Fault tolerance**.
+- **Fault tolerance**.
   Your open Workflows continue their progress in the standby region.
   This minimizes interruption and data loss during regional failures.
-* **No code changes**.
+- **No code changes**.
   Your Workers and Workflow starter code don't need updates to take advantage of multi-region setup or to respond to failover conditions.
   This allows for a smooth transition and continued operation.
 
@@ -69,9 +70,9 @@ The standby takes over as the primary region.
 
 **What reliability promises does this feature offer?**
 
-* Temporal provides a 99.99% Contractual SLA that provides redress in the event of downtime ([SLA](https://docs.temporal.io/cloud/sla)).
-* [RTO](https://csrc.nist.gov/glossary/term/recovery_time_objective): 20 minutes or less.
-* [RPO](https://csrc.nist.gov/glossary/term/recovery_point_objective): Near zero.
+- Temporal provides a 99.99% Contractual SLA that provides redress in the event of downtime ([SLA](https://docs.temporal.io/cloud/sla)).
+- [RTO](https://csrc.nist.gov/glossary/term/recovery_time_objective): 20 minutes or less.
+- [RPO](https://csrc.nist.gov/glossary/term/recovery_point_objective): Near zero.
 
 ### Target workloads {#target-workloads}
 
@@ -79,9 +80,9 @@ The standby takes over as the primary region.
 
 Multi-region Namespaces are a great solution for Workloads where a regional cloud outage would cause:
 
-* Revenue loss
-* Poor customer experience
-* Problems stemming from policy/legal requirements that demand high availability
+- Revenue loss
+- Poor customer experience
+- Problems stemming from policy/legal requirements that demand high availability
 
 Some examples: financial services, e-commerce, gaming, global SaaS platforms, bookings & reservations, delivery & shipping, order management.
 
@@ -89,9 +90,9 @@ Some examples: financial services, e-commerce, gaming, global SaaS platforms, bo
 
 **Read more about our multi-region features**
 
-* [Multi-region Namespaces](/cloud/multi-region) offer High Availability service for Temporal Cloud customers who need the highest level of availability at all times.
-* [Multi-region Pricing](/cloud/pricing) scales to use.
-* Multi-region high availability supports [PrivateLink routing](/cloud/multi-region#routing).
+- [Multi-region Namespaces](/cloud/multi-region) offer High Availability service for Temporal Cloud customers who need the highest level of availability at all times.
+- [Multi-region Pricing](/cloud/pricing) scales to use.
+- Multi-region high availability supports [PrivateLink routing](/cloud/multi-region#routing).
 
 ## Single-region Namespaces
 
@@ -103,17 +104,17 @@ It provides a great all-around solution that's suitable for most organizations.
 
 **Why choose single-region Namespaces?**
 
-* This option offers sufficient availability for most use cases and workloads.
-* Temporal Cloud provides 99.99% availability and a contractual service level agreement of 99.9% guarantee against service errors.
+- This option offers sufficient availability for most use cases and workloads.
+- Temporal Cloud provides 99.99% availability and a contractual service level agreement of 99.9% guarantee against service errors.
   Read more on our [SLA page](https://docs.temporal.io/cloud/sla).
 
 Some downsides of single-region Namespaces compared to multi-region Namespaces:
 
-* Stalled work during failures: Open Workflow Executions pause until the region/Namespace recovers.
-* Blocked work initiation: No new Workflow Executions will start until the region/Namespace recovers.
+- Stalled work during failures: Open Workflow Executions pause until the region/Namespace recovers.
+- Blocked work initiation: No new Workflow Executions will start until the region/Namespace recovers.
 
 ### Explore {#explore-temporal-namespaces}
 
 **Read more about Namespaces**
 
-* [Temporal Cloud Namespaces](/cloud/namespaces) offer outstanding reliable service for Temporal Cloud customers.
+- [Temporal Cloud Namespaces](/cloud/namespaces) offer outstanding reliable service for Temporal Cloud customers.
