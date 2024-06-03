@@ -25,11 +25,11 @@ const coreConcepts = [
 const appDevGuideLinks = [
   {
     path: "/develop/go",
-    name: "Go SDK developer's guide",
+    name: "Go SDK feature guides",
   },
   {
     path: "/develop/java",
-    name: "Java SDK developer's guide",
+    name: "Java SDK feature guides",
   },
   {
     path: "/develop/python",
@@ -37,15 +37,15 @@ const appDevGuideLinks = [
   },
   {
     path: "/develop/typescript",
-    name: "TypeScript SDK developer's guide",
+    name: "TypeScript SDK feature guides",
   },
   {
-    path: "https://github.com/temporalio/sdk-dotnet#readme",
-    name: ".NET SDK readme",
+    path: "/develop/python",
+    name: ".NET SDK feature guides",
   },
   {
     path: "/develop/php",
-    name: "PHP SDK developer's guide",
+    name: "PHP SDK feature guides",
   },
 ];
 
