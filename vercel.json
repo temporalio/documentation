@@ -626,6 +626,11 @@
       "permanent": true
     },
     {
+      "source": "/dev-guide/go/testing:path*",
+      "destination": "/develop/go/testing-suite",
+      "permanent": true
+    },
+    {
       "source": "/java/introduction",
       "destination": "/java"
     },
@@ -725,6 +730,11 @@
     {
       "source": "/dev-guide/java/features:path*",
       "destination": "/develop/java",
+      "permanent": true
+    },
+    {
+      "source": "/dev-guide/java/testing:path*",
+      "destination": "/develop/java/testing-suite",
       "permanent": true
     },
     {
@@ -843,6 +853,11 @@
     {
       "source": "/dev-guide/php/features:path*",
       "destination": "/develop/php",
+      "permanent": true
+    },
+    {
+      "source": "dev-guide/php/testing:path*",
+      "destination": "/develop/php/testing-suite",
       "permanent": true
     },
     {
@@ -1564,6 +1579,11 @@
       "permanent": true
     },
     {
+      "source": "/dev-guide/typescript/testing:path*",
+      "destination": "/develop/typescript/testing-suite",
+      "permanent": true
+    },
+    {
       "source": "/dev-guide/typescript/:path*",
       "destination": "/develop/typescript",
       "permanent": true
@@ -1580,6 +1600,11 @@
     {
       "source": "/dev-guide/python/features:path*",
       "destination": "/develop/python",
+      "permanent": true
+    },
+    {
+      "source": "/dev-guide/python/testing:path*",
+      "destination": "/develop/python/testing-suite",
       "permanent": true
     },
     {
