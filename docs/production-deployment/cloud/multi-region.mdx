@@ -66,21 +66,22 @@ It depends on your availability requirements:
 * Multi-region Namespaces offer a 99.99% contractual SLA for workloads with strict high-availability requirements.
   Multi-region Namespaces (MRNs) use two Namespaces in two deployment regions, to support standby recovery.
   In the event of a regional failure, Temporal Cloud automatically fails over the MRN Namespace to the standby region. 
-* Single-region Namespaces offer a 99.9% contractual Service Level Agreement ([SLA](/cloud/sla)).
+* Single-region Namespaces include a 99.9% contractual Service Level Agreement ([SLA](/cloud/sla)).
   In single-region use, Temporal clients connect to a single Namespace in one deployment region.
-  For many applications, this provides sufficient availability.
+  For many applications, this offers sufficient availability.
 
 Temporal Cloud provides 99.99% service availability for all Namespaces, both single-region and multi-region.
 
 **Upgrading to multi-region:**
 
 Enable the multi-region Namespace feature for your existing single-region Namespace by [adding a second region](/cloud/multi-region#add-regions) to your Namespace.
-Once provisioned, Temporal Cloud automatically begins data replication for your new standby region.
+After adding the second region, Temporal Cloud begins data replication for your new standby region.
+Temporal Cloud notifies you by email once the replication has caught up and both regions are in sync.
 
 **Advantages of using a multi-region Namespace:**
 
 * No manual deployment or configuration needed, just simple push-button operation.
-* Open Workflows continue in the standby region with minimal interruption and data loss.
+* Open Workflows continue in the standby region with minimal interruption and no data loss.
 * No changes needed for Worker and Workflow code during setup or failover.
 * 99.99% Contractual SLA.
 
@@ -155,14 +156,14 @@ Multi-region Namespaces offer 99.99% availability, enforced by Temporal Cloud's 
 Our system is designed to limit data loss after recovery when the incident triggering the failover is resolved.
 
 Our recovery point objective ([RPO](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Point_Objective)) is near-zero.
-There may be a short period of time during the incident, the [replication lag](/cloud/multi-region#replication-lag), when some data is unavailable.
-When the active region is unable to reach the standby region, that data will be unavailable until the network issue is fixed and data has finished replicating.
+There may be a short period of time during an incident or forced failover when some data is unavailable in the standby region.
+Some Workflow History data won't arrive until networks issue are fixed, enabling the History to finish replicating and the divergent History branches to reconcile.
 
-We've designed Temporal Cloud to proactively respond to incidents by triggering failovers.
+Temporal Cloud proactively responds to incidents by triggering failovers.
 Our recovery time objective ([RTO](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Time_Objective)) is 20 minutes or less per incident.
 
 :::info
-- During a disaster scenario in which the data on the hard drives in the active region cannot be recovered, the duration of data loss may be as high as the replication lag at the time of disaster.
+- During a disaster scenario in which the data on the hard drives in the active region cannot be recovered, the duration of data loss may be as high as the  [replication lag](/cloud/multi-region#replication-lag) at the time of disaster.
 
 :::
 
@@ -231,7 +232,7 @@ This mechanism ensures consistency and reliability in the replication process ac
 Multi-region Namespaces rely on asynchronous event replication across Temporal regions.
 In the event of a non-graceful failover, replication lag may result in a temporary setback in workflow progress.
 
-Single-region Namespaces provide _at-most-once_ semantics for Activities execution (when [Maximum Attempts](https://docs.temporal.io/retry-policies#maximum-attempts) is set to 0).
+Single-region Namespaces can be configured to provide _at-most-once_ semantics for Activities execution (when [Maximum Attempts](https://docs.temporal.io/retry-policies#maximum-attempts) is set to 0).
 Multi-region Namespaces provide _at-least-once_ semantics for execution of Activities.
 Completed Activities _may_ be re-dispatched in a newly active region, leading to repeated executions.
 
@@ -241,6 +242,15 @@ At this point, Temporal Cloud has forked the Workflow History.
 After failover, Temporal Cloud creates a new branch history for execution, and begins its conflict resolution process.
 The Temporal Service ensures that Workflow Histories remain valid and are replayable by SDKs post-failover or after conflict resolution.
 This capability is crucial for Workflow Executions to continue their forward progress.
+
+:::warning
+- Design your activities to succeed once and only once.
+  This "idempotent" approach avoids process duplication that could withdraw money twice or ship extra orders by mistake.
+  Run-once actions maintain data integrity and prevent costly errors.
+  Idempotency keeps operations from producing additional effects.
+  Protect your processes from accidental or repeated actions for more reliable execution.
+
+:::
 
 ## Pricing {#pricing}
 
@@ -285,7 +295,7 @@ Adding a second region enables multi-region Namespace capabilities.
 Start with the following command to create the new multi-region Namespace:
 
 ```
-tcld namespace create --namespace <namespace_id> --region <region> --region <region> 
+tcld namespace create --namespace <namespace_id> region <region> --region <region> 
 ```
 
 Include both regions by specifying the [region codes](/cloud/service-availability) as arguments to the `--region` flags.
@@ -345,8 +355,10 @@ This section provides how-to instructions for the following operations tasks:
 
 ### Triggering failovers {#triggering-failovers}
 
-Temporal is responsible for detecting and triggering a failover for a multi-region namespace in the event of an outage or a disaster.
-Users also can trigger a failover for testing purposes. 
+Users also can trigger a failover during the outage of a non-Temporal controlled regional downstream dependency, or for testing purposes.
+
+Temporal is responsible for detecting and triggering a failover for a multi-region namespace in the event of a regional outage or a disaster.
+Users also can trigger a failover during the outage of a non-Temporal controlled regional downstream dependency, or for testing purposes.
 
 The following sections show you how to perform this action, moving your active Namespace to the standby region.
 You'll also read about what to expect after a failover.
