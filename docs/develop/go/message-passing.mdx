@@ -35,7 +35,7 @@ This page shows how to do the following:
 
 ## Signals {#signals}
 
-A [Signal](/workflows#signal) is a message sent to a running Workflow Execution.
+A [Signal](/encyclopedia/application-message-passing#signals) is a message sent to a running Workflow Execution.
 
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
@@ -115,7 +115,7 @@ Otherwise, the Signals will be lost.
 
 When a Signal is sent successfully from the Temporal Client, the [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
 
-Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a [Signal](/workflows#signal) to a [Workflow Execution](/workflows#workflow-execution).
+Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a [Signal](/encyclopedia/application-message-passing#signals) to a [Workflow Execution](/workflows#workflow-execution).
 
 Pass in both the [Workflow Id](/workflows#workflow-id) and [Run Id](/workflows#run-id) to uniquely identify the Workflow Execution.
 If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is Running receives the Signal.
@@ -194,7 +194,7 @@ if err != nil {
 
 ## Queries {#queries}
 
-A [Query](/workflows#query) is a synchronous operation that is used to get the state of a Workflow Execution.
+A [Query](/encyclopedia/application-message-passing#queries) is a synchronous operation that is used to get the state of a Workflow Execution.
 
 ### How to define a Query {#define-query}
 
@@ -312,7 +312,7 @@ log.Println("Received Query result. Result: " + result)
 
 ## Updates {#updates}
 
-An [Update](/workflows#update) is an operation that can mutate the state of a Workflow Execution and return a response.
+An [Update](/encyclopedia/application-message-passing#updates) is an operation that can mutate the state of a Workflow Execution and return a response.
 
 ### Define an Update {#define-update}
 
@@ -456,7 +456,7 @@ func isPositive(ctx workflow.Context, u YourUpdateArg) error {
 
 **How to send an Update from a Temporal Client using the Go SDK.**
 
-Invoke the `UpdateWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to dispatch an [Update](/workflows#update) to a Workflow Execution.
+Invoke the `UpdateWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to dispatch an [Update](/encyclopedia/application-message-passing#updates) to a Workflow Execution.
 
 You must provide the Workflow Id, but specifying a Run Id is optional.
 If you supply only the Workflow Id (and provide an empty string as the Run Id param), the currently running Workflow Execution receives the Update.

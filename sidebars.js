@@ -468,6 +468,7 @@ module.exports = {
           ],
         },
         "encyclopedia/workers",
+        "encyclopedia/application-message-passing",
         "encyclopedia/child-workflows",
         "encyclopedia/visibility",
         "encyclopedia/clusters",
