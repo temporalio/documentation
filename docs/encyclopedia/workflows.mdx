@@ -53,7 +53,7 @@ Below are different ways to develop a basic Workflow Definition.
 <Tabs groupId="basic-workflow-definition" queryString>
 <TabItem value="go" label="Go">
 
-**[Workflow Definition in Go](/dev-guide/go/foundations#develop-workflows)**
+**[Workflow Definition in Go](/develop/go/core-application#develop-workflows)**
 
 ```go
 func YourBasicWorkflow(ctx workflow.Context) error {
@@ -65,7 +65,7 @@ func YourBasicWorkflow(ctx workflow.Context) error {
 </TabItem>
 <TabItem value="java" label="Java">
 
-**[Workflow Definition in Java (Interface)](/dev-guide/java/foundations#develop-workflows)**
+**[Workflow Definition in Java (Interface)](/develop/java/core-application#develop-workflows)**
 
 ```java
 // Workflow interface
@@ -77,7 +77,7 @@ public interface YourBasicWorkflow {
 }
 ```
 
-**[Workflow Definition in Java (Implementation)](/dev-guide/java/foundations#develop-workflows)**
+**[Workflow Definition in Java (Implementation)](/develop/java/core-application#develop-workflows)**
 
 ```java
 // Workflow implementation
@@ -89,7 +89,7 @@ public class YourBasicWorkflowImpl implements YourBasicWorkflow {
 </TabItem>
 <TabItem value="php" label="PHP">
 
-**[Workflow Definition in PHP (Interface)](/dev-guide/php/foundations#develop-workflows)**
+**[Workflow Definition in PHP (Interface)](/develop/php/core-application#develop-workflows)**
 
 ```php
 #[WorkflowInterface]
@@ -99,7 +99,7 @@ interface YourBasicWorkflow {
 }
 ```
 
-**[Workflow Definition in PHP (Implementation)](/dev-guide/php/foundations#develop-workflows)**
+**[Workflow Definition in PHP (Implementation)](/develop/php/core-application#develop-workflows)**
 
 ```php
 class YourBasicWorkflowImpl implements YourBasicWorkflow {
@@ -123,7 +123,7 @@ class YourWorkflow:
 </TabItem>
 <TabItem value="typescript" label="Typescript">
 
-**[Workflow Definition in Typescript](/dev-guide/typescript/foundations#develop-workflows)**
+**[Workflow Definition in Typescript](/develop/typescript/core-application#develop-workflows)**
 
 ```Typescript
 type BasicWorkflowArgs = {
@@ -213,8 +213,8 @@ The Workflow Execution would fail and return a non-deterministic error.
 The following are examples of minor changes that would not result in non-determinism errors when re-executing a History which already contain the Events:
 
 - Changing the duration of a Timer, with the following exceptions:
-  - In Java, Python, and Go, changing a Timer’s duration from or to 0 is a non-deterministic behavior.
-  - In .NET, changing a Timer’s duration from or to -1 (which means "infinite") is a non-deterministic behavior.
+  - In Java, Python, and Go, changing a Timer's duration from or to 0 is a non-deterministic behavior.
+  - In .NET, changing a Timer's duration from or to -1 (which means "infinite") is a non-deterministic behavior.
 - Changing the arguments to:
   - The Activity Options in a call to spawn an Activity Execution (local or nonlocal).
   - The Child Workflow Options in a call to spawn a Child Workflow Execution.
@@ -257,20 +257,20 @@ Apart from the ability to create new Task Queues for Workflow Types with the sam
 Patching APIs enable the creation of logical branching inside a Workflow Definition based on a developer-specified version identifier.
 This feature is useful for Workflow Definition logic that needs to be updated but still has running Workflow Executions that depend on it.
 
-- [How to patch Workflow code in Go](/dev-guide/go/versioning#patching)
-- [How to patch Workflow code in Java](/dev-guide/java/versioning#patching)
+- [How to patch Workflow code in Go](/develop/go/versioning#patching)
+- [How to patch Workflow code in Java](/develop/java/versioning#patching)
 - [How to patch Workflow code in Python](/develop/python/versioning#python-sdk-patching-api)
-- [How to patch Workflow code in TypeScript](/dev-guide/typescript/versioning#patching)
+- [How to patch Workflow code in TypeScript](/develop/typescript/versioning#patching)
 - [How to patch Workflow code in .NET](/develop/dotnet/versioning#dotnet-sdk-patching-api)
 
 #### Worker Build Ids
 
 Temporal [Worker Build Id-based versioning](/workers#worker-versioning) lets you define sets of versions that are compatible with each other, and then assign a Build Id to the code that defines a Worker.
 
-- [How to version Workers in Go](/dev-guide/go/versioning#worker-versioning)
-- [How to version Workers in Java](/dev-guide/java/versioning#worker-versioning)
+- [How to version Workers in Go](/develop/go/versioning#worker-versioning)
+- [How to version Workers in Java](/develop/java/versioning#worker-versioning)
 - [How to version Workers in Python](/develop/python/versioning#worker-versioning)
-- [How to version Workers in TypeScript](/dev-guide/typescript/versioning#worker-versioning)
+- [How to version Workers in TypeScript](/develop/typescript/versioning#worker-versioning)
 
 ### Handling unreliable Worker Processes
 
@@ -297,11 +297,11 @@ A Temporal Workflow Execution is a durable, reliable, and scalable function exec
 It is the main unit of execution of a [Temporal Application](/temporal#temporal-application).
 
 - [How to start a Workflow Execution using temporal](/cli/workflow#start)
-- [How to start a Workflow Execution using the Go SDK](/develop/go/temporal-client#start-workflow-execution)
-- [How to start a Workflow Execution using the Java SDK](/develop/java/temporal-client#start-workflow-execution)
-- [How to start a Workflow Execution using the PHP SDK](/dev-guide/php/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using the Go SDK](/develop/go/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the Java SDK](/develop/java/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the PHP SDK](/develop/php/temporal-clients#start-workflow-execution)
 - [How to start a Workflow Execution using the Python SDK](/develop/python/temporal-clients#start-workflow-execution)
-- [How to start a Workflow Execution using the TypeScript SDK](/dev-guide/typescript/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using the TypeScript SDK](/develop/typescript/temporal-clients#start-workflow-execution)
 - [How to start a Workflow Execution using the .NET SDK](/develop/dotnet/temporal-client#start-workflow)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
@@ -336,10 +336,10 @@ For more information, see [Deterministic constraints](#deterministic-constraints
 
 If a failure occurs, the Workflow Execution picks up where the last recorded event occurred in the Event History.
 
-- [How to use Replay APIs using the Go SDK](/dev-guide/go/testing#replay)
-- [How to use Replay APIs using the Java SDK](/dev-guide/java/testing#replay)
+- [How to use Replay APIs using the Go SDK](/develop/go/testing-suite#replay)
+- [How to use Replay APIs using the Java SDK](/develop/java/testing-suite#replay)
 - [How to use Replay APIs using the Python SDK](/develop/python/testing-suite#replay)
-- [How to use Replay APIs using the TypeScript SDK](/dev-guide/typescript/testing#replay)
+- [How to use Replay APIs using the TypeScript SDK](/develop/typescript/testing-suite#replay)
 - [How to use Replay APIs using the .NET SDK](/develop/dotnet/testing-suite#replay-test)
 
 ### Commands and awaitables
@@ -399,13 +399,13 @@ Each link in the Chain is often called a Workflow Run.
 Each Workflow Run in the sequence is connected by one of the following:
 
 - [Continue-As-New](#continue-as-new)
-- [Retries](/retry-policies)
+- [Retries](/encyclopedia/retry-policies)
 - [Temporal Cron Job](#temporal-cron-job)
 
 A Workflow Execution is uniquely identified by its [Namespace](/namespaces), [Workflow Id](#workflow-id), and [Run Id](#run-id).
 
-The [Workflow Execution Timeout](#workflow-execution-timeout) applies to a Workflow Execution Chain.
-The [Workflow Run Timeout](#workflow-run-timeout) applies to a single Workflow Execution (Workflow Run).
+The [Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout) applies to a Workflow Execution Chain.
+The [Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout) applies to a single Workflow Execution (Workflow Run).
 
 ### Event loop
 
@@ -488,9 +488,9 @@ Seven Activity-related Events are added to Event History at various points in an
 - A Worker polling that Task Queue picks up the Activity Task and runs the Activity function or method.
 - If the Activity function returns, the Worker reports completion to the Temporal Service, and the Temporal Service adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskCompleted](/references/events#activitytaskcompleted) to Event History.
 - If the Activity function throws a [non-retryable Failure](/references/failures#non-retryable), the Temporal Service adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to Event History.
-- If the Activity function throws an error or retryable Failure, the Temporal Service schedules an Activity Task retry to be added to the Task Queue (unless you’ve reached the Maximum Attempts value of the [Retry Policy](/retry-policies), in which case the Temporal Service adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to Event History).
-- If the Activity’s [Start-to-Close Timeout](/activities#start-to-close-timeout) passes before the Activity function returns or throws, the Temporal Service schedules a retry.
-- If the Activity’s [Schedule-to-Close Timeout](/activities#schedule-to-close-timeout) passes before Activity Execution is complete, or if [Schedule-to-Start Timeout](/activities#schedule-to-start-timeout) passes before a Worker gets the Activity Task, the Temporal Service writes [ActivityTaskTimedOut](/references/events#activitytasktimedout) to Event History.
+- If the Activity function throws an error or retryable Failure, the Temporal Service schedules an Activity Task retry to be added to the Task Queue (unless you’ve reached the Maximum Attempts value of the [Retry Policy](/encyclopedia/retry-policies), in which case the Temporal Service adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to Event History).
+- If the Activity’s [Start-to-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) passes before the Activity function returns or throws, the Temporal Service schedules a retry.
+- If the Activity’s [Schedule-to-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) passes before Activity Execution is complete, or if [Schedule-to-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) passes before a Worker gets the Activity Task, the Temporal Service writes [ActivityTaskTimedOut](/references/events#activitytasktimedout) to Event History.
 - If the Activity is [canceled](/activities#cancellation), the Temporal Service writes [ActivityTaskCancelRequested](/references/events#activitytaskcancelrequested) to Event History, and if the Activity accepts cancellation, the Temporal Service writes [ActivityTaskCanceled](/references/events#activitytaskcanceled).
 
 :::note
@@ -539,13 +539,12 @@ The new Workflow Execution has the same Workflow Id, but a different Run Id, and
 
 In the case of [Temporal Cron Jobs](#temporal-cron-job), Continue-As-New is actually used internally for the same effect.
 
-- [How to Continue-As-New using the Go SDK](/dev-guide/go/features#continue-as-new)
-- [How to Continue-As-New using the Java SDK](/dev-guide/java/features#continue-as-new)
-- [How to Continue-As-New using the PHP SDK](/dev-guide/php/features#continue-as-new)
+- [How to Continue-As-New using the Go SDK](/develop/go/continue-as-new)
+- [How to Continue-As-New using the Java SDK](/develop/java/continue-as-new)
+- [How to Continue-As-New using the PHP SDK](/develop/php/continue-as-new)
 - [How to Continue-As-New using the Python SDK](/develop/python/continue-as-new)
-- [How to Continue-As-New using the TypeScript SDK](/dev-guide/typescript/features#continue-as-new)
+- [How to Continue-As-New using the TypeScript SDK](/develop/typescript/continue-as-new)
 - [How to Continue-As-New using the .NET SDK](/develop/dotnet/continue-as-new)
-
 
 ### What is a Reset? {#reset}
 
@@ -558,7 +557,7 @@ Signals in the original history can be optionally copied to the new history, whe
 
 A Run Id is a globally unique, platform-level identifier for a [Workflow Execution](#workflow-execution).
 
-The current Run Id is mutable and can change during a [Workflow Retry](/retry-policies). You shouldn't rely on storing the current Run Id, or using it for any logical choices, because a Workflow Retry changes the Run Id and can lead to non-determinism issues.
+The current Run Id is mutable and can change during a [Workflow Retry](/encyclopedia/retry-policies). You shouldn't rely on storing the current Run Id, or using it for any logical choices, because a Workflow Retry changes the Run Id and can lead to non-determinism issues.
 
 Temporal guarantees that only one Workflow Execution with a given [Workflow Id](#workflow-id) can be in an Open state at any given time.
 But when a Workflow Execution reaches a Closed state, it is possible to have another Workflow Execution in an Open state with the same Workflow Id.
@@ -597,7 +596,7 @@ For more information, see the following link.
 
 A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](#workflow-execution) that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
 
-- [How to set a Workflow Id](/develop/go/temporal-client#workflow-id)
+- [How to set a Workflow Id](/develop/go/temporal-clients#workflow-id)
 
 A Workflow Id is meant to be a business-process identifier such as customer identifier or order identifier.
 
@@ -640,60 +639,6 @@ For Terminate if Running, the Retention Period is not a consideration for this p
 
 If there is an attempt to spawn a Workflow Execution with a Workflow Id Reuse Policy that won't allow it the Server will prevent the Workflow Execution from spawning.
 
-### What is a Workflow Execution Timeout? {#workflow-execution-timeout}
-
-A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
-
-- [How to set a Workflow Execution Timeout using the Go SDK](/dev-guide/go/features#workflow-timeouts)
-- [How to set a Workflow Execution Timeout using the Java SDK](/dev-guide/java/features#workflow-timeouts)
-- [How to set a Workflow Execution Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
-- [How to set a Workflow Execution Timeout using the Python SDK](/develop/python/failure-detection#workflow-timeouts)
-- [How to set a Workflow Execution Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
-- [How to set a Workflow Execution Timeout using the .NET SDK](/develop/dotnet/failure-detection#workflow-timeouts)
-
-<PrettyImage src="/diagrams/workflow-execution-timeout.svg" title="Workflow Execution Timeout period" />
-
-**The default value is ∞ (infinite).**
-If this timeout is reached, the Workflow Execution changes to a Timed Out status.
-This timeout is different from the [Workflow Run Timeout](#workflow-run-timeout).
-This timeout is most commonly used for stopping the execution of a [Temporal Cron Job](#temporal-cron-job) after a certain amount of time has passed.
-
-### What is a Workflow Run Timeout? {#workflow-run-timeout}
-
-A Workflow Run Timeout is the maximum amount of time that a single Workflow Run is restricted to.
-
-- [How to set a Workflow Run Timeout using the Go SDK](/dev-guide/go/features#workflow-timeouts)
-- [How to set a Workflow Run Timeout using the Java SDK](/dev-guide/java/features#workflow-timeouts)
-- [How to set a Workflow Run Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
-- [How to set a Workflow Run Timeout using the Python SDK](/develop/python/failure-detection#workflow-timeouts)
-- [How to set a Workflow Run Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
-- [How to set a Workflow Run Timeout using the .NET SDK](/develop/dotnet/failure-detection#workflow-timeouts)
-
-<PrettyImage src="/diagrams/workflow-run-timeout.svg" title="Workflow Run Timeout period" />
-
-**The default is set to the same value as the [Workflow Execution Timeout](#workflow-execution-timeout).**
-This timeout is most commonly used to limit the execution time of a single [Temporal Cron Job Execution](#temporal-cron-job).
-
-If the Workflow Run Timeout is reached, the Workflow Execution will be Timed Out.
-
-### What is a Workflow Task Timeout? {#workflow-task-timeout}
-
-A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/workers#worker) to execute a [Workflow Task](/workers#workflow-task) after the Worker has pulled that Workflow Task from the [Task Queue](/workers#task-queue).
-
-- [How to set a Workflow Task Timeout using the Go SDK](/dev-guide/go/features#workflow-timeouts)
-- [How to set a Workflow Task Timeout using the Java SDK](/dev-guide/java/features#workflow-timeouts)
-- [How to set a Workflow Task Timeout using the PHP SDK](/dev-guide/php/features#workflow-timeouts)
-- [How to set a Workflow Task Timeout using the Python SDK](/develop/python/failure-detection#workflow-timeouts)
-- [How to set a Workflow Task Timeout using the TypeScript SDK](/dev-guide/typescript/features#workflow-timeouts)
-- [How to set a Workflow Task Timeout using the .NET SDK](/develop/dotnet/failure-detection#workflow-timeouts)
-
-<PrettyImage src="/diagrams/workflow-task-timeout.svg" title="Workflow Task Timeout period" />
-
-**The default value is 10 seconds.**
-This timeout is primarily available to recognize whether a Worker has gone down so that the Workflow Execution can be recovered on a different Worker.
-The main reason for increasing the default value is to accommodate a Workflow Execution that has an extensive Workflow Execution History, requiring more than 10 seconds for the Worker to load.
-It's worth mentioning that although you can extend the timeout up to the maximum value of 120 seconds, it's not recommended to move beyond the default value.
-
 ### What is a Timer? {#timer}
 
 Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in their handling of time values.
@@ -702,11 +647,11 @@ Timers in Temporal are persisted, meaning that even if your Worker or Temporal S
 Timers are reliable and efficient.
 Workers consume no additional resources while waiting for a Timer to fire, so a single Worker can await millions of Timers concurrently.
 
-- [How to set Timers in Go](/dev-guide/go/features#timers)
-- [How to set Timers in Java](/dev-guide/java/features#timers)
-- [How to set Timers in PHP](/dev-guide/php/features#timers)
+- [How to set Timers in Go](/develop/go/timers)
+- [How to set Timers in Java](/develop/java/timers)
+- [How to set Timers in PHP](/develop/php/timers)
 - [How to set Timers in Python](/develop/python/timers)
-- [How to set Timers in TypeScript](/dev-guide/typescript/features#timers)
+- [How to set Timers in TypeScript](/develop/typescript/timers)
 - [How to set Timers in .NET](/develop/dotnet/durable-timers)
 
 The duration of a Timer is fixed, and your Workflow might specify a value as short as one second or as long as several years.
@@ -722,7 +667,6 @@ The primary purpose of using a Memo is to enhance the organization and managemen
 Add your own metadata, such as notes or descriptions, to a Workflow Execution, which lets you annotate and categorize Workflow Executions based on developer-defined criteria.
 This feature is particularly useful when dealing with numerous Workflow Executions because it facilitates the addition of context, reminders, or any other relevant information that aids in understanding or tracking the Workflow Execution.
 
-
 :::note Use Memos judiciously
 
 Memos shouldn't store data that's critical to the execution of a Workflow, for some of the following reasons:
@@ -733,18 +677,16 @@ Memos shouldn't store data that's critical to the execution of a Workflow, for s
 
 :::
 
-\*/}
-
 ## What is a Signal? {#signal}
 
 A Signal is an asynchronous request to a [Workflow Execution](#workflow-execution).
 
 - [How to send a Signal using the Temporal CLI](/cli/workflow#signal)
-- [How to develop, send, and handle Signals in Go](/dev-guide/go/features#signals)
-- [How to develop, send, and handle Signals in Java](/dev-guide/java/features#signals)
-- [How to develop, send, and handle Signals in PHP](/dev-guide/php/features#signals)
-- [How to develop, send, and handle Signals in Python](/develop/python/messages#signals)
-- [How to develop, send, and handle Signals in TypeScript](/dev-guide/typescript/features#signals)
+- [How to develop, send, and handle Signals in Go](/develop/go/message-passing#signals)
+- [How to develop, send, and handle Signals in Java](/develop/java/message-passing)
+- [How to develop, send, and handle Signals in PHP](/develop/php/message-passing#signals)
+- [How to develop, send, and handle Signals in Python](/develop/python/message-passing#signals)
+- [How to develop, send, and handle Signals in TypeScript](/develop/typescript/message-passing#signals)
 - [How to develop, send, and handle Signals in .NET](/develop/dotnet/message-passing#define-a-signal)
 
 A Signal delivers data to a running Workflow Execution.
@@ -778,11 +720,11 @@ Otherwise, a new Workflow Execution is started and immediately sent the Signal.
 
 How to Signal-With-Start in:
 
-- [How to Signal-With-Start in Go](/dev-guide/go/features#signal-with-start)
-- [How to Signal-With-Start in Java](/dev-guide/java/features#signal-with-start)
-- [How to Signal-With-Start in PHP](/dev-guide/php/features#signal-with-start)
-- [How to Signal-With-Start in Python](/develop/python/messages#signal-with-start)
-- [How to Signal-With-Start in TypeScript](/dev-guide/typescript/features#signal-with-start)
+- [How to Signal-With-Start in Go](/develop/go/message-passing#signal-with-start)
+- [How to Signal-With-Start in Java](/develop/java/message-passing#signal-with-start)
+- [How to Signal-With-Start in PHP](/develop/php/message-passing#signal-with-start)
+- [How to Signal-With-Start in Python](/develop/python/message-passing#signal-with-start)
+- [How to Signal-With-Start in TypeScript](/develop/typescript/message-passing#signal-with-start)
 - [How to Signal-With-Start in .NET](/develop/dotnet/message-passing#signal-with-start)
 
 ## What is a Query? {#query}
@@ -793,11 +735,11 @@ You can use Queries to expose the internal Workflow Execution state to the exter
 Queries are available for running or completed Workflows Executions only if the Worker is up and listening on the Task Queue.
 
 - [How to send a Query using the Temporal CLI](/cli/workflow#query)
-- [How to send and handle Queries with the Go SDK](/dev-guide/go/features#queries)
-- [How to send and handle Queries with the Java SDK](/dev-guide/java/features#queries)
-- [How to send and handle Queries with the PHP SDK](/dev-guide/php/features#queries)
-- [How to send and handle Queries with the Python SDK](/develop/python/messages#queries)
-- [How to send and handle Queries with the TypeScript SDK](/dev-guide/typescript/features#queries)
+- [How to send and handle Queries with the Go SDK](/develop/go/message-passing#queries)
+- [How to send and handle Queries with the Java SDK](/develop/java/message-passing)
+- [How to send and handle Queries with the PHP SDK](/develop/php/message-passing#queries)
+- [How to send and handle Queries with the Python SDK](/develop/python/message-passing#queries)
+- [How to send and handle Queries with the TypeScript SDK](/develop/typescript/message-passing#queries)
 - [How to send and handle Queries with the .NET SDK](/develop/dotnet/message-passing#define-query)
 
 Queries are sent from a Temporal Client to a Workflow Execution.
@@ -839,7 +781,7 @@ Stack Trace Queries are available only for running Workflow Executions.
 - Introduced in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
 - Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.23.1/client#Client.UpdateWorkflowWithOptions) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
 - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
-- Available in [Python SDK](https://docs.temporal.io/dev-guide/python/features#updates) since [v1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
+- Available in [Python SDK](https://docs.temporal.io/develop/python/features#updates) since [v1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
 - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_ExecuteUpdateAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowUpdateOptions_) since [v0.1.0-beta2](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta2)
 - Available in [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#executeupdate) since [v1.9.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0)
 - Available in [PHP SDK](https://php.temporal.io/classes/Temporal-Client-WorkflowStubInterface.html#method_startUpdate) since [v2.8.0](https://github.com/temporalio/sdk-php/releases/tag/v2.8.0)
@@ -848,10 +790,10 @@ Stack Trace Queries are available only for running Workflow Executions.
 
 An Update is a request and response from a Temporal Client to a [Workflow Execution](#workflow-execution).
 
-- [How to develop, send, and handle Updates in Go](/dev-guide/go/features#updates)
-- [How to develop, and send Updates in Python](/develop/python/messages#updates)
-- [How to develop, send, and handle Updates in Java](/dev-guide/java/features#updates)
-- [How to develop, send, and handle Updates in PHP](/dev-guide/php/features#updates)
+- [How to develop, send, and handle Updates in Go](/develop/go/message-passing#updates)
+- [How to develop, send, and handle Updates in Java](/develop/java/message-passing#updates)
+- [How to develop, send, and handle Updates in PHP](/develop/php/message-passing#updates)
+- [How to develop, send, and handle Updates in Python](/develop/go/message-passing#updates)
 - [How to develop, send, and handle Updates in .NET](/develop/dotnet/message-passing#updates)
 
 You can think of an Update as a synchronous, blocking call that could replace both a Signal and a Query. An update is:
@@ -909,8 +851,8 @@ Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
 
 Currently, the Temporal SDKs that support Dynamic Handlers are:
 
-- [Java](/dev-guide/java/features#dynamic-handler)
-- [Python](/develop/python/messages#dynamic-handler)
+- [Java](/develop/java/message-passing#dynamic-handler)
+- [Python](/develop/python/message-passing#dynamic-handler)
 - [.NET](/develop/dotnet/message-passing#dynamic-handler)
 
 The Go SDK supports Dynamic Signals through the [GetUnhandledSignalNames](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetUnhandledSignalNames) function.
@@ -959,7 +901,7 @@ If there is any chance that the code provided to the Side Effect could fail, use
 - Introduced in Temporal Server version [1.17.0](https://github.com/temporalio/temporal/releases/tag/v1.17.0)
 - Available in the Temporal CLI
 - Available in Temporal Cloud
-- Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) since [v1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
+- Available in [Go SDK](/develop/go/schedules#schedule-a-workflow) since [v1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
 - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
 - Available in [Python SDK](/develop/python/schedules#schedule-a-workflow) since [v1.1.0](https://github.com/temporalio/sdk-python/releases/tag/1.1.0)
 - Available in [TypeScript SDK](https://github.com/temporalio/samples-typescript/tree/main/schedules#schedules) since [v1.5.0](https://github.com/temporalio/sdk-typescript/blob/main/CHANGELOG.md#150---2022-12-07)
@@ -1182,11 +1124,11 @@ Schedules were built to provide a better developer experience, including more co
 
 A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
-- [How to set a Cron Schedule using the Go SDK](/dev-guide/go/features#temporal-cron-jobs)
-- [How to set a Cron Schedule using the Java SDK](/dev-guide/java/features#cron-schedule)
-- [How to set a Cron Schedule using the PHP SDK](/dev-guide/php/features#temporal-cron-jobs)
+- [How to set a Cron Schedule using the Go SDK](/develop/go/schedules#temporal-cron-jobs)
+- [How to set a Cron Schedule using the Java SDK](/develop/java/schedules#cron-schedule)
+- [How to set a Cron Schedule using the PHP SDK](/develop/php/schedules#temporal-cron-jobs)
 - [How to set a Cron Schedule using the Python SDK](/develop/python/schedules#temporal-cron-jobs)
-- [How to set a Cron Schedule using the TypeScript SDK](/dev-guide/typescript/features#temporal-cron-jobs)
+- [How to set a Cron Schedule using the TypeScript SDK](/develop/typescript/schedules#temporal-cron-jobs)
 
 <PrettyImage src="/diagrams/temporal-cron-job.svg" title="Temporal Cron Job timeline" />
 
@@ -1201,14 +1143,14 @@ Each Workflow Execution within the series is considered a Run.
 
 The Temporal Server spawns the first Workflow Execution in the chain of Runs immediately.
 However, it calculates and applies a backoff (`firstWorkflowTaskBackoff`) so that the first Workflow Task of the Workflow Execution does not get placed into a Task Queue until the scheduled time.
-After each Run Completes, Fails, or reaches the [Workflow Run Timeout](#workflow-run-timeout), the same thing happens: the next run will be created immediately with a new `firstWorkflowTaskBackoff` that is calculated based on the current Server time and the defined Cron Schedule.
+After each Run Completes, Fails, or reaches the [Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout), the same thing happens: the next run will be created immediately with a new `firstWorkflowTaskBackoff` that is calculated based on the current Server time and the defined Cron Schedule.
 
 The Temporal Server spawns the next Run only after the current Run has Completed, Failed, or has reached the Workflow Run Timeout.
 This means that, if a Retry Policy has also been provided, and a Run Fails or reaches the Workflow Run Timeout, the Run will first be retried per the Retry Policy until the Run Completes or the Retry Policy has been exhausted.
 If the next Run, per the Cron Schedule, is due to spawn while the current Run is still Open (including retries), the Server automatically starts the new Run after the current Run completes successfully.
 The start time for this new Run and the Cron definitions are used to calculate the `firstWorkflowTaskBackoff` that is applied to the new Run.
 
-A [Workflow Execution Timeout](#workflow-execution-timeout) is used to limit how long a Workflow can be executing (have an Open status), including retries and any usage of Continue As New.
+A [Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout) is used to limit how long a Workflow can be executing (have an Open status), including retries and any usage of Continue As New.
 The Cron Schedule runs until the Workflow Execution Timeout is reached or you terminate the Workflow.
 
 <PrettyImage src="/diagrams/temporal-cron-job-failure-with-retry.svg" title="Temporal Cron Job Run Failure with a Retry Policy" />
@@ -1279,7 +1221,7 @@ If you need to use time zones, here are a few edge cases to keep in mind:
 
 ### How to stop a Temporal Cron Job
 
-A Temporal Cron Job does not stop spawning Runs until it has been Terminated or until the [Workflow Execution Timeout](#workflow-execution-timeout) is reached.
+A Temporal Cron Job does not stop spawning Runs until it has been Terminated or until the [Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout) is reached.
 
 A Cancellation Request affects only the current Run.
 
@@ -1320,7 +1262,7 @@ You can delay the dispatch of the initial Workflow Execution by setting this opt
 A State Transition is a unit of progress made by a [Workflow Execution](#workflow-execution).
 Each State Transition is recorded in a persistence store.
 
-Some operations, such as [Activity Heartbeats](/activities#activity-heartbeat), require only one or two State Transitions each. With an Activity Heartbeat, there are two: the Activity Heartbeat and a Timer.
+Some operations, such as [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat), require only one or two State Transitions each. With an Activity Heartbeat, there are two: the Activity Heartbeat and a Timer.
 
 Most operations require multiple State Transitions.
 

@@ -1,0 +1,457 @@
+---
+id: message-passing
+title: Messages
+sidebar_label: Messages
+toc_max_heading_level: 2
+keywords:
+  - messages
+tags:
+  - messages
+---
+
+## How to develop with Signals {#signals}
+
+A [Signal](/workflows#signal) is a message sent to a running Workflow Execution.
+
+Signals are defined in your code and handled in your Workflow Definition.
+Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
+
+### How to define a Signal {#define-signal}
+
+A Signal has a name and can have arguments.
+
+- The name, also called a Signal type, is a string.
+- The arguments must be [serializable](/dataconversion).
+
+Workflows can answer synchronous [Queries](/workflows#query) and receive [Signals](/workflows#signal).
+
+All interface methods must have one of the following annotations:
+
+- **#[WorkflowMethod]** indicates an entry point to a Workflow.
+  It contains parameters that specify timeouts and a Task Queue name.
+  Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the annotation must be provided at runtime.
+- **#[SignalMethod]** indicates a method that reacts to external signals. It must have a `void` return type.
+- **#[QueryMethod]** indicates a method that reacts to synchronous query requests. It must have a non `void` return type.
+
+> It is possible (though not recommended for usability reasons) to annotate concrete class implementation.
+
+You can have more than one method with the same annotation (except #[WorkflowMethod]).
+
+For example:
+
+```php
+use Temporal\Workflow\WorkflowInterface;
+use Temporal\Workflow\WorkflowMethod;
+use Temporal\Workflow\SignalMethod;
+use Temporal\Workflow\QueryMethod;
+
+#[WorkflowInterface]
+interface FileProcessingWorkflow
+{
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+
+    #[QueryMethod("history")]
+    public function getHistory(): array;
+
+    #[QueryMethod("status")]
+    public function getStatus(): string;
+
+    #[SignalMethod]
+    public function retryNow(): void;
+
+    #[SignalMethod]
+    public function abandon(): void;
+}
+```
+
+Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
+If name is not specified the short name of the Workflow interface is used.
+
+In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
+
+### How to handle a Signal {#handle-signal}
+
+Workflows listen for Signals by the Signal's name.
+
+Use the `#[SignalMethod]` annotation to handle Signals in the Workflow interface:
+
+```php
+use Temporal\Workflow;
+
+#[Workflow\WorkflowInterface]
+class YourWorkflow
+{
+    private bool $value;
+
+    #[Workflow\WorkflowMethod]
+    public function run()
+    {
+        yield Workflow::await(fn()=> $this->value);
+        return 'OK';
+    }
+
+    #[Workflow\SignalMethod]
+    public function setValue(bool $value)
+    {
+        $this->value = $value;
+    }
+}
+```
+
+In the preceding example, the Workflow updates the protected value.
+The main Workflow coroutine waits for the value to change by using the `Workflow::await()` function.
+
+### How to send a Signal from a Temporal Client {#send-signal-from-client}
+
+When a Signal is sent successfully from the Temporal Client, the [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
+
+To send a Signal to a Workflow Execution from a Client, call the Signal method, annotated with `#[SignalMethod]` in the Workflow interface, from the Client code.
+
+To send a Signal to a Workflow, use `WorkflowClient->newWorkflowStub` or `WorkflowClient->newUntypedWorkflowStub`:
+
+```php
+$workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
+
+$run = $workflowClient->start($workflow);
+
+// do something
+
+$workflow->setValue(true);
+
+assert($run->getValue() === true);
+```
+
+Use `WorkflowClient->newRunningWorkflowStub` or `WorkflowClient->newUntypedRunningWorkflowStub` with Workflow Id to send Signals to already running Workflows.
+
+```php
+$workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workflowID');
+$workflow->setValue(true);
+```
+
+See [Handle Signal](#handle-signal) for details on how to handle Signals in a Workflow.
+
+### How to send a Signal from a Workflow {#send-signal-from-workflow}
+
+A Workflow can send a Signal to another Workflow, in which case it's called an _External Signal_.
+
+When an External Signal is sent:
+
+- A [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated) Event appears in the sender's Event History.
+- A [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the recipient's Event History.
+
+To send Signal to a Workflow use `WorkflowClient`->`newWorkflowStub` or `WorkflowClient`->`newUntypedWorkflowStub`:
+
+```php
+$workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
+
+$run = $workflowClient->start($workflow);
+
+// do something
+
+$workflow->setValue(true);
+
+assert($run->getValue() === true);
+```
+
+Use `WorkflowClient`->`newRunningWorkflowStub` or `WorkflowClient->newUntypedRunningWorkflowStub` with Workflow Id to send
+Signals to a running Workflow.
+
+```php
+$workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workflowID');
+$workflow->setValue(true);
+```
+
+### How to Signal-With-Start {#signal-with-start}
+
+Signal-With-Start is used from the Client.
+It takes a Workflow Id, Workflow arguments, a Signal name, and Signal arguments.
+
+If there's a Workflow running with the given Workflow Id, it will be signaled. If there isn't, a new Workflow will be started and immediately signaled.
+
+In cases where you may not know if a Workflow is running, and want to send a Signal to it, use `startwithSignal`.
+If a running Workflow exists, the `startwithSignal` API sends the Signal.
+If there is no running Workflow, the API starts a new Workflow Run and delivers the Signal to it.
+
+```php
+$workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
+
+$run = $workflowClient->startWithSignal(
+    $workflow,
+    'setValue',
+    [true], // signal arguments
+    [] // start arguments
+);
+```
+
+## How to develop with Queries {#queries}
+
+A [Query](/workflows#query) is a synchronous operation that is used to get the state of a Workflow Execution.
+
+### How to define a Query {#define-query}
+
+A Query has a name and can have arguments.
+
+- The name, also called a Query type, is a string.
+- The arguments must be [serializable](/dataconversion).
+
+Workflows can answer synchronous [Queries](/workflows#query) and receive [Signals](/workflows#signal).
+
+All interface methods must have one of the following annotations:
+
+- **#[WorkflowMethod]** indicates an entry point to a Workflow.
+  It contains parameters that specify timeouts and a Task Queue name.
+  Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the annotation must be provided at runtime.
+- **#[SignalMethod]** indicates a method that reacts to external signals. It must have a `void` return type.
+- **#[QueryMethod]** indicates a method that reacts to synchronous query requests. It must have a non `void` return type.
+
+> It is possible (though not recommended for usability reasons) to annotate concrete class implementation.
+
+You can have more than one method with the same annotation (except #[WorkflowMethod]).
+
+For example:
+
+```php
+use Temporal\Workflow\WorkflowInterface;
+use Temporal\Workflow\WorkflowMethod;
+use Temporal\Workflow\SignalMethod;
+use Temporal\Workflow\QueryMethod;
+
+#[WorkflowInterface]
+interface FileProcessingWorkflow
+{
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+
+    #[QueryMethod("history")]
+    public function getHistory(): array;
+
+    #[QueryMethod("status")]
+    public function getStatus(): string;
+
+    #[SignalMethod]
+    public function retryNow(): void;
+
+    #[SignalMethod]
+    public function abandon(): void;
+}
+```
+
+Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
+If name is not specified the short name of the Workflow interface is used.
+
+In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
+
+### How to handle a Query {#handle-query}
+
+Queries are handled by your Workflow.
+
+Don't include any logic that causes [Command](/workflows#command) generation within a Query handler (such as executing Activities).
+Including such logic causes unexpected behavior.
+
+You can add custom Query types to handle Queries such as Querying the current state of a
+Workflow, or Querying how many Activities the Workflow has completed. To do this, you need to set
+up a Query handler using method attribute `QueryMethod` or `Workflow::registerQueryHandler`.
+
+```php
+#[Workflow\WorkflowInterface]
+class YourWorkflow
+{
+    #[Workflow\QueryMethod]
+    public function getValue()
+    {
+        return 42;
+    }
+
+    #[Workflow\WorkflowMethod]
+    public function run()
+    {
+        // workflow code
+    }
+
+}
+```
+
+The handler function can receive any number of input parameters, but all input parameters must be
+serializable. The following sample code sets up a Query handler that handles the Query type of
+`currentState`:
+
+```php
+#[Workflow\WorkflowInterface]
+class YourWorkflow
+{
+    private string $currentState;
+
+    #[Workflow\QueryMethod('current_state')]
+    public function getCurrentState(): string
+    {
+        return $this->currentState;
+    }
+
+    #[Workflow\WorkflowMethod]
+    public function run()
+    {
+        // Your normal Workflow code begins here, and you update the currentState
+        // as the code makes progress.
+        $this->currentState = 'waiting timer';
+        try{
+            yield Workflow::timer(DateInterval::createFromDateString('1 hour'));
+        } catch (\Throwable $e) {
+            $this->currentState = 'timer failed';
+            throw $e;
+        }
+
+        $yourActivity = Workflow::newActivityStub(
+            YourActivityInterface::class,
+            ActivityOptions::new()->withScheduleToStartTimeout(60)
+        );
+
+        $this->currentState = 'waiting activity';
+        try{
+            yield $yourActivity->doSomething('some input');
+        } catch (\Throwable $e) {
+            $this->currentState = 'activity failed';
+            throw $e;
+        }
+
+        $this->currentState = 'done';
+
+        return null;
+    }
+}
+```
+
+You can also issue a Query from code using the `QueryWorkflow()` API on a Temporal Client object.
+
+Use `WorkflowStub` to Query Workflow instances from your Client code (can be applied to both running and closed Workflows):
+
+```php
+$workflow = $workflowClient->newWorkflowStub(
+    YourWorkflow::class,
+    WorkflowOptions::new()
+);
+
+$workflowClient->start($workflow);
+
+var_dump($workflow->getCurrentState());
+sleep(60);
+var_dump($workflow->getCurrentState());
+```
+
+### How to send a Query {#send-query}
+
+Queries are sent from a Temporal Client.
+
+## How to develop with Updates {#updates}
+
+An [Update](/workflows#update) is an operation that can mutate the state of a Workflow Execution and return a response.
+
+### How to define an Update {#define-update}
+
+Workflow Updates handlers are methods in your Workflow Definition designed to handle updates.
+These updates can be triggered during the lifecycle of a Workflow Execution.
+
+An Update handler has a name, arguments, response, and an optional validator.
+
+- The name, also called an Update type, is a string.
+- The arguments and response must be [serializable](/dataconversion).
+
+The [`#[UpdateMethod]`](https://php.temporal.io/classes/Temporal-Workflow-UpdateMethod.html) attribute indicates that the method is used to handle and respond to update requests.
+The Updates type defaults to the name of the method. To overwrite this default naming and assign a custom Update type, use the `#[UpdateMethod]` attribute with the `name` argument.
+
+```php
+#[UpdateMethod(name: 'my_update')]
+public function myUpdate(string $signalName);
+```
+
+### How to handle Updates in a Workflow {#handle-updates}
+
+Workflows listen for Update by the Update's name.
+
+The handler method can accept multiple serializable input parameters, but it's recommended using only a single parameter.
+The function can return a [serializable](/dataconversion) value or `void`.
+
+```php
+#[WorkflowInterface]
+interface FileProcessingWorkflow {
+    #[WorkflowMethod]
+    public function processFiles(FileList $files);
+
+    #[UpdateMethod(name: 'pause')]
+    public function pauseProcessing(): void;
+
+    #[UpdateMethod]
+    #[ReturnType(AddResult::class)]
+    public function addFile(FileInfo $file);
+}
+```
+
+Update handlers, unlike Query handlers, can change Workflow state.
+
+### How to validate an Update in a Workflow {#validate-an-update}
+
+Validate certain aspects of the data sent to the Workflow using an Update Validator method. For instance, a counter Workflow might never want to accept a non-positive number. Use the [`#[UpdateValidatorMethod]`](https://php.temporal.io/classes/Temporal-Workflow-UpdateValidatorMethod.html) attribute and set the `forUpdate` argument to the name of your Update handler. Your Update Validator should accept the same input parameters as your Update Handler and return `void`.
+
+```php
+#[WorkflowInterface]
+interface GreetingWorkflow {
+    #[WorkflowMethod]
+    public function getGreetings(): array;
+
+    #[UpdateMethod]
+    public function addGreeting(string $name): int;
+
+    #[UpdateValidatorMethod(forUpdate: 'addGreeting')]
+    public function addGreetingValidator(string $name): void;
+}
+```
+
+### How to send an Update from a Temporal Client {#send-update-from-client}
+
+To send an Update to a Workflow Execution from a Client, call the Update method, annotated with `#[UpdateMethod]` in the Workflow interface, from the Client code.
+
+In the following Client code example, start the Workflow `getGreetings` and call the Update method `addGreeting` that is handled in the Workflow.
+
+```php
+// Create a typed Workflow stub for GreetingsWorkflow
+$workflow = $workflowClient->newWorkflowStub(GreetingWorkflow::class, $workflowOptions);
+
+// Start the Workflow
+$run = $workflowClient->start($workflow);
+
+// Send an update to the Workflow. addGreeting returns
+// the number of greetings our workflow has received.
+$count = $workflow->addGreeting("World");
+```
+
+**Async accept**
+
+In Workflow Update methods, all Workflow features are available, such as executing Activities and child Workflows, and waiting on timers/conditions.
+In cases where it's known that the update will take a long time to execute, or you are not interested in the outcome of its execution, you can use the stub method [`startUpdate`](https://php.temporal.io/classes/Temporal-Client-WorkflowStubInterface.html#method_startUpdate) and move on immediately after receiving the validation result.
+Note that the processing Workflow Worker must be available.
+Otherwise, the request may block indefinitely or fail due to a timeout.
+
+```php
+use Ramsey\Uuid\UuidInterface;
+use Temporal\Client\Update\UpdateOptions;
+use Temporal\Client\Update\WaitPolicy;
+use Temporal\Client\Update\LifecycleStage;
+
+// Create an untyped Workflow stub for GreetingsWorkflow
+$stub = $client->newUntypedWorkflowStub('GreetingWorkflow', $workflowOptions);
+
+// Start the Workflow
+$run = $client->start($stub);
+
+// Send an Update to the Workflow. UpdateHandle returns
+$handle = $stub->startUpdate('addGreeting', 'World');
+
+// Use the UpdateHandle to get the Update result with timeout 2.5 seconds
+$result = $handle->getResult(timeout: 2.5);
+
+// You can get more control using UpdateOptions
+$resultUuid = $stub->startUpdate(
+    UpdateOptions::new('storeGreetings', LifecycleStage::StageCompleted)
+        ->withResultType(UuidInterface::class)
+ )->getResult();
+```

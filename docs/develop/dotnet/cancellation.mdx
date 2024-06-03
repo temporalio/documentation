@@ -109,7 +109,7 @@ public async Task RunAsync()
 
 **How to handle a Cancellation in an Activity using the Temporal .NET SDK**
 
-Ensure that the Activity is [Heartbeating](/develop/dotnet/failure-detection#activity-heartbeat) to receive the Cancellation request and stop execution.
+Ensure that the Activity is [Heartbeating](/develop/dotnet/failure-detection#activity-heartbeats) to receive the Cancellation request and stop execution.
 Also make sure that the [Heartbeat Timeout](/develop/dotnet/failure-detection#heartbeat-timeout) is set on the Activity Options when calling from the Workflow.
 An Activity Cancellation Request cancels the `CancellationToken` on the `ActivityExecutionContext`.
 

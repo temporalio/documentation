@@ -1,0 +1,90 @@
+---
+id: side-effects
+title: Side Effects - Temporal Go SDK feature guide
+sidebar_label: Side Effects
+toc_max_heading_level: 4
+keywords:
+  - side-effects
+tags:
+  - side-effects
+---
+
+Side Effects are used to execute non-deterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow.
+This is done by storing the non-deterministic results of the Side Effect into the Workflow [Event History](/workflows#event-history).
+
+A Side Effect does not re-execute during a Replay. Instead, it returns the recorded result from the Workflow Execution Event History.
+
+Side Effects should not fail. An exception that is thrown from the Side Effect causes failure and retry of the current Workflow Task.
+
+An Activity or a Local Activity may also be used instead of a Side effect, as its result is also persisted in Workflow Execution History.
+
+:::note
+
+You shouldn't modify the Workflow state inside a Side Effect function, because it is not reexecuted during Replay. Side Effect function should be used to return a value.
+
+:::
+
+Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/workflows#side-effect) directly in your Workflow.
+
+Pass it an instance of `context.Context` and the function to execute.
+
+The `SideEffect` API returns a Future, an instance of [`converter.EncodedValue`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect).
+
+Use the `Get` method on the Future to retrieve the result of the Side Effect.
+
+**Correct implementation**
+
+The following example demonstrates the correct way to use `SideEffect`:
+
+```go
+encodedRandom := workflow.SideEffect(ctx, func(ctx workflow.Context) interface{} {
+ return rand.Intn(100)
+})
+
+var random int
+encodedRandom.Get(&random)
+// ...
+}
+```
+
+**Incorrect implementation**
+
+The following example demonstrates how NOT to use `SideEffect`:
+
+```go
+// Warning: This is an incorrect example.
+// This code is non-deterministic.
+var random int
+workflow.SideEffect(func(ctx workflow.Context) interface{} {
+      random = rand.Intn(100)
+      return nil
+})
+// random will always be 0 in replay, so this code is non-deterministic.
+```
+
+On replay the provided function is not executed, the random number will always be 0, and the Workflow Execution could take a different path, breaking determinism.
+
+## Mutable Side Effects {#mutable-side-effects}
+
+Mutable Side Effects execute the provided function once, and then it looks up the History of the value with the given Workflow ID.
+
+- If there is no existing value, then it records the function result as a value with the given Workflow Id on the History.
+- If there is an existing value, then it compares whether the existing value from the History has changed from the new function results, by calling the equals function.
+  - If the values are equal, then it returns the value without recording a new Marker Event
+  - If the values aren't equal, then it records the new value with the same ID on the History.
+
+:::note
+
+During a Workflow Execution, every new Side Effect call results in a new Marker recorded on the Workflow History; whereas Mutable Side Effects only records a new Marker on the Workflow History if the value for the Side Effect ID changes or is set the first time.
+
+During a Replay, Mutable Side Effects will not execute the function again. Instead, it returns the exact same value that was returned during the Workflow Execution.
+
+:::
+
+To use [`MutableSideEffect()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#MutableSideEffect) in Go, provide a unique name within the scope of the workflow.
+
+```go
+if err := workflow.MutableSideEffect(ctx, "configureNumber", get, eq).Get(&number); err != nil {
+    panic("can't decode number:" + err.Error())
+  }
+```

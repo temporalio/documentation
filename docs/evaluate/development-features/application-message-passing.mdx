@@ -1,0 +1,55 @@
+---
+id: application-message-passing
+title: Application message passing - Temporal development feature
+description: Enhance your Workflows with Signals and Queries, allowing dynamic responses to external events and real-time state access for comprehensive monitoring and tracking.
+sidebar_label: Application Message Passing
+tags:
+  - signals
+  - queries
+  - workflows
+  - activities
+  - workers
+keywords:
+  - temporal application
+  - workflow design
+  - business logic activities
+  - temporal workers
+  - temporal SDK tutorial
+  - go sdk temporal guide
+  - java sdk temporal guide
+  - python sdk temporal guide
+  - typescript sdk temporal guide
+  - learning temporal workflows
+  - developing with temporal
+  - temporal workflow execution
+  - temporal activity management
+  - worker process execution
+  - signals
+  - queries
+---
+
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+
+Need a responsive application?
+Temporal provides **Signals**, **Queries**, and **Updates** as a means to send data into and get data out of your running application.
+Signals enable your application to asynchronously react to events at runtime, Queries enable on-demand data retrieval from ongoing Workflows without disrupting their execution, and Updates enable you to change the state of a running application.
+
+**Signals**: Signals allow you to send messages asynchronously to running Workflow Executions, enabling you to change their state and control their flow in real-time.
+This feature is particularly useful in scenarios where Workflows must react to external events or user interactions.
+
+**Queries**: Queries provide a way to access and monitor the internal state of your Workflow Executions in real-time.
+This is essential for monitoring the progress of long-running Workflows and retrieving their results.
+
+**Updates**: An Update is a synchronous, blocking call that could replace both a Signal and a Query.
+
+See the SDK feature guides for implementation details.
+
+<RelatedReadContainer>
+  <RelatedReadItem path="/develop/go/message-passing" text="Go SDK application message passing feature guide" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/java/message-passing" text="Java SDK application message passing feature guide" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/python/message-passing" text="Python SDK application message passing feature guide" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/typescript/message-passing" text="TypeScript SDK application message passing feature guide" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/dotnet/message-passing" text=".NET SDK application message passing feature guide" archetype="feature-guide" />
+</RelatedReadContainer>
+
+For a deep dive into Application message passing, enroll in one of [our courses](https://learn.temporal.io/courses/interacting_with_workflows).

@@ -36,7 +36,7 @@ If you implement the examples, ensure that your local docker-compose is set up, 
 (To get started, you can clone the SDK samples repositories.)
 
 - See [Docker Compose](https://github.com/temporalio/docker-compose) for details on how to set up your local Temporal docker-compose.
-- See the [Dev guide](/dev-guide) for details on how to install your SDK and get started with samples.
+- See the [Dev guide](/develop) for details on how to install your SDK and get started with samples.
 
 To set up Prometheus and Grafana:
 
@@ -55,7 +55,7 @@ To enable Prometheus to receive metrics data, set listen addresses in the Server
 
 The [docker-compose setup](https://github.com/temporalio/docker-compose/blob/0bca458992ef5135700dcd9369a53fcda30356b0/docker-compose.yml) provided for local development sets up most Temporal Services in one Docker container.
 
-Here’s an example of how to expose a Prometheus endpoint on your local docker-compose Temporal Cluster configuration:
+Here's an example of how to expose a Prometheus endpoint on your local docker-compose Temporal Cluster configuration:
 
 ```yaml {20,26}
 version: '3.5'
@@ -96,11 +96,11 @@ Depending on how you deploy your Temporal Cluster, you can set different ports f
 SDK metrics are emitted by Clients and must be set up in your application code.
 The Metrics section in the Observability guide details how to set this up for all the supported SDKs.
 
-[Golang](/dev-guide/go/observability#metrics)
-[Java](/dev-guide/java/observability#metrics)
-[PHP](/dev-guide/php/observability)
-[Python](/develop/python/observability#metrics)
-[TypeScript](/dev-guide/typescript/observability#metrics)
+- [Go](/develop/go/observability#metrics)
+- [Java](/develop/java/observability#metrics)
+- [PHP](/develop/php/observability)
+- [Python](/develop/python/observability#metrics)
+- [TypeScript](/develop/typescript/observability#metrics)
 
 For example, with the Java SDK, you can set up the Prometheus registry and Micrometer stats reporter, set the scope, and expose an endpoint from which Prometheus can scrape the SDK Client metrics in the following way.
 
@@ -157,7 +157,7 @@ For more examples on how to set up SDK metrics in other SDKs, see the metrics sa
 - [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics)
 - [Go SDK Samples](https://github.com/temporalio/samples-go/tree/main/metrics)
 
-In your Workers, you can set specific `WorkerOptions` for performance tuning, as described in the [Worker Performance Guide](/dev-guide/worker-performance).
+In your Workers, you can set specific `WorkerOptions` for performance tuning, as described in the [Worker Performance Guide](/develop/worker-performance).
 
 With the scrape endpoints set, define your Prometheus scrape configuration and targets to receive the metrics data from the Temporal Cluster and Temporal SDKs.
 
@@ -223,7 +223,7 @@ You can set up as many targets as required.
 
 For more details on how to configure Prometheus, refer the [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/configuration/configuration/).
 
-To check whether you’re receiving your metrics data, restart your local docker-compose Temporal Cluster (with the configuration provided in the examples here) and check the following ports:
+To check whether you're receiving your metrics data, restart your local docker-compose Temporal Cluster (with the configuration provided in the examples here) and check the following ports:
 
 - [localhost:8000/metrics](http://localhost:8000/metrics) - The port for exposing your Cluster metrics.
   You should see all the Cluster metrics emitted when you start your local docker-compose Temporal Cluster.

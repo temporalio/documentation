@@ -35,7 +35,7 @@ An Activity Execution is the full chain of Activity Task Executions.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Activity Heartbeat](/activities#activity-heartbeat)
+#### [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat)
 
 An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Service.
 
@@ -228,7 +228,7 @@ When service to the primary Cluster is compromised, a [Failover](#failover) tran
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Heartbeat Timeout](/activities#heartbeat-timeout)
+#### [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout)
 
 A Heartbeat Timeout is the maximum time between Activity Heartbeats.
 
@@ -352,7 +352,7 @@ A Retention Period is the amount of time a Workflow Execution Event History rema
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Retry Policy](/retry-policies)
+#### [Retry Policy](/encyclopedia/retry-policies)
 
 A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.
 
@@ -370,13 +370,13 @@ A Schedule enables the scheduling of Workflow Executions.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Schedule-To-Close Timeout](/activities#schedule-to-close-timeout)
+#### [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout)
 
 A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_
 
-#### [Schedule-To-Start Timeout](/activities#schedule-to-start-timeout)
+#### [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout)
 
 A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task Queue to when a Worker picks it up from the Task Queue.
 
@@ -406,7 +406,7 @@ Signal-With-Start starts and Signals a Workflow Execution, or just Signals it if
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Start-To-Close Timeout](/activities#start-to-close-timeout)
+#### [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout)
 
 A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.
 
@@ -621,7 +621,7 @@ A Temporal Workflow Execution is a durable, scalable, reliable, and reactive fun
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Workflow Execution Timeout](/workflows#workflow-execution-timeout)
+#### [Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout)
 
 A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
@@ -645,7 +645,7 @@ A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Workflow Run Timeout](/workflows#workflow-run-timeout)
+#### [Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout)
 
 This is the maximum amount of time that a single Workflow Run is restricted to.
 
@@ -663,7 +663,7 @@ A Workflow Task Execution occurs when a Worker picks up a Workflow Task and uses
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Workflow Task Timeout](/workflows#workflow-task-timeout)
+#### [Workflow Task Timeout](/encyclopedia/detecting-workflow-failures#workflow-task-timeout)
 
 A Workflow Task Timeout is the maximum amount of time that the Temporal Server will wait for a Worker to start processing a Workflow Task after the Task has been pulled from the Task Queue.
 

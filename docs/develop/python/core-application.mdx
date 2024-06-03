@@ -42,7 +42,6 @@ This page shows how to do the following:
 - [Run a Worker Process](#run-a-dev-worker)
 - [Register types](#register-types)
 
-
 ## Develop a basic Workflow {#develop-workflows}
 
 **How to develop a basic Workflow using the Temporal Python SDK.**
@@ -382,7 +381,7 @@ class YourWorkflow:
 **How to set the required Activity Timeouts using the Temporal Python SDK.**
 
 Activity Execution semantics rely on several parameters.
-The only required value that needs to be set is either a [Schedule-To-Close Timeout](/activities#start-to-close-timeout) or a [Start-To-Close Timeout](/activities#start-to-close-timeout).
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
 
 Activity options are set as keyword arguments after the Activity arguments.
@@ -460,7 +459,7 @@ The [Worker Process](/workers#worker-process) is where Workflow Functions and Ac
 A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
 
 Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
-For more information, see the [Worker tuning guide](/dev-guide/worker-performance).
+For more information, see the [Worker tuning guide](/develop/worker-performance).
 
 A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
 

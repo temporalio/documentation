@@ -22,13 +22,13 @@ See [Cluster metrics](/references/cluster-metrics) for metrics emitted by the [O
 
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
 
-- [How to emit metrics using the Go SDK](/dev-guide/go/observability#metrics)
-- [How to emit metrics using the Java SDK](/dev-guide/java/observability#metrics)
+- [How to emit metrics using the Go SDK](/develop/go/observability#metrics)
+- [How to emit metrics using the Java SDK](/develop/java/observability#metrics)
 - [How to emit metrics using the Python SDK](/develop/python/observability#metrics)
-- [How to emit metrics using the TypeScript SDK](/dev-guide/typescript/observability#metrics)
+- [How to emit metrics using the TypeScript SDK](/develop/typescript/observability#metrics)
 - [How to emit metrics using the .NET SDK](/develop/dotnet/observability#metrics)
 
-- [How to tune Worker performance based on metrics](/dev-guide/worker-performance)
+- [How to tune Worker performance based on metrics](/develop/worker-performance)
 
 All metrics are prefixed with `temporal_` before being exported to their configured destination.
 (The prefix has been removed in the following reference.)
@@ -154,7 +154,7 @@ An Activity Worker poll for an Activity Task timed out, and no Activity Task is 
 ### activity_schedule_to_start_latency
 
 The Schedule-To-Start time of an Activity Task in seconds.
-A [Schedule-To-Start Timeout](/activities#schedule-to-start-timeout) can be set when an Activity Execution is spawned.
+A [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) can be set when an Activity Execution is spawned.
 This metric is useful for ensuring Activity Tasks are being processed from the queue in a timely manner. Some SDKs may include
 the `activity_type` label, but the metric should not vary by type, as it does not influence the rate at which tasks are pulled
 from the queue.

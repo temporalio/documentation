@@ -23,6 +23,8 @@ keywords:
   - debugging temporal applications
   - data encryption in applications
   - throughput composability
+  - signals
+  - queries
 ---
 
 Through a Temporal SDK, Temporal provides a wide range of features that enable developers to build applications that serve a wide range of use cases.
@@ -33,8 +35,8 @@ Through a Temporal SDK, Temporal provides a wide range of features that enable d
 - **Scheduled Workflows**: Start a business process (Workflow) at a specific time or on a given time interval.
 - **Cancellation**: Cancel a business process (Workflow) that is already in progress and compensate for any steps already taken.
 - **Runtime safeguards**: Prevent avoidable errors and issues from executing during runtime.
-- **Failure detection and mitigation**: Detect failures with timeouts and configure automatic retries to mitigate them.
-- **Messages**: Send data into or get the state of your running application.
+- **[Failure detection and mitigation](/evaluate/development-features/failure-detection)**: Detect failures with timeouts and configure automatic retries to mitigate them.
+- **[Application message passing](/evaluate/development-features/application-message-passing)**: Build responsive applications that react to events at runtime and enable data retrieval from ongoing Workflows.
 - **Versioning**: Support multiple versions of your business logic for long-running business processes (Workflows).
 - **Observability**: List business process (Workflows), view their state, and setup dashboards with metrics.
 - **Debugging**: Surface errors and step through code to find issues.

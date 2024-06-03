@@ -24,11 +24,11 @@ const coreConcepts = [
 
 const appDevGuideLinks = [
   {
-    path: "/dev-guide/go",
+    path: "/develop/go",
     name: "Go SDK developer's guide",
   },
   {
-    path: "/dev-guide/java",
+    path: "/develop/java",
     name: "Java SDK developer's guide",
   },
   {
@@ -36,7 +36,7 @@ const appDevGuideLinks = [
     name: "Python SDK feature guides",
   },
   {
-    path: "/dev-guide/typescript",
+    path: "/develop/typescript",
     name: "TypeScript SDK developer's guide",
   },
   {
@@ -44,7 +44,7 @@ const appDevGuideLinks = [
     name: ".NET SDK readme",
   },
   {
-    path: "/dev-guide/php",
+    path: "/develop/php",
     name: "PHP SDK developer's guide",
   },
 ];

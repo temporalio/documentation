@@ -93,7 +93,7 @@ If your Sync Match Rate is low, you can contact Temporal Cloud support.
 
 The Schedule-To-Start metric represents how long Tasks are staying, unprocessed, in the Task Queues.
 But differently, it is the time between when a Task is enqueued and when it is picked up by a Worker.
-This time being long (likely) means that your Workers can’t keep up — either increase the number of Workers (if the host load is already high) or increase the number of pollers per Worker.
+This time being long (likely) means that your Workers can't keep up — either increase the number of Workers (if the host load is already high) or increase the number of pollers per Worker.
 
 The schedule_to_start_latency SDK metric for both [Workflow Executions](/references/sdk-metrics#workflow_task_schedule_to_start_latency) and [Activity Executions](/references/sdk-metrics#activity_schedule_to_start_latency) should have alerts.
 
@@ -182,7 +182,7 @@ Consider the following:
 - Verifying that your Worker hosts are appropriately resourced, OR
 - Increasing the Worker configuration value for concurrent pollers for Workers/Task executions (if your Worker resources can accommodate the increased load), OR
   - TypeScript: [Workflows](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#maxconcurrentworkflowtaskexecutions)
-  - Golang: [Workflows](/dev-guide/go/foundations#maxconcurrentworkflowtaskpollers)
+  - Golang: [Workflows](/develop/go/core-application#maxconcurrentworkflowtaskpollers)
 - Doing some combination of the above
 
 ** Temporal Cloud bottleneck**
@@ -191,7 +191,7 @@ If the Schedule-To-Start latency is _high_ and the Sync Match Rate is also _low_
 
 **Caveat**
 
-If you are setting the [Schedule-To-Start Timeout](/activities#schedule-to-start-timeout) value in your Activity Options, it will skew your observations if you are not following the guidance [here](/activities#schedule-to-start-timeout).
+If you are setting the [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) value in your Activity Options, it will skew your observations if you are not following the guidance [here](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout).
 As such, we recommend that you avoid setting that value.
 
 ## Detect greedy Worker resources {#detect-greedy-workers}
@@ -325,7 +325,7 @@ The work is not getting processed as fast as it should/can.
 
 **Action**
 
-Increase the `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecutionSize` values and keep an eye on your Worker resource metrics (CPU utilization, etc) to make sure you haven’t created a new issue.
+Increase the `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecutionSize` values and keep an eye on your Worker resource metrics (CPU utilization, etc) to make sure you haven't created a new issue.
 
 ### Configure Sticky Cache {#configure-sticky-cache}
 

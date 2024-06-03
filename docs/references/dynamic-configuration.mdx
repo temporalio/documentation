@@ -190,12 +190,12 @@ If the number of queries made to the Persistence store exceeds the dynamic confi
 
 ### Activity and Workflow default policy setting
 
-You can define default values for Activity and Workflow [Retry Policies](/retry-policies) at the Cluster level with the following dynamic configuration keys.
+You can define default values for Activity and Workflow [Retry Policies](/encyclopedia/retry-policies) at the Cluster level with the following dynamic configuration keys.
 
 | Dynamic configuration key            | Type                          | Description                                                                                                       | Default value                                                                      |
 | ------------------------------------ | ----------------------------- | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `history.defaultActivityRetryPolicy` | Map (key-value pair elements) | Server configuration for an Activity Retry Policy when it is not explicitly set for the Activity in your code.    | [Default values for retry Policy](/retry-policies#default-values-for-retry-policy) |
-| `history.defaultWorkflowRetryPolicy` | Map (key-value pair elements) | Retry Policy for unset fields where the user has set an explicit `RetryPolicy`, but not specified all the fields. | [Default values for retry Policy](/retry-policies#default-values-for-retry-policy) |
+| `history.defaultActivityRetryPolicy` | Map (key-value pair elements) | Server configuration for an Activity Retry Policy when it is not explicitly set for the Activity in your code.    | [Default values for retry Policy](/encyclopedia/retry-policies#default-values-for-retry-policy) |
+| `history.defaultWorkflowRetryPolicy` | Map (key-value pair elements) | Retry Policy for unset fields where the user has set an explicit `RetryPolicy`, but not specified all the fields. | [Default values for retry Policy](/encyclopedia/retry-policies#default-values-for-retry-policy) |
 
 ### Size limit settings
 
