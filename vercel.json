@@ -1847,7 +1847,6 @@
       "source": "/dev-guide/python/sandbox",
       "destination": "/encyclopedia/python-sdk-sandbox"
     },
-    // Background Check tutorial redirects
     {
       "source": "/dev-guide/go/introduction",
       "destination": "https://learn.temporal.io/tutorials/go/background-check/introduction/",
@@ -1908,8 +1907,6 @@
       "destination": "https://learn.temporal.io/tutorials/typescript/background-check/durable-execution/",
       "permanent": true
     },
-    // End Background Check tutorial redirects
-    // Catchall /dev-guide redirect
     {
       "source": "/dev-guide/:path*",
       "destination": "/develop/:path",
