@@ -2,7 +2,7 @@
 id: namespaces
 title: What is a Temporal Namespace?
 sidebar_label: Namespaces
-description: This guide provides a comprehensive overview of Namespaces.
+description: This guide covers everything about Namespaces within the Temporal Platform, highlighting their role in Workflow isolation, setting up, registering, and managing Namespaces, and the concept and benefits of Global Namespaces.
 slug: /namespaces
 toc_max_heading_level: 4
 keywords:
@@ -58,8 +58,8 @@ On self-hosted Temporal Clusters, you can register your Namespaces in the follow
 - Use the `temporal operator namespace create` or `temporal operator namespace update` command with the `--retention` modfiier to register your Namespaces, one at a time, and set the Retention Period on each.
 
   - [How to create a new Namespace using the Temporal CLI](/cli/operator#create)
-  - [How to create a new Namespace using the Go SDK](/dev-guide/go/features#register-namespace)
-  - [How to create a new Namespace using the Java SDK](/dev-guide/java/features#register-namespace)
+  - [How to create a new Namespace using the Go SDK](/develop/go/namespaces#register-namespace)
+  - [How to create a new Namespace using the Java SDK](/develop/java/namespaces#register-namespace)
 
 - In your Client program, register your Namespace using `RegisterNamespaceRequest` API available in all the SDKs.
 
@@ -73,11 +73,11 @@ On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces) or [tcld comma
 
 On self-hosted Temporal Cluster, you can manage your registered Namespaces using the Temporal CLI (recommended) or programmatically using APIs.
 
-{/* Technically correct but is this confusing for people since you can do this for non-self-hosted: */}
-{/* Note that these APIs and temporal CLI commands will not work with Temporal Cloud. */}
+{/* Technically correct but is this confusing for people since you can do this for non-self-hosted: _/}
+{/_ Note that these APIs and temporal CLI commands will not work with Temporal Cloud. */}
 
-- [How to manage Namespaces using the Go SDK](/dev-guide/go/features#manage-namespaces)
-- [How to manage Namespaces using the Java SDK](/dev-guide/java/features#manage-namespaces)
+- [How to manage Namespaces using the Go SDK](/develop/go/namespaces#manage-namespaces)
+- [How to manage Namespaces using the Java SDK](/develop/java/namespaces#manage-namespaces)
 
 - Update information and configuration for a registered Namespace on your Temporal Cluster:
 

@@ -2,7 +2,7 @@
 id: namespaces
 title: Namespace management - Temporal Cloud feature guide
 sidebar_label: Namespaces
-description: Create Namespaces, use Namespace endpoints for access, and obtain Namespace information.
+description: A Namespace is an isolation unit within the Temporal Platform, providing security boundaries, Workflow management, unique identifiers, and gRPC endpoints in Temporal Cloud.
 slug: /cloud/namespaces
 toc_max_heading_level: 4
 keywords:
@@ -293,7 +293,7 @@ Sample naming convention:
 
 #### Example 3: Namespace per use case, domain, and environment
 
-We recommend using one namespace per use case, domain, and environment combination when multiple services that are part of the same use case need to communicate with each another via [Signals](/workflows#signal) or by starting [Child Workflows](/encyclopedia/child-workflows).
+We recommend using one namespace per use case, domain, and environment combination when multiple services that are part of the same use case need to communicate with each another via [Signals](/encyclopedia/application-message-passing#signals) or by starting [Child Workflows](/encyclopedia/child-workflows).
 In this case, though, you must be mindful about Workflow Id uniqueness by prefixing each Workflow Id with a service-specific string.
 The name of each Task Queue must also be unique.
 If multiple teams are involved, the domain could also represent a team boundary.

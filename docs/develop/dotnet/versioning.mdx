@@ -2,7 +2,7 @@
 id: versioning
 title: Versioning - .NET SDK feature guide
 sidebar_label: Versioning
-description: The Versioning section of the Temporal Developer's guide covers how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
+description: Learn how to use the .NET SDK Patching API to safely deploy new code versions, handle deprecated patches, and manage Workflow activities using Temporal for long-running tasks.
 toc_max_heading_level: 4
 keywords:
   - best practices
@@ -43,24 +43,23 @@ This page shows how to do the following:
 - [Understanding deprecated Patches in the .NET SDK](#deprecated-patches)
 - [Safe Deployment of PostPatchActivity](#deploy-postpatchactivity)
 
-
 ## Introduction to Versioning
 
-Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction: 
+Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction:
 
 <div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
-  <iframe 
-    src="https://www.youtube.com/embed/kkP899WxgzY?autoplay=0" 
-    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }} 
-    frameborder="0" 
-    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+  <iframe
+    src="https://www.youtube.com/embed/kkP899WxgzY?autoplay=0"
+    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+    frameborder="0"
+    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
     allowfullscreen>
   </iframe>
 </div>
 
 ## Use the .NET SDK Patching API {#dotnet-sdk-patching-api}
 
-**How to use the .NET SDK Patching API using the Temporal .NET SDK** 
+**How to use the .NET SDK Patching API using the Temporal .NET SDK**
 
 In principle, the .NET SDK's patching mechanism operates similarly to other SDKs in a "feature-flag" fashion. However, the "versioning" API now uses the concept of "patching in" code.
 

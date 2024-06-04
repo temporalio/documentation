@@ -2,7 +2,7 @@
 id: cancellation
 title: Cancellation - Python SDK feature guide
 sidebar_label: Cancellation
-description: Cancel an Activity from a Workflow, sending Heartbeats and setting a Heartbeat Timeout, and handling cancellation errors.
+description: Learn how to cancel an Activity from a Workflow using the Temporal Python SDK. Ensure proper Heartbeat execution and handling to manage Workflow and Activity cancellations efficiently.
 toc_max_heading_level: 2
 keywords:
   - activity cancellation
@@ -24,7 +24,7 @@ tags:
 
 Canceling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat Timeout.
 If the Heartbeat is not invoked, the Activity cannot receive a cancellation request.
-When any non-immediate Activity is executed, the Activity Execution should send Heartbeats and set a [Heartbeat Timeout](/activities#heartbeat-timeout) to ensure that the server knows it is still working.
+When any non-immediate Activity is executed, the Activity Execution should send Heartbeats and set a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) to ensure that the server knows it is still working.
 
 When an Activity is canceled, an error is raised in the Activity at the next available opportunity.
 If cleanup logic needs to be performed, it can be done in a `finally` clause or inside a caught cancel error.

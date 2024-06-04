@@ -1,9 +1,9 @@
 ---
-id: temporal-client
+id: temporal-clients
 title: Temporal Client - Java SDK feature guide
 sidebar_label: Temporal Client
 toc_max_heading_level: 4
-description: Master the Temporal Java Client with our comprehensive guide that covers everything from initialization to Workflow Execution.
+description: This guide introduces Temporal Clients, explaining their role and configuration in Java to connect to various Temporal Services, including starting Workflow Executions and customizing Workflow options.
 keywords:
   - temporal java client
   - connect java client to temporal service
@@ -174,16 +174,16 @@ Add the Namespace to your Client build options and initialize the new Client:
 [Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.
-To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](/dev-guide/java/features#child-workflows) or External Workflow APIs.
+To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](/develop/java/child-workflows) or External Workflow APIs.
 
-See the [Customize Workflow Type](/dev-guide/java/foundations#workflow-type) section to see how to customize the name of the Workflow Type.
+See the [Customize Workflow Type](/develop/java/core-application#workflow-type) section to see how to customize the name of the Workflow Type.
 
 A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
 The Temporal Cluster then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
 
 Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
 
-See [`SignalwithStart`](/dev-guide/java/features#signal-with-start) to start a Workflow Execution to receive a Signal from within another Workflow.
+See [`SignalwithStart`](/develop/java/message-passing#signal-with-start) to start a Workflow Execution to receive a Signal from within another Workflow.
 
 **Using `WorkflowStub`**
 
@@ -298,7 +298,7 @@ See the [Temporal Polyglot](https://github.com/tsurdilo/temporal-polyglot) code 
 
 **Recurring start**
 
-You can start a Workflow Execution on a regular schedule by using [`setCronSchedule`](/dev-guide/java/features#cron-schedule) Workflow option in the Client code.
+You can start a Workflow Execution on a regular schedule by using [`setCronSchedule`](/develop/java/schedules#cron-schedule) Workflow option in the Client code.
 
 ### How to set a Workflow's Task Queue {#set-task-queue}
 
@@ -403,7 +403,7 @@ YourWorkflowInterface workflow1 =
 
 #### WorkflowExecutionTimeout
 
-Set the [Workflow Execution Timeout](/workflows#workflow-execution-timeout) with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowExecutionTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+Set the [Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout) with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowExecutionTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
 - Type: `time.Duration`
 - Default: Unlimited
