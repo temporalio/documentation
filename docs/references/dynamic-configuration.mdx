@@ -2,7 +2,7 @@
 id: dynamic-configuration
 title: Temporal Cluster dynamic configuration reference
 sidebar_label: Dynamic configuration
-description: Temporal Cluster provides dynamic configuration keys that you can update and apply to a running Cluster without restarting your services.
+description: Temporal Cluster offers dynamic configuration keys that you can update on the fly to optimize performance without service interruption. Customize these settings to meet specific Workflow, Activity, Namespace, or Task Queue requirements, and test thoroughly before deploying to production. For more details, visit the Temporal GitHub repository.
 toc_max_heading_level: 4
 keywords:
   - reference
@@ -192,8 +192,8 @@ If the number of queries made to the Persistence store exceeds the dynamic confi
 
 You can define default values for Activity and Workflow [Retry Policies](/encyclopedia/retry-policies) at the Cluster level with the following dynamic configuration keys.
 
-| Dynamic configuration key            | Type                          | Description                                                                                                       | Default value                                                                      |
-| ------------------------------------ | ----------------------------- | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Dynamic configuration key            | Type                          | Description                                                                                                       | Default value                                                                                   |
+| ------------------------------------ | ----------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | `history.defaultActivityRetryPolicy` | Map (key-value pair elements) | Server configuration for an Activity Retry Policy when it is not explicitly set for the Activity in your code.    | [Default values for retry Policy](/encyclopedia/retry-policies#default-values-for-retry-policy) |
 | `history.defaultWorkflowRetryPolicy` | Map (key-value pair elements) | Retry Policy for unset fields where the user has set an explicit `RetryPolicy`, but not specified all the fields. | [Default values for retry Policy](/encyclopedia/retry-policies#default-values-for-retry-policy) |
 
