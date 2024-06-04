@@ -29,7 +29,7 @@ tags:
 
 ## Signals {#signals}
 
-A [Signal](/workflows#signal) is a message sent to a running Workflow Execution.
+A [Signal](/encyclopedia/application-message-passing#signals) is a message sent to a running Workflow Execution.
 
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
@@ -269,7 +269,7 @@ Note that the Signal handler `setCustomer` is executed before the `@WorkflowMeth
 
 ## Queries {#queries}
 
-A [Query](/workflows#query) is a synchronous operation that is used to get the state of a Workflow Execution.
+A [Query](/encyclopedia/application-message-passing#queries) is a synchronous operation that is used to get the state of a Workflow Execution.
 
 ### Define a Query {#define-query}
 
@@ -501,7 +501,7 @@ Note that you can only register one `Workflow.registerListener(Object)` per Work
 
 ## Updates {#updates}
 
-An [Update](/workflows#update) is an operation that can mutate the state of a Workflow Execution and return a response.
+An [Update](/encyclopedia/application-message-passing#updates) is an operation that can mutate the state of a Workflow Execution and return a response.
 
 ### Define Update {#define-update}
 
