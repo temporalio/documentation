@@ -1,0 +1,86 @@
+---
+id: health
+title: Deployment health
+sidebar_label: Deployment health
+description: Use Temporal Cloud metrics to monitor your production deployment health.
+toc_max_heading_level: 4
+tags:
+  - temporal-cloud
+  - metrics
+  - observability
+  - health
+---
+
+Temporal Cloud metrics help you to monitor the health of your production deployments.
+
+## Detect availability issues
+
+When you see a sudden drop in Worker resource utilization, verify whether Temporal Cloud's API is showing an increased error rate.
+
+### Reference Metrics
+
+- [temporal\_cloud\_v0\_service\_latency\_bucket](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_service_latency_bucket)
+
+### Prometheus Query
+
+P99 service lag (histogram)
+
+```
+histogram_quantile(0.99, sum(rate(temporal_cloud_v0_service_latency_bucket[5m])) by (temporal_namespace, operation, le))
+```
+
+## Detect Temporal Cloud errors
+
+Check for front-end Temporal Service API errors.
+Note that Service API errors are not equivalent to guarantees mentioned in the Temporal Cloud SLA.
+
+### Reference Metrics
+
+- [temporal\_cloud\_v0\_frontend\_service\_error\_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_frontend_service_error_count)
+- [temporal\_cloud\_v0\_frontend\_service\_request\_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_frontend_service_request_count)
+
+
+### Prometheus Query
+
+Daily Average 10 Minute Window Errors
+
+```
+avg_over_time((
+    (
+
+        (
+            sum(increase(temporal_cloud_v0_frontend_service_request_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
+            -
+            sum(increase(temporal_cloud_v0_frontend_service_error_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
+        )
+        /
+        sum(increase(temporal_cloud_v0_frontend_service_request_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
+    )
+    
+    or vector(1)
+
+    )[1d:10m])
+```
+
+## Detect multi-region Namespace replication lag
+
+### Reference Metrics
+- [temporal\_cloud\_v0\_replication\_lag\_bucket](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket)
+- [temporal\_cloud\_v0\_replication\_lag\_sum](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_sum)
+- [temporal\_cloud\_v0\_replication\_lag\_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_count)
+
+### Prometheus Query
+
+P99 replication lag (histogram)
+
+```
+histogram_quantile(0.99, sum(rate(temporal_cloud_v0_replication_lag_bucket[1m])) by (temporal_namespace, le))
+```
+
+Average replication lag
+
+```
+sum(rate(temporal_cloud_v0_replication_lag_sum[1m])) by (temporal_namespace)
+/
+sum(rate(temporal_cloud_v0_replication_lag_count[1m])) by (temporal_namespace)
+```

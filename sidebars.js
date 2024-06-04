@@ -311,6 +311,7 @@ module.exports = {
               items: [
                 "production-deployment/cloud/metrics/general-setup",
                 "production-deployment/cloud/metrics/reference",
+                "production-deployment/cloud/metrics/health",
                 "production-deployment/cloud/metrics/datadog",
                 "production-deployment/cloud/metrics/prometheus-grafana",
               ],
