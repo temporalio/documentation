@@ -13,7 +13,7 @@ tags:
   - how-to
 ---
 
-Archival is a feature that automatically backs up [Event Histories](/workflows#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
+Archival is a feature that automatically backs up [Event Histories](/workflows#event-history) and Visibility records from Temporal Service persistence to a custom blob store.
 
 - [How to create a custom Archiver](#custom-archiver)
 - [How to set up Archival](#set-up-archival)
@@ -21,7 +21,7 @@ Archival is a feature that automatically backs up [Event Histories](/workflows#e
 Workflow Execution Event Histories are backed up after the [Retention Period](/clusters#retention-period) is reached.
 Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.
 
-Archival enables Workflow Execution data to persist as long as needed, while not overwhelming the Cluster's persistence store.
+Archival enables Workflow Execution data to persist as long as needed, while not overwhelming the Temporal Service's persistence store.
 
 This feature is helpful for compliance and debugging.
 
@@ -60,11 +60,11 @@ Archival configuration is defined in the [`config/development.yaml`](https://git
 Let's look at an example configuration:
 
 ```yaml
-# Cluster level Archival config
+# Temporal Service level Archival config
 archival:
   # Event History configuration
   history:
-    # Archival is enabled at the cluster level
+    # Archival is enabled at the Temporal Service level
     state: 'enabled'
     enableRead: true
     # Namespaces can use either the local filestore provider or the Google Cloud provider
@@ -105,7 +105,7 @@ The following table showcases acceptable values for each configuration and what 
 
 | Config                                         | Acceptable values                                                                  | Description                                                                                                                  |
 | ---------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `archival.history.state`                       | `enabled`, `disabled`                                                              | Must be `enabled` to use the Archival feature with any Namespace in the cluster.                                             |
+| `archival.history.state`                       | `enabled`, `disabled`                                                              | Must be `enabled` to use the Archival feature with any Namespace in the Temporal Service.                                             |
 | `archival.history.enableRead`                  | `true`, `false`                                                                    | Must be `true` to read from the archived Event History.                                                                      |
 | `archival.history.provider`                    | Sub provider configs are `filestore`, `gstorage`, `s3`, or `your_custom_provider`. | Default config specifies `filestore`.                                                                                        |
 | `archival.history.provider.filestore.fileMode` | File permission string                                                             | File permissions of the archived files. We recommend using the default value of `"0666"` to avoid read/write issues.         |
@@ -113,15 +113,15 @@ The following table showcases acceptable values for each configuration and what 
 | `namespaceDefaults.archival.history.state`     | `enabled`, `disabled`                                                              | Default state of the Archival feature whenever a new Namespace is created without specifying the Archival state.             |
 | `namespaceDefaults.archival.history.URI`       | Valid URI                                                                          | Must be a URI of the file store location and match a schema that correlates to a provider.                                   |
 
-Additional resources: [Cluster configuration reference](/references/configuration).
+Additional resources: [Temporal Service configuration reference](/references/configuration).
 
 #### Namespace creation
 
-Although Archival is configured at the cluster level, it operates independently within each Namespace.
+Although Archival is configured at the Temporal Service level, it operates independently within each Namespace.
 If an Archival URI is not specified when a Namespace is created, the Namespace uses the value of `defaultNamespace.archival.history.URI` from the `config/development.yaml` file.
 The Archival URI cannot be changed after the Namespace is created.
 Each Namespace supports only a single Archival URI, but each Namespace can use a different URI.
-A Namespace can safely switch Archival between `enabled` and `disabled` states as long as Archival is enabled at the cluster level.
+A Namespace can safely switch Archival between `enabled` and `disabled` states as long as Archival is enabled at the Temporal Service level.
 
 Archival is supported in [Global Namespaces](/namespaces#global-namespace) (Namespaces that span multiple clusters).
 When Archival is running in a Global Namespace, it first runs on the active cluster; later it runs on the standby cluster. Before archiving, a history check is done to see what has been previously archived.
