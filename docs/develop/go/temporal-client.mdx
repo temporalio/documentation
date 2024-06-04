@@ -40,7 +40,7 @@ The pages shows how to do the following:
 **How to connect to the local Temporal CLI development Temporal Service using the Go SDK**
 
 A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/clusters).
-Communication with a Temporal Cluster includes, but isn't limited to, the following:
+Communication with a Temporal Service includes, but isn't limited to, the following:
 
 - Starting Workflow Executions.
 - Sending Signals to Workflow Executions.
@@ -51,16 +51,16 @@ Communication with a Temporal Cluster includes, but isn't limited to, the follow
 :::caution
 
 A Temporal Client cannot be initialized and used inside a Workflow.
-However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Cluster.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Service.
 
 :::
 
-When you are running a Cluster locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
+When you are running a Temporal Service locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
 Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
 
 Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
 
-If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`, which is the port of the development Cluster.
+If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`, which is the port of the development Temporal Service.
 
 If you don't set a custom Namespace name in the Namespace field, the client connects to the default Namespace.
 
@@ -83,7 +83,7 @@ import (
 )
 
 func main() {
-	// Create a Temporal Client to communicate with the Temporal Cluster.
+	// Create a Temporal Client to communicate with the Temporal Service.
 	// A Temporal Client is a heavyweight object that should be created just once per process.
 	temporalClient, err := client.Dial(client.Options{
 		HostPort: client.DefaultHostPort,
@@ -113,7 +113,7 @@ When you connect to [Temporal Cloud](/cloud), you need to provide additional con
 
 For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
 
-For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 To connect to and run Workflows through Temporal Cloud, you need the following:
 
@@ -125,7 +125,7 @@ To connect to and run Workflows through Temporal Cloud, you need the following:
 
 For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
 
-For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 <!--SNIPSTART sample-apps-go-cloud-client {"selectedLines": ["1-38", "64"]} -->
 
@@ -187,8 +187,8 @@ To spawn Workflow Executions from within another Workflow Execution, use either 
 
 See the [Customize Workflow Type](/develop/go/core-application#customize-workflow-type) section to see how to customize the name of the Workflow Type.
 
-A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
-The Temporal Cluster then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
+A request to spawn a Workflow Execution causes the Temporal Service to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
+The Temporal Service then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
 
 To spawn a [Workflow Execution](/workflows#workflow-execution), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
 
@@ -633,8 +633,8 @@ To spawn Workflow Executions from within another Workflow Execution, use either 
 
 See the [Customize Workflow Type](/develop/go/core-application#customize-workflow-type) section to see how to customize the name of the Workflow Type.
 
-A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
-The Temporal Cluster then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
+A request to spawn a Workflow Execution causes the Temporal Service to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
+The Temporal Service then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
 
 Workflows can be started both synchronously and asynchronously.
 You can use typed or untyped Workflows stubs available via `Temporal\Client\WorkflowClient`.
