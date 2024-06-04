@@ -8,13 +8,13 @@ keywords:
   - temporal-clients
 tags:
   - temporal-clients
-description: Learn to connect a Temporal Client to a Temporal Cluster and start Workflow Executions. This guide covers communication, including sending signals and queries.
+description: Learn to connect a Temporal Client to a Temporal Service and start Workflow Executions. This guide covers communication, including sending signals and queries.
 ---
 
-## How to connect a Temporal Client to a Temporal Cluster {#connect-to-a-dev-cluster}
+## How to connect a Temporal Client to a Temporal Service {#connect-to-a-dev-cluster}
 
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Cluster](/clusters).
-Communication with a Temporal Cluster includes, but isn't limited to, the following:
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/clusters).
+Communication with a Temporal Service includes, but isn't limited to, the following:
 
 - Starting Workflow Executions.
 - Sending Signals to Workflow Executions.
@@ -25,16 +25,16 @@ Communication with a Temporal Cluster includes, but isn't limited to, the follow
 :::caution
 
 A Temporal Client cannot be initialized and used inside a Workflow.
-However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Cluster.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Service.
 
 :::
 
-When you are running a Cluster locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
+When you are running a Temporal Service locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
 Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
 
-Create an instance of the `$workflowClient` class and use the `create()` method to connect a Temporal Client to a Temporal Cluster.
+Create an instance of the `$workflowClient` class and use the `create()` method to connect a Temporal Client to a Temporal Service.
 
-Specify the target host, `localhost:7223`, parameter as a string and provide the TLS configuration for connecting to a Temporal Cluster.
+Specify the target host, `localhost:7223`, parameter as a string and provide the TLS configuration for connecting to a Temporal Service.
 
 ```php
 use Temporal\Client\GRPC\ServiceClient;
@@ -87,8 +87,8 @@ To spawn Workflow Executions from within another Workflow Execution, use either 
 
 See the [Customize Workflow Type](/develop/php/core-application#workflow-type) section to see how to customize the name of the Workflow Type.
 
-A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
-The Temporal Cluster then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
+A request to spawn a Workflow Execution causes the Temporal Service to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
+The Temporal Service then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
 
 Workflows can be started both synchronously and asynchronously.
 You can use typed or untyped Workflows stubs available via `Temporal\Client\WorkflowClient`.
