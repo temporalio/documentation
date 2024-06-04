@@ -1849,15 +1849,63 @@
     },
     {
       "source": "/dev-guide/go/introduction",
-      "destination": "https://learn.temporal.io/tutorials/go/background-check/introduction/"
+      "destination": "https://learn.temporal.io/tutorials/go/background-check/introduction/",
+      "permanent": true
     },
     {
       "source": "/dev-guide/go/project-setup",
-      "destination": "https://learn.temporal.io/tutorials/go/background-check/project-setup/"
+      "destination": "https://learn.temporal.io/tutorials/go/background-check/project-setup/",
+      "permanent": true
     },
     {
       "source": "/dev-guide/go/durable-execution",
-      "destination": "https://learn.temporal.io/tutorials/go/background-check/durable-execution/"
+      "destination": "https://learn.temporal.io/tutorials/go/background-check/durable-execution/",
+      "permanent": true
+    },
+    {
+      "source": "/dev-guide/java/introduction",
+      "destination": "https://learn.temporal.io/tutorials/java/background-check/introduction/",
+      "permanent": true
+    },
+    {
+      "source": "/dev-guide/java/project-setup",
+      "destination": "https://learn.temporal.io/tutorials/java/background-check/project-setup/",
+      "permanent": true
+    },
+    {
+      "source": "/dev-guide/java/durable-execution",
+      "destination": "https://learn.temporal.io/tutorials/java/background-check/durable-execution/",
+      "permanent": true
+    },
+    {
+      "source": "/dev-guide/python/introduction",
+      "destination": "https://learn.temporal.io/tutorials/python/background-check/introduction/",
+      "permanent": true
+    },
+    {
+      "source": "/dev-guide/python/project-setup",
+      "destination": "https://learn.temporal.io/tutorials/python/background-check/project-setup/",
+      "permanent": true
+    },
+    {
+      "source": "/dev-guide/python/durable-execution",
+      "destination": "https://learn.temporal.io/tutorials/python/background-check/durable-execution/",
+      "permanent": true
+    },
+    {
+      "source": "/dev-guide/typescript/introduction",
+      "destination": "https://learn.temporal.io/tutorials/gtypescript/background-check/introduction/",
+      "permanent": true
+    },
+    {
+      "source": "/dev-guide/typescript/project-setup",
+      "destination": "https://learn.temporal.io/tutorials/typescript/background-check/project-setup/",
+      "permanent": true
+    },
+    {
+      "source": "/dev-guide/typescript/durable-execution",
+      "destination": "https://learn.temporal.io/tutorials/typescript/background-check/durable-execution/",
+      "permanent": true
     },
     {
       "source": "/dev-guide/:path*",
