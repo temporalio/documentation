@@ -1,0 +1,137 @@
+---
+id: cancellation
+title: Cancellation
+sidebar_label: Cancellation
+description: Learn how to handle Cancellations in Temporal Workflows and Activities, set Activity Heartbeat Timeouts, and send Cancellation requests from a Temporal Client in Go.
+toc_max_heading_level: 4
+keywords:
+  - cancellation
+  - go sdk
+  - overview
+tags:
+  - cancellation
+  - go-sdk
+  - overview
+---
+
+This pages shows the following:
+
+- How to handle a Cancellation request within a Workflow.
+- How to set an Activity Heartbeat Timeout.
+- How to listen for and handle a Cancellation request within an Activity.
+- How to send a Cancellation request from a Temporal Client.
+
+## Handle Cancellation in Workflow {#handle-cancellation-in-workflow}
+
+**How to handle a Cancellation in a Workflow in Go.**
+
+Workflow Definitions can be written to handle execution cancellation requests with Go's `defer` and the `workflow.NewDisconnectedContext` API.
+In the Workflow Definition, there is a special Activity that handles clean up should the execution be cancelled.
+
+If the Workflow receives a Cancellation Request, but all Activities gracefully handle the Cancellation, and/or no Activities are skipped then the Workflow status will be Complete.
+It is completely up to the needs of the business process and your use case which determines whether you want to return the Cancellation error to show a Canceled status or Complete status regardless of whether a Cancellation has propagated to and/or skipped Activities.
+
+<!--SNIPSTART go-features-cancellation-workflow {"selectedLines": ["14-15", "18", "20-38", "41", "43-45", "47-50"]}-->
+
+[sample-apps/go/features/cancellation/workflow.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/cancellation/workflow.go)
+
+```go
+// ...
+// YourWorkflow is a Workflow Definition that shows how it can be canceled.
+func YourWorkflow(ctx workflow.Context) error {
+// ...
+	activityOptions := workflow.ActivityOptions{
+// ...
+		HeartbeatTimeout:    5 * time.Second,
+		// Set WaitForCancellation to true to have the Workflow wait to return
+		// until all in progress Activities have completed, failed, or accepted the Cancellation.
+		WaitForCancellation: true,
+	}
+	defer func() {
+		// This logic ensures cleanup only happens if there is a Cancelation error
+		if !errors.Is(ctx.Err(), workflow.ErrCanceled) {
+			return
+		}
+		// For the Workflow to execute an Activity after it receives a Cancellation Request
+		// It has to get a new disconnected context
+		newCtx, _ := workflow.NewDisconnectedContext(ctx)
+		// This Activity is only executed if
+		err := workflow.ExecuteActivity(newCtx, a.CleanupActivity).Get(ctx, nil)
+		if err != nil {
+			logger.Error("CleanupActivity failed", "Error", err)
+		}
+	}()
+// ...
+	err := workflow.ExecuteActivity(ctx, a.ActivityToBeCanceled).Get(ctx, &result)
+// ...
+	// This call to execute the Activity is expected to return an error "canceled".
+	// And the Activity Execution is skipped.
+	err = workflow.ExecuteActivity(ctx, a.ActivityToBeSkipped).Get(ctx, nil)
+// ...
+	// Return any errors.
+	// If a CanceledError is returned, the Workflow changes to a Canceled state.
+	return err
+}
+```
+
+<!--SNIPEND-->
+
+## Handle Cancellation in an Activity {#handle-cancellation-in-an-activity}
+
+**How to handle a Cancellation in an Activity in Go.**
+
+Ensure that the Activity is Heartbeating to receive the Cancellation request and stop execution.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/cancellation/activity.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+// ActivityToBeCanceled is the Activity that will respond to the Cancellation Request
+func (a *Activities) ActivityToBeCanceled(ctx context.Context) (string, error) {
+// ...
+	// A for select statement is a common approach to listening for a Cancellation is an Activity
+	for {
+		select {
+		case <-time.After(1 * time.Second):
+			logger.Info("Heartbeating...")
+			activity.RecordHeartbeat(ctx, "")
+		// Listen for ctx.Done() to know if a Cancellation Request has propagated to the Activity.
+		case <-ctx.Done():
+			logger.Info("This Activity is canceled!")
+			return "I am canceled by Done", nil
+		}
+	}
+}
+// ...
+```
+
+## Request Cancellation {#request-cancellation}
+
+**How to request Cancellation of a Workflow and Activities in Go.**
+
+Use the `CancelWorkflow` API to cancel a Workflow Execution using its Id.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/cancellation/cancel/main.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+func main() {
+// ...
+	// Call the CancelWorkflow API to cancel a Workflow
+	// In this call we are relying on the Workflow Id only.
+	// But a Run Id can also be supplied to ensure the correct Workflow is Canceled.
+	err = temporalClient.CancelWorkflow(context.Background(), cancellation.WorkflowId, "")
+	if err != nil {
+		log.Fatalln("Unable to cancel Workflow Execution", err)
+	}
+// ...
+}
+```

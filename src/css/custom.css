@@ -20,6 +20,10 @@
   --ifm-link-hover-decoration: none;
   --ifm-link-hover-color: inherit; */
   --ifm-link-decoration: underline;
+  --tag-background-color-light: #eee;
+  --tag-background-color-dark: #444;
+  --tag-text-color-light: #333;
+  --tag-text-color-dark: #ddd;
 }
 
 html[data-theme="dark"] {
@@ -48,6 +52,8 @@ html[data-theme="dark"] {
   --ifm-card-background-color: #1a1a1a;
   /* --card-color: var(--ifm-color-primary-dark); */
   --docusaurus-highlighted-code-line-bg: rgb(57, 104, 77);
+  --tag-background-color: var(--tag-background-color-dark);
+  --tag-text-color: var(--tag-text-color-dark);
 }
 
 html[data-theme="light"] {
@@ -76,6 +82,8 @@ html[data-theme="light"] {
   --ifm-badge-background-color: rgba(239, 246, 255); */
   --card-color: #ffffff;
   --docusaurus-highlighted-code-line-bg: rgb(57, 104, 77);
+  --tag-background-color: var(--tag-background-color-light);
+  --tag-text-color: var(--tag-text-color-light);
 }
 
 /* --ifm-background-surface-color: #000000;

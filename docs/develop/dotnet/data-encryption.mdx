@@ -2,7 +2,7 @@
 id: data-encryption
 title: Data encryption - .NET SDK feature guide
 sidebar_label: Data encryption
-description: Data encryption
+description: Learn how to use a custom Payload Codec and Converter in the .NET SDK to modify Temporal Data Conversion behavior, including examples for encryption and camel case conversion.
 keywords:
   - sdk
   - dotnet
@@ -128,7 +128,5 @@ var client = await TemporalClient.ConnectAsync(new()
     DataConverter = DataConverter.Default with { PayloadConverter = new CamelCasePayloadConverter() },
 });
 ```
-
-
 
 <!--  ### Custom Type Data Conversion TODO(cretz): Develop https://github.com/temporalio/samples-dotnet/issues/38 first -->

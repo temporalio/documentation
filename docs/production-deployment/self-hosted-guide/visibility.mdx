@@ -2,7 +2,7 @@
 id: visibility
 title: Self-hosted Visibility feature setup
 sidebar_label: Visibility
-description: Learn how to set up the Temporal self-hosted Cluster Visibility feature.
+description: A Visibility store is essential for your Temporal Cluster, supporting features like batch operations and custom Search Attributes for filtering Workflow Executions. Upgrade to PostgreSQL 12, MySQL 8.0.17, or SQLite 3.31.0 with Temporal Server 1.20+ for advanced Visibility
 slug: /self-hosted-guide/visibility
 toc_max_heading_level: 4
 keywords:
@@ -386,7 +386,6 @@ You can integrate Elasticsearch with your Temporal Cluster as your Visibility st
 We recommend using Elasticsearch for large-scale operations on the Temporal Cluster.
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file to add Elasticsearch as the `visibilityStore`, and run the index schema setup commands.
-
 
 **Persistence configuration**
 

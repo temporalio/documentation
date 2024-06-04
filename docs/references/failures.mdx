@@ -2,7 +2,7 @@
 id: failures
 title: Temporal Failures reference
 sidebar_label: Failures
-description: A Failure is Temporal's representation of various types of errors that occur in the system.
+description: A Failure in Temporal represents different types of errors in the system, categorized and managed uniquely within SDKs and protobuf messages, impacting Workflow and Activity operations.
 toc_max_heading_level: 4
 keywords:
   - explanation
@@ -84,7 +84,7 @@ When an [Activity Execution](/activities#activity-execution) fails, the Applicat
 
 ### Non-retryable
 
-When an Activity or Workflow throws an Application Failure, the Failure's `type` field is matched against a Retry Policy's list of [non-retryable errors](/retry-policies#non-retryable-errors) to determine whether to retry the Activity or Workflow.
+When an Activity or Workflow throws an Application Failure, the Failure's `type` field is matched against a Retry Policy's list of [non-retryable errors](/encyclopedia/retry-policies#non-retryable-errors) to determine whether to retry the Activity or Workflow.
 Activities and Workflow can also avoid retrying by setting an Application Failure's `non_retryable` flag to `true`.
 
 ## Cancelled Failure

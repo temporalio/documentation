@@ -3,7 +3,7 @@ id: temporal-clients
 title: Temporal Client - Python SDK feature guide
 sidebar_label: Temporal Client
 toc_max_heading_level: 4
-description: Master the Temporal Python Client with our comprehensive guide that covers everything from initialization to Workflow Execution.
+description: Discover how to connect and use Temporal Clients with Python. Learn to link your Client to Temporal Service, Temporal Cloud, start Workflow Executions, set Task Queues, Workflow Ids, and get Workflow results.
 keywords:
   - temporal python client
   - connect python client to temporal service
@@ -67,7 +67,6 @@ Use the `connect()` method on the Client class to create and connect to a Tempor
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -119,7 +118,6 @@ Use the `connect()` method on the Client class to create and connect to a Tempor
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -137,7 +135,6 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
 
@@ -168,7 +165,6 @@ The `client_cert` must be combined with `client_private_key` to authenticate the
 </div>
 
 ```python
-
 from temporalio.client import Client, TLSConfig
 # ...
 # ...
@@ -213,7 +209,6 @@ To start a Workflow Execution in Python, use either the [`start_workflow()`](htt
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -250,7 +245,6 @@ To set a Task Queue in Python, specify the `task_queue` argument when executing 
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -289,7 +283,6 @@ The `id` argument should be a unique identifier for the Workflow Execution.
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -336,7 +329,6 @@ If the Workflow does not exist, this call fails.
 </div>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")

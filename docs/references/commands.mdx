@@ -2,7 +2,7 @@
 id: commands
 title: Temporal Commands reference
 sidebar_label: Commands
-description: A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.
+description: Discover the range of Commands Workers can issue to the Temporal Cluster after Workflow Task Execution, from Completing Workflow Execution to Start Timer and Signal External Workflow Execution.
 toc_max_heading_level: 4
 keywords:
   - reference
@@ -57,7 +57,7 @@ By default, you cannot have more than 2,000 pending Child Workflows.
 
 ### SignalExternalWorkflowExecution
 
-This Command is triggered by a call to [Signal](/workflows#signal) another Workflow Execution.
+This Command is triggered by a call to [Signal](/encyclopedia/application-message-passing#signals) another Workflow Execution.
 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated)

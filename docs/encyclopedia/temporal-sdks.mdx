@@ -2,7 +2,7 @@
 id: temporal-sdks
 title: About Temporal SDKs
 sidebar_label: About the SDKs
-description: Explore the components that make up a Temporal SDK and how they work to create a durable execution.
+description: Temporal SDKs are open-source tools enabling scalable and reliable application development. They feature APIs for Workflow and Activity execution, automatic retries, and resilience mechanisms, making it easier to build fault-tolerant applications.
 toc_max_heading_level: 4
 keywords:
   - components
@@ -58,12 +58,12 @@ Hence, a Temporal Application can run for seconds or years in the presence of ar
 
 Each Temporal SDK targets a specific programming language.
 
-- [Go SDK developer's guide](/dev-guide/go/)
-- [Java SDK developer's guide](/dev-guide/java/introduction)
-- [PHP SDK developer's guide](/dev-guide/php)
-- [Python SDK developer's guide](/develop/python)
-- [TypeScript SDK developer's guide](/dev-guide/typescript/introduction)
-- [.NET SDK API reference](https://dotnet.temporal.io/)
+- [Go SDK feature guides](/develop/go)
+- [Java SDK feature guides](/develop/java)
+- [PHP SDK feature guides](/develop/php)
+- [Python SDK feature guides](/develop/python/)
+- [TypeScript SDK feature guides](/develop/typescript/)
+- [.NET SDK feature guides](/develop/dotnet)
 
 Despite supporting multiple languages, and supporting many features, Temporal SDKs aim to make developers feel at home in their language.
 
@@ -143,9 +143,7 @@ Another quality of the SDKs lies in their ability to replay Workflow Executions,
 We will delve into this idea more later, but for now, it signifies that the SDKs can automatically continue a process from the point of interruption, should a failure occur.
 This capability stems from the SDK's ability to persist each step the program takes.
 
-The "Developing for Durable Execution" chapter of the Background Check tutorials covers this concept in more detail.
-
-- [Go SDK Background Check tutorial](https://learn.temporal.io/tutorials/go/background-check/durable-execution/)
+{/* - [Developing for Durable Execution using the Go SDK](/develop/go/durable-execution) */}
 
 ## Temporal SDKs major components {#major-components}
 
@@ -159,7 +157,7 @@ Temporal SDKs offer developers the following:
 
 <PrettyImage src="/diagrams/temporal-sdk-components.svg" title="Temporal SDK components create a runtime across your environment and a Temporal Service" />
 
-Let’s break down each one.
+Let's break down each one.
 
 ### Temporal Client
 
@@ -182,11 +180,11 @@ It showcases how to initialize a Temporal Client, create a connection to a local
 The following code is for example purposes only.
 For tested code samples and best practices, use your preferred language SDK's developer's guide.
 
-- [Go SDK Temporal Client feature guide](/develop/go/temporal-client)
-- [Java SDK Temporal Client feature guide](/develop/java/temporal-client)
-- [PHP SDK Temporal Client feature guide](/dev-guide/php/foundations#connect-to-a-dev-cluster)
+- [Go SDK Temporal Client feature guide](/develop/go/temporal-clients)
+- [Java SDK Temporal Client feature guide](/develop/java/temporal-clients)
+- [PHP SDK Temporal Client feature guide](/develop/php/temporal-clients#connect-to-a-dev-cluster)
 - [Python SDK Temporal Client feature guide](/develop/python/temporal-clients#connect-to-a-dev-cluster)
-- [TypeScript SDK Temporal Client feature guide](/dev-guide/typescript/foundations#connect-to-a-dev-cluster)
+- [TypeScript SDK Temporal Client feature guide](/develop/typescript/core-application#connect-to-a-dev-cluster)
 
 :::
 
@@ -327,7 +325,7 @@ Additionally, the state of the Workflow is automatically persisted so if a failu
 ### APIs to create and manage Worker Processes
 
 Workers are responsible for executing Workflow and Activity code (application code). The SDK provides APIs for configuring and starting Workers, enabling developers to control how the code is executed.
-Workers are horizontally scalable, often run with systems like Kubernetes, and configured according to the application’s needs.
+Workers are horizontally scalable, often run with systems like Kubernetes, and configured according to the application's needs.
 
 Here is an example of how you could initialize a Worker using the Go SDK.
 
@@ -422,13 +420,13 @@ The Temporal Service functions more as a choreographer than a conductor. Rather 
 A Workflow might request to execute an Activity, start a Timer, or start a Child Workflow, each of which translates into a Command, dispatched to the Temporal Service.
 In addition to acting on these Commands, the Temporal Service documents that interaction by appending their corresponding Events into to the Workflow Execution's Event History.
 
-Take for instance the call to execute an Activity. When a Workflow invokes it, the Worker doesn’t immediately execute that Activity code. Instead, it generates a ScheduleActivityTask Command, dispatching it to the Temporal Service. In response, the Temporal Service queues up a new Activity Task. Only when a Worker finds itself free, it collects the task and begins executing the Activity code.
+Take for instance the call to execute an Activity. When a Workflow invokes it, the Worker doesn't immediately execute that Activity code. Instead, it generates a ScheduleActivityTask Command, dispatching it to the Cluster. In response, the Cluster queues up a new Activity Task. Only when a Worker finds itself free, it collects the task and begins executing the Activity code.
 
 The Temporal Service persists Workflow Execution Event History, so that if there is a failure, the SDK Worker is able to Replay the execution and resume where it left off.
 
 This is where the deterministic constraints of the Workflow code comes into play, requiring the use of Activities to create side effects and interact with the outside world.
 
-Let’s look at an example Workflow with a single Activity.
+Let's look at an example Workflow with a single Activity.
 
 ```go
 func LoanApplication(ctx workflow.Context, input *LoanApplicationWorkflowInput) (*LoanApplicationWorkflowResult, error) {
@@ -497,7 +495,7 @@ The Temporal Service creates a new Workflow Task which the Worker picks up.
 
 <PrettyImage src="/diagrams/how-sdk-works-1.svg" title="The Worker picks up the new Task" />
 
-This is when the SDK Worker Replays the Workflow code, uses the Event History as guidance on what to expect. If the Replay encounters an Event that doesn’t match up with what is expected from the code, a [non-determinism](/references/errors#non-deterministic-error) error gets thrown.
+This is when the SDK Worker Replays the Workflow code, uses the Event History as guidance on what to expect. If the Replay encounters an Event that doesn't match up with what is expected from the code, a [non-determinism](/references/errors#non-deterministic-error) error gets thrown.
 
 If there is alignment, the Worker continues evaluating code.
 
