@@ -85,14 +85,14 @@ To set up PrivateLink connectivity with Temporal Cloud, you'll need to perform t
 
 :::tip
 
-PrivateLink endpoint services are regional. 
+PrivateLink endpoint services are regional.
 Individual Namespaces do not use separate services.
 
 :::
 
 Once set up, you can test your PrivateLink connectivity using:
 
-* The Temporal CLI, by setting the [`--tls-server-name`](/cli/cmd-options#tls-server-name) parameter to the Namespace address (`<namespace>.<account>.tmprl.cloud`). For example:
+- The Temporal CLI, by setting the [`--tls-server-name`](/cli/cmd-options#tls-server-name) parameter to the Namespace address (`<namespace>.<account>.tmprl.cloud`). For example:
 
   ```
   temporal workflow count \
@@ -103,7 +103,7 @@ Once set up, you can test your PrivateLink connectivity using:
       --namespace <namespace>
   ```
 
-* Non-Temporal tools like grpcURL, useful for testing from environments that restrict tool usage. For example:
+- Non-Temporal tools like grpcURL, useful for testing from environments that restrict tool usage. For example:
 
   ```
   grpcurl \
@@ -114,7 +114,7 @@ Once set up, you can test your PrivateLink connectivity using:
       temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
   ```
 
-* Temporal SDKs: by setting the endpoint server address argument to the PrivateLink endpoint (`<DNS associated with VPC endpoint>:7233`).
+- Temporal SDKs: by setting the endpoint server address argument to the PrivateLink endpoint (`<DNS associated with VPC endpoint>:7233`).
 
 ### Encryption
 

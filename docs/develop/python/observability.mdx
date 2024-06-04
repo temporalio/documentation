@@ -130,7 +130,7 @@ Use the built-in [Logging facility for Python](https://docs.python.org/3/library
 
 ## Visibility APIs {#visibility}
 
-The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
+The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
 ### Use Search Attributes {#search-attributes}
 
@@ -146,7 +146,7 @@ You can do this with [Search Attributes](/visibility#search-attribute).
 
 The steps to using custom Search Attributes are:
 
-- Create a new Search Attribute in your Cluster in the Temporal CLI or Web UI.
+- Create a new Search Attribute in your Temporal Service in the Temporal CLI or Web UI.
   - For example: `temporal operator search-attribute create --name CustomKeywordField --type Text`
     - Replace `CustomKeywordField` with the name of your Search Attribute.
     - Replace `Text` with a type value associated with your Search Attribute: `Text` | `Keyword` | `Int` | `Double` | `Bool` | `Datetime` | `KeywordList`
@@ -179,7 +179,7 @@ Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.h
 
 ### How to set custom Search Attributes {#custom-search-attributes}
 
-After you've created custom Search Attributes in your Cluster (using `temporal operator search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
 To set custom Search Attributes, use the `search_attributes` parameter of the ['start_workflow()'](https://python.temporal.io/temporalio.client.Client.html#start_workflow) method.
 
