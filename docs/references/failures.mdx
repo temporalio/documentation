@@ -16,7 +16,7 @@ tags:
 
 A Failure is Temporal's representation of various types of errors that occur in the system.
 
-There are different types of Failures, and each has a different type in the SDKs and different information in the protobuf messages (which are used to communicate with the Temporal Cluster and appear in [Event History](/workflows#event-history)).
+There are different types of Failures, and each has a different type in the SDKs and different information in the protobuf messages (which are used to communicate with the Temporal Service and appear in [Event History](/workflows#event-history)).
 
 ## Temporal Failure
 
@@ -157,7 +157,7 @@ In the SDKs:
 
 ## Server Failure
 
-A Server Failure is used for errors that originate in the Cluster.
+A Server Failure is used for errors that originate in the Temporal Service.
 
 - TypeScript: [ServerFailure](https://typescript.temporal.io/api/classes/common.ServerFailure)
 - Java: [ServerFailure](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/ServerFailure.html)
