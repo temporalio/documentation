@@ -15,7 +15,7 @@ description: Experience disaster-tolerant deployment with Temporal Cloud's multi
 
 :::tip Support, stability, and dependency info
 
-- Multi-region Namespaces are in [Public Preview](/evaluate/release-stages#public-preview) for Temporal Cloud.
+Multi-region Namespaces are in [Public Preview](/evaluate/release-stages#public-preview) for Temporal Cloud.
 
 :::
 
@@ -97,8 +97,8 @@ This ensures that existing Workflows can progress and new Workflows can be creat
 
 :::info
 
-- You can test your multi-region Namespace by manually triggering failovers using the UI page or the 'tcld' CLI utility.
-  In most scenarios, we recommend you let Temporal handle failovers for you.
+You can test your multi-region Namespace by manually triggering failovers using the UI page or the 'tcld' CLI utility.
+In most scenarios, we recommend you let Temporal handle failovers for you.
 
 :::
 
@@ -137,7 +137,7 @@ This mode favors _consistency_ over availability.
 #### Forced failover {#forced-failover}
 
 In this mode, a Namespace immediately activates in the standby region.
-Events not yet replicated due to [replication lag](/cloud/multi-region#replication-lag) will undergo [conflict resolution](/cloud/multi-region#conflict-resolution) upon reaching the new active region.
+Events not replicated due to [replication lag](/cloud/multi-region#replication-lag) will undergo [conflict resolution](/cloud/multi-region#conflict-resolution) upon reaching the new active region.
 
 This mode prioritizes _availability_ over consistency.
 
@@ -166,7 +166,7 @@ Our recovery time objective ([RTO](https://en.wikipedia.org/wiki/Disaster_recove
 
 :::info
 
-- During a disaster scenario in which the data on the hard drives in the active region cannot be recovered, the duration of data loss may be as high as the [replication lag](/cloud/multi-region#replication-lag) at the time of disaster.
+During a disaster scenario in which the data on the hard drives in the active region cannot be recovered, the duration of data loss may be as high as the [replication lag](/cloud/multi-region#replication-lag) at the time of disaster.
 
 :::
 
@@ -176,9 +176,10 @@ Multi-region Namespaces are available in all existing [Temporal Cloud regions](/
 
 :::tip
 
-- Namespace pairing is currently limited to regions within the same continent.
-  South America is excluded as only one region is available.
-  :::
+Namespace pairing is currently limited to regions within the same continent.
+South America is excluded as only one region is available.
+
+:::
 
 ## Architecture {#architecture}
 
@@ -203,8 +204,8 @@ Temporal Cloud ensures that all regions will eventually share a consistent and u
 
 :::info
 
-- A Namespace failover, which changes the "active region" field of a Namespace record, is an update.
-  This update is replicated via the Namespace metadata mechanism.
+A Namespace failover, which changes the "active region" field of a Namespace record, is an update.
+This update is replicated via the Namespace metadata mechanism.
 
 :::
 
@@ -250,11 +251,11 @@ This capability is crucial for Workflow Executions to continue their forward pro
 
 :::warning
 
-- Design your activities to succeed once and only once.
-  This "idempotent" approach avoids process duplication that could withdraw money twice or ship extra orders by mistake.
-  Run-once actions maintain data integrity and prevent costly errors.
-  Idempotency keeps operations from producing additional effects.
-  Protect your processes from accidental or repeated actions for more reliable execution.
+Design your activities to succeed once and only once.
+This "idempotent" approach avoids process duplication that could withdraw money twice or ship extra orders by mistake.
+Run-once actions maintain data integrity and prevent costly errors.
+Idempotency keeps operations from producing additional effects.
+Protect your processes from accidental or repeated actions for more reliable execution.
 
 :::
 
@@ -277,7 +278,13 @@ Use these tools to create, upgrade, and discontinue your multi-region Namespace.
 
 :::warning
 
-- Only [Global Admins](https://docs.temporal.io/cloud/users#account-level-roles) and [Namespace Admins](https://docs.temporal.io/cloud/users#namespace-level-permissions) may create an multi-region Namespace (MRN), upgrade an existing namespace to MRN, or trigger an MRN failover.
+Only [Global Admins](https://docs.temporal.io/cloud/users#account-level-roles) and [Namespace Admins](https://docs.temporal.io/cloud/users#namespace-level-permissions) may create an multi-region Namespace (MRN), upgrade an existing namespace to MRN, or trigger an MRN failover.
+
+:::
+
+:::info Support, stability, and dependency info
+
+Temporal Cloud’s Terraform provider does not support multi-region Namespaces.
 
 :::
 
@@ -288,7 +295,7 @@ MRNs provide multi-region deployment backed by Temporal's data replication and a
 
 :::tip
 
-- While reading through this coverage, remember that pairing is currently limited to regions within the same continent.
+While reading through this coverage, remember that pairing is currently limited to regions within the same continent.
 
 :::
 
@@ -372,8 +379,8 @@ You'll also read about what to expect after a failover.
 
 :::warning Check Your Replication Lag
 
-- Always check the [metric replication lag](https://temporal-documentation-clljyhxqv.preview.thundergun.io/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket) before initiating a failover.
-  A forced failover when there is a large replication lag has a higher likelihood of rolling back Workflow progress.
+Always check the [metric replication lag](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket) before initiating a failover.
+A forced failover when there is a large replication lag has a higher likelihood of rolling back Workflow progress.
 
 :::
 
@@ -408,7 +415,7 @@ More information is available in [Monitoring and Observability](/cloud/multi-reg
 
 Replication lag refers to the transmission delay of Workflow updates and history events from the active region to the standby region.
 A forced failover when there is a large replication lag has a higher likelihood of rolling back Workflow progress, so always check the metric replication lag before initiating a failover.
-Temporal Cloud emits three replication lag-specific [metrics](https://temporal-documentation-clljyhxqv.preview.thundergun.io/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket).
+Temporal Cloud emits three replication lag-specific [metrics](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket).
 The following samples demonstrate how you can use these metrics to explore replication lag.
 
 **P99 replication lag histogram**
@@ -433,8 +440,8 @@ Errors--if any--will also surface in the Namespace Web UI.
 
 :::info
 
-- You may notice that multi-region Namespace shows twice (2x) the Action count in `temporal_cloud_v0_total_action_count`.
-  This doubling happens due to regional replication.
+You may notice that multi-region Namespace shows twice (2x) the Action count in `temporal_cloud_v0_total_action_count`.
+This doubling happens due to regional replication.
 
 :::
 
@@ -478,8 +485,8 @@ Clients should converge to the newly targeted region within, at, most a 30-secon
 
 :::important
 
-- At failover, routing is completely transparent for multi-region customers _unless_ you use PrivateLink.
-  This section describes how to configure routing for multi-region Namespaces for PrivateLink customers only.
+At failover, routing is completely transparent for multi-region customers _unless_ you use PrivateLink.
+This section describes how to configure routing for multi-region Namespaces for PrivateLink customers only.
 
 :::
 
@@ -531,6 +538,6 @@ The `sa-east-1` region listed here is not yet available for use with multi-regio
 
 :::tip Learn more about multi-region Namespaces
 
-- If you have more questions or feedback about this feature, please reach out to <a href="mailto:product@temporal.io">the product team</a>.
+If you have more questions or feedback about this feature, please reach out to <a href="mailto:product@temporal.io">the product team</a>.
 
 :::
