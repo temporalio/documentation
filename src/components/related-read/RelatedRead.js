@@ -17,6 +17,7 @@ const languageIcons = {
   Python: "/img/python.svg",
   TypeScript: "/img/typescript.svg",
   ".NET": "/img/dotnet.svg",
+  "Temporal CLI": "/img/terminal.svg",
 };
 
 const encyclopediaIcon = "/img/link-preview-icon.svg";
