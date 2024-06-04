@@ -2,7 +2,7 @@
 id: child-workflows
 title: Child Workflows
 sidebar_label: Child Workflows
-description: Explore the strategic utilization of Child Workflow Executions in Temporal, enabling sophisticated workflow management within the same Namespace.
+description: A Child Workflow Execution in the Temporal platform is initiated from another Workflow within the same Namespace. Learn about the feature guides for Go, Java, PHP, Python, TypeScript, and .NET SDKs. Understand the Parent-Child Workflow relationship, including when to use Child Workflows, Parent Close Policies
 toc_max_heading_level: 4
 keywords:
   - child workflow execution
@@ -28,11 +28,12 @@ tags:
 
 A Child Workflow Execution is a [Workflow Execution](/workflows#workflow-execution) that is spawned from within another Workflow in the same Namespace.
 
-- [Go SDK Child Workflow feature guide](/dev-guide/go/features#child-workflows)
-- [Java SDK Child Workflow feature guide](/dev-guide/java/features#child-workflows)
-- [PHP SDK Child Workflow feature guide](/dev-guide/php/features#child-workflows)
-- [Python SDK Child Workflow feature guide](//develop/python/child-workflows)
-- [TypeScript SDK Child Workflow feature guide](/dev-guide/typescript/features#child-workflows)
+- [Go SDK Child Workflow feature guide](/develop/go/child-workflows)
+- [Java SDK Child Workflow feature guide](/develop/java/child-workflows)
+- [PHP SDK Child Workflow feature guide](/develop/php/continue-as-new)
+- [Python SDK Child Workflow feature guide](/develop/python/continue-as-new)
+- [TypeScript SDK Child Workflow feature guide](/develop/typescript/child-workflows)
+- [.NET SDK Child Workflow feature guide](/develop/dotnet/child-workflows)
 
 A Workflow Execution can be both a Parent and a Child Workflow Execution because any Workflow can spawn another Workflow.
 
@@ -93,7 +94,7 @@ However, there are several valid reasons for using Child Workflows.
 
 Because a Child Workflow Execution can be processed by a completely separate set of [Workers](/workers#worker) than the Parent Workflow Execution, it can act as an entirely separate service.
 However, this also means that a Parent Workflow Execution and a Child Workflow Execution do not share any local state.
-As all Workflow Executions, they can communicate only via asynchronous [Signals](/workflows#signal).
+As all Workflow Executions, they can communicate only via asynchronous [Signals](/encyclopedia/application-message-passing#signals).
 
 ### Paritition problems into smaller chunks
 
@@ -146,11 +147,11 @@ Our advice: **When in doubt, use an Activity.**
 
 A Parent Close Policy determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed out).
 
-- [How to set a Parent Close Policy using the Go SDK](/dev-guide/go/features#parent-close-policy)
-- [How to set a Parent Close Policy using the Java SDK](/dev-guide/java/features#parent-close-policy)
-- [How to set a Parent Close Policy using the PHP SDK](/dev-guide/php/features#parent-close-policy)
+- [How to set a Parent Close Policy using the Go SDK](/develop/go/child-workflows#parent-close-policy)
+- [How to set a Parent Close Policy using the Java SDK](/develop/java/child-workflows#parent-close-policy)
+- [How to set a Parent Close Policy using the PHP SDK](/develop/php/child-workflows#parent-close-policy)
 - [How to set a Parent Close Policy using the Python SDK](/develop/python/child-workflows#parent-close-policy)
-- [How to set a Parent Close Policy using the TypeScript SDK](/dev-guide/typescript/features#parent-close-policy)
+- [How to set a Parent Close Policy using the TypeScript SDK](/develop/typescript/child-workflows#parent-close-policy)
 - [How to set a Parent Close Policy using the .NET SDK](/develop/dotnet/child-workflows#parent-close-policy)
 
 There are three possible values:

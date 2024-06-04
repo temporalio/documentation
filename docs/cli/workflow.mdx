@@ -2,7 +2,7 @@
 id: workflow
 title: Temporal CLI workflow command reference
 sidebar_label: workflow
-description: Effectively manage Workflows with the Temporal CLI. Explore comprehensive documentation on commands and options for Workflow management and monitoring.
+description: Temporal Workflow commands enable operations on Workflow Executions, such as cancel, count, delete, describe, execute, list, query, reset, reset-batch, show, signal, stack, start, terminate, trace, and update, enhancing efficiency and control.
 toc_max_heading_level: 4
 keywords:
   - call stack
@@ -398,7 +398,7 @@ Use the following command options to change the information returned by this com
 
 ## query
 
-The `temporal workflow query` command sends a [Query](/workflows#query) to a [Workflow Execution](/workflows#workflow-execution).
+The `temporal workflow query` command sends a [Query](/encyclopedia/application-message-passing#queries) to a [Workflow Execution](/workflows#workflow-execution).
 
 Queries can retrieve all or part of the Workflow state within given parameters.
 Queries can also be used on completed [Workflows](/workflows#workflow-execution).
@@ -623,7 +623,7 @@ Use the following options to change the behavior of this command.
 
 ## signal
 
-The `temporal workflow signal` command is used to send a [Signal](/workflows#signal) to a [Workflow Execution](/workflows#workflow-execution) by [Workflow Id](/workflows#workflow-id) or [List Filter](/visibility#list-filter).
+The `temporal workflow signal` command is used to send a [Signal](/encyclopedia/application-message-passing#signals) to a [Workflow Execution](/workflows#workflow-execution) by [Workflow Id](/workflows#workflow-id) or [List Filter](/visibility#list-filter).
 
 Use the following options to change the command's behavior.
 
@@ -673,7 +673,7 @@ Use the following options to change the command's behavior.
 
 ## stack
 
-The `temporal workflow stack` command queries a [Workflow Execution](/workflows#workflow-execution) with `--stack-trace` as the [Query](/workflows#stack-trace-query) type.
+The `temporal workflow stack` command queries a [Workflow Execution](/workflows#workflow-execution) with `--stack-trace` as the [Query](/encyclopedia/application-message-passing#stack-trace-query) type.
 Returning the call stack of all the threads owned by a Workflow Execution can be great for troubleshooting in production.
 
 Use the following options to change the command's behavior.

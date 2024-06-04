@@ -1,0 +1,308 @@
+---
+id: versioning
+title: Versioning - Temporal Go SDK feature guide
+description: Temporal's Go SDK ensures Workflow determinism through Patching APIs and Worker Versioning. Learn how to update Workflow code without causing non-deterministic issues, understand versioning best practices, and use dynamic configuration parameters for seamless updating of long-running Workflows.
+sidebar_label: Versioning
+toc_max_heading_level: 4
+keywords:
+  - determinism
+  - developer-guide-doc-type
+  - go sdk
+  - how-to-doc-type
+  - patching
+  - versioning
+  - workflows
+tags:
+  - determinism
+  - developer-guide-doc-type
+  - go-sdk
+  - how-to-doc-type
+  - patching
+  - versioning
+  - workflows
+---
+
+The Temporal Platform requires that Workflow code is [deterministic](/workflows#deterministic-constraints).
+Because of that requirement, the Temporal Go SDK offers two dedicated versioning features.
+
+- [Workflow Patching APIs](#patching)
+- [Worker Build Ids](#worker-versioning)
+
+## Temporal Go SDK Patching APIs {#patching}
+
+The definition code of a Temporal Workflow must be deterministic because Temporal uses event sourcing to reconstruct the Workflow state by replaying the saved history event data on the Workflow definition code.
+This means that any incompatible update to the Workflow Definition code could cause a non-deterministic issue if not handled correctly.
+
+Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY)
+
+Consider the following Workflow Definition:
+
+```go
+func YourWorkflow(ctx workflow.Context, data string) (string, error) {
+        ao := workflow.ActivityOptions{
+                ScheduleToStartTimeout: time.Minute,
+                StartToCloseTimeout:    time.Minute,
+        }
+        ctx = workflow.WithActivityOptions(ctx, ao)
+        var result1 string
+        err := workflow.ExecuteActivity(ctx, ActivityA, data).Get(ctx, &result1)
+        if err != nil {
+                return "", err
+        }
+        var result2 string
+        err = workflow.ExecuteActivity(ctx, ActivityB, result1).Get(ctx, &result2)
+        return result2, err
+}
+```
+
+Now let's say we replaced ActivityA with ActivityC and deployed the updated code.
+If an existing Workflow Execution was started by the original version of the Workflow code, where ActivityA had already completed and the result was recorded to history, the new version of the Workflow code picks up that Workflow Execution and tries to resume from there.
+However, the Workflow will fail because the new code expects a result for ActivityC from the history data, but instead it gets the result for ActivityA.
+This causes the Workflow to fail on the non-deterministic error.
+
+Thus we use `workflow.GetVersion().`
+
+```go
+var err error
+v := workflow.GetVersion(ctx, "Step1", workflow.DefaultVersion, 1)
+if v == workflow.DefaultVersion {
+        err = workflow.ExecuteActivity(ctx, ActivityA, data).Get(ctx, &result1)
+} else {
+        err = workflow.ExecuteActivity(ctx, ActivityC, data).Get(ctx, &result1)
+}
+if err != nil {
+        return "", err
+}
+
+var result2 string
+err = workflow.ExecuteActivity(ctx, ActivityB, result1).Get(ctx, &result2)
+return result2, err
+```
+
+When `workflow.GetVersion()` is run for the new Workflow Execution, it records a marker in the Workflow history so that all future calls to `GetVersion` for this change Id—`Step 1` in the example—on this Workflow Execution will always return the given version number, which is `1` in the example.
+
+If you make an additional change, such as replacing ActivityC with ActivityD, you need to
+add some additional code:
+
+```go
+v := workflow.GetVersion(ctx, "Step1", workflow.DefaultVersion, 2)
+if v == workflow.DefaultVersion {
+        err = workflow.ExecuteActivity(ctx, ActivityA, data).Get(ctx, &result1)
+} else if v == 1 {
+        err = workflow.ExecuteActivity(ctx, ActivityC, data).Get(ctx, &result1)
+} else {
+        err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
+}
+```
+
+Note that we changed `maxSupported` from 1 to 2.
+A Workflow that has already passed this `GetVersion()` call before it was introduced returns `DefaultVersion`.
+A Workflow that was run with `maxSupported` set to 1 returns 1.
+New Workflows return 2.
+
+After you are sure that all of the Workflow Executions prior to version 1 have completed, you can remove the code for that version.
+It should now look like the following:
+
+```go
+v := workflow.GetVersion(ctx, "Step1", 1, 2)
+if v == 1 {
+        err = workflow.ExecuteActivity(ctx, ActivityC, data).Get(ctx, &result1)
+} else {
+        err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
+}
+```
+
+You'll note that `minSupported` has changed from `DefaultVersion` to `1`.
+If an older version of the Workflow Execution history is replayed on this code, it fails because the minimum expected version is 1.
+After you are sure that all of the Workflow Executions for version 1 have completed, you can remove version 1 so that your code looks like the following:
+
+```go
+_ := workflow.GetVersion(ctx, "Step1", 2, 2)
+err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
+```
+
+Note that we have preserved the call to `GetVersion()`. There are two reasons to preserve this call:
+
+1. This ensures that if there is a Workflow Execution still running for an older version, it will
+   fail here and not proceed.
+2. If you need to make additional changes for `Step1`, such as changing ActivityD to ActivityE, you
+   only need to update `maxVersion` from 2 to 3 and branch from there.
+
+You need to preserve only the first call to `GetVersion()` for each `changeID`.
+All subsequent calls to `GetVersion()` with the same change Id are safe to remove.
+If necessary, you can remove the first `GetVersion()` call, but you need to ensure the following:
+
+- All executions with an older version are completed.
+- You can no longer use `Step1` for the changeId. If you need to make changes to that same part in
+  the future, such as change from ActivityD to ActivityE, you would need to use a different changeId
+  like `Step1-fix2`, and start minVersion from DefaultVersion again. The code would look like the
+  following:
+
+```go
+v := workflow.GetVersion(ctx, "Step1-fix2", workflow.DefaultVersion, 1)
+if v == workflow.DefaultVersion {
+        err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
+} else {
+        err = workflow.ExecuteActivity(ctx, ActivityE, data).Get(ctx, &result1)
+}
+```
+
+Upgrading a Workflow is straightforward if you don't need to preserve your currently running Workflow Executions.
+You can simply terminate all of the currently running Workflow Executions and suspend new ones from being created while you deploy the new version of your Workflow code, which does not use `GetVersion()`, and then resume Workflow creation.
+However, that is often not the case, and you need to take care of the currently running Workflow Executions, so using `GetVersion()` to update your code is the method to use.
+
+However, if you want your currently running Workflows to proceed based on the current Workflow logic, but you want to ensure new Workflows are running on new logic, you can define your Workflow as a new `WorkflowType`, and change your start path (calls to `StartWorkflow()`) to start the new Workflow type.
+
+## Sanity checking
+
+The Temporal client SDK performs a sanity check to help prevent obvious incompatible changes.
+The sanity check verifies whether a Command made in replay matches the event recorded in history, in the same order.
+The Command is generated by calling any of the following methods:
+
+- workflow.ExecuteActivity()
+- workflow.ExecuteChildWorkflow()
+- workflow.NewTimer()
+- workflow.RequestCancelWorkflow()
+- workflow.SideEffect()
+- workflow.SignalExternalWorkflow()
+- workflow.Sleep()
+
+Adding, removing, or reordering any of the preceding methods triggers the sanity check and results in a non-deterministic error.
+
+The sanity check does not perform a thorough check.
+For example, it does not check on the Activity's input arguments or the Timer duration.
+If the check is enforced on every property, it becomes too restrictive and harder to maintain the Workflow code.
+For example, if you move your Activity code from one package to another package, that move changes the `ActivityType`, which technically becomes a different Activity.
+But we don't want to fail on that change, so we check only the function name part of the `ActivityType`.
+
+## How to use Worker Versioning in Go {#worker-versioning}
+
+:::caution
+
+Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Temporal Service to enable Worker Versioning:
+
+```
+temporal server start-dev \
+   --dynamic-config-value frontend.workerVersioningDataAPIs=true \
+   --dynamic-config-value frontend.workerVersioningWorkflowAPIs=true \
+   --dynamic-config-value worker.buildIdScavengerEnabled=true
+```
+
+:::
+
+To use Worker Versioning in Go, you need to do the following:
+
+1. Determine and assign a Build ID to your built Worker code, and opt in to versioning.
+2. Tell the Task Queue your Worker is listening on about that Build ID, and whether its compatible with an existing Build ID.
+
+### Assign a Build ID to your Worker
+
+Let's say you've chosen `deadbeef` as your Build ID, which might be a short git commit hash (a reasonable choice as Build ID).
+To assign it in your Worker code, you assign the following Worker Options:
+
+```go
+// ...
+workerOptions := worker.Options{
+   BuildID: "deadbeef",
+   UseBuildIDForVersioning: true,
+// ...
+}
+w := worker.New(c, "your_task_queue_name", workerOptions)
+// ...
+```
+
+That's all you need to do in your Worker code.
+Importantly, if you start this Worker, it won't receive any tasks.
+That's because you need to tell the Task Queue about your Worker's Build ID first.
+
+### Tell the Task Queue about your Worker's Build ID
+
+Now you can use the SDK (or the Temporal CLI) to tell the Task Queue about your Worker's Build ID.
+You might want to do this as part of your CI deployment process.
+
+```go
+// ...
+err := client.UpdateWorkerBuildIdCompatibility(ctx, &client.UpdateWorkerBuildIdCompatibilityOptions{
+   TaskQueue: "your_task_queue_name",
+   Operation: &client.BuildIDOpAddNewIDInNewDefaultSet{
+      BuildID: "deadbeef",
+   },
+})
+```
+
+This code adds the `deadbeef` Build ID to the Task Queue as the sole version in a new version set, which becomes the default for the queue.
+New Workflows execute on Workers with this Build ID, and existing ones will continue to process by appropriately compatible Workers.
+
+If, instead, you want to add the Build ID to an existing compatible set, you can do this:
+
+```go
+// ...
+err := client.UpdateWorkerBuildIdCompatibility(ctx, &client.UpdateWorkerBuildIdCompatibilityOptions{
+   TaskQueue: "your_task_queue_name",
+   Operation: &client.BuildIDOpAddNewCompatibleVersion{
+      BuildID:                   "deadbeef",
+      ExistingCompatibleBuildId: "some-existing-build-id",
+   },
+})
+```
+
+This code adds `deadbeef` to the existing compatible set containing `some-existing-build-id` and marks it as the new default Build ID for that set.
+
+You can also promote an existing Build ID in a set to be the default for that set:
+
+```go
+// ...
+err := client.UpdateWorkerBuildIdCompatibility(ctx, &client.UpdateWorkerBuildIdCompatibilityOptions{
+   TaskQueue: "your_task_queue_name",
+   Operation: &client.BuildIDPromoteIDWithinSet{
+      BuildID: "some-existing-build-id",
+   },
+})
+```
+
+You can also promote an entire set to become the default set for the queue. New Workflows will start using that set's default.
+
+```go
+// ...
+err := client.UpdateWorkerBuildIdCompatibility(ctx, &client.UpdateWorkerBuildIdCompatibilityOptions{
+   TaskQueue: "your_task_queue_name",
+   Operation: &client.BuildIDPromoteSet{
+      BuildID: "some-existing-build-id",
+   },
+})
+```
+
+### Specify versions for Commands
+
+By default, Activities, Child Workflows, and Continue-as-New use the same compatible version set as the Workflow that invoked them if they're also using the same Task Queue.
+
+If you want to override this behavior, you can specify your intent via the `VersioningIntent` field on the appropriate options struct.
+
+{/* For more information refer to the [conceptual documentation](/workers#worker-versioning). */}
+
+For example, if you want to use the latest default version for an Activity, do the following inside your Workflow code:
+
+```go
+// ...
+ao := workflow.ActivityOptions{
+    VersioningIntent: VersioningIntentDefault,
+    // ...other options
+}
+activityCtx := workflow.WithActivityOptions(ctx, ao)
+var yourActivityResult YourActivityResultType
+err := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+// ...
+```
+
+#### Specifying versions for Continue-As-New
+
+When using the Continue-As-New feature, use the `WithWorkflowVersioningIntent` context modifier.
+
+The function `WithWorkflowVersioningIntent` sets `VersioningIntentDefault` before constructing a `ContinueAsNewError` object with `NewContinueAsNewError`:
+
+```go
+ctx = workflow.WithWorkflowVersioningIntent(ctx, temporal.VersioningIntentDefault)
+err := workflow.NewContinueAsNewError(ctx, "WorkflowName")
+```
+
+If you're migrating Workflows between incompatible Worker Build IDs and you want your continued Workflows to start using the Task Queue's latest default version, use `WithWorkflowVersioningIntent` as shown earlier before calling `NewContinueAsNewError`.

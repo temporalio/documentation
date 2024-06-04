@@ -3,7 +3,7 @@ id: pricing
 title: Temporal Cloud Pricing
 sidebar_label: Pricing
 sidebar_position: 6
-description: Temporal Cloud pricing information
+description: Temporal Cloud offers flexible, transparent, and predictable consumption-based pricing for Workflows, Activity, Worker, and storage. Pay only for the Actions, storage, and support you use, with volume-based discounts and credit systems providing additional savings. Estimate costs easily or contact our team for precise calculations.
 slug: /cloud/pricing
 toc_max_heading_level: 4
 keywords:
@@ -28,7 +28,7 @@ tags:
   - term
 ---
 
-Temporal Cloud is a consumption-based service. 
+Temporal Cloud is a consumption-based service.
 You pay only for what you need, when you need it.
 Our pricing reflects your use of _actions_, _storage_, and _support_.
 It is flexible, transparent, and predictable, so you know your costs and never pay for unused capacity.
@@ -50,9 +50,8 @@ The base rate is &#36;25 per one million Actions per month (across all Namespace
 You are billed for a prorated portion of the Actions you use.
 If you use fewer than one million Actions per month, your bill for Actions will be less than &#36;25 for that month.
 
-  
 | Actions | &#36;25 per one million (prorated) |
-| ------- | ------------------------------ |
+| ------- | ---------------------------------- |
 
 Temporal also offers a credit system.
 Credits provide an additional discount schedule for billable Actions and [storage](#storage).
@@ -61,18 +60,18 @@ Credits do not expire.
 The credits applied to a Temporal Cloud Account include volume-based discounts for each Namespace.
 Pricing may not be uniform per Namespace.
 For example, under one credit commitment, a Namespace may use up to 300 million Actions priced at &#36;23.25 per million Actions.
-Another Namespace with over 300 million Actions benefits from a reduced rate of &#36;18.80 per million Actions for any Actions beyond the 300 million mark. 
+Another Namespace with over 300 million Actions benefits from a reduced rate of &#36;18.80 per million Actions for any Actions beyond the 300 million mark.
 
-The following table outlines the tiers for the credits system. 
+The following table outlines the tiers for the credits system.
 
-|Actions per month (millions)|Cost per 1M (USD)|Cost band|Actions per second|
-|----------------------------|-----------------|---------|------------------|
-|0 to 299|&#36;23.25|&#36;0 - &#36;7,500|~115|
-|300 to 1,499|&#36;18.80|&#36;5,640 - &#36;28,200|~570|
-|1,500 to 7,499|&#36;14.10|&#36;21,150 - &#36;105,750|~2,860|
-|7,500 to 29,999|&#36;10.50|&#36;78,750 - &#36;315,000|~11,400|
-|30,000 to 149,999|&#36;7.90|&#36;237,000 - &#36;1,185,000|~57,000|
-|> 150,000|&#36;5.90|&#36;885,000 ->|–|
+| Actions per month (millions) | Cost per 1M (USD) | Cost band                     | Actions per second |
+| ---------------------------- | ----------------- | ----------------------------- | ------------------ |
+| 0 to 299                     | &#36;23.25        | &#36;0 - &#36;7,500           | ~115               |
+| 300 to 1,499                 | &#36;18.80        | &#36;5,640 - &#36;28,200      | ~570               |
+| 1,500 to 7,499               | &#36;14.10        | &#36;21,150 - &#36;105,750    | ~2,860             |
+| 7,500 to 29,999              | &#36;10.50        | &#36;78,750 - &#36;315,000    | ~11,400            |
+| 30,000 to 149,999            | &#36;7.90         | &#36;237,000 - &#36;1,185,000 | ~57,000            |
+| > 150,000                    | &#36;5.90         | &#36;885,000 ->               | –                  |
 
 The following operations result in Actions:
 
@@ -89,13 +88,13 @@ The following operations result in Actions:
 - **Search Attribute upsert requested.**
   Occurs after a Workflow starts and invokes `UpsertSearchAttributes`.
 - **Signal sent.**
-  Includes sending a [Signal](/workflows#signal) from a client or from within a Workflow to another Workflow.
-- **Query received.** [Queries](/workflows#query) aren't recorded in Event History.
+  Includes sending a [Signal](/encyclopedia/application-message-passing#signals) from a client or from within a Workflow to another Workflow.
+- **Query received.** [Queries](/encyclopedia/application-message-passing#queries) aren't recorded in Event History.
   An operation such as viewing the call stack in the Temporal Cloud UI results in a Query.
 - **Side Effect recorded.**
   For a mutable [Side Effect](/workflows#side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
-- **NEW: Workflow Update.** [[Workflow Updates](/workflows#update)] is a primitive that combines a Signal and Query together for a single Action.
+- **NEW: Workflow Update.** [[Workflow Updates](/encyclopedia/application-message-passing#updates)] is a primitive that combines a Signal and Query together for a single Action.
 
 **Child Workflows**
 
@@ -112,12 +111,12 @@ The following operations result in Actions:
   All [Local Activities](/activities#local-activity) associated with one Workflow Task count as a single Action.
   That's because Temporal Cloud counts all [RecordMarkers](https://docs.temporal.io/references/commands#recordmarker) from each Workflow Task as one action, and not _N_ actions.
   Please note:
-    * Each additional Workflow Task heartbeat after counts as an additional Action.
-    * Local Activities retried following a Workflow Task heartbeat count as one Action (capped at 100 Actions).
+  - Each additional Workflow Task heartbeat after counts as an additional Action.
+  - Local Activities retried following a Workflow Task heartbeat count as one Action (capped at 100 Actions).
 - **Activity Heartbeat recorded.**
   A Heartbeat call from Activity code counts as an Action only if it reaches the [Temporal Server](/clusters#temporal-server).
-  Temporal SDKs throttle [Activity Heartbeats](/activities#activity-heartbeat).
-  The default throttle is 80% of the [Heartbeat Timeout](/activities#heartbeat-timeout).
+  Temporal SDKs throttle [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
+  The default throttle is 80% of the [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout).
   Heartbeats don't apply to Local Activities.
 
 **Schedules**
@@ -159,19 +158,19 @@ Both kinds of storage have fixed costs.
 
 | **Storage** | **Cost per GBh (USD)** |
 | ----------- | ---------------------- |
-| Retained    | &#36;0.00042               |
-| Active      | &#36;0.042                 |
+| Retained    | &#36;0.00042           |
+| Active      | &#36;0.042             |
 
 If you purchase Temporal Cloud credits (as [outlined earlier](#action)), active storage costs are tiered and measured in gigabyte-hours.
 
 | **Active Storage (Per GB Hour Per Namespace)** | **Cost (USD)** |
 | ---------------------------------------------- | -------------- |
-| Up to 7,000                                    | &#36;0.039         |
-| Over 7,000 up to 30,000                        | &#36;0.031         |
-| Over 30,000 up to 90,000                       | &#36;0.023         |
-| Over 90,000 up to 400,000                      | &#36;0.018         |
-| Over 400,000 up to 1,500,000                   | &#36;0.013         |
-| Over 1,500,000                                 | &#36;0.010         |
+| Up to 7,000                                    | &#36;0.039     |
+| Over 7,000 up to 30,000                        | &#36;0.031     |
+| Over 30,000 up to 90,000                       | &#36;0.023     |
+| Over 90,000 up to 400,000                      | &#36;0.018     |
+| Over 400,000 up to 1,500,000                   | &#36;0.013     |
+| Over 1,500,000                                 | &#36;0.010     |
 
 ## Multi-region Namespace pricing {#multi-region}
 
@@ -186,20 +185,21 @@ To estimate costs for this deployment model, apply a 2x multiplier to your exist
 
 When upgrading an existing Namespace, some points to consider:
 
-* Temporal won't charge for historical Actions completed prior to upgrading to a multi-region Namespace.
+- Temporal won't charge for historical Actions completed prior to upgrading to a multi-region Namespace.
   Only ongoing (in-flight) and new Workflow Executions incur the \"2x\" charge, as these are actively replicated.
-* Temporal charges for all Actions of existing (ongoing) and new Workflows from the point of adding a new region and provisioning multi-region Namespace service onward.
-* Temporal charges for replicated storage of retained (historical), running (ongoing), and new Workflow Executions from the point of adding a new region and starting MRN service.
+- Temporal charges for all Actions of existing (ongoing) and new Workflows from the point of adding a new region and provisioning multi-region Namespace service onward.
+- Temporal charges for replicated storage of retained (historical), running (ongoing), and new Workflow Executions from the point of adding a new region and starting MRN service.
 
 Multi-region Namespace invoice charges will include:
 
-* An Actions row, showing the Action count from the active region.
-* A Replicated Actions row, showing the Action count from the standby region.
+- An Actions row, showing the Action count from the active region.
+- A Replicated Actions row, showing the Action count from the standby region.
 
 The invoice follows a similar structure for Replicated Storage.
 It breaks out storage and replicated storage into their own line items.
 
 :::tip Action counts for mid-month adoption
+
 - If your multi-region Namespace adoption began mid-month, expect to see more Actions than Replicated Actions and more Storage than Replicated Storage on your invoice.
 
 :::
@@ -210,10 +210,9 @@ We offer single sign-on (SSO) integration using SAML at a monthly fixed fee base
 
 | **Users** | **Cost per month** |
 | --------- | ------------------ |
-| 0 to 25   | &#36;200               |
-| 26 to 50  | &#36;300               |
-| 51+       | &#36;500               |
-
+| 0 to 25   | &#36;200           |
+| 26 to 50  | &#36;300           |
+| 51+       | &#36;500           |
 
 ## Services and Support {#support}
 
@@ -227,35 +226,34 @@ The Success team provides troubleshooting and issue resolution as well as servic
 The team can help investigate your Workflows to optimize their environments and so you might reduce costs associated with Actions and storage.
 They ensure your instance is performance-tuned and they help with other ongoing maintenance, like upgrades of the Temporal software and maintenance of the platform.
 
-Services and support costs are outlined in the table below. 
+Services and support costs are outlined in the table below.
 A more complete description of each level can be found on our [Services and Support](https://docs.temporal.io/cloud/support) outline.
 
-|                     |Basic|Premium|
-|---------------------|-----|-------|
+|                     | Basic                                       | Premium                                       |
+| ------------------- | ------------------------------------------- | --------------------------------------------- |
 | Pricing (per month) | Greater of &#36;200 or 10% of monthly usage | Greater of &#36;2,000 or 10% of monthly usage |
-
 
 ## Pricing Estimates
 
 Temporal Cloud uses a consumption-based pricing model based primarily on Actions and storage.
 Each workload is different.
 You can estimate the cost of a specific Workflow by running it at a low volume.
-Use the resulting storage and compute measurements to project your production scale cost. 
+Use the resulting storage and compute measurements to project your production scale cost.
 
 The examples below provide general estimates based on workload size.
 You can also use our calculator on the pricing page to build your estimate.
 Our team is always happy to [help you estimate costs] (https://pages.temporal.io/contact-us) for your specific workloads and requirements.
 
-|Workload size|Cost (monthly)|Characteristics|Actions           |Typical use cases|
-|-------------|--------------|---------------|------------------|-----------------|
-|Small|< &#36;25.00|Modest / transient throughput|< 1M / month  <br />_(< 0.38 actions per second)_|General automation <br /> Human dependent processes <br /> Data pipelines <br /> Nightly batch processes |
-|Medium|< &#36;1K|Steady or burst throughput|< 40M / month <br />_(< 15 actions per second)_ | Transaction & order systems <br /> Infrastructure automation <br /> Payment Processing <br /> Batch processes |
-|Large|< &#36;10K|Sustained throughput or multiple use cases|< 400M / month <br /> _(< 150 actions per second)_ | Data processing / sync <br /> Retail order system <br /> KYC & fraud detection |
-|Web Scale|&#36;20K+|"Web scale" and / or numerous use cases |1B+ / month <br /> _(400+ actions per second)_ | Social media application <br /> SaaS application service|
+| Workload size | Cost (monthly) | Characteristics                            | Actions                                            | Typical use cases                                                                                             |
+| ------------- | -------------- | ------------------------------------------ | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Small         | < &#36;25.00   | Modest / transient throughput              | < 1M / month  <br /> _(< 0.38 actions per second)_ | General automation <br /> Human dependent processes <br /> Data pipelines <br /> Nightly batch processes      |
+| Medium        | < &#36;1K      | Steady or burst throughput                 | < 40M / month <br /> _(< 15 actions per second)_   | Transaction & order systems <br /> Infrastructure automation <br /> Payment Processing <br /> Batch processes |
+| Large         | < &#36;10K     | Sustained throughput or multiple use cases | < 400M / month <br /> _(< 150 actions per second)_ | Data processing / sync <br /> Retail order system <br /> KYC & fraud detection                                |
+| Web Scale     | &#36;20K+      | "Web scale" and / or numerous use cases    | 1B+ / month <br /> _(400+ actions per second)_     | Social media application <br /> SaaS application service                                                      |
 
 ## Pricing FAQ {#pricing-faq}
 
-**What’s the minimum cost to run Temporal Cloud?**
+**What's the minimum cost to run Temporal Cloud?**
 
 The Temporal Cloud service is consumption based.
 You pay only for what you need with no minimum.

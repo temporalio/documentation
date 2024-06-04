@@ -84,7 +84,7 @@ module.exports = async function createConfigAsync() {
           },
           {
             label: "Start building",
-            href: "/dev-guide",
+            href: "/develop",
             right: "left",
           },
           {
@@ -209,7 +209,7 @@ module.exports = async function createConfigAsync() {
           docs: {
             sidebarPath: require.resolve("./sidebars.js"),
             routeBasePath: "/",
-            exclude: ["**/php/**", "**/typescript/**", "**/clusters/**"], // do not render context content
+            exclude: ["**/clusters/**"], // do not render context content
             editUrl: "https://github.com/temporalio/documentation/blob/master",
             /**
              * Whether to display the author who last updated the doc.

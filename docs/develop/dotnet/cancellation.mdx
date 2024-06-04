@@ -2,7 +2,7 @@
 id: cancellation
 title: Interrupt a Workflow - .NET SDK feature guide
 sidebar_label: Interrupt a Workflow
-description: Cancel and Terminate a Workflow Execution and its Activities using the .NET SDK.
+description: Learn how to interrupt Workflow Execution in .NET using the Temporal SDK. Cancel for graceful stops; terminate for forceful stops. Handle Cancellation in Workflow and Activities efficiently.
 toc_max_heading_level: 4
 keywords:
   - interrupt workflow execution
@@ -109,7 +109,7 @@ public async Task RunAsync()
 
 **How to handle a Cancellation in an Activity using the Temporal .NET SDK**
 
-Ensure that the Activity is [Heartbeating](/develop/dotnet/failure-detection#activity-heartbeat) to receive the Cancellation request and stop execution.
+Ensure that the Activity is [Heartbeating](/develop/dotnet/failure-detection#activity-heartbeats) to receive the Cancellation request and stop execution.
 Also make sure that the [Heartbeat Timeout](/develop/dotnet/failure-detection#heartbeat-timeout) is set on the Activity Options when calling from the Workflow.
 An Activity Cancellation Request cancels the `CancellationToken` on the `ActivityExecutionContext`.
 

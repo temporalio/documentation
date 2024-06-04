@@ -2,7 +2,7 @@
 id: timers
 title: Timers - Python SDK feature guide
 sidebar_label: Timers
-description: Learn how to use timers within Temporal Workflows to delay execution, enabling durable and long-term scheduling of tasks that can persist even if the worker or cluster goes down.
+description: Set durable Timers with Temporal Workflows using sleep() or timer(), ensuring code execution resumes after downtime. Sleep for months using resource-light operations in Python.
 slug: /develop/python/timers
 toc_max_heading_level: 2
 keywords:
@@ -36,7 +36,6 @@ To set a Timer in Python, call the [`asyncio.sleep()`](https://docs.python.org/3
 </div>
 
 ```python
-
 # ...
         await asyncio.sleep(10)
 ```

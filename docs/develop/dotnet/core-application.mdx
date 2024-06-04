@@ -2,7 +2,7 @@
 id: core-application
 title: Core application - .NET SDK feature guide
 sidebar_label: Core application
-description: Temporal's core application primitives include Workflows, Activities, and Workers.
+description: Learn how to develop a basic Workflow and Activity Definition using the Temporal .NET SDK, run a Worker Process, and set up Dynamic Workflows and Activities.
 toc_max_heading_level: 4
 keywords:
   - activity
@@ -29,7 +29,8 @@ tags:
   - workflow-return-values
 ---
 
-This page shows how to do the following: 
+This page shows how to do the following:
+
 - [Develop a basic Workflow Definition](#develop-workflow)
 - [Develop a basic Activity Definition](#develop-activity)
 - [Start an Activity from a Workflow](#activity-execution)
@@ -269,7 +270,7 @@ public class MyWorkflow
 ```
 
 Activity Execution semantics rely on several parameters.
-The only required value that needs to be set is either a [Schedule-To-Close Timeout](/activities#start-to-close-timeout) or a [Start-To-Close Timeout](/activities#start-to-close-timeout).
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
 
 ### Get Activity Execution results {#get-activity-results}
@@ -291,7 +292,7 @@ The [Worker Process](/workers#worker-process) is where Workflow Functions and Ac
 A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
 
 Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
-For more information, see the [Worker tuning guide](/dev-guide/worker-performance).
+For more information, see the [Worker tuning guide](/develop/worker-performance).
 
 A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
 
@@ -398,7 +399,6 @@ public class DynamicWorkflow
 ## Set a Dynamic Activity {#set-a-dynamic-activity}
 
 **How to set a Dynamic Activity using the Temporal .NET SDK**
-
 
 A Dynamic Activity in Temporal is an Activity that is invoked dynamically at runtime if no other Activity with the same name is registered.
 An Activity can be made dynamic by setting `Dynamic` as `true` on the `[Activity]` attribute.
