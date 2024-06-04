@@ -2,7 +2,7 @@
 id: workflow
 title: tctl v1.17 workflow command reference
 sidebar_label: workflow
-description: Explore the wide range of tctl Workflow commands for efficient management of Workflow Executions in a Temporal Cluster.
+description: The public preview of Temporal CLI is now available! Begin using it and provide feedback. After the full release, tctl will deprecate. Perform various Workflow operations using tctl commands.
 toc_max_heading_level: 4
 keywords:
   - cli
@@ -859,7 +859,7 @@ tctl workflow observeid --max_field_length <length>
 
 Alias: `q`
 
-The `tctl workflow query` command sends a [Query](/workflows#query) to a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow query` command sends a [Query](/encyclopedia/application-message-passing#queries) to a [Workflow Execution](/workflows#workflow-execution).
 
 Queries can be used to retrieve all or part of the Workflow state with given parameters.
 
@@ -1757,7 +1757,7 @@ tctl workflow showid <workflow_id> --reset_points_only
 
 ## signal
 
-The `tctl workflow signal` command [Signals](/workflows#signal) a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow signal` command [Signals](/encyclopedia/application-message-passing#signals) a [Workflow Execution](/workflows#workflow-execution).
 
 Workflows listen for Signals by their Signal name, and can be made to listen to one or more Signal names.
 Workflows can also listen for SQL queries.
@@ -1870,7 +1870,7 @@ tctl workflow signal --run_id <id>
 
 ### --name
 
-Specify the name of a [Signal](/workflows#signal).
+Specify the name of a [Signal](/encyclopedia/application-message-passing#signals).
 
 **Example**
 
@@ -1880,7 +1880,7 @@ tctl workflow signal --query <query> --name <name>
 
 ### --input
 
-Pass input for the [Signal](/workflows#signal).
+Pass input for the [Signal](/encyclopedia/application-message-passing#signals).
 Input must be in JSON format.
 
 Alias: `-i`
@@ -1893,7 +1893,7 @@ tctl workflow signal --query <query> --input <json>
 
 ### --input_file
 
-Pass input for the [Signal](/workflows#signal) from a JSON file.
+Pass input for the [Signal](/encyclopedia/application-message-passing#signals) from a JSON file.
 
 **Example**
 

@@ -2,7 +2,7 @@
 id: migration
 title: Migrate to Cloud
 sidebar_label: Migrate to Cloud
-description: Migrate to Temporal Cloud from a Self-hosted Temporal Service.
+description: Migrating to Temporal Cloud from self-hosted Temporal Service varies by Workflow requirements. This guide covers changing Client code, Workflow migration strategies, and necessary code adjustments.
 slug: /production-deployments/migration
 toc_max_heading_level: 4
 keywords:
@@ -64,7 +64,7 @@ To accomplish this migration, cancel your current Workflow and pass the current 
 Refer to [this repository](https://github.com/temporalio/migration-example/blob/main/src/main/java/io/temporal/migration/example/README.md) for an example of migrating running Workflows in Java.
 
 When performing a live migration, make sure your Worker capacity can support the migration load.
-Both a [Signal](/workflows#signal) and a [Query](/workflows#query) will be executed during the course of the migration.
+Both a [Signal](/encyclopedia/application-message-passing#signals) and a [Query](/encyclopedia/application-message-passing#queries) will be executed during the course of the migration.
 Also, the Query API loads the entire history of Workflows into Workers to compute the result (if they are not already cached).
 That means that your self-hosted Temporal Service Worker capacity will need to support having those executions in memory to serve those requests.
 The volume of these requests might be high to execute against all the matches to a `ListFilter`.

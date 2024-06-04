@@ -2,7 +2,7 @@
 id: message-passing
 title: Messages - Python SDK feature guide
 sidebar_label: Messages
-description: Explore using Signals in Temporal Python to send messages to Workflows, with details on defining, sending, and handling Signals, including customization options.
+description: Learn how to develop with Signals, Queries, and Updates using the Python SDK in Temporal. Master defining Signal handlers, customizing names, sending Signals, and handling Queries dynamically.
 toc_max_heading_level: 2
 keywords:
   - temporal python signals
@@ -38,7 +38,7 @@ This page shows how to do the following:
 
 **How to develop with Signals using the Python SDK.**
 
-A [Signal](/workflows#signal) is a message sent asynchronously to a running Workflow Execution which can be used to change the state and control the flow of a Workflow Execution.
+A [Signal](/encyclopedia/application-message-passing#signals) is a message sent asynchronously to a running Workflow Execution which can be used to change the state and control the flow of a Workflow Execution.
 It can only deliver data to a Workflow Execution that has not already closed.
 
 Signals are defined in your code and handled in your Workflow Definition.
@@ -223,7 +223,7 @@ async def main():
 
 ## Queries {#queries}
 
-A [Query](/workflows#query) is a synchronous operation that is used to get the state of a Workflow Execution.
+A [Query](/encyclopedia/application-message-passing#queries) is a synchronous operation that is used to get the state of a Workflow Execution.
 
 ### How to define a Query {#define-query}
 
@@ -303,7 +303,7 @@ To send a Query to a Workflow Execution from Client code, use the `query()` meth
 
 ## Develop with Updates {#updates}
 
-An [Update](/workflows#update) is an operation that can mutate the state of a Workflow Execution and return a response.
+An [Update](/encyclopedia/application-message-passing#updates) is an operation that can mutate the state of a Workflow Execution and return a response.
 
 ### How to define an Update {#define-update}
 

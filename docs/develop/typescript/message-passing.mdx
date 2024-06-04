@@ -2,7 +2,7 @@
 id: message-passing
 title: Messages
 sidebar_label: Messages
-description: Explore using Signals in Temporal with the TypeScript SDK to send messages to Workflows, with details on defining, sending, and handling Signals, including customization options.
+description: Interact with running Workflows using Signals to asynchronously change state or control flow, and Queries to query Workflow state synchronously without mutating it. Define Signals and Queries in your Workflow code for seamless interaction through a Temporal Client.
 toc_max_heading_level: 2
 keywords:
   - temporal typescript signals
@@ -37,7 +37,7 @@ Interact with running Workflows by messaging them using Signals and Queries.
 
 **What is a Signal?**
 
-A [Signal](/workflows#signal) is a message sent asynchronously to a running Workflow Execution which can be used to change the state and control the flow of a Workflow Execution.
+A [Signal](/encyclopedia/application-message-passing#signals) is a message sent asynchronously to a running Workflow Execution which can be used to change the state and control the flow of a Workflow Execution.
 It can only deliver data to a Workflow Execution that has not already closed.
 
 You define Signals in your code.
@@ -200,7 +200,7 @@ await client.workflow.signalWithStart(yourWorkflow, {
 
 **How to develop with Queries**
 
-A [Query](/workflows#query) is a synchronous operation that is used to get the state of a Workflow Execution.
+A [Query](/encyclopedia/application-message-passing#queries) is a synchronous operation that is used to get the state of a Workflow Execution.
 
 - [Define a Query](#define-query)
 - [Handle a Query](#handle-query)
