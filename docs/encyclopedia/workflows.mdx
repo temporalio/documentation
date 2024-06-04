@@ -1065,7 +1065,6 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 
 :::tip Support, stability, and dependency info
 
-- In [Public Preview](/evaluate/release-stages#public-preview)
 - Available in the [Go SDK](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions.StartDelay) since [v1.25.0](https://github.com/temporalio/sdk-go/releases/tag/v1.25.0)
 - Available in the [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setStartDelay(java.time.Duration)) since [v1.25.0](https://github.com/temporalio/sdk-java/releases/tag/v1.22.1)
 - Available in the [Python SDK](https://python.temporal.io/temporalio.client.Client.html#start_workflow) since [v1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
@@ -1077,10 +1076,9 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 
 Start Delay determines the amount of time to wait before initiating a Workflow Execution.
 
-:::note Experimental feature
-Start Delay Workflow Execution is incompatible with both [Schedules](#schedule) and [Cron Jobs](#temporal-cron-job).
+:::note
 
-This Workflow Option is considered experimental and may change in future releases.
+Start Delay Workflow Execution is incompatible with both [Schedules](#schedule) and [Cron Jobs](#temporal-cron-job).
 
 :::
 
