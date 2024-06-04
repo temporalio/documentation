@@ -364,7 +364,7 @@ The following sections show you how to perform this action, moving your active N
 You'll also read about what to expect after a failover.
 
 :::warning Check Your Replication Lag
-- Always check the [metric replication lag](https://temporal-documentation-clljyhxqv.preview.thundergun.io/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket) before initiating a failover.
+- Always check the [metric replication lag](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket) before initiating a failover.
   A forced failover when there is a large replication lag has a higher likelihood of rolling back Workflow progress.
 
 :::
@@ -400,7 +400,7 @@ More information is available in [Monitoring and Observability](/cloud/multi-reg
 
 Replication lag refers to the transmission delay of Workflow updates and history events from the active region to the standby region.
 A forced failover when there is a large replication lag has a higher likelihood of rolling back Workflow progress, so always check the metric replication lag before initiating a failover.
-Temporal Cloud emits three replication lag-specific [metrics](https://temporal-documentation-clljyhxqv.preview.thundergun.io/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket).
+Temporal Cloud emits three replication lag-specific [metrics](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket).
 The following samples demonstrate how you can use these metrics to explore replication lag.
 
 **P99 replication lag histogram**
