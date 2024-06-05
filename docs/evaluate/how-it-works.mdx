@@ -30,24 +30,20 @@ Your application logic can be recovered, replayed, or paused from any previous p
 
 
 ## How It Works
-![HIW Recent Workflows page](/img/how-it-works/hiw-yourapplicationclient.png)
-![HIW Recent Workflows page](/img/how-it-works/hiw-temporalservereventhistory.png)
+![HIW Recent Workflows page](/img/how-it-works/hiw-yourapplicationclient_eventhistory_merge.png)
 
-### Workflow as Code
+### Workflow
 A Temporal application is the code you write, comprised of Workflow and Activities. Workflows are defined as code: either a function or an object method, depending on the language. 
 A Temporal Workflow defines your overall business logic. That business logic might involve moving money between bank accounts, processing orders, deploying cloud infrastructure, training an AI model, or something else entirely. 
 The Worker runs the Workflow and Activity code. 
 
-![HIW Recent Workflows page](/img/how-it-works/hiw-yourapplicationworker-workerfunction.png)
-![HIW Recent Workflows page](/img/how-it-works/hiw-configuretimeoutsandretries.png)
+![HIW Recent Workflows page](/img/how-it-works/hiw-yourapplicationworkerfunction-configuretimeout-merge.png)
 
-### Activities 
+### Activity
 Activities are functions which encapsulate logic that can potentially fail, such as network calls, file operations,  or random number generation. 
 Activities are invoked in Workflow code and the Server coordinates with the application to execute them.
 
-![HIW Recent Workflows page](/img/how-it-works/hiw-yourapplicationworkeractivitywithdraw.png)
-![HIW Recent Workflows page](/img/how-it-works/hiw-yourapplicationcontinuingtheworkflow.png)
-
+![HIW Recent Workflows page](/img/how-it-works/hiw-activityinvocation-continuingworkflow-merge.png)
 
 ### Server
 Temporal consists of two components, the Server and an SDK in your preferred language such as Go, .NET, Java, Python, PHP, or Typescript. 
@@ -56,9 +52,7 @@ Once the application finishes executing the Activity, it communicates with the S
 The Activity invocation is handled by the Server. 
 The Server updates the Event History and creates a Task for executing the Activity.
 
-![HIW Recent Workflows page](/img/how-it-works/hiw-yourapplicationdepending.png)
-![HIW Recent Workflows page](/img/how-it-works/hiw-yourapplicationworkeractivityinvocation.png)
-![HIW Recent Workflows page](/img/how-it-works/hiw-activityexecution.png)
+![HIW Recent Workflows page](/img/how-it-works/hiw-yourapplicationdepending-activityexecution-merge.png)
 
 ### Recovering from Failure
 A Temporal Workflow is basically a process or sequence of events you want to make sure will execute reliably. 
@@ -66,12 +60,13 @@ They can run—and keep running—for years, even if the underlying infrastructu
 If the execution of your Workflow code crashes, Temporal automatically recreates its pre-crash state, allowing the Workflow to continue execution as if it never even happened. 
 Temporal provides built-in solutions for timers, event sourcing, state checkpointing, retries, and timeouts, removing the necessity for custom implementations.
 
-![HIW Recent Workflows page](/img/how-it-works/hiw-activityfailure.png)
-![HIW Recent Workflows page](/img/how-it-works/hiw-activityretry.png)
-![HIW Recent Workflows page](/img/how-it-works/hiw-successfulretry.png)
-![HIW Recent Workflows page](/img/how-it-works/hiw-yourapplicationconcludingtheworkflow.png)
-![HIW Recent Workflows page](/img/how-it-works/hiw-yourapplicationtemporalserver.png)
+![HIW Recent Workflows page](/img/how-it-works/hiw-recoveringfromfailure-mergeofthree.png)
 
+### Concluding the Workflow
+In this example, there are two Activities. The second Activity is complete, but the Workflow function sill has additional code to run. 
+The Temporal Server creates a new Task requesting that the application run the additional code.
+
+![HIW Recent Workflows page](/img/how-it-works/hiw-concludingtheworkflow-temporalserver-merge.png)
 
 :::info
 **Follow one of our tutorials to [Get started](https://learn.temporal.io/getting_started/) learning how to develop Workflows and Activities and run them in Worker Processes.**
