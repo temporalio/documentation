@@ -2,7 +2,7 @@
 id: reference
 title: Temporal Cloud available metrics reference
 sidebar_label: Available metrics
-description: Temporal Cloud metrics often use suffixes like _count, _bucket, and _sum. These are similar to Prometheus counters and histograms, aiding in calculating rates and latencies.
+description: Explore Temporal Cloud metrics with suffixes like _count, _bucket, and _sum, similar to Prometheus counters and histograms, supporting rate and latency calculations.
 toc_max_heading_level: 4
 tags:
   - temporal-cloud
@@ -26,6 +26,15 @@ keywords:
   - gRPC error count
 ---
 
+This documentation provides a guide to the metrics generated within Temporal Cloud environments.
+It enumerates the metrics, labels, and operations that enable you to analyze Workflow latencies, state transitions, gRPC errors, and more.
+
+* [Metrics labels](#metrics-labels)
+* [Available metrics](#available-metrics)
+* [Metrics groups](#metrics-groups)
+* [Metrics operations](#metrics-operations)
+* [Operations on metrics groups](#operation-ready-metrics)
+
 Most Temporal Cloud metrics are suffixed with `_count`.
 This indicates that they behave largely like a [Prometheus counter](https://prometheus.io/docs/concepts/metric_types/#counter).
 You'll want to use a function like `rate` or `increase` to calculate a per-second rate of increase, or an extrapolated total increase over a time period.
@@ -45,7 +54,9 @@ rate(temporal_cloud_v0_service_latency_sum[5m]) / rate(temporal_cloud_v0_service
 histogram_quantile(0.99, sum(rate(temporal_cloud_v0_service_latency_bucket[5m])) by (le, operation))
 ```
 
-## Metric labels {#metric-labels}
+## Metrics labels {#metrics-labels}
+
+**What labels can you use to filter metrics?**
 
 Metrics for all Namespaces in your account are available from the metrics endpoint.
 Use the following labels to filter metrics:
@@ -53,7 +64,7 @@ Use the following labels to filter metrics:
 | Label                      | Explanation                                                                                                                                                                                                                                                               |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `le`                       | Less than or equal to (`le`) is used in histograms to categorize observations into buckets based on their value being less than or equal to a predefined upper limit.                                                                                                     |
-| `operation`                | This includes operations such as:<ul><li>SignalWorkflowExecution</li><li>StartBatchOperation</li><li>StartWorkflowExecution</li><li>TaskQueueMgr</li><li>TerminateWorkflowExecution</li><li>UpdateNamespace</li><li>UpdateSchedule</li></ul> This list is non-exhaustive. |
+| `operation`                | This includes operations such as:<ul><li>SignalWorkflowExecution</li><li>StartBatchOperation</li><li>StartWorkflowExecution</li><li>TaskQueueMgr</li><li>TerminateWorkflowExecution</li><li>UpdateNamespace</li><li>UpdateSchedule</li></ul> See: [Metric Operations](#metric-operations) |
 | `resource_exhausted_cause` | Cause for resource exhaustion.                                                                                                                                                                                                                                            |
 | `task_type`                | Activity or Workflow.                                                                                                                                                                                                                                                     |
 | `temporal_account`         | Temporal Account.                                                                                                                                                                                                                                                         |
@@ -68,7 +79,7 @@ The following is an example of how you can filter metrics using labels:
 temporal_cloud_v0_poll_success_count{__rollup__="true", operation="TaskQueueMgr", task_type="Activity", temporal_account="12345", temporal_namespace="your_namespace.12345", temporal_service_type="matching"}
 ```
 
-## Available metrics
+## Available metrics {#available-metrics}
 
 **What metrics are emitted from Temporal Cloud?**
 
@@ -169,3 +180,98 @@ Workflows terminated before completing execution.
 ### temporal_cloud_v0_workflow_timeout_count
 
 Workflows that timed out before completing execution.
+
+## Metrics groups {#metrics-groups}
+
+**How are metrics grouped and which groups support filtering?**
+
+The following lists enumerate the groups of metrics that support operation level filtering:
+
+**Frontend Service metrics**
+  * Temporal\_cloud\_v0\_frontend\_service\_request\_count
+  * Temporal\_cloud\_v0\_frontend\_service\_error\_count
+  * Temporal\_cloud\_v0\_frontend\_service\_pending\_requests\_count
+
+**Poll metrics**
+  * Temporal\_cloud\_v0\_poll\_success\_count
+  * Temporal\_cloud\_v0\_poll\_success\_sync\_count
+  * Temporal\_cloud\_v0\_poll\_timeout\_count
+
+**Service latency metrics**
+  * Temporal\_cloud\_v0\_service\_latency\_bucket
+  * Temporal\_cloud\_v0\_service\_latency\_count
+  * Temporal\_cloud\_v0\_service\_latency\_sum
+
+**Workflow metrics**
+  * Temporal\_cloud\_v0\_workflow\_cancel\_count 
+  * Temporal\_cloud\_v0\_workflow\_continued\_as\_new\_count
+  * Temporal\_cloud\_v0\_workflow\_failed\_count
+  * Temporal\_cloud\_v0\_workflow\_success\_count
+  * Temporal\_cloud\_v0\_workflow\_terminate\_count
+  * Temporal\_cloud\_v0\_workflow\_timeout\_count
+
+Additional groups that do not support operation level filtering include:
+
+**Replication lag metrics**
+  * temporal\_cloud\_v0\_replication\_lag\_bucket
+  * temporal\_cloud\_v0\_replication\_lag\_count
+  * temporal\_cloud\_v0\_replication\_lag\_sum
+
+**Scheduling metrics**
+  * temporal\_cloud\_v0\_schedule\_action\_success\_count
+  * temporal\_cloud\_v0\_schedule\_buffer\_overruns\_count
+  * temporal\_cloud\_v0\_schedule\_missed\_catchup\_window\_count
+  * temporal\_cloud\_v0\_schedule\_rate\_limited\_count
+
+Ungrouped metrics include:
+
+* temporal\_cloud\_v0\_resource\_exhausted\_error\_count
+* temporal\_cloud\_v0\_state\_transition\_count
+* temporal\_cloud\_v0\_total\_action\_count
+
+## Metrics operations {#metrics-operations}
+
+**What operations are available on Temporal Cloud to use with metrics?**
+
+* AdminDescribeMutableState
+* AdminGetWorkflowExecutionRawHistory
+* AdminGetWorkflowExecutionRawHistoryV2
+* AdminReapplyEvents
+* CountWorkflowExecutions
+* CreateSchedule
+* DeleteSchedule
+* DeleteWorkflowExecution
+* DescribeBatchOperation
+* DescribeNamespace
+* DescribeSchedule
+* DescribeTaskQueue
+* DescribeWorkflowExecution
+* GetWorkerBuildIdCompatibility
+* GetWorkerTaskReachability
+* GetWorkflowExecutionHistory
+* GetWorkflowExecutionHistoryReverse
+* ListBatchOperations
+* ListClosedWorkflowExecutions
+* OperatorDeleteNamespace
+* PatchSchedule
+* PollActivityTaskQueue
+* PollWorkflowExecutionHistory
+* PollWorkflowExecutionUpdate
+* PollWorkflowTaskQueue
+* QueryWorkflow
+* RecordActivityTaskHeartbeat
+* RecordActivityTaskHeartbeatById
+
+## Operations on metrics groups {#operation-ready-metrics}
+
+**Which Temporal Cloud metrics groups are available for use with operations?**
+
+As the following table shows, certain [metrics groups](#metrics-groups) support operations for aggregation, filtering, and so forth:
+
+| Metrics Group / Operations | All Operations | SignalWithStartWorkflowExecution / SignalWorkflowExecution / StartWorkflowExecution | TaskQueueMgr | CompletionStats |
+|---------------------------|----------------|-------------------------------------------------------------------------------------|--------------|-----------------|
+| **Frontend Service Metrics**  |       X        |                                                                                     |              |                 |
+| **Service Latency Metrics**   |                |                                    X                                                |              |                 |
+| **Poll Metrics**              |                |                                                                                     |       X      |                 |
+| **Workflow Metrics**          |                |                                                                                     |              |        X        |
+
