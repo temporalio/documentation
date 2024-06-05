@@ -96,9 +96,9 @@ Once set up, you can test your PrivateLink connectivity using:
 
   ```
   temporal workflow count \
-      --address <DNS associated with vpc endpoint>:7233 \
-      --tls-cert-path <cert.pem> \
-      --tls-key-path <cert.key> \
+      --address <DNS associated with VPC endpoint>:7233 \
+      --tls-cert-path /path/to/client.pem \
+      --tls-key-path /path/to/client.key \
       --tls-server-name <namespace>.<account>.tmprl.cloud \
       --namespace <namespace>
   ```
@@ -108,8 +108,8 @@ Once set up, you can test your PrivateLink connectivity using:
   ```
   grpcurl \
       -servername <name>.<account>.tmprl.cloud \
-      -cert <cert-path> \
-      -key <key-path> \
+      -cert /path/to/client.pem \
+      -key /path/to/client.key \
       vpce-XXXXXXXXX.vpce.amazonaws.com:7233 \
       temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
   ```
