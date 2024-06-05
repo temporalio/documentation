@@ -2,7 +2,7 @@
 id: core-application
 title: Core application - Temporal Java SDK feature guide
 sidebar_label: Core application
-description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+description: Learn how to create a Workflow Definition, develop a basic Activity, initiate Activity Execution, and run a Development Worker using the Temporal Java SDK. Master essential concepts such as Workflow interface annotations, Activity definitions, custom Activity Types, and asynchronous Activity invocations to build robust and scalable Temporal applications.
 toc_max_heading_level: 4
 keywords:
   - Java
@@ -289,7 +289,7 @@ Java Workflow reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/la
 
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
-An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Cluster.
+An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service.
 For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
 
 An [Activity Definition](/activities) is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.

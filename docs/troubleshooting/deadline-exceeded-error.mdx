@@ -2,7 +2,7 @@
 id: deadline-exceeded-error
 title: Troubleshoot deadline-exceeded error
 sidebar_label: Deadline-exceeded error
-description: Deadline exceeded errors occur as a result of Temporal frontend requests failing. This guide provides troubleshooting solutions.
+description: Troubleshoot Temporal Service's Context deadline exceeded errors caused by network issues, server overload, and timing skews. Sync system clocks, check Frontend logs, metrics, Workflow logic, and service health after configurations or restarts. For unresolved issues, contact support.
 toc_max_heading_level: 4
 keywords:
   - error
@@ -55,7 +55,7 @@ Use [`grpc-health-probe`](https://github.com/grpc-ecosystem/grpc-health-probe) t
 ./grpc-health-probe -addr=historyAddress:historyPort -service=temporal.api.workflowservice.v1.HistoryService
 ```
 
-Logs can also be used to find failed Client [Query](/workflows#query) requests.
+Logs can also be used to find failed Client [Query](/encyclopedia/application-message-passing#queries) requests.
 
 ### Check your Temporal Service metrics
 

@@ -3,7 +3,7 @@ id: temporal-clients
 title: Temporal Client - Java SDK feature guide
 sidebar_label: Temporal Client
 toc_max_heading_level: 4
-description: Master the Temporal Java Client with our comprehensive guide that covers everything from initialization to Workflow Execution.
+description: This guide introduces Temporal Clients, explaining their role and configuration in Java to connect to various Temporal Services, including starting Workflow Executions and customizing Workflow options.
 keywords:
   - temporal java client
   - connect java client to temporal service
@@ -178,8 +178,8 @@ To spawn Workflow Executions from within another Workflow Execution, use either 
 
 See the [Customize Workflow Type](/develop/java/core-application#workflow-type) section to see how to customize the name of the Workflow Type.
 
-A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
-The Temporal Cluster then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
+A request to spawn a Workflow Execution causes the Temporal Service to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
+The Temporal Service then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
 
 Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
 

@@ -2,7 +2,7 @@
 id: security
 title: Security model - Temporal Cloud
 sidebar_label: Security model
-description: The security model of Temporal Cloud encompasses applications, data, and the Temporal Cloud platform.
+description: Temporal Cloud provides robust security for applications, data, and its platform with features like mTLS, client-side encryption, PrivateLink, and SOC 2 Type 2 compliance.
 slug: /cloud/security
 toc_max_heading_level: 4
 keywords:
@@ -83,11 +83,38 @@ To set up PrivateLink connectivity with Temporal Cloud, you'll need to perform t
 1. Add a VPC Endpoint Interface in your AWS VPC.
 1. Configure security groups to allow TCP ingress traffic to port `7233` (for gRPC communication).
 
+:::tip
+
+PrivateLink endpoint services are regional.
+Individual Namespaces do not use separate services.
+
+:::
+
 Once set up, you can test your PrivateLink connectivity using:
 
-1. Non-Temporal tools like cURL (useful for testing from environments that restrict tool usage).
-1. The Temporal CLI: by setting the [--tls-server-name](/cli/cmd-options#tls-server-name) parameter to the PrivateLink endpoint.
-1. Temporal SDKs: by setting the server name argument to the PrivateLink endpoint.
+- The Temporal CLI, by setting the [`--tls-server-name`](/cli/cmd-options#tls-server-name) parameter to the Namespace address (`<namespace>.<account>.tmprl.cloud`). For example:
+
+  ```
+  temporal workflow count \
+      --address <DNS associated with vpc endpoint>:7233 \
+      --tls-cert-path <cert.pem> \
+      --tls-key-path <cert.key> \
+      --tls-server-name <namespace>.<account>.tmprl.cloud \
+      --namespace <namespace>
+  ```
+
+- Non-Temporal tools like grpcURL, useful for testing from environments that restrict tool usage. For example:
+
+  ```
+  grpcurl \
+      -servername <name>.<account>.tmprl.cloud \
+      -cert <cert-path> \
+      -key <key-path> \
+      vpce-XXXXXXXXX.vpce.amazonaws.com:7233 \
+      temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
+  ```
+
+- Temporal SDKs: by setting the endpoint server address argument to the PrivateLink endpoint (`<DNS associated with VPC endpoint>:7233`).
 
 ### Encryption
 

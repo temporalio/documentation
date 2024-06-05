@@ -8,14 +8,15 @@ keywords:
   - core-application
 tags:
   - core-application
+description: The Foundations section of the Temporal Developer's guide explains essential concepts needed for building and running a Temporal Application, from installing the Temporal CLI to starting Workflow and Activity Executions.
 ---
 
 The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](#develop-workflows) that executes an [Activity](#develop-activities).
 
 In this section you can find the following:
 
-- [Run a development Cluster](#run-a-development-server)
-- [Connect to a dev Cluster](#connect-to-a-dev-cluster)
+- [Run a development Temporal Service](#run-a-development-server)
+- [Connect to a development Temporal Service](#connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Develop a Workflow](#develop-workflows)
 - [Develop an Activity](#develop-activities)
@@ -27,13 +28,13 @@ In this section you can find the following:
 
 ## How to install the Temporal CLI and run a development server {#run-a-development-server}
 
-This section describes how to install the [Temporal CLI](/cli) and run a development Cluster.
-The local development Cluster comes packaged with the [Temporal Web UI](/web-ui).
+This section describes how to install the [Temporal CLI](/cli) and run a development Temporal Service.
+The local development Temporal Service comes packaged with the [Temporal Web UI](/web-ui).
 
-For information on deploying and running a self-hosted production Cluster, see the [Self-hosted guide](/self-hosted-guide), or sign up for [Temporal Cloud](/cloud) and let us run your production Cluster for you.
+For information on deploying and running a self-hosted production Temporal Service, see the [Self-hosted guide](/self-hosted-guide), or sign up for [Temporal Cloud](/cloud) and let us run your production Temporal Service for you.
 
-Temporal CLI is a tool for interacting with a Temporal Cluster from the command line and it includes a distribution of the Temporal Server and Web UI.
-This local development Cluster runs as a single process with zero runtime dependencies and it supports persistence to disk and in-memory mode through SQLite.
+Temporal CLI is a tool for interacting with a Temporal Service from the command line and it includes a distribution of the Temporal Server and Web UI.
+This local development Temporal Service runs as a single process with zero runtime dependencies and it supports persistence to disk and in-memory mode through SQLite.
 
 **Install the Temporal CLI**
 
@@ -127,7 +128,7 @@ A [Temporal SDK](/encyclopedia/temporal-sdks) provides a framework for [Temporal
 
 An SDK provides you with the following:
 
-- A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) to communicate with a [Temporal Cluster](/clusters).
+- A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) to communicate with a [Temporal Service](/clusters).
 - APIs to develop [Workflows](/workflows).
 - APIs to create and manage [Worker Processes](/workers#worker).
 - APIs to author [Activities](/activities#activity-definition).
@@ -188,10 +189,10 @@ If you started your project with `@temporalio/create`, you already have our reco
 If you incrementally added Temporal to an existing app, we do recommend setting up linting and types because they help catch bugs well before you ship them to production, and they improve your development feedback loop.
 Take a look at our recommended [.eslintrc](https://github.com/temporalio/samples-typescript/blob/main/.shared/.eslintrc.js) file and tweak to suit your needs.
 
-## How to connect a Temporal Client to a Temporal Cluster {#connect-to-a-dev-cluster}
+## How to connect a Temporal Client to a Temporal Service {#connect-to-a-dev-cluster}
 
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Cluster](/clusters).
-Communication with a Temporal Cluster includes, but isn't limited to, the following:
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/clusters).
+Communication with a Temporal Service includes, but isn't limited to, the following:
 
 - Starting Workflow Executions.
 - Sending Signals to Workflow Executions.
@@ -202,14 +203,14 @@ Communication with a Temporal Cluster includes, but isn't limited to, the follow
 :::caution
 
 A Temporal Client cannot be initialized and used inside a Workflow.
-However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Cluster.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Service.
 
 :::
 
-When you are running a Cluster locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
+When you are running a Temporal Service locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
 Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
 
-Creating a [Connection](https://typescript.temporal.io/api/classes/client.Connection) connects to the Temporal Cluster, and you can pass the `Connection` instance when creating the [Client](https://typescript.temporal.io/api/classes/client.Client#connection).
+Creating a [Connection](https://typescript.temporal.io/api/classes/client.Connection) connects to the Temporal Service, and you can pass the `Connection` instance when creating the [Client](https://typescript.temporal.io/api/classes/client.Client#connection).
 
 If you omit the `Connection` and just create a `new Client()`, it will connect to `localhost:7233`.
 
@@ -243,7 +244,7 @@ When you connect to [Temporal Cloud](/cloud), you need to provide additional con
 
 For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
 
-For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 Create a [`Connection`](https://typescript.temporal.io/api/classes/client.Connection) with a [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) object that has your Cloud namespace and client certificate.
 
@@ -439,7 +440,7 @@ for (let x = 0; x < 10; ++x) {
 
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
-An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Cluster.
+An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service.
 For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
 
 - Activities execute in the standard Node.js environment.
@@ -872,7 +873,7 @@ To run a Worker that uses [Temporal Cloud](/cloud), you need to provide addition
 
 For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
 
-For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 ### How to register types {#register-types}
 
@@ -998,8 +999,8 @@ To spawn Workflow Executions from within another Workflow Execution, use either 
 
 See the [Customize Workflow Type](#workflow-type) section to see how to customize the name of the Workflow Type.
 
-A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
-The Temporal Cluster then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
+A request to spawn a Workflow Execution causes the Temporal Service to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
+The Temporal Service then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
 
 When you have a Client, you can schedule the start of a Workflow with `client.workflow.start()`, specifying `workflowId`, `taskQueue`, and `args` and returning a Workflow handle immediately after the Server acknowledges the receipt.
 

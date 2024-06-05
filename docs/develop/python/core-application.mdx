@@ -2,27 +2,27 @@
 id: core-application
 title: Core application - Python SDK feature guide
 sidebar_label: Core application
-description: Develop basic Temporal application with workflows & activities in Python using Temporal SDK.
+description: Learn to develop and customize Workflows and Activities using the Temporal Python SDK, manage parameters, set timeouts, execute Activities, and run a Worker Process efficiently.
 toc_max_heading_level: 2
 keywords:
- - temporal python core
- - develop temporal workflow
- - temporal python activities
- - workflow logic requirements
- - customizing workflow type
- - activity parameters
- - activity return values
- - activity execution in workflow
- - activity timeouts
- - getting activity results
- - temporal python worker
- - registering workflow types
+  - temporal python core
+  - develop temporal workflow
+  - temporal python activities
+  - workflow logic requirements
+  - customizing workflow type
+  - activity parameters
+  - activity return values
+  - activity execution in workflow
+  - activity timeouts
+  - getting activity results
+  - temporal python worker
+  - registering workflow types
 tags:
- - python
- - python-sdk
- - workflows
- - activities
- - core-application
+  - python
+  - python-sdk
+  - workflows
+  - activities
+  - core-application
 ---
 
 This page shows how to do the following:
@@ -196,7 +196,7 @@ All API safe for Workflows used in the [`temporalio.workflow`](https://python.te
 
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
-An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Cluster.
+An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service.
 For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
 
 You can develop an Activity Definition by using the `@activity.defn` decorator.

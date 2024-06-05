@@ -8,6 +8,7 @@ keywords:
   - schedules
 tags:
   - schedules
+description: Schedule automated tasks effortlessly with Temporal. Learn how to create, backfill, delete, describe, list, pause, trigger, and update Scheduled Workflows. Control your Workflow execution with Temporal Cron Jobs and ensure timely, automated business processes. Automate repetitive tasks and reduce manual intervention now!
 ---
 
 ## How to Schedule a Workflow {#schedule-a-workflow}
@@ -60,5 +61,21 @@ You can set each Workflow to repeat on a schedule with the `cronSchedule` option
 const handle = await client.workflow.start(scheduledWorkflow, {
   // ...
   cronSchedule: '* * * * *', // start every minute
+});
+```
+
+## Start Delay {#start-delay}
+
+**How to use Start Delay**
+
+Use the `startDelay` to schedule a Workflow Execution at a specific one-time future point rather than on a recurring schedule.
+
+You may specify the `startDelay` option on either the [`client.workflow.start()`](https://typescript.temporal.io/api/classes/client.WorkflowClient#start) or [`client.workflow.execute()`](https://typescript.temporal.io/api/classes/client.WorkflowClient#execute) methods of a Workflow Client.
+For example:
+
+```typescript
+const handle = await client.workflow.start(someWorkflow, {
+  // ...
+  startDelay: '2 hours',
 });
 ```
