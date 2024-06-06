@@ -28,20 +28,20 @@ Your application logic can be recovered, replayed, or paused from any previous p
 
 
 ## How It Works
-![HIW Recent Workflows page](/img/how-it-works/hiw-yourapplicationclient_eventhistory_merge.png)
+![HIW 1](/img/how-it-works/hiw-yourapplicationclient.png)
 
 ### Workflow
 A Temporal application is the code you write, comprised of Workflow and Activities. Workflows are defined as code: either a function or an object method, depending on the language. 
 A Temporal Workflow defines your overall business logic. That business logic might involve moving money between bank accounts, processing orders, deploying cloud infrastructure, training an AI model, or something else entirely. 
 The Worker runs the Workflow and Activity code. 
 
-![HIW Recent Workflows page](/img/how-it-works/hiw-configuretimeout-merge.png)
+![HIW 2](/img/how-it-works/hiw-configuretimeout.png)
 
 ### Activity
 Activities are functions which encapsulate logic that can potentially fail, such as network calls, file operations,  or random number generation. 
 Activities are invoked in Workflow code and the Temporal Service coordinates with the application to execute them.
 
-![HIW Recent Workflows page](/img/how-it-works/hiw-continuingtheworkflow-merge.png)
+![HIW 3](/img/how-it-works/hiw-continuingtheworkflow.png)
 
 ### Temporal Service
 Temporal consists of two components, the [Temporal Service](/evaluate/major-components#temporal-service) and an SDK in your preferred language such as Go, .NET, Java, Python, PHP, or Typescript. 
@@ -50,7 +50,7 @@ Once the application finishes executing the Activity, it communicates with the T
 The Activity invocation is handled by the Temporal Service. 
 The Temporal Service updates the Event History and creates a Task for executing the Activity.
 
-![HIW Recent Workflows page](/img/how-it-works/hiw-activityexecutionmerge.png)
+![HIW 4](/img/how-it-works/hiw-activityexecution.png)
 
 ### Recovering from Failure
 A Temporal Workflow is basically a process or sequence of events you want to make sure will execute reliably. 
@@ -58,13 +58,13 @@ They can run—and keep running—for years, even if the underlying infrastructu
 If the execution of your Workflow code crashes, Temporal automatically recreates its pre-crash state, allowing the Workflow to continue execution as if it never even happened. 
 Temporal provides built-in solutions for timers, event sourcing, state checkpointing, retries, and timeouts, removing the necessity for custom implementations.
 
-![HIW Recent Workflows page](/img/how-it-works/recoveringfromfailure-mergeofthree.png)
+![HIW 5](/img/how-it-works/hiw-recoveringfromfailure.png)
 
 ### Concluding the Workflow
 In this example, there are two Activities. The second Activity is complete, but the Workflow function still has additional code to run. 
-The Temporal Temporal Service creates a new Task requesting that the application run the additional code.
+The Temporal Service creates a new Task requesting that the application run the additional code.
 
-![HIW Recent Workflows page](/img/how-it-works/hiw-concludingtheworkflow-temporalserver-merge.png)
+![HIW 6](/img/how-it-works/hiw-concludingtheworkflow.png)
 
 
 :::info
