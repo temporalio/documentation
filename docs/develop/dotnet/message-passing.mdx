@@ -31,6 +31,16 @@ A [Signal](/encyclopedia/application-message-passing#signals) is a message sent 
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
 
+Signals can be used to change the state and control the flow of a Workflow Execution. 
+It can only deliver data to a Workflow Execution that has not already closed.
+
+There are two steps for adding support for a Signal to your Workflow code:
+
+1. **[Defining the Signal](#define-signal)** - You specify the name and data structure used by Temporal Clients when sending the Signal.
+2. **[Handling the Signal](#handle-signal)** - You write code that will be invoked when the Signal is received from a Temporal Client.
+
+After defining and handling your Signal, you can send it from a [Temporal Client](#send-signal-from-client) or from another [Workflow Execution](#send-signal-from-workflow).
+
 ### Define Signal {#define-a-signal}
 
 **How to define a Signal using the Temporal .NET SDK**
@@ -39,7 +49,7 @@ A Signal has a name and can have arguments.
 
 - The name, also called a Signal type, is a string.
 - The arguments must be serializable.
-  To define a Signal, set the `[WorkflowSignal]`(https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowSignalAttribute.html) attribute on the Signal method inside your Workflow.
+  To define a Signal, set the [`WorkflowSignal`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowSignalAttribute.html) attribute on the Signal method inside your Workflow.
   A string name can be provided to the attribute, otherwise the Signal's name defaults to the unqualified method name (sans an "Async" suffix if it is async).
 
 Temporal suggests taking a single argument that is an object that can be added to as needed.
@@ -48,6 +58,32 @@ Temporal suggests taking a single argument that is an object that can be added t
 [WorkflowSignal]
 public async Task DoSomethingAsync(DoSomethingParam input) => pendingThings.Add(input);
 ```
+
+### Handle Signal {#handle-signal}
+
+**How to handle a Signal using the .NET SDK.**
+
+Workflows listen for Signals by the Signal's name.
+
+Signal handlers are functions defined in the Workflow that listen for incoming Signals of a given type.
+These handlers define how a Workflow should react when it receives a specific type of Signal.
+
+To send a Signal to the Workflow, use the [signal](https://python.temporal.io/temporalio.client.WorkflowHandle.html#signal) method from the [WorkflowHandle](https://python.temporal.io/temporalio.client.WorkflowHandle.html) class.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/signal_your_workflow/signal_dacx.py">
+    View the source code in the context of the rest of the application code.
+  </a>
+
+</div>
+
+```python
+from temporalio.client import Client
+# ...
+# ...
+    await handle.signal(GreetingWorkflow.submit_greeting, "User 1")
+```
+
 
 ### Send a Signal from a Temporal Client {#send-signal-from-client}
 
@@ -190,6 +226,7 @@ public string MyStatus { get; private set; }
 Queries are sent from a Temporal Client.
 
 To send a Query to a Workflow Execution from Client code, use the `QueryAsync()` method on the Workflow handle.
+Queries are handled by your Workflow.
 
 ```csharp
 var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
