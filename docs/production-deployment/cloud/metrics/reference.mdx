@@ -33,7 +33,7 @@ This guide offers an overview of:
 * **[Metrics labels](#metrics-labels)**:
   Temporal Cloud metrics labels are used to filter metrics and help categorize and differentiate results.
 * **[Available metrics](#available-metrics)**:
-  he metrics emitted by Temporal Cloud include counts of gRPC errors, requests, successful task matches to a poller, and more.
+  The metrics emitted by Temporal Cloud include counts of gRPC errors, requests, successful task matches to a poller, and more.
 * **[Metrics groups](#metrics-groups)**:
   Related Temporal Cloud metrics grouped by their associated operations or other labels.
 * **[Metrics operations](#metrics-operations)**:
@@ -41,7 +41,7 @@ This guide offers an overview of:
 * **[Operations on metrics groups](#operation-ready-metrics)**:
   Metrics groups that support operations for aggregation and filtering.
 * **[Using metrics](#metrics-use)**:
-  An examplanation of how Temporal Cloud metrics act like Prometheus counters.
+  An example of how Temporal Cloud metrics act like Prometheus counters.
 
 Metrics play a key role in Temporal Cloud operations.
 They help you monitor performance and troubleshoot errors.
@@ -64,7 +64,7 @@ Use the following labels to filter metrics:
 | Label                      | Explanation                                                                                                                                                                                                                                                               |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `le`                       | Less than or equal to (`le`) is used in histograms to categorize observations into buckets based on their value being less than or equal to a predefined upper limit.                                                                                                     |
-| `operation`                | This includes operations such as:<ul><li>SignalWorkflowExecution</li><li>StartBatchOperation</li><li>StartWorkflowExecution</li><li>TaskQueueMgr</li><li>TerminateWorkflowExecution</li><li>UpdateNamespace</li><li>UpdateSchedule</li></ul> See: [Metric Operations](#metric-operations) |
+| `operation`                | This includes operations such as:<ul><li>SignalWorkflowExecution</li><li>StartBatchOperation</li><li>StartWorkflowExecution</li><li>TaskQueueMgr</li><li>TerminateWorkflowExecution</li><li>UpdateNamespace</li><li>UpdateSchedule</li></ul> See: [Metric Operations](#metrics-operations) |
 | `resource_exhausted_cause` | Cause for resource exhaustion.                                                                                                                                                                                                                                            |
 | `task_type`                | Activity or Workflow.                                                                                                                                                                                                                                                     |
 | `temporal_account`         | Temporal Account.                                                                                                                                                                                                                                                         |
@@ -262,7 +262,7 @@ Ungrouped metrics include:
 * RecordActivityTaskHeartbeat
 * RecordActivityTaskHeartbeatById
 
-## Operations on metrics groups {#operation-ready-metrics}
+## Operations and metrics groups {#operation-ready-metrics}
 
 **Which Temporal Cloud metrics groups are available for use with operations?**
 
