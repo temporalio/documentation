@@ -82,7 +82,7 @@ Temporal Cloud notifies you by email once the replication has caught up and both
 **Advantages of using a multi-region Namespace:**
 
 - No manual deployment or configuration needed, just simple push-button operation.
-- Open Workflows continue in the standby region with minimal interruption and no data loss.
+- Open Workflows continue in the standby region with minimal interruption and data loss.
 - No changes needed for Worker and Workflow code during setup or failover.
 - 99.99% Contractual SLA.
 
@@ -397,8 +397,6 @@ To manually trigger a failover, issue the following from your command line:
 ```
 tcld namespace failover --namespace <namespace_id> --region <target_region>
 ```
-
-Before pressing return, add your authentication credentials. For example, `--ca-certificate-file <path-to-pem-file>`.
 
 #### After failover
 
