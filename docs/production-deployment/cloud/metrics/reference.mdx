@@ -28,35 +28,35 @@ keywords:
 
 This documentation provides a guide to the metrics generated within Temporal Cloud environments.
 It enumerates the metrics, labels, and operations that enable you to analyze Workflow latencies, state transitions, gRPC errors, and more.
+This guide offers an overview of:
 
-* [Metrics labels](#metrics-labels)
-* [Available metrics](#available-metrics)
-* [Metrics groups](#metrics-groups)
-* [Metrics operations](#metrics-operations)
-* [Operations on metrics groups](#operation-ready-metrics)
+* **[Metrics labels](#metrics-labels)**:
+  Temporal Cloud metrics labels are used to filter metrics and help categorize and differentiate results.
+* **[Available metrics](#available-metrics)**:
+  he metrics emitted by Temporal Cloud include counts of gRPC errors, requests, successful task matches to a poller, and more.
+* **[Metrics groups](#metrics-groups)**:
+  Related Temporal Cloud metrics grouped by their associated operations or other labels.
+* **[Metrics operations](#metrics-operations)**:
+  The operation is a label in Temporal Cloud metrics that categorizes the type of operation being performed when the metric was collected.
+* **[Operations on metrics groups](#operation-ready-metrics)**:
+  Metrics groups that support operations for aggregation and filtering.
+* **[Using metrics](#metrics-use)**:
+  An examplanation of how Temporal Cloud metrics act like Prometheus counters.
 
-Most Temporal Cloud metrics are suffixed with `_count`.
-This indicates that they behave largely like a [Prometheus counter](https://prometheus.io/docs/concepts/metric_types/#counter).
-You'll want to use a function like `rate` or `increase` to calculate a per-second rate of increase, or an extrapolated total increase over a time period.
-
-```
-rate(temporal_cloud_v0_frontend_service_request_count[5m])
-```
-
-`temporal_cloud_v0_service_latency` has `_bucket`, `_count`, and `_sum` metrics. This is because it's a [Prometheus Histogram](https://prometheus.io/docs/concepts/metric_types/#histogram).
-You can use the `_count` and `_sum` metrics to calculate an average latency over a time period, or use the `_bucket` metric to calculate an approximate histogram quartile.
-
-```
-# the average latency observation over the last 5 minutes
-rate(temporal_cloud_v0_service_latency_sum[5m]) / rate(temporal_cloud_v0_service_latency_count[5m])
-
-# the approximate 99th percentile latency over the last 5 minutes, broken down by operation
-histogram_quantile(0.99, sum(rate(temporal_cloud_v0_service_latency_bucket[5m])) by (le, operation))
-```
+Metrics play a key role in Temporal Cloud operations.
+They help you monitor performance and troubleshoot errors.
+Temporal Cloud's metrics provide insights into different aspects of the system's operation.
+Temporal Cloud metrics can be exported to observability platforms like Datadog or visualized using Prometheus and Grafana.
 
 ## Metrics labels {#metrics-labels}
 
 **What labels can you use to filter metrics?**
+
+Temporal Cloud metrics include key-value pairs called labels in their associated metadata.
+Labels help you categorize and differentiate metrics for precise filtering, querying, and aggregation.
+Use labels to specific attributes or compare values, such as numeric buckets in histograms. 
+This added context enhances the monitoring and analysis capabilities, providing deeper insights into your data.
+
 
 Metrics for all Namespaces in your account are available from the metrics endpoint.
 Use the following labels to filter metrics:
@@ -83,7 +83,7 @@ temporal_cloud_v0_poll_success_count{__rollup__="true", operation="TaskQueueMgr"
 
 **What metrics are emitted from Temporal Cloud?**
 
-The following metrics are emitted for your various Namespaces.
+The following metrics are emitted for your various Namespaces:
 
 ### temporal_cloud_v0_frontend_service_error_count
 
@@ -275,3 +275,23 @@ As the following table shows, certain [metrics groups](#metrics-groups) support 
 | **Poll Metrics**              |                |                                                                                     |       X      |                 |
 | **Workflow Metrics**          |                |                                                                                     |              |        X        |
 
+## Using Metrics {#metrics-use}
+
+Most Temporal Cloud metrics are suffixed with `_count`.
+This indicates that they behave largely like a [Prometheus counter](https://prometheus.io/docs/concepts/metric_types/#counter).
+You'll want to use a function like `rate` or `increase` to calculate a per-second rate of increase, or an extrapolated total increase over a time period.
+
+```
+rate(temporal_cloud_v0_frontend_service_request_count[5m])
+```
+
+`temporal_cloud_v0_service_latency` has `_bucket`, `_count`, and `_sum` metrics. This is because it's a [Prometheus Histogram](https://prometheus.io/docs/concepts/metric_types/#histogram).
+You can use the `_count` and `_sum` metrics to calculate an average latency over a time period, or use the `_bucket` metric to calculate an approximate histogram quartile.
+
+```
+# the average latency observation over the last 5 minutes
+rate(temporal_cloud_v0_service_latency_sum[5m]) / rate(temporal_cloud_v0_service_latency_count[5m])
+
+# the approximate 99th percentile latency over the last 5 minutes, broken down by operation
+histogram_quantile(0.99, sum(rate(temporal_cloud_v0_service_latency_bucket[5m])) by (le, operation))
+```
