@@ -36,8 +36,8 @@ It can only deliver data to a Workflow Execution that has not already closed.
 
 There are two steps for adding support for a Signal to your Workflow code:
 
-1. **[Defining the Signal](#define-signal)** - You specify the name and data structure used by Temporal Clients when sending the Signal.
-2. **[Handling the Signal](#handle-signal)** - You write code that will be invoked when the Signal is received from a Temporal Client.
+1. **[Defining the Signal](#define-a-signal)** - You specify the name and data structure used by Temporal Clients when sending the Signal.
+2. **[Handling the Signal](#handle-a-signal)** - You write code that will be invoked when the Signal is received from a Temporal Client.
 
 After defining and handling your Signal, you can send it from a [Temporal Client](#send-signal-from-client) or from another [Workflow Execution](#send-signal-from-workflow).
 
@@ -59,7 +59,7 @@ Temporal suggests taking a single argument that is an object that can be added t
 public async Task DoSomethingAsync(DoSomethingParam input) => pendingThings.Add(input);
 ```
 
-### Handle Signal {#handle-signal}
+### Handle Signal {#handle-a-signal}
 
 **How to handle a Signal using the .NET SDK.**
 
