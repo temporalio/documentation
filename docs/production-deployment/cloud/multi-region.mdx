@@ -419,15 +419,15 @@ The following samples demonstrate how you can use these metrics to explore repli
 **P99 replication lag histogram**
 
 ```
-histogram_quantile(0.99, sum(rate(temporal_cloud_v0_replication_lag_bucket[1m])) by (temporal_namespace, le))
+histogram_quantile(0.99, sum(rate(temporal_cloud_v0_replication_lag_bucket[$__rate_interval])) by (temporal_namespace, le))
 ```
 
 **Average replication lag**
 
 ```
-sum(rate(temporal_cloud_v0_replication_lag_sum[1m])) by (temporal_namespace)
+sum(rate(temporal_cloud_v0_replication_lag_sum[$__rate_interval])) by (temporal_namespace)
 /
-sum(rate(temporal_cloud_v0_replication_lag_count[1m])) by (temporal_namespace)
+sum(rate(temporal_cloud_v0_replication_lag_count[$__rate_interval])) by (temporal_namespace)
 ```
 
 ### Monitoring and observability {#observability}
