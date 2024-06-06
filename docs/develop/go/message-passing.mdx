@@ -42,7 +42,7 @@ Signals can be sent to Workflow Executions from a Temporal Client or from anothe
 
 ### Define a Signal {#define-signal}
 
-** How to define a Signal using the Go SDK.**
+**How to define a Signal using the Go SDK**
 
 A Signal has a name and can have arguments.
 
@@ -62,7 +62,7 @@ type MySignal struct {
 
 ### Handle a Signal {#handle-signal}
 
-**How to handle a Signal using the Go SDK.**
+**How to handle a Signal using the Go SDK**
 
 Workflows listen for Signals by the Signal's name.
 
@@ -141,7 +141,7 @@ Possible errors:
 
 ### Send a Signal from a Workflow {#send-signal-from-workflow}
 
-**How to send a Signal from a Workflow using the Go SDK.**
+**How to send a Signal from a Workflow using the Go SDK**
 
 A Workflow can send a Signal to another Workflow, in which case it's called an _External Signal_.
 
@@ -169,7 +169,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 
 ### Signal-With-Start {#signal-with-start}
 
-**How to use Signal-With-Start using the Go SDK.**
+**How to use Signal-With-Start using the Go SDK**
 
 Signal-With-Start is used from the Client.
 It takes a Workflow Id, Workflow arguments, a Signal name, and Signal arguments.
@@ -198,7 +198,7 @@ A [Query](/encyclopedia/application-message-passing#queries) is a synchronous op
 
 ### How to define a Query {#define-query}
 
-**How to define a Query using the Go SDK.**
+**How to define a Query using the Go SDK**
 
 A Query has a name and can have arguments.
 
@@ -213,7 +213,7 @@ queryType := "your_query_name"
 
 ### Handle a Query {#handle-query}
 
-**How to handle a Query using the Go SDK.**
+**How to handle a Query using the Go SDK**
 
 Queries are handled by your Workflow.
 
@@ -273,7 +273,7 @@ err := workflow.SetQueryHandler(ctx, "current_state", func(prefix string, suffix
 
 ### Send a Query {#send-query}
 
-**How to send a Query using the Go SDK.**
+**How to send a Query using the Go SDK**
 
 Queries are sent from a Temporal Client.
 
@@ -316,7 +316,7 @@ An [Update](/encyclopedia/application-message-passing#updates) is an operation t
 
 ### Define an Update {#define-update}
 
-**How to define an Update using the Go SDK.**
+**How to define an Update using the Go SDK**
 
 In Go, you define an Update type, also known as an Update name, as a `string` value.
 You must ensure the arguments and result are [serializable](/dataconversion).
@@ -349,7 +349,7 @@ func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error
 
 ### Handle an Update {#handle-update}
 
-**How to handle an Update using the Go SDK.**
+**How to handle an Update using the Go SDK**
 
 Register an Update handler for a given name using the [SetUpdateHandler](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandler) API from the `go.temporal.io/sdk/workflow` package.
 The handler function can accept multiple serializable input parameters, but we recommend using only a single parameter.
@@ -388,7 +388,7 @@ func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error
 
 ### Set an Update validator function {#validator-function}
 
-**How to set an Update validator function using the Go SDK.**
+**How to set an Update validator function using the Go SDK**
 
 Validate certain aspects of the data sent to the Workflow using an Update validator function.
 For instance, a counter Workflow might never want to accept a non-positive number.
@@ -454,7 +454,7 @@ func isPositive(ctx workflow.Context, u YourUpdateArg) error {
 
 ### Send an Update from a Temporal Client {#send-update-from-client}
 
-**How to send an Update from a Temporal Client using the Go SDK.**
+**How to send an Update from a Temporal Client using the Go SDK**
 
 Invoke the `UpdateWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to dispatch an [Update](/encyclopedia/application-message-passing#updates) to a Workflow Execution.
 

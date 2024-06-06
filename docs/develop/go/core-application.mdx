@@ -86,7 +86,7 @@ tags:
 description: The Foundations section of the Temporal Developer's guide introduces essential concepts for building and running a Temporal Application, outlining steps to start Workflow and Activity Execution, running development Workers, and installing the Temporal CLI.
 ---
 
-The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](#develop-workflows) that executes an [Activity](#activity-definition).
+This page shows how to do the following:
 
 In this section you can find the following:
 
@@ -97,150 +97,7 @@ In this section you can find the following:
 - [Run a dev Worker](#develop-worker)
 - [Run a Temporal Cloud Worker](#run-a-temporal-cloud-worker)
 
-## How to install the Temporal CLI and run a development server {#run-a-development-server}
-
-This section describes how to install the [Temporal CLI](/cli) and run a development Temporal Service.
-The local development Temporal Service comes packaged with the [Temporal Web UI](/web-ui).
-
-For information on deploying and running a self-hosted production Temporal Service, see the [Self-hosted guide](/self-hosted-guide), or sign up for [Temporal Cloud](/cloud) and let us run your production Temporal Service for you.
-
-The Temporal CLI is a tool for interacting with a Temporal Service from the command line and it includes a distribution of the Temporal Server and Web UI.
-This local development Temporal Service runs as a single process with zero runtime dependencies and it supports persistence to disk and in-memory mode through SQLite.
-
-**Install the Temporal CLI**
-
-Choose one of the following install methods to install the Temporal CLI.
-
-<Tabs>
-<TabItem value="macOS" label="macOS">
-
-- Install the Temporal CLI with Homebrew.
-
-  ```bash
-  brew install temporal
-  ```
-
-- Install the Temporal CLI with cURL.
-
-  ```bash
-  curl -sSf https://temporal.download/cli.sh | sh
-  ```
-
-- Install the Temporal CLI from CDN.
-  1. Select the platform and architecture needed.
-     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64">
-         Download for Darwin amd64
-       </a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64">
-         Download for Darwin arm64
-       </a>
-  2. Extract the downloaded archive.
-  3. Add the `temporal` binary to your PATH.
-
-</TabItem>
-<TabItem value="Linux" label="Linux">
-
-- Install the Temporal CLI with cURL.
-
-  ```bash
-  curl -sSf https://temporal.download/cli.sh | sh
-  ```
-
-- Install the Temporal CLI from CDN.
-  1. Select the platform and architecture needed.
-     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">
-         Download for Linux amd64
-       </a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">
-         Download for Linux arm64
-       </a>
-  2. Extract the downloaded archive.
-  3. Add the `temporal` binary to your PATH.
-
-</TabItem>
-<TabItem value="Windows" label="Windows">
-
-- Install the Temporal CLI from CDN.
-  1. Select the platform and architecture needed and download the binary.
-     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">
-         Download for Windows amd64
-       </a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">
-         Download for Windows arm64
-       </a>
-  2. Extract the downloaded archive.
-  3. Add the `temporal.exe` binary to your PATH.
-
-</TabItem>
-</Tabs>
-
-**Start the Temporal Development Server**
-
-Start the Temporal Development Server by using the `server start-dev` command.
-
-```bash
-temporal server start-dev
-```
-
-This command automatically starts the Web UI, creates the default [Namespace](/namespaces), and uses an in-memory database.
-
-The Temporal Server should be available on `localhost:7233` and the Temporal Web UI should be accessible at [`http://localhost:8233`](http://localhost:8233/).
-
-The server's startup configuration can be customized using command line options.
-For a full list of options, run:
-
-```bash
-temporal server start-dev --help
-```
-
-## How to install a Temporal SDK {#install-a-temporal-sdk}
-
-A [Temporal SDK](/encyclopedia/temporal-sdks) provides a framework for [Temporal Application](/temporal#temporal-application) development.
-
-An SDK provides you with the following:
-
-- A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) to communicate with a [Temporal Service](/clusters).
-- APIs to develop [Workflows](/workflows).
-- APIs to create and manage [Worker Processes](/workers#worker).
-- APIs to author [Activities](/activities#activity-definition).
-
-[![Build Status](https://badge.buildkite.com/ce6df3b1a8b375270261ae70fb2d2756af298fef3a0dac4d20.svg?theme=github&branch=master)](https://buildkite.com/temporal/temporal-go-client) [![Coverage Status](https://coveralls.io/repos/github/temporalio/temporal-go-sdk/badge.svg?branch=master)](https://coveralls.io/github/temporalio/temporal-go-sdk?branch=master) [![Go reference](https://pkg.go.dev/badge/go.temporal.io/sdk)](https://pkg.go.dev/go.temporal.io/sdk)
-
-Add the [Temporal Go SDK](https://github.com/temporalio/sdk-go) to your project:
-
-```bash
-go get go.temporal.io/sdk
-```
-
-Or clone the Go SDK repo to your preferred location:
-
-```bash
-git clone git@github.com:temporalio/sdk-go.git
-```
-
-### How to find the Go SDK API reference {#api-reference}
-
-The Temporal Go SDK API reference is published on [pkg.go.dev](https://pkg.go.dev/go.temporal.io/sdk).
-
-- Short link: [`t.mp/go-api`](https://t.mp/go-api)
-
-### Where are SDK-specific code examples? {#code-samples}
-
-You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio?q=samples-&type=all&language=&sort=).
-
-Additionally, several of the [Tutorials](https://learn.temporal.io) are backed by a fully executable template application.
-
-- [Go Samples repo](https://github.com/temporalio/samples-go#samples-directory)
-- [Background Check application](https://github.com/temporalio/background-checks): Provides a non-trivial Temporal Application implementation in conjunction with [application documentation](https://learn.temporal.io/examples/go/background-checks/).
-- [Hello world application template in Go](https://github.com/temporalio/hello-world-project-template-go): Provides a quick-start development app for users.
-  This sample works in conjunction with the ["Hello World!" from scratch tutorial in Go](https://learn.temporal.io/getting_started/go/hello_world_in_go/).
-- [Money transfer application template in Go](https://github.com/temporalio/money-transfer-project-template-go): Provides a quick-start development app for users.
-  It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Go](https://learn.temporal.io/getting_started/go/first_program_in_go/).
-- [Subscription-style Workflow Definition in Go](https://github.com/temporalio/subscription-workflow-project-template-go): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
-- [eCommerce application example in Go](https://github.com/temporalio/temporal-ecommerce): Showcases a per-user shopping cart–style Workflow Definition that includes an API for adding and removing items from the cart as well as a web UI.
-  This application sample works in conjunction with the [eCommerce in Go tutorial](https://temporal.io/blog/build-an-ecommerce-app-with-temporal-part-1).
-
-## How to develop a basic Workflow {#develop-workflows}
+## Develop a basic Workflow {#develop-workflows}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definition).
 
@@ -271,7 +128,7 @@ func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
 }
 ```
 
-### How to define Workflow parameters {#workflow-parameters}
+### Define Workflow parameters {#workflow-parameters}
 
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
@@ -319,7 +176,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 }
 ```
 
-### How to define Workflow return parameters {#workflow-return-values}
+### Define Workflow return parameters {#workflow-return-values}
 
 Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
@@ -370,7 +227,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 }
 ```
 
-### How to customize Workflow Type in Go {#customize-workflow-type}
+### Customize Workflow Type in Go {#customize-workflow-type}
 
 In Go, by default, the Workflow Type name is the same as the function name.
 
@@ -410,7 +267,7 @@ func main() {
 }
 ```
 
-### How develop Workflow logic {#workflow-logic-requirements}
+### Develop Workflow logic {#workflow-logic-requirements}
 
 Workflow logic is constrained by [deterministic execution requirements](/workflows#deterministic-constraints).
 Therefore, each language is limited to the use of certain idiomatic techniques.
@@ -437,7 +294,7 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 - `workflow.Context` This is a replacement for `context.Context`.
   See [Tracing](/develop/go/observability#tracing-and-context-propogation) for more information about context propagation.
 
-## How to develop an Activity Definition in Go {#activity-definition}
+## Develop an Activity Definition in Go {#activity-definition}
 
 In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
 Below is an example of both a basic Activity Definition and of an Activity defined as a Struct method.
@@ -487,7 +344,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 }
 ```
 
-### How to develop Activity Parameters {#activity-parameters}
+### Develop Activity Parameters {#activity-parameters}
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
@@ -530,7 +387,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 }
 ```
 
-### How to define Activity return values {#activity-return-values}
+### Define Activity return values {#activity-return-values}
 
 All data returned from an Activity must be serializable.
 
@@ -567,7 +424,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 }
 ```
 
-### How to customize Activity Type in Go {#customize-activity-type}
+### Customize Activity Type in Go {#customize-activity-type}
 
 To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
 
@@ -595,7 +452,7 @@ func main() {
 // ...
 ```
 
-## How to start an Activity Execution {#activity-execution}
+## Start an Activity Execution {#activity-execution}
 
 Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
@@ -650,7 +507,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 }
 ```
 
-### How to set the required Activity Timeouts {#required-timeout}
+### Set the required Activity Timeouts {#required-timeout}
 
 Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
@@ -882,7 +739,7 @@ if err != nil {
 }
 ```
 
-### How to get the results of an Activity Execution {#get-activity-results}
+### Get the results of an Activity Execution {#get-activity-results}
 
 The call to spawn an [Activity Execution](/activities#activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
@@ -1009,7 +866,7 @@ func main() {
 // ...
 ```
 
-### How to set WorkerOptions in Go {#workeroptions}
+### Set WorkerOptions in Go {#workeroptions}
 
 Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/worker#Options) from the `go.temporal.io/sdk/worker` package, set any of the optional fields, and pass the instance to the [`New`](https://pkg.go.dev/go.temporal.io/sdk/worker#New) call.
 
@@ -1440,7 +1297,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-## How to run a Temporal Cloud Worker {#run-a-temporal-cloud-worker}
+## Run a Temporal Cloud Worker {#run-a-temporal-cloud-worker}
 
 To run a Worker that uses [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
@@ -1515,7 +1372,7 @@ func main() {
 }
 ```
 
-### How to register types {#register-types}
+### Register types {#register-types}
 
 All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -1542,7 +1399,7 @@ w.RegisterWorkflow(WorkflowB)
 w.RegisterWorkflow(WorkflowC)
 ```
 
-### How to set RegisterWorkflowOptions in Go {#registerworkflowoptions}
+### Set RegisterWorkflowOptions in Go {#registerworkflowoptions}
 
 Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#RegisterOptions) from the `go.temporal.io/sdk/workflow` package and pass it to the [`RegisterWorkflowWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/worker#WorkflowRegistry) call when registering the Workflow Type with the Worker.
 
@@ -1575,7 +1432,7 @@ w.RegisterWorkflowWithOptions(YourWorkflowDefinition, registerOptions)
 // ...
 ```
 
-### How to set RegisterActivityOptions in Go {#registeractivityoptions}
+### Set RegisterActivityOptions in Go {#registeractivityoptions}
 
 Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/activity#RegisterOptions) from the `go.temporal.io/sdk/activity` package and pass it to the [`RegisterActivityWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/worker#ActivityRegistry) call when registering the Activity Type with the Worker.
 
