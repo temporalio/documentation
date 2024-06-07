@@ -42,7 +42,7 @@ To assign a certificate and generate your metrics endpoint, follow these steps:
 2. Go to **Settings** and select **Integrations**.
 3. Select **Configure Observability** (if you're setting it up for the first time) or click **Edit** in the Observability section (if it was already configured before).
 4. Add your root CA certificate (.pem) and save it.
-   Note that if an observability endpoint is already set up, you can append your root CA certificate here to use the generated observability endpoint with your instance of Grafana.
+   Note that if an observability endpoint is already set up, you can append your root CA certificate here to use the generated observability endpoint in your observability tool.
 5. To test your endpoint, run the following command on your host:
    ```
    curl -v --cert <path to your client-cert.pem> --key <path to your client-cert.key> "<your generated Temporal Cloud prometheus_endpoint>/api/v1/query?query=temporal_cloud_v0_state_transition_count"
