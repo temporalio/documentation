@@ -38,17 +38,16 @@ To view and manage third-party integration settings, your user account must have
 
 To assign a certificate and generate your metrics endpoint, follow these steps:
 
-1. In Temporal Cloud UI, click **Settings**.
-2. On the **Settings** page, click **Integrations**.
-3. In the **Connection** section, paste the URL that was generated in the Observability section on the Temporal Cloud UI.
-4. The **Authentication** section may be left as **No Authentication**.
-5. In the **TLS Settings** section, select **TLS Client Authentication**:
-
-- Leave **ServerName** blank (this is not required).
-- Paste in your end-entity certificate and key.
-  Note that the end-entity certificate used here must be part of the certificate chain with the root CA certificates used in your Temporal Cloud observability setup.
-
-6. Select **Save and test** to verify that the data source is working.
+1. Log in to Temporal Cloud UI as a Global Admin.
+2. Go to **Settings** and select **Integrations**.
+3. Select **Configure Observability** (if you're setting it up for the first time) or click **Edit** in the Observability section (if it was already configured before).
+4. Add your root CA certificate (.pem) and save it.
+   Note that if an observability endpoint is already set up, you can append your root CA certificate here to use the generated observability endpoint with your instance of Grafana.
+5. To test your endpoint, run the following command on your host:
+   ```
+   curl -v --cert <path to your client-cert.pem> --key <path to your client-cert.key> "<your generated Temporal Cloud prometheus_endpoint>/api/v1/query?query=temporal_cloud_v0_state_transition_count"
+   ```
+   If you have Workflows running on a Namespace in your Temporal Cloud instance, you should see some data as a result of running this command.
 
 After the page refreshes, the new metrics endpoint appears below **Endpoint**, in the form `https://<account-id>.tmprl.cloud/prometheus`.
 Use the endpoint to configure your observability tool—for example, [Grafana](https://grafana.com/) with [this dashboard](https://github.com/temporalio/dashboards/blob/master/cloud/temporal_cloud.json).
