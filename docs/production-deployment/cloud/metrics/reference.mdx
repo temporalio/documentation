@@ -1,8 +1,8 @@
 ---
 id: reference
-title: Temporal Cloud available metrics reference
+title: Temporal Cloud metrics reference
 sidebar_label: Available metrics
-description: Explore Temporal Cloud metrics with suffixes like _count, _bucket, and _sum, similar to Prometheus counters and histograms, supporting rate and latency calculations.
+description: Explore Temporal Cloud metrics that can be used with counters and histograms, supporting rate and latency calculations.
 toc_max_heading_level: 4
 tags:
   - temporal-cloud
@@ -26,27 +26,185 @@ keywords:
   - gRPC error count
 ---
 
-This documentation provides a guide to the metrics generated within Temporal Cloud environments.
-It enumerates the metrics, labels, and operations that enable you to analyze Workflow latencies, state transitions, gRPC errors, and more.
+A metric is a measurement or data point that provides insights into the performance and health of a system.
+This document describes the metrics available on the Temporal Cloud platform.
+Temporal Cloud metrics help you monitor performance and troubleshoot errors.
+They provide insights into different aspects of the Service.
+
 This guide offers an overview of:
 
-* **[Metrics labels](#metrics-labels)**:
-  Temporal Cloud metrics labels are used to filter metrics and help categorize and differentiate results.
-* **[Available metrics](#available-metrics)**:
+* **[Metrics capture](#capture)**:
+  Gather metrics using a Prometheus-style endpoint so they can be visualized using Prometheus and Grafana or exported to observability platforms like Datadog.
+* **[Available Temporal Cloud metrics](#available-metrics)**:
   The metrics emitted by Temporal Cloud include counts of gRPC errors, requests, successful task matches to a poller, and more.
-* **[Metrics groups](#metrics-groups)**:
-  Related Temporal Cloud metrics grouped by their associated operations or other labels.
-* **[Metrics operations](#metrics-operations)**:
-  The operation is a label in Temporal Cloud metrics that categorizes the type of operation being performed when the metric was collected.
-* **[Operations on metrics groups](#operation-ready-metrics)**:
-  Metrics groups that support operations for aggregation and filtering.
-* **[Using metrics](#metrics-use)**:
-  An example of how Temporal Cloud metrics act like Prometheus counters.
+* **[Metrics labels](#metrics-labels)**:
+  Temporal Cloud metrics labels can filter metrics and help categorize and differentiate results.
+* **[Operations](#metrics-operations)**:
+  An operation is a special type of label that categorizes the type of operation being performed when the metric was collected.
 
-Metrics play a key role in Temporal Cloud operations.
-They help you monitor performance and troubleshoot errors.
-Temporal Cloud's metrics provide insights into different aspects of the system's operation.
-Temporal Cloud metrics can be exported to observability platforms like Datadog or visualized using Prometheus and Grafana.
+:::info SDK METRICS
+
+This document discusses metrics emitted by [Temporal Cloud](/cloud).
+Temporal SDKs also emit metrics, sourced from Temporal Clients and Worker processes.
+You can find information about Temporal SDK metrics on its [dedicated page](/references/sdk-metrics).
+
+Please note:
+
+* SDK metrics start with the phrase `temporal_`.
+  These metrics are distinct from Temporal Cloud metrics.
+* Temporal Cloud metrics start with `temporal_cloud_`.
+  They are documented here.
+
+:::
+
+## Metrics capture {#capture}
+
+**How do you capture and use Temporal Cloud metrics?**
+
+Temporal Cloud emits metrics in a Prometheus-supported format.
+Prometheus is an open-source systems monitoring and alerting toolkit.
+The Temporal Service exposes Cloud metrics with a [Prometheus HTTP API endpoint](https://prometheus.io/docs/prometheus/latest/querying/api/).
+Temporal Cloud metrics provide a compatible data source for visualizing, monitoring, and observability platforms like Grafana and Data Dog.
+
+You can use functions like `rate` or `increase` to calculate the rate of increase for a Temporal Cloud metric:
+
+```
+rate(temporal_cloud_v0_frontend_service_request_count[$__rate_interval])
+```
+
+Or you might use Prometheus to calculate average latencies or histogram quartiles:
+
+```
+# Average latency
+rate(temporal_cloud_v0_service_latency_sum[$__rate_interval])
+/ rate(temporal_cloud_v0_service_latency_count[$__rate_interval])
+
+# Approximate 99th percentile latency broken down by operation
+histogram_quantile(0.99, sum(rate(temporal_cloud_v0_service_latency_bucket[$__rate_interval])) by (le, operation))
+```
+
+Set up Grafana with Temporal Cloud observability to view metrics by creating or getting your Prometheus endpoint for Temporal Cloud metrics and enabling SDK metrics.
+
+Read more:
+
+* [How to set up Grafana with Temporal Cloud observability](/cloud/metrics/prometheus-grafana).
+* [How to monitor Worker Health with Temporal Cloud Metrics](/production-deployment/cloud/worker-health)
+* [How to monitor Service Health with Temporal Cloud Metrics](/production-deployment/cloud/service-health)
+
+## Available Temporal Cloud metrics {#available-metrics}
+
+**What metrics are emitted from Temporal Cloud?**
+
+The following metrics are emitted for your Namespaces:
+
+### Frontend Service metrics {#frontend}
+
+#### temporal_cloud_v0_frontend_service_error_count
+
+This is a count of gRPC errors returned aggregated by operation.
+
+#### temporal_cloud_v0_frontend_service_request_count
+
+This is a count of gRPC requests received aggregated by operation.
+
+#### temporal_cloud_v0_resource_exhausted_error_count
+
+gRPC requests received that were rate-limited by Temporal Cloud, aggregated by cause.
+
+#### temporal_cloud_v0_state_transition_count
+
+Count of state transitions for each Namespace.
+
+#### temporal_cloud_v0_total_action_count
+
+Approximate count of Temporal Cloud Actions.
+
+
+### Poll metrics {#poll}
+
+#### temporal_cloud_v0_poll_success_count
+
+Tasks that are successfully matched to a poller.
+
+#### temporal_cloud_v0_poll_success_sync_count
+
+Tasks that are successfully sync matched to a poller.
+
+#### temporal_cloud_v0_poll_timeout_count
+
+When no tasks are available for a poller before timing out.
+
+### Replication lag metrics {#replication-lag}
+
+#### temporal_cloud_v0_replication_lag_bucket
+
+A histogram of [replication lag](/cloud/multi-region#replication-lag) during a specific time interval for a [multi-region Namespace](/cloud/multi-region).
+
+#### temporal_cloud_v0_replication_lag_count
+
+The [replication lag](/cloud/multi-region#replication-lag) count during a specific time interval for a [multi-region Namespace](/cloud/multi-region).
+
+#### temporal_cloud_v0_replication_lag_sum
+
+The sum of [replication lag](/cloud/multi-region#replication-lag) during a specific time interval for a [multi-region Namespace](/cloud/multi-region).
+
+### Schedule metrics {#schedule}
+
+#### temporal_cloud_v0_schedule_action_success_count
+
+Successful execution of a Scheduled Workflow.
+
+#### temporal_cloud_v0_schedule_buffer_overruns_count
+
+When average schedule run length is greater than average schedule interval while a `buffer_all` overlap policy is configured.
+
+#### temporal_cloud_v0_schedule_missed_catchup_window_count
+
+Skipped Scheduled executions when Workflows were delayed longer than the catchup window.
+
+#### temporal_cloud_v0_schedule_rate_limited_count
+
+Workflows that were delayed due to exceeding a rate limit.
+
+### Service latency metrics {#service-latency}
+
+#### temporal_cloud_v0_service_latency_bucket
+
+Latency for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
+
+#### temporal_cloud_v0_service_latency_count
+
+Count of latency observations for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
+
+#### temporal_cloud_v0_service_latency_sum
+
+Sum of latency observation time for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
+
+### Workflow metrics {#workflow}
+
+#### temporal_cloud_v0_workflow_cancel_count
+
+Workflows canceled before completing execution.
+
+#### temporal_cloud_v0_workflow_continued_as_new_count
+
+Workflow Executions that were Continued-As-New from a past execution.
+
+#### temporal_cloud_v0_workflow_failed_count
+
+Workflows that failed before completion.
+
+#### temporal_cloud_v0_workflow_success_count
+
+Workflows that successfully completed.
+
+#### temporal_cloud_v0_workflow_terminate_count
+
+Workflows terminated before completing execution.
+
+#### temporal_cloud_v0_workflow_timeout_count
+
+Workflows that timed out before completing execution.
 
 ## Metrics labels {#metrics-labels}
 
@@ -54,11 +212,10 @@ Temporal Cloud metrics can be exported to observability platforms like Datadog o
 
 Temporal Cloud metrics include key-value pairs called labels in their associated metadata.
 Labels help you categorize and differentiate metrics for precise filtering, querying, and aggregation.
-Use labels to specific attributes or compare values, such as numeric buckets in histograms. 
+Use labels to specific attributes or compare values, such as numeric buckets in histograms.
 This added context enhances the monitoring and analysis capabilities, providing deeper insights into your data.
 
-
-Metrics for all Namespaces in your account are available from the metrics endpoint.
+Metrics for all Namespaces in your account are available from the [metrics endpoint](#capture).
 Use the following labels to filter metrics:
 
 | Label                      | Explanation                                                                                                                                                                                                                                                               |
@@ -79,159 +236,14 @@ The following is an example of how you can filter metrics using labels:
 temporal_cloud_v0_poll_success_count{__rollup__="true", operation="TaskQueueMgr", task_type="Activity", temporal_account="12345", temporal_namespace="your_namespace.12345", temporal_service_type="matching"}
 ```
 
-## Available metrics {#available-metrics}
 
-**What metrics are emitted from Temporal Cloud?**
+## Operations {#metrics-operations}
 
-The following metrics are emitted for your various Namespaces:
+**What operation labels are captured by Temporal Cloud?**
 
-### temporal_cloud_v0_frontend_service_error_count
-
-This is a count of gRPC errors returned aggregated by operation.
-
-### temporal_cloud_v0_frontend_service_request_count
-
-This is a count of gRPC requests received aggregated by operation.
-
-### temporal_cloud_v0_poll_success_count
-
-Tasks that are successfully matched to a poller.
-
-### temporal_cloud_v0_poll_success_sync_count
-
-Tasks that are successfully sync matched to a poller.
-
-### temporal_cloud_v0_poll_timeout_count
-
-When no tasks are available for a poller before timing out.
-
-### temporal_cloud_v0_replication_lag_bucket
-
-A histogram of [replication lag](/cloud/multi-region#replication-lag) during a specific time interval for a [multi-region Namespace](/cloud/multi-region).
-
-### temporal_cloud_v0_replication_lag_count
-
-The [replication lag](/cloud/multi-region#replication-lag) count during a specific time interval for a [multi-region Namespace](/cloud/multi-region).
-
-### temporal_cloud_v0_replication_lag_sum
-
-The sum of [replication lag](/cloud/multi-region#replication-lag) during a specific time interval for a [multi-region Namespace](/cloud/multi-region).
-
-### temporal_cloud_v0_resource_exhausted_error_count
-
-gRPC requests received that were rate-limited by Temporal Cloud, aggregated by cause.
-
-### temporal_cloud_v0_schedule_action_success_count
-
-Successful execution of a Scheduled Workflow.
-
-### temporal_cloud_v0_schedule_buffer_overruns_count
-
-When average schedule run length is greater than average schedule interval while a `buffer_all` overlap policy is configured.
-
-### temporal_cloud_v0_schedule_missed_catchup_window_count
-
-Skipped Scheduled executions when Workflows were delayed longer than the catchup window.
-
-### temporal_cloud_v0_schedule_rate_limited_count
-
-Workflows that were delayed due to exceeding a rate limit.
-
-### temporal_cloud_v0_service_latency_bucket
-
-Latency for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
-
-### temporal_cloud_v0_service_latency_count
-
-Count of latency observations for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
-
-### temporal_cloud_v0_service_latency_sum
-
-Sum of latency observation time for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
-
-### temporal_cloud_v0_state_transition_count
-
-Count of state transitions for each Namespace.
-
-### temporal_cloud_v0_total_action_count
-
-Approximate count of Temporal Cloud Actions.
-
-### temporal_cloud_v0_workflow_cancel_count
-
-Workflows canceled before completing execution.
-
-### temporal_cloud_v0_workflow_continued_as_new_count
-
-Workflow Executions that were Continued-As-New from a past execution.
-
-### temporal_cloud_v0_workflow_failed_count
-
-Workflows that failed before completion.
-
-### temporal_cloud_v0_workflow_success_count
-
-Workflows that successfully completed.
-
-### temporal_cloud_v0_workflow_terminate_count
-
-Workflows terminated before completing execution.
-
-### temporal_cloud_v0_workflow_timeout_count
-
-Workflows that timed out before completing execution.
-
-## Metrics groups {#metrics-groups}
-
-**How are metrics grouped and which groups support filtering?**
-
-The following lists enumerate the groups of metrics that support operation level filtering:
-
-**Frontend Service metrics**
-  * Temporal\_cloud\_v0\_frontend\_service\_request\_count
-  * Temporal\_cloud\_v0\_frontend\_service\_error\_count
-  * Temporal\_cloud\_v0\_frontend\_service\_pending\_requests\_count
-
-**Poll metrics**
-  * Temporal\_cloud\_v0\_poll\_success\_count
-  * Temporal\_cloud\_v0\_poll\_success\_sync\_count
-  * Temporal\_cloud\_v0\_poll\_timeout\_count
-
-**Service latency metrics**
-  * Temporal\_cloud\_v0\_service\_latency\_bucket
-  * Temporal\_cloud\_v0\_service\_latency\_count
-  * Temporal\_cloud\_v0\_service\_latency\_sum
-
-**Workflow metrics**
-  * Temporal\_cloud\_v0\_workflow\_cancel\_count 
-  * Temporal\_cloud\_v0\_workflow\_continued\_as\_new\_count
-  * Temporal\_cloud\_v0\_workflow\_failed\_count
-  * Temporal\_cloud\_v0\_workflow\_success\_count
-  * Temporal\_cloud\_v0\_workflow\_terminate\_count
-  * Temporal\_cloud\_v0\_workflow\_timeout\_count
-
-Additional groups that do not support operation level filtering include:
-
-**Replication lag metrics**
-  * temporal\_cloud\_v0\_replication\_lag\_bucket
-  * temporal\_cloud\_v0\_replication\_lag\_count
-  * temporal\_cloud\_v0\_replication\_lag\_sum
-
-**Scheduling metrics**
-  * temporal\_cloud\_v0\_schedule\_action\_success\_count
-  * temporal\_cloud\_v0\_schedule\_buffer\_overruns\_count
-  * temporal\_cloud\_v0\_schedule\_missed\_catchup\_window\_count
-  * temporal\_cloud\_v0\_schedule\_rate\_limited\_count
-
-Ungrouped metrics include:
-
-* temporal\_cloud\_v0\_resource\_exhausted\_error\_count
-* temporal\_cloud\_v0\_state\_transition\_count
-* temporal\_cloud\_v0\_total\_action\_count
-
-## Metrics operations {#metrics-operations}
-
-**What operations are available on Temporal Cloud to use with metrics?**
+Operations are a special class of metrics label.
+They describe the context during which a metric was captured.
+Temporal Cloud includes the following operations labels:
 
 * AdminDescribeMutableState
 * AdminGetWorkflowExecutionRawHistory
@@ -261,37 +273,35 @@ Ungrouped metrics include:
 * QueryWorkflow
 * RecordActivityTaskHeartbeat
 * RecordActivityTaskHeartbeatById
+* RegisterNamespace
+* RequestCancelWorkflowExecution
+* ResetStickyTaskQueue
+* ResetWorkflowExecution
+* RespondActivityTaskCanceled
+* RespondActivityTaskCompleted
+* RespondActivityTaskCompletedById
+* RespondActivityTaskFailed
+* RespondActivityTaskFailedById
+* RespondQueryTaskCompleted
+* RespondWorkflowTaskCompleted
+* RespondWorkflowTaskFailed
+* SignalWithStartWorkflowExecution
+* SignalWorkflowExecution
+* StartBatchOperation
+* StartWorkflowExecution
+* StopBatchOperation
+* TerminateWorkflowExecution
+* UpdateNamespace
+* UpdateSchedule
+* UpdateWorkerBuildIdCompatibility
+* UpdateWorkflowExecution
 
-## Operations and metrics groups {#operation-ready-metrics}
-
-**Which Temporal Cloud metrics groups are available for use with operations?**
-
-As the following table shows, certain [metrics groups](#metrics-groups) support operations for aggregation, filtering, and so forth:
+As the following table shows, certain [metrics groups](#available-metrics) support [operations](#metrics-operations) for aggregation and filtering:
 
 | Metrics Group / Operations | All Operations | SignalWithStartWorkflowExecution / SignalWorkflowExecution / StartWorkflowExecution | TaskQueueMgr | CompletionStats |
 |---------------------------|----------------|-------------------------------------------------------------------------------------|--------------|-----------------|
-| **Frontend Service Metrics**  |       X        |                                                                                     |              |                 |
-| **Service Latency Metrics**   |                |                                    X                                                |              |                 |
-| **Poll Metrics**              |                |                                                                                     |       X      |                 |
-| **Workflow Metrics**          |                |                                                                                     |              |        X        |
+| **[Frontend Service Metrics](#frontend)**  |       X        |                                                                                     |              |                 |
+| **[Service Latency Metrics](#service-latency)**   |                |                                    X                                                |              |                 |
+| **[Poll Metrics](#poll)**              |                |                                                                                     |       X      |                 |
+| **[Workflow Metrics](#workflow)**          |                |                                                                                     |              |        X        |
 
-## Using Metrics {#metrics-use}
-
-Most Temporal Cloud metrics are suffixed with `_count`.
-This indicates that they behave largely like a [Prometheus counter](https://prometheus.io/docs/concepts/metric_types/#counter).
-You'll want to use a function like `rate` or `increase` to calculate a per-second rate of increase, or an extrapolated total increase over a time period.
-
-```
-rate(temporal_cloud_v0_frontend_service_request_count[5m])
-```
-
-`temporal_cloud_v0_service_latency` has `_bucket`, `_count`, and `_sum` metrics. This is because it's a [Prometheus Histogram](https://prometheus.io/docs/concepts/metric_types/#histogram).
-You can use the `_count` and `_sum` metrics to calculate an average latency over a time period, or use the `_bucket` metric to calculate an approximate histogram quartile.
-
-```
-# the average latency observation over the last 5 minutes
-rate(temporal_cloud_v0_service_latency_sum[5m]) / rate(temporal_cloud_v0_service_latency_count[5m])
-
-# the approximate 99th percentile latency over the last 5 minutes, broken down by operation
-histogram_quantile(0.99, sum(rate(temporal_cloud_v0_service_latency_bucket[5m])) by (le, operation))
-```
