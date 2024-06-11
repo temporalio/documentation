@@ -26,6 +26,8 @@ keywords:
   - gRPC error count
 ---
 
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+
 A metric is a measurement or data point that provides insights into the performance and health of a system.
 This document describes the metrics available on the Temporal Cloud platform.
 Temporal Cloud metrics help you monitor performance and troubleshoot errors.
@@ -33,8 +35,8 @@ They provide insights into different aspects of the Service.
 
 This guide offers an overview of:
 
-* **[Metrics capture](#capture)**:
-  Gather metrics using a Prometheus-style endpoint so they can be visualized using Prometheus and Grafana or exported to observability platforms like Datadog.
+* **[Gather metrics](#gather)**:
+  Capture Temporal Cloud metrics using a Prometheus-style endpoint so they can be visualized using Prometheus and Grafana or exported to observability platforms like Datadog.
 * **[Available Temporal Cloud metrics](#available-metrics)**:
   The metrics emitted by Temporal Cloud include counts of gRPC errors, requests, successful task matches to a poller, and more.
 * **[Metrics labels](#metrics-labels)**:
@@ -51,18 +53,16 @@ You can find information about Temporal SDK metrics on its [dedicated page](/ref
 Please note:
 
 * SDK metrics start with the phrase `temporal_`.
-  These metrics are distinct from Temporal Cloud metrics.
 * Temporal Cloud metrics start with `temporal_cloud_`.
-  They are documented here.
 
 :::
 
-## Metrics capture {#capture}
+## Gather metrics {#gather}
 
 **How do you capture and use Temporal Cloud metrics?**
 
 Temporal Cloud emits metrics in a Prometheus-supported format.
-Prometheus is an open-source systems monitoring and alerting toolkit.
+Prometheus is an open-source toolkit for alerting and monitoring.
 The Temporal Service exposes Cloud metrics with a [Prometheus HTTP API endpoint](https://prometheus.io/docs/prometheus/latest/querying/api/).
 Temporal Cloud metrics provide a compatible data source for visualizing, monitoring, and observability platforms like Grafana and Data Dog.
 
@@ -85,11 +85,11 @@ histogram_quantile(0.99, sum(rate(temporal_cloud_v0_service_latency_bucket[$__ra
 
 Set up Grafana with Temporal Cloud observability to view metrics by creating or getting your Prometheus endpoint for Temporal Cloud metrics and enabling SDK metrics.
 
-Read more:
-
-* [How to set up Grafana with Temporal Cloud observability](/cloud/metrics/prometheus-grafana).
-* [How to monitor Worker Health with Temporal Cloud Metrics](/production-deployment/cloud/worker-health)
-* [How to monitor Service Health with Temporal Cloud Metrics](/production-deployment/cloud/service-health)
+<RelatedReadContainer>
+  <RelatedReadItem path="/cloud/metrics/prometheus-grafana" text="How to set up Grafana with Temporal Cloud observability" archetype="feature-guide" />
+  <RelatedReadItem path="/production-deployment/cloud/worker-health" text="How to monitor Worker Health with Temporal Cloud Metrics" archetype="feature-guide" />
+  <RelatedReadItem path="/production-deployment/cloud/service-health" text="How to monitor Service Health with Temporal Cloud Metrics" archetype="feature-guide" />
+</RelatedReadContainer>
 
 ## Available Temporal Cloud metrics {#available-metrics}
 
@@ -215,7 +215,7 @@ Labels help you categorize and differentiate metrics for precise filtering, quer
 Use labels to specific attributes or compare values, such as numeric buckets in histograms.
 This added context enhances the monitoring and analysis capabilities, providing deeper insights into your data.
 
-Metrics for all Namespaces in your account are available from the [metrics endpoint](#capture).
+Metrics for all Namespaces in your account are available from the [metrics endpoint](#gather).
 Use the following labels to filter metrics:
 
 | Label                      | Explanation                                                                                                                                                                                                                                                               |
