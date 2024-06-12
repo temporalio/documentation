@@ -54,7 +54,7 @@ if err != nil {
 
 ### Workflow Retry Policy {#workflow-retries}
 
-**How to set a Workflow Retry Polciy using the Go SDK.**
+**How to set a Workflow Retry Policy using the Go SDK**
 
 A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -83,9 +83,9 @@ if err != nil {
 }
 ```
 
-## How to set Activity timeouts {#activity-timeouts}
+## Set Activity timeouts {#activity-timeouts}
 
-**How to set Activity timeouts using the Go SDK.**
+**How to set Activity timeouts using the Go SDK**
 
 Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 
@@ -122,7 +122,7 @@ if err != nil {
 
 ### Set a custom Activity Retry Policy {#activity-retries}
 
-**How to set a custom Activity Retry Policy using the Go SDK.**
+**How to set a custom Activity Retry Policy using the Go SDK**
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -165,7 +165,7 @@ if err != nil {
 
 ## Activity Heartbeats {#activity-heartbeats}
 
-**How to Heartbeat an Activity using the Go SDK.**
+**How to Heartbeat an Activity using the Go SDK**
 
 An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/clusters).
 Each Heartbeat informs the Temporal Service that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
@@ -236,7 +236,7 @@ func SampleActivity(ctx context.Context, inputArg InputParams) error {
 
 ### Set a Heartbeat Timeout {#heartbeat-timeout}
 
-**How to set a Heartbeat Timeout for an Activity using the Go SDK.**
+**How to set a Heartbeat Timeout for an Activity using the Go SDK**
 
 A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
 

@@ -7,7 +7,7 @@ keywords:
   - schedules
 tags:
   - schedules
-description: Learn how to schedule Workflows, start them with delays or as Temporal Cron Jobs using the Go SDK. Master scheduling, backfilling, pausing, deleting, and updating Workflows.
+description: Learn how to schedule Workflows, start them with delays or as Temporal Cron Jobs using the Go SDK Master scheduling, backfilling, pausing, deleting, and updating Workflows.
 ---
 
 This page shows how to do the following:
@@ -24,7 +24,7 @@ Use any of the following action to help Schedule a Workflow Execution and take c
 
 ### Create a Schedule {#create-schedule}
 
-**How to create a Schedule for a Workflow using the Go SDK.**
+**How to create a Schedule for a Workflow using the Go SDK**
 
 Schedules are initiated with the `create` call.
 The user generates a unique Schedule ID for each new Schedule.
@@ -61,7 +61,7 @@ func main() {
 
 ### Backfill a Schedule {#backfill-schedule}
 
-**How to Backfill a Schedule for a Workflow using the Go SDK.**
+**How to Backfill a Schedule for a Workflow using the Go SDK**
 
 Backfilling a Schedule executes [Workflow Tasks](/workers#workflow-task) ahead of the Schedule's specified time range.
 This is useful for executing a missed or delayed Action, or for testing the Workflow ahead of time.
@@ -103,7 +103,7 @@ func main() {
 
 ### Delete a Schedule {#delete-schedule}
 
-**How to delete a Schedule for a Workflow using the Go SDK.**
+**How to delete a Schedule for a Workflow using the Go SDK**
 
 Deleting a Schedule erases a Schedule.
 Deletion does not affect any Workflows started by the Schedule.
@@ -132,7 +132,7 @@ func main() {
 
 ### Describe a Schedule {#describe-schedule}
 
-**How to describe a Schedule for a Workflow using the Go SDK.**
+**How to describe a Schedule for a Workflow using the Go SDK**
 
 `Describe` retrieves information about the current Schedule configuration.
 This can include details about the Schedule Spec (such as Intervals), CronExpressions, and Schedule State.
@@ -155,7 +155,7 @@ func main() {
 
 ### List a Schedules {#list-schedules}
 
-**How to list all Schedules for Workflows using the Go SDK.**
+**How to list all Schedules for Workflows using the Go SDK**
 
 The `List` action returns all available Schedules and their respective Schedule IDs.
 
@@ -183,7 +183,7 @@ func main() {
 
 ### Pause a Schedule {#pause-schedule}\
 
-**How to pause and unpause a Schedule for a Workflow using the Go SDK.**
+**How to pause and unpause a Schedule for a Workflow using the Go SDK**
 
 `Pause` and `Unpause` enable the start or stop of all future Workflow Runs on a given Schedule.
 
@@ -214,7 +214,7 @@ func main() {
 
 ### Trigger a Schedule {#trigger-schedule}
 
-**How to trigger a Schedule for a Workflow using the Go SDK.**
+**How to trigger a Schedule for a Workflow using the Go SDK**
 
 Triggering a Schedule immediately executes an Action defined in that Schedule.
 By default, `trigger` is subject to the Overlap Policy.
@@ -242,7 +242,7 @@ func main() {
 
 ### Update a Schedule {#update-schedule}
 
-**How to update a Schedule for a Workflow using the Go SDK.**
+**How to update a Schedule for a Workflow using the Go SDK**
 
 Updating a Schedule changes the configuration of an existing Schedule.
 These changes can be made to Workflow Actions, Action parameters, Memos, and the Workflow's Cancellation Policy.
@@ -295,7 +295,7 @@ if err != nil {
 
 ## Temporal Cron Jobs {#temporal-cron-jobs}
 
-**How to start a Workflow Execution as a Temporal Cron Job using the Go SDK.**
+**How to start a Workflow Execution as a Temporal Cron Job using the Go SDK**
 
 A [Temporal Cron Job](/workflows#temporal-cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
