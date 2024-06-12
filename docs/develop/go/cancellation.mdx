@@ -16,14 +16,14 @@ tags:
 
 This pages shows the following:
 
-- How to handle a Cancellation request within a Workflow.
-- How to set an Activity Heartbeat Timeout.
-- How to listen for and handle a Cancellation request within an Activity.
-- How to send a Cancellation request from a Temporal Client.
+- Handle a Cancellation request within a Workflow.
+- Set an Activity Heartbeat Timeout.
+- Listen for and handle a Cancellation request within an Activity.
+- Send a Cancellation request from a Temporal Client.
 
 ## Handle Cancellation in Workflow {#handle-cancellation-in-workflow}
 
-**How to handle a Cancellation in a Workflow in Go.**
+**How to handle a Cancellation in a Workflow using the Go SDK**
 
 Workflow Definitions can be written to handle execution cancellation requests with Go's `defer` and the `workflow.NewDisconnectedContext` API.
 In the Workflow Definition, there is a special Activity that handles clean up should the execution be cancelled.
@@ -78,7 +78,7 @@ func YourWorkflow(ctx workflow.Context) error {
 
 ## Handle Cancellation in an Activity {#handle-cancellation-in-an-activity}
 
-**How to handle a Cancellation in an Activity in Go.**
+**How to handle a Cancellation in an Activity using the Go SDK**
 
 Ensure that the Activity is Heartbeating to receive the Cancellation request and stop execution.
 
@@ -111,7 +111,7 @@ func (a *Activities) ActivityToBeCanceled(ctx context.Context) (string, error) {
 
 ## Request Cancellation {#request-cancellation}
 
-**How to request Cancellation of a Workflow and Activities in Go.**
+**How to request Cancellation of a Workflow and Activities using the Go SDK**
 
 Use the `CancelWorkflow` API to cancel a Workflow Execution using its Id.
 
