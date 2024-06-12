@@ -98,6 +98,8 @@ In this section you can find the following:
 
 ## Develop a basic Workflow {#develop-workflows}
 
+**How to develop a basic Workflow using the Go SDK**
+
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definition).
 
 In the Temporal Go SDK programming model, a [Workflow Definition](/workflows#workflow-definition) is an exportable function.
@@ -128,6 +130,8 @@ func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
 ```
 
 ### Define Workflow parameters {#workflow-parameters}
+
+**How to define Workflow parameters using the Go SDK**
 
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
@@ -176,6 +180,8 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 ```
 
 ### Define Workflow return parameters {#workflow-return-values}
+
+**How to define Workflow return parameters using the Go SDK**
 
 Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
@@ -228,6 +234,8 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 
 ### Customize Workflow Type in Go {#customize-workflow-type}
 
+**How to customize Workflow Type using the Go SDK**
+
 In Go, by default, the Workflow Type name is the same as the function name.
 
 To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
@@ -268,6 +276,8 @@ func main() {
 
 ### Develop Workflow logic {#workflow-logic-requirements}
 
+**How to develop Workflow logic using the Go SDK**
+
 Workflow logic is constrained by [deterministic execution requirements](/workflows#deterministic-constraints).
 Therefore, each language is limited to the use of certain idiomatic techniques.
 However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
@@ -294,6 +304,8 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
   See [Tracing](/develop/go/observability#tracing-and-context-propogation) for more information about context propagation.
 
 ## Develop an Activity Definition in Go {#activity-definition}
+
+**How to develop an Activity Definition using the Go SDK**
 
 In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
 Below is an example of both a basic Activity Definition and of an Activity defined as a Struct method.
@@ -345,6 +357,8 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 
 ### Develop Activity Parameters {#activity-parameters}
 
+**How to develop Activity Parameters using the Go SDK**
+
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
 
@@ -388,6 +402,8 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 
 ### Define Activity return values {#activity-return-values}
 
+**How to define Activity return values using the Go SDK**
+
 All data returned from an Activity must be serializable.
 
 There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflows#event-history).
@@ -425,6 +441,8 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 
 ### Customize Activity Type in Go {#customize-activity-type}
 
+**How to customize Activity Type using the Go SDK**
+
 To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
 
 <div className="copycode-notice-container">
@@ -452,6 +470,8 @@ func main() {
 ```
 
 ## Start an Activity Execution {#activity-execution}
+
+**How to start an Activity Execution using the Go SDK**
 
 Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
@@ -508,6 +528,8 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 
 ### Set the required Activity Timeouts {#required-timeout}
 
+**How to set the required Activity Timeouts using the Go SDK**
+
 Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
@@ -536,6 +558,8 @@ if err != nil {
 ```
 
 ### Go ActivityOptions reference {#activity-options-reference}
+
+**How to use Go ActivityOptions reference using the Go SDK**
 
 Create an instance of [`ActivityOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ActivityOptions) from the `go.temporal.io/sdk/workflow` package and use [`WithActivityOptions()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#WithActivityOptions) to apply it to the instance of `workflow.Context`.
 
@@ -740,6 +764,8 @@ if err != nil {
 
 ### Get the results of an Activity Execution {#get-activity-results}
 
+**How to get the results of an Activity Execution using the Go SDK**
+
 The call to spawn an [Activity Execution](/activities#activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
 
@@ -866,6 +892,8 @@ func main() {
 ```
 
 ### Set WorkerOptions in Go {#workeroptions}
+
+**How to set WorkerOptions using the Go SDK**
 
 Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/worker#Options) from the `go.temporal.io/sdk/worker` package, set any of the optional fields, and pass the instance to the [`New`](https://pkg.go.dev/go.temporal.io/sdk/worker#New) call.
 
@@ -1298,6 +1326,8 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 
 ## Run a Temporal Cloud Worker {#run-a-temporal-cloud-worker}
 
+**How to run a Temporal Cloud Worker using the Go SDK**
+
 To run a Worker that uses [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
 - An address that includes your [Cloud Namespace Name](/namespaces) and a port number: `<Namespace>.<ID>.tmprl.cloud:<port>`.
@@ -1373,6 +1403,8 @@ func main() {
 
 ### Register types {#register-types}
 
+**How to register types using the Go SDK**
+
 All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
 If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task.
@@ -1399,6 +1431,8 @@ w.RegisterWorkflow(WorkflowC)
 ```
 
 ### Set RegisterWorkflowOptions in Go {#registerworkflowoptions}
+
+**How to set RegisterWorkflowOptions using the Go SDK**
 
 Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#RegisterOptions) from the `go.temporal.io/sdk/workflow` package and pass it to the [`RegisterWorkflowWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/worker#WorkflowRegistry) call when registering the Workflow Type with the Worker.
 
@@ -1432,6 +1466,8 @@ w.RegisterWorkflowWithOptions(YourWorkflowDefinition, registerOptions)
 ```
 
 ### Set RegisterActivityOptions in Go {#registeractivityoptions}
+
+**How to set RegisterActivityOptions using the Go SDK**
 
 Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/activity#RegisterOptions) from the `go.temporal.io/sdk/activity` package and pass it to the [`RegisterActivityWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/worker#ActivityRegistry) call when registering the Activity Type with the Worker.
 
