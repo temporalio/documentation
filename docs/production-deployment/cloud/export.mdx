@@ -38,6 +38,12 @@ The Export feature in Temporal Cloud provides the following benefits:
 
 For pricing information, see [Temporal Cloud Pricing](/cloud/pricing).
 
+:::note
+
+If you have enabled encryption for your Workflow History, your exported data will also be encrypted.
+
+:::
+
 ## Supported integrations for Workflow History Export {#supported-integrations}
 
 The Workflow History Export feature allows users to export Closed Workflow Histories to [Amazon Simple Storage Service (S3)](https://docs.aws.amazon.com/s3/) as the destination.
@@ -71,6 +77,7 @@ The Temporal Cloud UI provides two ways for configuring Workflow History Export:
 - [Manual setup](#manual-setup): The Cloud UI provides a CloudFormation template for users to manually configure a CloudFormation stack.
 
 :::tip
+
 Don't forget to click Create at the end of your setup to confirm your export.
 
 :::
