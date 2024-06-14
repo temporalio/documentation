@@ -354,12 +354,12 @@ func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error
 Register an Update handler for a given name using the [SetUpdateHandler](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandler) API from the `go.temporal.io/sdk/workflow` package.
 The handler function can accept multiple serializable input parameters, but we recommend using only a single parameter.
 This practice enables you to add fields in future versions while maintaining backward compatibility.
-You can optionally include a `workflow.Context` parameter in the first position of the function.
+You must include a `workflow.Context` parameter in the first position of the function.
 The function can return either a serializable value with an error or just an error.
 The Workflow's WorkflowPanicPolicy configuration determines how panics are handled inside the Handler function.
 WorkflowPanicPolicy is set in the Worker Options.
 
-Update handlers, unlike Query handlers, can change Workflow state.
+Update handlers, unlike Query handlers, can block and change Workflow state.
 
 <div class="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/your_updatable_workflow.go">
@@ -461,6 +461,10 @@ Invoke the `UpdateWorkflow()` method on an instance of the [Go SDK Temporal Clie
 You must provide the Workflow Id, but specifying a Run Id is optional.
 If you supply only the Workflow Id (and provide an empty string as the Run Id param), the currently running Workflow Execution receives the Update.
 
+You must provide a `WaitForStage` when calling `UpdateWorkflow()`. This parameter controls what stage the update must reach before a
+handle is returned to the caller. If `WaitForStage` is set to `WorkflowUpdateStageCompleted` the handle is returned after the update completes,
+if `WaitForStage` is set to `WorkflowUpdateStageAccepted` the handle is returned after the update is accepted ie. the validator has ran.
+
 <div class="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/update/main.go">
     View the source code
@@ -477,7 +481,12 @@ func main() {
 	}
 	// Call the UpdateWorkflow API.
 	// A blank RunID means that the Update is routed to the most recent Workflow Run of the specified Workflow ID.
-	updateHandle, err := temporalClient.UpdateWorkflow(context.Background(), "your-workflow-id", "", YourUpdateName, updateArg)
+	updateHandle, err := temporalClient.UpdateWorkflow(context.Background(), client.UpdateWorkflowOptions{
+		WorkflowID:   "your-workflow-id",
+		UpdateName:   YourUpdateName,
+		WaitForStage: client.WorkflowUpdateStageCompleted,
+		Args:         []interface{}{updateArg},
+	})
 	if err != nil {
 		log.Fatalln("Error issuing Update request", err)
 	}

@@ -35,13 +35,13 @@ They provide insights into different aspects of the Service.
 
 This guide covers these topics:
 
-* **[Gather metrics](#gather)**:
+- **[Gather metrics](#gather)**:
   Capture Temporal Cloud metrics using a Prometheus-style endpoint so they can be visualized using Prometheus and Grafana or exported to observability platforms like Datadog.
-* **[Available Temporal Cloud metrics](#available-metrics)**:
+- **[Available Temporal Cloud metrics](#available-metrics)**:
   The metrics emitted by Temporal Cloud include counts of gRPC errors, requests, successful task matches to a poller, and more.
-* **[Metrics labels](#metrics-labels)**:
+- **[Metrics labels](#metrics-labels)**:
   Temporal Cloud metrics labels can filter metrics and help categorize and differentiate results.
-* **[Operations](#metrics-operations)**:
+- **[Operations](#metrics-operations)**:
   An operation is a special type of label that categorizes the type of operation being performed when the metric was collected.
 
 :::info SDK METRICS
@@ -52,8 +52,8 @@ You can find information about Temporal SDK metrics on its [dedicated page](/ref
 
 Please note:
 
-* SDK metrics start with the phrase `temporal_`.
-* Temporal Cloud metrics start with `temporal_cloud_`.
+- SDK metrics start with the phrase `temporal_`.
+- Temporal Cloud metrics start with `temporal_cloud_`.
 
 :::
 
@@ -118,7 +118,6 @@ Count of state transitions for each Namespace.
 #### temporal_cloud_v0_total_action_count
 
 Approximate count of Temporal Cloud Actions.
-
 
 ### Poll metrics {#poll}
 
@@ -218,9 +217,9 @@ This added context enhances the monitoring and analysis capabilities, providing 
 Metrics for all Namespaces in your account are available from the [metrics endpoint](#gather).
 Use the following labels to filter metrics:
 
-| Label                      | Explanation                                                                                                                                                                                                                                                               |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `le`                       | Less than or equal to (`le`) is used in histograms to categorize observations into buckets based on their value being less than or equal to a predefined upper limit.                                                                                                     |
+| Label                      | Explanation                                                                                                                                                                                                                                                                                |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `le`                       | Less than or equal to (`le`) is used in histograms to categorize observations into buckets based on their value being less than or equal to a predefined upper limit.                                                                                                                      |
 | `operation`                | This includes operations such as:<ul><li>SignalWorkflowExecution</li><li>StartBatchOperation</li><li>StartWorkflowExecution</li><li>TaskQueueMgr</li><li>TerminateWorkflowExecution</li><li>UpdateNamespace</li><li>UpdateSchedule</li></ul> See: [Metric Operations](#metrics-operations) |
 | `resource_exhausted_cause` | Cause for resource exhaustion.                                                                                                                                                                                                                                            |
 | `task_type`                | Activity or Workflow.                                                                                                                                                                                                                                                     |
@@ -236,7 +235,6 @@ The following is an example of how you can filter metrics using labels:
 temporal_cloud_v0_poll_success_count{__rollup__="true", operation="TaskQueueMgr", task_type="Activity", temporal_account="12345", temporal_namespace="your_namespace.12345", temporal_service_type="matching"}
 ```
 
-
 ## Operations {#metrics-operations}
 
 **What operation labels are captured by Temporal Cloud?**
@@ -245,63 +243,62 @@ Operations are a special class of metrics label.
 They describe the context during which a metric was captured.
 Temporal Cloud includes the following operations labels:
 
-* AdminDescribeMutableState
-* AdminGetWorkflowExecutionRawHistory
-* AdminGetWorkflowExecutionRawHistoryV2
-* AdminReapplyEvents
-* CountWorkflowExecutions
-* CreateSchedule
-* DeleteSchedule
-* DeleteWorkflowExecution
-* DescribeBatchOperation
-* DescribeNamespace
-* DescribeSchedule
-* DescribeTaskQueue
-* DescribeWorkflowExecution
-* GetWorkerBuildIdCompatibility
-* GetWorkerTaskReachability
-* GetWorkflowExecutionHistory
-* GetWorkflowExecutionHistoryReverse
-* ListBatchOperations
-* ListClosedWorkflowExecutions
-* OperatorDeleteNamespace
-* PatchSchedule
-* PollActivityTaskQueue
-* PollWorkflowExecutionHistory
-* PollWorkflowExecutionUpdate
-* PollWorkflowTaskQueue
-* QueryWorkflow
-* RecordActivityTaskHeartbeat
-* RecordActivityTaskHeartbeatById
-* RegisterNamespace
-* RequestCancelWorkflowExecution
-* ResetStickyTaskQueue
-* ResetWorkflowExecution
-* RespondActivityTaskCanceled
-* RespondActivityTaskCompleted
-* RespondActivityTaskCompletedById
-* RespondActivityTaskFailed
-* RespondActivityTaskFailedById
-* RespondQueryTaskCompleted
-* RespondWorkflowTaskCompleted
-* RespondWorkflowTaskFailed
-* SignalWithStartWorkflowExecution
-* SignalWorkflowExecution
-* StartBatchOperation
-* StartWorkflowExecution
-* StopBatchOperation
-* TerminateWorkflowExecution
-* UpdateNamespace
-* UpdateSchedule
-* UpdateWorkerBuildIdCompatibility
-* UpdateWorkflowExecution
+- AdminDescribeMutableState
+- AdminGetWorkflowExecutionRawHistory
+- AdminGetWorkflowExecutionRawHistoryV2
+- AdminReapplyEvents
+- CountWorkflowExecutions
+- CreateSchedule
+- DeleteSchedule
+- DeleteWorkflowExecution
+- DescribeBatchOperation
+- DescribeNamespace
+- DescribeSchedule
+- DescribeTaskQueue
+- DescribeWorkflowExecution
+- GetWorkerBuildIdCompatibility
+- GetWorkerTaskReachability
+- GetWorkflowExecutionHistory
+- GetWorkflowExecutionHistoryReverse
+- ListBatchOperations
+- ListClosedWorkflowExecutions
+- OperatorDeleteNamespace
+- PatchSchedule
+- PollActivityTaskQueue
+- PollWorkflowExecutionHistory
+- PollWorkflowExecutionUpdate
+- PollWorkflowTaskQueue
+- QueryWorkflow
+- RecordActivityTaskHeartbeat
+- RecordActivityTaskHeartbeatById
+- RegisterNamespace
+- RequestCancelWorkflowExecution
+- ResetStickyTaskQueue
+- ResetWorkflowExecution
+- RespondActivityTaskCanceled
+- RespondActivityTaskCompleted
+- RespondActivityTaskCompletedById
+- RespondActivityTaskFailed
+- RespondActivityTaskFailedById
+- RespondQueryTaskCompleted
+- RespondWorkflowTaskCompleted
+- RespondWorkflowTaskFailed
+- SignalWithStartWorkflowExecution
+- SignalWorkflowExecution
+- StartBatchOperation
+- StartWorkflowExecution
+- StopBatchOperation
+- TerminateWorkflowExecution
+- UpdateNamespace
+- UpdateSchedule
+- UpdateWorkerBuildIdCompatibility
+- UpdateWorkflowExecution
 
 As the following table shows, certain [metrics groups](#available-metrics) support [operations](#metrics-operations) for aggregation and filtering:
 
-| Metrics Group / Operations | All Operations | SignalWithStartWorkflowExecution / SignalWorkflowExecution / StartWorkflowExecution | TaskQueueMgr | CompletionStats |
-|---------------------------|----------------|-------------------------------------------------------------------------------------|--------------|-----------------|
-| **[Frontend Service Metrics](#frontend)**  |       X        |                                                                                     |              |                 |
-| **[Service Latency Metrics](#service-latency)**   |                |                                    X                                                |              |                 |
-| **[Poll Metrics](#poll)**              |                |                                                                                     |       X      |                 |
-| **[Workflow Metrics](#workflow)**          |                |                                                                                     |              |        X        |
-
+| Metrics Group / Operations                      | All Operations | SignalWithStartWorkflowExecution / SignalWorkflowExecution / StartWorkflowExecution | TaskQueueMgr | CompletionStats |
+| ----------------------------------------------- | -------------- | ----------------------------------------------------------------------------------- | ------------ | --------------- |
+| **[Frontend Service Metrics](#frontend)**       | X              |                                                                                     |              |                 |
+| **[Service Latency Metrics](#service-latency)** |                | X                                                                                   |              |                 |
+| **[Poll Metrics](#poll)**                       |                |                                                                                     | X            |                 |
+| **[Workflow Metrics](#workflow)**               |                |                                                                                     |              | X               |
