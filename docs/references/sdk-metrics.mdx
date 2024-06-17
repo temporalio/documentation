@@ -84,7 +84,8 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [activity_execution_latency](#activity_execution_latency)                               | Worker         | Histogram   | Core, Go, Java |
 | [activity_poll_no_task](#activity_poll_no_task)                                         | Worker         | Counter     | Core, Go, Java |
 | [activity_schedule_to_start_latency](#activity_schedule_to_start_latency)               | Worker         | Histogram   | Core, Go, Java |
-| [activity_task_error](#activity_task_error)                                             | Worker         | Counter     | Go,            |
+| [activity_succeed_endtoend_latency](#activity_succeed_endtoend_latency)                 | Worker         | Histogram   | Go, Java       |
+| [activity_task_error](#activity_task_error)                                             | Worker         | Counter     | Go             |
 | [corrupted_signals](#corrupted_signals)                                                 | Worker         | Counter     | Go, Java       |
 | [local_activity_execution_cancelled](#local_activity_execution_cancelled)               | Worker         | Counter     | Go, Java       |
 | [local_activity_execution_failed](#local_activity_execution_failed)                     | Worker         | Counter     | Go, Java       |
@@ -103,7 +104,7 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [sticky_cache_miss](#sticky_cache_miss)                                                 | Worker         | Counter     | Core, Go, Java |
 | [sticky_cache_size](#sticky_cache_size)                                                 | Worker         | Gauge       | Core, Go, Java |
 | [sticky_cache_total_forced_eviction](#sticky_cache_total_forced_eviction)               | Worker         | Counter     | Go, Java       |
-| [unregistered_activity_invocation](#unregistered_activity_invocation)                   | Worker         | Counter     | Go,            |
+| [unregistered_activity_invocation](#unregistered_activity_invocation)                   | Worker         | Counter     | Go             |
 | [worker_start](#worker_start)                                                           | Worker         | Counter     | Core, Go, Java |
 | [worker_task_slots_available](#worker_task_slots_available)                             | Worker         | Gauge       | Go, Java       |
 | [workflow_active_thread_count](#workflow_active_thread_count)                           | Worker         | Gauge       | Java           |
@@ -162,6 +163,15 @@ from the queue.
 - Type: Histogram
 - Available in: Core, Go, Java
 - Tags: `namespace`, `task_queue`
+
+### activity_succeed_endtoend_latency
+
+Total latency of successfully finished Activity Executions from the time they are scheduled to the time they are completed.
+This metric is not recorded for async Activity completion.
+
+- Type: Histogram
+- Available in: Go, Java
+- Tags: `activity_type`, `namespace`, `task_queue`
 
 ### activity_task_error
 
