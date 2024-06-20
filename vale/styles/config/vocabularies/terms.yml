@@ -1,0 +1,91 @@
+extends: substitution
+message: Consider using '%s' instead of '%s'
+level: warning
+ignorecase: true
+action:
+  name: replace
+# swap maps tokens in form of bad: good
+swap:
+  '\bactivity\b': Activity
+  activity definition: Activity Definition
+  activity execution: Activity Execution
+  activity heartbeat: Activity Heartbeat
+  activity id: Activity Id
+  activity task: Activity Task
+  activity task execution: Activity Task Execution
+  activity type: Activity Type
+  advanced visibility: Advanced Visibility
+  archival: Archival
+  child workflow execution: Child Workflow Execution
+  codec server: Codec Server
+  continue-as-new: Continue-As-New
+  data converter: Data Converter
+  event history: Event History
+  frontend service: Frontend Service
+  grpc: gRPC
+  '\bheartbeat\b': Heartbeat
+  #heartbeating: Heartbeating
+  heartbeat timeout: Heartbeat Timeout
+  history service: History Service
+  history shard: History Shard
+  id: Id
+  ID: Id
+  IDs: Ids
+  list filter: List Filter
+  list filters: List Filters
+  local activity: Local Activity
+  local activities: Local Activities
+  matching service: Matching Service
+  namespace: Namespace
+  namespaces: Namespaces
+  parent close policy: Parent Close Policy
+  query: Query
+  queries: Queries
+  retry policy: Retry Policy
+  run id: Run Id
+  schedule-to-close timeout: Schedule-To-Close Timeout
+  schedule-to-start timeout: Schedule-To-Start Timeout
+  search attribute: Search Attribute
+  search attributes: Search Attributes
+  side effect: Side Effect
+  signal: Signal
+  signals: Signals
+  standard visibility: Standard Visibility
+  start-to-close timeout: Start-To-Close Timeout
+  state transition: State Transition
+  temporal server: Temporal Server
+  temporal cluster: Temporal Cluster
+  task: Task
+  task queue: Task Queue
+  task queues: Task Queues
+  task token: Task Token
+  task tokens: Task Tokens
+  '\btemporal ': Temporal
+  temporal platform: Temporal Platform
+  temporal sdk: Temporal SDK
+  temporal sdks: Temporal SDKs
+  temporal server: Temporal Server
+  '\bworker\b': Worker
+  '\bworkflow\b': Workflow
+  timer: Timer
+  timers: Timers
+  web ui: Web UI
+  worker: Worker
+  workers: Workers
+  worker service: Worker Service
+  workflow: Workflow
+  workflows: Workflows
+  workflow definition: Workflow Definition
+  workflow definitions: Workflow Definitions
+  workflow execution: Workflow Execution
+  workflow executions: Workflow Executions
+  workflow execution timeout: Workflow Execution Timeout
+  workflow id: Workflow Id
+  workflow ids: Workflow Ids
+  workflow id reuse policy: Workflow Id Reuse Policy
+  workflow run timeout: Workflow Run Timeout
+  workflow task: Workflow Task
+  workflow tasks: Workflow Tasks
+  workflow task execution: Workflow Task Execution
+  workflow task timeout: Workflow Task Timeout
+  workflow type: Workflow Type

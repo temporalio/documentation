@@ -1,0 +1,12 @@
+extends: substitution
+message: Consider using '%s' instead of '%s'
+level: warning
+ignorecase: true
+action:
+  name: replace
+swap:
+  java: "Java"
+  javascript: "JavaScript"
+  jdk: "JDK"
+  nodejs: "Node.js"
+  typescript: "TypeScript"
