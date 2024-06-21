@@ -129,7 +129,7 @@ This prevents the loss of progress and avoids data conflicts.
 The Namespace experiences a short period of unavailability, defaulting to 10 seconds.
 
 During this period, existing Workflows stop progress.
-Temporal Cloud will return a "Service unavailable error", which will be retried by SDKs.
+Temporal Cloud returns a "Service unavailable error", which is retried by SDKs.
 State transitions will not happen and tasks are not dispatched.
 User requests like start/signal workflow will be rejected while operations are paused during handover.
 
