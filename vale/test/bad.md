@@ -46,3 +46,15 @@ This is a good section that ends with a paragraph. But it utilizes bad words.
 ## Wrapping up
 
 This is the end. There's no conclusion section.
+
+temporal is a not capitalized.
+
+Use tCloud
+
+It's a simple procedure.
+Simply use this.
+It's a straightforward approach.
+
+temporal single binary
+
+the core SDK uses gRPC and rust.

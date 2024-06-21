@@ -4,12 +4,13 @@ Temporal Application
 application
 ensure
 Ensure
+extract
 sample
 samples
 attempt
 multiple
-maintain
-Sandboxing
-Temporal CLI
-Temporal Cloud
-Workflow Sandboxing
+serverless
+Namespace
+gRPC
+tctl
+SDKs
