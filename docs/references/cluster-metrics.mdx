@@ -24,7 +24,7 @@ A Temporal Service emits a range of metrics to help operators get visibility int
 
 All metrics emitted by the Temporal Service is listed in [defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go).
 
-For details on setting up metrics in your Temporal Service configuration, see [Temporal Service](/references/configuration#global).
+For details on setting up metrics in your Temporal Service configuration, see the [Temporal Service configuration reference](/references/configuration#global).
 
 The [dashboards repository](https://github.com/temporalio/dashboards) contains community-driven Grafana dashboard templates that can be used as a starting point for monitoring the Temporal Service and SDK metrics.
 You can use these templates as references to build your own dashboards.
@@ -177,7 +177,7 @@ Examples:
 ### `persistence_errors`
 
 Shows all persistence errors.
-This metric is a good indicator for connection issues between Temporal Service and the persistence store.
+This metric is a good indicator for connection issues between the Temporal Service and the persistence store.
 Example:
 
 - Prometheus query for getting all persistence errors by service (history)
