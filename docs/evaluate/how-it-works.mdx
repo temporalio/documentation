@@ -18,7 +18,7 @@ Temporal provides a comprehensive platform for building distributed applications
 
 ## Resilient applications by default
 
-Temporal ensures your applications are reliable by default, handling everything from minor network outages to significant issues like unexpected reboots, or hardware failures.
+Temporal ensures your applications are reliable by default, handling everything from minor network outages to significant issues like unexpected reboots or hardware failures.
 By offloading the responsibility of failure management from the application to the platform, this removes the need for extensive coding, testing, and maintenance tasks.
 
 This shift simplifies the development process and enables your application to seamlessly recover from disruptions.
@@ -27,7 +27,7 @@ Your application logic can be recovered, replayed, or paused from any previous p
 
 ![Describing a Temporal Application - How It Works](/img/how-it-works/hiw-yourapplicationclient.png)
 
-### Workflow
+### Temporal Application
 
 A Temporal application is the code you write, comprised of Workflow and Activities. Workflows are defined as code: either a function or an object method, depending on the language.
 A Temporal Workflow defines your overall business logic. That business logic might involve moving money between bank accounts, processing orders, deploying cloud infrastructure, training an AI model, or something else entirely.
@@ -67,6 +67,14 @@ In this example, there are two Activities. The second Activity is complete, but 
 The Temporal Service creates a new Task requesting that the application run the additional code.
 
 ![Concluding the Workflow - How It Works](/img/how-it-works/hiw-concludingtheworkflow.png)
+
+## Common Misconceptions
+
+The Temporal Service does not execute your code!
+
+Your application code, including Workers, Workflows, and Activities, lives on your computers. 
+The code is written in your favorite SDK language. 
+None of that code runs on the Temporal Service.
 
 :::info
 **Follow one of our tutorials to [Get started](https://learn.temporal.io/getting_started/) learning how to use a Temporal SDK.**
