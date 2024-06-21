@@ -147,7 +147,7 @@ This mode prioritizes _availability_ over consistency.
 While graceful failovers are preferred for consistency, they aren’t always practical.
 Temporal Cloud’s hybrid failover mode (the default mode) limits an initial graceful failover attempt to 10 seconds or less.
 During this period, existing Workflows stop progress.
-Temporal Cloud will return a "Service unavailable error", which will be retried by the SDKs.
+Temporal Cloud returns a "Service unavailable error", which is retried by SDKs.
 If the graceful approach doesn’t resolve the issue, Temporal Cloud automatically switches to a forced failover.
 This strategy balances consistency and availability requirements.
 
