@@ -26,6 +26,8 @@ keywords:
   - temporal testing strategies
 ---
 
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+
 In the context of Temporal, you can create these types of automated tests:
 
 1. End-to-end: Running a Temporal Server and Worker with all its Workflows and Activities; starting and interacting with Workflows from a Client.
@@ -36,13 +38,13 @@ In the context of Temporal, you can create these types of automated tests:
 3. Unit: Running a piece of Workflow or Activity code and mocking any code it calls.
 
 
-Jump straight to a Temporal SDK feature guide:
+Jump straight to a Temporal SDK feature guide.
 
-- [Go SDK testing suite feature guide](/develop/go/testing-suite)
-- [Java SDK testing suite feature guide](/develop/java/testing-suite)
-- [PHP SDK testing suite feature guide](/develop/php/testing-suite)
-- [Python SDK testing suite feature guide](/develop/python/testing-suite)
-- [.NET SDK testing suite feature guide](/develop/dotnet/testing-suite)
-- [TypeScript SDK testing suite feature guide](/develop/typescript/testing-suite)
-
-For a deep dive into Temporal's testing suite, visit the Temporal SDKs Encyclopedia page or enroll in one of our courses.
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/testing-suite" text="Testing using the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/testing-suite" text="Testing using the Java SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/testing-suite" text="Testing using the PHP SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/testing-suite" text="Testing using the Python SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/testing-suite" text="Testing using the TypeScript SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/testing-suite" text="Testing using the .NET SDK" archetype="feature-guide" />
+</RelatedReadContainer>
