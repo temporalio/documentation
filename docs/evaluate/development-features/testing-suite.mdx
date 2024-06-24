@@ -1,0 +1,48 @@
+---
+id: testing-suite
+title: Temporal Testing Suite - Temporal development feature
+description: Explore Temporal's comprehensive testing suite; Frameworks that facilitate Workflow and integration testing across different programming languages with Temporal. 
+sidebar_label: Testing Suite
+tags:
+  - testing-suite
+  - workflow-testing
+  - activity-testing
+  - worker-testing
+keywords:
+  - temporal testing suite
+  - test temporal workflows
+  - temporal activity testing
+  - workflow unit testing temporal
+  - temporal SDK testing
+  - temporal integration testing
+  - automated tests for temporal
+  - temporal worker validation
+  - temporal framework testing
+  - best practices for temporal testing
+  - temporal testing examples
+  - temporal SDK tutorial
+  - end-to-end testing temporal
+  - temporal performance testing
+  - temporal testing strategies
+---
+
+In the context of Temporal, you can create these types of automated tests:
+
+1. End-to-end: Running a Temporal Server and Worker with all its Workflows and Activities; starting and interacting with Workflows from a Client.
+2. Integration: Anything between end-to-end and unit testing.
+   Running Activities with mocked Context and other SDK imports (and usually network requests).
+   Running Workers with mock Activities, and using a Client to start Workflows.
+   Running Workflows with mocked SDK imports.
+3. Unit: Running a piece of Workflow or Activity code and mocking any code it calls.
+
+
+Jump straight to a Temporal SDK feature guide:
+
+- [Go SDK testing suite feature guide](/develop/go/testing-suite)
+- [Java SDK testing suite feature guide](/develop/java/testing-suite)
+- [PHP SDK testing suite feature guide](/develop/php/testing-suite)
+- [Python SDK testing suite feature guide](/develop/python/testing-suite)
+- [.NET SDK testing suite feature guide](/develop/dotnet/testing-suite)
+- [TypeScript SDK testing suite feature guide](/develop/typescript/testing-suite)
+
+For a deep dive into Temporal's testing suite, visit the Temporal SDKs Encyclopedia page or enroll in one of our courses.
