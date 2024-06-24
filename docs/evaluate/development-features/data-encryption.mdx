@@ -1,0 +1,39 @@
+---
+id: data-encryption
+title: Data encryption - Temporal development feature
+description: Learn how to implement data encryption in your Temporal workflows to ensure the security and confidentiality of your data. Explore best practices for encrypting data at rest and in transit using Temporal's robust encryption features.
+sidebar_label: Data encryption
+tags:
+  - data-encryption
+  - security
+  - encryption
+  - temporal-workflows
+keywords:
+  - temporal data encryption
+  - secure temporal workflows
+  - encrypting workflow data
+  - temporal encryption 
+  - temporal encryption features
+  - temporal secure workflows
+---
+
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+
+Learn how to encrypt data to ensure the security and confidentiality of your Workflows.
+Data Converters in Temporal are SDK components that handle the serialization and encoding of data transmitted and received by a Temporal client. 
+Workflow input and output need to be serialized and deserialized so they can be sent as JSON to the Temporal Cluster.
+
+Temporal provides its own default Data Converter logic, which is not apparent to a user if payloads contain plain text or JSON data. 
+By implementing Custom Data Converters and a Codec Server, you can expand this behavior to support a variety of complex input and output data.
+Utilize Temporal's comprehensive data encryption capabilities, providing robust protection without compromising performance.
+
+
+Jump straight to a Temporal SDK feature guide.
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/data-encryption" text="Data Encryption using the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/data-encryption" text="Data Encryption using the Java SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/data-encryption" text="Data Encryption using the Python SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/data-encryption" text="Data Encryption using the TypeScript SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/data-encryption" text="Data Encryption using the .NET SDK" archetype="feature-guide" />
+</RelatedReadContainer>
