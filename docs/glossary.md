@@ -248,11 +248,8 @@ _Tags: [term](/tags/term)_
 
 #### [Idempotency](/activities#idempotency)
 
-An idempotent Activity is one that succeeds once and only once.
-It maintains its state no matter how many times it executes.
-Idempotency avoids process duplication that could withdraw money twice or ship extra orders by mistake.
-Run-once actions maintain data integrity and prevent costly errors.
-By ensuring operations don't produce extra effects upon repeated execution, idempotency protects your processes from accidental or repeated actions.
+An idempotent Activity is one that succeeds once and only once, producing the same result without additional or repeated effects.
+Temporal Activities must be idempotent.
 
 _Tags: [term](/tags/term)_
 
