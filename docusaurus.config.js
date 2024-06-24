@@ -57,7 +57,7 @@ module.exports = async function createConfigAsync() {
       announcementBar: {
         id: "replay_announcement",
         content:
-          'Replay will return September 18-20 in Seattle! <a href="https://www.papercall.io/replay2024">Submit a talk proposal</a> or <a href="https://www.eventbrite.com/e/replay-2024-tickets-744609486017?aff=ebdsoporgprofile">secure your ticket</a>.',
+          'Replay will return September 18-20 in Seattle! <a href="https://www.eventbrite.com/e/replay-2024-tickets-744609486017?aff=ebdsoporgprofile">Secure your ticket</a>.',
         backgroundColor: "#141414",
         textColor: "#ffffff",
         isCloseable: true,
