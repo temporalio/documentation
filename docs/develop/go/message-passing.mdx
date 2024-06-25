@@ -461,9 +461,8 @@ Invoke the `UpdateWorkflow()` method on an instance of the [Go SDK Temporal Clie
 You must provide the Workflow Id, but specifying a Run Id is optional.
 If you supply only the Workflow Id (and provide an empty string as the Run Id param), the currently running Workflow Execution receives the Update.
 
-You must provide a `WaitForStage` when calling `UpdateWorkflow()`. This parameter controls what stage the update must reach before a
-handle is returned to the caller. If `WaitForStage` is set to `WorkflowUpdateStageCompleted` the handle is returned after the update completes,
-if `WaitForStage` is set to `WorkflowUpdateStageAccepted` the handle is returned after the update is accepted ie. the validator has ran.
+You must provide a `WaitForStage` when calling `UpdateWorkflow()`.
+This parameter controls what stage the update must reach before a handle is returned to the caller. If `WaitForStage` is set to `WorkflowUpdateStageCompleted` the handle is returned after the update completes, if `WaitForStage` is set to `WorkflowUpdateStageAccepted` the handle is returned after the update is accepted (i.e. the validator has run).
 
 <div class="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/updates/update/main.go">
