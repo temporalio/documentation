@@ -32,7 +32,7 @@ const supportedTech = [
     class: "w-10",
   },
   {
-    link: "https://github.com/temporalio/sdk-dotnet#readme",
+    link: "/develop/dotnet",
     image: "/img/dotnet.svg",
     alt: ".Net logo",
     class: "w-10",
