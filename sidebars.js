@@ -26,6 +26,7 @@ module.exports = {
             "evaluate/development-features/failure-detection",
             "evaluate/development-features/throughput-composability",
             "evaluate/development-features/application-message-passing",
+            "evaluate/development-features/versioning",
           ],
         },
         {

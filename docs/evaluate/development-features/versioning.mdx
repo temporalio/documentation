@@ -1,0 +1,42 @@
+---
+id: versioning
+title: Versioning - Temporal Development Feature
+description: Learn how to implement versioning in your Temporal Workflows to manage changes in application code without causing non-deterministic behavior. Explore the benefits of versioning and how it ensures the continuity of long-running Workflows.
+sidebar_label: Versioning
+tags:
+  - versioning
+  - Workflow-versioning
+  - temporal-Workflows
+  - version-management
+keywords:
+  - temporal versioning
+  - manage Workflow changes
+  - version Workflow executions
+  - temporal versioning best practices
+  - Workflow continuity temporal
+  - version management
+  - temporal Workflow versioning
+---
+
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+
+Versioning in Temporal is a feature that allows safely evolve your Temporal application code in production.
+Developers can make changes to their application code without causing non-deterministic behavior in current long-running Workflows. 
+
+Workflow Versioning allows you to safely deploy incompatible changes to your Workflow code.
+This is especially important when you have Workflow Executions that were started with the original code and are still running when you deploy the updated code.
+
+Depending on your use case, the longevity of your Workflow Executions, and your organizational overhead, you can implement Versioning by changing Workflow Types or by using the Patching API. 
+
+Versioning is invaluable as it ensures that your Workflows remain stable and consistent, even as you update and improve your application code.
+This flexibility ensures that your long-running Workflows can continue seamlessly, regardless of code changes.
+
+Jump straight to a Temporal SDK feature guide or take one of our [Versioning](https://learn.temporal.io/courses/versioning/) courses. 
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/versioning" text="Versioning using the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/versioning" text="Versioning using the Java SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/versioning" text="Versioning using the Python SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/versioning" text="Versioning using the TypeScript SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/versioning" text="Versioning using the .NET SDK" archetype="feature-guide" />
+</RelatedReadContainer>
