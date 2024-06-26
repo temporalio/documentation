@@ -40,7 +40,7 @@ const appDevGuideLinks = [
     name: "TypeScript SDK feature guides",
   },
   {
-    path: "/develop/python",
+    path: "/develop/dotnet",
     name: ".NET SDK feature guides",
   },
   {
