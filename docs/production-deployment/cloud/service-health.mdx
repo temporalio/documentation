@@ -45,7 +45,6 @@ Note that Service API errors are not equivalent to guarantees mentioned in the T
 - [temporal\_cloud\_v0\_frontend\_service\_error\_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_frontend_service_error_count)
 - [temporal\_cloud\_v0\_frontend\_service\_request\_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_frontend_service_request_count)
 
-
 ### Prometheus Query
 
 Measure your daily average errors over 10-minute windows:
@@ -74,14 +73,14 @@ Replication lag refers to the transmission delay of Workflow updates and history
 Always check the [metric replication lag](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket) before initiating a failover.
 A forced failover when there is a large replication lag has a higher likelihood of rolling back Workflow progress.
 
-**Who owns the replication lag?** 
+**Who owns the replication lag?**
 Temporal owns replication lag.
 
 **What guarantees are available?**
-There is no SLA for replication lag. 
+There is no SLA for replication lag.
 Temporal recommends that customers do not trigger failovers except for testing or emergency situations.
 Multi-region's four-9 guarantee SLA means Temporal will handle failovers and ensure high availability.
-Temporal also monitors replication lag. 
+Temporal also monitors replication lag.
 Customer who decide to trigger failovers should look at this metric before moving forward.
 
 **If the lag is high, what should you do?**
@@ -92,6 +91,7 @@ Please contact Temporal support if you feel you have a pressing need.
 See [multi-region Namespaces](/cloud/multi-region).
 
 ### Reference Metrics
+
 - [temporal\_cloud\_v0\_replication\_lag\_bucket](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket)
 - [temporal\_cloud\_v0\_replication\_lag\_sum](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_sum)
 - [temporal\_cloud\_v0\_replication\_lag\_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_count)

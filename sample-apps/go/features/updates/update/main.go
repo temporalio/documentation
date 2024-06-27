@@ -48,7 +48,12 @@ func main() {
 	}
 	// Call the UpdateWorkflow API.
 	// A blank RunID means that the Update is routed to the most recent Workflow Run of the specified Workflow ID.
-	updateHandle, err := temporalClient.UpdateWorkflow(context.Background(), updates.YourUpdateWFID, "", updates.YourUpdateName, updateArg)
+	updateHandle, err := temporalClient.UpdateWorkflow(context.Background(), client.UpdateWorkflowOptions{
+		WorkflowID:   updates.YourUpdateWFID,
+		UpdateName:   updates.YourUpdateName,
+		WaitForStage: client.WorkflowUpdateStageCompleted,
+		Args: 		  []interface{}{updateArg},
+	})
 	if err != nil {
 		log.Fatalln("Error issuing Update request", err)
 	}

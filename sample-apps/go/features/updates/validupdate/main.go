@@ -32,7 +32,12 @@ func main() {
 	updateArg := updates.YourUpdateArg{
 		Add: n,
 	}
-	updateHandle, err := temporalClient.UpdateWorkflow(context.Background(), updates.YourValidUpdateWFID, "", updates.YourValidatedUpdateName, updateArg)
+	updateHandle, err := temporalClient.UpdateWorkflow(context.Background(), client.UpdateWorkflowOptions{
+		WorkflowID:   updates.YourValidUpdateWFID,
+		UpdateName:   updates.YourValidatedUpdateName,
+		WaitForStage: client.WorkflowUpdateStageCompleted,
+		Args: 		  []interface{}{updateArg},
+	})
 	if err != nil {
 		log.Fatalln("Error issuing Update request", err)
 	}
