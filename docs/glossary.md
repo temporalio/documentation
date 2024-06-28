@@ -248,8 +248,9 @@ _Tags: [term](/tags/term)_
 
 #### [Idempotency](/activities#idempotency)
 
-An idempotent Activity is one that succeeds once and only once, producing the same result without additional or repeated effects.
-Temporal Activities must be idempotent.
+Idempotency ensures a method or function, when executed multiple times with the same input, produces the same result without additional or unintended effects.
+Temporal uses retries and redundant operations as part of its hassle-free failure mitigation.
+Making your Activities idempotent helps you avoid adverse side effects during retries.
 
 _Tags: [term](/tags/term)_
 
