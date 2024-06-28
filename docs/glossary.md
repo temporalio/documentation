@@ -246,6 +246,14 @@ A History Shard is an important unit within a Temporal Service by which the scal
 
 _Tags: [term](/tags/term)_
 
+#### [Idempotency](/activities#idempotency)
+
+Idempotency ensures a method or function, when executed multiple times with the same input, produces the same result without additional or unintended effects.
+Temporal uses retries and redundant operations as part of its hassle-free failure mitigation.
+Making your Activities idempotent helps you avoid adverse side effects during retries.
+
+_Tags: [term](/tags/term)_
+
 #### [List Filter](/visibility#list-filter)
 
 A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.
