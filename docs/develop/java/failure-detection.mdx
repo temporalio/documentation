@@ -189,6 +189,20 @@ To set a Retry Policy, known as the [Retry Options](/encyclopedia/retry-policies
                 .build();
   ```
 
+### Overriding the retry interval with Next Retry Delay {#next-retry-delay}
+You may throw an [Application Failure](/references/failures#application-failure) with the NextRetryDelay field set.  This value will replace and override whatever the retry interval would be on the retry policy.
+
+For example, if in an activity, you want to base the interval on the number of attempts, you might do:
+  ```java 
+  int attempt = Activity.getExecutionContext().getInfo().getAttempt();
+
+  throw ApplicationFailure.newFailureWithCauseAndDelay(
+      "Something bad happened on attempt " + attempt,
+      "my_failure_type",
+      null,
+      3 * Duration.ofSeconds(attempt));
+  ```
+
 ## Heartbeat an Activity {#activity-heartbeats}
 
 **How to Heartbeat an Activity using the Java SDK.**
