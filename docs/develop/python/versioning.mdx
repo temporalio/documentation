@@ -238,11 +238,15 @@ for full information.
 
 :::
 
-To use [Worker Versioning](/workers#worker-versioning) for Python workers, you need to determine and assign a Build ID to your Worker code, and opt in to Worker Versioning.
+A Build ID corresponds to a deployment. If you don't already have one, we recommend a hash of the code--such as a Git SHA--combined with a human-readable timestamp.
+To use [Worker Versioning](/workers#worker-versioning), you need to pass a Build ID to your Java Worker and opt in to Worker Versioning.
 
 ### Assign a Build ID to your Worker and opt into versioning
 
-To turn on worker versioning for your worker, assign the build ID--perhaps from an environment variable--and turn it on.
+You should understand assignment rules before completing this step.
+See the [Worker Versioning Pre-release README.md](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
+
+To enable worker versioning for your worker, assign the build ID--perhaps from an environment variable--and turn it on.
 
 ```python
 # ...
@@ -255,9 +259,11 @@ worker = Worker(
 # ...
 ```
 
-That's all you need to do in your Worker code.
-Importantly, if you start this Worker, it won't receive any tasks until you set up assignment rules.
-See the [Pre-release README.md](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
+:::warning
+
+Importantly, when you start this Worker, it won't receive any tasks until you set up assignment rules.
+
+:::
 
 ### Specify versions for Activities, Child Workflows, and Continue-as-New Workflows
 
@@ -267,11 +273,12 @@ Python support for this feature is under construction!
 
 :::
 
-By default, Activities, Child Workflows, and Continue-as-New Workflows stay on the build of the workflow that spawned them if they are also being run on the same task queue.
+By default, Activities, Child Workflows, and Continue-as-New Workflows are run on the build of the workflow that created them if they are also configured to run on the same Task Queue.
+When configured to run on a separate task queue, they will default to using the current assignment rules.
 
 If you want to override this behavior, you can specify your intent via the `versioning_intent` argument available on the methods you use to invoke these commands.
 
-For example, if you want an activity to use the latest assignment rules rather than inheriting from its parent, do:
+For example, if you want an Activity to use the latest assignment rules rather than inheriting from its parent:
 
 ```python
 # ...

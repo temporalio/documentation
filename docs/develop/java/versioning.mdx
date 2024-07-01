@@ -20,7 +20,7 @@ tags:
 ---
 
 The Temporal Platform requires that Workflow code is [deterministic](/workflows#deterministic-constraints).
-Because of that requirement, the Temporal Java SDK offers two dedicated versioning features.
+Because of that requirement, the Temporal Java SDK offers two dedicated versioning features:
 
 - [Workflow Patching APIs](#patching)
 - [Worker Versioning](#worker-versioning)
@@ -119,12 +119,15 @@ See the [Pre-release README.md](https://github.com/temporalio/temporal/blob/main
 for full information.
 
 :::
-
-To use [Worker Versioning](/workers#worker-versioning) for Java workers, you need to determine and assign a Build ID to your Worker code, and opt in to Worker Versioning.
+A Build ID corresponds to a deployment. If you don't already have one, we recommend a hash of the code--such as a Git SHA--combined with a human-readable timestamp.
+To use [Worker Versioning](/workers#worker-versioning), you need to pass a Build ID to your Go Worker and opt in to Worker Versioning.
 
 ### Assign a Build ID to your Worker and opt into versioning
 
-To turn on worker versioning for your worker, assign the build ID--perhaps from an environment variable--and turn it on.
+You should understand assignment rules before completing this step.
+See the [Worker Versioning Pre-release README.md](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
+
+To enable worker versioning for your worker, assign the build ID--perhaps from an environment variable--and turn it on.
 
 ```java
 // ...
@@ -137,9 +140,11 @@ Worker w = workerFactory.newWorker("your_task_queue_name", workerOptions);
 // ...
 ```
 
-That's all you need to do in your Worker code.
-Importantly, if you start this Worker, it won't receive any tasks until you set up assignment rules.
-See the [Pre-release README.md](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
+:::warning
+
+Importantly, when you start this Worker, it won't receive any tasks until you set up assignment rules.
+
+:::
 
 ### Specify versions for Activities, Child Workflows, and Continue-as-New
 
@@ -149,12 +154,12 @@ Java support for this feature is under construction!
 
 :::
 
-By default, Activities, Child Workflows, and Continue-as-New Workflows stay on the build of the workflow that spawned them if they are also being run on the same task queue.
-If they are being run on a separate task queue, they default to using the current assignment rules.
+By default, Activities, Child Workflows, and Continue-as-New Workflows are run on the build of the workflow that created them if they are also configured to run on the same Task Queue.
+When configured to run on a separate task queue, they will default to using the current assignment rules.
 
 If you want to override this behavior, you can specify your intent via the `setVersioningIntent` method on the `ActivityOptions`, `ChildWorkflowOptions`, or `ContinueAsNewOptions` objects.
 
-For example, if you want an activity to use the latest assignment rules rather than inheriting from its parent, do:
+For example, if you want an Activity to use the latest assignment rules rather than inheriting from its parent:
 
 ```java
 // ...
