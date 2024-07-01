@@ -20,7 +20,7 @@ tags:
 ---
 
 This page addresses the limits of the Temporal Cloud system.
-Reach out to your account team should you have any quesitons about these limits.
+Reach out to your account team should you have any questions about these limits.
 
 These limits fall into the following three main categories:
 
@@ -239,3 +239,12 @@ After that limit is reached, no more Signals will be processed for that Workflow
 **What is the maximum number of Updates for a single Workflow Execution?**
 
 A single Workflow Execution can have a maximum of 10 in-flight Updates and 2000 total Updates in History.
+
+### Workflow Execution Event History limits
+
+**What are the limits that apply to the Workflow Execution's Event History?**
+
+As a precautionary measure, a Workflow Execution's Event History is limited to 51,200 Events or 50 MB.
+It warns you after 10,240 Events or 10 MB.
+This limit applies to all Temporal Workflow Executions, whether on Temporal Cloud or other deployments.
+Read more about [Temporal Workflow Execution limits](/workflows#limits) on the [Temporal Workflow](/workflows) documentation page.
