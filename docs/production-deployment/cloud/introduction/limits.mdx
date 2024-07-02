@@ -76,7 +76,19 @@ Throttling means limiting the rate at which Actions are performed to prevent the
 
 A Namespace's default limit is set at 400 APS and automatically adjusts based on recent usage (over the prior 7 days).
 Your throughput limit will never fall below this default value.
-You can request this limit be manually rasied by opening a [support ticket](/cloud/support#support-ticket).
+You can request this limit be manually raised by opening a [support ticket](/cloud/support#support-ticket).
+
+### Schedules rate limit
+
+Each Namespace has a default [Schedule](/glossary#schedule) rate limit of 10 requests per second (RPS).
+If too many Schedules trigger at once, they may be throttled.
+Throttling limits the rate at which Schedules create new Workflow Executions, ensuring the Namespace does not exceed its RPS limit.
+
+To avoid throttling, don't schedule all your Workflow Executions (whether daily, weekly, monthly, etc.) to start at the same time.
+Spread them out instead.
+Some Temporal SDKs support jittering, which adds small random delays to Schedules and helps reduce load at specific moments.
+
+If you need a higher Schedule RPS limit, open a [support ticket](/cloud/support#support-ticket).
 
 ### Certificates
 
