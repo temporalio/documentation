@@ -16,8 +16,8 @@ async def main():
     with open("client-private-key.pem", "rb") as f:
         client_private_key = f.read()
     client = await Client.connect(
-        "your-custom-namespace.tmprl.cloud:7233",
-        namespace="<your-custom-namespace>.<id>",
+        "your-custom-namespace.account-id.tmprl.cloud:7233",
+        namespace="<your-custom-namespace>.<account-id>",
         tls=TLSConfig(
             client_cert=client_cert,
             client_private_key=client_private_key,
