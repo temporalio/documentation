@@ -10,6 +10,8 @@ tags:
 description: Asynchronous Activity Completion lets the Activity Function return without finishing Activity Execution. Use Task Tokens and Temporal Client to complete the Activity externally.
 ---
 
+This page describes how to asynchronously complete an Activity.
+
 [Asynchronous Activity Completion](/activities#asynchronous-activity-completion) enables the Activity Function to return without the Activity Execution completing.
 
 There are three steps to follow:
@@ -19,7 +21,8 @@ There are three steps to follow:
 2. The Activity Function completes in a way that identifies it as waiting to be completed by an external system.
 3. The Temporal Client is used to Heartbeat and complete the Activity.
 
-4. Provide the external system with a Task Token to complete the Activity Execution.
+
+Provide the external system with a Task Token to complete the Activity Execution.
    To do this, use the `GetInfo()` API from the `go.temporal.io/sdk/activity` package.
 
 ```go
@@ -29,13 +32,13 @@ taskToken := activityInfo.TaskToken
 // Send the taskToken to the external service that will complete the Activity.
 ```
 
-2. Return an `activity.ErrResultPending` error to indicate that the Activity is completing asynchronously.
+Return an `activity.ErrResultPending` error to indicate that the Activity is completing asynchronously.
 
 ```go
 return "", activity.ErrResultPending
 ```
 
-3. Use the Temporal Client to complete the Activity using the Task Token.
+Use the Temporal Client to complete the Activity using the Task Token.
 
 ```go
 // Instantiate a Temporal service client.
