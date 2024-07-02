@@ -129,6 +129,7 @@ This prevents the loss of progress and avoids data conflicts.
 The Namespace experiences a short period of unavailability, defaulting to 10 seconds.
 
 During this period, existing Workflows stop progress.
+Temporal Cloud returns a "Service unavailable error", which is retried by SDKs.
 State transitions will not happen and tasks are not dispatched.
 User requests like start/signal workflow will be rejected while operations are paused during handover.
 
@@ -145,6 +146,8 @@ This mode prioritizes _availability_ over consistency.
 
 While graceful failovers are preferred for consistency, they aren’t always practical.
 Temporal Cloud’s hybrid failover mode (the default mode) limits an initial graceful failover attempt to 10 seconds or less.
+During this period, existing Workflows stop progress.
+Temporal Cloud returns a "Service unavailable error", which is retried by SDKs.
 If the graceful approach doesn’t resolve the issue, Temporal Cloud automatically switches to a forced failover.
 This strategy balances consistency and availability requirements.
 
@@ -483,7 +486,7 @@ Clients should converge to the newly targeted region within, at, most a 30-secon
 
 :::important
 
-At failover, routing is completely transparent for multi-region customers _unless_ you use PrivateLink.
+Some networking configuration is required for failover to be transparent to clients and workers when using PrivateLink.
 This section describes how to configure routing for multi-region Namespaces for PrivateLink customers only.
 
 :::
