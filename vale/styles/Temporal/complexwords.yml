@@ -1,4 +1,4 @@
-# This is a fork of Microsoft's word list
+# This is a fork of Microsoft's old Complex Word list they abandoned.
 extends: substitution
 message: "Consider using '%s' instead of '%s'."
 link: https://docs.microsoft.com/en-us/style-guide/word-choice/use-simple-words-concise-sentences
