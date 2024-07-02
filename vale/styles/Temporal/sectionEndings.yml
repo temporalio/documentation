@@ -1,6 +1,6 @@
 extends: script
 message: "The main section '%v' is not preceded by a paragraph. Ensure sections end with a paragraph for a smooth transition."
-level: error
+level: warning
 link: https://tengolang.com/
 # We need this to access heading markup.
 scope: raw

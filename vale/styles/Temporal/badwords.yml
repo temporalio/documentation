@@ -5,8 +5,7 @@ ignorecase: true
 action:
   name: replace
 swap:
-  allow: enable
-  allows: enables
+  above: "preceding"
   below: "following"
   female: woman
   females: women

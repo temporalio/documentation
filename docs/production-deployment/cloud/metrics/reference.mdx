@@ -228,7 +228,7 @@ Use the following labels to filter metrics:
 | `temporal_namespace`       | Temporal Namespace.                                                                                                                                                                                                                                                       |
 | `temporal_service_type`    | Frontend or Matching or History or Worker.                                                                                                                                                                                                                                |
 | `is_background`            | This label on `temporal_cloud_v0_total_action_count` indicates when actions are produced by a Temporal background job, for example: hourly Workflow Export.                                                                                                               |
-| `namespace_mode`           | This label on `temporal_cloud_v0_total_action_count` indicates if actions are produced by an active vs a passive Namespace. For a regular Namespace, `namespace_mode` will always be “active”.                                                                            |
+| `namespace_mode`           | This label on `temporal_cloud_v0_total_action_count` indicates if actions are produced by an active vs a standby Namespace. For a regular Namespace, `namespace_mode` will always be “active”.                                                                            |
 
 The following is an example of how you can filter metrics using labels:
 
