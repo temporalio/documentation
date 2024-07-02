@@ -3,7 +3,7 @@ id: pricing
 title: Temporal Cloud Pricing
 sidebar_label: Pricing
 sidebar_position: 6
-description: Temporal Cloud offers flexible, transparent, and predictable consumption-based pricing for Workflows, Activity, Worker, and storage. Pay only for the Actions, storage, and support you use, with volume-based discounts and credit systems providing additional savings. Estimate costs easily or contact our team for precise calculations.
+description: Temporal Cloud offers flexible, predictable pricing for Workflows, Activities, Workers, and storage. Pay for what you use with volume discounts and credit savings.
 slug: /cloud/pricing
 toc_max_heading_level: 4
 keywords:
@@ -31,7 +31,7 @@ tags:
 Temporal Cloud is a consumption-based service.
 You pay only for what you need, when you need it.
 Our pricing reflects your use of _actions_, _storage_, and _support_.
-It is flexible, transparent, and predictable, so you know your costs and never pay for unused capacity.
+It is flexible, transparent, and predictable so you know your costs and never pay for unused capacity.
 
 This page introduces the elements of Temporal Cloud pricing for [actions](#action), [storage](#storage), and [services/support](#support).
 It gives you the information you need to estimate costs for your implementation.
@@ -47,13 +47,13 @@ When you execute a Temporal Workflow, its Actions create the ongoing state and p
 
 Actions are collected and billed monthly for each Namespace.
 The base rate is &#36;25 per one million Actions per month (across all Namespaces).
-You are billed for a prorated portion of the Actions you use.
+You will be billed for a prorated portion of the Actions you use.
 If you use fewer than one million Actions per month, your bill for Actions will be less than &#36;25 for that month.
 
 | Actions | &#36;25 per one million (prorated) |
 | ------- | ---------------------------------- |
 
-Temporal also offers a credit system.
+Temporal Cloud also offers a credit system.
 Credits provide an additional discount schedule for billable Actions and [storage](#storage).
 Credits do not expire.
 
@@ -176,11 +176,11 @@ If you purchase Temporal Cloud credits (as [outlined earlier](#action)), active 
 
 For workloads with stringent high-availability requirements, Temporal Cloud provides multi-region Namespaces (MRNs), which add a failover capability.
 Each multi-region Namespace automatically replicates Workflow Execution data and metadata to a standby region.
-This keeps the standby region in sync, allowing for a near seamless failovers should regional outages occur. 
+This keeps the standby region in sync, allowing for a near-seamless failover should regional outages occur.
 
 Multi-region Namespace costs align with the volume of your workloads.
 After activation, the new MRN begins replicating data to the standby region.
-Due to this replication, MRNs double your current action and storage costs.
+Due to this replication, MRNs double your current Action and storage costs.
 To estimate costs for this deployment model, apply a 2x multiplier to your existing Actions and storage Namespace costs.
 
 When upgrading an existing Namespace, some points to consider:
@@ -222,9 +222,9 @@ Each Temporal Cloud account receives access to expert services and support.
 The Temporal Success team brings a deep knowledge of how Temporal works and how you can optimize your deployment.
 Our team is made up of engineers who bring deep knowledge of Temporal, and help contribute to its development.
 
-The Success team provides troubleshooting and issue resolution as well as service work-streams like as design reviews, setting up observability, and worker tuning.
-The team can help investigate your Workflows to optimize their environments and so you might reduce costs associated with Actions and storage.
-They ensure your instance is performance-tuned and they help with other ongoing maintenance, like upgrades of the Temporal software and maintenance of the platform.
+The Success team provides troubleshooting and issue resolution as well as service work-streams such as design reviews, setting up observability, and worker tuning.
+The team can help investigate your Workflows to optimize their environments, so you might reduce costs associated with Actions and storage.
+They ensure your instance is performance-tuned and help with other ongoing maintenance, like upgrades of the Temporal software and maintenance of the platform.
 
 Services and support costs are outlined in the table below.
 A more complete description of each level can be found on our [Services and Support](https://docs.temporal.io/cloud/support) outline.
@@ -251,20 +251,78 @@ Our team is always happy to [help you estimate costs] (https://pages.temporal.io
 | Large         | < &#36;10K     | Sustained throughput or multiple use cases | < 400M / month <br /> _(< 150 actions per second)_ | Data processing / sync <br /> Retail order system <br /> KYC & fraud detection                                |
 | Web Scale     | &#36;20K+      | "Web scale" and / or numerous use cases    | 1B+ / month <br /> _(400+ actions per second)_     | Social media application <br /> SaaS application service                                                      |
 
-## Pricing FAQ {#pricing-faq}
+## Billing Questions FAQs {#pricing-faq}
 
-**What's the minimum cost to run Temporal Cloud?**
+**What payment methods does Temporal accept?**
 
-The Temporal Cloud service is consumption based.
-You pay only for what you need with no minimum.
-Basic support has a minimum monthly fee of &#36;200 per month.
+You can pay with a credit card, ACH, wire transfer, or Temporal Cloud Credits.
 
-**How do I pay for Temporal Cloud?**
 
-Temporal sends a monthly bill based on your consumption.
-You can pay with a credit card, ACH, wire transfer, or Temporal Credits.
+**How often will I be billed?**
 
-**Can I purchase Temporal Cloud through my Amazon, Azure, or Google Cloud Platform marketplace?**
+Temporal Cloud issues invoices for the previous month’s usage and costs.
+Invoices are issued on the 3rd of the month for the previous month.
+For example, invoices for May will be issued at midnight UTC on June 3rd.
 
-You can purchase Temporal Cloud credits in the AWS Marketplace.
-To learn more about our private AWS Marketplace offer, contact our team at sales@temporal.io.
+
+**How do I purchase Temporal Cloud credits?**
+
+You can purchase Temporal Cloud credits by contacting our team at [sales@temporal.io](mailto:sales@temporal.io).
+
+
+**How do I see how many Temporal Cloud credits are remaining?**
+
+To view remaining Temporal Cloud credits, log in to Temporal Cloud and go to Settings > Billing.
+You will require sufficient administrative permissions to access this section.
+
+
+**What happens if I exceed my available credits?**
+
+Temporal will automatically invoice customers who purchased credits to reload their credit balance.
+This invoice amount is calculated by annualizing the most recent month’s usage total.
+Customers who are issued free credits as part of the startup program or offer will be invoiced at the end of the month for their consumption once their credit balance is exhausted.
+
+
+**Do credits expire?**
+
+Customers who purchased credits through the sales team, these credits will not expire.
+For customers who received credits through the startup program or an offer, will have an expiry date, which will be stated as part of the sign up.
+
+
+**How do I update my payment information?**
+
+To update payment information, [contact Support](https://temporalsupport.zendesk.com/).
+
+
+**What happens if my payment fails?**
+
+Temporal will periodically send you email reminders to complete the payment.
+
+
+**How do I view my invoices and billing history?**
+
+Invoices are emailed to Admins of Temporal Cloud.
+Alternatively, to view invoices and billing history, [contact Support](https://temporalsupport.zendesk.com/).
+
+
+**Does Temporal charge sales tax/VAT?**
+
+We charge applicable sales tax in US jurisdictions as required.
+
+
+**How do I cancel my account?**
+
+To cancel your Temporal Cloud account, [contact Support](https://temporalsupport.zendesk.com/).
+
+
+**Will I lose access immediately if I cancel my account?**
+
+Customers will lose access once Temporal completes the off-boarding process.
+Billing is independent of this process.
+
+
+**Can I reactivate my account after cancellation?**
+
+No.
+When your account is canceled, all of your account data is deleted and cannot be restored.
+If a customer wants to return to Temporal Cloud, they must sign up again and be assigned a new Temporal account, effectively being treated as a new customer.
