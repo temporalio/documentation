@@ -84,9 +84,10 @@ Each Namespace has a default [Schedule](/glossary#schedule) rate limit of 10 req
 If too many Schedules trigger at once, they may be throttled.
 Throttling limits the rate at which Schedules create new Workflow Executions, ensuring the Namespace does not exceed its RPS limit.
 
-To avoid throttling, don't schedule all your Workflow Executions (whether daily, weekly, monthly, etc.) to start at the same time.
-Spread them out instead.
-Some Temporal SDKs support jittering, which adds small random delays to Schedules and helps reduce load at specific moments.
+To avoid throttling, don't schedule all your Workflow Executions to start at the same time (daily, weekly, monthly, etc.).
+Every Temporal SDK supports jittering, which adds small random delays to Schedule specifications, helping to reduce load at any specific moment.
+Set the `jitter` value to the largest delay you will permit before your Workflow Execution must begin.
+This approach uniformly distributes the scheduled Workflow Execution launches through that period and reduces your Schedule Workflow Execution RPS load.
 
 If you need a higher Schedule RPS limit, open a [support ticket](/cloud/support#support-ticket).
 
