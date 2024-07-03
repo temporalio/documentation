@@ -248,43 +248,73 @@ We recommended using a lock file (`package-lock.json` or `yarn.lock`) to fix Wor
 
 :::caution
 
-Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Temporal Service to enable Worker Versioning:
+Worker Versioning is currently in [Pre-release](/evaluate/release-stages#pre-release).
 
-```
-temporal server start-dev \
-   --dynamic-config-value frontend.workerVersioningDataAPIs=true \
-   --dynamic-config-value frontend.workerVersioningWorkflowAPIs=true \
-   --dynamic-config-value worker.buildIdScavengerEnabled=true
-```
+See the [Pre-release README](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
 
 :::
 
-To use [Worker Versioning](/workers#worker-versioning) in TypeScript, you need to do the following:
+A Build ID corresponds to a deployment. If you don't already have one, we recommend a hash of the code--such as a Git SHA--combined with a human-readable timestamp.
+To use [Worker Versioning](/workers#worker-versioning), you need to pass a Build ID to your Typescript Worker and opt in to Worker Versioning.
 
-1. Determine and assign a Build ID to your built Worker code, and opt in to versioning.
-2. Tell the Task Queue your Worker is listening on about that Build ID and whether it's compatible with an existing Build ID.
+### Assign a Build ID to your Worker and opt in to Worker Versioning
 
-### Assign a Build ID to your Worker
+You should understand assignment rules before completing this step.
+See the [Worker Versioning Pre-release README](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
 
-Let's say you've chosen `deadbeef` as your Build ID, which might be a short git commit hash (a reasonable choice as Build ID).
-To assign it in your Worker code, assign the following Worker Options:
+To enable Worker Versioning for your Worker, assign the Build ID--perhaps from an environment variable--and turn it on.
 
 ```typescript
 // ...
 const worker = await Worker.create({
   taskQueue: 'your_task_queue_name',
-  buildId: 'deadbeef',
+  buildId: buildId,
   useVersioning: true,
   // ...
 });
 // ...
 ```
 
-That's all you need to do in your Worker code.
-Importantly, if you start this Worker, it won't receive any tasks.
-That's because you need to tell the Task Queue about your Worker's Build ID first.
+:::warning
 
-### Tell the Task Queue about your Worker's Build ID
+Importantly, when you start this Worker, it won't receive any tasks until you set up assignment rules.
+
+:::
+
+### Specify versions for Activities, Child Workflows, and Continue-as-New Workflows
+
+:::caution
+
+Typescript support for this feature is under construction!
+
+:::
+
+By default, Activities, Child Workflows, and Continue-as-New Workflows are run on the build of the Workflow that created them if they are also configured to run on the same Task Queue.
+When configured to run on a separate task queue, they will default to using the current assignment rules.
+
+If you want to override this behavior, you can specify your intent via the `versioningIntent`
+field available on the options object for each of these commands.
+
+{/* For more information refer to the [conceptual documentation](/workers#worker-versioning). */}
+
+For example, if you want an Activity to use the latest assignment rules rather than inheriting from its parent:
+
+```typescript
+// ...
+const { echo } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '20s',
+  versioningIntent: 'USE_ASSIGNMENT_RULES',
+});
+// ...
+```
+
+### Tell the Task Queue about your Worker's Build ID (Deprecated)
+
+:::caution
+
+This section is for a previous Worker Versioning API that is deprecated and will go away at some point. Please redirect your attention to [Worker Versioning](/workers#worker-versioning).
+
+:::
 
 Now you can use the SDK (or the Temporal CLI) to tell the Task Queue about your Worker's Build ID.
 You might want to do this as part of your CI deployment process.
@@ -343,26 +373,4 @@ await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
   primaryBuildId: 'deadbeef',
   secondaryBuildId: 'some-existing-build-id',
 });
-```
-
-### Specify versions for Commands
-
-By default, Activities, Child Workflows, and Continue-as-New use the same compatible version set as
-the Workflow that invoked them, if they're also using the same Task Queue.
-
-If you want to override this behavior, you can specify your intent via the `versioningIntent`
-field available on the options object for each of these commands.
-
-{/* For more information refer to the [conceptual documentation](/workers#worker-versioning). */}
-
-For example, if you want to use the latest default version for an Activity, you can proxy it like
-so:
-
-```typescript
-// ...
-const { echo } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '20s',
-  versioningIntent: 'DEFAULT',
-});
-// ...
 ```
