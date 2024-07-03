@@ -246,7 +246,7 @@ To use [Worker Versioning](/workers#worker-versioning), you need to pass a Build
 You should understand assignment rules before completing this step.
 See the [Worker Versioning Pre-release README.md](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
 
-To enable worker versioning for your worker, assign the build ID--perhaps from an environment variable--and turn it on.
+To enable Worker Versioning for your Worker, assign the build ID--perhaps from an environment variable--and turn it on.
 
 ```python
 # ...
@@ -274,7 +274,7 @@ Python support for this feature is under construction!
 :::
 
 By default, Activities, Child Workflows, and Continue-as-New Workflows are run on the build of the workflow that created them if they are also configured to run on the same Task Queue.
-When configured to run on a separate task queue, they will default to using the current assignment rules.
+When configured to run on a separate Task Queue, they will default to using the current assignment rules.
 
 If you want to override this behavior, you can specify your intent via the `versioning_intent` argument available on the methods you use to invoke these commands.
 

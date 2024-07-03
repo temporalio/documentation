@@ -8,7 +8,7 @@ toc_max_heading_level: 4
 
 :::tip Support, stability, and dependency info
 
-- This version of worker versioning is DEPRECATED
+- This version of Worker Versioning is DEPRECATED
 - Introduced in Temporal Server version [1.21.0](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
 - Available in CLI version [0.10.0](https://github.com/temporalio/cli/releases/tag/v0.10.0)
 - Available in [Go SDK](/develop/go/versioning#worker-versioning) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
@@ -59,7 +59,7 @@ For example, if you have a Workflow that completes within a day, a good strategy
 Because your Workflow completes in a day, you know that you won't need to keep older Workers running for more than a day after you deploy the new version (assuming availability).
 You can apply this technique to longer-lived Workflows too; however, you might need to run multiple Worker versions simultaneously while open Workflows complete.
 
-Version sets have a maximum size limit, which defaults to 100 build IDs across all sets.
+Version sets have a maximum size limit, which defaults to 100 Build IDs across all sets.
 Operations to add new Build IDs to the sets will fail if they exceed this limit.
 There is also a limit on the number of Version Sets, which defaults to 10.
 A version can only be garbage collected after a Workflow Execution is deleted.
@@ -258,7 +258,7 @@ You can also use this API `GetWorkerTaskReachability` directly from within langu
 ### Unversioned Workers
 
 Unversioned Workers refer to Workers that have not opted into the Worker Versioning feature in their configuration.
-They receive tasks only from Task Queues that do not have any version sets defined on them, or that have open workflows that began executing before versions were added to the queue.
+They receive tasks only from Task Queues that do not have any version sets defined on them, or that have open Workflows that began executing before versions were added to the queue.
 
 To migrate from an unversioned Task Queue, add a new default Build ID to the Task Queue.
 From there, deploy Workers with the same Build ID.
