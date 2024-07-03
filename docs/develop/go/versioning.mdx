@@ -181,7 +181,7 @@ But we don't want to fail on that change, so we check only the function name par
 
 Worker Versioning is currently in Pre-release.
 
-See the [Pre-release README.md](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md)
+See the [Pre-release README](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md)
 for full information.
 
 :::
@@ -189,12 +189,12 @@ for full information.
 A Build ID corresponds to a deployment. If you don't already have one, we recommend a hash of the code--such as a Git SHA--combined with a human-readable timestamp.
 To use [Worker Versioning](/workers#worker-versioning), you need to pass a Build ID to your Go Worker and opt in to Worker Versioning.
 
-### Assign a Build ID to your Worker and opt in to versioning
+### Assign a Build ID to your Worker and opt in to Worker Versioning
 
 You should understand assignment rules before completing this step.
-See the [Worker Versioning Pre-release README.md](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
+See the [Worker Versioning Pre-release README](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
 
-To enable Worker Versioning for your Worker, assign the build ID--perhaps from an environment variable--and turn it on.
+To enable Worker Versioning for your Worker, assign the Build ID--perhaps from an environment variable--and turn it on.
 
 ```go
 // ...
@@ -249,7 +249,7 @@ err := workflow.NewContinueAsNewError(ctx, "WorkflowName")
 
 :::caution
 
-This section is for a version of Worker Versioning that is deprecated and will go away at some point. Please redirect your attention to [Worker Versioning](/workers#worker-versioning).
+This section is for a previous Worker Versioning API that is deprecated and will go away at some point. Please redirect your attention to [Worker Versioning](/workers#worker-versioning).
 
 :::
 
