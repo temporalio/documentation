@@ -1,0 +1,214 @@
+---
+id: versioning
+title: Versioning - PHP SDK feature guide
+sidebar_label: Versioning
+description: Learn how to ensure deterministic Temporal Workflow execution and safely deploy updates using the PHP SDK's patching and Worker Versioning APIs, for scalable long-running Workflows.
+toc_max_heading_level: 4
+keywords:
+  - best practices
+  - code sample
+  - deployment
+  - deployment safety
+  - deprecated patches
+  - how-to
+  - patching
+  - php
+  - php sdk
+  - version
+  - versioning
+  - workflow completion
+  - workflow history
+  - workflow transition
+tags:
+  - best-practices
+  - code-sample
+  - deployment
+  - deployment-safety
+  - deprecated-patches
+  - how-to
+  - patching
+  - php
+  - php-sdk
+  - version
+  - versioning
+  - workflow-completion
+  - workflow-history
+  - workflow-transition
+---
+
+This page shows how to do the following:
+
+The definition code of a Temporal Workflow must be deterministic because Temporal uses event sourcing
+to reconstruct the Workflow state by replaying the saved history event data on the Workflow definition code.
+This means that any incompatible update to the Workflow definition code could cause a non-deterministic
+issue if not handled correctly.
+
+## Introduction to Versioning {#introduction-to-versioning}
+
+Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY)
+
+## How to use the PHP SDK Patching API {#php-sdk-patching-api}
+
+In principle, the PHP SDK's patching mechanism operates similarly to other SDKs in a "feature-flag" fashion. However, the "versioning" API now uses the concept of "patching in" code.
+
+To understand this, you can break it down into three steps, which reflect three stages of migration:
+
+- Running `prePatchActivity` code while concurrently patching in `postPatchActivity`.
+- Running `postPatchActivity` code with deprecation markers for `step-1` patches.
+- Running only the `postPatchActivity` code.
+
+Let's walk through this process in sequence.
+
+Suppose you have an initial Workflow version called `PrePatchActivity`:
+
+```php
+#[WorkflowInterface]
+class MyWorkflow
+{
+    private $activity;
+
+    public function __construct()
+    {
+        $this->activity = Workflow::newActivityStub(
+            YourActivityInterface::class,
+            ActivityOptions::new()->withScheduleToStartTimeout(60)
+        );
+    }
+
+    #[WorkflowMethod]
+    public function runAsync()
+    {
+        $result = yield $this->activity->prePatchActivity();
+    }
+}
+```
+
+Now, you want to update your code to run `postPatchActivity` instead. This represents your desired end state.
+
+```php
+#[WorkflowInterface]
+class MyWorkflow
+{
+    // ...
+
+    #[WorkflowMethod]
+    public function runAsync()
+    {
+        $result = yield $this->activity->postPatchActivity();
+    }
+}
+```
+
+**Problem: You cannot deploy `postPatchActivity` directly until you're certain there are no more running Workflows created using the `prePatchActivity` code, otherwise you are likely to cause a non-deterministic error.**
+
+Instead, you'll need to deploy `postPatchActivity` and use the [Workflow::getVersion()](https://php.temporal.io/classes/Temporal-Workflow.html#method_getVersion) method to determine which version of the code to execute.
+
+```php
+#[WorkflowInterface]
+class MyWorkflow
+{
+    // ...
+
+    #[WorkflowMethod]
+    public function runAsync()
+    {
+        $version = yield Workflow::getVersion('Step 1', Workflow::DEFAULT_VERSION, 1);
+
+        $result = $version === Workflow::DEFAULT_VERSION
+            ? yield $this->activity->prePatchActivity()
+            : yield $this->activity->postPatchActivity();
+    }
+}
+```
+
+When `getVersion()` is run for the new Workflow execution, it records a marker in the Workflow history so that all future calls to `GetVersion()` for this change Id (`Step 1` in the example) on this Workflow execution will always return the given version number, which is `1` in the example.
+
+:::note
+
+The Id that is passed to the `getVersion` call identifies the change. Each change is expected to have its own Id. But if a change spawns multiple places in the Workflow code and the new code should be either executed in all of them or in none of them, then they have to share the Id.
+
+:::
+
+If you make an additional change, such as replacing ActivityC with ActivityD, you need to add some additional code:
+
+```php
+#[WorkflowInterface]
+class MyWorkflow
+{
+    // ...
+
+    #[WorkflowMethod]
+    public function runAsync()
+    {
+        $version = yield Workflow::getVersion('Step 1', Workflow::DEFAULT_VERSION, maxSupported: 2);
+
+        $result = match($version) {
+            Workflow::DEFAULT_VERSION => yield $this->activity->prePatchActivity()
+            1 => yield $this->activity->postPatchActivity();
+            2 => yield $this->activity->anotherPatchActivity();
+        };
+    }
+}
+```
+
+Note that we have changed `maxSupported` from 1 to 2. A Workflow that had already passed this `GetVersion()` call before it was introduced will return `DEFAULT_VERSION`. A Workflow that was run with `maxSupported` set to 1, will return 1. New Workflows will return 2.
+
+After you are sure that all of the Workflow executions prior to version 1 have completed, you can remove the code for that version. It should now look like the following:
+
+```php
+    #[WorkflowMethod]
+    public function runAsync()
+    {
+        $version = yield Workflow::getVersion('Step 1', minSupported: 1, maxSupported: 2);
+
+        $result = match($version) {
+            1 => yield $this->activity->postPatchActivity();
+            2 => yield $this->activity->anotherPatchActivity();
+        };
+    }
+}
+```
+
+You'll note that `minSupported` has changed from `DEFAULT_VERSION` to `1`. If an older version of the Workflow execution history is replayed on this code, it will fail because the minimum expected version is 1. After you are sure that all of the Workflow executions for version 1 have completed, then you can remove 1 so that your code would look like the following:
+
+```php
+    #[WorkflowMethod]
+    public function runAsync()
+    {
+        $version = yield Workflow::getVersion('Step 1', minSupported: 2, maxSupported: 2);
+
+        $result = yield $this->activity->anotherPatchActivity();
+    }
+}
+```
+
+:::note
+
+Note that we have preserved the call to `GetVersion()`. There are two reasons to preserve this call:
+
+1. This ensures that if there is a Workflow execution still running for an older version, it will fail here and not proceed.
+2. If you need to make additional changes for `Step 1`, such as changing `anotherPatchActivity` to `yetAnotherPatchActivity`, you only need to update `maxVersion` from 2 to 3 and branch from there.
+
+:::
+
+## Sanity checking
+
+The Temporal client SDK performs a sanity check to help prevent obvious incompatible changes.
+The sanity check verifies whether a Command made in replay matches the event recorded in history, in the same order.
+The Command is generated by calling any of the following methods:
+
+- `Workflow::executeActivity()`
+- `Workflow::executeChildWorkflow()`
+- `Workflow::timer()`
+- `Workflow::sideEffect()`
+- `Workflow::newActivityStub()` execute
+- `Workflow::newChildWorkflowStub()` start and signal
+- `Workflow::newExternalWorkflowStub()` start and signal
+
+Adding, removing, or reordering any of the preceding methods triggers the sanity check and results in a non-deterministic error.
+
+The sanity check does not perform a thorough check.
+For example, it does not check on the Activity's input arguments or the Timer duration.
+If the check is enforced on every property, it becomes too restrictive and harder to maintain the Workflow code.
+For example, if you move your Activity code from one package to another package, that move changes the `ActivityType`, which technically becomes a different Activity.
+But we don't want to fail on that change, so we check only the function name part of the `ActivityType`.
