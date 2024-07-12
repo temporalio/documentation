@@ -28,55 +28,84 @@ keywords:
 
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
 
-Temporal applications can receive and provide data through messages.
+Workflows can be thought of as stateful web services that can receive messages. The Workflow can have powerful message handlers akin to endpoints that can react to the incoming messages in combination with the current state of the Workflow.
 Temporal supports three types of messages: Signals, Queries, and Updates.
+To define these, consider these messages from the perspective of the client making the request:
 
-## Signals {#signals}
+- Queries are read requests. They can read the current state of the Workflow but cannot block in doing so.
+- Signals are write requests. They cause changes in the running Workflow, but you cannot await any response or error.
+- Updates are interactive write requests, wherein the sender of the Update tracks completion and waits for a response or an error.
 
-**What is a Signal in the context of Temporal?**
+## How to choose between Signals, Updates, and Queries? {#choosing-messages}
 
-A Signal is an asynchronous request to a [Workflow Execution](/workflows#workflow-execution).
+### For write requests
+
+From the above descriptions, it may sound like Updates can do all the things that Queries and Signals can do. But, unlike Signals, Updates must be synchronous, that is, they must wait for the worker running the Workflow to acknowledge the request.
+
+Use Signals instead of Updates when:
+
+- You want to send a fully asynchronous message.
+- Your client does not want to rely on the worker being available.
+- Your Workflow’s client cares more about the latency of sending the message than it does of the end-to-end operation.
+- When you need to [Signal-With-Start](signal-with-start) atomically start the Workflow and then Signal as the first operation. (since there is currently no Update-with-start operation.)
+
+Use Updates instead of Signals when:
+
+- You want to track the completion of the message from the client.
+- You need a result or an exception from your message without having to query subsequently.
+- You’d like to “validate” the Update before accepting it into the Workflow and its history.
+- Your client cares more about the latency of the end-to-end operation than you care about the latency of sending the message.
+
+### For read requests
+
+You normally want to do a Query:
+
+- Queries are efficient–they never add entries to the [Workflow Event History](/workflows#event-history).
+- Queries can operate on completed Workflows.
+
+However, because Queries cannot block, sometimes Updates are best.\
+When your goal is to do a read once the Workflow achieves a certain desired state, you have two options.
+
+- You could poll periodically with Queries until the workflow is ready.
+- You could write your read operation as an Update, which will give you better efficiency and latency, though it will write an entry to the [Workflow Event History](/workflows#event-history).
+
+## Sending Messages {#sending-messages}
+
+This content will help you write clients that send messages to Workflows.
+
+### Sending Queries
+
+### Sending Signals
+
+You can send Signals from any Temporal Client, the Temporal CLI, or you can Signal one Workflow to another.
+You can also "Signal-With-Start" and send a Signal from
+
+#### Send a Signal from a Temporal Client or the CLI
 
 <RelatedReadContainer>
     <RelatedReadItem path="/cli/workflow#signal" text="Send a Signal using the Temporal CLI" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/go/message-passing#signals" text="Send and handle Signals with the Go SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/java/message-passing" text="Send and handle Signals with the Java SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/php/message-passing#signals" text="Send and handle Signals with the PHP SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#signals" text="Send and handle Signals with the Python SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/message-passing#signals" text="Send and handle Signals with the TypeScript SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/dotnet/message-passing#define-a-signal" text="Send and handle Signals with the .NET SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/go/message-passing#send-signal-from-client" text="Send Signals with the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#send-signal-from-client" text="Send Signals with the Java SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#send-signal-from-client" text="Send Signals with the PHP SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#send-signal-from-client" text="Send Signals with the Python SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#send-signal-from-client" text="Send Signals with the TypeScript SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#send-signal-from-client" text="Send Signals with the .NET SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-A Signal delivers data to a running Workflow Execution.
-It cannot return data to the caller; to do so, use a [Query](#queries) instead.
-The Workflow code that handles a Signal can mutate Workflow state.
-A Signal can be sent from a Temporal Client or a Workflow.
-When a Signal is sent, it is received by the Temporal Service and recorded as an Event to the Workflow Execution [Event History](/workflows#event-history).
-A successful response from the Temporal Service means that the Signal has been persisted and will be delivered at least once to the Workflow Execution.[^1]
-The next scheduled Workflow Task will contain the Signal Event.
+#### Send a Signal from one Workflow to another.
 
-A Signal must include a destination (Namespace and Workflow Id) and name.
-It can include a list of arguments.
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the Java SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the PHP SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the Python SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the TypeScript SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the .NET SDK" archetype="feature-guide" />
+</RelatedReadContainer>
 
-Signal handlers are Workflow functions that listen for Signals by the Signal name.
-Signals are delivered in the order they are received by the Temporal Service and written to History.
-If multiple deliveries of a Signal would be a problem for your Workflow, add idempotency logic to your Signal handler that checks for duplicates.
+#### Signal-With-Start
 
-[^1]: The Temporal Service usually deduplicates Signals, but does not guarantee deduplication: During shard migration, two Signal Events (and therefore two deliveries to the Workflow Execution) can be recorded for a single Signal because the deduping info is stored only in memory.
-
-### Signal-With-Start {#signal-with-start}
-
-**What is a Signal-With-Start in the context of Temporal?**
-
-Signal-With-Start is a Client method that takes the following arguments:
-
-- A Workflow Id
-- Workflow input
-- A [Signal](#signals) name
-- Signal input
-
-If there is a running Workflow Execution with the given Workflow Id, it will be Signaled.
-Otherwise, a new Workflow Execution is started and immediately sent the Signal.
+Signal-With-Start is a great tool for lazily creating workflows. When you send this operation, if there is a running Workflow Execution with the given Workflow Id, it will be Signaled. Otherwise, a new Workflow Execution is started and immediately sent the Signal.
 
 <RelatedReadContainer>
     <RelatedReadItem path="/develop/go/message-passing#signal-with-start" text="Signal-With-Start using the Go SDK" archetype="feature-guide" />
@@ -87,46 +116,22 @@ Otherwise, a new Workflow Execution is started and immediately sent the Signal.
     <RelatedReadItem path="/develop/dotnet/message-passing#signal-with-start" text="Signal-With-Start using the .NET SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-## Queries {#queries}
+## Sending Queries {#sending-queries}
 
-**What is a Query in the context of Temporal?**
-
-A Query is a synchronous operation that is used to get the state of a [Workflow Execution](/workflows#workflow-execution).
-The state of a running Workflow Execution is constantly changing.
-You can use Queries to expose the internal Workflow Execution state to the external world.
-Queries are available for running or completed Workflows Executions only if the Worker is up and listening on the Task Queue.
+Queries can be sent from a Temporal Client or the Temporal CLI to a Workflow Execution--even if this workflow has Completed. This call is synchronous and will call into the corresponding Query handler.
+You can also send a built-in "Stack Trace Query" for debugging.
 
 <RelatedReadContainer>
     <RelatedReadItem path="/cli/workflow#query" text="Send a Query using the Temporal CLI" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/go/message-passing#queries" text="Send and handle Queries with the Go SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/java/message-passing" text="Send and handle Queries with the Java SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/php/message-passing#queries" text="Send and handle Queries with the PHP SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#queries" text="Send and handle Queries with the Python SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/message-passing#queries" text="Send and handle Queries with the TypeScript SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/dotnet/message-passing#define-query" text="Send and handle Queries with the .NET SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/go/message-passing#send-query" text="Send a Query with the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#send-query" text="Send a Query with the Java SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#send-query" text="Send a Query with the PHP SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#send-query" text="Send a Query with the Python SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#send-query" text="Send a Query with the TypeScript SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#send-query" text="Send a Query with the .NET SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-Queries are sent from a Temporal Client to a Workflow Execution.
-The API call is synchronous.
-The Query is identified at both ends by a Query name.
-The Workflow must have a Query handler that is developed to handle that Query and provide data that represents the state of the Workflow Execution.
-
-Queries are strongly consistent and are guaranteed to return the most recent state.
-This means that the data reflects the state of all confirmed Events that came in before the Query was sent.
-An Event is considered confirmed if the call creating the Event returned success.
-Events that are created while the Query is outstanding may or may not be reflected in the Workflow state the Query result is based on.
-
-A Query can carry arguments to specify the data it is requesting.
-And each Workflow can expose data to multiple types of Queries.
-
-A Query must never mutate the state of the Workflow Execution—that is, Queries are _read-only_ and cannot contain any blocking code.
-This means, for example, that Query handling logic cannot schedule Activity Executions.
-
-Sending Queries to completed Workflow Executions is supported, though Query reject conditions can be configured per Query.
-
 #### Stack Trace Query {#stack-trace-query}
-
-**What is a Stack Trace Query in the context of Temporal?**
 
 In many SDKs, the Temporal Client exposes a predefined `__stack_trace` Query that returns the call stack of all the threads owned by that Workflow Execution.
 This is a great way to troubleshoot a Workflow Execution in production.
