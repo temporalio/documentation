@@ -20,10 +20,10 @@ tags:
 ---
 
 The Temporal Platform requires that Workflow code is [deterministic](/workflows#deterministic-constraints).
-Because of that requirement, the Temporal Java SDK offers two dedicated versioning features.
+Because of that requirement, the Temporal Java SDK offers two dedicated versioning features:
 
 - [Workflow Patching APIs](#patching)
-- [Worker Build Ids](#worker-versioning)
+- [Worker Versioning](#worker-versioning)
 
 ## How to patch Workflows in Java {#patching}
 
@@ -113,31 +113,25 @@ in none of them, then they have to share the Id.
 
 :::caution
 
-Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Temporal Service to enable Worker Versioning:
+Worker Versioning is currently in [Pre-release](/evaluate/release-stages#pre-release).
 
-```
-temporal server start-dev \
-   --dynamic-config-value frontend.workerVersioningDataAPIs=true \
-   --dynamic-config-value frontend.workerVersioningWorkflowAPIs=true \
-   --dynamic-config-value worker.buildIdScavengerEnabled=true
-```
+See the [Pre-release README](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
 
 :::
+A Build ID corresponds to a deployment. If you don't already have one, we recommend a hash of the code--such as a Git SHA--combined with a human-readable timestamp.
+To use [Worker Versioning](/workers#worker-versioning), you need to pass a Build ID to your Go Worker and opt in to Worker Versioning.
 
-To use Worker Versioning in Java, you need to do the following:
+### Assign a Build ID to your Worker and opt in to Worker Versioning
 
-1. Determine and assign a Build ID to your built Worker code, and opt in to versioning.
-2. Tell the Task Queue your Worker is listening on about that Build ID, and whether its compatible with an existing Build ID.
+You should understand assignment rules before completing this step.
+See the [Worker Versioning Pre-release README](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
 
-### Assign a Build ID to your Worker
-
-Let's say you've chosen `deadbeef` as your Build ID, which might be a short git commit hash (a reasonable choice as Build ID).
-To assign it in your Worker code, assign the following Worker Options:
+To enable Worker Versioning for your worker, assign the Build ID--perhaps from an environment variable--and turn it on.
 
 ```java
 // ...
 WorkerOptions workerOptions = WorkerOptions.newBuilder()
-    .setBuildId("deadbeef")
+    .setBuildId(buildId)
     .setUseBuildIdForVersioning(true)
     // ...
     .build();
@@ -145,11 +139,48 @@ Worker w = workerFactory.newWorker("your_task_queue_name", workerOptions);
 // ...
 ```
 
-That's all you need to do in your Worker code.
-Importantly, if you start this Worker, it won't receive any tasks.
-That's because you need to tell the Task Queue about your Worker's Build ID first.
+:::warning
 
-### Tell the Task Queue about your Worker's Build ID
+Importantly, when you start this Worker, it won't receive any tasks until you set up assignment rules.
+
+:::
+
+### Specify versions for Activities, Child Workflows, and Continue-as-New
+
+:::caution
+
+Java support for this feature is under construction!
+
+:::
+
+By default, Activities, Child Workflows, and Continue-as-New Workflows are run on the build of the workflow that created them if they are also configured to run on the same Task Queue.
+When configured to run on a separate Task Queue, they will default to using the current assignment rules.
+
+If you want to override this behavior, you can specify your intent via the `setVersioningIntent` method on the `ActivityOptions`, `ChildWorkflowOptions`, or `ContinueAsNewOptions` objects.
+
+For example, if you want an Activity to use the latest assignment rules rather than inheriting from its parent:
+
+```java
+// ...
+private final MyActivity activity =
+    Workflow.newActivityStub(
+        MyActivity.class,
+        ActivityOptions.newBuilder()
+          .setScheduleToCloseTimeout(Duration.ofSeconds(10))
+          .setVersioningIntent(VersioningIntent.VERSIONING_INTENT_USE_ASSIGNMENT_RULES)
+          // ...other options
+          .build()
+    );
+// ...
+```
+
+### Tell the Task Queue about your Worker's Build ID (Deprecated)
+
+:::caution
+
+This section is for a previous Worker Versioning API that is deprecated and will go away at some point. Please redirect your attention to [Worker Versioning](/workers#worker-versioning).
+
+:::
 
 Now you can use the SDK (or the Temporal CLI) to tell the Task Queue about your Worker's Build ID.
 You might want to do this as part of your CI deployment process.
@@ -187,28 +218,4 @@ You can also promote an entire set to become the default set for the queue. New 
 // ...
 workflowClient.updateWorkerBuildIdCompatability(
     "your_task_queue_name", BuildIdOperation.promoteSetByBuildId("deadbeef"));
-```
-
-### Specify versions for Commands
-
-By default, Activities, Child Workflows, and Continue-as-New use the same compatible version set as the Workflow that invoked them if they're also using the same Task Queue.
-
-If you want to override this behavior, you can specify your intent via the `setVersioningIntent` method on the `ActivityOptions`, `ChildWorkflowOptions`, or `ContinueAsNewOptions` objects.
-
-{/* For more information refer to the [conceptual documentation](/workers#worker-versioning). */}
-
-For example, if you want to use the latest default version for an Activity, you can define your Activity Options like this:
-
-```java
-// ...
-private final MyActivity activity =
-    Workflow.newActivityStub(
-        MyActivity.class,
-        ActivityOptions.newBuilder()
-          .setScheduleToCloseTimeout(Duration.ofSeconds(10))
-          .setVersioningIntent(VersioningIntent.VERSIONING_INTENT_DEFAULT)
-          // ...other options
-          .build()
-    );
-// ...
 ```
