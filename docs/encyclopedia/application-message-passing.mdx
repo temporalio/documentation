@@ -195,3 +195,111 @@ If you want to send an Update to another Workflow such as a Child Workflow from 
     <RelatedReadItem path="/develop/typescript/message-passing#send-update" text="Send Updates in Python" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/message-passing#send-update" text="Send Updates in .NET" archetype="feature-guide" />
 </RelatedReadContainer>
+
+## Handling Signals, Updates, and Queries {#handling-messages}
+
+When Signals, Updates, and Queries arrive at your Workflow, the handlers for these messages will operate on the current state of your Workflow and can use whatever fields you have set.
+In this section, we’ll give you an overview of how messages work with Temporal and cover how to write correct and robust handlers by covering topics like atomicity, guaranteeing completion before the Workflow exits, failures, and idempotency.
+
+### Message handler concurrency {#message-handler-concurrency}
+
+If your Workflow receives messages, you may need to consider how those messages interact with one another or with the main Workflow method.
+Behind the scenes, Temporal is running a loop that looks like this:
+
+<PrettyImage src="/img/messages-workflow-loop.png" title="Diagram that shows the execution ordering of workflows" />
+
+Every time the Workflow wakes up--generally, it wakes up when it needs to--it will process messages in the order they were received, followed by making progress in the Workflow’s main method.
+
+This execution is on a single thread–while this means you don’t have to worry about parallelism, you do need to worry about concurrency if you have written Signal and Update handlers that can block. These can run interleaved with the main Workflow and with one another, resulting in potential race conditions. These methods should be made reentrant.
+
+### Message handler patterns #{message-handler-patterns}
+
+Here are several common patterns for Signal and Update handlers:
+
+- Synchronous, returning immediately.
+- Waiting for the Workflow to be ready to process them.
+- Kicking off activities and other asynchronous tasks
+- Injecting work into the main Workflow.
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/message-passing#handler-patterns" text="Handle Updates in Go" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#handler-patterns" text="Handle Updates in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#handler-patterns" text="Handle Updates in PHP" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#handler-patterns" text="Handle Updates in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#handler-patterns" text="Handle Updates in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#handler-patterns" text="Handle Updates in .NET" archetype="feature-guide" />
+</RelatedReadContainer>
+
+#### Synchronous handlers
+
+Synchronous handlers don’t block or kick off any long-running operations. They are guaranteed to run atomically.
+
+#### Waiting
+
+An Update handler can block waiting for the Workflow to reach a certain state using a Wait Condition. See the links above to find out how to use this with your SDK.
+
+#### Running asynchronous tasks
+
+Sometimes, we need our message handlers to do long-running operations such as executing an Activity. When this happens, the handler will yield control back to [the loop](#message-handler-concurrency). This means that your handlers can have race conditions if you’re not careful.
+You can guard your handlers with concurrency primitives like mutexes or semaphores, but you should use versions of these primitives provided for Workflows in most languages. See the links above for examples of how to use them in your SDK.
+
+#### Inject work into the main Workflow
+
+Sometimes you want to process work provided by messages in the main Workflow. Perhaps you’d like to accumulate several messages before acting on any of them. For example, message handlers might put work into a queue, which can then be picked up and processed in an event loop that you yourself write.
+This option is considered advanced but offers powerful flexibility. And if you serialize the handling of your messages inside your main Workflow, you can avoid using concurrency primitives like mutexes and semaphores. See the links above for how to do this in your SDK.
+
+### Finishing handlers before the Workflow completes {#finishing-message-handlers}
+
+You should generally finish running all handlers before the Workflow run completes or continues as new. For some Workflows, this means you should explicitly check to make sure that all the handlers have completed before finishing. You can await a condition called All Handlers Finished at the end of your Workflow.
+
+If you don’t need to ensure that your handlers complete, you may specify your handler’s Handler Unfinished Policy as Abandon to avoid needing to do this. However, note that clients waiting for Updates will get Not Found errors if they are waiting for Updates that never complete before the Workflow run completes.
+
+See the links above for how to ensure handlers are finished in your SDK.
+
+### Update Validators {#update-validators}
+
+When you define an Update handler, you may optionally define a validator. That validator is responsible for accepting or rejecting the Update. You can use validators to verify arguments or make sure the Workflow is ready to accept your Updates.
+
+- If it accepts, the Update will become part of your Workflow’s history and the client will be notified that the operation has been Accepted. The Update handler will then run until it returns a value.
+- If it rejects or throws an exception, the client will be informed that it was Rejected, and the Workflow will have no indication that it was ever requested, similar to a Query handler.
+
+:::note
+
+Validators are not allowed to block.
+
+:::
+
+Once the Update handler is finished and has returned a value, the operation is considered Completed.
+
+See the links above for how to do write validators in your SDK.
+
+### Exceptions
+
+When throwing an exception in a message handler, you should decide whether to make it an [Application Failure](/references/failures#application-failure). The implications are different between Signals and Updates.
+
+:::caution
+The following content applies in every SDK except the Go SDK. See below.
+:::
+
+#### Signals
+
+In Signal handlers, throw [Application Failures](/references/failures#application-failure) only for unrecoverable errors, because the entire Workflow will fail.
+If you throw any other exception, by default, it will cause a [Workflow Task Failure](references/failures#workflow-task-failures). This means the Workflow will get stuck and will retry the handler periodically until the exception is fixed, for example by a code change or infrastructure coming back online.
+
+#### Updates
+
+When you want to fail the Update and for the client to receive that error:
+
+- Throw any exception from your validator, OR
+- Throw an [Application Failure](/references/failures#application-failure) from your Update handler. Unlike with Signals, the Workflow will keep going.
+
+If you throw any other exception, by default, it will cause a [Workflow Task Failure](references/failures#workflow-task-failures). This means the Workflow will get stuck and will retry the handler periodically until the exception is fixed, for example by a code change or infrastructure coming back online. Note that this will cause a delay for clients waiting for a result.
+
+#### Go SDK
+
+In Go, most exceptions behave like Application Failures in the other SDKs. Panics behave like other exceptions and fail the Signal or Update handler tasks.
+
+#### Idempotency
+
+Most developers want their message handlers to run exactly once in cases where a Signal is delivered twice or sent by two different call sites. You can pass a unique key among your message arguments and use that to check for duplicate messages in your handler.
+For Updates, clients can instead pass the ID argument into the Update to serve as an idempotency key and as logging context. This can be retrieved within your handler and used to check whether the Update has already been handled.
