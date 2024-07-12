@@ -88,13 +88,13 @@ The following operations result in Actions:
 - **Search Attribute upsert requested.**
   Occurs after a Workflow starts and invokes `UpsertSearchAttributes`.
 - **Signal sent.**
-  Includes sending a [Signal](/encyclopedia/application-message-passing#signals) from a client or from within a Workflow to another Workflow.
-- **Query received.** [Queries](/encyclopedia/application-message-passing#queries) aren't recorded in Event History.
+  Includes sending a [Signal](/encyclopedia/workflow-message-passing#signals) from a client or from within a Workflow to another Workflow.
+- **Query received.** [Queries](/encyclopedia/workflow-message-passing#queries) aren't recorded in Event History.
   An operation such as viewing the call stack in the Temporal Cloud UI results in a Query.
 - **Side Effect recorded.**
   For a mutable [Side Effect](/workflows#side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
-- **NEW: Workflow Update.** [[Workflow Updates](/encyclopedia/application-message-passing#updates)] is a primitive that combines a Signal and Query together for a single Action.
+- **NEW: Workflow Update.** [[Workflow Updates](/encyclopedia/workflow-message-passing#updates)] is a primitive that combines a Signal and Query together for a single Action.
 
 **Child Workflows**
 
