@@ -404,8 +404,8 @@ Ensure that your Workflow or Client can handle an Object type return or is able 
 
 **How to customize your Activity Type using the Java SDK.**
 
-Each Activity has a Type called the Activity 'name'.
-This name appears in the Workflow Execution Event History Summary, listed for each Activity Task.
+Each Activity has a Type, which may also be referred to as the Activity 'name'.
+This name appears in the Workflow Execution Event History in the Summary tab for each Activity Task.
 The name lets you identify Activity Types called during the Execution.
 
 Custom Activity Type names prevent name collisions across interfaces and Workflows.
@@ -431,9 +431,9 @@ public interface GreetingActivities {
 ```
 
 - Method Name: `sendMessage`
-- Outcome: `SendMessage`
+- Activity Type: `SendMessage`
 - Method Name: `composeGreeting`
-- Outcome: `ComposeGreeting`
+- Activity Type: `ComposeGreeting`
 
 **Custom Prefix**
 
@@ -450,11 +450,11 @@ public interface GreetingActivities {
 ```
 
 - Method Name: `sendMessage`
-- Outcome: `Messaging_SendMessage`
+- Activity Type: `Messaging_SendMessage`
 - Method Name: `composeGreeting`
-- Outcome: `Messaging_ComposeGreeting`
+- Activity Type: `Messaging_ComposeGreeting`
 
-The Activity Type method name is capitalized, even when using a prefix.
+The Activity Type is capitalized, even when using a prefix.
 
 **Custom Name**
 
@@ -475,14 +475,14 @@ public interface GreetingActivities {
 Using the `name` parameter won't automatically capitalize the result:
 
 - Method Name: `sendMessage`
-- Outcome: `Messaging_SendMessage`
+- Activity Type: `Messaging_SendMessage`
 - Method Name: `composeGreeting`
-- Outcome: `Messaging_ComposeGreeting`
+- Activity Type: `Messaging_ComposeGreeting`
 - Method Name: `composeFarewell`
-- Outcome: `farewell `
+- Activity Type: `farewell `
 
 Be cautious with names that contain special characters, as these can be used as metric tags.
-Systems like Prometheus may ignore metrics with tags using unsupported characters.
+Systems such as Prometheus may ignore metrics with tags using unsupported characters.
 
 ## Start an Activity Execution {#activity-execution}
 
