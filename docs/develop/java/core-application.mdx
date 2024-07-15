@@ -404,47 +404,85 @@ Ensure that your Workflow or Client can handle an Object type return or is able 
 
 **How to customize your Activity Type using the Java SDK.**
 
-Activities have a Type that are referred to as the Activity name.
-The following examples demonstrate how to set a custom name for your Activity Type.
+Each Activity has a Type called the Activity 'name'.
+This name appears in the Workflow Execution Event History Summary, listed for each Activity Task.
+The name lets you identify Activity Types called during the Execution.
 
-The Activity Type defaults to method name, with the first letter of the method name capitalized, and can be customized using `namePrefix()` or `{ActivityMethod.name()}` to ensure they are distinct.
+Custom Activity Type names prevent name collisions across interfaces and Workflows.
+They offer descriptive Activity method names without concerns about re-using those names elsewhere in your project.
+They also support code management, especially in larger projects with many Activities.
+For example, you might use a prefix to group related activities together.
+Custom names also distinguish keys for gathering metrics without name conflicts.
 
-In the following example, the Activity Type defaults to `ComposeGreeting`.
+The following examples show how to set custom names for your Activity Type.
+
+**Default behavior**
+
+By default, an Activity Type is the method name with the first letter capitalized:
 
 ```java
 @ActivityInterface
 public interface GreetingActivities {
+    String sendMessage(String input);
+
     @ActivityMethod
     String composeGreeting(String greeting, String language);
 }
 ```
 
-To overwrite this default naming and assign a custom Activity Type, use the `@ActivityMethod` annotation with the `name` parameter.
-In the following example, the Activity Type is set to "greet".
+- Method Name: `sendMessage`
+- Outcome: `SendMessage`
+- Method Name: `composeGreeting`
+- Outcome: `ComposeGreeting`
+
+**Custom Prefix**
+
+Using the `namePrefix` parameter in the `@ActivityInterface` annotation adds a prefix to each Activity Type name mentioned in the interface, unless the prefix is specifically overridden:
 
 ```java
-@ActivityInterface
+@ActivityInterface(namePrefix = "Messaging_")
 public interface GreetingActivities {
-    @ActivityMethod(name = "greet")
+    String sendMessage(String input);
+
+    @ActivityMethod
     String composeGreeting(String greeting, String language);
 }
 ```
 
-You can also define a prefix for all of your Activity Types using the `namePrefix` parameter with the `@ActivityInterface` annotation.
-The following example shows a `namePrefix` parameter applied to the `@ActivityInterface`, and two Activity methods, of which one is defined using the `@ActivityMethod` annotation.
+- Method Name: `sendMessage`
+- Outcome: `Messaging_SendMessage`
+- Method Name: `composeGreeting`
+- Outcome: `Messaging_ComposeGreeting`
+
+The Activity Type method name is capitalized, even when using a prefix.
+
+**Custom Name**
+
+To override the default name and any inherited prefixes, use the `name` parameter in the `@ActivityMethod` annotation:
 
 ```java
-@ActivityInterface(namePrefix = "A_")
-Public interface GreetingActivities {
-    String sendGreeting(String input);
+@ActivityInterface(namePrefix = "Messaging_")
+public interface GreetingActivities {
+    String sendMessage(String input);
 
-  @ActivityMethod(name = "abc")
-  String composeGreeting(String greeting, String language);
+    @ActivityMethod
+    String composeGreeting(String greeting, String language);
+    @ActivityMethod(name = "farewell")
+    String composeFarewell(String farewell, String language);
 }
 ```
 
-In this example, the Activity type for the first method is set to `A_SendGreeting`.
-The Activity type for the method annotated with `@ActivityMethod` is set to `A_abc`.
+Using the `name` parameter won't automatically capitalize the result:
+
+- Method Name: `sendMessage`
+- Outcome: `Messaging_SendMessage`
+- Method Name: `composeGreeting`
+- Outcome: `Messaging_ComposeGreeting`
+- Method Name: `composeFarewell`
+- Outcome: `farewell `
+
+Be cautious with names that contain special characters, as these can be used as metric tags.
+Systems like Prometheus may ignore metrics with tags using unsupported characters.
 
 ## Start an Activity Execution {#activity-execution}
 
