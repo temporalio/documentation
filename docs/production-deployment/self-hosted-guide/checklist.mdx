@@ -26,14 +26,14 @@ tags:
 This page describes common challenges customers face who self-host Temporal and it shares recommendations to mitigate those issues. 
 
 Temporal at its core is about durability and reliability.
-This durability is compromised if it is not architected and deployed as a reliable, trusted platform.
-This guide provides a path to demonstrate that Temporal consumers can be confident in a Temporal service and provides a list of key tests you as a user should perform against the service, such as:
+To ensure this durability and reliability, a Temporal Service must be deployed according to best practices.
 
-This guide provides a path to demonstrate that Temporal consumers can be confident in a Temporal service and provides a list of key tests you as a user should perform against the service.
+This guide provides a path to demonstrate that Temporal consumers can be confident in a Temporal Service and provides a list of key tests you as a user should perform against the service.
 
 ## Self-Hosting Challenge Areas
 
-Significant engineering must be done and ongoing effort is required to resolve these challenges:
+Significant engineering and ongoing effort is required to resolve several potential challenges:
+
 - Scalability with spiky or growing workloads
 - Global hosting
 - Uptime, availability and reliability
@@ -44,20 +44,21 @@ Significant engineering must be done and ongoing effort is required to resolve t
 - Expert support to users of the service
 - Cost management
 
-It is critical to demonstrate confidence in these areas as part of building a mission critical Temporal Service.
+Each of these components is an essential part of building a mission critical Temporal Service.
 Without demonstrated architectural durability, the value of Temporal's [Durable Execution](https://temporal.io/how-it-works) model is compromised.
 
 ## Scalability with Variable or Growing Workloads {#scaling-and-metrics}
 
-Workloads can be highly variable, and sustained workload spikes of 5-10x average is common. 
+Workloads can be highly variable, and you may experience sustained workload spikes. 
 We recommend scaling your clusters to well above the average throughput.
 See [Scaling Temporal: The Basics](https://temporal.io/blog/scaling-temporal-the-basics) for an introduction to the topic.
 
-Temporal Server throughput is often limited by the number of [shards](/clusters#history-shard) configured for the Temporal service.
+Temporal server throughput is often limited by the number of [Shards](/clusters#history-shard) configured for the Temporal Service.
+A Shard is an unit within a Temporal Service by which concurrent Workflow Execution throughput can be scaled.
 Shard capacity, and often overall cluster throughput, is set at build time for a cluster and that cluster setting cannot be adjusted later.
-Adding more shards if needed requires a cluster rebuild, and a migration to the new cluster.
+Adding more Shards if needed requires a cluster rebuild, and a migration to the new cluster.
 
-The requirements of your Temporal system will vary widely based on your intended production workload.
+The requirements of your Temporal Service will vary widely based on your intended production workload.
 You will want to run your own proof of concept tests and watch for key metrics to understand the system health and scaling needs.
 
 **Load testing.** You can use [the Omes benchmarking tool](https://github.com/temporalio/omes/), see how we ourselves [stress test Temporal](https://temporal.io/blog/temporal-deep-dive-stress-testing/), or write your own.
@@ -92,7 +93,7 @@ This can multiply the effort to implement and maintain clusters.
 
 ## Management and Control Plane 
 
-When you experience success with Temporal, you will typically expand your deployment.
+Temporal success leads to larger Temporal deployments.
 Needs can increase, and can go from having one or two production use cases in a single region to many use cases in many regions.
 Running multiple clusters is complex work, as each needs its own setup, tuning, and configuration. 
 
