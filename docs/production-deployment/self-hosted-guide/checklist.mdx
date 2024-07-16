@@ -60,7 +60,7 @@ Adding more shards if needed requires a cluster rebuild, and a migration to the 
 The requirements of your Temporal system will vary widely based on your intended production workload.
 You will want to run your own proof of concept tests and watch for key metrics to understand the system health and scaling needs.
 
-**Load testing.** You can use [the Maru benchmarking tool](https://github.com/temporalio/maru/) ([author's guide here](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/)), see how we ourselves [stress test Temporal](https://temporal.io/blog/temporal-deep-dive-stress-testing/), or write your own.
+**Load testing.** You can use [the Omes benchmarking tool](https://github.com/temporalio/omes/), see how we ourselves [stress test Temporal](https://temporal.io/blog/temporal-deep-dive-stress-testing/), or write your own.
 
 All metrics emitted by the server are [listed in Temporal's source](https://github.com/temporalio/temporal/blob/main/common/metrics/defs.go).
 There are also equivalent metrics that you can configure from the client side.
