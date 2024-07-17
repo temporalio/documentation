@@ -11,6 +11,19 @@ tags:
 description: Learn to Schedule, Backfill, Delete, Describe, List, Pause, Trigger, Update, and set Cron and Start Delays for Workflow Executions in Java using Temporal's ScheduleClient.
 ---
 
+This page shows how to do the following:
+
+- [How to Schedule a Workflow](#schedule-a-workflow)
+  - [How to create a Schedule in Java](#create-schedule)
+  - [How to backfill a Schedule in Java](#backfill-schedule)
+  - [How to delete a Schedule in Java](#delete-schedule)
+  - [How to describe a Schedule in Java](#describe-schedule)
+  - [How to pause a Schedule in Java](#pause-schedule)
+  - [How to trigger a Schedule in Java](#trigger-schedule)
+  - [How to update a Schedule in Java](#update-schedule)
+- [How to set a Cron Schedule in Java (legacy)](#cron-schedule)
+- [Start Delay](#start-delay)
+
 ## How to Schedule a Workflow {#schedule-a-workflow}
 
 Scheduling Workflows is a crucial aspect of any automation process, especially when dealing with time-sensitive tasks. By scheduling a Workflow, you can automate repetitive tasks, reduce the need for manual intervention, and ensure timely execution of your business processes
@@ -82,7 +95,7 @@ ScheduleHandle handle = client.getHandle("schedule-id")
 ScheduleDescription description = handle.describe();
 ```
 
-### How to describe a Schedule in Java {#describe-schedule}
+### How to list a Schedule in Java {#list-schedule}
 
 The list action lists all the available Schedules. This command is useful when you want to view a list of all the Schedules and their respective Schedule IDs.
 
@@ -139,7 +152,7 @@ handle.update(
     });
 ```
 
-## How to set a Cron Schedule in Java {#cron-schedule}
+## How to set a Cron Schedule in Java (legacy) {#cron-schedule}
 
 :::caution Cron support is not recommended
 

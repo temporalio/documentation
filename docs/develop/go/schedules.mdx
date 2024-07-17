@@ -12,9 +12,16 @@ description: Learn how to schedule Workflows, start them with delays or as Tempo
 
 This page shows how to do the following:
 
-- [Schedule a Workflow](#schedule-a-workflow)
-- [Start a Workflow with a delay](#start-delay)
-- [Start a Workflow as a Temporal Cron Job (legacy)](#temporal-cron-jobs)
+- [Scheduled Workflows](#schedule-a-workflow)
+  - [Create a Schedule](#create-schedule)
+  - [Backfill a Schedule](#backfill-schedule)
+  - [Delete a Schedule](#delete-schedule)
+  - [Describe a Schedule](#describe-schedule)
+  - [List Schedules](#list-schedules)
+  - [Pause a Schedule](#pause-schedule)
+  - [Trigger a Schedule](#trigger-schedule)
+  - [Update a Schedule](#update-schedule)
+- [Temporal Cron Jobs (legacy)](#temporal-cron-jobs)
 
 ## Scheduled Workflows {#schedule-a-workflow}
 
@@ -153,7 +160,7 @@ func main() {
 // ...
 ```
 
-### List a Schedules {#list-schedules}
+### List Schedules {#list-schedules}
 
 **How to list all Schedules for Workflows using the Go SDK.**
 
@@ -181,7 +188,7 @@ func main() {
 // ...
 ```
 
-### Pause a Schedule {#pause-schedule}\
+### Pause a Schedule {#pause-schedule}
 
 **How to pause and unpause a Schedule for a Workflow using the Go SDK.**
 
@@ -293,7 +300,7 @@ if err != nil {
 }
 ```
 
-## Temporal Cron Jobs {#temporal-cron-jobs}
+## Temporal Cron Jobs (legacy) {#temporal-cron-jobs}
 
 **How to start a Workflow Execution as a Temporal Cron Job using the Go SDK.**
 
