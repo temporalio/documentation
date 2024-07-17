@@ -14,20 +14,12 @@ tags:
   - troubleshooting
 ---
 
+Even the most reliable systems can encounter issues.
+Our troubleshooting guides are designed to help you quickly identify and resolve potential errors, ensuring your Temporal applications run smoothly and efficiently.
 
-Even the most reliable systems can encounter issues. 
-Address these challenges directly with our troubleshooting guides, designed to help you quickly identify and resolve potential errors. 
-Ensure your Temporal applications continue to run smoothly and efficiently.
-
-- [Troubleshoot the BlobSizeLimitError](/troubleshooting/blob-size-limit-error)
-- [Troubleshoot the Deadline-Exceeded Error](/troubleshooting/deadline-exceeded-error) 
-- [Troubleshoot the Failed Reaching Server Error](/troubleshooting/last-connection-error)
-
-### The BlobSizeLimitError (#troubleshooting/blob-size-limit-error)
-The BlobSizeLimitError happens when the size of a blob (payloads including Workflow context and each Workflow and Activity argument and return value) is too large. The maximum payload for a single request is 2 MB, and the maximum size for any Event History transaction is 4 MB.
-
-### Troubleshoot Deadline-Exceeded Error
-The "Context: deadline exceeded" error occurs when requests to the Temporal Service by the Client or Worker cannot be completed. This can be due to network issues, timeouts, server overload, or Query errors.
-
-### Troubleshoot the Failed Reaching Server Error
-The message "Failed reaching server: last connection error" often happens due to an expired TLS certificate or during the Server startup process when Client requests reach the Server before roles are fully initialized.
+- [Troubleshoot the BlobSizeLimitError](/troubleshooting/blob-size-limit-error): The `BlobSizeLimitError` happens when the size of a blob (payloads including Workflow context and each Workflow and Activity argument and return value) is too large.
+  The maximum payload for a single request is 2 MB, and the maximum size for any Event History transaction is 4 MB.
+- [Troubleshoot the Deadline-Exceeded Error](/troubleshooting/deadline-exceeded-error):
+  The "Context: deadline exceeded" error occurs when requests to the Temporal Service by the Client or Worker cannot be completed.
+  This can be due to network issues, timeouts, server overload, or Query errors.
+- [Troubleshoot the Failed Reaching Server Error](/troubleshooting/last-connection-error): The message "Failed reaching server: last connection error" often happens due to an expired TLS certificate or during the Server startup process when Client requests reach the Server before roles are fully initialized.
