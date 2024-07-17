@@ -50,7 +50,7 @@ Without demonstrated architectural durability, the value of Temporal's [Durable 
 ## Scalability with Variable or Growing Workloads {#scaling-and-metrics}
 
 Workloads can be highly variable, and you may experience sustained workload spikes. 
-We recommend scaling your clusters to well above the average throughput.
+Temporal recommends scaling your clusters to well above the average throughput.
 See [Scaling Temporal: The Basics](https://temporal.io/blog/scaling-temporal-the-basics) for an introduction to the topic.
 
 Temporal server throughput is often limited by the number of [Shards](/clusters#history-shard) configured for the Temporal Service.
@@ -80,7 +80,7 @@ At a high level, you will want to track these 3 categories of metrics:
 ## Availability
 
 A high level of availability and reliability (99.99%) is a requirement for mission critical deployments.
-We recommend testing for this availability level while load testing.
+Temporal recommends testing for this availability level while load testing.
 We also recommend validating this level of reliability while doing server upgrades, to ensure no loss of service availability.  
 
 Temporal Clusters can be deployed in as many regions as needed to meet various requirements:
@@ -97,31 +97,32 @@ Temporal success leads to larger Temporal deployments.
 Needs can increase, and can go from having one or two production use cases in a single region to many use cases in many regions.
 Running multiple Temporal Services is complex work, as each needs its own setup, tuning, and configuration. 
 
-This operational management pain leads to a need to monitor and manage all of your Temporal Services in a unified way.
-To do this, you need a layer on top of Temporal to manage multiple clusters: a control plane.
-Temporal does not ship an open source control plane. This can be complex to do and take significant effort.
+Needing to monitor and manage all your Temporal Services in a unified way leads to operational management pain.
+Consider adding a layer on top of Temporal to manage multiple Temporal Services: a control plane.
+A control plane manages and directs data flow, deciding where data packets should be sent.
+A Temporal Service data plan can streamline operations and improve efficiency.
+Since Temporal does not ship its own open source data plane, rolling your own can be complex and take effort to add.
 
-With Temporal Cloud, all namespaces in all regions can be managed from a single view.
-The Temporal Cloud control plane allows operators to observe, manage, and control.
-Responsibilities for individual namespaces can be delegated using RBAC built into [Temporal Cloud](https://temporal.io/cloud).
+Temporal Cloud provides exactly that support.
+With Temporal Cloud, all Namespaces in all regions can be managed from a single view.
+[Temporal Cloud](https://temporal.io/cloud) also has RBAC functionality that can delegate responsibilities for individual Namespaces.
 
 Self-hosted Temporal does not support RBAC or audit logging out of the box.
 Temporal Cloud provides RBAC and SSO support, audit logging, data encryption, third party penetration test validation, and SOC 2-Type II and HIPAA compliance.
 
 ## Maintenance and Upgrades 
 
-Temporal Server releases as often as every two weeks.
-Temporal recommends [upgrading sequentially](/self-hosted-guide/upgrade-server), not skipping any minor versions.
-It is acceptable to skip patch versions.
 Temporal recommends keeping up-to-date and not falling behind on your server versions.
+
+Temporal Server is proactively updated, and releases as often as every two weeks.
+Temporal recommends [upgrading sequentially](/self-hosted-guide/upgrade-server), not skipping any minor versions, although you can skip patch versions.
 No support is guaranteed for Temporal Server, but very old servers will be hard for even the community to support, so we encourage you to keep up to date. 
-In addition to the core service, infrastructure to run Temporal, such as Kubernetes to host the service and data stores for persistence, has to be implemented and maintained.
+You must create and maintain the infrastructure to host and run your self-hosted Temporal installation, such as Kubernetes, as well as data stores for persistence.
 
-Temporal service availability can be affected by server upgrades.
-We recommend load and availability testing during the upgrade process to understand the performance envelope.
+Server upgrades can negatively affect self-hosted Temporal Service availability.
+Temporal recommends load and availability testing during the upgrade process to understand the performance implications.
 
-Temporal Cloud updates are managed by the Temporal Cloud team.
-Cloud upgrades are seamless.
+Temporal Cloud updates are managed by the Temporal Cloud team; Cloud upgrades are seamless.
 
 ## Expert Support
 
@@ -138,20 +139,19 @@ Specific activities include:
 - [Metrics](/references/sdk-metrics) and monitoring
 - Technical onboarding
 
-Temporal support provides guidance on all of the above.
-Temporal support will work with your teams to make this easier and support teams that support Temporal.
+[Temporal support](/cloud/support) provides guidance on all of the above.
 
 
 ## Cost Management
 
 Running a mission critical, global Temporal Service can be expensive.
 Temporal Server is a complex system to run and scale.
-We recommend performance testing as outlined above, and planning scaling around your performance requirements.
-This implies that Temporal Servers will often be over-sized, but this is necessary to handle unpredictable spiky workloads.
+Temporal recommends performance testing and planning scaling as your performance requirements evolve.
+Following our guidance can oversize your self-hosted Temporal Server installs, but this is necessary to handle unpredictable spiky workloads.
 Performance testing can help you right-size your environments.
 Running mission critical Temporal as a Service requires multiple Temporal Clusters for high availability and global coverage. 
 
-It is a good practice to have trained, experienced administrators familiar with Temporal server architecture to maintain Temporal servers, with global coverage to maintain a global, mission critical service.
+It is a good practice to have trained, experienced administrators familiar with Temporal Service architecture to maintain your Temporal servers and provide a mission critical service.
 Staffing, training and skill development can be significant costs to maintaining a Temporal Service.
 
 [Temporal Cloud](https://temporal.io/cloud) can be significantly less expensive to set up and scale. 
