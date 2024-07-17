@@ -1,7 +1,7 @@
 ---
 id: high-availability
-title: High availability - Temporal Cloud production feature
-description: Temporal Cloud's Multi-region Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+title: High availability - Temporal Cloud and Self Hosted production feature
+description: Temporal Cloud's Multi-region Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime. Use Global Namespace for self-hosted. 
 sidebar_label: High availability
 tags:
   - production-deployment
@@ -118,3 +118,12 @@ Some downsides of single-region Namespaces compared to multi-region Namespaces:
 **Read more about Namespaces**
 
 - [Temporal Cloud Namespaces](/cloud/namespaces) offer outstanding reliable service for Temporal Cloud customers.
+
+## Self Hosted - Global Namespace
+
+Explore Temporal's self-hosted high-availability features.
+
+- [Global Namespace](/namespaces#global-namespace):
+  A Namespace that exists across Temporal Services to enhance your Namespace availability to higher levels.
+  A global Namespace automatically replicates metadata and Workflow Execution state from an active Temporal Service to a standby Temporal Service.
+  In the case of operational issues, a [failover](/glossary#failover) allows responsibility to pass from the active to the standby Temporal Service.

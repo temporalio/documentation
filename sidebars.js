@@ -18,45 +18,14 @@ module.exports = {
           collapsed: true,
           link: {
             type: "doc",
-            id: "evaluate/development-features/index",
+            id: "evaluate/development-production-features/index",
           },
           items: [
-            "evaluate/development-features/core-application",
-            "evaluate/development-features/temporal-client",
-            "evaluate/development-features/failure-detection",
-            "evaluate/development-features/throughput-composability",
-            "evaluate/development-features/workflow-message-passing",
-          ],
-        },
-        {
-          type: "category",
-          label: "Production features",
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "evaluate/production-features/index",
-          },
-          items: [
-            {
-              type: "category",
-              label: "Temporal Cloud",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "evaluate/production-features/temporal-cloud/index",
-              },
-              items: ["evaluate/production-features/temporal-cloud/high-availability"],
-            },
-            {
-              type: "category",
-              label: "Self-hosted",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "evaluate/production-features/self-hosted/index",
-              },
-              items: ["evaluate/production-features/self-hosted/high-availability"],
-            },
+            "evaluate/development-production-features/core-application",
+            "evaluate/development-production-features/temporal-client",
+            "evaluate/development-production-features/failure-detection",
+            "evaluate/development-production-features/throughput-composability",
+            "evaluate/development-production-features/workflow-message-passing",
           ],
         },
         "security",
