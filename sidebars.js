@@ -25,7 +25,7 @@ module.exports = {
             "evaluate/development-features/temporal-client",
             "evaluate/development-features/failure-detection",
             "evaluate/development-features/throughput-composability",
-            "evaluate/development-features/application-message-passing",
+            "evaluate/development-features/workflow-message-passing",
           ],
         },
         {
@@ -469,7 +469,7 @@ module.exports = {
           ],
         },
         "encyclopedia/workers",
-        "encyclopedia/application-message-passing",
+        "encyclopedia/workflow-message-passing",
         "encyclopedia/child-workflows",
         "encyclopedia/visibility",
         "encyclopedia/clusters",
