@@ -14,7 +14,7 @@ module.exports = {
         "evaluate/major-components",
         {
           type: "category",
-          label: "Development features",
+          label: "Features",
           collapsed: true,
           link: {
             type: "doc",
@@ -26,6 +26,7 @@ module.exports = {
             "evaluate/development-production-features/failure-detection",
             "evaluate/development-production-features/throughput-composability",
             "evaluate/development-production-features/workflow-message-passing",
+            "evaluate/development-production-features/high-availability",
           ],
         },
         "security",
