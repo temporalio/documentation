@@ -27,10 +27,10 @@ module.exports = {
             "evaluate/development-production-features/throughput-composability",
             "evaluate/development-production-features/workflow-message-passing",
             "evaluate/development-production-features/high-availability",
+            "evaluate/development-production-features/release-stages",
           ],
         },
         "security",
-        "evaluate/release-stages",
         {
           type: "link",
           label: "Change-log",
