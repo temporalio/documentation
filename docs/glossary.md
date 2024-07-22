@@ -214,7 +214,7 @@ The Frontend Service is a stateless gateway service that exposes a strongly type
 
 _Tags: [term](/tags/term)_
 
-#### [General Availability](/evaluate/release-stages#general-availability)
+#### [General Availability](/evaluate/development-production-features/release-stages#general-availability)
 
 Learn more about the General Availability release stage
 
@@ -316,13 +316,13 @@ A Payload Converter serializes data, converting objects or values to bytes and b
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Pre-release](/evaluate/release-stages#pre-release)
+#### [Pre-release](/evaluate/development-production-features/release-stages#pre-release)
 
 Learn more about the Pre-release stage
 
 _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_
 
-#### [Public Preview](/evaluate/release-stages#public-preview)
+#### [Public Preview](/evaluate/development-production-features/release-stages#public-preview)
 
 Learn more about the Public Preview release stage
 
