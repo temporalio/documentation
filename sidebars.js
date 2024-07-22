@@ -25,7 +25,7 @@ module.exports = {
             "evaluate/development-features/temporal-client",
             "evaluate/development-features/failure-detection",
             "evaluate/development-features/throughput-composability",
-            "evaluate/development-features/application-message-passing",
+            "evaluate/development-features/workflow-message-passing",
           ],
         },
         {
@@ -358,8 +358,8 @@ module.exports = {
           },
           items: [
             "production-deployment/self-hosted-guide/setup",
-            "production-deployment/self-hosted-guide/defaults",
             "production-deployment/self-hosted-guide/checklist",
+            "production-deployment/self-hosted-guide/defaults",
             "production-deployment/self-hosted-guide/security",
             "production-deployment/self-hosted-guide/monitoring",
             "production-deployment/self-hosted-guide/visibility",
@@ -469,7 +469,7 @@ module.exports = {
           ],
         },
         "encyclopedia/workers",
-        "encyclopedia/application-message-passing",
+        "encyclopedia/workflow-message-passing",
         "encyclopedia/child-workflows",
         "encyclopedia/visibility",
         "encyclopedia/clusters",
