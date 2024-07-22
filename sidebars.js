@@ -27,15 +27,25 @@ module.exports = {
             "evaluate/development-production-features/throughput-composability",
             "evaluate/development-production-features/workflow-message-passing",
             "evaluate/development-production-features/high-availability",
-            "evaluate/development-production-features/release-stages",
+            {
+              type: "category",
+              label: "Product release stages",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "evaluate/development-production-features/release-stages",
+              },
+              items: [
+                {
+                  type: "link",
+                  label: "Change-log",
+                  href: "https://temporal.io/change-log",
+                },
+              ],
+            },
           ],
         },
         "security",
-        {
-          type: "link",
-          label: "Change-log",
-          href: "https://temporal.io/change-log",
-        },
       ],
     },
     {
