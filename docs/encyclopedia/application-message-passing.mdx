@@ -74,6 +74,10 @@ When your goal is to do a read once the Workflow achieves a certain desired stat
 - You could poll periodically with Queries until the Workflow is ready.
 - You could write your read operation as an Update, which will give you better efficiency and latency, though it will write an entry to the [Workflow Event History](/workflows#event-history).
 
+### For read/write requests
+
+Use an Update for synchronous read/write requests. If your request must be asynchronous, consider sending a Signal followed by polling with a Query.
+
 ## Sending Messages {#sending-messages}
 
 This section will help you write clients that send messages to Workflows.
@@ -81,7 +85,8 @@ This section will help you write clients that send messages to Workflows.
 ### Sending Signals
 
 You can send Signals from any Temporal Client, the Temporal CLI, or you can Signal one Workflow to another.
-You can also Signal-With-Start or send a Signal from one Workflow to another.
+
+You can also Signal-With-Start to lazily initialize a Workflow while sending a Signal.
 
 #### Send a Signal from a Temporal Client or the CLI
 
@@ -138,7 +143,7 @@ Signal-With-Start is a great tool for lazily initializing Workflows. When you se
 
 Workflow Updates are currently disabled by default on Temporal Server.
 
-To enable sending Updates, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) and [frontend.enableUpdateWorkflowExecutionAsyncExcepted](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config values to `true`.
+To enable sending Updates, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) and [frontend.enableUpdateWorkflowExecutionAsyncAccepted](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config values to `true`.
 
 For example, with the Temporal CLI, run these commands:
 
@@ -155,7 +160,7 @@ In most languages (except Go), you may call `executeUpdate` to complete an Updat
 
 Alternatively, to start an Update, you may call `startUpdate` and pass in the Workflow Update Stage as an argument. You have two choices on what to await:
 
-- Accepted - wait til the Worker is contacted, which ensures that the Update is persisted. See [Update Validators]([link]) for more information.
+- Accepted - wait til the Worker is contacted, which ensures that the Update is persisted. See [Update Validators](#update-validators) for more information.
 - Completed - wait til the handler finishes and returns a result. (This is equivalent to `executeUpdate`.)
 
 The start call will give you a handle you can use to track the Update, determine whether it was Accepted, and ultimately get its result or an error.
@@ -248,25 +253,23 @@ This option is considered advanced but offers powerful flexibility. And if you s
 
 You should generally finish running all handlers before the Workflow run completes or continues as new. For some Workflows, this means you should explicitly check to make sure that all the handlers have completed before finishing. You can await a condition called All Handlers Finished at the end of your Workflow.
 
-If you don’t need to ensure that your handlers complete, you may specify your handler’s Handler Unfinished Policy as Abandon to avoid needing to do this. However, note that clients waiting for Updates will get Not Found errors if they are waiting for Updates that never complete before the Workflow run completes.
+If you don’t need to ensure that your handlers complete, you may specify your handler’s Handler Unfinished Policy as Abandon to turn off the warnings. However, note that clients waiting for Updates will get Not Found errors if they're waiting for Updates that never complete before the Workflow run completes.
 
 See the links below for how to ensure handlers are finished in your SDK.
 
 #### Ensuring your messages are processed exactly once
 
-Many developers want their message handlers to run exactly once--to be idempotent--in cases where the same Signal or Update is delivered twice or sent by two different call sites. To do this, you can use an idempotency key.
+Many developers want their message handlers to run exactly once--to be idempotent--in cases where the same Signal or Update is delivered twice or sent by two different call sites. Temporal deduplicates messages for you on the server, but there is one important case when you need to think about this yourself when authoring a Workflow, and one when sending Signals and Updates.
 
-For Signals, you can pass a unique key among your message arguments and use that to check for duplicate messages in your handler.
+When your workflow Continues-As-New, you should handle deduplication yourself in your message handler. This is because Temporal's built-in deduplication doesn't work across [Continue-As-New](/workflows#continue-as-new) boundaries, meaning you would risk processing messages twice for such Workflows if you don't check for duplicate messages yourself.
 
-For Updates, you can additionally retrieve the Update ID within your handler and use it to check whether the Workflow has already handled the Update. Clients randomize this Update ID by default, which means you'll be deduplicating retries from the same call. If you'd like multiple calls to share an idempotency key, such as when your client itself retries, pass in an Update ID of your own choosing.
+To deduplicate in your message handler, you can use an idempotency key.
 
-:::note
+Clients can provide an idempotency key. This can be important because Temporal's SDKs provide a randomized key by default, which means Temporal only deduplicates retries from the same call. For Updates, if you craft an Update ID, temporal will deduplicate any calls that use that key. This is useful when you have two different callsites that may send the same Update, or when your client itself may get retried. For Signals, you can provide a key as part of your Signal arguments.
 
-Temporal deduplicates messages for you on the server. However, this doesn't work across [Continue-As-New](/workflows#continue-as-new) boundaries, meaning you would risk processing messages twice for such Workflows if you don't do this yourself.
+Inside your message handler, you can check your idempotency key--the Update ID or the one you provided to the Signal--to check whether the Workflow has already handled the update.
 
-:::
-
-See the links below for examples in your SDK.
+See the links below for examples of solving this in your SDK.
 
 #### Authoring message handler patterns
 
