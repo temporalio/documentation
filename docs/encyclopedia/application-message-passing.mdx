@@ -39,7 +39,9 @@ To define these, consider these messages from the perspective of the client maki
 - Signals are write requests. They cause changes in the running Workflow, but you cannot await any response or error.
 - Updates are interactive write requests, wherein the sender of the Update tracks completion and waits for a response or an error.
 
-## How to choose between Signals, Updates, and Queries? {#choosing-messages}
+## How to choose between Signals, Updates, and Queries as a Workflow author? {#choosing-messages}
+
+This section will help you write Workflows that receive messages.
 
 ### For write requests
 
@@ -66,7 +68,7 @@ You normally want to do a Query:
 - Queries are efficient–they never add entries to the [Workflow Event History](/workflows#event-history).
 - Queries can operate on completed Workflows.
 
-However, because Queries cannot block, sometimes Updates are best.\
+However, because Queries cannot block, sometimes Updates are best.
 When your goal is to do a read once the Workflow achieves a certain desired state, you have two options.
 
 - You could poll periodically with Queries until the workflow is ready.
@@ -74,7 +76,7 @@ When your goal is to do a read once the Workflow achieves a certain desired stat
 
 ## Sending Messages {#sending-messages}
 
-This content will help you write clients that send messages to Workflows.
+This section will help you write clients that send messages to Workflows.
 
 ### Sending Signals
 
@@ -215,7 +217,7 @@ This execution is on a single thread–while this means you don’t have to worr
 
 ### Message handler patterns {#message-handler-patterns}
 
-Here are several common patterns for write operations, Signal and Update handlers. They don't apply to read operations, i.e. Queries or [Update Validators](#update-validators)):
+Here are several common patterns for write operations, Signal and Update handlers. They don't apply to pure read operations, i.e. Queries or [Update Validators](#update-validators)):
 
 - Synchronous, returning immediately.
 - Waiting for the Workflow to be ready to process them.
@@ -297,7 +299,7 @@ The following content applies in every SDK except the Go SDK. See below.
 #### Exceptions in Signals
 
 In Signal handlers, throw [Application Failures](/references/failures#application-failure) only for unrecoverable errors, because the entire Workflow will fail.
-If you throw any other exception, by default, it will cause a [Workflow Task Failure](references/failures#workflow-task-failures). This means the Workflow will get stuck and will retry the handler periodically until the exception is fixed, for example by a code change or infrastructure coming back online.
+If you throw any other exception, by default, it will cause a [Workflow Task Failure](references/failures#workflow-task-failures). This means the Workflow will get stuck and will retry the handler periodically until the exception is fixed, for example by a code change.
 
 #### Exceptions in Updates
 
