@@ -122,7 +122,7 @@ The wait time before a retry is the _retry interval_. A retry interval is the sm
 ### Per-error next retry delay
 
 Sometimes, your Activity or Workflow raises a special exception that needs a different retry interval from the Retry Policy.
-To accomplish this, you may throw an [Application Failure](/references/failures#application-failure) with the next retry delay field set. This value will replace and override whatever the retry interval would be on the retry policy.
+To accomplish this, you may throw an [Application Failure](/references/failures#application-failure) with the Next Retry Delay field set. This value will replace and override whatever the retry interval would be on the Retry Policy.
 Note that your retries will still cap out under the retry policy's Maximum Attempts, as well as overall timeouts--i.e. if it's an activity, its Schedule-to-Close Timeout or, if it's a workflow, the Execution Timeout.
 
 ## Event History
