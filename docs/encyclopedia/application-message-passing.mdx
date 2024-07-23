@@ -224,6 +224,7 @@ Here are several common patterns for write operations, Signal and Update handler
 - Kicking off activities and other asynchronous tasks
 - Injecting work into the main Workflow.
 - Finishing handlers before the Workflow completes.
+- Ensuring your messages are processed exactly once.
 
 #### Synchronous handlers
 
@@ -250,6 +251,13 @@ You should generally finish running all handlers before the Workflow run complet
 If you don’t need to ensure that your handlers complete, you may specify your handler’s Handler Unfinished Policy as Abandon to avoid needing to do this. However, note that clients waiting for Updates will get Not Found errors if they are waiting for Updates that never complete before the Workflow run completes.
 
 See the links below for how to ensure handlers are finished in your SDK.
+
+#### Ensuring your messages are processed exactly once
+
+Most developers want their message handlers to run exactly once in cases where a Signal is delivered twice or sent by two different call sites. You can pass a unique key among your message arguments and use that to check for duplicate messages in your handler.
+For Updates, clients can instead pass the ID argument into the Update to serve as an idempotency key and as logging context. This can be retrieved within your handler and used to check whether the Update has already been handled.
+
+See the links below for examples in your SDK.
 
 #### Authoring message handler patterns
 
@@ -313,11 +321,6 @@ If you throw any other exception, by default, it will cause a [Workflow Task Fai
 #### Exceptions in message handlers in the Go SDK
 
 In Go, most exceptions behave like [Application Failures](/references/failures#application-failure) in the other SDKs. Panics behave like other exceptions and fail the Signal or Update handler tasks.
-
-#### Idempotency
-
-Most developers want their message handlers to run exactly once in cases where a Signal is delivered twice or sent by two different call sites. You can pass a unique key among your message arguments and use that to check for duplicate messages in your handler.
-For Updates, clients can instead pass the ID argument into the Update to serve as an idempotency key and as logging context. This can be retrieved within your handler and used to check whether the Update has already been handled.
 
 ### Writing Signal Handlers {#writing-signal-handlers}
 
