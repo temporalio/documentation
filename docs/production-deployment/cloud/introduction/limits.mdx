@@ -20,7 +20,7 @@ tags:
 ---
 
 This page addresses the limits of the Temporal Cloud system.
-Reach out to your account team should you have any quesitons about these limits.
+Reach out to your account team should you have any questions about these limits.
 
 These limits fall into the following three main categories:
 
@@ -43,9 +43,8 @@ By default, 300 users across all Namespaces.
 **How many namespaces can I create?​**
 
 By default, each account is provisioned with ten Namespaces.
-As you create and use your Namespaces, for example by scheduling Workflows, Temporal Cloud automatically raises your limit.
-Our service identifies your usage patterns.
-It responds by slowly increasing your allowance, up to 100 Namespaces.
+As you start using Namespaces by scheduling Workflows, Temporal Cloud automatically raises your allowance.
+This automatic adjustment happens whenever all your Namespaces are in use, up to a maximum of 100 Namespaces.
 You can request further increases beyond the 100 Namespace limit by opening a [support ticket](/cloud/support#support-ticket).
 
 ### Retained Prometheus endpoint data
@@ -77,7 +76,20 @@ Throttling means limiting the rate at which Actions are performed to prevent the
 
 A Namespace's default limit is set at 400 APS and automatically adjusts based on recent usage (over the prior 7 days).
 Your throughput limit will never fall below this default value.
-You can request this limit be manually rasied by opening a [support ticket](/cloud/support#support-ticket).
+You can request this limit be manually raised by opening a [support ticket](/cloud/support#support-ticket).
+
+### Schedules rate limit
+
+Each Namespace has a default [Schedule](/glossary#schedule) rate limit of 10 requests per second (RPS).
+If too many Schedules trigger at once, they may be throttled.
+Throttling limits the rate at which Schedules create new Workflow Executions, ensuring the Namespace does not exceed its RPS limit.
+
+To avoid throttling, don't schedule all your Workflow Executions to start at the same time (daily, weekly, monthly, etc.).
+Every Temporal SDK supports jittering, which adds small random delays to Schedule specifications, helping to reduce load at any specific moment.
+Set the `jitter` value to the largest delay you will permit before your Workflow Execution must begin.
+This approach uniformly distributes the scheduled Workflow Execution launches through that period and reduces your Schedule Workflow Execution RPS load.
+
+If you need a higher Schedule RPS limit, open a [support ticket](/cloud/support#support-ticket).
 
 ### Certificates
 
@@ -240,3 +252,12 @@ After that limit is reached, no more Signals will be processed for that Workflow
 **What is the maximum number of Updates for a single Workflow Execution?**
 
 A single Workflow Execution can have a maximum of 10 in-flight Updates and 2000 total Updates in History.
+
+### Workflow Execution Event History limits
+
+**What are the limits that apply to the Workflow Execution's Event History?**
+
+As a precautionary measure, a Workflow Execution's Event History is limited to 51,200 Events or 50 MB.
+It warns you after 10,240 Events or 10 MB.
+This limit applies to all Temporal Workflow Executions, whether on Temporal Cloud or other deployments.
+Read more about [Temporal Workflow Execution limits](/workflows#limits) on the [Temporal Workflow](/workflows) documentation page.
