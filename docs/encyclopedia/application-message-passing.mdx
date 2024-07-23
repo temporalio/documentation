@@ -254,8 +254,17 @@ See the links below for how to ensure handlers are finished in your SDK.
 
 #### Ensuring your messages are processed exactly once
 
-Most developers want their message handlers to run exactly once in cases where a Signal is delivered twice or sent by two different call sites. You can pass a unique key among your message arguments and use that to check for duplicate messages in your handler.
-For Updates, clients can instead pass the ID argument into the Update to serve as an idempotency key and as logging context. This can be retrieved within your handler and used to check whether the Update has already been handled.
+Many developers want their message handlers to run exactly once--to be idempotent--in cases where the same Signal or Update is delivered twice or sent by two different call sites. To do this, you can use an idempotency key.
+
+For Signals, you can pass a unique key among your message arguments and use that to check for duplicate messages in your handler.
+
+For Updates, you can additionally retrieve the Update ID within your handler and use it to check whether the Workflow has already handled the Update. Clients randomize this Update ID by default, which means you'll be deduplicating retries from the same call. If you'd like multiple calls to share an idempotency key, such as when your client itself retries, pass in an Update ID of your own choosing.
+
+:::note
+
+Temporal deduplicates messages for you on the server. However, this doesn't work across [Continue-As-New](/workflows#continue-as-new) boundaries, meaning you would risk processing messages twice for such Workflows if you don't do this yourself.
+
+:::
 
 See the links below for examples in your SDK.
 
@@ -277,7 +286,7 @@ See examples of the above patterns.
 When you define an Update handler, you may optionally define an Update Validator: a read operation that's responsible for accepting or rejecting the Update. You can use Validators to verify arguments or make sure the Workflow is ready to accept your Updates.
 
 - If it accepts, the Update will become part of your Workflow’s history and the client will be notified that the operation has been Accepted. The Update handler will then run until it returns a value.
-- If it rejects or throws an exception, the client will be informed that it was Rejected, and the Workflow will have no indication that it was ever requested, similar to a Query handler.
+- If it rejects, the client will be informed that it was Rejected, and the Workflow will have no indication that it was ever requested, similar to a Query handler.
 
 :::note
 
