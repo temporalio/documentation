@@ -12,7 +12,7 @@ description: Learn how to develop with Signals, Queries, and Updates in Temporal
 
 ## How to develop with Signals {#signals}
 
-A [Signal](/encyclopedia/application-message-passing#signals) is a message sent to a running Workflow Execution.
+A [Signal](/encyclopedia/workflow-message-passing#signals) is a message sent to a running Workflow Execution.
 
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
@@ -24,7 +24,7 @@ A Signal has a name and can have arguments.
 - The name, also called a Signal type, is a string.
 - The arguments must be [serializable](/dataconversion).
 
-Workflows can answer synchronous [Queries](/encyclopedia/application-message-passing#queries) and receive [Signals](/encyclopedia/application-message-passing#signals).
+Workflows can answer synchronous [Queries](/encyclopedia/workflow-message-passing#queries) and receive [Signals](/encyclopedia/workflow-message-passing#signals).
 
 All interface methods must have one of the following annotations:
 
@@ -187,7 +187,7 @@ $run = $workflowClient->startWithSignal(
 
 ## How to develop with Queries {#queries}
 
-A [Query](/encyclopedia/application-message-passing#queries) is a synchronous operation that is used to get the state of a Workflow Execution.
+A [Query](/encyclopedia/workflow-message-passing#queries) is a synchronous operation that is used to get the state of a Workflow Execution.
 
 ### How to define a Query {#define-query}
 
@@ -196,7 +196,7 @@ A Query has a name and can have arguments.
 - The name, also called a Query type, is a string.
 - The arguments must be [serializable](/dataconversion).
 
-Workflows can answer synchronous [Queries](/encyclopedia/application-message-passing#queries) and receive [Signals](/encyclopedia/application-message-passing#signals).
+Workflows can answer synchronous [Queries](/encyclopedia/workflow-message-passing#queries) and receive [Signals](/encyclopedia/workflow-message-passing#signals).
 
 All interface methods must have one of the following annotations:
 
@@ -345,7 +345,7 @@ Queries are sent from a Temporal Client.
 
 ## How to develop with Updates {#updates}
 
-An [Update](/encyclopedia/application-message-passing#updates) is an operation that can mutate the state of a Workflow Execution and return a response.
+An [Update](/encyclopedia/workflow-message-passing#updates) is an operation that can mutate the state of a Workflow Execution and return a response.
 
 ### How to define an Update {#define-update}
 

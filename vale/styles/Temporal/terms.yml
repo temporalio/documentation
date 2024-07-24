@@ -32,6 +32,7 @@ swap:
   durable exeuction: Durable Execution
   event history: Event History
   failure converter: Failure Converter
+  frontend service: Frontend Service
   grpc: gRPC
   '\bheartbeat\b': Heartbeat
   heartbeat timeout: Heartbeat Timeout
