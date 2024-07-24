@@ -110,7 +110,7 @@ Adjust the size of the Payload to fit within the system's size limits.
 
 ## Bad Signal Input Size {#bad-signal-input-size}
 
-This error indicates that the Payload has exceeded the [Signal's](/encyclopedia/application-message-passing#signals) available input size.
+This error indicates that the Payload has exceeded the [Signal's](/encyclopedia/workflow-message-passing#signals) available input size.
 
 Adjust the size of the Payload, and redeploy the [Workflow Task](/workers#workflow-task).
 
@@ -218,7 +218,7 @@ If you see this error, give the system time to process pending requests before r
 ## Pending Signals Limit Exceeded {#pending-signals-limit-exceeded}
 
 The Workflow has reached capacity for pending Signals.
-Therefore, the [Workflow Task](/workers#workflow-task) was failed after attempting to add more [Signals](/encyclopedia/application-message-passing#signals) to an external Workflow.
+Therefore, the [Workflow Task](/workers#workflow-task) was failed after attempting to add more [Signals](/encyclopedia/workflow-message-passing#signals) to an external Workflow.
 
 Wait for Signals to be processed by the Workflow before retrying the Task.
 
@@ -281,7 +281,7 @@ Try entering a different Timer Id, and retry the [Workflow Task](/workers#workfl
 This error indicates new available [Events](/references/events) since the last [Workflow Task](/workers#workflow-task) started.
 The Workflow Task was failed because the [Workflow](/workflows) attempted to close itself without handling the new Events.
 
-`UnhandledCommand` can happen when the Workflow is receiving a high number of [Signals](/encyclopedia/application-message-passing#signals).
+`UnhandledCommand` can happen when the Workflow is receiving a high number of [Signals](/encyclopedia/workflow-message-passing#signals).
 If the Workflow doesn't have enough time to handle these Signals, a RetryWorkflow Task is scheduled to handle these new Events.
 
 To prevent this error, drain the Signal Channel with the ReceiveAsync function.

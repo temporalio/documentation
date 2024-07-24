@@ -25,7 +25,7 @@ tags:
   - cron-jobs
 ---
 
-The pages shows how to do the following:
+This page shows how to do the following:
 
 - [Schedule a Workflow](#schedule-a-workflow)
   - [Create a Scheduled Workflow](#create)
@@ -291,6 +291,13 @@ The following example updates the Schedule to use a new argument.
 ## Temporal Cron Jobs {#temporal-cron-jobs}
 
 **How to use Temporal Cron Jobs**
+
+:::caution Cron support is not recommended
+
+We recommend using [Schedules](https://docs.temporal.io/workflows#schedule) instead of Cron Jobs.
+Schedules were built to provide a better developer experience, including more configuration options and the ability to update or pause running Schedules.
+
+:::
 
 A [Temporal Cron Job](/workflows#temporal-cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
