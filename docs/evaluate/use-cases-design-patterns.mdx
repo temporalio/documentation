@@ -85,9 +85,10 @@ An automated method for getting a repeatable, mundane task accomplished. For exa
 
 ### Saga Pattern
 
-- **Description**: Manages failures in complex Workflows by compensating transactions.
-- **Temporal Advantage**: Orchestrates and simplifies complex compensation logic.
-- **Example**: [Build a trip booking application in Python](https://learn.temporal.io/tutorials/php/booking_saga/&ved=2ahUKEwjl8JOL-MSHAxVyLUQIHT58L2cQFnoECBEQAQ&usg=AOvVaw3GQxYwjwGpQ3xPiMeJgtn9).
+- **Description**: The Saga Pattern is a design pattern used to manage and handle failures in complex Workflows by breaking down a transaction into a series of smaller, manageable sub-transactions. 
+If a step in the Workflow fails, the Saga Pattern compensates for this failure by executing specific actions to undo the previous steps. 
+This ensures that even in the event of a failure, the system can revert to a consistent state.
+- **Example**: [Build a trip booking application in Python](https://learn.temporal.io/tutorials/python/trip-booking-app/).
 
 ### Pub/Sub Messaging Patterns
 
