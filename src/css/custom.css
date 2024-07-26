@@ -1156,14 +1156,14 @@ code {
   color: #000000;
   margin-bottom: 3px;
   border-radius: 6px;
-  justify-content: left;
   padding: 7px;
-  vertical-align: center !important;
+  display: flex;
   align-items: center;
 }
 
 .copycode-notice-container a {
   color: #000000 !important;
+  margin-right: 5px; /* Add space between the link and the text */
 }
 
 @keyframes bounce {

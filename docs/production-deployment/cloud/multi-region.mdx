@@ -15,7 +15,7 @@ description: Experience disaster-tolerant deployment with Temporal Cloud's multi
 
 :::tip Support, stability, and dependency info
 
-Multi-region Namespaces are in [Public Preview](/evaluate/release-stages#public-preview) for Temporal Cloud.
+Multi-region Namespaces are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for Temporal Cloud.
 
 :::
 
@@ -90,10 +90,12 @@ Temporal Cloud notifies you by email once the replication has caught up and both
 
 **What happens during the failover process?**
 
-Consider an incident or outage that elevates error rates or latency in the active region of a multi-region Namespace.
-Under these circumstances, Temporal Cloud will initiate a Namespace failover.
-This operation shifts Workflow processing to a standby region, unaffected by the incident.
+Temporal Cloud will initiate a Namespace failover when it detects an incident or outage that elevates error rates or latency in the active region of a multi-region Namespace.
+A failover operation shifts Workflow processing to a standby region, unaffected by the incident.
 This ensures that existing Workflows can progress and new Workflows can be created as the incident is addressed.
+
+Temporal Cloud doesn't revert Namespaces back to the original active region after an incident is resolved.
+[File a Support ticket](https://temporalsupport.zendesk.com/) to request switching back to the original region.
 
 :::info
 
@@ -266,7 +268,7 @@ Protect your processes from accidental or repeated actions for more reliable exe
 
 **How does adding a multi-region Namespace affect my costs?**
 
-For pricing details, please visit Temporal Cloud's [Pricing page](/cloud/pricing).
+For pricing details, visit Temporal Cloud's [Pricing page](/cloud/pricing).
 
 ## Manage your multi-region Namespace {#management}
 
@@ -281,7 +283,7 @@ Use these tools to create, upgrade, and discontinue your multi-region Namespace.
 
 :::warning
 
-Only [Global Admins](https://docs.temporal.io/cloud/users#account-level-roles) and [Namespace Admins](https://docs.temporal.io/cloud/users#namespace-level-permissions) may create an multi-region Namespace (MRN), upgrade an existing namespace to MRN, or trigger an MRN failover.
+Only [Global Admins](https://docs.temporal.io/cloud/users#account-level-roles) and [Namespace Admins](https://docs.temporal.io/cloud/users#namespace-level-permissions) may create an multi-region Namespace (MRN), upgrade an existing Namespace to MRN, or trigger an MRN failover.
 
 :::
 
@@ -374,7 +376,7 @@ This section provides how-to instructions for the following operations tasks:
 
 Users also can trigger a failover during the outage of a non-Temporal controlled regional downstream dependency, or for testing purposes.
 
-Temporal is responsible for detecting and triggering a failover for a multi-region namespace in the event of a regional outage or a disaster.
+Temporal is responsible for detecting and triggering a failover for a multi-region Namespace in the event of a regional outage or a disaster.
 Users also can trigger a failover during the outage of a non-Temporal controlled regional downstream dependency, or for testing purposes.
 
 The following sections show you how to perform this action, moving your active Namespace to the standby region.
@@ -405,10 +407,13 @@ tcld namespace failover --namespace <namespace_id> --region <target_region>
 
 After any failover, whether triggered by you or by Temporal, event information appears in both the [Temporal Cloud Web UI](https://cloud.temporal.io/namespaces) (on the Namespace detail page) and in your audit logs.
 The audit log entry for Failover uses the `"operation": FailoverNamespace"` event.
-After failover, the namespace is active in the new region.
+After failover, the Namespace is active in the new region.
 
 You needn't monitor Temporal Cloud's failover response in real-time.
 Whenever there is a failover event, you'll receive an alert email.
+
+Temporal Cloud doesn't revert Namespaces back to the original active region after an incident is resolved.
+[File a Support ticket](https://temporalsupport.zendesk.com/) to request switching back to the original region.
 
 More information is available in [Monitoring and Observability](/cloud/multi-region#observability).
 
@@ -474,7 +479,7 @@ More details are available in the [Routing](/cloud/multi-region#routing) section
 ### Routing {#routing}
 
 When using multi-region for a Namespace, the Namespace's DNS record `<ns>.<acct>.<tmprl_domain>` targets a regional DNS record in the format `<region>.region.<tmprl_domain>`.
-In this format, `<region>` is the currently active region for your namespace.
+In this format, `<region>` is the currently active region for your Namespace.
 Clients resolving the Namespace’s DNS record are directed to connect to the active region for that Namespace, thanks to the regional DNS record.
 
 During failover, Temporal Cloud changes the target of the Namespace DNS record from one region to another.
@@ -539,6 +544,6 @@ The `sa-east-1` region listed here is not yet available for use with multi-regio
 
 :::tip Learn more about multi-region Namespaces
 
-If you have more questions or feedback about this feature, please reach out to <a href="mailto:product@temporal.io">the product team</a>.
+If you have more questions or feedback about this feature, reach out to <a href="mailto:product@temporal.io">the product team</a>.
 
 :::

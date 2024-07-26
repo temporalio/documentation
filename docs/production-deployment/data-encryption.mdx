@@ -25,10 +25,10 @@ Encrypting this data ensures that any sensitive application data is secure when 
 For example, if you have sensitive information passed in the following objects that are persisted in the Workflow Execution Event History, use encryption to secure it:
 
 - Inputs and outputs/results in your [Workflow](/workflows#workflow-execution), [Activity](/activities#activity-execution), and [Child Workflow](/encyclopedia/child-workflows)
-- [Signal](/encyclopedia/application-message-passing#signals) inputs
+- [Signal](/encyclopedia/workflow-message-passing#signals) inputs
 - [Memo](/workflows#memo)
 - Headers (verify if applicable to your SDK)
-- [Query](/encyclopedia/application-message-passing#queries) inputs and results
+- [Query](/encyclopedia/workflow-message-passing#queries) inputs and results
 - Results of [Local Activities](/activities#local-activity) and [Side Effects](/workflows#side-effect)
 - [Application errors and failures](/references/failures).
   Failure messages and call stacks are not encoded as codec-capable Payloads by default; you must explicitly enable encoding these common attributes on failures.
