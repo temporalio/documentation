@@ -1,0 +1,116 @@
+---
+id: use-cases-design-patterns
+title: Temporal Use Cases and Design Patterns 
+description: Discover various use cases and architectural design patterns for implementing Workflows with Temporal.
+sidebar_label: Use Cases
+tags:
+  - temporal-use-cases
+  - temporal-design-patterns
+keywords:
+  - temporal use cases
+  - temporal design patterns
+  - temporal workflows
+---
+
+Business processes often have multiple steps that need coordination.
+Implementing these with Temporal simplifies managing complexity.
+Without Temporal, you may face challenges such as handling failure, complex code, debugging, state management.
+Temporal allows for orchestration in imperative style, simplified debugging with centralized state, and no need for dedicated state databases.
+
+## Use Cases of Temporal in Production
+
+Here are some examples where Temporal is most impactful and running in production at large organizations today.
+
+### Transactions
+
+Actions or activities involving two or more parties or things that reciprocally affect or influence each other. For example:
+
+- Payment processing [Stripe](https://www.youtube.com/watch?v=Crkcr1S-NSc)
+- Money movement [Coinbase](https://temporal.io/in-use/coinbase)
+- Content management [Box](https://temporal.io/use-cases/temporal-a-central-brain-for-box)
+
+### Business processes
+
+A sequence of tasks that find their end in the delivery of a service or product to a client. For example:
+
+- Bookings [Turo](https://temporal.io/replay/videos/temporal-adoption-and-integration-at-turo)
+- Orders/logistics [Maersk](https://temporal.io/replay/videos/building-a-time-machine-for-the-logistics-industry)
+- Marketing Campaigns [AirBnb](https://medium.com/airbnb-engineering/journey-platform-a-low-code-tool-for-creating-interactive-user-workflows-9954f51fa3f8)
+- Human-in-the-loop [Checkr](https://temporal.io/in-use/checkr)
+
+### Entity lifecycle
+
+Complex long-running processes that accumulate state over time. For example:
+
+- Mortgage underwriting applications [ANZ](https://temporal.io/in-use/anz-story)
+- Menu/listing versioning [Yum! Brands](https://temporal.io/replay-2023/videos/synchronizing-concurrent-workflows)
+
+### Operations
+
+An automated method for getting a repeatable, mundane task accomplished. For example:
+
+- Infrastructure services [DataDog](https://www.youtube.com/watch?v=Hz7ZZzafBoE)
+- Custom CI/CD [Netflix](https://temporal.io/replay-2023/videos/actor-workflows-reliably-orchestrating-thousands-of-flink-clusters-at)
+- Data pipelines/ETL
+- Provisioning
+- Backups
+
+## General Use Cases
+
+### Human In The Loop
+
+- **Description**: Systems requiring human interaction for certain steps, such as customer onboarding, forms, or invoice approval.
+  This is just an event driven system with humans generating events, often in an unreliable way due to time, lack of interaction, or unreliable connections between the human to the rest of the system.
+  Can use schedules and timers to prompt for user input, further simplifying Human In The Loop systems.
+- **Example**: [Background checks example](https://github.com/temporalio/background-checks).
+- **Code Sample**: [Candidate acceptance example prompting for a response](https://learn.temporal.io/examples/go/background-checks/candidate-acceptance)
+
+### Polyglot Systems
+
+- **Description**: Temporal supports multiple languages, allowing different teams to work in their preferred languages. Systems are built by people and teams with different language skills.
+  An advantage of event-driven or internet-communicating (REST) systems is they can interact via a specific protocol without having to be written in the same language.
+- **Example**: [Polyglot example](https://github.com/temporalio/temporal-polyglot). An implementer can wrap existing code, a Typescript UI starting a Java Workflow which calls a Python Activity.
+
+### Long Running Tasks
+
+- **Description**:
+  This use case is particularly relevant for scenarios like shopping cart Workflows in an eCommerce app, where you can handling long-running tasks efficiently without managing state in a separate database.
+  It processes one message at a time, ensuring each message is processed only once.
+  This approach addresses issues that can arise with long message processing times, which in other systems might cause consumer failover (typically with a default 5-minute message poll timeout) and potentially result in duplicate message processing by multiple consumers.
+  Temporal's ability to handle extended task durations makes it well-suited for such scenarios. Designed for long tasks, supports heartbeats for Activity status.
+  The heartbeat feature allows you to know that an activity is still working, providing insight into the progress of long-running processes.
+- **Example**: [eCommerce example](https://docs.temporal.io/blog/build-an-ecommerce-app-with-temporal-part-1).
+- **Code Sample**: [Temporal eCommerce](https://github.com/temporalio/temporal-ecommerce)
+
+## Design Patterns
+
+### Saga Pattern
+
+- **Description**: Manages failures in complex Workflows by compensating transactions.
+- **Temporal Advantage**: Orchestrates and simplifies complex compensation logic.
+- **Example**: [Build a trip booking application in Python](https://learn.temporal.io/tutorials/php/booking_saga/&ved=2ahUKEwjl8JOL-MSHAxVyLUQIHT58L2cQFnoECBEQAQ&usg=AOvVaw3GQxYwjwGpQ3xPiMeJgtn9).
+
+### Pub/Sub Messaging Patterns
+
+- **Description**: Pub/Sub (Publish/Subscribe) messaging patterns involve broadcasting events to multiple receivers or subscribers.
+  This model is commonly used in event-driven architectures where events need to be disseminated to various components or services.
+  While Pub/Sub is effective for certain scenarios, it can lead to architectural challenges when misused for orchestration purposes.
+  Temporal provides clear orchestration over pub/sub for coordinated Workflows.
+
+### Iterator Workflow Pattern
+
+- **Description**: Efficiently processing large datasets by loading pages of data and using child Workflows.
+  Continue-As-New can be used to manage Event History size.
+- **Example**:
+  For example, a Workflow can load a page of account IDs through an Activity, execute child Workflows for all IDs in the page, and call Continue-As-New with the last page token.
+  The next run of the Workflow processes the subsequent page in the same manner, effectively managing parallelism.
+  This approach, using Continue-As-New, helps control the Event History size.
+  In many cases, starting all Workflows simultaneously is impractical due to their potentially long execution times.
+  Instead, using a hierarchical structure or tree of child Workflows is the preferred method.
+
+### Batch Signal Feature
+
+- **Description**: Notify multiple Workflows with a single command for efficiency.
+  This reduces the time and computational resources needed to signal a large number of Workflows individually.
+  This is beneficial for scalability, it enhances the system’s ability to scale by handling bulk operations more effectively.
+- **Example**: [Batch Signal feature documentation](https://docs.temporal.io/docs/system-tools/tctl#signal-cancel-terminate-workflows-as-a-batch-job)
