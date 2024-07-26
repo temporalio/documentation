@@ -80,8 +80,24 @@ If you are interested in leveraging AWS PrivateLink in your Namespaces, [create 
 
 To set up PrivateLink connectivity with Temporal Cloud, you'll need to perform the following high-level steps:
 
-1. Add a VPC Endpoint Interface in your AWS VPC.
+1. Add a VPC Endpoint Interface in your AWS VPC using the below table.
 1. Configure security groups to allow TCP ingress traffic to port `7233` (for gRPC communication).
+
+| Region           | PrivateLink Service Name                                       |
+| ---------------- | -------------------------------------------------------------- |
+| `ap-northeast-1` | `com.amazonaws.vpce.ap-northeast-1.vpce-svc-08f34c33f9fb8a48a` | 
+| `ap-northeast-2` | `com.amazonaws.vpce.ap-northeast-2.vpce-svc-08c4d5445a5aad308` | 
+| `ap-south-1`     | `com.amazonaws.vpce.ap-south-1.vpce-svc-0ad4f8ed56db15662`     | 
+| `ap-southeast-1` | `com.amazonaws.vpce.ap-southeast-1.vpce-svc-05c24096fa89b0ccd` | 
+| `ap-southeast-2` | `com.amazonaws.vpce.ap-southeast-2.vpce-svc-0634f9628e3c15b08` | 
+| `ca-central-1`   | `com.amazonaws.vpce.ca-central-1.vpce-svc-080a781925d0b1d9d`   | 
+| `eu-central-1`   | `com.amazonaws.vpce.eu-central-1.vpce-svc-073a419b36663a0f3`   | 
+| `eu-west-1`      | `com.amazonaws.vpce.eu-west-1.vpce-svc-04388e89f3479b739`      | 
+| `eu-west-2`      | `com.amazonaws.vpce.eu-west-2.vpce-svc-0ac7f9f07e7fb5695`      | 
+| `sa-east-1`      | `com.amazonaws.vpce.sa-east-1.vpce-svc-0ca67a102f3ce525a`      | 
+| `us-east-1`      | `com.amazonaws.vpce.us-east-1.vpce-svc-0822256b6575ea37f`      |
+| `us-east-2`      | `com.amazonaws.vpce.us-east-2.vpce-svc-01b8dccfc6660d9d4`      | 
+| `us-west-2`      | `com.amazonaws.vpce.us-west-2.vpce-svc-0f44b3d7302816b94`      | 
 
 :::tip
 
