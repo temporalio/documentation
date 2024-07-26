@@ -78,6 +78,7 @@ During conversion, the following Application Failure fields are set:
 - `non_retryable` is set to false.
 - `details` are left unset.
 - `cause` is a Failure converted from the error's `cause` property.
+- `next_retry_delay` is left unset.
 - call stack is copied.
 
 When an [Activity Execution](/activities#activity-execution) fails, the Application Failure from the last Activity Task is the `cause` field of the [ActivityFailure](#activity-failure) thrown in the Workflow.
@@ -86,6 +87,12 @@ When an [Activity Execution](/activities#activity-execution) fails, the Applicat
 
 When an Activity or Workflow throws an Application Failure, the Failure's `type` field is matched against a Retry Policy's list of [non-retryable errors](/encyclopedia/retry-policies#non-retryable-errors) to determine whether to retry the Activity or Workflow.
 Activities and Workflow can also avoid retrying by setting an Application Failure's `non_retryable` flag to `true`.
+
+### Setting the Next Retry Delay {#next-retry-delay}
+
+By setting the Next Retry Delay for a given Application Failure, you can tell the server to wait that amount of time before trying the Activity or Workflow again. This will override whatever the Retry Policy would have computed for your specific exception.
+
+Java: [NextRetryDelay](/develop/java/failure-detection#next-retry-delay)
 
 ## Cancelled Failure
 
