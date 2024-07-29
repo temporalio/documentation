@@ -21,20 +21,17 @@ tags:
 
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
 
-Temporal provides features that significantly reduce latency, making your applications faster, more performant, and more efficient.
+Temporal Cloud provides features that significantly reduce latency compared to self-hosted instances, making your applications faster, more performant, and more efficient.
 In the world of modern applications, low latency is crucial for ensuring minimal delay in Workflow Executions.
-
-Temporal Cloud includes architectural advancements like a custom persistence layer, which reduce latency effectively.
-Benchmarks have shown that application-side latency is lower when using Temporal Cloud. 
 This low-latency architecture ensures rapid Workflow Execution and responsiveness, critical for time-sensitive applications and high-performance systems.
 
-Temporal Cloud’s architecture includes a custom persistence layer with three key components:
+Temporal Cloud's custom persistence layer incorporates three key components that contribute to low latency:
 
-- **Better Sharding:** Distributes load across multiple databases, preventing bottlenecks. 
-Better sharding of persistent state across multiple databases allows for independent resizing, improving scalability and handling high-traffic events without delay.
-- **Write-Ahead Log (WAL):** Aggregates updates before writing to the database, reducing write latency. 
-This log stores writes in an append-only format, reducing latency and database size by batching updates before writing to the database.
-- **Tiered Storage of Workflow Event History:**  Offloads completed Workflow Event Histories, improving database efficiency. Moving completed Workflow Event Histories to an object store reduces database load, improving efficiency and latency for running Workflows.
+- **Better Sharding:** Distributes load across multiple databases, preventing bottlenecks.
+  Enables independent resizing, improving scalability and handling high-traffic events without delay.
+- **Write-Ahead Log (WAL):** Aggregates updates before writing to the database, reducing write latency.
+  Stores writes in an append-only format, reducing latency and database size by batching updates before writing to the database.
+- **Tiered Storage of Workflow Event History:** Offloads completed Workflow Event Histories, improving database efficiency.
 
 Temporal Cloud provides lower latency, making it suitable for latency-sensitive, large-scale, or business-critical applications.
 
