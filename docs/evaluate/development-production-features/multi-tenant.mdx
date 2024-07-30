@@ -1,0 +1,39 @@
+---
+id: multi-tenant
+title: Multi-tenant - Temporal feature
+description: Learn about Temporal Cloud's multi-tenant architecture and how it enhances scalability, efficiency, and cost-effectiveness.
+sidebar_label: Multi-tenant
+tags:
+- multi-tenant
+
+keywords:
+- multi-tenant
+- Temporal Cloud
+- cloud architecture
+- scalability
+- cost-effectiveness
+- noisy neighbor 
+- database performance
+- high throughput
+---
+
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+
+Temporal Cloud's architecture scales to handle multiple tenants efficiently.
+Our features enable you to handle multiple Namespaces sharing the same compute and persistence layer, ensuring performance and operational efficiency.
+A Namespace is a unit of isolation within the Temporal Platform.
+A single Namespace is still multi-tenant.
+Customers pay for consumption instead of entire sets of hardware, providing a cost-effective solution.
+
+Multi-tenancy ensures extra capacity is available for all customers during traffic spikes.
+However, multi-tenancy also presents the challenge of noisy neighbors, where high-traffic tenants consume excess resources, causing slower performance for other tenants.
+The noisy neighbor problem is particularly difficult to address in the database, which is stateful and takes longer to scale.
+Temporal's write-heavy workload, where changes in execution state are constantly written to the persistence layer, demands a database that supports reliably high throughput with low latency for multiple customers, concurrently and fairly.
+
+<RelatedReadContainer>
+  <RelatedReadItem path="https://docs.temporal.io/cloud/pricing" text="Cost-effective Consumption documentation" archetype="cloud-guide" />
+  <RelatedReadItem path="https://docs.temporal.io/cloud/security#namespace-isolation" text="Namespace Isolation" archetype="cloud-guide" />
+
+</RelatedReadContainer>
+
+From centralizing cloud operations and managing multiple tenants to ensuring high performance and fair resource allocation, Temporal's multi-tenant architecture enhances efficiency and scalability across your organization.

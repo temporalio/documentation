@@ -35,6 +35,7 @@ module.exports = {
             "evaluate/development-production-features/schedules",
             "evaluate/development-production-features/cloud-automation",
             "evaluate/development-production-features/low-latency",
+            "evaluate/development-production-features/multi-tenant",
             
             {
               type: "category",
