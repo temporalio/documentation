@@ -1800,7 +1800,17 @@
       "destination": "/self-hosted-guide/monitoring"
     },
     {
-      "source": "production-readiness/:path*",
+      "source": "/production-readiness/develop#securing-your-data",
+      "destination": "/production-deployment/data-encryption",
+      "permanent": true
+    },
+    {
+      "source": "/production-readiness/develop#codec-server-setup",
+      "destination": "/production-deployment/data-encryption",
+      "permanent": true
+    },
+    {
+      "source": "/production-readiness/:path*",
       "destination": "/self-hosted-guide"
     },
     {
