@@ -196,6 +196,165 @@ tcld apikey disable --id <api-key-id>
 tcld apikey enable --id <api-key-id>
 ```
 
+### API Key Management with Temporal Client SDK
+
+This document covers the steps to enable, create, grant permissions, and use API Keys with the Temporal Client SDK.
+
+#### Toggle API Key Creation Enabled for Account
+
+To enable the creation of API Keys for your account:
+
+1. Go to **Settings**.
+2. Navigate to the **API Keys** tab.
+3. Toggle the switch from **API Keys disabled** to **API Keys enabled**.
+4. You should now be able to create API Keys for your account.
+
+#### Create an API Key-Enabled Namespace
+
+To create a namespace with API Key authentication enabled:
+
+1. Go to the **Namespaces** page by clicking on the **cube icon** in the sidebar.
+2. Click on the **Create Namespace** button at the top right.
+3. Enter the desired **Namespace Name** and **Region**.
+4. Under **Authentication**, toggle on **Allow API Key authentication**.
+5. Click **Create Namespace** at the bottom of the page.
+
+#### Creating User API Keys
+
+To create an API Key for a user:
+
+1. Go to **Settings**.
+2. Navigate to the **API Keys** tab.
+3. Click **Create API Key**.
+4. Toggle to **My User API Keys**.
+5. Enter a name for the new API Key.
+6. Set an **Expiry Date**.
+7. Click **Generate API Key**.
+
+#### Creating Service Account API Keys
+
+To create a service account and generate an API Key:
+
+1. Go to **Settings**.
+2. Click on **Create Service Account**.
+3. Enter an **Identity Name**.
+4. Assign an **Account Level Role**.
+5. Grant permissions for the namespaces you want this service account to access.
+6. Click **Create Service Account**.
+7. Click on **Create API Key**.
+8. Ensure the **Service Account Toggle** is enabled.
+9. Verify that your service account is the **Mapped Identity**.
+10. Enter a name for the new API Key.
+11. Set an **Expiry Date**.
+12. Click **Generate API Key**.
+
+### Using API Keys with Client SDK
+
+Take the API Key and Namespace created and configure a Temporal Client using the sample below. 
+
+```go
+package main
+
+const apiKey = "xxx.yyy.zzz"
+const namespaceID = "example.namespace"
+const hostPort = "us-east-1.aws.api.tmprl.cloud:7233"
+const taskQueue = "example-task-queue"
+
+func main(){
+	clientOptions := client.Options{
+		HostPort:  hostPort,
+		Namespace: namespaceID,
+		ConnectionOptions: client.ConnectionOptions{
+			TLS:                   &tls.Config{},
+			DialOptions: []grpc.DialOption{
+				grpc.WithUnaryInterceptor(
+					func(ctx context.Context, method string, req any, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+						return invoker(
+							metadata.AppendToOutgoingContext(ctx, "temporal-namespace", namespaceID),
+							method,
+							req,
+							reply,
+							cc,
+							opts...,
+						)
+					},
+				),
+			},
+		},
+		Credentials: client.NewAPIKeyStaticCredentials(apiKey),
+	}
+	c, err := client.Dial(clientOptions)
+	if err != nil {
+	  log.Fatalf("error creating temporal client: %v", err)
+	}
+}
+```
+
+For Java: 
+```java
+
+package io.temporal.samples.hello;
+
+import io.grpc.Metadata;
+import io.grpc.stub.MetadataUtils;
+import io.temporal.authorization.AuthorizationGrpcMetadataProvider;
+import io.temporal.client.WorkflowClient;
+import io.temporal.client.WorkflowClientOptions;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.serviceclient.WorkflowServiceStubsOptions;
+import io.temporal.worker.Worker;
+import io.temporal.worker.WorkerFactory;
+import javax.net.ssl.SSLException;
+
+public class HelloApiKey {
+  // Header key for the Temporal namespace
+  private static final Metadata.Key<String> TEMPORAL_NAMESPACE_HEADER_KEY =
+      Metadata.Key.of("temporal-namespace", Metadata.ASCII_STRING_MARSHALLER);
+  static final String TASK_QUEUE = "example-task-queue";
+  static final String NAMESPACE_ID = "example.namespace";
+  static final String API_KEY = "xxx.yyy.zzz";
+  // You can find your new regional endpoint in the "gRPC endpoint" field in the namespace details
+  // page
+  static final String ENDPOINT = "us-east-1.aws.api.tmprl.cloud:7233";
+  static final String SERVER_NAME = "us-east-1.aws.api.tmprl.cloud";
+
+  /**
+   * With our Workflow and Activities defined, we can now start execution. The main method starts
+   * the worker and then the workflow.
+   */
+  public static void main(String[] args) throws SSLException {
+    // Create a Metadata object with the Temporal namespace header key.
+    Metadata metadata = new Metadata();
+    metadata.put(TEMPORAL_NAMESPACE_HEADER_KEY, NAMESPACE_ID);
+    // Create the Workflow service stub.
+    WorkflowServiceStubsOptions.Builder stubOptions =
+        WorkflowServiceStubsOptions.newBuilder()
+            .setChannelInitializer(
+                (channel) -> {
+                  channel.overrideAuthority(SERVER_NAME);
+                  channel.intercept(MetadataUtils.newAttachHeadersInterceptor(metadata));
+                })
+            .addGrpcMetadataProvider(
+                new AuthorizationGrpcMetadataProvider(() -> "Bearer " + API_KEY))
+            .setTarget(ENDPOINT);
+
+    WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(stubOptions.build());
+
+    /*
+     * Get a Workflow service client which can be used to start, Signal, and Query Workflow Executions.
+     */
+    WorkflowClient client =
+        WorkflowClient.newInstance(
+            service, WorkflowClientOptions.newBuilder().setNamespace(NAMESPACE_ID).build());
+
+  }
+}
+```
+
+
+
+For any further assistance, consult the Temporal SDK documentation or contact support.
+
 ## Best practices {#best-practices}
 
 - **Keep it secret | Keep it safe**: Treat your API Key as you would a password. Don't expose it in client-side code, public repositories, or other easily accessible places.
