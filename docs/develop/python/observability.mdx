@@ -181,7 +181,8 @@ Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.h
 
 After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
-Use `SearchAttributeKey` to create your Search Attributes. Then, when starting a Workflow execution using `client.start_workflow()`, include the Custom Search Attributes by passing instances of `SearchAttributePair()` containing each of your keys and starting values to a parameter called `search_attributes`. If you had Custom Search Attributes `CustomerId` of type `Keyword` and `MiscData` of type `Text`, you could provide these starting values:
+Use `SearchAttributeKey` to create your Search Attributes. Then, when starting a Workflow execution using `client.start_workflow()`, include the Custom Search Attributes by passing instances of `SearchAttributePair()` containing each of your keys and starting values to a parameter called `search_attributes`.
+If you had Custom Search Attributes `CustomerId` of type `Keyword` and `MiscData` of type `Text`, you could provide these starting values:
 
 ```python
 customer_id_key = SearchAttributeKey.for_keyword("CustomerId")
@@ -198,7 +199,8 @@ handle = await client.start_workflow(
 )
 ```
 
-In this example, `CustomerId` and `MiscData` are set as Search Attributes. These attributes are useful for querying Workflows based on the customer ID or the date the order was placed.
+In this example, `CustomerId` and `MiscData` are set as Search Attributes.
+These attributes are useful for querying Workflows based on the customer ID or the date the order was placed.
 
 ### Upsert Search Attributes {#upsert-search-attributes}
 

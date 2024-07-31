@@ -171,8 +171,7 @@ Here is how to query Workflow Executions:
 
 After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
-When starting a Workflow Execution with your Client, include the Custom Search 
-Attribute in the options using `WorkflowOptions.newBuilder().setTypedSearchAttributes()`:
+When starting a Workflow Execution with your Client, include the Custom Search Attribute in the options using `WorkflowOptions.newBuilder().setTypedSearchAttributes()`:
 
 ```java
 
@@ -196,9 +195,7 @@ Attribute in the options using `WorkflowOptions.newBuilder().setTypedSearchAttri
     }
 ```
 
-Each `SearchAttribute` object represents a custom attribute name, and the value 
-is a [`SearchAttributeKey`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/SearchAttributeKey.html#forBoolean(java.lang.String)) 
-representing a specific type. Currently the following types are supported:
+Each `SearchAttribute` object represents a custom attribute name, and the value is a [`SearchAttributeKey`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/SearchAttributeKey.html#forBoolean(java.lang.String))  representing a specific type. Currently the following types are supported:
 
 * Boolean
 * Double
@@ -212,10 +209,8 @@ useful for querying Workflows based the success/failure of customer orders.
 
 ### How to upsert Search Attributes {#upsert-search-attributes}
 
-Within the Workflow code, you can dynamically add or update Search Attributes 
-using [`upsertTypedSearchAttributes`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertTypedSearchAttributes(io.temporal.common.SearchAttributeUpdate...)). 
-This method is particularly useful for Workflows whose attributes need to change 
-based on internal logic or external events.
+Within the Workflow code, you can dynamically add or update Search Attributes using [`upsertTypedSearchAttributes`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertTypedSearchAttributes(io.temporal.common.SearchAttributeUpdate...)). 
+This method is particularly useful for Workflows whose attributes need to change based on internal logic or external events.
 
 ```java
   import io.temporal.workflow.Workflow;
