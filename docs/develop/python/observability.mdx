@@ -181,24 +181,24 @@ Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.h
 
 After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
-To set custom Search Attributes, use the `search_attributes` parameter of the ['start_workflow()'](https://python.temporal.io/temporalio.client.Client.html#start_workflow) method.
-
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/starter_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+Use `SearchAttributeKey` to create your Search Attributes. Then, when starting a Workflow execution using `client.start_workflow()`, include the Custom Search Attributes by passing instances of `SearchAttributePair()` containing each of your keys and starting values to a parameter called `search_attributes`. If you had Custom Search Attributes `CustomerId` of type `Keyword` and `MiscData` of type `Text`, you could provide these starting values:
 
 ```python
-# ...
-    handle = await client.start_workflow(
-        GreetingWorkflow.run,
-        id="search-attributes-workflow-id",
-        task_queue="search-attributes-task-queue",
-        search_attributes={"CustomKeywordField": ["old-value"]},
-    )
+customer_id_key = SearchAttributeKey.for_keyword("CustomerId")
+misc_data_key = SearchAttributeKey.for_text("MiscData")
+
+handle = await client.start_workflow(
+    GreetingWorkflow.run,
+    id="search-attributes-workflow-id",
+    task_queue="search-attributes-task-queue",
+    search_attributes=TypedSearchAttributes([
+        SearchAttributePair(customer_id_key, "customer_1"),
+        SearchAttributePair(misc_data_key, "customer_1_data")
+    ]),
+)
 ```
+
+In this example, `CustomerId` and `MiscData` are set as Search Attributes. These attributes are useful for querying Workflows based on the customer ID or the date the order was placed.
 
 ### Upsert Search Attributes {#upsert-search-attributes}
 
