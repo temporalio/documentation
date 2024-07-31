@@ -152,7 +152,7 @@ The steps to using custom Search Attributes are:
     - Replace `Text` with a type value associated with your Search Attribute: `Text` | `Keyword` | `Int` | `Double` | `Bool` | `Datetime` | `KeywordList`
 - Set the value of the Search Attribute for a Workflow Execution:
   - On the Client by including it as an option when starting the Execution.
-  - In the Workflow by calling `UpsertSearchAttributes`.
+  - In the Workflow by calling `upsert_search_attributes`.
 - Read the value of the Search Attribute:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
@@ -204,36 +204,20 @@ To set custom Search Attributes, use the `search_attributes` parameter of the ['
 
 You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
 
-To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) method.
-
-The keys are added to or replace the existing Search Attributes, similar to [`dict.update()`](https://docs.python.org/3/library/stdtypes.html#dict.update).
-
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
+To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) method to pass instances of `SearchAttributePair()` containing each of your keys and starting values to a parameter to a `TypedSearchAttributes()` object:
 
 ```python
-# ...
-        workflow.upsert_search_attributes({"CustomKeywordField": ["new-value"]})
+workflow.upsert_search_attributes(TypedSearchAttributes([
+    SearchAttributePair(customer_id_key, "customer_2")
+]))
 ```
 
 ### Remove a Search Attribute from a Workflow {#remove-search-attribute}
 
 To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
 
-To remove a Search Attribute, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) function with an empty list as its value.
-
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_visibility/workflow_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
-
 ```python
-# ...
-        workflow.upsert_search_attributes({"CustomKeywordField": []})
+workflow.upsert_search_attributes(TypedSearchAttributes([
+    SearchAttributePair(customer_id_key, [])
+]))
 ```
