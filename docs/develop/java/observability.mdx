@@ -157,7 +157,7 @@ The steps to using custom Search Attributes are:
 - Create a new Search Attribute in your Temporal Service using `temporal operator search-attribute create` or the Cloud UI.
 - Set the value of the Search Attribute for a Workflow Execution:
   - On the Client by including it as an option when starting the Execution.
-  - In the Workflow by calling `upserTypedSearchAttributes`.
+  - In the Workflow by calling `upsertTypedSearchAttributes`.
 - Read the value of the Search Attribute:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
