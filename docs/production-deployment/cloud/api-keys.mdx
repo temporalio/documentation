@@ -88,7 +88,7 @@ You must enable API Key access to allow the creation of API Keys.
 
 Global Administrators can monitor, manage, update access, and delete API Keys for any user within their account.
 
-To manage your accounts API Keys
+To manage your accounts API Keys:
 
 1. [Login](https://cloud.temporal.io/) to the Cloud UI.
 2. [Select **Settings** and choose **API Keys**](https://cloud.temporal.io/settings/api-keys).
@@ -196,164 +196,311 @@ tcld apikey disable --id <api-key-id>
 tcld apikey enable --id <api-key-id>
 ```
 
-### API Key Management with Temporal Client SDK
+### API Keys for Client Connections
+Temporal Cloud supports secure programmatic access through API Key Authentication.
 
-This document covers the steps to enable, create, grant permissions, and use API Keys with the Temporal Client SDK.
 
-#### Toggle API Key Creation Enabled for Account
+API Keys for Client Connections are a new capability that extend the existing API Keys feature to afford users the ability to auth(n/z) into Temporal Cloud's "data plane" from Client Connections (Temporal CLI, SDKs) using an API Key.
 
-To enable the creation of API Keys for your account:
+> Note: This feature capability changes the UX for Namespace creation/management. With API Keys for Client Connections, the connection method for a Namespace is configurable, either mTLS or API Key during pre-release.
 
-1. Go to **Settings**.
-2. Navigate to the **API Keys** tab.
-3. Toggle the switch from **API Keys disabled** to **API Keys enabled**.
-4. You should now be able to create API Keys for your account.
+## Key Feature Terms
 
-#### Create an API Key-Enabled Namespace
+- **API Key**: Authentication token that can be used in the Temporal CLI, SDKs, tcld, the Cloud Operations API, and the Terraform Provider.
+- **gRPC Endpoint**: The gRPC endpoint used in the Temporal CLI and/or SDKs to connect to Temporal Cloud.
+  - For an mTLS connection, the endpoint is in the format `<namespace>.<account>.tmprl.cloud:7233`
+  - For an API Key connection, the endpoint is in the format `<region>.<cloud provider>.api.temporal.io:7233`
+- **gRPC header**: Connection information supplied by the user in the Temporal CLI or SDK when connecting to Temporal Cloud using an API Key. Currently, in most SDKs and the CLI, the gPRC header should include a Bearer Token with the API Key and a Namespace header.
 
-To create a namespace with API Key authentication enabled:
+## API Keys for Client Connections
 
-1. Go to the **Namespaces** page by clicking on the **cube icon** in the sidebar.
-2. Click on the **Create Namespace** button at the top right.
-3. Enter the desired **Namespace Name** and **Region**.
-4. Under **Authentication**, toggle on **Allow API Key authentication**.
-5. Click **Create Namespace** at the bottom of the page.
+Temporal Cloud supports secure programmatic access through API Key Authentication.
 
-#### Creating User API Keys
+### Overview
 
-To create an API Key for a user:
+Temporal Cloud API Keys facilitate identity-level authentication, for Users and Service Accounts. Each key is unique to a single identity and ties directly to the identity's Role-Based Access Control (RBAC) permissions, ensuring secure and appropriate access.
 
-1. Go to **Settings**.
-2. Navigate to the **API Keys** tab.
-3. Click **Create API Key**.
-4. Toggle to **My User API Keys**.
-5. Enter a name for the new API Key.
-6. Set an **Expiry Date**.
-7. Click **Generate API Key**.
+The process is as follows:
 
-#### Creating Service Account API Keys
+API Key (authentication) → User or Service Account (identity) → RBAC (authorization)
 
-To create a service account and generate an API Key:
+These API Keys are used to authenticate Temporal Cloud operator tools, including Temporal Cloud CLI (tcld) and the Temporal Cloud Operations API (Cloud Ops API), and Client Connection tools, including the Temporal CLI and SDKs.
 
-1. Go to **Settings**.
-2. Click on **Create Service Account**.
-3. Enter an **Identity Name**.
-4. Assign an **Account Level Role**.
-5. Grant permissions for the namespaces you want this service account to access.
-6. Click **Create Service Account**.
-7. Click on **Create API Key**.
-8. Ensure the **Service Account Toggle** is enabled.
-9. Verify that your service account is the **Mapped Identity**.
-10. Enter a name for the new API Key.
-11. Set an **Expiry Date**.
-12. Click **Generate API Key**.
+While API Keys use in operator tools is a publicly available feature, part of Public Preview, the ability to use an API in the Temporal CLI and SDKs is available to a limited number of Temporal Cloud users through a pre-release. Before an API Key can be used in the Temporal CLI or SDK, Temporal must enable API keys for Client Connections for your account using an internal feature flag.
 
-### Using API Keys with Client SDK
+### API Key Summary
 
-Take the API Key and Namespace created and configure a Temporal Client using the sample below. 
+Temporal Cloud API Keys functionality is designed for 3 types of use:
+
+1. User created API Keys - if enabled, users can create, delete, and update their own API Keys through the Cloud UI or tcld.
+2. Service Account created API Keys - Global Administrators can create, delete, and update API Keys for Service Accounts (in pre-release)
+3. API Key governance - Temporal Cloud provides affordances for Global Administrators to govern and control API Key use within their accounts. Global Administrators can enable/disable API Keys for their accounts, and disable/delete API Keys for any User and/or Service Account.
+
+By default, API Keys must be enabled by a Global Administrator before use.
+
+## Get started
+
+### Prerequisites
+
+- Access to the Temporal Cloud UI or Temporal Cloud CLI (tcld) - to create an API Key
+- Enable access to API Keys for your Account
+- Ask Temporal to enable the API Keys for Client Connections pre-release for your Temporal Account
+- Create a new Namespace that allows API Key connectivity.
+  - For pre-release, Namespaces support either mTLS or API Key connectivity without a way to switch between mTLS or API Keys. In subsequent releases you will have the option to switch between auth methods for your Namespaces, or use both.
+
+## Use API Keys
+
+API Keys can be used in (covered in this pre-release document):
+- Temporal CLI v 0.12
+- SDKs (latest recommended)
+
+API Keys can also be used in (covered in existing Temporal docs):
+- Temporal Cloud CLI (tcld)
+- The Cloud Operations API
+- Temporal's Terraform Provider
+
+### Temporal CLI
+
+To use your API Key with the Temporal CLI, you can pass in the API Key to each command using the `--api-key` flag or an environmental variable (best practice).
+
+In addition to passing in the API Key, the following client options are required:
+
+- `--address`: Provide the Namespace's gRPC endpoint located in the Namespace UI in the gRPC endpoint box.
+  - For API Key connectivity, the endpoint format is `<region>.<cloud provider>.api.temporal.io:7233`
+  - Can be set using an environmental variable
+- `--namespace`: Provide the namespace.accountId that appears at the top of the Namespace page in the UI.
+  - Format is `<namespace.accountId>`
+  - Can be set using an environmental variable
+- `--grpc-meta "temporal-namespace="`: Provide the namespace.accountId again as grpc-metadata. During pre-release, this field is required for routing to the namespace
+- `--tls` for a secure connection with the appropriate options
+  - Potentially, with `--tls-disable-host-verification` to disable host verification
+  - Can be set using an environmental variable
+
+Here's an example of connecting to Temporal Cloud from the CLI using an environmental variable for the API Key:
+
+```bash
+export TEMPORAL_API_KEY=<key secret>
+temporal workflow list --address <endpoint> \
+--namespace <namespace.accountid> \
+--tls --tls-disable-host-verification \
+--grpc-meta "temporal-namespace=<namespace.accountid>"
+```
+
+### SDK
+
+To use your API Key with a Temporal SDK, use headers to specify a Bearer token is provided for authentication and the Namespace for request routing. Temporal will simplify this experience for users to reduce the use of headers in subsequent SDK release.
+
+#### Go SDK (v 1.26.0+)
+
+Initial connection:
 
 ```go
-package main
-
-const apiKey = "xxx.yyy.zzz"
-const namespaceID = "example.namespace"
-const hostPort = "us-east-1.aws.api.tmprl.cloud:7233"
-const taskQueue = "example-task-queue"
-
-func main(){
-	clientOptions := client.Options{
-		HostPort:  hostPort,
-		Namespace: namespaceID,
-		ConnectionOptions: client.ConnectionOptions{
-			TLS:                   &tls.Config{},
-			DialOptions: []grpc.DialOption{
-				grpc.WithUnaryInterceptor(
-					func(ctx context.Context, method string, req any, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
-						return invoker(
-							metadata.AppendToOutgoingContext(ctx, "temporal-namespace", namespaceID),
-							method,
-							req,
-							reply,
-							cc,
-							opts...,
-						)
-					},
-				),
-			},
-		},
-		Credentials: client.NewAPIKeyStaticCredentials(apiKey),
-	}
-	c, err := client.Dial(clientOptions)
-	if err != nil {
-	  log.Fatalf("error creating temporal client: %v", err)
-	}
+clientOptions := client.Options{
+    HostPort: <endpoint>,
+    Namespace: <namespace.accountid>,
+    Credentials: client.NewAPIKeyStaticCredentials(<API Key>),
+    ConnectionOptions: client.ConnectionOptions{
+        TLS: &tls.Config{
+            InsecureSkipVerify: true, // not recommended for production
+        },
+        DialOptions: []grpc.DialOption{
+            grpc.WithUnaryInterceptor(
+                func(ctx context.Context, method string, req any, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+                    return invoker(
+                        metadata.AppendToOutgoingContext(ctx, "temporal-namespace", <namespace.accountid>),
+                        method,
+                        req,
+                        reply,
+                        cc,
+                        opts...,
+                    )
+                },
+            ),
+        },
+    },
 }
+c, err := client.Dial(clientOptions)
 ```
 
-For Java: 
+Update API key:
+
+```go
+// Assuming client Credentials created with
+var myKey string
+creds := client.NewAPIKeyDynamicCredentials(
+    func(context.Context) (string, error) { return myKey, nil })
+// Just update by replacing
+myKey = myKeyUpdated
+```
+
+#### Go SDK (pre v 1.26.0)
+
+Initial connection:
+
+```go
+// Create headers provider
+type APIKeyProvider struct {
+    APIKey string
+    Namespace string
+}
+
+func (a *APIKeyProvider) GetHeaders(context.Context) (map[string]string, error) {
+    return map[string]string{"Authorization": "Bearer " + a.APIKey, "temporal-namespace": a.Namespace}, nil
+}
+
+// Use headers provider
+apiKeyProvider := &APIKeyProvider{APIKey: <APIKey>, Namespace: <namespace.accountid>}
+c, err := client.Dial(client.Options{
+    HostPort: <endpoint>,
+    Namespace: <namespace.accountid>,
+    HeadersProvider: apiKeyProvider,
+    ConnectionOptions: client.ConnectionOptions{TLS: &tls.Config{
+        InsecureSkipVerify: true, // not recommended for production
+    }},
+})
+```
+
+Update API key:
+
+```go
+apiKeyProvider.APIKey = myKeyUpdated
+```
+
+#### Java SDK
+
+At a client level:
+
 ```java
+// Create a Metadata object with the Temporal namespace header key.
+Metadata.Key<String> TEMPORAL_NAMESPACE_HEADER_KEY =
+    Metadata.Key.of("temporal-namespace", Metadata.ASCII_STRING_MARSHALLER);
+Metadata metadata = new Metadata();
+metadata.put(TEMPORAL_NAMESPACE_HEADER_KEY, <namespace.accountid>);
 
-package io.temporal.samples.hello;
+// Create the Workflow service stub.
+WorkflowServiceStubsOptions.Builder stubOptions =
+    WorkflowServiceStubsOptions.newBuilder()
+        .setChannelInitializer(
+            (channel) -> {
+                channel.intercept(MetadataUtils.newAttachHeadersInterceptor(metadata));
+            })
+        .addGrpcMetadataProvider(
+            new AuthorizationGrpcMetadataProvider(() -> "Bearer " + <APIKey>))
+        .setTarget(<endpoint>);
 
-import io.grpc.Metadata;
-import io.grpc.stub.MetadataUtils;
-import io.temporal.authorization.AuthorizationGrpcMetadataProvider;
-import io.temporal.client.WorkflowClient;
-import io.temporal.client.WorkflowClientOptions;
-import io.temporal.serviceclient.WorkflowServiceStubs;
-import io.temporal.serviceclient.WorkflowServiceStubsOptions;
-import io.temporal.worker.Worker;
-import io.temporal.worker.WorkerFactory;
-import javax.net.ssl.SSLException;
+// Not recommended for Prod use, ignore TLS verification
+stubOptions.setSslContext(SimpleSslContextBuilder.noKeyOrCertChain().setUseInsecureTrustManager(true).build());
 
-public class HelloApiKey {
-  // Header key for the Temporal namespace
-  private static final Metadata.Key<String> TEMPORAL_NAMESPACE_HEADER_KEY =
-      Metadata.Key.of("temporal-namespace", Metadata.ASCII_STRING_MARSHALLER);
-  static final String TASK_QUEUE = "example-task-queue";
-  static final String NAMESPACE_ID = "example.namespace";
-  static final String API_KEY = "xxx.yyy.zzz";
-  // You can find your new regional endpoint in the "gRPC endpoint" field in the namespace details
-  // page
-  static final String ENDPOINT = "us-east-1.aws.api.tmprl.cloud:7233";
-  static final String SERVER_NAME = "us-east-1.aws.api.tmprl.cloud";
+WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(stubOptions.build());
 
-  /**
-   * With our Workflow and Activities defined, we can now start execution. The main method starts
-   * the worker and then the workflow.
-   */
-  public static void main(String[] args) throws SSLException {
-    // Create a Metadata object with the Temporal namespace header key.
-    Metadata metadata = new Metadata();
-    metadata.put(TEMPORAL_NAMESPACE_HEADER_KEY, NAMESPACE_ID);
-    // Create the Workflow service stub.
-    WorkflowServiceStubsOptions.Builder stubOptions =
-        WorkflowServiceStubsOptions.newBuilder()
-            .setChannelInitializer(
-                (channel) -> {
-                  channel.overrideAuthority(SERVER_NAME);
-                  channel.intercept(MetadataUtils.newAttachHeadersInterceptor(metadata));
-                })
-            .addGrpcMetadataProvider(
-                new AuthorizationGrpcMetadataProvider(() -> "Bearer " + API_KEY))
-            .setTarget(ENDPOINT);
-
-    WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(stubOptions.build());
-
-    /*
-     * Get a Workflow service client which can be used to start, Signal, and Query Workflow Executions.
-     */
-    WorkflowClient client =
-        WorkflowClient.newInstance(
-            service, WorkflowClientOptions.newBuilder().setNamespace(NAMESPACE_ID).build());
-
-  }
-}
+/*
+ * Get a Workflow service client which can be used to start, Signal, and Query Workflow Executions.
+ */
+WorkflowClient client =
+    WorkflowClient.newInstance(
+        service, WorkflowClientOptions.newBuilder().setNamespace(<namespace.accountid>).build());
 ```
 
+At a per-call level:
 
+```java
+String myKey = "Bearer " + <APIKey>;
+WorkflowServiceStubsOptions stubOptions =
+    WorkflowServiceStubsOptions.newBuilder()
+        .addGrpcMetadataProvider(new AuthorizationGrpcMetadataProvider(() -> myKey))
+        .build();
 
-For any further assistance, consult the Temporal SDK documentation or contact support.
+// Just update by replacing, this must be done in a thread safe way
+myKey = "Bearer " + <new APIKey>;
+```
+
+#### Python SDK (v 1.6.0+)
+
+Initial connection:
+
+```python
+client = await Client.connect(
+    <endpoint>,
+    namespace=<namespace.accountid>,
+    rpc_metadata={"temporal-namespace": <namespace.accountid>},
+    api_key=<APIKey>,
+    tls=True,
+)
+```
+
+Update API key (newer SDK):
+
+```python
+my_client.api_key = my_key_updated
+```
+
+#### Python SDK (pre v 1.6.0)
+
+Initial connection:
+
+```python
+client = await Client.connect(
+    <endpoint>,
+    namespace=<namespace.accountid>,
+    rpc_metadata={"temporal-namespace": <namespace.accountid>, "Authorization": f"Bearer {<APIKey>}"},
+    tls=True,
+)
+```
+
+Update API key:
+
+```python
+my_client.rpc_metadata = {"Authorization": f"Bearer {<my_key_updated>}"}
+```
+
+#### .NET SDK (v 1.1.0+)
+
+Initial connection:
+
+```csharp
+var myClient = TemporalClient.ConnectAsync(new(<endpoint>)
+{
+    Namespace = <namespace.accountid>,
+    ApiKey = <APIKey>,
+    RpcMetadata = new Dictionary<string, string>()
+    {
+        ["temporal-namespace"] = "${<namespace.accountid>}",
+    },
+    Tls = new(),
+});
+```
+
+Update API key:
+
+```csharp
+myClient.Connection.ApiKey = myKeyUpdated;
+```
+
+#### .NET SDK (pre v 1.1.0)
+
+Initial connection:
+
+```csharp
+var myClient = TemporalClient.ConnectAsync(new(<endpoint>)
+{
+    Namespace = <namespace.accountid>,
+    RpcMetadata = new Dictionary<string, string>()
+    {
+        ["Authorization"] = $"Bearer {<APIKey>}",
+        ["temporal-namespace"] = "${<namespace.accountid>}",
+    },
+    Tls = new(),
+});
+```
+
+Update API key:
+
+```csharp
+myClient.Connection.RpcMetadata = new Dictionary<string, string>()
+{
+    ["Authorization"] = $"Bearer {myKeyUpdated}",
+};
+```
 
 ## Best practices {#best-practices}
 
