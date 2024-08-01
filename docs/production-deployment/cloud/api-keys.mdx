@@ -202,7 +202,7 @@ Temporal Cloud supports secure programmatic access through API Key Authenticatio
 
 API Keys for Client Connections are a new capability that extend the existing API Keys feature to afford users the ability to auth(n/z) into Temporal Cloud's "data plane" from Client Connections (Temporal CLI, SDKs) using an API Key.
 
-> Note: This feature capability changes the UX for Namespace creation/management. With API Keys for Client Connections, the connection method for a Namespace is configurable, either mTLS or API Key during pre-release.
+> Note: This feature capability changes the UX for Namespace creation/management. With API Keys for Client Connections, the connection method for a Namespace is configurable, either mTLS or API Key.
 
 #### Key Feature Terms
 
@@ -226,14 +226,13 @@ API Key (authentication) → User or Service Account (identity) → RBAC (author
 
 These API Keys are used to authenticate Temporal Cloud operator tools, including Temporal Cloud CLI (tcld) and the Temporal Cloud Operations API (Cloud Ops API), and Client Connection tools, including the Temporal CLI and SDKs.
 
-While API Keys use in operator tools is a publicly available feature, part of Public Preview, the ability to use an API in the Temporal CLI and SDKs is available to a limited number of Temporal Cloud users through a pre-release. Before an API Key can be used in the Temporal CLI or SDK, Temporal must enable API keys for Client Connections for your account using an internal feature flag.
 
 #### API Key Summary
 
 Temporal Cloud API Keys functionality is designed for 3 types of use:
 
 1. User created API Keys - if enabled, users can create, delete, and update their own API Keys through the Cloud UI or tcld.
-2. Service Account created API Keys - Global Administrators can create, delete, and update API Keys for Service Accounts (in pre-release)
+2. Service Account created API Keys - Global Administrators can create, delete, and update API Keys for Service Accounts. 
 3. API Key governance - Temporal Cloud provides affordances for Global Administrators to govern and control API Key use within their accounts. Global Administrators can enable/disable API Keys for their accounts, and disable/delete API Keys for any User and/or Service Account.
 
 By default, API Keys must be enabled by a Global Administrator before use.
@@ -244,19 +243,7 @@ Prerequisites
 
 - Access to the Temporal Cloud UI or Temporal Cloud CLI (tcld) - to create an API Key
 - Enable access to API Keys for your Account
-- Ask Temporal to enable the API Keys for Client Connections pre-release for your Temporal Account
 - Create a new Namespace that allows API Key connectivity.
-
-## Use API Keys
-
-API Keys can be used in: 
-- Temporal CLI v 0.12
-- SDKs (latest recommended)
-
-API Keys can also be used in: 
-- Temporal Cloud CLI (tcld)
-- The Cloud Operations API
-- Temporal's Terraform Provider
 
 #### Temporal CLI
 
@@ -270,7 +257,7 @@ In addition to passing in the API Key, the following client options are required
 - `--namespace`: Provide the namespace.accountId that appears at the top of the Namespace page in the UI.
   - Format is `<namespace.accountId>`
   - Can be set using an environmental variable
-- `--grpc-meta "temporal-namespace="`: Provide the namespace.accountId again as grpc-metadata. During pre-release, this field is required for routing to the namespace
+- `--grpc-meta "temporal-namespace="`: Provide the namespace.accountId again as grpc-metadata.
 - `--tls` for a secure connection with the appropriate options
   - Potentially, with `--tls-disable-host-verification` to disable host verification
   - Can be set using an environmental variable
