@@ -204,7 +204,7 @@ API Keys for Client Connections are a new capability that extend the existing AP
 
 > Note: This feature capability changes the UX for Namespace creation/management. With API Keys for Client Connections, the connection method for a Namespace is configurable, either mTLS or API Key during pre-release.
 
-## Key Feature Terms
+#### Key Feature Terms
 
 - **API Key**: Authentication token that can be used in the Temporal CLI, SDKs, tcld, the Cloud Operations API, and the Terraform Provider.
 - **gRPC Endpoint**: The gRPC endpoint used in the Temporal CLI and/or SDKs to connect to Temporal Cloud.
@@ -216,7 +216,7 @@ API Keys for Client Connections are a new capability that extend the existing AP
 
 Temporal Cloud supports secure programmatic access through API Key Authentication.
 
-### Overview
+#### Overview
 
 Temporal Cloud API Keys facilitate identity-level authentication, for Users and Service Accounts. Each key is unique to a single identity and ties directly to the identity's Role-Based Access Control (RBAC) permissions, ensuring secure and appropriate access.
 
@@ -228,7 +228,7 @@ These API Keys are used to authenticate Temporal Cloud operator tools, including
 
 While API Keys use in operator tools is a publicly available feature, part of Public Preview, the ability to use an API in the Temporal CLI and SDKs is available to a limited number of Temporal Cloud users through a pre-release. Before an API Key can be used in the Temporal CLI or SDK, Temporal must enable API keys for Client Connections for your account using an internal feature flag.
 
-### API Key Summary
+#### API Key Summary
 
 Temporal Cloud API Keys functionality is designed for 3 types of use:
 
@@ -238,28 +238,27 @@ Temporal Cloud API Keys functionality is designed for 3 types of use:
 
 By default, API Keys must be enabled by a Global Administrator before use.
 
-## Get started
+#### Get started
 
-### Prerequisites
+Prerequisites
 
 - Access to the Temporal Cloud UI or Temporal Cloud CLI (tcld) - to create an API Key
 - Enable access to API Keys for your Account
 - Ask Temporal to enable the API Keys for Client Connections pre-release for your Temporal Account
 - Create a new Namespace that allows API Key connectivity.
-  - For pre-release, Namespaces support either mTLS or API Key connectivity without a way to switch between mTLS or API Keys. In subsequent releases you will have the option to switch between auth methods for your Namespaces, or use both.
 
 ## Use API Keys
 
-API Keys can be used in (covered in this pre-release document):
+API Keys can be used in: 
 - Temporal CLI v 0.12
 - SDKs (latest recommended)
 
-API Keys can also be used in (covered in existing Temporal docs):
+API Keys can also be used in: 
 - Temporal Cloud CLI (tcld)
 - The Cloud Operations API
 - Temporal's Terraform Provider
 
-### Temporal CLI
+#### Temporal CLI
 
 To use your API Key with the Temporal CLI, you can pass in the API Key to each command using the `--api-key` flag or an environmental variable (best practice).
 
@@ -286,11 +285,11 @@ temporal workflow list --address <endpoint> \
 --grpc-meta "temporal-namespace=<namespace.accountid>"
 ```
 
-### SDK
+#### SDK
 
 To use your API Key with a Temporal SDK, use headers to specify a Bearer token is provided for authentication and the Namespace for request routing. Temporal will simplify this experience for users to reduce the use of headers in subsequent SDK release.
 
-#### Go SDK (v 1.26.0+)
+**Go SDK (v 1.26.0+)**
 
 Initial connection:
 
@@ -333,7 +332,7 @@ creds := client.NewAPIKeyDynamicCredentials(
 myKey = myKeyUpdated
 ```
 
-#### Go SDK (pre v 1.26.0)
+**Go SDK (pre v 1.26.0)**
 
 Initial connection:
 
@@ -366,7 +365,7 @@ Update API key:
 apiKeyProvider.APIKey = myKeyUpdated
 ```
 
-#### Java SDK
+**Java SDK**
 
 At a client level:
 
@@ -414,7 +413,7 @@ WorkflowServiceStubsOptions stubOptions =
 myKey = "Bearer " + <new APIKey>;
 ```
 
-#### Python SDK (v 1.6.0+)
+**Python SDK (v 1.6.0+)**
 
 Initial connection:
 
@@ -434,7 +433,7 @@ Update API key (newer SDK):
 my_client.api_key = my_key_updated
 ```
 
-#### Python SDK (pre v 1.6.0)
+**Python SDK (pre v 1.6.0)**
 
 Initial connection:
 
@@ -453,7 +452,7 @@ Update API key:
 my_client.rpc_metadata = {"Authorization": f"Bearer {<my_key_updated>}"}
 ```
 
-#### .NET SDK (v 1.1.0+)
+**.NET SDK (v 1.1.0+)**
 
 Initial connection:
 
@@ -476,7 +475,7 @@ Update API key:
 myClient.Connection.ApiKey = myKeyUpdated;
 ```
 
-#### .NET SDK (pre v 1.1.0)
+**.NET SDK (pre v 1.1.0)**
 
 Initial connection:
 
