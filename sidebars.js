@@ -29,6 +29,13 @@ module.exports = {
             "evaluate/development-production-features/debugging",
             "evaluate/development-production-features/interrupt-workflow",
             "evaluate/development-production-features/high-availability",
+            "evaluate/development-production-features/testing-suite",
+            "evaluate/development-production-features/observability",
+            "evaluate/development-production-features/data-encryption",
+            "evaluate/development-production-features/schedules",
+            "evaluate/development-production-features/cloud-automation",
+            "evaluate/development-production-features/low-latency",
+            
             {
               type: "category",
               label: "Product release stages",
