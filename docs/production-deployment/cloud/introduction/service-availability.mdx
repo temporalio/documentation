@@ -78,6 +78,24 @@ At times, you may hit a maximum throughput threshold and need to switch to a hig
 Learn more about our tiers by visiting our [information page](/cloud/pricing#action) or [reach out to our team](https://pages.temporal.io/contact-us) to help size your number of Actions.
 Temporal Cloud can provide more than 150,000 Actions per second at its highest tier.
 
+:::tip MEASURING THROUGHPUT WITH APS AND RPS
+
+APS and RPS are both measures of throughput, but apply to different aspects of Temporal.
+
+APS, or Actions Per Second, is specific to Temporal Cloud.
+It measures the rate at which Actions, like starting or signaling a Workflow, can be performed in a specific Namespace.
+Temporal Cloud uses APS to manage and throttle Actions, preventing a Namespace from exceeding its limit.
+APS measures how many high-level operations (Actions) a user can perform in Temporal Cloud each second.
+
+RPS, or Requests Per Second, is used in the Temporal Service, both in self-hosted Temporal and Temporal Cloud.
+It measures and controls the rate of gRPC requests to the Service.
+This is a lower-level measure that manages rates at the service level, such as the Frontend, History, or Matching Services.
+
+In summary, APS is a higher-level measure to limit and mitigate Action spikes in Temporal Cloud.
+RPS is a lower-level measure to control and balance request rates at the service level.
+
+:::
+
 ## Latency Service Level Objective (SLO) {#latency}
 
 **What kind of latency can I expect from Temporal Cloud?**

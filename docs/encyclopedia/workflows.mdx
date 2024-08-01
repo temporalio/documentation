@@ -263,14 +263,7 @@ This feature is useful for Workflow Definition logic that needs to be updated bu
 - [How to patch Workflow code in TypeScript](/develop/typescript/versioning#patching)
 - [How to patch Workflow code in .NET](/develop/dotnet/versioning#dotnet-sdk-patching-api)
 
-#### Worker Build Ids
-
-Temporal [Worker Build Id-based versioning](/workers#worker-versioning) lets you define sets of versions that are compatible with each other, and then assign a Build Id to the code that defines a Worker.
-
-- [How to version Workers in Go](/develop/go/versioning#worker-versioning)
-- [How to version Workers in Java](/develop/java/versioning#worker-versioning)
-- [How to version Workers in Python](/develop/python/versioning#worker-versioning)
-- [How to version Workers in TypeScript](/develop/typescript/versioning#worker-versioning)
+You can also use [Worker Versioning](/workers#worker-versioning) instead of Patching.
 
 ### Handling unreliable Worker Processes
 
@@ -305,7 +298,7 @@ It is the main unit of execution of a [Temporal Application](/temporal#temporal-
 - [How to start a Workflow Execution using the .NET SDK](/develop/dotnet/temporal-client#start-workflow)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
-It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](/encyclopedia/application-message-passing#signals) and the environment through [Activities](/activities).
+It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](/encyclopedia/workflow-message-passing#sending-signals) and the environment through [Activities](/activities).
 While a single Workflow Execution has limits on size and throughput, a Temporal Application can consist of millions to billions of Workflow Executions.
 
 **Durability**
@@ -363,7 +356,7 @@ Awaitables are provided when using APIs for the following:
 
 - Awaiting: Progress can block using explicit "Await" APIs.
 - Requesting cancellation of another Workflow Execution: Progress can block on confirmation that the other Workflow Execution is cancelled.
-- Sending a [Signal](/encyclopedia/application-message-passing#signals): Progress can block on confirmation that the Signal sent.
+- Sending a [Signal](/encyclopedia/workflow-message-passing#sending-signals): Progress can block on confirmation that the Signal sent.
 - Spawning a [Child Workflow Execution](/encyclopedia/child-workflows): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
 - Spawning an [Activity Execution](/activities#activity-execution): Progress can block on the result of the Activity Execution.
 - Starting a Timer: Progress can block until the Timer fires.
@@ -731,7 +724,7 @@ If there is any chance that the code provided to the Side Effect could fail, use
 
 :::tip Support, stability, and dependency info
 
-- Is [Generally Available](https://docs.temporal.io/evaluate/release-stages#general-availability) as of Nov 2023
+- Is [Generally Available](https://docs.temporal.io/evaluate/development-production-features/release-stages#general-availability) as of Nov 2023
 - Introduced in Temporal Server version [1.17.0](https://github.com/temporalio/temporal/releases/tag/v1.17.0)
 - Available in the Temporal CLI
 - Available in Temporal Cloud
