@@ -208,14 +208,6 @@ This feature capability changes the UX for Namespace creation/management.
 With API Keys for Client Connections, the connection method for a Namespace is configurable, either mTLS or API Key.
 :::
 
-#### Key Feature Terms
-
-- **API Key**: Authentication token that can be used in the Temporal CLI, SDKs, tcld, the Cloud Operations API, and the Terraform Provider.
-- **gRPC Endpoint**: The gRPC endpoint used in the Temporal CLI and/or SDKs to connect to Temporal Cloud.
-  - For an mTLS connection, the endpoint is in the format `<namespace>.<account>.tmprl.cloud:7233`
-  - For an API Key connection, the endpoint is in the format `<region>.<cloud provider>.api.temporal.io:7233`
-- **gRPC header**: Connection information supplied by the user in the Temporal CLI or SDK when connecting to Temporal Cloud using an API Key.
-  Currently, in most SDKs and the CLI, the gPRC header should include a Bearer Token with the API Key and a Namespace header.
 
 #### Overview
 
@@ -229,6 +221,15 @@ API Key (authentication) → User or Service Account (identity) → RBAC (author
 ```
 
 These API Keys are used to authenticate Temporal Cloud operator tools, including Temporal Cloud CLI (tcld) and the Temporal Cloud Operations API (Cloud Ops API), and Client Connection tools, including the Temporal CLI and SDKs.
+
+#### Key Terms
+
+- **API Key**: Authentication token that can be used in the Temporal CLI, SDKs, tcld, the Cloud Operations API, and the Terraform Provider.
+- **gRPC Endpoint**: The gRPC endpoint used in the Temporal CLI and/or SDKs to connect to Temporal Cloud.
+  - For an mTLS connection, the endpoint is in the format `<namespace>.<account>.tmprl.cloud:7233`
+  - For an API Key connection, the endpoint is in the format `<region>.<cloud provider>.api.temporal.io:7233`
+- **gRPC header**: Connection information supplied by the user in the Temporal CLI or SDK when connecting to Temporal Cloud using an API Key.
+  Currently, in most SDKs and the CLI, the gPRC header should include a Bearer Token with the API Key and a Namespace header.
 
 #### API Key Summary
 
