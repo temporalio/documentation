@@ -82,7 +82,7 @@ Use an Update for synchronous read/write requests. If your request must be async
 
 This section will help you write clients that send messages to Workflows.
 
-### Sending Signals
+### Sending Signals {#sending-signals}
 
 You can send Signals from any Temporal Client, the Temporal CLI, or you can Signal one Workflow to another.
 
@@ -168,12 +168,14 @@ The start call will give you a handle you can use to track the Update, determine
 If you want to send an Update to another Workflow such as a Child Workflow from within a Workflow, you should do so within an Activity and use the Temporal Client as normal.
 
 <RelatedReadContainer>
-    <RelatedReadItem path="/develop/go/message-passing#send-update" text="Send Updates in Go" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/java/message-passing#send-update" text="Send Updates in Java" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/php/message-passing#send-update" text="Send Updates in PHP" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#send-update" text="Send Updates in Python" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/message-passing#send-update" text="Send Updates in Typescript" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/dotnet/message-passing#send-update" text="Send Updates in .NET" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/go/message-passing#send-update-from-client" text="Send Updates in Go" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#send-update-from-client" text="Send Updates in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#send-update-from-client" text="Send Updates in PHP" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#send-update-from-client" text="Send Updates in Python" archetype="feature-guide" />
+    <!-- DOES NOT EXIST YET
+        <RelatedReadItem path="/develop/typescript/message-passing#send-update-from-client" text="Send Updates in Typescript" archetype="feature-guide" />
+    -->
+    <RelatedReadItem path="/develop/dotnet/message-passing#send-update-from-client" text="Send Updates in .NET" archetype="feature-guide" />
 </RelatedReadContainer>
 
 ### Sending Queries {#sending-queries}
@@ -269,6 +271,8 @@ Clients can provide an idempotency key. This can be important because Temporal's
 
 Inside your message handler, you can check your idempotency key--the Update ID or the one you provided to the Signal--to check whether the Workflow has already handled the update.
 
+<!-- DOES NOT EXIST YET
+
 See the links below for examples of solving this in your SDK.
 
 #### Authoring message handler patterns
@@ -283,6 +287,7 @@ See examples of the above patterns.
     <RelatedReadItem path="/develop/typescript/message-passing#handler-patterns" text="Author message handler patterns in Typescript" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/message-passing#handler-patterns" text="Author message handler patterns in .NET" archetype="feature-guide" />
 </RelatedReadContainer>
+-->
 
 ### Update Validators {#update-validators}
 
@@ -299,6 +304,7 @@ Like Queries, Validators are not allowed to block.
 
 Once the Update handler is finished and has returned a value, the operation is considered Completed.
 
+<!-- DOES NOT EXIST YET
 <RelatedReadContainer>
     <RelatedReadItem path="/develop/go/message-passing#validate-update" text="Validate updates in Go" archetype="feature-guide" />
     <RelatedReadItem path="/develop/java/message-passing#validate-update" text="Validate updates in Java" archetype="feature-guide" />
@@ -307,6 +313,7 @@ Once the Update handler is finished and has returned a value, the operation is c
     <RelatedReadItem path="/develop/typescript/message-passing#validate-update" text="Validate updates in Typescript" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/message-passing#validate-update" text="Validate updates in .NET" archetype="feature-guide" />
 </RelatedReadContainer>
+-->
 
 ### Exceptions in message handlers
 
@@ -344,9 +351,12 @@ Use these links to see a simple Signal handler.
     <RelatedReadItem path="/develop/php/message-passing#handle-signal" text="Handle Signals in PHP" archetype="feature-guide" />
     <RelatedReadItem path="/develop/python/message-passing#handle-signal" text="Handle Signals in Python" archetype="feature-guide" />
     <RelatedReadItem path="/develop/typescript/message-passing#handle-signal" text="Handle Signals in Typescript" archetype="feature-guide" />
+    <!-- DOES NOT EXIST YET
     <RelatedReadItem path="/develop/dotnet/message-passing#handle-signal" text="Handle Signals in .NET" archetype="feature-guide" />
+    -->
 </RelatedReadContainer>
 
+<!-- DOES NOT EXIST YET
 ### Writing Update Handlers {#writing-update-handlers}
 
 Use these links to see a simple update handler.
@@ -359,16 +369,19 @@ Use these links to see a simple update handler.
     <RelatedReadItem path="/develop/typescript/message-passing#handle-update" text="Handle Updates in Typescript" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/message-passing#handle-update" text="Handle Updates in .NET" archetype="feature-guide" />
 </RelatedReadContainer>
+-->
 
 ### Writing Query Handlers {#writing-query-handlers}
 
 Author queries using these per-language guides.
 
 <RelatedReadContainer>
-    <RelatedReadItem path="/develop/go/message-passing#handle-queries" text="Handle Queries in Go" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/java/message-passing#handle-queries" text="Handle Queries in Java" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/php/message-passing#handle-queries" text="Handle Queries in PHP" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#handle-queries" text="Handle Queries in Python" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/message-passing#handle-queries" text="Handle Queries in Typescript" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/dotnet/message-passing#handle-queries" text="Handle Queries in .NET" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/go/message-passing#handle-query" text="Handle Queries in Go" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#handle-query" text="Handle Queries in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#handle-query" text="Handle Queries in PHP" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#handle-query" text="Handle Queries in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#handle-query" text="Handle Queries in Typescript" archetype="feature-guide" />
+    <!-- DOES NOT EXIST YET
+    <RelatedReadItem path="/develop/dotnet/message-passing#handle-query" text="Handle Queries in .NET" archetype="feature-guide" />
+    -->
 </RelatedReadContainer>
