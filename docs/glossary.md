@@ -328,7 +328,7 @@ Learn more about the Public Preview release stage
 
 _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_
 
-#### [Query](/encyclopedia/workflow-message-passing#queries)
+#### [Query](/encyclopedia/workflow-message-passing#sending-queries)
 
 A Query is a synchronous operation that is used to report the state of a Workflow Execution.
 
@@ -394,7 +394,7 @@ A Side Effect is a way to execute a short, non-deterministic code snippet, such 
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Signal](/encyclopedia/workflow-message-passing#signals)
+#### [Signal](/encyclopedia/workflow-message-passing#sending-signals)
 
 A Signal is an asynchronous request to a Workflow Execution.
 
@@ -555,7 +555,7 @@ Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in 
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Update](/encyclopedia/workflow-message-passing#updates)
+#### [Update](/encyclopedia/workflow-message-passing#sending-updates)
 
 An Update is a request to and a response from Workflow Execution.
 
