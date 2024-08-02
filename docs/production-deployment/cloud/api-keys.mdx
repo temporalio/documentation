@@ -48,7 +48,8 @@ For instructions on API Key Management for your organization, see [global Admini
 
 ## Get started {#get-started}
 
-To get started, ensure you're a Temporal Cloud user. If you don't have an account with Temporal, **[sign up here](https://pages.temporal.io/get-started-with-cloud)**.
+To get started, ensure you're a Temporal Cloud user. 
+If you don't have an account with Temporal, **[sign up here](https://pages.temporal.io/get-started-with-cloud)**.
 
 ### Prerequisites
 
@@ -200,9 +201,12 @@ tcld apikey enable --id <api-key-id>
 Temporal Cloud supports secure programmatic access through API Key Authentication.
 
 
-API Keys for Client Connections are a new capability that extend the existing API Keys feature to afford users the ability to auth(n/z) into Temporal Cloud's "data plane" from Client Connections (Temporal CLI, SDKs) using an API Key.
+API Keys for Client Connections are a new capability that extend the existing API Keys feature to afford users the ability to authorization into Temporal Cloud's "data plane" from Client Connections (Temporal CLI, SDKs) using an API Key.
 
-> Note: This feature capability changes the UX for Namespace creation/management. With API Keys for Client Connections, the connection method for a Namespace is configurable, either mTLS or API Key.
+:::note 
+This feature capability changes the UX for Namespace creation/management. 
+With API Keys for Client Connections, the connection method for a Namespace is configurable, either mTLS or API Key.
+:::
 
 #### Key Feature Terms
 
@@ -222,7 +226,9 @@ Temporal Cloud API Keys facilitate identity-level authentication, for Users and 
 
 The process is as follows:
 
+```
 API Key (authentication) → User or Service Account (identity) → RBAC (authorization)
+```
 
 These API Keys are used to authenticate Temporal Cloud operator tools, including Temporal Cloud CLI (tcld) and the Temporal Cloud Operations API (Cloud Ops API), and Client Connection tools, including the Temporal CLI and SDKs.
 
@@ -233,7 +239,8 @@ Temporal Cloud API Keys functionality is designed for 3 types of use:
 
 1. User created API Keys - if enabled, users can create, delete, and update their own API Keys through the Cloud UI or tcld.
 2. Service Account created API Keys - Global Administrators can create, delete, and update API Keys for Service Accounts. 
-3. API Key governance - Temporal Cloud provides affordances for Global Administrators to govern and control API Key use within their accounts. Global Administrators can enable/disable API Keys for their accounts, and disable/delete API Keys for any User and/or Service Account.
+3. API Key governance - Temporal Cloud provides affordances for Global Administrators to govern and control API Key use within their accounts. 
+lobal Administrators can enable/disable API Keys for their accounts, and disable/delete API Keys for any User and/or Service Account.
 
 By default, API Keys must be enabled by a Global Administrator before use.
 
@@ -243,7 +250,7 @@ Prerequisites
 
 - Access to the Temporal Cloud UI or Temporal Cloud CLI (tcld) - to create an API Key
 - Enable access to API Keys for your Account
-- Create a new Namespace that allows API Key connectivity.
+- Create a new Namespace that allows API Key connectivity
 
 #### Temporal CLI
 
@@ -274,7 +281,8 @@ temporal workflow list --address <endpoint> \
 
 #### SDK
 
-To use your API Key with a Temporal SDK, use headers to specify a Bearer token is provided for authentication and the Namespace for request routing. Temporal will simplify this experience for users to reduce the use of headers in subsequent SDK release.
+To use your API Key with a Temporal SDK, use headers to specify a Bearer token is provided for authentication and the Namespace for request routing. 
+Temporal will simplify this experience for users to reduce the use of headers in subsequent SDK release.
 
 **Go SDK (v 1.26.0+)**
 
@@ -490,9 +498,11 @@ myClient.Connection.RpcMetadata = new Dictionary<string, string>()
 
 ## Best practices {#best-practices}
 
-- **Keep it secret | Keep it safe**: Treat your API Key as you would a password. Don't expose it in client-side code, public repositories, or other easily accessible places.
+- **Keep it secret | Keep it safe**: Treat your API Key as you would a password. 
+Don't expose it in client-side code, public repositories, or other easily accessible places.
 - **Rotate regularly**: Change your API Keys periodically to minimize potential harm from any leaks.
-- **Monitor usage**: Keep an eye on the usage metrics and logs. If you notice unexpected or unauthorized activity, revoke the key immediately.
+- **Monitor usage**: Keep an eye on the usage metrics and logs. 
+If you notice unexpected or unauthorized activity, revoke the key immediately.
 - **KMS**: Use a KMS to reduce risks of key leak.
 
 ## Troubleshooting {#troubleshooting}
@@ -511,7 +521,9 @@ A: 10 per User.
 
 **Q: Is there an expiration for the API Keys?**
 
-A: Yes. During Preview, API Keys have an upper bound of 90 days. In a subsequent release, long-lived API Keys will become available. Temporal recommends rotating API Keys periodically.
+A: Yes. During Preview, API Keys have an upper bound of 90 days. 
+In a subsequent release, long-lived API Keys will become available. 
+Temporal recommends rotating API Keys periodically.
 
 **Q: What should I do if I lost my API Key secret?**
 
