@@ -197,7 +197,7 @@ tcld apikey disable --id <api-key-id>
 tcld apikey enable --id <api-key-id>
 ```
 
-### API Keys for Client Connections
+## API Keys for Client Connections
 
 Temporal Cloud supports secure programmatic access through API Key Authentication.
 
@@ -208,7 +208,7 @@ This feature capability changes the UX for Namespace creation/management.
 With API Keys for Client Connections, the connection method for a Namespace is configurable, either mTLS or API Key.
 :::
 
-#### Overview
+### Overview
 
 Temporal Cloud API Keys facilitate identity-level authentication, for Users and Service Accounts.
 Each key is unique to a single identity and ties directly to the identity's Role-Based Access Control (RBAC) permissions, ensuring secure and appropriate access.
@@ -221,7 +221,7 @@ API Key (authentication) → User or Service Account (identity) → RBAC (author
 
 These API Keys are used to authenticate Temporal Cloud operator tools, including Temporal Cloud CLI (tcld) and the Temporal Cloud Operations API (Cloud Ops API), and Client Connection tools, including the Temporal CLI and SDKs.
 
-#### Key Terms
+**Key Terms:**
 
 - **API Key**: Authentication token that can be used in the Temporal CLI, SDKs, tcld, the Cloud Operations API, and the Terraform Provider.
 - **gRPC Endpoint**: The gRPC endpoint used in the Temporal CLI and/or SDKs to connect to Temporal Cloud.
@@ -230,18 +230,9 @@ These API Keys are used to authenticate Temporal Cloud operator tools, including
 - **gRPC header**: Connection information supplied by the user in the Temporal CLI or SDK when connecting to Temporal Cloud using an API Key.
   Currently, in most SDKs and the CLI, the gPRC header should include a Bearer Token with the API Key and a Namespace header.
 
-#### API Key Summary
-
-Temporal Cloud API Keys functionality is designed for 3 types of use:
-
-1. User created API Keys - if enabled, users can create, delete, and update their own API Keys through the Cloud UI or tcld.
-2. Service Account created API Keys - Global Administrators can create, delete, and update API Keys for Service Accounts.
-3. API Key governance - Temporal Cloud provides affordances for Global Administrators to govern and control API Key use within their accounts.
-   Global Administrators can enable/disable API Keys for their accounts, and disable/delete API Keys for any User and/or Service Account.
-
 By default, API Keys must be enabled by a Global Administrator before use.
 
-#### Get started
+### Get started
 
 Prerequisites
 
@@ -249,7 +240,7 @@ Prerequisites
 - Enable access to API Keys for your Account
 - Create a new Namespace that allows API Key connectivity
 
-#### Temporal CLI
+### Temporal CLI
 
 To use your API Key with the Temporal CLI, you can pass in the API Key to each command using the `--api-key` flag or an environmental variable (best practice).
 
@@ -276,7 +267,7 @@ temporal workflow list --address <endpoint> \
 --grpc-meta "temporal-namespace=<namespace.accountid>"
 ```
 
-#### SDK
+### SDK
 
 To use your API Key with a Temporal SDK, use headers to specify a Bearer token is provided for authentication and the Namespace for request routing.
 Temporal will simplify this experience for users to reduce the use of headers in subsequent SDK release.
@@ -324,7 +315,7 @@ creds := client.NewAPIKeyDynamicCredentials(
 myKey = myKeyUpdated
 ```
 
-**Go SDK (pre v 1.26.0)**
+#### Go SDK (pre v 1.26.0)
 
 Initial connection:
 
@@ -357,7 +348,7 @@ Update API key:
 apiKeyProvider.APIKey = myKeyUpdated
 ```
 
-**Java SDK**
+#### Java SDK
 
 At a client level:
 
@@ -405,7 +396,7 @@ WorkflowServiceStubsOptions stubOptions =
 myKey = "Bearer " + <new APIKey>;
 ```
 
-**Python SDK (v 1.6.0+)**
+#### Python SDK (v 1.6.0+)
 
 Initial connection:
 
@@ -425,7 +416,7 @@ Update API key (newer SDK):
 my_client.api_key = my_key_updated
 ```
 
-**Python SDK (pre v 1.6.0)**
+#### Python SDK (pre v 1.6.0)
 
 Initial connection:
 
@@ -444,7 +435,7 @@ Update API key:
 my_client.rpc_metadata = {"Authorization": f"Bearer {<my_key_updated>}"}
 ```
 
-**.NET SDK (v 1.1.0+)**
+#### .NET SDK (v 1.1.0+)
 
 Initial connection:
 
