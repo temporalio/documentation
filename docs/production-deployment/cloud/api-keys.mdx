@@ -216,10 +216,10 @@ These API Keys are used to authenticate Temporal Cloud operator tools, including
 
 The API Key is the authentication token that can be used in the Temporal CLI, SDKs, tcld, the Cloud Operations API, and the Terraform Provider. 
 The gRPC endpoint used in the Temporal CLI and/or SDKs to connect to Temporal Cloud. 
-For an mTLS connection, the endpoint is in the format `<namespace>.<account>.tmprl.cloud:7233`. 
-For an API Key connection, the endpoint is in the format `<region>.<cloud provider>.api.temporal.io:7233`
+- For an mTLS connection, the endpoint is in the format `<namespace>.<account>.tmprl.cloud:7233`. 
+- For an API Key connection, the endpoint is in the format `<region>.<cloud_provider>.api.temporal.io:7233`
 The gRPC header is the connection information supplied by the user in the Temporal CLI or SDK when connecting to Temporal Cloud using an API Key.
-Currently, in most SDKs and the CLI, the gPRC header should include a Bearer Token with the API Key and a Namespace header.
+Currently, in most SDKs and the CLI, the gPRC header should include a Bearer Token with the API Key and a Namespace header, specifically `temporal-namespace`.
 
  Temporal Cloud API Keys functionality is designed for 3 types of use:
 
@@ -247,16 +247,16 @@ In addition to passing in the API Key, the following client options are required
 
 - `--address`: Provide the Namespace's gRPC endpoint located in the Namespace UI in the gRPC endpoint box.
   - For API Key connectivity, the endpoint format is `<region>.<cloud provider>.api.temporal.io:7233`
-  - Can be set using an environmental variable
+  - Can be set using an environment variable
 - `--namespace`: Provide the namespace.accountId that appears at the top of the Namespace page in the UI.
   - Format is `<namespace.accountId>`
-  - Can be set using an environmental variable
+  - Can be set using an environment variable
 - `--grpc-meta "temporal-namespace="`: Provide the namespace.accountId again as grpc-metadata.
 - `--tls` for a secure connection with the appropriate options
   - Potentially, with `--tls-disable-host-verification` to disable host verification
-  - Can be set using an environmental variable
+  - Can be set using an environment variable
 
-Here's an example of connecting to Temporal Cloud from the CLI using an environmental variable for the API Key:
+Here's an example of connecting to Temporal Cloud from the CLI using an environment variable for the API Key:
 
 ```bash
 export TEMPORAL_API_KEY=<key secret>
