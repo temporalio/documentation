@@ -29,7 +29,7 @@ tags:
 
 ## Signals {#signals}
 
-A [Signal](/encyclopedia/workflow-message-passing#signals) is a message sent to a running Workflow Execution.
+A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is a message sent to a running Workflow Execution.
 
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
@@ -66,7 +66,7 @@ Things to consider when defining Signals:
   In some cases, Signal method implementation might require some initialization to be performed by the Workflow method code first—for example, when the Signal processing depends on, and is defined by the Workflow input.
   In this case, you can use a flag to determine whether the Workflow method is already triggered; if not, persist the Signal data into a collection for delayed processing by the Workflow method.
 
-### Handle Signals in a Workflow in Java {#handle-signals}
+### Handle Signals in a Workflow in Java {#handle-signal}
 
 **How to handle Signals in a Workflow using the Java SDK.**
 
@@ -171,7 +171,7 @@ Customer customer = new Customer("John", "Spanish", "john@john.com");
 workflow.addCustomer(customer); //addCustomer is the Signal method defined in the greetCustomer Workflow.
 ```
 
-See [Handle Signals](#handle-signals) for details on how to handle Signals in a Workflow.
+See [Handle Signals](#handle-signal) for details on how to handle Signals in a Workflow.
 
 ### Send a Signal from a Workflow {#send-signal-from-workflow}
 
@@ -269,7 +269,7 @@ Note that the Signal handler `setCustomer` is executed before the `@WorkflowMeth
 
 ## Queries {#queries}
 
-A [Query](/encyclopedia/workflow-message-passing#queries) is a synchronous operation that is used to get the state of a Workflow Execution.
+A [Query](/encyclopedia/workflow-message-passing#sending-queries) is a synchronous operation that is used to get the state of a Workflow Execution.
 
 ### Define a Query {#define-query}
 
@@ -501,7 +501,7 @@ Note that you can only register one `Workflow.registerListener(Object)` per Work
 
 ## Updates {#updates}
 
-An [Update](/encyclopedia/workflow-message-passing#updates) is an operation that can mutate the state of a Workflow Execution and return a response.
+An [Update](/encyclopedia/workflow-message-passing#sending-updates) is an operation that can mutate the state of a Workflow Execution and return a response.
 
 ### Define Update {#define-update}
 
