@@ -206,7 +206,7 @@ Temporal Cloud supports secure programmatic access through API Key Authenticatio
 Temporal Cloud API Keys facilitate identity-level authentication, for Users and Service Accounts.
 Each key is unique to a single identity and ties directly to the identity's Role-Based Access Control (RBAC) permissions, ensuring secure and appropriate access.
 
-The process is as follows:
+The relationship is as follows:
 
 ```
 API Key (authentication) → User or Service Account (identity) → RBAC (authorization)
@@ -221,7 +221,15 @@ For an API Key connection, the endpoint is in the format `<region>.<cloud provid
 The gRPC header is the connection information supplied by the user in the Temporal CLI or SDK when connecting to Temporal Cloud using an API Key.
 Currently, in most SDKs and the CLI, the gPRC header should include a Bearer Token with the API Key and a Namespace header.
 
-By default, API Keys must be enabled by a Global Administrator before use.
+ Temporal Cloud API Keys functionality is designed for 3 types of use:
+
+ 1. User created API Keys - if enabled, users can create, delete, and update their own API Keys through the Cloud UI or tcld.
+ 2. Service Account created API Keys - Global Administrators can create, delete, and update API Keys for a Service Account. 
+ 3. API Key governance - Temporal Cloud provides affordances for Global Administrators to govern and control API Key use within their accounts. Global Administrators can enable/disable API Keys for their accounts, and disable/delete API Keys for any User and/or Service Account.
+
+
+By default, API Keys must be enabled by a Global Administrator before use. This action is an account-level setting.
+
 
 ### Get started
 
@@ -233,7 +241,7 @@ Prerequisites
 
 ### Temporal CLI
 
-To use your API Key with the Temporal CLI, you can pass in the API Key to each command using the `--api-key` flag or an environmental variable (best practice).
+To use your API Key with the Temporal CLI, you can pass in the API Key to each command using the `--api-key` flag or an environment variable (recommended).
 
 In addition to passing in the API Key, the following client options are required:
 
