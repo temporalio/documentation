@@ -214,29 +214,36 @@ API Key (authentication) → User or Service Account (identity) → RBAC (author
 
 These API Keys are used to authenticate Temporal Cloud operator tools, including Temporal Cloud CLI (tcld) and the Temporal Cloud Operations API (Cloud Ops API), and Client Connection tools, including the Temporal CLI and SDKs.
 
-The API Key is the authentication token that can be used in the Temporal CLI, SDKs, tcld, the Cloud Operations API, and the Terraform Provider. 
-The gRPC endpoint used in the Temporal CLI and/or SDKs to connect to Temporal Cloud. 
-- For an mTLS connection, the endpoint is in the format `<namespace>.<account>.tmprl.cloud:7233`. 
+The API Key is the authentication token that can be used in the Temporal CLI, SDKs, tcld, the Cloud Operations API, and the Terraform Provider.
+The gRPC endpoint used in the Temporal CLI and/or SDKs to connect to Temporal Cloud.
+
+- For an mTLS connection, the endpoint is in the format `<namespace>.<account>.tmprl.cloud:7233`.
 - For an API Key connection, the endpoint is in the format `<region>.<cloud_provider>.api.temporal.io:7233`
-The gRPC header is the connection information supplied by the user in the Temporal CLI or SDK when connecting to Temporal Cloud using an API Key.
-Currently, in most SDKs and the CLI, the gPRC header should include a Bearer Token with the API Key and a Namespace header, specifically `temporal-namespace`.
+  The gRPC header is the connection information supplied by the user in the Temporal CLI or SDK when connecting to Temporal Cloud using an API Key.
+  Currently, in most SDKs and the CLI, the gPRC header should include a Bearer Token with the API Key and a Namespace header, specifically `temporal-namespace`.
 
- Temporal Cloud API Keys functionality is designed for 3 types of use:
+Temporal Cloud API Keys functionality is designed for 3 types of use:
 
- 1. User created API Keys - if enabled, users can create, delete, and update their own API Keys through the Cloud UI or tcld.
- 2. Service Account created API Keys - Global Administrators can create, delete, and update API Keys for a Service Account. 
- 3. API Key governance - Temporal Cloud provides affordances for Global Administrators to govern and control API Key use within their accounts. Global Administrators can enable/disable API Keys for their accounts, and disable/delete API Keys for any User and/or Service Account.
+1. User created API Keys - if enabled, users can create, delete, and update their own API Keys through the Cloud UI or tcld.
+2. Service Account created API Keys - Global Administrators can create, delete, and update API Keys for a Service Account.
+3. API Key governance - Temporal Cloud provides affordances for Global Administrators to govern and control API Key use within their accounts. Global Administrators can enable/disable API Keys for their accounts, and disable/delete API Keys for any User and/or Service Account.
 
+API Keys can be used in:
+
+- [Temporal CLI v 0.12](/cli)
+- [SDKs (latest recommended)](/develop)
+- [Temporal Cloud CLI tcld](/production-deployment/cloud/tcld/index.mdx)
+- [The Cloud Operations API](/production-deployment/cloud/operation-api.mdx)
+- [Temporalʼs Terraform Provider](/production-deployment/cloud/terraform-provider)
 
 By default, API Keys must be enabled by a Global Administrator before use. This action is an account-level setting.
-
 
 ### Get started
 
 Prerequisites
 
-- Access to the Temporal Cloud UI or Temporal Cloud CLI (tcld) - to create an API Key
-- Enable access to API Keys for your Account
+- Access to the [Temporal Cloud UI](https://cloud.temporal.io/) or Temporal Cloud CLI [(tcld)](/cloud/tcld/) - to create an API Key
+- [Enable access to API Keys](/cloud/api-keys#manage-api-keys) for your Account
 - Create a new Namespace that allows API Key connectivity
 
 ### Temporal CLI
@@ -251,9 +258,9 @@ In addition to passing in the API Key, the following client options are required
 - `--namespace`: Provide the namespace.accountId that appears at the top of the Namespace page in the UI.
   - Format is `<namespace.accountId>`
   - Can be set using an environment variable
-- `--grpc-meta "temporal-namespace="`: Provide the namespace.accountId again as grpc-metadata.
+- `--grpc-meta "temporal-namespace="`: Provide the namespace.accountId again as grpc-metadata
 - `--tls` for a secure connection with the appropriate options
-  - Potentially, with `--tls-disable-host-verification` to disable host verification
+  - With `--tls-disable-host-verification` to disable host verification
   - Can be set using an environment variable
 
 Here's an example of connecting to Temporal Cloud from the CLI using an environment variable for the API Key:
