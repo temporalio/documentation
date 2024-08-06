@@ -288,6 +288,7 @@ module.exports = {
                 "production-deployment/cloud/account-setup/users",
               ],
             },
+            "production-deployment/cloud/service-accounts",
             "production-deployment/cloud/api-keys",
             {
               type: "category",
