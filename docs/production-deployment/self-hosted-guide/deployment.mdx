@@ -59,9 +59,11 @@ To try other configurations (different dependencies and databases), or to try a 
 
 ### Temporal Server binaries
 
-You can run a complete Temporal Server by deploying just two Go binaries -- the [core Temporal Server](https://github.com/temporalio/temporal/releases/), and the [Temporal UI Server](https://github.com/temporalio/ui-server/releases). Refer to our [tutorial site](https://learn.temporal.io/) to learn how to deploy Temporal binaries behind an [Nginx reverse proxy](https://learn.temporal.io/tutorials/infrastructure/nginx-sqlite-binary/) or an [Envoy edge proxy](https://learn.temporal.io/tutorials/infrastructure/envoy-sqlite-binary/).
+You can run a complete Temporal Server by deploying just two Go binaries -- the [core Temporal Server](https://github.com/temporalio/temporal/releases/), and the [Temporal UI Server](https://github.com/temporalio/ui-server/releases).
+Refer to our [tutorial site](https://learn.temporal.io/) to learn how to deploy Temporal binaries behind an [Nginx reverse proxy](https://learn.temporal.io/tutorials/infrastructure/nginx-sqlite-binary/) or an [Envoy edge proxy](https://learn.temporal.io/tutorials/infrastructure/envoy-sqlite-binary/).
 
-Each service can also be deployed separately. For example, if you are using Kubernetes, you could have one service per pod, so they can scale independently in the future.
+Each service can also be deployed separately.
+For example, if you are using Kubernetes, you could have one service per pod, so they can scale independently in the future.
 
 In Docker, you could run each service in its own container, using the `SERVICES` flag to specify the service:
 
