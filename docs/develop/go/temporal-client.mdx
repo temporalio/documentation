@@ -244,7 +244,7 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "Yo
 
 In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/workers#task-queue).
 
-You can configure Task Queues that are host-specific, Worker-specific, Workflow-specific, and so on, to effectively distribute your application load.
+You can configure Task Queues that are host-specific, Worker-specific or Workflow-specific to distribute your application load.
 For more information, refer to [Task Queues Processing Tuning](/develop/worker-performance#task-queues-processing-tuning) and [Worker Versioning](https://docs.temporal.io/workers#worker-versioning).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
