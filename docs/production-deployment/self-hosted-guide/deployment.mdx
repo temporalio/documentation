@@ -1,0 +1,95 @@
+---
+id: deployment
+title: Deploying a Temporal Service
+sidebar_label: Deployment
+description: Deploy a Temporal Service using Docker, Kubernetes, or from scratch. Requires a database like Cassandra, MySQL, or PostgreSQL. Customize setup for your infrastructure and tooling.
+slug: /self-hosted-guide/deployment
+toc_max_heading_level: 4
+keywords:
+  - cluster
+  - guide-context
+  - how-to
+  - server
+tags:
+  - cluster
+  - guide-context
+  - how-to
+  - server
+---
+
+There are many ways to self-host a [Temporal Service](/clusters).
+The right way for you depends entirely on your use case and where you plan to run it.
+
+For step-by-step guides on deploying and configuring Temporal, refer to our [Infrastructure tutorials](https://learn.temporal.io/tutorials/infrastructure/).
+
+### Minimum requirements
+
+The Temporal Server depends on a database.
+
+Supported databases include the following:
+
+- [Cassandra](/self-hosted-guide/visibility#cassandra)
+- [MySQL](/self-hosted-guide/visibility#mysql)
+- [PostgreSQL](/self-hosted-guide/visibility#postgresql)
+- [SQLite](/self-hosted-guide/visibility#sqlite)
+
+### Docker & Docker Compose
+
+You can run a Temporal Service in [Docker](https://docs.docker.com/engine/install) containers using [Docker Compose](https://docs.docker.com/compose/install).
+
+If you have Docker and Docker Compose installed, all you need to do is clone the [temporalio/docker-compose](https://github.com/temporalio/docker-compose) repo and run the `docker compose up` command from its root.
+
+The `temporalio/docker-compose` repo comes loaded with a variety of configuration templates that enable you to try all three databases that the Temporal Platform supports (PostgreSQL, MySQL, Cassandra).
+It also enables you to try [Advanced Visibility](/visibility#advanced-visibility) using [Search Attributes](/visibility#search-attribute), emit metrics, and even play with the [Archival](/clusters#archival) feature.
+The Docker images in this repo are produced using the Temporal Server [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script.
+This script defaults to creating images that run all the Temporal Server services in a single process.
+You can use this script as a starting point for producing your own images.
+
+The following commands start and run a Temporal Service in Docker using the default configuration (docker-compose.yml):
+
+```bash
+git clone https://github.com/temporalio/docker-compose.git
+cd docker-compose
+docker compose up
+```
+
+Local [Temporal Clients](/encyclopedia/temporal-sdks#temporal-client) and [Workers](/workers) can connect to the Temporal Service running in Docker at 127.0.0.1:7233 (default connection for most SDKs) and the Temporal Web UI at 127.0.0.1:8080.
+
+To try other configurations (different dependencies and databases), or to try a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
+
+### Temporal Server binaries
+
+You can run a complete Temporal Server by deploying just two Go binaries -- the [core Temporal Server](https://github.com/temporalio/temporal/releases/), and the [Temporal UI Server](https://github.com/temporalio/ui-server/releases). Refer to our [tutorial site](https://learn.temporal.io/) to learn how to deploy Temporal binaries behind an [Nginx reverse proxy](https://learn.temporal.io/tutorials/infrastructure/nginx-sqlite-binary/) or an [Envoy edge proxy](https://learn.temporal.io/tutorials/infrastructure/envoy-sqlite-binary/).
+
+Each service can also be deployed separately. For example, if you are using Kubernetes, you could have one service per pod, so they can scale independently in the future.
+
+In Docker, you could run each service in its own container, using the `SERVICES` flag to specify the service:
+
+```bash
+docker run
+    # persistence/schema setup flags omitted
+    -e SERVICES=history \                      -- Spin up one or more: history, matching, worker, frontend
+    -e LOG_LEVEL=debug,info \                           -- Logging level
+    -e DYNAMIC_CONFIG_FILE_PATH=config/foo.yaml         -- Dynamic config file to be watched
+    temporalio/server:<tag>
+```
+
+The environment variables supported by the Temporal Docker images are documented [on Docker Hub](https://hub.docker.com/r/temporalio/auto-setup).
+
+Each Temporal Server release ships an [Auto Setup](https://temporal.io/blog/auto-setup) Docker image that includes an [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script.
+We recommend using this script for initial schema setup of each supported database.
+
+### Importing the Server package
+
+The Temporal Server is a standalone Go application that can be [imported](/references/server-options) into another project.
+
+You might want to do this to pass custom plugins or any other customizations through the [Server Options](/references/server-options).
+Then you can build and run a binary that contains your customizations.
+
+This requires Go v1.19 or later, as specified in the Temporal Server [Build prerequisites](https://github.com/temporalio/temporal/blob/main/CONTRIBUTING.md#build-prerequisites).
+
+### Helm charts
+
+[Temporal Helm charts](https://github.com/temporalio/helm-charts) enable you to get a Temporal Service running on [Kubernetes](https://kubernetes.io/) by deploying the Temporal Server services to individual pods and connecting them to your existing database and Elasticsearch instances.
+
+The Temporal Helm charts repo contains [extensive documentation](https://github.com/temporalio/helm-charts/blob/main/README.md) about Kubernetes deployments.

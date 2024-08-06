@@ -347,7 +347,7 @@ module.exports = {
             id: "production-deployment/self-hosted-guide/index",
           },
           items: [
-            "production-deployment/self-hosted-guide/setup",
+            "production-deployment/self-hosted-guide/deployment",
             "production-deployment/self-hosted-guide/checklist",
             "production-deployment/self-hosted-guide/defaults",
             "production-deployment/self-hosted-guide/security",
