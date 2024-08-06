@@ -1800,7 +1800,17 @@
       "destination": "/self-hosted-guide/monitoring"
     },
     {
-      "source": "production-readiness/:path*",
+      "source": "/production-readiness/develop#securing-your-data",
+      "destination": "/production-deployment/data-encryption",
+      "permanent": true
+    },
+    {
+      "source": "/production-readiness/develop#codec-server-setup",
+      "destination": "/production-deployment/data-encryption",
+      "permanent": true
+    },
+    {
+      "source": "/production-readiness/:path*",
       "destination": "/self-hosted-guide"
     },
     {
@@ -1813,7 +1823,11 @@
     },
     {
       "source": "/temporal/release-stages",
-      "destination": "/evaluate/release-stages"
+      "destination": "/evaluate/development-production-features/release-stages"
+    },
+    {
+      "source": "/evaluate/release-stages",
+      "destination": "/evaluate/development-production-features/release-stages"
     },
     {
       "source": "/getting-started",
@@ -1910,6 +1924,16 @@
     {
       "source": "/dev-guide/:path*",
       "destination": "/develop/:path",
+      "permanent": true
+    },
+    {
+      "source": "/production-readiness/develop#securing-your-data",
+      "destination": "/production-deployment/data-encryption",
+      "permanent": true
+    },
+    {
+      "source": "/production-readiness/develop#codec-server-setup",
+      "destination": "/production-deployment/data-encryption",
       "permanent": true
     }
   ]
