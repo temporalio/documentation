@@ -13,6 +13,48 @@ tags:
 description: Experience disaster-tolerant deployment with Temporal Cloud's multi-region Namespaces. Ensure high availability and data integrity through automated failover and seamless data synchronization among regions, supported by a 99.99% SLA.
 ---
 
+## External to Temporal
+
+* YES <a href="https://github.com/temporalio/build-audiobook-go">HREF External Working</a>
+* YES <a href="https://github.com/temporalio/build-audiobook-go#setup">HREF External Working w anchor</a>
+* YES <a href="https://github.com/temporalio/build-audiobook-go?tab=readme-ov-file#setup">HREF External Working w anchor and query</a>
+* 404 <a href="https://github.com/temporalio/build-audiobook-nogo">HREF External Broken</a>
+* TOP OF PAGE <a href="https://github.com/temporalio/build-audiobook-go#setupdoesnotexist">HREF External w/ broken anchor</a>
+* TOP OF PAGE <a href="https://github.com/temporalio/build-audiobook-go?tab=readme-ov-file#setupdoesnotexist">HREF External w query and broken anchor</a>
+* YES [Markdown External Working](https://github.com/temporalio/build-audiobook-go)
+* YES [Markdown External Working w anchor](https://github.com/temporalio/build-audiobook-go#setup)
+* YES [Markdown External Working w anchor and query](https://github.com/temporalio/build-audiobook-go?tab=readme-ov-file#setup)
+* 404 [Markdown anchor External Broken](https://github.com/temporalio/build-audiobook-go-nogo)
+* TOP OF PAGE [Markdown External w broken anchor](https://github.com/temporalio/build-audiobook-go#setupdoesnotexist)
+* TOP OF PAGE [Markdown External w broken anchor and query](https://github.com/temporalio/build-audiobook-go?tab=readme-ov-file#setupdoesnotexist)
+
+## Internal to this page
+
+* YES [Relative anchor](#multi-region-intro)
+* YES [Page ref on page](/cloud/multi-region#multi-region-intro)
+* N/A Cannot test fully specified URL  as that will go to real site
+
+### Broken versions
+
+* BREAKS BUILD `[Relative anchor](#multi-region-introxx)`
+* BREAKS BUILD `[Page ref on page](/cloud/multi-region#multi-region-introxx)`
+* Cannot test fully specified URL as that will go to real site
+
+## Internal to docs site
+
+* YES [Page ref on page](/cloud/pricing#pricing-faq)
+* N/A Cannot test fully specified URL  as that will go to real site
+
+### Broken versions
+
+* BREAKS BUILD `[Page ref on page](/cloud/pricing#pricing-faqxx)`
+* BREAKS BUILD `[Page ref on page](/cloud/pricing#doesntexist)`
+* Cannot test fully specified URL  as that will go to real site
+
+## External over to the learn site
+
+We don't cross reference, so treated as external site like github.
+
 :::tip Support, stability, and dependency info
 
 Multi-region Namespaces are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for Temporal Cloud.
