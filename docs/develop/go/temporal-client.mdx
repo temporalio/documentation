@@ -244,9 +244,6 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "Yo
 
 In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/workers#task-queue).
 
-You can configure Task Queues that are host-specific, Worker-specific or Workflow-specific to distribute your application load.
-For more information, refer to [Task Queues Processing Tuning](/develop/worker-performance#task-queues-processing-tuning) and [Worker Versioning](https://docs.temporal.io/workers#worker-versioning).
-
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `TaskQueue` field, and pass the instance to the `ExecuteWorkflow` call.
@@ -265,6 +262,9 @@ if err != nil {
   // ...
 }
 ```
+
+You can configure Task Queues that are host-specific, Worker-specific or Workflow-specific to distribute your application load.
+For more information, refer to [Task Queues Processing Tuning](/develop/worker-performance#task-queues-processing-tuning) and [Worker Versioning](https://docs.temporal.io/workers#worker-versioning).
 
 ### Set custom Workflow Id {#workflow-id}
 
