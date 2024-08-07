@@ -13,10 +13,6 @@ tags:
   - term
 ---
 
-[Temporal Cloud](https://temporal.io/cloud) serves as a software-as-a-service (SaaS) infrastructure platform, specifically designed to manage the durability of your Temporal Applications.
-**Importantly, it does not execute your code directly.** Users of Temporal Cloud must have their own environment to run Temporal Applications.
-Essentially a [Temporal Application](/encyclopedia/temporal-sdks) refers to any application developed using a Temporal SDK.
-
 ### Temporal production deployment
 
 When it comes to running Temporal in production, you have two main options:
@@ -35,22 +31,11 @@ Temporal Cloud and self-hosted Temporal Services have some similarities, as both
 Additionally, in both cases, you are responsible for managing and hosting your application code and running your Workers.
 The choice between self-hosted and Temporal Cloud depends on your specific requirements, resources, and expertise.
 
-### Features of Temporal Cloud
+Use of Temporal Cloud adds several enterprise-grade benefits such as contractual reliability guarantees, eliminating the need for staff to maintain the Temporal server(s), built-in disaster recovery options, expert support, and usage based pricing.
 
-Based on the open-source Temporal Server software, Temporal Cloud offers comparable features without the overhead of setting up and managing a production-level Temporal Service.
-It provides [units of isolation called Namespace](/cloud/security#namespace-isolation), which you can provision for different environments such as development, testing, integration, staging, and production.
+### High level system topology of the Temporal Service
 
-Temporal Cloud provides additional features and benefits, such as:
-
-- [Globally available](/cloud/service-availability): Temporal Cloud is compatible with applications deployed in various cloud environments or data centers and operates globally.
-- [History Export](/cloud/export): Temporal Cloud allows you to export your Workflow Execution Event Histories for long-term storage, auditing, or analysis purposes.
-- [RBAC](/cloud/saml): Temporal Cloud provides RBAC which supports SAML Single Sign-On (SSO) authentication. This provides a secure and seamless way for users to access Temporal Cloud resources using their organization's credentials, simplifying user management and enhancing security.
-- [Support](/cloud/support): Temporal Cloud includes the support, services and training needed to onboard you successfully, design and deploy your application efficiently and scale. Our team has extensive knowledge of the Temporal project, and a broad set of skills to help you succeed with any project.
-- [Consumption based pricing](/cloud/pricing): Temporal Cloud is a consumption-based service; you pay only for what you need when you need it. Our pricing derives from your use of actions, storage, and support. Pricing is flexible, transparent, and predictable, so you know your costs and never pay for unused capacity.
-
-### High level system topology
-
-There are two major parts of the Temporal Platform that work together to create the fully functioning system.
+There are two major parts of the Temporal Service that work together to create the fully functioning system. Temporal Cloud is an offering of the Temporal Service.
 
 1. Temporal SDK: The Temporal software development kit (SDK) is available in various languages and can be integrated as a dependency into your new or existing application.
    It offers developers a comprehensive development framework and APIs, facilitating the creation and management of applications.
