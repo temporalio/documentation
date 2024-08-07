@@ -35,6 +35,7 @@ module.exports = {
             "evaluate/development-production-features/schedules",
             "evaluate/development-production-features/cloud-automation",
             "evaluate/development-production-features/low-latency",
+            "evaluate/development-production-features/multi-tenancy",
             
             {
               type: "category",
@@ -347,7 +348,7 @@ module.exports = {
             id: "production-deployment/self-hosted-guide/index",
           },
           items: [
-            "production-deployment/self-hosted-guide/setup",
+            "production-deployment/self-hosted-guide/deployment",
             "production-deployment/self-hosted-guide/checklist",
             "production-deployment/self-hosted-guide/defaults",
             "production-deployment/self-hosted-guide/security",
