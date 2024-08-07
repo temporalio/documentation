@@ -75,8 +75,8 @@ class GreetingWorkflow:
         self.approver_name: Optional[str] = None
         self.language = Language.English
         self.greetings = {
-            Language.English: "Hello, world!",
-            Language.Chinese: "你好，世界!",
+            Language.English: "Hello, world",
+            Language.Chinese: "你好，世界",
         }
 
     @workflow.run
@@ -346,12 +346,12 @@ As an example of an async handler, in the following code sample the Update handl
 async def call_greeting_service(to_language: Language) -> Optional[str]:
     await asyncio.sleep(0.2)  # Pretend that we are calling a remote service.
     greetings = {
-        Language.Arabic: "مرحبا بالعالم!",
-        Language.Chinese: "你好，世界!",
-        Language.English: "Hello, world!",
-        Language.French: "Bonjour, monde!",
-        Language.Hindi: "नमस्ते दुनिया!",
-        Language.Spanish: "¡Hola mundo!",
+        Language.Arabic: "مرحبا بالعالم",
+        Language.Chinese: "你好，世界",
+        Language.English: "Hello, world",
+        Language.French: "Bonjour, monde",
+        Language.Hindi: "नमस्ते दुनिया",
+        Language.Spanish: "Hola mundo",
     }
     return greetings.get(to_language)
 
