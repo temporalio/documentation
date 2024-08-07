@@ -67,7 +67,7 @@ The following example shows how to use `MicrometerClientStatsReporter` to define
 //...
 ```
 
-For more details, see the [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics).
+For more details, see the [Java SDK Samples](https://github.com/temporalio/samples-java/tree/637c2e66fd2dab43d9f3f39e5fd9c55e4f3884f0/core/src/main/java/io/temporal/samples/metrics).
 For details on configuring a Prometheus scrape endpoint with Micrometer, see the [Micrometer Prometheus Configuring](https://micrometer.io/docs/registry/prometheus#_configuring) documentation.
 
 ## How to setup Tracing {#tracing}
@@ -157,7 +157,7 @@ The steps to using custom Search Attributes are:
 - Create a new Search Attribute in your Temporal Service using `temporal operator search-attribute create` or the Cloud UI.
 - Set the value of the Search Attribute for a Workflow Execution:
   - On the Client by including it as an option when starting the Execution.
-  - In the Workflow by calling `UpsertSearchAttributes`.
+  - In the Workflow by calling `upsertTypedSearchAttributes`.
 - Read the value of the Search Attribute:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
@@ -165,60 +165,82 @@ The steps to using custom Search Attributes are:
   - [In the Temporal CLI](/cli/workflow#list).
   - In code by calling `ListWorkflowExecutions`.
 
-Here is how to query Workflow Executions:
-
 ### How to set custom Search Attributes {#custom-search-attributes}
 
 After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
-To set a custom Search Attribute, call the [`setSearchAttributes()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setSearchAttributes(java.util.Map)) method.
+When starting a Workflow Execution with your Client, include the Custom Search Attribute in the options using `WorkflowOptions.newBuilder().setTypedSearchAttributes()`:
 
 ```java
-WorkflowOptions workflowOptions =
-    WorkflowOptions.newBuilder()
-        .setSearchAttributes(generateSearchAttributes())
+
+    // In a shared constants file, so all files have access
+
+    public static final SearchAttributeKey<Boolean> IS_ORDER_FAILED = SearchAttributeKey.forBoolean("isOrderFailed");
+...
+    // In main
+    WorkflowOptions options = WorkflowOptions.newBuilder()
+        .setWorkflowId(workflowID)
+        .setTaskQueue(Constants.TASK_QUEUE_NAME)
+        .setTypedSearchAttributes(generateSearchAttributes())
         .build();
+
+    PizzaWorkflow workflow = client.newWorkflowStub(PizzaWorkflow.class, options);
+...
+
+    // Further down in the file
+    private static Map<String, Object> generateSearchAttributes(){
+        return SearchAttributes.newBuilder().set(Constants.IS_ORDER_FAILED, false).build();
+    }
 ```
 
-`generateSearchAttributes()` is a `Map<String, ?>` from the Search Attribute used as the key to a value of one of the following types.
+Each `SearchAttribute` object represents a custom attribute name, and the value is a [`SearchAttributeKey`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/SearchAttributeKey.html#forBoolean(java.lang.String))  representing a specific type. Currently the following types are supported:
 
-- `String`
-- `Long`
-- `Integer`
-- `Boolean`
-- `Double`
-- `OffsetDateTime`
+* Boolean
+* Double
+* Long
+* KeyWord
+* KeyWordList
+* Text
+
+In this example `isOrderFailed` is set as a Search Attribute. This attribute is 
+useful for querying Workflows based the success/failure of customer orders.
 
 ### How to upsert Search Attributes {#upsert-search-attributes}
 
-You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
-
-In your Workflow code, call the [`upsertSearchAttributes(Map<String, ?> searchAttributes)`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertSearchAttributes(java.util.Map)) method.
+Within the Workflow code, you can dynamically add or update Search Attributes using [`upsertTypedSearchAttributes`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertTypedSearchAttributes(io.temporal.common.SearchAttributeUpdate...)). 
+This method is particularly useful for Workflows whose attributes need to change based on internal logic or external events.
 
 ```java
- Map<String, Object> attr1 = new HashMap<>();
-     attr1.put("CustomIntField", 1);
-     attr1.put("CustomBoolField", true);
-     Workflow.upsertSearchAttributes(attr1);
+  import io.temporal.workflow.Workflow;
+  
+  ...
 
-     Map<String, Object> attr2 = new HashMap<>();
-     attr2.put("CustomIntField", Lists.newArrayList(1, 2));
-     attr2.put("CustomKeywordField", "Seattle");
-     Workflow.upsertSearchAttributes(attr2);
-```
+  // Existing Workflow Logic
 
-The results of `upsertSearchAttributes()` output the following search attributes.
+  Map<String, Object> searchAttribute = new HashMap<>();
 
-```json
-{
-    "CustomIntField": 1, 2,
-    "CustomBoolField": true,
-    "CustomKeywordField": "Seattle",
+  Distance distance;
+  try {
+    distance = activities.getDistance(address);
+    searchAttribute.put("isOrderFailed", false);
+    Workflow.upsertTypedSearchAttributes(Constants.IS_ORDER_FAILED.valueSet(false));
+  } catch (NullPointerException e) {
+    searchAttribute.put("isOrderFailed", true);
+    Workflow.upsertTypedSearchAttributes(Constants.IS_ORDER_FAILED.valueSet(true));
+    throw new NullPointerException("Unable to get distance");
   }
 ```
 
 ### How to remove a Search Attribute from a Workflow {#remove-search-attribute}
 
-To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
+To remove a Search Attribute that was previously set, set it to an empty Map.
 
-To remove a Search Attribute, call the `upsertSearchAttributes()` method and set it to an empty map.
+```java
+    // In a shared constants file, so all files have access
+
+    public static final SearchAttributeKey<Boolean> IS_ORDER_FAILED = SearchAttributeKey.forBoolean("isOrderFailed");
+
+    ...
+    
+    Workflow.upsertTypedSearchAttributes(Constants.IS_ORDER_FAILED.valueUnset());
+```

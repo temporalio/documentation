@@ -94,7 +94,7 @@ However, there are several valid reasons for using Child Workflows.
 
 Because a Child Workflow Execution can be processed by a completely separate set of [Workers](/workers#worker) than the Parent Workflow Execution, it can act as an entirely separate service.
 However, this also means that a Parent Workflow Execution and a Child Workflow Execution do not share any local state.
-As all Workflow Executions, they can communicate only via asynchronous [Signals](/encyclopedia/application-message-passing#signals).
+As all Workflow Executions, they can communicate only via asynchronous [Signals](/encyclopedia/workflow-message-passing#sending-signals).
 
 ### Paritition problems into smaller chunks
 
