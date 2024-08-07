@@ -28,14 +28,25 @@ module.exports = {
             "evaluate/development-production-features/workflow-message-passing",
             "evaluate/development-production-features/debugging",
             "evaluate/development-production-features/interrupt-workflow",
-            "evaluate/development-production-features/high-availability",
+            {
+              type: "category",
+              label: "High Availability",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "evaluate/development-production-features/high-availability",
+              },
+              items: [
+                "evaluate/development-production-features/multi-region-namespace",
+                "evaluate/development-production-features/global-namespace",
+              ],
+            },
             "evaluate/development-production-features/testing-suite",
             "evaluate/development-production-features/observability",
             "evaluate/development-production-features/data-encryption",
             "evaluate/development-production-features/schedules",
             "evaluate/development-production-features/cloud-automation",
             "evaluate/development-production-features/low-latency",
-            
             {
               type: "category",
               label: "Product release stages",
