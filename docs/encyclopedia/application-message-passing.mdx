@@ -160,8 +160,8 @@ In most languages (except Go), you may call `executeUpdate` to complete an Updat
 
 Alternatively, to start an Update, you may call `startUpdate` and pass in the Workflow Update Stage as an argument. You have two choices on what to await:
 
-- Accepted - wait til the Worker is contacted, which ensures that the Update is persisted. See [Update Validators](#update-validators) for more information.
-- Completed - wait til the handler finishes and returns a result. (This is equivalent to `executeUpdate`.)
+- Accepted - wait until the Worker is contacted, which ensures that the Update is persisted. See [Update Validators](#update-validators) for more information.
+- Completed - wait until the handler finishes and returns a result. (This is equivalent to `executeUpdate`.)
 
 The start call will give you a handle you can use to track the Update, determine whether it was Accepted, and ultimately get its result or an error.
 
@@ -339,7 +339,7 @@ If you throw any other exception, by default, it will cause a [Workflow Task Fai
 
 #### Errors and panics in message handlers in the Go SDK
 
-In Go, returning an error behaves like an [Application Failure](/references/failures#application-failure) in the other SDKs. Panics behave like non-Application Failure exceptions in other languages, in that they fail the Signal or Update handler tasks.
+In Go, returning an error behaves like an [Application Failure](/references/failures#application-failure) in the other SDKs. Panics behave like non-Application Failure exceptions in other languages, in that they cause a [Workflow Task Failure](/references/failures#workflow-task-failures).
 
 ### Writing Signal Handlers {#writing-signal-handlers}
 
