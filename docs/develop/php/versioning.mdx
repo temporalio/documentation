@@ -166,7 +166,6 @@ After you are sure that all of the Workflow executions prior to version 1 have c
             2 => yield $this->activity->anotherPatchActivity();
         };
     }
-}
 ```
 
 You'll note that `minSupported` has changed from `DEFAULT_VERSION` to `1`. If an older version of the Workflow execution history is replayed on this code, it will fail because the minimum expected version is 1. After you are sure that all of the Workflow executions for version 1 have completed, then you can remove 1 so that your code would look like the following:
@@ -179,7 +178,6 @@ You'll note that `minSupported` has changed from `DEFAULT_VERSION` to `1`. If an
 
         $result = yield $this->activity->anotherPatchActivity();
     }
-}
 ```
 
 :::note
