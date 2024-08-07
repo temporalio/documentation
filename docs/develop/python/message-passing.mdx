@@ -462,11 +462,9 @@ You can silence these warnings on a per-handler basis by passing the `unfinished
 
 
 
-## Dynamic Handler {#dynamic-handler}
+## Dynamic Handlers {#dynamic-handler}
 
-**What is a Dynamic Handler?**
-
-Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
+Temporal supports Dynamic Workflows, Activities, Signals, Updates, and Queries.
 These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
 
 Dynamic Handlers provide flexibility to handle cases where the names of Workflows, Activities, Signals, or Queries aren't known at run time.
@@ -482,54 +480,24 @@ Use static definitions as the primary way of structuring your Workflows.
 Reserve Dynamic Handlers for cases where the handler names are not known at compile time and need to be looked up dynamically at runtime.
 They are meant to handle edge cases and act as a catch-all, not as the main way of invoking logic.
 
-:::
-
-### Set a Dynamic Signal {#set-a-dynamic-signal}
-
-**How to set a Dynamic Signal**
+### Set a Dynamic Signal, Query, or Update handler {#set-a-dynamic-signal}
 
 A Dynamic Signal in Temporal is a Signal that is invoked dynamically at runtime if no other Signal with the same input is registered.
 A Signal can be made dynamic by adding `dynamic=True` to the `@signal.defn` decorator.
 
-The Signal Handler should accept `self`, a string input, and a `Sequence[temporalio.common.RawValue]`.
+The handler must accept `self`, a string input, and a `Sequence[temporalio.common.RawValue]`.
 The [payload_converter()](https://python.temporal.io/temporalio.workflow.html#payload_converter) function is used to convert a `RawValue` object to the desired type.
-
-<div class="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/dynamic_handlers/your_dynamic_signal_dacx.py">
-    View the source code in the context of the rest of the application code.
-  </a>{' '}
-
-</div>
+For example:
 
 ```python
-# ...
+from typing import Sequence
+
+from temporalio.common import RawValue
+...
+
     @workflow.signal(dynamic=True)
     async def dynamic_signal(self, name: str, args: Sequence[RawValue]) -> None:
-        await self._pending_greetings.put(name)
-```
-
-### Set a Dynamic Query {#set-a-dynamic-query}
-
-**How to set a Dynamic Query**
-
-A Dynamic Query in Temporal is a Query that is invoked dynamically at runtime if no other Query with the same name is registered.
-A Query can be made dynamic by adding `dynamic=True` to the `@query.defn` decorator.
-
-The Query Handler should accept `self`, a string name, and a `Sequence[temporalio.common.RawValue]`.
-The [payload_converter()](https://python.temporal.io/temporalio.workflow.html#payload_converter) function is used to convert a `RawValue` object to the desired type.
-
-<div class="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/dynamic_handlers/your_dynamic_query_dacx.py">
-    View the source code in the context of the rest of the application code.
-  </a>{' '}
-
-</div>
-
-```python
-# ...
-    @workflow.query(dynamic=True)
-    def dynamic_query(self, input: str, args: Sequence[RawValue]) -> str:
-        return self._greeting
+        ...
 ```
 
 ### Set a Dynamic Workflow {#set-a-dynamic-workflow}
