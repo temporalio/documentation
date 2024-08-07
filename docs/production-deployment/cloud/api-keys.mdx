@@ -23,8 +23,7 @@ tags:
 
 - API Keys used for Cloud Operations Tools (tcld, API, Terraform) are In [Public Preview](/evaluate/development-production-features/release-stages#public-preview)
 - API Keys used for Namespace Authentication are In [Pre Release](/evaluate/development-production-features/release-stages#pre-release)
-
-:::
+  :::
 
 Temporal Cloud supports secure programmatic access through API Key Authentication.
 
@@ -45,8 +44,6 @@ API Keys support 2 main use cases:
   - API Keys for use in Cloud Operations Tools are in Public Preview
 - _**Namespace Authentication**_: API Keys can be used as the Namespace authentication mechanism for executing and managing workflows from the SDK and Temporal CLI as an alternative to using mTLS-based authentication.
   - API Keys for use in Namespace Authentication are in Pre Release
-  - If you created a Temporal Account using the Self Serve Signup feature, API Keys are available for Namespace Authentication.
-  - If you have not created a Temporal Account using the Self Serve Signup feature, please reach out to Temporal to participate in the Pre Release.
 
 API Keys are an opt-in feature that must be enabled by a Global Administrator for use. For instructions on API Key Management for your organization, see [Global Administrator API Key Management](#ga-manage-api-keys).
 
@@ -89,10 +86,14 @@ To manage your accounts API Keys:
 1. [Login](https://cloud.temporal.io/) to the Cloud UI.
 2. [Select **Settings** and choose **API Keys**](https://cloud.temporal.io/settings/api-keys).
 
-You can also disable or delete an individual API Key using the vertical ellipsis at the right of the API Keys row. Disabling API Keys disables the creation of API Keys. Existing API Keys can be used to authenticate into Temporal Cloud until they are either disabled, deleted or expire.
+You can also disable or delete an individual API Key using the vertical ellipsis at the right of the API Keys row.
+Disabling API Keys disables the creation of API Keys. Existing API Keys can be used to authenticate into Temporal Cloud until they are either disabled, deleted or expire.
 
 :::note
-Deleting a key removes the ability for that API Key to authenticate into Temporal Cloud. Be aware that if you delete an API Key for a running WF, that WF will fail until a new API Key secret is created and configured.
+
+Deleting or disabling a key removes the ability for that API Key to authenticate into Temporal Cloud.
+Be aware that if you delete or disable an API Key for a running WF, that WF will fail until a new API Key secret is created and configured.
+
 :::
 
 Filtering by API Key state and Identity type exists to help Global Administrators find specific API Keys.
