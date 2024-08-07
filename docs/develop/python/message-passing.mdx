@@ -27,17 +27,6 @@ tags:
   - dynamic-handlers
 ---
 
-This page shows how to do the following:
-
-- [Develop with Queries](#handle-query)
-- [Develop with Signals](#handle-signal)
-- [Develop with Updates](#handle-update)
-- [Dynamic Handler](#dynamic-handler)
-
-See [Workflow message-passing](/encyclopedia/workflow-message-passing#sending-queries) for an introduction to using messages with Temporal Workflows and guidance on safe usage of async Signal and Update handlers.
-
-## Writing Query, Signal, and Update handlers
-
 Here is an example Workflow Definition featuring Query, Signal, and Update handlers, and an Update validator.
 You can view this as a runnable sample at [hello/hello_message_passing.py](https://github.com/temporalio/samples-python/blob/dan/dan/docs_message_passing.py).
 
@@ -124,6 +113,7 @@ While multiple arguments are supported, it's recommended to use a single datacla
 
 - The decorators can take arguments, for example to set the name to something other than the method name. See the API reference docs: [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query), [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal), [`workflow.update`](https://python.temporal.io/temporalio.workflow.html#update).
 
+- See [Workflow message-passing](/encyclopedia/workflow-message-passing#sending-queries) for an introduction to using messages with Temporal Workflows and guidance on safe usage of async Signal and Update handlers.
 
 ### Query handlers {#handle-query}
 
