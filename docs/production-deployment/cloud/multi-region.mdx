@@ -93,9 +93,7 @@ Temporal Cloud notifies you by email once the replication has caught up and both
 Temporal Cloud will initiate a Namespace failover when it detects an incident or outage that elevates error rates or latency in the active region of a multi-region Namespace.
 A failover operation shifts Workflow processing to a standby region, unaffected by the incident.
 This ensures that existing Workflows can progress and new Workflows can be created as the incident is addressed.
-
-Temporal Cloud doesn't revert Namespaces back to the original active region after an incident is resolved.
-[File a Support ticket](https://temporalsupport.zendesk.com/) to request switching back to the original region.
+After Temporal-initiated failovers, Temporal Cloud restores your Namespace to its original active region once the incident is resolved and the Namespace data is fully reconciled.
 
 :::info
 
@@ -412,9 +410,7 @@ After failover, the Namespace is active in the new region.
 You needn't monitor Temporal Cloud's failover response in real-time.
 Whenever there is a failover event, you'll receive an alert email.
 
-Temporal Cloud doesn't revert Namespaces back to the original active region after an incident is resolved.
-[File a Support ticket](https://temporalsupport.zendesk.com/) to request switching back to the original region.
-
+After Temporal-initiated failovers, Temporal Cloud restores your Namespace to its original active region once the incident is resolved and the Namespace data is fully reconciled.
 More information is available in [Monitoring and Observability](/cloud/multi-region#observability).
 
 ### Metrics {#metrics-operations}
