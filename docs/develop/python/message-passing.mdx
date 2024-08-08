@@ -77,7 +77,7 @@ class GreetingWorkflow:
 
     @workflow.query
     def get_languages(self, input: GetLanguagesInput) -> list[Language]:
-        # A Query handler returns a value: it can inspect but must not mutate the Workflow state.
+        # 👉 A Query handler returns a value: it can inspect but must not mutate the Workflow state.
         if input.include_unsupported:
             return list(Language)
         else:
@@ -85,20 +85,20 @@ class GreetingWorkflow:
 
     @workflow.signal
     def approve(self, input: ApproveInput) -> None:
-        # A Signal handler mutates the Workflow state but cannot return a value.
+        # 👉 A Signal handler mutates the Workflow state but cannot return a value.
         self.approved_for_release = True
         self.approver_name = input.name
 
     @workflow.update
     def set_language(self, language: Language) -> Language:
-        # An Update handler can mutate the Workflow state and return a value.
+        # 👉 An Update handler can mutate the Workflow state and return a value.
         previous_language, self.language = self.language, language
         return previous_language
 
     @set_language.validator
     def validate_language(self, language: Language) -> None:
         if language not in self.greetings:
-            # In an Update validator you raise any exception to reject the Update.
+            # 👉 In an Update validator you raise any exception to reject the Update.
             raise ValueError(f"{language.name} is not supported")
 ```
 
@@ -362,7 +362,7 @@ class GreetingWorkflow:
                 start_to_close_timeout=timedelta(seconds=10),
             )
             if greeting is None:
-                # An update validator cannot be async, so cannot be used to check that the remote
+                # 👉 An update validator cannot be async, so cannot be used to check that the remote
                 # call_greeting_service supports the requested language. Raising ApplicationError
                 # will fail the Update, but the WorkflowExecutionUpdateAccepted event will still be
                 # added to history.
@@ -429,7 +429,7 @@ class MyWorkflow:
                 fetch_data, start_to_close_timeout=timedelta(seconds=10)
             )
             self.x = data.x
-            # OK: the scheduler may switch now to a different handler execution, or to the main workflow
+            # ✅ OK: the scheduler may switch now to a different handler execution, or to the main workflow
             # method, but no other execution of this handler can run until this execution finishes.
             await asyncio.sleep(1)  # or await anything else
             self.y = data.y
