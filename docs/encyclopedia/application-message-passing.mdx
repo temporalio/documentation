@@ -246,7 +246,7 @@ A Signal or Update handler can block waiting for the Workflow to reach a certain
 Sometimes, you need your message handler to wait for long-running operations such as executing an Activity. When this happens, the handler will yield control back to [the loop](#message-handler-concurrency). This means that your handlers can have race conditions if you’re not careful.
 You can guard your handlers with concurrency primitives like mutexes or semaphores, but you should use versions of these primitives provided for Workflows in most languages. See the links below for examples of how to use them in your SDK.
 
-#### Inject work into the main Workflow
+#### Inject work into the main Workflow {#injecting-work-into-main-workflow}
 
 Sometimes you want to process work provided by messages in the main Workflow. Perhaps you’d like to accumulate several messages before acting on any of them. For example, message handlers might put work into a queue, which can then be picked up and processed in an event loop that you yourself write.
 This option is considered advanced but offers powerful flexibility. And if you serialize the handling of your messages inside your main Workflow, you can avoid using concurrency primitives like mutexes and semaphores. See the links above for how to do this in your SDK.
@@ -259,7 +259,7 @@ If you don’t need to ensure that your handlers complete, you may specify your 
 
 See the links below for how to ensure handlers are finished in your SDK.
 
-#### Ensuring your messages are processed exactly once
+#### Ensuring your messages are processed exactly once {#exactly-once-message-processing}
 
 Many developers want their message handlers to run exactly once--to be idempotent--in cases where the same Signal or Update is delivered twice or sent by two different call sites. Temporal deduplicates messages for you on the server, but there is one important case when you need to think about this yourself when authoring a Workflow, and one when sending Signals and Updates.
 
