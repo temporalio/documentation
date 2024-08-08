@@ -64,10 +64,10 @@ class GreetingWorkflow:
     def __init__(self) -> None:
         self.approved_for_release = False
         self.approver_name: Optional[str] = None
-        self.language = Language.English
+        self.language = Language.ENGLISH
         self.greetings = {
-            Language.English: "Hello, world",
-            Language.Chinese: "你好，世界",
+            Language.ENGLISH: "Hello, world",
+            Language.CHINESE: "你好，世界",
         }
 
     @workflow.run
@@ -103,13 +103,12 @@ class GreetingWorkflow:
 ```
 
 - Arguments and return values of handlers (and the main Workflow function) must be [serializable](/dataconversion): a [dataclass](https://docs.python.org/3/library/dataclasses.html) will often be the right choice.
-While multiple arguments are supported, it's recommended to use a single dataclass argument to which fields can be added as needed.
 
-- It's possible to write handler methods that take multiple arguments, but this is not recommended: instead use a single dataclass argument to which fields can be added/removed as needed.
+- It's possible to write handler methods that take multiple arguments, but this is not recommended: instead use a single dataclass argument to which fields can be added as needed.
 
 - The decorators can take arguments, for example to set the name to something other than the method name. See the API reference docs: [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query), [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal), [`workflow.update`](https://python.temporal.io/temporalio.workflow.html#update).
 
-- This example shows synchronous handlers only, but Update and Signal handlers can also be `async def` and thus use Activities, Child Workflows, durable [`asyncio.sleep(...)`](https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep) timers, and [`workflow.wait_condition(...)`](https://python.temporal.io/temporalio.workflow.html#wait_condition) conditions. See [Async handlers](#async-handlers) below and read [Workflow message passing](/encyclopedia/workflow-message-passing#sending-queries) for an introduction to safe usage of async Signal and Update handlers.
+- This example shows plain `def` handlers only, but Update and Signal handlers can also be `async def` and thus use Activities, Child Workflows, durable [`asyncio.sleep(...)`](https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep) timers, [`workflow.wait_condition(...)`](https://python.temporal.io/temporalio.workflow.html#wait_condition) conditions, etc. See [Async handlers](#async-handlers) below, and read [Workflow message passing](/encyclopedia/workflow-message-passing) for an introduction to safe usage of async Signal and Update handlers.
 
 ### Query handlers {#handle-query}
 
@@ -123,8 +122,6 @@ While multiple arguments are supported, it's recommended to use a single datacla
 
 - The handler should not return a value: it will be ignored (the sender of a signal gets a response immediately from the server, without waiting for the workflow to receive the signal).
 
-- Signal handlers can be `async def` and may use Activities, Child Workflows, durable [`asyncio.sleep(...)`](https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep) timers, and [`workflow.wait_condition(...)`](https://python.temporal.io/temporalio.workflow.html#wait_condition) conditions. See [Async handlers](#async-handlers) below.
-
 ### Update handlers and validators {#handle-update}
 
 - An [Update](/encyclopedia/workflow-message-passing#sending-updates) is a trackable request sent synchronously to a running Workflow Execution that can change the state and control the flow of a Workflow Execution, and return a result.
@@ -137,9 +134,6 @@ While multiple arguments are supported, it's recommended to use a single datacla
   The validator must take the same argument type as the handler, but always returns `None`.
 
 - To reject an Update, you raise an exception (of any type) in the validator.
-
-- Update handlers can be `async def` and may use Activities, Child Workflows, durable [`asyncio.sleep(...)`](https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep) timers, and [`workflow.wait_condition(...)`](https://python.temporal.io/temporalio.workflow.html#wait_condition) conditions. See [Async handlers](#async-handlers) below.
-
 
 
 ## Sending messages
@@ -254,7 +248,7 @@ async def main():
 
 ### Sending an Update {#send-update}
 
-- A client sending an Update must be prepared to wait until the Server has delivered the Update to the Worker: if the Worker is offline or too slow, the call will time out.
+- A client sending an Update must be prepared to wait until the Server has delivered the Update to the Worker: that means that the Worker must not be offline, and must not respond too slowly.
   If you want the server to send a response as soon as it receives your request, then you must use a Signal instead. 
 - `WorkflowExecutionUpdateAccepted` will be added to Event History when the Worker has responded to the Server that the Update passed validation.
 - `WorkflowExecutionUpdateCompleted` will be added to Event History when the Worker has responded to the Server that the Update has completed.
@@ -278,7 +272,7 @@ previous_language = await workflow_handle.execute_update(
 
 [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) sends an Update and waits until the Update has been accepted or rejected by a Worker. It returns an [`UpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html):
 
-You would use this when the Update handler is an `async def` and does some long-running async activity (i.e. it uses `await` to wait for Activities, Child Workflows, timers, or `wait_condition`), but you don't want to wait for all this activity to be finished; instead you want to only until the Worker has accepted or rejected the Update.
+You would use this when the Update handler is an `async def` and does some long-running async activity (i.e. it uses `await` to wait for Activities, Child Workflows, timers, or `wait_condition`), but you don't want to wait for all this activity to be finished; instead you want to wait only until the Worker has accepted or rejected the Update.
 See the "Async handlers" section.
 
 
@@ -326,7 +320,7 @@ In addition to the topics below, see [Inject work into the main Workflow](/encyc
 ### Async handlers {#async-handlers}
 In the example at the top of the page, all Signal and Update handlers were plain `def` methods.
 But handlers can also be `async def`.
-This allows them to use `await` to wait for Activities, Child Workflows, [`asyncio.sleep(...)`](https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep) timers, or [`workflow.wait_condition(...)`](https://python.temporal.io/temporalio.workflow.html#wait_condition) conditions, thus opening up many powerful possibilities.
+This allows them to use `await` to wait for Activities, Child Workflows, [`asyncio.sleep(...)`](https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep) timers, [`workflow.wait_condition(...)`](https://python.temporal.io/temporalio.workflow.html#wait_condition) conditions, etc, thus opening up many powerful possibilities.
 However, this means that handler executions, and your main Workflow method, are all running concurrently, with switching occurring between them at `await` calls.
 (I.e. they interleave, but there is no parallelism.)
 It's essential to understand the things that could go wrong in order to use `async def` handlers safely.
@@ -381,7 +375,7 @@ In contrast to a Signal, the client sending the Update will not get an Update re
 
 #### Waiting
 [`workflow.wait_condition(...)`](https://python.temporal.io/temporalio.workflow.html#wait_condition) is very useful in Temporal Workflow Definitions.
-It allows Workflow code to wait until
+It allows Workflow code to wait until an arbitrary function returns `True`.
 
 For example, in an `async def` handler it could be used to wait until the handler execution can proceed, according to Workflow implementation logic:
 ```python
@@ -392,6 +386,7 @@ For example, in an `async def` handler it could be used to wait until the handle
         )
 ```
 
+This is necessary if your Signal or Update handlers require something in the main Workflow method to be done first, since a Signal or Update handler can execute before the main Workflow method has started.
 
 #### Use `asyncio.Lock` to prevent concurrent handler execution {#control-handler-concurrency}
 See [Message handler concurrency](/encyclopedia/workflow-message-passing#message-handler-concurrency).
