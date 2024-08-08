@@ -20,9 +20,7 @@ func main() {
 	scheduleID := "schedule_id"
 	// Retrieve the schedule handle by its ID
 	scheduleHandle := temporalClient.ScheduleClient().GetHandle(ctx, scheduleID)
-	if err != nil {
-		log.Fatalln("Unable to retrieve schedule", err)
-	}
+
 	defer func() {
 		log.Println("Deleting schedule", "ScheduleID", scheduleHandle.GetID())
 		err = scheduleHandle.Delete(ctx)
