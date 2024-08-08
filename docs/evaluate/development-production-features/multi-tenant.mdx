@@ -1,0 +1,38 @@
+---
+id: multi-tenancy
+title: Multi-tenancy - Temporal feature
+description: Learn about Temporal Cloud's multi-tenant architecture and how it enhances scalability, efficiency, and cost-effectiveness.
+sidebar_label: Multi-tenancy
+tags:
+- multi-tenant
+
+keywords:
+- multi-tenant
+- Temporal Cloud
+- cloud architecture
+- scalability
+- cost-effectiveness
+- noisy neighbor 
+- database performance
+- high throughput
+---
+
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+
+A Namespace is a unit of isolation within the Temporal Platform -- but even a single Namespace is still multi-tenant. 
+Multi-tenancy ensures extra capacity is available for all customers during traffic spikes.
+
+However, multi-tenancy can also presents the challenge of "noisy neighbors", where high-traffic tenants consume excess resources, causing slower performance for other tenants. 
+This is a common problem for database scaling.
+
+Temporal's write-heavy workload, where changes in execution state are constantly written to the persistence layer, demands a database that supports reliably high throughput with low latency for multiple customers, concurrently and fairly. 
+
+With Temporal Cloud, customers pay for consumption instead of entire sets of hardware, providing a cost-effective solution.
+Temporal Cloud's architecture scales to handle multiple tenants efficiently.
+
+
+<RelatedReadContainer>
+  <RelatedReadItem path="https://docs.temporal.io/cloud/security#namespace-isolation" text="Namespace Isolation" archetype="cloud-guide" />
+  <RelatedReadItem path="https://docs.temporal.io/cloud/pricing" text="Cost-effective Consumption" archetype="cloud-guide" />
+</RelatedReadContainer>
+
