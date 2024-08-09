@@ -189,8 +189,8 @@ After Temporal Cloud has resolved an outage or incident involving a failover, a 
 
 #### [Failover](/cloud/multi-region)
 
-A failover shifts Workflow Execution processing from an active Temporal Namespace to a standby Temporal Namespace during outages or other incidents.
-Standby Namespaces use replication to duplicate data and prevent data loss during failover.
+A failover shifts Workflow Execution processing from an active Temporal Namespace region to a standby Temporal Namespace region during outages or other incidents.
+Standby Namespace regions use replication to duplicate data and prevent data loss during failover.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
