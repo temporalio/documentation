@@ -123,6 +123,7 @@ Set up PrivateLink connectivity with Temporal Cloud with these steps:
     This can take up to 10 minutes.
 12. Once available, you can use AWS PrivateLink.
     Use the first value under “DNS names” as your hostname to connect to Temporal Cloud using port 7233.
+    To establish a valid mTLS session, you must override the TLS server name used for the connection to `<namespace>.<account>.tmprl.cloud`.
 
     ![Highlighted DNS names section shows your hostname](/img/private-link/details.png)
 
@@ -135,9 +136,10 @@ Individual Namespaces do not use separate services.
 
 :::
 
-Once set up, you can test your PrivateLink connectivity using:
+Once set up, you can test your PrivateLink connectivity using the following methods.
+When connecting, you must override the TLS server name to target your Namespace’s individual hostname (`<namespace>.<account>.tmprl.cloud`) to establish a valid mTLS session:
 
-- The Temporal CLI, by setting the [`--tls-server-name`](/cli/cmd-options#tls-server-name) parameter to the Namespace address (`<namespace>.<account>.tmprl.cloud`). For example:
+- The Temporal CLI, using the `--tls-server-name` parameter to override the TLS server name. For example:
 
   ```
   temporal workflow count \
@@ -148,7 +150,7 @@ Once set up, you can test your PrivateLink connectivity using:
       --namespace <namespace>
   ```
 
-- Non-Temporal tools like grpcURL, useful for testing from environments that restrict tool usage. For example:
+- Non-Temporal tools like grpcURL, useful for testing from environments that restrict tool usage, using the `-servername` parameter to override the TLS server name. For example:
 
   ```
   grpcurl \
@@ -159,7 +161,7 @@ Once set up, you can test your PrivateLink connectivity using:
       temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
   ```
 
-- Temporal SDKs: by setting the endpoint server address argument to the PrivateLink endpoint (`<DNS associated with VPC endpoint>:7233`).
+- Temporal SDKs, by setting the endpoint server address argument to the PrivateLink endpoint (`<DNS associated with VPC endpoint>:7233`) and using the TLS configuration options to override the TLS server name.
 
 ### Encryption
 
