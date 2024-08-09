@@ -27,54 +27,36 @@ tags:
   - dynamic-handlers
 ---
 
-See [Workflow message passing](/encyclopedia/workflow-message-passing#sending-queries) for an introduction to using messages with Temporal Workflows.
+See [Workflow message passing](/encyclopedia/workflow-message-passing) for an introduction to using messages with Temporal Workflows.
 
-Here is an example Workflow Definition featuring Query, Signal, and Update handlers, and an Update validator.
-You can view this as a runnable sample at [hello/hello_message_passing.py](https://github.com/temporalio/samples-python/blob/dan/dan/docs_message_passing.py).
+## Writing message handlers
+
+The code samples below form part of a complete working sample, viewable at [message_passing/introduction](https://github.com/temporalio/samples-python/tree/message-passing/message_passing/introduction).
+
+General guidelines for writing message handlers:
+
+- Arguments and return values of handlers (and the main Workflow function) must be [serializable](/dataconversion): a [dataclass](https://docs.python.org/3/library/dataclasses.html) will often be the right choice.
+
+- It's possible to write handler methods that take multiple arguments, but this is not recommended: instead use a single dataclass argument to which fields can be added as needed.
+
+
+### Query handlers {#handle-query}
+
+A [Query](/encyclopedia/workflow-message-passing#sending-queries) is a synchronous operation that's used to get the state of a Workflow Execution.
 
 ```python
-import asyncio
-from dataclasses import dataclass
-from enum import IntEnum
-from typing import Optional
-
-from temporalio import workflow
-
-
 class Language(IntEnum):
     Chinese = 1
     English = 2
     French = 3
-    Spanish = 4
-    Portuguese = 5
-
 
 @dataclass
 class GetLanguagesInput:
     include_unsupported: bool
 
-
-@dataclass
-class ApproveInput:
-    name: str
-
-
 @workflow.defn
 class GreetingWorkflow:
-    def __init__(self) -> None:
-        self.approved_for_release = False
-        self.approver_name: Optional[str] = None
-        self.language = Language.ENGLISH
-        self.greetings = {
-            Language.ENGLISH: "Hello, world",
-            Language.CHINESE: "你好，世界",
-        }
-
-    @workflow.run
-    async def run(self) -> str:
-        await workflow.wait_condition(lambda: self.approved_for_release)
-        return self.greetings[self.language]
-
+    ...
     @workflow.query
     def get_languages(self, input: GetLanguagesInput) -> list[Language]:
         # 👉 A Query handler returns a value: it can inspect but must not mutate the Workflow state.
@@ -82,13 +64,51 @@ class GreetingWorkflow:
             return list(Language)
         else:
             return list(self.greetings)
+```
 
+- The decorator can take arguments. See the API reference docs: [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query).
+
+- A Query handler is a plain `def`, not an `async def`: you can't do async operations such as executing an Activity in a Query handler.
+
+### Signal handlers {#handle-signal}
+
+A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is a message sent asynchronously to a running Workflow Execution which can be used to change the state and control the flow of a Workflow Execution.
+
+```python
+@dataclass
+class ApproveInput:
+    name: str
+
+@workflow.defn
+class GreetingWorkflow:
+    ...
     @workflow.signal
     def approve(self, input: ApproveInput) -> None:
         # 👉 A Signal handler mutates the Workflow state but cannot return a value.
         self.approved_for_release = True
         self.approver_name = input.name
+```
 
+- The decorator can take arguments. See the API reference docs: [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal).
+
+- The handler should not return a value: it will be ignored (the sender of a signal gets a response immediately from the server, without waiting for the workflow to receive the signal).
+
+- Signal (and Update) handlers can also be `async def` and thus use Activities, Child Workflows, durable [`asyncio.sleep`](https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep) timers, [`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition) conditions, etc. See [Async handlers](#async-handlers) below, and read [Workflow message passing](/encyclopedia/workflow-message-passing) for an introduction to safe usage of async Signal and Update handlers.
+
+### Update handlers and validators {#handle-update}
+
+An [Update](/encyclopedia/workflow-message-passing#sending-updates) is a trackable request sent synchronously to a running Workflow Execution that can change the state and control the flow of a Workflow Execution, and return a result. The sender of the request must wait until the Update is at least accepted or rejected by a Worker, and will often opt to wait further to receive the value returned by the Update handler, or an exception indicating what went wrong.
+
+
+```python
+class Language(IntEnum):
+    Chinese = 1
+    English = 2
+    French = 3
+
+@workflow.defn
+class GreetingWorkflow:
+    ...
     @workflow.update
     def set_language(self, language: Language) -> Language:
         # 👉 An Update handler can mutate the Workflow state and return a value.
@@ -102,31 +122,7 @@ class GreetingWorkflow:
             raise ValueError(f"{language.name} is not supported")
 ```
 
-- Arguments and return values of handlers (and the main Workflow function) must be [serializable](/dataconversion): a [dataclass](https://docs.python.org/3/library/dataclasses.html) will often be the right choice.
-
-- It's possible to write handler methods that take multiple arguments, but this is not recommended: instead use a single dataclass argument to which fields can be added as needed.
-
-- The decorators can take arguments. See the API reference docs: [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query), [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal), [`workflow.update`](https://python.temporal.io/temporalio.workflow.html#update).
-
-- This example shows plain `def` handlers only, but Update and Signal handlers can also be `async def` and thus use Activities, Child Workflows, durable [`asyncio.sleep`](https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep) timers, [`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition) conditions, etc. See [Async handlers](#async-handlers) below, and read [Workflow message passing](/encyclopedia/workflow-message-passing) for an introduction to safe usage of async Signal and Update handlers.
-
-### Query handlers {#handle-query}
-
-- A [Query](/encyclopedia/workflow-message-passing#sending-queries) is a synchronous operation that's used to get the state of a Workflow Execution.
-
-- A Query handler is a plain `def`, not an `async def`: you can't do async operations such as executing an Activity in a Query handler.
-
-### Signal handlers {#handle-signal}
-
-- A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is a message sent asynchronously to a running Workflow Execution which can be used to change the state and control the flow of a Workflow Execution.
-
-- The handler should not return a value: it will be ignored (the sender of a signal gets a response immediately from the server, without waiting for the workflow to receive the signal).
-
-### Update handlers and validators {#handle-update}
-
-- An [Update](/encyclopedia/workflow-message-passing#sending-updates) is a trackable request sent synchronously to a running Workflow Execution that can change the state and control the flow of a Workflow Execution, and return a result.
-
-- The sender of the request must wait until the Update is at least accepted or rejected by a Worker, and will often opt to wait further to receive the value returned by the Update handler, or an exception indicating what went wrong.
+- The decorator can take arguments. See the API reference docs: [`workflow.update`](https://python.temporal.io/temporalio.workflow.html#update).
 
 - Validators are optional; if you don't want to be able to reject updates then you don't need a validator.
 
@@ -134,6 +130,8 @@ class GreetingWorkflow:
   The validator must take the same argument type as the handler, but always returns `None`.
 
 - To reject an Update, you raise an exception (of any type) in the validator.
+
+- Update (and Signal) handlers can also be `async def` and thus use Activities, Child Workflows, durable [`asyncio.sleep`](https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep) timers, [`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition) conditions, etc. See [Async handlers](#async-handlers) below, and read [Workflow message passing](/encyclopedia/workflow-message-passing) for an introduction to safe usage of async Signal and Update handlers.
 
 
 ## Sending messages
