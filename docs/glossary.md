@@ -185,7 +185,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Failback](/cloud/multi-region)
 
-After Temporal Cloud has resolved an outage or incident involving a failover, a failback process shifts Workflow Execution processing back to the original Temporal Namespace that was active before the incident.
+After Temporal Cloud has resolved an outage or incident involving a failover, a failback process shifts Workflow Execution processing back to the original region that was active before the incident.
 
 #### [Failover](/cloud/multi-region)
 
