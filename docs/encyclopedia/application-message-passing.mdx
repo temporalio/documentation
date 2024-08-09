@@ -31,9 +31,9 @@ keywords:
 import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
 
-Workflows can be thought of as stateful web services that can receive messages. The Workflow can have powerful message handlers akin to endpoints that can react to the incoming messages in combination with the current state of the Workflow.
-Temporal supports three types of messages: Signals, Queries, and Updates.
-To define these, consider these messages from the perspective of the client making the request:
+Workflows can be thought of as stateful web services that can receive messages.
+The Workflow can have powerful message handlers akin to endpoints that react to the incoming messages in combination with the current state of the Workflow.
+Temporal supports three types of messages: Signals, Queries, and Updates:
 
 - Queries are read requests. They can read the current state of the Workflow but cannot block in doing so.
 - Signals are asynchronous write requests. They cause changes in the running Workflow, but you cannot await any response or error.
@@ -315,7 +315,7 @@ Once the Update handler is finished and has returned a value, the operation is c
 </RelatedReadContainer>
 -->
 
-### Exceptions in message handlers
+### Exceptions in message handlers {#exceptions}
 
 When throwing an exception in a message handler, you should decide whether to make it an [Application Failure](/references/failures#application-failure). The implications are different between Signals and Updates.
 
