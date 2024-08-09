@@ -101,6 +101,9 @@ You can invite users pragmatically using the Cloud Ops API.
 
 When a Global Admin invites a user to join an account, the Global Admin selects one of the following Roles for that user:
 
+- **Account Owner**
+  - Has full administrative permissions across the account, including users, usage and billing
+  - Has Namespace Admin permissions on all Namespaces in the account
 - **Global Admin**
   - Has full administrative permissions across the account, including users and usage
   - Has Namespace Admin [permissions](#namespace-level-permissions) on all [Namespaces](/namespaces) in the account
@@ -108,6 +111,28 @@ When a Global Admin invites a user to join an account, the Global Admin selects 
   - Can create and update Namespaces; has full control over [Workflows](/workflows)
   - Has Namespace Admin permissions for each Namespace created by that user
 - **Read-Only:** Can only read information
+
+:::note Default Role
+
+By default, the first user assigned to your account is granted the **Account Owner** role. If your account does not have an Account Owner, please [contact Support](https://temporalsupport.zendesk.com/) to assign the appropriate individual to this role.
+
+:::
+
+## Using the Account Owner Role
+
+The Account Owner role (i.e., users with the Account Owner system role) holds the highest level of access in the system.
+This role configures account-level parameters and manages Temporal billing and credit data.
+It allows users to perform all actions within the Temporal Cloud account.
+
+:::tip Best Practices
+
+Temporal strongly recommends the following precautions when assigning the AccountOwner role to users:
+
+- Assign the role to at least two users in your organization.
+  Otherwise, limit the number of users with this role.
+- Associate each Account Owner’s email address with their role so Temporal Cloud support can contact them in urgent situations.
+
+:::
 
 ## What are the Namespace-level permissions for users in Temporal Cloud? {#namespace-level-permissions}
 
@@ -122,11 +147,12 @@ For a Namespace, a user can have one of the following permissions:
 
 ## How to update an account-level Role in Temporal Cloud {#update-roles}
 
-You can update the account-level [Role](#account-level-roles) for a user by using either Web UI or tcld.
+You can update a user's account-level [Role](#account-level-roles)  using either the Web UI or tcld..
 
 :::info
 
-To update an account-level Role, a user must have the Global Admin account-level Role.
+- To update an account-level Role, the user must have Global Admin privileges.
+- To create, update, or delete an Account Owner, you must submit a [support ticket](https://temporalsupport.zendesk.com/).
 
 :::
 
@@ -167,7 +193,7 @@ You can update Namespace-level [permissions](#namespace-level-permissions) by us
 
 :::note
 
-A user who has the Global Admin account-level [Role](#account-level-roles) has Namespace Admin permissions for all Namespaces.
+A user with the Account Owner or Global Admin account-level [Role](#account-level-roles) has Namespace Admin permissions for all Namespaces.
 
 :::
 
@@ -189,7 +215,7 @@ You can delete a user from your Temporal Cloud Account by using either Web UI or
 
 :::info
 
-To delete a user, a user must have the Global Admin account-level [Role](#account-level-roles).
+To delete a user, a user must have the Account Owner or Global Admin account-level [Role](#account-level-roles).
 
 :::
 
