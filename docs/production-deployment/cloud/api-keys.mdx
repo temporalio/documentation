@@ -29,7 +29,7 @@ Temporal Cloud supports secure programmatic access through API Key Authenticatio
 
 ## Overview
 
-Temporal Cloud API Keys provide identity based authentication where an Identity can be a Temporal User or [Service Account](/cloud/service-accounts)
+Temporal Cloud API Keys provide identity-based authentication where an identity can be either a Temporal User or a [Service Account](/cloud/service-accounts)
 Each key is unique to a single identity and ties directly to their Role-Based Access Control (RBAC) settings, ensuring secure and appropriate access.
 
 The process is as follows:
@@ -40,7 +40,7 @@ API Key (authentication) → Identity (User or Service Account) → RBAC (author
 
 API Keys support 2 main use cases:
 
-- _**Cloud Operations Automation**_: API Keys can be used as the authentication mechanism for Temporal Cloud operational tools ([Temporal Cloud CLI (tcld)](/cloud/tcld), [the Cloud Ops API](/ops), [Terraform](/production-deployment/cloud/terraform-provider)) to manage your Temporal Cloud account, namespaces, certificates, and user identities.
+- _**Cloud Operations Automation**_: API Keys can be used as the authentication mechanism for Temporal Cloud operational tools ([Temporal Cloud CLI (tcld)](/cloud/tcld), [the Cloud Ops API](/ops), [Terraform](/production-deployment/cloud/terraform-provider)) to manage your Temporal Cloud account, Namespaces, certificates, and user identities.
   - API Keys for use in Cloud Operations Tools are in Public Preview
 - _**Namespace Authentication**_: API Keys can be used as the Namespace authentication mechanism for executing and managing workflows from the SDK and Temporal CLI as an alternative to using mTLS-based authentication.
   - API Keys for use in Namespace Authentication are in Pre Release
@@ -49,7 +49,8 @@ API Keys are an opt-in feature that must be enabled by a Global Administrator fo
 
 API Keys are supported for Users and Service Accounts.
 
-- Users have the autonomy to create, delete, and update access to their API Keys through the Cloud UI or tcld. For broader oversight, Global Administrators can manage user's API Keys using the same interfaces.
+- Users may create, delete, and update API key access using the Cloud Web UI or the `tcld` CLI tool.
+  Global Administrators have permission to manage user API keys using the same interfaces.
 - Global Administrators can create, delete, and update access to API Keys for Service Accounts.
 
 API Keys can be used as an authentication mechanism with:
@@ -64,7 +65,7 @@ API Keys can be used as an authentication mechanism with:
 
 ### Prerequisites
 
-- Global Adinistrator should [Enable access to API Keys](#manage-api-keys)
+- The Global Administrator should [enable access to API Keys](#enabledisable-an-api-key)
 - A Cloud User or Service Account
 - Access to the [Temporal Cloud UI](https://cloud.temporal.io/) or Temporal Cloud CLI ([tcld](https://docs.temporal.io/cloud/tcld/)) to create an API Key
 
@@ -87,7 +88,8 @@ To manage your accounts API Keys:
 2. [Select **Settings** and choose **API Keys**](https://cloud.temporal.io/settings/api-keys).
 
 You can also disable or delete an individual API Key using the vertical ellipsis at the right of the API Keys row.
-Disabling API Keys disables the creation of API Keys. Existing API Keys can be used to authenticate into Temporal Cloud until they are either disabled, deleted or expire.
+Disabling API Keys disables the creation of API Keys.
+Existing API Keys can be used to authenticate into Temporal Cloud until they are either disabled, deleted or expire.
 
 :::note
 
@@ -127,7 +129,7 @@ To generate an API Key using the Cloud UI:
 
 :::note
 
-Temporal currently supports up to a 90-day duration for API Keys. The expiration will be extended in a future release.
+Temporal currently supports up to a 90-day duration for API Keys.
 
 :::
 
@@ -153,7 +155,9 @@ Use tcld to create API Keys with a day level expiration.
 
 ### Delete an API Key
 
-Delete an API Key using the Cloud UI or tcld. Deleting a key removes the ability for that API Key to authenticate into Temporal Cloud. Be aware that if you delete an API Key for a running WF, that WF will fail unless you rotate the API Key for a new one.
+Delete an API Key using the Cloud UI or tcld.
+Deleting a key removes the ability for that API Key to authenticate into Temporal Cloud.
+Be aware that if you delete an API Key for a running Workflow, that Workflow will fail unless you rotate the API Key for a new one.
 
 #### Using the Cloud UI
 
@@ -214,7 +218,7 @@ Create an API Key for a Service Account using the Temporal Cloud UI or tcld.
 
 1. Navigate to https://cloud.temporal.io/settings/api-keys
 2. Click the Create API Key button
-3. Click Service Account at the top of the page under "Create an API Key for*"
+3. Click Service Account at the top of the page under "Create an API Key for"
 4. Select the Service Account you would like to create an API Key in the “Mapped to identityˮ input box.
    Existing Service Accounts are provided in the “Mapped to Identityˮ box.
 5. Add values for the API Key. This includes:
@@ -230,7 +234,7 @@ Temporal currently supports up to a 90-day duration for API Keys.
 :::
 
 6. Click the Generate API Key button
-7. You will see the new API keyʼs secret, if the API Key was created successfully.
+7. You will see the new API Keyʼs secret, if the API Key was created successfully.
    Copy and store the secret somewhere safe.
 
 #### Using tcld
@@ -261,7 +265,9 @@ The process for enabling/disabling an API Key is the same for a User or a Servic
 
 ### Delete an API Key for a Service Account
 
-Global Administrators have ability to delete individual API Keys for any user in their account using the Cloud UI or tcld. Deleting a key removes the ability for that API Key to authenticate into Temporal Cloud. Be aware that if you delete an API Key for a running WF, that WF will fail unless you rotate the API Key for a new one.
+Global Administrators have ability to delete individual API Keys for any user in their account using the Cloud UI or tcld.
+Deleting a key removes the ability for that API Key to authenticate into Temporal Cloud.
+Be aware that if you delete an API Key for a running Workflow, that Workflow will fail unless you rotate the API Key for a new one.
 
 #### Using the Cloud UI
 
@@ -277,9 +283,10 @@ The process for deleting an API Key is the same for a User or a Service Account.
 
 ## API Keys for Namespace Authentication {#namespace-authentication}
 
-A Namespace can be created with API Key authentication enabled as an alternative to mTLS-based authentication. To create a Namespace that supports API Key authentication, specify Allow API Key authentication when creating the Namespace.
+A Namespace can be created with API Key authentication enabled as an alternative to mTLS-based authentication.
+To create a Namespace that supports API Key authentication, specify Allow API Key authentication when creating the Namespace.
 
-When creating a new Namespace, a gRPC endpointis provided based on the authentication method configured for the Namespace.
+When creating a new Namespace, a gRPC endpoint is provided based on the authentication method configured for the Namespace.
 
 - For an mTLS connection, the endpoint is in the format `<namespace>.<account>.tmprl.cloud:7233`.
 - For an API Key connection, the endpoint is in the format `<region>.<cloud_provider>.api.temporal.io:7233`
@@ -324,7 +331,8 @@ temporal workflow list --address <endpoint> \
 
 ### SDK
 
-To use your API Key with a Temporal SDK, use headers to specify a Bearer token and a Namespace. The Bearer token header is used to indicate the authentication type of the request and the Namespace header is used for request routing.
+To use your API Key with a Temporal SDK, use headers to specify a Bearer token and a Namespace.
+The Bearer token header is used to indicate the authentication type of the request and the Namespace header is used for request routing.
 Temporal will simplify this experience for users to reduce the use of headers in subsequent SDK release.
 
 **Go SDK (v 1.26.0+)**
@@ -540,13 +548,13 @@ To use an API Key with tcld, use one of the following methods:
 - `--api-key` flag
 - `TEMPORAL_CLOUD_API_KEY` environment variable
 
-### The Cloud Ops API
+### Cloud Ops API
 
 To use an API Key with the [Cloud Ops API](/ops), securely pass your API Key in your Cloud Ops API client.
 
 For a complete example, see [Cloud Samples in Go](https://github.com/temporalio/cloud-samples-go/blob/1dd4254b6ed1937e361005c0144410e72b8a5542/client/api/apikey.go).
 
-### The Terraform Provider
+### Terraform Provider
 
 To use an API Key with the [Temporal Terraform Provider](/production-deployment/cloud/terraform-provider), pass the API Key as a provider argument.
 
@@ -581,4 +589,5 @@ Temporal recommends rotating API Keys periodically.
 
 **Q: What should I do if I lost my API Key secret?**
 
-A: For security reasons, we only display the full key once upon creation. If you lose it, you'll need to generate a new one.
+A: For security reasons, we only display the full key once upon creation.
+If you lose it, you'll need to generate a new one.
