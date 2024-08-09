@@ -183,10 +183,14 @@ An append-only log of Events that represents the full state a Workflow Execution
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
+#### [Failback](/cloud/multi-region)
+
+After Temporal Cloud has resolved an outage or incident involving a failover, a failback process shifts Workflow Execution processing back to the original Temporal Namespace that was active before the incident.
+
 #### [Failover](/cloud/multi-region)
 
-A Failover shifts Workflow Execution processing from an active Temporal Namespace to a standby Temporal Namespace during outages or other incidents.
-Standby Namespaces use replication to duplicate data and prevent data loss during Failover.
+A failover shifts Workflow Execution processing from an active Temporal Namespace to a standby Temporal Namespace during outages or other incidents.
+Standby Namespaces use replication to duplicate data and prevent data loss during failover.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -224,7 +228,7 @@ _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term
 
 A Global Namespace is a Namespace that duplicates data from an active [Temporal Service](#temporal-cluster) to a standby Service using the replication to keep both Namespaces in sync.
 Global Namespaces are designed to respond to service issues like network congestion.
-When service to the primary Cluster is compromised, a [Failover](#failover) transfers control from the active to the standby cluster.
+When service to the primary Cluster is compromised, a [failover](#failover) transfers control from the active to the standby cluster.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -282,7 +286,7 @@ A multi-region Namespace (MRN) is a [Temporal Cloud](#temporal-cloud) Namespace 
 Each region corresponds to a dedicated Temporal Cloud Service. 
 Temporal Cloud automatically replicates Workflow Executions and metadata from the active to the standby region.
 MRNs are designed to respond to service issues as they arise.
-In the event that the Namespace's performance is compromised, a [Failover](#failover) transfers control from the active to the standby region.
+In the event that the Namespace's performance is compromised, a [failover](#failover) transfers control from the active to the standby region.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
