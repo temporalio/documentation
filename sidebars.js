@@ -46,6 +46,7 @@ module.exports = {
             "evaluate/development-production-features/schedules",
             "evaluate/development-production-features/cloud-automation",
             "evaluate/development-production-features/low-latency",
+            "evaluate/development-production-features/multi-tenancy",
             {
               type: "category",
               label: "Product release stages",
@@ -298,6 +299,7 @@ module.exports = {
                 "production-deployment/cloud/account-setup/users",
               ],
             },
+            "production-deployment/cloud/service-accounts",
             "production-deployment/cloud/api-keys",
             {
               type: "category",
@@ -356,7 +358,7 @@ module.exports = {
             id: "production-deployment/self-hosted-guide/index",
           },
           items: [
-            "production-deployment/self-hosted-guide/setup",
+            "production-deployment/self-hosted-guide/deployment",
             "production-deployment/self-hosted-guide/checklist",
             "production-deployment/self-hosted-guide/defaults",
             "production-deployment/self-hosted-guide/security",
