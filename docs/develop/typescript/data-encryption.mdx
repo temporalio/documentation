@@ -87,7 +87,7 @@ order until a Payload Converter returns a non-null Payload.
 
 To replace the default Data Converter with a custom `CompositeDataConverter`, use the following:
 
-```
+```typescript
 export const payloadConverter = new CompositePayloadConverter(
   new UndefinedPayloadConverter(),
   new EjsonPayloadConverter()
