@@ -26,7 +26,27 @@ module.exports = {
             "evaluate/development-production-features/failure-detection",
             "evaluate/development-production-features/throughput-composability",
             "evaluate/development-production-features/workflow-message-passing",
-            "evaluate/development-production-features/high-availability",
+            "evaluate/development-production-features/debugging",
+            "evaluate/development-production-features/interrupt-workflow",
+            {
+              type: "category",
+              label: "High Availability",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "evaluate/development-production-features/high-availability",
+              },
+              items: [
+                "evaluate/development-production-features/multi-region-namespace",
+              ],
+            },
+            "evaluate/development-production-features/testing-suite",
+            "evaluate/development-production-features/observability",
+            "evaluate/development-production-features/data-encryption",
+            "evaluate/development-production-features/schedules",
+            "evaluate/development-production-features/cloud-automation",
+            "evaluate/development-production-features/low-latency",
+            "evaluate/development-production-features/multi-tenancy",
             {
               type: "category",
               label: "Product release stages",
@@ -279,6 +299,7 @@ module.exports = {
                 "production-deployment/cloud/account-setup/users",
               ],
             },
+            "production-deployment/cloud/service-accounts",
             "production-deployment/cloud/api-keys",
             {
               type: "category",
@@ -337,7 +358,7 @@ module.exports = {
             id: "production-deployment/self-hosted-guide/index",
           },
           items: [
-            "production-deployment/self-hosted-guide/setup",
+            "production-deployment/self-hosted-guide/deployment",
             "production-deployment/self-hosted-guide/checklist",
             "production-deployment/self-hosted-guide/defaults",
             "production-deployment/self-hosted-guide/security",

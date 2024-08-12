@@ -37,7 +37,7 @@ Interact with running Workflows by messaging them using Signals and Queries.
 
 **What is a Signal?**
 
-A [Signal](/encyclopedia/workflow-message-passing#signals) is a message sent asynchronously to a running Workflow Execution which can be used to change the state and control the flow of a Workflow Execution.
+A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is a message sent asynchronously to a running Workflow Execution which can be used to change the state and control the flow of a Workflow Execution.
 It can only deliver data to a Workflow Execution that has not already closed.
 
 You define Signals in your code.
@@ -200,7 +200,7 @@ await client.workflow.signalWithStart(yourWorkflow, {
 
 **How to develop with Queries**
 
-A [Query](/encyclopedia/workflow-message-passing#queries) is a synchronous operation that is used to get the state of a Workflow Execution.
+A [Query](/encyclopedia/workflow-message-passing#sending-queries) is a synchronous operation that is used to get the state of a Workflow Execution.
 
 - [Define a Query](#define-query)
 - [Handle a Query](#handle-query)

@@ -78,10 +78,56 @@ If you are interested in leveraging AWS PrivateLink in your Namespaces, [create 
 
 :::
 
-To set up PrivateLink connectivity with Temporal Cloud, you'll need to perform the following high-level steps:
+Set up PrivateLink connectivity with Temporal Cloud with these steps:
 
-1. Add a VPC Endpoint Interface in your AWS VPC.
-1. Configure security groups to allow TCP ingress traffic to port `7233` (for gRPC communication).
+1. Open the AWS console with the region you want to use to establish the PrivateLink.
+2. Search for "VPC" in _Services_ and select the option.
+
+   ![AWS console showing services, features, resources](/img/private-link/aws-console.png)
+3. Select _Virtual private cloud_ > _Endpoints_ from the left menu bar.
+4. Click the _Create endpoint_ button to the right of the _Actions_ pulldown menu.
+5. Under _Service_ category, select _Other endpoint services_.
+   This option lets you find services shared with you by service name.
+6. Under _Service settings_, fill in the _Service name_ with the PrivateLink Service Name for the region you’re trying to connect from:
+
+   | Region           | PrivateLink Service Name                                       |
+   | ---------------- | -------------------------------------------------------------- |
+   | `ap-northeast-1` | `com.amazonaws.vpce.ap-northeast-1.vpce-svc-08f34c33f9fb8a48a` |
+   | `ap-northeast-2` | `com.amazonaws.vpce.ap-northeast-2.vpce-svc-08c4d5445a5aad308` |
+   | `ap-south-1`     | `com.amazonaws.vpce.ap-south-1.vpce-svc-0ad4f8ed56db15662`     |
+   | `ap-south-2`     | `com.amazonaws.vpce.ap-south-2.vpce-svc-08bcf602b646c69c1`     |
+   | `ap-southeast-1` | `com.amazonaws.vpce.ap-southeast-1.vpce-svc-05c24096fa89b0ccd` |
+   | `ap-southeast-2` | `com.amazonaws.vpce.ap-southeast-2.vpce-svc-0634f9628e3c15b08` |
+   | `ca-central-1`   | `com.amazonaws.vpce.ca-central-1.vpce-svc-080a781925d0b1d9d`   |
+   | `eu-central-1`   | `com.amazonaws.vpce.eu-central-1.vpce-svc-073a419b36663a0f3`   |
+   | `eu-west-1`      | `com.amazonaws.vpce.eu-west-1.vpce-svc-04388e89f3479b739`      |
+   | `eu-west-2`      | `com.amazonaws.vpce.eu-west-2.vpce-svc-0ac7f9f07e7fb5695`      |
+   | `sa-east-1`      | `com.amazonaws.vpce.sa-east-1.vpce-svc-0ca67a102f3ce525a`      |
+   | `us-east-1`      | `com.amazonaws.vpce.us-east-1.vpce-svc-0822256b6575ea37f`      |
+   | `us-east-2`      | `com.amazonaws.vpce.us-east-2.vpce-svc-01b8dccfc6660d9d4`      |
+   | `us-west-2`      | `com.amazonaws.vpce.us-west-2.vpce-svc-0f44b3d7302816b94`      |
+
+7. Confirm your service by clicking on the _Verify service_ button. AWS should respond "Service name verified."
+
+   ![The service name field is filled out and the Verify service button is shown](/img/private-link/service-settings.png)
+8. Select the VPC and subnets to peer with the Temporal Cloud service endpoint.
+9. Select the security group that will control traffic sources for this VPC endpoint.
+   The security group must accept TCP ingress traffic to port 7233 for gRPC communication with Temporal Cloud.
+10. Click the _Create endpoint_ button at the bottom of the screen.
+    If successful, AWS reports "Successfully created VPC endpoint." and lists the new endpoint.
+    The new endpoint appears in the Endpoints list, along with its ID.
+
+    ![The created endpoint appears in the Endpoints list](/img/private-link/endpoint-created.png)
+11. Click on the VPC endpoint ID in the Endpoints list to check its status.
+    Wait for the status to be “Available”.
+    This can take up to 10 minutes.
+12. Once available, you can use AWS PrivateLink.
+    Use the first value under “DNS names” as your hostname to connect to Temporal Cloud using port 7233.
+    To establish a valid mTLS session, you must override the TLS server name used for the connection to `<namespace>.<account>.tmprl.cloud`.
+
+    ![Highlighted DNS names section shows your hostname](/img/private-link/details.png)
+
+You are ready to start using Private Link with Temporal Cloud.
 
 :::tip
 
@@ -90,9 +136,10 @@ Individual Namespaces do not use separate services.
 
 :::
 
-Once set up, you can test your PrivateLink connectivity using:
+Once set up, you can test your PrivateLink connectivity using the following methods.
+When connecting, you must override the TLS server name to target your Namespace’s individual hostname (`<namespace>.<account>.tmprl.cloud`) to establish a valid mTLS session:
 
-- The Temporal CLI, by setting the [`--tls-server-name`](/cli/cmd-options#tls-server-name) parameter to the Namespace address (`<namespace>.<account>.tmprl.cloud`). For example:
+- The Temporal CLI, using the `--tls-server-name` parameter to override the TLS server name. For example:
 
   ```
   temporal workflow count \
@@ -103,7 +150,7 @@ Once set up, you can test your PrivateLink connectivity using:
       --namespace <namespace>
   ```
 
-- Non-Temporal tools like grpcURL, useful for testing from environments that restrict tool usage. For example:
+- Non-Temporal tools like grpcURL, useful for testing from environments that restrict tool usage, using the `-servername` parameter to override the TLS server name. For example:
 
   ```
   grpcurl \
@@ -114,7 +161,7 @@ Once set up, you can test your PrivateLink connectivity using:
       temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
   ```
 
-- Temporal SDKs: by setting the endpoint server address argument to the PrivateLink endpoint (`<DNS associated with VPC endpoint>:7233`).
+- Temporal SDKs, by setting the endpoint server address argument to the PrivateLink endpoint (`<DNS associated with VPC endpoint>:7233`) and using the TLS configuration options to override the TLS server name.
 
 ### Encryption
 
