@@ -19,7 +19,7 @@ This section will summarize the difference between a Payload Converter and Paylo
 
 Payload Converters are responsible for serializing application objects into a Payload and deserializing them back into application objects. A Payload, in this context, is a binary form suitable for network transmission that may include some metadata. This serialization process transforms an object (like those in JSON or Protobuf formats) into a binary format and vice versa. For example, an object might be serialized to JSON with UTF-8 byte encoding or to a protobuf binary using a specific set of protobuf message definitions.
 
-Due to their operation within the workflow context, Payload Converters run inside the workflow sandbox. Consequently, Payload Converters cannot access external services or employ non-deterministic modules, which excludes most types of encryption due to their non-deterministic nature.
+Due to their operation within the Workflow context, Payload Converters run inside the Workflow sandbox. Consequently, Payload Converters cannot access external services or employ non-deterministic modules, which excludes most types of encryption due to their non-deterministic nature.
 
 ### Payload Codec
 
@@ -40,14 +40,13 @@ It is needed only if the [default Data Converter](/dataconversion#default-data-c
 
 The order in which your encoding Payload Converters are applied depending on the order given to the Data Converter.
 You can set multiple encoding Payload Converters to run your conversions.
-When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion. You will explore more in detail now.
-
+When the Data Converter receives a value for conversion, the value gets passes through each Payload Converter in sequence until the converter that handles the data type does the conversion. You will explore more in detail now. You will explore more in detail now.
 
 ## Composite Data Converters
 
 Use a [Composite Data Converter](https://typescript.temporal.io/api/classes/common.CompositePayloadConverter) to apply custom, type-specific Payload Converters in a specified order. Defining a new Composite Data Converter is not always necessary to implement custom data handling. You can override the default Converter with a custom Codec, but a Composite Data Converter may be necessary for complex Workflow logic.
 
-A Composite Data Converter can be comprised of custom rules that you created, and it can also
+A Composite Data Converter can include custom rules created, and it can also
 leverage the default Data Converters built into Temporal. In fact, the default
 Data Converter logic is implemented internally in the Temporal source as a
 Composite Data Converter. It defines these rules in this order:
@@ -64,7 +63,7 @@ export class DefaultPayloadConverter extends CompositePayloadConverter {
 }
 ```
 
-The order in which the Payload Converters are applied is important. During
+The order of applying the Payload Converters is important. During
 serialization, the Data Converter tries the Payload Converters in that specific
 order until a Payload Converter returns a non-null Payload.
 
@@ -77,10 +76,40 @@ export const payloadConverter = new CompositePayloadConverter(
 );
 ```
 
+You can do this in its own `payload-conterter.ts` file for example.
+
+In the code snippet above, a converter is created that first attempts to handle `null` and `undefined` values. If the value isn't `null` or `undefined`, the EJSON serialization logic written in the `EjsonPayloadConverter` is then used. The Payload Converter is then provided to the Worker and Client.
+
+Here is the Worker code:
+
+```typescript
+const worker = await Worker.create({
+  workflowsPath: require.resolve("./workflows"),
+  taskQueue: "ejson",
+  dataConverter: {
+    payloadConverterPath: require.resolve("./payload-converter"),
+  },
+});
+```
+
+With this code, you now ensure that the Worker serializes and deserializes Workflow and Activity inputs and outputs using your EJSON-based logic, along with handling undefined values appropriately.
+
+Here is the Client:
+
+```typescript
+const client = new Client({
+  dataConverter: {
+    payloadConverterPath: require.resolve("./payload-converter"),
+  },
+});
+```
+
+You can now use a variety of data types in arguments.
+
 ## How to use a custom payload converter in TypeScript {#custom-payload-conversion}
 
 To support custom Payload conversion, create a [custom Payload Converter](/dataconversion#composite-data-converters) and configure the Data Converter to use it in your Client options.
-Custom Payload Converters can be used to change how application objects get serialized to binary Payload. To handle custom data types that are not natively JSON-serializable (e.g., `BigInt`, `Date`, or binary data), you can create a custom Payload Converter. A Custom Payload Converter is responsible for converting your custom data types to a payload format that Temporal can manage.
+You can use Custom Payload Converters to change how application objects get serialized to binary Payload. To handle custom data types that are not natively JSON-serializable (e.g., `BigInt`, `Date`, or binary data), you can create a custom Payload Converter. A Custom Payload Converter is responsible for converting your custom data types to a payload format that Temporal can manage.
 
 To implement a Custom Payload Converter in TypeScript, you need to do the following steps:
 
@@ -103,22 +132,7 @@ interface PayloadConverter {
 
 This custom converter should include logic for both serialization (`toPayload`) and deserialization (`fromPayload`), handling your specific data types or serialization format. The method `toPayload` returns a Payload object, which is used to manage and transport serialized data. The method `fromPayload` returns the deserialized data. This ensures that the data returned is in the same format as it was before serialization, allowing it to be used directly in the application.
 
-2. Configure the Data Converter: To send values that are not [JSON-serializable](https://en.wikipedia.org/wiki/JSON#Data_types) like a `BigInt` or `Date`, provide a custom [Data Converter](https://typescript.temporal.io/api/interfaces/common.DataConverter/) to the Client and Worker. By doing this, Temporal knows to use the Custom Converter for serializing and deserializing your Workflow and Activity inputs and outputs.
-
-- [new Client(\{ ..., dataConverter })](https://typescript.temporal.io/api/interfaces/client.ClientOptions#dataconverter)
-- [Worker.create(\{ ..., dataConverter })](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#dataconverter)
-
-A Data Converter has two parts:
-
-- [Payload Converter](#payload-converter): Sync methods that sometimes run inside the Workflow isolate (and are thus limited).
-- [Payload Codec](#payload-codec): Async methods that run outside the isolate.
-
-```ts
-interface DataConverter {
-  payloadConverterPath?: string;
-  payloadCodecs?: PayloadCodec[];
-}
-```
+2. Configure the Data Converter.  To send values that are not JSON-serializable like a `BigInt` or `Date`, provide the custom Data Converter to the Client and Worker as described in the [Composite Data Converters](#composite-data-converters) section.
 
 #### Custom implementation
 
