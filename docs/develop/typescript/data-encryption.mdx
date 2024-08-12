@@ -31,12 +31,30 @@ In practice, these two components operate in a chain to handle data securely. In
 
 The process is symmetric for outgoing data. Payloads retrieved from the Temporal Cluster first pass through the Payload Codec through the `decode` method, which reverses any transformations applied during encoding. Finally, the resulting Payload is converted back into an application object by the Payload Converter through the `fromPayload` method, making it ready for use within the application.
 
+## Payload Codec
+
+> API documentation: [PayloadCodec](https://typescript.temporal.io/api/interfaces/common.PayloadCodec)
+
+The default `PayloadCodec` does nothing. To create a custom one, we implement the following interface:
+
+```ts
+interface PayloadCodec {
+  /**
+   * Encode an array of {@link Payload}s for sending over the wire.
+   * @param payloads May have length 0.
+   */
+  encode(payloads: Payload[]): Promise<Payload[]>;
+
+  /**
+   * Decode an array of {@link Payload}s received from the wire.
+   */
+  decode(payloads: Payload[]): Promise<Payload[]>;
+}
+```
+
 ## Use custom payload conversion
 
 Temporal SDKs provide a [Payload Converter](/dataconversion#payload-converter) that can be customized to convert a custom data type to a [Payload](/dataconversion#payload) and back.
-
-Implementing custom Payload conversion is optional.
-It is needed only if the [default Data Converter](/dataconversion#default-data-converter) does not support your custom values.
 
 The order in which your encoding Payload Converters are applied depending on the order given to the Data Converter.
 You can set multiple encoding Payload Converters to run your conversions.
@@ -485,27 +503,6 @@ export async function protoActivity(
 ```
 
 <!--SNIPEND-->
-
-### Payload Codec
-
-> API documentation: [PayloadCodec](https://typescript.temporal.io/api/interfaces/common.PayloadCodec)
-
-The default `PayloadCodec` does nothing. To create a custom one, we implement the following interface:
-
-```ts
-interface PayloadCodec {
-  /**
-   * Encode an array of {@link Payload}s for sending over the wire.
-   * @param payloads May have length 0.
-   */
-  encode(payloads: Payload[]): Promise<Payload[]>;
-
-  /**
-   * Decode an array of {@link Payload}s received from the wire.
-   */
-  decode(payloads: Payload[]): Promise<Payload[]>;
-}
-```
 
 #### Encryption
 
