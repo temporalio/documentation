@@ -38,7 +38,6 @@ module.exports = {
               },
               items: [
                 "evaluate/development-production-features/multi-region-namespace",
-                "evaluate/development-production-features/global-namespace",
               ],
             },
             "evaluate/development-production-features/testing-suite",
