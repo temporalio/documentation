@@ -17,6 +17,14 @@ An Action is the fundamental pricing unit in Temporal Cloud.
 
 _Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_
 
+#### [Actions Per Second (APS)](/cloud/limits#throughput)
+
+APS, or Actions Per Second, is specific to Temporal Cloud.
+This is the number of Actions, such as starting or signaling a Workflow, that can be performed per second within a specific Namespace. 
+Temporal Cloud uses APS to manage and throttle the rate of these actions to ensure that a Namespace doesn't exceed its rate limit.
+
+_Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_
+
 #### [Activity](/activities)
 
 In day-to-day conversation, the term "Activity" denotes an Activity Type, Activity Definition, or Activity Execution.
@@ -339,6 +347,12 @@ _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explana
 Remote data encding is using your custom Data Converter to decode (and encode) your Payloads remotely through endpoints.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### [Requests Per Second (RPS)](/references/dynamic-configuration#service-level-rps-limits)
+
+RPS, or Requests Per Second, is used in the Temporal Service (both in self-hosted Temporal and Temporal Cloud). This is a measure that controls the rate of requests at the service level, such as the Frontend, History, or Matching Service.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal](/tags/temporal)_
 
 #### [Reset](/workflows#reset)
 
