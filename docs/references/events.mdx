@@ -18,32 +18,32 @@ All possible Events that could appear in a Workflow Execution [Event History](/w
 This is always the first [Event](/workflows#event) in a Workflow Execution Event History.
 It indicates that the Temporal Service received a request to spawn the Workflow Execution.
 
-| Field                              | Description                                                                                                                                                          |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| workflow_type                      | The [Name](/workflows#workflow-type) of [Workflow](/workflows) that was initiated.                                                                                   |
-| parent_workflow_namespace          | The [Namespace](/namespaces) of the Parent [Workflow Execution](/workflows#workflow-execution), if applicable.                                                       |
-| parent_workflow_execution          | Identifies the parent Workflow and the execution run.                                                                                                                |
-| parent_initiated_event_id          | Id of the [StartWorkflowExecutionInitiated](#startchildworkflowexecutioninitiated) Event this Event corresponds to.                                                  |
-| task_queue                         | The [Task Queue](/workers#task-queue) that this [Workflow Task](/workers#workflow-task) was enqueued in.                                                             |
-| input                              | Information that is deserialized by the SDK to provide arguments to the Workflow.                                                                                    |
-| workflow_execution_timeout         | The total timeout period for a [Workflow Execution](/workflows#workflow-execution), including retries and continue-as-new.                                           |
-| workflow_run_timeout               | Timeout of a single Workflow run.                                                                                                                                    |
-| workflow_task_timeout              | Timeout of a single Workflow Task.                                                                                                                                   |
-| continued_execution_run_id         | [Run Id](/workflows#run-id) of the previous Workflow which continued-as-new, retried or was executed by Cron into this Workflow.                                     |
-| initiator                          | Allows the Workflow to continue as a new Workflow Execution.                                                                                                         |
-| continued_failure                  | Serialized result of a failure.                                                                                                                                      |
-| last_completion_result             | Information from the previously completed [Task](/workers#task), if applicable.                                                                                      |
-| original_execution_run_id          | The [Run Id](/workflows#run-id) of the original Workflow started.                                                                                                    |
-| identity                           | The Id of the [Client](/self-hosted-guide/security#client-connections) or parent Workflow [Worker](/workers#worker) that requested the start of this Workflow.       |
-| first_execution_run_id             | The first [Run Id](/workflows#run-id), along the chain of [Continue-As-New](/workflows#continue-as-new) Runs and Reset.                                              |
-| retry_policy                       | The amount of retries as determined by the service's dynamic configuration. Retries will happen until 'schedule_to_close_timeout' is reached.                        |
-| attempt                            | The number of attempts that have been made to complete this Task.                                                                                                    |
-| workflow_execution_expiration_time | The absolute time at which the Workflow Execution will [time out](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout).                             |
-| cron_schedule                      | Displays the Workflow's [Cron Schedule](/workflows#temporal-cron-job), if applicable.                                                                                |
-| first_workflow_task_backoff        | Contains the amount of time between when this iteration of the Workflow was scheduled, and when it should run next. Applies to Cron Scheduling.                      |
-| memo                               | Non-indexed information to show in the Workflow.                                                                                                                     |
-| search_attributes                  | Provides data for setting up a Workflow's [Search Attributes](/visibility#search-attribute).                                                                         |
-| prev_auto_reset_points             |                                                                                                                                                                      |
+| Field                              | Description                                                                                                                                                               |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| workflow_type                      | The [Name](/workflows#workflow-type) of [Workflow](/workflows) that was initiated.                                                                                        |
+| parent_workflow_namespace          | The [Namespace](/namespaces) of the Parent [Workflow Execution](/workflows#workflow-execution), if applicable.                                                            |
+| parent_workflow_execution          | Identifies the parent Workflow and the execution run.                                                                                                                     |
+| parent_initiated_event_id          | Id of the [StartWorkflowExecutionInitiated](#startchildworkflowexecutioninitiated) Event this Event corresponds to.                                                       |
+| task_queue                         | The [Task Queue](/workers#task-queue) that this [Workflow Task](/workers#workflow-task) was enqueued in.                                                                  |
+| input                              | Information that is deserialized by the SDK to provide arguments to the Workflow.                                                                                         |
+| workflow_execution_timeout         | The total timeout period for a [Workflow Execution](/workflows#workflow-execution), including retries and continue-as-new.                                                |
+| workflow_run_timeout               | Timeout of a single Workflow run.                                                                                                                                         |
+| workflow_task_timeout              | Timeout of a single Workflow Task.                                                                                                                                        |
+| continued_execution_run_id         | [Run Id](/workflows#run-id) of the previous Workflow which continued-as-new, retried or was executed by Cron into this Workflow.                                          |
+| initiator                          | Allows the Workflow to continue as a new Workflow Execution.                                                                                                              |
+| continued_failure                  | Serialized result of a failure.                                                                                                                                           |
+| last_completion_result             | Information from the previously completed [Task](/workers#task), if applicable.                                                                                           |
+| original_execution_run_id          | The [Run Id](/workflows#run-id) of the original Workflow started.                                                                                                         |
+| identity                           | The Id of the [Client](/self-hosted-guide/security#client-connections) or parent Workflow [Worker](/workers#worker) that requested the start of this Workflow.            |
+| first_execution_run_id             | The first [Run Id](/workflows#run-id), along the chain of [Continue-As-New](/workflows#continue-as-new) Runs and Reset.                                                   |
+| retry_policy                       | The amount of retries as determined by the service's dynamic configuration. Retries will happen until 'schedule_to_close_timeout' is reached.                             |
+| attempt                            | The number of attempts that have been made to complete this Task.                                                                                                         |
+| workflow_execution_expiration_time | The absolute time at which the Workflow Execution will [time out](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout).                                  |
+| cron_schedule                      | Displays the Workflow's [Cron Schedule](/workflows#temporal-cron-job), if applicable.                                                                                     |
+| first_workflow_task_backoff        | Contains the amount of time between when this iteration of the Workflow was scheduled, and when it should run next. Applies to Cron Scheduling.                           |
+| memo                               | Non-indexed information to show in the Workflow.                                                                                                                          |
+| search_attributes                  | Provides data for setting up a Workflow's [Search Attributes](/visibility#search-attribute).                                                                              |
+| prev_auto_reset_points             |                                                                                                                                                                           |
 | header                             | Information passed by the sender of the [Signal](/encyclopedia/workflow-message-passing#sending-signals) that is copied into the [Workflow Task](/workers#workflow-task). |
 
 ### WorkflowExecutionCompleted
@@ -221,20 +221,20 @@ This [Event](/workflows#event) type indicates that an [Activity Task](/workers#a
 The SDK client should pick up this Activity Task and execute.
 This Event type contains Activity inputs, as well as Activity Timeout configurations.
 
-| Field                            | Description                                                                                                                                                          |
-| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| activity_id                      | The identifier assigned to this Activity by a [Worker](/workers#worker) or user.                                                                                     |
-| activity_type                    | The [type of Activity](/activities#activity-type) that was scheduled.                                                                                                |
-| namespace                        | Namespace of the Workflow that the [Activity](/activities) resides in.                                                                                               |
-| task_queue                       | The [Task Queue](/workers#task-queue) that this Activity Task was enqueued in.                                                                                       |
+| Field                            | Description                                                                                                                                                               |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| activity_id                      | The identifier assigned to this Activity by a [Worker](/workers#worker) or user.                                                                                          |
+| activity_type                    | The [type of Activity](/activities#activity-type) that was scheduled.                                                                                                     |
+| namespace                        | Namespace of the Workflow that the [Activity](/activities) resides in.                                                                                                    |
+| task_queue                       | The [Task Queue](/workers#task-queue) that this Activity Task was enqueued in.                                                                                            |
 | header                           | Information passed by the sender of the [Signal](/encyclopedia/workflow-message-passing#sending-signals) that is copied into the [Workflow Task](/workers#workflow-task). |
-| input                            | Information that is deserialized by the SDK to provide arguments to the [Workflow](/workflows) function.                                                             |
-| schedule_to_close_timeout        | The amount of time that a caller will wait for Activity completion. Limits the amount of time that retries will be attempted for this Activity.                      |
-| schedule_to_start_timeout        | Limits the time that an Activity Task can stay in a Task Queue. This timeout cannot be retried.                                                                      |
-| start_to_close_timeout           | Maximum amount of execution time that an Activity is allowed after being picked up by a Worker. This timeout is retryable.                                           |
-| heartbeat_timeout                | Maximum amount of time allowed between successful Worker heartbeats.                                                                                                 |
-| workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with.                                                                      |
-| retry_policy                     | The amount of retries as determined by the service's dynamic configuration. Retries will happen until `schedule_to_close_timeout` is reached.                        |
+| input                            | Information that is deserialized by the SDK to provide arguments to the [Workflow](/workflows) function.                                                                  |
+| schedule_to_close_timeout        | The amount of time that a caller will wait for Activity completion. Limits the amount of time that retries will be attempted for this Activity.                           |
+| schedule_to_start_timeout        | Limits the time that an Activity Task can stay in a Task Queue. This timeout cannot be retried.                                                                           |
+| start_to_close_timeout           | Maximum amount of execution time that an Activity is allowed after being picked up by a Worker. This timeout is retryable.                                                |
+| heartbeat_timeout                | Maximum amount of time allowed between successful Worker heartbeats.                                                                                                      |
+| workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with.                                                                           |
+| retry_policy                     | The amount of retries as determined by the service's dynamic configuration. Retries will happen until `schedule_to_close_timeout` is reached.                             |
 
 ### ActivityTaskStarted
 
@@ -391,13 +391,13 @@ This [Event](/workflows#event) type is transparent to the [Temporal Server](/clu
 The Server will only store it and will not try to understand it.
 The SDK client may use it for local activities or side effects.
 
-| Field                            | Description                                                                                                                         |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| marker_name                      | Identifies various markers.                                                                                                         |
-| details                          | Serialized information recorded in the marker.                                                                                      |
-| workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with.                                     |
+| Field                            | Description                                                                                                                              |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| marker_name                      | Identifies various markers.                                                                                                              |
+| details                          | Serialized information recorded in the marker.                                                                                           |
+| workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with.                                          |
 | header                           | Information passed by the sender of the [Signal](/encyclopedia/workflow-message-passing#sending-signals) that is copied into the marker. |
-| failure                          | Serialized result of a [Workflow](/workflows) failure.                                                                              |
+| failure                          | Serialized result of a [Workflow](/workflows) failure.                                                                                   |
 
 ### StartChildWorkflowExecutionInitiated
 
@@ -427,12 +427,12 @@ It is usually due to a Child Workflow Id collision.
 This [Event](/workflows#event) type indicates a [Child Workflow Execution](/encyclopedia/child-workflows) has successfully started / triggered.
 This would also cause the [WorkflowExecutionStarted](#workflowexecutionstarted) to be recorded for the Workflow that has started.
 
-| Field              | Description                                                                                                                                      |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| namespace          | [Namespace](/namespaces) of the Child Workflow.                                                                                                  |
-| initiated_event_id | Id of the [StartChildWorkflowExecutionInitiated](#startchildworkflowexecutioninitiated) Event this Event corresponds to.                         |
-| workflow_execution | Identifies the Workflow and the run of the Workflow Execution.                                                                                   |
-| workflow_type      | The name/type of Workflow that has started execution.                                                                                            |
+| Field              | Description                                                                                                                                           |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| namespace          | [Namespace](/namespaces) of the Child Workflow.                                                                                                       |
+| initiated_event_id | Id of the [StartChildWorkflowExecutionInitiated](#startchildworkflowexecutioninitiated) Event this Event corresponds to.                              |
+| workflow_execution | Identifies the Workflow and the run of the Workflow Execution.                                                                                        |
+| workflow_type      | The name/type of Workflow that has started execution.                                                                                                 |
 | header             | Information passed by the sender of the [Signal](/encyclopedia/workflow-message-passing#sending-signals) that is copied into the Child Workflow Task. |
 
 ### ChildWorkflowExecutionCompleted
@@ -525,11 +525,11 @@ This Event type contains the Signal name, as well as a Signal payload.
 
 This [Event](/workflows#event) type indicates that the [Temporal Server](/clusters#temporal-server) cannot Signal the targeted [Workflow](/workflows), usually because the Workflow could not be found.
 
-| Field                            | Description                                                                                                                                                                                                  |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with.                                                                                                              |
-| namespace                        | [Namespace](/namespaces) of the Workflow that failed to execute.                                                                                                                                             |
-| workflow_execution               | Identifies the Workflow and the run of the [Workflow Execution](/workflows#workflow-execution).                                                                                                              |
+| Field                            | Description                                                                                                                                                                                                       |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with.                                                                                                                   |
+| namespace                        | [Namespace](/namespaces) of the Workflow that failed to execute.                                                                                                                                                  |
+| workflow_execution               | Identifies the Workflow and the run of the [Workflow Execution](/workflows#workflow-execution).                                                                                                                   |
 | initiated_event_id               | Id of the [RequestCancelExternalWorkflowExecutionInitiated](#requestcancelexternalworkflowexecutioninitiated) Event this failure [signal](/encyclopedia/workflow-message-passing#sending-signals) corresponds to. |
 
 ### UpsertWorkflowSearchAttributes
