@@ -33,7 +33,7 @@ To use a Side Effect in PHP, use the `Workflow::sideEffect()` function in your W
 #[Workflow\WorkflowMethod]
 public function run()
 {
-    $random = yield Workflow::sideEffect(fn()=> return random_int(0, 100));
+    $random = yield Workflow::sideEffect(fn() => random_int(0, 100));
     if ($random < 50) {
         // ...
     } else {
