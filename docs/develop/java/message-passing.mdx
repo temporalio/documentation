@@ -359,7 +359,7 @@ public static class GreetingWorkflowImpl implements GreetingWorkflow {
                 // greetingService supports the requested language. Throwing an ApplicationFailure
                 // will fail the Update, but the WorkflowExecutionUpdateAccepted event will still be
                 // added to history.
-                throw ApplicationFailure.newFailure("Greeting service does not support", "GreetingFailure")
+                throw ApplicationFailure.newFailure("Greeting service does not support: " + language, "GreetingFailure")
             }
             greetings.put(language, greeting);
         }
