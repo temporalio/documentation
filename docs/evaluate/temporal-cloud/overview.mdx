@@ -13,15 +13,26 @@ tags:
   - term
 ---
 
-**What is Temporal Cloud?**
+When it comes to running Temporal in production, you have two main options:
 
-[Temporal Cloud](https://temporal.io/cloud) serves as a software-as-a-service (SaaS) infrastructure platform, specifically designed to manage the durability of your Temporal Applications.
-**Importantly, it does not execute your code directly.** Users of Temporal Cloud must have their own environment to run Temporal Applications.
-Essentially a [Temporal Application](/encyclopedia/temporal-sdks) refers to any application developed using a Temporal SDK.
+**Temporal self-hosted:**
+This option involves setting up and managing your own instance of the Temporal Server.
+Your Workers and Temporal Application connect directly to this self-hosted instance.
+With the self-hosted approach, you have full control over the infrastructure and are responsible for managing the persistence layer, scalability, and availability of the Temporal system.
 
-### High level system topology
+**Temporal Cloud:**
+Temporal Cloud is a fully managed service provided by Temporal.
+It offers a hassle-free way to run your Temporal Applications without the need to manage the underlying infrastructure.
+Your Workers and Temporal Applications connect to the Temporal Cloud service, which takes care of the persistence layer, scalability, and availability for you.
 
-There are two major parts of the Temporal Platform that work together to create the fully functioning system.
+Temporal Cloud and self-hosted Temporal Services have some similarities, as both require your Temporal Clients and Workers to establish a connection to the Temporal Service.
+Additionally, in both cases, you are responsible for managing and hosting your application code and running your Workers.
+The choice between self-hosted and Temporal Cloud depends on your specific requirements, resources, and expertise.
+
+### High level system topology of the Temporal Service
+
+There are two major parts of the Temporal Service that work together to create the fully functioning system.
+Temporal Cloud is an offering of the Temporal Service.
 
 1. Temporal SDK: The Temporal software development kit (SDK) is available in various languages and can be integrated as a dependency into your new or existing application.
    It offers developers a comprehensive development framework and APIs, facilitating the creation and management of applications.
