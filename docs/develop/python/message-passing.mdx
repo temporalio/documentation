@@ -240,7 +240,7 @@ async def main():
 ### Sending an Update {#send-update}
 
 - A client sending an Update must be prepared to wait until the Server has delivered the Update to the Worker: that means that the Worker must not be offline, and must not respond too slowly.
-  If you want the server to send a response as soon as it receives your request, then you must use a Signal instead. 
+  If you want the server to send a response as soon as it receives your request, then you must use a Signal instead.
 - `WorkflowExecutionUpdateAccepted` will be added to Event History when the Worker has responded to the Server that the Update passed validation.
 - `WorkflowExecutionUpdateCompleted` will be added to Event History when the Worker has responded to the Server that the Update has completed.
 
@@ -277,6 +277,11 @@ update_handle = await workflow_handle.start_update(
 update_result = await update_handle.result()
 ```
 
+To obtain an Update handle, you can:
+- Use [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) to start an Update and return the handle.
+- Use [`get_update_handle_for`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#get_update_handle_for) to get a handle to an in-progress update given the Update ID, and Workflow ID.
+
+
 #### Non-type safe APIs
 
 Note that all the sample code in this document assumes that you can import the Workflow Definition.
@@ -284,61 +289,80 @@ If you do not have access to the Workflow Definition (or it is not written in Py
 This involves passing method names instead of method objects to [`Client.start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) / [`WorkflowHandle.query`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#query) / [`WorkflowHandle.signal`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#signal) / [`WorkflowHandle.execute_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#execute_update) / [`WorkflowHandle.start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update), and using the non type-safe APIs [`get_workflow_handle`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle) and [`get_external_workflow_handle`](https://python.temporal.io/temporalio.workflow.html#get_external_workflow_handle).
 
 
-## Exceptions
+## Troubleshooting
 
-See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–Python-specific introduction to this topic.
+See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–Python-specific introduction.
 
 As a client, when you send a Signal, Update, or Query to a Workflow, the following two errors are always possible:
 
 1. **The client can't contact the server**
-   You'll get an [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) on which the `status` attribute is [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `UNAVAILABLE` (after some retries; see the `retry_config` argument to [`Client.connect`](https://python.temporal.io/temporalio.client.Client.html#connect)).
+
+    You'll get an [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) on which the `status` attribute is [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `UNAVAILABLE` (after some retries; see the `retry_config` argument to [`Client.connect`](https://python.temporal.io/temporalio.client.Client.html#connect)).
 
 1. **The workflow does not exist**
-   You'll get an [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) on which the `status` attribute is [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `NOT_FOUND`.
+
+    You'll get an [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) on which the `status` attribute is [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `NOT_FOUND`.
+
+### Problems when sending a Signal
 
 For Signal, these `RPCError`s are the only types of exception that will result from the request.
 
-The situation is different for Query and Update since for these the client waits for a response from the Worker, and so the client may get an exception indicating that something went wrong while the handler was being executed by the Workflow Worker. There are three types of error that could occur:
+The situation is different for Query and Update since for these the client waits for a response from the Worker, and so the Client may get an exception indicating that something went wrong while the handler was being executed by the Workflow Worker.
 
-1. **The handler caused the Workflow Task to fail.**
-    In this case
-See [Workflow Task Failure](/references/failures#errors-in-workflows)
+### Problems when sending an Update
+
+1. **There is no Workflow Worker polling the Task Queue**
+
+    Your request will be retried by the SDK Client indefinitely.
+    You can use [`asyncio.timeout`](https://docs.python.org/3/library/asyncio-task.html#timeouts) to impose a timeout; this will cause it to raise [`temporalio.client.WorkflowUpdateRPCTimeoutOrCancelledError`](https://python.temporal.io/temporalio.client.WorkflowUpdateRPCTimeoutOrCancelledError.html).
 
 1. **Update failed.**
 
-   Update failure is analogous to Workflow failure in the sense that all the things that cause Workflow failure when they happen in the main Workflow method, cause Update failure when they happen in an Update handler. 
-   Examples of things that cause Update/Workflow failure in this way include:
-     - A failed Child Workflow
-     - A failed Activity (if the activity retries have been set to a finite number)
-     - The Workflow author raising `ApplicationFailure`
-     - Any error listed in [workflow_failure_exception_types](https://python.temporal.io/temporalio.worker.Worker.html) (empty by default)
+    You'll get [`temporalio.client.WorkflowUpdateFailedError`](https://python.temporal.io/temporalio.client.WorkflowUpdateFailedError.html). There are two ways this can happen:
 
-1. **For Query only: There is no Workflow Worker polling the Task Queue**
+    1. The Update was [rejected](#handle-update) by an Update validator (defined in the Workflow alongside the Update handler).
+
+    1. The Update failed after having been accepted.
+
+        Update failure is analogous to [Workflow failure](/references/failures#errors-in-workflows) in the sense that all the things that cause Workflow failure when they happen in the main Workflow method, cause Update failure when they happen in an Update handler.
+        Examples of things that cause Update/Workflow failure in this way include:
+        - A failed Child Workflow
+        - A failed Activity (if the activity retries have been set to a finite number)
+        - The Workflow author raising `ApplicationFailure`
+        - Any error listed in [workflow_failure_exception_types](https://python.temporal.io/temporalio.worker.Worker.html) (empty by default)
+
+1. **The handler caused the Workflow Task to fail.**
+
+    As always with a [Workflow Task Failure](/references/failures#errors-in-workflows), the server starts to retry the Workflow Task indefinitely.
+    What happens to your Update request depends on the stage that it has got to.
+    If it had not yet been accepted by the server then you'll get a `FAILED_PRECONDITION` [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html).
+    On the other hand, if it had been [accepted](#send-update) by the server, then it is durable, and as soon as the Workflow becomes healthy again (perhaps as a result of a code deploy) then you can use an [`UpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html) to fetch the update result.
+
+1. **Workflow finished while the Update handler execution was in progress**
+
+    You'll get a [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) "workflow execution already completed"`
+
+    This will happen if the Workflow finished while the Update handler execution was in progress, for example because
+    - The Workflow was canceled or failed.
+    - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
+
+
+
+### Problems when sending a Query
+
+1. **There is no Workflow Worker polling the Task Queue**
+
     You'll get an [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) on which the `status` attribute is [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `FAILED_PRECONDITION`.
 
 1. **Query failed.**
 
-See also [Failures](/references/failures).
+    You'll get [`temporalio.client.WorkflowQueryFailedError`](https://python.temporal.io/temporalio.client.WorkflowQueryFailedError.html).
+    Any exception in a Query handler will cause this.
+    Note that this differs from Signal and Update, for which exceptions can cause Workflow Task Failure.
 
+1. **The handler caused the Workflow Task to fail.**
 
-
-Of course, it's possible that the handler you triggered caused the Workflow to fail.
-You'll get the resulting exception when you try to do `await workflow_handle.result()`.
-
-
-The following exceptions might be raised by [`execute_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#execute_update), or when calling [`update_handle.result`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html#result) on a handle obtained from [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update):
-
-- [`temporalio.client.WorkflowUpdateFailedError`](https://python.temporal.io/temporalio.client.WorkflowUpdateFailedError.html)
-
-  This is the error you'll see if the Update was rejected by the validator, or the update was failed after having been accepted.
-
-- [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) "workflow execution already completed"`
-
-  This will happen if the Workflow finished while the Update handler execution was in progress, for example because
-  - The Workflow was canceled or was deliberately failed (the Workflow author raised [`ApplicationError`](https://python.temporal.io/temporalio.exceptions.ApplicationError.html) outside an Update handler)
-  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
-
-If the Workflow handle references a Workflow that doesn't exist then [`execute_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#execute_update) and [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) will both raise `temporalio.service.RPCError "sql: no rows in result set"`.
+    This would happen, for example, if the Query handler blocks the thread for too long without yielding.
 
 
 ## Message handler patterns {#message-handler-patterns}
