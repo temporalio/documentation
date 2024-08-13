@@ -420,8 +420,10 @@ class GreetingWorkflow:
         return previous_language
 ```
 
-The Update handler is now able to schedule an Activity and wait for the result -- but this could be done with a Signal handler also.
-In contrast to a Signal, the client sending the Update will not get an Update result until the Activity has completed and the Workflow has received a response or error from the remote service.
+Now that the Update handler is an `async def`, it is able to schedule an Activity and wait for the result.
+However, an `async def` Signal handler could do the same thing.
+The advantage of using Update here is that the client sending the Update will get an Update result or error, once the Activity has completed.
+The end result is that, by using Update, the Client is able to track the progress of the asynchronous work done in the Update handler by Activities, Child Workflows, etc.
 
 #### Waiting
 [`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition) is very useful in Temporal Workflow Definitions.
