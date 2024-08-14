@@ -305,58 +305,77 @@ If you do not have access to the Workflow Definition (or it is not written in .N
 This involves passing method names instead of method objects to `ITemporalClient.StartWorkflowAsync` / `WorkflowHandle.QueryAsync` / `WorkflowHandle.SignalAsync` / `WorkflowHandle.ExecuteUpdateAsync` / `WorkflowHandle.StartUpdateAsync`, and using the non type-safe APIs `ITemporalClient.GetWorkflowHandle` and `Workflow.GetExternalWorkflowHandle`.
 
 
-## Exceptions
+## Troubleshooting
 
-🚧 This section is still in-progress 🚧
+See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–.NET-specific introduction.
 
 As a client, when you send a Signal, Update, or Query to a Workflow, the following two errors are always possible:
 
 1. **The client can't contact the server**
 
-   You'll get an [`Temporalio.Exceptions.RpcException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.html) on which the `Code` property is [`RpcException.StatusCode`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.StatusCode.html) `Unavailable` (after some retries; see the `RpcRetry` property on the client connection options).
+   You'll get a [`Temporalio.Exceptions.RpcException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.html) on which the `Code` property is [`RpcException.StatusCode`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.StatusCode.html) `Unavailable` (after some retries; see the `RpcRetry` property on the client connection options).
 
 1. **The workflow does not exist**
 
-   You'll get an [`Temporalio.Exceptions.RpcException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.html) on which the `Code` property is [`RpcException.StatusCode`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.StatusCode.html) `NotFound`.
+   You'll get a [`Temporalio.Exceptions.RpcException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.html) on which the `Code` property is [`RpcException.StatusCode`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.StatusCode.html) `NotFound`.
 
-For Signal, these `RpcException`s are the only types of exception that will result from the request, since the client gets a response without waiting for the Signal to be delivered to the Worker.
+### Problems when sending a Signal
 
-The situation is different for Query and Update since for these the client waits for a response for the Worker, and so the client may get an exception indicating that something went wrong while the handler was being executed by the Workflow Worker. There are three types of error that could occur:
+For Signal, these `RpcException`s are the only types of exception that will result from the request.
+
+The situation is different for Query and Update since for these the client waits for a response from the Worker, and so the Client may get an exception indicating that something went wrong while the handler was being executed by the Workflow Worker.
+
+### Problems when sending an Update
+
+1. **There is no Workflow Worker polling the Task Queue**
+
+   Your request will be retried by the SDK Client indefinitely.
+   You can use a `CancellationToken` in the [RPC options](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowUpdateOptions.html#Temporalio_Client_WorkflowUpdateOptions_Rpc) to cancel the Update.
+   This will raise [Temporalio.Exceptions.WorkflowUpdateRpcTimeoutOrCanceledException](https://dotnet.temporal.io/api/Temporalio.Exceptions.WorkflowUpdateRpcTimeoutOrCanceledException.html).
+
+1. **Update failed.**
+
+   You'll get [`Temporalio.Exceptions.WorkflowUpdateFailedException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.WorkflowUpdateFailedException.html). There are two ways this can happen:
+
+    1. The Update was rejected by an Update validator (defined in the Workflow alongside the Update handler).
+
+    1. The Update failed after having been accepted.
+
+       Update failure is analogous to [Workflow failure](/references/failures#errors-in-workflows) in the sense that all the things that cause Workflow failure when they happen in the main Workflow method, cause Update failure when they happen in an Update handler.
+       Examples of things that cause Update/Workflow failure in this way include:
+       - A failed Child Workflow
+       - A failed Activity (if the activity retries have been set to a finite number)
+       - The Workflow author raising `ApplicationFailureException`
+       - Any error listed in [`TemporalWorkerOptions.WorkflowFailureExceptionTypes`](https://dotnet.temporal.io/api/Temporalio.Worker.TemporalWorkerOptions.html#Temporalio_Worker_TemporalWorkerOptions_WorkflowFailureExceptionTypes) on the worker or [`WorkflowAttribute.FailureExceptionTypes`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowAttribute.html#Temporalio_Workflows_WorkflowAttribute_FailureExceptionTypes) on the workflow (empty by default)
 
 1. **The handler caused the Workflow Task to fail.**
 
-1. **You sent an Update and the Update failed.**
+   As always with a [Workflow Task Failure](/references/failures#errors-in-workflows), the server starts to retry the Workflow Task indefinitely.
+   What happens to your Update request depends on the stage that it has got to.
+   If it had not yet been accepted by the server, then you'll get a `FAILED_PRECONDITION` [`Temporalio.Exceptions.RpcException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.html).
+   On the other hand, if it had been accepted by the server, then it is durable, and as soon as the Workflow becomes healthy again (perhaps as a result of a code deploy), then you can use an [`UpdateHandle`](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowUpdateHandle.html) to fetch the update result.
 
-   Update failure is analogous to Workflow failure in the sense that all the things that cause Workflow failure when they happen in the main Workflow method, cause Update failure when they happen in an Update handler. 
-   Examples of things that cause Update/Workflow failure in this way include:
-     - A failed Child Workflow
-     - A failed Activity (if the activity retries have been set to a finite number)
-     - The Workflow author raising `ApplicationFailureException`
-     - Any error listed in []`TemporalWorkerOptions.WorkflowFailureExceptionTypes`](https://dotnet.temporal.io/api/Temporalio.Worker.TemporalWorkerOptions.html#Temporalio_Worker_TemporalWorkerOptions_WorkflowFailureExceptionTypes) on the worker or [`WorkflowAttribute.FailureExceptionTypes`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowAttribute.html#Temporalio_Workflows_WorkflowAttribute_FailureExceptionTypes) on the workflow (empty by default)
+1. **Workflow finished while the Update handler execution was in progress**
 
-1. **You sent a Query and the Query failed.**
+   You'll get a [`Temporalio.Exceptions.RpcException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.html) "workflow execution already completed."
 
-See also [Failures](/references/failures).
+   This will happen if the Workflow finished while the Update handler execution was in progress, for example because:
+   - The Workflow was canceled or failed.
+   - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
 
+### Problems when sending a Query
 
+1. **There is no Workflow Worker polling the Task Queue**
 
-Of course, it's possible that the handler you triggered caused the Workflow to fail.
-You'll get the resulting exception when you try to do `await workflowHandle.GetResultAsync()`.
+   You'll get a [`Temporalio.Exceptions.RpcException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.html) on which the `Code` property is [`RpcException.StatusCode`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.StatusCode.html) `FailedPrecondition`.
 
+1. **Query failed.**
 
-The following exceptions might be raised by `ExecuteUpdateAsync`, or when calling `updateHandle.GetResultAsync` on a handle obtained from `StartUpdateAsync`:
+   You'll get [`Temporalio.Exceptions.WorkflowQueryFailedException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.WorkflowQueryFailedException.html). Any exception in a Query handler will cause this. Note that this differs from Signal and Update, for which exceptions can cause Workflow Task Failure.
 
-- [`Temporalio.Exceptions.WorkflowUpdateFailedException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.WorkflowUpdateFailedException.html)
+1. **The handler caused the Workflow Task to fail.**
 
-  This is the error you'll see if the Update was rejected by the validator, or the update was failed after having been accepted.
-
-- [`Temporalio.Exceptions.RpcException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.html) "workflow execution already completed"`
-
-  This will happen if the Workflow finished while the Update handler execution was in progress, for example because
-  - The Workflow was canceled or was deliberately failed (the Workflow author raised [`ApplicationFailureException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.ApplicationFailureException.html) outside an Update handler)
-  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
-
-If the Workflow handle references a Workflow that doesn't exist then `ExecuteUpdateAsync` and `StartUpdateAsync` will both raise [`Temporalio.Exceptions.RpcException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.html) with a `NotFound` code.
+   This would happen, for example, if the Query handler blocks the thread for too long without yielding.
 
 
 ## Message handler patterns {#message-handler-patterns}
