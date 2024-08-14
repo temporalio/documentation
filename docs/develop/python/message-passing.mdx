@@ -385,13 +385,12 @@ This lets your client track the progress of asynchronous work performed by the U
 
 #### Wait conditions
 
-#### Wait conditions
-
 At times, Signal or Update handlers require something in the main Workflow method to be done first before they should proceed.
 Wait conditions are high beneficial in these circumstances.
 Using  ([`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition)) allows you to specify a function that must return True before the handler can proceed.
 
-For example, in an `async def` handler you might require a `ready_for_update_to_execute` method to be successful before starting the Update:
+For example, in an `async def` handler you might require a `ready_for_update_to_execute` method to be successful before starting the Update.
+This ensures that the Workflow doesn't proceed until it's correct to do so:
 
 ```python
     @workflow.update
@@ -485,9 +484,11 @@ See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-me
 
 When sending a Signal, Update, or Query to a Workflow, your Client might encounter the following errors:
 
-* **The client can't contact the server**: You'll encounter a [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) on which the `status` attribute is [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `UNAVAILABLE` (after some retries; see the `retry_config` argument to [`Client.connect`](https://python.temporal.io/temporalio.client.Client.html#connect)).
+- **The client can't contact the server**:
+  You'll receive a [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) on which the `status` attribute is [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `UNAVAILABLE` (after some retries; see the `retry_config` argument to [`Client.connect`](https://python.temporal.io/temporalio.client.Client.html#connect)).
 
-* **The workflow does not exist**: You'll get an [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) on which the `status` attribute is [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `NOT_FOUND`.
+- **The workflow does not exist**:
+  You'll receive an [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) exception on which the `status` attribute is [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `NOT_FOUND`.
 
 See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–Python-specific discussion of this topic.
 
@@ -502,53 +503,55 @@ If an issue occurs during the handler Execution by the Worker, the client may re
 
 When working with Updates, you may encounter these errors:
 
-* **No Workflow Workers are polling the Task Queue**: Your request will be retried by the SDK Client indefinitely.
-    You can use [`asyncio.timeout`](https://docs.python.org/3/library/asyncio-task.html#timeouts) to impose a timeout.
-    This raises [`temporalio.client.WorkflowUpdateRPCTimeoutOrCancelledError`](https://python.temporal.io/temporalio.client.WorkflowUpdateRPCTimeoutOrCancelledError.html).
+- **No Workflow Workers are polling the Task Queue**:
+  Your request will be retried by the SDK Client indefinitely.
+  You can use [`asyncio.timeout`](https://docs.python.org/3/library/asyncio-task.html#timeouts) to impose a timeout.
+  This raises a [`temporalio.client.WorkflowUpdateRPCTimeoutOrCancelledError`](https://python.temporal.io/temporalio.client.WorkflowUpdateRPCTimeoutOrCancelledError.html) exception.
 
-* **Update failed**: You'll encounter a [`temporalio.client.WorkflowUpdateFailedError`](https://python.temporal.io/temporalio.client.WorkflowUpdateFailedError.html). There are two ways this can happen:
+- **Update failed**: You'll receive a [`temporalio.client.WorkflowUpdateFailedError`](https://python.temporal.io/temporalio.client.WorkflowUpdateFailedError.html) exception.
+  There are two ways this can happen:
 
-    * The Update was rejected by an Update validator defined in the Workflow alongside the Update handler.
+    - The Update was rejected by an Update validator defined in the Workflow alongside the Update handler.
 
-    * The Update failed after having been accepted.
-      Update failures are like [Workflow failures](/references/failures#errors-in-workflows).
-      Issues that cause a Workflow failure in the main method also cause Update failures in the Update handler.
-      These might include:
-        - A failed Child Workflow
-        - A failed Activity (if the activity retries have been set to a finite number)
-        - The Workflow author raising `ApplicationFailure`
-        - Any error listed in [workflow_failure_exception_types](https://python.temporal.io/temporalio.worker.Worker.html) (empty by default)
+    - The Update failed after having been accepted.
 
-* **The handler caused the Workflow Task to fail**:
+    Update failures are like [Workflow failures](/references/failures#errors-in-workflows).
+    Issues that cause a Workflow failure in the main method also cause Update failures in the Update handler.
+    These might include:
+
+      - A failed Child Workflow
+      - A failed Activity (if the activity retries have been set to a finite number)
+      - The Workflow author raising `ApplicationFailure`
+      - Any error listed in [workflow_failure_exception_types](https://python.temporal.io/temporalio.worker.Worker.html) (empty by default)
+
+- **The handler caused the Workflow Task to fail**:
   A [Workflow Task Failure](/references/failures#errors-in-workflows) causes the server to retry Workflow Tasks indefinitely. What happens to your Update request depends on its stage:
-    - If the request hasn't been accepted by the server, you receive a `FAILED_PRECONDITION` [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html).
+    - If the request hasn't been accepted by the server, you receive a `FAILED_PRECONDITION` [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) exception.
     - If the request has been accepted, it is durable.
       Once the Workflow is healthy again after a code deploy, use an [`UpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html) to fetch the update result.
 
-*. **The Workflow finished while the Update handler execution was in progress**:
-    You'll get a [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) exception with a "workflow execution already completed" message.
-wefwef
-    This will happen if the Workflow finished while the Update handler execution was in progress, for example because
+- **The Workflow finished while the Update handler execution was in progress**:
+    You'll receive a [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) exception with a "workflow execution already completed" message.
+    This happens if the Workflow finished while the Update handler execution was in progress, for example because
+
     - The Workflow was canceled or failed.
+
     - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
 
 ### Problems when sending a Query {#query-problems}
 
-1. **There is no Workflow Worker polling the Task Queue**
+- **There is no Workflow Worker polling the Task Queue**:
+    You'll receive a [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) exception on which the `status` attribute is [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `FAILED_PRECONDITION`.
 
-    You'll get an [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) on which the `status` attribute is [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `FAILED_PRECONDITION`.
+- **Query failed**:
+  You'll receive a [`temporalio.client.WorkflowQueryFailedError`](https://python.temporal.io/temporalio.client.WorkflowQueryFailedError.html) exception if something goes wrong during a Query.
+  Any exception in a Query handler will trigger this error.
+  This differs from Signal and Update requests, where exceptions can lead to Workflow Task Failure instead.
 
-1. **Query failed.**
-
-    You'll get [`temporalio.client.WorkflowQueryFailedError`](https://python.temporal.io/temporalio.client.WorkflowQueryFailedError.html).
-    Any exception in a Query handler will cause this.
-    Note that this differs from Signal and Update, for which exceptions can cause Workflow Task Failure.
-
-1. **The handler caused the Workflow Task to fail.**
-
+- **The handler caused the Workflow Task to fail.**
     This would happen, for example, if the Query handler blocks the thread for too long without yielding.
 
-
+<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**OUT OF TIME FOR TODAY. WILL PICK UP HERE TOMORROW.**</div>
 ## Dynamic Handlers {#dynamic-handler}
 
 Temporal supports Dynamic Workflows, Activities, Signals, Updates, and Queries.
