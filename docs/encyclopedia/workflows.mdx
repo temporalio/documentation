@@ -628,7 +628,8 @@ The Workflow Id Reuse Policy can have one of the following values:
 The first three values (Allow Duplicate, Allow Duplicate Failed Only, and Reject Duplicate) of the Workflow Id Reuse Policy apply to Closed Workflow Executions that are retained within the Namespace.
 For example, the Temporal Service can only check the Workflow Id of the spawning Workflow Execution based on the Workflow Id Reuse Policy against the Closed Workflow Executions for the last *30 days* given a default Retention Period. 
 
-If you need to start a Workflow for a particular implementation only if it hasn't started yet, pay close attention to your Retention Period. If this becomes unwieldy, consider using [Workflow message passing](/encyclopedia/workflow-message-passing) instead of trying to start Workflows atomically.
+If you need to start a Workflow for a particular implementation only if it hasn't started yet, pay close attention to your Retention Period.
+If this becomes unwieldy, consider using [Workflow message passing](/encyclopedia/workflow-message-passing) instead of trying to start Workflows atomically.
 
 The fourth value of the Workflow Id Reuse Policy, Terminate if Running, only applies to a Workflow Execution that is currently open within the Namespace.
 For Terminate if Running, the Retention Period is not a consideration for this policy.
