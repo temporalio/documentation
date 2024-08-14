@@ -27,8 +27,10 @@ tags:
   - dynamic-handlers
 ---
 
+A Workflow can be thought of as a stateful web service that can receive messages: Queries, Signals, and Updates.
+Clients can use these to read data from a Workflow and control its execution.
 See [Workflow message passing](/encyclopedia/workflow-message-passing) for a non–Python-specific
-introduction to using messages with Temporal Workflows.
+introduction.
 
 ## Writing message handlers
 
@@ -57,7 +59,12 @@ class GetLanguagesInput:
 
 @workflow.defn
 class GreetingWorkflow:
-    ...
+    def __init__(self) -> None:
+        self.greetings = {
+            Language.CHINESE: "你好，世界",
+            Language.ENGLISH: "Hello, world",
+        }
+
     @workflow.query
     def get_languages(self, input: GetLanguagesInput) -> list[Language]:
         # 👉 A Query handler returns a value: it can inspect but must not mutate the Workflow state.
