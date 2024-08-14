@@ -261,13 +261,12 @@ This table provides API-level details for the permissions granted to a user thro
 | GetRolesByPermissions          | ✔         | ✔         | ✔            | ✔             |
 | GetServiceAccount              | ✔         | ✔         | ✔            | ✔             |
 | GetServiceAccounts             | ✔         | ✔         | ✔            | ✔             |
-| GetStripeInvoice               | ✔         | ✔         | ✔            | ✔             |
 | GetUser                        | ✔         | ✔         | ✔            | ✔             |
 | GetUsers                       | ✔         | ✔         | ✔            | ✔             |
 | GetUsersWithAccountRoles       | ✔         | ✔         | ✔            | ✔             |
 | InviteUsers                    |           |           | ✔            | ✔             |
-| ListCreditLedgerEntries        |           |           | ✔            | ✔             |
-| ListGrants                     |           |           | ✔            | ✔             |
+| ListCreditLedgerEntries        |           |           | ✔            |               |
+| ListGrants                     |           |           | ✔            |               |
 | ListNamespaces                 | ✔         | ✔         | ✔            | ✔             |
 | ResendUserInvite               |           |           | ✔            | ✔             |
 | SetAccountSettings             |           |           | ✔            | ✔             |
@@ -279,7 +278,8 @@ This table provides API-level details for the permissions granted to a user thro
 
 #### Namespace-level permissions details
 
-This table provides API-level details for the permissions granted to a user through Namespace-level permissions. These permissions are configured per Namespace per user.
+This table provides API-level details for the permissions granted to a user through Namespace-level permissions.
+These permissions are configured per Namespace per user.
 
 | Permission                         | Read | Write | Namespace Admin |
 | ---------------------------------- | ---- | ----- | --------------- |
@@ -349,3 +349,5 @@ This table provides API-level details for the permissions granted to a user thro
 | UpdateUserNamespacePermissions     |      |       | ✔               |
 | ValidateExportSink                 |      | ✔     | ✔               |
 | ValidateGlobalizeNamespace         |      |       | ✔               |
+
+Account Owners and Global Admins will have Namespace Admin permissions on Namespaces.
