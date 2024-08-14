@@ -101,9 +101,6 @@ You can invite users pragmatically using the Cloud Ops API.
 
 When a Global Admin invites a user to join an account, the Global Admin selects one of the following Roles for that user:
 
-- **Account Owner**
-  - Has full administrative permissions across the account, including users, usage and billing
-  - Has Namespace Admin permissions on all Namespaces in the account
 - **Global Admin**
   - Has full administrative permissions across the account, including users and usage
   - Has Namespace Admin [permissions](#namespace-level-permissions) on all [Namespaces](/namespaces) in the account
@@ -111,6 +108,12 @@ When a Global Admin invites a user to join an account, the Global Admin selects 
   - Can create and update Namespaces; has full control over [Workflows](/workflows)
   - Has Namespace Admin permissions for each Namespace created by that user
 - **Read-Only:** Can only read information
+
+In addition there's one role that the Global Admin cannot assign:
+
+- **Account Owner**
+  - Has full administrative permissions across the account, including users, usage and billing
+  - Has Namespace Admin [permissions](#namespace-level-permissions) on all [Namespaces](/namespaces) in the account
 
 :::note Default Role
 
