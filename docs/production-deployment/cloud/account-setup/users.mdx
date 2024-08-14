@@ -122,16 +122,16 @@ If your account does not have an Account Owner, please reach out to [Support](ht
 ## Using the Account Owner Role
 
 The Account Owner role (i.e., users with the Account Owner system role) holds the highest level of access in the system.
-This role configures account-level parameters and manages Temporal billing and credit data.
+This role configures account-level parameters and manages Temporal billing and payment information.
 It allows users to perform all actions within the Temporal Cloud account.
 
 :::tip Best Practices
 
-Temporal strongly recommends the following precautions when assigning the AccountOwner role to users:
+Temporal strongly recommends the following precautions when assigning the Account Owner role to users:
 
 - Assign the role to at least two users in your organization.
   Otherwise, limit the number of users with this role.
-- Associate each Account Owner’s email address with their role so Temporal Cloud support can contact them in urgent situations.
+- Associate an email address with each Account Owner role so Temporal Cloud support can be in contact for urgent situations.
 
 :::
 
@@ -150,6 +150,7 @@ For a Namespace, a user can have one of the following permissions:
 
 With Global Admin or Account Owner privileges, you can update any user's account-level [Role](#account-level-roles) using either the Web UI or `tcld`.
 This does not apply to the Account Owner role.
+For security purposes, Account Owners can only be changed through Temporal Support.
 To create, update, or delete an Account Owner, you must submit a [support ticket](https://temporalsupport.zendesk.com/).
 
 {/* How to update an account-level Role in Temporal Cloud using Web UI */}
