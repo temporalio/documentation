@@ -338,77 +338,6 @@ Note that all the sample code in this document assumes that you can import the W
 If you do not have access to the Workflow Interface (or it is not written in Java) then you can still do everything documented here by using non type-safe APIs.
 This involves passing method names instead of methods to [`WorkflowClient.newUntypedWorkflowStub`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#newUntypedWorkflowStub(java.lang.String,io.temporal.client.WorkflowOptions)) / [`WorkflowStub.query`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#query(java.lang.String,java.lang.Class,java.lang.Object...)) / [`WorkflowStub.signal`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#signal(java.lang.String,java.lang.Object...)) / [`WorkflowStub.update`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#update(java.lang.String,java.lang.Class,java.lang.Object...)) / [`WorkflowStub.startUpdate`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)), and using the non type-safe APIs [`newUntypedWorkflowStub​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#newUntypedWorkflowStub(java.lang.String,io.temporal.client.WorkflowOptions)) and [`Workflow.newUntypedExternalWorkflowStub`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newUntypedExternalWorkflowStub(java.lang.String)).
 
-## Troubleshooting
-
-See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–Java-specific introduction to this topic.
-
-As a client, when you send a Signal, Update, or Query to a Workflow, the following two errors are always possible:
-
-1. **The client can't contact the server**
-
-    You'll get an [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) on which the `cause` is a [`StatusRuntimeException`](https://grpc.github.io/grpc-java/javadoc/io/grpc/StatusRuntimeException.html) with `status` `UNAVAILABLE` (after some retries).
-
-1. **The workflow does not exist**
-
-    You'll get an [`WorkflowNotFoundException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowNotFoundException.html).
-
-### Problems when sending a Signal
-
-For Signal, these `WorkflowException`s are the only types of exception that will result from the request.
-
-The situation is different for Query and Update since for these the client waits for a response from the Worker, and so the Client may get an exception indicating that something went wrong while the handler was being executed by the Workflow Worker.
-
-### Problems when sending an Update
-
-1. **There is no Workflow Worker polling the Task Queue**
-
-    Your request will be retried by the SDK Client indefinitely.
-
-1. **Update failed.**
-
-    You'll get [`WorkflowUpdateException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowUpdateException.html). There are two ways this can happen:
-
-    1. The Update was [rejected](#handle-update) by an Update validator (defined in the Workflow alongside the Update handler).
-
-    1. The Update failed after having been accepted.
-        Update failure is analogous to [Workflow failure](/references/failures#errors-in-workflows) in the sense that all the things that cause Workflow failure when they happen in the main Workflow method, cause Update failure when they happen in an Update handler.
-        Examples of things that cause Update/Workflow failure in this way include:
-        - A failed Child Workflow
-        - A failed Activity (if the activity retries have been set to a finite number)
-        - The Workflow author threw an `ApplicationFailure`
-        - Any error listed in [failWorkflowExceptionTypes](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkflowImplementationOptions.html#getFailWorkflowExceptionTypes()) (empty by default)
-
-    1. **The handler caused the Workflow Task to fail.**
-
-        As always with a [Workflow Task Failure](/references/failures#errors-in-workflows), the server starts to retry the Workflow Task indefinitely.
-        What happens to your Update request depends on the stage that it has got to.
-        If it had not yet been accepted by the server then you'll get a `FAILED_PRECONDITION` [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html).
-        On the other hand, if it had been [accepted](#send-update) by the server, then it is durable, and as soon as the Workflow becomes healthy again (perhaps as a result of a code deploy) then you can use an [`UpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/UpdateHandle.html) to fetch the update result.
-
-
-    1. **Workflow finished while the Update handler execution was in progress**
-
-        You'll get a [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) "workflow execution already completed"`
-
-        This will happen if the Workflow finished while the Update handler execution was in progress, for example because
-        - The Workflow was canceled or failed.
-        - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
-
-### Problems when sending a Query
-
-1. **There is no Workflow Worker polling the Task Queue**
-
-    You'll get an [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) on which the `cause` is a [`StatusRuntimeException`](https://grpc.github.io/grpc-java/javadoc/io/grpc/StatusRuntimeException.html) with `status` `FAILED_PRECONDITION`.
-
-1. **Query failed.**
-
-    You'll get [`WorkflowQueryException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowQueryException.html).
-    Any exception in a Query handler will cause this.
-    Note that this differs from Signal and Update, for which exceptions can cause Workflow Task Failure.
-
-1. **The handler caused the Workflow Task to fail.**
-
-    This would happen, for example, if the Query handler blocks the thread for too long without yielding.
 
 ## Message handler patterns {#message-handler-patterns}
 
@@ -542,6 +471,80 @@ public interface MyWorkflow {
     void myUpdate();
 }
 ```
+
+
+## Troubleshooting
+
+See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–Java-specific introduction to this topic.
+
+As a client, when you send a Signal, Update, or Query to a Workflow, the following two errors are always possible:
+
+1. **The client can't contact the server**
+
+    You'll get an [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) on which the `cause` is a [`StatusRuntimeException`](https://grpc.github.io/grpc-java/javadoc/io/grpc/StatusRuntimeException.html) with `status` `UNAVAILABLE` (after some retries).
+
+1. **The workflow does not exist**
+
+    You'll get an [`WorkflowNotFoundException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowNotFoundException.html).
+
+### Problems when sending a Signal
+
+For Signal, these `WorkflowException`s are the only types of exception that will result from the request.
+
+The situation is different for Query and Update since for these the client waits for a response from the Worker, and so the Client may get an exception indicating that something went wrong while the handler was being executed by the Workflow Worker.
+
+### Problems when sending an Update
+
+1. **There is no Workflow Worker polling the Task Queue**
+
+    Your request will be retried by the SDK Client indefinitely.
+
+1. **Update failed.**
+
+    You'll get [`WorkflowUpdateException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowUpdateException.html). There are two ways this can happen:
+
+    1. The Update was [rejected](#handle-update) by an Update validator (defined in the Workflow alongside the Update handler).
+
+    1. The Update failed after having been accepted.
+        Update failure is analogous to [Workflow failure](/references/failures#errors-in-workflows) in the sense that all the things that cause Workflow failure when they happen in the main Workflow method, cause Update failure when they happen in an Update handler.
+        Examples of things that cause Update/Workflow failure in this way include:
+        - A failed Child Workflow
+        - A failed Activity (if the activity retries have been set to a finite number)
+        - The Workflow author threw an `ApplicationFailure`
+        - Any error listed in [failWorkflowExceptionTypes](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkflowImplementationOptions.html#getFailWorkflowExceptionTypes()) (empty by default)
+
+    1. **The handler caused the Workflow Task to fail.**
+
+        As always with a [Workflow Task Failure](/references/failures#errors-in-workflows), the server starts to retry the Workflow Task indefinitely.
+        What happens to your Update request depends on the stage that it has got to.
+        If it had not yet been accepted by the server then you'll get a `FAILED_PRECONDITION` [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html).
+        On the other hand, if it had been [accepted](#send-update) by the server, then it is durable, and as soon as the Workflow becomes healthy again (perhaps as a result of a code deploy) then you can use an [`UpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/UpdateHandle.html) to fetch the update result.
+
+
+    1. **Workflow finished while the Update handler execution was in progress**
+
+        You'll get a [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) "workflow execution already completed"`
+
+        This will happen if the Workflow finished while the Update handler execution was in progress, for example because
+        - The Workflow was canceled or failed.
+        - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
+
+### Problems when sending a Query
+
+1. **There is no Workflow Worker polling the Task Queue**
+
+    You'll get an [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) on which the `cause` is a [`StatusRuntimeException`](https://grpc.github.io/grpc-java/javadoc/io/grpc/StatusRuntimeException.html) with `status` `FAILED_PRECONDITION`.
+
+1. **Query failed.**
+
+    You'll get [`WorkflowQueryException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowQueryException.html).
+    Any exception in a Query handler will cause this.
+    Note that this differs from Signal and Update, for which exceptions can cause Workflow Task Failure.
+
+1. **The handler caused the Workflow Task to fail.**
+
+    This would happen, for example, if the Query handler blocks the thread for too long without yielding.
+
 
 ## Dynamic Handlers {#dynamic-handler}
 
