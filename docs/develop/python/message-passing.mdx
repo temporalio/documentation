@@ -332,7 +332,7 @@ For additional information, see [Inject work into the main Workflow](/encycloped
 ### Async handlers {#async-handlers}
 
 Signal and Update handlers can be `async def` as well as `def`.
-Using `async def` allows you to use `await` with Activities, Child Workflows, [`asyncio.sleep`](https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep) timers, [`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition) conditions, etc.
+Using `async def` allows you to use `await` with Activities, Child Workflows, [`asyncio.sleep`](https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep) Timers, [`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition) conditions, etc.
 This expands a handler's possibilities for what can be done by a handler but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at `await` calls.
 It's essential to understand the things that could go wrong in order to use `async def` handlers safely.
 See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of async Signal and Update handlers, the [Safe message handlers](https://github.com/temporalio/samples-python/tree/main/updates_and_signals/safe_message_handlers) sample, and the [Controlling handler concurrency](#control-handler-concurrency) and [Waiting for message handlers to finish](#wait-for-message-handlers) sections below.
@@ -385,12 +385,16 @@ This lets your client track the progress of asynchronous work performed by the U
 
 #### Wait conditions
 
-At times, Signal or Update handlers require something in the main Workflow method to be done first before they should proceed.
-Wait conditions are high beneficial in these circumstances.
-Using  ([`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition)) allows you to specify a function that must return True before the handler can proceed.
+Sometimes, `async def` Signal or Update handlers need preconditions to run safely.
+Wait conditions ([`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition)) let you set a function that must return `True` before your handler continues.
+This is an important feature that helps you control your handler logic.
+Your handler progresses only when specific conditions are met.
 
-For example, in an `async def` handler you might require a `ready_for_update_to_execute` method to be successful before starting the Update.
-This ensures that the Workflow doesn't proceed until it's correct to do so:
+The condition you're waiting for can be changed by any other Workflow code: the main Workflow method, another handler, a child coroutine spawned by the main Workflow method, and so forth.
+
+Your handlers might start work before your main Workflow method begins.
+Consider a `ready_for_update_to_execute` method that must complete before running your Update.
+Use `workflow.wait_condition` so the handler waits until the condition is met:
 
 ```python
     @workflow.update
@@ -400,14 +404,15 @@ This ensures that the Workflow doesn't proceed until it's correct to do so:
         )
 ```
 
-You can use wait conditions anywhere in your handlers, not just at the start and for whatever reason you need to block.
-The condition you're waiting for can be changed by anything -- another handler, a child coroutine spawned by the main workflow method, and so forth.
+Wait conditions can be used anywhere and at any time in your handlers, not just at the start.
+This flexibility lets you manage wait conditions throughout the handler's execution.
 
-Remember: a Signal or Update handler can execute before the main Workflow method has started.
+Remember: Handlers can execute before the main Workflow method starts.
 
 #### Use `asyncio.Lock` to prevent concurrent handler execution {#control-handler-concurrency}
 
-At times, [concurrent message-passing](/encyclopedia/workflow-message-passing#message-handler-concurrency) code won't work properly if multiple handler instances are in progress.
+Concurrent processes can interact in unpredictable ways.
+At times, [concurrent message-passing](/encyclopedia/workflow-message-passing#message-handler-concurrency) code won't work properly when multiple handler instances are in progress at the same time.
 Here's an example of a pathological case:
 
 ```python
@@ -426,8 +431,8 @@ class MyWorkflow:
         self.y = data.y
 ```
 
-Coordinating access with `asyncio.Lock` transforms this into a safe and maintainable approach.
-It ensures that only one coroutine is executing a particular section of code at a time.
+Coordinating access using `asyncio.Lock` transforms this code into a safe and maintainable approach.
+Locking makes sure that only one coroutine can execute a specific section of code at any given time:
 
 ```python
 @workflow.defn
@@ -551,32 +556,39 @@ When working with Updates, you may encounter these errors:
 - **The handler caused the Workflow Task to fail.**
     This would happen, for example, if the Query handler blocks the thread for too long without yielding.
 
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**OUT OF TIME FOR TODAY. WILL PICK UP HERE TOMORROW.**</div>
-## Dynamic Handlers {#dynamic-handler}
+## Dynamic handlers {#dynamic-handler}
 
-Temporal supports Dynamic Workflows, Activities, Signals, Updates, and Queries.
-These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
-
-Dynamic Handlers provide flexibility to handle cases where the names of Workflows, Activities, Signals, or Queries aren't known at run time.
+Dynamic Workflows, Activities, Signals, Updates, and Queries are a kind of unnamed handler.
+They're looked up by name and dynamically invoked at runtime.
+They're used when a static handler with a given name does not exist or when the name for an existing handler is unknown.
+In these cases, a dynamic handler provides a flexible workaround.
 
 :::caution
 
-Dynamic Handlers should be used judiciously as a fallback mechanism rather than the primary approach.
-Overusing them can lead to maintainability and debugging issues down the line.
+Use dynamic handlers judiciously and as a fallback mechanism, not a primary design.
+They can introduce long-term maintainability and debugging issues.
+Reserve dynamic handler use for cases where a handler name is not or can't be known at compile time.
 
-Instead, Workflows, Activities, Signals, and Queries should be defined statically whenever possible, with clear names that indicate their purpose.
-Use static definitions as the primary way of structuring your Workflows.
-
-Reserve Dynamic Handlers for cases where the handler names are not known at compile time and need to be looked up dynamically at runtime.
-They are meant to handle edge cases and act as a catch-all, not as the main way of invoking logic.
+:::
 
 ### Set a Dynamic Signal, Query, or Update handler {#set-a-dynamic-signal}
 
-A Dynamic Signal in Temporal is a Signal that is invoked dynamically at runtime if no other Signal with the same input is registered.
-A Signal can be made dynamic by adding `dynamic=True` to the `@signal.defn` decorator.
+A dynamic Signal, Query, or Update refers to a special handler that's invoked at runtime.
+It's used when an unregistered handler request arrives.
 
-The handler must accept `self`, a string input, and a `Sequence[temporalio.common.RawValue]`.
-The [payload_converter](https://python.temporal.io/temporalio.workflow.html#payload_converter) function is used to convert a `RawValue` object to the desired type.
+Consider a Signal, where you might send something like  `workflow.signal(MyWorkflow.my_signal_method, my_arg)`.
+This is a type-safe compiler-checked approach that guarantees a method exists.
+There's also a non-type-safe string-based form: `workflow.signal('some-name', my_arg)`.
+When sent to the server, the name is checked only after arriving at the Worker.
+This is where "dynamic handlers" come in.
+
+After failing to find a handler with a matching name and type, the dynamic invocation process looks for a method marked as "dynamic" with a matching invocation signature.
+After matching the signature, that handler is used.
+
+You must opt into dynamic access.
+In Python, you make a handler dynamic by adding `dynamic=true` to the handler decorator (for example, `@signal.defn`).
+The handler's signature must accept `self`, a string input, and a `Sequence[temporalio.common.RawValue]`.
+Use a [payload_converter](https://python.temporal.io/temporalio.workflow.html#payload_converter) function to convert `RawValue` objects to your required type.
 For example:
 
 ```python
@@ -590,16 +602,26 @@ from temporalio.common import RawValue
         ...
 ```
 
+This sample creates a `dynamic_signal` Signal.
+When an unregistered or unrecognized Signal arrives with a `(self, str, Sequence[RawValue])` signature, dynamic assignment will use this handler to manage the Signal.
+It is responsible for transforming the sequence contents into usable data in a form that the method's logic can process and act on.
+
 ### Set a Dynamic Workflow {#set-a-dynamic-workflow}
 
-**How to set a Dynamic Workflow**
+A dynamic Workflow refers to a special Workflow Definition that's invoked at runtime.
+It's used when an unknown Workflow Execution request arrives.
 
-A Dynamic Workflow in Temporal is a Workflow that is invoked dynamically at runtime if no other Workflow with the same name is registered.
-A Workflow can be made dynamic by adding `dynamic=True` to the `@workflow.defn` decorator.
+For example, you might create a new Workflow Execution called "MyUnknownWorkflow" and assign it to a Task Queue.
+After arriving at a Worker that polls that Task Queue, the Worker may find there's no registered Workflow Definitions of that name or type.
+After failing to find a Workflow Definition with a matching type, the dynamic invocation process looks for a possible alternate.
+
+To participate, your Workflow must opt into dynamic access.
+Adding `dynamic=true` to the `@workflow.defn` decorator makes the Workflow Definition eligible to participate in dynamic invocation.
 You must register the Workflow with the [Worker](https://python.temporal.io/temporalio.worker.html) before it can be invoked.
 
-The Workflow Definition must then accept a single argument of type `Sequence[temporalio.common.RawValue]`.
-The [payload_converter](https://python.temporal.io/temporalio.workflow.html#payload_converter) function is used to convert a `RawValue` object to the desired type.
+The Workflow Definition's primary Workflow method must accept a single argument of type `Sequence[temporalio.common.RawValue]`.
+Use a  [payload_converter](https://python.temporal.io/temporalio.workflow.html#payload_converter) function to convert `RawValue` objects to your required type.
+For example:
 
 <div style={{backgroundColor: '#e0e0e0',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/dynamic_handlers/your_dynamic_workflow_dacx.py"><tt>See full sample</tt></a></div>
 
@@ -617,16 +639,20 @@ class DynamicWorkflow:
         )
 ```
 
+This Workflow converts the first `Sequence` element to a string, and uses that to execute an Activity.
+
 ### Set a Dynamic Activity {#set-a-dynamic-activity}
 
-**How to set a Dynamic Activity**
+A dynamic Activity refers to a special Activity Definition that's invoked at runtime.
+It's used when an Activity Task with an unknown Activity type is received by the Worker.
 
-A Dynamic Activity in Temporal is an Activity that is invoked dynamically at runtime if no other Activity with the same name is registered.
-An Activity can be made dynamic by adding `dynamic=True` to the `@activity.defn` decorator.
+To participate, your Activity must opt into dynamic access.
+Adding `dynamic=true` to the `@activity.defn` decorator makes the Workflow Definition eligible to participate in dynamic invocation.
 You must register the Activity with the [Worker](https://python.temporal.io/temporalio.worker.html) before it can be invoked.
 
 The Activity Definition must then accept a single argument of type `Sequence[temporalio.common.RawValue]`.
-The [payload_converter](https://python.temporal.io/temporalio.activity.html#payload_converter) function is used to convert a `RawValue` object to the desired type.
+Use a  [payload_converter](https://python.temporal.io/temporalio.activity.html#payload_converter) function to convert `RawValue` objects to your required types.
+For example:
 
 <div style={{backgroundColor: '#e0e0e0',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/dynamic_handlers/your_dynamic_activity_dacx.py"><tt>See full sample</tt></a></div>
 
@@ -649,3 +675,6 @@ class GreetingWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
+
+This example invokes an unregistered Activity by name with a string, which can be resolved with dynamic invocation.
+When possible, prefer to use compiler-checked type-safe arguments rather than Activity name strings.
