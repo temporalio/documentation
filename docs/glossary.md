@@ -13,15 +13,17 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 
 #### [Action](/cloud/pricing#action)
 
-An Action is the fundamental pricing unit in Temporal Cloud.
+An Action is the fundamental pricing unit in Temporal Cloud. 
+Temporal Actions are the building blocks for Workflow Executions.
+When you execute a Temporal Workflow, its Actions create the ongoing state and progress of your Temporal Application.
 
 _Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_
 
 #### [Actions Per Second (APS)](/cloud/limits#throughput)
 
-APS, or Actions Per Second, is specific to Temporal Cloud.
+APS, or Actions per second, is specific to Temporal Cloud. 
+Each Temporal Cloud Namespace enforces a rate limit, which is measured in Actions per second (APS).
 This is the number of Actions, such as starting or signaling a Workflow, that can be performed per second within a specific Namespace. 
-Temporal Cloud uses APS to manage and throttle the rate of these actions to ensure that a Namespace doesn't exceed its rate limit.
 
 _Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_
 
@@ -350,7 +352,8 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Requests Per Second (RPS)](/references/dynamic-configuration#service-level-rps-limits)
 
-RPS, or Requests Per Second, is used in the Temporal Service (both in self-hosted Temporal and Temporal Cloud). This is a measure that controls the rate of requests at the service level, such as the Frontend, History, or Matching Service.
+RPS, or Requests per second, is used in the Temporal Service (both in self-hosted Temporal and Temporal Cloud). 
+This is a measure that controls the rate of requests at the service level, such as the Frontend, History, or Matching Service.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal](/tags/temporal)_
 
