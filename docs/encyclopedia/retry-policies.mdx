@@ -100,7 +100,7 @@ Non-Retryable Errors = []
   - Setting the value to 1 means a single execution attempt and no retries.
   - Setting the value to a negative integer results in an error when the execution is invoked.
 - **Use case:** Use this attribute to ensure that retries do not continue indefinitely.
-  However, in the majority of cases, we recommend relying on the Workflow Execution Timeout, in the case of Workflows](/workflows), or Schedule-To-Close Timeout, in the case of [Activities](/activities), to limit the total duration of retries instead of using this attribute.
+  In most cases, we recommend using the Workflow Execution Timeout for [Workflows](/workflows) or the Schedule-To-Close Timeout for Activities to limit the total duration of retries, rather than using this attribute.
 
 ### Non-Retryable Errors
 
