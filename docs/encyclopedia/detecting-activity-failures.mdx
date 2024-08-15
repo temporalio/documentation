@@ -207,7 +207,7 @@ Throttling is implemented as follows:
   - Sets the timer again.
 
 Throttling allows the Worker to reduce network traffic and load on the Temporal Service by suppressing Heartbeats that aren’t necessary to prevent a Heartbeat Timeout.
-While this may result in some messages not being delivered to the Temporal Service, throttling does not apply to the final Heartbeat message in the case of Activity Failure.
+Throttling does not apply to the final Heartbeat message in the case of Activity Failure.
 If an Activity fails just after recording progress information in a Heartbeat message, that progress information will be available during the next retry attempt, provided that the Worker itself did not crash before delivering it to the Temporal Service.
 
 ### Which Activities should Heartbeat?
