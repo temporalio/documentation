@@ -427,7 +427,7 @@ Remember: Handlers can execute before the main Workflow method starts.
 
 ### Ensure your handlers finish before the Workflow completes {#wait-for-message-handlers}
 
-Workflow wait conditions let your handlers complete before a Workflow finishes.
+Workflow wait conditions can ensure your handler completes before a Workflow finishes.
 When your Workflow uses `async def` Signal or Update handlers, your main Workflow method can return or continue-as-new while a handler is still waiting on an async task, such as an Activity result.
 The Workflow completing may interrupt the handler before it finishes crucial work and cause client errors when trying retrieve Update results.
 Use [`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition) and [`all_handlers_finished`](https://python.temporal.io/temporalio.workflow.html#all_handlers_finished) to address this problem and allow your Workflow to end smoothly:
