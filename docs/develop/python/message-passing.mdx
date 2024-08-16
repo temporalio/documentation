@@ -147,13 +147,9 @@ class GreetingWorkflow:
 - About validators:
   - Use validators to reject an Update before it is written to History.
     Validators are always optional.
-    If you don't need to reject updates, you can skip them.
+    If you don't need to reject Updates, you can skip them.
   - The SDK automatically provides a validator decorator named `@<update-handler-name>.validator`.
     The validator must accept the same argument types as the handler and return `None`.
-    You can create your own validator with the same constraints by marking a method with the `@update_workflow_status.validator` decorator.
-  - For more flexibility, use code-based checks at the start of the Update handler instead of validators.
-    Raise an `ApplicationError` for any issues that would prevent the Update from running.
-    This approach adds rejected Update requests to your Event History if exceptions occur.
 
 - Accepting and rejecting Updates with validators:
   - To reject an Update, raise an exception of any type in the validator.
@@ -168,9 +164,7 @@ class GreetingWorkflow:
 
 ## Send messages {#send-messages}
 
-To send Queries, Signals, or Updates, you call methods on a [WorkflowHandle](https://python.temporal.io/temporalio.client.WorkflowHandle.html) object.
-
-To fetch the Workflow handle:
+To send Queries, Signals, or Updates, you call methods on a [WorkflowHandle](https://python.temporal.io/temporalio.client.WorkflowHandle.html) object:
 
 - Use [start_workflow](https://python.temporal.io/temporalio.client.Client.html#start_workflow) to start a Workflow and return its handle.
 
@@ -202,7 +196,7 @@ supported_languages = await workflow_handle.query(
 
 - You can send Queries to closed Workflow Executions within a Namespace's Workflow retention period.
   This includes Workflows that have completed, failed, or timed out.
-  Querying terminated Workflows is not safe and, therefore, not supported
+  Querying terminated Workflows is not safe and, therefore, not supported.
 
 - A Worker must be online and polling the Task Queue to process a Query.
 
@@ -210,7 +204,6 @@ supported_languages = await workflow_handle.query(
 
 You can send a Signal to a Workflow Execution from a Temporal Client or from another Workflow Execution.
 However, you can only send Signals to Workflow Executions that haven’t closed.
-A Worker must be online and polling the Task Queue to process a Signal.
 
 #### Send a Signal from a Client {#send-signal-from-client}
 
@@ -248,7 +241,7 @@ When an External Signal is sent:
 
 #### Signal-With-Start {#signal-with-start}
 
-Signal-With-Start allows a Client to send a signal to a Workflow Execution, starting the Execution if it is not already running.
+Signal-With-Start allows a Client to send a Signal to a Workflow Execution, starting the Execution if it is not already running.
 To use Signal-With-Start, call the [`start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) method and pass the `start_signal` argument with the name of your Signal:
 
 <div style={{backgroundColor: '#e0e0e0',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/signal_your_workflow/signal_with_start_dacx.py"><tt>See full sample</tt></a></div>
@@ -281,7 +274,7 @@ Also note that you can't send Updates to other Workflow Executions or perform an
 
 To send an Update to a Workflow Execution, you can:
 
-- Call [`execute_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#execute_update) and wait for a Worker to complete.
+- Call [`execute_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#execute_update) and wait for the Update to complete.
   This code fetches an Update result:
 
   ```python
@@ -290,11 +283,11 @@ To send an Update to a Workflow Execution, you can:
   )
   ```
 
-- Send [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) to receive an [`UpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html) as soon as the update is accepted or rejected.
+- Send [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) to receive an [`UpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html) as soon as the Update is accepted or rejected.
 
   - Use this `UpdateHandle` later to fetch your results.
-  - `async def` update handlers normally perform long-running async activities.
-  - `start_update` wait until the Worker has accepted or rejected the Update, not until all activities are complete.
+  - `async def` Update handlers normally perform long-running async activities.
+  - `start_update` only waits until the Worker has accepted or rejected the Update, not until all asynchronous operations are complete.
 
   For example:
 
@@ -313,7 +306,7 @@ To send an Update to a Workflow Execution, you can:
 To obtain an Update handle, you can:
 
 - Use [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) to start an Update and return the handle, as shown in the preceding example.
-- Use [`get_update_handle_for`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#get_update_handle_for) to fetch a handle for an in-progress update using the Update ID and Workflow ID.
+- Use [`get_update_handle_for`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#get_update_handle_for) to fetch a handle for an in-progress Update using the Update ID and Workflow ID.
 
 :::info NON-TYPE SAFE API CALLS
 
@@ -349,7 +342,7 @@ For additional information, see [Inject work into the main Workflow](/encycloped
 
 Signal and Update handlers can be `async def` as well as `def`.
 Using `async def` allows you to use `await` with Activities, Child Workflows, [`asyncio.sleep`](https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep) Timers, [`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition) conditions, etc.
-This expands a handler's possibilities for what can be done by a handler but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at `await` calls.
+This expands the possibilities for what can be done by a handler but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at `await` calls.
 It's essential to understand the things that could go wrong in order to use `async def` handlers safely.
 See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of async Signal and Update handlers, the [Safe message handlers](https://github.com/temporalio/samples-python/tree/main/updates_and_signals/safe_message_handlers) sample, and the [Controlling handler concurrency](#control-handler-concurrency) and [Waiting for message handlers to finish](#wait-for-message-handlers) sections below.
 
@@ -402,22 +395,22 @@ This lets your client track the progress of asynchronous work performed by the U
 ### Add wait conditions to block
 
 Sometimes, `async def` Signal or Update handlers need to meet certain conditions before they should continue.
-You can use wait conditions ([`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition)) to set a function that prevents the code from proceeding until the condition returns `True`.
+You can use a wait condition ([`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition)) to set a function that prevents the code from proceeding until the condition returns `True`.
 This is an important feature that helps you control your handler logic.
 
 Here are two important use cases for `workflow.wait_condition`:
 
-* Waiting in a handler until it appropriate to continue.
-* Waiting in the main Workflow until all active handlers have finished.
+- Waiting in a handler until it is appropriate to continue.
+- Waiting in the main Workflow until all active handlers have finished.
 
 The condition state you're waiting for can be updated by and reflect any part of the Workflow code.
 This includes the main Workflow method, other handlers, or child coroutines spawned by the main Workflow method, and so forth.
 
-### Add handler conditions
+### Use wait conditions in handlers
 
-When using handlers, it's common to add early Workflow wait conditions to ensure the handler is ready to start.
-You can also use wait conditions anywhere else in the handler to wait for a specific status to become `True`.
-This flexibility helps you manage wait conditions throughout the handler's execution.
+It's common to use a Workflow wait condition to wait until a handler should start.
+You can also use wait conditions anywhere else in the handler to wait for a specific condition to become `True`.
+This allows you to write handlers that pause at multiple points, each time waiting for a required condition to become `True`.
 
 Consider a `ready_for_update_to_execute` method that runs before your Update handler executes.
 The `workflow.wait_condition` method waits until your condition is met:
@@ -520,7 +513,7 @@ See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exce
 
 ### Problems when sending a Signal {#signal-problems}
 
-When using Signal, the only exception that will result from your requests during its excecution is `RPCError`.
+When using Signal, the only exception that will result from your requests during its execution is `RPCError`.
 All handlers may experience additional exceptions during the initial (pre-Worker) part of a handler request lifecycle.
 
 For Queries and Updates, the client waits for a response from the Worker.
@@ -547,7 +540,7 @@ When working with Updates, you may encounter these errors:
     These might include:
 
       - A failed Child Workflow
-      - A failed Activity (if the activity retries have been set to a finite number)
+      - A failed Activity (if the Activity retries have been set to a finite number)
       - The Workflow author raising `ApplicationFailure`
       - Any error listed in [workflow_failure_exception_types](https://python.temporal.io/temporalio.worker.Worker.html) (empty by default)
 
@@ -555,7 +548,7 @@ When working with Updates, you may encounter these errors:
   A [Workflow Task Failure](/references/failures#errors-in-workflows) causes the server to retry Workflow Tasks indefinitely. What happens to your Update request depends on its stage:
     - If the request hasn't been accepted by the server, you receive a `FAILED_PRECONDITION` [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) exception.
     - If the request has been accepted, it is durable.
-      Once the Workflow is healthy again after a code deploy, use an [`UpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html) to fetch the update result.
+      Once the Workflow is healthy again after a code deploy, use an [`UpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html) to fetch the Update result.
 
 - **The Workflow finished while the Update handler execution was in progress**:
     You'll receive a [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) exception with a "workflow execution already completed" message.
@@ -582,10 +575,9 @@ When working with Queries, you may encounter these errors:
 
 ## Dynamic components {#dynamic-handler}
 
-A dynamic Workflow, Activitiy, Signal, Update, or Query is a kind of unnamed item.
+A dynamic Workflow, Activitity, Signal, Update, or Query is a kind of unnamed item.
 Normally, these items are registered by name with the Worker and invoked at runtime.
-When an unregistered or unrecognized Workflow, Activity, or message handler arrives with a recognized method signature, the Worker can use a pre-registered dynamic stand-in.
-This helps when a static named version does not exist or when the name for an existing item is unknown.
+When an unregistered or unrecognized Workflow, Activity, or message request arrives with a recognized method signature, the Worker can use a pre-registered dynamic stand-in.
 
 For example, you might send a request to start a Workflow named "MyUnknownWorkflow".
 After receiving a Workflow Task, the Worker may find that there's no registered Workflow Definitions of that type.
