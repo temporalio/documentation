@@ -34,7 +34,7 @@ See [Workflow message passing](/encyclopedia/workflow-message-passing) for a gen
 This page introduces these features for the Temporal Java SDK.
 
 :::info
-The code that follows is part of a working message passing [URL TODO]().
+The code that follows is part of a working message passing (URL TODO).
 :::
 
 General guidelines for writing message handlers:
@@ -182,8 +182,8 @@ public class MessagePassingIntro {
 
 - To send Queries, Signals, or Updates you call the annotated methods on a `WorkflowInterface`, often called the "WorkflowStub."
 - To obtain the WorkflowStub, you can:
-- Use the [newWorkflowStub(java.lang.Class<T> workflowInterface, WorkflowOptions options)](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#newWorkflowStub(java.lang.Class,io.temporal.client.WorkflowOptions)) to create a stub for a workflow.
-- Use the [newWorkflowStub​(java.lang.Class<T> workflowInterface, java.lang.String workflowId, java.util.Optional<java.lang.String> runId)](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#newWorkflowStub(java.lang.Class,java.lang.String,java.util.Optional)) method to get a Workflow handle for a existing workflow execution.
+- Use [newWorkflowStub(java.lang.Class\<\T> workflowInterface, WorkflowOptions options)](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#newWorkflowStub(java.lang.Class,io.temporal.client.WorkflowOptions)) to create a stub for a workflow.
+- Use [newWorkflowStub​(java.lang.Class\<T\> workflowInterface, java.lang.String workflowId, java.util.Optional\<java.lang.String\> runId)](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#newWorkflowStub(java.lang.Class,java.lang.String,java.util.Optional)) method to get a Workflow handle for a existing workflow execution.
 
 ```java
 WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
@@ -447,7 +447,7 @@ If your Workflow has a blocking Signal or Update handlers, then there is nothing
 However, this means that the handler may have been interrupted before it finished important work.
 And if it's an Update handler, then the client will get an error when they try to retrieve their Update result.
 
-You can avoid this by using [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)) to wait for [`Workflow.isEveryHandlerFinished`]() to return `true`:
+You can avoid this by using [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)) to wait for `Workflow.isEveryHandlerFinished` (URL TODO) to return `true`:
 ```java
 public class MyWorkflowImpl implements MyWorkflow {
     ...
