@@ -1,6 +1,6 @@
 ---
 id: index
-title: Temporal Cloud observability through metrics
+title: Temporal Cloud Observability and Metrics
 sidebar_label: Metrics
 description: Get detailed insights into your Temporal Cloud Namespace metrics using your own observability tool. Access data with a CA certificate and retain raw metrics for seven days.
 slug: /cloud/metrics/
@@ -27,8 +27,22 @@ tags:
   - temporal-cloud
 ---
 
-Beyond the [metrics](/references/sdk-metrics) provided by the Temporal SDKs, some key metrics exist only in Temporal Cloud.
-You can use your own observability tool to query an endpoint and review Namespace metrics.
+Temporal provides 2 different sources of metrics.
+Each source provides users options for metrics, levels of granularity and filtering, monitoring-tool integrations, and configuration.
+
+Temporal offers two distinct sources of metrics: [Cloud/Server Metrics](/production-deployment/cloud/metrics/reference) and [SDK Metrics](/references/sdk-metrics).
+Before implementing observability for Temporal Cloud, decide what you need to measure for your use case.
+
+You can implement Temporal Cloud observability for two different use cases:
+- To measure the health and performance of Temporal-backed applications and key business processes.
+- To measure the health and performance of Temporal infrastructure and user provided infrastructure in the form of Temporal Workers and Temporal Clients.
+
+When measuring the health and performance of Temporal backed applications and key business processes, you should typically rely on Temporal SDK metrics as a source of truth.
+This is because Temporal SDKs provide metric values calculated from your business process implementation.
+By using SDK Metrics, users gain visibility into the health of their application from the perspective of their application, not from the perspective of the Temporal Service. 
+
+SDK metrics are for monitoring individual workers and your code's behavior; Cloud/Server metrics are for monitoring Temporal behavior.
+When used together, Temporal Cloud and SDK metrics help users measure the health and performance of their full Temporal infrastructure, including the Temporal Cloud Service and user supplied Temporal Workers. 
 
 Metrics for all Namespaces in your account are available from your metrics endpoint.
 
