@@ -26,15 +26,15 @@ keywords:
   - temporal worker resources
 ---
 
-This page is a guide to the following:
+This page is a guide to monitoring a Temporal Worker fleet, which covers these scenarios:
 
-- [Configuring minimal alerts](#minimal-alerts)
+- [Configuring minimal observations](#minimal-observations)
 - [How to detect a backlog of Tasks](#detect-task-backlog)
 - [How to detect greedy Worker resources](#detect-greedy-workers)
 - [How to detect misconfigured Workers](#detect-misconfigured-workers)
 - [How to configure Sticky cache](#configure-sticky-cache)
 
-## Minimal alerts {#minimal-alerts}
+## Minimal Observations {#minimal-observations}
 
 These alerts should be configured and understood first to gain intelligence into your application health and behaviors.
 
@@ -189,10 +189,12 @@ Consider the following:
 
 If the Schedule-To-Start latency is _high_ and the Sync Match Rate is also _low_, Temporal Cloud could very well be the bottleneck and you should reach out via support channels for us to confirm.
 
-**Caveat**
+:::warning
 
 If you are setting the [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) value in your Activity Options, it will skew your observations.
 You should avoid setting a Schedule-To-Start Timeout when profiling latency.
+
+:::
 
 ## Detect greedy Worker resources {#detect-greedy-workers}
 
