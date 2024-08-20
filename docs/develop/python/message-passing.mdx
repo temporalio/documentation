@@ -551,8 +551,8 @@ When working with Updates, you may encounter these errors:
       Once the Workflow is healthy again after a code deploy, use an [`UpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html) to fetch the Update result.
 
 - **The Workflow finished while the Update handler execution was in progress**:
-    You'll receive a [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) exception with a "workflow execution already completed" message.
-    This happens if the Workflow finished while the Update handler execution was in progress, for example because
+  You'll receive a [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) exception with a `status` attribute of [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `NOT_FOUND`.
+  This happens if the Workflow finished while the Update handler execution was in progress, for example because
 
     - The Workflow was canceled or failed.
 
@@ -563,7 +563,7 @@ When working with Updates, you may encounter these errors:
 When working with Queries, you may encounter these errors:
 
 - **There is no Workflow Worker polling the Task Queue**:
-    You'll receive a [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) exception on which the `status` attribute is [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `FAILED_PRECONDITION`.
+  You'll receive a [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) exception on which the `status` attribute is [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `FAILED_PRECONDITION`.
 
 - **Query failed**:
   You'll receive a [`temporalio.client.WorkflowQueryFailedError`](https://python.temporal.io/temporalio.client.WorkflowQueryFailedError.html) exception if something goes wrong during a Query.
@@ -571,7 +571,7 @@ When working with Queries, you may encounter these errors:
   This differs from Signal and Update requests, where exceptions can lead to Workflow Task Failure instead.
 
 - **The handler caused the Workflow Task to fail.**
-    This would happen, for example, if the Query handler blocks the thread for too long without yielding.
+  This would happen, for example, if the Query handler blocks the thread for too long without yielding.
 
 ## Dynamic components {#dynamic-handler}
 
