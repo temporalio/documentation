@@ -23,7 +23,8 @@ When you see a sudden drop in Worker resource utilization, verify whether Tempor
 - [temporal\_cloud\_v0\_service\_latency\_bucket](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_service_latency_bucket)
 
 This metric measures latency for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
-These are all considered mission critical operations and are [never throttled](/cloud/service-availability#throughput), so this metric should be a good indicator of your lowest possible latency.
+These operations are mission critical and never [throttled](/cloud/service-availability#throughput).
+This metric is a good indicator of your lowest possible latency.
 
 ### Prometheus Query for this Metric
 
