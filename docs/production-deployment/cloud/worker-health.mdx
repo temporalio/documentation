@@ -333,7 +333,8 @@ Increase the `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivity
 
 ### Configure Sticky Execution Cache {#configure-sticky-cache}
 
-A Sticky Execution is a when a Worker Entity caches the Workflow Execution Event History and creates a dedicated Task Queue to listen on.
+Sticky Execution means that a Worker caches a Workflow Execution Event History and creates a dedicated Task Queue to listen on.
+It significantly improves performance because the Temporal Service only sends new events to the Worker instead of entire Event Histories.
 
 **How to configure your Workflow Sticky cache.**
 
