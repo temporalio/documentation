@@ -14,7 +14,7 @@ tags:
 Temporal Cloud metrics help monitor the Service health of production deployments.
 This documentation covers best practices for monitoring Service health.
 
-## Monitoring availability issues
+## Monitor availability issues
 
 When you see a sudden drop in Worker resource utilization, verify whether Temporal Cloud's API is showing increased latency and error rates.
 
@@ -34,7 +34,7 @@ P99 service lag (histogram):
 histogram_quantile(0.99, sum(rate(temporal_cloud_v0_service_latency_bucket[$__rate_interval])) by (temporal_namespace, operation, le))
 ```
 
-## Monitoring Temporal Service errors
+## Monitor Temporal Service errors
 
 Check for Temporal Service gRPC API errors.
 Note that Service API errors are not equivalent to guarantees mentioned in the [Temporal Cloud SLA](/cloud/sla).
@@ -66,7 +66,7 @@ avg_over_time((
     )[1d:10m])
 ```
 
-## Monitoring multi-region Namespace replication lag
+## Monitor multi-region Namespace replication lag
 
 Replication lag refers to the transmission delay of Workflow updates and history events from the active region to the standby region.
 Always check the [metric replication lag](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket) before initiating a failover.
