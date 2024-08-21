@@ -91,7 +91,8 @@ The Schedule-To-Start metric represents how long Tasks are staying, unprocessed,
 But differently, it is the time between when a Task is enqueued and when it is picked up by a Worker.
 This time being long (likely) means that your Workers can't keep up — either increase the number of Workers (if the host load is already high) or increase the number of pollers per Worker.
 
-If your Schedule-To-Start latency alert fires or appears high, cross-check this with the [Sync Match Rate](#sync-match-rate) to determine if you need to change your Worker or fleet, or if you need to contact Temporal Cloud support.
+If your Schedule-To-Start latency alert triggers or is high, check the [Sync Match Rate](#sync-match-rate) to decide if you need to adjust your Worker or fleet, or contact Temporal Cloud support.
+If your Sync Match Rate is low, contact [Temporal Cloud support](/cloud/support#support-ticket).
 If your Sync Match Rate is low, you can contact Temporal Cloud support.
 
 The schedule_to_start_latency SDK metric for both [Workflow Executions](/references/sdk-metrics#workflow_task_schedule_to_start_latency) and [Activity Executions](/references/sdk-metrics#activity_schedule_to_start_latency) should have alerts.
