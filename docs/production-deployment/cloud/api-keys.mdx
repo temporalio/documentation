@@ -21,8 +21,8 @@ tags:
 
 :::tip SUPPORT, STABILITY, AND DEPENDENCY INFO
 
-- API key authentication for Temporal Cloud, `tcld`, SDK-based API calls, and Terraform provider, is currently in [Public Preview](/evaluate/development-production-features/release-stages#public-preview)
-- API key authentication for Namespace authentication is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release)
+- API key authentication for Temporal Cloud, `tcld`, and Terraform provider, is currently in [Public Preview](/evaluate/development-production-features/release-stages#public-preview)
+- API key authentication for Namespace authentication and SDK-based API calls is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release)
 
 :::
 
@@ -84,8 +84,7 @@ Use API keys to authenticate with:
 
 Check these setup details before using API keys:
 
-- The Global Administrator must [enable API keys access](#manage-api-keys).
-- Be a Temporal Cloud user or Service Account.
+- The Global Administrator must [enable API keys access](#manage-api-keys) for your Temporal Account.
 - Have access to the [Temporal Cloud UI](https://cloud.temporal.io/) or Temporal Cloud CLI ([tcld](https://docs.temporal.io/cloud/tcld/)) to create an API key.
 
 ## Global Administrator API key management {#manage-api-keys}
@@ -118,7 +117,7 @@ If you delete or disable an API key for a running Workflow, that Workflow will f
 ## User API key management {#user-api-keys}
 
 Manage your personal API keys with the Temporal Cloud UI or `tcld`.
-These sections show you how to generate, manage, and remove API keys for a user account.
+These sections show you how to generate, manage, and remove API keys for a user.
 
 ### Generate an API key
 
@@ -170,7 +169,7 @@ Follow these steps:
 1. [Login](https://cloud.temporal.io/) to the Temporal Cloud UI.
 1. Go to your [Profile Page → API Keys](https://cloud.temporal.io/profile/api-keys).
 1. Select the three vertical dots next to the API key’s row.
-1. Choose **Disable**.
+1. Choose **Enable** or **Disable**.
 
 #### Manage API Key State with `tcld`
 
@@ -214,7 +213,7 @@ tcld apikey delete --id <api-key-id>
 ## Manage API Keys for Service Accounts {#serviceaccount-api-keys}
 
 Global Administrators can manage API keys for all Service Accounts in their account and generate API keys for Service Accounts.
-This is different from user accounts, which generate their own API keys.
+This is different for users, who generate their own API keys.
 
 ### Generate an API Key for a Service Account
 
@@ -232,7 +231,7 @@ Create API keys for Service Accounts using one of the following methods:
 #### Generate API Keys with the Temporal Cloud UI
 
 [Login](https://cloud.temporal.io/) to the Temporal Cloud UI and go to [API keys settings](https://cloud.temporal.io/settings/api-keys).
-Select **Create API key**, then choose **Service account** from the "Create an API key for" dropdown.
+Select **Create API key**, then choose **Service Account** from the "Create an API key for" dropdown.
 In the "Mapped to identity" input box, select a Service account and provide the following information:
 
 - **API key name**: A short, identifiable name for the key
