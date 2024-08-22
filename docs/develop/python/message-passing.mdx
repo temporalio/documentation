@@ -616,7 +616,7 @@ After failing to find a handler with a matching name and type, the Worker checks
 If found, the Worker uses that instead.
 
 You must opt handlers into dynamic access.
-In Python, you make a handler dynamic by adding `dynamic=true` to the handler decorator (for example, `@signal.defn`).
+Add `dynamic=True` to the handler decorator (for example, `@workflow.signal(dynamic=True)`) to make a handler dynamic.
 The handler's signature must accept `(self, name: str, args: Sequence[RawValue])`.
 Use a [payload_converter](https://python.temporal.io/temporalio.workflow.html#payload_converter) function to convert `RawValue` objects to your required type.
 For example:
@@ -647,7 +647,7 @@ After failing to find a Workflow Definition with a matching type, the Worker loo
 If found, it invokes that instead.
 
 To participate, your Workflow must opt into dynamic access.
-Adding `dynamic=true` to the `@workflow.defn` decorator makes the Workflow Definition eligible to participate in dynamic invocation.
+Adding `dynamic=True` to the `@workflow.defn` decorator makes the Workflow Definition eligible to participate in dynamic invocation.
 You must register the Workflow with the [Worker](https://python.temporal.io/temporalio.worker.html) before it can be invoked.
 
 The Workflow Definition's primary Workflow method must accept a single argument of type `Sequence[temporalio.common.RawValue]`.
@@ -678,7 +678,7 @@ A dynamic Activity is a stand-in implementation.
 It's used when an Activity Task with an unknown Activity type is received by the Worker.
 
 To participate, your Activity must opt into dynamic access.
-Adding `dynamic=true` to the `@activity.defn` decorator makes the Workflow Definition eligible to participate in dynamic invocation.
+Adding `dynamic=True` to the `@activity.defn` decorator makes the Workflow Definition eligible to participate in dynamic invocation.
 You must register the Activity with the [Worker](https://python.temporal.io/temporalio.worker.html) before it can be invoked.
 
 The Activity Definition must then accept a single argument of type `Sequence[temporalio.common.RawValue]`.
