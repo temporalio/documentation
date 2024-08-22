@@ -47,21 +47,21 @@ module.exports = {
             "evaluate/development-production-features/cloud-automation",
             "evaluate/development-production-features/low-latency",
             "evaluate/development-production-features/multi-tenancy",
+          ],
+        },
+        {
+          type: "category",
+          label: "Product release stages",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "evaluate/release-stages",
+          },
+          items: [
             {
-              type: "category",
-              label: "Product release stages",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "evaluate/development-production-features/release-stages",
-              },
-              items: [
-                {
-                  type: "link",
-                  label: "Change-log",
-                  href: "https://temporal.io/change-log",
-                },
-              ],
+              type: "link",
+              label: "Changelog",
+              href: "https://temporal.io/change-log",
             },
           ],
         },
