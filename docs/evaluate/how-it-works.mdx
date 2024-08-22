@@ -13,10 +13,9 @@ tags:
   - evaluate-temporal
   - how-temporal-works
 ---
+Temporal offers an entirely new way to build scalable and reliable applications.
 
-Temporal provides a comprehensive platform for building distributed applications with a focus on durability and reliability.
-
-## Resilient applications by default
+## Build Invincible Apps 
 
 Temporal ensures your applications are reliable by default, handling everything from minor network outages to significant issues like unexpected reboots or hardware failures.
 By offloading the responsibility of failure management from the application to the platform, this removes the need for extensive coding, testing, and maintenance tasks.
@@ -29,15 +28,14 @@ Your application logic can be recovered, replayed, or paused from any previous p
 
 ### Temporal Application
 
-A Temporal application is the code you write, comprised of Workflow and Activities. Workflows are defined as code: either a function or an object method, depending on the language.
+A Temporal application is the code you write, comprised of Workflow and Activities. 
 A Temporal Workflow defines your overall business logic. That business logic might involve moving money between bank accounts, processing orders, deploying cloud infrastructure, training an AI model, or something else entirely.
 The Worker runs the Workflow and Activity code.
 
 ![Workflow Function Execution - How It Works](/img/how-it-works/hiw-workflowexecution.png)
 
 ### Activity
-
-Activities are functions which encapsulate logic that can potentially fail, such as network calls, file operations, or random number generation.
+Activities represent code (either a functions or method) that handle tasks prone to errors or failure, such as network requests, calling a service, sending an email, or generating random numbers.
 Activities are invoked in Workflow code and the Temporal Service coordinates with the application to execute them.
 
 ![Continuing a Workflow - How It Works](/img/how-it-works/hiw-continuingtheworkflow.png)
