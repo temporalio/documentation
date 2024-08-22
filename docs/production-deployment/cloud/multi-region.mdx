@@ -39,6 +39,7 @@ This feature guide covers the following topics:
 - [Multi-region Namespace SLA](/cloud/multi-region#sla)
 - [Architecture](/cloud/multi-region#architecture)
 - [Pricing](/cloud/multi-region#pricing)
+- [Manage your multi-region Namespace](/cloud/multi-region#management)
 - [Operations](/cloud/multi-region#operations)
 
 ## Choosing multi-region {#multi-region-intro}
@@ -93,9 +94,7 @@ Temporal Cloud notifies you by email once the replication has caught up and both
 Temporal Cloud will initiate a Namespace failover when it detects an incident or outage that elevates error rates or latency in the active region of a multi-region Namespace.
 A failover operation shifts Workflow processing to a standby region, unaffected by the incident.
 This ensures that existing Workflows can progress and new Workflows can be created as the incident is addressed.
-
-Temporal Cloud doesn't revert Namespaces back to the original active region after an incident is resolved.
-[File a Support ticket](https://temporalsupport.zendesk.com/) to request switching back to the original region.
+After Temporal-initiated failovers, Temporal Cloud shifts Workflow Execution processing back to the original region that was active before the incident (a "failback") once the incident is resolved.
 
 :::info
 
@@ -412,9 +411,7 @@ After failover, the Namespace is active in the new region.
 You needn't monitor Temporal Cloud's failover response in real-time.
 Whenever there is a failover event, you'll receive an alert email.
 
-Temporal Cloud doesn't revert Namespaces back to the original active region after an incident is resolved.
-[File a Support ticket](https://temporalsupport.zendesk.com/) to request switching back to the original region.
-
+After Temporal-initiated failovers, Temporal Cloud shifts Workflow Execution processing back to the original region that was active before the incident (a "failback") once the incident is resolved.
 More information is available in [Monitoring and Observability](/cloud/multi-region#observability).
 
 ### Metrics {#metrics-operations}
@@ -524,11 +521,12 @@ Alternately, you could establish connectivity between the regions to redirect Wo
 The following table lists Temporal's available regions, PrivateLink endpoints, and DNS record overrides.
 The `sa-east-1` region listed here is not yet available for use with multi-region Namespaces.
 
-| Region           | PrivateLink VPC Endpoint                                       | DNS Record Override                     |
+| Region           | PrivateLink Service Name                                       | DNS Record Override                     |
 | ---------------- | -------------------------------------------------------------- | --------------------------------------- |
 | `ap-northeast-1` | `com.amazonaws.vpce.ap-northeast-1.vpce-svc-08f34c33f9fb8a48a` | `aws-ap-northeast-1.region.tmprl.cloud` |
 | `ap-northeast-2` | `com.amazonaws.vpce.ap-northeast-2.vpce-svc-08c4d5445a5aad308` | `aws-ap-northeast-2.region.tmprl.cloud` |
 | `ap-south-1`     | `com.amazonaws.vpce.ap-south-1.vpce-svc-0ad4f8ed56db15662`     | `aws-ap-south-1.region.tmprl.cloud`     |
+| `ap-south-2`     | `com.amazonaws.vpce.ap-south-2.vpce-svc-08bcf602b646c69c1`     | `aws-ap-south-2.region.tmprl.cloud`     |
 | `ap-southeast-1` | `com.amazonaws.vpce.ap-southeast-1.vpce-svc-05c24096fa89b0ccd` | `aws-ap-southeast-1.region.tmprl.cloud` |
 | `ap-southeast-2` | `com.amazonaws.vpce.ap-southeast-2.vpce-svc-0634f9628e3c15b08` | `aws-ap-southeast-2.region.tmprl.cloud` |
 | `ca-central-1`   | `com.amazonaws.vpce.ca-central-1.vpce-svc-080a781925d0b1d9d`   | `aws-ca-central-1.region.tmprl.cloud`   |
@@ -537,9 +535,7 @@ The `sa-east-1` region listed here is not yet available for use with multi-regio
 | `eu-west-2`      | `com.amazonaws.vpce.eu-west-2.vpce-svc-0ac7f9f07e7fb5695`      | `aws-eu-west-2.region.tmprl.cloud`      |
 | `sa-east-1`      | `com.amazonaws.vpce.sa-east-1.vpce-svc-0ca67a102f3ce525a`      | `aws-sa-east-1.region.tmprl.cloud`      |
 | `us-east-1`      | `com.amazonaws.vpce.us-east-1.vpce-svc-0822256b6575ea37f`      | `aws-us-east-1.region.tmprl.cloud`      |
-| `us-east-1`      | `com.amazonaws.vpce.us-east-1.vpce-svc-0b06bbbd81fd41222`      | `aws-us-east-1.region.tmprl.cloud`      |
 | `us-east-2`      | `com.amazonaws.vpce.us-east-2.vpce-svc-01b8dccfc6660d9d4`      | `aws-us-east-2.region.tmprl.cloud`      |
-| `us-west-2`      | `com.amazonaws.vpce.us-west-2.vpce-svc-0473f53028c65d8fb`      | `aws-us-west-2.region.tmprl.cloud`      |
 | `us-west-2`      | `com.amazonaws.vpce.us-west-2.vpce-svc-0f44b3d7302816b94`      | `aws-us-west-2.region.tmprl.cloud`      |
 
 :::tip Learn more about multi-region Namespaces

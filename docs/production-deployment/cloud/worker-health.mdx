@@ -26,14 +26,15 @@ keywords:
   - temporal worker resources
 ---
 
-This page is a guide to the following:
+This page is a guide to monitoring a Temporal Worker fleet and covers the following scenarios:
 
+- [Configuring minimal observations](#minimal-observations)
 - [How to detect a backlog of Tasks](#detect-task-backlog)
 - [How to detect greedy Worker resources](#detect-greedy-workers)
 - [How to detect misconfigured Workers](#detect-misconfigured-workers)
 - [How to configure Sticky cache](#configure-sticky-cache)
 
-## Minimal alerts
+## Minimal Observations {#minimal-observations}
 
 These alerts should be configured and understood first to gain intelligence into your application health and behaviors.
 
@@ -43,13 +44,13 @@ These alerts should be configured and understood first to gain intelligence into
 - Alert at >200ms for your p99 value
 - Plot >100ms for your p95 value
 
-2. Create a Grafana panel called Sync Match Rate.
+2. Create a [Grafana](/cloud/metrics/prometheus-grafana) panel called Sync Match Rate.
    See the [Sync Match Rate section](#sync-match-rate) to explore example queries and appropriate responses that accompany these values.
 
 - Alert at \<95% for your p99 value
 - Plot \<99% for your p95 value
 
-3. Create a Grafana panel called Poll Success Rate.
+3. Create a [Grafana](/cloud/metrics/prometheus-grafana) panel called Poll Success Rate.
    See the [Detect greedy Workers section](#detect-greedy-workers) for example queries and appropriate responses that accompany these values.
 
 - Alert at \<90% for your p99 value
@@ -84,16 +85,15 @@ Metrics to monitor:
 - **Temporal Cloud metric**: [temporal_cloud_v0_poll_success_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_poll_success_count)
 - **Temporal Cloud metric**: [temporal_cloud_v0_poll_success_sync_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_poll_success_sync_count)
 
-**Symptoms**
-
-If your Schedule-To-Start latency alert fires or appears high, cross-check this with the Sync Match Rate to determine if you need to change your Worker or fleet, or if you need to contact Temporal Cloud support.
-If your Sync Match Rate is low, you can contact Temporal Cloud support.
-
 ### Schedule To Start latency
 
 The Schedule-To-Start metric represents how long Tasks are staying, unprocessed, in the Task Queues.
 But differently, it is the time between when a Task is enqueued and when it is picked up by a Worker.
 This time being long (likely) means that your Workers can't keep up — either increase the number of Workers (if the host load is already high) or increase the number of pollers per Worker.
+
+If your Schedule-To-Start latency alert triggers or is high, check the [Sync Match Rate](#sync-match-rate) to decide if you need to adjust your Worker or fleet, or contact Temporal Cloud support.
+If your Sync Match Rate is low, contact [Temporal Cloud support](/cloud/support#support-ticket).
+If your Sync Match Rate is low, you can contact Temporal Cloud support.
 
 The schedule_to_start_latency SDK metric for both [Workflow Executions](/references/sdk-metrics#workflow_task_schedule_to_start_latency) and [Activity Executions](/references/sdk-metrics#activity_schedule_to_start_latency) should have alerts.
 
@@ -129,7 +129,9 @@ sum(increase(temporal_activity_schedule_to_start_latency_seconds_count[5m])) by 
 
 **Target**
 
-This latency should obviously be a very low value - close to zero. Anything else, indicates bottlenecking.
+This latency should be very low, close to zero.
+Any higher value indicates a bottleneck.
+Anything else indicates bottlenecking.
 
 ### Sync Match Rate {#sync-match-rate}
 
@@ -137,11 +139,11 @@ The Sync Match Rate measures the rate of Tasks that can be delivered to Workers 
 
 **Calculate Sync Match Rate**
 
-$$
-temporal\_cloud\_v0\_poll\_success\_sync\_count / temporal\_cloud\_v0\_poll\_success\_count = N%
-$$
+```
+temporal_cloud_v0_poll_success_sync_count ÷ temporal_cloud_v0_poll_success_count = N
+```
 
-#### Prometheus sample
+#### Prometheus query samples
 
 **sync_match_rate query**
 
@@ -185,14 +187,17 @@ Consider the following:
   - Golang: [Workflows](/develop/go/core-application#maxconcurrentworkflowtaskpollers)
 - Doing some combination of the above
 
-** Temporal Cloud bottleneck**
+**Temporal Cloud bottleneck**
 
 If the Schedule-To-Start latency is _high_ and the Sync Match Rate is also _low_, Temporal Cloud could very well be the bottleneck and you should reach out via support channels for us to confirm.
 
-**Caveat**
+:::warning
 
-If you are setting the [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) value in your Activity Options, it will skew your observations if you are not following the guidance [here](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout).
-As such, we recommend that you avoid setting that value.
+Setting the [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) in your Activity Options can skew your observations.
+Avoid setting a Schedule-To-Start Timeout when profiling latency.
+You should avoid setting a Schedule-To-Start Timeout when profiling latency.
+
+:::
 
 ## Detect greedy Worker resources {#detect-greedy-workers}
 
@@ -203,11 +208,11 @@ If you see the Poll Success Rate showing low numbers, you might have too many re
 
 Metrics to monitor:
 
-**Temporal Cloud metric**: [temporal_cloud_v0_poll_success_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_poll_success_count)
-**Temporal Cloud metric**: [temporal_cloud_v0_poll_success_sync_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_poll_success_sync_count)
-**Temporal Cloud metric**: [temporal_cloud_v0_poll_timeout_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_poll_timeout_count)
-**SDK metric**: [temporal_workflow_task_schedule_to_start_latency](/references/sdk-metrics#workflow_task_schedule_to_start_latency)
-**SDK metric**: [temporal_activity_schedule_to_start_latency](/references/sdk-metrics#activity_schedule_to_start_latency)
+- **Temporal Cloud metric**: [temporal_cloud_v0_poll_success_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_poll_success_count)
+- **Temporal Cloud metric**: [temporal_cloud_v0_poll_success_sync_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_poll_success_sync_count)
+- **Temporal Cloud metric**: [temporal_cloud_v0_poll_timeout_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_poll_timeout_count)
+- **SDK metric**: [temporal_workflow_task_schedule_to_start_latency](/references/sdk-metrics#workflow_task_schedule_to_start_latency)
+- **SDK metric**: [temporal_activity_schedule_to_start_latency](/references/sdk-metrics#activity_schedule_to_start_latency)
 
 **Calculate Poll Success Rate**
 
@@ -238,9 +243,9 @@ Consider sizing down your Workers by either:
 - Reducing the concurrent pollers per Worker, OR
 - Both of the above
 
-### Prometheus Sample
+#### Prometheus query samples
 
-poll_success_rate query
+**poll_success_rate query**
 
 ```
 (
@@ -286,14 +291,13 @@ poll_success_rate query
 
 **How to detect misconfigured Workers.**
 
-The configuration of your Workers can negatively affect the efficiency of your Task processing as well.
-Please review this document.
+Worker configuration can negatively affect Task processing efficiency.
 
 Metrics to monitor:
 
-**SDK metric**: [temporal_worker_task_slots_available](/references/sdk-metrics#worker_task_slots_available)
-**SDK metric**: [sticky_cache_size](/references/sdk-metrics#sticky_cache_size)
-**SDK metric**: [sticky_cache_total_forced_eviction](/references/sdk-metrics#sticky_cache_total_forced_eviction)
+- **SDK metric**: [temporal_worker_task_slots_available](/references/sdk-metrics#worker_task_slots_available)
+- **SDK metric**: [sticky_cache_size](/references/sdk-metrics#sticky_cache_size)
+- **SDK metric**: [sticky_cache_total_forced_eviction](/references/sdk-metrics#sticky_cache_total_forced_eviction)
 
 **Execution Size Configuration**
 
@@ -304,7 +308,7 @@ If this is set too low, the Worker would not be able to keep up processing Tasks
 
 The `temporal_worker_task_slots_available` metric should always be >0.
 
-### Prometheus Samples
+#### Prometheus query samples
 
 **Over Time**
 
@@ -327,7 +331,10 @@ The work is not getting processed as fast as it should/can.
 
 Increase the `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecutionSize` values and keep an eye on your Worker resource metrics (CPU utilization, etc) to make sure you haven't created a new issue.
 
-### Configure Sticky Cache {#configure-sticky-cache}
+### Configure Sticky Execution Cache {#configure-sticky-cache}
+
+Sticky Execution means that a Worker caches a Workflow Execution Event History and creates a dedicated Task Queue to listen on.
+It significantly improves performance because the Temporal Service only sends new events to the Worker instead of entire Event Histories.
 
 **How to configure your Workflow Sticky cache.**
 
@@ -345,7 +352,7 @@ If you see a high eviction count, verify there are no other inefficiencies in yo
 If you see the cache size metric exceed the `WorkflowCacheSize`, increase this value if your Worker resources can accommodate it or provision more Workers.
 Finally, take time to review this document and see if this document further addresses potential cache issues.
 
-#### Prometheus Sample
+#### Prometheus query samples
 
 **Sticky Cache Size**
 

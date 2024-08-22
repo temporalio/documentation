@@ -2,21 +2,23 @@
 id: workflow-message-passing
 title: Temporal Workflow message passing - Signals, Queries, & Updates
 sidebar_label: Workflow message passing
-description: Signals, Queries, and Updates facilitate message passing and data handling within Workflow Executions.
+description: Signals, Queries, and Updates facilitate interactions with Workflow Executions.
 tags:
 - signals
 - queries
 - updates
 - message-passing
 keywords:
-- temporal application signals
-- temporal application queries
-- temporal application updates
+- temporal workflow signals
+- temporal workflow queries
+- temporal workflow updates
 - temporal workflow execution
 - message passing temporal
 - signal-with-start temporal
 - temporal query handler
+- temporal signal handler
 - temporal update handler
+- temporal update validator
 - temporal message passing
 - workflow state temporal
 - synchronous operation temporal
@@ -26,57 +28,92 @@ keywords:
 - temporal sdk message passing
 ---
 
+import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
 
-Temporal applications can receive and provide data through messages.
+Workflows can be thought of as stateful web services that can receive messages. The Workflow can have powerful message handlers akin to endpoints that can react to the incoming messages in combination with the current state of the Workflow.
 Temporal supports three types of messages: Signals, Queries, and Updates.
+To define these, consider these messages from the perspective of the client making the request:
 
-## Signals {#signals}
+- Queries are read requests. They can read the current state of the Workflow but cannot block in doing so.
+- Signals are asynchronous write requests. They cause changes in the running Workflow, but you cannot await any response or error.
+- Updates are synchronous, tracked write requests. The sender of the Update can wait for a response on completion or an error on failure.
 
-**What is a Signal in the context of Temporal?**
+## How to choose between Signals, Updates, and Queries as a Workflow author? {#choosing-messages}
 
-A Signal is an asynchronous request to a [Workflow Execution](/workflows#workflow-execution).
+This section will help you write Workflows that receive messages.
+
+### For write requests
+
+Unlike Signals, Updates must be synchronous. That is, they must wait for the Worker running the Workflow to acknowledge the request.
+
+Use Signals instead of Updates when:
+
+- The Workflow's clients want to quickly move on after sending an asynchronous message.
+- The clients care more about the latency of sending the message than they do about the latency of the end-to-end operation.
+- The clients don't want to rely on the Worker being available.
+- Clients need to [Signal-With-Start](#signal-with-start) atomically (since there is currently no Update-with-Start operation.)
+
+Use Updates instead of Signals when:
+
+- The Workflow's clients want to track the completion of the message.
+- The clients need a result or an exception from your message without having to query subsequently.
+- You’d like to “validate” the Update before accepting it into the Workflow and its history.
+- The clients want a low-latency end-to-end operation and are willing to wait for it to finish or be validated.
+
+### For read requests
+
+You normally want to do a Query, because:
+
+- Queries are efficient–they never add entries to the [Workflow Event History](/workflows#event-history), whereas an Update would (if accepted).
+- Queries can operate on completed Workflows.
+
+However, because Queries cannot block, sometimes Updates are best.
+When your goal is to do a read once the Workflow achieves a certain desired state, you have two options:
+
+- You could poll periodically with Queries until the Workflow is ready.
+- You could write your read operation as an Update, which will give you better efficiency and latency, though it will write an entry to the [Workflow Event History](/workflows#event-history).
+
+### For read/write requests
+
+Use an Update for synchronous read/write requests. If your request must be asynchronous, consider sending a Signal followed by polling with a Query.
+
+## Sending Messages {#sending-messages}
+
+This section will help you write clients that send messages to Workflows.
+
+### Sending Signals {#sending-signals}
+
+You can send Signals from any Temporal Client, the Temporal CLI, or you can Signal one Workflow to another.
+
+You can also Signal-With-Start to lazily initialize a Workflow while sending a Signal.
+
+#### Send a Signal from a Temporal Client or the CLI
 
 <RelatedReadContainer>
     <RelatedReadItem path="/cli/workflow#signal" text="Send a Signal using the Temporal CLI" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/go/message-passing#signals" text="Send and handle Signals with the Go SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/java/message-passing" text="Send and handle Signals with the Java SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/php/message-passing#signals" text="Send and handle Signals with the PHP SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#signals" text="Send and handle Signals with the Python SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/message-passing#signals" text="Send and handle Signals with the TypeScript SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/dotnet/message-passing#define-a-signal" text="Send and handle Signals with the .NET SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/go/message-passing#send-signal-from-client" text="Send Signals with the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#send-signal-from-client" text="Send Signals with the Java SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#send-signal-from-client" text="Send Signals with the PHP SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#send-signal-from-client" text="Send Signals with the Python SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#send-signal-from-client" text="Send Signals with the TypeScript SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#send-signal-from-client" text="Send Signals with the .NET SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-A Signal delivers data to a running Workflow Execution.
-It cannot return data to the caller; to do so, use a [Query](#queries) instead.
-The Workflow code that handles a Signal can mutate Workflow state.
-A Signal can be sent from a Temporal Client or a Workflow.
-When a Signal is sent, it is received by the Temporal Service and recorded as an Event to the Workflow Execution [Event History](/workflows#event-history).
-A successful response from the Temporal Service means that the Signal has been persisted and will be delivered at least once to the Workflow Execution.[^1]
-The next scheduled Workflow Task will contain the Signal Event.
+#### Send a Signal from one Workflow to another.
 
-A Signal must include a destination (Namespace and Workflow Id) and name.
-It can include a list of arguments.
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the Java SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the PHP SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the Python SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the TypeScript SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the .NET SDK" archetype="feature-guide" />
+</RelatedReadContainer>
 
-Signal handlers are Workflow functions that listen for Signals by the Signal name.
-Signals are delivered in the order they are received by the Temporal Service and written to History.
-If multiple deliveries of a Signal would be a problem for your Workflow, add idempotency logic to your Signal handler that checks for duplicates.
+#### Signal-With-Start {#signal-with-start}
 
-[^1]: The Temporal Service usually deduplicates Signals, but does not guarantee deduplication: During shard migration, two Signal Events (and therefore two deliveries to the Workflow Execution) can be recorded for a single Signal because the deduping info is stored only in memory.
-
-### Signal-With-Start {#signal-with-start}
-
-**What is a Signal-With-Start in the context of Temporal?**
-
-Signal-With-Start is a Client method that takes the following arguments:
-
-- A Workflow Id
-- Workflow input
-- A [Signal](#signals) name
-- Signal input
-
-If there is a running Workflow Execution with the given Workflow Id, it will be Signaled.
-Otherwise, a new Workflow Execution is started and immediately sent the Signal.
+Signal-With-Start is a great tool for lazily initializing Workflows. When you send this operation, if there is a running Workflow Execution with the given Workflow Id, it will be Signaled. Otherwise, a new Workflow Execution starts and is immediately sent the Signal.
 
 <RelatedReadContainer>
     <RelatedReadItem path="/develop/go/message-passing#signal-with-start" text="Signal-With-Start using the Go SDK" archetype="feature-guide" />
@@ -87,46 +124,61 @@ Otherwise, a new Workflow Execution is started and immediately sent the Signal.
     <RelatedReadItem path="/develop/dotnet/message-passing#signal-with-start" text="Signal-With-Start using the .NET SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-## Queries {#queries}
+### Sending Updates {#sending-updates}
 
-**What is a Query in the context of Temporal?**
+:::tip Support, stability, and dependency info
 
-A Query is a synchronous operation that is used to get the state of a [Workflow Execution](/workflows#workflow-execution).
-The state of a running Workflow Execution is constantly changing.
-You can use Queries to expose the internal Workflow Execution state to the external world.
-Queries are available for running or completed Workflows Executions only if the Worker is up and listening on the Task Queue.
+- In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
+- Coming soon: Available in Public Preview as of Open Source Temporal Server version 1.25.  (Available in [Pre-release](/evaluate/development-production-features/release-stages#pre-release) as of [v1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0))
+- Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.28.0/client#Client.UpdateWorkflow) since [v1.28.0](https://github.com/temporalio/sdk-go/releases/tag/v1.28.0)
+- Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.25.0](https://github.com/temporalio/sdk-java/releases/tag/v1.25.0)
+- Available in [Python SDK](/develop/python/message-passing#send-update-from-client) since [v1.7.0](https://github.com/temporalio/sdk-python/releases/tag/1.7.0)
+- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_ExecuteUpdateAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowUpdateOptions_) since [v0.1.0-beta2](https://github.com/temporalio/sdk-dotnet/releases/tag/1.3.0)
+- Available in [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#executeupdate) since [v1.11.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.11.0)
+- Available in [PHP SDK](https://php.temporal.io/classes/Temporal-Client-WorkflowStubInterface.html#method_startUpdate) since [v2.11.0](https://github.com/temporalio/sdk-php/releases/tag/v2.11.0)
+
+:::
+
+Updates can be sent from a Temporal Client or the Temporal CLI to a Workflow Execution. This call is synchronous and will call into the corresponding Update handler. If you’d rather make an asynchronous request, you should use Signals.
+
+In most languages (except Go), you may call `executeUpdate` to complete an Update and get its result.
+
+Alternatively, to start an Update, you may call `startUpdate` and pass in the Workflow Update Stage as an argument. You have two choices on what to await:
+
+- Accepted - wait til the Worker is contacted, which ensures that the Update is persisted. See [Update Validators](#update-validators) for more information.
+- Completed - wait til the handler finishes and returns a result. (This is equivalent to `executeUpdate`.)
+
+The start call will give you a handle you can use to track the Update, determine whether it was Accepted, and ultimately get its result or an error.
+
+If you want to send an Update to another Workflow such as a Child Workflow from within a Workflow, you should do so within an Activity and use the Temporal Client as normal.
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/message-passing#send-update-from-client" text="Send Updates in Go" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#send-update-from-client" text="Send Updates in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#send-update-from-client" text="Send Updates in PHP" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#send-update-from-client" text="Send Updates in Python" archetype="feature-guide" />
+    <!-- DOES NOT EXIST YET
+        <RelatedReadItem path="/develop/typescript/message-passing#send-update-from-client" text="Send Updates in Typescript" archetype="feature-guide" />
+    -->
+    <RelatedReadItem path="/develop/dotnet/message-passing#send-update-from-client" text="Send Updates in .NET" archetype="feature-guide" />
+</RelatedReadContainer>
+
+### Sending Queries {#sending-queries}
+
+Queries can be sent from a Temporal Client or the Temporal CLI to a Workflow Execution--even if this Workflow has Completed. This call is synchronous and will call into the corresponding Query handler.
+You can also send a built-in "Stack Trace Query" for debugging.
 
 <RelatedReadContainer>
     <RelatedReadItem path="/cli/workflow#query" text="Send a Query using the Temporal CLI" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/go/message-passing#queries" text="Send and handle Queries with the Go SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/java/message-passing" text="Send and handle Queries with the Java SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/php/message-passing#queries" text="Send and handle Queries with the PHP SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#queries" text="Send and handle Queries with the Python SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/message-passing#queries" text="Send and handle Queries with the TypeScript SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/dotnet/message-passing#define-query" text="Send and handle Queries with the .NET SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/go/message-passing#send-query" text="Send a Query with the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#send-query" text="Send a Query with the Java SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#send-query" text="Send a Query with the PHP SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#send-query" text="Send a Query with the Python SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#send-query" text="Send a Query with the TypeScript SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#send-query" text="Send a Query with the .NET SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-Queries are sent from a Temporal Client to a Workflow Execution.
-The API call is synchronous.
-The Query is identified at both ends by a Query name.
-The Workflow must have a Query handler that is developed to handle that Query and provide data that represents the state of the Workflow Execution.
-
-Queries are strongly consistent and are guaranteed to return the most recent state.
-This means that the data reflects the state of all confirmed Events that came in before the Query was sent.
-An Event is considered confirmed if the call creating the Event returned success.
-Events that are created while the Query is outstanding may or may not be reflected in the Workflow state the Query result is based on.
-
-A Query can carry arguments to specify the data it is requesting.
-And each Workflow can expose data to multiple types of Queries.
-
-A Query must never mutate the state of the Workflow Execution—that is, Queries are _read-only_ and cannot contain any blocking code.
-This means, for example, that Query handling logic cannot schedule Activity Executions.
-
-Sending Queries to completed Workflow Executions is supported, though Query reject conditions can be configured per Query.
-
 #### Stack Trace Query {#stack-trace-query}
-
-**What is a Stack Trace Query in the context of Temporal?**
 
 In many SDKs, the Temporal Client exposes a predefined `__stack_trace` Query that returns the call stack of all the threads owned by that Workflow Execution.
 This is a great way to troubleshoot a Workflow Execution in production.
@@ -139,76 +191,182 @@ Stack Trace Queries are available only for running Workflow Executions.
 
 :::
 
-## Updates {#updates}
+## Handling Signals, Updates, and Queries {#handling-messages}
 
-**What is an Update in the context of Temporal?**
+When Signals, Updates, and Queries arrive at your Workflow, the handlers for these messages will operate on the current state of your Workflow and can use whatever fields you have set.
+In this section, we’ll give you an overview of how messages work with Temporal and cover how to write correct and robust handlers by covering topics like atomicity, guaranteeing completion before the Workflow exits, exceptions, and idempotency.
 
-:::tip Support, stability, and dependency info
+### Message handler concurrency {#message-handler-concurrency}
 
-- In [Pre-release](/evaluate/development-production-features/release-stages#pre-release) (API is subject to change)
-- Introduced in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
-- Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.23.1/client#Client.UpdateWorkflowWithOptions) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
-- Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
-- Available in [Python SDK](https://docs.temporal.io/develop/python/features#updates) since [v1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
-- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_ExecuteUpdateAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowUpdateOptions_) since [v0.1.0-beta2](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta2)
-- Available in [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#executeupdate) since [v1.9.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0)
-- Available in [PHP SDK](https://php.temporal.io/classes/Temporal-Client-WorkflowStubInterface.html#method_startUpdate) since [v2.8.0](https://github.com/temporalio/sdk-php/releases/tag/v2.8.0)
+If your Workflow receives messages, you may need to consider how those messages interact with one another or with the main Workflow method.
+Behind the scenes, Temporal is running a loop that looks like this:
 
-:::
+<PrettyImage src="/img/messages-workflow-loop.png" title="Diagram that shows the execution ordering of Workflows" />
 
-An Update is a request and response from a Temporal Client to a [Workflow Execution](/workflows#workflow-execution).
+Every time the Workflow wakes up--generally, it wakes up when it needs to--it will process messages in the order they were received, followed by making progress in the Workflow’s main method.
+
+This execution is on a single thread–while this means you don’t have to worry about parallelism, you do need to worry about concurrency if you have written Signal and Update handlers that can block. These can run interleaved with the main Workflow and with one another, resulting in potential race conditions. These methods should be made reentrant.
+
+### Message handler patterns {#message-handler-patterns}
+
+Here are several common patterns for write operations, Signal and Update handlers. They don't apply to pure read operations, i.e. Queries or [Update Validators](#update-validators):
+
+- Synchronous, returning immediately.
+- Waiting for the Workflow to be ready to process them.
+- Kicking off activities and other asynchronous tasks
+- Injecting work into the main Workflow.
+- Finishing handlers before the Workflow completes.
+- Ensuring your messages are processed exactly once.
+
+#### Synchronous handlers
+
+Synchronous handlers don’t kick off any long-running operations or otherwise block. They're guaranteed to run atomically.
+
+#### Waiting
+
+A Signal or Update handler can block waiting for the Workflow to reach a certain state using a Wait Condition. See the links below to find out how to use this with your SDK.
+
+#### Running asynchronous tasks
+
+Sometimes, you need your message handler to wait for long-running operations such as executing an Activity. When this happens, the handler will yield control back to [the loop](#message-handler-concurrency). This means that your handlers can have race conditions if you’re not careful.
+You can guard your handlers with concurrency primitives like mutexes or semaphores, but you should use versions of these primitives provided for Workflows in most languages. See the links below for examples of how to use them in your SDK.
+
+#### Inject work into the main Workflow
+
+Sometimes you want to process work provided by messages in the main Workflow. Perhaps you’d like to accumulate several messages before acting on any of them. For example, message handlers might put work into a queue, which can then be picked up and processed in an event loop that you yourself write.
+This option is considered advanced but offers powerful flexibility. And if you serialize the handling of your messages inside your main Workflow, you can avoid using concurrency primitives like mutexes and semaphores. See the links above for how to do this in your SDK.
+
+#### Finishing handlers before the Workflow completes {#finishing-message-handlers}
+
+You should generally finish running all handlers before the Workflow run completes or continues as new. For some Workflows, this means you should explicitly check to make sure that all the handlers have completed before finishing. You can await a condition called All Handlers Finished at the end of your Workflow.
+
+If you don’t need to ensure that your handlers complete, you may specify your handler’s Handler Unfinished Policy as Abandon to turn off the warnings. However, note that clients waiting for Updates will get Not Found errors if they're waiting for Updates that never complete before the Workflow run completes.
+
+See the links below for how to ensure handlers are finished in your SDK.
+
+#### Ensuring your messages are processed exactly once
+
+Many developers want their message handlers to run exactly once--to be idempotent--in cases where the same Signal or Update is delivered twice or sent by two different call sites. Temporal deduplicates messages for you on the server, but there is one important case when you need to think about this yourself when authoring a Workflow, and one when sending Signals and Updates.
+
+When your workflow Continues-As-New, you should handle deduplication yourself in your message handler. This is because Temporal's built-in deduplication doesn't work across [Continue-As-New](/workflows#continue-as-new) boundaries, meaning you would risk processing messages twice for such Workflows if you don't check for duplicate messages yourself.
+
+To deduplicate in your message handler, you can use an idempotency key.
+
+Clients can provide an idempotency key. This can be important because Temporal's SDKs provide a randomized key by default, which means Temporal only deduplicates retries from the same call. For Updates, if you craft an Update ID, temporal will deduplicate any calls that use that key. This is useful when you have two different callsites that may send the same Update, or when your client itself may get retried. For Signals, you can provide a key as part of your Signal arguments.
+
+Inside your message handler, you can check your idempotency key--the Update ID or the one you provided to the Signal--to check whether the Workflow has already handled the update.
+
+<!-- DOES NOT EXIST YET
+
+See the links below for examples of solving this in your SDK.
+
+#### Authoring message handler patterns
+
+See examples of the above patterns.
 
 <RelatedReadContainer>
-    <RelatedReadItem path="/develop/go/message-passing#updates" text="Develop, send, and handle Updates in Go" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/java/message-passing#updates" text="Develop, send, and handle Updates in Java" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/php/message-passing#updates" text="Develop, send, and handle Updates in PHP" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#updates" text="Develop, send, and handle Updates in Python" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/dotnet/message-passing#updates" text="Develop, send, and handle Updates in .NET" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/go/message-passing#handler-patterns" text="Author message handler patterns in Go" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#handler-patterns" text="Author message handler patterns in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#handler-patterns" text="Author message handler patterns in PHP" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#handler-patterns" text="Author message handler patterns in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#handler-patterns" text="Author message handler patterns in Typescript" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#handler-patterns" text="Author message handler patterns in .NET" archetype="feature-guide" />
 </RelatedReadContainer>
+-->
 
-You can think of an Update as a synchronous, blocking call that could replace both a Signal and a Query. An update is:
+### Update Validators {#update-validators}
 
-- A Signal that can return a value, and has lower overhead and latency
-- A Query that can mutate workflow state
+When you define an Update handler, you may optionally define an Update Validator: a read operation that's responsible for accepting or rejecting the Update. You can use Validators to verify arguments or make sure the Workflow is ready to accept your Updates.
 
-The Workflow must have a function to handle the Update.
-The Update handler can mutate workflow state (like a [Signal](#signals) but unlike a [Query](#queries)) and return a value to the caller (like a Query but unlike a Signal).
-Like every bit of code in a Workflow, Update handlers must be [deterministic](/workflows#deterministic-constraints).
-However, they may use all the available Workflow features, such as executing Activities and child Workflows, and waiting on timers/conditions.
-
-To avoid losing Updates when using [Continue-As-New](/workflows#continue-as-new), ensure that all Update handlers have completed before calling Continue-As-New.
-
-When there is the potential for multiple Updates to cause a duplication problem, Temporal recommends adding idempotency logic to your Update handler that checks for duplicates.
-
-An Update has four phases.
-
-1. **Admission.** The Temporal Service first validates Update submissions against the configured resource usage limits.
-   For example, limits apply to concurrent requests and requests per second.
-   For more details, see the [Temporal Platform defaults](/self-hosted-guide/defaults).
-   When this phase is complete, the Platform changes the status of the Update to **Admitted**.
-   At this stage, the Platform hasn't yet persisted the Update to the Workflow Execution's Event History or sent it to a Worker.
-2. **Validation.** An optional developer-provided function that performs request validation.
-   This validation code, similar to a [Query](#queries) handler, can observe but not change the Workflow state.
-   This means that the validation of an Update request may depend on the Workflow state at runtime.
-   To indicate that the Update request doesn't pass validation, the validation code must throw/return a language-appropriate error.
-   In this case, the system rejects the request, doesn't record anything in the Workflow Event History to indicate that the Update ever happened, and the Update processing doesn't proceed to later phases.
-   If the Update completes the validation stage without error, the Platform changes its state to **Accepted** and a [WorkflowExecutionUpdateAcceptedEvent](/references/events#workflowexecutionupdateacceptedevent) Event is added to Workflow Execution [Event History](/workflows#event-history).
-3. **Execution.** Accepted Update requests move to the execution phase.
-   In this phase, the Worker delivers the request to the Update handler.
-4. **Completion.** The Update handler can return a result or a language-appropriate error/exception to indicate its completion.
-   The Platform sends the Update outcome back to the original invoking entity as an Update response.
-   A [WorkflowExecutionUpdateCompletedEvent](/references/events#workflowexecutionupdatecompletedevent) Event in the Workflow Execution Event History denotes the completion of an Update.
+- If it accepts, the Update will become part of your Workflow’s history and the client will be notified that the operation has been Accepted. The Update handler will then run until it returns a value.
+- If it rejects, the client will be informed that it was Rejected, and the Workflow will have no indication that it was ever requested, similar to a Query handler.
 
 :::note
 
-Workflow Updates are currently disabled by default on Temporal Server.
-
-To enable the `UpdateWorkflowExecution` API, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config value to `true`.
-
-For example, to enable Workflow Updates with the Temporal CLI, pass the value when executing the Temporal CLI command:
-
-```command
-temporal server start-dev --dynamic-config-value frontend.enableUpdateWorkflowExecution=true
-```
+Like Queries, Validators are not allowed to block.
 
 :::
+
+Once the Update handler is finished and has returned a value, the operation is considered Completed.
+
+<!-- DOES NOT EXIST YET
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/message-passing#validate-update" text="Validate updates in Go" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#validate-update" text="Validate updates in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#validate-update" text="Validate updates in PHP" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#validate-update" text="Validate updates in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#validate-update" text="Validate updates in Typescript" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#validate-update" text="Validate updates in .NET" archetype="feature-guide" />
+</RelatedReadContainer>
+-->
+
+### Exceptions in message handlers
+
+When throwing an exception in a message handler, you should decide whether to make it an [Application Failure](/references/failures#application-failure). The implications are different between Signals and Updates.
+
+:::caution
+The following content applies in every SDK except the Go SDK. See below.
+:::
+
+#### Exceptions in Signals
+
+In Signal handlers, throw [Application Failures](/references/failures#application-failure) only for unrecoverable errors, because the entire Workflow will fail.
+If you throw any other exception, by default, it will cause a [Workflow Task Failure](/references/failures#workflow-task-failures). This means the Workflow will get stuck and will retry the handler periodically until the exception is fixed, for example by a code change.
+
+#### Exceptions in Updates
+
+When you want to fail the Update and for the client to receive that error:
+
+- Reject the Update by throwing any exception from your Validator, OR
+- Throw an [Application Failure](/references/failures#application-failure) from your Update handler. Unlike with Signals, the Workflow will keep going.
+
+If you throw any other exception, by default, it will cause a [Workflow Task Failure](/references/failures#workflow-task-failures). This means the Workflow will get stuck and will retry the handler periodically until the exception is fixed, for example by a code change or infrastructure coming back online. Note that this will cause a delay for clients waiting for a result.
+
+#### Errors and panics in message handlers in the Go SDK
+
+In Go, returning an error behaves like an [Application Failure](/references/failures#application-failure) in the other SDKs. Panics behave like non-Application Failure exceptions in other languages, in that they fail the Signal or Update handler tasks.
+
+### Writing Signal Handlers {#writing-signal-handlers}
+
+Use these links to see a simple Signal handler.
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/message-passing#handle-signal" text="Handle Signals in Go" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#handle-signal" text="Handle Signals in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#handle-signal" text="Handle Signals in PHP" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#handle-signal" text="Handle Signals in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#handle-signal" text="Handle Signals in Typescript" archetype="feature-guide" />
+    <!-- DOES NOT EXIST YET
+    <RelatedReadItem path="/develop/dotnet/message-passing#handle-signal" text="Handle Signals in .NET" archetype="feature-guide" />
+    -->
+</RelatedReadContainer>
+
+<!-- DOES NOT EXIST YET
+### Writing Update Handlers {#writing-update-handlers}
+
+Use these links to see a simple update handler.
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/message-passing#handle-update" text="Handle Updates in Go" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#handle-update" text="Handle Updates in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#handle-update" text="Handle Updates in PHP" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#handle-update" text="Handle Updates in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#handle-update" text="Handle Updates in Typescript" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#handle-update" text="Handle Updates in .NET" archetype="feature-guide" />
+</RelatedReadContainer>
+-->
+
+### Writing Query Handlers {#writing-query-handlers}
+
+Author queries using these per-language guides.
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/message-passing#handle-query" text="Handle Queries in Go" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#handle-query" text="Handle Queries in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#handle-query" text="Handle Queries in PHP" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#handle-query" text="Handle Queries in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#handle-query" text="Handle Queries in Typescript" archetype="feature-guide" />
+    <!-- DOES NOT EXIST YET
+    <RelatedReadItem path="/develop/dotnet/message-passing#handle-query" text="Handle Queries in .NET" archetype="feature-guide" />
+    -->
+</RelatedReadContainer>

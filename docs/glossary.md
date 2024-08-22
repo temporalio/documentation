@@ -13,7 +13,17 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 
 #### [Action](/cloud/pricing#action)
 
-An Action is the fundamental pricing unit in Temporal Cloud.
+An Action is the fundamental pricing unit in Temporal Cloud. 
+Temporal Actions are the building blocks for Workflow Executions.
+When you execute a Temporal Workflow, its Actions create the ongoing state and progress of your Temporal Application.
+
+_Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_
+
+#### [Actions Per Second (APS)](/cloud/limits#throughput)
+
+APS, or Actions per second, is specific to Temporal Cloud. 
+Each Temporal Cloud Namespace enforces a rate limit, which is measured in Actions per second (APS).
+This is the number of Actions, such as starting or signaling a Workflow, that can be performed per second within a specific Namespace. 
 
 _Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_
 
@@ -183,10 +193,14 @@ An append-only log of Events that represents the full state a Workflow Execution
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
+#### [Failback](/cloud/multi-region)
+
+After Temporal Cloud has resolved an outage or incident involving a failover, a failback process shifts Workflow Execution processing back to the original region that was active before the incident.
+
 #### [Failover](/cloud/multi-region)
 
-A Failover shifts Workflow Execution processing from an active Temporal Namespace to a standby Temporal Namespace during outages or other incidents.
-Standby Namespaces use replication to duplicate data and prevent data loss during Failover.
+A failover shifts Workflow Execution processing from an active Temporal Namespace region to a standby Temporal Namespace region during outages or other incidents.
+Standby Namespace regions use replication to duplicate data and prevent data loss during failover.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -224,7 +238,7 @@ _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term
 
 A Global Namespace is a Namespace that duplicates data from an active [Temporal Service](#temporal-cluster) to a standby Service using the replication to keep both Namespaces in sync.
 Global Namespaces are designed to respond to service issues like network congestion.
-When service to the primary Cluster is compromised, a [Failover](#failover) transfers control from the active to the standby cluster.
+When service to the primary Cluster is compromised, a [failover](#failover) transfers control from the active to the standby cluster.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -282,7 +296,7 @@ A multi-region Namespace (MRN) is a [Temporal Cloud](#temporal-cloud) Namespace 
 Each region corresponds to a dedicated Temporal Cloud Service. 
 Temporal Cloud automatically replicates Workflow Executions and metadata from the active to the standby region.
 MRNs are designed to respond to service issues as they arise.
-In the event that the Namespace's performance is compromised, a [Failover](#failover) transfers control from the active to the standby region.
+In the event that the Namespace's performance is compromised, a [failover](#failover) transfers control from the active to the standby region.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -328,7 +342,7 @@ Learn more about the Public Preview release stage
 
 _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_
 
-#### [Query](/encyclopedia/workflow-message-passing#queries)
+#### [Query](/encyclopedia/workflow-message-passing#sending-queries)
 
 A Query is a synchronous operation that is used to report the state of a Workflow Execution.
 
@@ -339,6 +353,13 @@ _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explana
 Remote data encding is using your custom Data Converter to decode (and encode) your Payloads remotely through endpoints.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### [Requests Per Second (RPS)](/references/dynamic-configuration#service-level-rps-limits)
+
+RPS, or Requests per second, is used in the Temporal Service (both in self-hosted Temporal and Temporal Cloud). 
+This is a measure that controls the rate of requests at the service level, such as the Frontend, History, or Matching Service.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal](/tags/temporal)_
 
 #### [Reset](/workflows#reset)
 
@@ -394,7 +415,7 @@ A Side Effect is a way to execute a short, non-deterministic code snippet, such 
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Signal](/encyclopedia/workflow-message-passing#signals)
+#### [Signal](/encyclopedia/workflow-message-passing#sending-signals)
 
 A Signal is an asynchronous request to a Workflow Execution.
 
@@ -555,7 +576,7 @@ Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in 
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Update](/encyclopedia/workflow-message-passing#updates)
+#### [Update](/encyclopedia/workflow-message-passing#sending-updates)
 
 An Update is a request to and a response from Workflow Execution.
 
