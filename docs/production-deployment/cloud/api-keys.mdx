@@ -26,12 +26,7 @@ tags:
 
 :::
 
-Temporal Cloud API key authentication provides secure access to the Temporal Service from your applications.
-API keys are a common industry standard for simple access control.
-They need only one key to authenticate.
-[mTLS certificates](https://docs.temporal.io/references/configuration#tls) offer higher security but they require more complex setup and configuration.
-API keys simplify deployment and management when mTLS is not needed.
-
+Temporal Cloud API keys offer industry-standard identity-based authentication for Temporal users and [Service Accounts](/cloud/service-accounts).
 This document introduces Temporal Cloud's API key features:
 
 - [API key overview](#overview)
@@ -46,22 +41,18 @@ This document introduces Temporal Cloud's API key features:
 
 ## API key overview {#overview}
 
-Temporal Cloud API keys offer industry-standard identity-based authentication for Temporal users and [Service Accounts](/cloud/service-accounts).
-Each key is a unique identity.
-It is linked to role-based access control (RBAC) settings to ensure secure and appropriate access.
+Each Temporal Cloud API key is a unique identity linked to role-based access control (RBAC) settings to ensure secure and appropriate access.
 
 The authentication process follows this pathway:
 
-```text
-API key (authentication) → Identity (user or Service Account) → RBAC (authorization)
-```
+![API key (authentication) → Identity (user or Service Account) → RBAC (authorization)](/img/apikeyrbac.png)
 
 ### API key use cases
 
 API keys are well suited for the following scenarios:
 
 - _**Cloud operations automation**_:
-  API keys work with most Temporal Cloud operational tools, including the [`tcld`](/cloud/tcld), [Cloud Ops APIs](/ops), and [the Terraform provider](/production-deployment/cloud/terraform-provider).
+  API keys work with most Temporal Cloud operational tools, including [`tcld`](/cloud/tcld), [Cloud Ops APIs](/ops), and [the Terraform provider](/production-deployment/cloud/terraform-provider).
   Use them to manage your Temporal Cloud account, Namespaces, certificates, and user identities.
   - API keys for Cloud operations tools are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
 - _**Namespace authentication**_:
@@ -335,8 +326,12 @@ Authenticate with Temporal Cloud using API keys with the following clients:
 
 ### Temporal CLI
 
-To use your API key with the Temporal CLI, either pass it with the `--api-key` flag for each command or set it as an environment variable (recommended).
-The `tcld` tool will automatically pick up the environment variable.
+To use your API key with the Temporal CLI, either pass it with the `--api-key` flag or set an environment variable (recommended).
+The `tcld` tool automatically picks up the `TEMPORAL_CLOUD_API_KEY` environment variable.
+
+```
+tcld <command> <subcommand> --api-key YourAPIKey <other flags and options>
+```
 
 In addition to the API key, the following client options are required:
 
