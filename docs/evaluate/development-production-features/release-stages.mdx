@@ -1,0 +1,84 @@
+---
+id: release-stages
+title: Temporal product release stages guide
+sidebar_label: Product release stages
+description: Discover Temporal's Product Release Stages Guide for detailed criteria on Pre-release, Public Preview, and General Availability. Make informed decisions on feature adoption!
+toc_max_heading_level: 4
+keywords:
+  - product release stages
+  - term
+tags:
+  - product-release-stages
+  - term
+---
+
+:::tip CHANGELOG
+To stay up-to-date with the latest feature changes, visit the [changelog](https://temporal.io/change-log).
+:::
+
+This Product Release Stages Guide provides an understanding of how Temporal features are released. It describes and lists the criteria for each release stage, so that you can make informed decisions about the adoption of each new feature.
+
+Product Release Guide Expectations:
+
+|                                 | Pre-release                                                        | Public Preview                                                                              | General Availability                                |
+| ------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| **Features access**             | Self-hosted Temporal users: Everyone; Temporal Cloud: Invite only. | Everyone. Temporal Cloud may limit the number of users being onboarded to ensure stability. | Everyone.                                           |
+| **Feature completeness**        | Limited functionality.                                             | Core functionality is complete.                                                             | Mature and feature complete.                        |
+| **API stability**               | Experimental; API is subject to change.                            | API breaking changes are kept to a minimum.                                                 | API is stable.                                      |
+| **Feature region Availability** | Limited regions.                                                   | Most regions.                                                                               | All [regions](/cloud/service-availability#regions). |
+| **Feature support**             | Community and engineering team.                                    | [Formal support](/cloud/support#support-ticket).                                            | [Formal support](/cloud/support#support-ticket).    |
+| **Feature recommended usage**   | Experimental.                                                      | Production use cases.                                                                       | Production usage.                                   |
+| **Feature Cloud pricing**       | No additional cost.                                                | Pricing changes are kept to a minimum.                                                      | Pricing is stable.                                  |
+| **Feature Interoperability**    | Limited.                                                           | Features are compatible with each other, unless otherwise stated.                           | Features are compatible with each other.            |
+
+## Pre-release {#pre-release}
+
+**Access:** Most Pre-release features are released in the open source Temporal software and are publicly available.
+However, some features which are explicit to hosting Temporal Services, such as [API Keys](/cloud/api-keys), may be specific to Temporal Cloud.
+
+In Temporal Cloud, Pre-release features are invite-only: Temporal will work directly with a group of existing Temporal Cloud customers to be part of testing of each Pre-release feature.
+These customers are invited to provide feedback to the Temporal team.
+
+**Classification:** New features in Pre-release may not be fully mature and may have bugs.
+Users acknowledge and agree that Pre-release features are provided on an “as-is” basis, and that they are provided without any indemnification, support, warranties, or representation of any kind.
+
+**Feedback:** Feedback is highly encouraged and important for guiding Temporal feature development.
+We encourage you to share your experience so that you can influence the future direction of Temporal.
+
+**Availability:** Temporal may modify features before they become Generally Available, or may even decide to remove them.
+This means there is no guarantee that a new feature will become Generally Available.
+A Pre-release feature can be deprecated at any time.
+
+Pre-release features may be disabled by default, and can be enabled via configuration.
+Temporal Cloud customers can contact the Temporal account team or [Temporal Support Team](/cloud/support#support-ticket) to gain Pre-release access.
+
+## Public Preview {#public-preview}
+
+**Access:** New features in Public preview are available to everyone.
+
+**Classification:** Features in public preview may undergo further development and testing before they are made Generally Available.
+These features are being refined and are recommended for production usage.
+
+**Feedback:** Temporal users are invited to share feedback via the [Community Slack](http://t.mp/slack), by reaching out directly to the Temporal team at product@temporal.io, or by creating issues in the relevant [GitHub repository](https://github.com/temporalio).
+Temporal also encourages Temporal Cloud users to submit feedback via [support ticket](/cloud/support#support-ticket).
+This feedback will assist in guiding the improvements for General Availability.
+
+**Availability:** New Features in Public Preview may evolve.
+The APIs may undergo changes; however, Temporal's goal is to maintain backward compatibility.
+
+## General Availability {#general-availability}
+
+**Access:** Features in General Availability are available to everyone.
+
+**Classification:** The feature is now fully developed, tested, and available for use without further anticipated changes.
+
+**Feedback:** Temporal users are invited to share feedback via the [Community Slack](http://t.mp/slack), by reaching out directly to the Temporal team at product@temporal.io, or by creating issues in the relevant [GitHub repository](https://github.com/temporalio).
+
+**Availability:** Features in General Availability are released with stable APIs and recommended for production use with a committed SLA.
+
+:::info Exceptions
+
+There may be exceptions for different features, but this is the typical expectation.
+Any variation will be documented.
+
+:::

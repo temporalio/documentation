@@ -32,6 +32,12 @@ tags:
 Exporting cloud metrics to Datadog provides enhanced observability, allowing you to monitor, alert, and visualize key performance indicators of your applications and infrastructure.
 Temporal's integration with Datadog extends the monitoring capabilities of your Temporal Cloud deployment.
 
+:::note
+
+This tutorial provides an example application to help users capture metrics from Temporal's PromQL endpoint and export to DataDog.
+
+:::
+
 ### What will you learn?
 
 You will set up your environment to export metrics from Temporal Cloud to Datadog, including:
@@ -233,7 +239,7 @@ k9s
 
 Review the logs to confirm the integration is functioning as expected.
 
-Use a [pre-built dashboard](https://github.com/temporalio/samples-server/blob/main/cloud/observability/promql-to-dd-go/examples/Datadog_dashboard.json) to visualize your metrics in Datadog.
+Use a [pre-built dashboard](https://github.com/temporalio/samples-server/blob/main/cloud/observability/) to visualize your metrics in Datadog.
 
 You've successfully set up the export of metrics from Temporal Cloud to Datadog.
 
@@ -243,6 +249,6 @@ This is just the start.
 
 Customize and extend this code, dashboards, and deployment processes to meet your needs.
 
-- Explore [Datadog dashboards](https://github.com/temporalio/samples-server/blob/main/cloud/observability/promql-to-dd-go/examples/Datadog_dashboard.json) to visualize your Temporal metrics.
+- Explore [Datadog dashboards](https://github.com/temporalio/samples-server/blob/main/cloud/observability/) to visualize your Temporal metrics.
 - Set up alerts in Datadog based on the metrics received from Temporal Cloud.
 - Consider integrating additional observability tools or exporting metrics to other platforms as needed.

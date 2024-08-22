@@ -15,7 +15,7 @@ description: Experience disaster-tolerant deployment with Temporal Cloud's multi
 
 :::tip Support, stability, and dependency info
 
-Multi-region Namespaces are in [Public Preview](/evaluate/release-stages#public-preview) for Temporal Cloud.
+Multi-region Namespaces are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for Temporal Cloud.
 
 :::
 
@@ -39,6 +39,7 @@ This feature guide covers the following topics:
 - [Multi-region Namespace SLA](/cloud/multi-region#sla)
 - [Architecture](/cloud/multi-region#architecture)
 - [Pricing](/cloud/multi-region#pricing)
+- [Manage your multi-region Namespace](/cloud/multi-region#management)
 - [Operations](/cloud/multi-region#operations)
 
 ## Choosing multi-region {#multi-region-intro}
@@ -90,10 +91,10 @@ Temporal Cloud notifies you by email once the replication has caught up and both
 
 **What happens during the failover process?**
 
-Consider an incident or outage that elevates error rates or latency in the active region of a multi-region Namespace.
-Under these circumstances, Temporal Cloud will initiate a Namespace failover.
-This operation shifts Workflow processing to a standby region, unaffected by the incident.
+Temporal Cloud will initiate a Namespace failover when it detects an incident or outage that elevates error rates or latency in the active region of a multi-region Namespace.
+A failover operation shifts Workflow processing to a standby region, unaffected by the incident.
 This ensures that existing Workflows can progress and new Workflows can be created as the incident is addressed.
+After Temporal-initiated failovers, Temporal Cloud shifts Workflow Execution processing back to the original region that was active before the incident (a "failback") once the incident is resolved.
 
 :::info
 
@@ -129,6 +130,7 @@ This prevents the loss of progress and avoids data conflicts.
 The Namespace experiences a short period of unavailability, defaulting to 10 seconds.
 
 During this period, existing Workflows stop progress.
+Temporal Cloud returns a "Service unavailable error", which is retried by SDKs.
 State transitions will not happen and tasks are not dispatched.
 User requests like start/signal workflow will be rejected while operations are paused during handover.
 
@@ -145,6 +147,8 @@ This mode prioritizes _availability_ over consistency.
 
 While graceful failovers are preferred for consistency, they aren’t always practical.
 Temporal Cloud’s hybrid failover mode (the default mode) limits an initial graceful failover attempt to 10 seconds or less.
+During this period, existing Workflows stop progress.
+Temporal Cloud returns a "Service unavailable error", which is retried by SDKs.
 If the graceful approach doesn’t resolve the issue, Temporal Cloud automatically switches to a forced failover.
 This strategy balances consistency and availability requirements.
 
@@ -263,7 +267,7 @@ Protect your processes from accidental or repeated actions for more reliable exe
 
 **How does adding a multi-region Namespace affect my costs?**
 
-For pricing details, please visit Temporal Cloud's [Pricing page](/cloud/pricing).
+For pricing details, visit Temporal Cloud's [Pricing page](/cloud/pricing).
 
 ## Manage your multi-region Namespace {#management}
 
@@ -278,7 +282,7 @@ Use these tools to create, upgrade, and discontinue your multi-region Namespace.
 
 :::warning
 
-Only [Global Admins](https://docs.temporal.io/cloud/users#account-level-roles) and [Namespace Admins](https://docs.temporal.io/cloud/users#namespace-level-permissions) may create an multi-region Namespace (MRN), upgrade an existing namespace to MRN, or trigger an MRN failover.
+Only [Global Admins](https://docs.temporal.io/cloud/users#account-level-roles) and [Namespace Admins](https://docs.temporal.io/cloud/users#namespace-level-permissions) may create an multi-region Namespace (MRN), upgrade an existing Namespace to MRN, or trigger an MRN failover.
 
 :::
 
@@ -371,7 +375,7 @@ This section provides how-to instructions for the following operations tasks:
 
 Users also can trigger a failover during the outage of a non-Temporal controlled regional downstream dependency, or for testing purposes.
 
-Temporal is responsible for detecting and triggering a failover for a multi-region namespace in the event of a regional outage or a disaster.
+Temporal is responsible for detecting and triggering a failover for a multi-region Namespace in the event of a regional outage or a disaster.
 Users also can trigger a failover during the outage of a non-Temporal controlled regional downstream dependency, or for testing purposes.
 
 The following sections show you how to perform this action, moving your active Namespace to the standby region.
@@ -402,11 +406,12 @@ tcld namespace failover --namespace <namespace_id> --region <target_region>
 
 After any failover, whether triggered by you or by Temporal, event information appears in both the [Temporal Cloud Web UI](https://cloud.temporal.io/namespaces) (on the Namespace detail page) and in your audit logs.
 The audit log entry for Failover uses the `"operation": FailoverNamespace"` event.
-After failover, the namespace is active in the new region.
+After failover, the Namespace is active in the new region.
 
 You needn't monitor Temporal Cloud's failover response in real-time.
 Whenever there is a failover event, you'll receive an alert email.
 
+After Temporal-initiated failovers, Temporal Cloud shifts Workflow Execution processing back to the original region that was active before the incident (a "failback") once the incident is resolved.
 More information is available in [Monitoring and Observability](/cloud/multi-region#observability).
 
 ### Metrics {#metrics-operations}
@@ -419,15 +424,15 @@ The following samples demonstrate how you can use these metrics to explore repli
 **P99 replication lag histogram**
 
 ```
-histogram_quantile(0.99, sum(rate(temporal_cloud_v0_replication_lag_bucket[1m])) by (temporal_namespace, le))
+histogram_quantile(0.99, sum(rate(temporal_cloud_v0_replication_lag_bucket[$__rate_interval])) by (temporal_namespace, le))
 ```
 
 **Average replication lag**
 
 ```
-sum(rate(temporal_cloud_v0_replication_lag_sum[1m])) by (temporal_namespace)
+sum(rate(temporal_cloud_v0_replication_lag_sum[$__rate_interval])) by (temporal_namespace)
 /
-sum(rate(temporal_cloud_v0_replication_lag_count[1m])) by (temporal_namespace)
+sum(rate(temporal_cloud_v0_replication_lag_count[$__rate_interval])) by (temporal_namespace)
 ```
 
 ### Monitoring and observability {#observability}
@@ -471,7 +476,7 @@ More details are available in the [Routing](/cloud/multi-region#routing) section
 ### Routing {#routing}
 
 When using multi-region for a Namespace, the Namespace's DNS record `<ns>.<acct>.<tmprl_domain>` targets a regional DNS record in the format `<region>.region.<tmprl_domain>`.
-In this format, `<region>` is the currently active region for your namespace.
+In this format, `<region>` is the currently active region for your Namespace.
 Clients resolving the Namespace’s DNS record are directed to connect to the active region for that Namespace, thanks to the regional DNS record.
 
 During failover, Temporal Cloud changes the target of the Namespace DNS record from one region to another.
@@ -483,7 +488,7 @@ Clients should converge to the newly targeted region within, at, most a 30-secon
 
 :::important
 
-At failover, routing is completely transparent for multi-region customers _unless_ you use PrivateLink.
+Some networking configuration is required for failover to be transparent to clients and workers when using PrivateLink.
 This section describes how to configure routing for multi-region Namespaces for PrivateLink customers only.
 
 :::
@@ -516,11 +521,12 @@ Alternately, you could establish connectivity between the regions to redirect Wo
 The following table lists Temporal's available regions, PrivateLink endpoints, and DNS record overrides.
 The `sa-east-1` region listed here is not yet available for use with multi-region Namespaces.
 
-| Region           | PrivateLink VPC Endpoint                                       | DNS Record Override                     |
+| Region           | PrivateLink Service Name                                       | DNS Record Override                     |
 | ---------------- | -------------------------------------------------------------- | --------------------------------------- |
 | `ap-northeast-1` | `com.amazonaws.vpce.ap-northeast-1.vpce-svc-08f34c33f9fb8a48a` | `aws-ap-northeast-1.region.tmprl.cloud` |
 | `ap-northeast-2` | `com.amazonaws.vpce.ap-northeast-2.vpce-svc-08c4d5445a5aad308` | `aws-ap-northeast-2.region.tmprl.cloud` |
 | `ap-south-1`     | `com.amazonaws.vpce.ap-south-1.vpce-svc-0ad4f8ed56db15662`     | `aws-ap-south-1.region.tmprl.cloud`     |
+| `ap-south-2`     | `com.amazonaws.vpce.ap-south-2.vpce-svc-08bcf602b646c69c1`     | `aws-ap-south-2.region.tmprl.cloud`     |
 | `ap-southeast-1` | `com.amazonaws.vpce.ap-southeast-1.vpce-svc-05c24096fa89b0ccd` | `aws-ap-southeast-1.region.tmprl.cloud` |
 | `ap-southeast-2` | `com.amazonaws.vpce.ap-southeast-2.vpce-svc-0634f9628e3c15b08` | `aws-ap-southeast-2.region.tmprl.cloud` |
 | `ca-central-1`   | `com.amazonaws.vpce.ca-central-1.vpce-svc-080a781925d0b1d9d`   | `aws-ca-central-1.region.tmprl.cloud`   |
@@ -529,13 +535,11 @@ The `sa-east-1` region listed here is not yet available for use with multi-regio
 | `eu-west-2`      | `com.amazonaws.vpce.eu-west-2.vpce-svc-0ac7f9f07e7fb5695`      | `aws-eu-west-2.region.tmprl.cloud`      |
 | `sa-east-1`      | `com.amazonaws.vpce.sa-east-1.vpce-svc-0ca67a102f3ce525a`      | `aws-sa-east-1.region.tmprl.cloud`      |
 | `us-east-1`      | `com.amazonaws.vpce.us-east-1.vpce-svc-0822256b6575ea37f`      | `aws-us-east-1.region.tmprl.cloud`      |
-| `us-east-1`      | `com.amazonaws.vpce.us-east-1.vpce-svc-0b06bbbd81fd41222`      | `aws-us-east-1.region.tmprl.cloud`      |
 | `us-east-2`      | `com.amazonaws.vpce.us-east-2.vpce-svc-01b8dccfc6660d9d4`      | `aws-us-east-2.region.tmprl.cloud`      |
-| `us-west-2`      | `com.amazonaws.vpce.us-west-2.vpce-svc-0473f53028c65d8fb`      | `aws-us-west-2.region.tmprl.cloud`      |
 | `us-west-2`      | `com.amazonaws.vpce.us-west-2.vpce-svc-0f44b3d7302816b94`      | `aws-us-west-2.region.tmprl.cloud`      |
 
 :::tip Learn more about multi-region Namespaces
 
-If you have more questions or feedback about this feature, please reach out to <a href="mailto:product@temporal.io">the product team</a>.
+If you have more questions or feedback about this feature, reach out to <a href="mailto:product@temporal.io">the product team</a>.
 
 :::

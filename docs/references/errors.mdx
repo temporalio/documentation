@@ -110,7 +110,7 @@ Adjust the size of the Payload to fit within the system's size limits.
 
 ## Bad Signal Input Size {#bad-signal-input-size}
 
-This error indicates that the Payload has exceeded the [Signal's](/encyclopedia/application-message-passing#signals) available input size.
+This error indicates that the Payload has exceeded the [Signal's](/encyclopedia/workflow-message-passing#sending-signals) available input size.
 
 Adjust the size of the Payload, and redeploy the [Workflow Task](/workers#workflow-task).
 
@@ -204,7 +204,7 @@ Let the Workflow complete any current Activities before redeploying the code.
 ## Pending Child Workflows Limit Exceeded {#pending-child-workflows-limit-exceeded}
 
 This error indicates that the [Workflow](/workflows) has reached capacity for pending [Child Workflows](/encyclopedia/child-workflows).
-Therefore, the [Workflow Task](/workers#workflow-task)was failed to prevent additional Child Workflows from being added.
+Therefore, the [Workflow Task](/workers#workflow-task) was failed to prevent additional Child Workflows from being added.
 
 Wait for the system to finish any currently running Child Workflows before redeploying this Task.
 
@@ -218,13 +218,13 @@ If you see this error, give the system time to process pending requests before r
 ## Pending Signals Limit Exceeded {#pending-signals-limit-exceeded}
 
 The Workflow has reached capacity for pending Signals.
-Therefore, the [Workflow Task](/workers#workflow-task) was failed after attempting to add more [Signals](/encyclopedia/application-message-passing#signals) to an external Workflow.
+Therefore, the [Workflow Task](/workers#workflow-task) was failed after attempting to add more [Signals](/encyclopedia/workflow-message-passing#sending-signals) to an external Workflow.
 
 Wait for Signals to be processed by the Workflow before retrying the Task.
 
 ## Reset Sticky Task Queue {#reset-sticky-task-queue}
 
-This error indicates that the Sticky [Task Queue](/workers#task-queue)needs to be reset.
+This error indicates that the Sticky [Task Queue](/workers#task-queue) needs to be reset.
 
 If you see this error, reset the Sticky Task Queue.
 The system will retry automatically.
@@ -281,7 +281,7 @@ Try entering a different Timer Id, and retry the [Workflow Task](/workers#workfl
 This error indicates new available [Events](/references/events) since the last [Workflow Task](/workers#workflow-task) started.
 The Workflow Task was failed because the [Workflow](/workflows) attempted to close itself without handling the new Events.
 
-`UnhandledCommand` can happen when the Workflow is receiving a high number of [Signals](/encyclopedia/application-message-passing#signals).
+`UnhandledCommand` can happen when the Workflow is receiving a high number of [Signals](/encyclopedia/workflow-message-passing#sending-signals).
 If the Workflow doesn't have enough time to handle these Signals, a RetryWorkflow Task is scheduled to handle these new Events.
 
 To prevent this error, drain the Signal Channel with the ReceiveAsync function.
