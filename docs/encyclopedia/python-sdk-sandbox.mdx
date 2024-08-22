@@ -156,7 +156,7 @@ my_restrictions = dataclasses.replace(
       "datetime", "date", "today",
     ),
 )
-my_worker = Worker(..., workflow_runner=SandboxeWorkflowRunner(restrictions=my_restrictions))
+my_worker = Worker(..., workflow_runner=SandboxedWorkflowRunner(restrictions=my_restrictions))
 ```
 
 Restrictions can also be added by piping (`|`) together matchers.
@@ -170,7 +170,7 @@ my_restrictions = dataclasses.replace(
       children={"datetime": SandboxMatcher(use={"date"})},
     ),
 )
-my_worker = Worker(..., workflow_runner=SandboxeWorkflowRunner(restrictions=my_restrictions))
+my_worker = Worker(..., workflow_runner=SandboxedWorkflowRunner(restrictions=my_restrictions))
 ```
 
 For more information on the Python sandbox, see the following resources.
