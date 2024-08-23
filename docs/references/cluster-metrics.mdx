@@ -239,3 +239,27 @@ This metric is confirms that Workflows are running as expected without delays or
 Example: To track the success rate of Scheduled Workflow Executions.
 
 `sum(rate(schedule_action_success{namespace="$namespace"}[5m]))`
+
+## Workflow metrics
+
+These metrics pertain to Workflow statistics.
+
+### `workflow_cancel`
+
+Number of Workflows canceled before completing execution.
+
+### `workflow_continued_as_new`
+
+Number of Workflow Executions that were Continued-As-New from a past execution.
+
+### `workflow_failed`
+
+Number of Workflows that failed before completion.
+
+### `workflow_success`
+
+Number of Workflows that successfully completed.
+
+### `workflow_timeout`
+
+Number of Workflows that timed out before completing execution.
