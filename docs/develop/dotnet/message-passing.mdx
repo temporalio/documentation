@@ -420,30 +420,41 @@ public class MyActivities
 [Workflow]
 public class GreetingWorkflow
 {
+    private readonly Mutex mutex = new();
+
     // ...
 
     [WorkflowUpdate]
     public async Task<Language> SetLanguageAsync(Language language)
     {
-        if (!greetings.ContainsKey(language))
+        // 👉 Use a mutex here to ensure that multiple calls to SetLanguageAsync are processed in order.
+        await mutex.WaitOneAsync();
+        try
         {
-            var greeting = Workflow.ExecuteActivityAsync(
-                (MyActivities acts) => acts.CallGreetingServiceAsync(language),
-                new() { StartToCloseTimeout = TimeSpan.FromSeconds(10) });
-            if (greeting == null)
+            if (!greetings.ContainsKey(language))
             {
-                // 👉 An update validator cannot be async, so cannot be used to check that the remote
-                // CallGreetingServiceAsync supports the requested language. Throwing ApplicationFailureException
-                // will fail the Update, but the WorkflowExecutionUpdateAccepted event will still be
-                // added to history.
-                throw new ApplicationFailureException(
-                    $"Greeting service does not support {language}");
+                var greeting = Workflow.ExecuteActivityAsync(
+                    (MyActivities acts) => acts.CallGreetingServiceAsync(language),
+                    new() { StartToCloseTimeout = TimeSpan.FromSeconds(10) });
+                if (greeting == null)
+                {
+                    // 👉 An update validator cannot be async, so cannot be used to check that the remote
+                    // CallGreetingServiceAsync supports the requested language. Throwing ApplicationFailureException
+                    // will fail the Update, but the WorkflowExecutionUpdateAccepted event will still be
+                    // added to history.
+                    throw new ApplicationFailureException(
+                        $"Greeting service does not support {language}");
+                }
+                greetings[language] = greeting;
             }
-            greetings[language] = greeting;
+            var previousLanguage = CurrentLanguage;
+            CurrentLanguage = langauge;
+            return previousLanguage;
         }
-        var previousLanguage = CurrentLanguage;
-        CurrentLanguage = langauge;
-        return previousLanguage;
+        finally
+        {
+            mutex.ReleaseMutex();
+        }
     }
 }
 ```
