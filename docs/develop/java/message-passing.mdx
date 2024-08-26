@@ -106,7 +106,7 @@ A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is an asynchr
 
 ```java
 public class MessagePassingIntro {
-  
+
     public static class ApproveInput {
         private String name;
 
@@ -293,6 +293,7 @@ public String sendGreeting(String name) {
 
     return responseTrigger;
 }
+```
 
 When an External Signal is sent:
 - A [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated) Event appears in the sender's Event History.
@@ -301,8 +302,9 @@ When an External Signal is sent:
 #### Signal-With-Start {#signal-with-start}
 
 Signal-With-Start allows a Client to send a Signal to a Workflow Execution, starting the Execution if it is not already running.
-If there's a Workflow running with the given Workflow Id, it will be signaled. If there isn't, a new Workflow will be started and immediately signaled.
-To use Signal-With-Start, call `signalWithStart` and pass the  name of your Signal with its arguments:
+If there's a Workflow running with the given Workflow Id, it will be signaled.
+If there isn't, a new Workflow will be started and immediately signaled.
+To use Signal-With-Start, call `signalWithStart` and pass the name of your Signal with its arguments:
 
 ```java
 public static void signalWithStart() {
@@ -348,7 +350,7 @@ public interface GreetingWorkflow {
 }
 ```
 
-### Sending an Update {#send-update}
+### Send an Update {#send-update-from-client}
 
 An Update is a synchronous, blocking call that can change Workflow state, control its flow, and return a result.
 
@@ -383,7 +385,7 @@ To send an Update to a Workflow Execution, you can:
       WorkflowStub.fromTyped(workflow)
           .startUpdate(
               "setLanguage", WorkflowUpdateStage.ACCEPTED, Language.class, Language.ENGLISH);
-previousLanguage = handle.getResultAsync().get();
+  previousLanguage = handle.getResultAsync().get();
   ```
 
   For more details, see the "Async handlers" section.
@@ -401,8 +403,7 @@ In real-world development, sometimes you may be unable to import Workflow Defini
 When you don't have access to the Workflow Definition or it isn't written in Python, you can still use non-type safe APIs and dynamic method invocation.
 Pass method names instead of method objects to:
 
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**I can't seem to find an equivalent for this first one. Taking a guess.'**</div>
-- [`Client.newUntypedWorkflowStub`](https://javadoc.io/static/io.temporal/temporal-sdk/1.25.1/io/temporal/client/WorkflowClient.html#newUntypedWorkflowStub(java.lang.String))
+- <div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**I can't seem to find an equivalent for this first one. Guessing.**</div>[`Client.newUntypedWorkflowStub`](https://javadoc.io/static/io.temporal/temporal-sdk/1.25.1/io/temporal/client/WorkflowClient.html#newUntypedWorkflowStub(java.lang.String))
 - [`WorkflowStub.query`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#query(java.lang.String,java.lang.Class,java.lang.Object...))
 - [`WorkflowStub.signal`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#signal(java.lang.String,java.lang.Object...))
 - [`WorkflowStub.update`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#update(java.lang.String,java.lang.Class,java.lang.Object...))
@@ -426,11 +427,12 @@ For additional information, see [Inject work into the main Workflow](/encycloped
 
 :::
 
-### Add async handlers to use `await` {#async-handlers}
+### Add async handlers to use `Workflow.await` {#async-handlers}
 
 Signal and Update handlers can be asynchronous as well as blocking.
 Using asynchronous calls allows you to [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)) Activities, Child Workflows, [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) Timers, wait conditions, etc.
 This expands the possibilities for what can be done by a handler but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at await calls.
+
 It's essential to understand the things that could go wrong in order to use asynchronous handlers safely.
 See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of async Signal and Update handlers, the [Safe message handlers](https://github.com/temporalio/samples-python/tree/main/updates_and_signals/safe_message_handlers) sample, and the [Controlling handler concurrency](#control-handler-concurrency) and [Waiting for message handlers to finish](#wait-for-message-handlers) sections below.
 
@@ -463,13 +465,13 @@ public static class GreetingWorkflowImpl implements GreetingWorkflow {
 ```
 
 After updating the code for asynchronous calls, your Update handler can schedule an Activity and await the result.
-Although an asynch Signal handler can initiate similar network tasks, using an Update handler allows the client to receive a result or error once the Activity completes.
+Although an async Signal handler can initiate similar network tasks, using an Update handler allows the client to receive a result or error once the Activity completes.
 This lets your client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, etc.
 
 ### Add wait conditions to block {#block-with-wait}
 
 Sometimes, async Signal or Update handlers need to meet certain conditions before they should continue.
-You can use a wait condition with [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)) to set a function that prevents the code from proceeding until the condition returns `true`.
+Using a wait condition with [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)) sets a function that prevents the code from proceeding until the condition returns `true`.
 This is an important feature that helps you control your handler logic.
 
 Here are two important use cases for `Workflow.await`:
@@ -554,7 +556,7 @@ public class DataWorkflowImpl implements DataWorkflow {
 }
 ```
 
-Coordinating access using `WorkflowLock` corrects this code.
+Coordinating access with `WorkflowLock` corrects this code.
 Locking makes sure that only one handler instance can execute a specific section of code at any given time:
 
 ```java
@@ -564,7 +566,7 @@ public class DataWorkflowImpl implements DataWorkflow {
     @Override
     public void sageSignalHandler() {
         try {
-            lock.lock();    
+            lock.lock();
             Data data = activity.fetchData();
             this.x = data.x;
             // 🐛🐛 Bug!! If multiple instances of this method are executing concurrently, then
@@ -610,11 +612,11 @@ When working with Updates, you may encounter these errors:
 - **Update failed**: You'll receive a `WorkflowUpdateException` exception.
   There are two ways this can happen:
 
-    - The Update was [rejected](#handle-update) by an Update validator defined in the Workflow alongside the Update handler.
+    - The Update was rejected by an Update validator defined in the Workflow alongside the Update handler.
 
     - The Update failed after having been accepted.
 
-    Update failures are like [Workflow failures](/references/failures#errors-in-workflows).
+    Update failures are like [Workflow failures](/references/failures).
     Issues that cause a Workflow failure in the main method also cause Update failures in the Update handler.
     These might include:
 
@@ -624,7 +626,7 @@ When working with Updates, you may encounter these errors:
       - Any error listed in [failWorkflowExceptionTypes](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkflowImplementationOptions.html#getFailWorkflowExceptionTypes()) (empty by default)
 
 - **The handler caused the Workflow Task to fail**:
-  A [Workflow Task Failure](/references/failures#errors-in-workflows) causes the server to retry Workflow Tasks indefinitely. What happens to your Update request depends on its stage:
+  A [Workflow Task Failure](/references/failures) causes the server to retry Workflow Tasks indefinitely. What happens to your Update request depends on its stage:
     - If the request hasn't been accepted by the server, you receive a `FAILED_PRECONDITION` [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) exception.
     - If the request has been accepted, it is durable.
       Once the Workflow is healthy again after a code deploy, use an `UpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/UpdateHandle.html) to fetch the Update result.
@@ -643,7 +645,7 @@ When working with Updates, you may encounter these errors:
 When working with Queries, you may encounter these errors:
 
 - **There is no Workflow Worker polling the Task Queue**:
-  You'll receive a [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) on which the `cause` is a [`StatusRuntimeException`](https://grpc.github.io/grpc-java/javadoc/io/grpc/StatusRuntimeException.html) with `status` of  `FAILED_PRECONDITION`.
+  You'll receive a [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) on which the `cause` is a [`StatusRuntimeException`](https://grpc.github.io/grpc-java/javadoc/io/grpc/StatusRuntimeException.html) with a `status` of  `FAILED_PRECONDITION`.
 
 - **Query failed**:
   You'll receive a [`WorkflowQueryException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowQueryException.html) exception if something goes wrong during a Query.
@@ -690,31 +692,7 @@ After failing to find a handler with a matching name and type, the Worker checks
 If found, the Worker uses that instead.
 
 You must opt handlers into dynamic access.
-Add `dynamic=True` to the handler annotation (for example, `@workflow.signal(dynamic=True)`) to make a handler dynamic.
-The handler's signature must accept `(self, name: str, args: Sequence[RawValue])`.
-Use a [payload_converter](https://python.temporal.io/temporalio.workflow.html#payload_converter) function to convert `RawValue` objects to your required type.
-For example:
-
-```python
-from typing import Sequence
-
-from temporalio.common import RawValue
-...
-
-    @workflow.signal(dynamic=True)
-    async def dynamic_signal(self, name: str, args: Sequence[RawValue]) -> None:
-        ...
-```
-
-This sample creates a `dynamic_signal` Signal.
-When an unregistered or unrecognized Signal arrives with a matching signature, dynamic assignment uses this handler to manage the Signal.
-It is responsible for transforming the sequence contents into usable data in a form that the method's logic can process and act on.
-
-:::caution ORIGINAL JAVA
-
-You can also implement Signal handlers dynamically. This is useful for library-level code and implementation of DSLs.
-
-Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
+Register a listener: for `DynamicSignalHandler` with `Workflow.registerListener(Object)`:
 
 ```java
 Workflow.registerListener(
@@ -722,10 +700,21 @@ Workflow.registerListener(
       (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
+The handler's signature must accept encoded arguments.
+Use a [payload_converter](https://python.temporal.io/temporalio.workflow.html#payload_converter) function to convert `RawValue` objects to your required type.
+For example:
+
+```java
+Add Example to demonstrate like Python does.
+```
+
+This sample creates a `DynamicSignal` Signal.
+When an unregistered or unrecognized Signal arrives with a matching signature, dynamic assignment uses this handler to manage the Signal.
+It is responsible for transforming the sequence contents into usable data in a form that the method's logic can process and act on.
+
 When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
 Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
 `DynamicSignalHandler` can be implemented in both regular and dynamic Workflow implementations.
-:::
 
 ### Set a dynamic Workflow {#set-a-dynamic-workflow}
 
@@ -738,7 +727,7 @@ After failing to find a Workflow Definition with a matching type, the Worker loo
 If found, it invokes that instead.
 
 To participate, your Workflow must opt into dynamic access.
-Adding `implements DynamicWorkflow` to the main Workflow method makes the Workflow Definition eligible to participate in dynamic invocation.
+Adding `implements DynamicWorkflow` to the Workflow class declaration makes the Workflow Definition eligible to participate in dynamic invocation.
 You must register the Workflow with the [Worker](https://python.temporal.io/temporalio.worker.html) before it can be invoked.
 
 ```java
@@ -759,6 +748,7 @@ For example:
 <div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Needs Java and an appropriate example with a payload converter.**</div>
 
 ```java
+ADD SAMPLE HERE LIKE PYTHON
 ```
 
 This Workflow converts the first element to a string, and uses that to execute an Activity.
@@ -769,159 +759,8 @@ A dynamic Activity is a stand-in implementation.
 It's used when an Activity Task with an unknown Activity type is received by the Worker.
 
 To participate, your Activity must opt into dynamic access.
-Adding `dynamic=True` to the `@activity.defn` decorator makes the Workflow Definition eligible to participate in dynamic invocation.
-You must register the Activity with the [Worker](https://python.temporal.io/temporalio.worker.html) before it can be invoked.
-
-The Activity Definition must then accept a single argument of type `Sequence[temporalio.common.RawValue]`.
-Use a  [payload_converter](https://python.temporal.io/temporalio.activity.html#payload_converter) function to convert `RawValue` objects to your required types.
-For example:
-
-<div style={{backgroundColor: '#e0e0e0',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/dynamic_handlers/your_dynamic_activity_dacx.py"><tt>See full sample</tt></a></div>
-
-```python
-# ...
-@activity.defn(dynamic=True)
-async def dynamic_greeting(args: Sequence[RawValue]) -> str:
-    arg1 = activity.payload_converter().from_payload(args[0].payload, YourDataClass)
-    return (
-        f"{arg1.greeting}, {arg1.name}!\nActivity Type: {activity.info().activity_type}"
-    )
-# ...
-@workflow.defn
-class GreetingWorkflow:
-    @workflow.run
-    async def run(self, name: str) -> str:
-        return await workflow.execute_activity(
-            "unregistered_activity",
-            YourDataClass("Hello", name),
-            start_to_close_timeout=timedelta(seconds=10),
-        )
-```
-
-This example invokes an unregistered Activity by name.
-The Worker resolves it using the registered dynamic Activity instead.
-When possible, prefer to use compiler-checked type-safe arguments rather than Activity name strings.
-
-
-## Troubleshooting
-
-See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–Java-specific introduction to this topic.
-
-As a client, when you send a Signal, Update, or Query to a Workflow, the following two errors are always possible:
-
-1. **The client can't contact the server**
-
-    You'll get an [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) on which the `cause` is a [`StatusRuntimeException`](https://grpc.github.io/grpc-java/javadoc/io/grpc/StatusRuntimeException.html) with `status` of `UNAVAILABLE` (after some retries).
-
-1. **The workflow does not exist**
-
-    You'll get an [`WorkflowNotFoundException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowNotFoundException.html).
-
-### Problems when sending a Signal {#signal-problems}
-
-For Signal, these `WorkflowException`s are the only types of exception that will result from the request.
-
-The situation is different for Query and Update since for these the client waits for a response from the Worker, and so the Client may get an exception indicating that something went wrong while the handler was being executed by the Workflow Worker.
-
-### Problems when sending an Update {#update-problems}
-
-1. **There is no Workflow Worker polling the Task Queue**
-
-    Your request will be retried by the SDK Client indefinitely.
-
-1. **Update failed.**
-
-    You'll get [`WorkflowUpdateException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowUpdateException.html). There are two ways this can happen:
-
-    1. The Update was [rejected](#handle-update) by an Update validator (defined in the Workflow alongside the Update handler).
-
-    1. The Update failed after having been accepted.
-        Update failure is analogous to [Workflow failure](/references/failures#errors-in-workflows) in the sense that all the things that cause Workflow failure when they happen in the main Workflow method, cause Update failure when they happen in an Update handler.
-        Examples of things that cause Update/Workflow failure in this way include:
-        - A failed Child Workflow
-        - A failed Activity (if the activity retries have been set to a finite number)
-        - The Workflow author threw an `ApplicationFailure`
-        - Any error listed in [failWorkflowExceptionTypes](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkflowImplementationOptions.html#getFailWorkflowExceptionTypes()) (empty by default)
-
-    1. **The handler caused the Workflow Task to fail.**
-
-        As always with a [Workflow Task Failure](/references/failures#errors-in-workflows), the server starts to retry the Workflow Task indefinitely.
-        What happens to your Update request depends on the stage that it has got to.
-        If it had not yet been accepted by the server then you'll get a `FAILED_PRECONDITION` [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html).
-        On the other hand, if it had been [accepted](#send-update) by the server, then it is durable, and as soon as the Workflow becomes healthy again (perhaps as a result of a code deploy) then you can use an [`UpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/UpdateHandle.html) to fetch the update result.
-
-
-    1. **Workflow finished while the Update handler execution was in progress**
-
-        You'll get a [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) "workflow execution already completed"`
-
-        This will happen if the Workflow finished while the Update handler execution was in progress, for example because
-        - The Workflow was canceled or failed.
-        - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
-
-### Problems when sending a Query {#query-problems}
-
-1. **There is no Workflow Worker polling the Task Queue**
-
-    You'll get an [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) on which the `cause` is a [`StatusRuntimeException`](https://grpc.github.io/grpc-java/javadoc/io/grpc/StatusRuntimeException.html) with `status` of `FAILED_PRECONDITION`.
-
-1. **Query failed.**
-
-    You'll get [`WorkflowQueryException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowQueryException.html).
-    Any exception in a Query handler will cause this.
-    Note that this differs from Signal and Update, for which exceptions can cause Workflow Task Failure.
-
-1. **The handler caused the Workflow Task to fail.**
-
-    This would happen, for example, if the Query handler blocks the thread for too long without yielding.
-
-
-## Dynamic components {#dynamic-handler}
-
-**What is a Dynamic Handler in Temporal Java SDK?**
-
-Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
-These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
-
-Dynamic Handlers provide flexibility to handle cases where the names of Workflows, Activities, Signals, or Queries aren't known at runtime.
-
-:::caution
-
-Dynamic Handlers should be used judiciously as a fallback mechanism rather than the primary approach.
-Overusing them can lead to maintainability and debugging issues down the line.
-
-Instead, Workflows, Activities, Signals, and Queries should be defined statically whenever possible, with clear names that indicate their purpose.
-Use static definitions as the primary way of structuring your Workflows.
-
-Reserve Dynamic Handlers for cases where the handler names are not known at compile time and need to be looked up dynamically at runtime.
-They are meant to handle edge cases and act as a catch-all, not as the main way of invoking logic.
-
-:::
-
-### Set a dynamic Workflow {#set-a-dynamic-workflow}
-
-Use [`DynamicWorkflow`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html) to implement Workflow Types dynamically.
-Register a Workflow implementation type that extends `DynamicWorkflow` to implement any Workflow Type that is not explicitly registered with the Worker.
-
-The dynamic Workflow interface is implemented with the `execute` method. This method takes in `EncodedValues` that are inputs to the Workflow Execution.
-These inputs can be specified by the Client when invoking the Workflow Execution.
-
-```java
-public class MyDynamicWorkflow implements DynamicWorkflow {
-    @Override
-    public Object execute(EncodedValues args) {
-    }
-}
-```
-
-### Set a dynamic Activity {#set-a-dynamic-activity}
-
-To handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
-
-Use `DynamicActivity` to implement any number of Activity types dynamically.
-When an Activity implementation that extends `DynamicActivity` is registered, it is called for any Activity type invocation that doesn't have an explicitly registered handler.
-
-The dynamic Activity interface is implemented with the `execute` method, as shown in the following example.
+Adding `implements DynamicActivity` to the type declaration makes the Activity Definition eligible to participate in dynamic invocation.
+You must register the Activity with the Worker before it can be invoked.
 
 ```java
 // Dynamic Activity implementation
@@ -940,52 +779,14 @@ public static class DynamicGreetingActivityImpl implements DynamicActivity {
 }
 ```
 
-Use `Activity.getExecutionContext()` to get information about the Activity type that should be implemented dynamically.
-
-### How to set a Dynamic Signal {#set-a-dynamic-signal}
-
-You can also implement Signal handlers dynamically. This is useful for library-level code and implementation of DSLs.
-
-Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
+The Activity Definition must then accept a single argument of `EncodedValues` type.
+Use a  payload_converter function to convert `RawValue` objects to your required types.
+For example:
 
 ```java
-Workflow.registerListener(
-  (DynamicSignalHandler)
-      (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+ADD SAMPLE HERE
 ```
 
-When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
-Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
-`DynamicSignalHandler` can be implemented in both regular and dynamic Workflow implementations.
-
-### How to set a Dynamic Query {#set-a-dynamic-query}
-
-You can also implement Query handlers dynamically. This is useful for library-level code and implementation of DSLs.
-
-Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicQueryListener` in the Workflow implementation code.
-
-```java
-Workflow.registerListener(
-  (DynamicQueryHandler)
-      (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
-```
-
-When registered, any Queries sent to the Workflow without a defined handler will be delivered to the `DynamicQueryHandler`.
-Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
-`DynamicQueryHandler` can be implemented in both regular and dynamic Workflow implementations.
-
-
-### Set a dynamic Signal, Query, or Update handler {#set-a-dynamic-signal}
-
-You can also implement Update handlers dynamically.
-This is useful for library-level code and implementation of DSLs.
-
-```java
-Workflow.registerListener(
-  (DynamicUpdateHandler)
-      (updateName, encodedArgs) -> encodedArgs.get(0, String.class));
-```
-
-When registered, any Updates sent to the Workflow without a defined handler will be delivered to the `DynamicUpdateHandler`.
-You can only register one `Workflow.registerListener(Object)` per Workflow Execution.
-`DynamicUpdateHandler` can be implemented in both regular and dynamic Workflow implementations.
+This example invokes an unregistered Activity by name.
+The Worker resolves it using the registered dynamic Activity instead.
+When possible, prefer to use compiler-checked type-safe arguments rather than Activity name strings.
