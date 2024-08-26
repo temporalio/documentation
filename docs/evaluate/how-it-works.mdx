@@ -80,37 +80,74 @@ The Temporal SDK is an open source library that developers install in their appl
 It provides everything needed and the framework to build Workflows, Activities, and various other features in a specific programming language.
 
 Temporal currently offers six SDKs: Java, Go, TypeScript, .NET, Python, and PHP. Installing the SDK makes it possible to use Temporal in that language. 
-This allows you to easily add Temporal to their current projects without having to change the tools you're already using, fitting right into the way you already work.
+This allows you to easily add Temporal to your current projects without having to change the tools you're already using, fitting right into the way you already work. 
+Temporal fits right into your existing tech stack without any hassle.
 
-### Temporal Service: The Engine Behind the Scenes
+The Temporal SDK makes it easier to implement complex features such as handling tasks either in order or at the same time (sync/async execution), managing retries, scheduling tasks to run regularly (schedules), managing complex workflows (SAGA compensation), handling events, canceling tasks when needed, and managing errors (advanced error handling).
+
+### Temporal Service
 
 Temporal has two main parts:
 1. Your application (with Workflows and Activities)
-2. The Temporal Service
+2. The Temporal Service 
 
-Temporal consists of two components, the [Temporal Service](/evaluate/major-components#temporal-service) and an SDK in your preferred language such as Go, .NET, Java, Python, PHP, or Typescript.
-The Temporal Service logs the progress and state of your application.
-Once the application finishes executing the Activity, it communicates with the Temporal Service, which records the Activity's completion in the Workflow's Event History.
-The Activity invocation is handled by the Temporal Service.
-The Temporal Service updates the Event History and creates a Task for executing the Activity.
+At the heart of this architecture is the Temporal Service. 
+The Temporal Service is like the central command center for your application. 
+It’s responsible for keeping everything on track, even when things go wrong. 
 
-The Temporal Service records every event in the Workflow’s lifecycle, so that the Workflow can continue from the last successful state in the case of a failure
-The Temporal Service schedules the Activity and creates a Task, which is picked up and executed by a Worker.
+**Here's a high-level overview of how it works:**
 
+**1. It monitors your Workflows.**
+Temporal Service maintains a meticulous log of every step in your workflows. 
+This comprehensive  history is invaluable for troubleshooting, allowing you to see exactly what happened if something goes wrong.
+
+**2. It manages the critical tasks.**
+At the heart of your Workflow are Activities - critical tasks like API calls or database updates. The Temporal Service takes charge of these Activities, scheduling them, ensuring their execution, and recording their completion. 
+
+Activities are the core tasks your Workflow performs, like making an API call or updating a database. 
+The Temporal Service handles these Activities by making sure they get executed, and then recording their completion. 
+If something fails, the service automatically retries or continues the task. 
+
+Whenever your application needs to perform a task, like sending a notification or calling an external service, the Temporal Service steps in. 
+This process creates a clear, organized list of what needs to be done, which Workers (components of your application) then execute.
+Workers, which are part of your application, pick up these tasks and carry them out.
+
+**3. It has built-in resilience.**
+One of the biggest advantages of the Temporal Service is how it handles failures. 
+If your Workflow encounters a problem - be it a crash, timeout, or any other hiccup - the Temporal Service knows exactly where to resume. 
+By keeping a history of every step in your Workflow, it ensures that even if something goes wrong—whether it’s a crash or a network issue—your Workflow can continue from the last successful point. 
+It automatically saves progress so that when things are back up, your process can continue from where it left off, without losing any work.
+This saves you from having to write complex error-handling code or recovery mechanisms yourself. 
+
+**4. It works with Workers.**
 A Temporal Application gains its durability, scalability, and reliability from the support provided by the Temporal Service. 
 However, the Temporal Service doesn't actually run the Workflow and Activity functions. 
-A Worker, which is part of the application and is provided by the Temporal SDK, is responsible for running that code. 
+A Worker, components within your application and provided by the Temporal SDK, is responsible for running that code. 
+
+It hands off tasks to these Workers, making sure they’re done correctly and efficiently while it keeps track of their progress. 
+Workers are the ones that actually do the work, like running the code that sends an email or processes a payment.
+This setup enhances your application's scalability and responsiveness, even as workloads increase.
+
+**5. It grows alongside your application.**
+The Temporal Service is designed to grow alongside your application.  
+Whether you’re managing a handful of tasks or orchestrating hundreds of complex Workflows, it scales seamlessly, ensuring consistent performance. 
+This means you can focus on building business logic, not on managing infrastructure.
+Whether you’re just starting with a few tasks or managing a large, complex operation, the Temporal Service can handle it. 
+It scales up easily, making sure everything runs smoothly, no matter how big your application gets. 
+From small startups to large enterprises, the Temporal Service adapts to your needs. 
+It ensures smooth operations regardless of your application's size or complexity, providing a solid foundation for growth.
+
+**6. It gives you flexible deployment.**
+You have the flexibility to run the Temporal Service on your own infrastructure or use Temporal Cloud, a managed service. 
+Temporal Cloud handles the operational overhead, offering a scalable, highly available service with expert support. 
+This flexibility allows you to choose the option that best fits your needs and resources.
+
+The real strength of Temporal comes from the combination of your application and the Temporal Service. 
+While the service handles tracking and scheduling, Workers (set up using the Temporal SDK) perform the actual tasks. 
+This collaboration is crucial for building reliable, scalable, and durable applications.
 It's typical to run multiple Workers, since doing so can improve the application's performance and scalability. 
 In a production environment, the Workers and Temporal Service are usually deployed on different machines.
 
-Temporal Cloud
-You can either run this service yourself or use Temporal Cloud, where experts take care of it for you.
-Temporal Cloud is a managed service that provides a scalable and highly available Temporal Service.
-There are two options for using Temporal Service: You can run it yourself or you can use our Temporal Cloud service. 
-Temporal Cloud relieves customers from the operational burden of self-hosting. In addition to reliability and peace of mind, they can depend on the support provided by our Developer Success team. 
-They'll also benefit from the high performance made possible by CDS, the custom persistence layer we built specifically for Temporal Cloud.
-
-The Worker runs the Workflow and Activity code. The Worker is the component that runs both the Workflow and Activity code.
 
 ### Recovering from Failure
 
