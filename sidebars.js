@@ -75,7 +75,19 @@ module.exports = {
           },
           items: [
             "evaluate/temporal-cloud/overview",
-            "evaluate/temporal-cloud/security",
+            {
+              type: "category",
+              label: "Security",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "evaluate/temporal-cloud/security",
+              },
+              items: [
+                "evaluate/temporal-cloud/aws-privatelink",
+                "evaluate/temporal-cloud/aws-private-service-connect",
+              ],
+            },
             "evaluate/temporal-cloud/service-availability",
             "evaluate/temporal-cloud/limits",
             "evaluate/temporal-cloud/sla",
