@@ -35,79 +35,58 @@ It means your application can pick up right where it left off, even if a compute
 
 ### Temporal Application: The Building Blocks
 
-Temporal uses two main concepts:
+Temporal uses two main concepts. In a Temporal application, the code you write is made up of Workflows and Activities. 
 
-**Workflows:** They outline the steps your app needs to take to complete a task. 
+#### Workflow
 
-These are at the heart of Temporal. These are like the blueprints for your app. 
-A Workflow is a definition of your business logic, expressed as code. 
-It describes the steps and decision points in your process, whether that's processing an order, managing a multi-day computation, or coordinating a complex series of events.
-Workflows are resilient and can be paused, resumed, or retried automatically, ensuring that your business processes are fault-tolerant.
+Conceptually, a workflow is a sequence of steps. 
+You've likely encountered workflows in your daily life, whether it's:
+- Using a mobile app to transfer money
+- Purchasing concert tickets
+- Booking a vacation
+- Ordering a meal delivery
+- Filing an expense report
+- Creating a new employee onboarding process
 
-Workflows are stateful and resilient to failure
-• Executions automatically recover from a crash and resume as if it never happened
-• Application developers can code as if such failures weren’t even possible
+In Temporal, a Workflow defines the steps your application takes to complete a task, much like a blueprint for your application. 
+It’s the heart of your business logic, written in code, outlining each step in your process. 
+This could be moving money between bank accounts, processing orders, deploying cloud infrastructure, or training an AI model. 
 
-Conceptually, a workflow is a sequence of steps
-• You probably have experience with workflows from everyday life
-• Using a mobile app to transfer money
-• Buying concert tickets
-• Booking a vacation
-• Ordering a pizza
-• Filing an expense report
-
-Reliability is Harder than It Seems. Correctness requires exactly-once execution. 
-
-**Activities:** These are the individual jobs within your Workflow. 
-
-They're the parts that might run into trouble, like sending an email or making a network request.
-They represent tasks that interact with the outside world, like making an API call, writing to a database, or sending an email.
-Activities represent code (either a functions or method) that handle tasks prone to errors or failure, such as network requests, calling a service, sending an email, or generating random numbers.
-Activities are invoked in Workflow code and the Temporal Service coordinates with the application to execute them.
+Temporal isn’t a no-code workflow engine. 
+It is **workflow-as-code**. 
+Instead of dragging and dropping steps in a visual interface, you write your workflows in code in your favorite programming language. 
+This gives you full control and flexibility over your business processes, allowing you to build exactly what you need.
 
 
-A Temporal Application is the code you write, composed of Workflow and Activities. 
-A Temporal Workflow defines your overall business logic. 
-That business logic might involve moving money between bank accounts, processing orders, deploying cloud infrastructure, or training an AI model.
-The Worker runs the Workflow and Activity code.
+Workflows are resilient and stateful. 
+With Temporal, they are built to handle problems smoothly. 
+They can pause, pick up where they left off, or try again automatically. 
+If a failure or a crash happens, this ensures that your business processes keep running without interruptions.
+
+#### Activities
+Activities are the individual tasks within your Workflow.
+
+They handle jobs that interact with the outside world, like sending an email, making a network request, writing to a database, or calling an API. 
+These tasks are where issues might occur, such as network failures or service errors. 
+Activities are pieces of code, either functions or methods depending on the programming language, that perform these tasks. 
+Activities are invoked in Workflow code. 
 
 
 ### SDKs
-Developers create Temporal applications by writing code, just as they would to create any other application.
-The SDK, short for software development kit, is used to create a Temporal application - it provides the framework to build software using Temporal. 
-More specifically, the Temporal SDK is a library that you install to add to their application. 
-It provides support for using Temporal in a specific programming language, enabling them to create Workflows, Activities, and use various features of the Temporal software.
+Developers create Temporal applications by writing code, just like they would to create any other software. 
+To do this, they use the Temporal SDK, which stands for software development kit. 
 
-A Temporal Workflow is defined in a standard programming language
-• A Temporal SDK provides support for using Temporal in that programming language
-• It’s a library that you include in your application
-• It’s installed in a way that’s idiomatic for that languages (e.g., go get, npm, mvn, pip, etc.)
-• Temporal currently offers six SDKs, which is a competitive advantage
+The Temporal SDK is an open source library that developers install in their application to use Temporal. 
+It provides everything needed and the framework to build Workflows, Activities, and various other features in a specific programming language.
 
-### With Temporal 
-**Effortless Reliability:** You don't have to write tons of extra code to handle every possible thing that could go wrong. 
-Temporal handles failures and retries for you, so you don't have to write complex error-handling code.
+Temporal currently offers six SDKs: Java, Go, TypeScript, .NET, Python, and PHP. Installing the SDK makes it possible to use Temporal in that language. 
+This allows you to easily add Temporal to their current projects without having to change the tools you're already using, fitting right into the way you already work.
 
-**Handles Long-Running Processes:** Your app can keep running for days, weeks, or even years, even if computers restart or networks fail.
-Your application can keep running for days, weeks, or even years without problems.
-You can write code that runs for days or weeks as easily as code that runs for seconds.
+### Temporal Service: The Engine Behind the Scenes
 
-**Works with Many Languages:** Temporal supports several programming languages, so more developers can use it.
-In addition to using their favorite programming language with Temporal, our "Workflows-as-Code" approach to creating applications means that developers can use their favorite code editor and other tools.
-Temporal supports several programming languages, including Java, Python, C#, Typescript, and Go.
-
-**Powerful Monitoring:** Temporal provides tools to watch how your application is doing and fix issues quickly.
-
-**Simplified State Management:** Temporal automatically saves and restores your app's state, so you don't have to juggle that yourself.
-
-
-### Temporal Service
-
-Temporal Service: The Engine Behind the Scenes
 Temporal has two main parts:
 1. Your application (with Workflows and Activities)
 2. The Temporal Service
-You can either run this service yourself or use Temporal Cloud, where experts take care of it for you.
 
 Temporal consists of two components, the [Temporal Service](/evaluate/major-components#temporal-service) and an SDK in your preferred language such as Go, .NET, Java, Python, PHP, or Typescript.
 The Temporal Service logs the progress and state of your application.
@@ -125,16 +104,25 @@ It's typical to run multiple Workers, since doing so can improve the application
 In a production environment, the Workers and Temporal Service are usually deployed on different machines.
 
 Temporal Cloud
+You can either run this service yourself or use Temporal Cloud, where experts take care of it for you.
+Temporal Cloud is a managed service that provides a scalable and highly available Temporal Service.
 There are two options for using Temporal Service: You can run it yourself or you can use our Temporal Cloud service. 
 Temporal Cloud relieves customers from the operational burden of self-hosting. In addition to reliability and peace of mind, they can depend on the support provided by our Developer Success team. 
 They'll also benefit from the high performance made possible by CDS, the custom persistence layer we built specifically for Temporal Cloud.
 
+The Worker runs the Workflow and Activity code. The Worker is the component that runs both the Workflow and Activity code.
 
 ### Recovering from Failure
 
 **Retries and timeouts**
 
-Distributed systems are complex—requests can fail, systems can crash, and services may get overloaded. Temporal’s most valuable feature is how it simplifies error handling, including retries and timeouts.
+Distributed systems are complex—requests can fail, systems can crash, and services may get overloaded. 
+Temporal’s most valuable feature is how it simplifies error handling, including retries and timeouts.
+
+If an Activity fails—for any reason—Temporal will automatically retry that Activity for you. 
+You can configure exactly how Temporal should perform retries – how often and how many times. 
+Temporal also provides options for when Activities should time out and then be retried. 
+Each Activity can be configured independently, giving you maximum control without requiring custom code.
 
 **Application State**
 
@@ -155,6 +143,23 @@ The Temporal Service does not execute your code!
 Your application code, including Workers, Workflows, and Activities, lives on your computers. 
 The code is written in your favorite SDK language. 
 None of that code runs on the Temporal Service.
+
+### With Temporal 
+**Effortless Reliability:** You don't have to write tons of extra code to handle every possible thing that could go wrong. 
+Temporal handles failures and retries for you, so you don't have to write complex error-handling code.
+
+**Handles Long-Running Processes:** Your app can keep running for days, weeks, or even years, even if computers restart or networks fail.
+Your application can keep running for days, weeks, or even years without problems.
+You can write code that runs for days or weeks as easily as code that runs for seconds.
+
+**Works with Many Languages:** Temporal supports several programming languages, so more developers can use it.
+In addition to using their favorite programming language with Temporal, our "Workflows-as-Code" approach to creating applications means that developers can use their favorite code editor and other tools.
+Temporal supports several programming languages, including Java, Python, C#, Typescript, and Go.
+
+**Powerful Monitoring:** Temporal provides tools to watch how your application is doing and fix issues quickly.
+
+**Simplified State Management:** Temporal automatically saves and restores your app's state, so you don't have to juggle that yourself.
+
 
 ## Developer Productivity and Overview
 Temporal provides durable execution for your code
