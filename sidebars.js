@@ -85,7 +85,7 @@ module.exports = {
               },
               items: [
                 "evaluate/temporal-cloud/aws-privatelink",
-                "evaluate/temporal-cloud/aws-private-service-connect",
+                "evaluate/temporal-cloud/gcp-private-service-connect",
               ],
             },
             "evaluate/temporal-cloud/service-availability",
