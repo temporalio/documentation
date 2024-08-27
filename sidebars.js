@@ -80,7 +80,6 @@ module.exports = {
             "evaluate/temporal-cloud/limits",
             "evaluate/temporal-cloud/sla",
             "evaluate/temporal-cloud/pricing",
-            "evaluate/temporal-cloud/billing-and-cost",
             "evaluate/temporal-cloud/support",
           ],
         },
@@ -301,6 +300,7 @@ module.exports = {
                 "production-deployment/cloud/account-setup/users",
               ],
             },
+            "production-deployment/cloud/billing-and-cost",
             "production-deployment/cloud/service-accounts",
             "production-deployment/cloud/api-keys",
             {
