@@ -41,9 +41,10 @@ The code that follows is part of a working message passing <div style={{backgrou
 
 Follow these guidelines when writing your message handlers:
 
-- Message handlers are defined as methods on the Workflow class, using one of the three decorators: [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query), [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal), and [`@workflow.update`](https://python.temporal.io/temporalio.workflow.html#update).
+<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Check these links.**</div>
+- Message handlers are defined as methods on the Workflow class, using one of the three annotations: [`@QueryMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/QueryMethod.html), [`@SignalMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/SignalMethod.html), and [`@UpdateMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/UpdateMethod.html).
 - The parameters and return values of handlers and the main Workflow function must be [serializable](/dataconversion).
-- Prefer [data classes](https://docs.python.org/3/library/dataclasses.html) to multiple input parameters.
+- Prefer data classes to multiple input parameters.
   Data class parameters allow you to add fields without changing the calling signature.
 
 ### Query handlers {#queries}
@@ -95,8 +96,8 @@ public class MessagePassingIntro {
 }
 ```
 
-- The Query decorator can accept arguments.
-  Refer to the API docs: [`@QueryMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/QueryMethod.html).
+- The Query annotation can accept arguments. <div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Example, like... and show?**</div>
+  Refer to the API docs for details: [`@QueryMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/QueryMethod.html).
 - A Query handler must not modify workflow state.
 - You can't perform async blocking operations such as executing an Activity in a Query handler.
 
