@@ -116,7 +116,7 @@ You can run multiple Workers — often dozens, hundreds, or even thousands — t
 ![Describing a Temporal Application and Temporal Service and Workers - How It Works](/img/how-it-works/htw_application_service_workers.png)
 
 :::info 
-For a deep dive into how Temporal Service works, visit the [Temporal Encyclopedia page](/encyclopedia/clusters).
+For a deep dive into how Temporal Service works, visit the [Temporal Encyclopedia page](/clusters).
 :::
 
 
@@ -132,7 +132,7 @@ This process is time-consuming and error-prone, making it hard to ensure reliabi
 
 With Temporal, if your Workflow crashes, it automatically recreates its pre-crash state and continues as if the failure never happened. 
 If a Temporal Application terminates prematurely, a Worker automatically reconstructs the state using data from the Event History. 
-Event History is a detailed log that records every significant action or decision made by the Workflow. 
+The Event History is a detailed log that records every significant action or decision made by the Workflow. 
 Temporal automatically saves and restores your application's state, so you don't have to juggle that yourself.
 This means your application can keep running for days, weeks, or even years, even if the underlying infrastructure fails.
 
@@ -159,5 +159,5 @@ Or jump straight into the SDK docs for your preferred language:
 - [TypeScript SDK](/develop/typescript)
 - [.NET SDK](/develop/dotnet)
 
-For a deep dive into how Temporal works, visit the [Temporal Encyclopedia page](/encyclopedia/temporal).
+For a deep dive into how Temporal works, visit the [Temporal Encyclopedia page](/temporal).
 :::
