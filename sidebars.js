@@ -80,6 +80,7 @@ module.exports = {
             "evaluate/temporal-cloud/limits",
             "evaluate/temporal-cloud/sla",
             "evaluate/temporal-cloud/pricing",
+            "evaluate/temporal-cloud/billing-and-cost",
             "evaluate/temporal-cloud/support",
           ],
         },
