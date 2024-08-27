@@ -526,9 +526,7 @@ String myUpdate(String updateName);
 Workflows listen for Updates by the update's name.
 
 Use the `@UpdateMethod` annotation to handle Updates in the Workflow interface.
-The handler method can accept multiple serial
-
-izable input parameters, but it's recommended to use only a single parameter.
+The handler method can accept multiple serializable input parameters, but it's recommended to use only a single parameter.
 The function can return a serializable value or `void`.
 If any exception is thrown while handling an update, that exception may fail the Workflow task or the update depending on the type of the exception and `WorkflowImplementationOptions.setFailWorkflowExceptionTypes`.
 
