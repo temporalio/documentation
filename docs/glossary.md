@@ -101,6 +101,12 @@ The `Authorizer` plugin contains a single `Authorize` method, which is invoked f
 
 _Tags: [term](/tags/term)_
 
+#### [Caller (aka source, consumer)](/nexus#caller)
+
+The initiator/caller of a Nexus Operation, also known as the service consumer calling a service API.
+
+_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+
 #### [Child Workflow](/encyclopedia/child-workflows)
 
 A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.
@@ -302,9 +308,69 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Namespace](/namespaces)
 
-A Namespace is a unit of isolation within the Temporal Platform
+A Namespace is a unit of isolation within the Temporal Platform.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### [Nexus Client](/nexus#nexus-client)
+
+Used by the caller to connect to a Nexus endpoint and service.
+
+_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+
+#### [Nexus Endpoint](/nexus#nexus-endpoint)
+
+A Nexus Endpoint is like an API proxy that can serve one or more Nexus Services from a target such as a Worker listening on a target Temporal namespace and target task queue. This allows service providers to present a clean API contract and hide the underlying implementation, which may consist of many internal Workflows. Multiple Nexus Endpoints can target the same Namespace, and over time a Nexus Endpoint will be able to span multiple Namespaces with service routing rules.
+
+_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+
+#### [Nexus Operation](/nexus#nexus-operation)
+
+An arbitrary-length service call that may be synchronous or asynchronous, short-lived, or long-lived, used to invoke operations across namespace, cluster, and cell boundaries – and into arbitrary external systems.
+
+_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+
+#### [Nexus Operation Events](/nexus#nexus-operation-events)
+
+History events that surface in the caller workflow to indicate the state of an Operation – including `Op Scheduled`, `Op Started`, `Op Completed`.
+
+_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+
+#### [Nexus Operation Handle](/nexus#nexus-operation-handle)
+
+Returned to the workflow that started an operation to interact with the operation e.g. `handle.WaitStarted()`, `handle.GetResult()`.
+
+_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+
+#### [Nexus Operation Handler](/nexus#nexus-operation-handler)
+
+The handler code in a handler worker, used to process service calls for a given Operation. Operation Handlers often run in the same worker as the Workflows they abstract, to provide a service interface that can be used across namespace boundaries.
+
+_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+
+#### [Nexus Operation Reference](/nexus#nexus-operation-reference)
+
+Key information about an Operation including the name and input/output types – sufficient for invoking the Operation from a caller workflow, or implementing a handler for the operation in a handler worker.
+
+_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+
+#### [Nexus API Registry](/nexus#nexus-api-registry)
+
+An account-scoped list of endpoints and services available for use within a cloud account. Over time, the registry will grow to support multi-target endpoints, cross-account endpoints within Temporal Cloud, and external endpoints that support arbitrary length Operations, such as an OSS Temporal deployment.
+
+_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+
+#### [Nexus Service](/nexus#nexus-service)
+
+Nexus Services are a new Temporal primitive that supports arbitrary-duration Nexus Operations compatible with durable execution systems. Unlike a traditional RPC, an arbitrary-length Nexus Operation has an identity (id) that lasts beyond the process lifetimes of the caller and handler, and can be used to re-attach to a long-lived Nexus Operation, for example, one backed by a Temporal Workflow.
+
+_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+
+#### [Async Completion Callback](/nexus#async-completion-callback)
+
+The completion callback for an asynchronous Operation.
+
+_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
 
 #### [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy)
 
@@ -350,7 +416,7 @@ _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explana
 
 #### [Remote data encoding](/dataconversion#remote-data-encoding)
 
-Remote data encding is using your custom Data Converter to decode (and encode) your Payloads remotely through endpoints.
+Remote data encoding is using your custom Data Converter to decode (and encode) your Payloads remotely through endpoints.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -563,7 +629,6 @@ The Temporal Server is a grouping of four horizontally scalable services.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-
 #### [Temporal Web UI](/web-ui)
 
 The Temporal Web UI provides users with Workflow Execution state and metadata for debugging purposes.
@@ -650,7 +715,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/ti
 
 #### [Workflow History Export](/cloud/export)
 
-Workflow History export allows users to export Closed Workflow Histories to a user's Cloud Storage Sink
+Workflow History export allows users to export Closed Workflow Histories to a user's Cloud Storage Sink.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/tags/temporal-cloud), [operations](/tags/operations)_
 
@@ -699,4 +764,4 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 #### tctl (_deprecated_)
 
 tctl is a command-line tool that you can use to interact with a Temporal Service.
-It is superceded by the [Temporal CLI utility](#cli)
+It is superseded by the [Temporal CLI utility](#cli).
