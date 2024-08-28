@@ -323,8 +323,19 @@ module.exports = {
             "production-deployment/cloud/saml",
             "production-deployment/cloud/operation-api",
             "production-deployment/cloud/terraform-provider",
-            "production-deployment/cloud/audit-logging",
-            
+            {
+              type: "category",
+              label: "Audit Logging",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/audit-logging",
+              },
+              items: [
+                "production-deployment/cloud/audit-logging-aws",
+                "production-deployment/cloud/audit-logging-gcp",
+              ],
+            },
             {
               type: "category",
               label: "Export",
