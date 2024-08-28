@@ -324,7 +324,20 @@ module.exports = {
             "production-deployment/cloud/operation-api",
             "production-deployment/cloud/terraform-provider",
             "production-deployment/cloud/audit-logging",
-            "production-deployment/cloud/export",
+            
+            {
+              type: "category",
+              label: "Export",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/export",
+              },
+              items: [
+                "production-deployment/cloud/aws-export-s3",
+                "production-deployment/cloud/gcp-export-gcs",
+              ],
+            },
             {
               type: "category",
               label: "CLI (tcld)",

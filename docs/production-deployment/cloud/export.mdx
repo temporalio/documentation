@@ -2,7 +2,7 @@
 id: export
 title: Export - Temporal Cloud feature guide
 sidebar_label: Export
-description: Workflow History Export in Temporal Cloud lets users export Closed Workflow Histories to S3 for compliance and analytics. Configure via Cloud UI or tcld with AWS integration.
+description: Workflow History Export in Temporal Cloud lets users export Closed Workflow Histories to an object storage for compliance and analytics. Configure via Cloud UI or tcld.
 slug: /cloud/export
 toc_max_heading_level: 4
 keywords:
@@ -47,7 +47,7 @@ If you have enabled encryption for the data handled in your Workflow Execution, 
 
 ## Supported integrations for Workflow History Export {#supported-integrations}
 
-The Workflow History Export feature allows users to export Closed Workflow Histories to [Amazon Simple Storage Service (S3)](https://docs.aws.amazon.com/s3/) as the destination.
+The Workflow History Export feature allows users to export Closed Workflow Histories to an object storage as the destination.
 
 You can enable Workflow History Export per Namespace in Temporal Cloud.
 
@@ -61,14 +61,15 @@ Before configuring the Export Sink, ensure you have the following:
 
 ## Configure Workflow History Export {#configure}
 
-You can configure your Workflow History Export in AWS currently.
+You can configure your Workflow History Export in AWS and GCP currently.
 
-* [AWS Instructions](/cloud/export/aws-export-s3)
+* [AWS S3 Instructions](/cloud/export/aws-export-s3)
+* [GCP Cloud Storage Instructions](/cloud/export/gcp-export-gcs)
 
 
 ## Verify export setup {#verify}
 
-**How to verify that the Export feature is set up correctly**
+**How to verify that the Export feature is correctly set up**
 
 From the Export configuration page, select **Verify**.
 This action checks if Temporal can successfully write a test file to the sink.
@@ -93,8 +94,8 @@ Once you've finalized the setup, here's how to monitor the export progress:
      These files encapsulate the relevant data from the Closed Workflows.
    - **Directory Structure**: Your exported files will adhere to the following naming convention and path:
 
-   ```command
-   s3://[bucket-name]/temporal-workflow-history/export/[Namespace]/[Year]/[Month]/[Day]/[Hour]/[Minute]/
+   ```bash
+   //[bucket-name]/temporal-workflow-history/export/[Namespace]/[Year]/[Month]/[Day]/[Hour]/[Minute]/
    ```
 
 3. **Delivery guarantee**:
