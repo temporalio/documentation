@@ -52,7 +52,7 @@ However, those using Google or Microsoft for SSO authentication need to follow t
 
 :::info
 
-To invite users, a user must have the Global Admin account-level [Role](#account-level-roles).
+To invite users, a user must have the Global Admin or Account Owner account-level [Role](#account-level-roles).
 
 :::
 
@@ -109,11 +109,14 @@ When a Global Admin invites a user to join an account, the Global Admin selects 
   - Has Namespace Admin permissions for each Namespace created by that user
 - **Read-Only:** Can only read information
 
-In addition there's one role that the Global Admin cannot assign:
+In addition there are two roles that the Global Admin cannot assign:
 
 - **Account Owner**
   - Has full administrative permissions across the account, including users, usage and billing
   - Has Namespace Admin [permissions](#namespace-level-permissions) on all [Namespaces](/namespaces) in the account
+- **Finance Admin**
+  - Has account Admin permissions to view billing information and update payment information
+  - Can only be assigned by an Account Owner
 
 :::note Default Role
 
@@ -255,54 +258,54 @@ Account Global Admin has Namespace Admin permissions on Namespaces.
 
 This table provides API-level details for the permissions granted to a user through account-level Roles. These permissions are configured per user.
 
-| Permission                     | Read-only | Developer | Global Admin | Account Owner |
-| ------------------------------ | --------- | --------- | ------------ | ------------- |
-| CountIdentities                | ✔         | ✔         | ✔            | ✔             |
-| CreateAPIKey                   | ✔         | ✔         | ✔            | ✔             |
-| CreateNamespace                |           | ✔         | ✔            | ✔             |
-| CreateServiceAccount           |           |           | ✔            | ✔             |
-| CreateServiceAccountAPIKey     |           |           | ✔            | ✔             |
-| CreateUser                     |           |           | ✔            | ✔             |
-| DeleteAPIKey                   | ✔         | ✔         | ✔            | ✔             |
-| DeleteServiceAccount           |           |           | ✔            | ✔             |
-| DeleteUser                     |           |           | ✔            | ✔             |
-| GetAccount                     | ✔         | ✔         | ✔            | ✔             |
-| GetAccountFeatureFlags         | ✔         | ✔         | ✔            | ✔             |
-| GetAccountLimits               | ✔         | ✔         | ✔            | ✔             |
-| GetAccountSettings             | ✔         | ✔         | ✔            | ✔             |
-| GetAccountUsage                |           |           | ✔            | ✔             |
-| GetAPIKey                      | ✔         | ✔         | ✔            | ✔             |
-| GetAPIKeys                     | ✔         | ✔         | ✔            | ✔             |
-| GetAsyncOperation              | ✔         | ✔         | ✔            | ✔             |
-| GetDecodedCertificate          | ✔         | ✔         | ✔            | ✔             |
-| GetIdentities                  | ✔         | ✔         | ✔            | ✔             |
-| GetIdentity                    | ✔         | ✔         | ✔            | ✔             |
-| GetNamespaces                  | ✔         | ✔         | ✔            | ✔             |
-| GetNamespacesUsage             |           |           | ✔            | ✔             |
-| GetRegion                      | ✔         | ✔         | ✔            | ✔             |
-| GetRegions                     | ✔         | ✔         | ✔            | ✔             |
-| GetRequestStatus               | ✔         | ✔         | ✔            | ✔             |
-| GetRequestStatuses             |           |           | ✔            | ✔             |
-| GetRequestStatusesForNamespace | ✔         | ✔         | ✔            | ✔             |
-| GetRequestStatusesForUser      | ✔         | ✔         | ✔            | ✔             |
-| GetRoles                       | ✔         | ✔         | ✔            | ✔             |
-| GetRolesByPermissions          | ✔         | ✔         | ✔            | ✔             |
-| GetServiceAccount              | ✔         | ✔         | ✔            | ✔             |
-| GetServiceAccounts             | ✔         | ✔         | ✔            | ✔             |
-| GetUser                        | ✔         | ✔         | ✔            | ✔             |
-| GetUsers                       | ✔         | ✔         | ✔            | ✔             |
-| GetUsersWithAccountRoles       | ✔         | ✔         | ✔            | ✔             |
-| InviteUsers                    |           |           | ✔            | ✔             |
-| ListCreditLedgerEntries        |           |           |              | ✔             |
-| ListGrants                     |           |           |              | ✔             |
-| ListNamespaces                 | ✔         | ✔         | ✔            | ✔             |
-| ResendUserInvite               |           |           | ✔            | ✔             |
-| SetAccountSettings             |           |           | ✔            | ✔             |
-| SyncCurrentUserInvite          | ✔         | ✔         | ✔            | ✔             |
-| UpdateAccount                  |           |           | ✔            | ✔             |
-| UpdateAPIKey                   | ✔         | ✔         | ✔            | ✔             |
-| UpdateServiceAccount           |           |           | ✔            | ✔             |
-| UpdateUser                     |           |           | ✔            | ✔             |
+| Permission                     | Read-only | Developer | Finance Admin | Global Admin | Account Owner |
+| ------------------------------ | --------- | --------- | ------------- | ------------ | ------------- |
+| CountIdentities                | ✔         | ✔         | ✔             | ✔            | ✔             |
+| CreateAPIKey                   | ✔         | ✔         | ✔             | ✔            | ✔             |
+| CreateNamespace                |           | ✔         |               | ✔            | ✔             |
+| CreateServiceAccount           |           |           |               | ✔            | ✔             |
+| CreateServiceAccountAPIKey     |           |           |               | ✔            | ✔             |
+| CreateUser                     |           |           |               | ✔            | ✔             |
+| DeleteAPIKey                   | ✔         | ✔         | ✔             | ✔            | ✔             |
+| DeleteServiceAccount           |           |           |               | ✔            | ✔             |
+| DeleteUser                     |           |           |               | ✔            | ✔             |
+| GetAccount                     | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAccountFeatureFlags         | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAccountLimits               | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAccountSettings             | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAccountUsage                |           |           |               | ✔            | ✔             |
+| GetAPIKey                      | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAPIKeys                     | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAsyncOperation              | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetDecodedCertificate          | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetIdentities                  | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetIdentity                    | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetNamespaces                  | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetNamespacesUsage             |           |           |               | ✔            | ✔             |
+| GetRegion                      | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRegions                     | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRequestStatus               | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRequestStatuses             |           |           |               | ✔            | ✔             |
+| GetRequestStatusesForNamespace | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRequestStatusesForUser      | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRoles                       | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRolesByPermissions          | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetServiceAccount              | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetServiceAccounts             | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetUser                        | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetUsers                       | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetUsersWithAccountRoles       | ✔         | ✔         | ✔             | ✔            | ✔             |
+| InviteUsers                    |           |           |               | ✔            | ✔             |
+| ListCreditLedgerEntries        |           |           |               |              | ✔             |
+| ListGrants                     |           |           |               |              | ✔             |
+| ListNamespaces                 | ✔         | ✔         | ✔             | ✔            | ✔             |
+| ResendUserInvite               |           |           |               | ✔            | ✔             |
+| SetAccountSettings             |           |           |               | ✔            | ✔             |
+| SyncCurrentUserInvite          | ✔         | ✔         | ✔             | ✔            | ✔             |
+| UpdateAccount                  |           |           |               | ✔            | ✔             |
+| UpdateAPIKey                   | ✔         | ✔         | ✔             | ✔            | ✔             |
+| UpdateServiceAccount           |           |           |               | ✔            | ✔             |
+| UpdateUser                     |           |           |               | ✔            | ✔             |
 
 #### Namespace-level permissions details
 
