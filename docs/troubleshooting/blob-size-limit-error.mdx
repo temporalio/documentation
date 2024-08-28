@@ -42,6 +42,6 @@ There are multiple strategies you can use to avoid this error:
      1. Execute Activities in smaller batches within a single Workflow Task.
      2. Introduce brief pauses or sleeps (for example, 1ms) between batches.
 
-3. Consider offloading large payloads to an object store (for example, Amazon S3) to reduce the risk of reaching blob size limits:
+3. Consider offloading large payloads to an object store to reduce the risk of reaching blob size limits:
    1. Pass references to the stored payloads within the Workflow instead of the actual data.
    2. Retrieve the payloads from the object store when needed during execution.
