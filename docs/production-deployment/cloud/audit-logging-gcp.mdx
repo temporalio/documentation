@@ -62,7 +62,7 @@ More details available in our public-facing documentation: https://docs.temporal
 
 The following Go code is an example of consuming Audit Logs from a PubSub stream
 
-```bash
+```go
 package main
 import (
   "fmt"
@@ -144,9 +144,7 @@ os.Exit(1) }
   fmt.Println("Total number of workflow histories: ", len(workflowHistories))
   fmt.Println("Choose an option:")
   fmt.Println("1. Print out all the workflows")
-  fmt.Println("2. Print out the workflow hisotry of a specific workflow. Enter the workflo
- 
-Export Feature (User Copy) 10w ID:")
+  fmt.Println("2. Print out the workflow hisotry of a specific workflow. Enter the workflow ID:")
   var option int
   fmt.Print("Enter your choice: ")
   _, err = fmt.Scanf("%d", &option)
