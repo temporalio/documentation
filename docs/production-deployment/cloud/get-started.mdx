@@ -31,15 +31,24 @@ Signing up on the AWS Marketplace is like signing up directly on the Temporal Cl
 You received email from Temporal that welcomes you to your new Temporal account.
 Your email address is now the first [Account Owner](/cloud/users#account-level-roles) for your account.
 
-**3. Set up CA certificates**
+**3. Set up authentication**
 
+Temporal Cloud supports both TLS and API key authentication.
+
+**TLS authentication**:
 You must provide your own CA certificates.
 These certificates are needed to create a Namespace, which are in turn used to grant Temporal Clients and Workers access to it.
-
 For certificate requirements, see the following:
 
 - [Requirements for CA certificates](/cloud/certificates#certificate-requirements)
 - [Issue root CA and end-entity certificates](/cloud/certificates#issue-certificates)
+
+**API key authentication**: To enable and use API key access, see the following:
+
+- [API key overview](/cloud/api-keys#overview)
+- [API key best practices](/cloud/api-keys#best-practices)
+- [Troubleshoot your API key use](/cloud/api-keys#troubleshooting)
+- [API keys: Frequently Asked Questions](/cloud/api-keys#faqs)
 
 **4. Create a Namespace**
 
