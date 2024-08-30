@@ -30,12 +30,12 @@ Temporal Cloud API keys offer industry-standard identity-based authentication fo
 This document introduces Temporal Cloud's API key features:
 
 - [API key overview](#overview)
+- [API key best practices](#best-practices)
 - [Global Administrator and Account Owner API key management](#manage-api-keys)
 - [User API key management](#user-api-keys)
 - [Manage API keys for Service Accounts](#serviceaccount-api-keys)
 - [API keys for Namespace authentication](#namespace-authentication)
 - [Use API keys to authenticate](#using-apikeys)
-- [API key best practices](#best-practices)
 - [Troubleshoot your API key use](#troubleshooting)
 - [API keys: Frequently Asked Questions](#faqs)
 
@@ -46,6 +46,15 @@ Each Temporal Cloud API key is a unique identity linked to role-based access con
 The authentication process follows this pathway:
 
 ![API key (authentication) → Identity (user or Service Account) → RBAC (authorization)](/img/apikeyrbac.png)
+
+## API key best practices {#best-practices}
+
+- **Keep it secret; keep it safe**: Treat your API key like a password.
+  Do not expose it in client-side code, public repositories, or other easily accessible locations.
+- **Rotate keys regularly**: Change your API keys periodically to reduce risks from potential leaks.
+- **Monitor API key usage**: Check usage metrics and logs regularly.
+  Revoke the key immediately if you detect any unexpected or unauthorized activity.
+- **Use a Key Management System (KMS)**: Employ a Key Management System to minimize the risk of key leaks.
 
 ### API key use cases
 
@@ -582,15 +591,6 @@ For a complete example, see [Cloud Samples in Go](https://github.com/temporalio/
 ### Terraform Provider
 
 To use an API key with the [Temporal Terraform Provider](/production-deployment/cloud/terraform-provider), pass the API key as a provider argument.
-
-## API key best practices {#best-practices}
-
-- **Keep it secret; keep it safe**: Treat your API key like a password.
-  Do not expose it in client-side code, public repositories, or other easily accessible locations.
-- **Rotate keys regularly**: Change your API keys periodically to reduce risks from potential leaks.
-- **Monitor API key usage**: Check usage metrics and logs regularly.
-  Revoke the key immediately if you detect any unexpected or unauthorized activity.
-- **Use a Key Management System (KMS)**: Employ a Key Management System to minimize the risk of key leaks.
 
 ## Troubleshoot your API key use {#troubleshooting}
 
