@@ -25,7 +25,7 @@ tags:
   - gcp
 ---
 
-## **Prerequisites**
+## Prerequisites {#prerequisites}
 
 Before configuring the Export sink, please complete the following steps in Google Cloud.
 
@@ -34,9 +34,11 @@ Enable customer-managed encryption keys (CMEK) if you need additional security f
 2. Record the GCP Project ID that owns the bucket.
 Create a service account in the same project that grants Temporal permission to write to your GCS bucket.
 4. Follow the instructions in the Temporal Cloud UI, there are two ways to set up this service account:
-    1. Input the service account ID, GCP project ID and GCS bucket name.
-        1. Follow the instructions, manually set up a new service account.
-        2. Use the [Terraform template](https://github.com/temporalio/terraform-modules/tree/main/modules/gcp-sink-sa) to create the service account.
+    - Manual Setup:
+      - Input the service account ID, GCP project ID and GCS bucket name.
+      - Follow the instructions, manually set up a new service account.
+    - Automated Setup:
+      - Use the [Terraform template](https://github.com/temporalio/terraform-modules/tree/main/modules/gcp-sink-sa) to create the service account.
 
 ## Configure Workflow History Export 
 

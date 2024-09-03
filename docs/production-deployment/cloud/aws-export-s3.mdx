@@ -25,13 +25,13 @@ tags:
   - aws
 ---
 
-### Prerequisites {#prerequisites}
+## Prerequisites {#prerequisites}
 
 Before configuring the Export Sink, ensure you have the following:
 
 1. An AWS Account with write permission to an S3 bucket.
 2. An AWS S3 bucket.
-   1. The S3 bucket must reside in the same region as your Namespace.
+   - The S3 bucket must reside in the same region as your Namespace.
 3. (optional) A KMS ARN associated with the S3 bucket.
 
 ## Configure Workflow History Export 
@@ -53,7 +53,7 @@ The following steps guide you through setting up Workflow History Export using t
 
 :::tip
 
-Don't forget to click Create at the end of your setup to confirm your export.
+Don't forget to click **Create** at the end of your setup to confirm your export.
 
 :::
 
@@ -65,13 +65,13 @@ Make sure to verify the export setup before you save the configuration.
 1. Open the Temporal Cloud UI and navigate to the Namespace you want to configure.
 2. Select **Configure** from the **Export** card.
 3. Provide the following information to configure the export sink and then select **Create and launch stack**:
-   1. Name: A name for the export sink.
-   2. AWS S3 Bucket Name: The name of the configured AWS S3 bucket to send Closed Workflow Histories to.
-   3. AWS Account ID: The AWS account ID.
-   4. Role Name: The name of the AWS IAM role to use for the CloudFormation stack that has write permission to the S3 bucket.
-   5. KMS ARN: (optional) The ARN of the AWS KMS key to use for encryption of the exported Workflow History.
+   - Name: A name for the export sink.
+   - AWS S3 Bucket Name: The name of the configured AWS S3 bucket to send Closed Workflow Histories to.
+   - AWS Account ID: The AWS account ID.
+   - Role Name: The name of the AWS IAM role to use for the CloudFormation stack that has write permission to the S3 bucket.
+   - KMS ARN: (optional) The ARN of the AWS KMS key to use for encryption of the exported Workflow History.
 4. You will be taken to the CloudFormation Console to create the stack with pre-populated information.
-   1. Review the information and then select **Create stack**.
+   - Review the information and then select **Create stack**.
 
 #### Manual setup
 
@@ -80,9 +80,9 @@ You can manually configure a CloudFormation stack using the provided template.
 1. Open the Temporal Cloud UI and navigate to the Namespace you want to configure.
 2. Select **Configure** from the **Export** card.
 3. Select **Manual** from **Access method**.
-   1. Enter the Template URL into your web browser to download your copy of the CloudFormation template.
-   2. Configure the CloudFormation template for your export sink.
-   3. Follow the steps in the [AWS documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-using-console-create-stack-template.html) by uploading the template to the CloudFormation console.
+   - Enter the Template URL into your web browser to download your copy of the CloudFormation template.
+   - Configure the CloudFormation template for your export sink.
+   - Follow the steps in the [AWS documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-using-console-create-stack-template.html) by uploading the template to the CloudFormation console.
 
 ### Using tcld
 
