@@ -123,6 +123,7 @@ module.exports = {
             "develop/go/schedules",
             "develop/go/data-encryption",
             "develop/go/side-effects",
+            "develop/go/temporal-nexus",
             "develop/go/child-workflows",
             "develop/go/continue-as-new",
             "develop/go/selectors",
