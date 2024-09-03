@@ -1,0 +1,49 @@
+---
+id: temporalnexus
+title: Temporal Nexus
+sidebar_label: Temporal Nexus
+description: Temporal Nexus is a higher-level primitive designed to facilitate modular architecture across team and Namespace boundaries, enabling seamless integration and durable execution across distributed systems.
+toc_max_heading_level: 4
+slug: /temporalnexus
+keywords:
+  - modular architecture
+  - Namespace boundaries
+  - durable execution
+tags:
+  - distributed systems
+  - integration
+  - temporal
+---
+
+In this Temporal Nexus guide, you'll find the following information:
+
+- [Overview of Temporal Nexus](/temporalnexus/overview)
+- [Nexus API Registry and Endpoints](/temporalnexus/api-registry-endpoints)
+- [Nexus Services and Operations](/temporalnexus/services-operations)
+- [Security](/temporalnexus/security)
+
+Building distributed applications of any size often requires a modular architecture and multiple teams collaborating, with each responsible for their slice of the overall application.
+
+Teams would like to build, operate, and deliver in an autonomous manner while allowing their slice to be used by other teams – but they also want the improved security and blast-radius isolation of separate Namespaces.
+
+Existing solutions to modularize a Temporal Application have several challenges:
+
+- Direct Workflow to Workflow integration is a leaky abstraction
+  - caller must know the target Namespace, Task Queue, Workflow policy & types
+  - tightly couples caller and handler
+  - difficult for handler to change to a different Task Queue or Namespace
+  - no service facade to refactor behind \- direct coupling to Workflow implementation
+- Child Workflows don’t work across Namespace boundaries in Temporal Cloud
+  - Namespaces can live in any cloud cell
+  - Child Workflows don’t support cross-cluster calls
+- Activities that use the Temporal client to invoke Workflows in a different Namespace
+  - cost to build and run Activity wrappers in each caller Namespace
+  - mTLS client certs must be exchanged and rotated
+  - callers get full access, so no control over what is available for other teams to use.
+
+Teams have faced a difficult choice:
+
+- multiple Namespaces \- using Activity wrappers with the limitations above
+- single large monolithic Namespace \- with Child Workflows but no Namespace isolation
+
+Higher-level Temporal primitives are needed to provide a clean interface across team boundaries and a clean separation of concerns – in a way that supports durable execution across each team’s slice of a Temporal Application.

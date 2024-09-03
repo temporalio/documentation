@@ -1,0 +1,102 @@
+---
+id: nexus-overview
+title: Temporal Nexus Overview
+sidebar_label: Overview
+description: Temporal Nexus is designed to connect durable executions across team and Namespace boundaries with an integrated Temporal SDK experience, promoting a modular architecture for sharing your team’s capabilities via a well-defined Nexus Service API contract.
+toc_max_heading_level: 4
+slug: /temporalnexus/overview
+keywords:
+  - modular architecture
+  - Namespace boundaries
+  - durable execution
+tags:
+  - distributed systems
+  - integration
+  - temporal
+---
+
+## Overview {#nexus-overview}
+
+Nexus is designed to connect durable executions across team and Namespace boundaries with an integrated Temporal SDK experience, built-in Nexus Machinery that processes Nexus RPC calls on your behalf, and promotes a more modular architecture for sharing a subset of your team’s capabilities via a well-defined Nexus Service API contract.
+
+Nexus Services are exposed from a Nexus Endpoint that is created in the Nexus API Registry, along with service documentation that enable others to use the Nexus Services provided by a Nexus Endpoint. This enables teams to compose Nexus Services into their Workflows, both within and across Namespace boundaries.
+
+Temporal has built-in Nexus machinery that performs the low-level Nexus RPC operations on the wire and provides an integrated Temporal SDK experience to create Nexus Services and use them from a caller Workflow via a Nexus Endpoint in the Nexus API Registry.
+
+Nexus RPC is designed for arbitrary-duration operations whose lifetime may extend beyond a traditional RPC and is an underpinning to connect durable executions within and across Namespaces, clusters and regions – with a clean API contract to streamline multi-team collaboration. Any service can be exposed via a Nexus endpoint as a set of sync or async Nexus operations – the latter provides an operation identity and a uniform interface to get the status of an operation or its result, receive a completion callback, or cancel the operation.
+
+Nexus Services and Operations are often registered in the same worker as the underlying Temporal primitives they abstract, and use the same task-queue worker polling architecture as Workflows and Activities.
+
+To make a Nexus Service available for others to use, a Nexus Endpoint must be created in the Nexus API Registry with a target Namespace and task-queue. In pre-release, all Nexus requests will be sent to the single target Namespace and task-queue for the Endpoint. Future releases may support multiple Endpoint targets, similar to how an API proxy can have multiple targets.
+
+When you start a Nexus Operation in a caller Workflow, a command is sent to Temporal to schedule the Operation, and then the Temporal Nexus Machinery is responsible for making the Nexus RPC calls on your behalf. This means you don’t have to use Nexus RPC directly, only the Temporal SDK along with a Temporal Service.
+
+Similar to executing an Activity, for a Nexus Operation:
+
+1. Caller Workflow will schedule a Nexus Operation using the Temporal SDK, which sends a `ScheduleNexusOperation` command in the existing `RespondWorkflowTaskCompleted` RPC which is recorded as `NexusOperationScheduled` in the caller’s Workflow history.
+2. Nexus handler worker uses the Temporal SDK to `PollNexusTaskQueue` and process the Nexus request.
+3. Nexus handler worker sends a `RespondNexusTaskCompleted` via the SDK, with the result of the Nexus request, which may be one of: Started, Completed, Failed, TimedOut, Canceled \- see [Nexus Operation Events][TODO: link to events] for more info
+4. Caller Workflow then processes the Nexus Operation event via `PollWorkflowTaskQueue`.
+
+See also: [Nexus Architecture on GitHub](https://github.com/temporalio/temporal/blob/main/docs/architecture/nexus.md).
+
+### Key Capabilities
+
+Nexus support is available in Temporal Cloud, OSS Server, and Temporal SDKs:
+
+- Workers that handle Nexus Operations, listening on a Namespace and taskqueue.
+- Nexus API registry, to create Nexus endpoints that forward requests to a target Namespace and Task Queue, so others can use Nexus services via a Nexus endpoint.
+- Start Nexus operations from Temporal Workflows across team & Namespace boundaries
+- Observe and troubleshoot end-to-end execution
+
+Temporal Cloud provides enhanced security, observability, and multi-region routing:
+
+- Multi-region routing from caller to destination Namespace in a Temporal Cloud account.
+- Control who can manage a Nexus endpoint with a new Nexus Endpoint Admin permission
+- Control who can use a Nexus endpoint within an account, using Namespace allowlists
+- Observe Nexus audit logs and observability metrics via cloud integrations
+
+#### Integrated Temporal SDK experience
+
+- run Nexus Services in a Temporal Worker:
+  - abstract and expose a subset of Temporal primitives for others to use
+  - can also execute arbitrary code
+  - typically the same worker as the underlying Temporal primitives
+  - same queue-based worker architecture, for worker fleet load balancing
+  - no separate deployment for a bespoke service wrapper
+  - polling architecture enables workers to run in a broad range of runtime environments
+- use Nexus Services from a Workflow
+  - start a Nexus Operation from a Temporal Workflow
+
+#### Built-in Nexus Machinery
+
+- built-in support in Temporal Server and Temporal Cloud
+- connects Nexus callers and handlers via Nexus Endpoints
+- routes Nexus calls across team and Namespace boundaries
+- automatic retries
+- integrated into Workflow event history for end-to-end debugging
+- supports metrics, traces, and logs
+
+#### Nexus API Registry
+
+- registry of Nexus Endpoints for others to use
+- routing configuration from a Nexus Endpoints to a target Namespace & Task Queue
+- service documentation markdown to rapidly onboard new users
+
+#### Temporal Cloud support for Nexus
+
+- account-scoped API registry
+  - single source of truth
+  - highly available across all supported regions/clouds
+- multi-region service mesh
+  - secure mTLS routing within & across Namespaces in different cloud regions
+  - traffic shaping: built-in circuit breaking & rate limiting
+  - multi-region Namespaces support with automatic failover
+- enhanced security
+  - strong mTLS worker authentication to a Namespace, as before
+  - secure mTLS Workflow-to-service communication within and across Namespaces
+  - built-in access control & authorization policies
+- enhanced observability
+  - audit logging
+  - usage tracking & visibility (global and per-Namespace)
+  - prometheus metrics via cloud endpoint
