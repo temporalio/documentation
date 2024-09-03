@@ -308,7 +308,7 @@ To send an Update to a Workflow Execution, you can:
 To obtain an Update handle, you can:
 
 - Use [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) to start an Update and return the handle, as shown in the preceding example.
-- Use [`get_update_handle_for`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#get_update_handle_for) to fetch a handle for an in-progress Update using the Update ID and Workflow ID.
+- Use [`get_update_handle_for`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#get_update_handle_for) to fetch a handle for an in-progress Update using the Update ID.
 
 :::info NON-TYPE SAFE API CALLS
 
@@ -340,7 +340,7 @@ For additional information, see [Inject work into the main Workflow](/encycloped
 
 :::
 
-### Add async handlers to use `await` {#async-handlers}
+### Use async handlers {#async-handlers}
 
 Signal and Update handlers can be `async def` as well as `def`.
 Using `async def` allows you to use `await` with Activities, Child Workflows, [`asyncio.sleep`](https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep) Timers, [`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition) conditions, etc.
@@ -396,13 +396,14 @@ class GreetingWorkflow:
 ```
 
 After updating the code to use an `async def`, your Update handler can schedule an Activity and await the result.
-Although an `async def` Signal handler can initiate similar network tasks, using an Update handler allows the client to receive a result or error once the Activity completes.
+Although an `async def` Signal handler can also execute an Activity, using an Update handler allows the client to receive a result or error once the Activity completes.
 This lets your client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, etc.
 
 ### Add wait conditions to block
 
 Sometimes, `async def` Signal or Update handlers need to meet certain conditions before they should continue.
-You can use a wait condition ([`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition)) to set a function that prevents the code from proceeding until the condition returns `True`.
+You can use [`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition) to prevent the code from proceeding until a condition is true.
+You specify the condition by passing a function that returns `True` or `False`.
 This is an important feature that helps you control your handler logic.
 
 Here are two important use cases for `workflow.wait_condition`:
@@ -410,17 +411,11 @@ Here are two important use cases for `workflow.wait_condition`:
 - Waiting in a handler until it is appropriate to continue.
 - Waiting in the main Workflow until all active handlers have finished.
 
-The condition state you're waiting for can be updated by and reflect any part of the Workflow code.
-This includes the main Workflow method, other handlers, or child coroutines spawned by the main Workflow method, and so forth.
+#### Use wait conditions in handlers
 
-### Use wait conditions in handlers
-
-It's common to use a Workflow wait condition to wait until a handler should start.
-You can also use wait conditions anywhere else in the handler to wait for a specific condition to become `True`.
-This allows you to write handlers that pause at multiple points, each time waiting for a required condition to become `True`.
-
-Consider a `ready_for_update_to_execute` method that runs before your Update handler executes.
-The `workflow.wait_condition` method waits until your condition is met:
+It's common to use a Workflow wait condition in a handler.
+For example, suppose your Workflow class has a `ready_for_update_to_execute` method that indicates whether your Update handler should be allowed to start executing.
+You can use `workflow.wait_condition` in the handler to make the handler pause until the condition is met:
 
 ```python
     @workflow.update
@@ -430,9 +425,12 @@ The `workflow.wait_condition` method waits until your condition is met:
         )
 ```
 
-Remember: Handlers can execute before the main Workflow method starts.
+Remember: handlers can execute before the main Workflow method starts.
 
-### Ensure your handlers finish before the Workflow completes {#wait-for-message-handlers}
+You can also use wait conditions anywhere else in the handler to wait for a specific condition to become true.
+This allows you to write handlers that pause at multiple points, each time waiting for a required condition to become true.
+
+#### Ensure your handlers finish before the Workflow completes {#wait-for-message-handlers}
 
 Workflow wait conditions can ensure your handler completes before a Workflow finishes.
 When your Workflow uses `async def` Signal or Update handlers, your main Workflow method can return or continue-as-new while a handler is still waiting on an async task, such as an Activity result.
