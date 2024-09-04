@@ -103,7 +103,7 @@ _Tags: [term](/tags/term)_
 
 #### [Caller (aka source, consumer)](/nexus#caller)
 
-The initiator/caller of a Nexus Operation, also known as the service consumer calling a service API.
+The initiator or caller of a Nexus Operation, also known as the service consumer calling a service API.
 
 _Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
 
@@ -248,6 +248,12 @@ When service to the primary Cluster is compromised, a [failover](#failover) tran
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
+#### [Handler (aka callee, target, destination, provider)](/nexus#handler)
+
+The handler of a Nexus Operation, running in a Worker that is polling a Task Queue the target/destination Namespace, and associated underlying Temporal primitives like a Workflow
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_, [nexus](/tags/nexus)_
+
 #### [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout)
 
 A Heartbeat Timeout is the maximum time between Activity Heartbeats.
@@ -314,7 +320,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Nexus Client](/nexus#nexus-client)
 
-Used by the caller to connect to a Nexus endpoint and service.
+Used by the Caller to connect to a Nexus Endpoint and Nexus Service.
 
 _Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
 
@@ -356,7 +362,7 @@ _Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation
 
 #### [Nexus API Registry](/nexus#nexus-api-registry)
 
-An account-scoped list of endpoints and services available for use within a cloud account. Over time, the registry will grow to support multi-target endpoints, cross-account endpoints within Temporal Cloud, and external endpoints that support arbitrary length Operations, such as an OSS Temporal deployment.
+An account-scoped list of endpoints and services available for use within a cloud account.
 
 _Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
 
