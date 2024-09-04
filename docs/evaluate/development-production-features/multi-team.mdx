@@ -29,8 +29,7 @@ As teams grow and applications evolve, modular architectures and seamless collab
 With multiple teams collaborating, each responsible for their slice of the application, they want to build, operate, and deliver autonomously while allowing their slice to be used by others.
 
 As applications grow in complexity, managing Workflows across multiple teams and Namespaces is increasingly challenging. 
-Existing solutions for modularizing a Temporal Application face several challenges, including tight coupling between Workflows that complicates management, limited modularity across Namespaces, security risks due to broad access permissions, complexity in managing cross-boundary interactions, and a lack of flexibility in adapting applications as they grow, often resulting in downtime or rework.
-Teams can struggle with collaboration, security, and flexibility in their Workflows.
+Existing solutions for modularizing a Temporal Application face several issues, including tight coupling between Workflows that complicates management, limited modularity across Namespaces, security risks due to broad access permissions, complexity in managing cross-boundary interactions, and a lack of flexibility in adapting applications as they grow, often resulting in downtime or rework.
 
 Temporal Nexus offers a powerful solution by providing a modular architecture that supports autonomous team collaboration and a clean separation of concerns - while maintaining strong integration across the organization.
 This ensures that applications remain scalable, secure, and easy to manage across multiple Namespaces and regions.
@@ -62,7 +61,7 @@ Nexus Services are registered with a `Worker` that is listening on the target Na
 
 **Nexus Operations:** A Nexus `Operation` is not intrinsically durable, but can be made durable by backing it with Temporal primitives like a `Workflow`, `Update`, or `Signal`.
 The Temporal SDK provides helper functions to create Nexus Operations that may be registered with a Nexus Service in a `Worker`. 
-Synchronous Nexus `Operations` can also execute arbitrary code, but unlike `Activities` they have a [short request timeout](\#nexus-operation-request-timeout) (under 10 seconds) and don’t support [heartbeats](https://community.temporal.io/t/best-practices-for-long-running-activities/934).
+Synchronous Nexus `Operations` can also execute arbitrary code, but unlike `Activities` they have a short request timeout (under 10 seconds) and don’t support [heartbeats](https://community.temporal.io/t/best-practices-for-long-running-activities/934).
 
 ## Nexus in Action
 The developer experience for Nexus callers and handlers is the same across both OSS and Cloud environments. 
@@ -76,11 +75,11 @@ Temporal Nexus is supported in three environments:
   * Cross-namespace calls work within a self-hosted cluster  
   * Nexus registry is cluster-scoped  
   * Future releases may add cross-cluster Nexus registry support  
-  * See [configuration details for self-hosted](\#temporal-nexus-(public-preview))  
+  * See configuration details for self-hosted
 * Temporal Cloud  
   * Nexus registry is account-scoped  
   * Cross-namespace calls work across cloud cells (clusters) and regions  
-  * See the [Temporal Nexus guide for Temporal Cloud](\#temporal-nexus-(public-preview)-1)  
+  * See the Temporal Nexus guide for Temporal Cloud 
     
 
 For a deep dive into Temporal Nexus concepts visit the following Temporal Encyclopedia pages.
