@@ -27,70 +27,55 @@ If you use a private environment that does not allow external connectivity, you 
 
 Set up Private Service Connect with Temporal Cloud with these steps:
 
-1. Open the GCP console with the region you want to use to establish the PrivateLink.
-2. Search for "VPC" in _Services_ and select the option.
+1. Open the Google Cloud console
+2. Navigate to _Network Services_, then _Private Service Connect_. If you haven't used _Network Services_ recently, you might have to find it by clicking on _View All Products_ at the bottom of the left sidebar.
 
-   ![AWS console showing services, features, resources](/img/private-link/aws-console.png)
-3. Select _Virtual private cloud_ > _Endpoints_ from the left menu bar.
-4. Click the _Create endpoint_ button to the right of the _Actions_ pulldown menu.
-5. Under _Service_ category, select _Other endpoint services_.
-   This option lets you find services shared with you by service name.
-6. Under _Service settings_, fill in the _Service name_ with the PrivateLink Service Name for the region you’re trying to connect from:
+   ![GCP console showing Network Services, and the View All Products button](/img/gcp-private-service-connect/gcp-console.png)
 
-   | Region           | PrivateLink Service Name                                       |
-   | ---------------- | -------------------------------------------------------------- |
-   | `ap-northeast-1` | `com.amazonaws.vpce.ap-northeast-1.vpce-svc-08f34c33f9fb8a48a` |
-   | `ap-northeast-2` | `com.amazonaws.vpce.ap-northeast-2.vpce-svc-08c4d5445a5aad308` |
-   | `ap-south-1`     | `com.amazonaws.vpce.ap-south-1.vpce-svc-0ad4f8ed56db15662`     |
-   | `ap-south-2`     | `com.amazonaws.vpce.ap-south-2.vpce-svc-08bcf602b646c69c1`     |
-   | `ap-southeast-1` | `com.amazonaws.vpce.ap-southeast-1.vpce-svc-05c24096fa89b0ccd` |
-   | `ap-southeast-2` | `com.amazonaws.vpce.ap-southeast-2.vpce-svc-0634f9628e3c15b08` |
-   | `ca-central-1`   | `com.amazonaws.vpce.ca-central-1.vpce-svc-080a781925d0b1d9d`   |
-   | `eu-central-1`   | `com.amazonaws.vpce.eu-central-1.vpce-svc-073a419b36663a0f3`   |
-   | `eu-west-1`      | `com.amazonaws.vpce.eu-west-1.vpce-svc-04388e89f3479b739`      |
-   | `eu-west-2`      | `com.amazonaws.vpce.eu-west-2.vpce-svc-0ac7f9f07e7fb5695`      |
-   | `sa-east-1`      | `com.amazonaws.vpce.sa-east-1.vpce-svc-0ca67a102f3ce525a`      |
-   | `us-east-1`      | `com.amazonaws.vpce.us-east-1.vpce-svc-0822256b6575ea37f`      |
-   | `us-east-2`      | `com.amazonaws.vpce.us-east-2.vpce-svc-01b8dccfc6660d9d4`      |
-   | `us-west-2`      | `com.amazonaws.vpce.us-west-2.vpce-svc-0f44b3d7302816b94`      |
+3. Go to the _Endpoints_ section. Click on _Connect endpoint_.
 
-7. Confirm your service by clicking on the _Verify service_ button. AWS should respond "Service name verified."
+   ![GCP console showing the endpoints, and the Connect endpoint button](/img/gcp-private-service-connect/connect-endpoint-button.png)
 
-   ![The service name field is filled out and the Verify service button is shown](/img/private-link/service-settings.png)
-8. Select the VPC and subnets to peer with the Temporal Cloud service endpoint.
-9. Select the security group that will control traffic sources for this VPC endpoint.
-   The security group must accept TCP ingress traffic to port 7233 for gRPC communication with Temporal Cloud.
-10. Click the _Create endpoint_ button at the bottom of the screen.
-    If successful, AWS reports "Successfully created VPC endpoint." and lists the new endpoint.
-    The new endpoint appears in the Endpoints list, along with its ID.
+4. Under _Target_, select _Published service_, this will change the contents of the form to allow you to fill the rest as described below
 
-    ![The created endpoint appears in the Endpoints list](/img/private-link/endpoint-created.png)
-11. Click on the VPC endpoint ID in the Endpoints list to check its status.
-    Wait for the status to be “Available”.
-    This can take up to 10 minutes.
-12. Once available, you can use AWS PrivateLink.
-    Use the first value under “DNS names” as your hostname to connect to Temporal Cloud using port 7233.
+   ![GCP console showing the endpoints, and the Connect endpoint button](/img/gcp-private-service-connect/connect-endpoint.png)
+
+  - For _Target service_, fill in the _Service name_ with the Private Service Connect Service Name for the region you’re trying to connect to:
+
+      | Region                 | Private Service Connect Service Name                           |
+      | ---------------------- | -------------------------------------------------------------- |
+      | `us-central1`          | `projects/TBD`                                                 |
+      | `australia-southeast1` | `projects/TBD`                                                 |
+
+  - For _Endpoint name_, enter a unique identifier to use for this endpoint. It could be for instance `temporal-api` or `temporal-api-<namespace>` if you want a different endpoint per namespace.
+  - For _Network_ and _Subnetwork_, choose the network and subnetwork where you want to publish your endpoint.
+  - For _IP address_, click the dropdown and select _Create IP address_ to create an internal IP from your subnet dedicated to the endpoint. Select this IP.
+  - Check _Enable global access_ if you intend to connect the endpoint to virtual machines outside of the selected region. We recommend regional connectivity instead of global access, as it can be better in terms of latency for your workers.
+
+5. Click the _Add endpoint_ button at the bottom of the screen.
+   If successful, the status of your new endpoint will appear as _Accepted_.
+   Take note of the _IP address_ that has been assigned to your endpoint, as it will be used to connect to Temporal Cloud.
+
+6. You can use GCP Private Service Connect.
+    You can use the _IP address_ of the previous step to connect to Temporal Cloud using port 7233.
     To establish a valid mTLS session, you must override the TLS server name used for the connection to `<namespace>.<account>.tmprl.cloud`.
 
-    ![Highlighted DNS names section shows your hostname](/img/private-link/details.png)
-
-You are ready to start using Private Link with Temporal Cloud.
 
 :::tip
 
-PrivateLink endpoint services are regional.
+GCP Private Service Connect services are regional.
 Individual Namespaces do not use separate services.
 
 :::
 
-Once set up, you can test your PrivateLink connectivity using the following methods.
+Once set up, you can test your Private Service Connect connectivity using the following methods.
 When connecting, you must override the TLS server name to target your Namespace’s individual hostname (`<namespace>.<account>.tmprl.cloud`) to establish a valid mTLS session:
 
 - The Temporal CLI, using the `--tls-server-name` parameter to override the TLS server name. For example:
 
   ```
   temporal workflow count \
-      --address <DNS associated with VPC endpoint>:7233 \
+      --address <IP address with PSC endpoint>:7233 \
       --tls-cert-path /path/to/client.pem \
       --tls-key-path /path/to/client.key \
       --tls-server-name <namespace>.<account>.tmprl.cloud \
@@ -104,8 +89,8 @@ When connecting, you must override the TLS server name to target your Namespace�
       -servername <name>.<account>.tmprl.cloud \
       -cert /path/to/client.pem \
       -key /path/to/client.key \
-      vpce-XXXXXXXXX.vpce.amazonaws.com:7233 \
+      <IP address with PSC endpoint>:7233 \
       temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
   ```
 
-- Temporal SDKs, by setting the endpoint server address argument to the PrivateLink endpoint (`<DNS associated with VPC endpoint>:7233`) and using the TLS configuration options to override the TLS server name.
+- Temporal SDKs, by setting the endpoint server address argument to the Private Service Connect endpoint (`<IP address with PSC endpoint>:7233`) and using the TLS configuration options to override the TLS server name.
