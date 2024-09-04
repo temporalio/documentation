@@ -42,10 +42,10 @@ Set up Private Service Connect with Temporal Cloud with these steps:
 
   - For _Target service_, fill in the _Service name_ with the Private Service Connect Service Name for the region you’re trying to connect to:
 
-      | Region                 | Private Service Connect Service Name                           |
-      | ---------------------- | -------------------------------------------------------------- |
-      | `us-central1`          | `projects/TBD`                                                 |
-      | `australia-southeast1` | `projects/TBD`                                                 |
+      | Region                 | Private Service Connect Service Name                                           |
+      | ---------------------- | ------------------------------------------------------------------------------ |
+      | `us-central1`          | `projects/PROJECT/regions/us-central1/serviceAttachments/nlb-api-psc`          |
+      | `australia-southeast1` | `projects/PROJECT/regions/australia-southeast1/serviceAttachments/nlb-api-psc` |
 
   - For _Endpoint name_, enter a unique identifier to use for this endpoint. It could be for instance `temporal-api` or `temporal-api-<namespace>` if you want a different endpoint per namespace.
   - For _Network_ and _Subnetwork_, choose the network and subnetwork where you want to publish your endpoint.
