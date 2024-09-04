@@ -24,39 +24,68 @@ keywords:
 
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
 
-Building distributed applications of any size often requires a modular architecture and multiple teams collaborating, with each responsible for their slice of the overall application.
+Building and managing applications that can scale and adapt to changing needs is a challenge every organization faces. 
+As teams grow and applications evolve, modular architectures and seamless collaboration become critical. 
+With multiple teams collaborating, each responsible for their slice of the application, they want to build, operate, and deliver autonomously while allowing their slice to be used by others.
 
-Teams would like to build, operate, and deliver in an autonomous manner while allowing their slice to be used by other teams – but they also want the improved security and blast-radius isolation of separate namespaces.
+As applications grow in complexity, managing Workflows across multiple teams and Namespaces is increasingly challenging. 
+Existing solutions for modularizing a Temporal Application face several challenges, including tight coupling between Workflows that complicates management, limited modularity across Namespaces, security risks due to broad access permissions, complexity in managing cross-boundary interactions, and a lack of flexibility in adapting applications as they grow, often resulting in downtime or rework.
+Teams can struggle with collaboration, security, and flexibility in their Workflows.
 
-Existing solutions to modularize a Temporal application have several challenges:
-- Direct workflow to workflow integration is a leaky abstraction with tight coupling
-- Child Workflows don’t work across namespace boundaries in Temporal Cloud
-- Activities that invoke workflows in a different namespace often have full access via mTLS certs that must be exchanged and rotated, plus second-class observability and execution debugging.
+Temporal Nexus offers a powerful solution by providing a modular architecture that supports autonomous team collaboration and a clean separation of concerns - while maintaining strong integration across the organization.
+This ensures that applications remain scalable, secure, and easy to manage across multiple Namespaces and regions.
+
+**Key Capabilities:**
+- **Modular Architecture:** Break down applications into manageable pieces that can be developed, maintained, and scaled independently.
+- **Autonomous Collaboration:** Enable teams to work independently while maintaining secure and efficient integration with other teams.
+- **Clean Separation of Concerns:** Keep different parts of the application isolated and secure, reducing complexity and enhancing manageability.
+- **Scalability and Flexibility:** Support cross-namespace and cross-region Workflows, ensuring that your application can grow and adapt as your organization evolves.
+- **Enhanced Security:** Leverage mTLS communication, Namespace allowlists, and strict access controls to protect sensitive operations and ensure compliance.
+
+## Core Components of Temporal Nexus
 
 Temporal Nexus supports improved modularity and multi-team collaboration, by allowing teams to define a clean Nexus Service API contract for other teams to use, that abstract underlying Temporal primitives, like Workflows.
 
-Nexus Services are exposed from a Nexus Endpoint that is created in the Nexus API Registry, along with service documentation that enable others to use the Nexus Services provided by a Nexus Endpoint. 
-This enables teams to compose Nexus Services into their workflows, both within and across namespace boundaries.
+Nexus Services are exposed from a Nexus Endpoint that is created in the Nexus API Registry, along with service documentation that enable others to use the Nexus Services provided by a Nexus Endpoint. This enables teams to compose Nexus Services into their workflows, both within and across namespace boundaries.
 
 Nexus is designed to connect durable executions across team and namespace boundaries with an integrated Temporal SDK experience, built-in Nexus Machinery that processes Nexus RPC calls on your behalf, and promotes a more modular architecture for sharing a subset of your team’s capabilities via a well-defined Nexus Service API contract.
 
-- **Nexus API Registry**: A `Nexus API Registry` is a list of Nexus Endpoints available within a Temporal environment. Adding a Nexus Endpoint allows Nexus Operation requests to be sent to the Worker listening on the Endpoint’s target Namespace and Task Queue, from a caller Workflow using the name of the Endpoint in the Nexus API Registry.
+**Nexus API Registry:** A `Nexus API Registry` is a list of Nexus `Endpoints` available within a Temporal environment. 
+Adding a Nexus `Endpoint` allows Nexus Operation requests to be sent to the Worker listening on the Endpoint’s target Namespace and Task Queue, from a caller Workflow using the name of the Endpoint in the Nexus API Registry.
 
-- **Nexus Endpoints**: A Nexus Endpoint is like an API proxy that can serve one or more Nexus Services from a Worker listening on a target Namespace and Task Queue. 
-This enables presenting a clean API contract and hiding the underlying Temporal implementation, which may consist of internal Workflows, Signals, and other Temporal primitives – or arbitrary code. 
-In Temporal Cloud an endpoint’s access-control policy determines which callers are allowed to access a Nexus Endpoint.
+**Nexus Endpoints:** A Nexus `Endpoint` is like an API proxy that can serve one or more Nexus `Services` from a `Worker` listening on a target Namespace and Task Queue. 
+This enables presenting a clean API contract and hiding the underlying Temporal implementation, which may consist of internal `Workflows`, `Signals`, and other Temporal primitives – or arbitrary code. 
+In Temporal Cloud an endpoint’s access-control policy determines which callers are allowed to access a Nexus `Endpoint`.
 
-- **Nexus Services**: A Nexus Service is a named collection of arbitrary-duration Nexus Operations that provide an API contract suitable for sharing across team boundaries. Nexus Services are registered with a Worker that is listening on the target Namespace and Task Queue for an Endpoint.
-  
-- **Nexus Operations**: A Nexus Operation is not intrinsically durable, but can be made durable by backing it with Temporal primitives like a Workflow, Update, or Signal. 
-The Temporal SDK provides helper functions to create Nexus Operations that may be registered with a Nexus Service in a Worker. Synchronous Nexus Operations can also execute arbitrary code, but unlike Activities they should be relatively short-lived, due to the lack of heartbeats and a 10 second request timeout.
+**Nexus Services:** A Nexus `Service` is a named collection of arbitrary-duration Nexus `Operations` that provide an API contract suitable for sharing across team boundaries. 
+Nexus Services are registered with a `Worker` that is listening on the target Namespace and Task Queue for an `Endpoint`.
 
-For a deep dive into Temporal Nexus concepts, visit the following Temporal Encyclopedia pages:
+**Nexus Operations:** A Nexus `Operation` is not intrinsically durable, but can be made durable by backing it with Temporal primitives like a `Workflow`, `Update`, or `Signal`.
+The Temporal SDK provides helper functions to create Nexus Operations that may be registered with a Nexus Service in a `Worker`. 
+Synchronous Nexus `Operations` can also execute arbitrary code, but unlike `Activities` they have a [short request timeout](\#nexus-operation-request-timeout) (under 10 seconds) and don’t support [heartbeats](https://community.temporal.io/t/best-practices-for-long-running-activities/934).
 
-<RelatedReadContainer>
-    <RelatedReadItem path="/develop/go/cancellation" text="Handling Cancellation and Termination using the Go SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/php/cancellation" text="Handling Cancellation and Termination using the PHP SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/cancellation" text="Handling Cancellation and Termination using the Python SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/cancellation" text="Handling Cancellation and Termination using the TypeScript SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/dotnet/cancellation" text="Handling Cancellation and Termination using the .NET SDK" archetype="feature-guide" />
-</RelatedReadContainer>
+## Nexus in Action
+The developer experience for Nexus callers and handlers is the same across both OSS and Cloud environments. 
+Callers use the Temporal SDK to execute Nexus Operations within a Workflow, while handlers use the SDK to create Nexus Services that are registered with a Worker.
+
+Temporal Nexus is supported in three environments:
+
+* Development Temporal Service  
+  * Nexus must be enabled via dynamic config while in Public Preview.  
+* Self-hosted Temporal Service  
+  * Cross-namespace calls work within a self-hosted cluster  
+  * Nexus registry is cluster-scoped  
+  * Future releases may add cross-cluster Nexus registry support  
+  * See [configuration details for self-hosted](\#temporal-nexus-(public-preview))  
+* Temporal Cloud  
+  * Nexus registry is account-scoped  
+  * Cross-namespace calls work across cloud cells (clusters) and regions  
+  * See the [Temporal Nexus guide for Temporal Cloud](\#temporal-nexus-(public-preview)-1)  
+    
+
+For a deep dive into Temporal Nexus concepts visit the following Temporal Encyclopedia pages.
+
+* Nexus API Registry
+* Nexus Endpoints
+* Nexus Services
+* Nexus Operations
