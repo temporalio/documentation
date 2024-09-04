@@ -341,17 +341,17 @@ To send an Update to a Workflow Execution, you can:
   Language previousLanguage = workflow.setLanguage(Language.CHINESE);
   ```
 
-- Send [`startUpdate`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) to receive an [`UpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/UpdateHandle.html) as soon as the Update is accepted or rejected.
+- Send [`startUpdate`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) to receive an [`WorkflowUpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowUpdateHandle.html) as soon as the Update is accepted or rejected.
 
 
-  - Use this `UpdateHandle` later to fetch your results.
+  - Use this `WorkflowUpdateHandle` later to fetch your results.
   - Asynchronous Update handlers normally perform long-running async activities.
   - `startUpdate` only waits until the Worker has accepted or rejected the Update, not until all asynchronous operations are complete.
 
   For example:
 
   ```java
-  UpdateHandle<Language> handle =
+  WorkflowUpdateHandle<Language> handle =
       WorkflowStub.fromTyped(workflow)
           .startUpdate(
               "setLanguage", WorkflowUpdateStage.ACCEPTED, Language.class, Language.ENGLISH);
@@ -367,7 +367,7 @@ To obtain an Update handle, you can:
 - Use [`startUpdate`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) to start an Update and return the handle, as shown in the preceding example.
 - Use [`getUpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#getUpdateHandle(java.lang.String,java.lang.Class)) to fetch a handle for an in-progress Update using the Update ID and Workflow ID.
 
-You can use the `UpdateHandle` to obtain information about the update:
+You can use the `WorkflowUpdateHandle` to obtain information about the update:
 
   - `getExecution()`: Returns the Workflow Execution that this Update was sent to.
   - `getId()`: Returns the Update's unique ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
@@ -598,7 +598,7 @@ When working with Updates, you may encounter these errors:
   A [Workflow Task Failure](/references/failures) causes the server to retry Workflow Tasks indefinitely. What happens to your Update request depends on its stage:
     - If the request hasn't been accepted by the server, you receive a `FAILED_PRECONDITION` [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) exception.
     - If the request has been accepted, it is durable.
-      Once the Workflow is healthy again after a code deploy, use an `UpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/UpdateHandle.html) to fetch the Update result.
+      Once the Workflow is healthy again after a code deploy, use an `WorkflowUpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowUpdateHandle.html) to fetch the Update result.
 
 - **The Workflow finished while the Update handler execution was in progress**:
   You'll receive a [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) "workflow execution already completed"`.
