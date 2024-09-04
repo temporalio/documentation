@@ -194,11 +194,11 @@ public class MessagePassingIntro {
     The validator must return `void` and accept the same argument types as the handler.
 
 - Accepting and rejecting Updates with validators:
-  - To reject an Update, raise an exception of any type in the validator.
+  - To reject an Update, throw an exception of any type in the validator.
   - Without a validator, Updates are always accepted.
 - Validators and Event History:
   - The `WorkflowExecutionUpdateAccepted` event is written into the History whether the acceptance was automatic or programmatic.
-  - When a Validator raises an error, the Update is rejected, the Update is not run, and `WorkflowExecutionUpdateAccepted` _won't_ be added to the Event History.
+  - When a Validator throws an error, the Update is rejected, the Update is not run, and `WorkflowExecutionUpdateAccepted` _won't_ be added to the Event History.
     The caller receives an "Update failed" error.
 
 - Use [`getCurrentUpdateInfo`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/internal/sync/WorkflowInternal.html#getCurrentUpdateInfo()) to obtain information about the current Update. This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](https://docs.temporal.io/encyclopedia/workflow-message-passing#exactly-once-message-processing).
@@ -476,7 +476,7 @@ This allows you to write handlers that pause at multiple points, each time waiti
 
 `Workflow.await` can ensure your handler completes before a Workflow finishes.
 When your Workflow uses blocking Signal or Update handlers, your main Workflow method can return or Continue-as-New while a handler is still waiting on an async task, such as an Activity.
-The Workflow completing may interrupt the handler before it finishes crucial work and cause client errors when trying retrieve Update results.
+The Workflow completing may interrupt the handler before it finishes crucial work and cause client errors when trying to retrieve Update results.
 Use `Workflow.await` to wait for [`Workflow.isEveryHandlerFinished`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#isEveryHandlerFinished()) to return `true` to address this problem and allow your Workflow to end smoothly:
 
 ```java
@@ -492,7 +492,7 @@ public class MyWorkflowImpl implements MyWorkflow {
 ```
 
 By default, your Worker will log a warning when you allow a Workflow Execution to finish with unfinished handler executions.
-You can silence these warnings on a per-handler basis by passing the `unfinished_policy` argument to the [`@SignalMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/SignalMethod.html) / [`@UpdateMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/UpdateMethod.html) annotation:
+You can silence these warnings on a per-handler basis by passing the `unfinishedPolicy` argument to the [`@SignalMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/SignalMethod.html) / [`@UpdateMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/UpdateMethod.html) annotation:
 
 ```java
 @WorkflowInterface
@@ -564,11 +564,10 @@ See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exce
 
 ### Problems when sending a Signal {#signal-problems}
 
-When using Signal, the only exception that will result from your requests during its execution is `WorkflowException`.
-All handlers may experience additional exceptions during the initial (pre-Worker) part of a handler request lifecycle.
+When using Signal, the above `WorkflowException`s are the only types of exception that will result from the request.
 
-For Queries and Updates, the client waits for a response from the Worker.
-If an issue occurs during the handler Execution by the Worker, the client may receive an exception.
+In contrast, for Queries and Updates, the client waits for a response from the Worker.
+If an issue occurs during the handler execution by the Worker, the client may receive an exception.
 
 ### Problems when sending an Update {#update-problems}
 
@@ -577,7 +576,7 @@ When working with Updates, you may encounter these errors:
 - **No Workflow Workers are polling the Task Queue**:
   Your request will be retried by the SDK Client indefinitely.
   You can impose a timeout with `CompletableFuture.get()` method with a timeout parameter.
-  This raises a `java.util.concurrent.TimeoutException` exception when it expires.
+  This throws a `java.util.concurrent.TimeoutException` exception when it expires.
 
 - **Update failed**: You'll receive a `WorkflowUpdateException` exception.
   There are two ways this can happen:
@@ -592,8 +591,8 @@ When working with Updates, you may encounter these errors:
 
       - A failed Child Workflow
       - A failed Activity (if the Activity retries have been set to a finite number)
-      - The Workflow author raising `ApplicationFailure`
-      - Any error listed in [failWorkflowExceptionTypes](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkflowImplementationOptions.html#getFailWorkflowExceptionTypes()) (empty by default)
+      - The Workflow author throwing `ApplicationFailure`
+      - Any error listed in [getFailWorkflowExceptionTypes](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkflowImplementationOptions.html#getFailWorkflowExceptionTypes()) (empty by default)
 
 - **The handler caused the Workflow Task to fail**:
   A [Workflow Task Failure](/references/failures) causes the server to retry Workflow Tasks indefinitely. What happens to your Update request depends on its stage:
