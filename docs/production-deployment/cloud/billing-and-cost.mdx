@@ -30,28 +30,28 @@ tags:
   - invoice history
 ---
 
-The Account Owner and Finance Admin hold the ability to access and view detailed billing and cost information at any time, ensuring full transparency and control over financial aspects. If you need to assess your spending patterns, check invoice histories, or handle payment details, Temporal Cloud's Cost and Billing capabilities are able to provide the information you need.
+The Account Owner and Finance Admin hold the ability to access and view detailed billing and cost information at any time, ensuring full transparency and control over financial aspects. If you need to assess your spending patterns, credit ledger, check invoice histories, or handle payment details, Temporal Cloud's Cost and Billing capabilities are able to provide the information you need.
 
 For more information on Temporal Cloud pricing for actions, storage, and services/support, view [Pricing](/cloud/pricing).
 
-On the **Billing** page, you can find the following details:
+On the [Billing](https://cloud.temporal.io/billing) page, you can find the following details:
+
+If you are not on a standard plan, the Billing page may not include all of the information stated above. 
 
 - [Current Balance](#current-balance): Your balance accrued thus far in the billing cycle
 - [Recent bill](#recent-bill): The amount of your most recent bill
 - [Invoice history](#invoice): A record of all past invoices
+- [Credit ledger](#credit-table): A record of all credit related transactions
 - Credit information: If applicable, details about any credit grants, purchases, usage, and remaining credits.
 
-If you are not on a standard plan, the Billing page may not include all of the information stated above. 
-
-On the **Usage** page, you can find cost breakdown by namespace. View [Cost Details](#cost-details)
+On the [Usage](https://cloud.temporal.io/usage) page, you can find cost breakdown by namespace. This allow your to view cost accured broken down by Namespace. For more details on this, view [Cost Details](#cost-details) 
 
 ## How to navigate to your invoices
 
 To review your invoices, follow these steps:
 
-1. Click **Settings** on your left sidenav.
-2. Select the **Billing** tab.
-3. Under the **Invoices** section, download the invoice(s) you wish to review.
+1. Click **Billing** on your left sidenav.
+2. Under the **Invoices** section, download the invoice(s) you wish to review.
 
 ## Current balance {#current-balance}
 
@@ -79,8 +79,18 @@ The Invoices table has the following information:
 
 You have the ability to download your Invoices by clicking the download icon by the date. 
 
+## Credit table (#credit-table}
+
+Under the the credits table, you will find the following information:
+
+- Effective At (UTC) - date when the credit grant is effective
+- Type - details if the the transcation was a deduction, expiry, or grant
+- Amount - credit amount that was granted, deducted or expired 
+- Credits Remaining - the remaining available in the account
+
+
 ## Cost details {#cost-details}
 
 Account Owners may view the cost column on the Usage page, which shows the cost-per-Namespace for their account.
 Select a period such as Current Period, Last Month, Two Months ago, etc.
-You cannot combine periods, such as "last 90 days" or "last 120 days", to view accumulated costs.
+Cost details is not available for "last 90 days" or "last 120 days" time periods.
