@@ -154,7 +154,7 @@ tcld n export gcs g -n test.ns --sink-name test-sink
 2. **Files in GCS Bucket**: After the first hour, you should check your GCS bucket to see if the exported Workflow history files have landed. 
   These files will contain relevant data from closed Workflows. 
   The exported files will be located in your GCS bucket, following the specified format: 
-  ```bash
+  ```
   //[test-bucket]/temporal-workflow-history/export/[Namespace]/[Year]/[Month]/[Date]/[Hour]/[Minute]/
   ```
 3. **UI Updates**: Within the UI, you will find two important pieces of information
