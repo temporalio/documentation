@@ -334,7 +334,7 @@ test('sleeperWorkflow counts days correctly', async () => {
 
 Learn to skip time in Activities in the SDK of your choice.
 
-Call [`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.testworkflowenvironment/#sleep) from the mock Activity.
+Call [`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#sleep) from the mock Activity.
 
 In the following test, `processOrderWorkflow` sends a notification to the user after one day.
 The `processOrder` mocked Activity calls `testEnv.sleep(‘2 days')`, during which the Workflow sends email (by calling the `sendNotificationEmail` Activity).
