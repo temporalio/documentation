@@ -75,7 +75,7 @@ When connecting, you must override the TLS server name to target your Namespaceâ
 
   ```
   temporal workflow count \
-      --address <IP address with PSC endpoint>:7233 \
+      --address <IP address of the PSC endpoint>:7233 \
       --tls-cert-path /path/to/client.pem \
       --tls-key-path /path/to/client.key \
       --tls-server-name <namespace>.<account>.tmprl.cloud \
@@ -89,8 +89,8 @@ When connecting, you must override the TLS server name to target your Namespaceâ
       -servername <name>.<account>.tmprl.cloud \
       -cert /path/to/client.pem \
       -key /path/to/client.key \
-      <IP address with PSC endpoint>:7233 \
+      <IP address of the PSC endpoint>:7233 \
       temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
   ```
 
-- Temporal SDKs, by setting the endpoint server address argument to the Private Service Connect endpoint (`<IP address with PSC endpoint>:7233`) and using the TLS configuration options to override the TLS server name.
+- Temporal SDKs, by setting the endpoint server address argument to the Private Service Connect endpoint (`<IP address of the PSC endpoint>:7233`) and using the TLS configuration options to override the TLS server name.
