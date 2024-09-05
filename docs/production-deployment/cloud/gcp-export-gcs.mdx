@@ -30,9 +30,12 @@ tags:
 Before configuring the Export sink, please complete the following steps in Google Cloud.
 
 1. Create a GCS bucket and take note of its bucket name, for example, "test-export"
-Enable customer-managed encryption keys (CMEK) if you need additional security for your GCS bucket.
+
+   Enable customer-managed encryption keys (CMEK) if you need additional security for your GCS bucket.
+   
 2. Record the GCP Project ID that owns the bucket.
-Create a service account in the same project that grants Temporal permission to write to your GCS bucket.
+
+   Create a service account in the same project that grants Temporal permission to write to your GCS bucket.
 4. Follow the instructions in the Temporal Cloud UI, there are two ways to set up this service account:
     - Manual Setup:
       - Input the service account ID, GCP project ID and GCS bucket name.
