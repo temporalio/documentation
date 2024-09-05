@@ -614,7 +614,7 @@ const worker = await Worker.create({
 Update the API key on an existing `Connection` or `NativeConnection`:
 
 ```typescript
-connection.setApiKey(<APIKey>)
+connection.setApiKey(<APIKey>);
 ```
 
 #### TypeScript SDK (pre v 1.10.0)
@@ -626,7 +626,7 @@ const connection = await Connection.connect(
     address: <endpoint>,
     tls: true,
     metadata: {
-        'Authorization': `Bearer ${<APIKey>}`
+        'Authorization': `Bearer ${<APIKey>}`,
         'temporal-namespace': <namespace.accountid>,
     },
 )
