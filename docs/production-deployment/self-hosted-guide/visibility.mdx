@@ -106,7 +106,7 @@ For details on the configuration parameters and values, see [Temporal Service co
 To enable advanced Visibility features on your MySQL Visibility store, upgrade to MySQL v8.0.17 or later with Temporal Server v1.20 or later.
 See [Upgrade Server](/self-hosted-guide/upgrade-server#upgrade-server) on how to upgrade your Temporal Server and database schemas.
 
-For example configuration templates, see [MySQL Visibility store configuration](https://github.com/temporalio/temporal/blob/master/config/development-mysql.yaml).
+For example configuration templates, see [MySQL Visibility store configuration](https://github.com/temporalio/temporal/blob/main/config/development-mysql.yaml).
 
 **Database schema and setup**
 
@@ -288,7 +288,7 @@ SQLite (v3.31.0 and later) has advanced Visibility enabled by default.
 
 **Database schema and setup**
 
-Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in https://github.com/temporalio/temporal/blob/master/schema/sqlite/v3/visibility/schema.sql.
+Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in https://github.com/temporalio/temporal/blob/main/schema/sqlite/v3/visibility/schema.sql.
 
 For an example of setting up the SQLite schema, see [Temporalite](https://github.com/temporalio/temporalite/blob/main/server.go) setup.
 
