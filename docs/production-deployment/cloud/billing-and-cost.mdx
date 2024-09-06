@@ -36,28 +36,16 @@ Use this information to assess your spending patterns, inspect your credit ledge
 
 For more information on Temporal Cloud pricing for Actions, storage, and services/support, please visit our [Pricing](/cloud/pricing) page.
 
-Your [billing](https://cloud.temporal.io/billing) page includes all or some of the following information, based on your plan:
+Your [Billing](https://cloud.temporal.io/billing) page includes all or some of the following information, based on your plan:
 
 - [Current balance](#current-balance): Your balance to date for this billing cycle
 - [Recent bill](#recent-bill): The amount of your most recent bill
-- [Invoice table](#invoice): Access to all past invoices
-- [Credit table](#credit-table): A record of all credit related transactions.
+- [Invoices](#invoice): Access to all past invoices
+- [Credits](#credit-table): A record of all credit related transactions.
   This includes details on credit grants, purchases, usage, and remaining credits, if applicable.
-- [Usage details](#usage-details): A summary of the billable elements and storage used by your account.
 
-:::note Check Your Usage
-
-The [Usage](https://cloud.temporal.io/usage) page shows your cost breakdown by Namespace.
-If your organization separates work by Namespace—for development, production, or different products—you can view individual costs for each.
-
-:::
-
-## Navigate to your invoices {#review-invoices}
-
-To review your invoices, follow these steps:
-
-1. Click **Billing** on your left-side vertical navigation.
-2. Under **Invoices**, select and download the invoice(s) you want to review.
+Your [Usage](https://cloud.temporal.io/usage) provides an overview of your usage across your Namespaces.
+In addition, Account Owners can review [cost breakdowns](#cost-by-namespace) by Namespace.
 
 ## Current balance {#current-balance}
 
@@ -80,11 +68,17 @@ The "Recent Bill" card displays the previous bill amount.
 * If you are paying invoices through the Stripe portal, you'll also see a **Pay Now** button, which takes you to the Stripe portal to complete your payment.
 * If your account is set up for auto-payment, you don’t need to pay the bill manually, however you can choose to make a manual payment whenever you wish.
 
-## Invoice table {#invoice}
+## Invoices {#invoice}
+
+To review your invoices, follow these steps:
+
+1. Click **Billing** on your left-side vertical navigation.
+2. Under **Invoices**, click the icon to download the invoice(s) you want to review.
+
 
 The Invoices table shows the following information:
 
-- Effective At (UTC): The date range covered by the invoice.
+- Date (UTC): The date range covered by the invoice.
 - Type: The type of invoice, such as credit purchase or cloud usage.
 - Credit Granted: The total credits added to your account.
 - Credit Purchase Amount: The amount paid for purchasing credits.
@@ -94,35 +88,34 @@ The Invoices table shows the following information:
 
 ![Billing page showing Invoices tab](/img/billing/billing-invoices.png)
 
-Click the download icon next to the date to download your invoice.
-
 :::note Current Month Invoice
 
 During the current billing period, your invoice will not been finalized and the download option will not be available.
 
 :::
 
-## Credit table {#credit-table}
+## Credits {#credit-table}
 
 The following information appears under the credits table.
 
-- Date (UTC): The date when the credit grant became effective
+- Effective At (UTC): The date when the credit grant became effective
 - Type: Indicates whether the transaction was a deduction, expiry, or grant
 - Amount: The credit amount that was granted, deducted, or expired
 - Credits Remaining: The remaining credit available in the account
 
 ![Billing page showing Credits tab](/img/billing/billing-credits.png)
 
-## Usage details {#usage-details}
+## Cost by Namespace {#cost-by-namespace}
 
-The Usage page shows usage details for your account.
-Select a period from the top-right corner drop-down menu, such as Current Period, Last Month, Two Months ago, etc.
+Account Owners can access a cost column on the Usage page.
+This allows you to monitor your cost on a per Namespace basis.
+If your organization separates work by Namespace—for development, production, or different products—you can view costs for each.
 
 ![Billing page showing Usage](/img/billing/billing-usage.png)
 
-:::note Usage details
+:::note Cost Breakdown Limitations
 
-- Usage details are not available for combined periods like "last 90 days" or "last 120 days".
-- Account Owners may access the cost column on the Usage page, which shows the cost-per-Namespace for your account.
+- Namespace cost details are not available for "last 90 days" or "last 120 days".
 
 :::
+
