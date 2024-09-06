@@ -24,7 +24,7 @@ This page shows how to do the following:
 - [Workflow retries](#workflow-retries)
 - [Activity Timeouts](#activity-timeouts)
 - [Activity Retry Policy](#activity-retries)
-- [Activity Next Retry Delay](#activity-next-retry-delay)
+- [Activity next Retry delay](#activity-next-retry-delay)
 - [Heartbeat an Activity](#activity-heartbeats)
 - [Activity Heartbeat Timeout](#activity-heartbeat-timeout)
 
@@ -128,14 +128,14 @@ const { myActivity } = proxyActivities<typeof activities>({
 });
 ```
 
-## Activity Next Retry Delay {#activity-next-retry-delay}
+## Activity next Retry delay {#activity-next-retry-delay}
 
-**How to override the Next Retry Delay following an Activity failure using the Temporal TypeScript SDK**
+**How to override the next Retry delay following an Activity failure using the Temporal TypeScript SDK**
 
 The time to wait after a retryable Activity failure until the next retry is attempted is normally determined by that Activity's Retry Policy.
-However, an Activity may override that duration when explicitly failing with an [`ApplicationFailure`](https://typescript.temporal.io/api/classes/common.ApplicationFailure) by setting a Next Retry Delay.
+However, an Activity may override that duration when explicitly failing with an [`ApplicationFailure`](https://typescript.temporal.io/api/classes/common.ApplicationFailure) by setting a next Retry delay.
 
-To override the Next Retry Delay for an `ApplicationFailure` thrown by an Activity in TypeScript, provide the [`nextRetryDelay`](https://typescript.temporal.io/api/interfaces/common.ApplicationFailureOptions#nextretrydelay) property on the object argument of the [`ApplicationFailure.create()`](https://typescript.temporal.io/api/classes/common.ApplicationFailure#create) factory method.
+To override the next Retry delay for an `ApplicationFailure` thrown by an Activity in TypeScript, provide the [`nextRetryDelay`](https://typescript.temporal.io/api/interfaces/common.ApplicationFailureOptions#nextretrydelay) property on the object argument of the [`ApplicationFailure.create()`](https://typescript.temporal.io/api/classes/common.ApplicationFailure#create) factory method.
 
 ```typescript
 throw ApplicationFailure.create({
