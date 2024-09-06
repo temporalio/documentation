@@ -1,9 +1,9 @@
 ---
 id: billing-and-cost
-title: Billing and Cost
+title: Billing and cost
 sidebar_label: Billing and cost
 sidebar_position: 3
-description: As an Account Owner, you can access and manage billing details anytime, with invoices available for download on the Billing page. The typical billing cycle begins on the first of the month (UTC).
+description: As an Account Owner, you can access and manage billing details anytime, with invoices available for download on the Billing page. Typical billing cycles begin on the first of the month (UTC).
 slug: /cloud/billing-and-cost
 toc_max_heading_level: 4
 keywords:
@@ -30,49 +30,99 @@ tags:
   - invoice history
 ---
 
-The Account Owner and Finance Admin hold the ability to access and view detailed billing and cost information at any time, ensuring full transparency and control over financial aspects. If you need to assess your spending patterns, check invoice histories, or handle payment details, Temporal Cloud's Cost and Billing capabilities are able to provide the information you need.
+Temporal strives to provide full transparency over billing and costs.
+Account Owners and Finance Admins can view their [detailed billing information](https://cloud.temporal.io/billing) at any time.
+Use this information to assess your spending patterns, inspect your credit ledger, check your invoice histories, or update payment details as needed.
 
-For more information on Temporal Cloud pricing for actions, storage, and services/support, view [Pricing](/cloud/pricing).
+For more information on Temporal Cloud pricing for Actions, storage, and services/support, please visit our [Pricing](/cloud/pricing) page.
 
-On the **Billing** page, you can find the following details:
+Your [billing](https://cloud.temporal.io/billing) page includes all or some of the following information, based on your plan:
 
-- [Current Balance](#current-balance): Your balance accrued thus far in the billing cycle
+- [Current balance](#current-balance): Your balance to date for this billing cycle
 - [Recent bill](#recent-bill): The amount of your most recent bill
-- [Invoice history](#invoice): A record of all past invoices
-- Credit information: If applicable, details about any credit grants, purchases, usage, and remaining credits.
+- [Invoice table](#invoice): Access to all past invoices
+- [Credit table](#credit-table): A record of all credit related transactions.
+  This includes details on credit grants, purchases, usage, and remaining credits, if applicable.
+- [Usage details](#usage-details): A summary of the billable elements and storage used by your account.
 
-If you are not on a standard plan, the Billing page may not include all of the information stated above. 
+:::note Check Your Usage
 
-## How to navigate to your invoices
+The [Usage](https://cloud.temporal.io/usage) page shows your cost breakdown by Namespace.
+If your organization separates work by Namespace—for development, production, or different products—you can view individual costs for each.
+
+:::
+
+## Navigate to your invoices {#review-invoices}
 
 To review your invoices, follow these steps:
 
-1. Click **Settings** on your left sidenav.
-2. Select the **Billing** tab.
-3. Under the **Invoices** section, download the invoice(s) you wish to review.
+1. Click **Billing** on your left-side vertical navigation.
+2. Under **Invoices**, select and download the invoice(s) you want to review.
 
 ## Current balance {#current-balance}
 
-The current balance card displays the balance accrued thus far in the billing cycle. You will see the date when this data was last updated. Note, this information will change based on usage. This data also corresponds to the first line in the Invoices table. 
+Your current balance card shows the balance for your current billing cycle and the date it was last updated.
+This balance adjusts with use and appears on the first line of your Invoices table.
 
-The typical billing cycle begins on the first of the month (UTC). The minimum support fee for your first month is prorated based on when you sign up.
+:::note Billing Cycles
+
+Billing cycles normally begin on the first of the month (UTC).
+The minimum support fee for your first month is prorated based on your sign-up date.
+
+:::
 
 ## Recent bill {#recent-bill}
 
-The recent bill card displays the last bill amount. If you are paying invoices through the Stripe portal, you will see a **Pay Now** button. The **Pay Now** button will take you to the Stripe portal for you to complete your payment. If the account is set up for auto-payment, no action is required to pay the bill manually, but it’s available if needed. 
+The "Recent Bill" card displays the previous bill amount.
+
+![Recent bill card showing a balance of $0.00](/img/billing/billing-card.png)
+
+* If you are paying invoices through the Stripe portal, you'll also see a **Pay Now** button, which takes you to the Stripe portal to complete your payment.
+* If your account is set up for auto-payment, you don’t need to pay the bill manually, however you can choose to make a manual payment whenever you wish.
 
 ## Invoice table {#invoice}
 
-For the current date or billing period, you will not have the download invoice option available as the Invoice has not been finalized. 
+The Invoices table shows the following information:
 
-The Invoices table has the following information: 
+- Effective At (UTC): The date range covered by the invoice.
+- Type: The type of invoice, such as credit purchase or cloud usage.
+- Credit Granted: The total credits added to your account.
+- Credit Purchase Amount: The amount paid for purchasing credits.
+- Credit Usage: The credits used during the billing cycle.
+- Subtotal: The total amount of the invoice before any adjustments.
+- Balance Due: The amount to pay after applying credits.
 
-- Date (UTC) - date range for the invoice
-- Type - Invoice type, credit purchase or cloud usage
-- Credit Granted - Amount of credits added to your account
-- Credit Purchase Amount - Amount paid for credits purchase
-- Credit Usage - Amount of credits used this billing cycle
-- Subtotal - Invoice amount
-- Balance due - Balance remaining after credits are granted
+![Billing page showing Invoices tab](/img/billing/billing-invoices.png)
 
-You have the ability to download your Invoices by clicking the download icon by the date. 
+Click the download icon next to the date to download your invoice.
+
+:::note Current Month Invoice
+
+During the current billing period, your invoice will not been finalized and the download option will not be available.
+
+:::
+
+## Credit table {#credit-table}
+
+The following information appears under the credits table.
+
+- Date (UTC): The date when the credit grant became effective
+- Type: Indicates whether the transaction was a deduction, expiry, or grant
+- Amount: The credit amount that was granted, deducted, or expired
+- Credits Remaining: The remaining credit available in the account
+
+![Billing page showing Credits tab](/img/billing/billing-credits.png)
+
+## Usage details {#usage-details}
+
+The Usage page shows usage details for your account.
+Select a period from the top-right such as Current Period, Last Month, Two Months ago, etc.
+
+![Billing page showing Usage](/img/billing/billing-usage.png)
+
+:::note Usage details
+
+- Usage details are not available for combined periods like "last 90 days" or "last 120 days".
+- Account Owners may access the cost column on the Usage page, which shows the cost-per-Namespace for your account.
+
+:::
