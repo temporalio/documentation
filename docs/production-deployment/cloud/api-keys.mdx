@@ -574,6 +574,86 @@ myClient.Connection.RpcMetadata = new Dictionary<string, string>()
 };
 ```
 
+#### TypeScript SDK (v 1.10.0+)
+
+Create an initial `Connection` (for use with `Client`):
+
+```typescript
+const connection = await Connection.connect(
+    address: <endpoint>,
+    tls: true,
+    apiKey: <APIKey>,
+    metadata: {
+        'temporal-namespace': <namespace.accountid>,
+    },
+)
+const client = new Client({
+    connection,
+    namespace: <namespace.accountid>,
+});
+```
+
+Create an initial Worker `NativeConnection` (for use with `Worker`):
+
+```typescript
+const connection = await NativeConnection.connect(
+    address: <endpoint>,
+    tls: true,
+    apiKey: <APIKey>,
+    metadata: {
+      'temporal-namespace': <namespace.accountid>,
+    },
+)
+const worker = await Worker.create({
+    connection,
+    namespace: <namespace.accountid>,
+    // ...
+});
+```
+
+Update the API key on an existing `Connection` or `NativeConnection`:
+
+```typescript
+connection.setApiKey(<APIKey>);
+```
+
+#### TypeScript SDK (pre v 1.10.0)
+
+Create an initial `Connection` (for use with `Client`):
+
+```typescript
+const connection = await Connection.connect(
+    address: <endpoint>,
+    tls: true,
+    metadata: {
+        'Authorization': `Bearer ${<APIKey>}`,
+        'temporal-namespace': <namespace.accountid>,
+    },
+)
+const client = new Client({
+    connection,
+    namespace: <namespace.accountid>,
+});
+```
+
+Create an initial Worker `NativeConnection` (for use with `Worker`):
+
+```typescript
+const connection = await NativeConnection.connect(
+    address: <endpoint>,
+    tls: true,
+    metadata: {
+        'Authorization': `Bearer ${<APIKey>}`
+        'temporal-namespace': <namespace.accountid>,
+    },
+)
+const worker = await Worker.create({
+    connection,
+    namespace: <namespace.accountid>,
+    // ...
+});
+```
+
 ### `tcld`
 
 To use an API key with `tcld`, choose one of these methods:
@@ -585,7 +665,6 @@ To use an API key with `tcld`, choose one of these methods:
 
 To use an API key with the [Cloud Ops API](/ops), securely pass the API key in your API client.
 For a complete example, see [Cloud Samples in Go](https://github.com/temporalio/cloud-samples-go/blob/1dd4254b6ed1937e361005c0144410e72b8a5542/client/api/apikey.go).
-
 
 ### Terraform Provider
 
