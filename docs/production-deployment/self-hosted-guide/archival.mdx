@@ -252,9 +252,9 @@ func(a * Archiver) Archive(ctx context.Context, URI string, request * ArchiveReq
 
 **How does my history archiver implementation read history?**
 
-The archiver package provides a utility called [HistoryIterator](https://github.com/temporalio/temporal/blob/main/common/archiver/historyIterator.go) which is a wrapper of [ExecutionManager](https://github.com/temporalio/temporal/blob/main/common/persistence/dataInterfaces.go#L1014).
+The archiver package provides a utility called [HistoryIterator](https://github.com/temporalio/temporal/blob/main/common/archiver/historyIterator.go) which is a wrapper of [ExecutionManager](https://github.com/temporalio/temporal/blob/main/common/persistence/data_interfaces.go#L1014).
 `HistoryIterator` is more simple than the `HistoryManager`, which is available in the BootstrapContainer, so archiver implementations can choose to use it when reading Workflow histories.
-See the [historyIterator.go](https://github.com/temporalio/temporal/blob/main/common/archiver/historyIterator.go) file for more details.
+See the [historyIterator.go](https://github.com/temporalio/temporal/blob/main/common/archiver/history_iterator.go) file for more details.
 Use the [filestore historyArchiver implementation](https://github.com/temporalio/temporal/tree/main/common/archiver/filestore) as an example.
 
 **Should my archiver define its own error types?**
