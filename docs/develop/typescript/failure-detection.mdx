@@ -2,7 +2,7 @@
 id: failure-detection
 title: Failure detection - TypeScript SDK feature guide
 sidebar_label: Failure detection
-description: Learn how to set Workflow and Activity Timeouts, implement Retry Policies, and manage Activity Heartbeats using the Temporal .NET SDK for efficient Workflow Execution.
+description: Learn how to set Workflow and Activity Timeouts, implement Retry Policies, and manage Activity Heartbeats using the Temporal TypeScript SDK for efficient Workflow Execution.
 toc_max_heading_level: 4
 keywords:
   - guide context
@@ -132,7 +132,7 @@ const { myActivity } = proxyActivities<typeof activities>({
 
 **How to override the Next Retry Delay following an Activity failure using the Temporal TypeScript SDK**
 
-The time to wait after a retryable Activity failure until the next retry is attempted is normaly determined by that Activity's Retry Policy.
+The time to wait after a retryable Activity failure until the next retry is attempted is normally determined by that Activity's Retry Policy.
 However, an Activity may override that duration when explicitly failing with an [`ApplicationFailure`](https://typescript.temporal.io/api/classes/common.ApplicationFailure) by setting a Next Retry Delay.
 
 To override the Next Retry Delay for an `ApplicationFailure` thrown by an Activity in TypeScript, provide the [`nextRetryDelay`](https://typescript.temporal.io/api/interfaces/common.ApplicationFailureOptions#nextretrydelay) property on the object argument of the [`ApplicationFailure.create()`](https://typescript.temporal.io/api/classes/common.ApplicationFailure#create) factory method.
