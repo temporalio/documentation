@@ -518,15 +518,13 @@ See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exce
 
 ### Problems when sending a Signal {#signal-problems}
 
-When using Signal, the only exception that will result from your requests during its execution is `RPCError`.
-All handlers may experience additional exceptions during the initial (pre-Worker) part of a handler request lifecycle.
+When using Signal, the only exceptions that will result from your requests during its execution are the `RPCError`s described above.
 
-For Queries and Updates, the client waits for a response from the Worker.
-If an issue occurs during the handler Execution by the Worker, the client may receive an exception.
+For Queries and Updates, the client waits for a response from the Worker, and therefore additional errors may occur during the handler Execution by the Worker.
 
 ### Problems when sending an Update {#update-problems}
 
-When working with Updates, you may encounter these errors:
+When working with Updates, in addition to the `RPCError`s described above, you may encounter these errors:
 
 - **No Workflow Workers are polling the Task Queue**:
   Your request will be retried by the SDK Client indefinitely.
@@ -565,7 +563,7 @@ When working with Updates, you may encounter these errors:
 
 ### Problems when sending a Query {#query-problems}
 
-When working with Queries, you may encounter these errors:
+When working with Queries, in addition to the `RPCError`s described above, you may encounter these errors:
 
 - **There is no Workflow Worker polling the Task Queue**:
   You'll receive a [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) exception on which the `status` attribute is [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `FAILED_PRECONDITION`.
