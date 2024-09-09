@@ -35,43 +35,95 @@ It is flexible, transparent, and predictable so you know your costs and never pa
 
 This page introduces the elements of Temporal Cloud pricing for [actions](#action), [storage](#storage), and [services/support](#support).
 It gives you the information you need to estimate costs for your implementation.
-For more accurate estimates, [reach out to our team](https://pages.temporal.io/contact-us). Once you have an account, you can view your cost and billing details in the account directly. For more information, view [Billing and Cost](/cloud/billing-and-cost).
+For more exact estimates, [reach out to our team](https://pages.temporal.io/contact-us). Once you have an account, you can view your cost and billing details in the account directly. For more information, view [Billing and Cost](/cloud/billing-and-cost).
 
 ## Action pricing {#action}
 
-**What is an Action?**
+**What's an Action?**
 
 Actions serve as the primary unit of consumption-based pricing for Temporal Cloud.
 Temporal Actions are the building blocks for Workflow Executions.
 When you execute a Temporal Workflow, its Actions create the ongoing state and progress of your Temporal Application.
 
 Actions are collected and billed monthly for each Namespace.
-The base rate is &#36;25 per one million Actions per month (across all Namespaces).
+The base rate is &#36;25 per one million Actions per month.
+This rate applies across all Namespaces.
 You will be billed for a prorated portion of the Actions you use.
 If you use fewer than one million Actions per month, your bill for Actions will be less than &#36;25 for that month.
 
 | Actions | &#36;25 per one million (prorated) |
 | ------- | ---------------------------------- |
 
-Temporal Cloud also offers a credit system.
+### Credit System {#credit-system}
+
+**How does Temporal Cloud's credit system work?**
+
+Temporal Cloud offers a credit system.
 Credits provide an additional discount schedule for billable Actions and [storage](#storage).
 Credits do not expire.
 
-The credits applied to a Temporal Cloud Account include volume-based discounts for each Namespace.
-Pricing may not be uniform per Namespace.
-For example, under one credit commitment, a Namespace may use up to 300 million Actions priced at &#36;23.25 per million Actions.
-Another Namespace with over 300 million Actions benefits from a reduced rate of &#36;18.80 per million Actions for any Actions beyond the 300 million mark.
-
-The following table outlines the tiers for the credits system:
+Credits applied to a Temporal Cloud Account unlock volume-based discounts.
+Discounts are applied separately to each Namespace so pricing may not be uniform between Namespaces. This table shows our credit tiers and thresholds:
 
 | Actions (Per Million Actions per Namespace) | Cost       |
-| ------------------------------------------- | ---------- |
-| Up to 300M                                  | &#36;23.25 |
-| Over 300M up to 1.5B                        | &#36;18.80 |
-| Over 1.5B up to 7.5B                        | &#36;14.10 |
-| Over 7.5B up to 30B                         | &#36;10.50 |
-| Over 30B up to 150B                         | &#36;7.90  |
+|---------------------------------------------|------------|
+| First 300M Actions                          | &#36;23.25 |
+| Over 1.2B up to 1.5B                        | &#36;18.80 |
+| Over 6B up to 7.5B                          | &#36;14.10 |
+| Over 22.5B up to 30B                        | &#36;10.50 |
+| Over 120B up to 150B                        | &#36;7.90  |
 | Over 150B                                   | &#36;5.90  |
+
+### Calculating Action costs
+
+**How does tiered invoicing work?**
+
+Consider an account eligible for volume discounts that uses two Namespaces.
+In this example, one Namespace consumed 100 million Actions in a calendar month and one consumed 500 million Actions during the same month.
+Here's how the billing works for these two Namespaces and across tiers:
+
+- The first Namespace using 100 million Actions is billed at the &#36;23.25 per million Actions tier, a &#36;2,325 invoice line item.
+
+  ```
+  100M Actions ⨉ $23.25 per million Actions = $2,325 (Namespace total)
+  ```
+
+- The second Namespace with 500 million Actions is billed as follows:
+  - The first 300 million Actions are billed at the &#36;23.25 Actions tier.
+
+    ```
+    300M Actions ⨉ $23.25 per million Actions = $6,975
+    ```
+
+  - The remaining 200 million Actions are billed at the &#36;18.80 per million Actions tier.
+
+    ```
+    200M Actions ⨉ $18.80 per million Actions = $3,760
+    ```
+
+  Calculating the invoice line item for the second Namespace:
+
+  ```
+  $6,975 (300M Actions) + $3,760 (200M Actions) = $10,735 (Namespace total)
+  ```
+
+- The account would be charged a total of &#36;13,060 for the month:
+
+  ```
+  $2,325 for the first Namespace + $10,735 for the second Namespace = $13,060 (invoice total)
+  ```
+
+If you have additional questions about credits and volume-based discounts, please see our [Services and Support](https://docs.temporal.io/cloud/support) page or reach out to [our team](https://pages.temporal.io/contact-us).
+
+:::note
+
+Read more about billing cycles, invoices, and payments on our [Billing and cost](/cloud/billing-and-cost) page.
+
+:::
+
+### Actions and operations {#action-and-operations}
+
+**How are Actions counted?**
 
 The following operations result in Actions:
 
@@ -122,7 +174,7 @@ The following operations result in Actions:
 **Schedules**
 
 [Schedules](/workflows#schedule) allows you to "schedule" a Workflow to start at a particular time.
-Each execution of a Schedule will accrue three actions:
+Each execution of a Schedule accrues three actions:
 
 - **Schedule Start**.
   This accounts for two actions.
@@ -162,6 +214,7 @@ Both kinds of storage have fixed costs.
 | Active      | &#36;0.042             |
 
 If you purchase Temporal Cloud credits (as [outlined earlier](#action)), active storage costs are tiered and measured in gigabyte-hours.
+Like Action pricing, each storage tier applies per Namespace.
 
 | **Active Storage (Per GB Hour Per Namespace)** | **Cost (USD)** |
 | ---------------------------------------------- | -------------- |
@@ -172,7 +225,46 @@ If you purchase Temporal Cloud credits (as [outlined earlier](#action)), active 
 | Over 400,000 up to 1,500,000                   | &#36;0.013     |
 | Over 1,500,000                                 | &#36;0.010     |
 
-## Multi-region Namespace pricing {#multi-region}
+### Calculating Storage costs
+
+**How does tiered invoicing work?**
+
+Consider an account eligible for volume discounts that uses two Namespaces.
+In this example, one Namespace used 5000 GBh of active storage during a calendar month.
+A second used 14000 GBh of Active Storage during the same calendar month.
+Here's how Active Storage will be billed for these two Namespaces:
+
+- The first Namespace is charged entirely at the &#36;0.039 tier:
+
+  ```
+  5000 GBh ⨉ $0.039 per GBh = $117 (total Active Storage cost for first Namespace)
+  ```
+
+- The second Namespace is charged at the &#36;0.039 tier for the first 7000 GBh, and at the &#36;0.031 tier for the remaining 7000 GBh.
+
+  ```
+  7000 GBh ⨉ $0.039 per GBh = $273
+  7000 GBh ⨉ $0.031 per GBh = $217
+  $273 + $217 = $490 (total Active Storage cost for second Namespace)
+  ```
+
+- The account would be charged $753 for the month:
+
+  ```
+  $273 for Namespace 1 + $490 for Namespace 2 = $753 Active Storage cost
+  ```
+
+If you have additional questions about credits and volume-based discounts, please see our [Services and Support](https://docs.temporal.io/cloud/support) page or reach out to [our team](https://pages.temporal.io/contact-us).
+
+:::note
+
+Read more about billing cycles, invoices, and payments on our [Billing and cost](/cloud/billing-and-cost) page.
+
+:::
+
+## Multi-region Namespace (MRN) pricing {#multi-region}
+
+**How does MRN costs work?**
 
 For workloads with stringent high-availability requirements, Temporal Cloud provides multi-region Namespaces (MRNs), which add a failover capability.
 Each multi-region Namespace automatically replicates Workflow Execution data and metadata to a standby region.
@@ -206,6 +298,8 @@ It breaks out storage and replicated storage into their own line items.
 
 ## SSO and SAML pricing {#sso-and-saml}
 
+**What costs are associated with SSO/SAML use?**
+
 We offer single sign-on (SSO) integration using SAML at a monthly fixed fee based on the number of users registered in Temporal Cloud:
 
 | **Users** | **Cost per month** |
@@ -233,7 +327,7 @@ A more complete description of each level can be found on our [Services and Supp
 | ------------------- | ------------------------------------------- | --------------------------------------------- |
 | Pricing (per month) | Greater of &#36;200 or 10% of monthly usage | Greater of &#36;2,000 or 10% of monthly usage |
 
-## Pricing Estimates
+## Pricing Estimates {#pricing-estimates}
 
 Temporal Cloud uses a consumption-based pricing model based primarily on Actions and storage.
 Each workload is different.
@@ -272,7 +366,7 @@ You can purchase Temporal Cloud credits by contacting our team at [sales@tempora
 
 The Temporal Cloud service is consumption-based.
 You pay only for what you need with no minimum usage requirement.
-Basic support has a monthly fee starting from $200.
+Basic support has a monthly fee starting from &#36;200.
 
 **Can I purchase Temporal Cloud through my Amazon, Azure, or Google Cloud Platform marketplace?**
 
