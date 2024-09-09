@@ -59,55 +59,54 @@ If you use fewer than one million Actions per month, your bill for Actions will 
 **How does Temporal Cloud's credit system work?**
 
 Temporal Cloud offers a credit system.
-Credits provide an additional discount schedule for billable Actions and [storage](#storage).
+Credits provide an additional discount schedule for billable [Actions](#action-and-operations) and [storage](#storage).
 Credits do not expire.
 
 Credits applied to a Temporal Cloud Account unlock volume-based discounts.
-Discounts are applied separately to each Namespace so pricing may not be uniform between Namespaces. This table shows our credit tiers and thresholds:
+Discounts are applied separately to each Namespace so pricing may not be uniform between Namespaces. This table shows our credit tiers and thresholds for each calendar month of use:
 
-| Actions (Per Million Actions per Namespace) | Cost       |
+| Actions (per Namespace)    | Price per Million Actions   |
 |---------------------------------------------|------------|
 | First 300M Actions                          | &#36;23.25 |
-| Over 1.2B up to 1.5B                        | &#36;18.80 |
-| Over 6B up to 7.5B                          | &#36;14.10 |
-| Over 22.5B up to 30B                        | &#36;10.50 |
-| Over 120B up to 150B                        | &#36;7.90  |
+| Next 1.2B, up to 1.5B                       | &#36;18.80 |
+| Next 6B, up to 7.5B                         | &#36;14.10 |
+| Next 22.5B, up to 30B                       | &#36;10.50 |
+| Next 120B, up to 150B                       | &#36;7.90  |
 | Over 150B                                   | &#36;5.90  |
+
+:::tip HOW TO PURCHASE CREDITS
+
+You can purchase Temporal Cloud credits by contacting our team at [sales@temporal.io](mailto:sales@temporal.io).
+
+:::
 
 ### Calculating Action costs
 
-**How does tiered invoicing work?**
+**How does tiered volume pricing work?**
 
-Consider an account eligible for volume discounts that uses two Namespaces.
-In this example, one Namespace consumed 100 million Actions in a calendar month and one consumed 500 million Actions during the same month.
-Here's how the billing works for these two Namespaces and across tiers:
+When you purchase Temporal Cloud with credits your account automatically unlock tiered price volume discounts.
+Volume prices are calculated on a calendar month basis and reset every calendar month.
 
-- The first Namespace using 100 million Actions is billed at the &#36;23.25 per million Actions tier, a &#36;2,325 invoice line item.
+Here's an example that demonstrates how this works.
+Consider a Temporal Cloud account paid for with credits, so it's eligible for volume discounts.
+This account uses two Namespaces.
+In this example, one Namespace consumes 100 million Actions in a calendar month and one consumes 500 million Actions during the same month.
+Here's how the billing works for these two Namespaces, and how the account is invoiced for the month.
+
+- The first Namespace using 100 million Actions is billed entirely at the &#36;23.25 per million Actions tier:
 
   ```
   100M Actions ⨉ $23.25 per million Actions = $2,325 (Namespace total)
   ```
 
-- The second Namespace with 500 million Actions is billed as follows:
-  - The first 300 million Actions are billed at the &#36;23.25 Actions tier.
-
-    ```
-    300M Actions ⨉ $23.25 per million Actions = $6,975
-    ```
-
-  - The remaining 200 million Actions are billed at the &#36;18.80 per million Actions tier.
-
-    ```
-    200M Actions ⨉ $18.80 per million Actions = $3,760
-    ```
-
-  Calculating the invoice line item for the second Namespace:
+- The second Namespace with 500 million Actions is billed at the &#36;23.25 Actions tier for the first 300 million Actions and at the &#36;18.80 per million Actions tier for the remaining 200 million Actions:
 
   ```
+  300M Actions ⨉ $23.25 per million Actions = $6,975
+  200M Actions ⨉ $18.80 per million Actions = $3,760
   $6,975 (300M Actions) + $3,760 (200M Actions) = $10,735 (Namespace total)
   ```
-
-- The account would be charged a total of &#36;13,060 for the month:
+- The account is charged a total of &#36;13,060 for the month:
 
   ```
   $2,325 for the first Namespace + $10,735 for the second Namespace = $13,060 (invoice total)
@@ -115,7 +114,7 @@ Here's how the billing works for these two Namespaces and across tiers:
 
 If you have additional questions about credits and volume-based discounts, please see our [Services and Support](https://docs.temporal.io/cloud/support) page or reach out to [our team](https://pages.temporal.io/contact-us).
 
-:::note
+:::tip BILLING AND COST
 
 Read more about billing cycles, invoices, and payments on our [Billing and cost](/cloud/billing-and-cost) page.
 
@@ -219,17 +218,17 @@ Like Action pricing, each storage tier applies per Namespace.
 | **Active Storage (Per GB Hour Per Namespace)** | **Cost (USD)** |
 | ---------------------------------------------- | -------------- |
 | Up to 7,000                                    | &#36;0.039     |
-| Over 7,000 up to 30,000                        | &#36;0.031     |
-| Over 30,000 up to 90,000                       | &#36;0.023     |
-| Over 90,000 up to 400,000                      | &#36;0.018     |
-| Over 400,000 up to 1,500,000                   | &#36;0.013     |
+| Over 7,000, up to 30,000                       | &#36;0.031     |
+| Over 30,000, up to 90,000                      | &#36;0.023     |
+| Over 90,000, up to 400,00                      | &#36;0.018     |
+| Over 400,000, up to 1,500000                   | &#36;0.013     |
 | Over 1,500,000                                 | &#36;0.010     |
 
 ### Calculating Storage costs
 
 **How does tiered invoicing work?**
 
-Consider an account eligible for volume discounts that uses two Namespaces.
+Consider an account [eligible for volume discounts](#credit-system) that uses two Namespaces.
 In this example, one Namespace used 5000 GBh of active storage during a calendar month.
 A second used 14000 GBh of Active Storage during the same calendar month.
 Here's how Active Storage will be billed for these two Namespaces:
@@ -248,7 +247,7 @@ Here's how Active Storage will be billed for these two Namespaces:
   $273 + $217 = $490 (total Active Storage cost for second Namespace)
   ```
 
-- The account would be charged $753 for the month:
+- The account is charged $753 for the month:
 
   ```
   $273 for Namespace 1 + $490 for Namespace 2 = $753 Active Storage cost
@@ -256,7 +255,7 @@ Here's how Active Storage will be billed for these two Namespaces:
 
 If you have additional questions about credits and volume-based discounts, please see our [Services and Support](https://docs.temporal.io/cloud/support) page or reach out to [our team](https://pages.temporal.io/contact-us).
 
-:::note
+:::tip BILLING AND COST
 
 Read more about billing cycles, invoices, and payments on our [Billing and cost](/cloud/billing-and-cost) page.
 
