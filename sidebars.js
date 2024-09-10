@@ -487,7 +487,8 @@ module.exports = {
               },
               items: [
                 "encyclopedia/nexus-overview",
-                "encyclopedia/nexus-api-registry-endpoints",
+                "encyclopedia/nexus-api-registry",
+                "encyclopedia/nexus-endpoints",
                 "encyclopedia/nexus-services-operations",
                 "encyclopedia/nexus-security",
               ],
