@@ -418,10 +418,10 @@ To communicate with a different Server, like a production Namespace on Temporal 
 To create a new environment and set its properties:
 
 ```shell
-temporal env set prod.namespace production.f45a2
-temporal env set prod.address production.f45a2.tmprl.cloud:7233
-temporal env set prod.tls-cert-path /temporal/certs/prod.pem
-temporal env set prod.tls-key-path /temporal/certs/prod.key
+temporal env set --env prod -k namespace -v production.f45a2
+temporal env set --env prod -k address -v production.f45a2.tmprl.cloud:7233
+temporal env set --env prod -k tls-cert-path -v /temporal/certs/prod.pem
+temporal env set --env prod -k tls-key-path -v /temporal/certs/prod.key
 ```
 
 Check your settings:
