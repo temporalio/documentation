@@ -335,7 +335,6 @@ module.exports = {
               },
               items: [
                 "production-deployment/cloud/aws-export-s3",
-                "production-deployment/cloud/gcp-export-gcs",
               ],
             },
             {
