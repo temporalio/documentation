@@ -54,10 +54,8 @@ The base unit of isolation in a Temporal environment is a [Namespace](/namespace
 Each Temporal Cloud account can have multiple Namespaces.
 A Namespace (regardless of account) cannot interact with other Namespaces.
 Each Namespace is available through a secure gRPC (mTLS) endpoint and an HTTPS (TLS) endpoint.
-You can make these endpoints more secure by communicating with them privately, depending on where you are deployed.
 
 * [AWS PrivateLink](aws-privatelink.mdx)
-* [GCP Private Service Connect](gcp-private-service-connect.mdx)
 
 Temporal Cloud is a multi-tenant service.
 Namespaces in the same environment are logically segregated.
