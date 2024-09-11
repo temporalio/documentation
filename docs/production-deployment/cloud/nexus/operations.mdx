@@ -123,21 +123,5 @@ Callbacks: 1
   RegistrationTime  32 minutes ago
 ```
 
-###### 
-
-###### *Bi-directional Linking (coming soon …)* {#bi-directional-linking-(coming-soon-…)}
-
-To support deep linking for Nexus Operations that may span Workflows across namespace boundaries, and invoke Update, Signals, and other operations on a Workflow, we have added linking support to workflow history events. This enables a given history event to link to events in other workflows, including across namespace boundaries.
-
-Temporal SDK Nexus Operation builders, like NewWorkflowRunOperation, use this new event history linking capability to auto-wire bi-directional links from a specific Nexus Operation event in the callers workflow history to a specific event in the handler’s workflow history. In Public Preview this is only supported for NewWorkflowRunOperation, which does the auto-wiring of bi-directional links for you, but it is not currently supported for NewSyncOperation.
-
-This enables bi-directional navigation across workflow histories:
-
-* Forward through the Nexus Operation execution:  
-  * From a Nexus Operation event in the callers workflow history  
-  * To the underlying event in the handler’s workflow  
-* Backwards through the Nexus Operation execution:  
-  * From the underlying event in the handler’s workflow  
-  * To a Nexus Operation event in the callers workflow history
 
 
