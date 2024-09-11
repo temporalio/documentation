@@ -376,8 +376,8 @@ Create an initial connection:
 clientOptions := client.Options{
     HostPort: <endpoint>,
     Namespace: <namespace.accountid>,
-    Credentials: client.NewAPIKeyStaticCredentials(<API key>),
     ConnectionOptions: client.ConnectionOptions{
+        TLS: &tls.Config{},
         DialOptions: []grpc.DialOption{
             grpc.WithUnaryInterceptor(
                 func(ctx context.Context, method string, req any, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
@@ -393,8 +393,12 @@ clientOptions := client.Options{
             ),
         },
     },
+    Credentials: client.NewAPIKeyStaticCredentials(apiKey),
 }
 c, err := client.Dial(clientOptions)
+if err != nil {
+  log.Fatalf("error creating temporal client: %v", err)
+}
 ```
 
 Update an API key:
