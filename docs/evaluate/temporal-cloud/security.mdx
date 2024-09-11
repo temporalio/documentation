@@ -163,6 +163,22 @@ When connecting, you must override the TLS server name to target your Namespace�
 
 - Temporal SDKs, by setting the endpoint server address argument to the PrivateLink endpoint (`<DNS associated with VPC endpoint>:7233`) and using the TLS configuration options to override the TLS server name.
 
+### Temporal Nexus 
+
+Like Namespaces, a Nexus Endpoint is an account-scoped resource that is global within a Temporal Cloud account. 
+Any Developer role (or higher) in an account, who is also a Namespace Admin on the endpoint’s target namespace, can manage (create/update/delete) a Nexus Endpoint. 
+All users with a Read-only role (or higher) in an account, can view and browse the full list of Endpoints.
+
+Runtime access from a Workflow in a caller namespace to a Nexus Endpoint is controlled by an allowlist policy (of caller namespaces) for each Endpoint in the Nexus API registry. 
+Workers authenticate with Temporal Cloud as they do today with mTLS certificates or API keys as allowed by the Namespace configuration. 
+Nexus requests are sent from the caller’s namespace to the handler’s namespace over a secure multi-region mTLS Envoy mesh.
+
+For payload encryption, the DataConverter works the same for a Nexus Operation as it does for other payloads sent between a Worker and Temporal Cloud. 
+There is support for a single DataConverter to be used for inbound inputs and outbound outputs, which means the encryption key often used in a custom DataConverter must be the same for both the caller and the handler. 
+
+See Nexus Security for more information.
+
+
 ### Encryption
 
 Communication into and out of Namespaces is over TLS.
@@ -211,3 +227,4 @@ Access grants are reviewed quarterly.
 
 Temporal Technologies is SOC 2 Type 2 certified and compliant with GDPR and HIPAA regulations.
 Compliance audits are available by request through our [Contact](https://pages.temporal.io/contact-us) page.
+
