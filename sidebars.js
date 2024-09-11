@@ -347,6 +347,22 @@ module.exports = {
                 "production-deployment/cloud/tcld/version",
               ],
             },
+            {
+              type: "category",
+              label: "Temporal Nexus",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/nexus/index",
+              },
+              items: [
+                "production-deployment/cloud/nexus/overview",
+                "production-deployment/cloud/nexus/pricing",
+                "production-deployment/cloud/nexus/getting-started",
+                "production-deployment/cloud/nexus/using-nexus",
+                "production-deployment/cloud/nexus/operations",
+              ],
+            },
           ],
         },
         "production-deployment/data-encryption",

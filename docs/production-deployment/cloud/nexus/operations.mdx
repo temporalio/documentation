@@ -1,0 +1,143 @@
+---
+id: operations
+slug: /cloud/nexus/operations
+title: Temporal Nexus Operations
+description: Explore how to manage and debug Nexus Operations, including retry policies, execution semantics, and cross-namespace operations in Temporal Cloud.
+sidebar_label: Nexus Operations
+tags:
+  - temporal cloud
+  - nexus operations
+  - workflow debugging
+  - execution semantics
+  - retry policies
+keywords:
+  - Temporal Nexus operations
+  - workflow execution semantics
+  - retry policies
+  - debugging workflows
+  - cross-namespace workflow operations
+  - handling Nexus Operations
+  - Temporal Cloud debugging
+---
+
+#### Operations
+
+##### Execution Debugging
+
+Execution debugging with Nexus includes end-to-end executions that span:
+
+* caller Workflow  
+* one or more Nexus Operations that are routed within and across namespaces  
+* underlying Temporal primitives created by a Nexus Operation handler like a Workflow
+
+Multi-level Nexus calls are supported:
+
+* workflow A \-\> nexus op 1 \-\> workflow B \-\> nexus op 2 \-\> workflow C
+
+In Public Preview we aim to provide a Nexus debugging experience at least as good as Child Workflows, and aim to provide a much better experience over time.
+
+###### *Underlying Workflow ID is returned as the Nexus Operation ID*
+
+When a Nexus Operation is started by a caller workflow that is processed by a Temporal SDK NewWorkflowRunOperation handler, the underlying Workflow ID is returned as the Nexus Operation ID which is reflected in the Nexus Operation Started event in the caller’s workflow history.  
+
+This can be used to search the handler’s namespace for that Workflow ID:  
+
+This may also be done using: `temporal workflow show –detailed`
+
+```
+
+--------------- [5] NexusOperationScheduled ---------------
+endpoint: myendpoint
+endpointId: 80a4fb3e7ab145eabc6a3b15e327548f
+eventTime: 2024-08-28T03:44:34.985230930Z
+input.Language: es
+input.Name: Nexus
+operation: say-hello
+requestId: 1307660f-7f2e-4626-8629-851a0e468482
+scheduleToCloseTimeout: 0s
+service: my-hello-service
+taskId: 158300487
+version: 1265
+workflowTaskCompletedEventId: 4
+
+--------------- [6] NexusOperationStarted ---------------
+eventTime: 2024-08-28T03:44:35.198292012Z
+operationId: 1307660f-7f2e-4626-8629-851a0e468482
+requestId: 1307660f-7f2e-4626-8629-851a0e468482
+scheduledEventId: 5
+taskId: 158300491
+version: 1265
+
+
+```
+
+Which can then be searched using: `temporal workflow list –query`.
+
+However this requires knowing the Endpoint’s target namespace and manual steps, which is why we’ve created [bi-directional linking for Nexus Operations](\#bi-directional-linking-(coming-soon-…)) to navigate forwards and backwards across workflow event histories, via the Nexus Operations and underlying Temporal primitives they may create.
+
+###### *Pending Operations*
+
+Similar to pending Activities, pending Nexus Operations are displayed in the Workflow details page and using: `temporal workflow describe`.
+
+For example from the Temporal UI:  
+![][image13]
+
+For example from the `temporal` CLI:
+
+```
+temporal workflow describe
+
+Pending Nexus Operations: 1
+
+  Endpoint                 myendpoint
+  Service                  my-hello-service
+  Operation                echo
+  OperationID
+  State                    BackingOff
+  Attempt                  6
+  ScheduleToCloseTimeout   0s
+  NextAttemptScheduleTime  20 seconds from now
+  LastAttemptCompleteTime  11 seconds ago
+  LastAttemptFailure       {"message":"unexpected response status: \"500 Internal Server Error\": internal error","applicationFailureInfo":{}}
+```
+
+###### *Pending Callbacks*
+
+Nexus callbacks are sent from the handler’s namespace to the caller’s namespace to complete an asynchronous Nexus Operation. These show up in the UI and using: `temporal workflow describe`.
+
+For example, from the Temporal UI:  
+![][image14]
+
+For example, from the `temporal` CLI:
+
+```
+temporal workflow describe
+
+
+Callbacks: 1
+
+  URL               https://nexus.phil-caller-namespace.a2dd6.cluster.tmprl.cloud:7243/namespaces/phil-caller-namespace.a2dd6/nexus/callback
+  Trigger           WorkflowClosed
+  State             Succeeded
+  Attempt           1
+  RegistrationTime  32 minutes ago
+```
+
+###### 
+
+###### *Bi-directional Linking (coming soon …)* {#bi-directional-linking-(coming-soon-…)}
+
+To support deep linking for Nexus Operations that may span Workflows across namespace boundaries, and invoke Update, Signals, and other operations on a Workflow, we have added linking support to workflow history events. This enables a given history event to link to events in other workflows, including across namespace boundaries.
+
+Temporal SDK Nexus Operation builders, like NewWorkflowRunOperation, use this new event history linking capability to auto-wire bi-directional links from a specific Nexus Operation event in the callers workflow history to a specific event in the handler’s workflow history. In Public Preview this is only supported for NewWorkflowRunOperation, which does the auto-wiring of bi-directional links for you, but it is not currently supported for NewSyncOperation.
+
+This enables bi-directional navigation across workflow histories:
+
+* Forward through the Nexus Operation execution:  
+  * From a Nexus Operation event in the callers workflow history  
+  * To the underlying event in the handler’s workflow  
+* Backwards through the Nexus Operation execution:  
+  * From the underlying event in the handler’s workflow  
+  * To a Nexus Operation event in the callers workflow history
+
+
