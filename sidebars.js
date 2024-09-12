@@ -333,7 +333,6 @@ module.exports = {
               },
               items: [
                 "production-deployment/cloud/audit-logging-aws",
-                "production-deployment/cloud/audit-logging-gcp",
               ],
             },
             {
