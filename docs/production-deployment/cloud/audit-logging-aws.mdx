@@ -76,7 +76,7 @@ The log sent to the Kinesis stream is JSON in the following format:
   "emit_time": // Time the operation was recorded
   "level": // Level of the log entry, such as info, warning, or error
   "user_email":  // Email address of the user who initiated the operation
-  "caller_ip_address": // Customer IP address or server name
+  "caller_ip_address": // Customer IP address in the X-Forwarded-For format
   "operation":  // Operation that was performed
   "details":  // Details of the operation
   "status": // Status, such as OK or ERROR
