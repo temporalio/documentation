@@ -20,38 +20,39 @@ keywords:
   - API contracts in Temporal
 ---
 
-## Why choose Temporal Nexus?
+## Introduction to Temporal Nexus
 
-**Temporal Nexus** is a feature of the Temporal platform that enables a modular architecture to connect durable executions across team and Namespace boundaries, with well-defined Nexus Service API contracts for sharing a subset of your team’s capabilities. Nexus Services can abstract underlying Temporal primitives, like Workflows, or execute arbitrary code – using Temporal’s queue-based Worker architecture.
+Temporal Nexus is a feature of the Temporal platform designed to connect durable executions across team, Namespace, region, and cloud boundaries. 
+It promotes a more modular architecture for sharing a subset of your team’s capabilities via well-defined service API contracts for other teams to use, that abstract underlying Temporal primitives, like Workflows, or execute arbitrary code.
 
-Contemporary solutions have several challenges:
+Temporal keeps the runtime benefits of an Event-Driven Architecture (EDA) where services can be down without affecting each other, but offers a higher-level durable execution programming model that lets you write idiomatic code in any language and preserve the state of execution so it can be resumed automatically in the presence of failure, without the extensive boilerplate code and complexity that comes with using raw EDA frameworks directly.
 
-* Direct Workflow to Workflow integration is a leaky abstraction  
-* Child Workflows don’t work across Namespace boundaries in Temporal Cloud  
-* Activities that invoke Workflows in a different Namespace get full access
+With Temporal Nexus, inter-service communication and durable execution may now span teams, Namespaces, and regions all from within the Temporal context. Nexus preserves a familiar API programming model that supports both sync and async patterns, is suitable for low-latency and long-running operations, and uses an optimized form of the Temporal queue-based worker architecture to preserve the benefits of EDA at runtime. 
+
+Temporal Nexus provides an integrated Temporal SDK experience, built-in Nexus Machinery, first-class observability, and enables each team to have their own Namespace for improved security, troubleshooting, and blast radius isolation.
 
 **Temporal Nexus** overcomes these challenges with an integrated Temporal experience:
 
 * Fully integrated Temporal SDK experience  
-  * run Nexus Services in a Worker, often the same Worker as underlying primitives  
-  * use Nexus Services from a Workflow  
-  * same queue-based Worker architecture, for Worker fleet load balancing  
+  * Run Nexus Services in a Worker, often the same Worker as underlying primitives  
+  * Use Nexus Services from a Workflow  
+  * Same queue-based Worker architecture, for Worker fleet load balancing  
 * Built-in Nexus machinery  
-  * connects Nexus callers and handlers via Nexus Endpoints  
-  * automatic retries & circuit breaking  
+  * Connects Nexus callers and handlers via Nexus Endpoints  
+  * Automatic retries & circuit breaking  
 * Multi-region routing across Namespaces  
   * Secure mTLS connectivity  
   * Endpoint access control  
 * Observability  
-  * integrated into Workflow Event History  
-  * bi-direction linking for end-to-end debugging  
-  * metrics, traces, and logs  
+  * Integrated into Workflow Event History  
+  * Bi-direction linking for end-to-end debugging  
+  * Metrics, traces, and logs  
 * Improved blast radius isolation  
-  * each team can have it’s own Namespace  
-  * per-Namespace security & rate limits  
-  * easier troubleshooting with less noise
+  * Each team can have it’s own Namespace  
+  * Per-Namespace security & rate limits  
+  * Easier troubleshooting with less noise
 
-## Should you be using Temporal Nexus?
+## Key Considerations for Using Nexus
 
 * **Modular design** \- Temporal Nexus enables a modular design that helps structure an application for fast growth and support teams working on their own parts independently. If you want to decouple callers from handlers to enable moving a service to a different Namespace or Task Queue later, Nexus can encapsulate those implementation details to avoid breaking changes and cross-team coordination.
 
@@ -66,7 +67,7 @@ A Nexus Endpoint is similar to an API Proxy or Gateway, that can act as a centra
 
 * **Adapting as the application grows** \- Temporal Nexus enables a modular application design that can evolve as you grow. From refactoring service implementations, changing an endpoint to point at a different target Namespace, or splitting a Worker out to a different Task Queue, Temporal Nexus enables you to hide these implementation details and provide a curated Nexus Service contract for other teams to use, so you can grow your application faster with less breaking changes, downtime, and cross-team coordination.
 
-## Advantages of using Temporal Nexus
+## Key Capabilities of Temporal Nexus
 
 * Connect durable execution within and across Namespaces  
 * Service contracts suitable for sharing across teams  
