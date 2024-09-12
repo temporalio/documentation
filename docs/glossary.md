@@ -89,9 +89,9 @@ Asynchronous Activity Completion occurs when an external system provides the fin
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Async Completion Callback](/nexus#async-completion-callback)
+#### [Nexus Async Completion Callback](/nexus#async-completion-callback)
 
-The completion callback for an asynchronous Operation.
+The completion callback for an asynchronous Nexus Operation.
 
 _Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
 
@@ -106,12 +106,6 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/t
 The `Authorizer` plugin contains a single `Authorize` method, which is invoked for each incoming API call. `Authorize` receives information about the API call, along with the role and permission claims of the caller.
 
 _Tags: [term](/tags/term)_
-
-#### [Caller](/nexus#caller)
-
-The initiator or caller of a Nexus Operation, also known as the service consumer calling a service API. A Caller is also known as a source or consumer. 
-
-_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
 
 #### [Child Workflow](/encyclopedia/child-workflows)
 
@@ -254,12 +248,6 @@ When service to the primary Cluster is compromised, a [failover](#failover) tran
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Handler](/nexus#handler)
-
-The Handler of a Nexus Operation, running in a Worker that is polling a Task Queue the target/destination Namespace, and associated underlying Temporal primitives like a Workflow. The Handler is also known as a callee, target, destination, or provider. 
-
-_Tags: [term](/tags/term), [explanation](/tags/explanation)_, [nexus](/tags/nexus)_
-
 #### [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout)
 
 A Heartbeat Timeout is the maximum time between Activity Heartbeats.
@@ -332,13 +320,9 @@ _Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation
 
 #### [Nexus API Registry](/nexus#nexus-api-registry)
 
-An account-scoped list of Endpoints and Services available for use within a Temporal Cloud account, including an Endpoint description of the Services and Operations which the Endpoint supports. 
-
-_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
-
-#### [Nexus Client](/nexus#nexus-client)
-
-Used by the Caller to connect to a Nexus Endpoint and Nexus Service.
+The Nexus API Registry stores information about Nexus Endpoints. In the open source version of Temporal, the registry is scoped to a Temporal Service, while in Temporal Cloud, it is scoped to an account. 
+Endpoint names must be unique within the registry. 
+When the Temporal Service dispatches a Nexus request, it resolves the request's Endpoint to a Namespace and Task Queue through the Registry.
 
 _Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
 
@@ -352,38 +336,29 @@ _Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation
 
 #### [Nexus Operation](/nexus#nexus-operation)
 
-An arbitrary-length service call that may be synchronous or asynchronous, short-lived, or long-lived, used to invoke operations across Namespace, Temporal Service, and cell boundaries and into arbitrary external systems.
+An arbitrary-duration operation that may be synchronous or asynchronous, short-lived, or long-lived, and used to connect durable executions within and across Namespaces, clusters, regions, and clouds. 
+Unlike a traditional RPC, an asynchronous Nexus Operation has an operation identity that can be used to re-attach to a long-lived Nexus Operation, for example, one backed by a Temporal Workflow.
+Nexus Operations support a uniform interface to get the status of an operation or its result, receive a completion callback, or cancel the operation – all of which are fully integrated into the Temporal platform.
 
 _Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
 
 #### [Nexus Operation Events](/nexus#nexus-operation-events)
 
-History events that surface in the Caller Workflow to indicate the state of an Operation including `Op Scheduled`, `Op Started`, `Op Completed`.
+History events that surface in the Caller Workflow to indicate the state of an Operation including `Nexus Operation Scheduled`, `Nexus Operation Started`, `Nexus Operation Completed`.
 
 _Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
 
-#### [Nexus Operation Handle](/nexus#nexus-operation-handle)
-
-Returned to the Workflow that started an operation to interact with the operation, for example `handle.WaitStarted()`, `handle.GetResult()`.
-
-_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
 
 #### [Nexus Operation Handler](/nexus#nexus-operation-handler)
 
-The handler code in a Handler Worker, used to process service calls for a given Operation. Operation Handlers often run in the same Worker as the Workflows they abstract, to provide a service interface that can be used across Namespace boundaries.
-
-_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
-
-#### [Nexus Operation Reference](/nexus#nexus-operation-reference)
-
-Key information about an Operation including the name and input/output types sufficient for invoking the Operation from a Caller Workflow, or implementing a Handler for the Operation in a Handler Worker.
+The Nexus handler code in a Temporal Worker typically created using Temporal SDK builder functions that make it easy to abstract Temporal primitives and expose a clean service contract for others to use.
 
 _Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
 
 #### [Nexus Service](/nexus#nexus-service)
 
-Nexus Services are a Temporal primitive that supports arbitrary-duration Nexus Operations compatible with durable execution systems. 
-Unlike a traditional RPC, an arbitrary-length Nexus Operation has an identity (id) that lasts beyond the process lifetimes of the Caller and Handler, and can be used to re-attach to a long-lived Nexus Operation, for example, one backed by a Temporal Workflow.
+A Nexus Service is a named collection of arbitrary-duration Nexus Operations that provide an API contract suitable for sharing across team boundaries.
+Nexus Services are registered with a Temporal Worker that is listening on the target Namespace and Task Queue for an Endpoint.
 
 _Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
 
