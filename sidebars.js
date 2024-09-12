@@ -311,6 +311,7 @@ module.exports = {
                 "production-deployment/cloud/account-setup/users",
               ],
             },
+            "production-deployment/cloud/billing-and-cost",
             "production-deployment/cloud/service-accounts",
             "production-deployment/cloud/api-keys",
             {
