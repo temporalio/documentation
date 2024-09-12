@@ -1,9 +1,9 @@
 ---
-id: audit-logging-gcp
-title: Audit Logging - GCP Pub/Sub
-sidebar_label: GCP Pub/Sub
-description: Audit Logging in Temporal Cloud provides forensic information, integrating with GCP Pub/Sub for secure data handling and supporting key Admin and API Key operations. This streamlines audit and compliance processes.
-slug: /cloud/audit-logging-gcp
+id: audit-logging
+title: Audit Logging - Temporal Cloud feature guide
+sidebar_label: Audit Logging
+description: Audit Logging in Temporal Cloud provides forensic information, integrating with Amazon Kinesis for secure data handling and supporting key Admin and API Key operations. This streamlines audit and compliance processes.
+slug: /cloud/audit-logging
 toc_max_heading_level: 4
 keywords:
   - audit logging
@@ -13,8 +13,6 @@ keywords:
   - temporal cloud
   - term
   - troubleshooting
-  - gcp
-  - pubsub
 tags:
   - audit-logging
   - explanation
@@ -23,147 +21,230 @@ tags:
   - temporal-cloud
   - term
   - troubleshooting
-  - gcp
-  - pubsub
 ---
 
-## **Prerequisites**
+Audit Logging is a feature of [Temporal Cloud](/cloud/overview) that provides forensic access information at the account level, the user level, and the [Namespace](/namespaces) level.
 
-Before configuring the Audit log Sink, please complete the following steps in Google Cloud:
+Audit Logging answers "who, when, and what" questions about Temporal Cloud resources.
+These answers can help you evaluate the security of your organization, and they can provide information that you need to satisfy audit and compliance requirements.
 
-1. Create a PubSub topic and take note of its topic name, for example, "test-
-auditlog"
-    1. If you wish to enable customer-managed encryption keys (CMEK), do so
-2. Record the GCP Project ID that owns the topic
-3. Set up a service account in the same project that trusts the Temporal internal service account to let Temporal write information to your account. Follow the instructions in the Temporal Cloud UI, there are two ways to set up this service account:
-    1. Input the service account ID, GCP project ID and PubSub topic name
-        1. Follow the instructions, manually set up a new service account
-        2. Use the [Terraform template](https://github.com/temporalio/terraform-modules/tree/main/modules/gcp-sink-sa) to create the service account
+## Which integrations are supported by Audit Logging? {#supported-integrations}
 
-## **Temporal Cloud UI**
+Audit Logging supports the [Amazon Kinesis](https://docs.aws.amazon.com/kinesis/) streaming-data platform.
+By using [Amazon Kinesis Data Firehose](https://docs.aws.amazon.com/firehose/latest/dev/what-is-this-service.html), you can route Temporal Audit Logs in [Amazon Simple Storage Service](https://docs.aws.amazon.com/s3/) (S3).
+We plan to release additional integrations.
 
-![Temporal Cloud UI Setup for Audit Logging with GCP Pub/Sub](/img/audit-logging-pub-sub-gcp.png)
+## Which events are supported by Audit Logging? {#supported-events}
 
-1. In the Cloud UI, navigate to the Settings → Integration Page → Audit Log, confirm that you see Pub/Sub as a sink option
-2. Configure the Audit Log
-    1. Choose Pub as Sink type
-    2. Provide the following information
-        1. Service account ID: [from Prerequisite 3]
-        2. GCP Project ID: [from Prerequisite 2]
-        3. Pub/Sub topic name: [from Prerequisite 1]
-3. Once you have filled in the necessary values, please click on “Create” to get Audit Log Configured
-4. Please check back in few minutes to make sure everything set up successfully
+Audit Logging supports [Admin Operation events](#admin-operation-events) as well as [API Key Create, Update, and Delete events](#admin-operation-events).
 
-## More information
+Please note that Audit Logging only captures operations in the Temporal Cloud control plane and not the data plane.
+This means events such as Workflow Start, Workflow Terminate, Schedule Create, etc. won't be logged.
+Instead, explore the [Export](/cloud/export) feature, which does let you send closed Workflow Histories to external storage.
 
-More details available in our public-facing documentation: https://docs.temporal.io/cloud/audit-logging
+### Admin Operation events
+
+The following list specifies both the supported events and the Temporal APIs that emit the logs.
+
+- Account
+  - Configure Audit Logging: `UpdateAccount`
+  - Configure observability: `UpdateAccount`
+- User
+  - Create user invitations: `InviteUsers`
+  - Delete users: `DeleteUser`
+  - Update user account-level Roles: `UpdateUser`
+  - Update user Namespace permissions: `UpdateUserNamespacePermissions`
+  - Log in user: `UserLogin`
+- Namespace
+  - Create Namespace: `CreateNamespace`
+  - Update Namespace: `UpdateNamespace`
+  - Delete Namespace: `DeleteNamespace`
+  - Add or update certificates or certificate filters: `UpdateNamespace`
+  - Add custom Search Attributes: `UpdateNamespace`
+  - Rename custom Search Attribute: `RenameCustomSearchAttribute`
+  - Request increase in Retention Period: `UpdateNamespace`
+- Multi-region Namespace
+  - Failover Namespace: `FailoverNamespace`
+
+### API Key Operation events
+
+The following list specifies both the supported events and the Temporal APIs that emit the logs for API Key Operations:
+
+- Create API Key: `CreateAPIKey`
+- Delete API Key: `DeleteAPIKey`
+- Update API Key: `UpdateAPIKey`
+
+### Audit Log format
+
+The log sent to the Kinesis stream is JSON in the following format:
+
+```json
+{
+  "emit_time": // Time the operation was recorded
+  "level": // Level of the log entry, such as info, warning, or error
+  "user_email":  // Email address of the user who initiated the operation
+  "caller_ip_address": // Customer IP address or server name
+  "operation":  // Operation that was performed
+  "details":  // Details of the operation
+  "status": // Status, such as OK or ERROR
+  "category":  // Category of the log entry: Admin or System
+  "version": // Version of the log entry
+  "log_id": // Unique ID of the log entry
+  "principal": // Information about who initiated the operation
+  "request_id": // Optional async request id set by the user when sending a request
+}
+```
+
+## How to configure Audit Logging {#configure-audit-logging}
+
+To set up Audit Logging, you must have an Amazon Web Services (AWS) account and set up Kinesis Data Streams.
+
+1. If you don't have an AWS account, follow the instructions from AWS in [Create and activate an AWS account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/).
+2. To set up Kinesis Data Streams, open the [AWS Management Console](https://aws.amazon.com/console/), search for Kinesis, and start the setup process.
+
+You can use [this AWS CloudFormation template](https://temporal-auditlogs-config.s3.us-west-2.amazonaws.com/cloudformation/iam-role-for-temporal-audit-logs.yaml) to create an IAM role with access to a Kinesis stream you have in your account.
+
+Be aware that Kinesis has a rate limit of 1,000 messages per second and quotas for both the number of records written and the size of the records.
+For more information, see [Why is my Kinesis data stream throttling?](https://aws.amazon.com/premiumsupport/knowledge-center/kinesis-data-stream-throttling/)
+
+### Create an Audit Log sink
+
+1. In the Temporal Cloud UI, select **Settings**.
+1. On the **Settings** page, select **Integrations**.
+1. In the **Audit Logging** card, select **Configure Audit Logs**.
+1. On the **Audit Logging** page, choose your **Access method** (either **Auto** or **Manual**).
+   - **Auto:** Configure the AWS CloudFormation stack in your AWS account from the Cloud UI.
+   - **Manual:** Use a generated AWS CloudFormation template to set up Kinesis manually.
+1. In **Kinesis ARN**, paste the Kinesis ARN from your AWS account.
+1. In **Role name**, provide a name for a new IAM Role.
+1. In **Select an AWS region**, select the appropriate region for your Kinesis stream.
+
+If you chose the **Auto** access method, continue with the following steps:
+
+1. Select **Save and launch stack**.
+1. In **Stack name** in the AWS CloudFormation console, specify a name for the stack.
+1. In the lower-right corner of the page, select **Create stack**.
+
+If you chose the **Manual** access method, continue with the following steps:
+
+1. Select **Save and download template**.
+1. Open the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/).
+1. Select **Create Stack**.
+1. On the **Create stack** page, select **Template is ready** and **Update a template file**.
+1. Select **Choose file** and specify the template you generated in step 1.
+1. Select **Next** on this page and on the next two pages.
+1. On the **Review** page, select **Create stack**.
+
+## How to consume an Audit Log {#consume-an-audit-log}
+
+After you create an Audit Log sink, wait for the logs to flow into the Kinesis stream.
+You should see the first logs 2–10 minutes after you configure the sink.
+Subsequent logs arrive every 2 minutes if any actions occurred during that 2-minute window.
+
+:::note
+
+You must configure and implement your own consumer of the Kinesis stream.
+For an example, see [Example of consuming an Audit Log](#example-of-consuming-an-audit-log).
+
+:::
+
+### Example of an Audit Log
+
+The following example shows the contents of an Audit Log.
+
+```json
+{"emit_time":"2023-10-24T08:19:41Z","level":"LOG_LEVEL_INFO","user_email":"user1@example.com","operation":"UpdateAccount","details":{"client_ca_fingerprints":["5bb99d14fa602f7d39b7d048674a2251"],"search_attribute_update":{}},"status":"OK","category":"LOG_CATEGORY_ADMIN","log_id":"0mc69c0323b871293ce231dd1c7fb634","principal":{"id":"988cb80b-d6be-4bb5-9c87-d09f93f58ed3","type":"user","name":"user1@example.com"}}
+**********
+{"emit_time":"2023-10-25T21:16:42Z","level":"LOG_LEVEL_INFO","user_email":"user2@example.com","operation":"DeleteUser","details":{"target_users":["0b741c47-e093-47d1-9b74-f2359129f78f"],"search_attribute_update":{}},"status":"OK","category":"LOG_CATEGORY_ADMIN","log_id":"0mc69c0323b871293ce231dd1c7fb635","request_id":"445297d3-43a7-4793-8a04-1b1dd1999641","principal":{"id":"b160473e-e40d-4a81-90d1-f4218269e6e4","type":"user","name":"user2@example.com"}}
+**********
+{"emit_time":"2023-11-03T19:31:45Z","level":"LOG_LEVEL_INFO","user_email":"user3@example.com","operation":"InviteUsers","details":{"target_users":["user3@example.net"],"search_attribute_update":{}},"status":"OK","category":"LOG_CATEGORY_ADMIN","log_id":"0mc69c0323b871293ce231dd1c7fb636","principal":{"id":"35fdc757-9637-446b-b386-12ed475511ad","type":"user","name":"user3@example.com"}}
+**********
+{"emit_time":"2023-11-08T08:06:40Z","level":"LOG_LEVEL_INFO","user_email":"user1@example.com","operation":"UpdateUser","details":{"target_users":["user1@example.net"],"search_attribute_update":{}},"status":"OK","category":"LOG_CATEGORY_ADMIN","log_id":"0mc69c0323b871293ce231dd1c7fb637","request_id":"445297d3-43a7-4793-8a04-1b1dd1999640","principal":{"id":"988cb80b-d6be-4bb5-9c87-d09f93f58ed3","type":"user","name":"user1@example.com"}}
+**********
+{"emit_time":"2023-11-08T08:14:09Z","level":"LOG_LEVEL_INFO","user_email":"user1@example.com","operation":"UpdateNamespace","details":{"namespace":"audit-log-test.example-dev","client_ca_fingerprints":["f186d0bd971ff7d52dc6cc9d9b6f7644"],"search_attribute_update":{}},"status":"OK","category":"LOG_CATEGORY_ADMIN","log_id":"0mc69c0323b871293ce231dd1c7fb638","principal":{"id":"988cb80b-d6be-4bb5-9c87-d09f93f58ed3","type":"user","name":"user1@example.com"}}
+**********
+{"emit_time":"2023-11-08T09:20:22Z","level":"LOG_LEVEL_INFO","user_email":"user1@example.com","operation":"UpdateUserNamespacePermissions","details":{"namespace":"audit-log-test.example-dev","search_attribute_update":{}},"status":"OK","category":"LOG_CATEGORY_ADMIN","log_id":"0mc69c0323b871293ce231dd1c7fb639","principal":{"id":"988cb80b-d6be-4bb5-9c87-d09f93f58ed3","type":"user","name":"user1@example.com"}}
+**********
+```
 
 ### Example of consuming an Audit Log
 
-The following Go code is an example of consuming Audit Logs from a PubSub stream
+The following Go code is an example of consuming Audit Logs from a Kinesis stream and delivering them to an S3 bucket.
 
 ```go
-package main
-import (
-  "fmt"
-  "io/ioutil"
-  "os"
-  "github.com/gogo/protobuf/jsonpb"
-  // TODO: change path to your generated proto
-  export "generated/exported_workflow"
-  "go.temporal.io/api/common/v1"
-  enumspb "go.temporal.io/api/enums/v1"
-  // TODO: change path to temporal repo
-  ossserialization "go.temporal.io/server/common/persistence/serialization"
-)
-func extractWorkflowHistoriesFromFile(filename string) ([]*export.Workflow, error) {
-  bytes, err := ioutil.ReadFile(filename)
-  if err != nil {
-    return nil, fmt.Errorf("error reading from file: %v", err)
-  }
-  blob := &common.DataBlob{
-    EncodingType: enumspb.ENCODING_TYPE_PROTO3,
-    Data:         bytes,
-  }
-  result := &export.ExportedWorkflows{}
-  err = ossserialization.ProtoDecodeBlob(blob, result)
-  if err != nil {
-    return nil, fmt.Errorf("failed to decode file: %w", err)
-  }
-  workflows := result.Workflows
-  for _, workflow := range workflows {
-    history := workflow.History
-    if history == nil {
-      return nil, fmt.Errorf("history is nil")
-    }
-}
-  return workflows, nil
-}
-func printWorkflow(workflow *export.Workflow) {
-  // Pretty print the workflow
-  marshaler := jsonpb.Marshaler{
-    Indent:       "\t",
-    EmitDefaults: true,
-  }
-Export Feature (User Copy)
-9
-   str, err := marshaler.MarshalToString(workflow.History)
-  if err != nil {
-    fmt.Println("error print workflow history: ", err)
-os.Exit(1) }
-print(str) }
-func printAllWorkflows(workflowHistories []*export.Workflow) {
-  for _, workflow := range workflowHistories {
-    printWorkflow(workflow)
-  }
-}
-func printWorkflowHistory(workflowID string, workflowHistories []*export.Workflow) {
-  if workflowID == "" {
-    fmt.Println("invalid workflow ID")
-os.Exit(1) }
-  for _, workflow := range workflowHistories {
-    if workflow.History.Events[0].GetWorkflowExecutionStartedEventAttributes().WorkflowId
- == workflowID {
-      fmt.Println("Printing workflow history for workflow ID: ", workflowID)
-      printWorkflow(workflow)
-} }
-  fmt.Println("No workflow found with workflow ID: ", workflowID)
-}
 func main() {
-  if len(os.Args) < 2 {
-    fmt.Println("Please provide a path to a file")
-os.Exit(1) }
-  filename := os.Args[1]
-  fmt.Println("Deserializing export workflow history from file: ", filename)
-  workflowHistories, err := extractWorkflowHistoriesFromFile(filename)
-  if err != nil {
-    fmt.Println("error extracting workflow histories: ", err)
-    os.Exit(1)
-}
-  fmt.Println("Successfully deserialized workflow histories")
-  fmt.Println("Total number of workflow histories: ", len(workflowHistories))
-  fmt.Println("Choose an option:")
-  fmt.Println("1. Print out all the workflows")
-  fmt.Println("2. Print out the workflow hisotry of a specific workflow. Enter the workflow ID:")
-  var option int
-  fmt.Print("Enter your choice: ")
-  _, err = fmt.Scanf("%d", &option)
-  if err != nil {
-    fmt.Println("invalid input.")
-os.Exit(1) }
-  switch option {
-  case 1:
-    printAllWorkflows(workflowHistories)
-  case 2:
-    fmt.Println("Please provide a workflow ID:")
-    var workflowID string
-    _, err = fmt.Scanf("%s", &workflowID)
-    if err != nil {
-      fmt.Println("invalid input for workflow ID.")
-os.Exit(1) }
-    printWorkflowHistory(workflowID, workflowHistories)
-  default:
-    fmt.Println("only options 1 and 2 are supported.")
-os.Exit(1) }
+   fmt.Println("print audit log from S3")
+   cfg, err := config.LoadDefaultConfig(context.TODO(),
+      config.WithSharedConfigProfile("your_profile"),
+   )
+   if err != nil {
+      fmt.Println(err)
+   }
+   s3Client := s3.NewFromConfig(cfg)
+   response, err := s3Client.GetObject(
+      context.Background(),
+      &s3.GetObjectInput{
+         Bucket: aws.String("your_bucket_name"),
+         Key:    aws.String("your_s3_file_path")})
+   if err != nil {
+      fmt.Println(err)
+   }
+   defer response.Body.Close()
+
+   content, err := io.ReadAll(response.Body)
+
+   fmt.Println(string(content))
 }
 ```
+
+The preceding code also prints the logs in the terminal.
+The following is a sample result.
+
+```json
+{
+  "emit_time": "2023-11-14T07:56:55Z",
+  "level": "LOG_LEVEL_INFO",
+  "user_email": "user1@example.com",
+  "operation": "DeleteUser",
+  "details": {
+    "target_users": ["d7dca96f-adcc-417d-aafc-e8f5d2ba9fe1"],
+    "search_attribute_update": {}
+  },
+  "status": "OK",
+  "category": "LOG_CATEGORY_ADMIN",
+  "log_id": "0mc69c0323b871293ce231dd1c7fb639",
+  "request_id": "445297d3-43a7-4793-8a04-1b1dd1999640",
+  "principal": {
+    "id": "988cb80b-d6be-4bb5-9c87-d09f93f58ed3",
+    "type": "user",
+    "name": "user1@example.com"
+  }
+}
+```
+
+## How to troubleshoot Audit Logging {#troubleshoot-audit-logging}
+
+The Audit Logging page of the Temporal Cloud UI provides the current status of an Audit Log sink.
+
+- If an error is detected, a summary of the error appears below the page title.
+- If the Audit Log sink is functioning normally, an **On** badge appears next to the page heading.
+
+After an Admin Operation is performed, users can see Audit Log messages flow through Kinesis.
+
+Upon successful configuration of the Audit Log sink and set up of Kinesis, you will receive events within the hour of setup.
+Temporal is able to retain Audit Log information for up to 30 days.
+To retrieve logs up to the past 30 days, you will need to file a request.
+
+If you experience an issue with an Audit Log sink, we can provide the missing audit information.
+Open a support ticket to request assistance.
+
+## How to delete an Audit Log sink {#delete-an-audit-log-sink}
+
+When you no longer need Audit Logging, you can delete the Audit Log sink.
+
+1. In the Temporal Cloud UI, select **Settings**.
+1. On the **Settings** page, select **Integrations**.
+1. In the **Audit Logging** card, select **Configure Audit Logs**.
+1. At the bottom of the **Audit Logging** page, choose **Delete**.
+
+After you confirm the deletion, the Audit Log Sink is removed from your account and logs stop flowing to your Kinesis stream.
