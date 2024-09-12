@@ -641,23 +641,55 @@ Reserve dynamic invocation use for cases where a name is not or can't be known a
 
 :::
 
-### Set a dynamic Signal, Query, or Update handler {#set-a-dynamic-signal}
+### Set a Dynamic Workflow {#set-a-dynamic-workflow}
 
-A dynamic Signal, Query, or Update refers to a special stand-in handler.
-It's used when an unregistered handler request arrives.
+Use [`DynamicWorkflow`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html) to implement Workflow Types dynamically.
+Register a Workflow implementation type that extends `DynamicWorkflow` to implement any Workflow Type that is not explicitly registered with the Worker.
 
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Needs Java.**</div>
-Consider a Signal, where you might send something like  `workflow.signal(MyWorkflow.my_signal_method, my_arg)`.
-This is a type-safe compiler-checked approach that guarantees a method exists.
-There's also a non-type-safe string-based form: `workflow.signal('some-name', my_arg)`.
-When sent to the server, the name is checked only after arriving at the Worker.
-This is where "dynamic handlers" come in.
+The dynamic Workflow interface is implemented with the `execute` method. This method takes in `EncodedValues` that are inputs to the Workflow Execution.
+These inputs can be specified by the Client when invoking the Workflow Execution.
 
-After failing to find a handler with a matching name and type, the Worker checks for a registered dynamic stand-in handler.
-If found, the Worker uses that instead.
+```java
+public class MyDynamicWorkflow implements DynamicWorkflow {
+   @Override
+    public Object execute(EncodedValues args) {
+    }
+}
+```
 
-You must opt handlers into dynamic access.
-Register a listener: for `DynamicSignalHandler` with `Workflow.registerListener(Object)`:
+### How to set a Dynamic Activity {#set-a-dynamic-activity}
+
+To handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
+
+Use `DynamicActivity` to implement any number of Activity types dynamically.
+When an Activity implementation that extends `DynamicActivity` is registered, it is called for any Activity type invocation that doesn't have an explicitly registered handler.
+
+The dynamic Activity interface is implemented with the `execute` method, as shown in the following example.
+
+```java
+// Dynamic Activity implementation
+ public static class DynamicGreetingActivityImpl implements DynamicActivity {
+   @Override
+   public Object execute(EncodedValues args) {
+     String activityType = Activity.getExecutionContext().getInfo().getActivityType();
+     return activityType
+         + ": "
+         + args.get(0, String.class)
+         + " "
+         + args.get(1, String.class)
+         + " from: "
+         + args.get(2, String.class);
+   }
+ }
+```
+
+Use `Activity.getExecutionContext()` to get information about the Activity type that should be implemented dynamically.
+
+### How to set a Dynamic Signal {#set-a-dynamic-signal}
+
+You can also implement Signal handlers dynamically. This is useful for library-level code and implementation of DSLs.
+
+Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
 
 ```java
 Workflow.registerListener(
@@ -665,93 +697,37 @@ Workflow.registerListener(
       (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
-The handler's signature must accept encoded arguments.
-Use a [payload_converter](https://python.temporal.io/temporalio.workflow.html#payload_converter) function to convert `RawValue` objects to your required type.
-For example:
-
-```java
-Add Example to demonstrate like Python does.
-```
-
-This sample creates a `DynamicSignal` Signal.
-When an unregistered or unrecognized Signal arrives with a matching signature, dynamic assignment uses this handler to manage the Signal.
-It is responsible for transforming the sequence contents into usable data in a form that the method's logic can process and act on.
-
 When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
 Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
 `DynamicSignalHandler` can be implemented in both regular and dynamic Workflow implementations.
 
-### Set a dynamic Workflow {#set-a-dynamic-workflow}
+### How to set a Dynamic Query {#set-a-dynamic-query}
 
-A dynamic Workflow refers to a special stand-in Workflow Definition.
-It's used when an unknown Workflow Execution request arrives.
+You can also implement Query handlers dynamically. This is useful for library-level code and implementation of DSLs.
 
-Consider the "MyUnknownWorkflow" example described earlier.
-The Worker may find there's no registered Workflow Definitions of that name or type.
-After failing to find a Workflow Definition with a matching type, the Worker looks for a dynamic stand-in.
-If found, it invokes that instead.
-
-To participate, your Workflow must opt into dynamic access.
-Adding `implements DynamicWorkflow` to the Workflow class declaration makes the Workflow Definition eligible to participate in dynamic invocation.
-You must register the Workflow with the [Worker](https://python.temporal.io/temporalio.worker.html) before it can be invoked.
+Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicQueryListener` in the Workflow implementation code.
 
 ```java
-public class MyDynamicWorkflow implements DynamicWorkflow {
-    @Override
-    public Object execute(EncodedValues args) {
-    }
-}
+Workflow.registerListener(
+  (DynamicQueryHandler)
+      (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Needs Java.**</div>
-The Workflow Definition's primary Workflow method must accept a single argument of type `EncodedValues`.
-Use a  [payload_converter](https://python.temporal.io/temporalio.workflow.html#payload_converter) function to convert `EncodedValues` objects to your required type.
-For example:
+When registered, any Queries sent to the Workflow without a defined handler will be delivered to the `DynamicQueryHandler`.
+Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
+`DynamicQueryHandler` can be implemented in both regular and dynamic Workflow implementations.
 
-<div style={{backgroundColor: '#e0e0e0',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/dynamic_handlers/your_dynamic_workflow_dacx.py"><tt>See full sample</tt></a></div>
+### How to set a Dynamic Update {#set-a-dynamic-update}
 
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Needs Java and an appropriate example with a payload converter.**</div>
+You can also implement Update handlers dynamically.
+This is useful for library-level code and implementation of DSLs.
 
 ```java
-ADD SAMPLE HERE LIKE PYTHON
+Workflow.registerListener(
+  (DynamicUpdateHandler)
+      (updateName, encodedArgs) -> encodedArgs.get(0, String.class));
 ```
 
-This Workflow converts the first element to a string, and uses that to execute an Activity.
-
-### Set a dynamic Activity {#set-a-dynamic-activity}
-
-A dynamic Activity is a stand-in implementation.
-It's used when an Activity Task with an unknown Activity type is received by the Worker.
-
-To participate, your Activity must opt into dynamic access.
-Adding `implements DynamicActivity` to the type declaration makes the Activity Definition eligible to participate in dynamic invocation.
-You must register the Activity with the Worker before it can be invoked.
-
-```java
-// Dynamic Activity implementation
-public static class DynamicGreetingActivityImpl implements DynamicActivity {
-    @Override
-    public Object execute(EncodedValues args) {
-        String activityType = Activity.getExecutionContext().getInfo().getActivityType();
-        return activityType
-            + ": "
-            + args.get(0, String.class)
-            + " "
-            + args.get(1, String.class)
-            + " from: "
-            + args.get(2, String.class);
-    }
-}
-```
-
-The Activity Definition must then accept a single argument of `EncodedValues` type.
-Use a  payload_converter function to convert `RawValue` objects to your required types.
-For example:
-
-```java
-ADD SAMPLE HERE
-```
-
-This example invokes an unregistered Activity by name.
-The Worker resolves it using the registered dynamic Activity instead.
-When possible, prefer to use compiler-checked type-safe arguments rather than Activity name strings.
+When registered, any Updates sent to the Workflow without a defined handler will be delivered to the `DynamicUpdateHandler`.
+You can only register one `Workflow.registerListener(Object)` per Workflow Execution.
+`DynamicUpdateHandler` can be implemented in both regular and dynamic Workflow implementations.
