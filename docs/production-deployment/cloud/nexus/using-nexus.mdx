@@ -20,7 +20,6 @@ keywords:
   - service-to-service communication
 ---
 
-##### Using Nexus
 
 Nexus Services are exposed from a Nexus Endpoint that is created in the Nexus API Registry. Nexus Endpoints include service documentation that enables others to use the Nexus Services provided by a Nexus Endpoint, from caller Workflows.  
 
@@ -48,7 +47,7 @@ Similar to executing an Activity, to execute a Nexus Operation from a Workflow:
 
 See the [Temporal Nexus encyclopedia entry] for more details.
 
-##### Access Control
+## Access Control
 
 Like `Namespaces`, a Nexus `Endpoint` is an account-scoped resource that is global within a Temporal Cloud account. Any `Developer` role (or higher) in an account, who is also a `Namespace Admin` on the endpoint’s target Namespace, can manage (create/update/delete) a Nexus `Endpoint`. All users with a `Read-only` role (or higher) in an account, can view and browse the full list of Endpoints.
 
@@ -56,13 +55,13 @@ Runtime access from a `Workflow` in a caller Namespace to a Nexus `Endpoint` is 
 
 See [Nexus Security]for additional details.
 
-##### Automatic Retries
+## Automatic Retries
 
 Once the caller `Workflow` schedules an `Operation` with the caller’s Temporal cluster, the caller’s Nexus Machinery keeps trying to start the `Operation`, with automatic retries and exponential backoff. If a Nexus `Operation` returns a retryable error when attempting to start, the `Operation` it will be retried up to the default retry policy’s max attempts and expiration interval.
 
 See [Nexus Automatic Retries](https://docs.google.com/document/d/11pAxCvICaodsGdQspENAWsDT3WG2tuFwGW68VpowCQI/edit?pli=1\#heading=h.f17cgqgefygj) for additional details.
 
-##### Failure Handling
+## Failure Handling
 
 In a Nexus Operation handler, you can throw a Nexus HandlerError with an associated Nexus HandlerErrorType. If an unknown Error is thrown from a Nexus handler, it is treated as a retryable 500 InternalServerError, that Nexus will attempt to retry until the the Schedule-to-Close Timeout is exceeded (which is capped at 60 days max by the server). See [Nexus Operation duration limits].
 
@@ -77,12 +76,13 @@ Note this differs from how Activities and Workflow handle errors and retries:
 
 See [Failures] and [Automatic Retries](https://docs.google.com/document/d/11pAxCvICaodsGdQspENAWsDT3WG2tuFwGW68VpowCQI/edit?pli=1\#heading=h.f17cgqgefygj) for additional details.
 
-##### Execution Semantics
+## Execution Semantics
 
-###### *At-least-once Execution Semantics and Idempotency*
+### At-least-once Execution Semantics and Idempotency
 
-Nexus Operations, like Activities, have at-least-once execution semantics. The caller's Nexus Machinery will keep trying to start the Operation over and over, so the Nexus `Operation` handler should be idempotent just like Activities should be idempotent as a general rule. It's not required in all cases, but highly recommended in general.
+Nexus Operations, like Activities, have at-least-once execution semantics. 
+The caller's Nexus Machinery will keep trying to start the Operation over and over, so the Nexus `Operation` handler should be idempotent just like Activities should be idempotent as a general rule. It's not required in all cases, but highly recommended in general.
 
-###### *At-most-once Execution Semantics via Underlying WorkflowIdReusePolicy*
+### At-most-once Execution Semantics via Underlying `WorkflowIdReusePolicy`
 
 To dedupe work and get at-most-once execution semantics, an `Operation` can start a `Workflow` with a `WorkflowIdReusePolicy` of `RejectDuplicates` which only allows one `Workflow Execution` per `Workflow Id` within a `Namespace` for the retention period.

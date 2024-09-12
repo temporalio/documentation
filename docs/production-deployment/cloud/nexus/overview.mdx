@@ -34,25 +34,25 @@ Temporal Nexus provides an integrated Temporal SDK experience, built-in Nexus Ma
 **Temporal Nexus** overcomes these challenges with an integrated Temporal experience:
 
 * Fully integrated Temporal SDK experience  
-  * Run Nexus Services in a Worker, often the same Worker as underlying primitives  
-  * Use Nexus Services from a Workflow  
-  * Same queue-based Worker architecture, for Worker fleet load balancing  
+  * Run Nexus Services in a Worker, often the same Worker as underlying primitives.  
+  * Use Nexus Services from a Workflow.  
+  * Same queue-based Worker architecture, for Worker fleet load balancing.  
 * Built-in Nexus machinery  
-  * Connects Nexus callers and handlers via Nexus Endpoints  
-  * Automatic retries & circuit breaking  
+  * Connects Nexus callers and handlers via Nexus Endpoints.  
+  * Automatic retries & circuit breaking. 
 * Multi-region routing across Namespaces  
-  * Secure mTLS connectivity  
-  * Endpoint access control  
+  * Secure mTLS connectivity. 
+  * Endpoint access control.  
 * Observability  
-  * Integrated into Workflow Event History  
-  * Bi-direction linking for end-to-end debugging  
-  * Metrics, traces, and logs  
+  * Integrated into Workflow Event History.  
+  * Bi-direction linking for end-to-end debugging.  
+  * Metrics, traces, and logs. 
 * Improved blast radius isolation  
-  * Each team can have it’s own Namespace  
-  * Per-Namespace security & rate limits  
-  * Easier troubleshooting with less noise
+  * Each team can have it’s own Namespace.  
+  * Per-Namespace security & rate limits.  
+  * Easier troubleshooting with less noise.
 
-## Key Considerations for Using Nexus
+## Key Considerations for Using Temporal Nexus
 
 * **Modular design** \- Temporal Nexus enables a modular design that helps structure an application for fast growth and support teams working on their own parts independently. If you want to decouple callers from handlers to enable moving a service to a different Namespace or Task Queue later, Nexus can encapsulate those implementation details to avoid breaking changes and cross-team coordination.
 

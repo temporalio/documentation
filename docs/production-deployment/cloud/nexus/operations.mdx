@@ -2,45 +2,39 @@
 id: operations
 slug: /cloud/nexus/operations
 title: Temporal Nexus Operations
-description: Explore how to manage and debug Nexus Operations, including retry policies, execution semantics, and cross-namespace operations in Temporal Cloud.
+description: Explore how to manage and debug Nexus Operations. 
 sidebar_label: Nexus Operations
 tags:
   - temporal cloud
   - nexus operations
-  - workflow debugging
-  - execution semantics
-  - retry policies
+
 keywords:
   - Temporal Nexus operations
-  - workflow execution semantics
-  - retry policies
-  - debugging workflows
-  - cross-namespace workflow operations
-  - handling Nexus Operations
-  - Temporal Cloud debugging
+  - temporal cloud 
+
 ---
 
-#### Operations
-
-##### Execution Debugging
+## Execution Debugging
 
 Execution debugging with Nexus includes end-to-end executions that span:
 
-* caller Workflow  
-* one or more Nexus Operations that are routed within and across namespaces  
-* underlying Temporal primitives created by a Nexus Operation handler like a Workflow
+* Caller Workflow.  
+* One or more Nexus Operations that are routed within and across Namespaces.  
+* Underlying Temporal primitives created by a Nexus Operation handler like a Workflow.
 
 Multi-level Nexus calls are supported:
 
-* workflow A \-\> nexus op 1 \-\> workflow B \-\> nexus op 2 \-\> workflow C
+* Workflow A \-\> Nexus Op 1 \-\> Workflow B \-\> Nexus Op 2 \-\> Workflow C
 
-In Public Preview we aim to provide a Nexus debugging experience at least as good as Child Workflows, and aim to provide a much better experience over time.
+### Underlying Workflow ID is returned as the Nexus Operation ID
 
-###### *Underlying Workflow ID is returned as the Nexus Operation ID*
+When a Nexus Operation is started by a caller Workflow that is processed by a Temporal SDK NewWorkflowRunOperation handler, the underlying Workflow ID is returned as the Nexus Operation ID which is reflected in the Nexus Operation Started event in the caller’s Workflow history.  
 
-When a Nexus Operation is started by a caller workflow that is processed by a Temporal SDK NewWorkflowRunOperation handler, the underlying Workflow ID is returned as the Nexus Operation ID which is reflected in the Nexus Operation Started event in the caller’s workflow history.  
+![Workflow history](/img/nexus/nexus-operations-ui.png)
 
-This can be used to search the handler’s namespace for that Workflow ID:  
+This can be used to search the handler’s Namespace for that Workflow ID: 
+
+![Search handler's Namespace](/img/nexus/nexus-operations-ui-search-handler.png)
 
 This may also be done using: `temporal workflow show –detailed`
 
@@ -73,16 +67,16 @@ version: 1265
 
 Which can then be searched using: `temporal workflow list –query`.
 
-However this requires knowing the Endpoint’s target namespace and manual steps, which is why we’ve created [bi-directional linking for Nexus Operations] to navigate forwards and backwards across workflow event histories, via the Nexus Operations and underlying Temporal primitives they may create.
+However this requires knowing the Endpoint’s target Namespace and manual steps, which is why we’ve created [bi-directional linking for Nexus Operations] to navigate forwards and backwards across Workflow event histories, via the Nexus Operations and underlying Temporal primitives they may create.
 
-###### *Pending Operations*
+### Pending Operations
 
 Similar to pending Activities, pending Nexus Operations are displayed in the Workflow details page and using: `temporal workflow describe`.
 
-For example from the Temporal UI:  
-![][image13]
+For example, from the Temporal UI:  
+![Pending Operations](/img/nexus/pending-nexus-operations.png)
 
-For example from the `temporal` CLI:
+For example, from the `temporal` CLI:
 
 ```
 temporal workflow describe
@@ -101,12 +95,13 @@ Pending Nexus Operations: 1
   LastAttemptFailure       {"message":"unexpected response status: \"500 Internal Server Error\": internal error","applicationFailureInfo":{}}
 ```
 
-###### *Pending Callbacks*
+### Pending Callbacks
 
-Nexus callbacks are sent from the handler’s namespace to the caller’s namespace to complete an asynchronous Nexus Operation. These show up in the UI and using: `temporal workflow describe`.
+Nexus callbacks are sent from the handler’s Namespace to the caller’s Namespace to complete an asynchronous Nexus Operation. 
+These show up in the UI and using: `temporal workflow describe`.
 
 For example, from the Temporal UI:  
-![][image14]
+![Pending Callbacks](/img/nexus/nexus-callback.png)
 
 For example, from the `temporal` CLI:
 
@@ -116,12 +111,72 @@ temporal workflow describe
 
 Callbacks: 1
 
-  URL               https://nexus.phil-caller-namespace.a2dd6.cluster.tmprl.cloud:7243/namespaces/phil-caller-namespace.a2dd6/nexus/callback
+  URL               https://nexus.phil-caller-Namespace.a2dd6.cluster.tmprl.cloud:7243/Namespaces/phil-caller-Namespace.a2dd6/nexus/callback
   Trigger           WorkflowClosed
   State             Succeeded
   Attempt           1
   RegistrationTime  32 minutes ago
 ```
 
+## Metrics
+
+Scheduling and processing a Nexus Operation is reported via existing cloud metrics via the following operation metric labels:
+
+* Caller Namespace  
+  * RespondWorkflowTaskCompleted \- is used to schedule the Nexus Operation.  
+* Handler Namespace  
+* PollNexusTaskQueue  
+* RespondNexusTaskCompleted  
+* RespondNexusTaskFailed
+
+There are a [preliminary set of metrics within Temporal](https://www.google.com/url?q=https://github.com/temporalio/saas-control-plane/blob/19bb8e3cc8fa9b276c83780ae069739ebb248743/cmn/auditlog/types.go%23L66\&sa=D\&source=docs\&ust=1724449565959937\&usg=AOvVaw1Olh8jQt3lsqu-OKkg5Zcv) for the internal Nexus RPC calls it makes, but they are still being finalized before being exposed as [cloud metrics](https://docs.temporal.io/production-deployment/cloud/metrics/reference).
+
+See [Cloud Metrics](\#metrics).
+
+## Audit Logging
+
+The following Nexus control plane actions are sent to the audit logging integration:
+
+* Create Nexus Endpoint: `CreateNexusEndpoint`  
+* Update Nexus Endpoint: `UpdateNexusEndpoint`  
+* Delete Nexus Endpoint: `DeleteNexusEndpoint`
+
+See [Audit Logging](\#audit-logging) for details.
+
+## Rate Limiting
+
+Nexus requests (commands, polling) are counted as part of the overall Namespace RPS limit in both the caller and handler Namespaces. Default Namespace RPS limits are set at 1600 and automatically adjust based on recent usage (over prior 7 days).
+
+See [Nexus Rate Limits](\#nexus-rate-limits) for additional details.
+
+## SLOs & SLAs
+
+Nexus requests (commands, polling) have the same [latency SLOs] and [error rate SLAs] as other Worker requests in both the caller and handler Namespaces.
+
+See [Availability] and [SLA].
+
+## Limits
+
+**Max Nexus Endpoints** \- By default, each account is provisioned with a max of ten Nexus `Endpoints`. You can request further increases beyond the initial 10 `Endpoint` limit by opening a support ticket.
+
+**Workflow Max Nexus Operations** \- A single Workflow Execution can have a maximum of 30 in-flight Nexus Operations and 30 total Nexus Operations (as public preview does not yet remove completed Nexus Operations from mutable state). After that limit is reached, no more Nexus Operations will be processed for that Workflow Execution.
+
+**Nexus Request Handler Timeout** \- Nexus Operation handlers have less than 10 seconds to process a single Nexus start or cancel request. Handlers should observe the context deadline and ensure they do not exceed it. This includes fully processing a synchronous Nexus operation and starting an asynchronous Nexus operation, for example one that starts a Workflow. If a handler doesn’t respond within a context deadline, a context deadline exceeded error will be tracked in the caller workflow’s pending Nexus operations, and the Nexus Machinery will retry the Nexus request with an exponential backoff policy.
+
+**Nexus Operation Maximum Duration** \- Each Nexus `Operation` has a maximum `ScheduleToClose` duration of 60 days, which is most applicable to asynchronous Nexus `Operations` that are completed with an asynchronous callback using a separate Nexus request from the handler back to the caller Namespace. For enhanced security, completion callbacks may be signed with a single use token in the future, and the 60 day maximum allows us to rotate the asymmetric encryption keys used for completion callback request signing. While the caller of a Nexus `Operation` can configure the `ScheduleToClose` duration to be shorter than 60 days, the maximum duration can not be extended beyond 60 days and will be capped by the server to 60 days.
+
+See [Nexus Limits] for additional details.
+
+## Secure Routing
+
+Nexus `Endpoints` are only privately accessible from within a Temporal Cloud and mTLS is used for all Nexus communication, including across cloud cells and regions. Workers authenticate to their Namespaces via mTLS or an API key as allowed by their Namespace configuration.
+
+See [Nexus Secure Routing](\#secure-routing) for details.
+
+## Payload Encryption
+
+For payload encryption, the `DataConverter` works the same for a Nexus `Operation` as it does for other payloads sent between a Worker and Temporal Cloud. Currently there is support for a single `DataConverter` to be used for inbound inputs and outbound outputs, which means the encryption key often used in a custom `DataConverter` must be the same for both the caller and the handler. We may support per-Service payload encryption in the future, so please reach out if you need this.
+
+See [Nexus Payload Encryption & Data Converter] for additional details.
 
 

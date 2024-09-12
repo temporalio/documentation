@@ -14,54 +14,50 @@ keywords:
   - Temporal Nexus onboarding
   - setting up Nexus Endpoints
   - workflow onboarding
-  - cross-namespace integration
+  - cross-Namespace integration
   - Nexus API registry
   - starting with Temporal Nexus
 ---
 
-#### Getting Started
+Temporal Nexus Public Preview is available within your Temporal Cloud account, with support in the Temporal Go SDK.
 
-##### Overview
+Calls across existing Namespaces can be enabled by creating a Nexus Endpoint in the Nexus API Registry, creating a Nexus Service in a Worker in the handler Namespace, and then using the Nexus Service from a caller Workflow in a different Namespace.
 
-Temporal Nexus Public Preview is available within your Temporal Cloud account, with support in the Temporal Go SDK ([developer guide]) and Temporal Java SDK (developer guide).
+Monolithic Namespaces can be decomposed into multiple Namespaces, by hiding service implementations behind a Nexus Endpoint in the monolithic Namespace, pointing all consumers at the new Nexus Endpoint, and then changing the Endpoint’s target Namespace to a different Namespace. Multiple Nexus Endpoints can target a single monolithic Namespace.
 
-Calls across existing namespaces can be enabled by creating a Nexus Endpoint in the Nexus API Registry, creating a Nexus Service in a Worker in the handler namespace, and then using the Nexus Service from a caller Workflow in a different namespace.
+## Cross-Namespace
 
-Monolithic namespaces can be decomposed into multiple namespaces, by hiding service implementations behind a Nexus Endpoint in the monolithic namespace, pointing all consumers at the new Nexus Endpoint, and then changing the Endpoint’s target namespace to a different namespace. Multiple Nexus Endpoints can target a single monolithic namespace.
+Calls across existing Namespaces can be enabled by creating a Nexus Endpoint in the Nexus API Registry, creating a Nexus Service in a Worker in the handler Namespace, and then using the Nexus Service from a caller Workflow in a different Namespace.
 
-##### Cross-namespace
-
-Calls across existing namespaces can be enabled by creating a Nexus Endpoint in the Nexus API Registry, creating a Nexus Service in a Worker in the handler namespace, and then using the Nexus Service from a caller Workflow in a different namespace.
-
-Steps to enable calls across existing namespaces \- see the [Develop examples]:
+Steps to enable calls across existing Namespaces \- see the [Develop examples]:
 
 1. Add Nexus `Services` to the same `Workers` as the Temporal primitives being abstracted  
 2. Add a Nexus `Endpoint` that:  
-   1. targets handler namespace  
-   2. allows the caller namespace  
-3. Make Nexus calls from a caller Workflow in a different namespace  
-   1. use `workflow.NewNexusClient(endpointName, serviceName)`  
-   2. execute a Nexus Operation: `nexusClient.ExecutionOperation(...)`
+   1. Targets handler Namespace  
+   2. Allows the caller Namespace  
+3. Make Nexus calls from a caller Workflow in a different Namespace  
+   1. Use `workflow.NewNexusClient(endpointName, serviceName)`  
+   2. Execute a Nexus Operation: `nexusClient.ExecutionOperation(...)`
 
-##### Decompose a Monolithic Namespace
+## Decompose a Monolithic Namespace
 
-Multiple Nexus Endpoints can target a single monolithic namespace, and then each Endpoint can be updated, one at a time, to target separate namespaces, for an incremental migration. 
+Multiple Nexus Endpoints can target a single monolithic Namespace, and then each Endpoint can be updated, one at a time, to target separate Namespaces, for an incremental migration. 
 
-Once Nexus Endpoints are in place, targeting a new namespace can be done with config changes and zero downtime, as new Nexus requests will be routed to the new target namespace, and existing Nexus requests will be completed in the old namespace.
+Once Nexus Endpoints are in place, targeting a new Namespace can be done with config changes and zero downtime, as new Nexus requests will be routed to the new target Namespace, and existing Nexus requests will be completed in the old Namespace.
 
-Steps to decompose a large monolithic namespace:
+Steps to decompose a large monolithic Namespace:
 
 1. Hide service implementations behind a Nexus `Endpoint`  
-   1. add Nexus `Services` to the same `Workers` as the Temporal primitives being abstracted  
-   2. add Nexus `Endpoints` to the Nexus API Registry, with monolithic namespace as the target  
+   1. Add Nexus `Services` to the same `Workers` as the Temporal primitives being abstracted  
+   2. Add Nexus `Endpoints` to the Nexus API Registry, with monolithic Namespace as the target  
 2. Service consumers use the Nexus Endpoint instead of the underlying implementation  
-   1. can be done incrementally, until there are no direct caller dependencies on the underlying service implementations (the underlying Temporal primitives)  
-3. Move service implementations to a different namespace  
-   1. create a new `Namespace`  
-   2. add a `Worker` deployment with the Nexus `Service`  
-   3. update the Nexus `Endpoint` target to the new namespace  
-   4. configure the Endpoint allowlist to allow calls from the original monolithic namespace  
-   5. new Nexus `Operations` will be routed from callers in the monolithic namespace to the new namespace  
-4. Quiesce Nexus Operations on the old target namespace  
-   1. leave the old `Worker` deployment running until all existing Nexus Operations in the old namespace have completed (and their underlying `Workflows`, if any).  
-   2. old Workers in the monolithic namespace can have the service implementation removed, since it is now being served from the new `Endpoint` target namespace.
+   1. Can be done incrementally, until there are no direct caller dependencies on the underlying service implementations (the underlying Temporal primitives)  
+3. Move service implementations to a different Namespace  
+   1. Create a new `Namespace`  
+   2. Add a `Worker` deployment with the Nexus `Service`  
+   3. Update the Nexus `Endpoint` target to the new Namespace  
+   4. Configure the Endpoint allowlist to allow calls from the original monolithic Namespace  
+   5. New Nexus `Operations` will be routed from callers in the monolithic Namespace to the new Namespace  
+4. Quiesce Nexus Operations on the old target Namespace  
+   1. Leave the old `Worker` deployment running until all existing Nexus Operations in the old Namespace have completed (and their underlying `Workflows`, if any).  
+   2. Old Workers in the monolithic Namespace can have the service implementation removed, since it is now being served from the new `Endpoint` target Namespace.
