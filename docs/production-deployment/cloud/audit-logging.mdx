@@ -94,6 +94,14 @@ The log sent to the stream is JSON in the following format:
 }
 ```
 
+:::note
+
+The [`X-Forwarded-For`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For) format is a comma-separated list of IP addresses which should be evaluated from the last to the first, until meeting the first untrusted IP address of the list. This allows for instance to consider proxies in the path.
+
+Temporal provides the caller IP address in that format to allow customers to identify a caller IP address even if one (or more proxies) are in the network path to reach Temporal Cloud.
+
+:::
+
 ## How to configure Audit Logging {#configure-audit-logging}
 
 Audit logging can be configured in both AWS Kinesis and GCP PubSub
