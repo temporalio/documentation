@@ -139,6 +139,21 @@ Signal-With-Start is a great tool for lazily initializing Workflows. When you se
 
 :::
 
+:::note
+
+Workflow Updates are currently disabled by default on Temporal Server.
+
+To enable sending Updates, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) and [frontend.enableUpdateWorkflowExecutionAsyncAccepted](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config values to `true`.
+
+For example, with the Temporal CLI, run these commands:
+
+```command
+temporal server start-dev --dynamic-config-value frontend.enableUpdateWorkflowExecution=true
+temporal server start-dev --dynamic-config-value frontend.enableUpdateWorkflowExecutionAsyncAccepted=true
+```
+
+:::
+
 Updates can be sent from a Temporal Client or the Temporal CLI to a Workflow Execution. This call is synchronous and will call into the corresponding Update handler. If you’d rather make an asynchronous request, you should use Signals.
 
 In most languages (except Go), you may call `executeUpdate` to complete an Update and get its result.
