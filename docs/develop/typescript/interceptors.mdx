@@ -118,7 +118,7 @@ Workflow interceptor registration is different from the other interceptors becau
 To register Workflow interceptors, export an `interceptors` function from a file located in the `workflows` directory and provide the name of that file to the Worker on creation via [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).
 
 At the time of construction, the Workflow context is already initialized for the current Workflow.
-You may use call the [`workflowInfo()`](https://typescript.temporal.io/api/interceptors/workflow#workflowinfo) function to access Workflow-specific information from an interceptor.
+You may call the [`workflowInfo()`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) function to access Workflow-specific information from an interceptor.
 
 `src/workflows/your-interceptors.ts`
 
