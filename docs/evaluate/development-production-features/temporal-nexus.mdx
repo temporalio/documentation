@@ -3,12 +3,11 @@ id: nexus
 title: Temporal Nexus - Temporal feature
 description: Explore how Temporal Nexus enables modular architecture and secure multi-team collaboration by abstracting Temporal primitives into clean Nexus Service APIs across namespace boundaries.
 sidebar_label: Temporal Nexus
+slug: /temporal-nexus
 tags:
-  - multi-team-collaboration
-  - modular-architecture
   - temporal-nexus
-  - namespace-boundaries
-  - secure-integration
+  - temporal-cloud
+
 keywords:
   - temporal multi-team collaboration
   - modular temporal architecture
@@ -18,35 +17,28 @@ keywords:
   - secure temporal workflows
   - multi-team integration temporal
   - temporal cloud nexus
-  - nexus endpoints temporal
-  - cross-namespace temporal
 ---
 
-import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+:::tip Support, stability, and dependency info
+
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for both OSS and Temporal Cloud.
+
+:::
+
 
 Temporal Nexus is an integrated feature of the Temporal platform designed to connect durable executions across team and Namespace boundaries.
 
 When organizations build applications, whether small or large, it’s essential to design them in a modular way to ensure scalability and adaptability. 
-This involves breaking the application into smaller, manageable parts that can be developed and operated by different teams. 
+This involves breaking the application into smaller, manageable parts developed and operated by different teams. 
 
 While this modular approach supports growth and evolution without requiring major changes, existing solutions often result in tightly coupled Workflows, complex integrations, and security risks.
 Teams collaborating on a Temporal Application often seek the isolation and security provided by separate Namespaces. However, they also need durable execution that works seamlessly across team and Namespace boundaries, ensuring secure integration with a clean separation of concerns.
 
-Temporal Nexus is designed to help multiple teams to collaborate autonomously while maintaining a clean separation of concerns, ensuring that applications are scalable, secure, and easy to manage as they grow.
+Temporal Nexus allows multiple teams to collaborate autonomously while maintaining a clean separation of concerns, ensuring that applications are scalable, secure, and easy to manage as they grow.
 
 With Temporal Nexus, teams are able to:
-- **Easily scale and manage applications** by breaking them into modular components that can be developed separately while maintaining smooth integration through clear service contracts.
+- **Easily scale and manage applications** by breaking them into modular components developed separately while maintaining smooth integration through clear service contracts.
 - **Run Workflows across teams and Namespaces**, enabling durable execution and custom code to operate seamlessly across different parts of the system.
 - **Enhance security by isolating different parts of the application**, reducing the risk and impact of potential issues.
 - **Continue using familiar tools like queue-based workers**, without the need for complex new setups or deployments.
-
-
-For a deep dive into core concepts of Temporal Nexus, visit the following Temporal Encyclopedia pages.
-
-<RelatedReadContainer>
-    <RelatedReadItem text="Nexus API Registry" archetype="encyclopedia" />
-    <RelatedReadItem text="Nexus Endpoints" archetype="encyclopedia" />
-    <RelatedReadItem text="Nexus Services" archetype="encyclopedia" />
-    <RelatedReadItem text="Nexus Operations" archetype="encyclopedia" />
-</RelatedReadContainer>
 
