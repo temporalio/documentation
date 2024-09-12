@@ -96,6 +96,7 @@ swap:
   '\bworkflow\b': Workflow
   timer: Timer
   timers: Timers
+  update: Update
   worker entity: Worker Entity
   worker process: Worker Process
   worker program: Worker Program
