@@ -35,10 +35,10 @@ The observability section of the Temporal Developer's guide covers the many ways
 
 This section covers features related to viewing the state of the application, including:
 
-- [Metrics](#metrics)
-- [Tracing](#tracing)
-- [Logging](#logging)
-- [Visibility](#visibility)
+- [Emit metrics](#metrics)
+- [Set up tracing](#tracing)
+- [Log from a Workflow](#logging)
+- [Visibility APIs](#visibility)
 
 ## Emit metrics {#metrics}
 
@@ -71,9 +71,9 @@ new_runtime = Runtime(telemetry=TelemetryConfig(metrics=PrometheusConfig(bind_ad
 my_client = await Client.connect("my.temporal.host:7233", runtime=new_runtime)
 ```
 
-## Setup Tracing {#tracing}
+## Set up tracing {#tracing}
 
-**How to setup Tracing**
+**How to set up tracing**
 
 Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
 
