@@ -1,0 +1,47 @@
+---
+id: debugging
+title: Debugging - .NET SDK feature guide
+sidebar_label: Debugging
+description: Learn how to debug Workflows in development and production environments using Temporal .NET SDK. Utilize logging, debugger, Web UI, CLI, replay, tracing, and more for efficient troubleshooting.
+toc_max_heading_level: 4
+keywords:
+  - sdk
+  - dotnet
+  - debugging
+tags:
+  - sdk
+  - dotnet
+  - debugging
+---
+
+## Debugging {#debug}
+
+This page shows how to do the following:
+
+- [Debug in a development environment](#debug-in-a-development-environment)
+- [Debug in a development production](#debug-in-a-development-production)
+
+### Debug in a development environment {#debug-in-a-development-environment}
+
+**How to debug in a development environment using the Temporal .NET SDK**
+
+In developing Workflows, you can use the normal development tools of logging and a debugger to see what’s happening in your Workflow.
+In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the [Web UI](/web-ui) or [Temporal CLI](/cli).
+The Web UI provides insight into your Workflows, making it easier to identify issues and monitor the state of your Workflows in real time.
+
+### Debug in a development production {#debug-in-a-development-production}
+
+**How to debug in a development production using the Temporal .NET SDK**
+
+You can debug production Workflows using:
+
+- [Web UI](/web-ui)
+- [Temporal CLI](/cli)
+- [Replay](/develop/dotnet/testing-suite#replay-test)
+- [Tracing](/develop/dotnet/observability#tracing)
+- [Logging](/develop/dotnet/observability#logging)
+
+You can debug and tune Worker performance with metrics and the [Worker performance guide](/develop/worker-performance).
+For more information, see [Observability ▶️ Metrics](/develop/dotnet/observability#metrics) for setting up SDK metrics.
+
+Debug Server performance with [Cloud metrics](/cloud/metrics/) or [self-hosted Server metrics](/self-hosted-guide/production-checklist#scaling-and-metrics).

@@ -2,28 +2,26 @@
 id: audit-logging
 title: Audit Logging - Temporal Cloud feature guide
 sidebar_label: Audit Logging
-sidebar_position: 8
-description: Audit Logging provides forensic access information at the account, user, and Namespace level. Configure, consume, troubleshoot, and delete audit logs.
+description: Audit Logging in Temporal Cloud provides forensic information, integrating with Amazon Kinesis for secure data handling and supporting key Admin and API Key operations. This streamlines audit and compliance processes.
 slug: /cloud/audit-logging
 toc_max_heading_level: 4
 keywords:
-- audit logging
-- explanation
-- how-to
-- operations
-- temporal cloud
-- term
-- troubleshooting
+  - audit logging
+  - explanation
+  - how-to
+  - operations
+  - temporal cloud
+  - term
+  - troubleshooting
 tags:
-- audit-logging
-- explanation
-- how-to
-- operations
-- temporal-cloud
-- term
-- troubleshooting
+  - audit-logging
+  - explanation
+  - how-to
+  - operations
+  - temporal-cloud
+  - term
+  - troubleshooting
 ---
-
 
 Audit Logging is a feature of [Temporal Cloud](/cloud/overview) that provides forensic access information at the account level, the user level, and the [Namespace](/namespaces) level.
 
@@ -65,6 +63,8 @@ The following list specifies both the supported events and the Temporal APIs tha
   - Add custom Search Attributes: `UpdateNamespace`
   - Rename custom Search Attribute: `RenameCustomSearchAttribute`
   - Request increase in Retention Period: `UpdateNamespace`
+- Multi-region Namespace
+  - Failover Namespace: `FailoverNamespace`
 
 ### API Key Operation events
 
@@ -86,10 +86,12 @@ The log sent to the Kinesis stream is JSON in the following format:
   "caller_ip_address": // Customer IP address or server name
   "operation":  // Operation that was performed
   "details":  // Details of the operation
-  "status": // Status, such as OK or error
+  "status": // Status, such as OK or ERROR
   "category":  // Category of the log entry: Admin or System
-  "version": // Version of the log entry, beginning with 0 and updated when a backfill or resend of the same log occurs
+  "version": // Version of the log entry
   "log_id": // Unique ID of the log entry
+  "principal": // Information about who initiated the operation
+  "request_id": // Optional async request id set by the user when sending a request
 }
 ```
 
@@ -151,17 +153,17 @@ For an example, see [Example of consuming an Audit Log](#example-of-consuming-an
 The following example shows the contents of an Audit Log.
 
 ```json
-{"emit_time":"2023-10-24T08:19:41Z","level":"LOG_LEVEL_INFO","user_email":"zhengbo@example.com","operation":"UpdateAccount","details":{"client_ca_fingerprints":["5bb99d14fa602f7d39b7d048674a2251"],"search_attribute_update":{},"additional_message":"finished unary call with code OK"},"status":"OK","category":"LOG_CATEGORY_ADMIN"}
+{"emit_time":"2023-10-24T08:19:41Z","level":"LOG_LEVEL_INFO","user_email":"user1@example.com","operation":"UpdateAccount","details":{"client_ca_fingerprints":["5bb99d14fa602f7d39b7d048674a2251"],"search_attribute_update":{}},"status":"OK","category":"LOG_CATEGORY_ADMIN","log_id":"0mc69c0323b871293ce231dd1c7fb634","principal":{"id":"988cb80b-d6be-4bb5-9c87-d09f93f58ed3","type":"user","name":"user1@example.com"}}
 **********
-{"emit_time":"2023-10-25T21:16:42Z","level":"LOG_LEVEL_INFO","user_email":"alex@example.com","operation":"DeleteUser","details":{"target_users":["0b741c47-e093-47d1-9b74-f2359129f78f"],"search_attribute_update":{},"additional_message":"finished unary call with code OK"},"status":"OK","category":"LOG_CATEGORY_ADMIN"}
+{"emit_time":"2023-10-25T21:16:42Z","level":"LOG_LEVEL_INFO","user_email":"user2@example.com","operation":"DeleteUser","details":{"target_users":["0b741c47-e093-47d1-9b74-f2359129f78f"],"search_attribute_update":{}},"status":"OK","category":"LOG_CATEGORY_ADMIN","log_id":"0mc69c0323b871293ce231dd1c7fb635","request_id":"445297d3-43a7-4793-8a04-1b1dd1999641","principal":{"id":"b160473e-e40d-4a81-90d1-f4218269e6e4","type":"user","name":"user2@example.com"}}
 **********
-{"emit_time":"2023-11-03T19:31:45Z","level":"LOG_LEVEL_INFO","user_email":"matt@example.com","operation":"InviteUsers","details":{"target_users":["matt@example.net"],"search_attribute_update":{},"additional_message":"finished unary call with code OK"},"status":"OK","category":"LOG_CATEGORY_ADMIN"}
+{"emit_time":"2023-11-03T19:31:45Z","level":"LOG_LEVEL_INFO","user_email":"user3@example.com","operation":"InviteUsers","details":{"target_users":["user3@example.net"],"search_attribute_update":{}},"status":"OK","category":"LOG_CATEGORY_ADMIN","log_id":"0mc69c0323b871293ce231dd1c7fb636","principal":{"id":"35fdc757-9637-446b-b386-12ed475511ad","type":"user","name":"user3@example.com"}}
 **********
-{"emit_time":"2023-11-08T08:06:40Z","level":"LOG_LEVEL_INFO","user_email":"zhengbo@example.com","operation":"UpdateUser","details":{"target_users":["zhengbo@example.net"],"search_attribute_update":{},"additional_message":"finished unary call with code OK"},"status":"OK","category":"LOG_CATEGORY_ADMIN"}
+{"emit_time":"2023-11-08T08:06:40Z","level":"LOG_LEVEL_INFO","user_email":"user1@example.com","operation":"UpdateUser","details":{"target_users":["user1@example.net"],"search_attribute_update":{}},"status":"OK","category":"LOG_CATEGORY_ADMIN","log_id":"0mc69c0323b871293ce231dd1c7fb637","request_id":"445297d3-43a7-4793-8a04-1b1dd1999640","principal":{"id":"988cb80b-d6be-4bb5-9c87-d09f93f58ed3","type":"user","name":"user1@example.com"}}
 **********
-{"emit_time":"2023-11-08T08:14:09Z","level":"LOG_LEVEL_INFO","user_email":"zhengbo@example.com","operation":"UpdateNamespace","details":{"namespace":"audit-log-test.example-dev","client_ca_fingerprints":["f186d0bd971ff7d52dc6cc9d9b6f7644"],"search_attribute_update":{},"additional_message":"finished unary call with code OK"},"status":"OK","category":"LOG_CATEGORY_ADMIN"}
+{"emit_time":"2023-11-08T08:14:09Z","level":"LOG_LEVEL_INFO","user_email":"user1@example.com","operation":"UpdateNamespace","details":{"namespace":"audit-log-test.example-dev","client_ca_fingerprints":["f186d0bd971ff7d52dc6cc9d9b6f7644"],"search_attribute_update":{}},"status":"OK","category":"LOG_CATEGORY_ADMIN","log_id":"0mc69c0323b871293ce231dd1c7fb638","principal":{"id":"988cb80b-d6be-4bb5-9c87-d09f93f58ed3","type":"user","name":"user1@example.com"}}
 **********
-{"emit_time":"2023-11-08T09:20:22Z","level":"LOG_LEVEL_INFO","user_email":"zhengbo@example.com","operation":"UpdateUserNamespacePermissions","details":{"namespace":"audit-log-test.example-dev","search_attribute_update":{},"additional_message":"finished unary call with code OK"},"status":"OK","category":"LOG_CATEGORY_ADMIN"}
+{"emit_time":"2023-11-08T09:20:22Z","level":"LOG_LEVEL_INFO","user_email":"user1@example.com","operation":"UpdateUserNamespacePermissions","details":{"namespace":"audit-log-test.example-dev","search_attribute_update":{}},"status":"OK","category":"LOG_CATEGORY_ADMIN","log_id":"0mc69c0323b871293ce231dd1c7fb639","principal":{"id":"988cb80b-d6be-4bb5-9c87-d09f93f58ed3","type":"user","name":"user1@example.com"}}
 **********
 ```
 
@@ -202,15 +204,21 @@ The following is a sample result.
 {
   "emit_time": "2023-11-14T07:56:55Z",
   "level": "LOG_LEVEL_INFO",
-  "user_email": "zhengbo@example.com",
+  "user_email": "user1@example.com",
   "operation": "DeleteUser",
   "details": {
     "target_users": ["d7dca96f-adcc-417d-aafc-e8f5d2ba9fe1"],
-    "search_attribute_update": {},
-    "additional_message": "finished unary call with code OK"
+    "search_attribute_update": {}
   },
   "status": "OK",
-  "category": "LOG_CATEGORY_ADMIN"
+  "category": "LOG_CATEGORY_ADMIN",
+  "log_id": "0mc69c0323b871293ce231dd1c7fb639",
+  "request_id": "445297d3-43a7-4793-8a04-1b1dd1999640",
+  "principal": {
+    "id": "988cb80b-d6be-4bb5-9c87-d09f93f58ed3",
+    "type": "user",
+    "name": "user1@example.com"
+  }
 }
 ```
 

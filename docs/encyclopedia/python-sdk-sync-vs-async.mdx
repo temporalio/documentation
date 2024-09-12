@@ -1,0 +1,184 @@
+---
+id: python-sdk-sync-vs-async
+title: Temporal Python SDK synchronous vs. asynchronous Activity implementations
+sidebar_label: Python SDK sync vs async
+description: The Temporal Python SDK supports implementing Activities asynchronously with asyncio, synchronously with ThreadPoolExecutor or ProcessPoolExecutor. Choose the correct method to avoid application errors.
+toc_max_heading_level: 4
+keywords:
+  - temporal python sdk
+  - asynchronous activities
+  - synchronous activities
+  - asyncio python
+  - multiprocessing.managers.syncmanager
+  - python async event loop
+  - blocking calls in python
+  - aiohttp vs requests
+  - python multithreading
+  - python multiprocessing
+  - async safe http library
+  - http requests in python activities
+  - activity implementation in temporal
+tags:
+  - python-sdk
+  - async-vs-sync
+---
+
+The Temporal Python SDK supports multiple ways of implementing an Activity:
+
+- Asynchronously using [`asyncio`](https://docs.python.org/3/library/asyncio.html)
+- Synchronously multithreaded using [`concurrent.futures.ThreadPoolExecutor`](https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor)
+- Synchronously multiprocess using [`concurrent.futures.ProcessPoolExecutor`](https://docs.python.org/3/library/concurrent.futures.html#processpoolexecutor) and [`multiprocessing.managers.SyncManager`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.managers.SyncManager)
+
+It is important to implement your Activities using the correct method, otherwise
+your application may fail in sporadic and unexpected ways. Which one you should
+use depends on your use case. This section provides guidance to help you choose
+the best approach.
+
+## The Python Asynchronous Event Loop and Blocking Calls
+
+First, let's look at how async event loops work in Python. The Python async
+event loop runs in a thread and executes all tasks in its thread. When any
+task is running in the event loop, the loop is blocked and no other tasks can be
+running at the same time within that event loop. Whenever a task executes an
+`await` expression, the task is suspended, and the event loop begins or resumes
+execution of another task.
+
+This means that the event loop can only pass the flow of control when the `await`
+keyword is executed. If a program makes a blocking call, such as one that reads
+from a file, makes a synchronous request to a network service, waits for user input,
+or anything else that blocks the execution, the entire event loop must wait until
+that execution has completed.
+
+Blocking the async event loop in Python would turn your asynchronous program
+into a synchronous program that executes serially, defeating the entire purpose
+of using `asyncio`. This can also lead to potential deadlock, and unpredictable behavior
+that causes tasks to be unable to execute. Debugging these issues can be difficult
+and time consuming, as locating the source of the blocking call might not always
+be immediately obvious.
+
+Due to this, Python developers must be extra careful to not make blocking calls
+from within an asynchronous Activity, or use an async safe library to perform
+these actions.
+
+For example, making an HTTP call with the popular `requests` library within an
+asynchronous Activity would lead to blocking your event loop. If you want to make
+an HTTP call from within an asynchronous Activity, you should use an async-safe HTTP library
+such as `aiohttp` or `httpx`. Otherwise, use a synchronous Activity.
+
+## Implementing Asynchronous Activities
+
+The following code is an asynchronous Activity Definition that's similar to one
+you will use during an upcoming exercise. Like the Workflow Definition
+you've already run, it takes a name (`str`) as input and returns a
+customized greeting (`str`) as output. However, this Activity makes
+a call to a microservice, accessed through HTTP, to request this
+greeting in Spanish. This activity uses the `aiohttp` library to make an async
+safe HTTP request. Using the `requests` library here would have resulting in
+blocking code within the async event loop, which will block the entire async
+event loop. For more in-depth information about this issue, refer to the
+[Python asyncio documentation](https://docs.python.org/3/library/asyncio-dev.html#running-blocking-code).
+
+The code below also implements the Activity Definition as a class, rather than a
+function. The `aiohttp` library requires an established `Session` to perform the
+HTTP request. It would be inefficient to establish a `Session` every time an
+Activity is invoked, so instead this code accepts a `Session` object as an instance
+parameter and makes it available to the methods. This approach will also be
+beneficial when the execution is over and the `Session` needs to be closed.
+
+In this example, the Activity supplies the name in the URL and retrieves
+the greeting from the body of the response.
+
+```python
+import aiohttp
+import urllib.parse
+from temporalio import activity
+
+class TranslateActivities:
+    def __init__(self, session: aiohttp.ClientSession):
+        self.session = session
+
+    @activity.defn
+    async def greet_in_spanish(self, name: str) -> str:
+        greeting = await self.call_service("get-spanish-greeting", name)
+        return greeting
+
+    # Utility method for making calls to the microservices
+    async def call_service(self, stem: str, name: str) -> str:
+        base = f"http://localhost:9999/{stem}"
+        url = f"{base}?name={urllib.parse.quote(name)}"
+
+        async with self.session.get(url) as response:
+            translation = await response.text()
+
+            if response.status >= 400:
+                raise ApplicationError(
+                    f"HTTP Error {response.status}: {translation}",
+                    # We want to have Temporal automatically retry 5xx but not 4xx
+                    non_retryable=response.status < 500,
+                )
+
+            return translation
+```
+
+## Implementing Synchronous Activities
+
+The following code is an implementation of the above Activity, but as a
+synchronous Activity Definition. When making the call to the microservice,
+you'll notice that it uses the `requests` library. This is safe to do in
+synchronous Activities.
+
+```python
+import urllib.parse
+import requests
+from temporalio import activity
+
+class TranslateActivities:
+
+    @activity.defn
+    def greet_in_spanish(self, name: str) -> str:
+        greeting = self.call_service("get-spanish-greeting", name)
+        return greeting
+
+    # Utility method for making calls to the microservices
+    def call_service(self, stem: str, name: str) -> str:
+        base = f"http://localhost:9999/{stem}"
+        url = f"{base}?name={urllib.parse.quote(name)}"
+
+        response = requests.get(url)
+        return response.text
+```
+
+In the above example we chose not to share a session across the Activity, so
+`__init__` was removed. While `requests` does have the ability to create sessions,
+it is currently unknown if they are thread safe. Due to no longer having or needing
+`__ini__`, the case could be made here to not implement the Activities as a class,
+but just as decorated functions as shown below:
+
+```python
+@activity.defn
+def greet_in_spanish(name: str) -> str:
+    greeting = call_service("get-spanish-greeting", name)
+    return greeting
+
+# Utility method for making calls to the microservices
+def call_service(stem: str, name: str) -> str:
+    base = f"http://localhost:9999/{stem}"
+    url = f"{base}?name={urllib.parse.quote(name)}"
+
+    response = requests.get(url)
+    return response.text
+```
+
+Whether to implement Activities as class methods or functions is a design choice
+choice left up to the developer when cross-activity state is not needed. Both are
+equally valid implementations.
+
+## When Should You Use Async Activities
+
+Asynchronous Activities have many advantages, such as potential speed up of execution.
+However, as discussed above, making unsafe calls within the async event loop
+can cause sporadic and difficult to diagnose bugs. For this reason, we recommend
+using asynchronous Activities _only_ when you are certain that your Activities
+are async safe and don't make blocking calls.
+
+If you experience bugs that you think may be a result of an unsafe call being made in an asynchronous Activity, convert it to a synchronous Activity and see if the issue resolves.

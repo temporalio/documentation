@@ -2,7 +2,7 @@
 id: workflow
 title: tctl v1.17 workflow command reference
 sidebar_label: workflow
-description: Explore the wide range of tctl Workflow commands for efficient management of Workflow Executions in a Temporal Cluster.
+description: The public preview of Temporal CLI is now available! Begin using it and provide feedback. After the full release, tctl will deprecate. Perform various Workflow operations using tctl commands.
 toc_max_heading_level: 4
 keywords:
   - cli
@@ -859,7 +859,7 @@ tctl workflow observeid --max_field_length <length>
 
 Alias: `q`
 
-The `tctl workflow query` command sends a [Query](/workflows#query) to a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow query` command sends a [Query](/encyclopedia/workflow-message-passing#sending-queries) to a [Workflow Execution](/workflows#workflow-execution).
 
 Queries can be used to retrieve all or part of the Workflow state with given parameters.
 
@@ -1260,7 +1260,7 @@ tctl workflow run --workflow_type <name>
 
 ### --execution_timeout
 
-Specify the [Start-To-Close Timeout](/activities#start-to-close-timeout) of the [Workflow Execution](/workflows#workflow-execution) in seconds.
+Specify the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) of the [Workflow Execution](/workflows#workflow-execution) in seconds.
 The default value is 0.
 
 **Example**
@@ -1271,7 +1271,7 @@ tctl workflow run --execution_timeout <seconds>
 
 ### --workflow_task_timeout
 
-Specify the [Start-To-Close Timeout](/activities#start-to-close-timeout) of the [Workflow Task](/workers#workflow-task) in seconds.
+Specify the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) of the [Workflow Task](/workers#workflow-task) in seconds.
 The default value is 10.
 
 **Example**
@@ -1757,7 +1757,7 @@ tctl workflow showid <workflow_id> --reset_points_only
 
 ## signal
 
-The `tctl workflow signal` command [Signals](/workflows#signal) a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow signal` command [Signals](/encyclopedia/workflow-message-passing#sending-signals) a [Workflow Execution](/workflows#workflow-execution).
 
 Workflows listen for Signals by their Signal name, and can be made to listen to one or more Signal names.
 Workflows can also listen for SQL queries.
@@ -1870,7 +1870,7 @@ tctl workflow signal --run_id <id>
 
 ### --name
 
-Specify the name of a [Signal](/workflows#signal).
+Specify the name of a [Signal](/encyclopedia/workflow-message-passing#sending-signals).
 
 **Example**
 
@@ -1880,7 +1880,7 @@ tctl workflow signal --query <query> --name <name>
 
 ### --input
 
-Pass input for the [Signal](/workflows#signal).
+Pass input for the [Signal](/encyclopedia/workflow-message-passing#sending-signals).
 Input must be in JSON format.
 
 Alias: `-i`
@@ -1893,7 +1893,7 @@ tctl workflow signal --query <query> --input <json>
 
 ### --input_file
 
-Pass input for the [Signal](/workflows#signal) from a JSON file.
+Pass input for the [Signal](/encyclopedia/workflow-message-passing#sending-signals) from a JSON file.
 
 **Example**
 
@@ -2031,7 +2031,7 @@ tctl workflow start --workflow_type <name>
 
 ### --execution_timeout
 
-Specify the [Start-To-Close Timeout](/activities#start-to-close-timeout) of the [Workflow Execution](/workflows#workflow-execution) in seconds.
+Specify the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) of the [Workflow Execution](/workflows#workflow-execution) in seconds.
 The default value is 0.
 
 **Example**
@@ -2042,7 +2042,7 @@ tctl workflow start --execution_timeout <seconds>
 
 ### --workflow_task_timeout
 
-Specify the [Start-To-Close Timeout](/activities#start-to-close-timeout) of the [Workflow Task](/workers#workflow-task) in seconds.
+Specify the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) of the [Workflow Task](/workers#workflow-task) in seconds.
 The default value is 10.
 
 **Example**

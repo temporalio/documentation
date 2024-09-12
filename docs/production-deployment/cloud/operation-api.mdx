@@ -2,8 +2,7 @@
 id: operation-api
 title: Operations API - Temporal Cloud feature guide
 sidebar_label: Cloud Ops API
-sidebar_position: 7
-description: Temporal Cloud Operations API.
+description: The Temporal Cloud Operations API streamlines automation of Users, Namespaces, and Accounts with gRPC integration for diverse programming languages, enabling efficient resource management.
 slug: /ops
 toc_max_heading_level: 4
 keywords:
@@ -14,7 +13,7 @@ tags:
 
 :::tip Support, stability, and dependency info
 
-- Temporal Cloud Operations API is in [Public Preview](/evaluate/release-stages#public-preview) for Temporal Cloud.
+- Temporal Cloud Operations API is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for Temporal Cloud.
 
 :::
 
@@ -43,12 +42,13 @@ This process assumes you have basic familiarity with gRPC and Protocol Buffers (
 - [Temporal Cloud user account](/cloud/get-started)
 - [API Key](/cloud/tcld/apikey#create) for authentication
 - [Protocol Buffers](https://github.com/protocolbuffers/protobuf/releases)
+- [gRPC](https://grpc.io/docs/languages/) in your preferred programming language
 
 ### Compile the API
 
 Download the gRPC protobufs from the [Cloud Ops API repository](https://github.com/temporalio/api-cloud/tree/main/temporal/api/cloud).
 
-Use [grpc](https://grpc.io/docs/) to compile and generate code in your preferred [programming language](https://grpc.io/docs/#official-support).
+Use [gRPC](https://grpc.io/docs/) to compile and generate code in your preferred [programming language](https://grpc.io/docs/#official-support).
 
 1. **Clone the Temporal Cloud API repository:**
 
@@ -63,13 +63,16 @@ Use [grpc](https://grpc.io/docs/) to compile and generate code in your preferred
    - Copy the protobuf files to your project directory.
 
 3. **Compile the Protobuf files:**
+   :::note
+   Python requires [gRPC tools](https://grpc.io/docs/languages/python/quickstart/#grpc-tools) to be installed.
+   :::
    1. The following is an example of how to use the generated code for Python; however, this approach can be adapted for other supported programming languages:
    ```python
    python -m grpc_tools.protoc -I./ --python_out=./ --grpc_python_out=./ *.proto
    ```
-   - `-I./` specifies the directory of the `.proto` files.
-   - `--python_out=./` sets the output directory for generated Python classes.
-   - `--grpc_python_out=./` sets the output directory for generated gRPC service classes.
+   - `-I` specifies the directory of the `.proto` files.
+   - `--python_out=` sets the output directory for generated Python classes.
+   - `--grpc_python_out=` sets the output directory for generated gRPC service classes.
    - `*.proto` processes all `.proto` files.
 
 ## Use the generated code

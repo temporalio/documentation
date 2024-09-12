@@ -1,28 +1,42 @@
 ---
 id: datadog
-title: Datadog Metrics
+title: Datadog metrics setup - Temporal Cloud feature guide
 sidebar_label: Datadog
-sidebar_position: 2
-description: Configure and track performance metrics for Temporal Cloud.
+description: Learn to export Cloud metrics from Temporal Cloud to Datadog, enhancing observability to monitor, alert, and visualize your applications and infrastructure seamlessly.
 slug: /cloud/metrics/datadog
 toc_max_heading_level: 4
 keywords:
-- Datadog
-- how-to
-- metrics
-- observability
-- temporal cloud
+  - temporal cloud datadog integration
+  - exporting temporal cloud metrics
+  - datadog observability integration
+  - helm minikube setup
+  - prometheus api temporal cloud
+  - metrics monitoring datadog
+  - datadog kubernetes integration
+  - helm kubernetes deployment
+  - kubernetes observability
+  - datadog metrics dashboard
+  - prometheus querying datadog
+  - temporal cloud observability
+  - helm setup minikube
+  - monitoring temporal metrics
+  - temporal cloud dashboards
 tags:
-- datadog
-- how-to
-- metrics
-- observability
-- temporal-cloud
+  - datadog
+  - how-to
+  - metrics
+  - observability
+  - temporal-cloud
 ---
-
 
 Exporting cloud metrics to Datadog provides enhanced observability, allowing you to monitor, alert, and visualize key performance indicators of your applications and infrastructure.
 Temporal's integration with Datadog extends the monitoring capabilities of your Temporal Cloud deployment.
+
+:::note
+
+This tutorial provides an example application to help users capture metrics from Temporal's PromQL endpoint and export to DataDog.
+
+:::
 
 ### What will you learn?
 
@@ -132,6 +146,7 @@ curl --cert ca.pem --key ca.key "https://<Organization_ID>.tmprl.cloud/prometheu
 ```
 
 Provide the Organization ID of your Temporal Cloud account.
+
 </TabItem>
 <TabItem value="ouput" label="Output">
 Expect a successful response indicating your setup is correct.
@@ -150,10 +165,7 @@ Expect a successful response indicating your setup is correct.
           "temporal_namespace": "namespace.id",
           "temporal_service_type": "history"
         },
-        "value": [
-          123456.789,
-          "12"
-        ]
+        "value": [123456.789, "12"]
       }
     ]
   }
@@ -227,7 +239,7 @@ k9s
 
 Review the logs to confirm the integration is functioning as expected.
 
-Use a [pre-built dashboard](https://github.com/temporalio/samples-server/blob/main/cloud/observability/promql-to-dd-go/examples/Datadog_dashboard.json) to visualize your metrics in Datadog.
+Use a [pre-built dashboard](https://github.com/temporalio/samples-server/blob/main/cloud/observability/) to visualize your metrics in Datadog.
 
 You've successfully set up the export of metrics from Temporal Cloud to Datadog.
 
@@ -237,7 +249,6 @@ This is just the start.
 
 Customize and extend this code, dashboards, and deployment processes to meet your needs.
 
-- Explore [Datadog dashboards](https://github.com/temporalio/samples-server/blob/main/cloud/observability/promql-to-dd-go/examples/Datadog_dashboard.json) to visualize your Temporal metrics.
+- Explore [Datadog dashboards](https://github.com/temporalio/samples-server/blob/main/cloud/observability/) to visualize your Temporal metrics.
 - Set up alerts in Datadog based on the metrics received from Temporal Cloud.
 - Consider integrating additional observability tools or exporting metrics to other platforms as needed.
-

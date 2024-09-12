@@ -1,0 +1,61 @@
+---
+id: workflow-message-passing
+title: Workflow message passing - Temporal feature
+description: Enhance your Workflows with Signals and Queries, allowing dynamic responses to external events and real-time state access for comprehensive monitoring and tracking.
+sidebar_label: Workflow message passing
+tags:
+  - signals
+  - queries
+  - updates
+  - workflows
+  - activities
+  - workers
+keywords:
+  - temporal application
+  - workflow design
+  - business logic activities
+  - temporal workers
+  - temporal SDK tutorial
+  - learning temporal workflows
+  - developing with temporal
+  - temporal workflow execution
+  - temporal activity management
+  - worker process execution
+  - signals
+  - queries
+  - updates
+---
+
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+
+Need to interact with your Workflow from outside of it? Think about use cases like these:
+
+- Your shipment-tracking Workflow needs to know when the item leaves the warehouse and is loaded into their truck. **Signal** your Workflow when the truck driver scans the barcode.
+- Folks in your company want to track the progress of their data migration Workflows. **Query** your running batch Workflow to get the data for the progress bar.
+- Your eCommerce shopping cart Workflow needs to know when a new item is added. **Update** it to add the item and receive back the current items to render.
+
+Temporal provides Signals, Queries, and Updates to allow rich interactivity with your running Workflows.
+
+**Signals**: Signal to send messages asynchronously to a running Workflow, changing its state or controlling its flow in real-time.
+
+**Queries**: Query to check the progress of your Workflow or debug the internal state in real-time.
+
+**Updates**: Update to send synchronous requests to your Workflow and track it in real-time.
+
+To learn more about using these powerful primitives, see our encyclopedia Entry:
+
+<RelatedReadContainer>
+  <RelatedReadItem path="/encyclopedia/workflow-message-passing" text="Workflow message passing (Signals, Queries, & Updates)" archetype="encyclopedia" />
+</RelatedReadContainer>
+
+For a deeper dive into Workflow message passing, enroll in one of [our courses](https://learn.temporal.io/courses/interacting_with_workflows).
+
+If you want to jump to straight to implementation details, see the SDK feature guides.
+
+<RelatedReadContainer>
+  <RelatedReadItem path="/develop/go/message-passing" text="Go SDK Workflow message passing feature guide" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/java/message-passing" text="Java SDK Workflow message passing feature guide" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/python/message-passing" text="Python SDK Workflow message passing feature guide" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/typescript/message-passing" text="TypeScript SDK Workflow message passing feature guide" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/dotnet/message-passing" text=".NET SDK Workflow message passing feature guide" archetype="feature-guide" />
+</RelatedReadContainer>

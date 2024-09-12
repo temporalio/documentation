@@ -2,30 +2,28 @@
 id: security
 title: Temporal Platform security features
 sidebar_label: Security
-sidebar_position: 3
-description: This guide is an overview of the Temporal Platform security features.
+description: Discover comprehensive security features of the Temporal Platform, including secure network communication with TLS and mTLS, robust authentication, customizable authorization, and single sign-on integration to protect your data and operations.
 slug: /self-hosted-guide/security
 toc_max_heading_level: 4
 keywords:
-- auth
-- developer-guide
-- guide-context
-- java
-- security
-- term
+  - auth
+  - developer-guide
+  - guide-context
+  - java
+  - security
+  - term
 tags:
-- auth
-- developer-guide
-- guide-context
-- java
-- security
-- term
+  - auth
+  - developer-guide
+  - guide-context
+  - java
+  - security
+  - term
 ---
-
 
 :::info General company security
 
-For information about the general security habits of Temporal Technologies, see our [company security page](/temporal-technologies-inc-security).
+For information about the general security habits of Temporal Technologies, see our [trust page](https://trust.temporal.io).
 
 :::
 
@@ -46,17 +44,17 @@ However users may also choose to design their own security architecture with rev
 
 The https://github.com/temporalio/samples-server repo offers two examples, which are further explained below:
 
-- **TLS:** how to configure Transport Layer Security (TLS) to secure network communication with and within a Temporal cluster.
+- **TLS:** how to configure Transport Layer Security (TLS) to secure network communication with and within a Temporal Service.
 - **Authorizer:** how to inject a low-level authorizer component that can control access to all API calls.
 
 ### Encryption in transit with mTLS
 
-Temporal supports Mutual Transport Layer Security (mTLS) as a way of encrypting network traffic between the services of a cluster and also between application processes and a Cluster.
+Temporal supports Mutual Transport Layer Security (mTLS) as a way of encrypting network traffic between the services of a Temporal Service and also between application processes and a Temporal Service.
 Self-signed or properly minted certificates can be used for mTLS.
 mTLS is set in Temporal's [TLS configuration](/references/configuration#tls).
-The configuration includes two sections such that intra-Cluster and external traffic can be encrypted with different sets of certificates and settings:
+The configuration includes two sections such that intra-Temporal Service and external traffic can be encrypted with different sets of certificates and settings:
 
-- `internode`: Configuration for encrypting communication between nodes in the cluster.
+- `internode`: Configuration for encrypting communication between nodes in the Temporal Service.
 - `frontend`: Configuration for encrypting the Frontend's public endpoints.
 
 A customized configuration can be passed using either the [WithConfig](/references/server-options#withconfig) or [WithConfigLoader](/references/server-options#withconfigloader) Server options.
@@ -77,7 +75,7 @@ More guidance on mTLS setup can be found in [the `samples-server` repo](https://
 
 ### Client connections
 
-To restrict a client's network access to cluster endpoints you can limit it to clients with certificates issued by a specific Certificate Authority (CA).
+To restrict a client's network access to Temporal Service endpoints you can limit it to clients with certificates issued by a specific Certificate Authority (CA).
 Use the `clientCAFiles`/ `clientCAData` and `requireClientAuth` properties in both the `internode` and `frontend` sections of the [mTLS configuration](/references/configuration#tls).
 
 ### Users
@@ -111,9 +109,9 @@ The default JWT `ClaimMapper` implementation can be used as is or as a base for 
 
 To enable SSO for the Temporal Web UI edit the web service's configuration per the [Temporal Web README](https://github.com/temporalio/web#configuring-authentication-optional).
 
-## Temporal Cluster plugins {#plugins}
+## Temporal Service plugins {#plugins}
 
-Temporal Clusters support some pluggable components.
+The Temporal Service supports some pluggable components.
 
 ### What is a ClaimMapper Plugin? {#claim-mapper}
 
@@ -293,7 +291,7 @@ WorkflowClient client = WorkflowClient.newInstance(service);
 
 Related read:
 
-- [How to secure a Temporal Cluster](/security)
+- [How to secure a Temporal Service](/security)
 
 ## Data Converter {#data-converter}
 
@@ -307,4 +305,3 @@ You can use a [Codec Server](/dataconversion#codec-server) with your custom Payl
 However, ensure that you consider all security implications of [remote data encoding](/dataconversion#remote-data-encoding) before using a Codec Server.
 
 For details on how to set up a Codec Server, see [Codec Server setup](/production-deployment/data-encryption#codec-server-setup).
-

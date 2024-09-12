@@ -1,0 +1,46 @@
+---
+id: go-sdk-multithreading
+title: Temporal Go SDK multithreading
+sidebar_label: Go SDK multithreading
+description: The Temporal Go SDK ensures deterministic multithreading in Workflows using workflow.Go(), avoiding race conditions and eliminating the need for mutexes.
+toc_max_heading_level: 4
+keywords:
+  - temporal go sdk
+  - go multithreading
+  - deterministic runner
+  - parallel processing in go
+  - go asynchronous workflows
+  - race conditions in go
+  - mutex in go workflows
+  - go threading best practices
+  - temporalio samples
+  - go particle swarm operation sample
+  - go await signal sample
+  - managing concurrency in go
+  - workflow code threading
+  - go deterministic execution
+tags:
+  - go-sdk
+  - multithreading
+---
+
+The Temporal Go SDK allows you to create additional goroutines (threads) in your Workflows by calling `workflow.Go()`.
+Native Go threading is never allowed in Workflow code, as it would create determinism errors.
+
+You might sometimes need to execute multiple Activities or Child Workflows in parallel and then await the result of all of them.
+Normally, this would require a lock or [mutex](https://en.wikipedia.org/wiki/Lock_(computer_science)) around some shared data structure to avoid race conditions that could occur when multiple asynchronous operations try to modify the data structure.
+
+Although Temporal Workflows run Asynchronously in Go, there is a control in place that ensures only one thread can access at the time.
+
+## How multithreading works
+
+Temporal's Go SDKs contains a deterministic runner to control the thread execution.
+This deterministic runner will decide which Workflow thread to run in the right order, and one at a time.
+Each task will execute in a loop until all threads are blocked.
+
+`workflow.Go()` creates a new thread and adds it to this runner.
+This significantly minimizes the likelihood of race conditions, and eliminates the need to use a mutex.
+
+For a complex example, refer to the [Go Particle Swarm Operation Sample](https://github.com/temporalio/samples-go/tree/main/pso).
+
+For an example using Signals, refer to the [Go Await Signal Sample](https://github.com/temporalio/samples-go/tree/main/await-signals)

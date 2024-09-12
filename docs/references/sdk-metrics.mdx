@@ -2,33 +2,37 @@
 id: sdk-metrics
 title: Temporal SDK metrics reference
 sidebar_label: SDK metrics
-description: The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.
+description: Temporal SDKs emit metrics covering Client usage and Worker Processes. Metrics can be tuned to improve Worker performance and are prefixed with temporal_ before export.
 toc_max_heading_level: 4
 keywords:
-- reference
+  - reference
 tags:
-- reference
+  - reference
 ---
-
 
 :::info SDK metrics
 
-The information on this page is relevant to [Temporal SDKs](/temporal#temporal-sdk).
+The information on this page is relevant to [Temporal SDKs](/encyclopedia/temporal-sdks).
 
 See [Cloud metrics](/cloud/metrics/) for metrics emitted by [Temporal Cloud](/cloud/overview).
 
 See [Cluster metrics](/references/cluster-metrics) for metrics emitted by the [OSS Cluster](/clusters).
 
+Some SDKs may emit metrics beyond what is listed in this SDK Metrics reference.
+Only metrics included in this Metrics reference have guaranteed, defined behavior.
+Other metrics are considered deprecated, inconsistent or experimental.
+
 :::
 
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
 
-- [How to emit metrics using the Go SDK](/dev-guide/go/observability#metrics)
-- [How to emit metrics using the Java SDK](/dev-guide/java/observability#metrics)
-- [How to emit metrics using the Python SDK](/dev-guide/python/observability#metrics)
-- [How to emit metrics using the TypeScript SDK](/dev-guide/typescript/observability#metrics)
+- [How to emit metrics using the Go SDK](/develop/go/observability#metrics)
+- [How to emit metrics using the Java SDK](/develop/java/observability#metrics)
+- [How to emit metrics using the Python SDK](/develop/python/observability#metrics)
+- [How to emit metrics using the TypeScript SDK](/develop/typescript/observability#metrics)
+- [How to emit metrics using the .NET SDK](/develop/dotnet/observability#metrics)
 
-- [How to tune Worker performance based on metrics](/dev-guide/worker-performance)
+- [How to tune Worker performance based on metrics](/develop/worker-performance)
 
 All metrics are prefixed with `temporal_` before being exported to their configured destination.
 (The prefix has been removed in the following reference.)
@@ -51,8 +55,9 @@ Metrics are defined in the following locations.
 
 The unit of measurement for metrics can vary based on which SDK they are being reported from:
 
-**Core-based SDKs:** Metrics of the type Histogram are measured in _milliseconds_.
-This includes SDKs like TypeScript, Python, and .NET which are defined in the Core SDK.
+**Core-based SDKs:** Metrics of the type Histogram are measured in _milliseconds_ by default.
+This can be customized to use seconds for SDKs using [Core SDK](/glossary#core-sdk).
+The Core SDK is a shared common core library used by several Temporal SDKs, including TypeScript, Python, and .NET.
 
 **Java and Go SDKs:** Metrics of the type Histogram are measured in _seconds_.
 
@@ -83,7 +88,8 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [activity_execution_latency](#activity_execution_latency)                               | Worker         | Histogram   | Core, Go, Java |
 | [activity_poll_no_task](#activity_poll_no_task)                                         | Worker         | Counter     | Core, Go, Java |
 | [activity_schedule_to_start_latency](#activity_schedule_to_start_latency)               | Worker         | Histogram   | Core, Go, Java |
-| [activity_task_error](#activity_task_error)                                             | Worker         | Counter     | Go,            |
+| [activity_succeed_endtoend_latency](#activity_succeed_endtoend_latency)                 | Worker         | Histogram   | Go, Java       |
+| [activity_task_error](#activity_task_error)                                             | Worker         | Counter     | Go             |
 | [corrupted_signals](#corrupted_signals)                                                 | Worker         | Counter     | Go, Java       |
 | [local_activity_execution_cancelled](#local_activity_execution_cancelled)               | Worker         | Counter     | Go, Java       |
 | [local_activity_execution_failed](#local_activity_execution_failed)                     | Worker         | Counter     | Go, Java       |
@@ -102,7 +108,7 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [sticky_cache_miss](#sticky_cache_miss)                                                 | Worker         | Counter     | Core, Go, Java |
 | [sticky_cache_size](#sticky_cache_size)                                                 | Worker         | Gauge       | Core, Go, Java |
 | [sticky_cache_total_forced_eviction](#sticky_cache_total_forced_eviction)               | Worker         | Counter     | Go, Java       |
-| [unregistered_activity_invocation](#unregistered_activity_invocation)                   | Worker         | Counter     | Go,            |
+| [unregistered_activity_invocation](#unregistered_activity_invocation)                   | Worker         | Counter     | Go             |
 | [worker_start](#worker_start)                                                           | Worker         | Counter     | Core, Go, Java |
 | [worker_task_slots_available](#worker_task_slots_available)                             | Worker         | Gauge       | Go, Java       |
 | [workflow_active_thread_count](#workflow_active_thread_count)                           | Worker         | Gauge       | Java           |
@@ -129,6 +135,7 @@ An Activity Execution was canceled.
 ### activity_execution_failed
 
 An Activity Execution failed.
+This does not include local Activity Failures in the Go and Java SDKs (see [local_activity_execution_failed](#local_activity_execution_failed)).
 
 - Type: Counter
 - Available in: Core, Go, Java
@@ -153,7 +160,7 @@ An Activity Worker poll for an Activity Task timed out, and no Activity Task is 
 ### activity_schedule_to_start_latency
 
 The Schedule-To-Start time of an Activity Task in seconds.
-A [Schedule-To-Start Timeout](/activities#schedule-to-start-timeout) can be set when an Activity Execution is spawned.
+A [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) can be set when an Activity Execution is spawned.
 This metric is useful for ensuring Activity Tasks are being processed from the queue in a timely manner. Some SDKs may include
 the `activity_type` label, but the metric should not vary by type, as it does not influence the rate at which tasks are pulled
 from the queue.
@@ -161,6 +168,15 @@ from the queue.
 - Type: Histogram
 - Available in: Core, Go, Java
 - Tags: `namespace`, `task_queue`
+
+### activity_succeed_endtoend_latency
+
+Total latency of successfully finished Activity Executions from the time they are scheduled to the time they are completed.
+This metric is not recorded for async Activity completion.
+
+- Type: Histogram
+- Available in: Go, Java
+- Tags: `activity_type`, `namespace`, `task_queue`
 
 ### activity_task_error
 
@@ -436,4 +452,3 @@ The Schedule-To-Start time of a Workflow Task.
 - Type: Histogram
 - Available in: Core, Go, Java
 - Tags: `namespace`, `task_queue`
-

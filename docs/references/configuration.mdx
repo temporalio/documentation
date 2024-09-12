@@ -2,14 +2,13 @@
 id: configuration
 title: Temporal Cluster configuration reference
 sidebar_label: Cluster configuration
-description: Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.
+description: Configure a Temporal Cluster using the development.yaml file to set global parameters, metrics, security, persistence, and service roles, ensuring a streamlined setup and management process.
 toc_max_heading_level: 4
 keywords:
-- reference
+  - reference
 tags:
-- reference
+  - reference
 ---
-
 
 Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file and may contain the following top-level sections:
 
@@ -25,7 +24,7 @@ Much of the behavior of a Temporal Cluster is configured using the `development.
 - [`dynamicConfigClient`](#dynamicconfigclient)
 
 Changing any properties in the `development.yaml` file requires a process restart for changes to take effect.
-Configuration parsing code is available [here](https://github.com/temporalio/temporal/blob/master/common/config/config.go).
+Configuration parsing code is available [here](https://github.com/temporalio/temporal/blob/main/common/config/config.go).
 
 ## global
 
@@ -34,11 +33,11 @@ The `global` section contains process-wide configuration. See below for a minima
 ```yaml
 global:
   membership:
-    broadcastAddress: "127.0.0.1"
+    broadcastAddress: '127.0.0.1'
   metrics:
     prometheus:
-      framework: "tally"
-      listenAddress: "127.0.0.1:8000"
+      framework: 'tally'
+      listenAddress: '127.0.0.1:8000'
 ```
 
 ### membership
@@ -219,21 +218,21 @@ persistence:
   datastores:
     default:
       cassandra:
-        hosts: "127.0.0.1"
-        keyspace: "temporal"
-        user: "username"
-        password: "password"
+        hosts: '127.0.0.1'
+        keyspace: 'temporal'
+        user: 'username'
+        password: 'password'
     cass-visibility:
       cassandra:
-        hosts: "127.0.0.1"
-        keyspace: "temporal_visibility"
+        hosts: '127.0.0.1'
+        keyspace: 'temporal_visibility'
     es-visibility:
       elasticsearch:
-        version: "v7"
-        logLevel: "error"
+        version: 'v7'
+        logLevel: 'error'
         url:
-          scheme: "http"
-          host: "127.0.0.1:9200"
+          scheme: 'http'
+          host: '127.0.0.1:9200'
         indices:
           visibility: temporal_visibility_v1_dev
         closeIdleConnectionsInterval: 15s
@@ -331,13 +330,13 @@ An example `clusterMetadata` section:
 clusterMetadata:
   enableGlobalNamespace: true
   failoverVersionIncrement: 10
-  masterClusterName: "active"
-  currentClusterName: "active"
+  masterClusterName: 'active'
+  currentClusterName: 'active'
   clusterInformation:
     active:
       enabled: true
       initialFailoverVersion: 0
-      rpcAddress: "127.0.0.1:7233"
+      rpcAddress: '127.0.0.1:7233'
   #replicationConsumer:
   #type: kafka
 ```
@@ -370,7 +369,7 @@ services:
     rpc:
       grpcPort: 8233
       membershipPort: 8933
-      bindOnIP: "0.0.0.0"
+      bindOnIP: '0.0.0.0'
 ```
 
 There are two sections defined under each service heading:
@@ -401,7 +400,7 @@ Example:
 
 ```yaml
 publicClient:
-  hostPort: "localhost:8933"
+  hostPort: 'localhost:8933'
 ```
 
 Use `dns:///` prefix to enable round-robin between IP address for DNS name.
@@ -431,24 +430,24 @@ Example:
     # Event History configuration
     history:
       # Archival is enabled for the History Service data.
-      state: "enabled"
+      state: 'enabled'
       enableRead: true
       # Namespaces can use either the local filestore provider or the Google Cloud provider.
       provider:
         filestore:
-          fileMode: "0666"
-          dirMode: "0766"
+          fileMode: '0666'
+          dirMode: '0766'
         gstorage:
-          credentialsPath: "/tmp/gcloud/keyfile.json"
+          credentialsPath: '/tmp/gcloud/keyfile.json'
     # Configuration for archiving Visibility data.
     visibility:
       # Archival is enabled for Visibility data.
-      state: "enabled"
+      state: 'enabled'
       enableRead: true
       provider:
         filestore:
-          fileMode: "0666"
-          dirMode: "0766"
+          fileMode: '0666'
+          dirMode: '0766'
   ```
 
 - To disable Archival in your Cluster configuration:
@@ -457,18 +456,18 @@ Example:
   # Cluster-level Archival config disabled
   archival:
     history:
-      state: "disabled"
+      state: 'disabled'
       enableRead: false
     visibility:
-      state: "disabled"
+      state: 'disabled'
       enableRead: false
 
   namespaceDefaults:
     archival:
       history:
-        state: "disabled"
+        state: 'disabled'
       visibility:
-        state: "disabled"
+        state: 'disabled'
   ```
 
 For more details on Archival setup, see [Set up Archival](/self-hosted-guide/archival#set-up-archival).
@@ -493,12 +492,12 @@ namespaceDefaults:
   archival:
     # Event History defaults.
     history:
-      state: "enabled"
+      state: 'enabled'
       # New Namespaces will default to the local provider.
-      URI: "file:///tmp/temporal_archival/development"
+      URI: 'file:///tmp/temporal_archival/development'
     visibility:
-      state: "disabled"
-      URI: "file:///tmp/temporal_vis_archival/development"
+      state: 'disabled'
+      URI: 'file:///tmp/temporal_vis_archival/development'
 ```
 
 ## dcRedirectionPolicy
@@ -525,7 +524,7 @@ Example:
 ```yaml
 #...
 dcRedirectionPolicy:
-  policy: "selected-apis-forwarding"
+  policy: 'selected-apis-forwarding'
 #...
 ```
 
@@ -544,7 +543,6 @@ Example:
 
 ```yaml
 dynamicConfigClient:
-  filepath: "config/dynamicconfig/development-cass.yaml"
-  pollInterval: "10s"
+  filepath: 'config/dynamicconfig/development-cass.yaml'
+  pollInterval: '10s'
 ```
-

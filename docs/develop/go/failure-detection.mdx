@@ -1,0 +1,255 @@
+---
+id: failure-detection
+title: Failure detection - Temporal Go SDK feature guide
+sidebar_label: Failure detection
+toc_max_heading_level: 4
+keywords:
+  - failure-detection
+tags:
+  - failure-detection
+description: Learn how to configure Workflow timeouts, set Retry Policies, and manage Activity timeouts and Heartbeats using Temporal's Go SDK for optimized execution control.
+---
+
+This page shows how to do the following:
+
+- [Set Workflow timeouts](#workflow-timeouts)
+- [Set a Workflow Retry Policy](#workflow-retries)
+- [Set Activity timeouts](#activity-timeouts)
+- [Set a custom Activity Retry Policy](#activity-retries)
+
+## Workflow timeouts {#workflow-timeouts}
+
+**How to set Workflow timeouts using the Temporal Go SDK**
+
+Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
+
+Workflow timeouts are set when [starting the Workflow Execution](#workflow-timeouts).
+
+- **[Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
+- **[Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout):** restricts the maximum amount of time that a single Workflow Run can last.
+- **[Workflow Task Timeout](/encyclopedia/detecting-workflow-failures#workflow-task-timeout):** restricts the maximum amount of time that a Worker can execute a Workflow Task.
+
+Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set a timeout, and pass the instance to the `ExecuteWorkflow` call.
+
+Available timeouts are:
+
+- `WorkflowExecutionTimeout`
+- `WorkflowRunTimeout`
+- `WorkflowTaskTimeout`
+
+```go
+workflowOptions := client.StartWorkflowOptions{
+  // ...
+  // Set Workflow Timeout duration
+  WorkflowExecutionTimeout: time.Hours * 24 * 365 * 10,
+  // WorkflowRunTimeout: time.Hours * 24 * 365 * 10,
+  // WorkflowTaskTimeout: time.Second * 10,
+  // ...
+}
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```
+
+### Workflow Retry Policy {#workflow-retries}
+
+**How to set a Workflow Retry Polciy using the Go SDK.**
+
+A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
+
+Use a [Retry Policy](/encyclopedia/retry-policies) to retry a Workflow Execution in the event of a failure.
+
+Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
+
+Create an instance of a [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) from the `go.temporal.io/sdk/temporal` package and provide it as the value to the `RetryPolicy` field of the instance of `StartWorkflowOptions`.
+
+- Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
+- Default: None
+
+```go
+retrypolicy := &temporal.RetryPolicy{
+  InitialInterval:    time.Second,
+  BackoffCoefficient: 2.0,
+  MaximumInterval:    time.Second * 100,
+}
+workflowOptions := client.StartWorkflowOptions{
+  RetryPolicy: retrypolicy,
+  // ...
+}
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```
+
+## How to set Activity timeouts {#activity-timeouts}
+
+**How to set Activity timeouts using the Go SDK.**
+
+Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
+
+The following timeouts are available in the Activity Options.
+
+- **[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout):** is the maximum amount of time allowed for the overall [Activity Execution](/activities#activity-execution).
+- **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout):** is the maximum time allowed for a single [Activity Task Execution](/workers#activity-task-execution).
+- **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/workers#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.
+
+An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
+
+To set an Activity Timeout in Go, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the Activity Timeout field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+Available timeouts are:
+
+- `StartToCloseTimeout`
+- `ScheduleToClose`
+- `ScheduleToStartTimeout`
+
+```go
+activityoptions := workflow.ActivityOptions{
+  // Set Activity Timeout duration
+  ScheduleToCloseTimeout: 10 * time.Second,
+  // StartToCloseTimeout: 10 * time.Second,
+  // ScheduleToStartTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+### Set a custom Activity Retry Policy {#activity-retries}
+
+**How to set a custom Activity Retry Policy using the Go SDK.**
+
+A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
+
+Activity Executions are automatically associated with a default [Retry Policy](/encyclopedia/retry-policies) if a custom one is not provided.
+
+To set a [RetryPolicy](/encyclopedia/retry-policies), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+- Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
+- Default:
+
+```go
+retrypolicy := &temporal.RetryPolicy{
+  InitialInterval:    time.Second,
+  BackoffCoefficient: 2.0,
+  MaximumInterval:    time.Second * 100, // 100 * InitialInterval
+  MaximumAttempts: 0, // Unlimited
+  NonRetryableErrorTypes: []string, // empty
+}
+```
+
+Providing a Retry Policy here is a customization, and overwrites individual Field defaults.
+
+```go
+retrypolicy := &temporal.RetryPolicy{
+  InitialInterval:    time.Second,
+  BackoffCoefficient: 2.0,
+  MaximumInterval:    time.Second * 100,
+}
+
+activityoptions := workflow.ActivityOptions{
+  RetryPolicy: retrypolicy,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+## Activity Heartbeats {#activity-heartbeats}
+
+**How to Heartbeat an Activity using the Go SDK.**
+
+An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/clusters).
+Each Heartbeat informs the Temporal Service that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
+If the Temporal Service does not receive a Heartbeat within a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/workers#activity-task-execution) may be scheduled according to the Retry Policy.
+
+Heartbeats may not always be sent to the Temporal Service—they may be [throttled](/encyclopedia/detecting-activity-failures#throttling) by the Worker.
+
+Activity Cancellations are delivered to Activities from the Temporal Service when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
+Heartbeat throttling may lead to Cancellation getting delivered later than expected.
+
+Heartbeats can contain a `details` field describing the Activity's current progress.
+If an Activity gets retried, the Activity can access the `details` from the last Heartbeat that was sent to the Temporal Service.
+
+To [Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) in an Activity in Go, use the `RecordHeartbeat` API.
+
+```go
+import (
+    // ...
+    "go.temporal.io/sdk/workflow"
+    // ...
+)
+
+func YourActivityDefinition(ctx, YourActivityDefinitionParam) (YourActivityDefinitionResult, error) {
+    // ...
+    activity.RecordHeartbeat(ctx, details)
+    // ...
+}
+```
+
+When an Activity Task Execution times out due to a missed Heartbeat, the last value of the `details` variable above is returned to the calling Workflow in the `details` field of `TimeoutError` with `TimeoutType` set to `Heartbeat`.
+
+You can also Heartbeat an Activity from an external source:
+
+```go
+// The client is a heavyweight object that should be created once per process.
+temporalClient, err := client.Dial(client.Options{})
+// Record heartbeat.
+err := temporalClient.RecordActivityHeartbeat(ctx, taskToken, details)
+```
+
+The parameters of the `RecordActivityHeartbeat` function are:
+
+- `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
+  the Activity.
+- `details`: The serializable payload containing progress information.
+
+If an Activity Execution Heartbeats its progress before it failed, the retry attempt will have access to the progress information, so that the Activity Execution can resume from the failed state.
+Here's an example of how this can be implemented:
+
+```go
+func SampleActivity(ctx context.Context, inputArg InputParams) error {
+    startIdx := inputArg.StartIndex
+    if activity.HasHeartbeatDetails(ctx) {
+        // Recover from finished progress.
+        var finishedIndex int
+        if err := activity.GetHeartbeatDetails(ctx, &finishedIndex); err == nil {
+            startIdx = finishedIndex + 1 // Start from next one.
+        }
+    }
+
+    // Normal Activity logic...
+    for i:=startIdx; i<inputArg.EndIdx; i++ {
+        // Code for processing item i goes here...
+        activity.RecordHeartbeat(ctx, i) // Report progress.
+    }
+}
+```
+
+### Set a Heartbeat Timeout {#heartbeat-timeout}
+
+**How to set a Heartbeat Timeout for an Activity using the Go SDK.**
+
+A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
+
+To set a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+```go
+activityoptions := workflow.ActivityOptions{
+  HeartbeatTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```

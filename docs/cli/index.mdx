@@ -2,8 +2,7 @@
 id: index
 title: Temporal CLI command reference
 sidebar_label: Temporal CLI
-sidebar_position: 8
-description: Discover the Temporal Command Line Interface (CLI) documentation. Navigate, configure, and utilize Temporal CLI effectively.
+description: The Temporal CLI offers terminal access to Temporal Services for managing, monitoring, and debugging Workflows and Activities, including Namespace and Task Queue management, with embedded development support.
 slug: /cli
 toc_max_heading_level: 4
 keywords:
@@ -20,24 +19,78 @@ tags:
   - term
 ---
 
-The Temporal CLI, evolving from its precursor [tctl](/tctl-v1), serves as a command-line interface that provides developers with direct access to a Temporal Cluster.
+The Temporal CLI provides direct access to a Temporal Service via the terminal.
 It's a powerful tool for managing, monitoring, and debugging Temporal Applications.
-With the Temporal CLI, developers can start Workflows, Signal or cancel them, and Query Workflow state, directly from their terminal.
-This interface also facilitates administrative tasks such as Namespace management.
+You can use it to start, stop, inspect and operate on Workflows and Activities, and perform administrative tasks such as Namespace, Schedule, and Task Queue management.
 
-The CLI encapsulates complex operations into simpler command-line inputs, making it an indispensable component of a developer’s toolkit when working with the Temporal ecosystem.
-Its design philosophy emphasizes ease of use and efficiency, catering to both quick inspections and more complex batch operations, thereby streamlining the development and operational processes for durable applications.
+The Temporal CLI also includes an embedded Temporal Service suitable for use in development and CI/CD.
+It includes the [Temporal Server](/clusters#temporal-server), SQLite persistence, and the [Temporal Web UI](/web-ui).
 
 :::note
 
-When upgrading from `tctl` to Temporal CLI, make sure to update your environment variables and use updated commands.
+When upgrading from [tctl](/tctl-v1) to the Temporal CLI, make sure to update your environment variables and use updated commands.
 For details, see [CLI release notes](https://github.com/temporalio/cli/releases/).
 
 :::
 
-The Temporal CLI includes a distribution of a Temporal Cluster, comprised of the [Temporal Server](/clusters#temporal-server), SQLite persistence, and the [Temporal Web UI](/web-ui).
+## Install the Temporal CLI {#install}
 
-### Command set
+**How to download and install the Temporal CLI**
+
+The Temporal CLI is available on MacOS, Windows, and Linux.
+
+### How to install the Temporal CLI on Mac OS
+
+Choose one of the following install methods to install the Temporal CLI on MacOS:
+
+- Install the Temporal CLI with Homebrew.
+
+```shell
+brew install temporal
+```
+
+- Install the Temporal CLI from CDN.
+
+  1. Select the platform and architecture needed.
+
+  - Download for Darwin amd64: https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64
+  - Download for Darwin arm64: https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64
+
+  2. Extract the downloaded archive.
+
+  3. Add the Temporal CLI binary to your PATH.
+
+### How to install the Temporal CLI on Linux
+
+Choose one of the following install methods to install the Temporal CLI on Linux:
+
+- Install the Temporal CLI from CDN.
+
+  1. Select the platform and architecture needed.
+
+  - Download for Linux amd64: https://temporal.download/cli/archive/latest?platform=linux&arch=amd64
+  - Download for Linux arm64: https://temporal.download/cli/archive/latest?platform=linux&arch=arm64
+
+  2. Extract the downloaded archive.
+
+  3. Add the `temporal` binary to your PATH.
+
+### How to install the Temporal CLI on Windows
+
+Choose one of the following methods to install the Temporal CLI on Windows:
+
+- Install the Temporal CLI from CDN.
+
+  1. Select the platform and architecture needed and download the binary.
+
+  - Download for Windows amd64: https://temporal.download/cli/archive/latest?platform=windows&arch=amd64
+  - Download for Windows arm64: https://temporal.download/cli/archive/latest?platform=windows&arch=arm64
+
+  2. Extract the downloaded archive.
+
+  3. Add the `temporal.exe` binary to your PATH.
+
+## Command set
 
 - [temporal activity](/cli/activity/)
 - [temporal batch](/cli/batch/)
@@ -47,6 +100,10 @@ The Temporal CLI includes a distribution of a Temporal Cluster, comprised of the
 - [temporal server](/cli/server)
 - [temporal task-queue](/cli/task-queue/)
 - [temporal workflow](/cli/workflow/)
+
+## Configuration
+
+The following information provides important configuration details.
 
 ### Namespace registration
 
@@ -60,12 +117,12 @@ temporal server start-dev --namespace foo --namespace bar
 Register Namespaces with `namespace create`:
 
 ```shell
-temporal operator namespace create foo
+temporal operator namespace create --namespace foo
 ```
 
 ### Enable or disable Temporal UI
 
-By default, the Temporal UI starts with Temporal CLI.
+By default, the Temporal UI is enabled when running the development server using the Temporal CLI.
 To disable the UI, use the `--headless` modifier:
 
 ```shell
@@ -87,15 +144,13 @@ This setting makes created Search Attributes immediately available.
 
 ## Environment variables
 
-Configure system environment with Temporal CLI environmental variables.
-The following table lists and describes the environment variables you can set for Temporal CLI.
+The following table describes the environment variables you can set for the Temporal CLI.
 
 | Variable                                 | Definition                                                                | Client Option                   |
 | ---------------------------------------- | ------------------------------------------------------------------------- | ------------------------------- |
 | `TEMPORAL_ADDRESS`                       | Host and port (formatted as host:port) for the Temporal Frontend Service. | --address                       |
-| `TEMPORAL_CODEC_AUTH`                    | Sets the authorization header for requests to Codec Server.               | --codec-auth                    |
+| `TEMPORAL_CODEC_AUTH`                    | Authorization header for requests to Codec Server.                        | --codec-auth                    |
 | `TEMPORAL_CODEC_ENDPOINT`                | Endpoint for remote Codec Server.                                         | --codec-endpoint                |
-| `TEMPORAL_CONTEXT_TIMEOUT`               | Optional timeout for RPC call context (in seconds). Default: 5.           | --context-timeout               |
 | `TEMPORAL_NAMESPACE`                     | Namespace in Temporal Workflow. Default: "default".                       | --namespace                     |
 | `TEMPORAL_TLS_CA`                        | Path to server CA certificate.                                            | --tls-ca-path                   |
 | `TEMPORAL_TLS_CERT`                      | Path to x509 certificate.                                                 | --tls-cert-path                 |
@@ -105,7 +160,7 @@ The following table lists and describes the environment variables you can set fo
 
 ## Proxy support
 
-Temporal CLI provides support for users who are operating behind a proxy.
+The Temporal CLI provides support for users who are operating behind a proxy.
 This feature ensures seamless communication even in network-restricted environments.
 
 #### Setting up proxy support
@@ -138,122 +193,59 @@ Enable auto-completion using the following commands.
 
 ### zsh auto-completion
 
-<!-- TODO: add more information about zsh to make comparable to bash section -->
+1. Add the following line to your `~/.zshrc` startup script:
 
-Add the following code snippet to your `~/.zshrc` file:
+   ```sh
+   eval "$(temporal completion zsh)"
+   ```
 
-```sh
-source <(temporal completion zsh)
-```
+2. Re-launch your shell or run:
 
-If you're running auto-completion from the terminal, run the following command:
-
-```sh
-echo 'source <(temporal completion zsh)' >> ~/.zshrc
-```
-
-After setting the variable, run the following command:
-
-`source ~/.zshrc`.
+   ```sh
+   source ~/.zshrc
+   ```
 
 ### Bash auto-completion
 
-Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to `~/.bash_profile`.
+1. Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to your `~/.bashrc`.
 
-To use aliases, add them to `~/.bash_profile` as needed.
+2. Add the following line to your `~/.bashrc` startup script:
 
-```bash
-alias t='temporal'
-alias tw='temporal workflow'
-alias ts='temporal server start-dev'
-alias tsdb='temporal server start-dev --db-filename ~/temporal.db'
+   ```sh
+   eval "$(temporal completion bash)"
+   ```
 
-# send process to background so you can continue using the terminal
-alias tsbg='temporal server start-dev &> /dev/null & disown'
-```
+3. Re-launch your shell or run:
 
-## Install the Temporal CLI {#install}
+   ```sh
+   source ~/.bashrc
+   ```
 
-**How to download and install the Temporal CLI**
+:::note
 
-The Temporal CLI is available on MacOS, Windows, and Linux.
+If auto-completion fails with the error: `bash: _get_comp_words_by_ref: command not found`, you did not successfully install [bash-completion](https://github.com/scop/bash-completion#installation). This package must be loaded into your shell for `temporal` auto-completion to work.
 
-### MacOS
+:::
 
-**How to install the Temporal CLI on Mac OS**
+### Fish auto-completion
 
-Choose one of the following install methods to install the Temporal CLI on MacOS:
+1. Create the Fish custom completions directory if it does not already exist:
 
-- Install the Temporal CLI with Homebrew.
+   ```fish
+   mkdir -p ~/.config/fish/completions
+   ```
 
-```shell
-brew install temporal
-```
+2. Configure the completions to load when needed. Note: the file name must be `temporal.fish` or the completions will not be found:
 
-- Install the Temporal CLI with cURL.
+   ```fish
+   echo 'eval "$(temporal completion fish)"' >~/.config/fish/completions/temporal.fish
+   ```
 
-```shell
-curl -sSf https://temporal.download/cli.sh | sh
-```
+3. Re-launch your shell or run:
 
-- Install the Temporal CLI from CDN.
-
-  1. Select the platform and architecture needed.
-
-  - Download for Darwin amd64: https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64
-  - Download for Darwin arm64: https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64
-
-  2. Extract the downloaded archive.
-
-  3. Add the `temporal` binary to your PATH.
-
-### Linux
-
-**How to install the Temporal CLI on Linux**
-
-Choose one of the following install methods to install the Temporal CLI on Linux:
-
-- Install the Temporal CLI with cURL.
-
-```shell
-curl -sSf https://temporal.download/cli.sh | sh
-```
-
-- Install the Temporal CLI from CDN.
-
-  1. Select the platform and architecture needed.
-
-  - Download for Linux amd64: https://temporal.download/cli/archive/latest?platform=linux&arch=amd64
-  - Download for Linux arm64: https://temporal.download/cli/archive/latest?platform=linux&arch=arm64
-
-  2. Extract the downloaded archive.
-
-  3. Add the `temporal` binary to your PATH.
-
-### Windows
-
-**How to install the Temporal CLI on Windows**
-
-Choose one of the following methods to install the Temporal CLI on Windows:
-
-- Install the Temporal CLI with Scoop
-
-Run the following command to install Temporal CLI using Scoop on Windows:
-
-```shell
-scoop install temporal-cli
-```
-
-- Install the Temporal CLI from CDN.
-
-  1. Select the platform and architecture needed and download the binary.
-
-  - Download for Windows amd64: https://temporal.download/cli/archive/latest?platform=windows&arch=amd64
-  - Download for Windows arm64: https://temporal.download/cli/archive/latest?platform=windows&arch=arm64
-
-  2. Extract the downloaded archive.
-
-  3. Add the `temporal.exe` binary to your PATH.
+   ```fish
+   source ~/.config/fish/completions/temporal.fish
+   ```
 
 ## Temporal dev server {#start-dev-server}
 
@@ -277,6 +269,13 @@ This is helpful if you plan on stopping and re-starting the dev server.
 temporal server start-dev --db-filename temporal.db
 ```
 
+:::note
+
+Local databases created with `--db-filename` may not be compatible with newer versions of the Temporal CLI.
+The `temporal server` command is only intended for development environments.
+
+:::
+
 For the full list of dev server options use the `--help` flag:
 
 ```shell
@@ -285,7 +284,7 @@ temporal server start-dev --help
 
 ## Common CLI operations {#common-operations}
 
-The following are some of the more common operations you can perform with the CLI.
+The following are some of the more common operations you can perform with the Temporal CLI.
 
 ### Start a Workflow
 
@@ -311,7 +310,7 @@ Running execution:
 Shorthand options are available:
 
 ```shell
-temporal workflow start -t hello-world --type MyWorkflow -w 123 -i 456
+temporal workflow start --task-queue hello-world --type MyWorkflow --workflow-id 123 --input 456
 ```
 
 You can also list and describe Workflows:
@@ -389,7 +388,7 @@ $ temporal workflow list --fields long --output json
 Filter out Workflows based on Workflow Type with [jq](https://stedolan.github.io/jq/):
 
 ```shell
-$ temporal workflow list --fields long -o json | jq '.[].type.name'
+$ temporal workflow list --fields long --output json | jq '.[].type.name'
 
 "OtherWorkflow"
 "MyWorkflow"
@@ -399,7 +398,7 @@ $ temporal workflow list --fields long -o json | jq '.[].type.name'
 To count the number of Workflows, use the following command:
 
 ```shell
-$ temporal workflow list --fields long -o json | jq '.[].type.name' | uniq -c
+$ temporal workflow list --fields long --output json | jq '.[].type.name' | uniq -c
 
    1 "OtherWorkflow"
    2 "MyWorkflow"
@@ -407,7 +406,7 @@ $ temporal workflow list --fields long -o json | jq '.[].type.name' | uniq -c
 
 To see the full range of Workflow-related commands, run `temporal workflow` or see the [Temporal CLI workflow command reference](/cli/workflow).
 
-For a full list of available commands, run `temporal` or see [Available commands](#command-set).
+For a full list of available commands, run `temporal` without arguments or see [Available commands](#command-set).
 
 ### Customize your environment variables
 

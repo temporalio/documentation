@@ -1,3 +1,4 @@
+// @@@SNIPSTART javasdk-build-caller-app-using-temporal-cloud
 package clientsample;
 
 import io.temporal.client.WorkflowClient;
@@ -50,7 +51,7 @@ public class YourCallerApp {
                 .setTarget(gRPCEndpoint)
                 .build();
 
-            // Create a stub that accesses a Temporal Service
+             // Create a stub that accesses a Temporal Service
             WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
 
             // Set the Client options
@@ -85,4 +86,4 @@ public class YourCallerApp {
         System.exit(0);
     }
 }
-
+// @@@SNIPEND

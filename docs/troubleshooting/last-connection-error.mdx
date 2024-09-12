@@ -2,16 +2,15 @@
 id: last-connection-error
 title: Troubleshoot the failed reaching server error
 sidebar_label: Failed reaching server error
-description: Failed reaching server errors can result from expired certificates. This guide provides troubleshooting solutions.
+description: Troubleshoot server connection errors often caused by expired TLS certificates. Verify, renew, and update server configurations to resolve temporal client request issues effectively.
 toc_max_heading_level: 4
 keywords:
-- cloud
-- namespaces
+  - cloud
+  - namespaces
 tags:
-- cloud
-- namespaces
+  - cloud
+  - namespaces
 ---
-
 
 The message `Failed reaching server: last connection error` can often result from an expired TLS certificate or during the Server startup process, in which the Client requests reach the Server before the roles are fully initialized.
 
@@ -44,16 +43,18 @@ If you are using an existing certificate management infrastructure, use it to ve
 For example, if you are using OpenSSL, run the following command:
 
 ```command
-openssl s_client -connect <address_id>.tmprl.cloud:7233 -showcerts -cert ~/certs/path.pem -key .~/certs/path.key -tls1_2
+openssl s_client -connect <namespace_grpc_endpoint> -showcerts -cert ~/certs/path.pem -key .~/certs/path.key -tls1_2
 ```
 
 **Self-signed certificate**
 
-If you are using a self-signed certificate, run the following `tctl` command:
+If you are using a self-signed certificate, run the following Temporal CLI command:
 
 ```command
-tctl --namespace <namespace_id> --address <address_id>.tmprl.cloud:7233 --tls-cert-path ~/certs/path.pem --tls-key-path ~/certs/path.key namespace describe
+temporal namespace describe --namespace <namespace_id> --address <namespace_grpc_endpoint> --tls-cert-path <path-to-mTLS-pem-file> --tls-key-path <path-to-mTLS-key-file>
 ```
+
+Your Namespace gRPC endpoint is available on the details page for your [Temporal Cloud Namespace](https://cloud.temporal.io/namespaces).
 
 ### Renew TLS certification
 
@@ -93,4 +94,3 @@ The preceding steps should help you troubleshoot the `failed reaching server: la
 
 If this issue persists, verify that the Client you are using to connect to the server is using the correct TLS certification and that the Client requests reach the server after the roles are fully initialized.
 If you still need help, [create a support ticket](/cloud/support#support-ticket).
-

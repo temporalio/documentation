@@ -1,0 +1,682 @@
+---
+id: temporal-clients
+title: Temporal Client - Java SDK feature guide
+sidebar_label: Temporal Client
+toc_max_heading_level: 4
+description: This guide introduces Temporal Clients, explaining their role and configuration in Java to connect to various Temporal Services, including starting Workflow Executions and customizing Workflow options.
+keywords:
+  - temporal java client
+  - connect java client to temporal service
+  - initialize temporal client
+  - temporal SDK java guide
+  - start workflow execution java
+  - temporal cloud connection
+  - java client for temporal cli
+  - custom namespace configuration
+  - temporal workflow management
+  - temporal client setup
+  - java workflow execution
+  - temporal cloud integration
+  - temporal client options
+  - managing temporal namespaces
+tags:
+  - java
+  - java-sdk
+  - temporal-client
+---
+
+This guide introduces Temporal Clients.
+It explains the role and use of Clients and shows you how to configure your Java Client code to connect to the Temporal Service.
+
+This section includes the following topics:
+
+- [How to initialize a Temporal Client for the Temporal CLI development service](#connect-to-development-service)
+- [How to initialize a Temporal Client to connect to a custom Namespace](#connect-to-custom-namespace)
+- [How to initialize a Temporal Client to connect to Temporal Cloud](#connect-to-temporal-cloud)
+- [How to start a Workflow Execution](#start-workflow-execution)
+
+## Connect to a development Temporal Service {#connect-to-development-service}
+
+**How to initialize a Temporal Client for the Temporal CLI development service using the Java SDK.**
+
+The Java SDK provides an already-configured way to connect to a locally hosted Temporal Service.
+The `.newLocalServiceStubs()` method returns a stub that points to the default Temporal CLI service settings (localhost:7233).
+
+:::info
+
+A Temporal Client cannot be initialized and used inside a Workflow.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Service.
+
+:::
+
+<!--SNIPSTART javasdk-build-caller-app-using-local-client {"selectedLines": ["11-17"]}-->
+
+[sample-apps/java/client/devserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/devserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
+
+```java
+// ...
+        // Create an instance that connects to a Temporal Service running on the local
+        // machine, using the default port (7233)
+        WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newLocalServiceStubs();
+
+        // Initialize the Temporal Client
+        // This application uses the Client to communicate with the local Temporal Service
+        WorkflowClient client = WorkflowClient.newInstance(serviceStub);
+```
+
+<!--SNIPEND-->
+
+The Namespace is assumed to be 'default' unless otherwise specified.
+
+## Connect to a custom Namespace {#connect-to-custom-namespace}
+
+**How to initialize a Temporal Client to connect to a custom Namespace using the Java SDK.**
+
+Custom Namespaces on local development systems let you to build out new features while isolating Workflow Executions.
+Namespaces are established by setting a Client's options to configure the new instance.
+
+<!--SNIPSTART javasdk-build-caller-app-using-local-client-custom-namespace {"selectedLines": ["23-31"]}-->
+
+[sample-apps/java/client/devserver-namespace-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/devserver-namespace-client-sample/src/main/java/clientsample/YourCallerApp.java)
+
+```java
+// ...
+        // Add the Namespace as a Client Option
+        WorkflowClientOptions clientOptions = WorkflowClientOptions
+            .newBuilder()
+            .setNamespace(namespace)
+            .build();
+
+        // Initialize the Temporal Client
+        // This application uses the Client to communicate with the Temporal Service
+        WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
+```
+
+<!--SNIPEND-->
+
+## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+
+**How to initialize a Temporal Client to connect to Temporal Cloud.**
+
+When you use a remote service, you don't use the `newLocalServicesStubs` convenience method.
+Instead, set your connection details as stub configuration options:
+
+<!--SNIPSTART javasdk-build-caller-app-using-temporal-cloud {"selectedLines": ["46-54"]}-->
+
+[sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
+
+```java
+// ...
+            // Set the Service Stub options (SSL context and gRPC endpoint)
+            WorkflowServiceStubsOptions stubsOptions = WorkflowServiceStubsOptions
+                .newBuilder()
+                .setSslContext(sslContext)
+                .setTarget(gRPCEndpoint)
+                .build();
+
+             // Create a stub that accesses a Temporal Service
+            WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
+```
+
+<!--SNIPEND-->
+
+Each Temporal Cloud service Client has four prerequisites.
+
+- The full Namespace Id from the [Cloud Namespace](https://cloud.temporal.io/namespaces) details page
+- The gRPC endpoint from the [Cloud Namespace](https://cloud.temporal.io/namespaces) details page
+- Your mTLS private key
+- Your mTLS x509 Certificate
+
+Retrieve these values before building your Client.
+
+The following sample generates an SSL context from the mTLS .pem and .key files.
+Along with the gRPC endpoint, this information configures a service stub for Temporal Cloud.
+Add the Namespace to your Client build options and initialize the new Client:
+
+<!--SNIPSTART javasdk-build-caller-app-using-temporal-cloud {"selectedLines": ["41-64"]}-->
+
+[sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
+
+```java
+// ...
+            // Generate an SSL context
+            InputStream clientCertInputStream = new FileInputStream(clientCertPath);
+            InputStream clientKeyInputStream = new FileInputStream(clientKeyPath);
+            SslContext sslContext = SimpleSslContextBuilder.forPKCS8(clientCertInputStream, clientKeyInputStream).build();
+
+            // Set the Service Stub options (SSL context and gRPC endpoint)
+            WorkflowServiceStubsOptions stubsOptions = WorkflowServiceStubsOptions
+                .newBuilder()
+                .setSslContext(sslContext)
+                .setTarget(gRPCEndpoint)
+                .build();
+
+             // Create a stub that accesses a Temporal Service
+            WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
+
+            // Set the Client options
+            WorkflowClientOptions clientOptions = WorkflowClientOptions
+                .newBuilder()
+                .setNamespace(namespace)
+                .build();
+
+            // Initialize the Temporal Client
+            // This application uses the Client to communicate with the Temporal Service
+            WorkflowClient client = WorkflowClient.newInstance(serviceStub, clientOptions);
+```
+
+<!--SNIPEND-->
+
+## Start a Workflow Execution {#start-workflow-execution}
+
+**How to start a Workflow Execution using the Java SDK**
+
+[Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+
+In the examples below, all Workflow Executions are started using a Temporal Client.
+To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](/develop/java/child-workflows) or External Workflow APIs.
+
+See the [Customize Workflow Type](/develop/java/core-application#workflow-type) section to see how to customize the name of the Workflow Type.
+
+A request to spawn a Workflow Execution causes the Temporal Service to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
+The Temporal Service then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
+
+Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
+
+See [`SignalwithStart`](/develop/java/message-passing#signal-with-start) to start a Workflow Execution to receive a Signal from within another Workflow.
+
+**Using `WorkflowStub`**
+
+`WorkflowStub` is a proxy generated by the `WorkflowClient`.
+Each time a new Workflow Execution is started, an instance of the Workflow implementation object is created.
+Then, one of the methods (depending on the Workflow Type of the instance) annotated with `@WorkflowMethod` can be invoked.
+As soon as this method returns, the Workflow Execution is considered to be complete.
+
+You can use a typed or untyped `WorkflowStub` in the client code.
+
+- Typed `WorkflowStub` are useful because they are type safe and allow you to invoke your Workflow methods such as `@WorkflowMethod`, `@QueryMethod`, and `@SignalMethod` directly.
+- An untyped `WorkflowStub` does not use the Workflow interface, and is not type safe. It is more flexible because it has methods from the `WorkflowStub` interface, such as `start`, `signalWithStart`, `getResults` (sync and async), `query`, `signal`, `cancel` and `terminate`.
+  Note that the Temporal Java SDK also provides typed `WorkflowStub` versions for these methods.
+  When using untyped `WorkflowStub`, we rely on the Workflow Type, Activity Type, Child Workflow Type, as well as Query and Signal names.
+  For details, see [Temporal Client](#connect-to-development-service).
+
+A Workflow Execution can be started either synchronously or asynchronously.
+
+- Synchronous invocation starts a Workflow and then waits for its completion. If the process that started the Workflow crashes or stops waiting, the Workflow continues executing.
+  Because Workflows are potentially long-running, and Client crashes happen, it is not very commonly found in production use.
+  The following example is a type-safe approach for starting a Workflow Execution synchronously.
+
+  ```java
+    NotifyUserAccounts workflow = client.newWorkflowStub(
+          NotifyUserAccounts.class,
+          WorkflowOptions.newBuilder()
+                  .setWorkflowId("notifyAccounts")
+                  .setTaskQueue(taskQueue)
+                  .build()
+          );
+
+  // start the Workflow and wait for a result.
+    workflow.notify(new String[] { "Account1", "Account2", "Account3", "Account4", "Account5",
+                  "Account6", "Account7", "Account8", "Account9", "Account10"});
+      }
+  // notify(String[] accountIds) is a Workflow method defined in the Workflow Definition.
+  ```
+
+- Asynchronous start initiates a Workflow Execution and immediately returns to the caller. This is the most common way to start Workflows in production code.
+  The `WorkflowClient` [https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)](https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)) provides some static methods, such as `start`, `execute`, `signalWithStart` etc., that help with starting your Workflows asynchronously.
+
+  The following examples show how to start Workflow Executions asynchronously, with either typed or untyped `WorkflowStub`.
+
+  - **Typed WorkflowStub Example**
+
+    ```java
+    // create typed Workflow stub
+    FileProcessingWorkflow workflow = client.newWorkflowStub(FileProcessingWorkflow.class,
+          WorkflowOptions.newBuilder()
+                  .setTaskQueue(taskQueue)
+                  .setWorkflowId(workflowId)
+                  .build());
+    // use WorkflowClient.execute to return future that contains Workflow result or failure, or
+    // use WorkflowClient.start to return WorkflowId and RunId of the started Workflow).
+    WorkflowClient.start(workflow::greetCustomer);
+    ```
+
+  - **Untyped WorkflowStub Example**
+
+    ```java
+    WorkflowStub untyped = client.newUntypedWorkflowStub("FileProcessingWorkflow",
+          WorkflowOptions.newBuilder()
+                  .setWorkflowId(workflowId)
+                  .setTaskQueue(taskQueue)
+                  .build());
+
+    // blocks until Workflow Execution has been started (not until it completes)
+    untyped.start(argument);
+    ```
+
+You can call a Dynamic Workflow implementation using an untyped `WorkflowStub`.
+The following example shows how to call the Dynamic Workflow implementation in the Client code.
+
+```java
+    WorkflowClient client = WorkflowClient.newInstance(service);
+    /**
+      * Note that for this part of the client code, the dynamic Workflow implementation must
+      * be known to the Worker at runtime in order to dispatch Workflow tasks, and may be defined
+      * in the Worker definition as:*/
+    // worker.registerWorkflowImplementationTypes(DynamicGreetingWorkflowImpl.class);
+
+    /* Create the Workflow stub to call the dynamic Workflow.
+    * Note that the Workflow Type is not explicitly registered with the Worker.*/
+    WorkflowOptions workflowOptions =
+        WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
+    WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
+```
+
+`DynamicWorkflow` can be used to invoke different Workflow Types.
+To check what type is running when your Dynamic Workflow `execute` method runs, use `getWorkflowType()` in the implementation code.
+
+```java
+String type = Workflow.getInfo().getWorkflowType();
+```
+
+See [Workflow Execution Result](#get-workflow-results) for details on how to get the results of the Workflow Execution.
+
+**Using `ExternalWorkflowStub`**
+
+Use `ExternalWorkflowStub` within a Workflow to invoke, and send Signals to, other Workflows by type.
+
+This helps particularly for executing Workflows written in other language SDKs, as shown in the following example.
+
+```java
+@Override
+  public String yourWFMethod(String name) {
+      ExternalWorkflowStub callOtherWorkflow = Workflow.newUntypedExternalWorkflowStub("OtherWFId");
+    }
+```
+
+See the [Temporal Polyglot](https://github.com/tsurdilo/temporal-polyglot) code for examples of executing Workflows written in other language SDKs.
+
+**Recurring start**
+
+You can start a Workflow Execution on a regular schedule by using [`setCronSchedule`](/develop/java/schedules#cron-schedule) Workflow option in the Client code.
+
+### How to set a Workflow's Task Queue {#set-task-queue}
+
+In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/workers#task-queue).
+
+For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
+
+Set the Workflow Task Queue with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setTaskQueue`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+- Type: `String`
+- Default: none
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("YourWF")
+                // Set the Task Queue
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                .build());
+```
+
+### How to set a Workflow Id {#workflow-id}
+
+Although it is not required, we recommend providing your own [Workflow Id](/workflows#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+
+Set the Workflow Id with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowId​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+- Type: `String`
+- Default: none
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                // Set the Workflow Id
+                .setWorkflowId("YourWF")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                .build());
+```
+
+### Java WorkflowOptions reference {#workflow-options-reference}
+
+Create a [`newWorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) in the Temporal Client code, call the instance of the Workflow, and set the Workflow options with the [`WorkflowOptions.Builder`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html) class.
+
+The following fields are available:
+
+| Option                                                  | Required             | Type                                                                                                                 |
+| ------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| [`WorkflowId`](#workflowid)                             | No (but recommended) | String                                                                                                               |
+| [`TaskQueue`](#taskqueue)                               | **Yes**              | String                                                                                                               |
+| [`WorkflowExecutionTimeout`](#workflowexecutiontimeout) | No                   | `Duration`                                                                                                           |
+| [`WorkflowRunTimeout`](#workflowruntimeout)             | No                   | `Duration`                                                                                                           |
+| [`WorkflowTaskTimeout`](#workflowtasktimeout)           | No                   | `Duration`                                                                                                           |
+| [`WorkflowIdReusePolicy`](#workflowidreusepolicy)       | No                   | `WorkflowIdReusePolicy`                                                                                              |
+| [`RetryOptions`](#retryoptions)                         | No                   | [`RetryOptions`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.17.0/io/temporal/common/RetryOptions.html) |
+| [`CronSchedule`](#cronschedule)                         | No                   | String                                                                                                               |
+| [`Memo`](#memo)                                         | No                   | string                                                                                                               |
+| [`SearchAttributes`](#searchattributes)                 | No                   | `Map<String, Object>`                                                                                                |
+
+#### WorkflowId
+
+Set the Workflow Id with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowId​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+- Type: `String`
+- Default: none
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                // Set the Workflow Id
+                .setWorkflowId("YourWF")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                .build());
+```
+
+#### TaskQueue
+
+Set the Workflow Task Queue with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setTaskQueue`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+- Type: `String`
+- Default: none
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("YourWF")
+                // Set the Task Queue
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                .build());
+```
+
+#### WorkflowExecutionTimeout
+
+Set the [Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout) with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowExecutionTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+- Type: `time.Duration`
+- Default: Unlimited
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("YourWF")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                // Set Workflow Execution Timeout duration
+                .setWorkflowExecutionTimeout(Duration.ofSeconds(10))
+                .build());
+```
+
+#### WorkflowRunTimeout
+
+Set the Workflow Run Timeout with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowRunTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+- Type: `time.Duration`
+- Default: Same as [WorkflowExecutionTimeout](#workflowexecutiontimeout).
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("YourWF")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                // Set Workflow Run Timeout duration
+                .setWorkflowRunTimeout(Duration.ofSeconds(10))
+                .build());
+```
+
+#### WorkflowTaskTimeout
+
+Set the Workflow Task Timeout with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowTaskTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+- Type: `time.Duration`
+- Default: 10 seconds.
+- Values: Maximum accepted value is 60 seconds.
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("YourWF")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                // Set Workflow Task Timeout duration
+                .setWorkflowTaskTimeout(Duration.ofSeconds(10))
+                .build());
+```
+
+#### WorkflowIDReusePolicy
+
+- Type: `WorkflowIdReusePolicy`
+- Default: `AllowDuplicate`
+- Values:
+  - `enums.AllowDuplicateFailedOnly`: The Workflow can start if the earlier Workflow Execution failed, Canceled, or Terminated.
+  - `AllowDuplicate`: The Workflow can start regardless of the earlier Execution's closure status.
+  - `RejectDuplicate`: The Workflow can not start if there is a earlier Run.
+
+```java
+//create Workflow stub for GreetWorkflowInterface
+GreetWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("GreetWF")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                // Set Workflow Id Reuse Policy
+                .setWorkflowIdReusePolicy(
+                        WorkflowIdReusePolicy.WORKFLOW_ID_REUSE_POLICY_REJECT_DUPLICATE)
+                .build());
+```
+
+#### RetryOptions
+
+To set a Workflow Retry Options in the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance use [`WorkflowOptions.Builder.setWorkflowRetryOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+- Type: `RetryOptions`
+- Default: `Null` which means no retries will be attempted.
+
+```java
+//create Workflow stub for GreetWorkflowInterface
+GreetWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("GreetWF")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                // Set Workflow Retry Options
+                .setRetryOptions(RetryOptions.newBuilder()
+                .build());
+```
+
+#### CronSchedule
+
+A [Temporal Cron Job](/workflows#temporal-cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
+
+A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
+
+Set the Cron Schedule with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setCronSchedule`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+Setting `setCronSchedule` changes the Workflow Execution into a Temporal Cron Job.
+The default timezone for a Cron is UTC.
+
+- Type: `String`
+- Default: None
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    YourWorker.yourclient.newWorkflowStub(
+        YourWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("YourWF")
+                .setTaskQueue(YourWorker.TASK_QUEUE)
+                // Set Cron Schedule
+                .setCronSchedule("* * * * *")
+                .build());
+```
+
+For more details, see the [HelloCron Sample](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/hello/HelloCron.java).
+
+#### Memo
+
+- Type: `String`
+- Default: None
+
+```java
+//create Workflow stub for GreetWorkflowInterface
+GreetWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("GreetWF")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                // Set Memo. You can set additional non-indexed info via Memo
+                        .setMemo(ImmutableMap.of(
+                                "memoKey", "memoValue"
+                        ))
+                .build());
+```
+
+#### SearchAttributes
+
+Search Attributes are additional indexed information attributed to Workflow and used for search and visibility.
+These can be used in a query of List/Scan/Count Workflow APIs.
+The key and its value type must be registered on Temporal server side.
+
+- Type: `Map<String, Object>`
+- Default: None
+
+```java
+private static void parentWorkflow() {
+        ChildWorkflowOptions childworkflowOptions =
+                ChildWorkflowOptions.newBuilder()
+                        // Set Search Attributes
+                        .setSearchAttributes(ImmutableMap.of("MySearchAttributeNAme", "value"))
+                        .build();
+```
+
+The following Java types are supported:
+
+- String
+- Long, Integer, Short, Byte
+- Boolean
+- Double
+- OffsetDateTime
+- Collection of the types in this list.
+
+### How to get the result of a Workflow Execution in Java {#get-workflow-results}
+
+If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
+
+The Workflow Id, Run Id, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its result.
+
+It's possible to both block progress on the result (synchronous execution) or get the result at some other point in time (asynchronous execution).
+
+In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
+
+A synchronous Workflow Execution blocks your client thread until the Workflow Execution completes (or fails) and get the results (or error in case of failure).
+
+The following example is a type-safe approach for getting the results of a synchronous Workflow Execution.
+
+```java
+ FileProcessingWorkflow workflow = client.newWorkflowStub(
+                FileProcessingWorkflow.class,
+                WorkflowOptions.newBuilder()
+                        .setWorkflowId(workflowId)
+                        .setTaskQueue(taskQueue)
+                        .build();
+
+// start sync and wait for results (or failure)
+String result = workflow.processfile(new Argument());
+```
+
+An asynchronous Workflow Execution immediately returns a value to the caller.
+
+The following examples show how to get the results of a Workflow Execution through typed and untyped `WorkflowStub`.
+
+- **Typed WorkflowStub Example**
+
+  ```java
+  // create typed Workflow stub
+  FileProcessingWorkflow workflow = client.newWorkflowStub(FileProcessingWorkflow.class,
+                WorkflowOptions.newBuilder()
+                        .setTaskQueue(taskQueue)
+                        .setWorkflowId(workflowId)
+                        .build());
+  // use WorkflowClient.execute (if your Workflow takes in arguments) or WorkflowClient.start (for zero arguments)
+  WorkflowClient.start(workflow::greetCustomer);
+  ```
+
+- **Untyped WorkflowStub Example**
+
+  ```java
+  WorkflowStub untyped = client.newUntypedWorkflowStub("FileProcessingWorkflow",
+                  WorkflowOptions.newBuilder()
+                          .setWorkflowId(workflowId)
+                          .setTaskQueue(taskQueue)
+                          .build());
+
+  // blocks until Workflow Execution has been started (not until it completes)
+  untyped.start(argument);
+  ```
+
+If you need to wait for a Workflow Execution to complete after an asynchronous start, the most straightforward way is to call the blocking Workflow instance again.
+
+Note that if `WorkflowOptions.WorkflowIdReusePolicy` is not set to `AllowDuplicate`, then instead of throwing `DuplicateWorkflowException`, it reconnects to an existing Workflow and waits for its completion.
+
+The following example shows how to do this from a different process than the one that started the Workflow Execution.
+
+```java
+YourWorkflow workflow = client.newWorkflowStub(YourWorkflow.class, workflowId);
+
+// Returns the result after waiting for the Workflow to complete.
+String result = workflow.yourMethod();
+```
+
+Another way to connect to an existing Workflow and wait for its completion from another process, is to use `UntypedWorkflowStub`. For example:
+
+```java
+WorkflowStub workflowStub = client.newUntypedWorkflowStub(workflowType, workflowOptions);
+
+// Returns the result after waiting for the Workflow to complete.
+String result = untyped.getResult(String.class);
+```
+
+**Get last (successful) completion result**
+
+For a Temporal Cron Job, get the result of previous successful runs using `GetLastCompletionResult()`.
+The method returns `null` if there is no previous completion.
+The following example shows how to implement this in a Workflow.
+
+```java
+public String cronWorkflow() {
+    String lastProcessedFileName = Workflow.getLastCompletionResult(String.class);
+
+    // Process work starting from the lastProcessedFileName.
+    // Business logic implementation goes here.
+    // Updates lastProcessedFileName to the new value.
+
+    return lastProcessedFileName;
+}
+```
+
+Note that this works even if one of the Cron schedule runs failed.
+The next schedule will still get the last successful result if it ever successfully completed at least once.
+For example, for a daily cron Workflow, if the run succeeds on the first day and fails on the second day, then the third day run will get the result from first day's run using these APIs.

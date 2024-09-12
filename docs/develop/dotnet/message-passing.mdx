@@ -1,0 +1,261 @@
+---
+id: message-passing
+title: Workflow message passing - .NET SDK feature guide
+sidebar_label: Messages
+description: Learn how to develop with Signals, Queries, and Updates using the Temporal .NET SDK. Get in-depth guidance on defining, sending, and dynamically handling them to enhance your Workflow Execution.
+toc_max_heading_level: 5
+keywords:
+  - message passing
+  - signals
+  - queries
+  - updates
+tags:
+  - message-passing
+  - signals
+  - queries
+  - updates
+---
+
+This page shows how to do the following:
+
+- [Develop with Signals](#signals)
+- [Develop with Queries](#queries)
+- [Develop with Updates](#updates)
+
+## Signals {#signals}
+
+**How to develop with Signals using the Temporal .NET SDK**
+
+A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is a message sent to a running Workflow Execution.
+
+Signals are defined in your code and handled in your Workflow Definition.
+Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
+
+### Define Signal {#define-a-signal}
+
+**How to define a Signal using the Temporal .NET SDK**
+
+A Signal has a name and can have arguments.
+
+- The name, also called a Signal type, is a string.
+- The arguments must be serializable.
+  To define a Signal, set the `[WorkflowSignal]`(https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowSignalAttribute.html) attribute on the Signal method inside your Workflow.
+  A string name can be provided to the attribute, otherwise the Signal's name defaults to the unqualified method name (sans an "Async" suffix if it is async).
+
+Temporal suggests taking a single argument that is an object that can be added to as needed.
+
+```csharp
+[WorkflowSignal]
+public async Task DoSomethingAsync(DoSomethingParam input) => pendingThings.Add(input);
+```
+
+### Send a Signal from a Temporal Client {#send-signal-from-client}
+
+**How to send a Signal from a Temporal Client using the Temporal .NET SDK**
+
+When a Signal is sent successfully from the Temporal Client, the [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
+
+To send a Signal from the Client, use the `SignalAsync()` method on the Workflow handle.
+The Workflow handle can be obtained via `StartWorkflowAsync()` or `GetWorkflowHandle()` methods on the client.
+
+```csharp
+var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
+var handle = await client.StartWorkflowAsync(
+    (MyWorkflow wf) => wf.RunAsync(),
+    new(id: "my-workflow-id", taskQueue: "my-task-queue"));
+var param = new DoSomethingParam("something");
+await handle.SignalAsync(wf => wf.DoSomethingAsync(param));
+```
+
+### Send a Signal from a Workflow {#send-signal-from-workflow}
+
+**How to send a Signal from a Workflow using the Temporal .NET SDK**
+
+A Workflow can send a Signal to another Workflow, in which case it's called an _External Signal_.
+
+When an External Signal is sent:
+
+- A [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated) Event appears in the sender's Event History.
+- A [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the recipient's Event History.
+
+Use `GetExternalWorkflowHandle` to get a Workflow handle to an existing Workflow by its identifier.
+
+```csharp
+var handle = Workflow.GetExternalWorkflowHandle<OtherWorkflow>("other-workflow-id");
+var param = new DoSomethingParam("something");
+await handle.SignalAsync(wf => wf.DoSomethingAsync(param));
+```
+
+### Signal-With-Start {#signal-with-start}
+
+**How to Signal-With-Start using the Temporal .NET SDK**
+
+Signal-With-Start is used from the Client.
+It takes a Workflow Id, Workflow arguments, a Signal name, and Signal arguments.
+
+If there's a Workflow running with the given Workflow Id, it will be signaled. If there isn't, a new Workflow will be started and immediately signaled.
+
+To send a Signal-With-Start in .NET, set the `StartSignal` property in `WorkflowOptions` for `StartWorkflowAsync` or `ExecuteWorkflowAsync` with the name of your Signal.
+Arguments for the signal can be set with the `StartSignalArgs`.
+A `SignalWithStart` helper exists on the options for type-safe invocation.
+
+```csharp
+var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
+
+// Create options for signal-with-start
+var options = new WorkflowOptions(id: "my-workflow-id", taskQueue: "my-task-queue");
+var param = new DoSomethingParam("something");
+options.SignalWithStart((MyWorkflow wf) => wf.DoSomethingAsync(param));
+await client.StartWorkflowAsync((MyWorkflow wf) => wf.RunAsync(), options);
+```
+
+### Dynamic Handler {#dynamic-handler}
+
+**How to set a Dynamic Handler**
+
+Temporal supports Dynamic Signals, Queries, Workflows, and Activities,
+These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
+
+Dynamic Handlers provide flexibility to handle cases where the names of Signals, Queries, Workflows, or Activities, aren't known at run time.
+
+:::caution
+
+Dynamic Handlers should be used judiciously as a fallback mechanism rather than the primary approach.
+Overusing them can lead to maintainability and debugging issues down the line.
+
+Instead, Signals, Queries, Workflows, or Activities should be defined statically whenever possible, with clear names that indicate their purpose.
+Use static definitions as the primary way of structuring your Workflows.
+
+Reserve Dynamic Handlers for cases where the handler names are not known at compile time and need to be looked up dynamically at runtime.
+They are meant to handle edge cases and act as a catch-all, not as the main way of invoking logic.
+
+:::
+
+### Set a Dynamic Signal {#set-a-dynamic-signal}
+
+**How to set a Dynamic Signal using the Temporal .NET SDK**
+
+A Dynamic Signal in Temporal is a Signal that is invoked dynamically at runtime if no other Signal with the same input is registered.
+A Signal can be made dynamic by setting `Dynamic` to `true` on the `[WorkflowSignal]` attribute.
+Only one Dynamic Signal can be present on a Workflow.
+
+The Signal Handler parameters must accept a `string` name and `Temporalio.Converters.IRawValue[]` for the arguments.
+The [Workflow.PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_PayloadConverter) property is used to convert an `IRawValue` object to the desired type using extension methods in the `Temporalio.Converters` namespace.
+
+```csharp
+[WorkflowSignal(Dynamic = true)]
+public async Task DynamicSignalAsync(string signalName, IRawValue[] args)
+{
+    var input = Workflow.PayloadConverter.ToValue<DoSomethingParam>(args.Single());
+    pendingThings.Add(input);
+}
+```
+
+## Queries {#queries}
+
+A [Query](/encyclopedia/workflow-message-passing#sending-queries) is a synchronous operation that is used to get the state of a Workflow Execution.
+
+### Define a Query {#define-query}
+
+**How to define a Query using the Temporal .NET SDK**
+
+A Query has a name and can have arguments.
+
+- The name, also called a Query type, is a string.
+- The arguments must be [serializable](/dataconversion).
+
+Queries may be methods or properties (only the getter is used).
+Queries must be synchronous and must not mutate workflow state in any way or issue any [Commands](/workflows#command).
+To define a Query, set the `[WorkflowQuery]`(https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowQueryAttribute.html) attribute on the Query method or property inside your Workflow.
+A string name can be provided to the attribute, otherwise the Query's name defaults to the unqualified method/property name.
+
+Queries can be methods that can accept arguments:
+
+```csharp
+[WorkflowQuery]
+public string GetMyStatus(MyStatusParam input) => statuses[input.Type];
+```
+
+Or properties:
+
+```csharp
+[WorkflowQuery]
+public string MyStatus { get; private set; }
+```
+
+### Send a Query from a Temporal Client {#send-query}
+
+**How to send a Query using the Temporal .NET SDK**
+
+Queries are sent from a Temporal Client.
+
+To send a Query to a Workflow Execution from Client code, use the `QueryAsync()` method on the Workflow handle.
+
+```csharp
+var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
+var handle = await client.StartWorkflowAsync(
+    (MyWorkflow wf) => wf.RunAsync(),
+    new(id: "my-workflow-id", taskQueue: "my-task-queue"));
+var status = await handle.QueryAsync(wf => wf.MyStatus);
+```
+
+### Set a Dynamic Query {#set-a-dynamic-query}
+
+**How to set a Dynamic Query using the Temporal .NET SDK**
+
+A Dynamic Query in Temporal is a Query method that is invoked dynamically at runtime if no other Query with the same name is registered.
+A Query can be made dynamic by setting `Dynamic` to `true` on the `[WorkflowQuery]` attribute.
+Only one Dynamic Query can be present on a Workflow.
+
+The Query Handler parameters must accept a `string` name and `Temporalio.Converters.IRawValue[]` for the arguments.
+The [Workflow.PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_PayloadConverter) property is used to convert an `IRawValue` object to the desired type using extension methods in the `Temporalio.Converters` namespace.
+
+```csharp
+[WorkflowQuery(Dynamic = true)]
+public string DynamicQueryAsync(string queryName, IRawValue[] args)
+{
+    var input = Workflow.PayloadConverter.ToValue<MyStatusParam>(args.Single());
+    return statuses[input.Type];
+}
+```
+
+## Updates {#updates}
+
+**How to develop with Updates using the Temporal .NET SDK**
+
+An [Update](/encyclopedia/workflow-message-passing#sending-updates) is an operation that can mutate the state of a Workflow Execution and return a response.
+
+### Define an Update {#define-update}
+
+**How to define an Update using the Temporal .NET SDK**
+
+Workflow Updates handlers are methods in your Workflow Definition designed to handle updates.
+These updates can be triggered during the lifecycle of a Workflow Execution.
+
+**Define an Update Handler**
+
+To define an update handler, use the `[WorkflowUpdate]` attribute on a method within your Workflow.
+
+- **Attribute Usage:** Apply `[WorkflowUpdate]` to the method intended to handle updates.
+- **Overriding:** If a method with this attribute is overridden, the overriding method should also have the `[WorkflowUpdate]` attribute.
+- **Validator Method:** Optionally, you can define a validator method for the update handler. This validator is specified using `[WorkflowUpdateValidator]` attribute with the argument of the update method (e.g. `[WorkflowUpdateValidator(nameof(MyUpdateMethod))]`) and is invoked before the update handler.
+- **Return Values:** The update handler can return a serializable value. This value is sent back to the caller of the update.
+
+```csharp
+[WorkflowUpdate]
+public async Task<string> UpdateStatusAsync(Status status)
+{
+    this.status = status;
+    return "Status updated";
+}
+```
+
+### Send an Update from a Temporal Client {#send-update-from-client}
+
+**How to send an Update from a Temporal Client using the Temporal .NET SDK**
+
+To send a Workflow Update from a Temporal Client, call the `ExecuteUpdateAsync` method on the `WorkflowHandle` class.
+
+```csharp
+var result = await handle.ExecuteUpdateAsync(wf => wf.UpdateStatusAsync(newStatus));
+```

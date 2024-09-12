@@ -2,17 +2,15 @@
 id: web-ui
 title: Temporal Web UI
 sidebar_label: Web UI
-sidebar_position: 9
-description: Explore the intuitive web user interface (Web UI) for Temporal. Seamlessly monitor and manage your Namespaces, Workflows, Schedules, and other settings.
+description: The Temporal Web UI offers comprehensive Workflow management, debugging tools, and metadata access.
 toc_max_heading_level: 4
 keywords:
-- term
-- web-ui
+  - term
+  - web-ui
 tags:
-- term
-- web-ui
+  - term
+  - web-ui
 ---
-
 
 The Temporal Web UI provides users with Workflow Execution state and metadata for debugging purposes.
 It ships with every [Temporal CLI](/cli) release and [Docker Compose](https://github.com/temporalio/docker-compose) update and is available with [Temporal Cloud](/cloud).
@@ -29,7 +27,7 @@ The Web UI is packed with several features.
 
 ### Namespaces
 
-All Namespaces in your self-hosted Cluster or Temporal Cloud account are listed under **Namespaces** in the left section of the window.
+All Namespaces in your self-hosted Temporal Service or Temporal Cloud account are listed under **Namespaces** in the left section of the window.
 You can also switch Namespaces from the Workflows view by selecting from the Namespace switcher at the top right corner of the window.
 After you select a Namespace, the Web UI shows the Recent Workflows page for that Namespace.
 In Temporal Cloud, users can access only the Namespaces that they have been granted access to.
@@ -104,7 +102,7 @@ Clicking a pending Activity directs the user to the Pending Activities tab to vi
 
 #### Call Stack
 
-The screen shows the captured result from the [\_\_stack_trace](/workflows#stack-trace-query) Query.
+The screen shows the captured result from the [\_\_stack_trace](/encyclopedia/workflow-message-passing#stack-trace-query) Query.
 The Query is performed when the tab is selected.
 It works only if a Worker is running and available to return the call stack. The call stack shows each location where Workflow code is waiting.
 
@@ -114,7 +112,7 @@ Lists all Queries sent to the Workflow Execution.
 
 ### Schedules
 
-On Temporal Cloud and self-hosted Temporal Cluster Web UI, the Schedules page lists all the [Schedules](/workflows#schedule) created on the selected Namespace.
+On Temporal Cloud and self-hosted Temporal Service Web UI, the Schedules page lists all the [Schedules](/workflows#schedule) created on the selected Namespace.
 
 Click a Schedule to see details, such as configured frequency, start and end times, and recent and upcoming runs.
 
@@ -124,26 +122,13 @@ On Temporal Cloud, **Settings** is visible only to [Global Admins](/cloud/users#
 
 Click **Settings** to see and manage the list of users in your account and to set up integrations such as [Observability](/cloud/metrics) and [Audit logging](/cloud/audit-logging).
 
-On self-hosted Temporal Clusters, manage your users, metrics, and logging in your [server configuration](/references/configuration).
-
-<!--
-AB: Commenting because this is redundant now? Also this needs to be updated for self-hosted clusters.
-Displays the following information:
-
-- Description of the Namespace.
-- Owner: Namespace owner.
-- Global?: Whether the Namespace is a Global Namespace
-- Retention Period: Namespace Retention Period
-- History Archival: Whether History Archival is enabled
-- Visibility Archival: Whether Visibility Archival is enabled
-- Failover Version: Namespace Failover Version
-- Clusters: Cluster information -->
+On a self-hosted Temporal Service, manage your users, metrics, and logging in your [server configuration](/references/configuration).
 
 ### Archive
 
-On self-hosted Temporal Clusters, Archive shows [Archived](/clusters#archival) data of your Workflow Executions on the Namespace.
+On a self-hosted Temporal Service, Archive shows [Archived](/clusters#archival) data of your Workflow Executions on the Namespace.
 
-To see data in your self-hosted Temporal Cluster, you must have [Archival set up and configured](/self-hosted-guide/archival).
+To see data in your self-hosted Temporal Service, you must have [Archival set up and configured](/self-hosted-guide/archival).
 
 For information and details on the Archive feature in Temporal Cloud, contact your Temporal representative.
 
@@ -151,8 +136,8 @@ For information and details on the Archive feature in Temporal Cloud, contact yo
 
 The Web UI can use a [Codec Server](/dataconversion#codec-server) with a custom Data Converter to decode inputs and return values.
 For details, see [Securing your data](/production-deployment/data-encryption).
-The UI supports both a [Codec Server endpoint](/production-deployment/data-encryption#web-ui) and the `tctl` plugin port.
 
+The UI supports a [Codec Server endpoint](/production-deployment/data-encryption#web-ui).
 For details on setting the Codec Server endpoint, see [Codec Server setup](/production-deployment/data-encryption#codec-server-setup).
 
 ### Labs mode
@@ -161,4 +146,3 @@ The Web UI provides a "labs" mode for users to try out upcoming, production-read
 When off, users will experience the current UI.
 Features will move in and out of labs mode according to demand and feedback.
 Labs mode can be turned on or off at any time in the left navigation bar via the Labs icon.
-

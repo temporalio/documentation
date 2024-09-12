@@ -2,22 +2,20 @@
 id: multi-cluster-replication
 title: Self-hosted Multi-Cluster Replication
 sidebar_label: Multi-Cluster Replication
-sidebar_position: 10
-description: Learn how to setup Multi-Cluster Replication.
+description: Multi-Cluster Replication in Temporal ensures asynchronous replication of Workflow Executions from active to passive Clusters for backup and state reconstruction, enabling seamless failovers.
 slug: /self-hosted-guide/multi-cluster-replication
 toc_max_heading_level: 4
 keywords:
-- cluster
-- explanation
-- how-to
-- term
+  - cluster
+  - explanation
+  - how-to
+  - term
 tags:
-- cluster
-- explanation
-- how-to
-- term
+  - cluster
+  - explanation
+  - how-to
+  - term
 ---
-
 
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 When necessary, for higher availability, Cluster operators can failover to any of the backup Clusters.
@@ -284,7 +282,6 @@ Note: below is a tree structures
 | 4              | 2             |  | 4        | 3             |
 | -------------- | ------------- |  | -------- | ------------- |
 
-
 | --------------- | ----------- |
 | Version History |              |
 | --------------- | ------------ |
@@ -293,7 +290,6 @@ Note: below is a tree structures
 | 2               | 1            |
 | 3               | 2            |
 | --------------- | ------------ |
-
 
 | --------------- | ----------- |  | --------------- | ------- |
 | Event ID | Version |  | Event ID | Version |
@@ -320,7 +316,7 @@ Temporal Multi-Cluster Replication relies on asynchronous replication of Events 
 This also means that whenever a Workflow Execution is updated after a failover by the new Cluster, any previous replication tasks for that Execution cannot be applied.
 This results in loss of some progress made by the Workflow Execution in the previous active Cluster.
 During such conflict resolution, Temporal re-injects any external Events like Signals in the new Event History before discarding replication tasks.
-Even though some progress could roll back during failovers, Temporal provides the guarantee that Workflow Executions won’t get stuck and will continue to make forward progress.
+Even though some progress could roll back during failovers, Temporal provides the guarantee that Workflow Executions won't get stuck and will continue to make forward progress.
 
 Activity Execution completions are not forwarded across Clusters.
 Any outstanding Activities will eventually time out based on the configuration.
@@ -504,20 +500,27 @@ clusterMetadata:
       rpcAddress: "127.0.0.1:8233"
 ```
 
-Then you can use the `tctl admin` tool to add cluster connections. All operations should be executed in both Clusters.
+Then you can use the Temporal CLI tool to add cluster connections. All operations should be executed in both Clusters.
+
+{/* tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233" */}
+
+{/* tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233" */}
+
+{/* tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233" --enable_connection false
+tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233" --enable_connection false */}
+
+{/* tctl -address 127.0.0.1:7233 admin cluster remove-remote-cluster --cluster "clusterB"
+tctl -address 127.0.0.1:8233 admin cluster remove-remote-cluster --cluster "clusterA" */}
+
+{/* THIS MUST BE CHECKED FOR ACCURACY */}
 
 ```shell
-# Add cluster B connection into cluster A
-tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233"
-# Add cluster A connection into cluster B
-tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233"
+# Add a cluster
+temporal operator cluster upsert --frontend_address="127.0.2.1:8233"
 
 # Disable connections
-tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233" --enable_connection false
-tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233" --enable_connection false
+temporal operator cluster upsert --frontend_address="localhost:8233" --enable_connection false
 
 # Delete connections
-tctl -address 127.0.0.1:7233 admin cluster remove-remote-cluster --cluster "clusterB"
-tctl -address 127.0.0.1:8233 admin cluster remove-remote-cluster --cluster "clusterA"
+temporal operator cluster remove --name="someClusterName"
 ```
-

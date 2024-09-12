@@ -1,11 +1,12 @@
 extends: substitution
-message: Consider using '%s' instead of '%s'
+message: Use '%s' instead of '%s' when referring to a Temporal term.
 level: warning
-ignorecase: true
+ignorecase: false
 action:
   name: replace
 # swap maps tokens in form of bad: good
 swap:
+  account id: Account Id
   '\bactivity\b': Activity
   activity definition: Activity Definition
   activity execution: Activity Execution
@@ -16,33 +17,54 @@ swap:
   activity type: Activity Type
   advanced visibility: Advanced Visibility
   archival: Archival
+  asynchronous activity completion: Asynchronous Activity Completion
+  audit logging: Audit Logging
+  child workflow: Child Workflow
   child workflow execution: Child Workflow Execution
+  claim mapper: Claim Mapper
   codec server: Codec Server
+  continue as new: Continue-As-New
   continue-as-new: Continue-As-New
+  core SDK: Core SDK
+  custom data converter: Custom Data Converter
   data converter: Data Converter
+  default data converter: Default Data Converter
+  durable exeuction: Durable Execution
   event history: Event History
+  failure converter: Failure Converter
   frontend service: Frontend Service
   grpc: gRPC
   '\bheartbeat\b': Heartbeat
-  #heartbeating: Heartbeating
   heartbeat timeout: Heartbeat Timeout
+  heartbeating: Heartbeating
   history service: History Service
   history shard: History Shard
-  id: Id
-  ID: Id
-  IDs: Ids
+  id: ID
+  IDs: IDs
   list filter: List Filter
   list filters: List Filters
   local activity: Local Activity
   local activities: Local Activities
-  matching service: Matching Service
+  matching service: "Matching Service"
+  multiregion namespace: Multi-Region Namespace
+  multi cluster replication: Multi-Cluster Replication
+  multi-cluster replication: Multi-Cluster Replication
+  multicluster replication: Multi-Cluster Replication
   namespace: Namespace
   namespaces: Namespaces
+  namespace id: Namespace Id
   parent close policy: Parent Close Policy
+  payload codec: Payload Codec
+  payload converter: Payload Converter
+  prerelease: Pre-Release
+  pre-release: Pre-Release
+  public preview: Public Preview
   query: Query
   queries: Queries
+  retention period: Retention Period
   retry policy: Retry Policy
   run id: Run Id
+  schedule: Schedule
   schedule-to-close timeout: Schedule-To-Close Timeout
   schedule-to-start timeout: Schedule-To-Start Timeout
   search attribute: Search Attribute
@@ -50,28 +72,34 @@ swap:
   side effect: Side Effect
   signal: Signal
   signals: Signals
+  signal-with-start: Signal-With-Start
   standard visibility: Standard Visibility
   start-to-close timeout: Start-To-Close Timeout
   state transition: State Transition
-  temporal server: Temporal Server
-  temporal cluster: Temporal Cluster
+  sticky execution: Sticky Execution
   task: Task
   task queue: Task Queue
   task queues: Task Queues
+  task routing: Task Routing
   task token: Task Token
   task tokens: Task Tokens
+  tcloud: Temporal Cloud
   '\btemporal ': Temporal
+  temporal client: Temporal Client
+  temporal cluster: Temporal Service
   temporal platform: Temporal Platform
   temporal sdk: Temporal SDK
+  temporal single binary: Temporal CLI
   temporal sdks: Temporal SDKs
   temporal server: Temporal Server
   '\bworker\b': Worker
   '\bworkflow\b': Workflow
   timer: Timer
   timers: Timers
-  web ui: Web UI
-  worker: Worker
-  workers: Workers
+  update: Update
+  worker entity: Worker Entity
+  worker process: Worker Process
+  worker program: Worker Program
   worker service: Worker Service
   workflow: Workflow
   workflows: Workflows
@@ -80,7 +108,9 @@ swap:
   workflow execution: Workflow Execution
   workflow executions: Workflow Executions
   workflow execution timeout: Workflow Execution Timeout
+  workflow history export: Workflow History Export
   workflow id: Workflow Id
+  workflow id reuse policy: Workflow Id Reuse Policy
   workflow ids: Workflow Ids
   workflow id reuse policy: Workflow Id Reuse Policy
   workflow run timeout: Workflow Run Timeout

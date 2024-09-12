@@ -1,0 +1,112 @@
+---
+id: service-health
+title: Service health
+sidebar_label: Service health
+description: Use Temporal Cloud metrics to monitor your production deployment Service health.
+toc_max_heading_level: 4
+tags:
+  - temporal-cloud
+  - metrics
+  - observability
+  - health
+---
+
+Temporal Cloud metrics help monitor the Service health of production deployments.
+This documentation covers best practices for monitoring Service health.
+
+## Monitor availability issues
+
+When you see a sudden drop in Worker resource utilization, verify whether Temporal Cloud's API is showing increased latency and error rates.
+
+### Reference Metrics
+
+- [temporal\_cloud\_v0\_service\_latency\_bucket](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_service_latency_bucket)
+
+This metric measures latency for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
+These operations are mission critical and never [throttled](/cloud/service-availability#throughput).
+This metric is a good indicator of your lowest possible latency.
+
+### Prometheus Query for this Metric
+
+P99 service lag (histogram):
+
+```
+histogram_quantile(0.99, sum(rate(temporal_cloud_v0_service_latency_bucket[$__rate_interval])) by (temporal_namespace, operation, le))
+```
+
+## Monitor Temporal Service errors
+
+Check for Temporal Service gRPC API errors.
+Note that Service API errors are not equivalent to guarantees mentioned in the [Temporal Cloud SLA](/cloud/sla).
+
+### Reference Metrics
+
+- [temporal\_cloud\_v0\_frontend\_service\_error\_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_frontend_service_error_count)
+- [temporal\_cloud\_v0\_frontend\_service\_request\_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_frontend_service_request_count)
+
+### Prometheus Query for this Metric
+
+Measure your daily average errors over 10-minute windows:
+
+```
+avg_over_time((
+    (
+
+        (
+            sum(increase(temporal_cloud_v0_frontend_service_request_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
+            -
+            sum(increase(temporal_cloud_v0_frontend_service_error_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
+        )
+        /
+        sum(increase(temporal_cloud_v0_frontend_service_request_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
+    )
+    
+    or vector(1)
+
+    )[1d:10m])
+```
+
+## Monitor multi-region Namespace replication lag
+
+Replication lag refers to the transmission delay of Workflow updates and history events from the active region to the standby region.
+Always check the [metric replication lag](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket) before initiating a failover.
+A forced failover when there is a large replication lag has a higher likelihood of rolling back Workflow progress.
+
+**Who owns the replication lag?**
+Temporal owns replication lag.
+
+**What guarantees are available?**
+There is no SLA for replication lag.
+Temporal recommends that customers do not trigger failovers except for testing or emergency situations.
+Multi-region's four-9 guarantee SLA means Temporal will handle failovers and ensure high availability.
+Temporal also monitors replication lag.
+Customer who decide to trigger failovers should look at this metric before moving forward.
+
+**If the lag is high, what should you do?**
+We don't expect users to failover.
+Please contact Temporal support if you feel you have a pressing need.
+
+**Where can you read more?**
+See [multi-region Namespaces](/cloud/multi-region).
+
+### Reference Metrics
+
+- [temporal\_cloud\_v0\_replication\_lag\_bucket](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket)
+- [temporal\_cloud\_v0\_replication\_lag\_sum](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_sum)
+- [temporal\_cloud\_v0\_replication\_lag\_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_count)
+
+### Prometheus Query for this Metric
+
+P99 replication lag (histogram):
+
+```
+histogram_quantile(0.99, sum(rate(temporal_cloud_v0_replication_lag_bucket[$__rate_interval])) by (temporal_namespace, le))
+```
+
+Average replication lag:
+
+```
+sum(rate(temporal_cloud_v0_replication_lag_sum[$__rate_interval])) by (temporal_namespace)
+/
+sum(rate(temporal_cloud_v0_replication_lag_count[$__rate_interval])) by (temporal_namespace)
+```

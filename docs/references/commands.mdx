@@ -2,23 +2,22 @@
 id: commands
 title: Temporal Commands reference
 sidebar_label: Commands
-description: A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.
+description: Discover the range of Commands Workers can issue to the Temporal Service after Workflow Task Execution, from Completing Workflow Execution to Start Timer and Signal External Workflow Execution.
 toc_max_heading_level: 4
 keywords:
-- reference
+  - reference
 tags:
-- reference
+  - reference
 ---
 
-
-A [Command](/workflows#command) is a requested action issued by a [Worker](/workers#worker) to the [Temporal Cluster](/clusters) after a [Workflow Task Execution](/workers#workflow-task-execution) completes.
+A [Command](/workflows#command) is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/clusters) after a [Workflow Task Execution](/workers#workflow-task-execution) completes.
 
 The following is a complete list of possible Commands.
 
 ### CompleteWorkflowExecution
 
 This Command is triggered when the Workflow Function Execution returns.
-It indicates to the Cluster that the [Workflow Execution](/workflows#workflow-execution) is complete.
+It indicates to the Temporal Service that the [Workflow Execution](/workflows#workflow-execution) is complete.
 The corresponding [Event](/workflows#event) for this Command is one of the few Events that will be the last in a Workflow Execution [Event History](/workflows#event-history).
 
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
@@ -49,7 +48,7 @@ The Corresponding Event for this Command is one of the few Events that will be t
 
 ### StartChildWorkflowExecution
 
-This Command is triggered by a call to spawn a [Child Workflow Execution](/workflows#child-workflow).
+This Command is triggered by a call to spawn a [Child Workflow Execution](/encyclopedia/child-workflows).
 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted)
@@ -58,7 +57,7 @@ By default, you cannot have more than 2,000 pending Child Workflows.
 
 ### SignalExternalWorkflowExecution
 
-This Command is triggered by a call to [Signal](/workflows#signal) another Workflow Execution.
+This Command is triggered by a call to [Signal](/encyclopedia/workflow-message-passing#sending-signals) another Workflow Execution.
 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated)
@@ -124,4 +123,3 @@ This Command helps guarantee ordering constraints for features such as Updates
 
 This Command points at the message from which the Event is created.
 Therefore, just from the Command, you can't predict the resulting Event type.
-

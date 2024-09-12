@@ -1,0 +1,245 @@
+---
+id: observability
+title: Observability - .NET SDK feature guide
+sidebar_label: Observability
+description: Explore Temporal SDK observability features for Metrics, Tracing, Logging, and Visibility. Learn to track Workflow Executions, set up Prometheus endpoints, customize metrics, configure tracing, and more.
+toc_max_heading_level: 4
+keywords:
+  - client
+  - code sample
+  - developer guide
+  - guide context
+  - how to
+  - logging
+  - dotnet
+  - dotnet sdk
+  - sdk
+  - search attribute
+  - workflow
+  - observability
+tags:
+  - client
+  - code-sample
+  - developer-guide
+  - guide-context
+  - how-to
+  - logging
+  - dotnet
+  - dotnet-sdk
+  - sdk
+  - search-attribute
+  - workflow
+  - observability
+---
+
+This page covers features related to viewing the state of the application, including:
+
+- [Metrics](#metrics)
+- [Tracing](#tracing)
+- [Logging](#logging)
+- [Visibility](#visibility)
+
+The observability feature guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application).
+This includes the ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
+
+## Emit metrics {#metrics}
+
+**How to emit metrics using the Temporal .NET SDK**
+
+Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
+For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
+
+Metrics can be scraped and stored in time series databases, such as:
+
+- [Prometheus](https://prometheus.io/docs/introduction/overview/)
+- [M3db](https://m3db.io/docs/)
+- [statsd](https://github.com/statsd/statsd)
+
+Temporal also provides a dashboard you can integrate with graphing services like [Grafana](https://grafana.com/docs/). For more information, see:
+
+- Temporal's implementation of the [Grafana dashboard](https://github.com/temporalio/dashboards)
+- [How to export metrics in Grafana](https://github.com/temporalio/helm-charts#exploring-metrics-via-grafana)
+
+Metrics in .NET are configured on the `Metrics` property of the `Telemetry` property on the `TemporalRuntime`. That object should be created globally and should be used for all clients; therefore, you should configure this before any other Temporal code.
+
+### Set a Prometheus endpoint
+
+**How to set a Prometheus endpoint using the .NET SDK**
+
+The following example exposes a Prometheus endpoint on port `9000`.
+
+```csharp
+using Temporalio.Client;
+using Temporalio.Runtime;
+
+var runtime = new TemporalRuntime(new()
+{
+    Telemetry = new() { Metrics = new() { Prometheus = new("0.0.0.0:9000") } },
+});
+var client = await Temporalio.ConnectAsync(new("localhost:7233") { Runtime = runtime });
+```
+
+### Set a custom metric meter
+
+**How to reuse the .NET metric meter using the Temporal .NET SDK**
+
+A custom metric meter can be set on the telemetry options to handle metrics programmatically.
+The [Temporalio.Extensions.DiagnosticSource](https://github.com/temporalio/sdk-dotnet/tree/main/src/Temporalio.Extensions.DiagnosticSource) extension provides a custom metric meter implementation that sends all metrics to a [System.Diagnostics.Metrics.Meter](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.metrics.meter) instance.
+
+```csharp
+using System.Diagnostics.Metrics;
+using Temporalio.Client;
+using Temporalio.Extensions.DiagnosticSource;
+using Temporalio.Runtime;
+
+// Create .NET meter
+using var meter = new Meter("My.Meter");
+// Can create MeterListener or OTel meter provider here...
+
+// Create Temporal runtime with a custom metric meter for that meter
+var runtime = new TemporalRuntime(new()
+{
+    Telemetry = new()
+    {
+        Metrics = new() { CustomMetricMeter = new CustomMetricMeter(meter) },
+    },
+});
+var client = await Temporalio.ConnectAsync(new("localhost:7233") { Runtime = runtime });
+```
+
+## Setup Tracing {#tracing}
+
+**How to configure tracing using the Temporal .NET SDK**
+
+Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
+
+To configure OpenTelemetry tracing in .NET, use the [Temporalio.Extensions.OpenTelemetry](https://github.com/temporalio/sdk-dotnet/tree/main/src/Temporalio.Extensions.OpenTelemetry) extension.
+
+The [`Temporalio.Extensions.OpenTelemetry.TracingInterceptor`](https://dotnet.temporal.io/api/Temporalio.Extensions.OpenTelemetry.TracingInterceptor.html) class can be set as an interceptor in the client options.
+
+When your Client is connected, spans are created for all Client calls, Activities, and Workflow invocations on the Worker.
+Spans are created and serialized through the server to give one trace for a Workflow Execution.
+
+## Log from a Workflow {#logging}
+
+**How to log from a Workflow to Temporal .NET SDK**
+
+Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
+
+The SDK core uses `WARN` for its default logging level.
+
+Logging uses the .NET standard logging APIs.
+The `LoggerFactory` can be set in the client.
+The following example shows logging on the console and sets the level to `Information`.
+
+```csharp
+var client = await TemporalClient.ConnectAsync(new("localhost:7233")
+{
+    LoggerFactory = LoggerFactory.Create(builder =>
+        builder.
+            AddSimpleConsole(options => options.TimestampFormat = "[HH:mm:ss] ").
+            SetMinimumLevel(LogLevel.Information)),
+});
+```
+
+You can log from a Workflow using `Workflow.Logger` which is an instance of .NET's `ILogger`.
+
+```csharp
+Workflow.Logger.LogInformation("Given name: {Name}", name);
+```
+
+## Use Visibility APIs {#visibility}
+
+**How to use Visibility APIs using the Temporal .NET SDK**
+
+The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
+
+### Use Search Attributes {#search-attributes}
+
+**How to use Search Attributes using the Temporal .NET SDK**
+
+The typical method of retrieving a Workflow Execution is by its Workflow Id.
+
+However, sometimes you'll want to retrieve one or more Workflow Executions based on another property. For example, imagine you want to get all Workflow Executions of a certain type that have failed within a time range, so that you can start new ones with the same arguments.
+
+You can do this with [Search Attributes](/visibility#search-attribute).
+
+- [Default Search Attributes](/visibility#default-search-attributes) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
+- _Custom Search Attributes_ can contain their own domain-specific data (like `customerId` or `numItems`).
+- A few [generic Custom Search Attributes](/visibility#custom-search-attributes) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](https://github.com/temporalio/docker-compose).
+
+The steps to using custom Search Attributes are:
+
+- Create a new Search Attribute in your Temporal Service in the CLI or Web UI.
+  - For example: `temporal operator search-attribute create --name CustomKeywordField --type Text`
+    - Replace `CustomKeywordField` with the name of your Search Attribute.
+    - Replace `Text` with a type value associated with your Search Attribute: `Text` | `Keyword` | `Int` | `Double` | `Bool` | `Datetime` | `KeywordList`
+- Set the value of the Search Attribute for a Workflow Execution:
+  - On the Client by including it as an option when starting the Execution.
+  - In the Workflow by calling `UpsertTypedSearchAttributes`.
+- Read the value of the Search Attribute:
+  - On the Client by calling `Describe` on a `WorkflowHandle`.
+  - In the Workflow by looking at `WorkflowInfo`.
+- Query Workflow Executions by the Search Attribute using a [List Filter](/visibility#list-filter):
+  - [In the Temporal CLI](/cli/operator#list-2)
+  - In code by calling `ListWorkflowsAsync`.
+
+### List Workflow Executions {#list-workflow-executions}
+
+**How to list Workflow Executions using the .NET SDK**
+
+Use the [ListWorkflowsAsync()](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClient.html#Temporalio_Client_ITemporalClient_ListWorkflowsAsync_System_String_Temporalio_Client_WorkflowListOptions_) method on the Client and pass a [List Filter](/visibility#list-filter) as an argument to filter the listed Workflows.
+The result is an async enumerable.
+
+```csharp
+await foreach (var wf in client.ListWorkflowsAsync("WorkflowType='GreetingWorkflow'"))
+{
+    Console.WriteLine("Workflow: {0}", wf.Id);
+}
+```
+
+### Set Custom Search Attributes {#custom-search-attributes}
+
+**How to use custom Search Attributes using the Temporal .NET SDK**
+
+After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+
+To set custom Search Attributes, use the `TypedSearchAttributes` property on `WorkflowOptions` for `StartWorkflowAsync` or `ExecuteWorkflowAsync`.
+Typed search attributes are a `SearchAttributeCollection` created with a builder.
+
+```csharp
+// This only needs to be created once, so it is common to make it a static readonly even though we
+// create inline here for demonstration
+var myKeywordAttributeKey = SearchAttributeKey.CreateKeyword("MyKeywordAttribute");
+
+// Start workflow with the search attribute collection
+var handle = await client.StartWorkflowAsync(
+    (MyWorkflow wf) => wf.RunAsync(),
+    new(id: "my-workflow-id", taskQueue: "my-task-queue")
+    {
+        TypedSearchAttributes = new SearchAttributeCollection.Builder().
+            Set(myKeywordAttributeKey, "SomeKeywordValue").
+            ToSearchAttributeCollection(),
+    });
+```
+
+### Upsert Search Attributes {#upsert-search-attributes}
+
+**How to upsert custom Search Attributes using the Temporal .NET SDK**
+
+You can upsert Search Attributes to add, update, or remove Search Attributes from within Workflow code.
+
+To upsert custom Search Attributes, use the [`UpsertTypedSearchAttributes()`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_UpsertTypedSearchAttributes_Temporalio_Workflows_SearchAttributeUpdate___) method with a set of updates.
+Keys can be predefined for reuse.
+
+```csharp
+// These only need to be created once, so it is common to make them static readonly even though we
+// create inline here for demonstration
+var myKeywordAttributeKey = SearchAttributeKey.CreateKeyword("MyKeywordAttribute");
+var myTextAttributeKey = SearchAttributeKey.CreateText("MyTextAttribute");
+
+// Add/Update the keyword one and remove the text one
+Workflow.UpsertTypedSearchAttributes(
+    myKeywordAttributeKey.ValueSet("SomeKeywordValue"),
+    myTextAttrbiuteKey.ValueUnset());
+```

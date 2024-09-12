@@ -1,9 +1,8 @@
 ---
 id: index
-title: Metrics - Temporal Cloud feature guide
+title: Temporal Cloud Observability and Metrics
 sidebar_label: Metrics
-sidebar_position: 5
-description: Configure and track performance metrics for Temporal Cloud.
+description: Get detailed insights into your Temporal Cloud Namespace metrics using your own observability tool. Access data with a CA certificate and retain raw metrics for seven days.
 slug: /cloud/metrics/
 toc_max_heading_level: 4
 keywords:
@@ -28,165 +27,30 @@ tags:
   - temporal-cloud
 ---
 
-Beyond the [metrics](/references/sdk-metrics) provided by the Temporal SDKs, some key metrics exist only in Temporal Cloud.
-You can use your own observability tool to query an endpoint and review Namespace metrics.
+Temporal offers two distinct sources of metrics: [Cloud/Server Metrics](/production-deployment/cloud/metrics/reference) and [SDK Metrics](/references/sdk-metrics).
+Each source provides options for levels of granularity and filtering, monitoring-tool integrations, and configuration.
+Before implementing Temporal Cloud observability, decide what you need to measure for your use case. There are two primary use cases for metrics:
+- To measure the health and performance of Temporal-backed applications and key business processes.
+- To measure the health and performance of Temporal infrastructure and user provided infrastructure in the form of Temporal Workers and Temporal Clients.
 
-To ensure security of your metrics, a CA certificate dedicated to observability is required.
-Only clients that use certificates signed by that CA, or that chain up to the CA, can query the metrics endpoint.
-For more information about CA certificates in Temporal Cloud, see [Certificate requirements](/cloud/certificates#certificate-requirements).
+When measuring the performance of Temporal-backed applications and key business processes, you should rely on Temporal SDK metrics as a source of truth.
+This is because Temporal SDKs provide visibility from the perspective of your application, not from the perspective of the Temporal Service. 
 
-## How to configure a metrics endpoint using Temporal Cloud UI {#configure-via-ui}
+SDK metrics monitor individual workers and your code's behavior.
+Cloud metrics monitor Temporal behavior.
+When used together, Temporal Cloud and SDK metrics measure the health and performance of your full Temporal infrastructure, including the Temporal Cloud Service and user-supplied Temporal Workers. 
 
-:::note
-
-To view and manage third-party integration settings, your user account must have the Global Admin [Role](/cloud/users#account-level-roles).
-
-:::
-
-To assign a certificate and generate your metrics endpoint, follow these steps:
-
-1. In Temporal Cloud UI, click **Settings**.
-1. On the **Settings** page, click **Integrations**.
-1. In the **Observability** card, click **Configure Observability**.
-   (If observability is already configured, the **Edit** link appears instead.)
-1. In **Certificates**, paste a base64-encoded CA certificate PEM block.
-1. Click **Generate endpoint**.
-
-After the page refreshes, the new metrics endpoint appears below **Endpoint**, in the form `https://<account-id>.tmprl.cloud/prometheus`.
-Use the endpoint to configure your observability tool—for example, [Grafana](https://grafana.com/) with [this dashboard](https://github.com/temporalio/dashboards/blob/master/cloud/temporal_cloud.json).
-For more information, see [Set up Grafana with Temporal Cloud](/cloud/metrics/prometheus-grafana#prometheus-and-grafana-setup).
-
-You can also query via the [Prometheus HTTP API](https://prometheus.io/docs/prometheus/latest/querying/api/) at URLs like:
-
-```
-https://<account-id>.tmprl.cloud/prometheus/api/v1/query?query=temporal_cloud_v0_state_transition_count
-```
-
-For example:
-
-```
-$ curl --cert client.pem --key client-key.pem "https://<account-id>.tmprl.cloud/prometheus/api/v1/query?query=temporal_cloud_v0_state_transition_count" | jq .
-{
-  "status": "success",
-  "data": {
-    "resultType": "vector",
-    "result": [
-      {
-        "metric": {
-          "__name__": "temporal_cloud_v0_state_transition_count",
-          "__rollup__": "true",
-          "operation": "WorkflowContext",
-          "temporal_account": "your-account",
-          "temporal_namespace": "your-namespace.your-account-is",
-          "temporal_service_type": "history"
-        },
-        "value": [
-          1672347471.2,
-          "0"
-        ]
-      },
-      ...
-}
-```
-
-## How to configure a metrics endpoint using the tcld CLI {#configure-via-cli-(tcld)}
-
-To add a certificate to a metrics endpoint, use [`tcld account metrics accepted-client-ca add`](/cloud/tcld/account#add).
-
-To enable a metrics endpoint, use [`tcld account metrics enable`](/cloud/tcld/account#enable).
-
-To disable a metrics endpoint, use [`tcld account metrics disable`](/cloud/tcld/account#disable).
-
-For more information, see [tcld account metrics command](/cloud/tcld/account#metrics).
-
-## What metrics are emitted from Temporal Cloud? {#available-metrics}
-
-Temporal tracks the following metrics for your various Namespaces.
-
-- `temporal_cloud_v0_frontend_service_error_count`: gRPC errors returned aggregated by operation.
-
-- `temporal_cloud_v0_frontend_service_request_count`: gRPC requests received aggregated by operation.
-
-- `temporal_cloud_v0_poll_success_count`: Tasks that are successfully matched to a poller.
-
-- `temporal_cloud_v0_poll_success_sync_count`: Tasks that are successfully sync matched to a poller.
-
-- `temporal_cloud_v0_poll_timeout_count`: When no tasks are available for a poller before timing out.
-
-- `temporal_cloud_v0_resource_exhausted_error_count`: gRPC requests received that were rate-limited by Temporal Cloud, aggregated by cause.
-
-- `temporal_cloud_v0_schedule_action_success_count`: Successful execution of a Scheduled Workflow.
-
-- `temporal_cloud_v0_schedule_buffer_overruns_count`: When average schedule run length is greater than average schedule interval while a `buffer_all` overlap policy is configured.
-
-- `temporal_cloud_v0_schedule_missed_catchup_window_count`: Skipped Scheduled executions when Workflows were delayed longer than the catchup window.
-
-- `temporal_cloud_v0_schedule_rate_limited_count`: Workflows that were delayed due to exceeding a rate limit.
-
-- `temporal_cloud_v0_service_latency_bucket`: Latency for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
-
-- `temporal_cloud_v0_service_latency_count`: Count of latency observations for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
-
-- `temporal_cloud_v0_service_latency_sum` - Sum of latency observation time for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
-
-- `temporal_cloud_v0_state_transition_count`: Count of state transitions for each Namespace.
-
-- `temporal_cloud_v0_total_action_count`: Approximate count of Temporal Cloud Actions.
-
-- `temporal_cloud_v0_workflow_cancel_count`: Workflows canceled before completing execution.
-
-- `temporal_cloud_v0_workflow_continued_as_new_count`: Workflow Executions that were Continued-As-New from a past execution.
-
-- `temporal_cloud_v0_workflow_failed_count`: Workflows that failed before completion.
-
-- `temporal_cloud_v0_workflow_success_count`: Workflows that successfully completed.
-
-- `temporal_cloud_v0_workflow_terminate_count`: Workflows terminated before completing execution.
-
-- `temporal_cloud_v0_workflow_timeout_count`: Workflows that timed out before completing execution.
-
-Metrics for all Namespaces in your account are available from the metrics endpoint.
+Metrics for all Namespaces in your account are available from your metrics endpoint.
 
 Metrics lag real-time performance by about one minute.
 
 Temporal Cloud retains raw metrics for seven days.
 
-### Metric labels
+To ensure security of your metrics, a CA certificate dedicated to observability is required.
+Only clients that use certificates signed by that CA, or that chain up to the CA, can query the metrics endpoint.
+For more information about CA certificates in Temporal Cloud, see [Certificate requirements](/cloud/certificates#certificate-requirements).
 
-Metrics for all Namespaces in your account are available from the metrics endpoint. Use the following labels to filter metrics:
-
-| Label                      | Explanation                                                                                                                                                                                                                                                               |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `le`                       | Less than or equal to (`le`) is used in histograms to categorize observations into buckets based on their value being less than or equal to a predefined upper limit.                                                                                                     |
-| `operation`                | This includes operations such as:<ul><li>SignalWorkflowExecution</li><li>StartBatchOperation</li><li>StartWorkflowExecution</li><li>TaskQueueMgr</li><li>TerminateWorkflowExecution</li><li>UpdateNamespace</li><li>UpdateSchedule</li></ul> This list is non-exhaustive. |
-| `resource_exhausted_cause` | Cause for resource exhaustion.                                                                                                                                                                                                                                            |
-| `task_type`                | Activity or Workflow.                                                                                                                                                                                                                                                     |
-| `temporal_account`         | Temporal Account.                                                                                                                                                                                                                                                         |
-| `temporal_namespace`       | Temporal Namespace.                                                                                                                                                                                                                                                       |
-| `temporal_service_type`    | Frontend or Matching or History or Worker.                                                                                                                                                                                                                                |
-| `is_background`            | This label on `temporal_cloud_v0_total_action_count` indicates when actions are produced by a Temporal background job, for example: hourly Workflow Export.                                                                                                               |
-| `namespace_mode`           | This label on `temporal_cloud_v0_total_action_count` indicates if actions are produced by an active vs a passive Namespace. For a regular Namespace, `namespace_mode` will always be “active”.                                                                            |
-
-The following is an example of how you can filter metrics using labels:
-
-```text
-temporal_cloud_v0_poll_success_count{__rollup__="true", operation="TaskQueueMgr", task_type="Activity", temporal_account="12345", temporal_namespace="your_namespace.12345", temporal_service_type="matching"}
-```
-
-## How to use Temporal Cloud performance metrics {#how-to-use}
-
-Most Temporal Cloud metrics are suffixed with `_count`. This indicates that they behave largely like a [Prometheus counter](https://prometheus.io/docs/concepts/metric_types/#counter). You'll want to use a function like `rate` or `increase` to calculate a per-second rate of increase, or an extrapolated total increase over a time period.
-
-```
-rate(temporal_cloud_v0_frontend_service_request_count[5m])
-```
-
-`temporal_cloud_v0_service_latency` has `_bucket`, `_count`, and `_sum` metrics. This is because it's a [Prometheus Histogram](https://prometheus.io/docs/concepts/metric_types/#histogram). You can use the `_count` and `_sum` metrics to calculate an average latency over a time period, or use the `_bucket` metric to calculate an approximate histogram quartile.
-
-```
-# the average latency observation over the last 5 minutes
-rate(temporal_cloud_v0_service_latency_sum[5m]) / rate(temporal_cloud_v0_service_latency_count[5m])
-
-# the approximate 99th percentile latency over the last 5 minutes, broken down by operation
-histogram_quantile(0.99, sum(rate(temporal_cloud_v0_service_latency_bucket[5m])) by (le, operation))
-```
+- [General setup](/production-deployment/cloud/metrics/general-setup)
+- [Available metrics](/production-deployment/cloud/metrics/reference)
+- [Prometheus & Grafana setup](/cloud/metrics/prometheus-grafana)
+- [Datadog setup](/cloud/metrics/datadog)

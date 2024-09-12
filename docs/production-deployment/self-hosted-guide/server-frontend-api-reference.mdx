@@ -2,18 +2,16 @@
 id: server-frontend-api-reference
 title: Server Frontend API Reference
 sidebar_label: Server API
-sidebar_position: 11
-description: You can interact with Temporal Server via one of its APIs.
+description: Easily interact with the Temporal Server via Client SDKs or CLI, or use the gRPC and HTTP APIs for Workflow operations. Access code examples and API docs at api-docs.temporal.io.
 slug: /self-hosted-guide/server-frontend-api-reference
 toc_max_heading_level: 4
 keywords:
-- reference
+  - reference
 tags:
-- reference
+  - reference
 ---
 
-
-While it's usually easiest to interact with [Temporal Server](/clusters#temporal-server) via a [Client SDK](/temporal#temporal-client) or the [Temporal CLI](https://docs.temporal.io/cli), you can also use its gRPC API.
+While it's usually easiest to interact with [Temporal Server](/clusters#temporal-server) via a [Client SDK](/encyclopedia/temporal-sdks#temporal-client) or the [Temporal CLI](https://docs.temporal.io/cli), you can also use its gRPC API.
 
 ## gRPC API
 
@@ -78,14 +76,33 @@ Once inside the evans prompt, you can run commands like `help`, `show service` t
 - Edit the JSON in the left pane.
 - Hit `Cmd/Ctrl-Enter` or click the play button to get a response from the server on the right.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">ListWorkflowExecutions</p></div><div class="tdiiw" height="1716"><img class="img_ev3q" src="/img/ListWorkflowExecutions.png" alt="ListWorkflowExecutions" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">ListWorkflowExecutions</p>
+  </div>
+  <div className="tdiiw" height="1716">
+    <img
+      className="img_ev3q"
+      src="/img/ListWorkflowExecutions.png"
+      alt="ListWorkflowExecutions"
+    />
+  </div>
+</div>
 
 One downside compared to [command line](#with-command-line) is it doesn't show enum names, just numbers like `"task_queue_type": 1`.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">DescribeTaskQueue</p></div><div class="tdiiw" height="1282"><img class="img_ev3q" src="/img/DescribeTaskQueue.png" alt="DescribeTaskQueue" /></div></div>
-
-<!--
-TODO redo this section when we publish a stable HTTP API
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">DescribeTaskQueue</p>
+  </div>
+  <div className="tdiiw" height="1282">
+    <img
+      className="img_ev3q"
+      src="/img/DescribeTaskQueue.png"
+      alt="DescribeTaskQueue"
+    />
+  </div>
+</div>
 
 ## HTTP API
 
@@ -97,13 +114,13 @@ As soon as [this HTTP API proposal](https://github.com/temporalio/proposals/pull
 
 :::
 
-To view the API docs, run [`temporal server start-dev`](/cli/#starting-the-temporal-server) and open:
+To view the API docs, run [`temporal server start-dev`](/cli#start-dev-server) and open:
 
 [`localhost:8233/openapi/`](http://localhost:8233/openapi/)
 
 To make a request, run:
 
-```sh
+````sh
 $ curl localhost:8233/api/v1/namespaces/default/workflows
 
 {
@@ -122,5 +139,7 @@ $ curl localhost:8233/api/v1/namespaces/default/workflows
   ],
   "nextPageToken": null
 }
-``` -->
+```
 
+*/}
+````

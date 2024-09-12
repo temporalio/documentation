@@ -2,8 +2,7 @@
 id: terraform-provider
 title: Temporal Cloud Terraform provider
 sidebar_label: Terraform provider
-description: Use the Temporal Cloud Terraform provider to manage Temporal Cloud resources.
-sidebar_position: 7
+description: The Terraform Temporal provider enables Terraform to automate resource management on Temporal Cloud. Easily manage Namespaces and users using Terraform's infrastructure as code capabilities. Find it on the Terraform Registry.
 tags:
   - temporal cloud
   - terraform
@@ -36,6 +35,12 @@ You must have access to the following to use the Temporal Cloud Terraform provid
 - [Issued certification authority](/cloud/certificates)
   - This is needed when Account Role permission set actions are used. For example, when managing a Namespace.
 
+:::note OpenTofu Registry
+
+Our Terraform Provider is registered with [OpenTofu](https://opentofu.org), but that registration is not maintained or managed by Temporal Technologies.
+
+:::
+
 ## Setup
 
 Generate an API Key to authenticate your requests with your Temporal Cloud account.
@@ -57,10 +62,10 @@ You can skip generating an API Key if you already possess a valid API Key.
 2. Select your account name in the top right corner.
 3. Select **API Keys** from the menu.
 4. Choose **Create API Key**.
-  1. Enter a name for your API Key.
-  2. (optional) Provide a description.
-  3. Set a duration for the API Key.
-  4. Choose **Generate API Key**.
+5. Enter a name for your API Key.
+6. (optional) Provide a description.
+7. Set a duration for the API Key.
+8. Choose **Generate API Key**.
 
 **Using the tcld**
 
@@ -118,17 +123,23 @@ You can create, update, and delete Namespaces with the Terraform provider.
 
 You must have the Account Role permission set associated with your account to manage Namespaces.
 
+:::info Support, stability, and dependency info
+
+Temporal Cloud’s Terraform provider does not support [multi-region Namespaces](/cloud/multi-region).
+
+:::
+
 **How do I create a Namespace with Terraform?**
 
 1. Create a Terraform configuration file (`terraform.tf`) to define a Namespace.
 
 ```yml
 terraform {
-	required_providers {
-		temporalcloud = {
-			source = "temporalio/temporalcloud"
-		}
-	}
+required_providers {
+temporalcloud = {
+source = "temporalio/temporalcloud"
+}
+}
 }
 
 provider "temporalcloud" {
@@ -136,10 +147,10 @@ provider "temporalcloud" {
 }
 
 resource "temporalcloud_namespace" "namespace" {
-	name               = "terraform"
-	regions            = ["aws-us-east-1"]
-	accepted_client_ca = base64encode(file("ca.pem"))
-	retention_days     = 14
+name               = "terraform"
+regions            = ["aws-us-east-1"]
+accepted_client_ca = base64encode(file("ca.pem"))
+retention_days     = 14
 }
 ```
 
@@ -199,12 +210,12 @@ For example, change the retention period setting in the Terraform file previousl
 
 ```yml
 terraform {
-  required_providers {
-    temporalcloud = {
-      source = "temporalio/temporalcloud"
-      version = ">= 0.0.6"
-    }
-  }
+required_providers {
+temporalcloud = {
+source = "temporalio/temporalcloud"
+version = ">= 0.0.6"
+}
+}
 }
 
 provider "temporalcloud" {
@@ -212,10 +223,10 @@ provider "temporalcloud" {
 }
 
 resource "temporalcloud_namespace" "namespace" {
-        name               = "terraform"
-        regions            = ["aws-us-east-1"]
-        accepted_client_ca = base64encode(file("ca.pem"))
-        retention_days     = 30
+name               = "terraform"
+regions            = ["aws-us-east-1"]
+accepted_client_ca = base64encode(file("ca.pem"))
+retention_days     = 30
 }
 ```
 
@@ -252,12 +263,12 @@ The following examples create, update, and delete Temporal Cloud Users by using 
 
 ```yml
 terraform {
-  required_providers {
-    temporalcloud = {
-      source = "temporalio/temporalcloud"
-      version = ">= 0.0.6"
-    }
-  }
+required_providers {
+temporalcloud = {
+source = "temporalio/temporalcloud"
+version = ">= 0.0.6"
+}
+}
 }
 
 provider "temporalcloud" {
@@ -265,26 +276,26 @@ provider "temporalcloud" {
 }
 
 resource "temporalcloud_namespace" "namespace" {
-        name               = "terraform"
-        regions            = ["aws-us-east-1"]
-        accepted_client_ca = base64encode(file("ca.pem"))
-        retention_days     = 14
+name               = "terraform"
+regions            = ["aws-us-east-1"]
+accepted_client_ca = base64encode(file("ca.pem"))
+retention_days     = 14
 }
 
 resource "temporalcloud_user" "global_admin" {
-  email          = <admin email>
-  account_access = "Admin"
+email          = <admin email>
+account_access = "Admin"
 }
 
 resource "temporalcloud_user" "namespace_admin" {
-  email          = <developer email>
-  account_access = "Developer"
-  namespace_accesses = [
-    {
-      namespace_id = temporalcloud_namespace.namespace.id
-      permission = "Write"
-    }
-  ]
+email          = <developer email>
+account_access = "Developer"
+namespace_accesses = [
+{
+namespace_id = temporalcloud_namespace.namespace.id
+permission = "Write"
+}
+]
 }
 ```
 
@@ -316,12 +327,12 @@ To delete a User with Terraform, remove the Terraform User resources configurati
 
 ```yml
 terraform {
-  required_providers {
-    temporalcloud = {
-      source = "temporalio/temporalcloud"
-      version = ">= 0.0.6"
-    }
-  }
+required_providers {
+temporalcloud = {
+source = "temporalio/temporalcloud"
+version = ">= 0.0.6"
+}
+}
 }
 
 provider "temporalcloud" {
@@ -329,22 +340,21 @@ provider "temporalcloud" {
 }
 
 resource "temporalcloud_namespace" "namespace" {
-        name               = "terraform"
-        regions            = ["aws-us-east-1"]
-        accepted_client_ca = base64encode(file("ca.pem"))
-        retention_days     = 14
+name               = "terraform"
+regions            = ["aws-us-east-1"]
+accepted_client_ca = base64encode(file("ca.pem"))
+retention_days     = 14
 }
 
 resource "temporalcloud_user" "global_admin" {
-  email          = <some email>
-  account_access = "Admin"
+email          = <some email>
+account_access = "Admin"
 }
 
 resource "temporalcloud_user" "global_admin" {
-  email          = <admin email>
-  account_access = "Admin"
+email          = <admin email>
+account_access = "Admin"
 }
-
 # resource "temporalcloud_user" "namespace_admin" {
 #   email          = <developer email>
 #   account_access = "Developer"

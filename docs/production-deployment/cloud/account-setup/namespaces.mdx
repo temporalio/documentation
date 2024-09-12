@@ -2,26 +2,24 @@
 id: namespaces
 title: Namespace management - Temporal Cloud feature guide
 sidebar_label: Namespaces
-sidebar_position: 2
-description: Create Namespaces, use Namespace endpoints for access, and obtain Namespace information.
+description: A Namespace is an isolation unit within the Temporal Platform, providing security boundaries, Workflow management, unique identifiers, and gRPC endpoints in Temporal Cloud.
 slug: /cloud/namespaces
 toc_max_heading_level: 4
 keywords:
-- explanation
-- how-to
-- introduction
-- namespaces
-- temporal cloud
-- term
+  - explanation
+  - how-to
+  - introduction
+  - namespaces
+  - temporal cloud
+  - term
 tags:
-- explanation
-- how-to
-- introduction
-- namespaces
-- temporal-cloud
-- term
+  - explanation
+  - how-to
+  - introduction
+  - namespaces
+  - temporal-cloud
+  - term
 ---
-
 
 A Namespace is a unit of isolation within the Temporal Platform.
 
@@ -158,7 +156,14 @@ Follow these steps to find it:
    Just below that is a row of information including the completed Workflow retention policy, the Namespace region, the Actions-Per-Second limit, and the gRPC endpoint.
 5. Click the copy icon next to the gRPC address to copy it to your clipboard.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">gRPC endpoint</p></div><div class="tdiiw" height="207"><img class="img_ev3q" src="/img/grpc-endpoint.png" alt="gRPC endpoint" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">gRPC endpoint</p>
+  </div>
+  <div className="tdiiw" height="207">
+    <img className="img_ev3q" src="/img/grpc-endpoint.png" alt="gRPC endpoint" />
+  </div>
+</div>
 
 ## How to create a Namespace in Temporal Cloud {#create-a-namespace}
 
@@ -173,14 +178,13 @@ To create a Namespace, a user must have the Developer or Global Admin account-le
 :::tip
 
 By default, each account is provisioned with ten Namespaces.
-As you create and use your Namespaces, for example by scheduling Workflows, Temporal Cloud automatically raises your limit.
-Our service identifies your usage patterns.
-It responds by slowly increasing your allowance, up to 100 Namespaces.
+As you start using Namespaces by scheduling Workflows, Temporal Cloud automatically raises your allowance.
+This automatic adjustment happens whenever all your Namespaces are in use, up to a maximum of 100 Namespaces.
 You can request further increases beyond the 100 Namespace limit by opening a [support ticket](/cloud/support#support-ticket).
 
 :::
 
-<!--- What information do I need to create a Namespace in Temporal Cloud? --->
+{/* What information do I need to create a Namespace in Temporal Cloud? */}
 
 ### Information needed to create a Namespace
 
@@ -192,7 +196,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 - [Codec Server endpoint](/production-deployment/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/production-deployment/data-encryption).
 - [Permissions](/cloud/users#namespace-level-permissions) for each user.
 
-<!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
+{/* How to create a Namespace in Temporal Cloud using Temporal Cloud UI */}
 
 ### Create a Namespace using Temporal Cloud UI
 
@@ -212,7 +216,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
    For details, see [Hosting your Codec Server](/production-deployment/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli).
 1. Click **Create Namespace**.
 
-<!--- How to create a Namespace in Temporal Cloud using tcld --->
+{/* How to create a Namespace in Temporal Cloud using tcld */}
 
 ### Create a Namespace using tcld
 
@@ -234,7 +238,7 @@ Before considering an appropriate Namespace configuration, you should be aware o
   It responds by slowly increasing your allowance, up to 100 Namespaces.
   You can request further increases beyond the 100 Namespace limit by opening a [support ticket](/cloud/support#support-ticket).
 - Cross-Namespace communications between [Workflows](/workflows) is not yet supported.
-  For now, you can use the [SDK client](/temporal#temporal-client) from within an [Activity](/activities) as a workaround.
+  For now, you can use the [SDK client](/encyclopedia/temporal-sdks#temporal-client) from within an [Activity](/activities) as a workaround.
 - Each Namespace has a rate limit, which is measured in Actions per second (APS).
   A namespace may be throttled when its throughput becomes too high.
   Throttling means limiting the rate at which actions are performed to prevent overloading the system.
@@ -276,9 +280,7 @@ We recommend using one Namespace for each use case and environment combination f
 
 Sample naming convention:
 
-<pre>
-&lt;use-case>_&lt;environment>
-</pre>
+<pre>&lt;use-case>_&lt;environment></pre>
 
 #### Example 2: Namespace per use case, service, and environment
 
@@ -286,32 +288,26 @@ We recommend using one Namespace for each use case, service, and environment com
 
 Sample naming convention:
 
-<pre>
-&lt;use-case>_&lt;service>_&lt;environment>
-</pre>
+<pre>&lt;use-case>_&lt;service>_&lt;environment></pre>
 
 #### Example 3: Namespace per use case, domain, and environment
 
-We recommend using one namespace per use case, domain, and environment combination when multiple services that are part of the same use case need to communicate with each another via [Signals](/workflows#signal) or by starting [Child Workflows](/workflows#child-workflow).
+We recommend using one namespace per use case, domain, and environment combination when multiple services that are part of the same use case need to communicate with each another via [Signals](/encyclopedia/workflow-message-passing#sending-signals) or by starting [Child Workflows](/encyclopedia/child-workflows).
 In this case, though, you must be mindful about Workflow Id uniqueness by prefixing each Workflow Id with a service-specific string.
 The name of each Task Queue must also be unique.
 If multiple teams are involved, the domain could also represent a team boundary.
 
 Sample naming convention:
 
-<pre>
-&lt;use-case>_&lt;domain>_&lt;environment>
-</pre>
+<pre>&lt;use-case>_&lt;domain>_&lt;environment></pre>
 
 Sample workflowId convention:
 
-<pre>
-&lt;service-string>_&lt;workflow-id>
-</pre>
+<pre>&lt;service-string>_&lt;workflow-id></pre>
 
 ## How to access a Namespace in Temporal Cloud {#access-namespaces}
 
-<!--- How to access a Namespace in Temporal Cloud --->
+{/* How to access a Namespace in Temporal Cloud */}
 
 Each Namespace in Temporal Cloud has two unique endpoints, both of which include the [Namespace Id](#temporal-cloud-namespace-id).
 
@@ -327,7 +323,7 @@ However, for enhanced protection, you have additional options:
 
 ## How to manage Namespaces in Temporal Cloud {#manage-namespaces}
 
-<!--- How to manage Namespaces in Temporal Cloud using Temporal Cloud UI --->
+{/* How to manage Namespaces in Temporal Cloud using Temporal Cloud UI */}
 
 ### Manage Namespaces in Temporal Cloud using Temporal Cloud UI
 
@@ -354,7 +350,7 @@ To add a user to a Namespace, scroll to the bottom of the page and select **Add 
 
 After you make changes, select **Save** in the top-right or bottom-left portion of the page.
 
-<!--- How to manage Namespaces in Temporal Cloud using tcld --->
+{/* How to manage Namespaces in Temporal Cloud using tcld */}
 
 ### Manage Namespaces in Temporal Cloud using tcld
 
@@ -390,4 +386,3 @@ To delete a Namespace, a user must have Namespace Admin [permission](/cloud/user
 ### Delete a Namespace using tcld
 
 See the [tcld namespace delete](/cloud/tcld/namespace/#delete) command reference for details.
-

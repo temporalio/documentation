@@ -13,7 +13,17 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 
 #### [Action](/cloud/pricing#action)
 
-An Action is the fundamental pricing unit in Temporal Cloud.
+An Action is the fundamental pricing unit in Temporal Cloud. 
+Temporal Actions are the building blocks for Workflow Executions.
+When you execute a Temporal Workflow, its Actions create the ongoing state and progress of your Temporal Application.
+
+_Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_
+
+#### [Actions Per Second (APS)](/cloud/limits#throughput)
+
+APS, or Actions per second, is specific to Temporal Cloud. 
+Each Temporal Cloud Namespace enforces a rate limit, which is measured in Actions per second (APS).
+This is the number of Actions, such as starting or signaling a Workflow, that can be performed per second within a specific Namespace. 
 
 _Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_
 
@@ -35,9 +45,11 @@ An Activity Execution is the full chain of Activity Task Executions.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Activity Heartbeat](/activities#activity-heartbeat)
+#### [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat)
 
-An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
+An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Service.
+
+Each ping informs the Temporal Service that the Activity Execution is making progress and the Worker has not crashed.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -67,7 +79,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Archival](/clusters#archival)
 
-Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.
+Archival is a feature specific to a Self-hosted Temporal Service that automatically backs up Event Histories from Temporal Service persistence to a custom blob store after the Closed Workflow Execution retention period is reached.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -89,7 +101,7 @@ The `Authorizer` plugin contains a single `Authorize` method, which is invoked f
 
 _Tags: [term](/tags/term)_
 
-#### [Child Workflow](/workflows#child-workflow)
+#### [Child Workflow](/encyclopedia/child-workflows)
 
 A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.
 
@@ -101,12 +113,6 @@ The Claim Mapper component is a pluggable component that extracts Claims from JS
 
 _Tags: [term](/tags/term)_
 
-#### [Cluster configuration](/clusters#cluster-configuration)
-
-Cluster Configuration is the setup and configuration details of your Temporal Cluster, defined using YAML.
-
-_Tags: [term](/tags/term), [explanation](/tags/explanation)_
-
 #### [Codec Server](/dataconversion#codec-server)
 
 A Codec Server is an HTTP server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.
@@ -115,13 +121,21 @@ _Tags: [term](/tags/term)_
 
 #### [Command](/workflows#command)
 
-A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.
+A Command is a requested action issued by a Worker to the Temporal Service after a Workflow Task Execution completes.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Continue-As-New](/workflows#continue-as-new)
 
 Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation), [continue-as-new](/tags/continue-as-new)_
+
+#### [Core SDK](https://temporal.io/blog/why-rust-powers-core-sdk)
+
+The Core SDK is a shared common core library used by several Temporal SDKs.
+Written in Rust, the Core SDK provides complex concurrency management and state machine logic among its standout features.
+Centralizing development enables the Core SDK to support quick and reliable deployment of new features to existing SDKs, and to more easily add new SDK languages to the Temporal ecosystem.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [continue-as-new](/tags/continue-as-new)_
 
@@ -133,7 +147,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Data Converter](/dataconversion)
 
-A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.
+A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Service.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -151,7 +165,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation), [delay-workflow](/t
 
 #### [Dual Visibility](/visibility#dual-visibility)
 
-Dual Visibility is a feature that lets you set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.
+Dual Visibility is a feature, specific to a Self-hosted Temporal Service, that lets you set a secondary Visibility store in your Temporal Service to facilitate migrating your Visibility data from one database to another.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_
 
@@ -169,13 +183,24 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Event](/workflows#event)
 
-Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.
+Events are created by a Temporal Service in response to external occurrences and Commands generated by a Workflow Execution.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Event History](/workflows#event-history)
 
 An append-only log of Events that represents the full state a Workflow Execution.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### [Failback](/cloud/multi-region)
+
+After Temporal Cloud has resolved an outage or incident involving a failover, a failback process shifts Workflow Execution processing back to the original region that was active before the incident.
+
+#### [Failover](/cloud/multi-region)
+
+A failover shifts Workflow Execution processing from an active Temporal Namespace region to a standby Temporal Namespace region during outages or other incidents.
+Standby Namespace regions use replication to duplicate data and prevent data loss during failover.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -203,7 +228,7 @@ The Frontend Service is a stateless gateway service that exposes a strongly type
 
 _Tags: [term](/tags/term)_
 
-#### [General Availability](/evaluate/release-stages#general-availability)
+#### [General Availability](/evaluate/development-production-features/release-stages#general-availability)
 
 Learn more about the General Availability release stage
 
@@ -211,11 +236,13 @@ _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term
 
 #### [Global Namespace](/namespaces#global-namespace)
 
-A Global Namespace is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.
+A Global Namespace is a Namespace that duplicates data from an active [Temporal Service](#temporal-cluster) to a standby Service using the replication to keep both Namespaces in sync.
+Global Namespaces are designed to respond to service issues like network congestion.
+When service to the primary Cluster is compromised, a [failover](#failover) transfers control from the active to the standby cluster.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Heartbeat Timeout](/activities#heartbeat-timeout)
+#### [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout)
 
 A Heartbeat Timeout is the maximum time between Activity Heartbeats.
 
@@ -229,7 +256,7 @@ _Tags: [term](/tags/term)_
 
 #### [History Shard](/clusters#history-shard)
 
-A History Shard is an important unit within a Temporal Cluster by which the scale of concurrent Workflow Execution throughput can be measured.
+A History Shard is an important unit within a Temporal Service by which the scale of concurrent Workflow Execution throughput can be measured.
 
 _Tags: [term](/tags/term)_
 
@@ -263,9 +290,13 @@ Multi-Cluster Replication is a feature which asynchronously replicates Workflow 
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Multi-Cluster Replication](/clusters#multi-cluster-replication)
+#### [Multi-region Namespace](/cloud/multi-region)
 
-Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
+A multi-region Namespace (MRN) is a [Temporal Cloud](#temporal-cloud) Namespace that is configured to work across an active [region](/cloud/service-availability#regions) and a standby region.
+Each region corresponds to a dedicated Temporal Cloud Service. 
+Temporal Cloud automatically replicates Workflow Executions and metadata from the active to the standby region.
+MRNs are designed to respond to service issues as they arise.
+In the event that the Namespace's performance is compromised, a [failover](#failover) transfers control from the active to the standby region.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -275,7 +306,7 @@ A Namespace is a unit of isolation within the Temporal Platform
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Parent Close Policy](/workflows#parent-close-policy)
+#### [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy)
 
 If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).
 
@@ -299,25 +330,19 @@ A Payload Converter serializes data, converting objects or values to bytes and b
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Persistence](/clusters#persistence)
-
-The Temporal Persistence store is a database used by Temporal Services to persist events generated and processed in the Temporal Cluster and SDK.
-
-_Tags: [term](/tags/term), [explanation](/tags/explanation)_
-
-#### [Pre-release](/evaluate/release-stages#pre-release)
+#### [Pre-release](/evaluate/development-production-features/release-stages#pre-release)
 
 Learn more about the Pre-release stage
 
 _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_
 
-#### [Public Preview](/evaluate/release-stages#public-preview)
+#### [Public Preview](/evaluate/development-production-features/release-stages#public-preview)
 
 Learn more about the Public Preview release stage
 
 _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_
 
-#### [Query](/workflows#query)
+#### [Query](/encyclopedia/workflow-message-passing#sending-queries)
 
 A Query is a synchronous operation that is used to report the state of a Workflow Execution.
 
@@ -329,6 +354,13 @@ Remote data encding is using your custom Data Converter to decode (and encode) y
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
+#### [Requests Per Second (RPS)](/references/dynamic-configuration#service-level-rps-limits)
+
+RPS, or Requests per second, is used in the Temporal Service (both in self-hosted Temporal and Temporal Cloud). 
+This is a measure that controls the rate of requests at the service level, such as the Frontend, History, or Matching Service.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal](/tags/temporal)_
+
 #### [Reset](/workflows#reset)
 
 A Reset terminates a Workflow Execution, removes the progress in the Event History up to the reset point, and then creates a new Workflow Execution with the same Workflow Type and Id to continue.
@@ -337,11 +369,11 @@ _Tags: [term](/tags/term), [resets](/tags/resets), [explanation](/tags/explanati
 
 #### [Retention Period](/clusters#retention-period)
 
-A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.
+A Retention Period is the amount of time a Workflow Execution Event History remains in the Temporal Service's persistence store.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Retry Policy](/retry-policies)
+#### [Retry Policy](/encyclopedia/retry-policies)
 
 A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.
 
@@ -359,13 +391,13 @@ A Schedule enables the scheduling of Workflow Executions.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Schedule-To-Close Timeout](/activities#schedule-to-close-timeout)
+#### [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout)
 
 A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_
 
-#### [Schedule-To-Start Timeout](/activities#schedule-to-start-timeout)
+#### [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout)
 
 A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task Queue to when a Worker picks it up from the Task Queue.
 
@@ -383,19 +415,19 @@ A Side Effect is a way to execute a short, non-deterministic code snippet, such 
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Signal](/workflows#signal)
+#### [Signal](/encyclopedia/workflow-message-passing#sending-signals)
 
 A Signal is an asynchronous request to a Workflow Execution.
 
 _Tags: [term](/tags/term), [signals](/tags/signals), [explanation](/tags/explanation)_
 
-#### [Signal-With-Start](/workflows#signal-with-start)
+#### [Signal-With-Start](/encyclopedia/workflow-message-passing#signal-with-start)
 
 Signal-With-Start starts and Signals a Workflow Execution, or just Signals it if it already exists.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Start-To-Close Timeout](/activities#start-to-close-timeout)
+#### [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout)
 
 A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.
 
@@ -449,15 +481,15 @@ A Temporal Application is a set of Workflow Executions.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Temporal CLI](/cli)
+#### [Temporal CLI](/cli) {#cli}
 
 The Temporal CLI is the most recent version of Temporal's command-line tool.
 
 _Tags: [term](/tags/term), [cli](/tags/cli)_
 
-#### [Temporal Client](/temporal#temporal-client)
+#### [Temporal Client](/encyclopedia/temporal-sdks#temporal-client)
 
-A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.
+A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Service.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -492,8 +524,18 @@ A Cloud gRPC Endpoint is a Namespace-specific address used to access Temporal Cl
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Temporal Cluster](/clusters)
+The term "Temporal Cluster" is being phased out.
+Instead the term [Temporal Service](#temporal-service) is now being used.
 
-A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.
+#### [Temporal Service](/clusters)
+
+A Temporal Service is a Temporal Server paired with Persistence and Visibility stores.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### [Temporal Service configuration](/clusters#cluster-configuration)
+
+Temporal Service configuration is the setup and configuration details of your Temporal Service, defined using YAML.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -505,13 +547,13 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Temporal Platform](/temporal#temporal-platform)
 
-The Temporal Platform consists of a Temporal Cluster and Worker Processes.
+The Temporal Platform consists of a Temporal Service and Worker Processes.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Temporal SDK](/temporal#temporal-sdk)
+#### [Temporal SDK](/encyclopedia/temporal-sdks)
 
-A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.
+A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Service, develop Workflow Definitions, and develop Worker Programs.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -520,6 +562,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 The Temporal Server is a grouping of four horizontally scalable services.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
 
 #### [Temporal Web UI](/web-ui)
 
@@ -533,7 +576,7 @@ Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in 
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Update](/workflows#update)
+#### [Update](/encyclopedia/workflow-message-passing#sending-updates)
 
 An Update is a request to and a response from Workflow Execution.
 
@@ -541,7 +584,7 @@ _Tags: [term](/tags/term), [updates](/tags/updates), [explanation](/tags/explana
 
 #### [Visibility](/clusters#visibility)
 
-The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
+The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
 _Tags: [term](/tags/term)_
 
@@ -599,7 +642,7 @@ A Temporal Workflow Execution is a durable, scalable, reliable, and reactive fun
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Workflow Execution Timeout](/workflows#workflow-execution-timeout)
+#### [Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout)
 
 A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
@@ -629,7 +672,7 @@ A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Workflow Run Timeout](/workflows#workflow-run-timeout)
+#### [Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout)
 
 This is the maximum amount of time that a single Workflow Run is restricted to.
 
@@ -647,7 +690,7 @@ A Workflow Task Execution occurs when a Worker picks up a Workflow Task and uses
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Workflow Task Timeout](/workflows#workflow-task-timeout)
+#### [Workflow Task Timeout](/encyclopedia/detecting-workflow-failures#workflow-task-timeout)
 
 A Workflow Task Timeout is the maximum amount of time that the Temporal Server will wait for a Worker to start processing a Workflow Task after the Task has been pulled from the Task Queue.
 
@@ -659,8 +702,7 @@ A Workflow Type is a name that maps to a Workflow Definition.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [tctl](/tctl-v1)
+#### tctl (_deprecated_)
 
-tctl is a command-line tool that you can use to interact with a Temporal Cluster.
-
-_Tags: [term](/tags/term), [tctl](/tags/tctl)_
+tctl is a command-line tool that you can use to interact with a Temporal Service.
+It is superceded by the [Temporal CLI utility](#cli)

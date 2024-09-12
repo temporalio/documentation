@@ -2,18 +2,17 @@
 id: errors
 title: Errors
 sidebar_label: Errors
-description: This reference lists possible Workflow Task errors and how to resolve them.
+description: This reference outlines possible Workflow Task errors, causes, and resolution steps in Temporal. It covers various error scenarios such as attribute failures, size limits, and system resource issues.
 toc_max_heading_level: 4
 keywords:
-- error
-- errors
-- strongly-typed
+  - error
+  - errors
+  - strongly-typed
 tags:
-- error
-- errors
-- strongly-typed
+  - error
+  - errors
+  - strongly-typed
 ---
-
 
 This reference lists possible [Workflow Task](/workers#workflow-task) errors and how to resolve them.
 
@@ -25,7 +24,7 @@ Each of the below errors corresponds with a [WorkflowTaskFailedCause](https://ap
 
 This error indicates that the [Workflow Task](/workers#workflow-task) failed while attempting to cancel a Timer.
 
-<!-- TODO add Timer term definition and link to it -->
+{/* TODO add Timer term definition and link to it */}
 
 Check your Timer attributes for a missing Timer Id value.
 Add a valid Timer Id and redeploy the code.
@@ -78,7 +77,7 @@ Enter a valid Marker name and redeploy the Task.
 
 This error either indicates the possibility of unset attributes for [RequestCancelActivity](/references/commands#requestcancelactivitytask), or an invalid History Builder state.
 
-Update the [Temporal SDK](/temporal#temporal-sdk) to the most recent release.
+Update the [Temporal SDK](/encyclopedia/temporal-sdks) to the most recent release.
 Reset any unset attributes before retrying the [Workflow Task](/workers#workflow-task).
 
 If you continue to see this error, review your code for [nondeterministic causes](/workflows#non-deterministic-change).
@@ -91,7 +90,7 @@ Unset or invalid attributes can cause this to occur.
 Reset any missing attributes, such as Workflow Id or Run Id.
 Adjust any fields that exceed length limits.
 
-If [Child Workflow](/workflows#child-workflow) is set to `Start` and `RequestCancel`, remove one of these attributes.
+If [Child Workflow](/encyclopedia/child-workflows) is set to `Start` and `RequestCancel`, remove one of these attributes.
 A Child Workflow cannot perform both actions in the same Workflow Task.
 
 ## Bad Schedule Activity Attributes {#bad-schedule-activity-attributes}
@@ -111,7 +110,7 @@ Adjust the size of the Payload to fit within the system's size limits.
 
 ## Bad Signal Input Size {#bad-signal-input-size}
 
-This error indicates that the Payload has exceeded the [Signal's](/workflows#signal) available input size.
+This error indicates that the Payload has exceeded the [Signal's](/encyclopedia/workflow-message-passing#sending-signals) available input size.
 
 Adjust the size of the Payload, and redeploy the [Workflow Task](/workers#workflow-task).
 
@@ -134,7 +133,7 @@ Make sure that [Search Attribute](/visibility#search-attribute) validation is pe
 
 This error indicates that the scheduled [Event](/workflows#event) is missing a Timer Id.
 
-<!-- TODO add Timer Id as anchor for term and link to it -->
+{/* TODO add Timer Id as anchor for term and link to it */}
 
 Set a valid Timer Id and retry the [Workflow Task](/workers#workflow-task).
 
@@ -142,18 +141,18 @@ Set a valid Timer Id and retry the [Workflow Task](/workers#workflow-task).
 
 This error indicates that the [Worker](/workers) deployment returned a bad binary checksum.
 
-<!-- TODO: get more information about binary -->
+{/* TODO: get more information about binary */}
 
 ## Cause Bad Update {#cause-bad-update}
 
-<!--TODO: add link to Workflow Update page when written -->
+{/* TODO: add link to Workflow Update page when written */}
 
 This error indicates that a [Workflow Execution](/workflows#workflow-execution) tried to complete before receiving an Update.
 
 `BadUpdate` can happen when a [Worker](/workers#worker) generates a [Workflow Task Completed](/references/events#workflowtaskcompleted) message with missing fields or an invalid Update response format.
 
 This error might indicate usage of an unsupported SDK.
-Make sure you're using a [supported SDK](/temporal#temporal-sdk).
+Make sure you're using a [supported SDK](/encyclopedia/temporal-sdks).
 
 ## Cause Reset Workflow {#cause-reset-workflow}
 
@@ -180,20 +179,20 @@ If you see this error, examine your Workflow Definition.
 This error indicates that a [Namespace](/namespaces) failover forced the [Workflow Task](/workers#workflow-task) to close.
 The system automatically schedules a retry when this error occurs.
 
-<!--TODO: troubleshooting -->
+{/* TODO: troubleshooting */}
 
 ## Force Close Command {#force-close-command}
 
 This error indicates that the [Workflow Task](/workers#workflow-task) was forced to close.
 A retry will be scheduled if the error is recoverable.
 
-<!-- TODO: more info-->
+{/* TODO: more info */}
 
 ## Non-Deterministic Error {#non-deterministic-error}
 
 The [Workflow Task](/workers#workflow-task) failed due to a [nondeterministic error](/workflows#non-deterministic-change).
 
-<!-- TODO: info -->
+{/* TODO: info */}
 
 ## Pending Activities Limit Exceeded {#pending-activities-limit-exceeded}
 
@@ -204,8 +203,8 @@ Let the Workflow complete any current Activities before redeploying the code.
 
 ## Pending Child Workflows Limit Exceeded {#pending-child-workflows-limit-exceeded}
 
-This error indicates that the [Workflow](/workflows) has reached capacity for pending [Child Workflows](/workflows#child-workflow).
-Therefore, the [Workflow Task](/workers#workflow-task)was failed to prevent additional Child Workflows from being added.
+This error indicates that the [Workflow](/workflows) has reached capacity for pending [Child Workflows](/encyclopedia/child-workflows).
+Therefore, the [Workflow Task](/workers#workflow-task) was failed to prevent additional Child Workflows from being added.
 
 Wait for the system to finish any currently running Child Workflows before redeploying this Task.
 
@@ -219,22 +218,22 @@ If you see this error, give the system time to process pending requests before r
 ## Pending Signals Limit Exceeded {#pending-signals-limit-exceeded}
 
 The Workflow has reached capacity for pending Signals.
-Therefore, the [Workflow Task](/workers#workflow-task) was failed after attempting to add more [Signals](/workflows#signal) to an external Workflow.
+Therefore, the [Workflow Task](/workers#workflow-task) was failed after attempting to add more [Signals](/encyclopedia/workflow-message-passing#sending-signals) to an external Workflow.
 
 Wait for Signals to be processed by the Workflow before retrying the Task.
 
 ## Reset Sticky Task Queue {#reset-sticky-task-queue}
 
-This error indicates that the Sticky [Task Queue](/workers#task-queue)needs to be reset.
+This error indicates that the Sticky [Task Queue](/workers#task-queue) needs to be reset.
 
 If you see this error, reset the Sticky Task Queue.
 The system will retry automatically.
 
 ## Resource Exhausted Cause Concurrent Limit {#resource-exhausted-cause-concurrent-limit}
 
-This error indicates that the concurrent [poller count](/dev-guide/worker-performance#poller-count) has been exhausted.
+This error indicates that the concurrent [poller count](/develop/worker-performance#poller-count) has been exhausted.
 
-<!--TODO: more info needed -->
+{/* TODO: more info needed */}
 
 Adjust the poller count per [Worker](/workers).
 
@@ -242,25 +241,25 @@ Adjust the poller count per [Worker](/workers).
 
 This error indicates that the persistence rate limit has been reached.
 
-<!--TODO: more info needed -->
+{/* TODO: more info needed */}
 
 ## Resource Exhausted Cause RPS Limit {#resource-exhausted-cause-rps-limit}
 
 This error indicates that the [Workflow](/workflows) has exhausted its RPS limit.
 
-<!--TODO: more info needed -->
+{/* TODO: more info needed */}
 
 ## Resource Exhausted Cause System Overload {#resource-exhausted-cause-system-overload}
 
 This error indicates that the system is overloaded and cannot allocate further resources to [Workflow Tasks](/workers#workflow-task).
 
-<!--TODO: more info needed -->
+{/* TODO: more info needed */}
 
 ## Resource Exhausted Cause Unspecified {#resource-exhausted-cause-unspecified}
 
 This error indicates that an unknown cause is preventing resources from being allocated to further [Workflow Tasks](/workers#workflow-task).
 
-<!--TODO: more info needed -->
+{/* TODO: more info needed */}
 
 ## Schedule Activity Duplicate Id {#schedule-activity-duplicate-id}
 
@@ -273,7 +272,7 @@ Enter another Activity Id, and try running the Workflow Task again.
 
 This error indicates that a Timer with the given Timer Id has already started.
 
-<!-- TODO link to Timer term when exists -->
+{/* TODO link to Timer term when exists */}
 
 Try entering a different Timer Id, and retry the [Workflow Task](/workers#workflow-task).
 
@@ -282,7 +281,7 @@ Try entering a different Timer Id, and retry the [Workflow Task](/workers#workfl
 This error indicates new available [Events](/references/events) since the last [Workflow Task](/workers#workflow-task) started.
 The Workflow Task was failed because the [Workflow](/workflows) attempted to close itself without handling the new Events.
 
-`UnhandledCommand` can happen when the Workflow is receiving a high number of [Signals](/workflows#signal).
+`UnhandledCommand` can happen when the Workflow is receiving a high number of [Signals](/encyclopedia/workflow-message-passing#sending-signals).
 If the Workflow doesn't have enough time to handle these Signals, a RetryWorkflow Task is scheduled to handle these new Events.
 
 To prevent this error, drain the Signal Channel with the ReceiveAsync function.
@@ -294,5 +293,4 @@ The Workflow may have been picked up by a different [Worker](/workers#worker).
 
 This error indicates that the [Workflow Task](/workers#workflow-task) encountered an unhandled failure from the [Workflow Definition](/workflows#workflow-definition).
 
-<!--TODO: more info needed -->
-
+{/* TODO: more info needed */}

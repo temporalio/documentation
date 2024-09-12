@@ -2,16 +2,14 @@
 id: upgrade-server
 title: Upgrade the Temporal Server
 sidebar_label: Upgrade server
-sidebar_position: 8
-description: Learn how to keep your Temporal Server up to date.
+description: Learn how to upgrade your Temporal Server effectively. Follow our step-by-step guide for seamless upgrades, ensuring data compatibility and schema alignment.
 slug: /self-hosted-guide/upgrade-server
 toc_max_heading_level: 4
 keywords:
-- how-to
+  - how-to
 tags:
-- how-to
+  - how-to
 ---
-
 
 ## How to upgrade the Temporal Server version {#upgrade-server}
 
@@ -73,7 +71,7 @@ This flag was removed in the 1.8.0 release.
 
 ### Upgrade Cassandra schema
 
-If you are using Cassandra for your Cluster's persistence, use the `temporal-cassandra-tool` to upgrade both the default Persistence and Visibility schemas.
+If you are using Cassandra for your Temporal Service's persistence, use the `temporal-cassandra-tool` to upgrade both the default Persistence and Visibility schemas.
 
 **Example default schema upgrade:**
 
@@ -189,11 +187,10 @@ If you're upgrading MySQL to v8.0.17 or later to enable advanced Visibility feat
 
 ### Roll-out technique
 
-We recommend preparing a staging Cluster and then do the following to verify the upgrade is successful:
+We recommend preparing a staging Temporal Service and then do the following to verify the upgrade is successful:
 
-1. Create some simulation load on the staging cluster.
-2. Upgrade the database schema in the staging cluster.
+1. Create some simulation load on the staging Temporal Service.
+2. Upgrade the database schema in the staging Temporal Service.
 3. Wait and observe for a few minutes to verify that there is no unstable behavior from both the server and the simulation load logic.
 4. Upgrade the server.
-5. Now do the same to the live environment cluster.
-
+5. Now do the same to the live environment Temporal Service.

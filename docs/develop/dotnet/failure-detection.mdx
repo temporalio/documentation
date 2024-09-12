@@ -1,0 +1,180 @@
+---
+id: failure-detection
+title: Failure detection - .NET SDK feature guide
+sidebar_label: Failure detection
+description: Learn how to set Workflow and Activity Timeouts, implement Retry Policies, and manage Activity Heartbeats using the Temporal .NET SDK for efficient Workflow Execution.
+toc_max_heading_level: 4
+keywords:
+  - guide context
+  - how to
+  - dotnet
+  - sdk
+  - failure detection
+tags:
+  - guide-context
+  - how-to
+  - dotnet
+  - sdk
+  - failure-detection
+---
+
+This page shows how to do the following:
+
+- [Workflow timeouts](#workflow-timeouts)
+- [Workflow retries](#workflow-retries)
+- [Activity timeouts](#activity-timeouts)
+- [Activity Retry Policy](#activity-retries)
+- [Heartbeat an Activity](#activity-heartbeats)
+- [Heartbeat Timeout](#heartbeat-timeout)
+
+## Workflow timeouts {#workflow-timeouts}
+
+**How to set Workflow timeouts using the Temporal .NET SDK**
+
+Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
+
+Workflow timeouts are set when [starting the Workflow Execution](#workflow-timeouts).
+
+- **[Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
+- **[Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout):** restricts the maximum amount of time that a single Workflow Run can last.
+- **[Workflow Task Timeout](/encyclopedia/detecting-workflow-failures#workflow-task-timeout):** restricts the maximum amount of time that a Worker can execute a Workflow Task.
+
+These values can be set in the `WorkflowOptions` when calling `StartWorkflowAsync` or `ExecuteWorkflowAsync`.
+
+Available timeouts are:
+
+- ExecutionTimeout
+- RunTimeout
+- TaskTimeout
+
+```csharp
+var result = await client.ExecuteWorkflowAsync(
+    (MyWorkflow wf) => wf.RunAsync(),
+    new(id: "my-workflow-id", taskQueue: "my-task-queue")
+    {
+        WorkflowExecutionTimeout = TimeSpan.FromMinutes(5),
+    });
+```
+
+### Set Workflow retries {#workflow-retries}
+
+**How to set Workflow retries using the Temporal .NET SDK**
+
+A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
+
+Use a [Retry Policy](/encyclopedia/retry-policies) to retry a Workflow Execution in the event of a failure.
+
+Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
+
+The `RetryPolicy` can be set in the `WorkflowOptions` when calling `StartWorkflowAsync` or `ExecuteWorkflowAsync`.
+
+```csharp
+var result = await client.ExecuteWorkflowAsync(
+    (MyWorkflow wf) => wf.RunAsync(),
+    new(id: "my-workflow-id", taskQueue: "my-task-queue")
+    {
+        RetryPolicy = new() { MaximumInterval = TimeSpan.FromSeconds(10) },
+    });
+```
+
+## Activity Timeouts {#activity-timeouts}
+
+**How to set Activity Timeouts using the Temporal .NET SDK**
+
+Each Activity Timeout controls the maximum duration of a different aspect of an Activity Execution.
+
+The following Timeouts are available in the Activity Options.
+
+- **[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout):** is the maximum amount of time allowed for the overall [Activity Execution](/activities#activity-execution).
+- **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout):** is the maximum time allowed for a single [Activity Task Execution](/workers#activity-task-execution).
+- **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/workers#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.
+
+An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
+
+These values can be set in the `ActivityOptions` when calling `ExecuteActivityAsync`.
+
+Available timeouts are:
+
+- ScheduleToCloseTimeout
+- ScheduleToStartTimeout
+- StartToCloseTimeout
+
+```csharp
+return await Workflow.ExecuteActivityAsync(
+    (MyActivities a) => a.MyActivity(param),
+    new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
+```
+
+### Set an Activity Retry Policy {#activity-retries}
+
+**How to an Activity Retry Policy using the Temporal .NET SDK**
+
+A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
+
+Activity Executions are automatically associated with a default [Retry Policy](/encyclopedia/retry-policies) if a custom one is not provided.
+
+To create an Activity Retry Policy in .NET, set the `RetryPolicy` on the `ActivityOptions` when calling `ExecuteActivityAsync`.
+
+```csharp
+return await Workflow.ExecuteActivityAsync(
+    (MyActivities a) => a.MyActivity(param),
+    new()
+    {
+        StartToCloseTimeout = TimeSpan.FromMinutes(5),
+        RetryPolicy = new() { MaximumInterval = TimeSpan.FromSeconds(10) },
+    });
+```
+
+## Heartbeat an Activity {#activity-heartbeats}
+
+**How to Heartbeat an Activity using the Temporal .NET SDK**
+
+An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/clusters).
+Each Heartbeat informs the Temporal Service that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
+If the Temporal Service does not receive a Heartbeat within a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/workers#activity-task-execution) may be scheduled according to the Retry Policy.
+
+Heartbeats may not always be sent to the Temporal Service—they may be [throttled](/encyclopedia/detecting-activity-failures#throttling) by the Worker.
+
+Activity Cancellations are delivered to Activities from the Temporal Service when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
+Heartbeat throttling may lead to Cancellation getting delivered later than expected.
+
+Heartbeats can contain a `Details` field describing the Activity's current progress.
+If an Activity gets retried, the Activity can access the `Details` from the last Heartbeat that was sent to the Temporal Service.
+
+To Heartbeat an Activity Execution in .NET, use the [`Heartbeat()`](https://dotnet.temporal.io/api/Temporalio.Activities.ActivityExecutionContext.html#Temporalio_Activities_ActivityExecutionContext_Heartbeat_System_Object___) method on the `ActivityExecutionContext`.
+
+```csharp
+[Activity]
+public async Task MyActivityAsync()
+{
+    while (true)
+    {
+        // Send heartbeat
+        ActivityExecutionContext.Current.Heartbeat();
+
+        // Do some work, passing the cancellation token
+        await Task.Delay(1000, ActivityExecutionContext.Current.CancellationToken);
+    }
+}
+```
+
+In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity retry.
+If an Activity calls `Heartbeat(123, 456)` and then fails and is retried, `HeartbeatDetails` on the `ActivityInfo` returns an collection containing `123` and `456` on the next Run.
+
+### Set a Heartbeat Timeout {#heartbeat-timeout}
+
+**How to set a Heartbeat Timeout using the Temporal .NET SDK**
+
+A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
+
+`HeartbeatTimeout` is a property on `ActivityOptions` for `ExecuteActivityAsync` used to set the maximum time between Activity Heartbeats.
+
+```csharp
+await Workflow.ExecuteActivityAsync(
+    (MyActivities a) => a.MyActivity(param),
+    new()
+    {
+        StartToCloseTimeout = TimeSpan.FromMinutes(5),
+        HeartbeatTimeout = TimeSpan.FromSeconds(30),
+    });
+```

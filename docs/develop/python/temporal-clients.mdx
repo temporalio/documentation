@@ -1,0 +1,345 @@
+---
+id: temporal-clients
+title: Temporal Client - Python SDK feature guide
+sidebar_label: Temporal Client
+toc_max_heading_level: 4
+description: Discover how to connect and use Temporal Clients with Python. Learn to link your Client to Temporal Service, Temporal Cloud, start Workflow Executions, set Task Queues, Workflow Ids, and get Workflow results.
+keywords:
+  - temporal python client
+  - connect python client to temporal service
+  - initialize temporal client
+  - temporal SDK python guide
+  - start workflow execution python
+  - temporal cloud connection
+  - python client for temporal cli
+  - custom namespace configuration
+  - temporal workflow management
+  - temporal client setup
+  - python workflow execution
+  - temporal cloud integration
+  - temporal client options
+  - managing temporal namespaces
+tags:
+  - python
+  - python-sdk
+  - temporal-client
+---
+
+This guide introduces Temporal Clients.
+It explains the role and use of Clients and shows you how to configure your Python Client code to connect to the Temporal Service.
+
+The pages shows how to do the following:
+
+- [Connect to a local development Temporal Service](#connect-to-development-service)
+- [Connect to Temporal Cloud](#connect-to-temporal-cloud)
+- [Start a Workflow Execution](#start-workflow-execution)
+
+## Connect to development Temporal Service {#connect-to-development-service}
+
+**How to connect to the local Temporal CLI development Temporal Service using the Python SDK**
+
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/clusters).
+Communication with a Temporal Service includes, but isn't limited to, the following:
+
+- Starting Workflow Executions.
+- Sending Signals to Workflow Executions.
+- Sending Queries to Workflow Executions.
+- Getting the results of a Workflow Execution.
+- Providing an Activity Task Token.
+
+:::caution
+
+A Temporal Client cannot be initialized and used inside a Workflow.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Service.
+
+:::
+
+When you are running a Temporal Service locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
+Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
+
+Use the `connect()` method on the Client class to create and connect to a Temporal Client to the Temporal Service.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+# ...
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    result = await client.execute_workflow(
+        YourWorkflow.run,
+        "your name",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
+
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+## Connect a Temporal Client to a Temporal Service {#connect-to-a-dev-cluster}
+
+**How to connect to a Temporal Service**
+
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/clusters).
+Communication with a Temporal Service includes, but isn't limited to, the following:
+
+- Starting Workflow Executions.
+- Sending Signals to Workflow Executions.
+- Sending Queries to Workflow Executions.
+- Getting the results of a Workflow Execution.
+- Providing an Activity Task Token.
+
+:::caution
+
+A Temporal Client cannot be initialized and used inside a Workflow.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Service.
+
+:::
+
+When you are running a Temporal Service locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
+Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
+
+Use the `connect()` method on the Client class to create and connect to a Temporal Client to the Temporal Service.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+# ...
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    result = await client.execute_workflow(
+        YourWorkflow.run,
+        "your name",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
+
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+## Connect to Temporal Cloud {#connect-to-temporal-cloud}
+
+**How to connect to Temporal Cloud using the Python SDK**
+
+When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
+
+- The [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
+- The [Namespace's gRPC endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint).
+  An endpoint listing is available at the [Temporal Cloud Website](https://cloud.temporal.io/namespaces) on each Namespace detail page.
+  The endpoint contains the Namespace Id and port.
+- mTLS CA certificate.
+- mTLS private key.
+
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
+
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+
+Use the `connect()` method on the Client class to create and connect to a Temporal Client to the Temporal Service.
+Then specify the [TLSConfig](https://python.temporal.io/temporalio.service.TLSConfig.html) arguments to connect to a Temporal Service with TLS enabled.
+The `client_cert` must be combined with `client_private_key` to authenticate the Client.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/connect_cloud_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+from temporalio.client import Client, TLSConfig
+# ...
+# ...
+async def main():
+    with open("client-cert.pem", "rb") as f:
+        client_cert = f.read()
+    with open("client-private-key.pem", "rb") as f:
+        client_private_key = f.read()
+    client = await Client.connect(
+        "your-custom-namespace.tmprl.cloud:7233",
+        namespace="<your-custom-namespace>.<id>",
+        tls=TLSConfig(
+            client_cert=client_cert,
+            client_private_key=client_private_key,
+            # domain=domain, # TLS domain
+            # server_root_ca_cert=server_root_ca_cert, # ROOT CA to validate the server cert
+        ),
+    )
+```
+
+## Start a Workflow Execution {#start-workflow-execution}
+
+**How to start a Workflow Execution using the Python SDK**
+
+[Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+
+In the examples below, all Workflow Executions are started using a Temporal Client.
+To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](/develop/python/child-workflows) or External Workflow APIs.
+
+See the [Customize Workflow Type](/develop/python/core-application#workflow-type) section to see how to customize the name of the Workflow Type.
+
+A request to spawn a Workflow Execution causes the Temporal Service to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
+The Temporal Service then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
+
+To start a Workflow Execution in Python, use either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods in the Client.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+# ...
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    result = await client.execute_workflow(
+        YourWorkflow.run,
+        "your name",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
+
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+### Set a Workflow's Task Queue {#set-task-queue}
+
+**How to set a Workflow's Task Queue using the Python SDK**
+
+In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/workers#task-queue).
+
+For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
+
+To set a Task Queue in Python, specify the `task_queue` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+# ...
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    result = await client.execute_workflow(
+        YourWorkflow.run,
+        "your name",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
+
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+### Set a Workflow Id {#workflow-id}
+
+**How to set a Workflow Id using the Python SDK**
+
+You must set a [Workflow Id](/workflows#workflow-id).
+
+When setting a Workflow Id, we recommended mapping it to a business process or business entity identifier, such as an order identifier or customer identifier.
+
+To set a Workflow Id in Python, specify the `id` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
+
+The `id` argument should be a unique identifier for the Workflow Execution.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+# ...
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    result = await client.execute_workflow(
+        YourWorkflow.run,
+        "your name",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
+
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+### Get the results of a Workflow Execution {#get-workflow-results}
+
+**How to get the results of a Workflow Execution using the Python SDK**
+
+If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
+
+The Workflow Id, Run Id, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its result.
+
+It's possible to both block progress on the result (synchronous execution) or get the result at some other point in time (asynchronous execution).
+
+In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
+
+Use [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle) to return a Workflow handle.
+Then use the [`result`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#result) method to await on the result of the Workflow.
+
+To get a handle for an existing Workflow by its Id, you can use [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle), or use [`get_workflow_handle_for()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle_for) for type safety.
+
+Then use [`describe()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#describe) to get the current status of the Workflow.
+If the Workflow does not exist, this call fails.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/get_workflow_results_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+# ...
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    handle = client.get_workflow_handle(
+        workflow_id="your-workflow-id",
+    )
+    results = await handle.result()
+    print(f"Result: {results}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```

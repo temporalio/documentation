@@ -1,0 +1,53 @@
+---
+id: namespaces
+title: Manage Namespaces
+sidebar_label: Namespaces
+slug: /develop/typescript/namespaces
+toc_max_heading_level: 2
+keywords:
+  - namespaces
+tags:
+  - namespaces
+description: Efficiently create and manage Namespaces on Temporal using CLI or SDK APIs. Isolate Workflow Executions, control access with custom Authorizers, and manage via Temporal Cloud UI or CLI.
+---
+
+## How to create and manage Namespaces {#namespaces}
+
+You can create, update, deprecate or delete your [Namespaces](/namespaces) using either the Temporal CLI or SDK APIs.
+
+Use Namespaces to isolate your Workflow Executions according to your needs.
+For example, you can use Namespaces to match the development lifecycle by having separate `dev` and `prod` Namespaces.
+You could also use them to ensure Workflow Executions between different teams never communicate - such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
+
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) to create and manage a Namespace from the UI, or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces from the command-line interface.
+
+On self-hosted Temporal Service, you can register and manage your Namespaces using the Temporal CLI (recommended) or programmatically using APIs.
+Note that these APIs and Temporal CLI commands will not work with Temporal Cloud.
+
+Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Service to set restrictions on who can create, update, or deprecate Namespaces.
+
+You must register a Namespace with the Temporal Service before setting it in the Temporal Client.
+
+### How to register Namespaces {#register-namespace}
+
+Registering a Namespace creates a Namespace on the Temporal Service or Temporal Cloud.
+
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create Namespaces.
+
+On self-hosted Temporal Service, you can register your Namespaces using the Temporal CLI (recommended) or programmatically using APIs.
+Note that these APIs and Temporal CLI commands will not work with Temporal Cloud.
+
+Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Service to set restrictions on who can create, update, or deprecate Namespaces.
+
+### How to manage Namespaces {#manage-namespaces}
+
+You can get details for your Namespaces, update Namespace configuration, and deprecate or delete your Namespaces.
+
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces.
+
+On self-hosted Temporal Service, you can manage your registered Namespaces using the Temporal CLI (recommended) or programmatically using APIs.
+Note that these APIs and Temporal CLI commands will not work with Temporal Cloud.
+
+Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Service to set restrictions on who can create, update, or deprecate Namespaces.
+
+You must register a Namespace with the Temporal Service before setting it in the Temporal Client.

@@ -1,0 +1,71 @@
+---
+id: schedules
+title: Schedules
+sidebar_label: Schedules
+slug: /develop/php/schedules
+toc_max_heading_level: 2
+keywords:
+  - schedules
+tags:
+  - schedules
+description: Learn how to use Workflow Start Delay and Temporal Cron Jobs in PHP. Delay Workflow execution or set up recurring tasks with a Cron Schedule using Temporal Client.
+---
+
+This page shows how to do the following:
+
+- [How to use Start Delay](#start-delay)
+- [How to use Temporal Cron Jobs](#temporal-cron-jobs)
+
+## How to use Start Delay {#start-delay}
+
+Use the Workflow [Start Delay](/workflows#delay-workflow-execution) functionality if you need to delay the execution of the Workflow without the need for regular launches.
+Here you simply specify the time to wait before dispatching the first Workflow task.
+
+```php
+$workflow = $workflowClient->newWorkflowStub(
+    GreeterWorkflowInterface::class,
+    WorkflowOptions::new()
+        ->withWorkflowStartDelay(CarbonInterval::minutes(10)),
+);
+$workflowClient->start($workflow, 'Hello world!');
+```
+
+## How to use Temporal Cron Jobs {#temporal-cron-jobs}
+
+:::caution Cron support is not recommended
+
+We recommend using [Schedules](https://docs.temporal.io/workflows#schedule) instead of Cron Jobs.
+Schedules were built to provide a better developer experience, including more configuration options and the ability to update or pause running Schedules.
+
+:::
+
+A [Temporal Cron Job](/workflows#temporal-cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
+
+A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
+
+Set your Cron Schedule with `CronSchedule('* * * * *')`.
+
+The following example sets a Cron Schedule in PHP:
+
+```php
+  $workflow = $this->workflowClient->newWorkflowStub(
+      CronWorkflowInterface::class,
+      WorkflowOptions::new()
+          ->withWorkflowId(CronWorkflowInterface::WORKFLOW_ID)
+          ->withCronSchedule('* * * * *')
+          // Execution timeout limits total time. Cron will stop executing after this timeout.
+          ->withWorkflowExecutionTimeout(CarbonInterval::minutes(10))
+          // Run timeout limits duration of a single workflow invocation.
+          ->withWorkflowRunTimeout(CarbonInterval::minute(1))
+  );
+
+  $output->writeln("Starting <comment>CronWorkflow</comment>... ");
+
+  try {
+      $run = $this->workflowClient->start($workflow, 'Antony');
+      // ...
+  }
+```
+
+Setting `withCronSchedule` turns the Workflow Execution into a Temporal Cron Job.
+For more information, see the [PHP samples](https://github.com/temporalio/samples-php/tree/master/app/src/Cron) for example code or the PHP SDK `WorkflowOptions` [source code](https://github.com/temporalio/sdk-php/blob/master/src/Client/WorkflowOptions.php).

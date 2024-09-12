@@ -2,8 +2,7 @@
 id: workers
 title: What is a Temporal Worker?
 sidebar_label: Workers
-sidebar_position: 5
-description: There is a tight coupling between Temporal Task Queues and Worker Processes.
+description: Temporal Workers are tightly coupled with Task Queues and Worker Processes. Workers include Worker Programs, Worker Processes, and Worker Entities, executing Workflow and Activity Tasks. Worker Processes, external to Temporal Service, handle Task polling and execution. Worker Identity aids debugging. Task Queues, supporting Task Routing and Sticky Execution
 slug: /workers
 toc_max_heading_level: 4
 keywords:
@@ -36,14 +35,15 @@ There are two types of Tasks:
 
 A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.
 
-- [How to run a development Worker using the Go SDK](/dev-guide/go/foundations#develop-worker)
-- [How to run a development Worker using the Java SDK](/dev-guide/java/foundations#run-a-dev-worker)
-- [How to run a development Worker using the PHP SDK](/dev-guide/php/foundations#run-a-dev-worker)
-- [How to run a development Worker using the Python SDK](/dev-guide/python/foundations#run-a-dev-worker)
-- [How to run a development Worker using the TypeScript SDK](/dev-guide/typescript/foundations#run-a-dev-worker)
+- [How to run a development Worker using the Go SDK](/develop/go/core-application#develop-worker)
+- [How to run a development Worker using the Java SDK](/develop/java/core-application#run-a-dev-worker)
+- [How to run a development Worker using the PHP SDK](/develop/php/core-application#run-a-dev-worker)
+- [How to run a development Worker using the Python SDK](/develop/python/core-application#run-a-dev-worker)
+- [How to run a development Worker using the TypeScript SDK](/develop/typescript/core-application#run-a-dev-worker)
+- [How to run a development Worker using the .NET SDK](/develop/dotnet/core-application#run-worker-process)
 
-- [How to run a Temporal Cloud Worker using the Go SDK](/dev-guide/go/foundations#run-a-temporal-cloud-worker)
-- [How to run a Temporal Cloud Worker using the TypeScript SDK](/dev-guide/typescript/foundations#run-a-temporal-cloud-worker)
+- [How to run a Temporal Cloud Worker using the Go SDK](/develop/go/core-application#run-a-temporal-cloud-worker)
+- [How to run a Temporal Cloud Worker using the TypeScript SDK](/develop/typescript/core-application#run-a-temporal-cloud-worker)
 
 ## What is a Worker Entity? {#worker-entity}
 
@@ -63,7 +63,7 @@ Therefore, a single Worker can handle millions of open Workflow Executions, assu
 
 **Operation guides:**
 
-- [How to tune Workers](/dev-guide/worker-performance)
+- [How to tune Workers](/develop/worker-performance)
 
 ## What is a Worker Identity? {#worker-identity}
 
@@ -98,20 +98,22 @@ Here are some approaches:
 
 ## What is a Worker Process? {#worker-process}
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Component diagram of a Worker Process and the Temporal Server</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">
+      Component diagram of a Worker Process and the Temporal Server
+    </p>
   </div>
-  <div class="tdiiw" height="422">
+  <div className="tdiiw" height="422">
     <img
-      class="img_ev3q"
+      className="img_ev3q"
       src="/diagrams/worker-and-server-component.svg"
       alt="Component diagram of a Worker Process and the Temporal Server"
     />
   </div>
 </div>
 
-A Worker Process is responsible for polling a [Task Queue](#task-queue), dequeueing a [Task](#task), executing your code in response to a Task, and responding to the [Temporal Cluster](/clusters) with the results.
+A Worker Process is responsible for polling a [Task Queue](#task-queue), dequeueing a [Task](#task), executing your code in response to a Task, and responding to the [Temporal Service](/clusters) with the results.
 
 More formally, a Worker Process is any process that implements the Task Queue Protocol and the Task Execution Protocol.
 
@@ -120,16 +122,16 @@ More formally, a Worker Process is any process that implements the Task Queue Pr
 - A Worker Process is an Activity Worker Process if the process implements the Activity Task Queue Protocol and executes the Activity Task Processing Protocol to make progress on an Activity Execution.
   An Activity Worker Process can listen on an arbitrary number of Activity Task Queues and can execute an arbitrary number of Activity Tasks.
 
-**Worker Processes are external to a Temporal Cluster.**
+**Worker Processes are external to a Temporal Service.**
 Temporal Application developers are responsible for developing [Worker Programs](#worker-program) and operating Worker Processes.
-Said another way, the [Temporal Cluster](/clusters) (including the Temporal Cloud) doesn't execute any of your code (Workflow and Activity Definitions) on Temporal Cluster machines. The Cluster is solely responsible for orchestrating [State Transitions](/workflows#state-transition) and providing Tasks to the next available [Worker Entity](#worker-entity).
+Said another way, the [Temporal Service](/clusters) (including the Temporal Cloud) doesn't execute any of your code (Workflow and Activity Definitions) on Temporal Service machines. The Temporal Service is solely responsible for orchestrating [State Transitions](/workflows#state-transition) and providing Tasks to the next available [Worker Entity](#worker-entity).
 
-While data transferred in Event Histories is [secured by mTLS](/self-hosted-guide/security#encryption-in-transit-with-mtls), by default, it is still readable at rest in the Temporal Cluster.
+While data transferred in Event Histories is [secured by mTLS](/self-hosted-guide/security#encryption-in-transit-with-mtls), by default, it is still readable at rest in the Temporal Service.
 
-To solve this, Temporal SDKs offer a [Data Converter API](/dataconversion) that you can use to customize the serialization of data going out of and coming back in to a Worker Entity, with the net effect of guaranteeing that the Temporal Cluster cannot read sensitive business data.
+To solve this, Temporal SDKs offer a [Data Converter API](/dataconversion) that you can use to customize the serialization of data going out of and coming back in to a Worker Entity, with the net effect of guaranteeing that the Temporal Service cannot read sensitive business data.
 
-In many of our tutorials, we show you how to run both a Temporal Cluster and one Worker on the same machine for local development.
-However, a production-grade Temporal Application typically has a _fleet_ of Worker Processes, all running on hosts external to the Temporal Cluster.
+In many of our tutorials, we show you how to run both a Temporal Service and one Worker on the same machine for local development.
+However, a production-grade Temporal Application typically has a _fleet_ of Worker Processes, all running on hosts external to the Temporal Service.
 A Temporal Application can have as many Worker Processes as needed.
 
 A Worker Process can be both a Workflow Worker Process and an Activity Worker Process.
@@ -146,7 +148,7 @@ Worker Processes executing Activity Tasks must have access to any resources need
 - Credentials for infrastructure provisioning.
 - Specialized GPUs for machine learning utilities.
 
-The Temporal Cluster itself has [internal workers](https://temporal.io/blog/workflow-engine-principles/#system-workflows-1910) for system Workflow Executions.
+The Temporal Service itself has [internal workers](https://temporal.io/blog/workflow-engine-principles/#system-workflows-1910) for system Workflow Executions.
 However, these internal workers are not visible to the developer.
 
 ## What is a Workflow Task? {#workflow-task}
@@ -172,15 +174,15 @@ If Heartbeat data is being passed, an Activity Task will also contain the latest
 
 An Activity Task Execution occurs when a [Worker](#worker-entity) uses the context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/activities#activity-definition) (also known as the Activity Function).
 
-The [ActivityTaskScheduled Event](/references/events#activitytaskscheduled) corresponds to when the Temporal Cluster puts the Activity Task into the Task Queue.
+The [ActivityTaskScheduled Event](/references/events#activitytaskscheduled) corresponds to when the Temporal Service puts the Activity Task into the Task Queue.
 
 The [ActivityTaskStarted Event](/references/events#activitytaskstarted) corresponds to when the Worker picks up the Activity Task from the Task Queue.
 
-Either [ActivityTaskCompleted](/references/events#activitytaskcompleted) or one of the other Closed Activity Task Events corresponds to when the Worker has yielded back to the Temporal Cluster.
+Either [ActivityTaskCompleted](/references/events#activitytaskcompleted) or one of the other Closed Activity Task Events corresponds to when the Worker has yielded back to the Temporal Service.
 
 The API to schedule an Activity Execution provides an "effectively once" experience, even though there may be several Activity Task Executions that take place to successfully complete an Activity.
 
-Once an Activity Task finishes execution, the Worker responds to the Cluster with a specific Event:
+Once an Activity Task finishes execution, the Worker responds to the Temporal Service with a specific Event:
 
 - ActivityTaskCanceled
 - ActivityTaskCompleted
@@ -194,19 +196,23 @@ A Task Queue is a lightweight, dynamically allocated queue that one or more [Wor
 
 There are two types of Task Queues, Activity Task Queues and Workflow Task Queues.
 
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Task Queue component</p>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Task Queue component</p>
   </div>
-  <div class="tdiiw" height="500">
-    <img class="img_ev3q" src="/diagrams/task-queue.svg" alt="Task Queue component" />
+  <div className="tdiiw" height="500">
+    <img
+      className="img_ev3q"
+      src="/diagrams/task-queue.svg"
+      alt="Task Queue component"
+    />
   </div>
 </div>
 
 Task Queues are very lightweight components.
 Task Queues do not require explicit registration but instead are created on demand when a Workflow Execution or Activity spawns or when a Worker Process subscribes to it.
 When a Task Queue is created, both a Workflow Task Queue and an Activity Task Queue are created under the same name.
-There is no limit to the number of Task Queues a Temporal Application can use or a Temporal Cluster can maintain.
+There is no limit to the number of Task Queues a Temporal Application can use or a Temporal Service can maintain.
 
 Workers poll for Tasks in Task Queues via synchronous RPC.
 This implementation offers several benefits:
@@ -228,23 +234,25 @@ There are four places where the name of the Task Queue can be set by the develop
 
 1. A Task Queue must be set when spawning a Workflow Execution:
 
-- [How to start a Workflow Execution using tctl](/tctl-v1/workflow#start)
-- [How to start a Workflow Execution using the Go SDK](/dev-guide/go/foundations#start-workflow-execution)
-- [How to start a Workflow Execution using the Java SDK](/dev-guide/java/foundations#start-workflow-execution)
-- [How to start a Workflow Execution using the PHP SDK](/dev-guide/php/foundations#start-workflow-execution)
-- [How to start a Workflow Execution using the Python SDK](/dev-guide/python/foundations#start-workflow-execution)
-- [How to start a Workflow Execution using the TypeScript SDK](/dev-guide/typescript/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using the Temporal CLI](/cli/workflow#start)
+- [How to start a Workflow Execution using the Go SDK](/develop/go/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the Java SDK](/develop/java/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the PHP SDK](/develop/php/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the Python SDK](/develop/python/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the TypeScript SDK](/develop/typescript/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the .NET SDK](/develop/dotnet/temporal-client#start-workflow)
 
 2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
 
-- [How to run a development Worker using the Go SDK](/dev-guide/go/foundations#develop-worker)
-- [How to run a development Worker using the Java SDK](/dev-guide/java/foundations#run-a-dev-worker)
-- [How to run a development Worker using the PHP SDK](/dev-guide/php/foundations#run-a-dev-worker)
-- [How to run a development Worker using the Python SDK](/dev-guide/python/foundations#run-a-dev-worker)
-- [How to run a development Worker using the TypeScript SDK](/dev-guide/typescript/foundations#run-a-dev-worker)
+- [How to run a development Worker using the Go SDK](/develop/go/core-application#develop-worker)
+- [How to run a development Worker using the Java SDK](/develop/java/core-application#run-a-dev-worker)
+- [How to run a development Worker using the PHP SDK](/develop/php/core-application#run-a-dev-worker)
+- [How to run a development Worker using the Python SDK](/develop/python/core-application#run-a-dev-worker)
+- [How to run a development Worker using the TypeScript SDK](/develop/typescript/core-application#run-a-dev-worker)
+- [How to run a development Worker using the .NET SDK](/develop/dotnet/core-application#run-worker-process)
 
-- [How to run a Temporal Cloud Worker using the Go SDK](/dev-guide/go/foundations#run-a-temporal-cloud-worker)
-- [How to run a Temporal Cloud Worker using the TypeScript SDK](/dev-guide/typescript/foundations#run-a-temporal-cloud-worker)
+- [How to run a Temporal Cloud Worker using the Go SDK](/develop/go/core-application#run-a-temporal-cloud-worker)
+- [How to run a Temporal Cloud Worker using the TypeScript SDK](/develop/typescript/core-application#run-a-temporal-cloud-worker)
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -256,22 +264,24 @@ However, the failure of the Task will not cause the associated Workflow Executio
 This is optional.
 An Activity Execution inherits the Task Queue name from its Workflow Execution if one is not provided.
 
-- [How to start an Activity Execution using the Go SDK](/dev-guide/go/foundations#activity-execution)
-- [How to start an Activity Execution using the Java SDK](/dev-guide/java/foundations#activity-execution)
-- [How to start an Activity Execution using the PHP SDK](/dev-guide/php/foundations#activity-execution)
-- [How to start an Activity Execution using the Python SDK](/dev-guide/python/foundations#activity-execution)
-- [How to start an Activity Execution using the TypeScript SDK](/dev-guide/typescript/foundations#activity-execution)
+- [How to start an Activity Execution using the Go SDK](/develop/go/core-application#activity-execution)
+- [How to start an Activity Execution using the Java SDK](/develop/java/core-application#activity-execution)
+- [How to start an Activity Execution using the PHP SDK](/develop/php/core-application#activity-execution)
+- [How to start an Activity Execution using the Python SDK](/develop/python/core-application#activity-execution)
+- [How to start an Activity Execution using the TypeScript SDK](/develop/typescript/core-application#activity-execution)
+- [How to start an Activity Execution using the .NET SDK](/develop/dotnet/core-application#activity-execution)
 
 4. A Task Queue name can be provided when spawning a Child Workflow Execution:
 
 This is optional.
 A Child Workflow Execution inherits the Task Queue name from its Parent Workflow Execution if one is not provided.
 
-- [How to start a Child Workflow Execution using the Go SDK](/dev-guide/go/features#child-workflows)
-- [How to start a Child Workflow Execution using the Java SDK](/dev-guide/java/features#child-workflows)
-- [How to start a Child Workflow Execution using the PHP SDK](/dev-guide/php/features#child-workflows)
-- [How to start a Child Workflow Execution using the Python SDK](/dev-guide/python/features#child-workflows)
-- [How to start a Child Workflow Execution using the TypeScript SDK](/dev-guide/typescript/features#child-workflows)
+- [How to start a Child Workflow Execution using the Go SDK](/develop/go/child-workflows)
+- [How to start a Child Workflow Execution using the Java SDK](/develop/java/child-workflows)
+- [How to start a Child Workflow Execution using the PHP SDK](/develop/php/continue-as-new)
+- [How to start a Child Workflow Execution using the Python SDK](/develop/python/child-workflows)
+- [How to start a Child Workflow Execution using the TypeScript SDK](/develop/typescript/child-workflows)
+- [How to start a Child Workflow Execution using the .NET SDK](/develop/dotnet/child-workflows)
 
 #### Task ordering
 
@@ -300,10 +310,10 @@ A Sticky Execution occurs after a Worker Entity completes the first Workflow Tas
 
 The Worker Entity caches the Workflow in memory and begins polling the dedicated Task Queue for Workflow Tasks that contain updates, rather than the entire Event History.
 
-If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Cluster will resume Scheduling Workflow Tasks on the original Task Queue.
+If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Temporal Service will resume Scheduling Workflow Tasks on the original Task Queue.
 Another Worker Entity can then resume the Workflow Execution, and can set up its own Sticky Execution for future Workflow Tasks.
 
-- [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](/dev-guide/go/foundations#stickyscheduletostarttimeout)
+- [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](/develop/go/core-application#stickyscheduletostarttimeout)
 
 Sticky Executions are the default behavior of the Temporal Platform.
 
@@ -385,253 +395,24 @@ If you have a new backward-incompatible Activity Definition, start by using a di
 A Worker Session is a feature provided by some SDKs that provides a straightforward API for [Task Routing](#task-routing) to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 It also includes features like concurrent session limitations and Worker failure detection.
 
-- [How to use Worker Sessions](/dev-guide/go/features#worker-sessions)
+- [How to use Worker Sessions](/develop/go/sessions)
 
 ## What is Worker Versioning? {#worker-versioning}
 
 :::tip Support, stability, and dependency info
 
-- In [Pre-release](/evaluate/release-stages#pre-release)
+- In [Pre-release](/evaluate/development-production-features/release-stages#pre-release)
 - Introduced in Temporal Server version [1.21.0](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
-- Available in CLI version [0.10.0](https://github.com/temporalio/cli/releases/tag/v0.10.0)
-- Available in [Go SDK](/dev-guide/go/versioning#worker-versioning) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
-- Available in [Java SDK](/dev-guide/java/versioning#worker-versioning) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
-- Available in [TypeScript SDK](/dev-guide/typescript/versioning#worker-versioning) since [v1.8.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.8.0)
-- Available in [Python SDK](https://python.temporal.io/temporalio.worker.Worker.html) since [v1.3.0](https://github.com/temporalio/sdk-python/releases/tag/1.3.0)
-- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Worker.TemporalWorkerOptions.html#Temporalio_Worker_TemporalWorkerOptions_UseWorkerVersioning) since [v0.1.0-beta1](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta1)
-- Not yet available in Temporal Cloud
-
-:::
-
-:::caution
-
-Worker Versioning is currently in Pre-release, and backwards-incompatible changes are coming to the Worker Versioning APIs. For now, you need to provide dynamic configuration parameters to your Cluster to enable Worker Versioning:
-
-```
-temporal server start-dev \
-   --dynamic-config-value frontend.workerVersioningDataAPIs=true \
-   --dynamic-config-value frontend.workerVersioningWorkflowAPIs=true \
-   --dynamic-config-value worker.buildIdScavengerEnabled=true
-```
-
-:::
+- CLI, recommended and minimum [0.13.1](https://github.com/temporalio/cli/releases/tag/v0.13.1)
+- [Go SDK](/develop/go/versioning#worker-versioning) recommended [v1.27.0](https://github.com/temporalio/sdk-go/releases/tag/v1.27.0), minimum [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
+- [Java SDK](/develop/java/versioning#worker-versioning) minimum [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+- [TypeScript SDK](/develop/typescript/versioning#worker-versioning) minimum [v1.8.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.8.0)
+- [Python SDK](/develop/python/versioning#worker-versioning) minimum [v1.3.0](https://github.com/temporalio/sdk-python/releases/tag/1.3.0)
+- [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Worker.TemporalWorkerOptions.html#Temporalio_Worker_TemporalWorkerOptions_UseWorkerVersioning) minimum [v0.1.0-beta1](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta1)
+  :::
 
 Worker Versioning simplifies the process of deploying changes to [Workflow Definitions](/workflows#workflow-definition).
-It does this by letting you define sets of versions that are compatible with each other, and then assigning a Build ID to the code that defines a Worker.
-The Temporal Server uses the Build ID to determine which versions of a Workflow Definition a Worker can process.
 
-We recommend that you read about Workflow Definitions before proceeding, because Workflow Versioning is largely concerned with helping to manage nondeterministic changes to those definitions.
+See the [Pre-release README.md](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
 
-Worker Versioning helps manage nondeterministic changes by providing a convenient way to ensure that [Workers](#worker) with different Workflow and Activity Definitions operating on the same [Task Queue](#task-queue) don't attempt to process [Workflow Tasks](#workflow-task) and [Activity Tasks](#activity-task-execution) that they can't successfully process, according to sets of versions associated with that Task Queue that you've defined.
-
-Accomplish this goal by assigning a Build ID (a free-form string) to the code that defines a Worker, and specifying which Build IDs are compatible with each other by updating the version sets associated with the Task Queue, stored by the Temporal Server.
-
-### When and why you should use Worker Versioning
-
-The main reason to use this feature is to deploy incompatible changes to short-lived [Workflows](/workflows).
-On Task Queues using this feature, the Workflow starter doesn't have to know about the introduction of new versions.
-
-The new code in the newly deployed Workers executes new [Workflow Executions](/workflows#workflow-execution), while only Workers with an appropriate version process old Workflow Executions.
-
-#### Decommission old Workers
-
-You can decommission old Workers after you archive all open Workflows using their version.
-If you have no need to query closed Workflows, you can decommission them when no open Workflows remain at that version.
-
-For example, if you have a Workflow that completes within a day, a good strategy is to assign a new Build ID to every new Worker build and add it as the new overall default in the version sets.
-
-Because your Workflow completes in a day, you know that you won't need to keep older Workers running for more than a day after you deploy the new version (assuming availability).
-You can apply this technique to longer-lived Workflows too; however, you might need to run multiple Worker versions simultaneously while open Workflows complete.
-
-Version sets have a maximum size limit, which defaults to 100 build IDs across all sets.
-Operations to add new Build IDs to the sets will fail if they exceed this limit.
-There is also a limit on the number of Version Sets, which defaults to 10.
-A version can only be garbage collected after a Workflow Execution is deleted.
-
-#### Deploy code changes to Workers
-
-The feature also lets you implement compatible changes to or prevent a buggy code path from executing on currently open Workflows.
-You can achieve this by adding a new version to an existing set and defining it as _compatible_ with an existing version, which shouldn't execute any future Workflow Tasks.
-Because the new version processes existing [Event Histories](/workflows#event-history), it must adhere to the usual [deterministic constraints](/workflows#deterministic-constraints), and you might need to use one of the [versioning APIs](/workflows#workflow-versioning).
-
-Moreover, this feature lets you make incompatible changes to Activity Definitions in conjunction with incompatible changes to Workflow Definitions that use those Activities.
-This functionality works because any Activity that a Workflow schedules on the same Task Queue gets dispatched by default only to Workers compatible with the Workflow that scheduled it.
-If you want to change an Activity Definition's type signature while creating a new incompatible Build ID for a Worker, you can do so without worrying about the Activity failing to execute on some other Worker with an incompatible definition.
-The same principle applies to Child Workflows.
-For both Activities and Child Workflows, you can override the default behavior and run the Activity or Child Workflow on latest default version.
-
-:::tip
-
-Public-facing Workflows on a versioned Task Queue shouldn't change their signatures because doing so contradicts the purpose of Workflow-launching Clients remaining unaware of changes in the Workflow Definition.
-If you need to change a Workflow's signature, use a different Workflow Type or a completely new Task Queue.
-
-:::
-
-:::note
-
-If you schedule an Activity or a Child Workflow on _a different_ Task Queue from the one the Workflow runs on, the system doesn't assign a specific version.
-This means if the target queue is versioned, they run on the latest default, and if it's unversioned, they operate as they would have without this feature.
-
-:::
-
-**Continue-As-New and Worker Versioning**
-
-By default, a versioned Task Queue's Continue-as-New function starts the continued Workflow on the same compatible set as the original Workflow.
-
-If you continue-as-new onto a different Task Queue, the system doesn't assign any particular version.
-You also have the option to specify that the continued Workflow should start using the Task Queue's latest default version.
-
-### How to use Worker Versioning
-
-To use Worker Versioning, follow these steps:
-
-1. Define Worker build-identifier version sets for the Task Queue.
-   You can use either the `temporal` CLI or your choice of SDK.
-2. Enable the feature on your Worker by specifying a Build ID.
-
-#### Defining the version sets
-
-Whether you use [Temporal CLI](/cli/) or an SDK, updating the version sets feels the same.
-You specify the Task Queue that you're targeting, the Build ID that you're adding (or promoting), whether it becomes the new default version, and any existing versions it should be considered compatible with.
-
-The rest of this section uses updates to one Task Queue's version sets as examples.
-
-By default, both Task Queues and Workers are in an unversioned state.
-[Unversioned Worker](#unversioned-workers) can poll unversioned Task Queues and receive tasks.
-To use this feature, both the Task Queue and the Worker must be associated with Build IDs.
-
-If you run a Worker using versioning against a Task Queue that has not been set up to use versioning (or is missing that Worker's Build ID), it won't get any tasks.
-Likewise, a unversioned Worker polling a Task Queue with versioning won't work either.
-
-:::note Versions don't need to follow semver or any other semantic versioning scheme!
-
-The versions in the following examples look like semver versions for clarity, but they don't need to be.
-Versions can be any arbitrary string.
-
-:::
-
-First, add a version `1.0` to the Task Queue as the new default.
-Your version sets now look like this:
-
-| set 1 (default) |
-| --------------- |
-| 1.0 (default)   |
-
-All new Workflows started on the Task Queue have their first tasks assigned to version `1.0`.
-Workers with their Build ID set to `1.0` receive these Tasks.
-
-If Workflows that don't have an assigned version are still running on the Task Queue, Workers without a version take those tasks.
-So ensure that such Workers are still operational if any Workflows were open when you added the first version.
-If you deployed any Workers with a _different_ version, those Workers receive no Tasks.
-
-Now, imagine you need change the Workflow for some reason.
-
-Add `2.0` to the sets as the new default:
-
-| set 1         | set 2 (default) |
-| ------------- | --------------- |
-| 1.0 (default) | 2.0 (default)   |
-
-All new Workflows started on the Task Queue have their first tasks assigned to version `2.0`.
-Existing `1.0` Workflows keep generating tasks targeting `1.0`.
-Each deployment of Workers receives their respective Tasks.
-This same concept carries forward for each new incompatible version.
-
-Maybe you have a bug in `2.0`, and you want to make sure all open `2.0` Workflows switch to some new code as fast as possible.
-So, you add `2.1` to the sets, marking it as compatible with `2.0`.
-Now your sets look like this:
-
-| set 1         | set 2 (default) |
-| ------------- | --------------- |
-| 1.0 (default) | 2.0             |
-|               | 2.1 (default)   |
-
-All new Workflow Tasks that are generated for Workflows whose last Workflow Task completion was on version `2.0` are now assigned to version `2.1`.
-Because you specified that `2.1` is compatible with `2.0`, Temporal Server assumes that Workers with this version can process the existing Event Histories successfully.
-
-Continue with your normal development cycle, adding a `3.0` version.
-Nothing new here:
-
-| set 1         | set 2         | set 3 (default) |
-| ------------- | ------------- | --------------- |
-| 1.0 (default) | 2.0           | 3.0 (default)   |
-|               | 2.1 (default) |                 |
-
-Now imagine that version `3.0` doesn't have an explicit bug, but something about the business logic
-is less than ideal.
-You are okay with existing `3.0` Workflows running to completion, but you want new Workflows to use the old `2.x` branch.
-This operation is supported by performing an update targeting `2.1` (or `2.0`) and setting its set as the current default, which results in these sets:
-
-| set 1         | set 3         | set 2 (default) |
-| ------------- | ------------- | --------------- |
-| 1.0 (default) | 3.0 (default) | 2.0             |
-|               |               | 2.1 (default)   |
-
-Now new Workflows start on `2.1`.
-
-#### Permitted and forbidden operations on version sets
-
-A request to change the sets can do one of the following:
-
-- Add a version to the sets as the new default version in a new overall-default compatible set.
-- Add a version to an existing set that's compatible with an existing version.
-  - Optionally making it the default for that set.
-  - Optionally making that set the overall-default set.
-- Promote a version within an existing set to become the default for that set.
-- Promote a set to become the overall-default set.
-
-You can't explicitly delete versions.This helps you avoid the situation in which Workflows accidentally become stuck with no means of making progress because the version they're associated with no longer exists.
-
-However, sometimes you might want to do this intentionally.
-If you _want_ to make sure that all Workflows currently being processed by, say, `2.0` stop (even if you don't yet have a new version ready), you can add a new version `2.1` to the sets marked as compatible with `2.0`.
-New tasks will target `2.1`, but because you haven't deployed any `2.1` Workers, they won't make any progress.
-
-#### Set constraints
-
-The sets have a maximum size limit, which defaults to 100 build IDs across all sets.
-This limit is configurable on Temporal Server via the `limit.versionBuildIdLimitPerQueue` dynamic config property.
-Operations to add new Build IDs to the sets fail if the limit would be exceeded.
-
-There is also a limit on the number of sets, which defaults to 10.
-This limit is configurable via the `limit.versionCompatibleSetLimitPerQueue` dynamic config property.
-
-In practice, these limits should rarely be a concern because a version is no longer needed after no open Workflows are using that version, and a background process will delete IDs and sets that are no longer needed.
-
-There is also a limit on the size of each Build ID or version string, which defaults to 255 characters.
-This limit is configurable on the server via the `limit.workerBuildIdSize` dynamic config property.
-
-### Build ID reachability
-
-Eventually, you'll want to know whether you can retire the old Worker versions.
-Temporal provides functionality to help you determine whether a version is still in use by open or closed Workflows.
-You can use the Temporal CLI to do this with the following command:
-
-```command
-temporal task-queue get-build-id-reachability
-```
-
-The command determines, for each Task Queue, whether the Build ID in question is unreachable, only reachable by closed Workflows, or reachable by open and new Workflows.
-For example, this "2.0" Build ID is shown here by the CLI to be reachable by both new Workflows and some existing Workflows:
-
-```command
-temporal task-queue get-build-id-reachability --build-id "2.0"
-```
-
-```output
-BuildId                         TaskQueue                                   Reachability
-    2.0  build-id-versioning-dc0068f6-0426-428f-b0b2-703a7e409a97  [NewWorkflows
-                                                                   ExistingWorkflows]
-```
-
-For more information, see the [CLI documentation](/cli/) or help output.
-
-You can also use this API `GetWorkerTaskReachability` directly from within language SDKs.
-
-### Unversioned Workers
-
-Unversioned Workers refer to Workers that have not opted into the Worker Versioning feature in their configuration.
-They receive tasks only from Task Queues that do not have any version sets defined on them, or that have open workflows that began executing before versions were added to the queue.
-
-To migrate from an unversioned Task Queue, add a new default Build ID to the Task Queue.
-From there, deploy Workers with the same Build ID.
-Unversioned Workers will continue processing open Workflows, while Workers with the new Build ID will process new Workflow Executions.
+If you're using the older version of the Worker Versioning pre-release that was released in late 2023, go [here](/encyclopedia/worker-versioning-legacy.mdx).

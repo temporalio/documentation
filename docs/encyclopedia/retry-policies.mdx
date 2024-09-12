@@ -2,9 +2,7 @@
 id: retry-policies
 title: What is a Temporal Retry Policy?
 sidebar_label: Retry Policies
-sidebar_position: 4
-description: A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
-slug: /retry-policies
+description: Optimize your Workflow and Activity Task Executions with a custom Retry Policy on Temporal. Understand default retries, intervals, backoff, and maximum attempts for error handling.
 toc_max_heading_level: 4
 keywords:
   - explanation
@@ -14,41 +12,35 @@ tags:
   - term
 ---
 
+import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
 A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](/workflows#workflow-execution) or an [Activity Task Execution](/workers#activity-task-execution).
 (Retry Policies do not apply to [Workflow Task Executions](/workers#workflow-task-execution), which always retry indefinitely.)
 
-- [Activity retry simulator](/dev-guide/activity-retry-simulator)
+Try out the [Activity retry simulator](/develop/activity-retry-simulator) to visiualize how a Retry Policy works.
 
 ---
 
-- [How to set a custom Retry Policy for an Activity in Go](/dev-guide/go/features#activity-retries)
-- [How to set a custom Retry Policy for an Activity in Java](/dev-guide/java/features#activity-retries)
-- [How to set a custom Retry Policy for an Activity in PHP](/dev-guide/php/features#activity-retries)
-- [How to set a custom Retry Policy for an Activity in Python](/dev-guide/python/features#activity-retries)
-- [How to set a custom Retry Policy for an Activity in TypeScript](/dev-guide/typescript/features#activity-retries)
+<RelatedReadContainer>
+  <RelatedReadItem path="/develop/go/failure-detection#activity-retries" text="Set a custom Retry Policy for an Activity in Go" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/java/failure-detection#activity-retries" text="Set a custom Retry Policy for an Activity in Java" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/php/failure-detection#activity-retries" text="Set a custom Retry Policy for an Activity in PHP" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/python/failure-detection#activity-retries" text="Set a custom Retry Policy for an Activity in Python" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/typescript/failure-detection#activity-retries" text="Set a custom Retry Policy for an Activity in TypeScript" archetype="feature-guide" />
+</RelatedReadContainer>
 
 ---
 
-- [How to set a Retry Policy for a Workflow in Go](/dev-guide/go/features#workflow-retries)
-- [How to set a Retry Policy for a Workflow in Java](/dev-guide/java/features#workflow-retries)
-- [How to set a Retry Policy for a Workflow in PHP](/dev-guide/php/features#workflow-retries)
-- [How to set a Retry Policy for a Workflow in Python](/dev-guide/python/features#workflow-retries)
-- [How to set a Retry Policy for a Workflow in TypeScript](/dev-guide/typescript/features#workflow-retries)
-
-<div class="tdiw">
-  <div class="tditw">
-    <p class="tdit">Diagram that shows the retry interval and its formula</p>
-  </div>
-  <div class="tdiiw" height="233">
-    <img
-      class="img_ev3q"
-      src="/img/retry-interval-diagram.png"
-      alt="Diagram that shows the retry interval and its formula"
-    />
-  </div>
-</div>
+<RelatedReadContainer>
+  <RelatedReadItem path="/develop/go/failure-detection#workflow-retries" text="Set a Retry Policy for a Workflow in Go" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/java/failure-detection#workflow-retries" text="Set a Retry Policy for a Workflow in Java" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/php/failure-detection#workflow-retries" text="Set a Retry Policy for a Workflow in PHP" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/python/failure-detection#workflow-retries" text="Set a Retry Policy for a Workflow in Python" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/typescript/failure-detection#workflow-retries" text="Set a Retry Policy for a Workflow in TypeScript" archetype="feature-guide" />
+</RelatedReadContainer>
 
 ## Default behavior
 
@@ -56,7 +48,7 @@ A Retry Policy is a collection of attributes that instructs the Temporal Server 
   The intention is that a Workflow Definition should be written to never fail due to intermittent issues; an Activity is designed to handle such issues.
 
 - **Activity Execution:** When an Activity Execution is spawned, it is associated with a default Retry Policy, and thus Activity Task Executions are retried by default.
-  When an Activity Task Execution is retried, the Cluster places a new [Activity Task](/workers#activity-task) into its respective [Activity Task Queue](/workers#task-queue), which results in a new Activity Task Execution.
+  When an Activity Task Execution is retried, the Temporal Service places a new [Activity Task](/workers#activity-task) into its respective [Activity Task Queue](/workers#task-queue), which results in a new Activity Task Execution.
 
 ## Custom Retry Policy
 
@@ -108,7 +100,7 @@ Non-Retryable Errors = []
   - Setting the value to 1 means a single execution attempt and no retries.
   - Setting the value to a negative integer results in an error when the execution is invoked.
 - **Use case:** Use this attribute to ensure that retries do not continue indefinitely.
-  However, in the majority of cases, we recommend relying on the Workflow Execution Timeout, in the case of Workflows](/workflows), or Schedule-To-Close Timeout, in the case of [Activities](/activities), to limit the total duration of retries instead of using this attribute.
+  In most cases, we recommend using the Workflow Execution Timeout for [Workflows](/workflows) or the Schedule-To-Close Timeout for Activities to limit the total duration of retries, rather than using this attribute.
 
 ### Non-Retryable Errors
 
@@ -124,6 +116,18 @@ The wait time before a retry is the _retry interval_. A retry interval is the sm
 
 - The [Initial Interval](#initial-interval) multiplied by the [Backoff Coefficient](#backoff-coefficient) raised to the power of the number of retries.
 - The [Maximum Interval](#maximum-interval).
+
+<PrettyImage src="/img/retry-interval-diagram.png" title="Diagram that shows the retry interval and its formula" />
+
+### Per-error Next Retry Delay
+
+Sometimes, your Activity or Workflow raises a special exception that needs a different retry interval from the Retry Policy.
+To accomplish this, you may throw an [Application Failure](/references/failures#application-failure) with the Next Retry Delay field set. This value will replace and override whatever the retry interval would be on the Retry Policy.
+Note that your retries will still cap out under the Retry Policy's Maximum Attempts, as well as overall timeouts. For an Activity, its Schedule-to-Close Timeout applies. For a Workflow, the Execution Timeout applies.
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/java/failure-detection#next-retry-delay" text="Customize retry delays per error in the Java SDK." archetype="feature-guide" />
+</RelatedReadContainer>
 
 ## Event History
 

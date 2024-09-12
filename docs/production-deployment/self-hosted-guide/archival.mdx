@@ -2,20 +2,18 @@
 id: archival
 title: Self-hosted Archival setup
 sidebar_label: Archival
-sidebar_position: 9
-description: Learn how to setup the self-hosted Cluster Archival feature.
+description: Archival backs up Event Histories and Visibility records from Temporal Service to a blob store, aiding compliance and debugging. Supports S3, GCloud, and local storage.
 slug: /self-hosted-guide/archival
 toc_max_heading_level: 4
 keywords:
-- explanation
-- how-to
+  - explanation
+  - how-to
 tags:
-- explanation
-- how-to
+  - explanation
+  - how-to
 ---
 
-
-Archival is a feature that automatically backs up [Event Histories](/workflows#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
+Archival is a feature that automatically backs up [Event Histories](/workflows#event-history) and Visibility records from Temporal Service persistence to a custom blob store.
 
 - [How to create a custom Archiver](#custom-archiver)
 - [How to set up Archival](#set-up-archival)
@@ -23,19 +21,21 @@ Archival is a feature that automatically backs up [Event Histories](/workflows#e
 Workflow Execution Event Histories are backed up after the [Retention Period](/clusters#retention-period) is reached.
 Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.
 
-Archival enables Workflow Execution data to persist as long as needed, while not overwhelming the Cluster's persistence store.
+Archival enables Workflow Execution data to persist as long as needed, while not overwhelming the Temporal Service's persistence store.
 
 This feature is helpful for compliance and debugging.
 
 Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters#versions-and-support).
 
-Archival is not supported when running Temporal through Docker and is disabled by default when installing the system manually and when deploying through [helm charts](https://github.com/temporalio/helm-charts/blob/master/templates/server-configmap.yaml) (but can be enabled in the [config](https://github.com/temporalio/temporal/blob/master/config/development.yaml)).
+Archival is not supported when running Temporal through Docker.
+It's disabled by default when installing the system manually and when deploying through [helm charts](https://github.com/temporalio/helm-charts/blob/main/charts/temporal/templates/server-configmap.yaml).
+It can be enabled in the [config](https://github.com/temporalio/temporal/blob/main/config/development.yaml).
 
 ### How to set up Archival {#set-up-archival}
 
 [Archival](/clusters#archival) consists of the following elements:
 
-- **Configuration:** Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
+- **Configuration:** Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/main/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
 - **Provider:** Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
 - **URI:** Specifies which provider should be used. The system uses the URI schema and path to make the determination.
 
@@ -49,33 +49,33 @@ Take the following steps to set up Archival:
 
 Temporal directly supports several providers:
 
-- **Local file system**: The [filestore archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) is used to archive data in the file system of whatever host the Temporal server is running on. In the case of [temporal helm-charts](https://github.com/temporalio/helm-charts), the archive data is stored in the `history` pod. APIs do not function with the filestore archive. This provider is used mainly for local installations and testing and should not be relied on for production environments.
-- **Google Cloud**: The [gcloud archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud) is used to connect and archive data with [Google Cloud](https://cloud.google.com/storage).
-- **S3**: The [s3store archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store) is used to connect and archive data with [S3](https://aws.amazon.com/s3).
+- **Local file system**: The [filestore archiver](https://github.com/temporalio/temporal/tree/main/common/archiver/filestore) is used to archive data in the file system of whatever host the Temporal server is running on. In the case of [temporal helm-charts](https://github.com/temporalio/helm-charts), the archive data is stored in the `history` pod. APIs do not function with the filestore archive. This provider is used mainly for local installations and testing and should not be relied on for production environments.
+- **Google Cloud**: The [gcloud archiver](https://github.com/temporalio/temporal/tree/main/common/archiver/gcloud) is used to connect and archive data with [Google Cloud](https://cloud.google.com/storage).
+- **S3**: The [s3store archiver](https://github.com/temporalio/temporal/tree/main/common/archiver/s3store) is used to connect and archive data with [S3](https://aws.amazon.com/s3).
 - **Custom**: If you want to use a provider that is not currently supported, you can [create your own archiver](#custom-archiver) to support it.
 
 Make sure that you save the provider's storage location URI in a place where you can reference it later, because it is passed as a parameter when you [create a Namespace](#namespace-creation).
 
 #### Configuration
 
-Archival configuration is defined in the [`config/development.yaml`](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L93) file.
+Archival configuration is defined in the [`config/development.yaml`](https://github.com/temporalio/temporal/blob/main/config/development.yaml#L93) file.
 Let's look at an example configuration:
 
 ```yaml
-# Cluster level Archival config
+# Temporal Service level Archival config
 archival:
   # Event History configuration
   history:
-    # Archival is enabled at the cluster level
-    state: "enabled"
+    # Archival is enabled at the Temporal Service level
+    state: 'enabled'
     enableRead: true
     # Namespaces can use either the local filestore provider or the Google Cloud provider
     provider:
       filestore:
-        fileMode: "0666"
-        dirMode: "0766"
+        fileMode: '0666'
+        dirMode: '0766'
       gstorage:
-        credentialsPath: "/tmp/gcloud/keyfile.json"
+        credentialsPath: '/tmp/gcloud/keyfile.json'
 
 # Default values for a Namespace if none are provided at creation
 namespaceDefaults:
@@ -83,9 +83,9 @@ namespaceDefaults:
   archival:
     # Event History defaults
     history:
-      state: "enabled"
+      state: 'enabled'
       # New Namespaces will default to the local provider
-      URI: "file:///tmp/temporal_archival/development"
+      URI: 'file:///tmp/temporal_archival/development'
 ```
 
 You can disable Archival by setting `archival.history.state` and `namespaceDefaults.archival.history.state` to `"disabled"`.
@@ -95,19 +95,19 @@ Example:
 ```yaml
 archival:
   history:
-    state: "disabled"
+    state: 'disabled'
 
 namespaceDefaults:
   archival:
     history:
-      state: "disabled"
+      state: 'disabled'
 ```
 
 The following table showcases acceptable values for each configuration and what purpose they serve.
 
 | Config                                         | Acceptable values                                                                  | Description                                                                                                                  |
 | ---------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `archival.history.state`                       | `enabled`, `disabled`                                                              | Must be `enabled` to use the Archival feature with any Namespace in the cluster.                                             |
+| `archival.history.state`                       | `enabled`, `disabled`                                                              | Must be `enabled` to use the Archival feature with any Namespace in the Temporal Service.                                    |
 | `archival.history.enableRead`                  | `true`, `false`                                                                    | Must be `true` to read from the archived Event History.                                                                      |
 | `archival.history.provider`                    | Sub provider configs are `filestore`, `gstorage`, `s3`, or `your_custom_provider`. | Default config specifies `filestore`.                                                                                        |
 | `archival.history.provider.filestore.fileMode` | File permission string                                                             | File permissions of the archived files. We recommend using the default value of `"0666"` to avoid read/write issues.         |
@@ -115,15 +115,15 @@ The following table showcases acceptable values for each configuration and what 
 | `namespaceDefaults.archival.history.state`     | `enabled`, `disabled`                                                              | Default state of the Archival feature whenever a new Namespace is created without specifying the Archival state.             |
 | `namespaceDefaults.archival.history.URI`       | Valid URI                                                                          | Must be a URI of the file store location and match a schema that correlates to a provider.                                   |
 
-Additional resources: [Cluster configuration reference](/references/configuration).
+Additional resources: [Temporal Service configuration reference](/references/configuration).
 
 #### Namespace creation
 
-Although Archival is configured at the cluster level, it operates independently within each Namespace.
+Although Archival is configured at the Temporal Service level, it operates independently within each Namespace.
 If an Archival URI is not specified when a Namespace is created, the Namespace uses the value of `defaultNamespace.archival.history.URI` from the `config/development.yaml` file.
 The Archival URI cannot be changed after the Namespace is created.
 Each Namespace supports only a single Archival URI, but each Namespace can use a different URI.
-A Namespace can safely switch Archival between `enabled` and `disabled` states as long as Archival is enabled at the cluster level.
+A Namespace can safely switch Archival between `enabled` and `disabled` states as long as Archival is enabled at the Temporal Service level.
 
 Archival is supported in [Global Namespaces](/namespaces#global-namespace) (Namespaces that span multiple clusters).
 When Archival is running in a Global Namespace, it first runs on the active cluster; later it runs on the standby cluster. Before archiving, a history check is done to see what has been previously archived.
@@ -138,13 +138,15 @@ To test Archival locally, start by running a Temporal server:
 
 Then register a new Namespace with Archival enabled.
 
+{/* ./tctl --ns samples-namespace namespace register --gd false --history_archival_state enabled --retention 3 */}
+
 ```bash
-./tctl --ns samples-namespace namespace register --gd false --history_archival_state enabled --retention 3
+./temporal operator namespace create --namespace="my-namespace" --global false --history-archival-state="enabled" --retention="4d"
 ```
 
 :::note
 
-If the retention period isn't set, it defaults to two days.
+If the retention period isn't set, it defaults to 72h.
 The minimum retention period is one day.
 The maximum retention period is 30 days.
 
@@ -160,8 +162,10 @@ When execution is finished, Archival occurs.
 
 You can retrieve archived Event Histories by copying the `workflowId` and `runId` of the completed Workflow from the log output and running the following command:
 
+{/* ./tctl --ns samples-namespace wf show --wid <workflowId> --rid <runId> */}
+
 ```bash
-./tctl --ns samples-namespace wf show --wid <workflowId> --rid <runId>
+./temporal workflow show --workflow-id="my-workflow-id" --run-id="my-run-id" --namespace="my-namespace"
 ```
 
 ### How to create a custom Archiver {#custom-archiver}
@@ -172,7 +176,7 @@ To use a provider that is not currently supported, you can create your own Archi
 
 #### Create a new package
 
-The first step is to create a new package for your implementation in [/common/archiver](https://github.com/temporalio/temporal/tree/master/common/archiver).
+The first step is to create a new package for your implementation in [/common/archiver](https://github.com/temporalio/temporal/tree/main/common/archiver).
 Create a directory in the archiver folder and arrange the structure to look like the following:
 
 ```
@@ -189,17 +193,17 @@ temporal/common/archiver
 
 #### Archiver interfaces
 
-Next, define objects that implement the [HistoryArchiver](https://github.com/temporalio/temporal/blob/master/common/archiver/interface.go#L80) and the [VisibilityArchiver](https://github.com/temporalio/temporal/blob/master/common/archiver/interface.go#L121) interfaces.
+Next, define objects that implement the [HistoryArchiver](https://github.com/temporalio/temporal/blob/main/common/archiver/interface.go#L80) and the [VisibilityArchiver](https://github.com/temporalio/temporal/blob/main/common/archiver/interface.go#L121) interfaces.
 
 The objects should live in `historyArchiver.go` and `visibilityArchiver.go`, respectively.
 
 #### Update provider
 
-Update the `GetHistoryArchiver` and `GetVisibilityArchiver` methods of the `archiverProvider` object in the [/common/archiver/provider/provider.go](https://github.com/temporalio/temporal/blob/master/common/archiver/provider/provider.go) file so that it knows how to create an instance of your archiver.
+Update the `GetHistoryArchiver` and `GetVisibilityArchiver` methods of the `archiverProvider` object in the [/common/archiver/provider/provider.go](https://github.com/temporalio/temporal/blob/main/common/archiver/provider/provider.go) file so that it knows how to create an instance of your archiver.
 
 #### Add configs
 
-Add configs for your archiver to the `config/development.yaml` file and then modify the [HistoryArchiverProvider](https://github.com/temporalio/temporal/blob/master/common/config/config.go#L376) and [VisibilityArchiverProvider](https://github.com/temporalio/temporal/blob/master/common/config/config.go#L393) structs in `/common/common/config.go` accordingly.
+Add configs for your archiver to the `config/development.yaml` file and then modify the [HistoryArchiverProvider](https://github.com/temporalio/temporal/blob/main/common/config/config.go#L376) and [VisibilityArchiverProvider](https://github.com/temporalio/temporal/blob/main/common/config/config.go#L393) structs in `/common/common/config.go` accordingly.
 
 #### Custom archiver FAQ
 
@@ -250,15 +254,15 @@ func(a * Archiver) Archive(ctx context.Context, URI string, request * ArchiveReq
 
 **How does my history archiver implementation read history?**
 
-The archiver package provides a utility called [HistoryIterator](https://github.com/temporalio/temporal/blob/master/common/archiver/historyIterator.go) which is a wrapper of [ExecutionManager](https://github.com/temporalio/temporal/blob/master/common/persistence/dataInterfaces.go#L1014).
+The archiver package provides a utility called [HistoryIterator](https://github.com/temporalio/temporal/blob/main/common/archiver/historyIterator.go) which is a wrapper of [ExecutionManager](https://github.com/temporalio/temporal/blob/main/common/persistence/data_interfaces.go#L1014).
 `HistoryIterator` is more simple than the `HistoryManager`, which is available in the BootstrapContainer, so archiver implementations can choose to use it when reading Workflow histories.
-See the [historyIterator.go](https://github.com/temporalio/temporal/blob/master/common/archiver/historyIterator.go) file for more details.
-Use the [filestore historyArchiver implementation](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) as an example.
+See the [historyIterator.go](https://github.com/temporalio/temporal/blob/main/common/archiver/history_iterator.go) file for more details.
+Use the [filestore historyArchiver implementation](https://github.com/temporalio/temporal/tree/main/common/archiver/filestore) as an example.
 
 **Should my archiver define its own error types?**
 
 Each archiver is free to define and return its own errors.
-However, many common errors that exist between archivers are already defined in [common/archiver/constants.go](https://github.com/temporalio/temporal/blob/master/common/archiver/constants.go).
+However, many common errors that exist between archivers are already defined in [common/archiver/constants.go](https://github.com/temporalio/temporal/blob/main/common/archiver/constants.go).
 
 **Is there a generic query syntax for the visibility archiver?**
 
@@ -266,6 +270,5 @@ Currently, no.
 But this is something we plan to do in the future.
 As for now, try to make your syntax similar to the one used by our advanced list Workflow API.
 
-- [s3store](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store#visibility-query-syntax)
-- [gcloud](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud#visibility-query-syntax)
-
+- [s3store](https://github.com/temporalio/temporal/tree/main/common/archiver/s3store#visibility-query-syntax)
+- [gcloud](https://github.com/temporalio/temporal/tree/main/common/archiver/gcloud#visibility-query-syntax)

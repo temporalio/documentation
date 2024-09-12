@@ -2,8 +2,7 @@
 id: export
 title: Export - Temporal Cloud feature guide
 sidebar_label: Export
-sidebar_position: 9
-description: Workflow History export allows users to export Closed Workflow Histories to a user's Cloud Storage Sink.
+description: Workflow History Export in Temporal Cloud lets users export Closed Workflow Histories to S3 for compliance and analytics. Configure via Cloud UI or tcld with AWS integration.
 slug: /cloud/export
 toc_max_heading_level: 4
 keywords:
@@ -39,6 +38,12 @@ The Export feature in Temporal Cloud provides the following benefits:
 
 For pricing information, see [Temporal Cloud Pricing](/cloud/pricing).
 
+:::note
+
+If you have enabled encryption for the data handled in your Workflow Execution, the exported data will also be encrypted.
+
+:::
+
 ## Supported integrations for Workflow History Export {#supported-integrations}
 
 The Workflow History Export feature allows users to export Closed Workflow Histories to [Amazon Simple Storage Service (S3)](https://docs.aws.amazon.com/s3/) as the destination.
@@ -70,6 +75,12 @@ The Temporal Cloud UI provides two ways for configuring Workflow History Export:
 
 - [Automated setup](#automated-setup) (recommended): The Cloud UI launches the AWS CloudFormation Console to create a stack, with write permission to the S3 bucket.
 - [Manual setup](#manual-setup): The Cloud UI provides a CloudFormation template for users to manually configure a CloudFormation stack.
+
+:::tip
+
+Don't forget to click Create at the end of your setup to confirm your export.
+
+:::
 
 #### Automated setup
 
@@ -197,4 +208,4 @@ Once you've finalized the setup, here's how to monitor the export progress:
 For optimal results, review the S3 bucket for any new exported files and refer to the UI insights.
 This dual check ensures you remain abreast of the export progress and any potential issues.
 
-<!--  starting on `2024/03/01` UTC actions are charged. -->
+{/* starting on `2024/03/01` UTC actions are charged. */}

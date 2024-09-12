@@ -2,21 +2,20 @@
 id: dynamic-configuration
 title: Temporal Cluster dynamic configuration reference
 sidebar_label: Dynamic configuration
-description: Temporal Cluster provides dynamic configuration keys that you can update and apply to a running Cluster without restarting your services.
+description: Temporal Cluster offers dynamic configuration keys that you can update on the fly to optimize performance without service interruption. Customize these settings to meet specific Workflow, Activity, Namespace, or Task Queue requirements, and test thoroughly before deploying to production. For more details, visit the Temporal GitHub repository.
 toc_max_heading_level: 4
 keywords:
-- reference
+  - reference
 tags:
-- reference
+  - reference
 ---
-
 
 Temporal Cluster provides [dynamic configuration](/clusters#dynamic-configuration) keys that you can update and apply to a running Cluster without restarting your services.
 
 The dynamic configuration keys are set with default values when you create your Cluster configuration.
 You can override these values as you test your Cluster setup for optimal performance according to your workload requirements.
 
-For the complete list of dynamic configuration keys, see [https://github.com/temporalio/temporal/blob/master/common/dynamicconfig/constants.go](https://github.com/temporalio/temporal/blob/master/common/dynamicconfig/constants.go).
+For the complete list of dynamic configuration keys, see [https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go).
 Ensure that you check server release notes for any changes to these keys and values.
 
 For the default values of dynamic configuration keys, check the following links:
@@ -40,23 +39,23 @@ testGetBoolPropertyKey:
   - value: false
   - value: true
     constraints:
-      namespace: "your-namespace"
+      namespace: 'your-namespace'
   - value: false
     constraints:
-      namespace: "your-other-namespace"
+      namespace: 'your-other-namespace'
 testGetDurationPropertyKey:
-  - value: "1m"
+  - value: '1m'
     constraints:
-      namespace: "your-namespace"
-      taskQueueName: "longIdleTimeTaskqueue"
+      namespace: 'your-namespace'
+      taskQueueName: 'longIdleTimeTaskqueue'
 testGetFloat64PropertyKey:
   - value: 12.0
     constraints:
-      namespace: "your-namespace"
+      namespace: 'your-namespace'
 testGetMapPropertyKey:
   - value:
       key1: 1
-      key2: "value 2"
+      key2: 'value 2'
       key3:
         - false
         - key4: true
@@ -82,9 +81,9 @@ Not defining constraints on a dynamic configuration key sets the values across t
   frontend.persistenceNamespaceMaxQPS: # Rate limit on the number of queries the Frontend sends to the Persistence store.
     - constraints: {} # Sets default value that applies to all Namespaces
       value: 2000 # The default value for this key is 0.
-    - constraints: { namespace: "namespace1" } # Sets limit on number of queries that can be sent from "namespace1" Namespace to the Persistence store.
+    - constraints: { namespace: 'namespace1' } # Sets limit on number of queries that can be sent from "namespace1" Namespace to the Persistence store.
       value: 4000
-    - constraints: { namespace: "namespace2" }
+    - constraints: { namespace: 'namespace2' }
       value: 1000
   ```
 
@@ -97,26 +96,34 @@ Not defining constraints on a dynamic configuration key sets the values across t
 
   ```yaml
   matching.numTaskqueueReadPartitions: # Number of Task Queue partitions for read operations.
-    - constraints: { namespace: "namespace1", taskQueueName: "tq" } # Applies to the "tq" Task Queue for both Workflows and Activities.
+    - constraints: { namespace: 'namespace1', taskQueueName: 'tq' } # Applies to the "tq" Task Queue for both Workflows and Activities.
       value: 8 # The default value for this key is 4. Task Queues that need to support high traffic require higher number of partitions. Set these values in accordance to your poller count.
-    - constraints: { namespace: "namespace1", taskQueueName: "other-tq", taskType: "Activity" } # Applies to the "other_tq" Task Queue for Activities specifically.
+    - constraints: {
+          namespace: 'namespace1',
+          taskQueueName: 'other-tq',
+          taskType: 'Activity',
+        } # Applies to the "other_tq" Task Queue for Activities specifically.
       value: 20
-    - constraints: { namespace: "namespace2" } # Applies to all task queues in "namespace2".
+    - constraints: { namespace: 'namespace2' } # Applies to all task queues in "namespace2".
       value: 10
     - constraints: {} # Applies to all other task queues in "namespace1" and all other Namespaces.
       value: 16
   matching.numTaskqueueWritePartitions: # Number of Task Queue partitions for write operations.
-    - constraints: { namespace: "namespace1", taskQueueName: "tq" } # Applies to the "tq" Task Queue for both Workflows and Activities.
+    - constraints: { namespace: 'namespace1', taskQueueName: 'tq' } # Applies to the "tq" Task Queue for both Workflows and Activities.
       value: 8 # The default value for this key is 4. Task Queues that need to support high traffic require higher number of partitions. Set these values in accordance to your poller count.
-    - constraints: { namespace: "namespace1", taskQueueName: "other-tq", taskType: "Activity" } # Applies to the "other_tq" Task Queue for Activities specifically.
+    - constraints: {
+          namespace: 'namespace1',
+          taskQueueName: 'other-tq',
+          taskType: 'Activity',
+        } # Applies to the "other_tq" Task Queue for Activities specifically.
       value: 20
-    - constraints: { namespace: "namespace2" } # Applies to all task queues in "namespace2".
+    - constraints: { namespace: 'namespace2' } # Applies to all task queues in "namespace2".
       value: 10
     - constraints: {} # Applies to all other task queues in "namespace1" and all other Namespaces.
       value: 16
   ```
 
-<!-- Note that the values set with most constraints take priority over values that are set with fewer constraints, regardless of the order in which they are set in the dynamic configuration key. -->
+{/* Note that the values set with most constraints take priority over values that are set with fewer constraints, regardless of the order in which they are set in the dynamic configuration key. */}
 
 For more examples on how dynamic configuration is set, see:
 
@@ -183,12 +190,12 @@ If the number of queries made to the Persistence store exceeds the dynamic confi
 
 ### Activity and Workflow default policy setting
 
-You can define default values for Activity and Workflow [Retry Policies](/retry-policies) at the Cluster level with the following dynamic configuration keys.
+You can define default values for Activity and Workflow [Retry Policies](/encyclopedia/retry-policies) at the Cluster level with the following dynamic configuration keys.
 
-| Dynamic configuration key            | Type                          | Description                                                                                                       | Default value                                                                      |
-| ------------------------------------ | ----------------------------- | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `history.defaultActivityRetryPolicy` | Map (key-value pair elements) | Server configuration for an Activity Retry Policy when it is not explicitly set for the Activity in your code.    | [Default values for retry Policy](/retry-policies#default-values-for-retry-policy) |
-| `history.defaultWorkflowRetryPolicy` | Map (key-value pair elements) | Retry Policy for unset fields where the user has set an explicit `RetryPolicy`, but not specified all the fields. | [Default values for retry Policy](/retry-policies#default-values-for-retry-policy) |
+| Dynamic configuration key            | Type                          | Description                                                                                                       | Default value                                                                                   |
+| ------------------------------------ | ----------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `history.defaultActivityRetryPolicy` | Map (key-value pair elements) | Server configuration for an Activity Retry Policy when it is not explicitly set for the Activity in your code.    | [Default values for retry Policy](/encyclopedia/retry-policies#default-values-for-retry-policy) |
+| `history.defaultWorkflowRetryPolicy` | Map (key-value pair elements) | Retry Policy for unset fields where the user has set an explicit `RetryPolicy`, but not specified all the fields. | [Default values for retry Policy](/encyclopedia/retry-policies#default-values-for-retry-policy) |
 
 ### Size limit settings
 
@@ -224,4 +231,3 @@ This can be useful when migrating a Visibility database or creating a backup Vis
 | ------------------------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
 | `system.enableReadFromSecondaryVisibility` | Boolean | Enables reading from the [secondary Visibility store](/visibility#dual-visibility), and can be set per Namespace. Allowed values are `true` or `false`.                                                                                                                                                                                                                                                              | `false`       |
 | `system.secondaryVisibilityWritingMode`    |         | Enables writing Visibility data to the secondary Visibility store and can be set per Namespace. Setting this value to `on` disables write operations to the primary Visibility store. Allowed values:<br /> `off`: Enables writing to primary Visibility store only. <br /> `on`: Enables writing to secondary Visibility store only.<br /> `dual`: Enables writing to both primary and secondary Visibility stores. | `off`         |
-

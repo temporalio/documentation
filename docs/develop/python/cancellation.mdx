@@ -1,0 +1,80 @@
+---
+id: cancellation
+title: Cancellation - Python SDK feature guide
+sidebar_label: Cancellation
+description: Learn how to cancel an Activity from a Workflow using the Temporal Python SDK. Ensure proper Heartbeat execution and handling to manage Workflow and Activity cancellations efficiently.
+toc_max_heading_level: 2
+keywords:
+  - activity cancellation
+  - cancel activity from workflow
+  - temporal python activity cancellation
+  - activity heartbeats
+  - heartbeat timeout
+  - handling cancellation errors
+  - local activity cancellation
+tags:
+  - python
+  - python-sdk
+  - activities
+  - workflows
+  - cancellation
+---
+
+**How to cancel an Activity from a Workflow using the Temporal Python SDK.**
+
+Canceling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat Timeout.
+If the Heartbeat is not invoked, the Activity cannot receive a cancellation request.
+When any non-immediate Activity is executed, the Activity Execution should send Heartbeats and set a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) to ensure that the server knows it is still working.
+
+When an Activity is canceled, an error is raised in the Activity at the next available opportunity.
+If cleanup logic needs to be performed, it can be done in a `finally` clause or inside a caught cancel error.
+However, for the Activity to appear canceled the exception needs to be re-raised.
+
+:::note
+
+Unlike regular Activities, [Local Activities](/activities#local-activity) can be canceled if they don't send Heartbeats.
+Local Activities are handled locally, and all the information needed to handle the cancellation logic is available in the same Worker process.
+
+:::
+
+To cancel an Activity from a Workflow Execution, call the [cancel()](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel) method on the Activity handle that is returned from [start_activity()](https://python.temporal.io/temporalio.workflow.html#start_activity).
+
+```python
+@activity.defn
+async def cancellable_activity(input: ComposeArgsInput) -> NoReturn:
+    try:
+        while True:
+            print("Heartbeating cancel activity")
+            await asyncio.sleep(0.5)
+            activity.heartbeat("some details")
+    except asyncio.CancelledError:
+        print("Activity cancelled")
+        raise
+
+
+@activity.defn
+async def run_activity(input: ComposeArgsInput):
+    print("Executing activity")
+    return input.arg1 + input.arg2
+
+@workflow.defn
+ class GreetingWorkflow:
+     @workflow.run
+     async def run(self, input: ComposeArgsInput) -> None:
+        activity_handle = workflow.start_activity(
+            cancellable_activity,
+            ComposeArgsInput(input.arg1, input.arg2),
+            start_to_close_timeout=timedelta(minutes=5),
+            heartbeat_timeout=timedelta(seconds=30),
+        )
+
+        await asyncio.sleep(3)
+        activity_handle.cancel()
+```
+
+:::note
+
+The Activity handle is a Python task.
+By calling `cancel()`, you're essentially requesting the task to be canceled.
+
+:::

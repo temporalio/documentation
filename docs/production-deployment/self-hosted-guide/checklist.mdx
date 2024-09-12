@@ -1,9 +1,8 @@
 ---
 id: checklist
 title: Temporal Platform's production readiness checklist
-sidebar_label: Prod checklist
-sidebar_position: 3
-description: Discover all the production level steps you can take to ensure a smooth deployment.
+sidebar_label: Production checklist
+description: Optimize your Temporal Service for production with scaling, metrics, load testing, and effective workflow versioning techniques. Ensure robust performance and future-proof your workflows.
 slug: /self-hosted-guide/production-checklist
 toc_max_heading_level: 4
 keywords:
@@ -24,14 +23,45 @@ tags:
   - versioning
 ---
 
-Consider the following when running a production level Temporal Cluster.
+This page describes common challenges customers face who self-host Temporal and it shares recommendations to mitigate those issues.
 
-## Scaling and Metrics {#scaling-and-metrics}
+Temporal at its core is about durability and reliability.
+To ensure this durability and reliability, a Temporal Service must be deployed according to best practices.
 
-The requirements of your Temporal system will vary widely based on your intended production workload.
+This guide provides a path to demonstrate that Temporal consumers can be confident in a Temporal Service and provides a list of key tests you as a user should perform against the service.
+
+## Self-Hosting Challenge Areas
+
+Significant engineering and ongoing effort is required to resolve several potential challenges:
+
+- Scalability with spiky or growing workloads
+- Global hosting
+- Uptime, availability and reliability
+- Management and control plane
+- Latency, which must be kept low and consistent
+- [Security](/self-hosted-guide/security)
+- Maintenance and upgrades
+- Expert support to users of the service
+- Cost management
+
+Each of these components is an essential part of building a mission critical Temporal Service.
+Without demonstrated architectural durability, the value of Temporal's [Durable Execution](https://temporal.io/how-it-works) model is compromised.
+
+## Scalability with Variable or Growing Workloads {#scaling-and-metrics}
+
+Workloads can be highly variable, and you may experience sustained workload spikes.
+Temporal recommends scaling your clusters to well above the average throughput.
+See [Scaling Temporal: The Basics](https://temporal.io/blog/scaling-temporal-the-basics) for an introduction to the topic.
+
+Temporal server throughput is often limited by the number of [Shards](/clusters#history-shard) configured for the Temporal Service.
+A Shard is an unit within a Temporal Service by which concurrent Workflow Execution throughput can be scaled.
+Shard capacity, and often overall cluster throughput, is set at build time for a cluster and that cluster setting cannot be adjusted later.
+Adding more Shards if needed requires a cluster rebuild, and a migration to the new cluster.
+
+The requirements of your Temporal Service will vary widely based on your intended production workload.
 You will want to run your own proof of concept tests and watch for key metrics to understand the system health and scaling needs.
 
-**Load testing.** You can use [the Maru benchmarking tool](https://github.com/temporalio/maru/) ([author's guide here](https://mikhail.io/2021/03/maru-load-testing-tool-for-temporal-workflows/)), see how we ourselves [stress test Temporal](https://temporal.io/blog/temporal-deep-dive-stress-testing/), or write your own.
+**Load testing.** You can use [the Omes benchmarking tool](https://github.com/temporalio/omes/), see how we ourselves [stress test Temporal](https://temporal.io/blog/temporal-deep-dive-stress-testing/), or write your own.
 
 All metrics emitted by the server are [listed in Temporal's source](https://github.com/temporalio/temporal/blob/main/common/metrics/defs.go).
 There are also equivalent metrics that you can configure from the client side.
@@ -47,104 +77,82 @@ At a high level, you will want to track these 3 categories of metrics:
   Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate` and `workflow_cancel` counters for each type of Workflow Execution completion.
   These include the `namespace` tag.
 
-## Workflow Versioning {#workflow-versioning}
+## Availability
 
-### Future-proofing your Payloads
+A high level of availability and reliability (99.99%) is a requirement for mission critical deployments.
+Temporal recommends testing for this availability level while load testing.
+We also recommend validating this level of reliability while doing server upgrades, to ensure no loss of service availability.
 
-One of the easiest things you can do to future-proof your Workflows is to ensure that the inputs and outputs of your Workflows and [Activities](/activities) are ready for changes.
-The first step is to use one object, struct, or similar for each input and output.
+Temporal Clusters can be deployed in as many regions as needed to meet various requirements:
 
-For example, rather than defining your Workflow like this—
+- Data Residency
+- Latency
+- Security / Isolation
+  This can multiply the effort to implement and maintain clusters.
 
-```typescript
-export async function myWorkflow(foo: string): Promise<string>;
-```
+[Temporal Cloud is available in 15 AWS regions](/cloud/service-availability).
 
-—define it like this:
+## Management and Control Plane
 
-```typescript
-type MyWorkflowInput = { foo: string };
-type MyWorkflowOuptut = { result: string };
-export async function myWorkflow(foo: MyWorkflowInput): Promise<MyWorkflowOutput>;
-```
+Temporal success leads to larger Temporal deployments.
+Needs can increase, and can go from having one or two production use cases in a single region to many use cases in many regions.
+Running multiple Temporal Services is complex work, as each needs its own setup, tuning, and configuration.
 
-By using this technique, you can add fields in a way that will be compatible with existing [Event Histories](/workflows#event-history) (assuming you use a [Payload Converter](/dataconversion#payload-converter) that can deserialize older [Payloads](/dataconversion#payload), such as JSON).
-We recommend doing this for all your Workflows and Activities in production.
+Needing to monitor and manage all your Temporal Services in a unified way leads to operational management pain.
+Consider adding a layer on top of Temporal to manage multiple Temporal Services: a control plane.
+A control plane manages and directs data flow, deciding where data packets should be sent.
+A Temporal Service data plan can streamline operations and improve efficiency.
+Since Temporal does not ship its own open source data plane, rolling your own can be complex and take effort to add.
 
-You can go even farther by defining your inputs and outputs using [Protocol Buffers (protobuf)](https://protobuf.dev/) or another interface definition language (IDL).
-We support protobuf with built-in converters.
+Temporal Cloud provides exactly that support.
+With Temporal Cloud, all Namespaces in all regions can be managed from a single view.
+[Temporal Cloud](https://temporal.io/cloud) also has RBAC functionality that can delegate responsibilities for individual Namespaces.
 
-### Dealing with very long-lived or very event-heavy Workflows
+Self-hosted Temporal does not support RBAC or audit logging out of the box.
+Temporal Cloud provides RBAC and SSO support, audit logging, data encryption, third party penetration test validation, and SOC 2-Type II and HIPAA compliance.
 
-If you know that your Workflow will live for a very long time or generates a large volume of [Events](/workflows#event), you need to deal with the Event [limits](/workflows#limits) and [Continue-As-New](/workflows#continue-as-new) at some point.
+## Maintenance and Upgrades
 
-One technique to prepare for this eventuality (and at the same time make your life easier when you need to make changes to the [Workflow Definition](/workflows#workflow-definition)) is to structure your Workflow as an "entity Workflow."
+Temporal recommends keeping up-to-date and not falling behind on your server versions.
 
-### Make all non-transient state serializable
+Temporal Server is proactively updated, and releases as often as every two weeks.
+Temporal recommends [upgrading sequentially](/self-hosted-guide/upgrade-server), not skipping any minor versions, although you can skip patch versions.
+No support is guaranteed for Temporal Server, but very old servers will be hard for even the community to support, so we encourage you to keep up to date.
+You must create and maintain the infrastructure to host and run your self-hosted Temporal installation, such as Kubernetes, as well as data stores for persistence.
 
-You already defined your Workflow input as an object or struct like we mentioned in the previous section, right?
-If you didn't, do that.
+Server upgrades can negatively affect self-hosted Temporal Service availability.
+Temporal recommends load and availability testing during the upgrade process to understand the performance implications.
 
-The struct should be capable of representing all state that your Workflow cares about.
-Because it is also your Workflow input, it must be serializable.
+Temporal Cloud updates are managed by the Temporal Cloud team; Cloud upgrades are seamless.
 
-In practice, this often ends up looking like a state machine.
+## Expert Support
 
-### Continue-As-New on demand
+Temporal recommends that customer platform teams who are building out a Temporal service gain deep experience across the lifecycle and breadth of a Temporal application.
 
-Set up a mechanism to force your Workflow to Continue-As-New on demand.
-The easiest way to do this is to define a Signal handler that continues the Workflow when received.
-Be sure that all previously received Signals have been processed and that all running [Child Workflows](/workflows#child-workflow) have been waited on or otherwise dealt with.
+Specific activities include:
 
-The newly started Workflow then unpacks the state in the input and can "resume" the Workflow according to your business logic.
+- [Worker tuning](/develop/worker-performance)
+- [Worker best practices](/workers)
+- Code reviews
+- Design guidance
+- Training
+- Code reviews
+- Security reviews
+- [Metrics](/references/sdk-metrics) and monitoring
+- Technical onboarding
 
-A huge benefit of this approach is that you avoid making patches to running Workflows.
-Instead, tell them all to continue onto a new [Task Queue](/workers#task-queue) with [Workers](/workers) that have the updated Workflow code.
+[Temporal support](/cloud/support) provides guidance on all of the above.
 
-### When and how to make changes to your Workflow code
+## Cost Management
 
-When you have an understanding of the importance of writing deterministic Workflow code, you might find yourself grappling with the best way to make changes to that code.
+Running a mission critical, global Temporal Service can be expensive.
+Temporal Server is a complex system to run and scale.
+Temporal recommends performance testing and planning scaling as your performance requirements evolve.
+Following our guidance can oversize your self-hosted Temporal Server installs, but this is necessary to handle unpredictable spiky workloads.
+Performance testing can help you right-size your environments.
+Running mission critical Temporal as a Service requires multiple Temporal Clusters for high availability and global coverage.
 
-Three approaches are available to you at this time: Task Queue–based versioning, Workflow Name–based versioning, and the Patch and GetVersion APIs.
-Each approach has merits and demerits.
-(We're also [working toward](https://github.com/temporalio/proposals/blob/master/versioning/worker-versions.md) making Task Queue–based versioning a first-class concept built into Temporal, but that's not quite ready.)
+It is a good practice to have trained, experienced administrators familiar with Temporal Service architecture to maintain your Temporal servers and provide a mission critical service.
+Staffing, training and skill development can be significant costs to maintaining a Temporal Service.
 
-The fundamental recommendation here is to use [Task Queue–based versioning](#task-queuebased-versioning) whenever you can, and use the [Patch and GetVersion APIs](#patch-and-getversion-apis) if your Workflows live long enough that you cannot afford to wait for them to complete before changing their behavior.
-
-### Task Queue–based versioning
-
-In this approach, after you make changes to your Workflow code, deploy your Workers pointed at a new Task Queue instead of the existing one.
-For example, if you were targeting the Task Queue `tq-v1`, you'd now target `tq-v2` or similar.
-You must also update whatever sources are starting new Workflows to point at the new Task Queue name.
-Leave your old Workers running, possibly reducing the number of instances, until no more open Workflows are on `tq-v1`.
-Then you can decommission all of them.
-
-**Advantages**
-
-- Conceptually simple.
-- Robust.
-  Changes are isolated from each other in a way that makes mistakes unlikely.
-
-**Disadvantages**
-
-- Operationally complex (need to keep old Workers alive and change the Task Queue that clients point to).
-  This approach can result in multiple sets of old Workers, especially with long-running Workflows.
-- Can't be used to fix a bug in currently running or open Workflows.
-
-### Patch and GetVersion APIs
-
-By using functions available in our SDKs, you can branch in your Workflow code based on whether the Workflow is running with newer or older code.
-The APIs take slightly different forms depending on the language you're using.
-For details, see the language-specific links in [Workflow Versioning](/workflows#workflow-versioning).
-
-**Advantages**
-
-- Don't need to change where Workflow starters are pointing.
-- Lets you change the yet-to-be-executed behavior of currently open Workflows while remaining compatible with existing Event Histories.
-  The behavior of new Workflows always takes the "new" path.
-
-**Disadvantages**
-
-- Conceptually complex.
-- Cognitive burden of needing to understand how both the "old" and "new" code paths work.
-- If used indefinitely on the same Workflow Definition, can lead to a mess of branching.
+[Temporal Cloud](https://temporal.io/cloud) can be significantly less expensive to set up and scale.

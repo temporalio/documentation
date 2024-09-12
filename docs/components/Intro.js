@@ -24,28 +24,28 @@ const coreConcepts = [
 
 const appDevGuideLinks = [
   {
-    path: "/dev-guide/go",
-    name: "Go SDK developer's guide",
+    path: "/develop/go",
+    name: "Go SDK feature guides",
   },
   {
-    path: "/dev-guide/java",
-    name: "Java SDK developer's guide",
+    path: "/develop/java",
+    name: "Java SDK feature guides",
   },
   {
-    path: "/dev-guide/python",
-    name: "Python SDK developer's guide",
+    path: "/develop/python",
+    name: "Python SDK feature guides",
   },
   {
-    path: "/dev-guide/typescript",
-    name: "TypeScript SDK developer's guide",
+    path: "/develop/typescript",
+    name: "TypeScript SDK feature guides",
   },
   {
-    path: "https://github.com/temporalio/sdk-dotnet#readme",
-    name: ".NET SDK readme",
+    path: "/develop/dotnet",
+    name: ".NET SDK feature guides",
   },
   {
-    path: "/dev-guide/php",
-    name: "PHP SDK developer's guide",
+    path: "/develop/php",
+    name: "PHP SDK feature guides",
   },
 ];
 
@@ -76,10 +76,6 @@ const devTools = [
     path: "/web-ui",
     name: `Web UI`,
   },
-  {
-    path: "/tctl-v1",
-    name: "tctl v1.17",
-  },
 ];
 
 const references = [
@@ -97,7 +93,7 @@ const references = [
   },
   {
     path: "/references/cluster-metrics",
-    name: "Cluster metrics",
+    name: "Temporal Service metrics",
   },
   {
     path: "/references/errors",
@@ -222,17 +218,17 @@ function CommunityCard({ title, content, link }) {
 
 const slides = [
   {
-    title: "Temporal Cluster",
+    title: "Temporal Service",
     description: "Provides reliable and scalable workflow orchestration.",
-    content1: `A Temporal Cluster ensures that Workflows are resilient by saving each step the Workflow code takes. It also schedules retries whenever there are errors in your application’s code.`,
-    content2: `You can run it wherever you’d like and scale from a single laptop to thousands of machines, adding resources when and where you need them. And although you've just set up a lightweight Cluster for development, switching your code to point at a production Cluster only requires changing your connection parameters.`,
+    content1: `A Temporal Service ensures that Workflows are resilient by saving each step the Workflow code takes. It also schedules retries whenever there are errors in your application’s code.`,
+    content2: `You can run it wherever you’d like and scale from a single laptop to thousands of machines, adding resources when and where you need them. And although you've just set up a lightweight Temporal Service for development, switching your code to point at a production Temporal Service only requires changing your connection parameters.`,
     giphy: "eePSFNBFv2W9owZ4Sh",
   },
   {
     title: "SDKs",
     description: "Write code in your programming language of choice.",
     content1:
-      "A Temporal SDK is a library you use in your code. Each SDK has two parts to its API: the Client and the Worker. The Worker is the long-running process that has your Workflow code. The Client is used to communicate with the Cluster—for instance, to start and interact with Workflows.",
+      "A Temporal SDK is a library you use in your code. Each SDK has two parts to its API: the Client and the Worker. The Worker is the long-running process that has your Workflow code. The Client is used to communicate with the Temporal Service—for instance, to start and interact with Workflows.",
     giphy: "6UFgdU9hirj1pAOJyN",
   },
   {
@@ -260,15 +256,15 @@ const slides = [
     title: "Workers",
     description:
       "Workers run Workflow and Activity code reliably and consistently. You can increase the scalability and availability of your application by running additional Workers. ",
-    content1: `One thing that people new to Temporal find surprising is that the Temporal Cluster does not execute your code.`,
-    content2: `You deploy your code to containers or machines that are separate from the Temporal Cluster. Using the Worker API provided by the Temporal SDK, you will run one or more Worker processes that will execute your Workflow and Activity code based on tasks managed by the Temporal Cluster.`,
-    content3: `The Cluster gives the Workers tasks like “Start running Workflow A,” and the Workers run the corresponding Workflow function or method.`,
+    content1: `One thing that people new to Temporal find surprising is that the Temporal Service does not execute your code.`,
+    content2: `You deploy your code to containers or machines that are separate from the Temporal Service. Using the Worker API provided by the Temporal SDK, you will run one or more Worker processes that will execute your Workflow and Activity code based on tasks managed by the Temporal Service.`,
+    content3: `The Temporal Service gives the Workers tasks like “Start running Workflow A,” and the Workers run the corresponding Workflow function or method.`,
     giphy: "DhstvI3zZ598Nb1rFf",
   },
   {
     title: "Temporal CLI",
-    description: "Communicate directly with the Temporal Cluster by entering commands in the terminal.",
-    content1: `The Temporal CLI runs a development version of the Cluster. Interact with the Cluster - start Workflows, list them, get their status, and more.`,
+    description: "Communicate directly with the Temporal Service by entering commands in the terminal.",
+    content1: `The Temporal CLI runs a development version of the Temporal Service. Interact with the Temporal Service - start Workflows, list them, get their status, and more.`,
     content2: `  From the command line using the temporal command. From code, using an SDK Client. From your browser, using the Web UI.`,
     giphy: "GA2dwDU7owOS4",
   },

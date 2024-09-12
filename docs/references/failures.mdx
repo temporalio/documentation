@@ -2,22 +2,21 @@
 id: failures
 title: Temporal Failures reference
 sidebar_label: Failures
-description: A Failure is Temporal's representation of various types of errors that occur in the system.
+description: A Failure in Temporal represents different types of errors in the system, categorized and managed uniquely within SDKs and protobuf messages, impacting Workflow and Activity operations.
 toc_max_heading_level: 4
 keywords:
-- explanation
-- failure
-- term
+  - explanation
+  - failure
+  - term
 tags:
-- explanation
-- failure
-- term
+  - explanation
+  - failure
+  - term
 ---
-
 
 A Failure is Temporal's representation of various types of errors that occur in the system.
 
-There are different types of Failures, and each has a different type in the SDKs and different information in the protobuf messages (which are used to communicate with the Temporal Cluster and appear in [Event History](/workflows#event-history)).
+There are different types of Failures, and each has a different type in the SDKs and different information in the protobuf messages (which are used to communicate with the Temporal Service and appear in [Event History](/workflows#event-history)).
 
 ## Temporal Failure
 
@@ -46,14 +45,13 @@ This is the only type of Failure created and thrown by user code.
 - Python: [ApplicationError](https://python.temporal.io/temporalio.exceptions.ApplicationError.html)
 - Proto: [ApplicationFailureInfo](https://api-docs.temporal.io/#temporal.api.failure.v1.ApplicationFailureInfo) and [Failure](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)
 
-### Throw from Workflows
+### Errors in Workflows
 
-Only Workflow errors that are Temporal Failures cause the Workflow Execution to fail; all other errors cause the Workflow Task to fail and be retried (except for Go, where any error returned from the Workflow fails the Execution, and a panic fails the Task).
-Most types of Temporal Failures automatically occur, like a [Cancelled Failure](#cancelled-failure) when the Workflow is Cancelled or an [Activity Failure](#activity-failure) when an Activity Fails.
-You can also explicitly fail the Workflow Execution by throwing (or returning, depending on the SDK) an Application Failure.
+An error in a Workflow can cause either a **Workflow Task Failure** (the Task will be retried) or a **Workflow Execution Failure** (the Workflow is marked as failed).
 
-If a Workflow raises an exception, it will either be retried, or marked as failed.
-This is dependent on whether the exception is a **Workflow Task Failure** or a **Workflow Execution Failure**.
+Only Workflow exceptions that are Temporal Failures cause the Workflow Execution to fail; all other exceptions cause the Workflow Task to fail and be retried (in Go, any error returned from the Workflow fails the Workflow Execution, and a panic fails the Workflow Task).
+Most types of Temporal Failures occur automatically, like a [Cancelled Failure](#cancelled-failure) when the Workflow is Cancelled or an [Activity Failure](#activity-failure) when an Activity Fails.
+You can also explicitly fail the Workflow Execution by throwing an Application Failure (returning any error in Go).
 
 #### Workflow Task Failures
 
@@ -68,7 +66,7 @@ An `ApplicationError`, an extension of `FailureError`, can be raised in a Workfl
 Workflow Execution Failures put the Workflow Execution into the "Failed" state and no more attempts will be made in progressing this execution.
 If you are creating custom exceptions you would either need to extend the `ApplicationError` class—a child class of `FailureError`— or explicitly state that this exception is a Workflow Execution Failure by raising a new `ApplicationError`.
 
-### Throw from Activities
+### Errors in Activities
 
 In Activities, you can either throw an Application Failure or another Error to fail the Activity Task.
 In the latter case, the error is converted to an Application Failure.
@@ -79,14 +77,21 @@ During conversion, the following Application Failure fields are set:
 - `non_retryable` is set to false.
 - `details` are left unset.
 - `cause` is a Failure converted from the error's `cause` property.
+- `next_retry_delay` is left unset.
 - call stack is copied.
 
 When an [Activity Execution](/activities#activity-execution) fails, the Application Failure from the last Activity Task is the `cause` field of the [ActivityFailure](#activity-failure) thrown in the Workflow.
 
 ### Non-retryable
 
-When an Activity or Workflow throws an Application Failure, the Failure's `type` field is matched against a Retry Policy's list of [non-retryable errors](/retry-policies#non-retryable-errors) to determine whether to retry the Activity or Workflow.
+When an Activity or Workflow throws an Application Failure, the Failure's `type` field is matched against a Retry Policy's list of [non-retryable errors](/encyclopedia/retry-policies#non-retryable-errors) to determine whether to retry the Activity or Workflow.
 Activities and Workflow can also avoid retrying by setting an Application Failure's `non_retryable` flag to `true`.
+
+### Setting the Next Retry Delay {#next-retry-delay}
+
+By setting the Next Retry Delay for a given Application Failure, you can tell the server to wait that amount of time before trying the Activity or Workflow again. This will override whatever the Retry Policy would have computed for your specific exception.
+
+Java: [NextRetryDelay](/develop/java/failure-detection#next-retry-delay)
 
 ## Cancelled Failure
 
@@ -94,7 +99,7 @@ When [Cancellation](/activities#cancellation) of a Workflow or Activity is reque
 For example, in TypeScript, in some cases a Cancelled Failure is thrown directly by a Workflow API function, and in other cases the Cancelled Failure is wrapped in a different Failure.
 To check both types of cases, TypeScript has the [isCancellation](https://typescript.temporal.io/api/namespaces/workflow#iscancellation) helper.
 
-<!-- TODO also link to Workflow Cancellation concept -->
+{/* TODO also link to Workflow Cancellation concept */}
 
 When a Workflow or Activity is successfully Cancelled, a Cancelled Failure is the `cause` field of the Activity Failure or "Workflow failed" error.
 
@@ -158,11 +163,10 @@ In the SDKs:
 
 ## Server Failure
 
-A Server Failure is used for errors that originate in the Cluster.
+A Server Failure is used for errors that originate in the Temporal Service.
 
 - TypeScript: [ServerFailure](https://typescript.temporal.io/api/classes/common.ServerFailure)
 - Java: [ServerFailure](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/ServerFailure.html)
 - Go: [ServerError](https://pkg.go.dev/go.temporal.io/sdk/temporal#ServerError)
 - Python: [ServerError](https://python.temporal.io/temporalio.exceptions.ServerError.html)
 - Proto: [ServerFailureInfo](https://api-docs.temporal.io/#temporal.api.failure.v1.ServerFailureInfo) and [Failure](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)
-

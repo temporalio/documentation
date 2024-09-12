@@ -1,0 +1,333 @@
+---
+id: schedules
+title: Schedules - Temporal Go SDK feature guide
+sidebar_label: Schedules
+toc_max_heading_level: 4
+keywords:
+  - schedules
+tags:
+  - schedules
+description: Learn how to schedule Workflows, start them with delays or as Temporal Cron Jobs using the Go SDK. Master scheduling, backfilling, pausing, deleting, and updating Workflows.
+---
+
+This page shows how to do the following:
+
+- [Scheduled Workflows](#schedule-a-workflow)
+  - [Create a Schedule](#create-schedule)
+  - [Backfill a Schedule](#backfill-schedule)
+  - [Delete a Schedule](#delete-schedule)
+  - [Describe a Schedule](#describe-schedule)
+  - [List Schedules](#list-schedules)
+  - [Pause a Schedule](#pause-schedule)
+  - [Trigger a Schedule](#trigger-schedule)
+  - [Update a Schedule](#update-schedule)
+- [Start delay](#start-delay)
+- [Temporal Cron Jobs](#temporal-cron-jobs)
+
+## Scheduled Workflows {#schedule-a-workflow}
+
+Scheduling Workflows is a crucial aspect of any automation process, especially when dealing with time-sensitive tasks. By scheduling a Workflow, you can automate repetitive tasks, reduce the need for manual intervention, and ensure timely execution of your business processes
+
+Use any of the following action to help Schedule a Workflow Execution and take control over your automation process.
+
+### Create a Schedule {#create-schedule}
+
+**How to create a Schedule for a Workflow using the Go SDK.**
+
+Schedules are initiated with the `create` call.
+The user generates a unique Schedule ID for each new Schedule.
+
+To create a Schedule in Go, use `Create()` on the [Client](/encyclopedia/temporal-sdks#temporal-client).
+Schedules must be initialized with a Schedule ID, [Spec](/workflows#spec), and [Action](/workflows#action) in `client.ScheduleOptions{}`.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/create/main.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+func main() {
+// ...
+	scheduleID := "schedule_id"
+	workflowID := "schedule_workflow_id"
+	// Create the schedule.
+	scheduleHandle, err := temporalClient.ScheduleClient().Create(ctx, client.ScheduleOptions{
+		ID:   scheduleID,
+		Spec: client.ScheduleSpec{},
+		Action: &client.ScheduleWorkflowAction{
+			ID:        workflowID,
+			Workflow:  schedule.ScheduleWorkflow,
+			TaskQueue: "schedule",
+		},
+	})
+// ...
+}
+// ...
+```
+
+### Backfill a Schedule {#backfill-schedule}
+
+**How to Backfill a Schedule for a Workflow using the Go SDK.**
+
+Backfilling a Schedule executes [Workflow Tasks](/workers#workflow-task) ahead of the Schedule's specified time range.
+This is useful for executing a missed or delayed Action, or for testing the Workflow ahead of time.
+
+To backfill a Schedule in Go, use `Backfill()` on `ScheduleHandle`.
+Specify the start and end times to execute the Workflow, along with the overlap policy.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/backfill/main.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+func main() {
+// ...
+	err = scheduleHandle.Backfill(ctx, client.ScheduleBackfillOptions{
+		Backfill: []client.ScheduleBackfill{
+			{
+				Start:   now.Add(-4 * time.Minute),
+				End:     now.Add(-2 * time.Minute),
+				Overlap: enums.SCHEDULE_OVERLAP_POLICY_ALLOW_ALL,
+			},
+			{
+				Start:   now.Add(-2 * time.Minute),
+				End:     now,
+				Overlap: enums.SCHEDULE_OVERLAP_POLICY_ALLOW_ALL,
+			},
+		},
+	})
+	if err != nil {
+		log.Fatalln("Unable to Backfill Schedule", err)
+	}
+// ...
+}
+// ...
+```
+
+### Delete a Schedule {#delete-schedule}
+
+**How to delete a Schedule for a Workflow using the Go SDK.**
+
+Deleting a Schedule erases a Schedule.
+Deletion does not affect any Workflows started by the Schedule.
+
+To delete a Schedule, use `Delete()` on the `ScheduleHandle`.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/delete/main.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+func main() {
+// ...
+	defer func() {
+		log.Println("Deleting schedule", "ScheduleID", scheduleHandle.GetID())
+		err = scheduleHandle.Delete(ctx)
+		if err != nil {
+			log.Fatalln("Unable to delete schedule", err)
+		}
+	}()
+// ...
+```
+
+### Describe a Schedule {#describe-schedule}
+
+**How to describe a Schedule for a Workflow using the Go SDK.**
+
+`Describe` retrieves information about the current Schedule configuration.
+This can include details about the Schedule Spec (such as Intervals), CronExpressions, and Schedule State.
+
+To describe a Schedule, use `Describe()` on the ScheduleHandle.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/describe/main.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+func main() {
+// ...
+	scheduleHandle.Describe(ctx)
+// ...
+```
+
+### List Schedules {#list-schedules}
+
+**How to list all Schedules for Workflows using the Go SDK.**
+
+The `List` action returns all available Schedules and their respective Schedule IDs.
+
+To return information on all Schedules, use `ScheduleClient.List()`.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/list/main.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+func main() {
+// ...
+	listView, _ := temporalClient.ScheduleClient().List(ctx, client.ScheduleListOptions{
+		PageSize: 1,
+	})
+
+	for listView.HasNext() {
+		log.Println(listView.Next())
+	}
+// ...
+```
+
+### Pause a Schedule {#pause-schedule}
+
+**How to pause and unpause a Schedule for a Workflow using the Go SDK.**
+
+`Pause` and `Unpause` enable the start or stop of all future Workflow Runs on a given Schedule.
+
+Pausing a Schedule halts all future Workflow Runs.
+Pausing can be enabled by setting `State.Paused` to `true`, or by using `Pause()` on the ScheduleHandle.
+
+Unpausing a Schedule allows the Workflow to execute as planned.
+To unpause a Schedule, use `Unpause()` on `ScheduleHandle`.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/pause/main.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+func main() {
+// ...
+	err = scheduleHandle.Pause(ctx, client.SchedulePauseOptions{
+		Note: "The Schedule has been paused.",
+	})
+// ...
+	err = scheduleHandle.Unpause(ctx, client.ScheduleUnpauseOptions{
+		Note: "The Schedule has been unpaused.",
+	})
+```
+
+### Trigger a Schedule {#trigger-schedule}
+
+**How to trigger a Schedule for a Workflow using the Go SDK.**
+
+Triggering a Schedule immediately executes an Action defined in that Schedule.
+By default, `trigger` is subject to the Overlap Policy.
+
+To trigger a Scheduled Workflow Execution, use `trigger()` on `ScheduleHandle`.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/trigger/main.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+func main() {
+// ...
+	for i := 0; i < 5; i++ {
+		scheduleHandle.Trigger(ctx, client.ScheduleTriggerOptions{
+			Overlap: enums.SCHEDULE_OVERLAP_POLICY_ALLOW_ALL,
+		})
+		time.Sleep(2 * time.Second)
+	}
+// ...
+```
+
+### Update a Schedule {#update-schedule}
+
+**How to update a Schedule for a Workflow using the Go SDK.**
+
+Updating a Schedule changes the configuration of an existing Schedule.
+These changes can be made to Workflow Actions, Action parameters, Memos, and the Workflow's Cancellation Policy.
+
+Use `Update()` on the ScheduleHandle to modify a Schedule.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/update/main.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+func main() {
+// ...
+	updateSchedule := func(input client.ScheduleUpdateInput) (*client.ScheduleUpdate, error) {
+		return &client.ScheduleUpdate{
+			Schedule: &input.Description.Schedule,
+		}, nil
+	}
+
+	_ = scheduleHandle.Update(ctx, client.ScheduleUpdateOptions{
+		DoUpdate: updateSchedule,
+	})
+}
+// ...
+```
+
+## Start Delay {#start-delay}
+
+**How to delay the start of a Workflow Execution using Start Delay with the Temporal Go SDK.**
+
+Use `StartDelay` to schedule a Workflow Execution at a specific one-time future point rather than on a recurring schedule.
+
+Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `StartDelay` field, and pass the instance to the `ExecuteWorkflow` call.
+
+```go
+workflowOptions := client.StartWorkflowOptions{
+  // ...
+  // Start the workflow in 12 hours
+  StartDelay: time.Hours * 12,
+  // ...
+}
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```
+
+## Temporal Cron Jobs {#temporal-cron-jobs}
+
+**How to start a Workflow Execution as a Temporal Cron Job using the Go SDK.**
+
+:::caution Cron support is not recommended
+
+We recommend using [Schedules](https://docs.temporal.io/workflows#schedule) instead of Cron Jobs.
+Schedules were built to provide a better developer experience, including more configuration options and the ability to update or pause running Schedules.
+
+:::
+
+A [Temporal Cron Job](/workflows#temporal-cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
+
+A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
+
+Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `CronSchedule` field, and pass the instance to the `ExecuteWorkflow` call.
+
+- Type: `string`
+- Default: None
+
+```go
+workflowOptions := client.StartWorkflowOptions{
+  CronSchedule: "15 8 * * *",
+  // ...
+}
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```

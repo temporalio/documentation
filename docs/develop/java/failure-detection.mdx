@@ -1,0 +1,290 @@
+---
+id: failure-detection
+title: Failure detection - Temporal Java SDK feature guide
+sidebar_label: Failure detection
+toc_max_heading_level: 4
+keywords:
+  - failure-detection
+tags:
+  - failure-detection
+description: Learn how to set Workflow and Activity timeouts, Retry Policies, and Heartbeat in Java using the Temporal Client and Worker for Workflow optimization and execution controls.
+---
+
+This page shows how to do the following:
+
+- [Set Workflow timeouts](#workflow-timeouts)
+- [Set a Workflow Retry Policy](#workflow-retries)
+- [Set Activity timeouts](#activity-timeouts)
+- [Set a custom Activity Retry Policy](#activity-retries)
+- [Heartbeat an Activity](#activity-heartbeats)
+- [Set a Heartbeat Timeout](#heartbeat-timeout)
+
+## Workflow timeouts {#workflow-timeouts}
+
+**How to set Workflow timeouts using the Java SDK.**
+
+Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
+
+Workflow timeouts are set when [starting the Workflow Execution](#workflow-timeouts).
+
+- **[Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
+- **[Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout):** restricts the maximum amount of time that a single Workflow Run can last.
+- **[Workflow Task Timeout](/encyclopedia/detecting-workflow-failures#workflow-task-timeout):** restricts the maximum amount of time that a Worker can execute a Workflow Task.
+
+Create an instance of [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) in the Client code and set your timeout.
+
+Available timeouts are:
+
+- [setWorkflowExecutionTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowExecutionTimeout(java.time.Duration))
+- [setWorkflowRunTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowRunTimeout(java.time.Duration))
+- [setWorkflowTaskTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowTaskTimeout(java.time.Duration))
+
+```java
+//create Workflow stub for YourWorkflowInterface
+YourWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("YourWorkflow")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                // Set Workflow Timeout duration
+                .setWorkflowExecutionTimeout(Duration.ofSeconds(10))
+                // .setWorkflowRunTimeout(Duration.ofSeconds(10))
+                // .setWorkflowTaskTimeout(Duration.ofSeconds(10))
+                .build());
+```
+
+### Workflow Retry Policy {#workflow-retries}
+
+**How to set a Workflow Retry Policy in Java.**
+
+A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
+
+Use a [Retry Policy](/encyclopedia/retry-policies) to retry a Workflow Execution in the event of a failure.
+
+Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
+
+To set a Workflow Retry Options in the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance use [`WorkflowOptions.Builder.setWorkflowRetryOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+
+- Type: `RetryOptions`
+- Default: `Null` which means no retries will be attempted.
+
+```java
+//create Workflow stub for GreetWorkflowInterface
+GreetWorkflowInterface workflow1 =
+    WorkerGreet.greetclient.newWorkflowStub(
+        GreetWorkflowInterface.class,
+        WorkflowOptions.newBuilder()
+                .setWorkflowId("GreetWF")
+                .setTaskQueue(WorkerGreet.TASK_QUEUE)
+                // Set Workflow Retry Options
+                .setRetryOptions(RetryOptions.newBuilder()
+                .build());
+```
+
+## Activity timeouts {#activity-timeouts}
+
+**How to set Activity timeouts using the Java SDK.**
+
+Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
+
+The following timeouts are available in the Activity Options.
+
+- **[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout):** is the maximum amount of time allowed for the overall [Activity Execution](/activities#activity-execution).
+- **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout):** is the maximum time allowed for a single [Activity Task Execution](/workers#activity-task-execution).
+- **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/workers#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.
+
+An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
+
+Set your Activity Timeout from the [`ActivityOptions.Builder`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) class.
+
+Available timeouts are:
+
+- ScheduleToCloseTimeout()
+- ScheduleToStartTimeout()
+- StartToCloseTimeout()
+
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+
+The following uses `ActivityStub`.
+
+```java
+GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+                ActivityOptions.newBuilder()
+                        .setScheduleToCloseTimeout(Duration.ofSeconds(5))
+                        // .setStartToCloseTimeout(Duration.ofSeconds(2)
+                        // .setScheduletoCloseTimeout(Duration.ofSeconds(20))
+                        .build());
+```
+
+The following uses `WorkflowImplementationOptions`.
+
+```java
+WorkflowImplementationOptions options =
+            WorkflowImplementationOptions.newBuilder()
+                    .setActivityOptions(
+                            ImmutableMap.of(
+                                    "GetCustomerGreeting",
+                                    // Set Activity Execution timeout
+                                    ActivityOptions.newBuilder()
+                                        .setScheduleToCloseTimeout(Duration.ofSeconds(5))
+                                        // .setStartToCloseTimeout(Duration.ofSeconds(2))
+                                        // .setScheduleToStartTimeout(Duration.ofSeconds(5))
+                                        .build()))
+                    .build();
+```
+
+:::note
+
+If you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+:::
+
+### Custom Activity Retry Policy {#activity-retries}
+
+**How to set a custom Activity Retry Policy in Java.**
+
+A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
+
+Activity Executions are automatically associated with a default [Retry Policy](/encyclopedia/retry-policies) if a custom one is not provided.
+
+To set a Retry Policy, known as the [Retry Options](/encyclopedia/retry-policies) in Java, use [`ActivityOptions.newBuilder.setRetryOptions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+
+- Type: `RetryOptions`
+- Default: Server-defined Activity Retry policy.
+
+- With `ActivityStub`
+
+  ```java
+  private final ActivityOptions options =
+      ActivityOptions.newBuilder()
+          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+          // required when setting Activity options.
+          .setStartToCloseTimeout(Duration.ofSeconds(5))
+          .setRetryOptions(
+              RetryOptions.newBuilder()
+                  .setInitialInterval(Duration.ofSeconds(1))
+                  .setMaximumInterval(Duration.ofSeconds(10))
+                  .build())
+          .build();
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+          WorkflowImplementationOptions.newBuilder()
+                 .setActivityOptions(
+                      ImmutableMap.of(
+                          "EmailCustomerGreeting",
+                          ActivityOptions.newBuilder()
+                                // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                                // required when setting Activity options.
+                                .setStartToCloseTimeout(Duration.ofSeconds(5))
+                                .setRetryOptions(
+                                      RetryOptions.newBuilder()
+                                          .setDoNotRetry(NullPointerException.class.getName())
+                                          .build())
+                                .build()))
+                .build();
+  ```
+
+### Overriding the retry interval with Next Retry Delay {#next-retry-delay}
+
+You may throw an [Application Failure](/references/failures#application-failure) with the NextRetryDelay field set. This value will replace and override whatever the retry interval would be on the retry policy.
+
+For example, if in an activity, you want to base the interval on the number of attempts, you might do:
+
+```java
+int attempt = Activity.getExecutionContext().getInfo().getAttempt();
+
+throw ApplicationFailure.newFailureWithCauseAndDelay(
+    "Something bad happened on attempt " + attempt,
+    "my_failure_type",
+    null,
+    3 * Duration.ofSeconds(attempt));
+```
+
+## Heartbeat an Activity {#activity-heartbeats}
+
+**How to Heartbeat an Activity using the Java SDK.**
+
+An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/clusters).
+Each Heartbeat informs the Temporal Service that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
+If the Temporal Service does not receive a Heartbeat within a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/workers#activity-task-execution) may be scheduled according to the Retry Policy.
+
+Heartbeats may not always be sent to the Temporal Service—they may be [throttled](/encyclopedia/detecting-activity-failures#throttling) by the Worker.
+
+Activity Cancellations are delivered to Activities from the Temporal Service when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
+Heartbeat throttling may lead to Cancellation getting delivered later than expected.
+
+Heartbeats can contain a `details` field describing the Activity's current progress.
+If an Activity gets retried, the Activity can access the `details` from the last Heartbeat that was sent to the Temporal Service.
+
+To Heartbeat an Activity Execution in Java, use the `Activity.getExecutionContext().heartbeat()` Class method.
+
+```java
+public class YourActivityDefinitionImpl implements YourActivityDefinition {
+
+  @Override
+  public String yourActivityMethod(YourActivityMethodParam param) {
+    // ...
+    Activity.getExecutionContext().heartbeat(details);
+    // ...
+  }
+  // ...
+}
+```
+
+The method takes an optional argument, the `details` variable above that represents latest progress of the Activity Execution.
+This method can take a variety of types such as an exception object, custom object, or string.
+
+If the Activity Execution times out, the last Heartbeat `details` are included in the thrown `ActivityTimeoutException`, which can be caught by the calling Workflow.
+The Workflow can then use the `details` information to pass to the next Activity invocation if needed.
+
+In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last failed attempt by using `Activity.getExecutionContext().getHeartbeatDetails(Class<V> detailsClass)`
+
+### Heartbeat Timeout {#heartbeat-timeout}
+
+**How to set a Heartbeat Timeout using the Java SDK.**
+
+A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
+
+To set a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout), use [`ActivityOptions.newBuilder.setHeartbeatTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+
+- Type: `Duration`
+- Default: None
+
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+- With `ActivityStub`
+
+  ```java
+  private final GreetingActivities activities =
+      Workflow.newActivityStub(
+          GreetingActivities.class,
+          ActivityOptions.newBuilder()
+              // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+              // required when setting Activity options.
+              .setStartToCloseTimeout(Duration.ofSeconds(5))
+              .setHeartbeatTimeout(Duration.ofSeconds(2))
+              .build());
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+              WorkflowImplementationOptions.newBuilder()
+                      .setActivityOptions(
+                              ImmutableMap.of(
+                                "EmailCustomerGreeting",
+                                      ActivityOptions.newBuilder()
+                                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                                          // required when setting Activity options.
+                                            .setStartToCloseTimeout(Duration.ofSeconds(5))
+                                            .setHeartbeatTimeout(Duration.ofSeconds(2))
+                                            .build()))
+                      .build();
+  ```

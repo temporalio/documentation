@@ -2,22 +2,20 @@
 id: temporal
 title: What is Temporal?
 sidebar_label: Temporal
-sidebar_position: 1
-description: Discover the Temporal Platform, a runtime for durable executions that consists of a Temporal Cluster and Worker Processes, plus SDKs in multiple languages.
+description: Temporal is a scalable platform that ensures the Durable Execution of application code, allowing reliable and resilient Workflow Executions even in the face of failures like network outages or server crashes.
 slug: /temporal
 toc_max_heading_level: 4
 keywords:
-- durable execution
-- explanation
-- temporal
-- term
+  - durable execution
+  - explanation
+  - temporal
+  - term
 tags:
-- durable-execution
-- explanation
-- temporal
-- term
+  - durable-execution
+  - explanation
+  - temporal
+  - term
 ---
-
 
 Temporal is a scalable and reliable runtime for durable function executions called [Temporal Workflow Executions](/workflows#workflow-execution).
 
@@ -27,7 +25,18 @@ It enables you to develop as if failures don't even exist.
 Your application will run reliably even if it encounters problems, such as network outages or server crashes, which would be catastrophic for a typical application.
 The Temporal Platform handles these types of problems, allowing you to focus on the business logic, instead of writing application code to detect and recover from failures.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">The Temporal System</p></div><div class="tdiiw" height="740"><img class="img_ev3q" src="/diagrams/temporal-system-simple.svg" alt="The Temporal System" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">The Temporal System</p>
+  </div>
+  <div className="tdiiw" height="740">
+    <img
+      className="img_ev3q"
+      src="/diagrams/temporal-system-simple.svg"
+      alt="The Temporal System"
+    />
+  </div>
+</div>
 
 ## Durable Execution {#durable-execution}
 
@@ -39,21 +48,43 @@ It enables application code to execute effectively once and to completion, regar
 
 ## What is the Temporal Platform? {#temporal-platform}
 
-The Temporal Platform consists of a [Temporal Cluster](/clusters) and [Worker Processes](/workers#worker-process).
+The Temporal Platform consists of a [Temporal Service](/clusters) and [Worker Processes](/workers#worker-process).
 Together these components create a runtime for Workflow Executions.
 
-The Temporal Platform consists of a supervising software typically called a [Temporal Cluster](/clusters) and application code bundled as Worker Processes.
+The Temporal Platform consists of a supervising software typically called the [Temporal Service](/clusters) and application code bundled as Worker Processes.
 Together these components create a runtime for your application.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">The Temporal Platform</p></div><div class="tdiiw" height="740"><img class="img_ev3q" src="/diagrams/temporal-platform-simple.svg" alt="The Temporal Platform" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">The Temporal Platform</p>
+  </div>
+  <div className="tdiiw" height="740">
+    <img
+      className="img_ev3q"
+      src="/diagrams/temporal-platform-simple.svg"
+      alt="The Temporal Platform"
+    />
+  </div>
+</div>
 
-A Temporal Cluster consists of the Temporal Server and a database.
+A Temporal Service consists of the Temporal Server and a database.
 
-Our software as a service (SaaS) offering, Temporal Cloud, offers an alternative to hosting a Temporal Cluster yourself.
+Our software as a service (SaaS) offering, Temporal Cloud, offers an alternative to hosting the Temporal Service yourself.
 
 Worker Processes are hosted and operated by you and execute your code. Workers run using one of our SDKs.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Basic component topology of the Temporal Platform</p></div><div class="tdiiw" height="1121"><img class="img_ev3q" src="/diagrams/temporal-platform-component-topology.svg" alt="Basic component topology of the Temporal Platform" /></div></div>
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Basic component topology of the Temporal Platform</p>
+  </div>
+  <div className="tdiiw" height="1121">
+    <img
+      className="img_ev3q"
+      src="/diagrams/temporal-platform-component-topology.svg"
+      alt="Basic component topology of the Temporal Platform"
+    />
+  </div>
+</div>
 
 ## What is a Temporal Application? {#temporal-application}
 
@@ -74,72 +105,6 @@ A Temporal Workflow Execution is a Reentrant Process. A Reentrant Process is re
 
 Therefore, a Temporal Workflow Execution executes a [Temporal Workflow Definition](/workflows#workflow-definition), also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.
 
-## What is a Temporal SDK? {#temporal-sdk}
-
-A Temporal SDK is a language-specific library that offers APIs to do the following:
-
-1. Construct and use a [Temporal Client](#temporal-client)
-2. Develop [Workflow Definitions](/workflows#workflow-definition)
-3. Develop [Worker Programs](/workers#worker-program)
-
-A Temporal SDK enables you to write your application code using the full power of the programming language, while the Temporal Platform handles the durability, reliability, and scalability of the application.
-
-Temporal currently offers the following SDKs:
-
-- [Get started with the Go SDK](/dev-guide/go/introduction)
-- [Get started with the Java SDK](/dev-guide/java/introduction)
-- [Get started with the PHP SDK](/dev-guide/php)
-- [Get started with the Python SDK](/dev-guide/python/introduction)
-- [Get started with the TypeScript SDK](/dev-guide/typescript/introduction)
-- [.NET SDK API reference](https://dotnet.temporal.io/)
-
-Each SDK emits metrics which can be ingested into monitoring platforms.
-See the [SDK metrics reference](/references/sdk-metrics) for a complete list.
-
-### Auth
-
-Temporal offers methods of authenticating and authorizing client API calls within our SDKs.
-
-### Sandbox environment
-
-Some SDKs support running Workflows inside a sandbox environment.
-
-The Temporal Python SDK, for example, enables you to run Workflow code in a sandbox environment to help prevent non-determinism errors in your application.
-The Temporal Workflow Sandbox for Python is not completely isolated, and some libraries can internally mutate state, which can result in breaking determinism.
-
-By default, Workflows run in a sandbox environment.
-If a Workflow Execution performs a non-deterministic event, an exception is thrown, which results in failing the Workflow Task.
-The Workflow will not progress until the code is fixed.
-
-For more information, see the knowledge base article on [Python sandbox environments](/dev-guide/python/sandbox).
-
-### SDKs in development
-
-The following SDKs are in development and do not yet have developer's guides:
-
-- [.NET](https://github.com/temporalio/sdk-dotnet)
-- [Rust](https://github.com/temporalio/sdk-core)
-
-### Third-party SDKs
-
-The following third-party SDKs exist but are not supported in the [Developer's guide](/dev-guide):
-
-- [Clojure](https://github.com/manetu/temporal-clojure-sdk) - from [@Manetu](https://github.com/manetu)
-- [Scala](https://github.com/vitaliihonta/zio-temporal) from [@vitaliihonta](https://github.com/vitaliihonta)
-- [Ruby](https://github.com/coinbase/temporal-ruby) from [@coinbase](https://github.com/coinbase)
-
-### What is a Temporal Client? {#temporal-client}
-
-A Temporal Client is available in each SDK and provides a set of APIs to communicate with a [Temporal Cluster](/clusters).
-
-The most common operations that a Temporal Client enables you to perform are the following:
-
-- Get the result of Workflow Execution.
-- List Workflow Executions.
-- Query a Workflow Execution.
-- Signal a Workflow Execution.
-- Start a Workflow Execution.
-
 ## What is a Failure? {#failure}
 
 [Temporal Failures](/references/failures) are representations (in the SDKs and Event History) of various types of errors that occur in the system.
@@ -150,4 +115,3 @@ For the practical application of those concepts in Temporal, see [Failure Handli
 
 For languages that throw (or raise) errors (or exceptions), throwing an error that is not a Temporal Failure from a Workflow fails the Workflow Task (and the Task will be retried until it succeeds), whereas throwing a Temporal Failure (or letting a Temporal Failure propagate from Temporal calls, like an [Activity Failure](/references/failures#activity-failure) from an Activity call) fails the Workflow Execution.
 For more information, see [Application Failure](/references/failures#application-failure).
-

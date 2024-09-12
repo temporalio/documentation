@@ -2,24 +2,22 @@
 id: certificates
 title: Certificate management - Temporal Cloud feature guide
 sidebar_label: Certificates
-sidebar_position: 1
-description: Create certificates and use them to control access to Namespaces.
+description: Temporal Cloud uses mTLS, requiring CA certificates for secure communication. Keep certificates updated to avoid disruptions in Workflow Execution. Manage and update certificates easily via the Temporal Cloud UI or tcld tool.
 slug: /cloud/certificates
 toc_max_heading_level: 4
 keywords:
-- certificates
-- explanation
-- how-to
-- introduction
-- temporal cloud
+  - certificates
+  - explanation
+  - how-to
+  - introduction
+  - temporal cloud
 tags:
-- certificates
-- explanation
-- how-to
-- introduction
-- temporal-cloud
+  - certificates
+  - explanation
+  - how-to
+  - introduction
+  - temporal-cloud
 ---
-
 
 [Temporal Cloud](https://temporal.io/cloud) requires security certificates for secure access and communication.
 
@@ -32,7 +30,7 @@ Temporal Cloud does not require an exchange of secrets; only the certificates pr
 
 An expired root CA certificate invalidates all downstream certificates.
 
-An expired end-entity certificate prevents a [Temporal Client](/temporal#temporal-client) from connecting to a Namespace or starting a Workflow Execution.
+An expired end-entity certificate prevents a [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) from connecting to a Namespace or starting a Workflow Execution.
 If the client is on a Worker, any current Workflow Executions that are processed by that Worker either run indefinitely without making progress until the Worker resumes or fail because of timeouts.
 
 To update certificates, see [How to add, update, and remove certificates in a Temporal Cloud Namespace](#manage-certificates).
@@ -266,7 +264,7 @@ Doing so enables your Namespace to serve both CA certificates for a period of ti
 Be aware that the subject of the existing certificate and the subject of the new certificate must not be identical.
 One way to meet this requirement is to add a version or a date to the common name (CN).
 
-<!--- How to update certificates in Temporal Cloud using Temporal Cloud UI --->
+{/* How to update certificates in Temporal Cloud using Temporal Cloud UI */}
 
 ### Update certificates using Temporal Cloud UI
 
@@ -294,7 +292,7 @@ Updating certificates using the following strategy allows for a zero-downtime ro
 
 11. Select **Save**.
 
-<!--- How to update certificates in Temporal Cloud using tcld --->
+{/* How to update certificates in Temporal Cloud using tcld */}
 
 ### Update certificates using tcld
 
@@ -378,7 +376,7 @@ The following values are not valid:
 - `code.*.com`
 - `*`
 
-<!--- How to manage certificate filters in Temporal Cloud using Temporal Cloud UI --->
+{/* How to manage certificate filters in Temporal Cloud using Temporal Cloud UI */}
 
 ### Manage certificate filters using Temporal Cloud UI
 
@@ -392,7 +390,7 @@ To add or remove a certificate filter, follow these steps:
    - To remove a certificate filter, click the **×** in the upper-right corner of the filter details.
 1. To cancel your changes, click **Back to Namespace**. To save your changes, click **Save**.
 
-<!--- How to manage certificate filters in Temporal Cloud using tcld --->
+{/* How to manage certificate filters in Temporal Cloud using tcld */}
 
 ### Manage certificate filters using tcld
 
@@ -402,4 +400,3 @@ To set or clear certificate filters, use the following [tcld](/cloud/tcld) comma
 - [tcld namespace certificate-filters clear](/cloud/tcld/namespace/#clear)
 
 To view the current certificate filters, use the [tcld namespace certificate-filters export](/cloud/tcld/namespace/#export) command.
-

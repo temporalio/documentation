@@ -2,226 +2,225 @@
 id: cmd-options
 title: Temporal CLI command options reference
 sidebar_label: cmd options
-description: Explore the command-line options available in the Temporal CLI. Customize and configure various aspects of the CLI tool for seamless Workflow management.
+description: Discover how to manage Temporal Workflows, from Activity Execution to Workflow Ids, using clusters, cron schedules, dynamic configurations, and logging. Perfect for developers.
 toc_max_heading_level: 4
 keywords:
-- actions
-- active cluster
-- activity
-- activity execution
-- activity id
-- address
-- archival
-- backfill
-- batch job
-- build
-- build id
-- ca-certificate
-- calendar
-- certificate key
-- child workflows
-- cli reference
-- cluster
-- codec server
-- command-line-interface-cli
-- command-line-interface-cli,
-- concurrency control
-- configuration
-- context
-- continue-as-new
-- cron
-- cross-cluster-connection
-- data converters
-- endpoint
-- environment
-- event
-- event id
-- event type
-- events
-- external temporal and state events
-- failures
-- frontend
-- frontend address
-- frontend service
-- goroutine
-- grpc
-- history
-- http
-- interval
-- ip address
-- job id
-- log-feature
-- logging
-- logging and metrics
-- memo
-- metrics
-- namespace
-- namespace description
-- namespace id
-- namespace management
-- nondeterministic
-- notes
-- operation
-- operator
-- options-feature
-- overlap policy
-- pager
-- port
-- pragma
-- queries-feature
-- query
-- requests
-- reset point
-- resets-feature
-- retention policy
-- retries
-- reuse policy
-- schedule
-- schedule backfill
-- schedule id
-- schedule pause
-- schedule unpause
-- schedules
-- search attribute
-- search attributes
-- server
-- server options and configurations
-- sqlite
-- start-to-close
-- task queue
-- task queue type
-- temporal cli
-- temporal ui
-- time
-- time zone
-- timeout
-- timeouts and heartbeats
-- tls
-- tls server
-- uri
-- verification
-- visibility
-- web ui
-- workflow
-- workflow execution
-- workflow id
-- workflow run
-- workflow state
-- workflow task
-- workflow task failure
-- workflow type
-- workflow visibility
-- x509-certificate
+  - actions
+  - active cluster
+  - activity
+  - activity execution
+  - activity id
+  - address
+  - archival
+  - backfill
+  - batch job
+  - build
+  - build id
+  - ca-certificate
+  - calendar
+  - certificate key
+  - child workflows
+  - cli reference
+  - cluster
+  - codec server
+  - command-line-interface-cli
+  - command-line-interface-cli,
+  - concurrency control
+  - configuration
+  - context
+  - continue-as-new
+  - cron
+  - cross-cluster-connection
+  - data converters
+  - endpoint
+  - environment
+  - event
+  - event id
+  - event type
+  - events
+  - external temporal and state events
+  - failures
+  - frontend
+  - frontend address
+  - frontend service
+  - goroutine
+  - grpc
+  - history
+  - http
+  - interval
+  - ip address
+  - job id
+  - log-feature
+  - logging
+  - logging and metrics
+  - memo
+  - metrics
+  - namespace
+  - namespace description
+  - namespace id
+  - namespace management
+  - nondeterministic
+  - notes
+  - operation
+  - operator
+  - options-feature
+  - overlap policy
+  - pager
+  - port
+  - pragma
+  - queries-feature
+  - query
+  - requests
+  - reset point
+  - resets-feature
+  - retention policy
+  - retries
+  - reuse policy
+  - schedule
+  - schedule backfill
+  - schedule id
+  - schedule pause
+  - schedule unpause
+  - schedules
+  - search attribute
+  - search attributes
+  - server
+  - server options and configurations
+  - sqlite
+  - start-to-close
+  - task queue
+  - task queue type
+  - temporal cli
+  - temporal ui
+  - time
+  - time zone
+  - timeout
+  - timeouts and heartbeats
+  - tls
+  - tls server
+  - uri
+  - verification
+  - visibility
+  - web ui
+  - workflow
+  - workflow execution
+  - workflow id
+  - workflow run
+  - workflow state
+  - workflow task
+  - workflow task failure
+  - workflow type
+  - workflow visibility
+  - x509-certificate
 tags:
-- actions
-- active-cluster
-- activity
-- activity-execution
-- activity-id
-- address
-- archival
-- backfill
-- batch-job
-- build
-- build-id
-- ca-certificate
-- calendar
-- certificate-key
-- child-workflows
-- cli-reference
-- cluster
-- codec-server
-- command-line-interface-cli
-- command-line-interface-cli,
-- concurrency-control
-- configuration
-- context
-- continue-as-new
-- cron
-- cross-cluster-connection
-- data-converters
-- endpoint
-- environment
-- event
-- event-id
-- event-type
-- events
-- external-temporal-and-state-events
-- failures
-- frontend
-- frontend-address
-- frontend-service
-- goroutine
-- grpc
-- history
-- http
-- interval
-- ip-address
-- job-id
-- log-feature
-- logging
-- logging-and-metrics
-- memo
-- metrics
-- namespace
-- namespace-description
-- namespace-id
-- namespace-management
-- nondeterministic
-- notes
-- operation
-- operator
-- options-feature
-- overlap-policy
-- pager
-- port
-- pragma
-- queries-feature
-- query
-- requests
-- reset-point
-- resets-feature
-- retention-policy
-- retries
-- reuse-policy
-- schedule
-- schedule-backfill
-- schedule-id
-- schedule-pause
-- schedule-unpause
-- schedules
-- search-attribute
-- search-attributes
-- server
-- server-options-and-configurations
-- sqlite
-- start-to-close
-- task-queue
-- task-queue-type
-- temporal-cli
-- temporal-ui
-- time
-- time-zone
-- timeout
-- timeouts-and-heartbeats
-- tls
-- tls-server
-- uri
-- verification
-- visibility
-- web-ui
-- workflow
-- workflow-execution
-- workflow-id
-- workflow-run
-- workflow-state
-- workflow-task
-- workflow-task-failure
-- workflow-type
-- workflow-visibility
-- x509-certificate
+  - actions
+  - active-cluster
+  - activity
+  - activity-execution
+  - activity-id
+  - address
+  - archival
+  - backfill
+  - batch-job
+  - build
+  - build-id
+  - ca-certificate
+  - calendar
+  - certificate-key
+  - child-workflows
+  - cli-reference
+  - cluster
+  - codec-server
+  - command-line-interface-cli
+  - command-line-interface-cli,
+  - concurrency-control
+  - configuration
+  - context
+  - continue-as-new
+  - cron
+  - cross-cluster-connection
+  - data-converters
+  - endpoint
+  - environment
+  - event
+  - event-id
+  - event-type
+  - events
+  - external-temporal-and-state-events
+  - failures
+  - frontend
+  - frontend-address
+  - frontend-service
+  - goroutine
+  - grpc
+  - history
+  - http
+  - interval
+  - ip-address
+  - job-id
+  - log-feature
+  - logging
+  - logging-and-metrics
+  - memo
+  - metrics
+  - namespace
+  - namespace-description
+  - namespace-id
+  - namespace-management
+  - nondeterministic
+  - notes
+  - operation
+  - operator
+  - options-feature
+  - overlap-policy
+  - pager
+  - port
+  - pragma
+  - queries-feature
+  - query
+  - requests
+  - reset-point
+  - resets-feature
+  - retention-policy
+  - retries
+  - reuse-policy
+  - schedule
+  - schedule-backfill
+  - schedule-id
+  - schedule-pause
+  - schedule-unpause
+  - schedules
+  - search-attribute
+  - search-attributes
+  - server
+  - server-options-and-configurations
+  - sqlite
+  - start-to-close
+  - task-queue
+  - task-queue-type
+  - temporal-cli
+  - temporal-ui
+  - time
+  - time-zone
+  - timeout
+  - timeouts-and-heartbeats
+  - tls
+  - tls-server
+  - uri
+  - verification
+  - visibility
+  - web-ui
+  - workflow
+  - workflow-execution
+  - workflow-id
+  - workflow-run
+  - workflow-state
+  - workflow-task
+  - workflow-task-failure
+  - workflow-type
+  - workflow-visibility
+  - x509-certificate
 ---
-
 
 ## active-cluster
 
@@ -543,7 +542,7 @@ Options: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll.
 
 ## pager
 
-Sets the pager for Temporal CLI to use.
+Sets the pager for the Temporal CLI to use.
 Options are less, more, and favoritePager.
 
 ## pause-on-failure
@@ -565,7 +564,7 @@ Promote local Namespace to Global Namespace.
 ## query
 
 Provides a SQL-like Query of Search Attributes to return Workflow Executions to reset.
-For more information, refer to the [temporal workflow list](/cli/workflow#list) command.
+For more information, refer to the [`temporal workflow list`](/cli/workflow#list) command.
 
 ## raw
 
@@ -648,6 +647,10 @@ Skip a Workflow Execution if the current Run is open for the same Workflow Id as
 
 Specify sqlite pragma statements in pragma=value format.
 Pragma options: ["journal_mode" "synchronous"].
+
+## start-delay
+
+Specify a delay before the workflow starts.
 
 ## start-time
 
@@ -749,4 +752,3 @@ Workflow type name.
 ## yes
 
 Confirm all prompts.
-

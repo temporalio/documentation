@@ -1,0 +1,376 @@
+---
+id: versioning
+title: Versioning
+sidebar_label: Versioning
+slug: /develop/typescript/versioning
+description: Temporal TypeScript SDK ensures deterministic Workflow code with versioning features like Workflow Patching APIs, Worker Build IDs, and Workflow migration strategies. Learn more with our 30-min video intro.
+toc_max_heading_level: 4
+keywords:
+  - how-to
+  - patching
+  - typescript
+  - versioning
+  - workflow code
+tags:
+  - how-to
+  - patching
+  - typescript
+  - versioning
+  - workflow-code
+---
+
+The Temporal Platform requires that Workflow code is [deterministic](/workflows#deterministic-constraints).
+Because of that requirement, the Temporal TypeScript SDK offers two dedicated versioning features.
+
+- [Workflow Patching APIs](#patching)
+- [Worker Build Ids](#worker-versioning)
+
+### Alternatives
+
+Before you explore dedicated versioning features, check whether your needs can be addressed in other ways:
+
+- [Version Task Queue](#version-task-queue)
+- [Version Workflow Name](#version-workflow-name)
+
+Both options mean that Workflows running `v1` code will never migrate to `v2` code; they will run `v1` code to completion.
+If you would like to update Workflows running `v1` _while they are still running,_ you [might need to "patch in" code](#do-i-need-to-patch).
+
+#### Version Task Queue
+
+If you're currently running v1 Workflow code on Workers that poll on `queue1`, you can run v2 Workflow code on Workers that poll on `queue2`:
+
+1. Leave some Workers running your v1 `Workflow`, on the `queue1` Task Queue.
+1. Change your `Workflow` code and spin up new Workers that are polling a `queue2` Task Queue.
+1. Cut over your Clients to only call `Workflow` on `queue2` from now on.
+1. Remove your v1 Workers when all the v1 Workflows have completed.
+
+#### Version Workflow Name
+
+Although versioning the Task Queue is usually easier, we can also create a new version of a Workflow by copying it and changing its name:
+
+1. Copy the `Workflow1` code to a `Workflow2` function and change what you need.
+1. Register `Workflow2` in your Workers alongside `Workflow1`.
+1. Cut over your Clients to only call `Workflow2` from now on.
+1. Remove `Workflow1` code when none of them are running anymore.
+
+## How to patch Workflow code in TypeScript {#patching}
+
+The TypeScript SDK Patching API lets you change Workflow Definitions without causing [non-deterministic behavior](/workflows#non-deterministic-change) in current long-running Workflows.
+
+### Do I need to Patch?
+
+You may need to patch if:
+
+- You want to change the remaining logic of a Workflow while it is still running
+- If your new logic can result in a different execution path
+
+This added `sleep()` can result in a different execution path:
+
+```ts
+// from v1
+export async function yourWorkflow(value: number): Promise<number> {
+  await runActivity();
+  return 7;
+}
+
+// to v2
+export async function yourWorkflow(value: number): Promise<number> {
+  await sleep('1 day');
+
+  await runActivity();
+  return 7;
+}
+```
+
+If v2 is deployed while there's a Workflow on the `runActivity` step, when the Activity completes, the Worker will try to replay the Workflow (in order to continue Workflow execution), notice that the sleep command is called and doesn't match with the Workflow's Event History, and throw a non-determinism error.
+
+Adding a Signal Handler for a Signal type that has never been sent before does not need patching:
+
+```ts
+// from v1
+export async function yourWorkflow(value: number): Promise<number> {
+  await sleep('1 days');
+  return value;
+}
+
+// to v2
+const updateValueSignal = defineSignal<[number]>('updateValue');
+
+export async function yourWorkflow(value: number): Promise<number> {
+  setHandler(updateValueSignal, (newValue) => (value = newValue));
+
+  await sleep('1 days');
+  return value;
+}
+```
+
+### Migrating Workflows in Patches
+
+Workflow code has to be [deterministic](/workflows#deterministic-constraints) by taking the same code path when replaying History Events.
+Any Workflow code change that affects the order in which commands are generated breaks this assumption.
+
+So we have to keep both the old and new code when migrating Workflows while they are still running:
+
+- When replaying, use the original code version that generated the ongoing event history.
+- When executing a new code path, always execute the
+  new code.
+
+<details>
+    <summary>
+    30 Min Video: Introduction to Versioning
+    </summary>
+
+Because we design for potentially long-running Workflows at scale, versioning with Temporal works differently than with other Workflow systems.
+We explain more in this optional 30 minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY)
+
+</details>
+
+### TypeScript SDK Patching API
+
+In principle, the TypeScript SDK's patching mechanism works in a similar "feature-flag" fashion to the other SDKs; however, the "versioning" API has been updated to a notion of "patching in" code.
+There are three steps to this reflecting three stages of migration:
+
+- Running v1 code with vFinal patched in concurrently
+- Running vFinal code with deprecation markers for vFinal patches
+- Running "just" vFinal code.
+
+This is best explained in sequence (click through to follow along using our SDK sample).
+
+Given an initial Workflow version `v1`:
+
+<!--SNIPSTART typescript-patching-1-->
+
+[patching-api/src/workflows-v1.ts](https://github.com/temporalio/samples-typescript/blob/main/patching-api/src/workflows-v1.ts)
+
+```ts
+// v1
+export async function myWorkflow(): Promise<void> {
+  await activityA();
+  await sleep('1 days'); // arbitrary long sleep to simulate a long running workflow we need to patch
+  await activityThatMustRunAfterA();
+}
+```
+
+<!--SNIPEND-->
+
+We decide to update our code and run `activityB` instead.
+This is our desired end state, `vFinal`.
+
+<!--SNIPSTART typescript-patching-final-->
+
+[patching-api/src/workflows-vFinal.ts](https://github.com/temporalio/samples-typescript/blob/main/patching-api/src/workflows-vFinal.ts)
+
+```ts
+// vFinal
+export async function myWorkflow(): Promise<void> {
+  await activityB();
+  await sleep('1 days');
+}
+```
+
+<!--SNIPEND-->
+
+**Problem: We cannot directly deploy `vFinal` until we know for sure there are no more running Workflows created using `v1` code.**
+
+Instead we must deploy `v2` (below) and use the [`patched`](https://typescript.temporal.io/api/namespaces/workflow#patched) function to check which version of the code should be executed.
+
+Patching is a three-step process:
+
+1. Patch in new code with `patched` and run it alongside old code
+2. Remove old code and `deprecatePatch`
+3. When you are sure all old Workflows are done executing, remove `deprecatePatch`
+
+#### Step 1: Patch in new code
+
+`patched` inserts a marker into the Workflow history.
+
+![image](https://user-images.githubusercontent.com/6764957/139673361-35d61b38-ab94-401e-ae7b-feaa52eae8c6.png)
+
+During replay, when a Worker picks up a history with that marker it will fail the Workflow task when running Workflow code that does not emit the same patch marker (in this case `your-change-id`); therefore it is safe to deploy code from `v2` in a "feature flag" alongside the original version (`v1`).
+
+<!--SNIPSTART typescript-patching-2-->
+
+[patching-api/src/workflows-v2.ts](https://github.com/temporalio/samples-typescript/blob/main/patching-api/src/workflows-v2.ts)
+
+```ts
+// v2
+import { patched } from '@temporalio/workflow';
+export async function myWorkflow(): Promise<void> {
+  if (patched('my-change-id')) {
+    await activityB();
+    await sleep('1 days');
+  } else {
+    await activityA();
+    await sleep('1 days');
+    await activityThatMustRunAfterA();
+  }
+}
+```
+
+<!--SNIPEND-->
+
+#### Step 2: Deprecate patch
+
+When we know that all Workflows started with `v1` code have completed, we can [deprecate the patch](https://typescript.temporal.io/api/namespaces/workflow#deprecatepatch).
+Deprecated patches bridge between `v2` and `vFinal` (the end result).
+They work similarly to regular patches by recording a marker in the Workflow history.
+This marker does not fail replay when Workflow code does not emit it.
+
+If while we're deploying `v3` (below) there are still live Workers running `v2` code and those Workers pick up Workflow histories generated by `v3`, they will safely use the patched branch.
+
+<!--SNIPSTART typescript-patching-3-->
+
+[patching-api/src/workflows-v3.ts](https://github.com/temporalio/samples-typescript/blob/main/patching-api/src/workflows-v3.ts)
+
+```ts
+// v3
+import { deprecatePatch } from '@temporalio/workflow';
+
+export async function myWorkflow(): Promise<void> {
+  deprecatePatch('my-change-id');
+  await activityB();
+  await sleep('1 days');
+}
+```
+
+<!--SNIPEND-->
+
+#### Step 3: Solely deploy new code
+
+`vFinal` is safe to deploy once all `v2` or earlier Workflows are complete due to the assertion mentioned above.
+
+### Upgrading Workflow dependencies
+
+Upgrading Workflow dependencies (such as ones installed into `node_modules`) _might_ break determinism in unpredictable ways.
+We recommended using a lock file (`package-lock.json` or `yarn.lock`) to fix Workflow dependency versions and gain control of when they're updated.
+
+## How to use Worker Versioning in TypeScript {#worker-versioning}
+
+:::caution
+
+Worker Versioning is currently in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+See the [Pre-release README](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
+
+:::
+
+A Build ID corresponds to a deployment. If you don't already have one, we recommend a hash of the code--such as a Git SHA--combined with a human-readable timestamp.
+To use [Worker Versioning](/workers#worker-versioning), you need to pass a Build ID to your Typescript Worker and opt in to Worker Versioning.
+
+### Assign a Build ID to your Worker and opt in to Worker Versioning
+
+You should understand assignment rules before completing this step.
+See the [Worker Versioning Pre-release README](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
+
+To enable Worker Versioning for your Worker, assign the Build ID--perhaps from an environment variable--and turn it on.
+
+```typescript
+// ...
+const worker = await Worker.create({
+  taskQueue: 'your_task_queue_name',
+  buildId: buildId,
+  useVersioning: true,
+  // ...
+});
+// ...
+```
+
+:::warning
+
+Importantly, when you start this Worker, it won't receive any tasks until you set up assignment rules.
+
+:::
+
+### Specify versions for Activities, Child Workflows, and Continue-as-New Workflows
+
+:::caution
+
+Typescript support for this feature is under construction!
+
+:::
+
+By default, Activities, Child Workflows, and Continue-as-New Workflows are run on the build of the Workflow that created them if they are also configured to run on the same Task Queue.
+When configured to run on a separate task queue, they will default to using the current assignment rules.
+
+If you want to override this behavior, you can specify your intent via the `versioningIntent`
+field available on the options object for each of these commands.
+
+{/* For more information refer to the [conceptual documentation](/workers#worker-versioning). */}
+
+For example, if you want an Activity to use the latest assignment rules rather than inheriting from its parent:
+
+```typescript
+// ...
+const { echo } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '20s',
+  versioningIntent: 'USE_ASSIGNMENT_RULES',
+});
+// ...
+```
+
+### Tell the Task Queue about your Worker's Build ID (Deprecated)
+
+:::caution
+
+This section is for a previous Worker Versioning API that is deprecated and will go away at some point. Please redirect your attention to [Worker Versioning](/workers#worker-versioning).
+
+:::
+
+Now you can use the SDK (or the Temporal CLI) to tell the Task Queue about your Worker's Build ID.
+You might want to do this as part of your CI deployment process.
+
+```typescript
+// ...
+await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
+  operation: 'addNewIdInNewDefaultSet',
+  buildId: 'deadbeef',
+});
+```
+
+This code adds the `deadbeef` Build ID to the Task Queue as the sole version in a new version set, which becomes the default for the queue.
+New Workflows execute on Workers with this Build ID, and existing ones will continue to process by appropriately compatible Workers.
+
+If, instead, you want to add the Build ID to an existing compatible set, you can do this:
+
+```typescript
+// ...
+await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
+  operation: 'addNewCompatibleVersion',
+  buildId: 'deadbeef',
+  existingCompatibleBuildId: 'some-existing-build-id',
+});
+```
+
+This code adds `deadbeef` to the existing compatible set containing `some-existing-build-id` and marks it as the new default Build ID for that set.
+
+You can promote an existing Build ID in a set to be the default for that set:
+
+```typescript
+// ...
+await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
+  operation: 'promoteBuildIdWithinSet',
+  buildId: 'deadbeef',
+});
+```
+
+You can promote an entire set to become the default set for the queue. New Workflows will start using that set's default build.
+
+```typescript
+// ...
+await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
+  operation: 'promoteSetByBuildId',
+  buildId: 'deadbeef',
+});
+```
+
+You can merge two sets into one, preserving the primary set's default Build ID as the default
+for the merged set.
+
+```typescript
+// ...
+await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
+  operation: 'mergeSets',
+  primaryBuildId: 'deadbeef',
+  secondaryBuildId: 'some-existing-build-id',
+});
+```
