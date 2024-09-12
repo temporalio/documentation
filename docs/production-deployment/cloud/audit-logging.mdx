@@ -82,7 +82,7 @@ The log sent to the stream is JSON in the following format:
   "emit_time": // Time the operation was recorded
   "level": // Level of the log entry, such as info, warning, or error
   "user_email":  // Email address of the user who initiated the operation
-  "caller_ip_address": // Customer IP address or server name
+  "caller_ip_address": // Customer IP address in the X-Forwarded-For format
   "operation":  // Operation that was performed
   "details":  // Details of the operation
   "status": // Status, such as OK or ERROR
@@ -102,45 +102,6 @@ Temporal provides the caller IP address in that format to allow customers to ide
 
 :::
 
-## How to configure Audit Logging {#configure-audit-logging}
-
-Audit logging can be configured in both AWS Kinesis
-
-* [AWS Kinesis Instructions](/cloud/audit-logging-aws)
-
-## How to consume an Audit Log {#consume-an-audit-log}
-
-After you create an Audit Log sink, wait for the logs to flow into the stream.
-You should see the first logs 2–10 minutes after you configure the sink.
-Subsequent logs arrive every 2 minutes if any actions occurred during that 2-minute window.
-
-:::note
-
-You must configure and implement your own consumer of the stream.
-
-:::
-
-### Audit Log format
-
-The log sent to the Kinesis stream is JSON in the following format:
-
-```json
-{
-  "emit_time": // Time the operation was recorded
-  "level": // Level of the log entry, such as info, warning, or error
-  "user_email":  // Email address of the user who initiated the operation
-  "caller_ip_address": // Customer IP address in the X-Forwarded-For format
-  "operation":  // Operation that was performed
-  "details":  // Details of the operation
-  "status": // Status, such as OK or ERROR
-  "category":  // Category of the log entry: Admin or System
-  "version": // Version of the log entry
-  "log_id": // Unique ID of the log entry
-  "principal": // Information about who initiated the operation
-  "request_id": // Optional async request id set by the user when sending a request
-}
-```
-
 ### Example of an Audit Log
 
 The following example shows the contents of an Audit Log.
@@ -159,6 +120,27 @@ The following example shows the contents of an Audit Log.
 {"emit_time":"2023-11-08T09:20:22Z","level":"LOG_LEVEL_INFO","user_email":"user1@example.com","operation":"UpdateUserNamespacePermissions","details":{"namespace":"audit-log-test.example-dev","search_attribute_update":{}},"status":"OK","category":"LOG_CATEGORY_ADMIN","log_id":"0mc69c0323b871293ce231dd1c7fb639","principal":{"id":"988cb80b-d6be-4bb5-9c87-d09f93f58ed3","type":"user","name":"user1@example.com"}}
 **********
 ```
+
+
+
+## How to configure Audit Logging {#configure-audit-logging}
+
+Audit logging can be configured in both AWS Kinesis
+
+* [AWS Kinesis Instructions](/cloud/audit-logging-aws)
+
+## How to consume an Audit Log {#consume-an-audit-log}
+
+After you create an Audit Log sink, wait for the logs to flow into the stream.
+You should see the first logs 2–10 minutes after you configure the sink.
+Subsequent logs arrive every 2 minutes if any actions occurred during that 2-minute window.
+
+:::note
+
+You must configure and implement your own consumer of the stream.
+
+:::
+
 
 ## How to troubleshoot Audit Logging {#troubleshoot-audit-logging}
 
