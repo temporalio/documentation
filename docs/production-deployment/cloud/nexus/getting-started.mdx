@@ -27,12 +27,12 @@ Calls across existing Namespaces can be enabled by creating a Nexus Endpoint in 
 
 Steps to enable calls across existing Namespaces \- see the [Develop examples]:
 
-1. Add Nexus `Services` to the same `Workers` as the Temporal primitives being abstracted  
+1. Add Nexus `Services` to the same `Workers` as the Temporal primitives being abstracted. 
 2. Add a Nexus `Endpoint` that:  
-   1. Targets handler Namespace  
-   2. Allows the caller Namespace  
-3. Make Nexus calls from a caller Workflow in a different Namespace  
-   1. Use `workflow.NewNexusClient(endpointName, serviceName)`  
+   1. Targets handler Namespace. 
+   2. Allows the caller Namespace.  
+3. Make Nexus calls from a caller Workflow in a different Namespace.  
+   1. Use `workflow.NewNexusClient(endpointName, serviceName)`.  
    2. Execute a Nexus Operation: `nexusClient.ExecutionOperation(...)`
 
 ## Decompose a Monolithic Namespace
