@@ -117,7 +117,7 @@ Start with a `NewSyncOperation` example, and then use `NewWorkflowRunOperation` 
 
 ### Develop a Synchronous Nexus Operation handler
 
-The temporalnexus.NewSyncOperation builder function is for exposing simple RPC handlers. It’s handler func is provided with an SDK client that can be used for signaling, querying, and listing workflows, but implementations are free to make arbitrary calls to other services or databases, or perform simple computations such as this one:
+The `temporalnexus.NewSyncOperation` builder function is for exposing simple RPC handlers. It’s handler function is provided with an SDK client that can be used for signaling, querying, and listing Workflows, but implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
 
 ```go
 package handler
