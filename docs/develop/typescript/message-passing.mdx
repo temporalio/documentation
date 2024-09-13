@@ -68,7 +68,7 @@ interface GetLanguagesInput {
 }
 
 // 👉 Use the object returned by defineQuery to set the query handler in
-// Workflow code, and when calling the Query in Client code.
+// Workflow code, and when sending the Query in Client code.
 export const getLanguages = wf.defineQuery<Language[], [GetLanguagesInput]>('getLanguages');
 
 export async function greetingWorkflow(): Promise<string> {
@@ -215,7 +215,7 @@ Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/clien
 
 
 ```typescript
-currentLanguage = await handle.query(getLanguage);
+const supportedLanguages = await handle.query(getLanguages, { includeUnsupported: false });
 ```
 
 - Sending a Query doesn’t add events to a Workflow's Event History.
