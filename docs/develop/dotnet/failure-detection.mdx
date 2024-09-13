@@ -125,6 +125,21 @@ return await Workflow.ExecuteActivityAsync(
     });
 ```
 
+### Overriding the retry interval with Next Retry Delay {#next-retry-delay}
+
+You may throw an [Application Failure](/references/failures#application-failure) with the NextRetryDelay field set. This value will replace and override whatever the retry interval would be on the retry policy.
+
+For example, if in an activity, you want to base the interval on the number of attempts, you might do:
+
+```csharp
+var attempt = ActivityExecutionContext.Current.Info.Attempt;
+
+throw new ApplicationFailureException(
+    $"Something bad happened on attempt {attempt}",
+    errorType: "my_failure_type",
+    nextRetryDelay: TimeSpan.FromSeconds(3 * attempt));
+```
+
 ## Heartbeat an Activity {#activity-heartbeats}
 
 **How to Heartbeat an Activity using the Temporal .NET SDK**
