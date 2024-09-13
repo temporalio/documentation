@@ -403,7 +403,7 @@ This lets your client track the progress of asynchronous work performed by the U
 
 Sometimes, `async def` Signal or Update handlers need to meet certain conditions before they should continue.
 You can use [`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition) to prevent the code from proceeding until a condition is true.
-You specify the condition by passing a function that returns `True` or `False`.
+You specify the condition by passing a function that returns `True` or `False`, and you can optionally set a timeout.
 This is an important feature that helps you control your handler logic.
 
 Here are two important use cases for `workflow.wait_condition`:
