@@ -41,7 +41,6 @@ The code that follows is part of a [working solution](https://github.com/tempora
 
 Follow these guidelines when writing your message handlers:
 
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Check these links.**</div>
 - Message handlers are defined as methods on the Workflow class, using one of the three attributes: [`WorkflowQueryAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowQueryAttribute.html), [`WorkflowSignalAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowSignalAttribute.html), and [`WorkflowUpdateAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowUpdateAttribute.html).
 - The parameters and return values of handlers and the main Workflow function must be [serializable](/dataconversion).
 - Prefer data classes to multiple input parameters.
@@ -101,7 +100,7 @@ public class GreetingWorkflow
     // ...
 ```
 
-- The Query attribution can accept arguments. <div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Example, like... and show?**</div>
+- The Query attribute can accept arguments.
   See the API reference docs: [`WorkflowQueryAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowQueryAttribute.html).
 - A Query handler must not modify workflow state.
 - You can't perform async blocking operations such as executing an Activity in a Query handler.
@@ -198,15 +197,11 @@ public class GreetingWorkflow
   - When a Validator raises an error, the Update is rejected, the Update is not run, and `WorkflowExecutionUpdateAccepted` _won't_ be added to the Event History.
     The caller receives an "Update failed" error.
 
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Please translate to .NET.**</div>
-- Use the `UpdateHandle` interface to obtain information about the update.
-  - `getExecution()`: Returns the Workflow Execution that this Update was sent to.
-  - `getId()`: Returns the Update's unique ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
-  - `getResultAsync()`: Returns a `CompletableFuture` with the update's Workflow Execution request result, which can wait for the Update to complete.
-
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Please translate to .NET.**</div>
-- Signal (and Update) handlers can be asynchronous and blocking, letting them use Activities, Child Workflows, durable [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) Timers, [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)) conditions, and more.
-  See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for safe usage guidelines.
+- Use [`Workflow.CurrentUpdateInfo`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_CurrentUpdateInfo) to obtain information about the current Update.
+  This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
+- Update (and Signal) handlers can be asynchronous and blocking.
+  This allows you to use Activities, Child Workflows, durable `Workflow.DelayAsync` Timers, `Workflow.WaitConditionAsync` conditions, and more.
+  See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for guidelines on safely using async Update and Signal handlers.
 
 ## Send messages {#send-messages}
 
