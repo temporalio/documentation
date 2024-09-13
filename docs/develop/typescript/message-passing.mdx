@@ -342,7 +342,7 @@ To obtain an Update handle, you can:
 - Use [`getUpdateHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#getupdatehandle) to fetch a handle for an in-progress Update using the Update ID.
 
 
-:::info NON-TYPE SAFE API CALLS
+:::info SEND MESSAGES WITHOUT TYPE SAFETY
 
 In real-world development, sometimes you may be unable to import message type objects defined by `defineQuery`, `defineSignal`, or `defineUpdate`.
 When you don't have access to the Workflow Definition or it isn't written in Typescript, you can still use APIs that aren't type-safe, and dynamic method invocation.

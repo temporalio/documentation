@@ -310,10 +310,10 @@ To obtain an Update handle, you can:
 - Use [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) to start an Update and return the handle, as shown in the preceding example.
 - Use [`get_update_handle_for`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#get_update_handle_for) to fetch a handle for an in-progress Update using the Update ID and Workflow ID.
 
-:::info NON-TYPE SAFE API CALLS
+:::info SEND MESSAGES WITHOUT TYPE SAFETY
 
 In real-world development, sometimes you may be unable to import Workflow Definition method signatures.
-When you don't have access to the Workflow Definition or it isn't written in Python, you can still use non-type safe APIs and dynamic method invocation.
+When you don't have access to the Workflow Definition or it isn't written in Python, you can still use APIs that aren't type-safe, and dynamic method invocation.
 Pass method names instead of method objects to:
 
 - [`Client.start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_workflow)
