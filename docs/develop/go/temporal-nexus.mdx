@@ -26,12 +26,11 @@ In this page you can find the following:
 - [Define the Nexus Service API contract](#define-nexus-service-api-contract)
 - [Develop a Nexus Service and Operation handlers](#develop-nexus-service-operation-handlers)
 - [Develop a caller Workflow that uses a Nexus Service](#develop-caller-workflow-nexus-service)
-- [Make Nexus calls across Namespaces with a dev Server](#nexus-calls-across-namespaces-dev-server)
+- [Make Nexus calls across Namespaces with a development Server](#nexus-calls-across-namespaces-dev-server)
 - [Make Nexus calls across Namespaces in Temporal Cloud](#nexus-calls-across-namespaces-temporal-cloud)
 
 ## Run a development server with Nexus enabled {#run-the-temporal-nexus-development-server}
-Setting up a development environment is the first step in working with Temporal Nexus. 
-This process involves running a Temporal server with Nexus enabled.
+The first step in working with Temporal Nexus involves starting a Temporal server with Nexus enabled.
 
 Prerequisites:
 
@@ -136,7 +135,7 @@ Use the NewWorkflowRunOperation constructor, which is the easiest way to expose 
 See alternatives at [https://pkg.go.dev/go.temporal.io/sdk/temporalnexus](https://pkg.go.dev/go.temporal.io/sdk/temporalnexus).
 
 ```go
-var HelloOperation = temporalnexus.NewWorkflowRunOperation(  service.HelloOperationName,   HelloHandlerWorkflow,   func(ctx context.Context, input service.HelloInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
+var HelloOperation = temporalnexus.NewWorkflowRunOperation(  service.HelloOperationName,   HelloHandlerWorkflow,  func(ctx context.Context, input service.HelloInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
 	return client.StartWorkflowOptions{
 		ID: "workflow-type-" + input.CustomerID,
 	}, nil
@@ -408,6 +407,7 @@ go run ./worker \
 ```
 
 ### Start a caller Workflow
+
 In order to start the caller Workflow, run the starter. 
 
 ```
