@@ -480,7 +480,7 @@ You can silence these warnings on a per-handler basis by setting the `unfinished
 
 See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
 
-### Use `asyncio.Lock` to prevent concurrent handler execution {#control-handler-concurrency}
+### Use a lock to prevent concurrent handler execution {#control-handler-concurrency}
 
 Concurrent processes can interact in unpredictable ways.
 Incorrectly written [concurrent message-passing](/encyclopedia/workflow-message-passing#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
