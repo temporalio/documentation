@@ -22,9 +22,10 @@ keywords:
 Temporal Nexus is a feature of the Temporal platform designed to connect durable executions across team, Namespace, region, and cloud boundaries. 
 It promotes a more modular architecture for sharing a subset of your team’s capabilities through a well-defined service API contracts for other teams to use which abstract underlying Temporal primitives, like Workflows, or execute arbitrary code.
 
-Temporal keeps the runtime benefits of an Event-Driven Architecture (EDA) where services can be down without affecting each other, but offers a higher-level durable execution programming model that lets you write idiomatic code in any language and preserve the state of execution so it can be resumed automatically in the presence of failure, without the extensive boilerplate code and complexity that comes with using raw EDA frameworks directly.
+Temporal keeps the runtime benefits of an Event-Driven Architecture (EDA) where services can be down without affecting each other, but offers a higher-level durable execution programming model that lets you write idiomatic code in any language and preserve the state of execution.
+This ensures that your Workflows can be resumed automatically in the presence of failure, without the extensive boilerplate code and complexity that comes with using raw EDA frameworks directly.
 
-With Temporal Nexus, inter-service communication and durable execution may now span teams, Namespaces, and regions all from within the Temporal context. 
+With Temporal Nexus, inter-service communication and durable execution can span teams, Namespaces, and regions all from within the Temporal context. 
 Nexus preserves a familiar API programming model that supports both sync and async patterns, is suitable for low-latency and long-running operations, and uses an optimized form of the Temporal queue-based Worker architecture to preserve the benefits of EDA at runtime.
 
 Temporal Nexus provides an integrated Temporal SDK experience, built-in Nexus Machinery, first-class observability, and enables each team to have their own Namespace for improved security, troubleshooting, and blast radius isolation.
