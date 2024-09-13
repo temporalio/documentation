@@ -62,10 +62,10 @@ For each Task Queue name, Temporal creates separate queues for each Task Queue t
 - **Workflow Task Queue**: A queue that holds Workflow Tasks.
   Workflow Tasks contain the context needed by a Workflow Definition.
   Workers poll Workflow Tasks from the Workflow Task Queue and use them to initiate Workflow Executions.
-- **Nexus Task Queue** ([Public Preview](/evaluate/development-production-features/release-stages#public-preview)): A queue that holds Nexus Tasks.
-  Nexus Tasks are used for units of work passed between Namespaces.
-  Workers configured with the Nexus Service poll the Nexus Task Queue for available tasks and handle them by initiating Workflow Executions in the target Namespace.
-  Each Nexus Task contains the context required by the target Workflow Definition.
+- **Nexus Task Queue** ([Public Preview](/evaluate/development-production-features/release-stages#public-preview)): A queue that holds Temporal Nexus Tasks.
+  Temporal Nexus Tasks are used for units of work passed between Namespaces.
+  Workers configured with the Temporal Nexus Service poll the Nexus Task Queue for available tasks and handle them by initiating Workflow Executions in the target Namespace.
+  Each Temporal Nexus Task contains the context required by the target Workflow Definition.
 
 The Temporal Service reports information separately for each Task Queue type (not aggregated).
 Use the following metrics to retrieve detailed information about Task Queue health and performance.
