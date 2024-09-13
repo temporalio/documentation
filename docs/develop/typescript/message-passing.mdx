@@ -509,6 +509,10 @@ Coordinating access using a lock (also known as a mutex) corrects this code.
 Locking makes sure that only one handler instance can execute a specific section of code at any given time:
 
 ```typescript
+import { Mutex } from 'async-mutex';  // https://github.com/DirtyHairy/async-mutex
+
+...
+
 export async function myWorkflow(): Promise<MyWorkflowOutput> {
   let x = 0;
   let y = 0;
