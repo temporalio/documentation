@@ -53,32 +53,42 @@ Follow these guidelines when writing your message handlers:
 A [Query](/encyclopedia/workflow-message-passing#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution:
 
 ```typescript
-TODO: workflow w/ query handler
+export enum Language {
+  ARABIC = 'ARABIC',
+  CHINESE = 'CHINESE',
+  ENGLISH = 'ENGLISH',
+  FRENCH = 'FRENCH',
+  HINDI = 'HINDI',
+  PORTUGUESE = 'PORTUGUESE',
+  SPANISH = 'SPANISH',
+}
 
-class Language(IntEnum):
-    Chinese = 1
-    English = 2
-    French = 3
+interface GetLanguagesInput {
+  includeUnsupported: boolean;
+}
 
-@dataclass
-class GetLanguagesInput:
-    include_unsupported: bool
+// 👉 Use the object returned by defineQuery to set the query handler in
+// Workflow code, and when calling the Query in Client code.
+export const getLanguages = wf.defineQuery<Language[], [GetLanguagesInput]>('getLanguages');
 
-@workflow.defn
-class GreetingWorkflow:
-    def __init__(self) -> None:
-        self.greetings = {
-            Language.CHINESE: "你好，世界",
-            Language.ENGLISH: "Hello, world",
-        }
+export async function greetingWorkflow(): Promise<string> {
+  const greetings: Partial<Record<Language, string>> = {
+    [Language.CHINESE]: '你好，世界',
+    [Language.ENGLISH]: 'Hello, world',
+  };
 
-    @workflow.query
-    def get_languages(self, input: GetLanguagesInput) -> list[Language]:
-        # 👉 A Query handler returns a value: it can inspect but must not mutate the Workflow state.
-        if input.include_unsupported:
-            return list(Language)
-        else:
-            return list(self.greetings)
+  wf.setHandler(getLanguages, (input: GetLanguagesInput): Language[] => {
+    // 👉 A Query handler returns a value: it must not mutate the Workflow state
+    // and can't perform async operations.
+    if (input.includeUnsupported) {
+      return Object.values(Language);
+    } else {
+      return Object.keys(greetings) as Language[];
+    }
+  });
+
+  ...
+}
 ```
 
 - A Query handler cannot be `async`.
@@ -92,20 +102,23 @@ class GreetingWorkflow:
 A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
 
 ```typescript
-TODO: workflow w/ signal handler
+// 👉 Use the object returned by defineSignal to set the Signal handler in
+// Workflow code, and to send the Signal from Client code.
+export const approve = wf.defineSignal<[ApproveInput]>('approve');
 
-@dataclass
-class ApproveInput:
-    name: str
+export async function greetingWorkflow(): Promise<string> {
+  let approvedForRelease = false;
+  let approverName: string | undefined;
 
-@workflow.defn
-class GreetingWorkflow:
-    ...
-    @workflow.signal
-    def approve(self, input: ApproveInput) -> None:
-        # 👉 A Signal handler mutates the Workflow state but cannot return a value.
-        self.approved_for_release = True
-        self.approver_name = input.name
+  wf.setHandler(approve, (input) => {
+    // 👉 A Signal handler mutates the Workflow state but cannot return a value.
+    approvedForRelease = true;
+    approverName = input.name;
+  });
+
+  ...
+}
+...
 ```
 
 - The handler cannot return a value.
@@ -126,28 +139,31 @@ It can change the Workflow state, control its flow, and return a result.
 The sender must wait until the Worker accepts or rejects the Update.
 The sender may wait further to receive a returned value or an exception if something goes wrong:
 
-```python
-TODO: workflow w/ update handler
+```typescript
+// 👉 Use the object returned by defineUpdate to set the Update handler in
+// Workflow code, and to send Updates from Client code.
+export const setLanguage = wf.defineUpdate<Language, [Language]>('setLanguage');
 
-class Language(IntEnum):
-    Chinese = 1
-    English = 2
-    French = 3
+export async function greetingWorkflow(): Promise<string> {
+  const greetings: Partial<Record<Language, string>> = {
+    [Language.CHINESE]: '你好，世界',
+    [Language.ENGLISH]: 'Hello, world',
+  };
 
-@workflow.defn
-class GreetingWorkflow:
-    ...
-    @workflow.update
-    def set_language(self, language: Language) -> Language:
-        # 👉 An Update handler can mutate the Workflow state and return a value.
-        previous_language, self.language = self.language, language
-        return previous_language
+  let language = Language.ENGLISH;
 
-    @set_language.validator
-    def validate_language(self, language: Language) -> None:
-        if language not in self.greetings:
-            # 👉 In an Update validator you raise any exception to reject the Update.
-            raise ValueError(f"{language.name} is not supported")
+  wf.setHandler(setLanguage, (newLanguage: Language) => {
+    // 👉 An Update handler can mutate the Workflow state and return a value.
+    if (!(newLanguage in greetings)) {
+      throw new Error(`${newLanguage} is not supported`);
+    }
+    const previousLanguage = language;
+    language = newLanguage;
+    return previousLanguage;
+  });
+
+  ...
+}
 ```
 
 - `setHandler` can take `UpdateHandlerOptions` (such as `validator`, `description` and `unfinishedPolicy`) as described in the API reference docs for [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler).
@@ -182,12 +198,12 @@ To send Queries, Signals, or Updates, you call methods on a [WorkflowHandle](htt
 
 For example:
 
-```python
-# TODO
-client = await Client.connect("localhost:7233")
-workflow_handle = await client.start_workflow(
-    GreetingWorkflow.run, id="greeting-workflow-1234", task_queue="my-task-queue"
-)
+```typescript
+const handle = await client.workflow.start(greetingWorkflow, {
+  taskQueue: 'my-task-queue',
+  args: [myArg],
+  workflowId: 'my-workflow-id',
+});
 ```
 
 To check the argument types required when sending messages -- and the return type for Queries and Updates -- refer to the corresponding handler method in the Workflow Definition.
@@ -198,12 +214,8 @@ To check the argument types required when sending messages -- and the return typ
 Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#query) to send a Query to a Workflow Execution:
 
 
-```python
-TODO
-
-supported_languages = await workflow_handle.query(
-    GreetingWorkflow.get_languages, GetLanguagesInput(supported_only=True)
-)
+```typescript
+currentLanguage = await handle.query(getLanguage);
 ```
 
 - Sending a Query doesn’t add events to a Workflow's Event History.
@@ -223,9 +235,8 @@ However, you can only send Signals to Workflow Executions that haven’t closed.
 
 Use [WorkflowHandle.signal](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal) to send a Signal:
 
-```python
-TODO
-await workflow_handle.signal(GreetingWorkflow.approve, ApproveInput(name="me"))
+```typescript
+await handle.signal(greetingWorkflow.approve, { name: 'me' });
 ```
 
 - The call returns when the server accepts the Signal; it does _not_ wait for the Signal to be delivered to the Workflow Execution.
@@ -301,11 +312,10 @@ To send an Update to a Workflow Execution, you can:
 - Call [`WorkflowHandle.executeUpdate`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#executeUpdate) and wait for the Update to complete.
   This code fetches an Update result:
 
-  ```python
-  # TODO
-  previous_language = await workflow_handle.execute_update(
-      GreetingWorkflow.set_language, Language.Chinese
-  )
+  ```typescript
+  let previousLanguage = await handle.executeUpdate(setLanguage, {
+    args: [Language.CHINESE],
+  });
   ```
 
 - Send [`WorkflowHandle.startUpdate`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#startUpdate) to receive an [`WorkflowUpdateHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowUpdateHandle) as soon as the Update is accepted or rejected.
@@ -316,16 +326,12 @@ To send an Update to a Workflow Execution, you can:
 
   For example:
 
-  ```python
-  # TODO
-  
-  # Wait until the update is accepted
-  update_handle = await workflow_handle.start_update(
-      HelloWorldWorkflow.set_greeting,
-      HelloWorldInput("World"),
-  )
-  # Wait until the update is completed
-  update_result = await update_handle.result()
+  ```typescript
+  const updateHandle = await handle.startUpdate(setLanguage, {
+    args: [Language.ENGLISH],
+    waitForStage: WorkflowUpdateStage.ACCEPTED,
+  });
+  previousLanguage = await updateHandle.result();
   ```
 
   For more details, see the "Async handlers" section.
@@ -378,50 +384,47 @@ See [Workflow message passing](/encyclopedia/workflow-message-passing) for guida
 The following code executes an Activity that makes a network call to a remote service.
 It modifies the Update handler from earlier on this page, turning it into an `async def`:
 
-```python
-TODO
+```typescript
+// 👉 Use the objects returned by defineUpdate to set the Update handler in
+// Workflow code, and to send Updates from Client code.
+export const setLanguageUsingActivity = wf.defineUpdate<Language, [Language]>('setLanguageUsingActivity');
 
-@activity.defn
-async def call_greeting_service(to_language: Language) -> Optional[str]:
-    await asyncio.sleep(0.2)  # Pretend that we are calling a remote service.
-    greetings = {
-        Language.Arabic: "مرحبا بالعالم",
-        Language.Chinese: "你好，世界",
-        Language.English: "Hello, world",
-        Language.French: "Bonjour, monde",
-        Language.Hindi: "नमस्ते दुनिया",
-        Language.Spanish: "Hola mundo",
+export async function greetingWorkflow(): Promise<string> {
+  const greetings: Partial<Record<Language, string>> = {
+    [Language.CHINESE]: '你好，世界',
+    [Language.ENGLISH]: 'Hello, world',
+  };
+
+  let language = Language.ENGLISH;
+
+  const lock = new Mutex();
+  wf.setHandler(setLanguageUsingActivity, async (newLanguage) => {
+    // 👉 An Update handler can mutate the Workflow state and return a value.
+    // 👉 Since this update handler is async, it can execute an activity.
+    if (!(newLanguage in greetings)) {
+      // 👉 Do the following with the lock held to ensure that multiple calls to set_language are processed in order.
+      await lock.runExclusive(async () => {
+        // Simulate an async call to a greeting service
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        if (!(newLanguage in greetings)) {
+          const greeting = await callGreetingService(newLanguage);
+          if (!greeting) {
+            // 👉 An update validator cannot be async, so cannot be used to check that the remote
+            // call_greeting_service supports the requested language. Raising ApplicationError
+            // will fail the Update, but the WorkflowExecutionUpdateAccepted event will still be
+            // added to history.
+            throw new wf.ApplicationFailure(`${newLanguage} is not supported by the greeting service`);
+          }
+          greetings[newLanguage] = greeting;
+        }
+      });
     }
-    return greetings.get(to_language)
-
-
-@workflow.defn
-class GreetingWorkflow:
-    def __init__(self) -> None:
-        self.lock = asyncio.Lock()
-        ...
-    ...
-    @workflow.update
-    async def set_language(self, language: Language) -> Language:
-        if language not in self.greetings:
-            # 👉 Use a lock here to ensure that multiple calls to set_language are processed in order.
-            async with self.lock:
-                greeting = await workflow.execute_activity(
-                    call_greeting_service,
-                    language,
-                    start_to_close_timeout=timedelta(seconds=10),
-                )
-                if greeting is None:
-                    # 👉 An update validator cannot be async, so cannot be used to check that the remote
-                    # call_greeting_service supports the requested language. Raising ApplicationError
-                    # will fail the Update, but the WorkflowExecutionUpdateAccepted event will still be
-                    # added to history.
-                    raise ApplicationError(
-                        f"Greeting service does not support {language.name}"
-                    )
-                self.greetings[language] = greeting
-        previous_language, self.language = self.language, language
-        return previous_language
+    const previousLanguage = language;
+    language = newLanguage;
+    return previousLanguage;
+  });
+  ...
+}
 ```
 
 After updating the code to use `async`, your Update handler can schedule an Activity and await the result.
@@ -443,16 +446,16 @@ Here are two important use cases for `workflow.condition`:
 #### Use wait conditions in handlers
 
 It's common to use a Workflow wait condition in a handler.
-For example, suppose your Workflow class has a `readyForUpdateToExecute` method that indicates whether your Update handler should be allowed to start executing.
+For example, suppose your Workflow has a mutable variable `readyForUpdateToExecute` that indicates whether your Update handler should be allowed to start executing.
 You can use `workflow.condition` in the handler to make the handler pause until the condition is met:
 
-```python
-TODO
-    @workflow.update
-    async def my_update(self, update_input: UpdateInput) -> str:
-        await workflow.wait_condition(
-            lambda: self.ready_for_update_to_execute(update_input)
-        )
+```typescript
+let readyForUpdateToExecute = false;
+
+wf.setHandler(myUpdate, async (input: MyUpdateInput): Promise<MyUpdateOutput> => {
+  await wf.condition(() => readyForUpdateToExecute);
+  ...
+});
 ```
 
 Remember: handlers can execute before the main Workflow method starts.
@@ -467,26 +470,15 @@ When your Workflow uses `async` Signal or Update handlers, your main Workflow me
 The Workflow completing may interrupt the handler before it finishes crucial work and cause client errors when trying retrieve Update results.
 Use [`workflow.condition`](https://typescript.temporal.io/api/namespaces/workflow#condition) and [`allHandlersFinished`](https://typescript.temporal.io/api/namespaces/workflow#condition#allhandlersfinished) to address this problem and allow your Workflow to end smoothly:
 
-```python
-TODO
-@workflow.defn
-class MyWorkflow:
-    @workflow.run
-    async def run(self) -> str:
-        ...
-        await workflow.wait_condition(workflow.all_handlers_finished)
-        return "workflow-result"
+```typescript
+export async function myWorkflow(): Promise<MyWorkflowOutput> {
+  await wf.condition(wf.allHandlersFinished);
+  return workflowOutput;
+}
 ```
 
 By default, your Worker will log a warning when you allow a Workflow Execution to finish with unfinished handler executions.
-You can silence these warnings on a per-handler basis by setting the `unfinishedPolicy` in `SignalHandlerOptions` or `UpdateHandlerOptions` when calling [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler):
-
-```python
-TODO
-    @workflow.update(unfinished_policy=workflow.HandlerUnfinishedPolicy.ABANDON)
-    async def my_update(self) -> None:
-        ...
-```
+You can silence these warnings on a per-handler basis by setting the `unfinishedPolicy` in `SignalHandlerOptions` or `UpdateHandlerOptions` when calling [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler)
 
 See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
 
@@ -496,46 +488,51 @@ Concurrent processes can interact in unpredictable ways.
 Incorrectly written [concurrent message-passing](/encyclopedia/workflow-message-passing#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
 Here's an example of a pathological case:
 
-```python
-TODO
-@workflow.defn
-class MyWorkflow:
+```typescript
+export async function myWorkflow(): Promise<MyWorkflowOutput> {
+  let x = 0;
+  let y = 0;
+  wf.setHandler(mySignal, async () => {
+    const data = await myActivity();
+    x = data.x;
 
-    @workflow.signal
-    async def bad_async_handler(self):
-        data = await workflow.execute_activity(
-            fetch_data, start_to_close_timeout=timedelta(seconds=10)
-        )
-        self.x = data.x
-        # 🐛🐛 Bug!! If multiple instances of this handler are executing concurrently, then
-        # there may be times when the Workflow has self.x from one Activity execution and self.y from another.
-        await asyncio.sleep(1)  # or await anything else
-        self.y = data.y
+    // 🐛🐛 Bug!! If multiple instances of this handler are executing
+    // concurrently, then there may be times when the Workflow has x from one
+    // Activity execution and y from another.
+    await wf.sleep(500); // or await anything else
+
+    y = data.y;
+  });
+  ...
+}
 ```
 
 Coordinating access using a lock (also known as a mutex) corrects this code.
 Locking makes sure that only one handler instance can execute a specific section of code at any given time:
 
-```python
-TODO
-@workflow.defn
-class MyWorkflow:
-    def __init__(self) -> None:
-        ...
-        self.lock = asyncio.Lock()
-        ...
+```typescript
+export async function myWorkflow(): Promise<MyWorkflowOutput> {
+  let x = 0;
+  let y = 0;
+  const lock = new Mutex();
 
-    @workflow.signal
-    async def safe_async_handler(self):
-        async with self.lock:
-            data = await workflow.execute_activity(
-                fetch_data, start_to_close_timeout=timedelta(seconds=10)
-            )
-            self.x = data.x
-            # ✅ OK: the scheduler may switch now to a different handler execution, or to the main workflow
-            # method, but no other execution of this handler can run until this execution finishes.
-            await asyncio.sleep(1)  # or await anything else
-            self.y = data.y
+  wf.setHandler(mySignal, async () => {
+    await lock.runExclusive(async () => {
+      const data = await myActivity();
+      x = data.x;
+
+      // ✅ OK: node's event loop may switch now to a different handler
+      // execution, or to the main workflow function, but no other execution of
+      // this handler can run until this execution finishes.
+      await wf.sleep(500); // or await anything else
+
+      y = data.y;
+    });
+  });
+  return {
+    name: 'hello',
+  };
+}
 ```
 
 
