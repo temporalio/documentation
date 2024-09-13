@@ -295,7 +295,7 @@ func main() {
 
 In separate terminal window, run the Nexus handler Worker:
 
-```
+```go 
 cd handler
 
 go run ./worker \
@@ -318,7 +318,7 @@ With the Workers running, the final step in the local development process is to 
 
 Run the starter:
 
-```
+```go 
 cd caller
 go run ./starter \
     -target-host localhost:7233 \
@@ -391,7 +391,7 @@ Alternatively, you can create a Nexus Endpoint via the UI: [https://cloud.tempor
 
 Run the handler Worker:
 
-```
+```go 
 cd handler
 
 go run ./worker \
@@ -403,7 +403,7 @@ go run ./worker \
 
 Run the caller Worker:
 
-```
+```go 
 cd caller
 
 go run ./worker \
@@ -417,7 +417,7 @@ go run ./worker \
 
 In order to start the caller Workflow, run the starter.
 
-```
+```go 
 cd caller
 
 go run ./starter \
