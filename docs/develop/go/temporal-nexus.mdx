@@ -410,8 +410,6 @@ go run ./worker \
 ### Start a caller Workflow
 In order to start the caller Workflow, run the starter. 
 
-Run the starter:
-
 ```
 cd caller
 
@@ -431,12 +429,13 @@ This will result in:
 
 ### Observability in Temporal Cloud
 
-A synchronous Nexus Operation will surface in the caller Workflow as follows, with just `NexusOperationScheduled` and `NexusOperationCompleted` events in the caller’s Workflow history:\
-![][image4]
+A synchronous Nexus Operation will surface in the caller Workflow as follows, with just `NexusOperationScheduled` and `NexusOperationCompleted` events in the caller’s Workflow history:
+
+![Observability in Temporal Cloud Sync](/img/nexus-go/go-sdk-observability-sync.png)
 
 An asynchronous Nexus Operation will surface in the caller Workflow as follows, with `NexusOperationScheduled`, `NexusOperationStarted`, and `NexusOperationCompleted`, in the caller’s Workflow history:
 
-![][image5]
+![Observability in Temporal Cloud Async](/img/nexus-go/go-sdk-observability-async.png)
 
 ### Observability from the Temporal CLI
 
