@@ -683,10 +683,9 @@ Reserve dynamic invocation use for cases where a name is not or can't be known a
 A dynamic Signal, Query, or Update refers to a special stand-in handler.
 It's used when an unregistered handler request arrives.
 
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Needs .NET.**</div>
-Consider a Signal, where you might send something like  `workflow.signal(MyWorkflow.my_signal_method, my_arg)`.
+Consider a Signal, where you might send something like  `handle.SignalAsync(wf => wf.MySignalMethodAsync("my_arg"))`.
 This is a type-safe compiler-checked approach that guarantees a method exists.
-There's also a non-type-safe string-based form: `workflow.signal('some-name', my_arg)`.
+There's also a non-type-safe string-based form: `handle.SignalAsync("some-name", new object?[] { "my_arg" })`.
 When sent to the server, the name is checked only after arriving at the Worker.
 This is where "dynamic handlers" come in.
 
