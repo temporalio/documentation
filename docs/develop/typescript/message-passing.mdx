@@ -382,7 +382,7 @@ It's essential to understand the things that could go wrong in order to use `asy
 See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of async Signal and Update handlers, the [Safe message handlers](https://github.com/temporalio/samples-typescript/blob/main/pdates-and-signals/safe-message-handlers/README.md) sample, and the [Controlling handler concurrency](#control-handler-concurrency) and [Waiting for message handlers to finish](#wait-for-message-handlers) sections below.
 
 The following code executes an Activity that makes a network call to a remote service.
-It modifies the Update handler from earlier on this page, turning it into an `async def`:
+It modifies the Update handler from earlier on this page, turning it into an `async` function:
 
 ```typescript
 // 👉 Use the objects returned by defineUpdate to set the Update handler in
