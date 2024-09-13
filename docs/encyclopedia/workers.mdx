@@ -206,9 +206,10 @@ The `NexusOperationStarted` Event corresponds to when the Worker picks up the Ne
 
 Either NexusOperationCompleted or one of the other Closed Nexus Operation Events corresponds to when the Nexus Operation has reached a final state due to successfully completing the operation or unsuccessfully completing the operation in the case of a failure, timeout, or cancellation.
 
-A Nexus Operation Execution appears to the caller Workflow as a single RPC, while under the hood the Temporal Service may issue several Nexus Tasks to attempt to start the Operation. Hence, a Nexus Operation Handler implementation should be idempotent. The WorkflowRunOperation provided by the SDK leverages Workflow ID based deduplication to ensures idempotency and provide an "effectively once" experience.
+A Nexus Operation Execution appears to the caller Workflow as a single RPC, while under the hood the Temporal Service may issue several Nexus Tasks to attempt to start the Operation. Hence, a Nexus Operation Handler implementation should be idempotent. 
+The WorkflowRunOperation provided by the SDK leverages Workflow ID based deduplication to ensures idempotency and provide an "effectively once" experience.
 
-Once an Nexus Task finishes execution, the Worker responds to the Temporal Service with a specific Event:
+A Nexus Task Execution completes when a Worker responds to the Temporal Service with either a RespondNexusTaskCompleted or RespondNexusTaskFailed call, or when the task times out. Temporal Service interprets the outcome and determines whether to retry the task or record the progress in a History Event:
 
 - NexusTaskCompleted
 - NexusTaskFailed
