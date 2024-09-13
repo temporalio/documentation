@@ -405,13 +405,36 @@ Sometimes, `async def` Signal or Update handlers need to meet certain conditions
 You can use a wait condition ([`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition)) to set a function that prevents the code from proceeding until the condition returns `True`.
 This is an important feature that helps you control your handler logic.
 
-Here are two important use cases for `workflow.wait_condition`:
+Here are three important use cases for `workflow.wait_condition`:
 
-- Waiting in a handler until it is appropriate to continue.
-- Waiting in the main Workflow until all active handlers have finished.
+- Wait for a Signal or Update to arrive.
+- Wait in a handler until it's appropriate to continue.
+- Wait in the main Workflow until all active handlers have finished.
 
 The condition state you're waiting for can be updated by and reflect any part of the Workflow code.
 This includes the main Workflow method, other handlers, or child coroutines spawned by the main Workflow method, and so forth.
+
+#### Wait for a Signal or Update to arrive
+It's common to use `workflow.condition` to wait for a particular Signal or Update to be sent by a Client:
+
+```python
+@workflow.defn
+class GreetingWorkflow:
+    def __init__(self) -> None:
+        self.approved_for_release = False
+        self.approver_name: Optional[str] = None
+
+    @workflow.signal
+    def approve(self, input: ApproveInput) -> None:
+        self.approved_for_release = True
+        self.approver_name = input.name
+
+    @workflow.run
+    async def run(self) -> str:
+        await workflow.wait_condition(lambda: self.approved_for_release)
+        ...
+        return self.greetings[self.language]
+```
 
 ### Use wait conditions in handlers
 

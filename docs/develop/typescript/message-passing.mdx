@@ -345,7 +345,7 @@ To obtain an Update handle, you can:
 :::info NON-TYPE SAFE API CALLS
 
 In real-world development, sometimes you may be unable to import message type objects defined by `defineQuery`, `defineSignal`, or `defineUpdate`.
-When you don't have access to the Workflow Definition or it isn't written in Typescript, you can still use non-type safe APIs and dynamic method invocation.
+When you don't have access to the Workflow Definition or it isn't written in Typescript, you can still use APIs that aren't type-safe, and dynamic method invocation.
 Pass message type names instead of message type objects to:
 
 - [`client.workflow.start`](https://typescript.temporal.io/api/classes/client.WorkflowClient#start)
@@ -436,10 +436,31 @@ You can use [`workflow.condition`](https://typescript.temporal.io/api/namespaces
 You specify the condition by passing a function that returns `true` or `false`.
 This is an important feature that helps you control your handler logic.
 
-Here are two important use cases for `workflow.condition`:
+Here are three important use cases for `workflow.condition`:
 
+- Waiting for a Signal or Update to arrive
 - Waiting in a handler until it is appropriate to continue.
 - Waiting in the main Workflow until all active handlers have finished.
+
+#### Wait for a Signal or Update to arrive
+It's common to use `workflow.condition` to wait for a particular Signal or Update to be sent by a Client:
+
+```typescript
+export async function greetingWorkflow(): Promise<string> {
+  let approvedForRelease = false;
+  let approverName: string | undefined;
+
+  wf.setHandler(approve, (input) => {
+    approvedForRelease = true;
+    approverName = input.name;
+  });
+  ...
+
+  await wf.condition(() => approvedForRelease);
+  ...
+}
+```
+
 
 #### Use wait conditions in handlers
 
