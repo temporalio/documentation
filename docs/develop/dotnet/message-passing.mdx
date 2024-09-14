@@ -657,47 +657,53 @@ When working with Queries, you may encounter these errors:
 - **The handler caused the Workflow Task to fail.**
   This would happen, for example, if the Query handler blocks the thread for too long without yielding.
 
-## Dynamic components {#dynamic-handler}
 
-A dynamic Workflow, Activitity, Signal, Update, or Query is a kind of unnamed item.
-Normally, these items are registered by name with the Worker and invoked at runtime.
-When an unregistered or unrecognized Workflow, Activity, or message request arrives with a recognized method signature, the Worker can use a pre-registered dynamic stand-in.
+## Dynamic Handler {#dynamic-handler}
 
-For example, you might send a request to start a Workflow named "MyUnknownWorkflow".
-After receiving a Workflow Task, the Worker may find that there's no registered Workflow Definitions of that type.
-It then checks to see if there's a registered dynamic Workflow.
-If the dynamic Workflow signature matches the incoming Workflow signature, the Worker invokes that just as it would invoke a non-dynamic statically named version.
+Temporal supports Dynamic Queries, Signals, Updates, Workflows, and Activities.
+These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
 
-By registering dynamic versions of your Temporal components, the Worker can fall back to these alternate implementations for name mismatches.
+Dynamic Handlers provide flexibility to handle cases where the names of Queries, Signals, Updates, Workflows, or Activities, aren't known at run time.
 
 :::caution
 
-Use dynamic elements judiciously and as a fallback mechanism, not a primary design.
-They can introduce long-term maintainability and debugging issues.
-Reserve dynamic invocation use for cases where a name is not or can't be known at compile time.
+Dynamic Handlers should be used judiciously as a fallback mechanism rather than the primary approach.
+Overusing them can lead to maintainability and debugging issues down the line.
+
+Instead, Signals, Queries, Workflows, or Activities should be defined statically whenever possible, with clear names that indicate their purpose.
+Use static definitions as the primary way of structuring your Workflows.
+
+Reserve Dynamic Handlers for cases where the handler names are not known at compile time and need to be looked up dynamically at runtime.
+They are meant to handle edge cases and act as a catch-all, not as the main way of invoking logic.
 
 :::
 
-### Set a dynamic Signal, Query, or Update handler {#set-a-dynamic-signal}
+### Set a Dynamic Query {#set-a-dynamic-query}
 
-A dynamic Signal, Query, or Update refers to a special stand-in handler.
-It's used when an unregistered handler request arrives.
+A Dynamic Query in Temporal is a Query method that is invoked dynamically at runtime if no other Query with the same name is registered.
+A Query can be made dynamic by setting `Dynamic` to `true` on the `[WorkflowQuery]` attribute.
+Only one Dynamic Query can be present on a Workflow.
 
-Consider a Signal, where you might send something like  `handle.SignalAsync(wf => wf.MySignalMethodAsync("my_arg"))`.
-This is a type-safe compiler-checked approach that guarantees a method exists.
-There's also a non-type-safe string-based form: `handle.SignalAsync("some-name", new object?[] { "my_arg" })`.
-When sent to the server, the name is checked only after arriving at the Worker.
-This is where "dynamic handlers" come in.
+The Query Handler parameters must accept a `string` name and `Temporalio.Converters.IRawValue[]` for the arguments.
+The [Workflow.PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_PayloadConverter) property is used to convert an `IRawValue` object to the desired type using extension methods in the `Temporalio.Converters` namespace.
 
-After failing to find a handler with a matching name and type, the Worker checks for a registered dynamic stand-in handler.
-If found, the Worker uses that instead.
+```csharp
+[WorkflowQuery(Dynamic = true)]
+public string DynamicQueryAsync(string queryName, IRawValue[] args)
+{
+    var input = Workflow.PayloadConverter.ToValue<MyStatusParam>(args.Single());
+    return statuses[input.Type];
+}
+```
 
-You must opt handlers into dynamic access.
-For example, you make a Signal dynamic by adding `Dynamic = true` to the `[WorkflowSignal]` attribute.
+### Set a Dynamic Signal {#set-a-dynamic-signal}
 
-The handler must accept a string input for the name, and a `Temporalio.Converters.IRawValue[]` for the arguments.
-Use a [Workflow.PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_PayloadConverter)  to convert `IRawValue` objects to your required type.
-For example:
+A Dynamic Signal in Temporal is a Signal that is invoked dynamically at runtime if no other Signal with the same input is registered.
+A Signal can be made dynamic by setting `Dynamic` to `true` on the `[WorkflowSignal]` attribute.
+Only one Dynamic Signal can be present on a Workflow.
+
+The Signal Handler parameters must accept a `string` name and `Temporalio.Converters.IRawValue[]` for the arguments.
+The [Workflow.PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_PayloadConverter) property is used to convert an `IRawValue` object to the desired type using extension methods in the `Temporalio.Converters` namespace.
 
 ```csharp
 [WorkflowSignal(Dynamic = true)]
@@ -708,78 +714,21 @@ public async Task DynamicSignalAsync(string signalName, IRawValue[] args)
 }
 ```
 
-This sample creates a dynamic Signal.
-When an unregistered or unrecognized Signal arrives with a matching signature, dynamic assignment uses this handler to manage the Signal.
-It is responsible for transforming the sequence contents into usable data in a form that the method's logic can process and act on.
+### Set a Dynamic Update {#set-a-dynamic-update}
 
-When registered, any Signals sent to the Workflow without a defined handler will be delivered to the dynamic `WorkflowSignal`.
-Note that you can only register one each of a dynamic Signal, Query, or Update per Workflow Execution.
-Dynamic handlers can be implemented in both regular and dynamic Workflow implementations.
+A Dynamic Update in Temporal is an Update that is invoked dynamically at runtime if no other Update with the same input is registered.
+An Update can be made dynamic by setting `Dynamic` to `true` on the `[WorkflowUpdate]` attribute.
+Only one Dynamic Update can be present on a Workflow.
 
-
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**.NET source did not include dynamic Workflow coverage.**</div>
-
-### Set a dynamic Workflow {#set-a-dynamic-workflow}
-
-A dynamic Workflow refers to a special stand-in Workflow Definition.
-It's used when an unknown Workflow Execution request arrives.
-
-Consider the "MyUnknownWorkflow" example described earlier.
-The Worker may find there's no registered Workflow Definitions of that name or type.
-After failing to find a Workflow Definition with a matching type, the Worker looks for a dynamic stand-in.
-If found, it invokes that instead.
-
-To participate, your Workflow must opt into dynamic access.
-Adding `implements DynamicWorkflow` to the Workflow class declaration makes the Workflow Definition eligible to participate in dynamic invocation.
-You must register the Workflow with the [Worker](https://python.temporal.io/temporalio.worker.html) before it can be invoked.
+The Update Handler parameters must accept a `string` name and `Temporalio.Converters.IRawValue[]` for the arguments.
+The [Workflow.PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_PayloadConverter) property is used to convert an `IRawValue` object to the desired type using extension methods in the `Temporalio.Converters` namespace.
 
 ```csharp
-NEEDS EXAMPLE
+[WorkflowUpdate(Dynamic = true)]
+public async Task<string> DynamicUpdateAsync(string updateName, IRawValue[] args)
+{
+    var input = Workflow.PayloadConverter.ToValue<DoSomethingParam>(args.Single());
+    pendingThings.Add(input);
+    return statuses[input.Type];
+}
 ```
-
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Needs .NET.**</div>
-The Workflow Definition's primary Workflow method must accept a single argument of type `EncodedValues`.
-Use a  [payload_converter](https://python.temporal.io/temporalio.workflow.html#payload_converter) function to convert `EncodedValues` objects to your required type.
-For example:
-
-<div style={{backgroundColor: '#e0e0e0',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}><a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/dynamic_handlers/your_dynamic_workflow_dacx.py"><tt>See full sample</tt></a></div>
-
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Needs .NET and an appropriate example with a payload converter.**</div>
-
-```csharp
-ADD SAMPLE HERE LIKE PYTHON
-```
-
-This Workflow converts the first element to a string, and uses that to execute an Activity.
-
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**.NET source did not include dynamic Activity coverage.**</div>
-
-### Set a dynamic Activity {#set-a-dynamic-activity}
-
-A dynamic Activity is a stand-in implementation.
-It's used when an Activity Task with an unknown Activity type is received by the Worker.
-
-To participate, your Activity must opt into dynamic access.
-Adding `implements DynamicActivity` to the type declaration makes the Activity Definition eligible to participate in dynamic invocation.
-You must register the Activity with the Worker before it can be invoked.
-
-```csharp
-NEEDS EXAMPLE
-```
-
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Needs .NET**</div>
-
-The Activity Definition must then accept a single argument of `EncodedValues` type.
-Use a  payload_converter function to convert `RawValue` objects to your required types.
-For example:
-
-```.NET
-ADD SAMPLE HERE
-```
-
-This example invokes an unregistered Activity by name.
-The Worker resolves it using the registered dynamic Activity instead.
-When possible, prefer to use compiler-checked type-safe arguments rather than Activity name strings.
-
-
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**.NET material required here**</div>
