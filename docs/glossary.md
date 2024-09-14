@@ -89,12 +89,6 @@ Asynchronous Activity Completion occurs when an external system provides the fin
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Nexus Async Completion Callback](/nexus#async-completion-callback)
-
-The completion callback for an asynchronous Nexus Operation.
-
-_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
-
 #### [Audit Logging](/cloud/audit-logging)
 
 Audit Logging is a feature that provides forensic access information for accounts, users, and Namespaces.
@@ -312,55 +306,77 @@ A Namespace is a unit of isolation within the Temporal Platform.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Nexus API Definitions](/nexus#nexus-api-defintions)
+#### Nexus API Definitions
 
 A common code package, schema, or documentation that a Caller can use to obtain Service and Operation names as associated input/output types a Service will accept for a given Operation.
 
-_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Nexus API Registry](/nexus#nexus-api-registry)
+#### Nexus API Registry
 
-The Nexus API Registry stores information about Nexus Endpoints. In the open source version of Temporal, the registry is scoped to a Temporal Service, while in Temporal Cloud, it is scoped to an account. 
+The Nexus API Registry stores information about Nexus Endpoints. 
+With Temporal OSS, the registry is scoped to a Temporal Service. 
+With Temporal Cloud, the registry is scoped to an account. 
 Endpoint names must be unique within the registry. 
 When the Temporal Service dispatches a Nexus request, it resolves the request's Endpoint to a Namespace and Task Queue through the Registry.
 
-_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Nexus Endpoint](/nexus#nexus-endpoint)
+#### Nexus Async Completion Callback
 
-A Nexus Endpoint is like an API proxy that can serve one or more Nexus Services from a target such as a Worker listening on a target Temporal Namespace and target Task Queue. 
+A Nexus Async Completion Callback is the completion callback for an asynchronous Nexus Operation.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### Nexus Endpoint
+
+A Nexus Endpoint is an API proxy that can serve one or more Nexus Services from a target such as a Worker listening on a target Temporal Namespace and target Task Queue. 
 This allows service providers to present a clean API contract and hide the underlying implementation, which may consist of many internal Workflows. 
 Multiple Nexus Endpoints can target the same Namespace, and over time a Nexus Endpoint will be able to span multiple Namespaces with service routing rules.
 
-_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Nexus Operation](/nexus#nexus-operation)
+#### Nexus Operation
 
 An arbitrary-duration operation that may be synchronous or asynchronous, short-lived, or long-lived, and used to connect durable executions within and across Namespaces, clusters, regions, and clouds. 
 Unlike a traditional RPC, an asynchronous Nexus Operation has an operation identity that can be used to re-attach to a long-lived Nexus Operation, for example, one backed by a Temporal Workflow.
-Nexus Operations support a uniform interface to get the status of an operation or its result, receive a completion callback, or cancel the operation – all of which are fully integrated into the Temporal platform.
+Nexus Operations support a uniform interface to get the status of an operation or its result, receive a completion callback, or cancel the operation – all of which are fully integrated into the Temporal Platform.
 
-_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Nexus Operation Events](/nexus#nexus-operation-events)
+#### Nexus Operation Events
 
-History events that surface in the Caller Workflow to indicate the state of an Operation including `Nexus Operation Scheduled`, `Nexus Operation Started`, `Nexus Operation Completed`.
+Nexus Operations Events are history events that surface in the Caller Workflow to indicate the state of an Operation including `Nexus Operation Scheduled`, `Nexus Operation Started`, `Nexus Operation Completed`.
 
-_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Nexus Operation Handler](/nexus#nexus-operation-handler)
+#### Nexus Operation Handler
 
 The Nexus handler code in a Temporal Worker typically created using Temporal SDK builder functions that make it easy to abstract Temporal primitives and expose a clean service contract for others to use.
 
-_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-#### [Nexus Service](/nexus#nexus-service)
+
+#### [Nexus RPC](https://github.com/nexus-rpc/api/blob/main/SPEC.md)
+
+Nexus RPC is a new protocol designed with durable execution in mind. 
+It supports arbitrary-duration Operations that extend beyond a traditional RPC — a key underpinning to connect durable executions within and across Namespaces, Temporal Service, regions, and clouds.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### Nexus Service
 
 A Nexus Service is a named collection of arbitrary-duration Nexus Operations that provide an API contract suitable for sharing across team boundaries.
 Nexus Services are registered with a Temporal Worker that is listening on the target Namespace and Task Queue for an Endpoint.
 
-_Tags: [term](/tags/term), [nexus](/tags/nexus), [explanation](/tags/explanation)_
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### Nexus Machinery
+
+Temporal has built-in Nexus Machinery that performs the low-level Nexus RPC operations on the wire and provides an integrated Temporal SDK experience to create Nexus Services in a handler Worker and use them from a caller Workflow through a Nexus Endpoint.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy)
 
