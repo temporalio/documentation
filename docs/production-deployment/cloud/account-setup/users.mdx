@@ -2,7 +2,7 @@
 id: users
 title: User management - Temporal Cloud feature guide
 sidebar_label: Users
-description: Learn how to manage user invitations, account-level Roles, and Namespace-level permissions in Temporal Cloud. Invite users, update roles, and delete users seamlessly using the Temporal Web UI, tcld, or the Cloud Ops API.
+description: Learn how to manage user invitations, account-level roles, and Namespace-level permissions in Temporal Cloud. Invite users, update roles, and delete users seamlessly using the Temporal Web UI, tcld, or the Cloud Ops API.
 slug: /cloud/users
 toc_max_heading_level: 4
 keywords:
@@ -52,16 +52,16 @@ However, those using Google or Microsoft for SSO authentication need to follow t
 
 :::info
 
-To invite users, a user must have the Global Admin account-level [Role](#account-level-roles).
+To invite users, a user must have the Global Admin or Account Owner account-level [role](#account-level-roles).
 
 :::
 
 ### Roles and permissions
 
-Each user in Temporal Cloud is assigned a Role.
+Each user in Temporal Cloud is assigned a role.
 Each user can be assigned permissions for individual Namespaces.
 
-- [Account-level Roles](#account-level-roles)
+- [Account-level roles](#account-level-roles)
 - [Namespace-level permissions](#namespace-level-permissions)
 
 {/* How to invite users to your Temporal Cloud account using Web UI */}
@@ -97,9 +97,9 @@ You can invite users pragmatically using the Cloud Ops API.
 1. Create a connection to your Temporal Service using the Cloud Operations API.
 2. Use the [CreateUser service](https://github.com/temporalio/api-cloud/blob/main/temporal/api/cloud/cloudservice/v1/service.proto) to create a user.
 
-## What are the account-level Roles for users in Temporal Cloud? {#account-level-roles}
+## What are the account-level roles for users in Temporal Cloud? {#account-level-roles}
 
-When a Global Admin invites a user to join an account, the Global Admin selects one of the following Roles for that user:
+When a Global Admin invites a user to join an account, the Global Admin selects one of the following roles for that user:
 
 - **Global Admin**
   - Has full administrative permissions across the account, including users and usage
@@ -108,6 +108,41 @@ When a Global Admin invites a user to join an account, the Global Admin selects 
   - Can create and update Namespaces; has full control over [Workflows](/workflows)
   - Has Namespace Admin permissions for each Namespace created by that user
 - **Read-Only:** Can only read information
+
+In addition, there are two roles that the Global Admin cannot assign:
+
+- **Account Owner**
+  - Has full administrative permissions across the account, including users, usage and [billing](/cloud/billing-and-cost)
+  - Has Namespace Admin [permissions](#namespace-level-permissions) on all [Namespaces](/namespaces) in the account
+- **Finance Admin**
+  - Has permissions to view [billing](/cloud/billing-and-cost) information and update payment information
+  - Otherwise, has the same permissions as Account Read-only users 
+  - Can only be assigned by an Account Owner
+
+:::note Default Role
+
+When the account is created, the initial user who logs in is automatically assigned the Account Owner role.
+If your account does not have an Account Owner, please reach out to [Support](https://temporalsupport.zendesk.com/) to assign the appropriate individual to this role.
+
+:::
+
+## Using the Account Owner role
+
+The Account Owner role (i.e., users with the Account Owner system role) holds the highest level of access in the system.
+This role configures account-level parameters and manages Temporal billing and payment information.
+It allows users to perform all actions within the Temporal Cloud account.
+
+:::tip Best Practices
+
+Temporal strongly recommends the following precautions when assigning the Account Owner role to users:
+
+- Assign the role to at least two users in your organization.
+  Otherwise, limit the number of users with this role.
+- Associate a person’s direct email address to the Account Owner, rather than a shared or generic address, so Temporal Support can contact the right person in urgent situations.
+
+This latter rule is useful for anyone on your team who may need to be contacted urgently, regardless of their Account role.
+
+:::
 
 ## What are the Namespace-level permissions for users in Temporal Cloud? {#namespace-level-permissions}
 
@@ -120,29 +155,26 @@ For a Namespace, a user can have one of the following permissions:
 - **Write:** Can create, rename, update, and delete Workflows within the Namespace
 - **Read-Only:** Can only read information from the Namespace
 
-## How to update an account-level Role in Temporal Cloud {#update-roles}
+## How to update an account-level role in Temporal Cloud {#update-roles}
 
-You can update the account-level [Role](#account-level-roles) for a user by using either Web UI or tcld.
+With Global Admin or Account Owner privileges, you can update any user's account-level [role](#account-level-roles) using either the Web UI or `tcld`.
+This does not apply to the Account Owner role.
+For security purposes, Account Owners can only be changed through Temporal Support.
+To create, update, or delete an Account Owner, you must submit a [support ticket](https://temporalsupport.zendesk.com/).
 
-:::info
+{/* How to update an account-level role in Temporal Cloud using Web UI */}
 
-To update an account-level Role, a user must have the Global Admin account-level Role.
-
-:::
-
-{/* How to update an account-level Role in Temporal Cloud using Web UI */}
-
-### How to update an account-level Role using Web UI
+### How to update an account-level role using Web UI
 
 1. In Temporal Web UI, select **Settings** in the left portion of the window.
 1. On the **Settings** page, select the user.
 1. On the user profile page, select **Edit User**.
-1. On the **Edit User** page in **Account Level Role**, select the Role.
+1. On the **Edit User** page in **Account Level Role**, select the role.
 1. Select **Save**.
 
-{/* How to update an account-level Role in Temporal Cloud using tcld */}
+{/* How to update an account-level role in Temporal Cloud using tcld */}
 
-### How to update an account-level Role using tcld
+### How to update an account-level role using tcld
 
 For details, see the [tcld user set-account-role](/cloud/tcld/user/#set-account-role) command.
 
@@ -158,7 +190,7 @@ You can update Namespace-level [permissions](#namespace-level-permissions) by us
 1. On the **Namespaces** page, select the Namespace.
 1. If necessary, scroll down to the list of permissions
 1. On the user profile page in **Namespace permissions**, select the Namespace.
-1. On the Namespace page in **Account Level Role**, select the Role.
+1. On the Namespace page in **Account Level Role**, select the role.
 1. Select **Save**.
 
 {/* How to update Namespace-level permissions for a user in Temporal Cloud using Web UI */}
@@ -167,7 +199,7 @@ You can update Namespace-level [permissions](#namespace-level-permissions) by us
 
 :::note
 
-A user who has the Global Admin account-level [Role](#account-level-roles) has Namespace Admin permissions for all Namespaces.
+A user with the Account Owner or Global Admin account-level [role](#account-level-roles) has Namespace Admin permissions for all Namespaces.
 
 :::
 
@@ -177,7 +209,7 @@ A user who has the Global Admin account-level [Role](#account-level-roles) has N
 1. On the **Edit User** page in **Namespace permissions**, change the permissions for one or more Namespaces.
 1. Select **Save**.
 
-{/* How to update an account-level Role in Temporal Cloud using tcld */}
+{/* How to update an account-level role in Temporal Cloud using tcld */}
 
 ### How to use tcld to update Namespace-level permissions
 
@@ -189,13 +221,13 @@ You can delete a user from your Temporal Cloud Account by using either Web UI or
 
 :::info
 
-To delete a user, a user must have the Global Admin account-level [Role](#account-level-roles).
+To delete a user, a user must have the Account Owner or Global Admin account-level [role](#account-level-roles).
 
 :::
 
 {/* How to delete a user from your Temporal Cloud account using Web UI */}
 
-### How to update an account-level Role using Web UI
+### How to update an account-level role using Web UI
 
 1. In Temporal Web UI, select **Settings** in the left portion of the window.
 1. On the **Settings** page, find the user and, on the right end of the row, select **Delete**.
@@ -208,14 +240,14 @@ You can delete a user in two other ways in Web UI:
 
 {/* How to delete a user from your Temporal Cloud account using tcld */}
 
-### How to update an account-level Role using tcld
+### How to update an account-level role using tcld
 
 For details, see the [tcld user delete](/cloud/tcld/user/#delete) command.
 
-## Account-level Roles and Namespace-level permissions {#account-level-roles-and-namespace-level-permissions}
+## Account-level roles and Namespace-level permissions {#account-level-roles-and-namespace-level-permissions}
 
-Temporal account-level Roles and Namespace-level permissions provide access to specific Temporal Workflow and Temporal Cloud operational APIs.
-The following table provides the API details associated with each account-level Role and Namespace-level permission.
+Temporal account-level roles and Namespace-level permissions provide access to specific Temporal Workflow and Temporal Cloud operational APIs.
+The following table provides the API details associated with each account-level role and Namespace-level permission.
 
 :::note
 
@@ -223,62 +255,68 @@ Account Global Admin has Namespace Admin permissions on Namespaces.
 
 :::
 
-#### Account-level Role details
+#### Account-level role details
 
-This table provides API-level details for the permissions granted to a user through account-level Roles. These permissions are configured per user.
+This table provides API-level details for the permissions granted to a user through account-level roles. These permissions are configured per user.
 
-| Permission                     | Read-only | Developer | Global Admin |
-| ------------------------------ | --------- | --------- | ------------ |
-| CountIdentities                | ✔         | ✔         | ✔            |
-| CreateAPIKey                   | ✔         | ✔         | ✔            |
-| CreateNamespace                |           | ✔         | ✔            |
-| CreateServiceAccount           |           |           | ✔            |
-| CreateServiceAccountAPIKey     |           |           | ✔            |
-| CreateUser                     |           |           | ✔            |
-| DeleteAPIKey                   | ✔         | ✔         | ✔            |
-| DeleteServiceAccount           |           |           | ✔            |
-| DeleteUser                     |           |           | ✔            |
-| GetAccount                     | ✔         | ✔         | ✔            |
-| GetAccountFeatureFlags         | ✔         | ✔         | ✔            |
-| GetAccountLimits               | ✔         | ✔         | ✔            |
-| GetAccountSettings             | ✔         | ✔         | ✔            |
-| GetAccountUsage                |           |           | ✔            |
-| GetAPIKey                      | ✔         | ✔         | ✔            |
-| GetAPIKeys                     | ✔         | ✔         | ✔            |
-| GetAsyncOperation              | ✔         | ✔         | ✔            |
-| GetDecodedCertificate          | ✔         | ✔         | ✔            |
-| GetIdentities                  | ✔         | ✔         | ✔            |
-| GetIdentity                    | ✔         | ✔         | ✔            |
-| GetNamespaces                  | ✔         | ✔         | ✔            |
-| GetNamespacesUsage             |           |           | ✔            |
-| GetRegion                      | ✔         | ✔         | ✔            |
-| GetRegions                     | ✔         | ✔         | ✔            |
-| GetRequestStatus               | ✔         | ✔         | ✔            |
-| GetRequestStatuses             |           |           | ✔            |
-| GetRequestStatusesForNamespace | ✔         | ✔         | ✔            |
-| GetRequestStatusesForUser      | ✔         | ✔         | ✔            |
-| GetRoles                       | ✔         | ✔         | ✔            |
-| GetRolesByPermissions          | ✔         | ✔         | ✔            |
-| GetServiceAccount              | ✔         | ✔         | ✔            |
-| GetServiceAccounts             | ✔         | ✔         | ✔            |
-| GetUser                        | ✔         | ✔         | ✔            |
-| GetUsers                       | ✔         | ✔         | ✔            |
-| GetUsersWithAccountRoles       | ✔         | ✔         | ✔            |
-| InviteUsers                    |           |           | ✔            |
-| ListCreditLedgerEntries        |           |           | ✔            |
-| ListGrants                     |           |           | ✔            |
-| ListNamespaces                 | ✔         | ✔         | ✔            |
-| ResendUserInvite               |           |           | ✔            |
-| SetAccountSettings             |           |           | ✔            |
-| SyncCurrentUserInvite          | ✔         | ✔         | ✔            |
-| UpdateAccount                  |           |           | ✔            |
-| UpdateAPIKey                   | ✔         | ✔         | ✔            |
-| UpdateServiceAccount           |           |           | ✔            |
-| UpdateUser                     |           |           | ✔            |
+| Permission                            | Read-only | Developer | Finance Admin | Global Admin | Account Owner |
+| ------------------------------------- | --------- | --------- | ------------- | ------------ | ------------- |
+| CountIdentities                       | ✔         | ✔         | ✔             | ✔            | ✔             |
+| CreateAPIKey                          | ✔         | ✔         | ✔             | ✔            | ✔             |
+| CreateNamespace                       |           | ✔         |               | ✔            | ✔             |
+| CreateServiceAccount                  |           |           |               | ✔            | ✔             |
+| CreateServiceAccountAPIKey            |           |           |               | ✔            | ✔             |
+| CreateStripeCustomerPortalSession     |           |           | ✔             |              | ✔             |
+| CreateUser                            |           |           |               | ✔            | ✔             |
+| DeleteAPIKey                          | ✔         | ✔         | ✔             | ✔            | ✔             |
+| DeleteServiceAccount                  |           |           |               | ✔            | ✔             |
+| DeleteUser                            |           |           |               | ✔            | ✔             |
+| GetAccount                            | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAccountFeatureFlags                | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAccountLimits                      | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAccountSettings                    | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAccountUsage                       |           |           |               | ✔            | ✔             |
+| GetAPIKey                             | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAPIKeys                            | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAsyncOperation                     | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetDecodedCertificate                 | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetIdentities                         | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetIdentity                           | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetNamespaces                         | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetNamespacesUsage                    |           |           |               | ✔            | ✔             |
+| GetRegion                             | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRegions                            | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRequestStatus                      | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRequestStatuses                    |           |           |               | ✔            | ✔             |
+| GetRequestStatusesForNamespace        | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRequestStatusesForUser             | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRoles                              | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRolesByPermissions                 | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetServiceAccount                     | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetServiceAccounts                    | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetStripeInvoice                      |           |           | ✔             |              | ✔             |
+| GetUser                               | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetUsers                              | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetUsersWithAccountRoles              | ✔         | ✔         | ✔             | ✔            | ✔             |
+| InviteUsers                           |           |           |               | ✔            | ✔             |
+| ListCreditLedgerEntries               |           |           | ✔             |              | ✔             |
+| ListGrants                            |           |           | ✔             |              | ✔             |
+| ListMetronomeInvoices                 |           |           | ✔             |              | ✔             |
+| ListMetronomeInvoicesForNamespace     |           |           | ✔             |              | ✔             |
+| ListNamespaces                        | ✔         | ✔         | ✔             | ✔            | ✔             |
+| ListPromotionGrantBalances            |           |           | ✔             |              | ✔             |
+| ResendUserInvite                      |           |           |               | ✔            | ✔             |
+| SetAccountSettings                    |           |           |               | ✔            | ✔             |
+| SyncCurrentUserInvite                 | ✔         | ✔         | ✔             | ✔            | ✔             |
+| UpdateAccount                         |           |           |               | ✔            | ✔             |
+| UpdateAPIKey                          | ✔         | ✔         | ✔             | ✔            | ✔             |
+| UpdateServiceAccount                  |           |           |               | ✔            | ✔             |
+| UpdateUser                            |           |           |               | ✔            | ✔             |
 
 #### Namespace-level permissions details
 
-This table provides API-level details for the permissions granted to a user through Namespace-level permissions. These permissions are configured per Namespace per user.
+This table provides API-level details for the permissions granted to a user through Namespace-level permissions.
+These permissions are configured per Namespace per user.
 
 | Permission                         | Read | Write | Namespace Admin |
 | ---------------------------------- | ---- | ----- | --------------- |
@@ -348,3 +386,5 @@ This table provides API-level details for the permissions granted to a user thro
 | UpdateUserNamespacePermissions     |      |       | ✔               |
 | ValidateExportSink                 |      | ✔     | ✔               |
 | ValidateGlobalizeNamespace         |      |       | ✔               |
+
+Account Owners and Global Admins will have Namespace Admin permissions on Namespaces.
