@@ -328,7 +328,6 @@ module.exports = {
                 id: "production-deployment/cloud/nexus/index",
               },
               items: [
-                "production-deployment/cloud/nexus/overview",
                 "production-deployment/cloud/nexus/using-nexus",
                 "production-deployment/cloud/nexus/pricing",
                 "production-deployment/cloud/nexus/getting-started",

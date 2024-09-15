@@ -20,10 +20,9 @@ keywords:
   - service-to-service communication
 ---
 
+Nexus Services are exposed from a Nexus Endpoint that is created in the Nexus API Registry. Nexus Endpoints include service documentation that enables others to use the Nexus Services provided by a Nexus Endpoint, for example from caller Workflows. 
 
-Nexus Services are exposed from a Nexus Endpoint that is created in the Nexus API Registry. Nexus Endpoints include service documentation that enables others to use the Nexus Services provided by a Nexus Endpoint, from caller Workflows.  
-
-Temporal has built-in Nexus machinery that performs the low-level Nexus RPC operations on the wire and provides an integrated Temporal SDK experience to create Nexus Services in a handler Worker and use them from a caller Workflow via a Nexus Endpoint.
+Temporal has built-in Nexus Machinery that performs the low-level Nexus RPC operations on the wire and provides an integrated Temporal SDK experience to create Nexus Services in a handler Worker and use them from a caller Workflow via a Nexus Endpoint.
 
 In Temporal Cloud, the Nexus Machinery routes Nexus requests across Namespace boundaries via a secure mTLS Envoy mesh, where they are sync matched to a Worker in the handler Namespace, which processes the Nexus request.
 
@@ -53,7 +52,7 @@ Like `Namespaces`, a Nexus `Endpoint` is an account-scoped resource that is glob
 
 Runtime access from a `Workflow` in a caller Namespace to a Nexus `Endpoint` is controlled by an allowlist policy (of caller namespaces) for each `Endpoint` in the Nexus API registry. Workers authenticate with Temporal Cloud as they do today with mTLS certificates or API keys as allowed by the `Namespace` configuration. Nexus requests are sent from the caller’s Namespace to the handler’s Namespace over a secure multi-region mTLS Envoy mesh.
 
-See [Nexus Security]for additional details.
+See [Nexus Security] for additional details.
 
 ## Automatic Retries
 
@@ -83,6 +82,6 @@ See [Failures] and [Automatic Retries](https://docs.google.com/document/d/11pAxC
 Nexus Operations, like Activities, have at-least-once execution semantics. 
 The caller's Nexus Machinery will keep trying to start the Operation over and over, so the Nexus `Operation` handler should be idempotent just like Activities should be idempotent as a general rule. It's not required in all cases, but highly recommended in general.
 
-### At-most-once Execution Semantics via Underlying `WorkflowIdReusePolicy`
+### At-most-once Execution Semantics via Underlying WorkflowIdReusePolicy
 
-To dedupe work and get at-most-once execution semantics, an `Operation` can start a `Workflow` with a `WorkflowIdReusePolicy` of `RejectDuplicates` which only allows one `Workflow Execution` per `Workflow Id` within a `Namespace` for the retention period.
+To dedupe work and get at-most-once execution semantics, an Operation can start a Workflow with a WorkflowIdReusePolicy of RejectDuplicates which only allows one Workflow Execution per Workflow Id within a Namespace for the retention period.

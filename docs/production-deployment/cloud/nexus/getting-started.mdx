@@ -29,7 +29,7 @@ Steps to enable calls across existing Namespaces \- see the [Develop examples]:
 
 1. Add Nexus `Services` to the same `Workers` as the Temporal primitives being abstracted. 
 2. Add a Nexus `Endpoint` that:  
-   1. Targets handler Namespace. 
+   1. Targets the handler Namespace. 
    2. Allows the caller Namespace.  
 3. Make Nexus calls from a caller Workflow in a different Namespace.  
    1. Use `workflow.NewNexusClient(endpointName, serviceName)`.  
@@ -39,7 +39,7 @@ Steps to enable calls across existing Namespaces \- see the [Develop examples]:
 
 Multiple Nexus Endpoints can target a single monolithic Namespace, and then each Endpoint can be updated, one at a time, to target separate Namespaces, for an incremental migration. 
 
-Once Nexus Endpoints are in place, targeting a new Namespace can be done with config changes and zero downtime, as new Nexus requests will be routed to the new target Namespace, and existing Nexus requests will be completed in the old Namespace.
+Once Nexus Endpoints are in place, targeting a new Namespace can be done with config changes and zero downtime, as new Nexus requests will be routed to the new target Namespace, and existing Nexus requests will be completed in the previous Namespace.
 
 Steps to decompose a large monolithic Namespace:
 
@@ -54,6 +54,12 @@ Steps to decompose a large monolithic Namespace:
    3. Update the Nexus `Endpoint` target to the new Namespace  
    4. Configure the Endpoint allowlist to allow calls from the original monolithic Namespace  
    5. New Nexus `Operations` will be routed from callers in the monolithic Namespace to the new Namespace  
-4. Quiesce Nexus Operations on the old target Namespace  
-   1. Leave the old `Worker` deployment running until all existing Nexus Operations in the old Namespace have completed (and their underlying `Workflows`, if any).  
-   2. Old Workers in the monolithic Namespace can have the service implementation removed, since it is now being served from the new `Endpoint` target Namespace.
+4. Quiesce Nexus Operations on the previous target Namespace  
+   1. Leave the previous `Worker` deployment running until all existing Nexus Operations in the previous Namespace have completed (and their underlying `Workflows`, if any).  
+   2. Previous Workers in the monolithic Namespace can have the service implementation removed, since it is now being served from the new `Endpoint` target Namespace.
+
+There are a few caveats:
+   1. For long-lived entity Workflows, new Nexus requests will be routed to the new target Namespace and the long-lived entity-Workflow will still be running on the previous Namespace.
+   2. If using Signal-with-Start behind a Nexus Operation, then a new entity-Workflow will be started in the new target Namespace.
+   3. A cancel Nexus Operation request from a caller Workflow will be routed via the Nexus Endpoint to the new target Namespace, which may not have the underlying Workflow.
+   4. In these scenarios our team can provide guidance on different migration strategies.
