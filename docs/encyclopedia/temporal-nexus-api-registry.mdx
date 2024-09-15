@@ -14,7 +14,14 @@ tags:
   - temporal
 ---
 
-### Nexus API Registry {#nexus-api-registry}
-
 The Nexus API Registry is an account-scoped list of Nexus `Endpoints` available within an account.
+
 Endpoints descriptions are rendered as markdown, and can include Service and Operation descriptions, and input/output types, so consumers know how to use the Services and Endpoint offers.
+
+You can search the Nexus API registry for Endpoint name or an endpoint Target Namespace to quickly find an Endpoint of interest.
+
+Creating a Nexus endpoint includes setting an Access Policy of caller Namespaces that can access the Endpoint. Even the Target Namespace must be added to the Access Policy to access the Endpoint. 
+
+Editing a Nexus Endpoint allows changing everything but the Endpoint Name. The Target Namespace and Target Task Queue can be updated without interrupting existing in-flight Nexus Operations that are already being processed, and new Nexus Operations will be routed to the updated Target Namespace and Target Task Queue.
+
+The Access Policy may also be edited to add or remove caller Namespaces that can access the Endpoint.

@@ -2,7 +2,7 @@
 id: temporalnexus
 title: Temporal Nexus
 sidebar_label: Temporal Nexus
-description: Temporal Nexus is a higher-level primitive designed to facilitate modular architecture across team and Namespace boundaries, enabling seamless integration and durable execution across distributed systems.
+description: Temporal Nexus is a feature of the Temporal platform designed to connect durable executions across team, namespace, region, and cloud boundaries. It promotes a more modular architecture for sharing a subset of your team’s capabilities via well-defined service API contracts for other teams to use, that abstract underlying Temporal primitives, like Workflows, or execute arbitrary code.
 toc_max_heading_level: 4
 slug: /temporalnexus
 keywords:
@@ -16,35 +16,30 @@ tags:
 ---
 
 In this Temporal Nexus guide, you'll find the following information:
-
-- [Overview of Temporal Nexus](/temporalnexus/overview)
+- [Overview](#temporal-nexus-overview)
 - [Nexus API Registry](/temporalnexus/api-registry)
 - [Nexus Endpoints](/temporalnexus/endpoints)
 - [Nexus Services and Operations](/temporalnexus/services-operations)
 - [Security](/temporalnexus/security)
 
-Building distributed applications of any size often requires a modular architecture and multiple teams collaborating, with each responsible for their slice of the overall application.
+## Overview {#temporal-nexus-overview}
+Temporal Nexus is a feature of the Temporal Platform designed to connect durable executions across team, Namespace, region, and cloud boundaries. 
+It promotes a more modular architecture for sharing a subset of your team’s capabilities via well-defined service API contracts for other teams to use, that abstract underlying Temporal primitives, like Workflows, or execute arbitrary code.
 
-Teams would like to build, operate, and deliver in an autonomous manner while allowing their slice to be used by other teams – but they also want the improved security and blast-radius isolation of separate Namespaces.
+Temporal keeps the runtime benefits of an Event-Driven Architecture (EDA) where services can be down without affecting each other, but offers a higher-level durable execution programming model that lets you write idiomatic code in any language and preserve the state of execution so it can be resumed automatically in the presence of failure, without the extensive boilerplate code and complexity that comes with using raw EDA frameworks directly.
 
-Existing solutions to modularize a Temporal Application have several challenges:
+With Temporal Nexus, inter-service communication and durable execution may now span teams, Namespaces, and regions all from within the Temporal context. Nexus preserves a familiar API programming model that supports both sync and async patterns, is suitable for low-latency and long-running operations, and uses an optimized form of the Temporal queue-based Worker architecture to preserve the benefits of EDA at runtime.
 
-- Direct Workflow to Workflow integration is a leaky abstraction
-  - caller must know the target Namespace, Task Queue, Workflow policy & types
-  - tightly couples caller and handler
-  - difficult for handler to change to a different Task Queue or Namespace
-  - no service facade to refactor behind \- direct coupling to Workflow implementation
-- Child Workflows don’t work across Namespace boundaries in Temporal Cloud
-  - Namespaces can live in any cloud cell
-  - Child Workflows don’t support cross-cluster calls
-- Activities that use the Temporal client to invoke Workflows in a different Namespace
-  - cost to build and run Activity wrappers in each caller Namespace
-  - mTLS client certs must be exchanged and rotated
-  - callers get full access, so no control over what is available for other teams to use.
+Temporal Nexus provides an integrated Temporal SDK experience, built-in Nexus Machinery that makes Nexus RPC calls on your behalf, first-class observability, and enables each team to have their own Namespace for improved security, troubleshooting, and blast radius isolation.
 
-Teams have faced a difficult choice:
+Nexus RPC is a new protocol designed with durable execution in mind. It supports arbitrary-duration Operations that extend beyond a traditional RPC — a key underpinning to connect durable executions within and across Namespaces, clusters, and regions.
 
-- multiple Namespaces \- using Activity wrappers with the limitations above
-- single large monolithic Namespace \- with Child Workflows but no Namespace isolation
+A single Temporal Nexus Endpoint, like an API proxy, can serve multiple Nexus Services. Both synchronous and asynchronous operations are supported. 
+However, unlike traditional RPC, an asynchronous Nexus Operation has an operation identity that can be used to re-attach to a durable execution after a process failure. 
+Nexus also provides a uniform interface to get the status of an operation or its result, receive a completion callback, or cancel the operation – all of which are fully integrated into the Temporal platform.
 
-Higher-level Temporal primitives are needed to provide a clean interface across team boundaries and a clean separation of concerns – in a way that supports durable execution across each team’s slice of a Temporal Application.
+Temporal Nexus Services and Operations are often registered in the same Worker as the underlying Temporal primitives they abstract, and use the same queue-based Worker architecture as Workflows and Activities.
+
+For example, in Temporal Cloud when you execute a Nexus Operation in a caller Workflow, a command is sent to Temporal to schedule the Operation, and then the Temporal Nexus Machinery is responsible for making the Nexus RPC calls on your behalf. This means you don’t have to use Nexus RPC directly, only the Temporal SDK along with the Temporal Service.
+
+Temporal Nexus is available both in Temporal Cloud and Open Source. 

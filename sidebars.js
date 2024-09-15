@@ -486,7 +486,6 @@ module.exports = {
                 id: "encyclopedia/temporalnexus",
               },
               items: [
-                "encyclopedia/nexus-overview",
                 "encyclopedia/nexus-api-registry",
                 "encyclopedia/nexus-endpoints",
                 "encyclopedia/nexus-services-operations",
