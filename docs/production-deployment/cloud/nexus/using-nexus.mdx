@@ -44,21 +44,15 @@ Similar to executing an Activity, to execute a Nexus Operation from a Workflow:
 3. Nexus handler Worker sends a `RespondNexusTaskCompleted` via the SDK, with the result of the Nexus request, which may be one of: Started, Completed, Failed, TimedOut, Canceled \- see [Nexus Operation Events] for more info  
 4. Caller Workflow then processes the Nexus Operation event via `PollWorkflowTaskQueue`.
 
-See the [Temporal Nexus encyclopedia entry] for more details.
-
 ## Access Control
 
 Like `Namespaces`, a Nexus `Endpoint` is an account-scoped resource that is global within a Temporal Cloud account. Any `Developer` role (or higher) in an account, who is also a `Namespace Admin` on the endpoint’s target Namespace, can manage (create/update/delete) a Nexus `Endpoint`. All users with a `Read-only` role (or higher) in an account, can view and browse the full list of Endpoints.
 
 Runtime access from a `Workflow` in a caller Namespace to a Nexus `Endpoint` is controlled by an allowlist policy (of caller namespaces) for each `Endpoint` in the Nexus API registry. Workers authenticate with Temporal Cloud as they do today with mTLS certificates or API keys as allowed by the `Namespace` configuration. Nexus requests are sent from the caller’s Namespace to the handler’s Namespace over a secure multi-region mTLS Envoy mesh.
 
-See [Nexus Security] for additional details.
-
 ## Automatic Retries
 
 Once the caller `Workflow` schedules an `Operation` with the caller’s Temporal cluster, the caller’s Nexus Machinery keeps trying to start the `Operation`, with automatic retries and exponential backoff. If a Nexus `Operation` returns a retryable error when attempting to start, the `Operation` it will be retried up to the default retry policy’s max attempts and expiration interval.
-
-See [Nexus Automatic Retries](https://docs.google.com/document/d/11pAxCvICaodsGdQspENAWsDT3WG2tuFwGW68VpowCQI/edit?pli=1\#heading=h.f17cgqgefygj) for additional details.
 
 ## Failure Handling
 
@@ -72,8 +66,6 @@ Note this differs from how Activities and Workflow handle errors and retries:
 
 * [https://docs.temporal.io/references/failures\#errors-in-activities](https://docs.temporal.io/references/failures\#errors-in-activities)  
 * [https://docs.temporal.io/references/failures\#non-retryable](https://docs.temporal.io/references/failures\#non-retryable)
-
-See [Failures] and [Automatic Retries](https://docs.google.com/document/d/11pAxCvICaodsGdQspENAWsDT3WG2tuFwGW68VpowCQI/edit?pli=1\#heading=h.f17cgqgefygj) for additional details.
 
 ## Execution Semantics
 

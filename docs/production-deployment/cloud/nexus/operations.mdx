@@ -145,15 +145,12 @@ See [Audit Logging](\#audit-logging) for details.
 
 ## Rate Limiting
 
-Nexus requests (commands, polling) are counted as part of the overall Namespace RPS limit in both the caller and handler Namespaces. Default Namespace RPS limits are set at 1600 and automatically adjust based on recent usage (over prior 7 days).
-
-See [Nexus Rate Limits] for additional details.
+Nexus requests (commands, polling) are counted as part of the overall Namespace RPS limit in both the caller and handler Namespaces. 
+Default Namespace RPS limits are set at 1600 and automatically adjust based on recent usage (over prior 7 days).
 
 ## SLOs & SLAs
 
 Nexus requests (commands, polling) have the same [latency SLOs] and [error rate SLAs] as other Worker requests in both the caller and handler Namespaces.
-
-See [Availability] and [SLA].
 
 ## Limits
 
@@ -165,18 +162,12 @@ See [Availability] and [SLA].
 
 **Nexus Operation Maximum Duration** \- Each Nexus `Operation` has a maximum `ScheduleToClose` duration of 60 days, which is most applicable to asynchronous Nexus `Operations` that are completed with an asynchronous callback using a separate Nexus request from the handler back to the caller Namespace. The 60 day maximum is forward-compatible with completion callbacks that may be signed with a single use token such that asymmetric encryption keys may be rotated in a timely fashion. While the caller of a Nexus `Operation` can configure the `ScheduleToClose` duration to be shorter than 60 days, the maximum duration can not be extended beyond 60 days and will be capped by the server to 60 days.
 
-See [Nexus Limits] for additional details.
-
 ## Secure Routing
 
 Nexus `Endpoints` are only privately accessible from within a Temporal Cloud and mTLS is used for all Nexus communication, including across cloud cells and regions. Workers authenticate to their Namespaces via mTLS or an API key as allowed by their Namespace configuration.
 
-See [Nexus Secure Routing](\#secure-routing) for details.
-
 ## Payload Encryption
 
 For payload encryption, the `DataConverter` works the same for a Nexus `Operation` as it does for other payloads sent between a Worker and Temporal Cloud. Currently there is support for a single `DataConverter` to be used for inbound inputs and outbound outputs, which means the encryption key often used in a custom `DataConverter` must be the same for both the caller and the handler. Please let us know if you need per-Endpoint or per-Service payload encryption.
-
-See [Nexus Payload Encryption & Data Converter] for additional details.
 
 
