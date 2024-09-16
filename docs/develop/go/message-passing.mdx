@@ -115,6 +115,29 @@ func GreetingWorkflow(ctx workflow.Context) error {
 ```
 
 - Pass the Signal's name to [`GetSignalChannel`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetSignalChannel) to get the Signal Channel that listen for Signals of that type.
+
+Alternatively, you might want the Workflow to proceed and still be capable of handling external Signals.
+
+```go
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
+   var signal MySignal
+   signalChan := workflow.GetSignalChannel(ctx, "your-signal-name")
+ 	workflow.Go(ctx, func(ctx workflow.Context) {
+ 		for {
+ 			selector := workflow.NewSelector(ctx)
+ 			selector.AddReceive(signalChan, func(c workflow.ReceiveChannel, more bool) {
+ 				c.Receive(ctx, &signal)
+ 			})
+ 			selector.Select(ctx)
+ 		}
+ 	})
+   // You could now submit an activity; any signals will still be received while the activity is pending.
+ }
+```
+
+In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
+
+
 - Before completing the Workflow or using [Continue-As-New](/develop/go/continue-as-new), make sure to do an asynchronous drain on the Signal channel.
 Otherwise, the Signals will be lost.
 
