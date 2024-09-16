@@ -575,7 +575,7 @@ If an issue occurs during the handler execution by the Worker, the client may re
     You'll receive a [`ServiceError`](https://pkg.go.dev/go.temporal.io/api/serviceerror#ServiceError) on which the `status` is `FAILED_PRECONDITION`.
 
 1. **Query failed.**
-    You'll receive a [`QueryFailed`](https://pkg.go.dev/go.temporal.io/api/serviceerror#QueryFailed).
+    You'll receive a [`QueryFailed`](https://pkg.go.dev/go.temporal.io/api/serviceerror#QueryFailed) error.
     Any panic in a Query handler will trigger this error.
     This differs from Signal and Update, where panics can lead to Workflow Task Failure instead.
 
