@@ -193,26 +193,31 @@ Once an Activity Task finishes execution, the Worker responds to the Temporal Se
 
 ## What is a Nexus Task? {#nexus-task}
 
-A Nexus Task provides the context needed to proceed with a Nexus Task Execution.
-Nexus Tasks contain the data needed to execute various actions related to a Nexus Operation.
+A Nexus Task represents a single Nexus request to start or cancel a Nexus Operation. 
+The Nexus Task includes details such as the Nexus Service and Nexus Operation names, and other information required to process the Nexus request.
+The Temporal Worker triggers the registered Operation handler based on the Nexus task information.
 
 ## What is a Nexus Task Execution? {#nexus-task-execution}
 
-A Nexus Task Execution occurs when a Worker uses the context provided from the Nexus Task and executes an action associated with a Nexus Operation, which commonly includes starting a Nexus Operation using it's Nexus Operation handler plus many additional actions that may be performed on a Nexus Operation.
+A Nexus Task Execution occurs when a Worker uses the context provided from the Nexus Task and executes an action associated with a Nexus Operation which commonly includes starting a Nexus Operation using it's Nexus Operation handler plus many additional actions that may be performed on a Nexus Operation.
 
-The `NexusOperationScheduled` Event corresponds to when the Temporal Service puts the Nexus Task to start a Nexus Operation into the Task Queue.
+The NexusOperationScheduled Event corresponds to when the Temporal Service puts the Nexus Task to start a Nexus Operation into the Task Queue.
 
-The `NexusOperationStarted` Event corresponds to when the Worker picks up the Nexus Task from the Task Queue, starts an asynchronous Nexus Operation, and returns an Operation ID to the caller indicating the asynchronous Nexus Operation has started.
+The NexusOperationStarted Event corresponds to when the Worker picks up the Nexus Task from the Task Queue, starts an asynchronous Nexus Operation, and returns an Operation ID to the caller indicating the asynchronous Nexus Operation has started.
 
 Either NexusOperationCompleted or one of the other Closed Nexus Operation Events corresponds to when the Nexus Operation has reached a final state due to successfully completing the operation or unsuccessfully completing the operation in the case of a failure, timeout, or cancellation.
 
 A Nexus Operation Execution appears to the caller Workflow as a single RPC, while under the hood the Temporal Service may issue several Nexus Tasks to attempt to start the Operation. Hence, a Nexus Operation Handler implementation should be idempotent. 
 The WorkflowRunOperation provided by the SDK leverages Workflow ID based deduplication to ensures idempotency and provide an "effectively once" experience.
 
-A Nexus Task Execution completes when a Worker responds to the Temporal Service with either a RespondNexusTaskCompleted or RespondNexusTaskFailed call, or when the task times out. Temporal Service interprets the outcome and determines whether to retry the task or record the progress in a History Event:
+A Nexus Task Execution completes when a Worker responds to the Temporal Service with either a RespondNexusTaskCompleted or RespondNexusTaskFailed call, or when the Task times out. 
+
+The Temporal Service interprets the outcome and determines whether to retry the Task or record the progress in a History Event:
 
 - NexusTaskCompleted
 - NexusTaskFailed
+- NexusOperationCompleted
+- NexusOperationScheduled
 
 ## What is a Task Queue? {#task-queue}
 
