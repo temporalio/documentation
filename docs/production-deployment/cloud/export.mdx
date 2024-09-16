@@ -121,7 +121,7 @@ Run the `tcld namespace export s3 create` command and provide the following info
 For example:
 
 ```command
-tcld namespace export s3 create --namespace "your-namespace.your-account" --sink-name "your-sink-name" --role-arn "arn:aws:iam::123456789012:role/test-sink" --s3-bucket-name "your-aws-s3-bucket-name”
+tcld namespace export s3 create --namespace "your-namespace.your-account" --sink-name "your-sink-name" --role-arn "arn:aws:iam::123456789012:role/test-sink" --s3-bucket-name "your-aws-s3-bucket-name"
 ```
 
 Retrieve the status of this command by running the `tcld namespace export s3 get` command.
@@ -203,7 +203,7 @@ Once you've finalized the setup, here's how to monitor the export progress:
 
 5. **Usage monitoring**:
    - Actions from the Export Job are included in the Usage UI.
-   - **Metrics**: Export related metrics are available in `temporal_cloud_v0_total_action_count` with the label `is_background=“true”`. For more information, see [Cloud metrics](/cloud/metrics/).
+   - **Metrics**: Export related metrics are available in `temporal_cloud_v0_total_action_count` with the label `is_background="true"`. For more information, see [Cloud metrics](/cloud/metrics/).
 
 For optimal results, review the S3 bucket for any new exported files and refer to the UI insights.
 This dual check ensures you remain abreast of the export progress and any potential issues.

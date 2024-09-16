@@ -730,6 +730,12 @@ A Workflow Id is a customizable, application-level identifier for a Workflow Exe
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
+#### [Workflow Id Conflict Policy](/workflows#workflow-id-conflict-policy)
+
+A Workflow Id Conflict Policy determines how to resolve the conflict when spawning a new Workflow Execution with a particular Workflow Id that is used by an Open Workflow Execution already.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
 #### [Workflow Id Reuse Policy](/workflows#workflow-id-reuse-policy)
 
 A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.
