@@ -174,7 +174,7 @@ func GreetingWorkflow(ctx workflow.Context) error {
 - Use [`workflow.GetCurrentUpdateInfo`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetCurrentUpdateInfo) to obtain information about the current Update.
   This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
 - Update handlers can use Activities, Child Workflows, durable [workflow.Sleep](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) Timers, [`workflow.Await`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Await) conditions, and more.
-  See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for safe usage guidelines.
+  See [Blocking handlers](#blocking-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for safe usage guidelines.
 
 
 ## Send messages {#send-messages}
@@ -327,7 +327,7 @@ It doesn't apply to pure read operations, like Queries or Update Validators.
 
 :::tip
 
-For additional information, see [Inject work into the main Workflow](/encyclopedia/workflow-message-passing#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-typescript/blob/main/pdates-and-signals/safe-message-handlers/README.md) demonstrating safe `async` message handling.
+For additional information, see [Inject work into the main Workflow](/encyclopedia/workflow-message-passing#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-typescript/blob/main/pdates-and-signals/safe-message-handlers/README.md) demonstrating safe blocking message handling.
 
 :::
 
