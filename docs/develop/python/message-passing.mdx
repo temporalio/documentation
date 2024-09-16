@@ -396,7 +396,7 @@ class GreetingWorkflow:
 ```
 
 After updating the code to use an `async def`, your Update handler can schedule an Activity and await the result.
-Although an `async def` Signal handler can also execute an Activity, using an Update handler allows the client to receive a result or error once the Activity completes.
+Although an `async def` Signal handler can also execute an Activity, using an Update handler allows the Client to receive a result or error once the Activity completes.
 This lets your client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, etc.
 
 ### Add wait conditions to block
@@ -548,7 +548,7 @@ See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exce
 
 When using Signal, the only exceptions that will result from your requests during its execution are the `RPCError`s described above.
 
-For Queries and Updates, the client waits for a response from the Worker, and therefore additional errors may occur during the handler Execution by the Worker.
+For Queries and Updates, the Client waits for a response from the Worker, and therefore additional errors may occur during the handler Execution by the Worker.
 
 ### Problems when sending an Update {#update-problems}
 
