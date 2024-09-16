@@ -213,7 +213,7 @@ The WorkflowRunOperation provided by the SDK leverages Workflow ID based dedupli
 
 A Nexus Task Execution completes when a Worker responds to the Temporal Service with either a RespondNexusTaskCompleted or RespondNexusTaskFailed call, or when the Task times out. 
 
-Once an Nexus Task finishes execution, the Worker responds to the Temporal Service with a specific Event:
+The Temporal Service interprets the outcome and determines whether to retry the Task or record the progress in a History Event:
 
 - NexusTaskCompleted
 - NexusTaskFailed
