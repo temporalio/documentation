@@ -195,7 +195,6 @@ The metric values provided by `temporal task-queue describe` can help you manage
   If this time grows too long, more Workers can boost Workflow efficiency.
 
 - Calculate the demand per Worker by dividing the number of backlogged Tasks (`ApproximateBacklogCount`) by the number of Workers.
-  You can rely on this count when making scaling decisions.
   Determine if your task processing rate is within an acceptable range for you needs using the per-Worker demand (how many Tasks each Worker has yet to process), the backlog consumption rate (`TasksDispatchRate`, the rate at which Workers are processing Tasks), and the dispatch latency (`ApproximateBacklogAge`, the time the oldest Task has been waiting to be assigned to a Worker).
 
 - The backlog increase rate (`BacklogIncreaseRate`) shows the changing demand on your Workers over time.
