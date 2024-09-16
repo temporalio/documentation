@@ -32,7 +32,8 @@ The following page covers:
 
 ## Nexus Services {#nexus-services}
 
-A Nexus `Service` is a named collection of arbitrary-duration Nexus `Operations` that provide an API contract suitable for sharing across team boundaries. Nexus Services are registered with a Temporal `Worker` that is listening on the target Namespace and Task Queue for an Endpoint.
+A Nexus `Service` is a named collection of arbitrary-duration Nexus `Operations` that provide an API contract suitable for sharing across team boundaries. 
+Nexus Services are registered with a Temporal `Worker` that is listening on the target Namespace and Task Queue for an Endpoint.
 
 For example a Nexus Service is often registered in the same Worker as the underlying Workflows they abstract:
 
@@ -88,7 +89,7 @@ Caller Workflows use the following to execute a Nexus Operation:
 
 #### Asynchronous Operation Lifecycle {#asynchronous-operation-lifecycle}
 
-An asynchronous Nexus Operation may take up to 2 months to complete, to allow for callback URL token validation with asymmetric key rotation at those intervals.
+An asynchronous Nexus Operation may take up to 2 months to complete in Temporal Cloud, to allow for callback URL token validation with asymmetric key rotation at those intervals.
 
 The lifecycle of an asynchronous Nexus `Operation`:
 
