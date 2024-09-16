@@ -30,6 +30,8 @@ Nexus preserves a familiar API programming model that supports both sync and asy
 
 Temporal Nexus provides an integrated Temporal SDK experience, built-in Nexus Machinery that makes Nexus RPC calls on your behalf, first-class observability, and enables each team to have their own Namespace for improved security, troubleshooting, and blast radius isolation.
 
+![Nexus API Registry](/img/nexusapiregistry.png)
+
 Nexus RPC is a protocol designed with durable execution in mind. 
 It supports arbitrary-duration Operations that extend beyond a traditional RPC — a key underpinning to connect durable executions within and across Namespaces, clusters, and regions.
 
@@ -42,4 +44,4 @@ Temporal Nexus Services and Operations are often registered in the same Worker a
 For example, in Temporal Cloud when you execute a Nexus Operation in a caller Workflow, a command is sent to Temporal to schedule the Operation, and then the Temporal Nexus Machinery is responsible for making the Nexus RPC calls on your behalf. 
 This means you don’t have to use Nexus RPC directly, only the Temporal SDK along with the Temporal Service.
 
-Temporal Nexus is available both in Temporal Cloud and Open Source. 
+Temporal Nexus is available both in self-hosted deployments and Temporal Cloud. 
