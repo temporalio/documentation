@@ -76,7 +76,18 @@ module.exports = {
           },
           items: [
             "evaluate/temporal-cloud/overview",
-            "evaluate/temporal-cloud/security",
+            {
+              type: "category",
+              label: "Security",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "evaluate/temporal-cloud/security",
+              },
+              items: [
+                "evaluate/temporal-cloud/aws-privatelink",
+              ],
+            },
             "evaluate/temporal-cloud/service-availability",
             "evaluate/temporal-cloud/limits",
             "evaluate/temporal-cloud/sla",
@@ -297,13 +308,13 @@ module.exports = {
               },
               items: [
                 "production-deployment/cloud/account-setup/certificates",
+                "production-deployment/cloud/api-keys",
                 "production-deployment/cloud/account-setup/namespaces",
                 "production-deployment/cloud/account-setup/users",
               ],
             },
             "production-deployment/cloud/billing-and-cost",
             "production-deployment/cloud/service-accounts",
-            "production-deployment/cloud/api-keys",
             {
               type: "category",
               label: "Metrics",
@@ -325,8 +336,30 @@ module.exports = {
             "production-deployment/cloud/saml",
             "production-deployment/cloud/operation-api",
             "production-deployment/cloud/terraform-provider",
-            "production-deployment/cloud/audit-logging",
-            "production-deployment/cloud/export",
+            {
+              type: "category",
+              label: "Export",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/export",
+              },
+              items: [
+                "production-deployment/cloud/aws-export-s3",
+              ],
+            },
+            {
+              type: "category",
+              label: "Audit Logging",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/audit-logging",
+              },
+              items: [
+                "production-deployment/cloud/audit-logging-aws",
+              ],
+            },
             {
               type: "category",
               label: "CLI (tcld)",
