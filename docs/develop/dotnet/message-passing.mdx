@@ -453,7 +453,7 @@ This lets your client track the progress of asynchronous work performed by the U
 ### Add wait conditions to block {#block-with-wait}
 
 Sometimes, async Signal or Update handlers need to meet certain conditions before they should continue.
-Using a wait condition with [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)) sets a function that prevents the code from proceeding until the condition returns `true`.
+Using a wait condition with `Workflow.WaitConditionAsync` sets a function that prevents the code from proceeding until the condition returns `true`.
 This is an important feature that helps you control your handler logic.
 
 Here are two important use cases for `Workflow.await`:
