@@ -88,14 +88,14 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [activity_execution_latency](#activity_execution_latency)                               | Worker         | Histogram   | Core, Go, Java |
 | [activity_poll_no_task](#activity_poll_no_task)                                         | Worker         | Counter     | Core, Go, Java |
 | [activity_schedule_to_start_latency](#activity_schedule_to_start_latency)               | Worker         | Histogram   | Core, Go, Java |
-| [activity_succeed_endtoend_latency](#activity_succeed_endtoend_latency)                 | Worker         | Histogram   | Go, Java       |
+| [activity_succeed_endtoend_latency](#activity_succeed_endtoend_latency)                 | Worker         | Histogram   | Core, Go, Java |
 | [activity_task_error](#activity_task_error)                                             | Worker         | Counter     | Go             |
-| [corrupted_signals](#corrupted_signals)                                                 | Worker         | Counter     | Go, Java       |
-| [local_activity_execution_cancelled](#local_activity_execution_cancelled)               | Worker         | Counter     | Go, Java       |
-| [local_activity_execution_failed](#local_activity_execution_failed)                     | Worker         | Counter     | Go, Java       |
-| [local_activity_execution_latency](#local_activity_execution_latency)                   | Worker         | Histogram   | Go, Java       |
-| [local_activity_succeeded_endtoend_latency](#local_activity_succeeded_endtoend_latency) | Worker         | Histogram   | Go, Java       |
-| [local_activity_total](#local_activity_total)                                           | Worker         | Counter     | Go, Java       |
+| [corrupted_signals](#corrupted_signals)                                                 | Worker         | Counter     | Core, Go, Java |
+| [local_activity_execution_cancelled](#local_activity_execution_cancelled)               | Worker         | Counter     | Core, Go, Java |
+| [local_activity_execution_failed](#local_activity_execution_failed)                     | Worker         | Counter     | Core, Go, Java |
+| [local_activity_execution_latency](#local_activity_execution_latency)                   | Worker         | Histogram   | Core, Go, Java |
+| [local_activity_succeeded_endtoend_latency](#local_activity_succeeded_endtoend_latency) | Worker         | Histogram   | Core, Go, Java |
+| [local_activity_total](#local_activity_total)                                           | Worker         | Counter     | Core, Go, Java |
 | [long_request](#long_request)                                                           | Service Client | Counter     | Core, Go, Java |
 | [long_request_failure](#long_request_failure)                                           | Service Client | Counter     | Core, Go, Java |
 | [long_request_latency](#long_request_latency)                                           | Service Client | Histogram   | Core, Go, Java |
@@ -110,7 +110,7 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [sticky_cache_total_forced_eviction](#sticky_cache_total_forced_eviction)               | Worker         | Counter     | Go, Java       |
 | [unregistered_activity_invocation](#unregistered_activity_invocation)                   | Worker         | Counter     | Go             |
 | [worker_start](#worker_start)                                                           | Worker         | Counter     | Core, Go, Java |
-| [worker_task_slots_available](#worker_task_slots_available)                             | Worker         | Gauge       | Go, Java       |
+| [worker_task_slots_available](#worker_task_slots_available)                             | Worker         | Gauge       | Core, Go, Java |
 | [workflow_active_thread_count](#workflow_active_thread_count)                           | Worker         | Gauge       | Java           |
 | [workflow_cancelled](#workflow_cancelled)                                               | Worker         | Counter     | Core, Go, Java |
 | [workflow_completed](#workflow_completed)                                               | Worker         | Counter     | Core, Go, Java |
@@ -175,7 +175,7 @@ Total latency of successfully finished Activity Executions from the time they ar
 This metric is not recorded for async Activity completion.
 
 - Type: Histogram
-- Available in: Go, Java
+- Available in: Core, Go, Java
 - Tags: `activity_type`, `namespace`, `task_queue`
 
 ### activity_task_error
@@ -199,7 +199,7 @@ Number of Signals whose payload could not be deserialized.
 A Local Activity Execution was canceled.
 
 - Type: Counter
-- Available in: Go, Java
+- Available in: Core, Go, Java
 - Tags: `activity_type`, `namespace`, `task_queue`
 
 ### local_activity_execution_failed
@@ -207,7 +207,7 @@ A Local Activity Execution was canceled.
 A Local Activity Execution failed.
 
 - Type: Counter
-- Available in: Go, Java
+- Available in: Core, Go, Java
 - Tags: `activity_type`, `namespace`, `task_queue`
 
 ### local_activity_execution_latency
@@ -215,7 +215,7 @@ A Local Activity Execution failed.
 Time to complete a Local Activity Execution, from the time the first Activity Task is generated to the time the SDK responds that the execution is complete.
 
 - Type: Histogram
-- Available in: Go, Java
+- Available in: Core, Go, Java
 - Tags: `activity_type`, `namespace`, `task_queue`
 
 ### local_activity_succeeded_endtoend_latency
@@ -223,7 +223,7 @@ Time to complete a Local Activity Execution, from the time the first Activity Ta
 Total latency of successfully finished Local Activity Executions (from schedule to completion).
 
 - Type: Histogram
-- Available in: Go, Java
+- Available in: Core, Go, Java
 - Tags: `activity_type`, `namespace`, `task_queue`
 
 ### local_activity_total
@@ -231,7 +231,7 @@ Total latency of successfully finished Local Activity Executions (from schedule 
 Total number of [Local Activity Executions](/activities#local-activity).
 
 - Type: Counter
-- Available in: Go, Java
+- Available in: Core, Go, Java
 - Tags: `activity_type`, `namespace`, `task_queue`
 
 ### long_request
