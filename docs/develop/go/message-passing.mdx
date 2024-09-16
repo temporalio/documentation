@@ -140,6 +140,19 @@ In the example above, the Workflow code uses `workflow.GetSignalChannel` to open
 
 - Before completing the Workflow or using [Continue-As-New](/develop/go/continue-as-new), make sure to do an asynchronous drain on the Signal channel.
 Otherwise, the Signals will be lost.
+The [batch sliding window](https://github.com/temporalio/samples-go/tree/main/batch-sliding-window) sample contains an example:
+```go
+	reportCompletionChannel := workflow.GetSignalChannel(ctx, "ReportCompletion")
+	// Drain signals async
+	for {
+		var recordId int
+		ok := reportCompletionChannel.ReceiveAsync(&recordId)
+		if !ok {
+			break
+		}
+		s.recordCompletion(ctx, recordId)
+	}
+```
 
 ### Update handlers and validators {#updates}
 
