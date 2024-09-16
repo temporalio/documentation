@@ -92,7 +92,7 @@ public class MessagePassingIntro {
 ```
 
 - A Query handler must not modify workflow state.
-- You can't perform async blocking operations such as executing an Activity in a Query handler.
+- You can't perform blocking operations such as executing an Activity in a Query handler.
 - The Query annotation accepts an argument (`name`) as described in the API reference docs for [`@QueryMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/QueryMethod.html).
 
 ### Signal handlers {#signals}
@@ -138,7 +138,7 @@ public class MessagePassingIntro {
 
 - Signal (and Update) handlers can be blocking.
   This allows you to use Activities, Child Workflows, durable [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)), Timers, [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)), and more.
-  See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for guidelines on safely using async Signal and Update handlers.
+  See [Blocking handlers](#blocking-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for guidelines on safely using blocking Signal and Update handlers.
 
 ### Update handlers and validators {#updates}
 
@@ -198,8 +198,8 @@ public class MessagePassingIntro {
 
 - Use [`getCurrentUpdateInfo`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/internal/sync/WorkflowInternal.html#getCurrentUpdateInfo()) to obtain information about the current Update. This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](https://docs.temporal.io/encyclopedia/workflow-message-passing#exactly-once-message-processing).
 
-- Signal (and Update) handlers can be asynchronous and blocking, letting them use Activities, Child Workflows, durable [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) Timers, [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)) conditions, and more.
-  See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for safe usage guidelines.
+- Signal (and Update) handlers can be blocking, letting them use Activities, Child Workflows, durable [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) Timers, [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)) conditions, and more.
+  See [Blocking handlers](#blocking-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for safe usage guidelines.
 
 ## Send messages {#send-messages}
 
@@ -340,7 +340,7 @@ To send an Update to a Workflow Execution, you can:
 
 
   - Use this `WorkflowUpdateHandle` later to fetch your results.
-  - Asynchronous Update handlers normally perform long-running async activities.
+  - Blocking Update handlers normally perform long-running asynchronous operations.
   - `startUpdate` only waits until the Worker has accepted or rejected the Update, not until all asynchronous operations are complete.
 
   For example:
@@ -353,7 +353,7 @@ To send an Update to a Workflow Execution, you can:
   previousLanguage = handle.getResultAsync().get();
   ```
 
-  For more details, see the "Async handlers" section.
+  For more details, see the "Blocking handlers" section.
 
 To obtain an Update handle, you can:
 
@@ -396,7 +396,7 @@ For additional information, see [Inject work into the main Workflow](/encycloped
 :::
 
 
-### Do blocking operations in handlers {#async-handlers}
+### Do blocking operations in handlers {#blocking-handlers}
 
 Signal and Update handlers can block.
 This allows you to use [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)), Activities, Child Workflows, [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) Timers, etc.
@@ -436,7 +436,7 @@ This lets your client track the progress of asynchronous work performed by the U
 
 ### Add blocking wait conditions {#block-with-wait}
 
-Sometimes, async Signal or Update handlers need to meet certain conditions before they should continue.
+Sometimes, blocking Signal or Update handlers need to meet certain conditions before they should continue.
 You can use [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)) to prevent the code from proceeding until a condition is true.
 You specify the condition by passing a function that returns `true` or `false`.
 This is an important feature that helps you control your handler logic.
