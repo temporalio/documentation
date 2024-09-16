@@ -19,7 +19,14 @@ keywords:
   - temporal cloud nexus
 ---
 
-Temporal Nexus is a feature of the Temporal platform designed to connect durable executions across team, Namespace, region, and cloud boundaries - available in Public Preview for OSS and Temporal Cloud. 
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus available in [Public Preview](https://docs.temporal.io/evaluate/development-production-features/release-stages\#public-preview) for OSS and Temporal Cloud in the Temporal Go SDK. 
+For more information, visit the Encyclopedia. 
+
+:::
+
+Temporal Nexus is a feature of the Temporal platform designed to connect durable executions across team, Namespace, region, and cloud boundaries.
 It promotes a more modular architecture for sharing a subset of your team’s capabilities through well-defined service API contracts for other teams to use, that abstract underlying Temporal primitives, like Workflows, or execute arbitrary code.
 
 Temporal keeps the runtime benefits of an Event-Driven Architecture (EDA) where services can be down without affecting each other, but offers a higher-level durable execution programming model that lets you write idiomatic code in any language and preserve the state of execution.
@@ -35,6 +42,4 @@ With Temporal Nexus, teams are able to:
 - **Easily scale and manage applications** by breaking them into modular components developed separately while maintaining smooth integration through clear service contracts.
 - **Run Workflows across teams and Namespaces**, enabling durable execution and custom code to operate seamlessly across different parts of the system.
 - **Enhance security by isolating different parts of the application**, reducing the risk and impact of potential issues.
-- **Continue using familiar tools like queue-based workers**, without the need for complex new setups or deployments.
-
-Nexus is available in Public Preview with the [Temporal Go SDK](https://docs.temporal.io/develop/go) [<img src="/img/golang.svg" alt="Go Icon" width="40" height="10"/>](https://docs.temporal.io/develop/go)
+- **Continue using familiar tools like queue-based Workers**, without the need for complex new setups or deployments.
