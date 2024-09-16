@@ -130,7 +130,7 @@ The lifecycle of a synchronous Nexus Operation, for example to do a Query or a S
    2. Retries are processed by the Nexus Machinery in the caller’s Temporal cluster and tracked as part of the caller Workflow, similar to Activities.
 3. Nexus Operation handler in the target cluster processes the Nexus `Operation`.
    1. Operation handler pulls operation `Task` from Task Queue.
-   2. Operation handler starts a `Workflow` in the target cluster.
+   2. Operation handler starts a Workflow in the target cluster.
    3. Operation result is returned inline, since the operation is synchronous.
    4. **`NexusOperationCompleted`** added to caller’s Event History.
 4. Caller’s Workflow `handle.GetResult()` returns the result.
@@ -138,24 +138,24 @@ The lifecycle of a synchronous Nexus Operation, for example to do a Query or a S
 #### Executing Arbitrary (non-durable code) from a Sync Handler {#executing-arbitrary-(non-durable-code)-from-a-sync-handler}
 
 Nexus Operation handlers can execute arbitrary code, but unlike Activities they should be relatively short-lived, due to the lack of [heartbeats](https://community.temporal.io/t/best-practices-for-long-running-Activities/934) and a default 10 second NexusOperationStarted timeout. 
-Nexus Operation handlers are not required to use underlying Temporal primitives like a `Workflow` or `Signal`.
+Nexus Operation handlers are not required to use underlying Temporal primitives like a Workflow or `Signal`.
 
 ### Automatic Retries {#automatic-retries}
 
-Once the caller `Workflow` schedules an Operation with the caller’s Temporal cluster, the caller’s Nexus Machinery keeps trying to start the `Operation`, with automatic retries and exponential backoff. 
+Once the caller Workflow schedules an Operation with the caller’s Temporal cluster, the caller’s Nexus Machinery keeps trying to start the `Operation`, with automatic retries and exponential backoff. 
 If a Nexus `Operation` returns a [retryable error](https://github.com/temporalio/temporal/blob/13d6cd8cf7a4ba0c4660cf98f672bbd645dca3e7/components/nexusoperations/executors.go#L659) when attempting to start, the `Operation` it will be retried up to the [default Retry Policy’s](https://github.com/temporalio/temporal/blob/de7c8879e103be666a7b067cc1b247f0ac63c25c/components/nexusoperations/config.go#L111) max attempts and expiration interval.
 
 ### Execution Semantics {#execution-semantics}
 
-### At-least-once Execution Semantics and idempotency
+#### At-least-once Execution Semantics and idempotency
 
 Since the caller's Nexus Machinery will keep trying to start the Operation over and over, the Nexus `Operation` handler should be idempotent just like Activities should be idempotent. 
 It's not required in all cases, but highly recommended in general. 
 With retries an Operation, like Activities, has at-least-once execution semantics, so an Operation should be idempotent as a general rule.
 
-### At-most-once Execution Semantics via Underlying WorkflowidReusePolicy
+#### At-most-once Execution Semantics via Underlying WorkflowIDReusePolicy
 
-To dedupe work and get at-most-once execution semantics, an `Operation` can start a `Workflow` with a `WorkflowidReusePolicy` of `RejectDuplicates` which only allows one Workflow Execution per Workflow ID within a `Namespace` for the Retention Period.
+To dedupe work and get at-most-once execution semantics, an `Operation` can start a Workflow with a `WorkflowidReusePolicy` of `RejectDuplicates` which only allows one Workflow Execution per Workflow ID within a `Namespace` for the Retention Period.
 
 ### Versioning {#versioning}
 
