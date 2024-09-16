@@ -18,8 +18,8 @@ A Worker handles Nexus requests by registering one or more Nexus Services - a gr
 
 Endpoints descriptions are rendered as Markdown, and can include Service and Operation descriptions, and input/output types, so consumers know how to use the Services and Endpoint offers.
 
-Adding a Nexus `Endpoint` to the API Registry allows Nexus Operation requests to be sent to the underlying target Namespace and Task Queue, using the name of the Endpoint in the API Registry.
+Adding a Nexus Endpoint to the API Registry allows Nexus Operation requests to be sent to the underlying target Namespace and Task Queue, using the name of the Endpoint in the API Registry.
 Temporal Cloud also provides built-in Endpoint access control in the form of a caller Namespace allowlist, which must be set for any caller to access a Nexus Endpoint, even if in the same Namespace.
 
-Multiple Nexus `Endpoints` can target the same target `Namespace`. 
+Multiple Nexus Endpoint can target the same target Namespace. 
 For example, to decompose a monolithic namespace into multiple Nexus Endpoints you can add multiple Nexus Endpoints that target the monolithic namespace, and then update the Endpoints to target  different Target Namespaces later.

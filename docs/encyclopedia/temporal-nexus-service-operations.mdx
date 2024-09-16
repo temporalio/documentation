@@ -96,20 +96,20 @@ The lifecycle of an asynchronous Nexus Operation:
 1. Caller’s Workflow does a `myServiceClient.ExecuteOperation()`.
    1. **`NexusOperationScheduled`** added to caller’s Event History.
    2. Nexus Operation added to Nexus Machinery in the caller’s Temporal cluster.
-   3. Immediately returns a Nexus `OperationHandle`, so the Workflow doesn’t block.
-   4. Caller’s Workflow can interact with the `Operation` using the `OperationHandle`.
+   3. Immediately returns a Nexus OperationHandle, so the Workflow doesn’t block.
+   4. Caller’s Workflow can interact with the Operation using the OperationHandle.
       1. `WaitStarted()`, `GetResult()`, and the ability to cancel.
 2. Start Nexus operation on the target cluster is attempted by the caller’s Temporal cluster.
    1. Via the Nexus Machinery in the target cluster.
    2. Retries are processed by the Nexus Machinery in the caller’s Temporal cluster and tracked as part of the caller Workflow, similar to Activities.
-3. Nexus `Operation handler` in the target cluster processes the Nexus Operation.
-   1. `Operation handler` pulls operation Task from Task Queue.
-   2. `Operation handler` starts a Workflow in the target cluster with attached Nexus Callback.
-   3. Nexus operation ID is returned since the Nexus Operation is asynchronous.
+3. Nexus Operation handler in the target cluster processes the Nexus Operation.
+   1. Operation handler pulls operation Task from Task Queue.
+   2. Operation handler starts a Workflow in the target cluster with attached Nexus Callback.
+   3. Nexus Operation ID is returned since the Nexus Operation is asynchronous.
    4. **`NexusOperationStarted`** added to caller’s Event History.
    5. Operation ID is associated with the caller's `NexusOperationFuture` and the `GetNexusOperationExecution` future is unblocked.
 4. Handler’s Nexus Machinery sends a Nexus completion Callback when the Workflow reaches a terminal state.
-   1. Operation `result` is returned via callback since the operation is asynchronous.
+   1. Operation result is returned via callback since the operation is asynchronous.
    2. **`NexusOperationCompleted`** added to caller’s Event History.
 5. Caller’s Workflow `handle.GetResult()` returns the result.
 
@@ -122,13 +122,13 @@ The lifecycle of a synchronous Nexus Operation, for example to do a Query or a S
 1. Caller’s Workflow does a `myServiceClient.ExecuteOperation()`
    1. **`NexusOperationScheduled`** added to caller’s Event History.
    2. Nexus Operation added to Nexus Machinery in the caller’s Temporal cluster.
-   3. Immediately returns an `OperationHandle`, so the Workflow does not block.
-   4. Caller’s Workflow can interact with the Operation using the `OperationHandle`.
+   3. Immediately returns an OperationHandle, so the Workflow does not block.
+   4. Caller’s Workflow can interact with the Operation using the OperationHandle.
       1. `WaitStarted()`, `GetResult()`.
 2. Start Nexus operation on the target cluster is attempted by the caller’s Temporal cluster.
    1. Via the Nexus Machinery in the target cluster.
    2. Retries are processed by the Nexus Machinery in the caller’s Temporal cluster and tracked as part of the caller Workflow, similar to Activities.
-3. Nexus Operation handler in the target cluster processes the Nexus `Operation`.
+3. Nexus Operation handler in the target cluster processes the Nexus Operation.
    1. Operation handler pulls operation Nexus Task from Task Queue.
    2. Operation handler starts a Workflow in the target cluster.
    3. Operation result is returned inline, since the operation is synchronous.
@@ -142,20 +142,20 @@ Nexus Operation handlers may execute arbitrary code or use a Temporal Client to 
 
 ### Automatic Retries {#automatic-retries}
 
-Once the caller Workflow schedules an Operation with the caller’s Temporal cluster, the caller’s Nexus Machinery keeps trying to start the `Operation`, with automatic retries and exponential backoff. 
-If a Nexus `Operation` returns a [retryable error](https://github.com/temporalio/temporal/blob/13d6cd8cf7a4ba0c4660cf98f672bbd645dca3e7/components/nexusoperations/executors.go#L659) when attempting to start, the `Operation` it will be retried up to the [default Retry Policy’s](https://github.com/temporalio/temporal/blob/de7c8879e103be666a7b067cc1b247f0ac63c25c/components/nexusoperations/config.go#L111) max attempts and expiration interval.
+Once the caller Workflow schedules an Operation with the caller’s Temporal cluster, the caller’s Nexus Machinery keeps trying to start the Operation, with automatic retries and exponential backoff. 
+If a Nexus Operation returns a [retryable error](https://github.com/temporalio/temporal/blob/13d6cd8cf7a4ba0c4660cf98f672bbd645dca3e7/components/nexusoperations/executors.go#L659) when attempting to start, the Operation it will be retried up to the [default Retry Policy’s](https://github.com/temporalio/temporal/blob/de7c8879e103be666a7b067cc1b247f0ac63c25c/components/nexusoperations/config.go#L111) max attempts and expiration interval.
 
 ### Execution Semantics {#execution-semantics}
 
 #### At-least-once Execution Semantics and idempotency
 
-Since the caller's Nexus Machinery will keep trying to start the Operation over and over, the Nexus `Operation` handler should be idempotent just like Activities should be idempotent. 
+Since the caller's Nexus Machinery will keep trying to start the Operation over and over, the Nexus Operation handler should be idempotent just like Activities should be idempotent. 
 It's not required in all cases, but highly recommended in general. 
 With retries an Operation, like Activities, has at-least-once execution semantics, so an Operation should be idempotent as a general rule.
 
-#### At-most-once Execution Semantics via Underlying WorkflowIDReusePolicy
+#### At-most-once Execution Semantics through an Underlying WorkflowIDReusePolicy
 
-To dedupe work and get at-most-once execution semantics, an `Operation` can start a Workflow with a `WorkflowidReusePolicy` of `RejectDuplicates` which only allows one Workflow Execution per Workflow ID within a `Namespace` for the Retention Period.
+To dedupe work and get at-most-once execution semantics, an Operation can start a Workflow with a WorkflowIDReusePolicy of RejectDuplicates which only allows one Workflow Execution per Workflow ID within a Namespace for the Retention Period.
 
 ### Versioning {#versioning}
 
