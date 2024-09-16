@@ -527,7 +527,7 @@ public class DataWorkflowImpl implements DataWorkflow {
     WorkflowLock lock = Workflow.newWorkflowLock();
     ...
     @Override
-    public void sageSignalHandler() {
+    public void safeSignalHandler() {
         try {
             lock.lock();
             Data data = activity.fetchData();
