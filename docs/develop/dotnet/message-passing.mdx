@@ -723,7 +723,7 @@ An Update can be made dynamic by setting `Dynamic` to `true` on the `[WorkflowUp
 Only one Dynamic Update can be present on a Workflow.
 
 The Update Handler parameters must accept a `string` name and `Temporalio.Converters.IRawValue[]` for the arguments.
-The [Workflow.PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_PayloadConverter) property is used to convert an `IRawValue` object to the desired type using extension methods in the `Temporalio.Converters` namespace.
+The [Workflow.PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_PayloadConverter) property is used to convert an `IRawValue` object to the desired type using extension methods in the `Temporalio.Converters` Namespace.
 
 ```csharp
 [WorkflowUpdate(Dynamic = true)]
