@@ -307,13 +307,13 @@ module.exports = {
               },
               items: [
                 "production-deployment/cloud/account-setup/certificates",
+                "production-deployment/cloud/api-keys",
                 "production-deployment/cloud/account-setup/namespaces",
                 "production-deployment/cloud/account-setup/users",
               ],
             },
             "production-deployment/cloud/billing-and-cost",
             "production-deployment/cloud/service-accounts",
-            "production-deployment/cloud/api-keys",
             {
               type: "category",
               label: "Metrics",
