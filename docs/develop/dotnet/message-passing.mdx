@@ -286,7 +286,7 @@ When an External Signal is sent:
 Signal-With-Start allows a Client to send a Signal to a Workflow Execution, starting the Execution if it is not already running.
 If there's a Workflow running with the given Workflow Id, it will be signaled.
 If there isn't, a new Workflow will be started and immediately signaled.
-To use Signal-With-Start, call `signalWithStart` and pass the name of your Signal with its arguments:
+To use Signal-With-Start, call `SignalWithStart` with a lambda expression invoking it:
 
 ```csharp
 var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
