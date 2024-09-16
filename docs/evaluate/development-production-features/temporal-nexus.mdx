@@ -21,12 +21,11 @@ keywords:
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Temporal Nexus available in [Public Preview](https://docs.temporal.io/evaluate/development-production-features/release-stages\#public-preview) for OSS and Temporal Cloud in the Temporal Go SDK. 
-For more information, visit the Encyclopedia. 
+Temporal Nexus available in [Public Preview](https://docs.temporal.io/evaluate/development-production-features/release-stages\#public-preview) for self-hosted deployments and Temporal Cloud in the Temporal Go SDK. 
 
 :::
 
-Temporal Nexus is a feature of the Temporal platform designed to connect durable executions across team, Namespace, region, and cloud boundaries.
+Temporal Nexus is a feature of the Temporal platform designed to connect durable executions across team, Namespace, region, and cloud boundaries.*
 It promotes a more modular architecture for sharing a subset of your team’s capabilities through well-defined service API contracts for other teams to use, that abstract underlying Temporal primitives, like Workflows, or execute arbitrary code.
 
 Temporal keeps the runtime benefits of an Event-Driven Architecture (EDA) where services can be down without affecting each other, but offers a higher-level durable execution programming model that lets you write idiomatic code in any language and preserve the state of execution.
@@ -43,3 +42,6 @@ With Temporal Nexus, teams are able to:
 - **Run Workflows across teams and Namespaces**, enabling durable execution and custom code to operate seamlessly across different parts of the system.
 - **Enhance security by isolating different parts of the application**, reducing the risk and impact of potential issues.
 - **Continue using familiar tools like queue-based Workers**, without the need for complex new setups or deployments.
+
+_*Cross cloud calls are not available yet on Temporal Cloud. Only single cluster deployments are supported for self-hosted._
+
