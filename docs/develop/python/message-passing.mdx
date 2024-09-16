@@ -288,7 +288,7 @@ To send an Update to a Workflow Execution, you can:
 - Send [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) to receive an [`UpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html) as soon as the Update is accepted or rejected.
 
   - Use this `UpdateHandle` later to fetch your results.
-  - `async def` Update handlers normally perform long-running async activities.
+  - `async def` Update handlers normally perform long-running asynchronous operations, such as executing an Activity.
   - `start_update` only waits until the Worker has accepted or rejected the Update, not until all asynchronous operations are complete.
 
   For example:
@@ -310,10 +310,10 @@ To obtain an Update handle, you can:
 - Use [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) to start an Update and return the handle, as shown in the preceding example.
 - Use [`get_update_handle_for`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#get_update_handle_for) to fetch a handle for an in-progress Update using the Update ID.
 
-:::info NON-TYPE SAFE API CALLS
+:::info SEND MESSAGES WITHOUT TYPE SAFETY
 
 In real-world development, sometimes you may be unable to import Workflow Definition method signatures.
-When you don't have access to the Workflow Definition or it isn't written in Python, you can still use non-type safe APIs and dynamic method invocation.
+When you don't have access to the Workflow Definition or it isn't written in Python, you can still use APIs that aren't type-safe, and dynamic method invocation.
 Pass method names instead of method objects to:
 
 - [`Client.start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_workflow)
@@ -406,16 +406,44 @@ You can use [`workflow.wait_condition`](https://python.temporal.io/temporalio.wo
 You specify the condition by passing a function that returns `True` or `False`, and you can optionally set a timeout.
 This is an important feature that helps you control your handler logic.
 
-Here are two important use cases for `workflow.wait_condition`:
+Here are three important use cases for `workflow.wait_condition`:
 
-- Waiting in a handler until it is appropriate to continue.
-- Waiting in the main Workflow until all active handlers have finished.
+- Wait for a Signal or Update to arrive.
+- Wait in a handler until it's appropriate to continue.
+- Wait in the main Workflow until all active handlers have finished.
 
 #### Use wait conditions in handlers
 
-It's common to use a Workflow wait condition in a handler.
-For example, suppose your Workflow class has a `ready_for_update_to_execute` method that indicates whether your Update handler should be allowed to start executing.
-You can use `workflow.wait_condition` in the handler to make the handler pause until the condition is met:
+#### Wait for a Signal or Update to arrive
+It's common to use `workflow.condition` to wait for a particular Signal or Update to be sent by a Client:
+
+```python
+@workflow.defn
+class GreetingWorkflow:
+    def __init__(self) -> None:
+        self.approved_for_release = False
+        self.approver_name: Optional[str] = None
+
+    @workflow.signal
+    def approve(self, input: ApproveInput) -> None:
+        self.approved_for_release = True
+        self.approver_name = input.name
+
+    @workflow.run
+    async def run(self) -> str:
+        await workflow.wait_condition(lambda: self.approved_for_release)
+        ...
+        return self.greetings[self.language]
+```
+
+### Use wait conditions in handlers
+
+It's common to use a Workflow wait condition to wait until a handler should start.
+You can also use wait conditions anywhere else in the handler to wait for a specific condition to become `True`.
+This allows you to write handlers that pause at multiple points, each time waiting for a required condition to become `True`.
+
+Consider a `ready_for_update_to_execute` method that runs before your Update handler executes.
+The `workflow.wait_condition` method waits until your condition is met:
 
 ```python
     @workflow.update
