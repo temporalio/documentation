@@ -201,7 +201,7 @@ The Temporal Worker triggers the registered Operation handler based on the Nexus
 
 A Nexus Task Execution occurs when a Worker uses the context provided from the Nexus Task and executes an action associated with a Nexus Operation which commonly includes starting a Nexus Operation using it's Nexus Operation handler plus many additional actions that may be performed on a Nexus Operation.
 
-The NexusOperationScheduled Event corresponds to when the Temporal Service puts the Nexus Task to start a Nexus Operation into the Task Queue.
+The NexusOperationScheduled Event corresponds to when the Temporal Service records the Workflow's intent to schedule an operation.
 
 The NexusOperationStarted Event corresponds to when the Worker picks up the Nexus Task from the Task Queue, starts an asynchronous Nexus Operation, and returns an Operation ID to the caller indicating the asynchronous Nexus Operation has started.
 
@@ -216,8 +216,6 @@ The Temporal Service interprets the outcome and determines whether to retry the 
 
 - NexusTaskCompleted
 - NexusTaskFailed
-- NexusOperationCompleted
-- NexusOperationScheduled
 
 ## What is a Task Queue? {#task-queue}
 
