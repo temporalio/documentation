@@ -4,7 +4,7 @@ title: Nexus API Registry
 sidebar_label: Nexus API Registry
 description: Learn how to use the Nexus API Registry to manage Nexus Endpoints. 
 toc_max_heading_level: 4
-slug: /temporalnexus/api-registry
+slug: /temporalnexus/nexus-api-registry
 keywords:
   - API registry
   - service documentation
@@ -26,6 +26,7 @@ You can search the Nexus API registry for Endpoint name or an endpoint Target Na
 Creating a Nexus Endpoint includes setting an Access Policy of caller Namespaces that can access the Endpoint. 
 Even the Target Namespace must be added to the Access Policy to access the Endpoint. 
 
-Editing a Nexus Endpoint allows changing everything but the Endpoint Name. The Target Namespace and Target Task Queue can be updated without interrupting existing in-flight Nexus Operations that are already being processed, and new Nexus Operations will be routed to the updated Target Namespace and Target Task Queue.
+Editing a Nexus Endpoint allows changing everything but the Endpoint Name. 
+The Target Namespace and Target Task Queue can be updated without interrupting existing in-flight Nexus Operations that are already being processed, and new Nexus Operations will be routed to the updated Target Namespace and Target Task Queue.
 
 The Access Policy may also be edited to add or remove caller Namespaces that can access the Endpoint.
