@@ -3,7 +3,7 @@ id: message-passing
 title: Messages - Python SDK feature guide
 sidebar_label: Messages
 description: Develop with Queries, Signals, and Updates with the Temporal Python SDK.
-toc_max_heading_level: 2
+toc_max_heading_level: 3
 keywords:
   - temporal python signals
   - send signal from client
@@ -36,7 +36,7 @@ This page introduces these features for the Temporal Python SDK.
 ## Write message handlers {#writing-message-handlers}
 
 :::info
-The code that follows is part of a working message passing [sample](https://github.com/temporalio/samples-python/tree/message-passing/message_passing/introduction).
+The code that follows is part of a working message passing [sample](https://github.com/temporalio/samples-python/tree/main/message_passing/introduction).
 :::
 
 Follow these guidelines when writing your message handlers:
@@ -288,7 +288,7 @@ To send an Update to a Workflow Execution, you can:
 - Send [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) to receive an [`UpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html) as soon as the Update is accepted or rejected.
 
   - Use this `UpdateHandle` later to fetch your results.
-  - `async def` Update handlers normally perform long-running async activities.
+  - `async def` Update handlers normally perform long-running asynchronous operations, such as executing an Activity.
   - `start_update` only waits until the Worker has accepted or rejected the Update, not until all asynchronous operations are complete.
 
   For example:
@@ -308,12 +308,12 @@ To send an Update to a Workflow Execution, you can:
 To obtain an Update handle, you can:
 
 - Use [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) to start an Update and return the handle, as shown in the preceding example.
-- Use [`get_update_handle_for`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#get_update_handle_for) to fetch a handle for an in-progress Update using the Update ID and Workflow ID.
+- Use [`get_update_handle_for`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#get_update_handle_for) to fetch a handle for an in-progress Update using the Update ID.
 
-:::info NON-TYPE SAFE API CALLS
+:::info SEND MESSAGES WITHOUT TYPE SAFETY
 
 In real-world development, sometimes you may be unable to import Workflow Definition method signatures.
-When you don't have access to the Workflow Definition or it isn't written in Python, you can still use non-type safe APIs and dynamic method invocation.
+When you don't have access to the Workflow Definition or it isn't written in Python, you can still use APIs that aren't type-safe, and dynamic method invocation.
 Pass method names instead of method objects to:
 
 - [`Client.start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_workflow)
@@ -340,7 +340,7 @@ For additional information, see [Inject work into the main Workflow](/encycloped
 
 :::
 
-### Add async handlers to use `await` {#async-handlers}
+### Use async handlers {#async-handlers}
 
 Signal and Update handlers can be `async def` as well as `def`.
 Using `async def` allows you to use `await` with Activities, Child Workflows, [`asyncio.sleep`](https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep) Timers, [`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition) conditions, etc.
@@ -396,22 +396,45 @@ class GreetingWorkflow:
 ```
 
 After updating the code to use an `async def`, your Update handler can schedule an Activity and await the result.
-Although an `async def` Signal handler can initiate similar network tasks, using an Update handler allows the client to receive a result or error once the Activity completes.
+Although an `async def` Signal handler can also execute an Activity, using an Update handler allows the Client to receive a result or error once the Activity completes.
 This lets your client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, etc.
 
 ### Add wait conditions to block
 
 Sometimes, `async def` Signal or Update handlers need to meet certain conditions before they should continue.
-You can use a wait condition ([`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition)) to set a function that prevents the code from proceeding until the condition returns `True`.
+You can use [`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition) to prevent the code from proceeding until a condition is true.
+You specify the condition by passing a function that returns `True` or `False`, and you can optionally set a timeout.
 This is an important feature that helps you control your handler logic.
 
-Here are two important use cases for `workflow.wait_condition`:
+Here are three important use cases for `workflow.wait_condition`:
 
-- Waiting in a handler until it is appropriate to continue.
-- Waiting in the main Workflow until all active handlers have finished.
+- Wait for a Signal or Update to arrive.
+- Wait in a handler until it's appropriate to continue.
+- Wait in the main Workflow until all active handlers have finished.
 
-The condition state you're waiting for can be updated by and reflect any part of the Workflow code.
-This includes the main Workflow method, other handlers, or child coroutines spawned by the main Workflow method, and so forth.
+#### Use wait conditions in handlers
+
+#### Wait for a Signal or Update to arrive
+It's common to use `workflow.condition` to wait for a particular Signal or Update to be sent by a Client:
+
+```python
+@workflow.defn
+class GreetingWorkflow:
+    def __init__(self) -> None:
+        self.approved_for_release = False
+        self.approver_name: Optional[str] = None
+
+    @workflow.signal
+    def approve(self, input: ApproveInput) -> None:
+        self.approved_for_release = True
+        self.approver_name = input.name
+
+    @workflow.run
+    async def run(self) -> str:
+        await workflow.wait_condition(lambda: self.approved_for_release)
+        ...
+        return self.greetings[self.language]
+```
 
 ### Use wait conditions in handlers
 
@@ -430,9 +453,12 @@ The `workflow.wait_condition` method waits until your condition is met:
         )
 ```
 
-Remember: Handlers can execute before the main Workflow method starts.
+Remember: handlers can execute before the main Workflow method starts.
 
-### Ensure your handlers finish before the Workflow completes {#wait-for-message-handlers}
+You can also use wait conditions anywhere else in the handler to wait for a specific condition to become true.
+This allows you to write handlers that pause at multiple points, each time waiting for a required condition to become true.
+
+#### Ensure your handlers finish before the Workflow completes {#wait-for-message-handlers}
 
 Workflow wait conditions can ensure your handler completes before a Workflow finishes.
 When your Workflow uses `async def` Signal or Update handlers, your main Workflow method can return or continue-as-new while a handler is still waiting on an async task, such as an Activity result.
@@ -520,15 +546,13 @@ See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exce
 
 ### Problems when sending a Signal {#signal-problems}
 
-When using Signal, the only exception that will result from your requests during its execution is `RPCError`.
-All handlers may experience additional exceptions during the initial (pre-Worker) part of a handler request lifecycle.
+When using Signal, the only exceptions that will result from your requests during its execution are the `RPCError`s described above.
 
-For Queries and Updates, the client waits for a response from the Worker.
-If an issue occurs during the handler Execution by the Worker, the client may receive an exception.
+For Queries and Updates, the Client waits for a response from the Worker, and therefore additional errors may occur during the handler Execution by the Worker.
 
 ### Problems when sending an Update {#update-problems}
 
-When working with Updates, you may encounter these errors:
+When working with Updates, in addition to the `RPCError`s described above, you may encounter these errors:
 
 - **No Workflow Workers are polling the Task Queue**:
   Your request will be retried by the SDK Client indefinitely.
@@ -567,7 +591,7 @@ When working with Updates, you may encounter these errors:
 
 ### Problems when sending a Query {#query-problems}
 
-When working with Queries, you may encounter these errors:
+When working with Queries, in addition to the `RPCError`s described above, you may encounter these errors:
 
 - **There is no Workflow Worker polling the Task Queue**:
   You'll receive a [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) exception on which the `status` attribute is [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `FAILED_PRECONDITION`.
