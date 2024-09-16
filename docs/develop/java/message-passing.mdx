@@ -544,8 +544,9 @@ public class DataWorkflowImpl implements DataWorkflow {
             lock.lock();
             Data data = activity.fetchData();
             this.x = data.x;
-            // 🐛🐛 Bug!! If multiple instances of this method are executing concurrently, then
-            // there may be times when the Workflow has self.x from one Activity execution and self.y from another.
+            // ✅ OK: the scheduler may switch now to a different handler execution,
+            // or to the main workflow method, but no other execution of this handler
+            // can run until this execution finishes.
             Workflow.sleep(Duration.ofSeconds(1));
             this.y = data.y;
         } finally {
