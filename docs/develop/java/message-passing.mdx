@@ -137,7 +137,7 @@ public class MessagePassingIntro {
 - The Signal annotation accepts arguments (`name`, and `unfinished_policy`) as described in the API reference docs for [`@SignalMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/SignalMethod.html).
 
 - Signal (and Update) handlers can be blocking.
-  This allows you to use Activities, Child Workflows, durable [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)), Timers, [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)), and more.
+  This allows you to use Activities, Child Workflows, durable [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) Timers, [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)), and more.
   See [Blocking handlers](#blocking-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for guidelines on safely using blocking Signal and Update handlers.
 
 ### Update handlers and validators {#updates}
@@ -184,7 +184,7 @@ public class MessagePassingIntro {
   - Use validators to reject an Update before it is written to History.
     Validators are always optional.
     If you don't need to reject Updates, you can skip them.
-  - Define an update validator with the `@UpdateValidatorMethod` annotation.
+  - Define an Update validator with the `@UpdateValidatorMethod` annotation.
     Use the `updateName` argument when declaring the validator to connect it to its Update.
     The validator must return `void` and accept the same argument types as the handler.
 
@@ -319,7 +319,7 @@ public interface GreetingWorkflow {
 
 An Update is a synchronous, blocking call that can change Workflow state, control its flow, and return a result.
 
-A client sending an Update must wait until the Server delivers the Update to a Worker.
+A Client sending an Update must wait until the Server delivers the Update to a Worker.
 Workers must be available and responsive.
 If you need a response as soon as the Server receives the request, use a Signal instead.
 Also note that you can't send Updates to other Workflow Executions or perform an Update equivalent of Signal-With-Start.
@@ -431,8 +431,8 @@ public static class GreetingWorkflowImpl implements GreetingWorkflow {
 }
 ```
 
-Although a Signal handler can also make blocking calls like this, using an Update handler allows the client to receive a result or error once the Activity completes.
-This lets your client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, etc.
+Although a Signal handler can also make blocking calls like this, using an Update handler allows the Client to receive a result or error once the Activity completes.
+This lets your Client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, etc.
 
 ### Add blocking wait conditions {#block-with-wait}
 
@@ -469,7 +469,7 @@ This allows you to write handlers that pause at multiple points, each time waiti
 
 `Workflow.await` can ensure your handler completes before a Workflow finishes.
 When your Workflow uses blocking Signal or Update handlers, your main Workflow method can return or Continue-as-New while a handler is still waiting on an async task, such as an Activity.
-The Workflow completing may interrupt the handler before it finishes crucial work and cause client errors when trying to retrieve Update results.
+The Workflow completing may interrupt the handler before it finishes crucial work and cause Client errors when trying to retrieve Update results.
 Use `Workflow.await` to wait for [`Workflow.isEveryHandlerFinished`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#isEveryHandlerFinished()) to return `true` to address this problem and allow your Workflow to end smoothly:
 
 ```java
@@ -547,10 +547,10 @@ public class DataWorkflowImpl implements DataWorkflow {
 
 When sending a Signal, Update, or Query to a Workflow, your Client might encounter the following errors:
 
-- **The client can't contact the server**:
+- **The Client can't contact the server**:
   You'll receive a [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) on which the `cause` is a [`StatusRuntimeException`](https://grpc.github.io/grpc-java/javadoc/io/grpc/StatusRuntimeException.html) and `status` of `UNAVAILABLE` (after some retries).
 
-- **The workflow does not exist**:
+- **The Workflow does not exist**:
   You'll receive a [`WorkflowNotFoundException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowNotFoundException.html).
 
 See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–Java-specific discussion of this topic.
@@ -560,7 +560,7 @@ See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exce
 When using Signal, the above `WorkflowException`s are the only types of exception that will result from the request.
 
 In contrast, for Queries and Updates, the client waits for a response from the Worker.
-If an issue occurs during the handler execution by the Worker, the client may receive an exception.
+If an issue occurs during the handler execution by the Worker, the Client may receive an exception.
 
 ### Problems when sending an Update {#update-problems}
 
