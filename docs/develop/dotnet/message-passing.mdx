@@ -238,7 +238,7 @@ var supportedLanguages = await workflowHandle.QueryAsync(wf => wf.GetLanguages(n
 
 - A Worker must be online and polling the Task Queue to process a Query.
 
-#### Send a Signal {#send-signal}
+### Send a Signal {#send-signal}
 
 You can send a Signal to a Workflow Execution from a Temporal Client or from another Workflow Execution.
 However, you can only send Signals to Workflow Executions that haven’t closed.
@@ -464,7 +464,7 @@ Here are two important use cases for `Workflow.await`:
 The condition state you're waiting for can be updated by and reflect any part of the Workflow code.
 This includes the main Workflow method, other handlers, or child coroutines spawned by the main Workflow method, and so forth.
 
-### Use wait conditions in handlers {#wait-in-handlers}
+#### Use wait conditions in handlers {#wait-in-handlers}
 
 Sometimes, async Signal or Update handlers need to meet certain conditions before they should continue.
 Using a wait condition with [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)) sets a function that prevents the code from proceeding until the condition returns `true`.
@@ -484,7 +484,7 @@ The `Workflow.WaitConditionAsync` call waits until your condition is met:
 
 Remember: Handlers can execute before the main Workflow method starts.
 
-### Ensure your handlers finish before the Workflow completes {#wait-for-message-handlers}
+#### Ensure your handlers finish before the Workflow completes {#wait-for-message-handlers}
 
 Workflow wait conditions can ensure your handler completes before a Workflow finishes.
 When your Workflow uses async Signal or Update handlers, your main Workflow method can return or continue-as-new while a handler is still waiting on an async task, such as an Activity result.
