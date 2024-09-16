@@ -6,13 +6,10 @@ description: Temporal Nexus is a feature of the Temporal platform designed to co
 toc_max_heading_level: 4
 slug: /temporalnexus
 keywords:
-  - modular architecture
-  - Namespace boundaries
-  - durable execution
+  - temporal nexus 
 tags:
-  - distributed systems
-  - integration
-  - temporal
+- nexus
+- temporal nexus
 ---
 
 In this Temporal Nexus guide, you'll find the following information:
@@ -28,11 +25,13 @@ It promotes a more modular architecture for sharing a subset of your team’s ca
 
 Temporal keeps the runtime benefits of an Event-Driven Architecture (EDA) where services can be down without affecting each other, but offers a higher-level durable execution programming model that lets you write idiomatic code in any language and preserve the state of execution so it can be resumed automatically in the presence of failure, without the extensive boilerplate code and complexity that comes with using raw EDA frameworks directly.
 
-With Temporal Nexus, inter-service communication and durable execution may now span teams, Namespaces, and regions all from within the Temporal context. Nexus preserves a familiar API programming model that supports both sync and async patterns, is suitable for low-latency and long-running operations, and uses an optimized form of the Temporal queue-based Worker architecture to preserve the benefits of EDA at runtime.
+With Temporal Nexus, inter-service communication and durable execution can span teams, Namespaces, and regions all from within the Temporal context. 
+Nexus preserves a familiar API programming model that supports both sync and async patterns, is suitable for low-latency and long-running operations, and uses an optimized form of the Temporal queue-based Worker architecture to preserve the benefits of EDA at runtime.
 
 Temporal Nexus provides an integrated Temporal SDK experience, built-in Nexus Machinery that makes Nexus RPC calls on your behalf, first-class observability, and enables each team to have their own Namespace for improved security, troubleshooting, and blast radius isolation.
 
-Nexus RPC is a new protocol designed with durable execution in mind. It supports arbitrary-duration Operations that extend beyond a traditional RPC — a key underpinning to connect durable executions within and across Namespaces, clusters, and regions.
+Nexus RPC is a protocol designed with durable execution in mind. 
+It supports arbitrary-duration Operations that extend beyond a traditional RPC — a key underpinning to connect durable executions within and across Namespaces, clusters, and regions.
 
 A single Temporal Nexus Endpoint, like an API proxy, can serve multiple Nexus Services. Both synchronous and asynchronous operations are supported. 
 However, unlike traditional RPC, an asynchronous Nexus Operation has an operation identity that can be used to re-attach to a durable execution after a process failure. 
@@ -40,6 +39,7 @@ Nexus also provides a uniform interface to get the status of an operation or its
 
 Temporal Nexus Services and Operations are often registered in the same Worker as the underlying Temporal primitives they abstract, and use the same queue-based Worker architecture as Workflows and Activities.
 
-For example, in Temporal Cloud when you execute a Nexus Operation in a caller Workflow, a command is sent to Temporal to schedule the Operation, and then the Temporal Nexus Machinery is responsible for making the Nexus RPC calls on your behalf. This means you don’t have to use Nexus RPC directly, only the Temporal SDK along with the Temporal Service.
+For example, in Temporal Cloud when you execute a Nexus Operation in a caller Workflow, a command is sent to Temporal to schedule the Operation, and then the Temporal Nexus Machinery is responsible for making the Nexus RPC calls on your behalf. 
+This means you don’t have to use Nexus RPC directly, only the Temporal SDK along with the Temporal Service.
 
 Temporal Nexus is available both in Temporal Cloud and Open Source. 
