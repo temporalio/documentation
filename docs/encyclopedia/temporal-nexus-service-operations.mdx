@@ -22,7 +22,7 @@ tags:
 
 ---
 
-The following page covers: 
+The following page covers the following: 
 - [Nexus Services](#nexus-services)
 - [Nexus Operations](#nexus-services) 
    - [Operation Lifecycle](#operation-lifecycle)
@@ -105,17 +105,17 @@ The lifecycle of an asynchronous Nexus Operation:
 3. Nexus `Operation handler` in the target cluster processes the Nexus Operation.
    1. `Operation handler` pulls operation Task from Task Queue.
    2. `Operation handler` starts a Workflow in the target cluster with attached Nexus Callback.
-   3. Nexus operation ID is returned since the Nexus operation is asynchronous.
+   3. Nexus operation ID is returned since the Nexus Operation is asynchronous.
    4. **`NexusOperationStarted`** added to caller’s Event History.
-   5. Operation ID is added to the caller’s operation `OperationHandle`.
-4. Handler’s Nexus Machinery sends a Nexus completion Callback when the Workflow has completed.
+   5. Operation ID is associated with the caller's `NexusOperationFuture` and the `GetNexusOperationExecution` future is unblocked.
+4. Handler’s Nexus Machinery sends a Nexus completion Callback when the Workflow reaches a terminal state.
    1. Operation `result` is returned via callback since the operation is asynchronous.
    2. **`NexusOperationCompleted`** added to caller’s Event History.
 5. Caller’s Workflow `handle.GetResult()` returns the result.
 
 #### Synchronous Operations Lifecycle
 
-An synchronous Nexus Operation may take up to 10 seconds to complete and will then timeout.
+A single attempt to start a synchronous Nexus Operation may take up to 10 seconds to complete and will then timeout.
 
 The lifecycle of a synchronous Nexus Operation, for example to do a Query or a Signal:
 
@@ -129,7 +129,7 @@ The lifecycle of a synchronous Nexus Operation, for example to do a Query or a S
    1. Via the Nexus Machinery in the target cluster.
    2. Retries are processed by the Nexus Machinery in the caller’s Temporal cluster and tracked as part of the caller Workflow, similar to Activities.
 3. Nexus Operation handler in the target cluster processes the Nexus `Operation`.
-   1. Operation handler pulls operation `Task` from Task Queue.
+   1. Operation handler pulls operation Nexus Task from Task Queue.
    2. Operation handler starts a Workflow in the target cluster.
    3. Operation result is returned inline, since the operation is synchronous.
    4. **`NexusOperationCompleted`** added to caller’s Event History.
@@ -138,7 +138,7 @@ The lifecycle of a synchronous Nexus Operation, for example to do a Query or a S
 #### Executing Arbitrary (non-durable code) from a Sync Handler {#executing-arbitrary-(non-durable-code)-from-a-sync-handler}
 
 Nexus Operation handlers can execute arbitrary code, but unlike Activities they should be relatively short-lived, due to the lack of [heartbeats](https://community.temporal.io/t/best-practices-for-long-running-Activities/934) and a default 10 second NexusOperationStarted timeout. 
-Nexus Operation handlers are not required to use underlying Temporal primitives like a Workflow or `Signal`.
+Nexus Operation handlers may execute arbitrary code or use a Temporal Client to interact with Temporal APIs.
 
 ### Automatic Retries {#automatic-retries}
 
