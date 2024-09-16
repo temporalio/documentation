@@ -134,7 +134,7 @@ public class GreetingWorkflow
   The response is sent immediately from the server, without waiting for the Workflow to process the Signal.
 
 - Signal (and Update) handlers can be asynchronous and blocking.
-  This allows you to use Activities, Child Workflows, durable `Workflow.DelayAsync` Timers, `Workflow.WaitConditionAsync` conditions, and more.
+  This allows you to use Activities, Child Workflows, durable [`Workflow.DelayAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_DelayAsync_System_Int32_System_Nullable_System_Threading_CancellationToken__) Timers, [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) conditions, and more.
   See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for guidelines on safely using async Signal and Update handlers.
 
 ### Update handlers and validators {#updates}
@@ -200,16 +200,16 @@ public class GreetingWorkflow
 - Use [`Workflow.CurrentUpdateInfo`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_CurrentUpdateInfo) to obtain information about the current Update.
   This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
 - Update (and Signal) handlers can be asynchronous and blocking.
-  This allows you to use Activities, Child Workflows, durable `Workflow.DelayAsync` Timers, `Workflow.WaitConditionAsync` conditions, and more.
+  This allows you to use Activities, Child Workflows, durable [`Workflow.DelayAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_DelayAsync_System_Int32_System_Nullable_System_Threading_CancellationToken__) Timers, [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) conditions, and more.
   See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for guidelines on safely using async Update and Signal handlers.
 
 ## Send messages {#send-messages}
 
-To send Queries, Signals, or Updates you call methods on a `WorkflowHandle` object.
+To send Queries, Signals, or Updates you call methods on a [`WorkflowHandle`](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html) object.
 To obtain the WorkflowStub, you can:
 
-- Use `StartWorkflowAsync` to start a Workflow and return its handle.
-- Use the `GetWorkflowHandle` method to retrieve a Workflow handle by its Workflow Id.
+- Use [`TemporalClient.StartWorkflowAsync`](https://dotnet.temporal.io/api/Temporalio.Client.TemporalClient.html#Temporalio_Client_TemporalClient_StartWorkflowAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowOptions_) to start a Workflow and return its handle.
+- Use the [`TemporalClient.GetWorkflowHandle`](https://dotnet.temporal.io/api/Temporalio.Client.TemporalClient.html#Temporalio_Client_TemporalClient_GetWorkflowHandle_System_String_System_String_System_String_) method to retrieve a Workflow handle by its Workflow Id.
 
 For example:
 
@@ -224,7 +224,7 @@ To check the argument types required when sending messages -- and the return typ
 
 ### Send a Query {#send-query}
 
-Call a Query method with `WorkflowHandle.QueryAsync`:
+Call a Query method with [`WorkflowHandle.QueryAsync`](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_QueryAsync__1_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowQueryOptions_):
 
 ```csharp
 var supportedLanguages = await workflowHandle.QueryAsync(wf => wf.GetLanguages(new(false)));
@@ -245,7 +245,7 @@ However, you can only send Signals to Workflow Executions that haven’t closed.
 
 #### Send a Signal from a Client {#send-signal-from-client}
 
-Use `WorkflowHandle.SignalAsync` from Client code to send a Signal:
+Use [`WorkflowHandle.SignalAsync`](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_SignalAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowSignalOptions_) from Client code to send a Signal:
 
 ```csharp
 await workflowHandle.SignalAsync(wf => wf.ApproveAsync(new("MyUser")));
@@ -342,16 +342,18 @@ In real-world development, sometimes you may be unable to import Workflow Defini
 When you don't have access to the Workflow Definition or it isn't written in .NET, you can still use non-type safe APIs and dynamic method invocation.
 Pass method names instead of method objects to:
 
-- `ITemporalClient.StartWorkflowAsync`
-- `WorkflowHandle.QueryAsync`
-- `WorkflowHandle.SignalAsync`
-- `WorkflowHandle.ExecuteUpdateAsync`
-- `WorkflowHandle.StartUpdateAsync`
+- [`TemporalClient.StartWorkflowAsync`](https://dotnet.temporal.io/api/Temporalio.Client.TemporalClient.html#Temporalio_Client_TemporalClient_StartWorkflowAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowOptions_)
+- [`WorkflowHandle.QueryAsync`](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_QueryAsync__1_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowQueryOptions_)
+- [`WorkflowHandle.SignalAsync`](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_SignalAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowSignalOptions_)
+- [`WorkflowHandle.ExecuteUpdateAsync`](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_ExecuteUpdateAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowUpdateOptions_)
+- [`WorkflowHandle.StartUpdateAsync`](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_StartUpdateAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowUpdateStartOptions_)
 
 Use non-type safe overloads of these APIs:
 
-- `ITemporalClient.GetWorkflowHandle`
-- `Workflow.GetExternalWorkflowHandle`
+- [`TemporalClient.GetWorkflowHandle`](https://dotnet.temporal.io/api/Temporalio.Client.TemporalClient.html#Temporalio_Client_TemporalClient_GetWorkflowHandle_System_String_System_String_System_String_)
+- [`Workflow.GetExternalWorkflowHandle`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_GetExternalWorkflowHandle_System_String_System_String_)
+
+
 
 :::
 
@@ -369,7 +371,7 @@ For additional information, see [Inject work into the main Workflow](/encycloped
 ### Add async handlers to use `await` {#async-handlers}
 
 Signal and Update handlers can be asynchronous as well as blocking.
-Using asynchronous calls allows you to `await` Activities, Child Workflows, `Workflow.DelayAsync` Timers, `Workflow.WaitConditionAsync` wait conditions, etc.
+Using asynchronous calls allows you to `await` Activities, Child Workflows, [`Workflow.DelayAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_DelayAsync_System_Int32_System_Nullable_System_Threading_CancellationToken__) Timers, [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) wait conditions, etc.
 This expands the possibilities for what can be done by a handler but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at await calls.
 
 It's essential to understand the things that could go wrong in order to use asynchronous handlers safely.
@@ -453,7 +455,7 @@ This lets your client track the progress of asynchronous work performed by the U
 ### Add wait conditions to block {#block-with-wait}
 
 Sometimes, async Signal or Update handlers need to meet certain conditions before they should continue.
-Using a wait condition with `Workflow.WaitConditionAsync` sets a function that prevents the code from proceeding until the condition returns `true`.
+Using a wait condition with [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) sets a function that prevents the code from proceeding until the condition returns `true`.
 This is an important feature that helps you control your handler logic.
 
 Here are two important use cases for `Workflow.await`:
@@ -467,11 +469,11 @@ This includes the main Workflow method, other handlers, or child coroutines spaw
 #### Use wait conditions in handlers {#wait-in-handlers}
 
 Sometimes, async Signal or Update handlers need to meet certain conditions before they should continue.
-Using a wait condition with [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)) sets a function that prevents the code from proceeding until the condition returns `true`.
+Using a wait condition with [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) sets a function that prevents the code from proceeding until the condition returns `true`.
 This is an important feature that helps you control your handler logic.
 
 Consider a `ReadyForUpdateToExecute` method that runs before your Update handler executes.
-The `Workflow.WaitConditionAsync` call waits until your condition is met:
+The [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) call waits until your condition is met:
 
 ```csharp
     [WorkflowUpdate]
@@ -545,7 +547,7 @@ public class MyWorkflow
 }
 ```
 
-Coordinating access with `Workflows.Mutex`, a mutual exclusion lock, corrects this code.
+Coordinating access with [`Workflows.Mutex`](https://dotnet.temporal.io/api/Temporalio.Workflows.Mutex.html), a mutual exclusion lock, corrects this code.
 Locking makes sure that only one handler instance can execute a specific section of code at any given time:
 
 ```csharp
@@ -579,7 +581,7 @@ public class MyWorkflow
 }
 ```
 
-For additional concurrency options, you can use `Workflows.Semaphore`.
+For additional concurrency options, you can use [`Workflows.Semaphore`](https://dotnet.temporal.io/api/Temporalio.Workflows.Semaphore.html).
 Semaphores manage access to shared resources and coordinate the order in which threads or processes execute.
 
 ## Message handler troubleshooting {#message-handler-troubleshooting}
