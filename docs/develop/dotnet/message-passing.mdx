@@ -687,7 +687,7 @@ A Query can be made dynamic by setting `Dynamic` to `true` on the `[WorkflowQuer
 Only one Dynamic Query can be present on a Workflow.
 
 The Query Handler parameters must accept a `string` name and `Temporalio.Converters.IRawValue[]` for the arguments.
-The [Workflow.PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_PayloadConverter) property is used to convert an `IRawValue` object to the desired type using extension methods in the `Temporalio.Converters` namespace.
+The [Workflow.PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_PayloadConverter) property is used to convert an `IRawValue` object to the desired type using extension methods in the `Temporalio.Converters` Namespace.
 
 ```csharp
 [WorkflowQuery(Dynamic = true)]
