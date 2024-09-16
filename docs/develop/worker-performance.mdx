@@ -77,7 +77,7 @@ Use the following metrics to retrieve detailed information about Task Queue heal
 Available metrics include:
 
 - [`ApproximateBacklogCount`](#ApproximateBacklogCount)
-- [`ApproximateBacklogAge`](#ApproximateBacklogCount)
+- [`ApproximateBacklogAge`](#ApproximateBacklogAge)
 - [`TasksAddRate`](#TasksAddRate-and-TasksDispatchRate) and [`TasksDispatchRate`](#TasksAddRate-and-TasksDispatchRate)
 - [`BacklogIncreaseRate`](#BacklogIncreaseRate) (derived from [`TasksAddRate`](#TasksAddRate-and-TasksDispatchRate) and [`TasksDispatchRate`](#TasksAddRate-and-TasksDispatchRate))
 
@@ -121,8 +121,8 @@ The calculations include Tasks that were added to or dispatched from the backlog
 
 The actual Task delivery count may be significantly higher than the number reported by these metrics:
 
-- Tasks using Eager dispatch do not pass through Task Queues.
-  Eager dispatch refers to a Temporal feature where Activities can be requested by an SDK using one Workflow Task completion response.
+- Eager dispatch refers to a Temporal feature where Activities can be requested by an SDK using one Workflow Task completion response.
+  Tasks using Eager dispatch do not pass through Task Queues.
 - A Sticky Task Queue is associated with a dedicated Worker instance.
   Tasks passed to Sticky Task Queues are not accounted for by these metrics.
   Normally, only the first Workflow Task of each Workflow is placed on a Workflow Task Queue.
