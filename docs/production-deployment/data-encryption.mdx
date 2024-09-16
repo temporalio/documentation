@@ -325,5 +325,5 @@ Codec Servers can be used for more than encryption and decryption of sensitive d
 Codec Server behavior is left up to implementers -- they can also call external services or perform other tasks, as long as they hook in at the encoding and decoding stages of a Workflow payload.
 
 By default, Temporal limits payload size to 4MB.
-If this limitation is problematic for your use case, you could implement a codec that persists your payloads to an S3 bucket outside of workflow histories.
+If this limitation is problematic for your use case, you could implement a codec that persists your payloads to an object store outside of workflow histories.
 An example implementation is available from [DataDog](https://github.com/DataDog/temporal-large-payload-codec).

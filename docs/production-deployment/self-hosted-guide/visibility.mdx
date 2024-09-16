@@ -106,14 +106,13 @@ For details on the configuration parameters and values, see [Temporal Service co
 To enable advanced Visibility features on your MySQL Visibility store, upgrade to MySQL v8.0.17 or later with Temporal Server v1.20 or later.
 See [Upgrade Server](/self-hosted-guide/upgrade-server#upgrade-server) on how to upgrade your Temporal Server and database schemas.
 
-For example configuration templates, see [MySQL Visibility store configuration](https://github.com/temporalio/temporal/blob/master/config/development-mysql.yaml).
+For example configuration templates, see [MySQL Visibility store configuration](https://github.com/temporalio/temporal/blob/main/config/development-mysql8.yaml).
 
 **Database schema and setup**
 
 Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions):
 
-- [MySQL v5.7 and later](https://github.com/temporalio/temporal/tree/master/schema/mysql/v57/visibility)
-- [MySQL v8.0.17 and later](https://github.com/temporalio/temporal/tree/master/schema/mysql/v8/visibility)
+- [MySQL v8.0.17 and later](https://github.com/temporalio/temporal/tree/main/schema/mysql/v8/visibility)
 
 The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script sets up your Visibility store.
 
@@ -198,8 +197,7 @@ See [Upgrade Server](/self-hosted-guide/upgrade-server#upgrade-server) for detai
 
 Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions):
 
-- [PostgreSQL v12 and later](https://github.com/temporalio/temporal/tree/master/schema/postgresql/v12/visibility)
-- [PostgreSQL v9.6 and later](https://github.com/temporalio/temporal/tree/master/schema/postgresql/v96/visibility)
+- [PostgreSQL v12 and later](https://github.com/temporalio/temporal/tree/main/schema/postgresql/v12/visibility)
 
 The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script sets up your PostgreSQL Visibility store.
 
@@ -288,7 +286,7 @@ SQLite (v3.31.0 and later) has advanced Visibility enabled by default.
 
 **Database schema and setup**
 
-Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in https://github.com/temporalio/temporal/blob/master/schema/sqlite/v3/visibility/schema.sql.
+Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in https://github.com/temporalio/temporal/blob/main/schema/sqlite/v3/visibility/schema.sql.
 
 For an example of setting up the SQLite schema, see [Temporalite](https://github.com/temporalio/temporalite/blob/main/server.go) setup.
 
@@ -335,7 +333,7 @@ persistence:
 
 **Database schema and setup**
 
-Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in https://github.com/temporalio/temporal/tree/master/schema/cassandra/visibility.
+Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in https://github.com/temporalio/temporal/tree/main/schema/cassandra/visibility.
 
 The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script sets up your Visibility store.
 
