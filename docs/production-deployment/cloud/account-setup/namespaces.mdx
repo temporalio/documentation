@@ -190,7 +190,7 @@ You can request further increases beyond the 100 Namespace limit by opening a [s
 
 To create a Namespace in Temporal Cloud, gather the following information:
 
-- [Namespace Name](#temporal-cloud-namespace-name) and region.
+- [Namespace Name](#temporal-cloud-namespace-name), region, and Cloud Provider
 - [Retention Period](/clusters#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution).
 - [CA certificate](/cloud/certificates#certificate-requirements) for the Namespace.
 - [Codec Server endpoint](/production-deployment/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/production-deployment/data-encryption).
@@ -205,6 +205,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. On the left side of the window, click **Namespaces**.
 1. On the **Namespaces** page, click **Create Namespace** in the upper-right portion of the window.
 1. On the **Create Namespace** page in **Name**, enter the Namespace Name.
+1. In **Cloud Provider**, select the cloud provider in which to host this Namespace.
 1. In **Region**, select the region in which to host this Namespace.
 1. In **Retention Period**, specify a value from 1 to 90 days.
    When choosing this value, consider your needs for Event History versus the cost of maintaining that Event History.
@@ -220,7 +221,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 
 ### Create a Namespace using tcld
 
-See the [tcld namespace create](/cloud/tcld/namespace/#create) command reference for details.
+See the [`tcld` namespace create](/cloud/tcld/namespace/#create) command reference for details.
 
 ## What are some Namespace best practices? {#best-practices}
 
