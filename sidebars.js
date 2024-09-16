@@ -337,6 +337,18 @@ module.exports = {
             "production-deployment/cloud/terraform-provider",
             {
               type: "category",
+              label: "Export",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/export",
+              },
+              items: [
+                "production-deployment/cloud/aws-export-s3",
+              ],
+            },
+            {
+              type: "category",
               label: "Audit Logging",
               collapsed: true,
               link: {
