@@ -262,7 +262,7 @@ module.exports = {
             "develop/dotnet/testing-suite",
             "develop/dotnet/failure-detection",
             "develop/dotnet/message-passing",
-            "develop/dotnet/cancellation",
+            "develop/dotnet/interrupt-workflow",
             "develop/dotnet/versioning",
             "develop/dotnet/observability",
             "develop/dotnet/debugging",

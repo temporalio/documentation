@@ -1,8 +1,8 @@
 ---
-id: cancellation
+id: interrupt-workflow
 title: Interrupt a Workflow - .NET SDK feature guide
-sidebar_label: Interrupt a Workflow
-description: Learn how to interrupt Workflow Execution in .NET using the Temporal SDK. Cancel for graceful stops; terminate for forceful stops. Handle Cancellation in Workflow and Activities efficiently.
+sidebar_label: Interrupt a Workflow 
+description: Learn how to interrupt Workflow Execution using the Temporal SDK. Cancel for graceful stops; terminate for forceful stops.
 toc_max_heading_level: 4
 keywords:
   - interrupt workflow execution
@@ -59,7 +59,7 @@ To give a Workflow and its Activities the ability to be cancelled, do the follow
 
 ### Handle Cancellation in Workflow {#handle-cancellation-in-workflow}
 
-**How to handle a Cancellation in a Workflow in .NET.**
+**How to handle a Cancellation in a Workflow in .NET**
 
 Workflow Definitions can be written to respond to cancellation requests.
 It is common for an Activity to be run on Cancellation to perform cleanup.
@@ -183,7 +183,7 @@ public async Task RunAsync()
 
 ## Termination {#termination}
 
-**How to Terminate a Workflow Execution in .NET using the Temporal .NET SDK**
+**How to Terminate a Workflow Execution using the Temporal .NET SDK**
 
 To Terminate a Workflow Execution in .NET, use the [TerminateAsync()](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_TerminateAsync_System_String_Temporalio_Client_WorkflowTerminateOptions_) method on the Workflow handle.
 
