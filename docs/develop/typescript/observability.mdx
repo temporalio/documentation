@@ -23,12 +23,12 @@ The observability section of the Temporal Developer's guide covers the many ways
 
 This section covers features related to viewing the state of the application, including:
 
-- [Metrics](#metrics)
-- [Tracing](#tracing)
-- [Logging](#logging)
-- [Visibility](#visibility)
+- [Emit metrics](#metrics)
+- [Set up tracing](#tracing)
+- [Log from a Workflow](#logging)
+- [Visibility APIs](#visibility)
 
-## How to emit metrics {#metrics}
+## Emit metrics {#metrics}
 
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
@@ -61,7 +61,7 @@ telemetryOptions: {
   },
 ```
 
-## How to setup Tracing {#tracing}
+## Set up tracing {#tracing}
 
 Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
 
@@ -106,7 +106,7 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
 
 Similarly, you can customize the OpenTelemetry `NodeSDK` propagators by following the instructions in the [Initialize the SDK](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node#initialize-the-sdk) section of the `README.md` file.
 
-## How to log from a Workflow in TypeScript {#logging}
+## Log from a Workflow {#logging}
 
 ### Logging from Activities
 
@@ -182,7 +182,7 @@ Notably, logged objects must be serializable using the V8 serialization.
 
 A Temporal Worker may emit logs in various ways, including:
 
-- Messages emitted using the [Workflow Context Logger](#logging-from-workflows);
+- Messages emitted using the [Workflow Context Logger](#logging);
 - Messages emitted using the [Activity Context Logger](#logging-from-activities);
 - Messages emitted by the TypeScript SDK Worker itself;
 - Messages emitted by the underlying Temporal Core SDK (native code).
@@ -426,7 +426,7 @@ const logger = winston.createLogger({
 Runtime.install({ logger });
 ```
 
-## How to use Visibility APIs {#visibility}
+## Visibility APIs {#visibility}
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
