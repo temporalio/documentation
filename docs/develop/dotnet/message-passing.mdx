@@ -185,7 +185,7 @@ public class GreetingWorkflow
   - Use validators to reject an Update before it is written to History.
     Validators are always optional.
     If you don't need to reject Updates, you can skip them.
-  - Define an update validator with the [`WorkflowUpdateValidatorAttribute'](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowUpdateValidatorAttribute.html) attribute.
+  - Define an update validator with the [`WorkflowUpdateValidatorAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowUpdateValidatorAttribute.html) attribute.
     Use the Name argument when declaring the validator to connect it to its Update.
     The validator must be a `void` type and accept the same argument types as the handler.
 
