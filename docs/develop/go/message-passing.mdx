@@ -1,8 +1,8 @@
 ---
 id: message-passing
-title: Workflow message passing  - Temporal Go SDK feature guide
+title: Messages  - Go SDK feature guide
 sidebar_label: Messages
-description: Learn how to develop with Signals, Queries, and Updates using the Go SDK in Temporal. Methods covered include Signal handling, Query definitions, and Update integrations.
+description: Develop with Queries, Signals, and Updates with the Temporal Go SDK.
 toc_max_heading_level: 4
 keywords:
   - temporal go signals
@@ -27,16 +27,30 @@ tags:
   - dynamic-handlers
 ---
 
-See [Workflow message passing](/encyclopedia/workflow-message-passing#sending-queries) for an introduction to using messages with Temporal Workflows.
+A Workflow can act like a stateful web service that receives messages: Queries, Signals, and Updates.
+The Workflow implementation defines these endpoints via handler methods that can react to incoming Queries and Updates, and via Signal channels.
+Temporal Clients use messages to read Workflow state and control its execution.
+See [Workflow message passing](/encyclopedia/workflow-message-passing) for a general overview of this topic.
+This page introduces these features for the Temporal Go SDK.
 
-General guidelines for writing message handlers:
 
-- Arguments and return values of handlers, signal channels, and the main Workflow function must be [serializable](/dataconversion): a struct is often a good choice to make changes easier in the future. This practice enables you to add fields in future versions while maintaining backward compatibility.
-- It's possible to write handler methods that take multiple arguments, but this is not recommended: instead use a single struct to which fields can be added as needed.
+## Handle messages {#handling-messages}
 
-### Query handlers {#handle-query}
+:::info
+The code that follows is part of a working message passing [sample](https://github.com/temporalio/samples-go/tree/message-passing/message-passing-intro).
+:::
 
-A [Query](/encyclopedia/workflow-message-passing#sending-queries) is a synchronous operation that's used to get the state of a Workflow Execution.
+Follow these guidelines when writing message handlers:
+
+
+- Values sent in messages, and the return values of message handlers and the main Workflow function, must be [serializable](/dataconversion).
+- Prefer using a single struct over multiple input parameters.
+  This allows you to add fields without changing the calling signature.
+
+
+### Query handlers {#queries}
+
+A [Query](/encyclopedia/workflow-message-passing#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution:
 
 ```go
 type Language string
@@ -72,13 +86,13 @@ func GreetingWorkflow(ctx workflow.Context) (string, error) {
 ```
 
 - Use [`SetQueryHandler`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetQueryHandler) to set a Query Handler that listens for a Query by name.
-- Don't include any logic that causes [Command](/workflows#command) generation within a Query handler (such as executing Activities).
-Including such logic causes unexpected behavior.
-- The handler must be a function that returns two values, a serializable result and an error
+- The handler must be a function that returns two values, a serializable result and an error.
+- You can't perform async operations such as executing an Activity in a Query handler.
 
-### Signal Channels {#handle-signal}
+### Signal Channels {#signals}
 
-A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is a message sent asynchronously to a running Workflow Execution which can be used to change the state and control the flow of a Workflow Execution.
+A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow.
+Handle Signal messages by receiving them from their channel:
 
 ```go
 const ApproveSignal = "approve"
@@ -100,13 +114,16 @@ func GreetingWorkflow(ctx workflow.Context) error {
 }
 ```
 
-- Use [`GetSignalChannel`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetSignalChannel) to get the Signal Channel that listen for Signals by the Signal's name.
+- Pass the Signal's name to [`GetSignalChannel`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetSignalChannel) to get the Signal Channel that listen for Signals of that type.
 - Before completing the Workflow or using [Continue-As-New](/develop/go/continue-as-new), make sure to do an asynchronous drain on the Signal channel.
 Otherwise, the Signals will be lost.
 
-### Update handlers and validators {#handle-update}
+### Update handlers and validators {#updates}
 
-An [Update](/encyclopedia/workflow-message-passing#sending-updates) is a trackable request sent synchronously to a running Workflow Execution that can change the state and control the flow of a Workflow Execution, and return a result. The sender of the request must wait until the Update is at least accepted or rejected by a Worker, and will often opt to wait further to receive the value returned by the Update handler, or an error indicating what went wrong.
+An [Update](/encyclopedia/workflow-message-passing#sending-updates) is a trackable synchronous request sent to a running Workflow Execution.
+It can change the Workflow state, control its flow, and return a result.
+The sender must wait until the Worker accepts or rejects the Update.
+The sender may wait further to receive a returned value or an exception if something goes wrong:
 
 ```go
 type Language string
@@ -134,17 +151,39 @@ func GreetingWorkflow(ctx workflow.Context) error {
 }
 ```
 
-- Register an Update handler for a given name using either [workflow.SetUpdateHandler](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandler) or [workflow.SetUpdateHandler](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandlerWithOptions).
-- You must include a `workflow.Context` parameter in the first position of the function.
+- Register an Update handler for a given name using either [workflow.SetUpdateHandler](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandler) or [workflow.SetUpdateHandlerWithOptions](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandlerWithOptions).
+- The handler must be a function that accepts a `workflow.Context` as its first parameter.
 - The function can return either a serializable value with an error or just an error.
-- To reject an update you must return an error or panic in the validator.
-- Validators are optional; if you don't want to be able to reject updates then you don't need a validator.
-- The validator must take the same argument type as the handler, but always returns an error.
-- The Workflow's WorkflowPanicPolicy determines how panics are handled inside the Handler function.
 
-## Sending Messages
+- About validators:
+  - Use validators to reject an Update before it is written to History.
+    Validators are always optional.
+    If you don't need to reject Updates, you don't need a validator.
+  - To set a validator, pass the validator function in the [workflow.UpdateHandlerOptions](https://pkg.go.dev/go.temporal.io/sdk@v1.29.1/internal#UpdateHandlerOptions) when calling [workflow.SetUpdateHandlerWithOptions](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandlerWithOptions).
+    The validator must be a function that accepts the same argument types as the handler and returns a single value of type error.
 
-### Sending a Query {#send-query}
+- Accepting and rejecting Updates with validators:
+  - To reject an Update you must return an error or panic in the validator.
+    The Workflow's `WorkflowPanicPolicy` determines how panics are handled inside the Handler function.
+  - Without a validator, Updates are always accepted.
+- Validators and Event History:
+  - The `WorkflowExecutionUpdateAccepted` event is written into History whether the acceptance was automatic or due to a validator function not throwing an error or panicking.
+  - When a validator throws an error, the Update is rejected and `WorkflowExecutionUpdateAccepted` _won't_ be added to the Event History.
+    The caller receives an "Update failed" error.
+
+- Use [`workflow.GetCurrentUpdateInfo`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetCurrentUpdateInfo) to obtain information about the current Update.
+  This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
+- Update handlers can use Activities, Child Workflows, durable [workflow.Sleep](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) Timers, [`workflow.Await`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Await) conditions, and more.
+  See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for safe usage guidelines.
+
+
+## Send messages {#send-messages}
+
+To send Queries, Signals, or Updates, you call methods on a Temporal [Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
+To check the argument types required when sending messages -- and the return type for Queries and Updates -- refer to the corresponding handler method in the Workflow Definition.
+
+
+### Send a Query {#send-query}
 
 Queries are sent from a Temporal Client.
 
@@ -165,20 +204,25 @@ log.Println("Supported languages:", supportedLang)
 // ...
 ```
 
-- Sending a Query does not add any events to the Workflow's Event History.
-- You can send a Query to a Workflow Execution that has closed.
+- Sending a Query doesn’t add events to a Workflow's Event History.
 
-### Sending a Signal {#send-signal}
+- You can send Queries to closed Workflow Executions within a Namespace's Workflow retention period.
+  This includes Workflows that have completed, failed, or timed out.
+  Querying terminated Workflows is not supported.
 
-- A Signal can only be sent to a Workflow Execution that has not already closed.
-- A Signal can be sent to a Workflow Execution from a Temporal Client or from another Workflow Execution.
+- A Worker must be online and polling the Task Queue to process a Query.
 
-#### Sending a Signal from a Client {#send-signal-from-client}
+### Send a Signal {#send-signal}
+
+You can send a Signal to a Workflow Execution from a Temporal Client or from another Workflow Execution.
+However, you can only send Signals to Workflow Executions that haven’t closed.
+
+#### Send a Signal from a Client {#send-signal-from-client}
 
 Use [`Client.SignalWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.SignalWorkflow).
 
 Pass in both the [Workflow Id](/workflows#workflow-id) and [Run Id](/workflows#run-id) to uniquely identify the Workflow Execution.
-If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is Running receives the Signal.
+If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is running receives the Signal.
 
 ```go
 // ...
@@ -188,8 +232,9 @@ if err != nil {
 }
 // ...
 ```
-- The call will return as soon as the server accepts the Signal: it does _not_ wait for the Signal to be delivered to the Workflow Execution.
-- The [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Workflow's Event History if the Server accepts the Signal.
+- The call returns when the server accepts the Signal; it does _not_ wait for the Signal to be delivered to the Workflow Execution.
+
+- The [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Workflow's Event History.
 
 #### Sending a Signal from a Workflow {#send-signal-from-workflow}
 
@@ -237,21 +282,25 @@ if err != nil {
 }
 ```
 
-### Sending an Update {#send-update}
+### Send an Update {#send-update-from-client}
 
-- A client sending an Update must be prepared to wait until the Server has delivered the Update to the Worker: that means that the Worker must not be offline, and must not respond too slowly. If you want the server to send a response as soon as it receives your request, then you must use a Signal instead.
-- WorkflowExecutionUpdateAccepted will be added to Event History when the Worker has responded to the Server that the Update passed validation.
-- WorkflowExecutionUpdateCompleted will be added to Event History when the Worker has responded to the Server that the Update has completed.
+An Update is a synchronous, blocking call that can change Workflow state, control its flow, and return a result.
 
-It is not yet possible to send an Update to another Workflow, or to do the Update equivalent of Signal-With-Start.
+A client sending an Update must wait until the Server delivers the Update to a Worker.
+Workers must be available and responsive.
+If you need a response as soon as the Server receives the request, use a Signal instead.
+Also note that you can't send Updates to other Workflow Executions or perform an Update equivalent of Signal-With-Start.
 
-Use the [`Client.UpdateWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.UpdateWorkflow) API to a Workflow Execution.
+- `WorkflowExecutionUpdateAccepted` is added to the Event History when the Worker confirms that the Update passed validation.
+- `WorkflowExecutionUpdateCompleted` is added to the Event History when the Worker confirms that the Update has finished.
+
+Use the [`Client.UpdateWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.UpdateWorkflow) API to send an Update to a Workflow Execution.
 
 You must provide the Workflow Id, but specifying a Run Id is optional.
-If you supply only the Workflow Id (and provide an empty string as the Run Id param), the currently running Workflow Execution receives the Update.
+If you supply only the Workflow Id (and provide an empty string as the Run Id param), the running Workflow Execution receives the Update.
 
 You must provide a `WaitForStage` when calling `UpdateWorkflow()`.
-This parameter controls what stage the update must reach before a handle is returned to the caller. If `WaitForStage` is set to `WorkflowUpdateStageCompleted` the handle is returned after the update completes, if `WaitForStage` is set to `WorkflowUpdateStageAccepted` the handle is returned after the update is accepted (i.e. the validator has run).
+This parameter controls what stage the update must reach before a handle is returned to the caller. If `WaitForStage` is set to `WorkflowUpdateStageCompleted` the handle is returned after the update completes; if `WaitForStage` is set to `WorkflowUpdateStageAccepted` the handle is returned after the Update is accepted (i.e. after the validator has run, if there is a validator).
 
 ```go
 updateHandle, err := temporalClient.UpdateWorkflow(context.Background(), client.UpdateWorkflowOptions{
@@ -271,66 +320,28 @@ if err != nil {
 }
 ```
 
-## Troubleshooting
-
-See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–Go-specific introduction.
-
-As a client, when you send a Signal, Update, or Query to a Workflow, the following two errors are always possible:
-1. **The client can't contact the server**
-1. **The workflow does not exist**
-
-### Problems when sending an Update
-1. **There is no Workflow Worker polling the Task Queue**
-
-    Your request will be retried by the SDK Client until the calling context is cancelled.
-
-1. **Update failed.**
-
-        Update failure is analogous to [Workflow failure](/references/failures#errors-in-workflows) in the sense that all the things that cause Workflow failure when they happen in the main Workflow function, cause Update failure when they happen in an Update handler.
-        Examples of things that cause Update/Workflow failure in this way include:
-        - A failed Child Workflow
-        - A failed Activity (if the activity retries have been set to a finite number)
-        - The Workflow author retuning an `error`
-        - A panic in the handler depending on the `WorkflowPanicPolicy`.
-
-1. **The handler caused the Workflow Task to fail.**
-
-    As always with a [Workflow Task Failure](/references/failures#errors-in-workflows), the server starts to retry the Workflow Task indefinitely.
-    What happens to your Update request depends on the stage that it has got to.
-    If it had not yet been accepted by the server then you'll get a [`FAILED_PRECONDITION`](https://pkg.go.dev/go.temporal.io/api/serviceerror#FailedPrecondition).
-    On the other hand, if it had been [accepted](#send-update) by the server, then it is durable, and as soon as the Workflow becomes healthy again (perhaps as a result of a code deploy) then you can use an [`WorkflowUpdateHandle`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowUpdateHandle) to fetch the update result.
-
-1. **Workflow finished while the Update handler execution was in progress**
-
-    You'll get a [`ServiceError`](https://pkg.go.dev/go.temporal.io/api/serviceerror#ServiceError) "workflow execution already completed"`
-
-    This will happen if the Workflow finished while the Update handler execution was in progress, for example because
-    - The Workflow was canceled or failed.
-    - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
-
-### Problems when sending a Query
-
-1. **There is no Workflow Worker polling the Task Queue**
-
-    You'll get an [`ServiceError`](https://pkg.go.dev/go.temporal.io/api/serviceerror#ServiceError) on which the `status` is `FAILED_PRECONDITION`.
-
-1. **Query failed.**
-    You'll get [`QueryFailed`](https://pkg.go.dev/go.temporal.io/api/serviceerror#QueryFailed).
-    Any panic in a Query handler will cause this.
-    Note that this differs from Signal and Update, for which panics can cause Workflow Task Failure.
-
-1. **The handler caused the Workflow Task to fail.**
-    This would happen, for example, if the Query handler blocks the thread for too long without yielding.
-
 ## Message handler patterns {#message-handler-patterns}
 
-In addition to the topics below, see [Inject work into the main Workflow](/encyclopedia/workflow-message-passing#injecting-work-into-main-workflow) and [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
+This section covers common write operations, such as Signal and Update handlers.
+It doesn't apply to pure read operations, like Queries or Update Validators.
+
+:::tip
+
+For additional information, see [Inject work into the main Workflow](/encyclopedia/workflow-message-passing#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-typescript/blob/main/pdates-and-signals/safe-message-handlers/README.md) demonstrating safe `async` message handling.
+
+:::
 
 ### Blocking handlers {#blocking-handlers}
 
-In the examples above, all the Update handlers did not block. But handlers can also be blocking. This means you can wait for Activities, Child Workflows, timers, `workflow.Await` conditions, etc, in Update Handlers thus opening up many powerful possibilities. However, this means that handler executions, and your main Workflow method, are all running concurrently, with switching occurring between them at await calls. (I.e. they interleave, but there is no parallelism.) It's essential to understand the things that could go wrong in order to use blocking handlers safely. See Workflow message passing for guidance on safe usage of async Update handlers, the Safe message handlers sample, and the Controlling handler concurrency and Waiting for message handlers to finish sections below.
+Signal and Update handlers can block.
+This allows you to use Activities, Child Workflows, durable [workflow.Sleep](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) Timers, [`workflow.Await`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Await) conditions, etc.
+This expands the possibilities for what can be done by a handler but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at await calls.
 
-As an example of an blocking update handler, in the following code sample the Update handler from above has been changed to be an async def so that it can execute an Activity to make a network call to a remote service:
+It's essential to understand the things that could go wrong in order to use blocking handlers safely.
+See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of blocking Signal and Update handlers, and the [Controlling handler concurrency](#control-handler-concurrency) and [Waiting for message handlers to finish](#wait-for-message-handlers) sections below.
+
+The following code modifies the Update handler from earlier on in this page.
+The Update handler now makes a blocking call to execute an Activity:
 
 ```go
 func GreetingWorkflow(ctx workflow.Context) error {
@@ -358,12 +369,19 @@ func GreetingWorkflow(ctx workflow.Context) error {
 }
 ```
 
-#### Waiting
+### Add blocking wait conditions {#block-with-wait}
 
-[`workflow.Await(...)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Await) is very useful in Temporal Workflow Definitions.
-It allows Workflow code to wait until an arbitrary function returns `true`. See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of blocking Update handlers, the [Safe message handlers](https://github.com/temporalio/samples-python/tree/main/updates_and_signals/safe_message_handlers) sample, and the [Controlling handler concurrency](#control-handler-concurrency) and [Waiting for message handlers to finish](#wait-for-message-handlers) sections below.
+Sometimes, blocking Signal or Update handlers need to meet certain conditions before they should continue.
+You can use [`workflow.Await`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Await) to prevent the code from proceeding until a condition is true.
+You specify the condition by passing a function that returns `true` or `false`.
+This is an important feature that helps you control your handler logic.
 
-For example, in an workflow function it could be used to wait until the handler execution can proceed, according to Workflow implementation logic:
+Here are three important use cases for `Workflow.await`:
+
+- Waiting until a specific Update has arrived.
+- Waiting in a handler until it is appropriate to continue.
+- Waiting in the main Workflow until all active handlers have finished.
+
 ```go
 err = workflow.SetUpdateHandler(ctx, "UpdateHandler", func(ctx workflow.Context, input UpdateInput) error {
     workflow.Await(ctx, updateUnblockedFunc)
@@ -372,10 +390,45 @@ err = workflow.SetUpdateHandler(ctx, "UpdateHandler", func(ctx workflow.Context,
 ```
 This is necessary if your Update handlers require something in the main Workflow function to be done first, since an Update handler can execute concurrently with the main Workflow function.
 
+You can also use `Workflow.await` anywhere else in the handler to wait for a specific condition to become true.
+This allows you to write handlers that pause at multiple points, each time waiting for a required condition to become true.
+
+#### Ensure your handlers finish before the Workflow completes {#wait-for-message-handlers}
+
+`Workflow.await` can ensure your handler completes before a Workflow finishes.
+When your Workflow uses blocking Update handlers, your main Workflow method can return or Continue-as-New while a handler is still waiting on an async task, such as an Activity.
+The Workflow completing may interrupt the handler before it finishes crucial work and cause client errors when trying to retrieve Update results.
+Use [`workflow.Await`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Await) to wait for [`AllHandlersFinished`](https://pkg.go.dev/go.temporal.io/sdk/workflow#AllHandlersFinished) to return `true` to address this problem and allow your Workflow to end smoothly:
+
+```go
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
+    ...
+	err = workflow.Await(ctx, func() bool {
+		return workflow.AllHandlersFinished(ctx)
+	})
+    return nil
+}
+```
+
+By default, your Worker will log a warning if you allow your Workflow Execution to finish with unfinished update handler executions.
+You can silence these warnings on a per-handler basis by setting `UnfinishedPolicy` field on [`workflow.UpdateHandlerOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#UpdateHandlerOptions) struct:
+
+```go
+	err = workflow.SetUpdateHandlerWithOptions(ctx, UpdateHandlerName, UpdateFunc, workflow.UpdateHandlerOptions{
+        UnfinishedPolicy: workflow.HandlerUnfinishedPolicyAbandon,
+	})
+```
+
+See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
+
+
 #### Use `workflow.Mutex` to prevent concurrent handler execution {#control-handler-concurrency}
 See [Message handler concurrency](/encyclopedia/workflow-message-passing#message-handler-concurrency).
 
-Sometimes you may write code that is incorrect if multiple instances of a handler are in progress concurrently. Here's an example:
+Concurrent processes can interact in unpredictable ways.
+Incorrectly written [concurrent message-passing](/encyclopedia/workflow-message-passing#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
+Here's an example of a pathological case:
+
 ```go
 // ...
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
@@ -400,7 +453,9 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
     ...
 }
 ```
-To make this safe, you can use `workflow.Mutex`:
+
+Coordinating access with `workflow.Mutex` corrects this code.
+Locking makes sure that only one handler instance can execute a specific section of code at any given time:
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
@@ -430,32 +485,63 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 
 ```
 
-#### Finishing handlers before the Workflow completes {#wait-for-message-handlers}
-See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers).
+## Troubleshooting
 
-Invoke the `UpdateWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to dispatch an [Update](/encyclopedia/workflow-message-passing#sending-updates) to a Workflow Execution.
+See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–Go-specific discussion of this topic.
 
-If your Workflow has an Update handler, then there is nothing to stop you allowing your Workflow function to return or continue-as-new while a handler execution is waiting on something such as an Activity result.
-However, this means that the handler may have been interrupted before it finished important work and the client will get an error when they try to retrieve their Update result.
+When sending a Signal, Update, or Query to a Workflow, your Client might encounter the following errors:
+
+- **The client can't contact the server**
+
+- **The workflow does not exist**
 
 
-You can avoid this by using [`workflow.Await`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Await) to wait for [`AllHandlersFinished`](https://pkg.go.dev/go.temporal.io/sdk/workflow#AllHandlersFinished) to return `true`:
+Unlike Signals, for Queries and Updates, the client waits for a response from the Worker.
+If an issue occurs during the handler execution by the Worker, the client may receive an exception.
 
-```go
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
-    ...
-	err = workflow.Await(ctx, func() bool {
-		return workflow.AllHandlersFinished(ctx)
-	})
-    return nil
-}
-```
 
-By default, your Worker will log a warning if you allow your Workflow Execution to finish with unfinished update handler executions.
-You can silence these warnings on a per-handler basis by setting `UnfinishedPolicy` field on [`workflow.UpdateHandlerOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#UpdateHandlerOptions) struct:
+### Problems when sending an Update
+- **There is no Workflow Worker polling the Task Queue**
 
-```go
-	err = workflow.SetUpdateHandlerWithOptions(ctx, UpdateHandlerName, UpdateFunc, workflow.UpdateHandlerOptions{
-        UnfinishedPolicy: workflow.HandlerUnfinishedPolicyAbandon,
-	})
-```
+    Your request will be retried by the SDK Client until the calling context is cancelled.
+
+- **Update failed.**
+
+    Update failures are like [Workflow failure](/references/failures#errors-in-workflows).
+    Update failures are like [Workflow failures](/references/failures).
+    Issues that cause a Workflow failure in the main method also cause Update failures in the Update handler.
+    These might include:
+
+    - A failed Child Workflow
+    - A failed Activity (if the activity retries have been set to a finite number)
+    - The Workflow author returning an `error`
+    - A panic in the handler, depending on the `WorkflowPanicPolicy`.
+
+- **The handler caused the Workflow Task to fail.**
+  A [Workflow Task Failure](/references/failures) causes the server to retry Workflow Tasks indefinitely. What happens to your Update request depends on its stage:
+    - If the request hasn't been accepted by the server, you receive a [`FAILED_PRECONDITION`](https://pkg.go.dev/go.temporal.io/api/serviceerror#FailedPrecondition) error.
+    - If the request has been accepted, it is durable.
+      Once the Workflow is healthy again after a code deploy, use a [`WorkflowUpdateHandle`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowUpdateHandle) to fetch the Update result.
+
+- **The Workflow finished while the Update handler execution was in progress**:
+  You'll receive a [`ServiceError`](https://pkg.go.dev/go.temporal.io/api/serviceerror#ServiceError) "workflow execution already completed"`.
+
+   This will happen if the Workflow finished while the Update handler execution was in progress, for example because
+
+    - The Workflow was canceled or failed.
+
+    - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
+
+### Problems when sending a Query
+
+1. **There is no Workflow Worker polling the Task Queue**
+
+    You'll receive a [`ServiceError`](https://pkg.go.dev/go.temporal.io/api/serviceerror#ServiceError) on which the `status` is `FAILED_PRECONDITION`.
+
+1. **Query failed.**
+    You'll receive a [`QueryFailed`](https://pkg.go.dev/go.temporal.io/api/serviceerror#QueryFailed).
+    Any panic in a Query handler will trigger this error.
+    This differs from Signal and Update, where panics can lead to Workflow Task Failure instead.
+
+1. **The handler caused the Workflow Task to fail.**
+    This would happen, for example, if the Query handler blocks the thread for too long without yielding.
