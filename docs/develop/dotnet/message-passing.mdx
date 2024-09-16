@@ -102,7 +102,7 @@ public class GreetingWorkflow
 
 - The Query attribute can accept arguments.
   See the API reference docs: [`WorkflowQueryAttribute`](https://dotnet.temporal.io/api/Temporalio.Workflows.WorkflowQueryAttribute.html).
-- A Query handler must not modify workflow state.
+- A Query handler must not modify Workflow state.
 - You can't perform async blocking operations such as executing an Activity in a Query handler.
 
 ### Signal handlers {#signals}
