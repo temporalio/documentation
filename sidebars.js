@@ -25,6 +25,7 @@ module.exports = {
             "evaluate/development-production-features/temporal-client",
             "evaluate/development-production-features/failure-detection",
             "evaluate/development-production-features/throughput-composability",
+            "evaluate/development-production-features/nexus",
             "evaluate/development-production-features/workflow-message-passing",
             "evaluate/development-production-features/debugging",
             "evaluate/development-production-features/interrupt-workflow",
@@ -335,6 +336,18 @@ module.exports = {
             "production-deployment/cloud/saml",
             "production-deployment/cloud/operation-api",
             "production-deployment/cloud/terraform-provider",
+            {
+              type: "category",
+              label: "Export",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/export",
+              },
+              items: [
+                "production-deployment/cloud/aws-export-s3",
+              ],
+            },
             {
               type: "category",
               label: "Audit Logging",
