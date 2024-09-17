@@ -33,14 +33,23 @@ Adding a Nexus Endpoint to the API Registry allows Nexus Operation requests to b
 Endpoint names must be unique within the registry.
 When the Temporal Service dispatches a Nexus request, it resolves the request's Endpoint to a Target Namespace and Task Queue via the Nexus API Registry.
 
+![Nexus Endpoints](/img/nexus/nexus-endpoints-ss.png)
+
 You can search the Nexus API registry for Endpoint name or an endpoint Target Namespace to quickly find an Endpoint of interest.
+The Endpoint details page shows the Target Namespace and Target Task Queue along with the endpoint description rendered as markdown.
+
+![Nexus Billing](/img/nexus/nexus-billing-ss.png)
 
 Creating a Nexus Endpoint includes setting an Access Policy of caller Namespaces that can access the Endpoint.
 Even the Target Namespace must be added to the Access Policy to access the Endpoint.
 Temporal Cloud also provides built-in Endpoint access control in the form of a caller Namespace allowlist, which must be set for any caller to access a Nexus Endpoint, even if in the same Namespace.
 
+![Create Nexus Endpoint](/img/nexus/create-nexus-endpoint-ss.png)
+
 Editing a Nexus Endpoint allows changing everything but the Endpoint Name.
 The Target Namespace and Target Task Queue can be updated without interrupting existing in-flight Nexus Operations that are already being processed, and new Nexus Operations will be routed to the updated Target Namespace and Target Task Queue.
+
+![Target Namespace](/img/nexus/target-namespace-ss.png)
 
 The Access Policy may also be edited to add or remove caller Namespaces that can access the Endpoint.
 
