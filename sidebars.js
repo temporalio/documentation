@@ -511,6 +511,20 @@ module.exports = {
             "encyclopedia/visibility",
             "encyclopedia/clusters",
             "encyclopedia/namespaces",
+            {
+              type: "category",
+              label: "Temporal Nexus",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/temporalnexus",
+              },
+              items: [
+                "encyclopedia/nexus-api-registry-endpoints",
+                "encyclopedia/nexus-services-operations",
+                "encyclopedia/nexus-security",
+              ],
+            },
             "encyclopedia/dataconversion",
           ],
         },
