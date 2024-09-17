@@ -1,0 +1,169 @@
+---
+id: nexus-services-operations
+title: Nexus Services and Operations
+sidebar_label: Nexus Service and Operations
+description: Discover how Nexus Service and Operations enable the creation of well-defined API contracts for sharing capabilities across team and Namespace boundaries, leveraging Temporal's durable and scalable infrastructure.
+toc_max_heading_level: 4
+slug: /temporalnexus/nexus-services-operations
+keywords:
+  - Nexus Services
+  - Nexus Operations
+  - Operation Lifecycle
+  - durable execution
+  - Automatic Retries
+  - Execution Semantics
+  - Temporal SDK
+  - Versioning
+tags:
+  - nexus 
+  - temporal nexus 
+  - nexus services
+  - nexus operations
+
+---
+
+This page covers the following:
+
+- [Nexus Services](#nexus-services)
+- [Nexus Operations](#nexus-services)
+  - [Operation Lifecycle](#operation-lifecycle)
+  - [Automatic Retries](#automatic-retries)
+  - [Execution Semantics](#execution-semantics)
+  - [Versioning](#versioning)
+
+## Nexus Services {#nexus-services}
+
+A Nexus Service is a named collection of arbitrary-duration Nexus Operations that provide an API contract suitable for sharing across team boundaries.
+Nexus Services are registered with a Temporal Worker that is listening on the target Namespace and Task Queue for an Endpoint.
+
+For example, a Nexus Service is often registered in the same Worker as the underlying Workflows they abstract:
+
+```go
+func main() {
+	c, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+
+	w := worker.New(c, taskQueue, worker.Options{})
+	service := nexus.NewService(service.HelloServiceName)
+	err = service.Register(handler.EchoOperation, handler.HelloOperation)
+	if err != nil {
+		log.Fatalln("Unable to register operations", err)
+	}
+	w.RegisterNexusService(service)
+	w.RegisterWorkflow(handler.HelloHandlerWorkflow)
+
+	err = w.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
+}
+```
+
+## Operations {#nexus-operations}
+
+Nexus Operations are not intrinsically durable, but can be made durable by backing them with Temporal primitives like a Workflow, Update, or Signal.
+The Temporal SDK provides helper functions to create Operations that may be registered with a Service in a Temporal Worker.
+
+Calling a Nexus Operation from a caller Workflow presents as a non-blocking, arbitrary duration operation.
+This schedules the Operation with the caller’s Temporal Service and does not block caller Workflow execution, unless the caller Workflow chooses to do so by waiting for the Nexus Operation to be started or in a final state (completed, failed, timed out, canceled).
+The caller’s Nexus Machinery is responsible for making the underlying Nexus RPC calls and updating the caller’s Workflow history with the result.
+
+### Operation Lifecycle {#operation-lifecycle}
+
+Nexus Operation handlers are created with the Temporal SDK:
+
+- New-Workflow-Run-Operation
+  - Start a Workflow as an asynchronous operation.
+- New-Sync-Operation
+  - Invoke an underlying Query or Signal as a synchronous operation.
+  - Invoke an Update as a synchronous operation.
+  - Execute arbitrary code as a synchronous operation.
+
+Caller Workflows use the Temporal SDK to execute a Nexus Operation.
+
+#### Asynchronous Operation Lifecycle {#asynchronous-operation-lifecycle}
+
+An asynchronous Nexus Operation may take up to 60 days to complete in Temporal Cloud, to allow for callback URL token validation with asymmetric key rotation at those intervals.
+
+The lifecycle of an asynchronous Nexus Operation:
+
+1. Caller’s Workflow executes a Nexus Operation using the Temporal SDK.
+   1. `NexusOperationScheduled` is added to caller’s Event History.
+   2. Nexus Operation added to Nexus Machinery in the caller’s Temporal cluster.
+   3. Caller Workflow doesn’t automatically block on a Nexus Operation.
+   4. Caller’s Workflow can interact with the Nexus Operation execution:
+      1. Wait for the Nexus Operation to start.
+      2. Wait for the Operation result.
+      3. Cancel the Nexus Operation.
+2. The caller’s Temporal Service attempts to start the Nexus Operation on the target cluster through the Nexus Endpoint.
+   1. Nexus Machinery in the target cluster sync matches the Nexus request to a Worker polling the endpoint's target Namespace and Task Queue.
+   2. Retries are processed by the Nexus Machinery in the caller’s Temporal cluster and tracked as part of the caller Workflow, similar to Activities.
+3. Nexus Operation handler processes the Nexus Operation.
+   1. Handler Worker gets a Nexus Task from Task Queue.
+   2. Operation handler starts a Workflow in the target cluster with attached Nexus Callback.
+   3. Nexus Operation ID is returned since the Nexus Operation is asynchronous.
+   4. `NexusOperationStarted` is added to caller’s Event History.
+   5. Operation ID is associated with the caller's `NexusOperationStarted` event and the caller Workflow is unblocked if waiting for `NexusOperationStarted` using the Temporal SDK.
+4. Handler’s Nexus Machinery sends a Nexus completion Callback when the Workflow reaches a terminal state.
+   1. Operation result is returned via callback since the operation is asynchronous.
+   2. `NexusOperationCompleted` is added to caller’s Event History.
+5. Caller’s Workflow code is returned the result if requested.
+
+#### Synchronous Operations Lifecycle
+
+A synchronous Nexus Operation handler has less than 10 seconds to complete, as measured from the caller's Nexus Machinery, and will then timeout with a retryable error.
+The handler should stay within the context deadline to not timeout.
+The Nexus Operation will be retried by the caller's Nexus Machinery, until the operation's Start-to-Close timeout has been exceeded.
+
+The lifecycle of a synchronous Nexus Operation, for example to do a Query or a Signal:
+
+1. Caller’s Workflow executes a Nexus Operation using the Temporal SDK.
+   1. **`NexusOperationScheduled`** added to caller’s Event History.
+   2. Nexus Operation added to Nexus Machinery in the caller’s Temporal cluster.
+   3. Caller Workflow doesn’t automatically block on a Nexus Operation.
+   4. Caller’s Workflow can interact with the Nexus Operation execution:
+      1. Wait for the Nexus Operation to start (not needed for synchronous operations).
+      2. Wait for the Operation result.
+      3. Cancel the Nexus Operation (not allowed for synchronous operations).
+2. The caller’s Temporal cluster attempts to start the Nexus Operation on the target cluster via the Nexus Endpoint.
+   1. Nexus Machinery in the target cluster sync matches the Nexus request to a Worker polling the endpoint's target Namespace and Task Queue.
+   2. Retries are processed by the Nexus Machinery in the caller’s Temporal cluster and tracked as part of the caller Workflow, similar to Activities.
+3. Nexus Operation handler processes the Nexus Operation.
+   1. Handler Worker gets a Nexus Task from Task Queue.
+   2. Operation handler starts a Workflow in the target cluster.
+   3. Operation result is returned inline, since the operation is synchronous.
+   4. **`NexusOperationCompleted`** added to caller’s Event History.
+4. Caller’s Workflow code is returned the result if requested.
+
+#### Executing Arbitrary Code from a Synchronous Nexus Operation Handler {#executing-arbitrary-code-from-a-sync-handler}
+
+Synchronous Nexus Operation handlers can execute arbitrary code, but unlike Activities they should be short-lived.
+As mentioned above, a synchronous Nexus Operation handler has less than 10 seconds to process a Nexus start operation request and should stay within the context deadline provided by the Temporal SDK.
+
+### Automatic Retries {#automatic-retries}
+
+Once the caller Workflow schedules an Operation with the caller’s Temporal cluster, the caller’s Nexus Machinery keeps trying to start the Operation, with automatic retries and exponential backoff.
+If a Nexus Operation returns a [retryable error](https://github.com/temporalio/temporal/blob/13d6cd8cf7a4ba0c4660cf98f672bbd645dca3e7/components/nexusoperations/executors.go#L659) when attempting to start, the Operation it will be retried up to the [default Retry Policy’s](https://github.com/temporalio/temporal/blob/de7c8879e103be666a7b067cc1b247f0ac63c25c/components/nexusoperations/config.go#L111) max attempts and expiration interval.
+
+### Execution Semantics {#execution-semantics}
+
+#### At-least-once Execution Semantics and idempotency
+
+Since the caller's Nexus Machinery will keep trying to start the Operation multiple times, the Nexus Operation handler should be idempotent, like Activities should be idempotent.
+It's not required in all cases, but highly recommended in general.
+With retries an Operation, like Activities, has at-least-once execution semantics, so an Operation should be idempotent as a general rule.
+
+#### At-most-once Execution Semantics through an Underlying WorkflowIDReusePolicy
+
+To deduplicate work and get at-most-once execution semantics, an Operation can start a Workflow with a WorkflowIDReusePolicy of RejectDuplicates which only allows one Workflow Execution per Workflow ID within a Namespace for the Retention Period.
+
+### Versioning {#versioning}
+
+Task Routing is the simplest way to version your service code.
+
+If you have a new backward-incompatible Nexus Operation Handler, for example due to a wire-level incompatible breaking change, start by using a different Service and Task Queue.
+The version may be part of the service name, for example `prod.payments.v2`.
+Callers can then migrate to the new version in their normal deployment schedule.

@@ -72,6 +72,8 @@ public class MessagePassingIntro {
     @WorkflowInterface
     public interface GreetingWorkflow {
         ...
+        // 👉 Use the @QueryMethod annotation to define a Query handler in the
+        // Workflow interface.
         @QueryMethod
         List<Language> getLanguages(GetLanguagesInput input);
     }
@@ -80,6 +82,8 @@ public class MessagePassingIntro {
         ...
         @Override
         public List<Language> getLanguages(GetLanguagesInput input) {
+            // 👉 The Query handler returns a value: it must not mutate the Workflow state
+            // or perform blocking operations.
             if (input.includeUnsupported) {
                 return Arrays.asList(Language.values());
             } else {
@@ -115,6 +119,8 @@ public class MessagePassingIntro {
     @WorkflowInterface
     public interface GreetingWorkflow {
         ...
+        // 👉 Use the @SignalMethod annotation to define a Signal handler in the
+        // Workflow interface.
         @SignalMethod
         void approve(ApproveInput input);
     }
@@ -123,6 +129,7 @@ public class MessagePassingIntro {
         ...
         @Override
         public Language setLanguage(Language language) {
+            // 👉 The Signal handler mutates the Workflow state but cannot return a value.
             Language previousLanguage = this.language;
             this.language = language;
             return previousLanguage;
@@ -152,9 +159,12 @@ public class MessagePassingIntro {
     @WorkflowInterface
     public interface GreetingWorkflow {
         ...
+        // 👉 Use the @UpdateMethod annotation to define an Update handler in the
+        // Workflow interface.
         @UpdateMethod
         Language setLanguage(Language language);
 
+        // 👉 Update validators are optional
         @UpdateValidatorMethod(updateName = "setLanguage")
         void setLanguageValidator(Language language);
     }
@@ -163,6 +173,7 @@ public class MessagePassingIntro {
         ...
         @Override
         public Language setLanguage(Language language) {
+            // 👉 The Update handler can mutate the Workflow state and return a value.
             Language previousLanguage = this.language;
             this.language = language;
             return previousLanguage;
@@ -170,6 +181,7 @@ public class MessagePassingIntro {
 
         @Override
         public void setLanguageValidator(Language language) {
+            // 👉 The Update validator performs validation but cannot mutate the Workflow state.
             if (!greetings.containsKey(language)) {
                 throw new IllegalArgumentException("Unsupported language: " + language);
             }
@@ -532,8 +544,9 @@ public class DataWorkflowImpl implements DataWorkflow {
             lock.lock();
             Data data = activity.fetchData();
             this.x = data.x;
-            // 🐛🐛 Bug!! If multiple instances of this method are executing concurrently, then
-            // there may be times when the Workflow has self.x from one Activity execution and self.y from another.
+            // ✅ OK: the scheduler may switch now to a different handler execution,
+            // or to the main workflow method, but no other execution of this handler
+            // can run until this execution finishes.
             Workflow.sleep(Duration.ofSeconds(1));
             this.y = data.y;
         } finally {
