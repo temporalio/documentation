@@ -5,7 +5,7 @@ const FontPreloadPlugin = require("webpack-font-preload-plugin");
 
 module.exports = async function createConfigAsync() {
   return {
-    title: "Temporal Documentation",
+    title: "Temporal Platform Documentation",
     tagline: "Build invincible applications",
     url: "https://docs.temporal.io",
     baseUrl: "/",
