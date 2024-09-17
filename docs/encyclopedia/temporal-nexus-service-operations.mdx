@@ -132,7 +132,7 @@ The lifecycle of a synchronous Nexus Operation, for example to do a Query or a S
    1. Nexus Machinery in the target cluster sync matches the Nexus request to a Worker polling the endpoint's target Namespace and Task Queue.
    2. Retries are processed by the Nexus Machinery in the caller’s Temporal cluster and tracked as part of the caller Workflow, similar to Activities.
 3. Nexus Operation handler processes the Nexus Operation.
-   1. Handler Worker get a Nexus Task from Task Queue.
+   1. Handler Worker gets a Nexus Task from Task Queue.
    2. Operation handler starts a Workflow in the target cluster.
    3. Operation result is returned inline, since the operation is synchronous.
    4. **`NexusOperationCompleted`** added to caller’s Event History.
