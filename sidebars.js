@@ -517,7 +517,7 @@ module.exports = {
               collapsed: true,
               link: {
                 type: "doc",
-                id: "encyclopedia/temporalnexus",
+                id: "encyclopedia/nexus",
               },
               items: [
                 "encyclopedia/nexus-api-registry-endpoints",
