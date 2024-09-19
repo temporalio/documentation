@@ -179,6 +179,22 @@ from temporalio.common import RetryPolicy
         )
 ```
 
+### Override the retry interval with Next Retry Delay {#next-retry-delay}
+
+To override the next retry interval, pass `next_retry_delay` when raising [ApplicationError](/references/failures#application-failure) in an Activity:
+
+```python
+from temporalio.exceptions import ApplicationError
+
+@activity.defn
+async def my_activity():
+    ...
+    raise ApplicationError(
+        "Something bad happened",
+        next_retry_delay=timedelta(seconds=3),
+    )
+```
+
 ## Heartbeat an Activity {#activity-heartbeats}
 
 **How to Heartbeat an Activity using the Temporal Python SDK.**
