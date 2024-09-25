@@ -30,7 +30,7 @@ In Temporal Cloud, the Nexus Machinery routes Nexus requests across Namespace bo
 Nexus caller Workflows will send commands to Temporal Cloud to schedule or cancel a Nexus Operation in the caller Namespace. 
 Handler Workers will poll for Nexus tasks in the handler Namespace.
 
-Nexus Operation handlers can be implemented as [Asynchronous Operations] or [Synchronous Operations], using Temporal SDK builders that enable running a Nexus Service in a Worker, typically the same Worker as the underlying primitive the Nexus Service abstracts.
+Nexus Operation handlers can be implemented as [Asynchronous Operations] or [Synchronous Operations], using Temporal SDK builders that enable running a Nexus Service in a Worker, typically the same Worker as the underlying primitives the Nexus Service abstracts.
 
 For example, an asynchronous operation that starts a Workflow in a different Namespace:
 
@@ -43,14 +43,16 @@ Similar to executing an Activity, to execute a Nexus Operation from a Workflow:
 
 1. Caller Workflow will schedule a Nexus Operation using the Temporal SDK, which sends a `ScheduleNexusOperation` command in the existing `RespondWorkflowTaskCompleted` RPC which is recorded as `NexusOperationScheduled` in the caller’s Workflow history.  
 2. Nexus handler Worker uses the Temporal SDK to `PollNexusTaskQueue` and process the Nexus request.  
-3. Nexus handler Worker sends a `RespondNexusTaskCompleted` through the SDK, with the result of the Nexus request, which may be one of: Started, Completed, Failed, TimedOut, Canceled \- see [Nexus Operation Events] for more info  
+3. Nexus handler Worker sends a `RespondNexusTaskCompleted` through the SDK, with the result of the Nexus request, which may be one of: Started, Completed, Failed, TimedOut, or Canceled \- see [Nexus Operation Events] for more info  
 4. Caller Workflow then processes the Nexus Operation event through `PollWorkflowTaskQueue`.
 
 ## Access Control
 
 Like Namespaces, a Nexus Endpoint is an account-scoped resource that is global within a Temporal Cloud account. Any `Developer` role (or higher) in an account, who is also a `Namespace Admin` on the endpoint’s target Namespace, can manage (create/update/delete) a Nexus Endpoint. All users with a `Read-only` role (or higher) in an account, can view and browse the full list of Endpoints.
 
-Runtime access from a Workflow in a caller Namespace to a Nexus Endpoint is controlled by an allowlist policy (of caller Namespaces) for each Endpoint in the Nexus API registry. Workers authenticate with Temporal Cloud as they do today with mTLS certificates or API keys as allowed by the Namespace configuration. Nexus requests are sent from the caller’s Namespace to the handler’s Namespace over a secure multi-region mTLS Envoy mesh.
+Runtime access from a Workflow in a caller Namespace to a Nexus Endpoint is controlled by an allowlist policy (of caller Namespaces) for each Endpoint in the Nexus API registry. 
+Workers authenticate with Temporal Cloud as they do today with mTLS certificates or API keys as allowed by the Namespace configuration. 
+In Temporal Cloud, Nexus requests are sent from the caller’s Namespace to the handler’s Namespace over a secure multi-region mTLS Envoy mesh.
 
 ## Automatic Retries
 
