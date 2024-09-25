@@ -20,9 +20,10 @@ keywords:
   - service-to-service communication
 ---
 
-Nexus Services are exposed from a Nexus Endpoint that is created in the Nexus API Registry. Nexus Endpoints include service documentation that enables others to use the Nexus Services provided by a Nexus Endpoint, for example from caller Workflows. 
+Nexus Services are exposed from a Nexus Endpoint that is created in the Nexus API Registry. 
+Nexus Endpoints include service documentation that enables others to use the Nexus Services provided by a Nexus Endpoint, for example from caller Workflows. 
 
-Temporal has built-in Nexus Machinery that performs the low-level Nexus RPC operations on the wire and provides an integrated Temporal SDK experience to create Nexus Services in a handler Worker and use them from a caller Workflow through a Nexus Endpoint.
+Temporal has built-in Nexus Machinery that performs the low-level [Nexus RPC](/glossary#nexus-rpc) operations on the wire and provides an integrated Temporal SDK experience to create Nexus Services in a handler Worker and use them from a caller Workflow through a Nexus Endpoint.
 
 In Temporal Cloud, the Nexus Machinery routes Nexus requests across Namespace boundaries through a secure mTLS Envoy mesh, where they are sync matched to a Worker in the handler Namespace, which processes the Nexus request.
 
@@ -49,7 +50,7 @@ Similar to executing an Activity, to execute a Nexus Operation from a Workflow:
 
 Like Namespaces, a Nexus Endpoint is an account-scoped resource that is global within a Temporal Cloud account. Any `Developer` role (or higher) in an account, who is also a `Namespace Admin` on the endpoint’s target Namespace, can manage (create/update/delete) a Nexus Endpoint. All users with a `Read-only` role (or higher) in an account, can view and browse the full list of Endpoints.
 
-Runtime access from a Workflow in a caller Namespace to a Nexus Endpoint is controlled by an allowlist policy (of caller Namespaces) for each Endpoint in the Nexus API registry. Workers authenticate with Temporal Cloud as they do today with mTLS certificates or API keys as allowed by the `Namespace` configuration. Nexus requests are sent from the caller’s Namespace to the handler’s Namespace over a secure multi-region mTLS Envoy mesh.
+Runtime access from a Workflow in a caller Namespace to a Nexus Endpoint is controlled by an allowlist policy (of caller Namespaces) for each Endpoint in the Nexus API registry. Workers authenticate with Temporal Cloud as they do today with mTLS certificates or API keys as allowed by the Namespace configuration. Nexus requests are sent from the caller’s Namespace to the handler’s Namespace over a secure multi-region mTLS Envoy mesh.
 
 ## Automatic Retries
 
