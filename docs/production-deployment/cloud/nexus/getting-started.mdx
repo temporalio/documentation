@@ -18,14 +18,12 @@ keywords:
 Temporal Nexus Public Preview is available within your Temporal Cloud account, with support in the [Temporal Go SDK](/develop/go).
 
 Calls across existing Namespaces can be enabled by creating a Nexus Endpoint in the Nexus API Registry, creating a Nexus Service in a Worker in the handler Namespace, and then using the Nexus Service from a caller Workflow in a different Namespace.
-
-Monolithic Namespaces can be decomposed into multiple Namespaces, by hiding service implementations behind a Nexus Endpoint in the monolithic Namespace, pointing all consumers at the new Nexus Endpoint, and then changing the Endpoint’s target Namespace to a different Namespace. Multiple Nexus Endpoints can target a single monolithic Namespace.
+Monolithic Namespaces can be decomposed into multiple Namespaces, by hiding service implementations behind a Nexus Endpoint in the monolithic Namespace, pointing all consumers at the new Nexus Endpoint, and then changing the Endpoint’s target Namespace to a different Namespace. 
+Multiple Nexus Endpoints can target a single monolithic Namespace.
 
 ## Cross-Namespace
 
-Calls across existing Namespaces can be enabled by creating a Nexus Endpoint in the Nexus API Registry, creating a Nexus Service in a Worker in the handler Namespace, and then using the Nexus Service from a caller Workflow in a different Namespace.
-
-Steps to enable calls across existing Namespaces:
+Follow these steps to enable calls across existing Namespaces:
 
 1. Add Nexus Services to the same Workers as the Temporal primitives being abstracted. 
 2. Add a Nexus Endpoint that:  
@@ -33,7 +31,7 @@ Steps to enable calls across existing Namespaces:
    2. Allows the caller Namespace.  
 3. Make Nexus calls from a caller Workflow in a different Namespace.  
    1. Use `workflow.NewNexusClient(endpointName, serviceName)`.  
-   2. Execute a Nexus Operation: `nexusClient.ExecutionOperation(...)`
+   2. Execute a Nexus Operation with `nexusClient.ExecutionOperation(...)`
 
 ## Decompose a Monolithic Namespace
 
@@ -58,9 +56,9 @@ Once Nexus Endpoints are in place, targeting a new Namespace can be done with co
    1. Leave the previous Worker deployment running until all existing Nexus Operations in the previous Namespace have completed (and their underlying Workflows, if any).  
    2. Previous Workers in the monolithic Namespace can have the service implementation removed, since it is now being served from the new Endpoint target Namespace.
 
-There are a few caveats:
-   1. For long-lived entity Workflows, new Nexus requests will be routed to the new target Namespace and the long-lived entity-Workflow will still be running on the previous Namespace.
-   2. If using Signal-with-Start behind a Nexus Operation, then a new entity-Workflow will be started in the new target Namespace.
-   3. A cancel Nexus Operation request from a caller Workflow will be routed through the Nexus Endpoint to the new target Namespace, which may not have the underlying Workflow.
+Please note the following points:
+- For long-lived entity Workflows, new Nexus requests will be routed to the new target Namespace and the long-lived entity-Workflow will still be running on the previous Namespace.
+- If using Signal-with-Start behind a Nexus Operation, then a new entity-Workflow will be started in the new target Namespace.
+- A cancel Nexus Operation request from a caller Workflow will be routed through the Nexus Endpoint to the new target Namespace, which may not have the underlying Workflow.
 
 In these scenarios, Temporal can provide guidance on different migration strategies.
