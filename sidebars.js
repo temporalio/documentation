@@ -25,6 +25,7 @@ module.exports = {
             "evaluate/development-production-features/temporal-client",
             "evaluate/development-production-features/failure-detection",
             "evaluate/development-production-features/throughput-composability",
+            "evaluate/development-production-features/nexus",
             "evaluate/development-production-features/workflow-message-passing",
             "evaluate/development-production-features/debugging",
             "evaluate/development-production-features/interrupt-workflow",
@@ -75,7 +76,18 @@ module.exports = {
           },
           items: [
             "evaluate/temporal-cloud/overview",
-            "evaluate/temporal-cloud/security",
+            {
+              type: "category",
+              label: "Security",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "evaluate/temporal-cloud/security",
+              },
+              items: [
+                "evaluate/temporal-cloud/aws-privatelink",
+              ],
+            },
             "evaluate/temporal-cloud/service-availability",
             "evaluate/temporal-cloud/limits",
             "evaluate/temporal-cloud/sla",
@@ -296,13 +308,13 @@ module.exports = {
               },
               items: [
                 "production-deployment/cloud/account-setup/certificates",
+                "production-deployment/cloud/api-keys",
                 "production-deployment/cloud/account-setup/namespaces",
                 "production-deployment/cloud/account-setup/users",
               ],
             },
             "production-deployment/cloud/billing-and-cost",
             "production-deployment/cloud/service-accounts",
-            "production-deployment/cloud/api-keys",
             {
               type: "category",
               label: "Metrics",
@@ -339,8 +351,30 @@ module.exports = {
             "production-deployment/cloud/saml",
             "production-deployment/cloud/operation-api",
             "production-deployment/cloud/terraform-provider",
-            "production-deployment/cloud/audit-logging",
-            "production-deployment/cloud/export",
+            {
+              type: "category",
+              label: "Export",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/export",
+              },
+              items: [
+                "production-deployment/cloud/aws-export-s3",
+              ],
+            },
+            {
+              type: "category",
+              label: "Audit Logging",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/audit-logging",
+              },
+              items: [
+                "production-deployment/cloud/audit-logging-aws",
+              ],
+            },
             {
               type: "category",
               label: "CLI (tcld)",
@@ -492,6 +526,20 @@ module.exports = {
             "encyclopedia/visibility",
             "encyclopedia/clusters",
             "encyclopedia/namespaces",
+            {
+              type: "category",
+              label: "Temporal Nexus",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/nexus",
+              },
+              items: [
+                "encyclopedia/nexus-api-registry-endpoints",
+                "encyclopedia/nexus-services-operations",
+                "encyclopedia/nexus-security",
+              ],
+            },
             "encyclopedia/dataconversion",
           ],
         },
