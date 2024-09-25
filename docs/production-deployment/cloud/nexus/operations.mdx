@@ -154,20 +154,27 @@ Nexus requests (commands, polling) have the same latency SLOs and error rate SLA
 
 ## Limits
 
-**Max Nexus Endpoints** \- By default, each account is provisioned with a max of ten Nexus `Endpoints`. You can request further increases beyond the initial 10 `Endpoint` limit by opening a support ticket.
+**Max Nexus Endpoints** \- By default, each account is provisioned with a max of ten Nexus Endpoints. You can request further increases beyond the initial 10 Endpoint limit by opening a support ticket.
 
-**Workflow Max Nexus Operations** \- A single Workflow Execution can have a maximum of 30 in-flight Nexus Operations and 30 total Nexus Operations (as Public Preview does not yet remove completed Nexus Operations from mutable state). After that limit is reached, no more Nexus Operations will be processed for that Workflow Execution.
+**Workflow Max Nexus Operations** \- A single Workflow Execution can have a maximum of 30 in-flight Nexus Operations and 30 total Nexus Operations (as Public Preview does not yet remove completed Nexus Operations from mutable state). 
+After that limit is reached, no more Nexus Operations will be processed for that Workflow Execution.
 
-**Nexus Request Handler Timeout** \- Nexus Operation handlers have less than 10 seconds to process a single Nexus start or cancel request. Handlers should observe the context deadline and ensure they do not exceed it. This includes fully processing a synchronous Nexus operation and starting an asynchronous Nexus operation, for example one that starts a Workflow. If a handler doesn’t respond within a context deadline, a context deadline exceeded error will be tracked in the caller workflow’s pending Nexus operations, and the Nexus Machinery will retry the Nexus request with an exponential backoff policy.
+**Nexus Request Handler Timeout** \- Nexus Operation handlers have less than 10 seconds to process a single Nexus start or cancel request. 
+Handlers should observe the context deadline and ensure they do not exceed it. 
+This includes fully processing a synchronous Nexus operation and starting an asynchronous Nexus operation, for example one that starts a Workflow. 
+If a handler doesn’t respond within a context deadline, a context deadline exceeded error will be tracked in the caller Workflow’s pending Nexus operations, and the Nexus Machinery will retry the Nexus request with an exponential backoff policy.
 
-**Nexus Operation Maximum Duration** \- Each Nexus `Operation` has a maximum `ScheduleToClose` duration of 60 days, which is most applicable to asynchronous Nexus `Operations` that are completed with an asynchronous callback using a separate Nexus request from the handler back to the caller Namespace. The 60 day maximum is forward-compatible with completion callbacks that may be signed with a single use token such that asymmetric encryption keys may be rotated in a timely fashion. While the caller of a Nexus `Operation` can configure the `ScheduleToClose` duration to be shorter than 60 days, the maximum duration can not be extended beyond 60 days and will be capped by the server to 60 days.
+**Nexus Operation Maximum Duration** \- Each Nexus Operation has a maximum `ScheduleToClose` duration of 60 days, which is most applicable to asynchronous Nexus Operations that are completed with an asynchronous callback using a separate Nexus request from the handler back to the caller Namespace. The 60 day maximum is forward-compatible with completion callbacks that may be signed with a single use token such that asymmetric encryption keys may be rotated in a timely fashion. While the caller of a Nexus Operation can configure the `ScheduleToClose` duration to be shorter than 60 days, the maximum duration can not be extended beyond 60 days and will be capped by the server to 60 days.
 
 ## Secure Routing
 
-Nexus `Endpoints` are only privately accessible from within a Temporal Cloud and mTLS is used for all Nexus communication, including across cloud cells and regions. Workers authenticate to their Namespaces via mTLS or an API key as allowed by their Namespace configuration.
+Nexus Endpoints are only privately accessible from within a Temporal Cloud and mTLS is used for all Nexus communication, including across cloud cells and regions. 
+Workers authenticate to their Namespaces via mTLS or an API key as allowed by their Namespace configuration.
 
 ## Payload Encryption
 
-For payload encryption, the `DataConverter` works the same for a Nexus `Operation` as it does for other payloads sent between a Worker and Temporal Cloud. Currently there is support for a single `DataConverter` to be used for inbound inputs and outbound outputs, which means the encryption key often used in a custom `DataConverter` must be the same for both the caller and the handler. Please let us know if you need per-Endpoint or per-Service payload encryption.
+For payload encryption, the DataConverter works the same for a Nexus Operation as it does for other payloads sent between a Worker and Temporal Cloud. 
+Currently there is support for a single DataConverter to be used for inbound inputs and outbound outputs, which means the encryption key often used in a custom DataConverter must be the same for both the caller and the handler. 
+Please let us know if you need per-Endpoint or per-Service payload encryption.
 
 
