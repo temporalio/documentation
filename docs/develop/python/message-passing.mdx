@@ -440,7 +440,7 @@ class GreetingWorkflow:
         return self.greetings[self.language]
 ```
 
-### Use wait conditions in handlers
+### Use wait conditions in handlers {#wait-in-message-handler}
 
 It's common to use a Workflow wait condition to wait until a handler should start.
 You can also use wait conditions anywhere else in the handler to wait for a specific condition to become `True`.
@@ -456,8 +456,6 @@ The `workflow.wait_condition` method waits until your condition is met:
             lambda: self.ready_for_update_to_execute(update_input)
         )
 ```
-
-Remember: handlers can execute before the main Workflow method starts.
 
 You can also use wait conditions anywhere else in the handler to wait for a specific condition to become true.
 This allows you to write handlers that pause at multiple points, each time waiting for a required condition to become true.
@@ -489,6 +487,51 @@ You can silence these warnings on a per-handler basis by passing the `unfinished
 ```
 
 See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
+
+
+### Use `@workflow.init` to operate on Workflow input before any handler executes
+
+Normally, your Workflow `__init__` method won't have any parameters.
+However, if you use the `@workflow.init` decorator on your `__init__` method, you can give it the same [Workflow parameters](/develop/python/core-application#workflow-parameters) as your `@workflow.run` method.
+The SDK will then ensure that your `__init__` method receives the Workflow input arguments that the  [Client sent](/develop/python/core/temporal-clients#start-workflow-execution).
+(The Workflow input arguments are also passed to your `@workflow.run` method -- that always happens, whether or not you use the `@workflow.init` decorator.)
+
+To understand why `@workflow.init` is useful, suppose that you've written a Signal or Update handler that does something involving the Workflow input, but that you need to process the workflow input in some way before the handler should be allowed to access it.
+The problem is that it's possible for a Signal or Update handler to start executing _before_ your `@workflow.run` method!
+This means that you can't do the processing in your `@workflow.run` method.
+A solution is to use the `@workflow.init` decorator, and do the processing in your `__init__` method. (An alternative solution would be to [use `@workflow.wait_condition` in your handler](#wait-in-message-handler) to wait until the processing has been done by your `@workflow.run` method.
+That would work, but using `@workflow.init` is simpler.)
+
+Here's an example.
+Notice that `__init__` and `get_greeting` must have the same parameters, with the same type annotations:
+
+```python
+@dataclass
+class MyWorkflowInput:
+    name: str
+
+
+@workflow.defn
+class WorkflowRunSeesWorkflowInitWorkflow:
+    @workflow.init
+    def __init__(self, workflow_input: MyWorkflowInput) -> None:
+        self.name_with_title = f"Sir {workflow_input.name}"
+
+    @workflow.run
+    async def get_greeting(self, workflow_input: MyWorkflowInput) -> str:
+        return f"Hello, {workflow_input.name}"
+
+    @workflow.update
+    async def check_title_validity(self) -> bool:
+        # 👈 The handler sees the workflow input after it has been processed by __init__.
+        return await workflow.execute_activity(
+            check_title_validity,
+            self.name_with_title,
+            schedule_to_close_timeout=timedelta(seconds=10),
+        )
+```
+
+
 
 ### Use `asyncio.Lock` to prevent concurrent handler execution {#control-handler-concurrency}
 
