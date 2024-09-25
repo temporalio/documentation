@@ -493,7 +493,7 @@ See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-me
 
 Normally, your Workflow `__init__` method won't have any parameters.
 However, if you use the `@workflow.init` decorator on your `__init__` method, you can give it the same [Workflow parameters](/develop/python/core-application#workflow-parameters) as your `@workflow.run` method.
-The SDK will then ensure that your `__init__` method receives the Workflow input arguments that the  [Client sent](/develop/python/core/temporal-clients#start-workflow-execution).
+The SDK will then ensure that your `__init__` method receives the Workflow input arguments that the  [Client sent](/develop/python/temporal-clients#start-workflow-execution).
 (The Workflow input arguments are also passed to your `@workflow.run` method -- that always happens, whether or not you use the `@workflow.init` decorator.)
 
 To understand why `@workflow.init` is useful, suppose that you've written a Signal or Update handler that does something involving the Workflow input, but that you need to process the workflow input in some way before the handler should be allowed to access it.
