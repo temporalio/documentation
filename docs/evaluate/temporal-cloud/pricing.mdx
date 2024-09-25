@@ -45,15 +45,20 @@ For more information about our detailed billing information features, visit our 
 This section explains the basis of the Temporal Cloud pricing model and how it works.
 Your total invoice each calendar month is the combination of Temporal Cloud consumption (Actions and storage) and support.
 
-### What are Actions {#actions}
+### How Actions work {#action}
 
-**How are Actions counted?**
+**What are the Actions that are counted?**
 
-Actions serve as the primary unit of consumption-based pricing for Temporal Cloud.
 Actions are the building blocks for Workflow Executions.
 When you execute a Temporal Workflow, its Actions create the ongoing state and progress of your Temporal Application.
+Actions serve as the primary unit of consumption-based pricing for Temporal Cloud.
 
-:::tip OPERATIONS THAT RESULT IN ACTIONS
+The following disclosure section explains the operations that do and do not result in Actions:
+<details>
+
+<summary>
+Open to view operations that result in Actions
+</summary>
 
 **WORKFLOWS**
 
@@ -116,11 +121,9 @@ Each execution of a Schedule accrues three actions:
 - **Workflow exported**.
   Each Workflow exported accrues a single action.
 
----
+</details>
 
-[Reach out to our team](https://pages.temporal.io/contact-us) for more information or to help size your number of Actions.
-
-:::
+[Reach out](https://pages.temporal.io/contact-us) to our team for more information or to help size your number of Actions.
 
 ### How storage works {#storage}
 
@@ -128,13 +131,13 @@ Each execution of a Schedule accrues three actions:
 
 A particular Workflow's execution might exist for a few seconds, a day, month, or even forever.
 Temporal stores the Workflow Execution's [Event History](/workflows#event-history).
-Under this framework, a Workflow Execution has only two states, open (Active Storage) or closed (Retained Storage).
+Under this framework, a Workflow Execution has only two states, open (active storage) or closed (retained storage).
 
 * _Active storage_ measures the amount of storage used by active Workflows.
 
 * When the execution of a Workflow finishes, Temporal Cloud stores Event History for a defined Retention Period, which is set by the user by Namespace.
-  This is _Retained Storage_.
-  Typical uses of Retained Storage include compliance, debugging, workload refresh, and business analytics.
+  This is _retained storage_.
+  Typical uses of retained storage include compliance, debugging, workload refresh, and business analytics.
   When you need to store closed Workflow histories for longer than the maximum 90-day period on Temporal Cloud, we recommend using our **Export** feature.
 
 Storage costs are measured in gigabyte-hours (GBh) and they are measured per Namespace.
@@ -147,10 +150,10 @@ Each Temporal Cloud account receives access to expert support.
 The Temporal Developer Success team brings a deep knowledge of how Temporal works and how you can optimize your deployment.
 Our team is made up of engineers who bring deep knowledge of Temporal, and help contribute to its development.
 
-Each account must select a support plan.
+Each account selects a support plan.
 We offer two support tiers: Basic and Premium.
 Support costs are outlined in the table below
-You'll find a complete description of our support plans in our [Support](/cloud/support#support) documentation.
+You'll find a complete description of our support plans and response times in our [Support](/cloud/support#support) documentation.
 
 |                     | Basic                                       | Premium                                       |
 | ------------------- | ------------------------------------------- | --------------------------------------------- |
@@ -169,38 +172,41 @@ Temporal Cloud offers two payment choices: **pay-as-you-go** and **prepaid Tempo
 
 Both models invoice for Actions, storage, and support.
 
-**How can I view invoice and usage details?**
+:::info INVOICE AND USAGE DETAILS
 
-Account Owners and Finance Admin can view detailed billing data at any time in the [Usage and Billing dashboards](/cloud/billing-and-cost) in Temporal Cloud.
+Account Owners and Finance Admins can view detailed billing data at any time using the [Usage and Billing dashboards](/cloud/billing-and-cost) on the Temporal Cloud website.
+
+:::
 
 ## Pay-as-you-go pricing {#payg}
 
 **How does pay-as-you-go pricing work for Actions, storage, and support?**
 
 Pay-as-you-go uses consumption pricing.
-This section shows how you're billed each calendar month and gives examples for each pricing style.
+This section explains how you're billed each calendar month and gives examples for each pricing style.
 
 ### Action pricing {#payg-action-pricing}
 
-You're billed for the Actions you use each calendar month, for each Namespace.
-The pay-as-you-go rate is $25 per one million Actions per month.
-This rate applies across all Namespaces and is pro-rated per Namespace.
+You're billed for the Actions you use each calendar month for each Namespace.
+The pay-as-you-go rate is &#36;25 per one million Actions per month.
+This rate applies across all Namespaces and is prorated per Namespace.
 
-| Actions | &#36;25 per one million |
-| ------- | ------------------------|
+| Actions | &#36;25 per one million Actions |
+| ------- | --------------------------------|
 
 **Example**
 
-If you use fewer than one million Actions per month in a Namespace, your bill for that Namespace's Actions will be less than &#36;25 for that calendar month.
-For example, if you use 800,000 actions in a month, you're billed:
+Actions are prorated per Namespace.
+If you use fewer than one million Actions in a Namespace each month, your bill for that Namespace's Actions will be less than &#36;25 for that month.
+For example, if you use 800,000 Actions in a month, you're billed:
 
 ```
-0.8M Actions * $25 Per Million Actions= $20
+0.8M Actions ⨉ $25 Per Million Actions= $20
 ```
 
 ### Storage pricing {#payg-storage-pricing}
 
-You're billed for your Namespaces' Active and Retained Storage for each calendar month.
+You're billed for your Namespaces' active and retained storage each calendar month.
 
 | **Storage** | **Price per GBh (USD)** |
 | ----------- | ---------------------- |
@@ -209,43 +215,44 @@ You're billed for your Namespaces' Active and Retained Storage for each calendar
 
 **Example**
 
-Say you consume 720 GBh of Active Storage and 3,600 GBh of Retained Storage in one calendar month your bill is:
+If you consume 720 GBh of active storage and 3,600 GBh of retained storage in one calendar month, your bill is:
 
 ```
-720 GBh Active Storage * $0.042 per GBh=$30.24
-3,600 GBh Retained Storage * $0.00042 per GBh= $1.51
-Total Storage Bill: $30.24 Active Storage + $1.512 Retained Storage= $31.75
+720 GBh active storage ⨉ $0.042 per GBh = $30.24
+3,600 GBh retained storage ⨉ $0.00042 per GBh = $1.51
+Total Storage Bill: $30.24 active storage + $1.512 retained storage = $31.75
 ```
 
 ### Support pricing {#payg-support-pricing}
 
 Support pricing offers [two tiers](/cloud/support#support):
 
-- Basic Support is priced at the maximum of &#36;200/mo or 10% of Temporal Cloud consumption.
-- Premium Support is priced at the maximum of &#36;2,000/mo or 10% Temporal Cloud consumption.
-Temporal cloud consumption is based on the combined Actions and Storage cost.
+- Basic Support is priced at the greater of &#36;200/month or 10% of Temporal Cloud consumption.
+- Premium Support is priced at the greater of &#36;2,000/month or 10% of Temporal Cloud consumption.
+
+Temporal Cloud consumption is based on the combined cost of Actions and Storage.
+
 
 **Example**
 
-Say that you are signed up for Basic Support with &#36;20 of Actions and &#36;31.75 of Storage consumed in one month.
-Using this example, your Basic Support costs are:
+If you are signed up for Basic Support with &#36;20 of Actions and &#36;31.75 of Storage consumed in one month, your Basic Support costs are:
 
 ```
-Max of $200 or 10% * ($20 (Actions) + $31.75 (Storage)) = $5.18, so $200.
+Max of $200 or 10% ⨉ ($20 (Actions) + $31.75 (Storage)) = $5.18, so $200.
 ```
 
 ## Prepaid Temporal Cloud Credit pricing {#prepaid}
 
-**How does prepaid Credit pricing work for Actions, storage, and support?**
+**How does prepaid Credit pricing work for Actions, Storage, and Support?**
 
 Temporal Credits unlock volume pricing for Temporal Cloud.
 You must purchase them before use.
-Credits cover your Action and storage costs for Temporal Cloud, as well as support fees.
+Credits cover your Action and Storage costs for Temporal Cloud, along with support fees.
 
 One Temporal Credit is worth &#36;1 USD.
 For example, if you purchase &#36;3,000, you receive 3,000 Temporal Credits that don't expire.
 The minimum purchase of Temporal Credits is &#36;2,500.
-Each calendar month, your invoice balance is paid from your Temporal Credits balance.
+Each calendar month, your invoice balance is deducted from your Temporal Credits balance.
 
 When you run out of Temporal Credits, your account is automatically invoiced.
 That invoice amount is either a flat &#36;2,500 or your last month's Temporal Cloud invoice multiplied by 12, whichever is greater.
@@ -260,7 +267,7 @@ Credits are also available for purchase at the AWS Marketplace.
 ### Action prepaid pricing {#prepaid-action}
 
 The following table shows our volume price tiers for Actions.
-Pricing tiers are applied per Namespace per calendar month:
+Pricing tiers are applied per Namespace each calendar month:
 
 | Actions (per Namespace)    | Price per Million Actions   |
 |---------------------------------------------|------------|
@@ -273,8 +280,7 @@ Pricing tiers are applied per Namespace per calendar month:
 
 **Example**
 
-Say that you have two Namespaces.
-Last month, `namespace1` consumed 100 million Actions and `namespace2` consumed 500 million Actions.
+If you have two Namespaces, and last month, `namespace1` consumed 100 million Actions and `namespace2` consumed 500 million Actions.
 Your Temporal Credits consumed will be:
 
 - `namespace1` used 100 million Actions and is billed at the &#36;23.25 per million Actions tier:
@@ -299,7 +305,7 @@ Your Temporal Credits consumed will be:
 
 ### Storage prepaid pricing {#prepaid-storage}
 
-The following table shows our volume price tiers for Active Storage.
+The following table shows our volume price tiers for active storage.
 Pricing tiers are applied per Namespace and per month:
 
 | **Active Storage (Per Namespace)** | **Price per GBh (USD)**    |
@@ -311,7 +317,7 @@ Pricing tiers are applied per Namespace and per month:
 | Over 400,000, up to 1,500000                   | &#36;0.013     |
 | Over 1,500,000                                 | &#36;0.010     |
 
-Retained Storage does not use price tiers.
+Retained storage does not use price tiers.
 It is priced at a flat rate:
 
 | **Storage** | **Price per GBh (USD)** |
@@ -320,42 +326,44 @@ It is priced at a flat rate:
 
 **Example**
 
-Say that you have two Namespaces.
-Last month, `namespace1` consumed 5,000 GBh of active storage and 5,000GBh of retained storage.
-`namespace2` consumed 15,000 GBh of active storage and 15,000GBh of retained storage.
-Here's how the billing works for these two Namespaces, and how the account is invoiced for the month.
+You may have two Namespaces.
+Last month, `namespace1` consumed 5,000 GBh of active storage and 5,000 GBh of retained storage.
+`namespace2` consumed 15,000 GBh of active storage and 15,000 GBh of retained storage.
+Here's how the billing works for these two Namespaces and how the account is invoiced for the month.
 
 - `namespace1` is charged at the &#36;0.039 per GBh tier for active storage:
 
   ```
-  5,000 GBh ⨉ $0.039 per GBh = $117 (Active Storage)
+  5,000 GBh ⨉ $0.039 per GBh = $195 (active storage)
   ```
 
 - `namespace1` is charged at &#36;0.00042 per GBh for retained storage:
 
   ```
-  5,000 GBh ⨉ $0.00042 per GBh = $2.10 (Retained Storage)
+  5,000 GBh ⨉ $0.00042 per GBh = $2.10 (retained storage)
   ```
 
-- `namespace2` is charged at the &#36;0.039 per GBh tier for the first 7,000 GBh, and at the &#36;0.031 per GBh tier for the remaining 8,000 GBh:
+- `namespace2` is charged at the &#36;0.039 per GBh tier for the first 7,000 GBh of active storage, and at the &#36;0.031 per GBh tier for the remaining 8,000 GBh:
 
   ```
   7,000 GBh ⨉ $0.039 per GBh = $273
   8,000 GBh ⨉ $0.031 per GBh = $248
 
-  Total: $273 (7,000 GBh) + $248 (8,000 GBh) = $521 (Active Storage)
+  Total: $273 (7,000 GBh) + $248 (8,000 GBh) = $521 (active storage)
   ```
 
 - `namespace2` is charged at &#36;0.00042 per GBh for retained storage:
 
   ```
-  15,000 GBh ⨉ $0.00042 per GBh = $6.30 (Retained Storage)
+  15,000 GBh ⨉ $0.00042 per GBh = $6.30 (retained storage)
   ```
 
-- The account is charged $753 for the month:
+- The account is charged $724.40 for the month:
 
   ```
-  $273 for Namespace 1 + $490 for Namespace 2 = $753 Active Storage cost
+  $195 for namespace1 + $521 for namespace2 = $716 (active storage)
+  $2.10 for namespace1 + $6.30 for namespace 2 = $8.40 (retained storage)
+  $716 (active storage) + $8.40 (retained storage) = $724.40 (Total)
   ```
 
 If you have additional questions about credits and volume-based pricing, please see our [Services and Support](https://docs.temporal.io/cloud/support) page or reach out to [our team](https://pages.temporal.io/contact-us).
@@ -368,29 +376,108 @@ Read more about billing cycles, invoices, and payments on our [Billing and cost]
 
 ### Support prepaid pricing {#prepaid-support}
 
-tbd
+Prepaid support pricing is based on tiers:
 
-## Other pricing
+- Basic Support is the maximum of &#36;200 or 10% of Temporal Cloud consumption.
+- Premium Support is the maximum of &#36;2,000 or 10% of Temporal Cloud consumption.
 
-tbd
+**Example**
 
-### Multi-region Namespace pricing
+An account has a &#36;13,060 bill for Actions and a &#36;724.40 bill for Storage, resulting in a total Temporal Cloud consumption bill of &#36;13,784.40.
 
-tbd
+If the account has Premium Support, the fee will be the greater of &#36;2,000 or 10% of Temporal Cloud consumption:
 
-### SSO and SAML pricing
+```
+$13,784.4 Total Consumption ⨉ 10% = $1,378.44
+```
 
-tbd
+Since &#36;2,000 is greater than &#36;1,378.44, the support fee would be &#36;2,000.
+You are invoiced for your support fee plus your Temporal Cloud consumption.
 
-### Pricing estimates
+**Example**
 
-tbd
+In the previous examples for Actions and Storage credit billing, the account had a total bill of &#36;13,784.40 and &#36;2,000 for support.
+Your total bill is the sum of these line items, or &#36;15,784.40.
+Your invoice will state that you now have 120,000 - 15,784.40 = 104,215.60 Temporal Credits remaining.
+When you run out of Temporal Credits, Temporal will invoice you for the previous month’s invoice multiplied by 12 months or a flat &#36;2,500, whichever is greater.
+
+If you have additional questions about credits and volume-based pricing, please contact Sales at [sales@temporal.io](mailto:sales@temporal.io).
+If you're already a Temporal Cloud customer, please reach out to your dedicated account executive.
+
+## Other pricing {#other-pricing}
+
+Temporal Cloud offers additional pricing models to match different usage patterns and needs.
+Below are details on specific pricing structures, including Multi-region Namespace (MRN) and SSO/SAML integration, as well as guidance on estimating costs based on your workloads.
+
+### Multi-region Namespace (MRN) pricing {#multi-region}
+
+**How does MRN costs work?**
+
+For workloads with stringent high-availability requirements, Temporal Cloud provides multi-region Namespaces (MRNs), which add a failover capability.
+Each multi-region Namespace automatically replicates Workflow Execution data and metadata to a standby region.
+This keeps the standby region in sync, allowing for a near-seamless failover should regional outages occur.
+
+Multi-region Namespace pricing align with the volume of your workloads.
+After activation, the new MRN begins replicating data to the standby region.
+Due to this replication, MRNs double your current Action and storage costs.
+To estimate costs for this deployment model, apply a 2x multiplier to your existing Actions and storage Namespace costs.
+
+When upgrading an existing Namespace, some points to consider:
+
+- Temporal won't charge for historical Actions completed prior to upgrading to a multi-region Namespace.
+  Only ongoing (in-flight) and new Workflow Executions incur the \"2x\" charge, as these are actively replicated.
+- Temporal charges for all Actions of existing (ongoing) and new Workflows from the point of adding a new region and provisioning multi-region Namespace service onward.
+- Temporal charges for replicated storage of retained (historical), running (ongoing), and new Workflow Executions from the point of adding a new region and starting MRN service.
+
+Multi-region Namespace invoice charges will include:
+
+- An Actions row, showing the Action count from the active region.
+- A Replicated Actions row, showing the Action count from the standby region.
+
+The invoice follows a similar structure for Replicated Storage.
+It breaks out storage and replicated storage into their own line items.
+
+:::tip Action counts for mid-month adoption
+
+- If your multi-region Namespace adoption began mid-month, expect to see more Actions than Replicated Actions and more Storage than Replicated Storage on your invoice.
+
+:::
+
+### SSO and SAML pricing {#sso-and-saml}
+
+**What costs are associated with SSO/SAML use?**
+
+We offer single sign-on (SSO) integration using SAML at a monthly fixed fee based on the number of users registered in Temporal Cloud:
+
+| **Users** | **Cost per month** |
+| --------- | ------------------ |
+| 0 to 25   | &#36;200           |
+| 26 to 50  | &#36;300           |
+| 51+       | &#36;500           |
+
+### Use case cost estimates {#pricing-estimates}
+
+Temporal Cloud uses a consumption-based pricing model based primarily on Actions and storage.
+Each workload is different.
+You can estimate the cost of a specific Workflow by running it at a low volume.
+Use the resulting storage and compute measurements to project your production scale cost.
+
+The examples below provide general estimates based on workload size.
+You can also use our calculator on the pricing page to build your estimate.
+Our team is always happy to [help you estimate costs] (https://pages.temporal.io/contact-us) for your specific workloads and requirements.
+
+| Workload size | Cost (monthly) | Characteristics                            | Actions                                            | Typical use cases                                                                                             |
+| ------------- | -------------- | ------------------------------------------ | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Small         | < &#36;25.00   | Modest / transient throughput              | < 1M / month  <br /> _(< 0.38 actions per second)_ | General automation <br /> Human dependent processes <br /> Data pipelines <br /> Nightly batch processes      |
+| Medium        | < &#36;1K      | Steady or burst throughput                 | < 40M / month <br /> _(< 15 actions per second)_   | Transaction & order systems <br /> Infrastructure automation <br /> Payment Processing <br /> Batch processes |
+| Large         | < &#36;10K     | Sustained throughput or multiple use cases | < 400M / month <br /> _(< 150 actions per second)_ | Data processing / sync <br /> Retail order system <br /> KYC & fraud detection                                |
+| Web Scale     | &#36;20K+      | "Web scale" and / or numerous use cases    | 1B+ / month <br /> _(400+ actions per second)_     | Social media application <br /> SaaS application service                                                      |
 
 ## Billing Questions FAQs {#pricing-faq}
 
 **What payment methods does Temporal accept?**
 
-You can pay with a credit card, ACH, wire transfer, or Temporal Cloud Credits.
+You can pay with a credit card, ACH, or wire transfer.
 To pay for Temporal Cloud with an AWS Account, sign up for [Temporal Cloud Pay-As-You-Go](https://aws.amazon.com/marketplace/pp/prodview-hbcjz7wcl2mvu) on the AWS Marketplace.
 
 **How often will I be billed?**
@@ -476,191 +563,3 @@ You will be assigned a new Temporal account and be treated as a new customer.
 **What happens to my credits if I cancel my account?**
 
 Prepaid but unused credits purchased after June 17, 2024 will be refunded if the account is canceled.
-Credits received as part of a promotion won't be refunded.
-
-## <div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**REST OF UNUSED MATERIAL**</div>
-
-Actions are collected and billed monthly for each Namespace.
-The base rate is &#36;25 per one million Actions per month.
-This rate applies across all Namespaces.
-You will be billed for a prorated portion of the Actions you use.
-If you use fewer than one million Actions per month, your bill for Actions will be less than &#36;25 for that month.
-
-| Actions | &#36;25 per one million (prorated) |
-| ------- | ---------------------------------- |
-
-### Calculating Action volume prices {#action-volume-prices}
-
-**How does tiered volume pricing work?**
-
-When you purchase credits for Temporal Cloud, your account automatically unlocks tiered volume pricing.
-Volume prices are calculated on a calendar month basis and reset every calendar month.
-
-Here's an example that demonstrates how this works.
-Consider a Temporal Cloud account paid for with credits, so it's eligible for volume discounts.
-
-### Actions and operations {#action-and-operations}
-
-**How are Actions counted?**
-
-The following operations result in Actions:
-
-**Workflows**
-
-- **Workflow started.**
-  Occurs via client start, client Signal-With-Start, [Continue-As-New](/workflows#continue-as-new), or [Child Workflow](/encyclopedia/child-workflows) start.
-  If a Workflow start fails, an Action is not recorded.
-- **Workflow reset.**
-  Occurs when a [Workflow](/workflows) is reset.
-  (Actions that occur before a [Reset](/workflows#reset) are counted even if they are no longer visible in [Event History](/workflows#event-history).)
-- **Timer started.**
-  Includes implicit Timers that are started by a Temporal SDK when timeouts are set, such as `AwaitWithTimeout` in Go or `condition` in TypeScript.
-- **Search Attribute upsert requested.**
-  Occurs after a Workflow starts and invokes `UpsertSearchAttributes`.
-- **Signal sent.**
-  Includes sending a [Signal](/encyclopedia/workflow-message-passing#sending-signals) from a client or from within a Workflow to another Workflow.
-- **Query received.** [Queries](/encyclopedia/workflow-message-passing#sending-queries) aren't recorded in Event History.
-  An operation such as viewing the call stack in the Temporal Cloud UI results in a Query.
-- **Side Effect recorded.**
-  For a mutable [Side Effect](/workflows#side-effect), an Action occurs only when the value changes.
-  (Be aware that some SDKs don't support Side Effects.)
-- **NEW: Workflow Update.** [[Workflow Updates](/encyclopedia/workflow-message-passing#sending-updates)] is a primitive that combines a Signal and Query together for a single Action.
-
-**Child Workflows**
-
-- **Child Workflows spawned.**
-  The parent Workflow spawning a Child Workflow results in one Action.
-- **Child Workflows executed.**
-  Execution of the Child Workflow results in one Action.
-
-**Activities**
-
-- **Activity started or retried.**
-  Occurs each time an Activity is started or retried.
-- **Local Activity started.**
-  All [Local Activities](/activities#local-activity) associated with one Workflow Task count as a single Action.
-  That's because Temporal Cloud counts all [RecordMarkers](https://docs.temporal.io/references/commands#recordmarker) from each Workflow Task as one action, and not _N_ actions.
-  Please note:
-  - Each additional Workflow Task heartbeat after counts as an additional Action.
-  - Local Activities retried following a Workflow Task heartbeat count as one Action (capped at 100 Actions).
-- **Activity Heartbeat recorded.**
-  A Heartbeat call from Activity code counts as an Action only if it reaches the [Temporal Server](/clusters#temporal-server).
-  Temporal SDKs throttle [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
-  The default throttle is 80% of the [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout).
-  Heartbeats don't apply to Local Activities.
-
-**Schedules**
-
-[Schedules](/workflows#schedule) allows you to "schedule" a Workflow to start at a particular time.
-Each execution of a Schedule accrues three actions:
-
-- **Schedule Start**.
-  This accounts for two actions.
-- **Workflow started**.
-  This is a single action to start the target workflow.
-
-**Export**
-
-[Workflow History Export](/cloud/export) enables you to export closed Workflow Histories to a cloud storage sink of your choice.
-
-- **Workflow exported**.
-  Each Workflow exported accrues a single action.
-
-[Reach out to our team](https://pages.temporal.io/contact-us) to get more information or to help size your number of Actions.
-
-
-### Calculating Storage volume prices {#storage-volume-prices}
-
-**How do I get discounted pricing for Storage?**
-
-When you purchase credits for Temporal Cloud, your account automatically unlocks tiered volume pricing.
-Volume prices are calculated on a calendar month basis and reset every calendar month.
-
-Here's an example that demonstrates how this works.
-Consider a Temporal Cloud account paid for with credits, so it's eligible for volume discounts.
-This account uses two Namespaces.
-
-
-## Multi-region Namespace (MRN) pricing {#multi-region}
-
-**How does MRN costs work?**
-
-For workloads with stringent high-availability requirements, Temporal Cloud provides multi-region Namespaces (MRNs), which add a failover capability.
-Each multi-region Namespace automatically replicates Workflow Execution data and metadata to a standby region.
-This keeps the standby region in sync, allowing for a near-seamless failover should regional outages occur.
-
-Multi-region Namespace pricing align with the volume of your workloads.
-After activation, the new MRN begins replicating data to the standby region.
-Due to this replication, MRNs double your current Action and storage costs.
-To estimate costs for this deployment model, apply a 2x multiplier to your existing Actions and storage Namespace costs.
-
-When upgrading an existing Namespace, some points to consider:
-
-- Temporal won't charge for historical Actions completed prior to upgrading to a multi-region Namespace.
-  Only ongoing (in-flight) and new Workflow Executions incur the \"2x\" charge, as these are actively replicated.
-- Temporal charges for all Actions of existing (ongoing) and new Workflows from the point of adding a new region and provisioning multi-region Namespace service onward.
-- Temporal charges for replicated storage of retained (historical), running (ongoing), and new Workflow Executions from the point of adding a new region and starting MRN service.
-
-Multi-region Namespace invoice charges will include:
-
-- An Actions row, showing the Action count from the active region.
-- A Replicated Actions row, showing the Action count from the standby region.
-
-The invoice follows a similar structure for Replicated Storage.
-It breaks out storage and replicated storage into their own line items.
-
-:::tip Action counts for mid-month adoption
-
-- If your multi-region Namespace adoption began mid-month, expect to see more Actions than Replicated Actions and more Storage than Replicated Storage on your invoice.
-
-:::
-
-## SSO and SAML pricing {#sso-and-saml}
-
-**What costs are associated with SSO/SAML use?**
-
-We offer single sign-on (SSO) integration using SAML at a monthly fixed fee based on the number of users registered in Temporal Cloud:
-
-| **Users** | **Cost per month** |
-| --------- | ------------------ |
-| 0 to 25   | &#36;200           |
-| 26 to 50  | &#36;300           |
-| 51+       | &#36;500           |
-
-## Services and Support {#support}
-
-**What kind of services and support do I get with Temporal Cloud?**
-
-Each Temporal Cloud account receives access to expert services and support.
-The Temporal Success team brings a deep knowledge of how Temporal works and how you can optimize your deployment.
-Our team is made up of engineers who bring deep knowledge of Temporal, and help contribute to its development.
-
-The Success team provides troubleshooting and issue resolution as well as service work-streams such as design reviews, setting up observability, and worker tuning.
-The team can help investigate your Workflows to optimize their environments, so you might reduce costs associated with Actions and storage.
-They ensure your instance is performance-tuned and help with other ongoing maintenance, like upgrades of the Temporal software and maintenance of the platform.
-
-Services and support pricing is outlined in the table below.
-A more complete description of each level can be found on our [Services and Support](https://docs.temporal.io/cloud/support) outline.
-
-|                     | Basic                                       | Premium                                       |
-| ------------------- | ------------------------------------------- | --------------------------------------------- |
-| Pricing (per month) | Greater of &#36;200 or 10% of monthly usage | Greater of &#36;2,000 or 10% of monthly usage |
-
-## Pricing Estimates {#pricing-estimates}
-
-Temporal Cloud uses a consumption-based pricing model based primarily on Actions and storage.
-Each workload is different.
-You can estimate the cost of a specific Workflow by running it at a low volume.
-Use the resulting storage and compute measurements to project your production scale cost.
-
-The examples below provide general estimates based on workload size.
-You can also use our calculator on the pricing page to build your estimate.
-Our team is always happy to [help you estimate costs] (https://pages.temporal.io/contact-us) for your specific workloads and requirements.
-
-| Workload size | Cost (monthly) | Characteristics                            | Actions                                            | Typical use cases                                                                                             |
-| ------------- | -------------- | ------------------------------------------ | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Small         | < &#36;25.00   | Modest / transient throughput              | < 1M / month  <br /> _(< 0.38 actions per second)_ | General automation <br /> Human dependent processes <br /> Data pipelines <br /> Nightly batch processes      |
-| Medium        | < &#36;1K      | Steady or burst throughput                 | < 40M / month <br /> _(< 15 actions per second)_   | Transaction & order systems <br /> Infrastructure automation <br /> Payment Processing <br /> Batch processes |
-| Large         | < &#36;10K     | Sustained throughput or multiple use cases | < 400M / month <br /> _(< 150 actions per second)_ | Data processing / sync <br /> Retail order system <br /> KYC & fraud detection                                |
-| Web Scale     | &#36;20K+      | "Web scale" and / or numerous use cases    | 1B+ / month <br /> _(400+ actions per second)_     | Social media application <br /> SaaS application service                                                      |
-
