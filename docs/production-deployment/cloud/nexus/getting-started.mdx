@@ -15,7 +15,7 @@ keywords:
 
 ---
 
-Temporal Nexus Public Preview is available within your Temporal Cloud account, with support in the Temporal Go SDK.
+Temporal Nexus Public Preview is available within your Temporal Cloud account, with support in the [Temporal Go SDK](/develop/go).
 
 Calls across existing Namespaces can be enabled by creating a Nexus Endpoint in the Nexus API Registry, creating a Nexus Service in a Worker in the handler Namespace, and then using the Nexus Service from a caller Workflow in a different Namespace.
 
@@ -25,7 +25,7 @@ Monolithic Namespaces can be decomposed into multiple Namespaces, by hiding serv
 
 Calls across existing Namespaces can be enabled by creating a Nexus Endpoint in the Nexus API Registry, creating a Nexus Service in a Worker in the handler Namespace, and then using the Nexus Service from a caller Workflow in a different Namespace.
 
-Steps to enable calls across existing Namespaces \- see the [Develop examples]:
+Steps to enable calls across existing Namespaces:
 
 1. Add Nexus Services to the same Workers as the Temporal primitives being abstracted. 
 2. Add a Nexus Endpoint that:  
@@ -41,7 +41,7 @@ Multiple Nexus Endpoints can target a single monolithic Namespace, and then each
 
 Once Nexus Endpoints are in place, targeting a new Namespace can be done with config changes and zero downtime, as new Nexus requests will be routed to the new target Namespace, and existing Nexus requests will be completed in the previous Namespace.
 
-Steps to decompose a large monolithic Namespace:
+**Steps to decompose a large monolithic Namespace:**
 
 1. Hide service implementations behind a Nexus Endpoint. 
    1. Add Nexus Services to the same Workers as the Temporal primitives being abstracted. 
@@ -61,5 +61,6 @@ Steps to decompose a large monolithic Namespace:
 There are a few caveats:
    1. For long-lived entity Workflows, new Nexus requests will be routed to the new target Namespace and the long-lived entity-Workflow will still be running on the previous Namespace.
    2. If using Signal-with-Start behind a Nexus Operation, then a new entity-Workflow will be started in the new target Namespace.
-   3. A cancel Nexus Operation request from a caller Workflow will be routed via the Nexus Endpoint to the new target Namespace, which may not have the underlying Workflow.
+   3. A cancel Nexus Operation request from a caller Workflow will be routed through the Nexus Endpoint to the new target Namespace, which may not have the underlying Workflow.
+
 In these scenarios, Temporal can provide guidance on different migration strategies.

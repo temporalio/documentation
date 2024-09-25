@@ -120,7 +120,7 @@ Callbacks: 1
 
 ## Metrics
 
-Scheduling and processing a Nexus Operation is reported via existing cloud metrics via the following operation metric labels:
+Scheduling and processing a Nexus Operation is reported through existing cloud metrics with the following operation metric labels:
 
 * Caller Namespace  
   * RespondWorkflowTaskCompleted: This is used to schedule the Nexus Operation.  
@@ -169,7 +169,7 @@ If a handler doesn’t respond within a context deadline, a context deadline exc
 ## Secure Routing
 
 Nexus Endpoints are only privately accessible from within a Temporal Cloud and mTLS is used for all Nexus communication, including across cloud cells and regions. 
-Workers authenticate to their Namespaces via mTLS or an API key as allowed by their Namespace configuration.
+Workers authenticate to their Namespaces through mTLS or an API key as allowed by their Namespace configuration.
 
 ## Payload Encryption
 
