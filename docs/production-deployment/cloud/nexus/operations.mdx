@@ -19,16 +19,16 @@ Temporal Nexus supports fully integrated observability, execution debugging, met
 Execution debugging with Nexus includes end-to-end executions that span:
 
 * Caller Workflow.  
-* One or more Nexus Operations that are routed within and across Namespaces.  
+* One or more Nexus Operations routed within and across Namespaces.  
 * Underlying Temporal primitives created by a Nexus Operation handler like a Workflow.
 
 Multi-level Nexus calls are supported:
 
-* Workflow A \-\> Nexus Op 1 \-\> Workflow B \-\> Nexus Op 2 \-\> Workflow C
+* Workflow A → Nexus Op 1 → Workflow B → Nexus Op 2 → Workflow C
 
 ### Underlying Workflow ID is returned as the Nexus Operation ID
 
-When a Nexus Operation is started by a caller Workflow that is processed by a Temporal SDK NewWorkflowRunOperation handler, the underlying Workflow ID is returned as the Nexus Operation ID which is reflected in the Nexus Operation Started event in the caller’s Workflow history.  
+When a Nexus Operation is started by a caller Workflow that's processed by a Temporal SDK NewWorkflowRunOperation handler, the underlying Workflow ID is returned as the Nexus Operation ID which is reflected in the Nexus Operation Started event in the caller’s Workflow history.  
 
 ![Workflow history](/img/nexus/nexus-operations-ui.png)
 
@@ -67,7 +67,7 @@ version: 1265
 
 Which can then be searched using: `temporal workflow list –query`.
 
-However this requires knowing the Endpoint’s target Namespace and manual steps, which is why we’ve created [bi-directional linking for Nexus Operations] to navigate forwards and backwards across Workflow event histories, via the Nexus Operations and underlying Temporal primitives they may create.
+However, this requires knowing the Endpoint’s target Namespace and manual steps, which is why we’ve created [bi-directional linking for Nexus Operations] to navigate forwards and backwards across Workflow event histories, through the Nexus Operations and underlying Temporal primitives they may create.
 
 ### Pending Operations
 

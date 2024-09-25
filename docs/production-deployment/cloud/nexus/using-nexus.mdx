@@ -22,11 +22,12 @@ keywords:
 
 Nexus Services are exposed from a Nexus Endpoint that is created in the Nexus API Registry. Nexus Endpoints include service documentation that enables others to use the Nexus Services provided by a Nexus Endpoint, for example from caller Workflows. 
 
-Temporal has built-in Nexus Machinery that performs the low-level Nexus RPC operations on the wire and provides an integrated Temporal SDK experience to create Nexus Services in a handler Worker and use them from a caller Workflow via a Nexus Endpoint.
+Temporal has built-in Nexus Machinery that performs the low-level Nexus RPC operations on the wire and provides an integrated Temporal SDK experience to create Nexus Services in a handler Worker and use them from a caller Workflow through a Nexus Endpoint.
 
-In Temporal Cloud, the Nexus Machinery routes Nexus requests across Namespace boundaries via a secure mTLS Envoy mesh, where they are sync matched to a Worker in the handler Namespace, which processes the Nexus request.
+In Temporal Cloud, the Nexus Machinery routes Nexus requests across Namespace boundaries through a secure mTLS Envoy mesh, where they are sync matched to a Worker in the handler Namespace, which processes the Nexus request.
 
-Nexus caller `Workflows` will send commands to Temporal Cloud to schedule or cancel a Nexus Operation in the caller Namespace. Handler `Workers` will poll for Nexus tasks in the handler Namespace.
+Nexus caller Workflows will send commands to Temporal Cloud to schedule or cancel a Nexus Operation in the caller Namespace. 
+Handler Workers will poll for Nexus tasks in the handler Namespace.
 
 Nexus Operation handlers can be implemented as [Asynchronous Operations] or [Synchronous Operations], using Temporal SDK builders that enable running a Nexus Service in a Worker, typically the same Worker as the underlying primitive the Nexus Service abstracts.
 
@@ -41,39 +42,44 @@ Similar to executing an Activity, to execute a Nexus Operation from a Workflow:
 
 1. Caller Workflow will schedule a Nexus Operation using the Temporal SDK, which sends a `ScheduleNexusOperation` command in the existing `RespondWorkflowTaskCompleted` RPC which is recorded as `NexusOperationScheduled` in the caller’s Workflow history.  
 2. Nexus handler Worker uses the Temporal SDK to `PollNexusTaskQueue` and process the Nexus request.  
-3. Nexus handler Worker sends a `RespondNexusTaskCompleted` via the SDK, with the result of the Nexus request, which may be one of: Started, Completed, Failed, TimedOut, Canceled \- see [Nexus Operation Events] for more info  
-4. Caller Workflow then processes the Nexus Operation event via `PollWorkflowTaskQueue`.
+3. Nexus handler Worker sends a `RespondNexusTaskCompleted` through the SDK, with the result of the Nexus request, which may be one of: Started, Completed, Failed, TimedOut, Canceled \- see [Nexus Operation Events] for more info  
+4. Caller Workflow then processes the Nexus Operation event through `PollWorkflowTaskQueue`.
 
 ## Access Control
 
-Like `Namespaces`, a Nexus `Endpoint` is an account-scoped resource that is global within a Temporal Cloud account. Any `Developer` role (or higher) in an account, who is also a `Namespace Admin` on the endpoint’s target Namespace, can manage (create/update/delete) a Nexus `Endpoint`. All users with a `Read-only` role (or higher) in an account, can view and browse the full list of Endpoints.
+Like Namespaces, a Nexus Endpoint is an account-scoped resource that is global within a Temporal Cloud account. Any `Developer` role (or higher) in an account, who is also a `Namespace Admin` on the endpoint’s target Namespace, can manage (create/update/delete) a Nexus Endpoint. All users with a `Read-only` role (or higher) in an account, can view and browse the full list of Endpoints.
 
-Runtime access from a `Workflow` in a caller Namespace to a Nexus `Endpoint` is controlled by an allowlist policy (of caller namespaces) for each `Endpoint` in the Nexus API registry. Workers authenticate with Temporal Cloud as they do today with mTLS certificates or API keys as allowed by the `Namespace` configuration. Nexus requests are sent from the caller’s Namespace to the handler’s Namespace over a secure multi-region mTLS Envoy mesh.
+Runtime access from a Workflow in a caller Namespace to a Nexus Endpoint is controlled by an allowlist policy (of caller Namespaces) for each Endpoint in the Nexus API registry. Workers authenticate with Temporal Cloud as they do today with mTLS certificates or API keys as allowed by the `Namespace` configuration. Nexus requests are sent from the caller’s Namespace to the handler’s Namespace over a secure multi-region mTLS Envoy mesh.
 
 ## Automatic Retries
 
-Once the caller `Workflow` schedules an `Operation` with the caller’s Temporal cluster, the caller’s Nexus Machinery keeps trying to start the `Operation`, with automatic retries and exponential backoff. If a Nexus `Operation` returns a retryable error when attempting to start, the `Operation` it will be retried up to the default retry policy’s max attempts and expiration interval.
+Once the caller Workflow schedules an Operation with the caller’s Temporal Cluster, the caller’s Nexus Machinery keeps trying to start the Operation, with automatic retries and exponential backoff. If a Nexus Operation returns a retryable error when attempting to start, the Operation it will be retried up to the default Retry Policy’s max attempts and expiration interval.
 
 ## Failure Handling
 
-In a Nexus Operation handler, you can throw a Nexus HandlerError with an associated Nexus HandlerErrorType. If an unknown Error is thrown from a Nexus handler, it is treated as a retryable 500 InternalServerError, that Nexus will attempt to retry until the the Schedule-to-Close Timeout is exceeded (which is capped at 60 days max by the server). See [Nexus Operation duration limits].
+In a Nexus Operation handler, you can throw a Nexus HandlerError with an associated Nexus HandlerErrorType. If an unknown Error is thrown from a Nexus handler, it is treated as a retryable 500 InternalServerError, that Nexus will attempt to retry until the Schedule-to-Close Timeout is exceeded (which is capped at 60 days max by the server). See [Nexus Operation duration limits].
 
-All retryable errors are automatically retried by the Nexus Machinery, as discussed in [Automatic Retries](https://docs.google.com/document/d/11pAxCvICaodsGdQspENAWsDT3WG2tuFwGW68VpowCQI/edit?pli=1\#heading=h.f17cgqgefygj). If a non-retryable error is returned from the handler, then it is returned as a Nexus Operation Failure to the caller Workflow. The list of [non-retryable errors](https://github.com/temporalio/temporal/blob/13d6cd8cf7a4ba0c4660cf98f672bbd645dca3e7/components/nexusoperations/executors.go\#L659) is currently not configurable, but we may provide this option in the future.
+All retryable errors are automatically retried by the Nexus Machinery, as discussed in [Automatic Retries](https://docs.google.com/document/d/11pAxCvICaodsGdQspENAWsDT3WG2tuFwGW68VpowCQI/edit?pli=1\#heading=h.f17cgqgefygj). If a non-retryable error is returned from the handler, then it is returned as a Nexus Operation Failure to the caller Workflow. 
+The list of [non-retryable errors](https://github.com/temporalio/temporal/blob/13d6cd8cf7a4ba0c4660cf98f672bbd645dca3e7/components/nexusoperations/executors.go\#L659) is currently not configurable.
 
-A Nexus Operation Failure is delivered to the Workflow Execution when a Nexus Operation fails. It contains information about the failure and the Nexus Operation Execution; for example, the Nexus Operation name and Nexus Operation Id. The reason for the failure is in the message and in the underlying cause is typically an Application Error or a Canceled Error.
+A Nexus Operation Failure is delivered to the Workflow Execution when a Nexus Operation fails. 
+It contains information about the failure and the Nexus Operation Execution; for example, the Nexus Operation name and Nexus Operation Id. 
+The reason for the failure is in the message and in the underlying cause is typically an Application Error or a Canceled Error.
 
-Note this differs from how Activities and Workflow handle errors and retries: 
+:::note
+This differs from how Activities and Workflow handle errors and retries: 
 
-* [https://docs.temporal.io/references/failures\#errors-in-activities](https://docs.temporal.io/references/failures\#errors-in-activities)  
-* [https://docs.temporal.io/references/failures\#non-retryable](https://docs.temporal.io/references/failures\#non-retryable)
+* [Errors in Activities](https://docs.temporal.io/references/failures\#errors-in-activities)  
+* [Non-retryable errors](https://docs.temporal.io/references/failures\#non-retryable)
+:::
 
 ## Execution Semantics
 
 ### At-least-once Execution Semantics and Idempotency
 
 Nexus Operations, like Activities, have at-least-once execution semantics. 
-The caller's Nexus Machinery will keep trying to start the Operation over and over, so the Nexus `Operation` handler should be idempotent just like Activities should be idempotent as a general rule. It's not required in all cases, but highly recommended in general.
+The caller's Nexus Machinery will keep trying to start the Operation over and over, so the Nexus Operation handler should be idempotent just like Activities should be idempotent as a general rule. It's not required in all cases, but highly recommended in general.
 
-### At-most-once Execution Semantics via Underlying WorkflowIdReusePolicy
+### At-most-once Execution Semantics through an Underlying WorkflowIdReusePolicy
 
 To dedupe work and get at-most-once execution semantics, an Operation can start a Workflow with a WorkflowIdReusePolicy of RejectDuplicates which only allows one Workflow Execution per Workflow Id within a Namespace for the retention period.
