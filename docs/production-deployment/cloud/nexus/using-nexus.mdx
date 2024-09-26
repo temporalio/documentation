@@ -34,6 +34,8 @@ Unlike a traditional RPC, an arbitrary-duration Nexus Operation has an identity 
 When you schedule a Nexus Operation in a caller Workflow, a command is sent to Temporal to schedule the Operation, and then the Temporal Nexus Machinery is responsible for making the Nexus RPC calls on your behalf.
 This means you don’t have to use Nexus RPC directly, only the Temporal SDK along with a Temporal Service.
 
+![NexusYourCloud](/img/nexus/NexusYourCloud.png)
+
 Similar to executing an Activity, to execute a Nexus Operation from a Workflow:
 
 1. Caller Workflow will schedule a Nexus Operation using the Temporal SDK, which sends a `ScheduleNexusOperation` command in the existing `RespondWorkflowTaskCompleted` RPC which is recorded as `NexusOperationScheduled` in the caller’s Workflow history.

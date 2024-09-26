@@ -37,7 +37,7 @@ This can be used to search the handler’s Namespace for that Workflow ID:
 
 ![Search handler's Namespace](/img/nexus/nexus-operations-ui-search-handler.png)
 
-This may also be done using: `temporal Workflow show –detailed`
+This may also be done using: `temporal workflow show –detailed`
 
 ```
 --------------- [5] NexusOperationScheduled ---------------
@@ -63,13 +63,13 @@ taskId: 158300491
 version: 1265
 ```
 
-Which can then be searched using: `temporal Workflow list –query`.
+Which can then be searched using: `temporal workflow list –query`.
 
 However, this requires knowing the Endpoint’s target Namespace and manual steps, which is why we’ve created [bi-directional linking for Nexus Operations] to navigate forwards and backwards across Workflow event histories, through the Nexus Operations and underlying Temporal primitives they may create.
 
 ### Pending Operations
 
-Similar to pending Activities, pending Nexus Operations are displayed in the Workflow details page and using: `temporal Workflow describe`.
+Similar to pending Activities, pending Nexus Operations are displayed in the Workflow details page and using: `temporal workflow describe`.
 
 For example, from the Temporal UI:\
 ![Pending Operations](/img/nexus/pending-nexus-operations.png)
@@ -77,7 +77,7 @@ For example, from the Temporal UI:\
 For example, from the `temporal` CLI:
 
 ```
-temporal Workflow describe
+temporal workflow describe
 
 Pending Nexus Operations: 1
 
@@ -96,7 +96,7 @@ Pending Nexus Operations: 1
 ### Pending Callbacks
 
 Nexus callbacks are sent from the handler’s Namespace to the caller’s Namespace to complete an asynchronous Nexus Operation.
-These show up in the UI and using: `temporal Workflow describe`.
+These show up in the UI and using: `temporal workflow describe`.
 
 For example, from the Temporal UI:\
 ![Pending Callbacks](/img/nexus/nexus-callback.png)
@@ -104,7 +104,7 @@ For example, from the Temporal UI:\
 For example, from the `temporal` CLI:
 
 ```
-temporal Workflow describe
+temporal workflow describe
 
 
 Callbacks: 1
@@ -117,9 +117,11 @@ Callbacks: 1
 ```
 
 ### Bi-directional linking
-To support deep linking for Nexus Operations that may span Workflows across Namespace boundaries, and invoke Update, Signals, and other operations on a Workflow, we have added linking support to Workflow history events. This enables a given history event to link to events in other Workflows, including across Namespace boundaries.
+To support deep linking for Nexus Operations that may span Workflows across Namespace boundaries, and invoke Update, Signals, and other operations on a Workflow, linking support is available for Workflow history events. 
+This enables a given history event to link to events in other Workflows, including across Namespace boundaries.
 
-Temporal SDK Nexus Operation builders, like NewWorkflowRunOperation, use this new Event History linking capability to auto-wire bi-directional links from a specific Nexus Operation event in the callers Workflow history to a specific event in the handler’s Workflow history. In Public Preview this is only supported for NewWorkflowRunOperation, which does the auto-wiring of bi-directional links for you, but it is not currently supported for NewSyncOperation.
+Temporal SDK Nexus Operation builders, like NewWorkflowRunOperation, use this new Event History linking capability to auto-wire bi-directional links from a specific Nexus Operation event in the callers Workflow history to a specific event in the handler’s Workflow history. 
+In Public Preview this is only supported for NewWorkflowRunOperation, which does the auto-wiring of bi-directional links for you, but it is not currently supported for NewSyncOperation.
 
 This enables bi-directional navigation across Workflow histories:
 - Forward through the Nexus Operation execution:
@@ -141,9 +143,7 @@ Scheduling and processing a Nexus Operation is reported through existing cloud m
   - RespondNexusTaskCompleted
   - RespondNexusTaskFailed
 
-In Public Preview, there are not yet any [cloud metrics](https://docs.temporal.io/production-deployment/cloud/metrics/reference) for the internal Nexus RPC calls that Temporal makes on your behalf.
-
-See [Cloud Metrics](#metrics).
+See [Cloud Metrics](/cloud/metrics/reference).
 
 ## Audit Logging
 
