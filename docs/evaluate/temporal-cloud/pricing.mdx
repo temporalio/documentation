@@ -33,31 +33,31 @@ You pay only for what you use.
 Our pricing reflects your use of _actions_, _storage_, and _support_.
 It is flexible, transparent, and predictable so you know your costs.
 
-This page introduces the elements of Temporal Cloud pricing for [actions](#action), [storage](#storage), and [services/support](#support).
+This page describes the elements of Temporal Cloud pricing for [actions](#action), [storage](#storage), and [services/support](#support).
 It gives you the information you need to understand and estimate costs for your implementation.
 For more exact estimates, please reach out to [our team](https://pages.temporal.io/ask-an-expert).
 
-Once you have set up an account, you can directly view your cost and billing details for your account.
-For more information about our detailed billing information features, visit our [Billing and Cost](/cloud/billing-and-cost) page.
+Cost and billing information are available directly in the account.
+For more information, visit the [Billing and Cost](/cloud/billing-and-cost) page.
 
 ## Temporal Cloud pricing model {#pricing-model}
 
 This section explains the basis of the Temporal Cloud pricing model and how it works.
 Your total invoice each calendar month is the combination of Temporal Cloud consumption (Actions and storage) and support.
 
-### How Actions work {#action}
+### Actions {#action}
 
-**What are the Actions that are counted?**
+**What are Temporal Actions?**
 
 Actions are the building blocks for Workflow Executions.
 When you execute a Temporal Workflow, its Actions create the ongoing state and progress of your Temporal Application.
 Actions serve as the primary unit of consumption-based pricing for Temporal Cloud.
 
-The following disclosure section explains the operations that do and do not result in Actions:
+The following operations result in Actions:
 <details>
 
 <summary>
-Open to view operations that result in Actions
+View operations and Actions
 </summary>
 
 **WORKFLOWS**
@@ -125,60 +125,65 @@ Each execution of a Schedule accrues three actions:
 
 [Reach out](https://pages.temporal.io/contact-us) to our team for more information or to help size your number of Actions.
 
-### How storage works {#storage}
+### Storage {#storage}
 
-**What are the Temporal Cloud storage prices?**
+**How Workflow storage works**
 
 A particular Workflow's execution might exist for a few seconds, a day, month, or even forever.
-Temporal stores the Workflow Execution's [Event History](/workflows#event-history).
-Under this framework, a Workflow Execution has only two states, open (active storage) or closed (retained storage).
+The Temporal Service stores the Workflow Execution's [Event History](/workflows#event-history).
+Under this framework, a Workflow Execution has only two states, open (Active Storage) or closed (Retained Storage).
 
-* _Active storage_ measures the amount of storage used by active Workflows.
+- _Active Storage_ measures the amount of storage used by active Workflows.
 
-* When the execution of a Workflow finishes, Temporal Cloud stores Event History for a defined Retention Period, which is set by the user by Namespace.
-  This is _retained storage_.
-  Typical uses of retained storage include compliance, debugging, workload refresh, and business analytics.
-  When you need to store closed Workflow histories for longer than the maximum 90-day period on Temporal Cloud, we recommend using our **Export** feature.
+- When the execution of a Workflow finishes, Temporal Cloud stores Event History for a defined Retention Period, which is set by the user per Namespace.
+  This is _Retained Storage_.
+  Typical uses of Retained Storage include compliance, debugging, workload refresh, and business analytics.
+  When retention of closed Workflow histories are needed for longer than the maximum 90-day period on Temporal Cloud, we recommend using our **Export** feature.
 
 Storage costs are measured in gigabyte-hours (GBh) and they are measured per Namespace.
 
-### How support works {#support}
+### Support {#support}
 
-**What kind of services and support do I get with Temporal Cloud?**
+**How Temporal support tiers work**
 
-Each Temporal Cloud account receives access to expert support.
-The Temporal Developer Success team brings a deep knowledge of how Temporal works and how you can optimize your deployment.
-Our team is made up of engineers who bring deep knowledge of Temporal, and help contribute to its development.
+Each Temporal Cloud account includes access to expert support.
+The Temporal Developer Success team has extensive knowledge of how Temporal operates and how to optimize your deployment.
+Our team consists of engineers who are well-versed in Temporal and actively contribute to its development.
 
-Each account selects a support plan.
+Each account is required to have a support plan.
 We offer two support tiers: Basic and Premium.
 Support costs are outlined in the table below
-You'll find a complete description of our support plans and response times in our [Support](/cloud/support#support) documentation.
+A complete description of support plans and response times can be found in our [Support](/cloud/support#support) documentation.
 
 |                     | Basic                                       | Premium                                       |
 | ------------------- | ------------------------------------------- | --------------------------------------------- |
 | Pricing (per month) | Greater of &#36;200 or 10% of monthly usage | Greater of &#36;2,000 or 10% of monthly usage |
 
-### Two pricing options {#pricing-options}
+### Pricing options {#pricing-options}
 
-**What are the two ways to pay for Temporal Cloud?**
+**How to Pay for Temporal Cloud**
 
-Temporal Cloud offers two payment choices: **pay-as-you-go** and **prepaid Temporal Cloud Credits**.
+Temporal Cloud offers two payment options: pay-as-you-go and the pre-purchase of Temporal Credits.
+Both models meter and bill for three components: Actions, Storage, and Support.
 
-- With pay-as-you-go, you're invoiced each calendar month.
-- With Temporal Cloud Credits, you pre-pay your Temporal Cloud spend.
-  You're invoiced only when you run out of credits.
-  Prepaid Temporal Cloud Credits provides [discounted volume pricing](#prepaid).
+- With pay-as-you-go, you are invoiced each calendar month based on your consumption.
+- With Temporal Credits, you pre-purchase your Temporal Cloud spend.
+  Temporal Credits are used to pay your Temporal Cloud consumption, including support charges. Purchasing Temporal Credits provides [volume pricing](#prepaid).
 
-Both models invoice for Actions, storage, and support.
+Temporal Credits are used to pay your Temporal Cloud consumption, including support charges.
+A Temporal Credit is equivalent to &#36;1USD.
+For example, a credit purchase of &#36;3,000 results in &#36;3,000 Temporal Credits.
+The minimum purchase of Temporal Credits purchase is &#36;2,500.
+Each month, your total invoice draws down from your Temporal Credits balance.
 
-:::info INVOICE AND USAGE DETAILS
+Once you run out of Temporal Credits, you'll be automatically invoiced for &#36;2,500 or your last month's Temporal Cloud invoice multiplied by 12, whichever is greater.
 
-Account Owners and Finance Admins can view detailed billing data at any time using the [Usage and Billing dashboards](/cloud/billing-and-cost) on the Temporal Cloud website.
+### How to purchase Temporal Credits? {#purchasing-credits}
 
-:::
+You may purchase Temporal Credits by contacting our team at [sales@temporal.io](mailto:sales@temporal.io) or reaching out to your dedicated account manager.
+Temporal Cloud credits are also available for purchase available through AWS Marketplace.
 
-## Pay-as-you-go pricing {#payg}
+## Pay-as-you-go {#payg}
 
 **How does pay-as-you-go pricing work for Actions, storage, and support?**
 
@@ -187,17 +192,17 @@ This section explains how you're billed each calendar month and gives examples f
 
 ### Action pricing {#payg-action-pricing}
 
-You're billed for the Actions you use each calendar month for each Namespace.
+You are only billed for the Actions you use.
+Actions are metered and billed on a calendar month for each Namespace.
 The pay-as-you-go rate is &#36;25 per one million Actions per month.
-This rate applies across all Namespaces and is prorated per Namespace.
+This rate applies across all Namespaces:
 
 | Actions | &#36;25 per one million Actions |
 | ------- | --------------------------------|
 
 **Example**
 
-Actions are prorated per Namespace.
-If you use fewer than one million Actions in a Namespace each month, your bill for that Namespace's Actions will be less than &#36;25 for that month.
+If you use fewer than one million Actions per month, your bill for Actions will be less than &#36;2525 for that month.
 For example, if you use 800,000 Actions in a month, you're billed:
 
 ```
@@ -206,7 +211,7 @@ For example, if you use 800,000 Actions in a month, you're billed:
 
 ### Storage pricing {#payg-storage-pricing}
 
-You're billed for your Namespaces' active and retained storage each calendar month.
+You are billed for  your Namespace’s Active and Retained Storage each calendar month:
 
 | **Storage** | **Price per GBh (USD)** |
 | ----------- | ---------------------- |
@@ -215,12 +220,12 @@ You're billed for your Namespaces' active and retained storage each calendar mon
 
 **Example**
 
-If you consume 720 GBh of active storage and 3,600 GBh of retained storage in one calendar month, your bill is:
+If you have 720 GBhr of Active Storage and 3,600 GBhr of Retained Storage in one calendar month your bill will be:
 
 ```
-720 GBh active storage ⨉ $0.042 per GBh = $30.24
-3,600 GBh retained storage ⨉ $0.00042 per GBh = $1.51
-Total Storage Bill: $30.24 active storage + $1.512 retained storage = $31.75
+720 GBh Active Storage ⨉ $0.042 per GBh = $30.24
+3,600 GBh Retained Storage ⨉ $0.00042 per GBh = $1.51
+Total Storage Bill: $30.24 Active Storage + $1.512 Retained Storage = $31.75
 ```
 
 ### Support pricing {#payg-support-pricing}
@@ -232,39 +237,23 @@ Support pricing offers [two tiers](/cloud/support#support):
 
 Temporal Cloud consumption is based on the combined cost of Actions and Storage.
 
-
 **Example**
 
-If you are signed up for Basic Support with &#36;20 of Actions and &#36;31.75 of Storage consumed in one month, your Basic Support costs are:
+If you are signed up for Basic Support, with the above example, your Basic Support will be:
 
 ```
 Max of $200 or 10% ⨉ ($20 (Actions) + $31.75 (Storage)) = $5.18, so $200.
 ```
 
-## Prepaid Temporal Cloud Credit pricing {#prepaid}
+## Prepaid Temporal Credits {#prepaid}
 
-**How does prepaid Credit pricing work for Actions, Storage, and Support?**
+**Credit pricing for Actions, Storage, and Support**
 
 Temporal Credits unlock volume pricing for Temporal Cloud.
-You must purchase them before use.
 Credits cover your Action and Storage costs for Temporal Cloud, along with support fees.
+The following sections introduce how this works.
 
-One Temporal Credit is worth &#36;1 USD.
-For example, if you purchase &#36;3,000, you receive 3,000 Temporal Credits that don't expire.
-The minimum purchase of Temporal Credits is &#36;2,500.
-Each calendar month, your invoice balance is deducted from your Temporal Credits balance.
-
-When you run out of Temporal Credits, your account is automatically invoiced.
-That invoice amount is either a flat &#36;2,500 or your last month's Temporal Cloud invoice multiplied by 12, whichever is greater.
-
-### Purchase Temporal Credits {#prepaid-credits}
-
-Contact our team at sales@temporal.io or reach out to your dedicated account manager to purchase Temporal Cloud Credits.
-Credits are also available for purchase at the AWS Marketplace.
-
-:::
-
-### Action prepaid pricing {#prepaid-action}
+### Action Credit pricing {#prepaid-action}
 
 The following table shows our volume price tiers for Actions.
 Pricing tiers are applied per Namespace each calendar month:
@@ -280,7 +269,8 @@ Pricing tiers are applied per Namespace each calendar month:
 
 **Example**
 
-If you have two Namespaces, and last month, `namespace1` consumed 100 million Actions and `namespace2` consumed 500 million Actions.
+You have two Namespaces.
+In the prior month, `namespace1` consumed 100 million Actions and `namespace2` consumed 500 million Actions.
 Your Temporal Credits consumed will be:
 
 - `namespace1` used 100 million Actions and is billed at the &#36;23.25 per million Actions tier:
@@ -297,7 +287,7 @@ Your Temporal Credits consumed will be:
   $6,975 (300M Actions) + $3,760 (200M Actions) = $10,735
   ```
 
-- The account is charged a total of &#36;13,060 for the month:
+- The account is charged a total of &#36;13,060 for the prior month:
 
   ```
   $2,325 (namespace1) + $10,735 (namespace2) = $13,060
@@ -305,8 +295,8 @@ Your Temporal Credits consumed will be:
 
 ### Storage prepaid pricing {#prepaid-storage}
 
-The following table shows our volume price tiers for active storage.
-Pricing tiers are applied per Namespace and per month:
+The following table shows our volume price tiers for Active Storage.
+Pricing tiers are applied per Namespace each calendar month:
 
 | **Active Storage (Per Namespace)** | **Price per GBh (USD)**    |
 | ---------------------------------------------- | -------------- |
@@ -317,8 +307,7 @@ Pricing tiers are applied per Namespace and per month:
 | Over 400,000, up to 1,500000                   | &#36;0.013     |
 | Over 1,500,000                                 | &#36;0.010     |
 
-Retained storage does not use price tiers.
-It is priced at a flat rate:
+Retained Storage is priced at a flat rate:
 
 | **Storage** | **Price per GBh (USD)** |
 | ----------- | ----------------------- |
@@ -326,60 +315,66 @@ It is priced at a flat rate:
 
 **Example**
 
-You may have two Namespaces.
-Last month, `namespace1` consumed 5,000 GBh of active storage and 5,000 GBh of retained storage.
-`namespace2` consumed 15,000 GBh of active storage and 15,000 GBh of retained storage.
-Here's how the billing works for these two Namespaces and how the account is invoiced for the month.
+You have two Namespaces.
+In the prior month, `namespace1` consumed 5,000 GBh of Active Storage and 5,000 GBh of Retained Storage.
+Your `namespace2` consumed 15,000 GBh of Active Storage and 15,000 GBh of Retained Storage.
+Your Temporal Credits consumed will be:
 
-- `namespace1` is charged at the &#36;0.039 per GBh tier for active storage:
-
-  ```
-  5,000 GBh ⨉ $0.039 per GBh = $195 (active storage)
-  ```
-
-- `namespace1` is charged at &#36;0.00042 per GBh for retained storage:
+- `namespace1` is charged at the &#36;0.039 per GBh tier for Active Storage:
 
   ```
-  5,000 GBh ⨉ $0.00042 per GBh = $2.10 (retained storage)
+  5,000 GBh ⨉ $0.039 per GBh = $195 (Active Storage)
   ```
 
-- `namespace2` is charged at the &#36;0.039 per GBh tier for the first 7,000 GBh of active storage, and at the &#36;0.031 per GBh tier for the remaining 8,000 GBh:
+- Retained storage for `namespace1` is charged at &#36;0.00042 GBh:
+
+  ```
+  5,000 GBh ⨉ $0.00042 per GBh = $2.10 (Retained Storage)
+  ```
+
+- `namespace2` is charged at the &#36;0.039 per GBh tier for the first 7,000 GBh of Active Storage, and at the &#36;0.031 per GBh tier for the remaining 8,000 GBh:
 
   ```
   7,000 GBh ⨉ $0.039 per GBh = $273
   8,000 GBh ⨉ $0.031 per GBh = $248
 
-  Total: $273 (7,000 GBh) + $248 (8,000 GBh) = $521 (active storage)
+  Total: $273 (7,000 GBh) + $248 (8,000 GBh) = $521 (Active Storage)
   ```
 
-- `namespace2` is charged at &#36;0.00042 per GBh for retained storage:
+- Retained storage for `namespace2` is charged at &#36;0.00042 GBh:
 
   ```
-  15,000 GBh ⨉ $0.00042 per GBh = $6.30 (retained storage)
+  15,000 GBh ⨉ $0.00042 per GBh = $6.30 (Retained Storage)
   ```
 
-- The account is charged $724.40 for the month:
+- The account is charged &#36;724.40 for the month:
 
   ```
-  $195 for namespace1 + $521 for namespace2 = $716 (active storage)
-  $2.10 for namespace1 + $6.30 for namespace 2 = $8.40 (retained storage)
-  $716 (active storage) + $8.40 (retained storage) = $724.40 (Total)
+  Active Storage: $195 for namespace1 + $521 for namespace2 = $716
+  Retained Storage: $2.10 for namespace1 + $6.30 for namespace 2 = $8.40
+  Total Storage: $716 (Active Storage) + $8.40 (Retained Storage) = $724.40
   ```
 
-If you have additional questions about credits and volume-based pricing, please see our [Services and Support](https://docs.temporal.io/cloud/support) page or reach out to [our team](https://pages.temporal.io/contact-us).
+**Example**
 
-:::tip BILLING AND COST
+In the previous examples for Actions and Storage credit billing, the account had a &#36;13,060 bill for Actions, a &#36;724.40 bill for storage for a total Temporal Cloud consumption bill of &#36;13,784.40.
 
-Read more about billing cycles, invoices, and payments on our [Billing and cost](/cloud/billing-and-cost) page.
+If the account has Premium Support, the fee will be the greater of &#36;2,000 or 10% Temporal Cloud consumption:
 
-:::
+```
+$13,784.40 Total Consumption ⨉ 10% = $1,378.44
+```
 
-### Support prepaid pricing {#prepaid-support}
+Since &#36;2,000 is greater than &#36;1,378.44, the support fee would be &#36;2,000.
+
+### Support Credit pricing {#prepaid-support}
 
 Prepaid support pricing is based on tiers:
 
-- Basic Support is the maximum of &#36;200 or 10% of Temporal Cloud consumption.
-- Premium Support is the maximum of &#36;2,000 or 10% of Temporal Cloud consumption.
+- Basic Support is the greater of &#36;200 or 10% of Temporal Cloud consumption.
+- Premium Support is the greater of &#36;2,000 or 10% of Temporal Cloud consumption.
+
+Temporal Cloud consumption is based on the combined cost of Actions and Storage.
 
 **Example**
 
@@ -394,20 +389,23 @@ $13,784.4 Total Consumption ⨉ 10% = $1,378.44
 Since &#36;2,000 is greater than &#36;1,378.44, the support fee would be &#36;2,000.
 You are invoiced for your support fee plus your Temporal Cloud consumption.
 
+### Credit Balance
+
+Your Credit Balance is adjusted each calendar month based on your Credit Usage.
+
 **Example**
 
-In the previous examples for Actions and Storage credit billing, the account had a total bill of &#36;13,784.40 and &#36;2,000 for support.
-Your total bill is the sum of these line items, or &#36;15,784.40.
-Your invoice will state that you now have 120,000 - 15,784.40 = 104,215.60 Temporal Credits remaining.
-When you run out of Temporal Credits, Temporal will invoice you for the previous month’s invoice multiplied by 12 months or a flat &#36;2,500, whichever is greater.
+In the previous examples for Actions and storage Credit billing, the account had a total bill of &#36;13,784.40 and &#36;2,000 for support.
+The total bill is the sum of these line items, or &#36;15,784.40.
 
-If you have additional questions about credits and volume-based pricing, please contact Sales at [sales@temporal.io](mailto:sales@temporal.io).
-If you're already a Temporal Cloud customer, please reach out to your dedicated account executive.
+The invoice will state that you now have 120,000 - 15,784.40 = 104,215.60 Temporal Credits remaining.
+
+If you have additional questions about credits and volume-based pricing, please  [contact sales](mailto:sales@temporal.io) or, if you're already a Temporal Cloud customer, please reach out to your dedicated account executive.
 
 ## Other pricing {#other-pricing}
 
-Temporal Cloud offers additional pricing models to match different usage patterns and needs.
-Below are details on specific pricing structures, including Multi-region Namespace (MRN) and SSO/SAML integration, as well as guidance on estimating costs based on your workloads.
+Temporal Cloud may have additional pricing for  other elements of the platform.
+Following are additional pricing considerations for Multi-region Namespaces and SSO/SAML.
 
 ### Multi-region Namespace (MRN) pricing {#multi-region}
 
