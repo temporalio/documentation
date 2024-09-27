@@ -23,6 +23,7 @@ By offloading the responsibility of failure management from the application to t
 This shift simplifies the development process and enables your application to seamlessly recover from disruptions.
 It does so by automatically reconstructing its previous state.
 Your application logic can be recovered, replayed, or paused from any previous point in your application, ensuring continuity even after failures.
+This ensures continuity of your application even after failures. 
 
 ## Temporal Application: The Building Blocks
 
@@ -65,7 +66,7 @@ If an Activity fails, Temporal automatically retries it based on your configurat
 You have full control over how often and how many times these retries should happen. 
 You can also define specific timeouts for each Activity, triggering a retry if the task takes too long to complete.
 
-### SDKs
+### SDK
 Developers create Temporal applications by writing code, just like you would to create any other software. 
 To do this, you use an Temporal SDK, which stands for software development kit. 
 
