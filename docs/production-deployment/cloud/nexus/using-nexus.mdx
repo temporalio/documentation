@@ -47,13 +47,15 @@ See the [Temporal Nexus](/nexus) encyclopedia entry for more details.
 
 ## Access Control
 
-Like Namespaces, a Nexus Endpoint is an account-scoped resource that is global within a Temporal Cloud account. Any `Developer` role (or higher) in an account, who is also a `Namespace Admin` on the endpoint’s target Namespace, can manage (create/update/delete) a Nexus Endpoint. All users with a `Read-only` role (or higher) in an account, can view and browse the full list of Endpoints.
+Like Namespaces, a Nexus Endpoint is an account-scoped resource that is global within a Temporal Cloud account. 
+Any Developer role (or higher) in an account, who is also a Namespace Admin on the endpoint’s target Namespace, can manage (create, update, or delete) a Nexus Endpoint. 
+All users with a Read-only role (or higher) in an account, can view and browse the full list of Endpoints.
 
 Runtime access from a Workflow in a caller Namespace to a Nexus Endpoint is controlled by an allowlist policy (of caller Namespaces) for each Endpoint in the Nexus API registry.
 Workers authenticate with Temporal Cloud as they do today with mTLS certificates or API keys as allowed by the Namespace configuration.
 In Temporal Cloud, Nexus requests are sent from the caller’s Namespace to the handler’s Namespace over a secure multi-region mTLS Envoy mesh.
 
-See [Nexus Security](nexus/security) for additional details.
+See [Nexus Security](/nexus/security) for additional details.
 
 ## Automatic Retries
 
