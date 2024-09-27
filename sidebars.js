@@ -25,6 +25,7 @@ module.exports = {
             "evaluate/development-production-features/temporal-client",
             "evaluate/development-production-features/failure-detection",
             "evaluate/development-production-features/throughput-composability",
+            "evaluate/development-production-features/nexus",
             "evaluate/development-production-features/workflow-message-passing",
             "evaluate/development-production-features/debugging",
             "evaluate/development-production-features/interrupt-workflow",
@@ -509,6 +510,20 @@ module.exports = {
             "encyclopedia/visibility",
             "encyclopedia/clusters",
             "encyclopedia/namespaces",
+            {
+              type: "category",
+              label: "Temporal Nexus",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/nexus",
+              },
+              items: [
+                "encyclopedia/nexus-api-registry-endpoints",
+                "encyclopedia/nexus-services-operations",
+                "encyclopedia/nexus-security",
+              ],
+            },
             "encyclopedia/dataconversion",
           ],
         },

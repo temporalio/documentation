@@ -55,14 +55,14 @@ module.exports = async function createConfigAsync() {
           autoCollapseCategories: true,
         },
       },
-      announcementBar: {
-        id: "replay_announcement",
-        content:
-          'Replay will return September 18-20 in Seattle! <a href="https://www.eventbrite.com/e/replay-2024-tickets-744609486017?aff=ebdsoporgprofile">Secure your ticket</a>.',
-        backgroundColor: "#141414",
-        textColor: "#ffffff",
-        isCloseable: true,
-      },
+      // announcementBar: {
+      //   id: "replay_announcement",
+      //   content:
+      //     'Replay will return September 18-20 in Seattle! <a href="https://www.eventbrite.com/e/replay-2024-tickets-744609486017?aff=ebdsoporgprofile">Secure your ticket</a>.',
+      //   backgroundColor: "#141414",
+      //   textColor: "#ffffff",
+      //   isCloseable: true,
+      // },
       navbar: {
         hideOnScroll: false,
         logo: {
@@ -211,7 +211,7 @@ module.exports = async function createConfigAsync() {
             sidebarPath: require.resolve("./sidebars.js"),
             routeBasePath: "/",
             exclude: ["**/clusters/**"], // do not render context content
-            editUrl: "https://github.com/temporalio/documentation/blob/master",
+            editUrl: "https://github.com/temporalio/documentation/edit/main/docs/",
             /**
              * Whether to display the author who last updated the doc.
              */

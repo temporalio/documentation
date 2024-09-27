@@ -576,7 +576,7 @@ When working with Updates, in addition to the `RPCError`s described above, you m
 
       - A failed Child Workflow
       - A failed Activity (if the Activity retries have been set to a finite number)
-      - The Workflow author raising `ApplicationFailure`
+      - The Workflow author raising [`ApplicationError`](/references/failures#application-failure)
       - Any error listed in [workflow_failure_exception_types](https://python.temporal.io/temporalio.worker.Worker.html) (empty by default)
 
 - **The handler caused the Workflow Task to fail**:
@@ -610,7 +610,7 @@ When working with Queries, in addition to the `RPCError`s described above, you m
 
 ## Dynamic components {#dynamic-handler}
 
-A dynamic Workflow, Activitity, Signal, Update, or Query is a kind of unnamed item.
+A dynamic Workflow, Activity, Signal, Update, or Query is a kind of unnamed item.
 Normally, these items are registered by name with the Worker and invoked at runtime.
 When an unregistered or unrecognized Workflow, Activity, or message request arrives with a recognized method signature, the Worker can use a pre-registered dynamic stand-in.
 

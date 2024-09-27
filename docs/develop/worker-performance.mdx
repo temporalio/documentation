@@ -3,6 +3,7 @@ id: worker-performance
 title: Worker performance
 description: Optimize Temporal SDK performance by fine-tuning maxConcurrentWorkflowTaskExecutionSize, Worker Cache options, and Poll Success Rate. Ensure balanced Worker resources and monitor metrics for best results.
 sidebar_label: Worker performance
+toc_max_heading_level: 3
 tags:
   - operation-guide
   - workers
@@ -36,10 +37,175 @@ The Workflow Cache is created and shared between all the workers. It's designed 
 
 These options limit the resource consumption of the in-memory Workflow cache. Workflow cache options are shared between all Workers, because the Workflow cache is something that has to do with the resource consumption of the whole host, like memory and the total amount of threads, and should be limited per JVM.
 
-## Task Queues Processing Tuning
+## Monitor Task Queue backlog metrics {#task-queue-metrics}
 
-These steps are intended to make sure that there are no delays in the processing of Task Queues because of the under-provisioning of Workers or their unbalanced configuration.
-You should revisit these steps if you observe elevated `schedule_to_start` metrics.
+A [Task Queue](https://docs.temporal.io/workers#task-queue) is a lightweight, dynamically allocated queue.
+[Worker Entities](https://docs.temporal.io/workers#worker-entity) poll the queue for [Tasks](https://docs.temporal.io/workers#task).
+The Temporal Service dynamically creates different [Task Queue types](/workers#task-queue) including Activity Task Queues, Workflow Task Queues, and Nexus Task Queues.
+These Task Queue types route their Tasks to Workers for Task completion.
+
+With an accurate estimate of backlog Tasks, you can determine the optimal number of Workers to deploy.
+Balance your Worker count with the number of Tasks to achieve the best performance.
+This approach minimizes Task backlog saturation and reduces idle Workers.
+
+Task Queue metrics provide numerical insights into your Task Queue activity and backlog characteristics.
+Use these metrics to tune your production deployments.
+Evaluate your Worker loads and assess whether you need to scale up or reduce your Worker deployment.
+
+### Task Queue types {#task-queue-types}
+
+For each Task Queue name, Temporal creates separate queues for each Task Queue type, namely:
+
+- **Activity Task Queue**: A queue that holds Activity Tasks.
+  Activity Tasks represent units of work within a larger business process.
+  Each Activity Task contains the context required by an Activity Definition.
+  Workers poll Activity Tasks from the Activity Task Queue and use them to initiate Activity Executions.
+- **Workflow Task Queue**: A queue that holds Workflow Tasks.
+  Workflow Tasks contain the context needed by a Workflow Definition.
+  Workers poll Workflow Tasks from the Workflow Task Queue and use them to initiate Workflow Executions.
+- **Nexus Task Queue** ([Public Preview](/evaluate/development-production-features/release-stages#public-preview)): A queue that holds Nexus Tasks.
+  Nexus Tasks are used for units of work passed between Namespaces.
+  Workers configured with the Nexus Service poll the Nexus Task Queue for available tasks and handle them by initiating Workflow Executions in the target Namespace.
+  Each Nexus Task contains the context required by the target Workflow Definition.
+
+Each Task Queue type provides unaggregated metrics.
+
+### Task Queue metrics {#task-queue-metrics-list}
+
+The Temporal Service reports information separately for each Task Queue type (not aggregated).
+Use the following metrics to retrieve detailed information about Task Queue health and performance.
+Available metrics include:
+
+- [`ApproximateBacklogCount`](#ApproximateBacklogCount)
+- [`ApproximateBacklogAge`](#ApproximateBacklogAge)
+- [`TasksAddRate`](#TasksAddRate-and-TasksDispatchRate) and [`TasksDispatchRate`](#TasksAddRate-and-TasksDispatchRate)
+- [`BacklogIncreaseRate`](#BacklogIncreaseRate) (derived from [`TasksAddRate`](#TasksAddRate-and-TasksDispatchRate) and [`TasksDispatchRate`](#TasksAddRate-and-TasksDispatchRate))
+
+#### `ApproximateBacklogCount` {#ApproximateBacklogCount}
+
+Represents the approximate count of Tasks currently backlogged in this Task Queue.
+The number may include expired Tasks as well as active Tasks, but it will eventually converge to the correct count over time.
+
+You can rely on this count when making scaling decisions.
+
+:::info Metric Accuracy
+
+Workflow Task Queue types provide partial information due to performance optimizations.
+Tasks sent to [Sticky](https://docs.temporal.io/workers#sticky-execution) queues are not included in the returned values for this metric.
+Since Tasks remain valid for only a few seconds in Sticky Queues, this inaccuracy diminishes over time, especially as the backlog grows.
+:::
+
+
+#### `ApproximateBacklogAge` {#ApproximateBacklogAge}
+
+Returns the approximate age of the oldest Task in the backlog.
+The age is based on the creation time of the Task at the head of the queue.
+
+You can rely on this count when making scaling decisions.
+
+:::info Metric Accuracy
+
+Workflow Task Queue types provide partial information due to performance optimizations.
+Tasks sent to [Sticky](https://docs.temporal.io/workers#sticky-execution) queues are not included in the returned values.
+Since Tasks remain valid for only a few seconds in Sticky Queues, this inaccuracy diminishes over time, especially when the backlog is older than a few seconds.
+
+:::
+
+#### `TasksAddRate` and `TasksDispatchRate` {#TasksAddRate-and-TasksDispatchRate}
+
+Reports the approximate Tasks-per-second added to or dispatched from a Task Queue.
+This rate is averaged over the most recent 30-second time interval.
+The calculations include Tasks that were added to or dispatched from the backlog as well as Tasks that were immediately dispatched and bypassed the backlog (sync-matched).
+
+:::info Metric Accuracy
+
+The actual Task delivery count may be significantly higher than the number reported by these metrics:
+
+- Eager dispatch refers to a Temporal feature where Activities can be requested by an SDK using one Workflow Task completion response.
+  Tasks using Eager dispatch do not pass through Task Queues.
+- A Sticky Task Queue is associated with a dedicated Worker instance.
+  Tasks passed to Sticky Task Queues are not accounted for by these metrics.
+  Normally, only the first Workflow Task of each Workflow is placed on a Workflow Task Queue.
+  Subsequent Tasks are passed to the Sticky Task Queue for performance improvement.
+
+:::
+
+#### `BacklogIncreaseRate` {#BacklogIncreaseRate}
+
+Approximates the *net* Tasks per second added to the backlog, averaged over the most recent 30 seconds.
+This is calculated as:
+
+```
+TasksAddRate - TasksDispatchRate
+```
+
+- Positive values of `X` indicate the backlog is growing by about `X` Tasks per second.
+- Negative values of `X` indicate the backlog is shrinking by about `X` Tasks per second.
+
+:::info Metric Accuracy
+
+While individual `add` and `dispatch` rates may be inaccurate due to Eager and Sticky Task Queues, the `BacklogIncreaseRate` reliably reflects the rate at which the backlog is shrinking or growing for backlogs older than a few seconds.
+
+:::
+
+### Fetch Worker metrics {#retrieve-worker-info}
+
+The Temporal CLI helps you monitor and evaluate Worker performance.
+Issue the following command to display a list of active Workers that have recently polled a Task Queue:
+
+```
+temporal task-queue describe \
+    --task-queue YourTaskQueueName \
+    [additional options]
+```
+
+This command retrieves poller information, backlog statistics, and task reachability for Task types (available in Temporal Server v1.25.0, Temporal CLI 1.1 and later).
+
+:::warning
+
+Task reachability status is experimental.
+Determining Task reachability incurs a non-trivial computing cost.
+This feature may significantly change or be removed in a future release.
+
+:::
+
+#### Evaluate Worker availability and capacity issues {#worker-capacity-issues}
+
+Each Temporal [Server](https://docs.temporal.io/clusters#temporal-server) records the last time of each poll request.
+This time is displayed in the `temporal task-queue describe` output.
+
+- A `LastAccessTime` value exceeding one minute may indicate that the Worker fleet is at capacity or that Workers have shut down or been removed.
+
+- Values under 5 minutes typically suggest the Worker fleet is at capacity.
+  "At capacity" means that all Workflow and Activity slots are full.
+
+- Values over 5 minutes since the last poll request usually suggest that Workers have shut down or been removed.
+  Workers are removed if 5 minutes have passed since the last poll request.
+
+#### Manage your Worker fleet {#manage-your-worker-fleet}
+
+You can adjust the number of Workers to enhance Workflow Execution performance and manage your fleet size.
+For instance, a large backlog of Tasks with too few Workers will slow down Workflow Execution completions and decrease processing efficiency.
+Adding more Workers boosts speeds up completion rates and improves throughput.
+An empty backlog indicates low Worker utilization, allowing you to reduce your fleet and associated costs.
+
+The metric values provided by `temporal task-queue describe` can help you manage your Worker fleet deployment:
+
+- `ApproximateBacklogAge` shows how long Tasks have been waiting to be dispatched.
+  If this time grows too long, more Workers can boost Workflow efficiency.
+
+- Calculate the demand per Worker by dividing the number of backlogged Tasks (`ApproximateBacklogCount`) by the number of Workers.
+  Determine if your task processing rate is within an acceptable range for you needs using the per-Worker demand (how many Tasks each Worker has yet to process), the backlog consumption rate (`TasksDispatchRate`, the rate at which Workers are processing Tasks), and the dispatch latency (`ApproximateBacklogAge`, the time the oldest Task has been waiting to be assigned to a Worker).
+
+- The backlog increase rate (`BacklogIncreaseRate`) shows the changing demand on your Workers over time.
+  As this rate increases, you may need to add more Workers until demand and capacity are balanced.
+  As it decreases, you may be able to reduce your Worker fleet.
+
+## Task Queue processing tuning {#task-queues-processing-tuning}
+
+The following steps limit delays in Task Queue processing due to insufficient or unbalanced Workers.
+Review these steps if you notice high `schedule_to_start` metrics.
+
 The steps are arranged in the recommended order of execution.
 
 ### Hosts and Resources provisioning
