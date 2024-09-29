@@ -20,10 +20,12 @@ Temporal offers an entirely new way to build scalable and reliable applications.
 Temporal ensures your applications are reliable by default, handling everything from minor network outages to significant issues like unexpected reboots or hardware failures.
 By offloading the responsibility of failure management from the application to the platform, this removes the need for extensive coding, testing, and maintenance tasks.
 
+Temporal keeps track of everything your app does, so if something goes wrong—like a power outage—it helps your app pick up right where it left off. 
+Similar to when a video game crashes, you can just continue from the last save point. 
+Temporal makes sure your app doesn’t lose any progress, so you don’t have to worry about starting over or dealing with messy recoveries.
+
 This shift simplifies the development process and enables your application to seamlessly recover from disruptions.
-It does so by automatically reconstructing its previous state.
 Your application logic can be recovered, replayed, or paused from any previous point in your application, ensuring continuity even after failures.
-This ensures continuity of your application even after failures. 
 
 ## Temporal Application: The Building Blocks
 
@@ -49,22 +51,24 @@ It is **Workflows-as-Code**.
 Instead of dragging and dropping steps in a visual interface, you write your Workflows in code in your favorite programming language, code editor, and other tools. 
 This gives you full control and flexibility over your business processes, allowing you to build exactly what you need. 
 
-Workflows are resilient and stateful. 
-With Temporal, they are built to handle problems smoothly. 
+Workflows in Temporal are resilient and stateful, meaning they’re designed to handle problems smoothly.
 They can pause, pick up where they left off, or try again automatically. 
-If a failure or a crash happens, this ensures that your business processes keep running without interruptions.
+Hence, if a failure or a crash happens, your business processes keep running seamlessly without interruptions.
 
 ### Activities
 Activities are the individual tasks within your Workflow.
 
-They handle jobs that interact with the outside world, like sending an email, making a network request, writing to a database, or calling an API. 
-These tasks are where issues might occur, such as network failures or service errors. 
+Activities are the individual tasks in your Workflow that often interact with the outside world. 
+These tasks include sending emails, making network requests, writing to a database, or calling an API. 
+
 Activities are pieces of code, either functions or methods depending on the programming language, that perform these tasks. 
-Activities are invoked in Workflow code. 
+Activities are called directly from within your Workflow code.
 
 If an Activity fails, Temporal automatically retries it based on your configuration. 
-You have full control over how often and how many times these retries should happen. 
-You can also define specific timeouts for each Activity, triggering a retry if the task takes too long to complete.
+Since Activities often rely on external systems, transient issues can occur—temporary problems like network failures, timeouts, or service outages. 
+Unlike application-level errors, such as an invalid credit card number, transient issues can often be fixed by retrying the task.
+
+You have full control over how often and how many times these retries should happen for each Activity. 
 
 ### SDK
 Developers create Temporal applications by writing code, just like you would to create any other software. 
@@ -77,7 +81,7 @@ Temporal currently offers six SDKs: Java, Go, TypeScript, .NET, Python, and PHP.
 Installing the SDK allows you to easily add Temporal to your current projects without having to change the tools you're already using. 
 Temporal fits right into your existing tech stack.
 
-The Temporal SDK also makes it easier to implement complex tasks such as handling jobs either in order or at the same time (sync/async execution), automatically retrying failed tasks, scheduling tasks to run regularly, managing complex workflows (SAGA compensation), and managing errors (advanced error handling).
+The Temporal SDK also makes it easier to implement complex tasks such as handling jobs either in order or at the same time (sync/async execution), automatically retrying failed tasks, scheduling tasks to run regularly, managing complex workflows (SAGA compensation), and managing errors.
 
 ![Describing a Temporal Application - How It Works](/img/how-it-works/htw_application.png)
 
@@ -110,7 +114,7 @@ Workers execute the actual tasks defined in your Workflows. The Temporal Service
 Whenever your application needs to perform a task, like sending a notification or calling an processing a payment, the Temporal Service steps in. 
 This process creates a clear, organized list of what needs to be done. 
 It hands off tasks to these Workers, making sure they’re done correctly and efficiently while it keeps track of their progress. 
-Workers which are part of your application then carry out the tasks and run your code. 
+Workers, which are part of your application, then carry out the tasks and run your code. 
 This collaboration is crucial for building reliable, scalable, and durable applications. 
 You can run multiple Workers — often dozens, hundreds, or even thousands — to improve application performance and scalability. 
 
