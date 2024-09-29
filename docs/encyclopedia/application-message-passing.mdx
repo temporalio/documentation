@@ -220,22 +220,39 @@ Every time the Workflow wakes up--generally, it wakes up when it needs to--it wi
 
 This execution is on a single thread–while this means you don’t have to worry about parallelism, you do need to worry about concurrency if you have written Signal and Update handlers that can block. These can run interleaved with the main Workflow and with one another, resulting in potential race conditions. These methods should be made reentrant.
 
+#### Initializing the Workflow first {#workflow-initializers}
+
+Notice from the [diagram](#message-handler-concurrency) that messages can be processed before the first time your Workflow's main method runs.
+
+In practice, this happens in two main scenarios:
+
+- You are using [Signal-with-Start](#signal-with-start), in which case the message handler always runs first.
+- Your Worker is delayed, such as when it's backlogged.
+
+So, it's important to initialize your Workflow's state before messages come in, otherwise you will be reading uninitialized instance variables.
+
+In object-oriented languages, you should annotate your constructor as a Workflow Initializer. Initializers take the same arguments as your Workflow's main method so that you can fully set up your state.
+
+Note that you cannot make blocking calls from your constructor. For that case, if you have a Signal or Update handler, you can make it [wait](#waiting).
+
+In other languages, wait to register your handlers until after you've done any initialization that your message handlers might need.
+
 ### Message handler patterns {#message-handler-patterns}
 
 Here are several common patterns for write operations, Signal and Update handlers. They don't apply to pure read operations, i.e. Queries or [Update Validators](#update-validators):
 
-- Synchronous, returning immediately.
-- Waiting for the Workflow to be ready to process them.
+- Returning immediately from a handler.
+- Waiting for the Workflow to be ready to process them
 - Kicking off activities and other asynchronous tasks
-- Injecting work into the main Workflow.
-- Finishing handlers before the Workflow completes.
-- Ensuring your messages are processed exactly once.
+- Injecting work into the main Workflow
+- Finishing handlers before the Workflow completes
+- Ensuring your messages are processed exactly once
 
 #### Synchronous handlers
 
 Synchronous handlers don’t kick off any long-running operations or otherwise block. They're guaranteed to run atomically.
 
-#### Waiting
+#### Waiting {#waiting}
 
 A Signal or Update handler can block waiting for the Workflow to reach a certain state using a Wait Condition. See the links below to find out how to use this with your SDK.
 
