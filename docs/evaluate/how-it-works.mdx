@@ -20,7 +20,7 @@ Temporal offers an entirely new way to build scalable and reliable applications.
 In any complex system, failures are bound to happen. 
 Temporal makes your applications reliable by default - ensuring that these failures don’t disrupt your application. 
 
-In a traditional non-Temporal application, if a crash occurs, the progress of your application is lost. 
+In a non-Temporal application, if a crash occurs, the progress of your application is lost. 
 The application has no memory of what happened before the failure, requiring extensive error-handling logic and messy recovery code to resume. 
 This process is time-consuming and error-prone, making it hard to ensure reliability.
 
@@ -53,8 +53,7 @@ In Temporal, a Workflow defines the steps your application takes to complete a t
 It’s your business logic, written in code, outlining each step in your process. 
 This could be moving money between bank accounts, processing orders, deploying cloud infrastructure, or training an AI model. 
 
-Temporal isn’t a no-code Workflow engine. 
-It is **Workflows-as-Code**.
+Temporal isn’t a no-code Workflow engine - it is **Workflows-as-Code**.
 Instead of dragging and dropping steps in a visual interface, you write your Workflows in code in your favorite programming language, code editor, and other tools. 
 This gives you full control and flexibility over your business processes, allowing you to build exactly what you need. 
 
@@ -77,13 +76,11 @@ To do this, you use an Temporal SDK, which stands for software development kit.
 The Temporal SDK is an open source library that developers install in their application to use Temporal. 
 It provides everything needed to build Workflows, Activities, and various other features in a specific programming language.
 
-Temporal currently offers six SDKs: Java, Go, TypeScript, .NET, Python, and PHP. 
-Installing the SDK allows you to easily add Temporal to your current projects without having to change the tools you're already using. 
+Temporal offers six SDKs: Java, Go, TypeScript, .NET, Python, and PHP. 
+Installing the SDK allows you to easily add Temporal to your current projects without changing the tools you're already using. 
 Temporal fits right into your existing tech stack.
 
 The Temporal SDK also makes it easier to implement complex tasks such as sync/async execution, automatically retrying failed tasks, scheduling tasks to run regularly, managing complex workflows such as SAGA compensation, and managing errors.
-
-![Describing a Temporal Application - How It Works](/img/how-it-works/htw_application.png)
 
 ## Temporal Service 
 
@@ -135,6 +132,7 @@ With Temporal, you don't have to write tons of extra code to handle every possib
 Temporal supports multiple programming languages and simplifies state management. 
 Temporal scales up easily, making sure everything runs smoothly, no matter how big your application gets. 
 
+Workflows handle the overall control structure and Activities add retryable pieces that could potentially fail. 
 Temporal handles everything from minor network outages to significant issues like unexpected reboots or hardware failures.
 If your Workflow crashes, it automatically recreates its pre-crash state and continues as if the failure never happened using data from the Event History. 
 The Event History is a detailed log that records every significant action or decision made by the Workflow. 
