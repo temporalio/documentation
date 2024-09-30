@@ -95,6 +95,9 @@ In this example, there is a service package that describes the Service and Opera
   in the context of the rest of the application code.
 </div>
 
+<!--SNIPSTART service-nexus-->
+<!--SNIPEND-->
+
 ```go
 package service
 
@@ -132,6 +135,9 @@ The `temporalnexus.NewSyncOperation` builder function is for exposing simple RPC
   in the context of the rest of the application code.
 </div>
 
+<!--SNIPSTART handler-nexus {"selectedLines": ["2-23"]}-->
+<!--SNIPEND-->
+
 ```go
 package handler
 
@@ -162,14 +168,11 @@ var EchoOperation = temporalnexus.NewSyncOperation(service.EchoOperationName, fu
 Use the NewWorkflowRunOperation constructor, which is the easiest way to expose a Workflow as an operation.
 See alternatives at [https://pkg.go.dev/go.temporal.io/sdk/temporalnexus](https://pkg.go.dev/go.temporal.io/sdk/temporalnexus).
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/samples-go/blob/main/nexus/handler/app.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
-
+<!--SNIPSTART handler-nexus-->
+<!--SNIPEND-->
 ```go
+// Use the NewWorkflowRunOperation constructor, which is the easiest way to expose a workflow as an operation.
+// See alternatives at https://pkg.go.dev/go.temporal.io/sdk/temporalnexus.
 var HelloOperation = temporalnexus.NewWorkflowRunOperation(service.HelloOperationName, HelloHandlerWorkflow, func(ctx context.Context, input service.HelloInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
 	return client.StartWorkflowOptions{
 		// Workflow IDs should typically be business meaningful IDs and are used to dedupe workflow starts.
@@ -187,13 +190,8 @@ Workflow IDs should typically be business meaningful IDs and are used to dedupe 
 
 A Nexus Service and its Operation handlers are usually registered in the same Worker as the underlying Temporal primitives they abstract.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/samples-go/blob/main/nexus/handler/worker/main.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
-
+<!--SNIPSTART workerhandler-nexus-->
+[sample-apps/go/nexus/handler/worker/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/nexus/handler/worker/main.go)
 ```go
 package main
 
@@ -241,18 +239,15 @@ func main() {
 	}
 }
 ```
+<!--SNIPEND-->
+
 
 ## Develop a caller Workflow that uses the Nexus Service {#develop-caller-workflow-nexus-service}
 
 Import the Service API package, that has the necessary service and operation names and input/output types to execute a Nexus Operation from the caller Workflow:
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/samples-go/blob/main/nexus/caller/workflows.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
-
+<!--SNIPSTART workflowcaller-nexus-->
+[sample-apps/go/nexus/caller/workflows.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/nexus/caller/workflows.go)
 ```go
 package caller
 
@@ -278,19 +273,35 @@ func EchoCallerWorkflow(ctx workflow.Context, message string) (string, error) {
 
 	return res.Message, nil
 }
+
+func HelloCallerWorkflow(ctx workflow.Context, name string, language service.Language) (string, error) {
+	c := workflow.NewNexusClient(endpointName, service.HelloServiceName)
+
+	fut := c.ExecuteOperation(ctx, service.HelloOperationName, service.HelloInput{Name: name, Language: language}, workflow.NexusOperationOptions{})
+	var res service.HelloOutput
+
+	// Optionally wait for the operation to be started. NexusOperationExecution will contain the operation ID in
+	// case this operation is asynchronous.
+	var exec workflow.NexusOperationExecution
+	if err := fut.GetNexusOperationExecution().Get(ctx, &exec); err != nil {
+		return "", err
+	}
+	if err := fut.Get(ctx, &res); err != nil {
+		return "", err
+	}
+
+	return res.Message, nil
+}
 ```
+<!--SNIPEND-->
+
 
 ### Register the caller Workflow in a Worker
 
 After developing the caller Workflow, the next step is to register it with a Worker.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/samples-go/blob/main/nexus/caller/worker/main.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
-
+<!--SNIPSTART workercaller-nexus-->
+[sample-apps/go/nexus/caller/worker/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/nexus/caller/worker/main.go)
 ```go
 package main
 
@@ -328,18 +339,14 @@ func main() {
 	}
 }
 ```
+<!--SNIPEND-->
 
 ### Develop a starter to start the caller Workflow
 
 To initiate the caller Workflow, a starter program is required.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/samples-go/blob/main/nexus/caller/starter/main.go">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
-
+<!--SNIPSTART startercaller-nexus-->
+[sample-apps/go/nexus/caller/starter/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/nexus/caller/starter/main.go)
 ```go
 package main
 
@@ -369,7 +376,31 @@ func main() {
 	runWorkflow(c, caller.EchoCallerWorkflow, "Nexus Echo 👋")
 	runWorkflow(c, caller.HelloCallerWorkflow, "Nexus", service.ES)
 }
+
+func runWorkflow(c client.Client, workflow interface{}, args ...interface{}) {
+	ctx := context.Background()
+	workflowOptions := client.StartWorkflowOptions{
+		ID:        "nexus_hello_caller_workflow_" + time.Now().Format("20060102150405"),
+		TaskQueue: caller.TaskQueue,
+	}
+
+	wr, err := c.ExecuteWorkflow(ctx, workflowOptions, workflow, args...)
+	if err != nil {
+		log.Fatalln("Unable to execute workflow", err)
+	}
+	log.Println("Started workflow", "WorkflowID", wr.GetID(), "RunID", wr.GetRunID())
+
+	// Synchronously wait for the workflow completion.
+	var result string
+	err = wr.Get(context.Background(), &result)
+	if err != nil {
+		log.Fatalln("Unable get workflow result", err)
+	}
+	log.Println("Workflow result:", result)
+}
 ```
+<!--SNIPEND-->
+
 
 ## Make Nexus calls across Namespaces with a development Server {#nexus-calls-across-namespaces-dev-server}
 
