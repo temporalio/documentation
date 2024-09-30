@@ -17,15 +17,21 @@ Temporal offers an entirely new way to build scalable and reliable applications.
 
 ## Build Invincible Apps 
 
+In any complex system, failures are bound to happen, but how they are handled makes all the difference. 
+Temporal ensures that these failures don’t disrupt your application. 
+
+In a traditional non-Temporal application, if a crash occurs, the progress of your application is often lost. 
+The application has no memory of what happened before the failure, requiring extensive error-handling and messy recovery code to resume. 
+This process is time-consuming and error-prone, making it hard to ensure reliability.
+
 Temporal ensures your applications are reliable by default, handling everything from minor network outages to significant issues like unexpected reboots or hardware failures.
 By offloading the responsibility of failure management from the application to the platform, this removes the need for extensive coding, testing, and maintenance tasks.
 
-Temporal keeps track of everything your app does, so if something goes wrong—like a power outage—it helps your app pick up right where it left off. 
-Similar to when a video game crashes, you can just continue from the last save point. 
-Temporal makes sure your app doesn’t lose any progress, so you don’t have to worry about starting over or dealing with messy recoveries.
+Temporal keeps track of everything your application does, so if something goes wrong—like a power outage—it helps your application pick up right where it left off. 
+Similar to when a video game crashes, you can continue from the last save point. 
+Temporal ensures your application doesn’t lose any progress. 
 
-This shift simplifies the development process and enables your application to seamlessly recover from disruptions.
-Your application logic can be recovered, replayed, or paused from any previous point in your application, ensuring continuity even after failures.
+This shift simplifies the development process and if a failure or a crash happens, your business processes keep running seamlessly without interruptions.
 
 ## Temporal Application: The Building Blocks
 
@@ -33,8 +39,8 @@ In a Temporal application, the code you write is made up of Workflows and Activi
 
 ### Workflow
 
-Conceptually, a workflow is a sequence of steps. 
-You've likely encountered workflows in your daily life, whether it's:
+Conceptually, a Workflow is a sequence of steps. 
+You've likely encountered Workflows in your daily life, whether it's:
 - Using a mobile app to transfer money
 - Purchasing concert tickets
 - Booking a vacation
@@ -46,28 +52,26 @@ In Temporal, a Workflow defines the steps your application takes to complete a t
 It’s your business logic, written in code, outlining each step in your process. 
 This could be moving money between bank accounts, processing orders, deploying cloud infrastructure, or training an AI model. 
 
-Temporal isn’t a no-code workflow engine. 
+Temporal isn’t a no-code Workflow engine. 
 It is **Workflows-as-Code**. 
 Instead of dragging and dropping steps in a visual interface, you write your Workflows in code in your favorite programming language, code editor, and other tools. 
 This gives you full control and flexibility over your business processes, allowing you to build exactly what you need. 
 
-Workflows in Temporal are resilient and stateful, meaning they’re designed to handle problems smoothly.
-They can pause, pick up where they left off, or try again automatically. 
-Hence, if a failure or a crash happens, your business processes keep running seamlessly without interruptions.
+Workflows in Temporal are resilient and stateful. 
+They can pause, pick up where they left off, or try again automatically from any previous point in your application - ensuring continuity even after failures.
+
+If a failure or a crash happens, your business processes keep running seamlessly without interruptions.
 
 ### Activities
-Activities are the individual tasks within your Workflow.
+Activities are the individual tasks in your Workflow. 
+These are tasks that often interact with the outside world such as sending emails, making network requests, writing to a database, or calling an API. 
 
-Activities are the individual tasks in your Workflow that often interact with the outside world. 
-These tasks include sending emails, making network requests, writing to a database, or calling an API. 
-
-Activities are pieces of code, either functions or methods depending on the programming language, that perform these tasks. 
+Specifically, Activities are pieces of code. 
+These either functions or methods depending on the programming language, that perform these tasks. 
 Activities are called directly from within your Workflow code.
 
 If an Activity fails, Temporal automatically retries it based on your configuration. 
-Since Activities often rely on external systems, transient issues can occur—temporary problems like network failures, timeouts, or service outages. 
-Unlike application-level errors, such as an invalid credit card number, transient issues can often be fixed by retrying the task.
-
+Since Activities often rely on external systems, transient issues can occur - temporary problems like network failures, timeouts, or service outages. 
 You have full control over how often and how many times these retries should happen for each Activity. 
 
 ### SDK
@@ -81,7 +85,7 @@ Temporal currently offers six SDKs: Java, Go, TypeScript, .NET, Python, and PHP.
 Installing the SDK allows you to easily add Temporal to your current projects without having to change the tools you're already using. 
 Temporal fits right into your existing tech stack.
 
-The Temporal SDK also makes it easier to implement complex tasks such as handling jobs either in order or at the same time (sync/async execution), automatically retrying failed tasks, scheduling tasks to run regularly, managing complex workflows (SAGA compensation), and managing errors.
+The Temporal SDK also makes it easier to implement complex tasks such as sync/async execution, automatically retrying failed tasks, scheduling tasks to run regularly, managing complex workflows such as SAGA compensation, and managing errors.
 
 ![Describing a Temporal Application - How It Works](/img/how-it-works/htw_application.png)
 
@@ -125,27 +129,17 @@ For a deep dive into how Temporal Service works, visit the [Temporal Encyclopedi
 :::
 
 
-## Recovering from Failure
-
-In any complex system, failures are bound to happen, but how they are handled makes all the difference. 
-Temporal ensures that these failures don’t disrupt your application. 
-This reliability is achieved through **Durable Execution**.
-
-In a traditional non-Temporal application, if a crash occurs, the progress of your Workflow is often lost. 
-The application has no memory of what happened before the failure, requiring extensive error-handling and recovery code to resume. 
-This process is time-consuming and error-prone, making it hard to ensure reliability.
+## Conclusion
+Temporal provides effortless reliability, allowing applications to run for days, weeks, or even years without interruption. 
+With Temporal, you don't have to write tons of extra code to handle every possible thing that could go wrong.
+Temporal supports multiple programming languages and simplifies state management. 
+Temporal scales up easily, making sure everything runs smoothly, no matter how big your application gets. 
 
 With Temporal, if your Workflow crashes, it automatically recreates its pre-crash state and continues as if the failure never happened. 
 If a Temporal Application terminates prematurely, a Worker automatically reconstructs the state using data from the Event History. 
 The Event History is a detailed log that records every significant action or decision made by the Workflow. 
 Temporal automatically saves and restores your application's state, so you don't have to juggle that yourself.
 This means your application can keep running for days, weeks, or even years, even if the underlying infrastructure fails.
-
-## Conclusion
-Temporal provides effortless reliability, allowing applications to run for days, weeks, or even years without interruption. 
-With Temporal, you don't have to write tons of extra code to handle every possible thing that could go wrong.
-Temporal supports multiple programming languages and simplifies state management. 
-Temporal scales up easily, making sure everything runs smoothly, no matter how big your application gets. 
 
 Temporal also represents a paradigm shift in software development. 
 It's not just about making existing patterns more reliable; it's about enabling entirely new approaches to building complex, distributed systems. 
