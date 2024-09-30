@@ -18,19 +18,16 @@ Temporal offers an entirely new way to build scalable and reliable applications.
 ## Build Invincible Apps 
 
 In any complex system, failures are bound to happen, but how they are handled makes all the difference. 
-Temporal ensures that these failures don’t disrupt your application. 
-
-In a traditional non-Temporal application, if a crash occurs, the progress of your application is often lost. 
-The application has no memory of what happened before the failure, requiring extensive error-handling and messy recovery code to resume. 
-This process is time-consuming and error-prone, making it hard to ensure reliability.
-
-Temporal ensures your applications are reliable by default, handling everything from minor network outages to significant issues like unexpected reboots or hardware failures.
-By offloading the responsibility of failure management from the application to the platform, this removes the need for extensive coding, testing, and maintenance tasks.
+Temporal makes sure that these failures don’t disrupt your application. Temporal ensures your applications are reliable by default, handling everything from minor network outages to significant issues like unexpected reboots or hardware failures.
 
 Temporal keeps track of everything your application does, so if something goes wrong—like a power outage—it helps your application pick up right where it left off. 
 Similar to when a video game crashes, you can continue from the last save point. 
 Temporal ensures your application doesn’t lose any progress. 
 This shift simplifies the development process and if a failure or a crash happens, your business processes keep running seamlessly without interruptions.
+
+In a traditional non-Temporal application, if a crash occurs, the progress of your application is often lost. 
+The application has no memory of what happened before the failure, requiring extensive error-handling and messy recovery code to resume. 
+This process is time-consuming and error-prone, making it hard to ensure reliability.
 
 This allows for developers to focus on business logic rather than infrastructure concerns and create applications that are inherently scalable and maintainable.
 Any business process that must be reliable and scalable is a potential candidate for Temporal, but common use cases include order processing, customer onboarding, and payment processing.
@@ -138,7 +135,7 @@ Temporal scales up easily, making sure everything runs smoothly, no matter how b
 If your Workflow crashes, it automatically recreates its pre-crash state and continues as if the failure never happened using data from the Event History. 
 The Event History is a detailed log that records every significant action or decision made by the Workflow. 
 Temporal automatically saves and restores your application's state, so you don't have to juggle that yourself.
-This means your application can keep running for days, weeks, or even years, even if the underlying infrastructure fails.
+This means your application can keep running for days, weeks, or years, even if the underlying infrastructure fails.
 
 Temporal also represents a paradigm shift in software development. 
 It's not just about making existing patterns more reliable; it's about enabling entirely new approaches to building complex, distributed systems. 
