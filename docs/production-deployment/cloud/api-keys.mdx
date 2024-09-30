@@ -51,6 +51,8 @@ The authentication process follows this pathway:
 - **Keep it secret; keep it safe**: Treat your API key like a password.
   Do not expose it in client-side code, public repositories, or other easily accessible locations.
 - **Rotate keys regularly**: Change your API keys periodically to reduce risks from potential leaks.
+  Keys must be rotated every at least every 90 days.
+- **Design your code for easy key updates**: Opt for key management practices that let you refresh your API keys without touching your code.
 - **Monitor API key usage**: Check usage metrics and logs regularly.
   Revoke the key immediately if you detect any unexpected or unauthorized activity.
 - **Use a Key Management System (KMS)**: Employ a Key Management System to minimize the risk of key leaks.
@@ -218,7 +220,17 @@ tcld login
 tcld apikey delete --id <api-key-id>
 ```
 
-## Manage API Keys for Service Accounts {#serviceaccount-api-keys}
+### Rotate an API key
+
+Temporal API keys automatically expire.
+Their maximum life is 90 days.
+Follow these steps to rotate API keys:
+
+1. Delete the existing key.
+1. Create a new key.
+   You may reuse key names if that helps.
+
+## Manage API keys for Service Accounts {#serviceaccount-api-keys}
 
 Global Administrators/Account Owners can manage API keys for all Service Accounts in their account and generate API keys for Service Accounts.
 This is different for users, who generate their own API keys.
@@ -310,6 +322,16 @@ The process for deleting an API key is the same for a user or Service Account.
 tcld login
 tcld apikey delete --id <api-key-id>
 ```
+
+### Rotate a Service Account API key
+
+Temporal API keys automatically expire.
+Their maximum life is 90 days.
+Follow these steps to rotate API keys:
+
+1. Delete the existing key.
+1. Create a new key.
+   You may reuse key names if that helps.
 
 ## API keys for Namespace authentication {#namespace-authentication}
 
