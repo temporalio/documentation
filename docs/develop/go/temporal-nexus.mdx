@@ -373,6 +373,8 @@ func main() {
 
 ## Make Nexus calls across Namespaces with a development Server {#nexus-calls-across-namespaces-dev-server}
 
+To run the tutorial, follow the steps below to run the Nexus handler Worker, the Nexus caller Worker, and the starter.
+
 ### Run Workers connected to a local development server
 
 In separate terminal window, run the Nexus handler Worker:
@@ -386,7 +388,7 @@ go run ./worker \
 
 In another terminal window, run the Nexus caller Worker:
 
-```
+```go
 cd caller
 go run ./worker \
     -target-host localhost:7233 \
@@ -452,7 +454,7 @@ Alternatively, you can create Namespace via the UI: [https://cloud.temporal.io/N
 
 ### Create a Nexus Endpoint to route requests from caller to handler
 
-To create a Nexus Endpoint you must have a `Developer` account role or higher, and have `NamespaceAdmin` permission on the `--target-namespace`.
+To create a Nexus Endpoint you must have a Developer account role or higher, and have NamespaceAdmin permission on the `--target-namespace`.
 
 ```
 tcld nexus endpoint create \
@@ -517,6 +519,8 @@ This will result in:
 ```
 
 ### Observability
+
+#### Web UI
 
 A synchronous Nexus Operation will surface in the caller Workflow as follows, with just `NexusOperationScheduled` and `NexusOperationCompleted` events in the caller’s Workflow history:
 
