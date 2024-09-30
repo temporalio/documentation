@@ -17,21 +17,20 @@ Temporal offers an entirely new way to build scalable and reliable applications.
 
 ## Build Invincible Apps 
 
-In any complex system, failures are bound to happen, but how they are handled makes all the difference. 
-Temporal makes sure that these failures don’t disrupt your application. 
-Temporal ensures your applications are reliable by default, handling everything from minor network outages to significant issues like unexpected reboots or hardware failures.
+In any complex system, failures are bound to happen. 
+Temporal makes your applications reliable by default - ensuring that these failures don’t disrupt your application. 
 
-Temporal keeps track of everything your application does, so if something goes wrong—like a power outage—it helps your application pick up right where it left off. 
-Similar to when a video game crashes, you can continue from the last save point. 
-Temporal ensures your application doesn’t lose any progress. 
-This shift simplifies the development process and if a failure or a crash happens, your business processes keep running seamlessly without interruptions.
-
-In a traditional non-Temporal application, if a crash occurs, the progress of your application is often lost. 
+In a traditional non-Temporal application, if a crash occurs, the progress of your application is lost. 
 The application has no memory of what happened before the failure, requiring extensive error-handling and messy recovery code to resume. 
 This process is time-consuming and error-prone, making it hard to ensure reliability.
 
+Temporal keeps track of the state of your application, so if something goes wrong—like a power outage—it helps your application pick up right where it left off. 
+Similar to going from manually saving to autosaving with a Google document, you can continue from the last save point. 
+By offloading the responsibility of failure management from the application to the platform, this removes the need for extensive coding, testing, and maintenance tasks.
+
+This shift simplifies the development process and if a failure or a crash happens, your business processes keep running seamlessly without interruptions.
 This allows for developers to focus on business logic rather than infrastructure concerns and create applications that are inherently scalable and maintainable.
-Any business process that must be reliable and scalable is a potential candidate for Temporal, but common use cases include order processing, customer onboarding, and payment processing.
+Temporal is ideal for any business process that requires reliability and scalability, with a common use cases including order processing, customer onboarding, and payment handling.
 
 ## Temporal Application: The Building Blocks
 
@@ -53,13 +52,13 @@ It’s your business logic, written in code, outlining each step in your process
 This could be moving money between bank accounts, processing orders, deploying cloud infrastructure, or training an AI model. 
 
 Temporal isn’t a no-code Workflow engine. 
-It is **Workflows-as-Code**. 
+It is **Workflows-as-Code**.
 Instead of dragging and dropping steps in a visual interface, you write your Workflows in code in your favorite programming language, code editor, and other tools. 
 This gives you full control and flexibility over your business processes, allowing you to build exactly what you need. 
 
 ### Activities
 Activities are the individual tasks in your Workflow. 
-These are tasks that often interact with the outside world such as sending emails, making network requests, writing to a database, or calling an API. 
+These are tasks that often interact with the outside world and are prone to failure such as sending emails, making network requests, writing to a database, or calling an API. 
 
 Specifically, Activities are pieces of code. 
 They are either functions or methods depending on the programming language, that perform these tasks. 
@@ -107,16 +106,17 @@ You can run the Temporal Service on your own infrastructure or use Temporal Clou
 
 ## Workers
 The real strength of Temporal comes from the combination of your application and the Temporal Service. 
-The Temporal Service doesn't actually run the Workflow and Activity functions. 
-A Worker, which is part of the application and is provided by the Temporal SDK, is responsible for running that code. 
 
 Workers execute the actual tasks defined in your Workflows. 
 The Temporal Service tracks and coordinates these Workers. 
 
 Whenever your application needs to perform a task, like sending a notification or calling an processing a payment, the Temporal Service steps in. 
 This process creates a clear, organized list of what needs to be done. 
-It hands off tasks to these Workers, making sure they’re done correctly and efficiently while it keeps track of their progress. 
-Workers, which are part of your application, then carry out the tasks and run your code. 
+
+Workers, which are part of your application and provided by the Temporal SDK, then carry out the tasks and run your code. 
+The Worker polls the Temporal Service to see if there are tasks available and the Temporal Service matches the Task with the Worker.
+The Worker runs the Workflow function based on the details specified in the Task.
+
 This collaboration is crucial for building reliable, scalable, and durable applications. 
 You can run multiple Workers — often dozens, hundreds, or even thousands — to improve application performance and scalability. 
 
@@ -133,6 +133,7 @@ With Temporal, you don't have to write tons of extra code to handle every possib
 Temporal supports multiple programming languages and simplifies state management. 
 Temporal scales up easily, making sure everything runs smoothly, no matter how big your application gets. 
 
+Temporal handles everything from minor network outages to significant issues like unexpected reboots or hardware failures.
 If your Workflow crashes, it automatically recreates its pre-crash state and continues as if the failure never happened using data from the Event History. 
 The Event History is a detailed log that records every significant action or decision made by the Workflow. 
 Temporal automatically saves and restores your application's state, so you don't have to juggle that yourself.
