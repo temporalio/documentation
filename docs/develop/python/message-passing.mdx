@@ -416,8 +416,6 @@ Here are three important use cases for `workflow.wait_condition`:
 - Wait in a handler until it's appropriate to continue.
 - Wait in the main Workflow until all active handlers have finished.
 
-#### Use wait conditions in handlers
-
 #### Wait for a Signal or Update to arrive
 It's common to use `workflow.condition` to wait for a particular Signal or Update to be sent by a Client:
 
@@ -440,7 +438,7 @@ class GreetingWorkflow:
         return self.greetings[self.language]
 ```
 
-### Use wait conditions in handlers {#wait-in-message-handler}
+#### Use wait conditions in handlers {#wait-in-message-handler}
 
 It's common to use a Workflow wait condition to wait until a handler should start.
 You can also use wait conditions anywhere else in the handler to wait for a specific condition to become `True`.
