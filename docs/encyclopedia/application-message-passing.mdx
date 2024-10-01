@@ -222,20 +222,20 @@ This execution is on a single thread–while this means you don’t have to worr
 
 #### Initializing the Workflow first {#workflow-initializers}
 
-Notice from the [diagram](#message-handler-concurrency) that messages can be processed before the first time your Workflow's main method runs.
+Initialize your Workflow's state before handling messages. This prevents reading uninitialized instance variables.
 
-In practice, this happens in two main scenarios:
+To see why, refer to the [diagram](#message-handler-concurrency). It shows that your Workflow processes messages before the first run of your Workflow's main method.
 
-- You are using [Signal-with-Start](#signal-with-start), in which case the message handler always runs first.
-- Your Worker is delayed, such as when it's backlogged.
+This happens in two main scenarios:
 
-So, it's important to initialize your Workflow's state before messages come in, otherwise you will be reading uninitialized instance variables.
+- When using [Signal-with-Start](#signal-with-start), the message handler always runs first.
+- When your Worker experiences delays, such as during backlogs.
 
-In object-oriented languages, you should annotate your constructor as a Workflow Initializer. Initializers take the same arguments as your Workflow's main method so that you can fully set up your state.
+For object-oriented languages, use your constructor to set up state. Annotate your constructor as an Workflow Initializer and take the same arguments as your Workflow's main method.
 
-Note that you cannot make blocking calls from your constructor. For that case, if you have a Signal or Update handler, you can make it [wait](#waiting).
+Note that you can't make blocking calls from your constructor. If you need to block, make your Signal or Update handler [wait](#waiting) for an initialization flag.
 
-In other languages, wait to register your handlers until after you've done any initialization that your message handlers might need.
+In other languages, register any message handlers only after completing initialization.
 
 ### Message handler patterns {#message-handler-patterns}
 
