@@ -493,6 +493,7 @@ Normally, your Workflow `__init__` method won't have any parameters.
 However, if you use the `@workflow.init` decorator on your `__init__` method, you can give it the same [Workflow parameters](/develop/python/core-application#workflow-parameters) as your `@workflow.run` method.
 The SDK will then ensure that your `__init__` method receives the Workflow input arguments that the  [Client sent](/develop/python/temporal-clients#start-workflow-execution).
 (The Workflow input arguments are also passed to your `@workflow.run` method -- that always happens, whether or not you use the `@workflow.init` decorator.)
+This is useful if you have Update or Signal handlers that need access to workflow input: see [Initializing the Workflow first](/encyclopedia/workflow-message-passing#workflow-initializers).
 
 Here's an example.
 Notice that `__init__` and `get_greeting` must have the same parameters, with the same type annotations:
@@ -515,7 +516,8 @@ class WorkflowRunSeesWorkflowInitWorkflow:
 
     @workflow.update
     async def check_title_validity(self) -> bool:
-        # 👉 The handler sees the workflow input after it has been processed by __init__.
+        # 👉 The handler is now guaranteed to see the workflow input
+        # after it has been processed by __init__.
         return await workflow.execute_activity(
             check_title_validity,
             self.name_with_title,
