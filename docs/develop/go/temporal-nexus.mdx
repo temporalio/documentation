@@ -52,7 +52,7 @@ The Temporal Server should be available on `localhost:7233` and the Temporal Web
 
 ## Create caller and handler Namespaces {#create-caller-handler-namespaces}
 
-Before setting up Nexus endpoints, create separate namespaces for the caller and handler.
+Before setting up Nexus endpoints, create separate Namespaces for the caller and handler.
 
 ```
 temporal operator namespace create --namespace my-target-namespace
@@ -83,7 +83,7 @@ cd samples-go/nexus
 ```
 
 The Nexus Service API contract can be in whatever form works best for your environment.
-Each [Temporal SDK includes and uses a default Data Converter](https://docs.temporal.io/dataconversion), that encodes payloads in the following order: Null, Byte array, Protobuf JSON, JSON.
+Each [Temporal SDK includes and uses a default Data Converter](https://docs.temporal.io/dataconversion), that encodes payloads in the following order: Null, Byte array, Protobuf JSON, and JSON.
 In a polyglot environment, Protobuf and JSON are common choices, but this example uses native Go types.
 
 In this example, there is a service package that describes the Service and Operation names along with input/output types for caller Workflows to use the Nexus Endpoint.
@@ -93,7 +93,8 @@ In this example, there is a service package that describes the Service and Opera
 
 ## Develop a Nexus Service & Operation handlers {#develop-nexus-service-operation-handlers}
 
-Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract. Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous, execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
+Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract. 
+Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous, execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
 
 The `temporalnexus` package has builders to create Nexus Operations:
 
@@ -104,7 +105,8 @@ Start with a `NewSyncOperation` example, and then use `NewWorkflowRunOperation` 
 
 ### Develop a Synchronous Nexus Operation handler
 
-The `temporalnexus.NewSyncOperation` builder function is for exposing simple RPC handlers. It’s handler function is provided with an SDK client that can be used for signaling, querying, and listing Workflows, but implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
+The `temporalnexus.NewSyncOperation` builder function is for exposing simple RPC handlers. 
+It’s handler function is provided with an SDK client that can be used for signaling, querying, and listing Workflows, but implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
 
 <!--SNIPSTART handler-nexus {"selectedLines": ["2-23"]}-->
 <!--SNIPEND-->
@@ -112,14 +114,15 @@ The `temporalnexus.NewSyncOperation` builder function is for exposing simple RPC
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
-Use the NewWorkflowRunOperation constructor, which is the easiest way to expose a Workflow as an operation.
-See alternatives at [https://pkg.go.dev/go.temporal.io/sdk/temporalnexus](https://pkg.go.dev/go.temporal.io/sdk/temporalnexus).
+Use the 'NewWorkflowRunOperation' constructor, which is the easiest way to expose a Workflow as an operation.
+See alternatives [here](https://pkg.go.dev/go.temporal.io/sdk/temporalnexus).
 
 <!--SNIPSTART handler-nexus {"selectedLines": ["25-35"]}-->
 <!--SNIPEND-->
 
 
-Workflow IDs should typically be business meaningful IDs and are used to dedupe Workflow starts. Here `input.ID` is passed as part of the Nexus Service contract, for the `HelloOperation`.
+Workflow IDs should typically be business meaningful IDs and are used to dedupe Workflow starts. 
+Here `input.ID` is passed as part of the Nexus Service contract, for the `HelloOperation`.
 
 ### Register a Nexus Service in a Worker
 
@@ -231,7 +234,7 @@ tcld namespace create \
 	--retention-days 1
 ```
 
-Alternatively, you can create Namespace via the UI: [https://cloud.temporal.io/Namespaces](https://cloud.temporal.io/Namespaces)
+Alternatively, you can create Namespace through the UI: [https://cloud.temporal.io/Namespaces](https://cloud.temporal.io/Namespaces)
 
 ### Create a Nexus Endpoint to route requests from caller to handler
 
@@ -248,7 +251,7 @@ tcld nexus endpoint create \
 
 The `--allow-namespace` is used to build an Endpoint allowlist of caller Namespaces that can use the Nexus Endpoint, as described in Runtime Access Control.
 
-Alternatively, you can create a Nexus Endpoint via the UI: [https://cloud.temporal.io/nexus](https://cloud.temporal.io/nexus)
+Alternatively, you can create a Nexus Endpoint through the UI: [https://cloud.temporal.io/nexus](https://cloud.temporal.io/nexus)
 
 ### Run Workers Connected to Temporal Cloud
 
