@@ -1,55 +1,53 @@
 ---
 id: index
-title: Temporal .NET SDK feature guidance
+title: .Net SDK developer guide
 sidebar_label: .NET SDK
-description: Discover how to utilize Temporal .NET SDK features to develop Temporal Applications, connect to the Temporal Service, test Workflows and Activities, handle failures, send messages, and more.
+description: Use the Temporal .NET SDK to develop Temporal Applications, connect to the Temporal Service, test Workflows and Activities, handle failures, send messages, and more.
 toc_max_heading_level: 4
 keywords:
   - dotnet
   - sdk
-  - feature guidance
 tags:
-  - dotnet
-  - sdk
-  - feature guidance
+  - dotnet-sdk
+  - developer guide
 ---
 
 <!-- .NET SDK feature guidance landing page-->
 
-The following Temporal .NET SDK feature guides aim to show how to use Temporal features when developing [Temporal Applications](/temporal#temporal-application).
+Build [Temporal Applications](/temporal#temporal-application) with the .Net SDK.
 
-## Core application
+## [Core Application](/develop/dotnet/core-application)
 
-The [Core application feature guide](/develop/dotnet/core-application) shows how to use the basic building blocks of a Temporal Application (Workflows, Activities, and Workers).
+Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.
 
 - [Develop a basic Workflow Definition](/develop/dotnet/core-application#develop-workflow): Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.
 - [Develop a basic Activity Definition](/develop/dotnet/core-application#develop-activity): One of the primary things that Workflows do is orchestrate the execution of Activities.
 - [Start an Activity from a Workflow](/develop/dotnet/core-application#activity-execution): Calls to spawn Activity Executions are written within a Workflow Definition.
 - [Run a Worker Process](/develop/dotnet/core-application#run-worker-process): The Worker Process is where Workflow Functions and Activity Functions are executed.
-- [Set a Dynamic Workflow](/develop/dotnet/core-application#set-a-dynamic-workflow): Set a workflow that can be invoked dynamically at runtime.
+- [Set a Dynamic Workflow](/develop/dotnet/core-application#set-a-dynamic-workflow): Set a Workflow that can be invoked dynamically at runtime.
 - [Set a Dynamic Activity](/develop/dotnet/core-application#set-a-dynamic-activity): Set an Activity that can be invoked dynamically at runtime.
 
-## Temporal Client
+## [Temporal Client](/develop/dotnet/temporal-client)
 
-The [Temporal Client feature guide](/develop/dotnet/temporal-client) shows how to connect to a Temporal Service and start a Workflow Execution.
+Connect to a Temporal Service and start a Workflow Execution.
 
 - [Create a Temporal Client](/develop/dotnet/temporal-client#create-a-client): Learn to instantiate and configure a client to interact with the Temporal Service.
 - [Connect to Temporal Cloud](/develop/dotnet/temporal-client#connect-to-temporal-cloud): Securely connect to the Temporal Cloud for a fully managed service.
 - [Start a Workflow](/develop/dotnet/temporal-client#start-workflow): Initiate Workflows seamlessly via the .NET SDK.
 - [Get Workflow results](/develop/dotnet/temporal-client#get-workflow-results): Retrieve and process the results of your Workflows efficiently.
 
-## Testing suite
+## [Testing](/develop/dotnet/testing-suite)
 
-The [Testing suite feature guide](/develop/dotnet/testing-suite) shows how to set up the testing suite and test Workflows and Activities.
+Set up the testing suite and test Workflows and Activities.
 
 - [Test frameworks](/develop/dotnet/testing-suite#test-frameworks): Testing provides a framework to facilitate Workflow and integration testing.
 - [Testing Workflows](/develop/dotnet/testing-suite#testing-workflows): Ensure the functionality and reliability of your Workflows.
 - [Testing Activities](/develop/dotnet/testing-suite#test-activities): Validate the execution and outcomes of your Activities.
 - [Replay test](/develop/dotnet/testing-suite#replay-test): Replay recreates the exact state of a Workflow Execution.
 
-## Failure detection
+## [Failure detection](/develop/dotnet/failure-detection)
 
-The [Failure detection feature guide](/develop/dotnet/failure-detection) shows how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
+Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
 
 - [Workflow timeouts](/develop/dotnet/failure-detection#workflow-timeouts): Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 - [Workflow retries](/develop/dotnet/failure-detection#workflow-retries): A Workflow Retry Policy can be used to retry a Workflow Execution in the event of a failure.
@@ -58,11 +56,11 @@ The [Failure detection feature guide](/develop/dotnet/failure-detection) shows h
 - [Heartbeat an Activity](/develop/dotnet/failure-detection#activity-heartbeats): An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Service.
 - [Heartbeat Timeout](/develop/dotnet/failure-detection#heartbeat-timeout): A Heartbeat Timeout works in conjunction with Activity Heartbeats.
 
-## Message passing
+## [Workflow message passing](/develop/go/message-passing)
 
-The [Workflow messages feature guide](/develop/dotnet/message-passing) shows how to send messages to and read the state of Workflow Executions.
+Send messages to and read the state of Workflow Executions.
 
-**Signals**
+### Signals
 
 - [Define Signal](/develop/dotnet/message-passing#signals): A Signal is a message sent to a running Workflow Execution.
 - [Send a Signal from a Temporal Client](/develop/dotnet/message-passing#send-signal-from-client): Send a Signal to a Workflow from a Temporal Client.
@@ -71,49 +69,55 @@ The [Workflow messages feature guide](/develop/dotnet/message-passing) shows how
 - [Dynamic Handler](/develop/dotnet/message-passing#dynamic-handler): Dynamic Handlers provide flexibility to handle cases where the names of Workflows, Activities, Signals, or Queries aren't known at run time.
 - [Set a Dynamic Signal](/develop/dotnet/message-passing#set-a-dynamic-signal): A Dynamic Signal in Temporal is a Signal that is invoked dynamically at runtime if no other Signal with the same input is registered.
 
-**Queries**
+### Queries
 
 - [Define a Query](/develop/dotnet/message-passing#queries): A Query is a synchronous operation that is used to get the state of a Workflow Execution.
 - [Send Queries](/develop/dotnet/message-passing#send-query): Queries are sent from the Temporal Client.
 - [Set a Dynamic Query](/develop/dotnet/message-passing#set-a-dynamic-signal): A Dynamic Query in Temporal is a Query that is invoked dynamically at runtime if no other Query with the same name is registered.
 
-**Updates**
+### Updates
 
 - [Define an Update](/develop/dotnet/message-passing#updates): An Update is an operation that can mutate the state of a Workflow Execution and return a response.
 - [Send an Update](/develop/dotnet/message-passing#send-update-from-client): An Update is sent from the Temporal Client.
 
-## Interrupt a Workflow
+## [Interrupt a Workflow](/develop/dotnet/cancellation)
 
-The [Interrupt a Workflow feature guide](/develop/dotnet/cancellation) shows how to interrupt a Workflow Execution with a Cancel or Terminate action.
+Interrupt a Workflow Execution with a Cancel or Terminate action.
 
 - [Cancel a Workflow](/develop/dotnet/cancellation#cancellation): Interrupt a Workflow Execution and its Activities through Workflow cancellation.
 - [Terminate a Workflow](/develop/dotnet/cancellation#termination): Interrupt a Workflow Execution and its Activities through Workflow termination.
 
-## Versioning
+## [Asynchronous Activity completion](/develop/dotnet/asynchronous-activity)
 
-The [Versioning feature guide](/develop/dotnet/versioning) shows how to change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
+Complete Activities asynchronously.
+
+- [Asynchronous Activity](/develop/dotnet/asynchronous-activity): Asynchronous Activity completion enables the Activity Function to return without the Activity Execution completing.
+
+## [Versioning](/develop/dotnet/versioning)
+
+Change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 
 - [Use the .NET SDK Patching API](/develop/dotnet/versioning#dotnet-sdk-patching-api): Patching Workflows using the .NET SDK.
 
-## Observability
+## [Observability](/develop/dotnet/observability)
 
-The [Observability feature guide](/develop/dotnet/observability) shows how to configure and use the Temporal Observability APIs.
+Configure and use the Temporal Observability APIs.
 
 - [Emit Metrics](/develop/dotnet/observability#metrics): Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
-- [Set up Tracing](/develop/dotnet/observability#tracing): Explains how the Go SDK supports tracing and custom context propogation.
+- [Set up Tracing](/develop/dotnet/observability#tracing): Explains how the Go SDK supports tracing and custom context propagation.
 - [Log from a Workflow](/develop/dotnet/observability#logging): Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
 - [Use Visibility APIs](/develop/dotnet/observability#visibility): The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Terminal Service.
 
-## Debugging
+## [Debugging](/develop/dotnet/debugging)
 
-The [Debugging feature guide](/develop/dotnet/debugging) covers the various ways to debug your application.
+Explore various ways to debug your application.
 
 - [Debug in a development environment](/develop/dotnet/debugging#debug-in-a-development-environment): In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the Web UI and the Temporal CLI.
 - [Debug in a development production](/develop/dotnet/debugging#debug-in-a-development-production): Debug production Workflows using the Web UI, the Temporal CLI, Replays, Tracing, or Logging.
 
-## Schedules
+## [Schedules](/develop/dotnet/schedules)
 
-The [Schedules feature guide](/develop/dotnet/schedules) shows how to schedule Workflows and to delay the start of a Workflow.
+Run Workflows on a schedule and delay the start of a Workflow.
 
 - [Schedule a Workflow](/develop/dotnet/schedules#schedule-a-workflow)
   - [Create a Scheduled Workflow](/develop/dotnet/schedules#create-a-workflow): Create a new schedule for a scheduled Workflow.
@@ -126,34 +130,29 @@ The [Schedules feature guide](/develop/dotnet/schedules) shows how to schedule W
   - [Update a Scheduled Workflow](/develop/dotnet/schedules#update-a-scheduled-workflow): Updates a schedule with a new definition for a scheduled Workflow.
 - [Use Start Delay](/develop/dotnet/schedules#start-delay): Start delay functionality if you need to delay the execution of the Workflow without the need for regular launches.
 
-## Data encryption
+## [Data encryption](/develop/dotnet/data-encryption)
 
-The [Data encryption feature guide](/develop/dotnet/data-encryption) provides guidance on how to support compression, encryption, and other data handling by implementing custom converters and codecs.
+Use compression, encryption, and other data handling by implementing custom converters and codecs.
 
 - [Use a custom Payload Codec](/develop/dotnet/data-encryption#custom-payload-codec): Create a custom PayloadCodec implementation and define your encryption/compression and decryption/decompression logic.
 - [Use a custom Payload Converter](/develop/dotnet/data-encryption#custom-payload-converter): A custom data converter can be set via the `DataConverter` option when creating a client.
 
-## Durable Timers
+## [Durable Timers](/develop/go/timers)
 
-The [Durable Timers feature guide](/develop/dotnet/durable-timers) shows how to use Timers and sleep within Workflows.
+Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.
 
 - [Sleep](/develop/dotnet/durable-timers): A Timer lets a Workflow sleep for a fixed time period.
 
-## Continue-As-New
+## [Child Workflows](/develop/dotnet/child-workflows)
 
-The [Continue-As-New feature guide](/develop/dotnet/continue-as-new) shows how to continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
-
-- [Continue-As-New](/develop/dotnet/continue-as-new): Continue-As-New enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
-
-## Child Workflows
-
-The [Child Workflows feature guide](/develop/dotnet/child-workflows) shows how to spawn a Child Workflow Execution and handle Child Workflow Events.
+Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.
 
 - [Start a Child Workflow Execution](/develop/dotnet/child-workflows): A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 - [Set a Parent Close Policy](/develop/dotnet/child-workflows#parent-close-policy): A Parent Close Policy determines what happens to a Child Workflow Execution if its Parent changes to a Closed status.
 
-## Asynchronous Activity
+## [Continue-As-New](/develop/dotnet/continue-as-new)
 
-The [Asynchronous Activity feature guide](/develop/dotnet/asynchronous-activity) shows how to complete Activities asynchronously.
+Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
 
-- [Asynchronous Activity](/develop/dotnet/asynchronous-activity): Asynchronous Activity Completion enables the Activity Function to return without the Activity Execution completing.
+- [Continue-As-New](/develop/dotnet/continue-as-new): Continue-As-New enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
+
