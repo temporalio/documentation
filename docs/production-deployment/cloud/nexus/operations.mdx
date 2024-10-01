@@ -143,7 +143,7 @@ Scheduling and processing a Nexus Operation is reported through existing cloud m
   - RespondNexusTaskCompleted
   - RespondNexusTaskFailed
 
-See [Cloud Metrics](/cloud/metrics/reference).
+See [Cloud Metrics](/production-deployment/cloud/metrics/reference).
 
 ## Audit Logging
 
@@ -163,6 +163,8 @@ Default Namespace RPS limits are set at 1600 and automatically adjust based on r
 ## SLOs & SLAs
 
 Nexus requests (commands, polling) have the same latency SLOs and error rate SLAs as other Worker requests in both the caller and handler Namespaces.
+
+See [Availability](/cloud/service-availability) and [SLA](/cloud/sla).
 
 ## Limits
 
@@ -185,9 +187,9 @@ If a handler doesn’t respond within a context deadline, a context deadline exc
 
 ### Nexus Operation Maximum Duration
 
-Each Nexus Operation has a maximum `ScheduleToClose` duration of 60 days, which is most applicable to asynchronous Nexus Operations that are completed with an asynchronous callback using a separate Nexus request from the handler back to the caller Namespace. 
+Each Nexus Operation has a maximum ScheduleToClose duration of 60 days, which is most applicable to asynchronous Nexus Operations that are completed with an asynchronous callback using a separate Nexus request from the handler back to the caller Namespace. 
 The 60 day maximum is forward-compatible with completion callbacks that may be signed with a single use token such that asymmetric encryption keys may be rotated in a timely fashion. 
-While the caller of a Nexus Operation can configure the `ScheduleToClose` duration to be shorter than 60 days, the maximum duration can not be extended beyond 60 days and will be capped by the server to 60 days.
+While the caller of a Nexus Operation can configure the ScheduleToClose duration to be shorter than 60 days, the maximum duration can not be extended beyond 60 days and will be capped by the server to 60 days.
 
 ## Secure Routing
 
