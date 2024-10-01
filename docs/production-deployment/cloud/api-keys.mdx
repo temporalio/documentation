@@ -52,7 +52,8 @@ The authentication process follows this pathway:
   Do not expose it in client-side code, public repositories, or other easily accessible locations.
 - **Rotate keys regularly**: Change your API keys periodically to reduce risks from potential leaks.
   Keys must be rotated every at least every 90 days.
-- **Design your code for easy key updates**: Opt for key management practices that let you refresh your API keys without touching your code.
+- **Design your code for key updates**: Use key management practices that retrieve your API keys without hard-coding them into your apps.
+  This lets you restart your Workers to refresh your rotated keys without recompiling your code.
 - **Monitor API key usage**: Check usage metrics and logs regularly.
   Revoke the key immediately if you detect any unexpected or unauthorized activity.
 - **Use a Key Management System (KMS)**: Employ a Key Management System to minimize the risk of key leaks.
@@ -226,9 +227,12 @@ Temporal API keys automatically expire.
 Their maximum life is 90 days.
 Follow these steps to rotate API keys:
 
-1. Delete the existing key.
 1. Create a new key.
    You may reuse key names if that helps.
+1. Allow both keys to be active at the same time.
+1. Switch to the new key and start using it.
+1. Verify the new key works and the old key is no longer being used.
+1. Delete the existing key.
 
 ## Manage API keys for Service Accounts {#serviceaccount-api-keys}
 
@@ -329,9 +333,12 @@ Temporal API keys automatically expire.
 Their maximum life is 90 days.
 Follow these steps to rotate API keys:
 
-1. Delete the existing key.
 1. Create a new key.
    You may reuse key names if that helps.
+1. Allow both keys to be active at the same time.
+1. Switch to the new key and start using it.
+1. Verify the new key works and the old key is no longer being used.
+1. Delete the existing key.
 
 ## API keys for Namespace authentication {#namespace-authentication}
 
