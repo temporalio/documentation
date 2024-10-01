@@ -496,12 +496,6 @@ However, if you use the `@workflow.init` decorator on your `__init__` method, yo
 The SDK will then ensure that your `__init__` method receives the Workflow input arguments that the  [Client sent](/develop/python/temporal-clients#start-workflow-execution).
 (The Workflow input arguments are also passed to your `@workflow.run` method -- that always happens, whether or not you use the `@workflow.init` decorator.)
 
-To understand why `@workflow.init` is useful, suppose that you've written a Signal or Update handler that does something involving the Workflow input, but that you need to process the workflow input in some way before the handler should be allowed to access it.
-The problem is that it's possible for a Signal or Update handler to start executing _before_ your `@workflow.run` method!
-This means that you can't do the processing in your `@workflow.run` method.
-A solution is to use the `@workflow.init` decorator, and do the processing in your `__init__` method. (An alternative solution would be to [use `@workflow.wait_condition` in your handler](#wait-in-message-handler) to wait until the processing has been done by your `@workflow.run` method.
-That would work, but using `@workflow.init` is simpler.)
-
 Here's an example.
 Notice that `__init__` and `get_greeting` must have the same parameters, with the same type annotations:
 
@@ -523,7 +517,7 @@ class WorkflowRunSeesWorkflowInitWorkflow:
 
     @workflow.update
     async def check_title_validity(self) -> bool:
-        # 👈 The handler sees the workflow input after it has been processed by __init__.
+        # 👉 The handler sees the workflow input after it has been processed by __init__.
         return await workflow.execute_activity(
             check_title_validity,
             self.name_with_title,
