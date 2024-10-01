@@ -58,22 +58,20 @@ Instead of dragging and dropping steps in a visual interface, you write your Wor
 This gives you full control and flexibility over your business processes, allowing you to build exactly what you need. 
 
 ### Activities
-Activities are the individual tasks in your Workflow. 
-These are tasks that often interact with the outside world and are prone to failure such as sending emails, making network requests, writing to a database, or calling an API. 
+Activities are the individual tasks in your Workflow - functions or methods depending on the programming language.
+Activity tasks often interact with the outside world and are prone to failure such as sending emails, making network requests, writing to a database, or calling an API. 
 
-Specifically, Activities are pieces of code. 
-They are either functions or methods depending on the programming language, that perform these tasks. 
 Activities are called directly from within your Workflow code.
 
 If an Activity fails, Temporal automatically retries it based on your configuration. 
-Since Activities often rely on external systems, transient issues can occur - temporary problems like network failures, timeouts, or service outages. 
+Since Activities often rely on external systems, transient issues can occur - temporary but critical problems like network failures, timeouts, or service outages. 
 You have full control over how often and how many times these retries should happen for each Activity. 
 
 ### SDK
 Developers create Temporal applications by writing code, just like you would to create any other software. 
 To do this, you use an Temporal SDK, which stands for software development kit. 
 
-The Temporal SDK is an open source library that developers install in their application to use Temporal. 
+A Temporal SDK is an open source library that developers install in their application to use Temporal. 
 It provides everything needed to build Workflows, Activities, and various other features in a specific programming language.
 
 Temporal offers six SDKs: Java, Go, TypeScript, .NET, Python, and PHP. 
