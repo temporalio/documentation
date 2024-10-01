@@ -19,9 +19,9 @@ Temporal Nexus supports fully integrated observability, execution debugging, met
 
 Execution debugging with Nexus includes end-to-end executions that span:
 
-- Caller Workflows.
-- One or more Nexus Operations routed within and across Namespaces.
-- Underlying Temporal primitives created by a Nexus Operation handler like a Workflow.
+- Caller Workflows
+- One or more Nexus Operations routed within and across Namespaces
+- Underlying Temporal primitives created by a Nexus Operation handler like a Workflow
 
 Multi-level Nexus calls are supported:
 
@@ -120,8 +120,8 @@ Callbacks: 1
 To support deep linking for Nexus Operations that may span Workflows across Namespace boundaries, and invoke Update, Signals, and other operations on a Workflow, linking support is available for Workflow history events. 
 This enables a given history event to link to events in other Workflows, including across Namespace boundaries.
 
-Temporal SDK Nexus Operation builders, like NewWorkflowRunOperation, use this new Event History linking capability to auto-wire bi-directional links from a specific Nexus Operation event in the callers Workflow history to a specific event in the handler’s Workflow history. 
-In Public Preview this is only supported for NewWorkflowRunOperation, which does the auto-wiring of bi-directional links for you, but it is not currently supported for NewSyncOperation.
+Temporal SDK Nexus Operation builders, like  `NewWorkflowRunOperation`, use this new Event History linking capability to auto-wire bi-directional links from a specific Nexus Operation event in the callers Workflow history to a specific event in the handler’s Workflow history. 
+In Public Preview, this is only supported for `NewWorkflowRunOperation`, which does the auto-wiring of bi-directional links for you, but it is not currently supported for `NewSyncOperation`.
 
 This enables bi-directional navigation across Workflow histories:
 - Forward through the Nexus Operation execution:
@@ -194,8 +194,12 @@ While the caller of a Nexus Operation can configure the `ScheduleToClose` durati
 Nexus Endpoints are only privately accessible from within a Temporal Cloud and mTLS is used for all Nexus communication, including across cloud cells and regions.
 Workers authenticate to their Namespaces through mTLS or an API key as allowed by their Namespace configuration.
 
+See [Nexus Secure Routing](/nexus/security#secure-routing) for additional details.
+
 ## Payload Encryption
 
 For payload encryption, the DataConverter works the same for a Nexus Operation as it does for other payloads sent between a Worker and Temporal Cloud.
 Currently there is support for a single DataConverter to be used for inbound inputs and outbound outputs, which means the encryption key often used in a custom DataConverter must be the same for both the caller and the handler.
 Please let us know if you need per-Endpoint or per-Service payload encryption.
+
+See [Nexus Payload Encryption & Data Converter](/nexus/security#payload-encryption-data-converter) for additional details. 
