@@ -28,8 +28,10 @@ keywords:
 - temporal sdk message passing
 ---
 
+
+
 import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
-import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+import {RelatedReadContainer, RelatedReadItem} from '@site/src/components/related-read/RelatedRead';
 
 Workflows can be thought of as stateful web services that can receive messages.
 The Workflow can have powerful message handlers akin to endpoints that react to the incoming messages in combination with the current state of the Workflow.
@@ -174,6 +176,14 @@ If you want to send an Update to another Workflow such as a Child Workflow from 
     <RelatedReadItem path="/develop/python/message-passing#send-update-from-client" text="Send Updates in Python" archetype="feature-guide" />
     <RelatedReadItem path="/develop/typescript/message-passing#send-update-from-client" text="Send Updates in Typescript" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/message-passing#send-update-from-client" text="Send Updates in .NET" archetype="feature-guide" />
+</RelatedReadContainer>
+
+#### Update-With-Start {#update-with-start}
+
+Sending an Update-with-Start, if there is a running Workflow Execution with the given Workflow Id, it will handle the Update. Otherwise, a new Workflow Execution starts and immediately handles the Update.
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/message-passing#update-with-start" text="Update-With-Start using the Go SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
 ### Sending Queries {#sending-queries}
