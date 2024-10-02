@@ -304,7 +304,8 @@ The timeout is measured from the calling History Service and the request must go
 Handlers should observe the context deadline and ensure they don't exceed it.
 This includes fully processing a synchronous Nexus operation and starting an asynchronous Nexus operation, for example one that starts a Workflow.
 
-If a Nexus handler doesn’t process a start or cancel request within 10 seconds, it will receive a context deadline exceeded error, and the caller will retry, with an exponential backoff, for the ScheduleToClose duration for the overall Nexus Operation, which has a default and maximum as defined below in [Nexus Operation duration limits](/cloud/limits#nexus-operation-duration-limits).
+If a Nexus handler doesn’t process a start or cancel request within 10 seconds, it will receive a context deadline exceeded error, and the caller will retry, with an exponential backoff, for the ScheduleToClose duration for the overall Nexus Operation.
+This has a default and maximum as defined below in [Nexus Operation duration limits](/cloud/limits#nexus-operation-duration-limits).
 
 ### Nexus Operation duration limits {#nexus-operation-duration-limits}
 
