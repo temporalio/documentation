@@ -226,16 +226,17 @@ Initialize your Workflow's state before handling messages. This prevents reading
 
 To see why, refer to the [diagram](#message-handler-concurrency). It shows that your Workflow processes messages before the first run of your Workflow's main method.
 
-This happens in two main scenarios:
+This happens in several scenarios, such as:
 
 - When using [Signal-with-Start](#signal-with-start), the message handler always runs first.
 - When your Worker experiences delays, such as during backlogs.
+- When messages arrive immediately after a Workflow continues as new but before it resumes.
 
-For object-oriented languages, use your constructor to set up state. Annotate your constructor as an Workflow Initializer and take the same arguments as your Workflow's main method.
+For all languages except Go and TypeScript, use your constructor to set up state. Annotate your constructor as an Workflow Initializer and take the same arguments as your Workflow's main method.
 
 Note that you can't make blocking calls from your constructor. If you need to block, make your Signal or Update handler [wait](#waiting) for an initialization flag.
 
-In other languages, register any message handlers only after completing initialization.
+In Go and TypeScript, register any message handlers only after completing initialization.
 
 ### Message handler patterns {#message-handler-patterns}
 
