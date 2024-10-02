@@ -449,6 +449,18 @@ These limits are set with the following [dynamic configuration keys](https://git
 - `NumPendingSignalsLimit`
 - `NumPendingCancelRequestsLimit`
 
+#### Workflow Execution Nexus Operation Limits {#workflow-execution-nexus-operation-limits}
+
+There is a limit to the maximum number of Nexus Operations in a Workflow before Continue-As-New is required.
+Each in-progress Nexus Operation generates a metadata entry in the Workflow Execution's mutable state. 
+Too many entries in a single Workflow Execution's mutable state causes unstable persistence.
+To protect the system, Temporal enforces a maximum number of incomplete (and complete in Public Preview) Nexus Operation requests per Workflow Execution (by default, 30 Nexus Operations).
+Once the limit is reached for a type of operation, if the Workflow Execution attempts to start another Nexus operation (by producing a ScheduleNexusOperation), it will be unable to do so (the Workflow Task Execution will fail and get retried).
+
+These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/de7c8879e103be666a7b067cc1b247f0ac63c25c/components/nexusoperations/config.go#L38):
+
+- MaxConcurrentOperations
+
 ### What is a Command? {#command}
 
 A Command is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/clusters) after a [Workflow Task Execution](/workers#workflow-task-execution) completes.
@@ -593,8 +605,11 @@ A Workflow Id is a customizable, application-level identifier for a [Workflow Ex
 
 A Workflow Id is meant to be a business-process identifier such as customer identifier or order identifier.
 
-A [Workflow Id Reuse Policy](#workflow-id-reuse-policy) can be used to manage whether a Workflow Id can be re-used.
 The Temporal Platform guarantees uniqueness of the Workflow Id within a [Namespace](/namespaces) based on the Workflow Id Reuse Policy.
+
+A [Workflow Id Reuse Policy](#workflow-id-reuse-policy) can be used to manage whether a Workflow Id from a Closed Workflow can be re-used.
+
+A [Workflow Id Conflict Policy](#workflow-id-conflict-policy) can be used to decide how to resolve a Workflow Id conflict with a Running Workflow.
 
 A Workflow Execution can be uniquely identified across all Namespaces by its [Namespace](/namespaces), Workflow Id, and [Run Id](#run-id).
 
@@ -603,16 +618,8 @@ A Workflow Execution can be uniquely identified across all Namespaces by its [Na
 A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.
 
 It is not possible for a new Workflow Execution to spawn with the same Workflow Id as another Open Workflow Execution, regardless of the Workflow Id Reuse Policy.
-In some cases, an attempt to spawn a Workflow Execution with a Workflow Id that is the same as the Id of a currently Open Workflow Execution results in a `Workflow execution already started` error.
 
-:::note
-
-The default [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions) behavior in the Go SDK is to not return an error when a new Workflow Execution is attempted with the same Workflow Id as an open Workflow Execution.
-Instead, it returns a WorkflowRun instance representing the current or last run of the open Workflow Execution.
-
-To return the `Workflow execution already started` error, set `WorkflowExecutionErrorWhenAlreadyStarted` to `true`.
-
-:::
+See [Workflow Id Conflict Policy](#workflow-id-conflict-policy) for resolving a Workflow Id conflict.
 
 The Workflow Id Reuse Policy can have one of the following values:
 
@@ -626,7 +633,7 @@ The Workflow Id Reuse Policy can have one of the following values:
 - **Terminate if Running:** Specifies that if a Workflow Execution with the same Workflow Id is already running, it should be terminated and a new Workflow Execution with the same Workflow Id should be started. This policy allows for only one Workflow Execution with a specific Workflow Id to be running at any given time.
 
 The first three values (Allow Duplicate, Allow Duplicate Failed Only, and Reject Duplicate) of the Workflow Id Reuse Policy apply to Closed Workflow Executions that are retained within the Namespace.
-For example, given a default Retention Period, the Temporal Service can only check the Workflow Id of the spawning Workflow Execution based on the Workflow Id Reuse Policy against the Closed Workflow Executions for the last *30 days*. 
+For example, given a default Retention Period, the Temporal Service can only check the Workflow Id of the spawning Workflow Execution based on the Workflow Id Reuse Policy against the Closed Workflow Executions for the last _30 days_.
 
 If you need to start a Workflow for a particular implementation only if it hasn't started yet, ensure that your Retention Period is long enough to check against.
 If this becomes unwieldy, consider using [Workflow message passing](/encyclopedia/workflow-message-passing) instead of trying to start Workflows atomically.
@@ -634,7 +641,30 @@ If this becomes unwieldy, consider using [Workflow message passing](/encyclopedi
 The fourth value of the Workflow Id Reuse Policy, Terminate if Running, only applies to a Workflow Execution that is currently open within the Namespace.
 For Terminate if Running, the Retention Period is not a consideration for this policy.
 
-If there is an attempt to spawn a Workflow Execution with a Workflow Id Reuse Policy that won't allow it the Server will prevent the Workflow Execution from spawning.
+If there is an attempt to spawn a Workflow Execution with a Workflow Id Reuse Policy that won't allow it, the Server will prevent the Workflow Execution from spawning.
+
+#### What is a Workflow Id Conflict Policy? {#workflow-id-conflict-policy}
+
+A Workflow Id Conflict Policy determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution.
+See [Workflow Id Reuse Policy](#workflow-id-reuse-policy) for managing the reuse of a Workflow Id of a Closed Workflow.
+
+By default, this results in a `Workflow execution already started` error.
+
+:::note
+
+The default [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions) behavior in the Go SDK is to not return an error when a new Workflow Execution is attempted with the same Workflow Id as an Open Workflow Execution.
+Instead, it returns a WorkflowRun instance representing the current or last run of the Open Workflow Execution.
+
+To return the `Workflow execution already started` error, set `WorkflowExecutionErrorWhenAlreadyStarted` to `true`.
+
+:::
+
+The Workflow Id Conflict Policy can have one of the following values:
+
+- **Fail:** Prevents the Workflow Execution from spawning and returns a `Workflow execution already started` error.
+  **This is the default policy, if one isn't specified.**
+- **Use Existing:** Prevents the Workflow Execution from spawning and returns a successful response with the Open Workflow Execution's Run Id.
+- **Terminate Existing:** Terminates the Open Workflow Execution then spawns the new Workflow Execution with the same Workflow Id.
 
 ### What is a Timer? {#timer}
 
