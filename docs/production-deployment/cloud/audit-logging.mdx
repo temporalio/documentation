@@ -23,7 +23,7 @@ tags:
   - troubleshooting
 ---
 
-Audit Logging is a feature of [Temporal Cloud](/cloud/overview) that provides forensic access information at the account level, the user level, and the [Namespace](/namespaces) level.
+Audit Logging is a feature of [Temporal Cloud](/cloud/overview) that provides forensic access information at the account level, the user level, [Namespace](/namespaces) level, and the Nexus Endpoint level.
 
 Audit Logging answers "who, when, and what" questions about Temporal Cloud resources.
 These answers can help you evaluate the security of your organization, and they can provide information that you need to satisfy audit and compliance requirements.
@@ -63,6 +63,10 @@ The following list specifies both the supported events and the Temporal APIs tha
   - Request increase in Retention Period: `UpdateNamespace`
 - Multi-region Namespace
   - Failover Namespace: `FailoverNamespace`
+- Nexus Endpoint
+  - Create Nexus Endpoint: `CreateNexusEndpoint`
+  - Update Nexus Endpoint: `UpdateNexusEndpoint`
+  - Delete Nexus Endpoint: `DeleteNexusEndpoint`
 
 ### API Key Operation events
 

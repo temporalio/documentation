@@ -330,6 +330,21 @@ module.exports = {
               ],
             },
             "production-deployment/cloud/multi-region",
+            {
+              type: "category",
+              label: "Temporal Nexus",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/nexus/index",
+              },
+              items: [
+                "production-deployment/cloud/nexus/using-nexus",
+                "production-deployment/cloud/nexus/pricing",
+                "production-deployment/cloud/nexus/getting-started",
+                "production-deployment/cloud/nexus/operations",
+              ],
+            },
             "production-deployment/cloud/worker-health",
             "production-deployment/cloud/service-health",
             "production-deployment/cloud/saml",
