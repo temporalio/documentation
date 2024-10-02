@@ -196,7 +196,7 @@ The pay-as-you-go rate is &#36;25 per million Actions per month.
 This rate applies across all Namespaces:
 
 | Actions | &#36;25 per million Actions |
-| ------- | --------------------------------|
+| ------- | --------------------------- |
 
 **Example**
 
@@ -209,12 +209,12 @@ For example, if you use 800,000 Actions in a month, you're billed:
 
 ### Storage pricing {#payg-storage-pricing}
 
-You are billed for  your Namespace’s Active and Retained Storage each calendar month:
+You are billed for your Namespace’s Active and Retained Storage each calendar month:
 
 | **Storage** | **Price per GBh (USD)** |
-| ----------- | ---------------------- |
-| Retained    | &#36;0.00042           |
-| Active      | &#36;0.042             |
+| ----------- | ----------------------- |
+| Retained    | &#36;0.00042            |
+| Active      | &#36;0.042              |
 
 **Example**
 
@@ -257,14 +257,14 @@ The following sections explains how you are invoiced each calendar month and giv
 The following table shows our volume price tiers for Actions.
 Pricing tiers are applied per Namespace each calendar month:
 
-| Actions (per Namespace)    | Price per Million Actions   |
-|---------------------------------------------|------------|
-| First 300M Actions                          | &#36;23.25 |
-| Next 1.2B, up to 1.5B                       | &#36;18.80 |
-| Next 6B, up to 7.5B                         | &#36;14.10 |
-| Next 22.5B, up to 30B                       | &#36;10.50 |
-| Next 120B, up to 150B                       | &#36;7.90  |
-| Over 150B                                   | &#36;5.90  |
+| Actions (per Namespace) | Price per Million Actions |
+| ----------------------- | ------------------------- |
+| First 300M Actions      | &#36;23.25                |
+| Next 1.2B, up to 1.5B   | &#36;18.80                |
+| Next 6B, up to 7.5B     | &#36;14.10                |
+| Next 22.5B, up to 30B   | &#36;10.50                |
+| Next 120B, up to 150B   | &#36;7.90                 |
+| Over 150B               | &#36;5.90                 |
 
 **Example**
 
@@ -297,14 +297,14 @@ Your Temporal Credits consumed will be:
 The following table shows our volume price tiers for Active Storage.
 Pricing tiers are applied per Namespace each calendar month:
 
-| **Active Storage (Per Namespace)** | **Price per GBh (USD)**    |
-| ---------------------------------------------- | -------------- |
-| Up to 7,000 GBh                                | &#36;0.039     |
-| Next 23,000, up to 30,000                      | &#36;0.031     |
-| Next 60,000, up to 90,000                      | &#36;0.023     |
-| Next 310,000, up to 400,000                    | &#36;0.018     |
-| Next 1,100,000, up to 1,500,000                | &#36;0.013     |
-| Over 1,500,000                                 | &#36;0.010     |
+| **Active Storage (Per Namespace)** | **Price per GBh (USD)** |
+| ---------------------------------- | ----------------------- |
+| Up to 7,000 GBh                    | &#36;0.039              |
+| Next 23,000, up to 30,000          | &#36;0.031              |
+| Next 60,000, up to 90,000          | &#36;0.023              |
+| Next 310,000, up to 400,000        | &#36;0.018              |
+| Next 1,100,000, up to 1,500,000    | &#36;0.013              |
+| Over 1,500,000                     | &#36;0.010              |
 
 Retained Storage is priced at a flat rate:
 
@@ -387,7 +387,7 @@ The total bill is the sum of these line items, or &#36;15,784.40.
 
 The invoice will state that you now have 120,000 - 15,784.40 = 104,215.60 Temporal Credits remaining.
 
-If you have additional questions about credits and volume-based pricing, please  [contact sales](mailto:sales@temporal.io) or, if you're already a Temporal Cloud customer, please reach out to your dedicated account executive.
+If you have additional questions about credits and volume-based pricing, please [contact sales](mailto:sales@temporal.io) or, if you're already a Temporal Cloud customer, please reach out to your dedicated account executive.
 
 ## Other pricing {#other-pricing}
 
@@ -431,9 +431,9 @@ It breaks out Storage and Replicated Storage into their own line items.
 ### Temporal Nexus pricing {#temporal-nexus-pricing}
 
 - For Nexus Operation scheduled, the caller Workflow starting a Nexus Operation results in one Action on the caller Namespace.
-- For Nexus Operation canceled,  the caller Workflow canceling a Nexus Operation results in one Action on the caller Namespace.
-- The underlying Temporal primitives (such as Workflows, Activities, and Signals) created by a Nexus Operation handler (directly or indirectly) result in the normal Actions for those primitives billed to the handler’s Namespace. 
-This includes retries for underlying Temporal primitives like Activities.
+- For Nexus Operation canceled, the caller Workflow canceling a Nexus Operation results in one Action on the caller Namespace.
+- The underlying Temporal primitives (such as Workflows, Activities, and Signals) created by a Nexus Operation handler (directly or indirectly) result in the normal Actions for those primitives billed to the handler’s Namespace.
+  This includes retries for underlying Temporal primitives like Activities.
 - No Action results for handling the Nexus Operation itself.
 - No Action results for a retry of the Nexus Operation itself.
 
