@@ -36,7 +36,7 @@ Follow these steps to enable calls across existing Namespaces:
 
 ## Decompose a Monolithic Namespace
 
-Multiple Nexus Endpoints can target a single monolithic Namespace, and then each Endpoint can be updated, one at a time, to target separate Namespaces, for an incremental migration.
+Multiple Nexus Endpoints can target a single Namespace, and then each Endpoint can be updated, one at a time, to target separate Namespaces, for an incremental migration.
 
 Once Nexus Endpoints are in place, targeting a new Namespace can be done with config changes and zero downtime. 
 New Nexus requests will be routed to the new target Namespace, and existing Nexus requests will be completed in the previous Namespace.
