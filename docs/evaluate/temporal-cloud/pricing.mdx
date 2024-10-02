@@ -204,15 +204,6 @@ It breaks out storage and replicated storage into their own line items.
 
 :::
 
-## Temporal Nexus pricing {#temporal-nexus-pricing}
-
-* Nexus Operation scheduled. The caller Workflow starting a Nexus Operation results in one Action on the caller Namespace.  
-* Nexus Operation canceled. The caller Workflow canceling a Nexus Operation results in one Action on the caller Namespace.  
-* The underlying Temporal primitives such as Workflows, Activities, and Signals are created by a Nexus Operation handler result in the normal Actions for those primitives billed to the handler’s namespace. 
-This includes retries for underlying Temporal primitives like Activity retries.  
-* No Action results for handling the Nexus Operation itself.  
-* No Action results for a retry of the Nexus Operation itself.
-
 ## SSO and SAML pricing {#sso-and-saml}
 
 We offer single sign-on (SSO) integration using SAML at a monthly fixed fee based on the number of users registered in Temporal Cloud:
