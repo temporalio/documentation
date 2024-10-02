@@ -10,9 +10,7 @@ keywords:
 tags:
   - temporal-nexus
   - go-sdk
-  - nexus-endpoints
-  - nexus-operations
-  - nexus-service-contract
+  - nexus
 ---
 
 Use Temporal Nexus to connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
@@ -84,14 +82,14 @@ cd samples-go/nexus
 
 The Nexus Service API contract can be in whatever form works best for your environment.
 Each [Temporal SDK includes and uses a default Data Converter](https://docs.temporal.io/dataconversion), that encodes payloads in the following order: Null, Byte array, Protobuf JSON, and JSON.
-In a polyglot environment, Protobuf and JSON are common choices, but this example uses native Go types.
+In a polyglot environment, Protobuf and JSON are common choices. This example uses native Go types.
 
 In this example, there is a service package that describes the Service and Operation names along with input/output types for caller Workflows to use the Nexus Endpoint.
 
 <!--SNIPSTART service-nexus-->
 <!--SNIPEND-->
 
-## Develop a Nexus Service & Operation handlers {#develop-nexus-service-operation-handlers}
+## Develop a Nexus Service and Operation handlers {#develop-nexus-service-operation-handlers}
 
 Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract. 
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous, execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
@@ -101,12 +99,13 @@ The `temporalnexus` package has builders to create Nexus Operations:
 - `NewSyncOperation` \- Simple synchronous RPC handlers, such as for Signals
 - `NewWorkflowRunOperation` \- Run a Workflow as an asynchronous Nexus Operation
 
-Start with a `NewSyncOperation` example, and then use `NewWorkflowRunOperation` to start a handler Workflow from a Nexus Operation.
+This tutorial starts with a `NewSyncOperation` example, and then uses `NewWorkflowRunOperation` to start a handler Workflow from a Nexus Operation.
 
 ### Develop a Synchronous Nexus Operation handler
 
 The `temporalnexus.NewSyncOperation` builder function is for exposing simple RPC handlers. 
-It’s handler function is provided with an SDK client that can be used for signaling, querying, and listing Workflows, but implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
+Its handler function is provided with an SDK client that can be used for signaling, querying, and listing Workflows.
+However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
 
 <!--SNIPSTART handler-nexus {"selectedLines": ["2-23"]}-->
 <!--SNIPEND-->
@@ -341,6 +340,6 @@ For **synchronous Nexus Operations** the following are reported in the caller’
 
 :::note
 
-`NexusOperationStarted` is not reported in the caller’s history for synchronous operations.
+`NexusOperationStarted` isn't reported in the caller’s history for synchronous operations.
 
 :::
