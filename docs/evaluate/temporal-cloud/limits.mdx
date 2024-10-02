@@ -289,9 +289,8 @@ Read more about [Temporal Workflow Execution limits](/workflows#limits) on the [
 
 **What is the maximum number of Nexus Operations that can be started from a single Workflow Execution?**
 
-A single Workflow Execution can have a maximum of 30 in-flight Nexus Operations and 30 total Nexus Operations.
-Public Preview doesn't yet remove completed Nexus operations from mutable state.
-After the Workflow Execution reaches that limit, it will process no more Nexus Operations.
+A single Workflow Execution can have a maximum of 30 in-flight Nexus Operations and 30 total Nexus Operations (as Public Preview does not remove completed Nexus Operations from mutable state).
+After the Workflow Execution reaches that limit, it won't process any further Nexus Operations.
 
 See the Nexus Encyclopedia entry for [additional details](/workflows#workflow-execution-nexus-operation-limits).
 
