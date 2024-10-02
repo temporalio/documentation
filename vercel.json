@@ -1740,10 +1740,6 @@
       "destination": "/cli/workflow#reset"
     },
     {
-      "source": "/tctl-next/modifiers#--event-id",
-      "destination": "/cli/cmd-options#event-id"
-    },
-    {
       "source": "/kb/additional-resources",
       "destination": "/kb/how-to-explain-temporal"
     },
