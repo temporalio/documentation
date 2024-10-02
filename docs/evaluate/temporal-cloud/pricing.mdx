@@ -428,6 +428,15 @@ It breaks out Storage and Replicated Storage into their own line items.
 
 :::
 
+### Temporal Nexus pricing {#temporal-nexus-pricing}
+
+- For Nexus Operation scheduled, the caller Workflow starting a Nexus Operation results in one Action on the caller Namespace.
+- For Nexus Operation canceled,  the caller Workflow canceling a Nexus Operation results in one Action on the caller Namespace.
+- The underlying Temporal primitives (Workflows, Activities, Signals, …) created by a Nexus Operation handler (directly or indirectly) result in the normal Actions for those primitives billed to the handler’s Namespace. 
+This includes retries for underlying Temporal primitives like Activities.
+- No Action results for handling the Nexus Operation itself.
+- No Action results for a retry of the Nexus Operation itself.
+
 ### SSO and SAML pricing {#sso-and-saml}
 
 **What costs are associated with SSO/SAML use?**
