@@ -193,9 +193,6 @@ Nexus requests (such as starting a Nexus Operation or sending a Nexus completion
 If too many Nexus requests are sent at once, they may be throttled, along with other requests to the Namespace. 
 Throttling limits the rate at which Nexus requests are processed, ensuring the RPS limit is not exceeded.
 
-A Namespace’s default limit is set at 400 APS, which translates to an underlying rate limit of 4x APS (1600 RPS), and automatically adjusts based on recent usage (over the prior 7 days). 
-Your throughput limit will never fall below this default value. 
-
 You can request this limit be manually raised by [opening a support ticket](https://docs.temporal.io/cloud/support\#support-ticket).
 
 :::note 
