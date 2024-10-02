@@ -314,15 +314,13 @@ Also note that you can't send Updates to other Workflow Executions or perform an
 To send an Update to a Workflow Execution, you can:
 
 - Call the Update method with `ExecuteUpdateAsync` from the Client and wait for the Update to complete.
-  This code fetches an Update result:
 
-  ```csharp
-  ```
+This code fetches an Update result:
 
+```csharp
 var previousLanguage = await workflowHandle.ExecuteUpdateAsync(
 wf => wf.SetCurrentLanguageAsync(GreetingWorkflow.Language.Chinese));
-
-````
+```
 - 2. Use `StartUpdateAsync` to receive a handle as soon as the Update is accepted or rejected
   It returns an `UpdateHandle`
 
@@ -338,7 +336,7 @@ var updateHandle = await workflowHandle.StartUpdateAsync(
     wf => wf.SetGreetingAsync(new HelloWorldInput("World")));
 // Wait until the update is completed
 var updateResult = await updateHandle.GetResultAsync();
-````
+```
 
 For more details, see the "Async handlers" section.
 
