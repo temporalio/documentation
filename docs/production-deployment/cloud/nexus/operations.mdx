@@ -188,7 +188,7 @@ If a handler doesn’t respond within a context deadline, a context deadline exc
 ### Nexus Operation Maximum Duration
 
 Each Nexus Operation has a maximum ScheduleToClose duration of 60 days, which is most applicable to asynchronous Nexus Operations that are completed with an asynchronous callback using a separate Nexus request from the handler back to the caller Namespace. 
-The 60 day maximum is forward-compatible with completion callbacks that may be signed with a single use token such that asymmetric encryption keys may be rotated in a timely fashion. 
+The 60 day maximum is a limit we will look to increase at some point in the future. 
 While the caller of a Nexus Operation can configure the ScheduleToClose duration to be shorter than 60 days, the maximum duration can not be extended beyond 60 days and will be capped by the server to 60 days.
 
 ## Secure Routing
