@@ -17,21 +17,23 @@ Temporal offers an entirely new way to build scalable and reliable applications.
 
 ## Build Invincible Apps 
 
-In any complex system, failures are bound to happen. 
+In any complex system, failures are bound to happen.
+Software Engineers spend a lot of time ensuring that their applications are reliable.
 Temporal makes your applications reliable by default - ensuring that these failures don’t disrupt your application. 
 
 In a non-Temporal application, if a crash occurs, the progress of your application is lost. 
-The application has no memory of what happened before the failure, requiring extensive error-handling logic and messy recovery code to resume. 
-This process is time-consuming and error-prone, making it hard to ensure reliability.
+The application has no memory of what happened before the failure, requiring extensive error-handling logic and complex recovery code to resume. 
+This process is time-consuming and error-prone, making it difficult to ensure reliability.
 
 Temporal keeps track of the progress of your application. 
-If something goes wrong like a power outage, it helps your application pick up right where it left off - it’s like having the ultimate autosave. 
+If something goes wrong, like a power outage, it guarantees that your application can pick up right where it left off - it’s like having the ultimate autosave. 
 By offloading the responsibility of failure management from the application to the platform, this removes the need for extensive recovery coding, testing, and maintenance tasks.
 
-This shift simplifies the development process and if a failure or a crash happens, your business processes keep running seamlessly without interruptions.
+This shift simplifies the development process. 
+If a failure or a crash happens, your business processes keep running seamlessly without interruptions.
 This allows for developers to focus on business logic rather than infrastructure concerns and create applications that are inherently scalable and maintainable.
 
-Thousands of developers trust Temporal for use cases like order processing, customer onboarding, and payment handling because it lets them build invincible applications that are resilient, durable, and _just work_. 
+Thousands of developers trust Temporal for use cases like order processing, customer onboarding, and payment handling because it enables them to build invincible applications that are resilient, durable, and _just work_. 
 With Temporal, your applications keep running, no matter what.
 
 ## Temporal Application: The Building Blocks
@@ -58,27 +60,29 @@ Instead of dragging and dropping steps in a visual interface, you write your Wor
 This gives you full control and flexibility over your business processes, allowing you to build exactly what you need. 
 
 ### Activities
-Activities are the individual tasks in your Workflow - functions or methods depending on the programming language.
+Activities are the individual tasks in your Workflow.
+These are defined as either functions or methods depending on the programming language.
 Activity tasks often interact with the outside world and are prone to failure such as sending emails, making network requests, writing to a database, or calling an API. 
 
 Activities are called directly from within your Workflow code.
 
 If an Activity fails, Temporal automatically retries it based on your configuration. 
-Since Activities often rely on external systems, transient issues can occur - temporary but critical problems like network failures, timeouts, or service outages. 
+Since Activities often rely on external systems, transient issues can occur.
+These include temporary but critical problems like network failures, timeouts, or service outages. 
 You have full control over how often and how many times these retries should happen for each Activity. 
 
 ### SDK
 Developers create Temporal applications by writing code, just like you would to create any other software. 
-To do this, you use an Temporal SDK, which stands for software development kit. 
+To do this, you use an Temporal SDK, which stands for software development kit.
 
 A Temporal SDK is an open source library that developers install in their application to use Temporal. 
-It provides everything needed to build Workflows, Activities, and various other features in a specific programming language.
+It provides everything needed to build Workflows, Activities, and various other Temporal features in a specific programming language.
 
 Temporal offers six SDKs: Java, Go, TypeScript, .NET, Python, and PHP. 
 Installing the SDK allows you to easily add Temporal to your current projects without changing the tools you're already using. 
 Temporal fits right into your existing tech stack.
 
-The Temporal SDK also makes it easier to implement complex tasks such as sync/async execution, automatically retrying failed tasks, scheduling tasks to run regularly, managing complex workflows such as SAGA compensation, and managing errors.
+The Temporal SDK also makes it easier to implement complex tasks such as sync/async execution, automatically retrying failed tasks, scheduling tasks to run regularly, managing complex workflows such as Saga compensation, and managing errors.
 
 ## Temporal Service 
 
