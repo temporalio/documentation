@@ -1,6 +1,6 @@
 ---
 id: message-passing
-title: Messages  - Go SDK feature guide
+title: Workflow message passing - Go SDK
 sidebar_label: Messages
 description: Develop with Queries, Signals, and Updates with the Temporal Go SDK.
 toc_max_heading_level: 3
@@ -17,14 +17,15 @@ keywords:
   - dynamic signals
   - dynamic queries
 tags:
-  - go
-  - go-sdk
   - workflows
   - messages
   - signals
   - queries
   - updates
   - dynamic-handlers
+  - sdk
+  - go-sdk
+  - developer guide
 ---
 
 A Workflow can act like a stateful web service that receives messages: Queries, Signals, and Updates.
@@ -474,17 +475,17 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
         ao := workflow.ActivityOptions{
             StartToCloseTimeout: 10 * time.Second,
         }
-	    ctx = workflow.WithActivityOptions(ctx, ao)
+        ctx = workflow.WithActivityOptions(ctx, ao)
 
-	    var result Data
-	    err := workflow.ExecuteActivity(ctx, FetchData, name).Get(ctx, &result)
+        var result Data
+        err := workflow.ExecuteActivity(ctx, FetchData, name).Get(ctx, &result)
         x = result.x
         // 🐛🐛 Bug!! If multiple instances of this handler are executing concurrently, then
         // there may be times when the Workflow has self.x from one Activity execution and self.y from another.
         err = workflow.Sleep(ctx, time.Second)
-		if err != nil {
-			return err
-		}
+        if err != nil {
+            return err
+        }
         y = result.y
     })
     ...
@@ -497,26 +498,28 @@ Locking makes sure that only one handler instance can execute a specific section
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
     ...
-	err := workflow.SetUpdateHandler(ctx, "SafeUpdateHandler", func(ctx workflow.Context) error {
-		err := mutex.Lock(ctx)
-		if err != nil {
-			return err
-		}
-		defer mutex.Unlock()
-		ao := workflow.ActivityOptions{
-			StartToCloseTimeout: 10 * time.Second,
-		}
-		ctx = workflow.WithActivityOptions(ctx, ao)
+    err := workflow.SetUpdateHandler(ctx, "SafeUpdateHandler", func(ctx workflow.Context) error {
+        err := mutex.Lock(ctx)
+        if err != nil {
+            return err
+        }
+        defer mutex.Unlock()
+        ao := workflow.ActivityOptions{
+            StartToCloseTimeout: 10 * time.Second,
+        }
+        ctx = workflow.WithActivityOptions(ctx, ao)
 
-		var result Data
-		err := workflow.ExecuteActivity(ctx, FetchData, name).Get(ctx, &result)
-		x = data.x
-		err = workflow.Sleep(ctx, time.Second)
-		if err != nil {
-			return err
-		}
-		self.y = data.y
-	})
+        var result Data
+        err := workflow.ExecuteActivity(ctx, FetchData, name).Get(ctx, &result)
+        x = data.x
+        // ✅ OK: the scheduler may switch now to a different handler execution, or to the main workflow
+        // method, but no other execution of this handler can run until this execution finishes.
+        err = workflow.Sleep(ctx, time.Second)
+        if err != nil {
+            return err
+        }
+        self.y = data.y
+    })
     ...
 }
 
