@@ -18,8 +18,8 @@ Temporal offers an entirely new way to build scalable and reliable applications.
 ## Build Invincible Apps 
 
 In any complex system, failures are bound to happen.
-Software Engineers spend a lot of time ensuring that their applications are reliable.
-Temporal makes your applications reliable by default - ensuring that these failures don’t disrupt your application. 
+Software Engineers spend a lot of time ensuring that what they build can withstand potential failures.
+Temporal makes your applications reliable and durable by default. 
 
 In a non-Temporal application, if a crash occurs, the progress of your application is lost. 
 The application has no memory of what happened before the failure, requiring extensive error-handling logic and complex recovery code to resume. 
@@ -95,7 +95,7 @@ It communicates with the application, manages tasks, and maintains a detailed hi
 The Temporal Service manages critical tasks like making an API call or updating a database, by making sure they get executed, and then recording their completion.
 
 One of the biggest advantages of the Temporal Service is how it handles failures. 
-The Temporal Service maintains a meticulous log of every step in your Workflows. 
+The Temporal Service maintains a meticulous record of every step in your Workflows. 
 By keeping a history of every step in your Workflow, it ensures that even if something goes wrong — your Workflow can continue from the last successful point. 
 The Temporal Service knows exactly where to resume without losing any work. 
 This saves you from having to write complex error-handling code or painstaking recovery mechanisms yourself. 
@@ -107,68 +107,61 @@ You can run the Temporal Service on your own infrastructure or use Temporal Clou
 ## Workers
 The real strength of Temporal comes from the combination of your application and the Temporal Service. 
 
-Workers execute the actual tasks defined in your Workflows. 
-The Temporal Service tracks and coordinates these Workers. 
-
-Whenever your application needs to perform a task, like sending a notification or calling an processing a payment, the Temporal Service steps in. 
-This process creates a clear, organized list of what needs to be done. 
+Whenever your application needs to perform a task, like sending a notification or processing a payment, the Temporal Service creates a clear, organized list of what needs to be done. 
 
 Workers, which are part of your application and provided by the Temporal SDK, then carry out the tasks and run your code. 
+
 The Worker polls the Temporal Service to see if there are tasks available and the Temporal Service matches the Task with the Worker.
-The Worker runs the Workflow function based on the details specified in the Task.
+The Worker runs the Workflow code based on the details specified in the Task. Overall, Workers execute the actual tasks defined in your Workflows. 
+The Temporal Service orchestrates tasks to be done for the Workers.
 
 This collaboration is crucial for building reliable, scalable, and durable applications. 
 You can run multiple Workers — often dozens, hundreds, or even thousands — to improve application performance and scalability. 
 
-![Describing a Temporal Application and Temporal Service and Workers - How It Works](/img/how-it-works/htw_application_service_workers.png)
 
-:::info 
-For a deep dive into how Temporal Service works, visit the [Temporal Encyclopedia page](/clusters).
-:::
+![Describing a Temporal Application and Temporal Service and Workers - How It Works](/img/how-it-works/deployinyoureviron_diagram.avif)
 
-## Real-time Monitoring
-To recap, the Temporal SDK is used to build and run your Temporal applications. 
+## Observability 
+To recap, the Temporal SDK is used to build your Temporal applications. 
 The Temporal Service maintains the state of the applications.
 
-We have two other major components: The Temporal Web UI and the Temporal CLI. 
+We have two other major components: The **Temporal Web UI** and the **Temporal CLI**. 
+
 These are two ways you can see behind the scenes and track your Workflows. 
-Both tools are powerful for debugging uses. 
+Both tools are powerful for debugging uses and provide real-time monitoring of your applications. 
 
 ### The Temporal UI 
-The Temporal UI is a powerful tool for developers to monitor and debug their applications. 
-It's a browser-based user interface that allows you to see the progress and state of the your application. 
-The Web UI can also help you to quickly isolate, debug, and resolve production problems.
+The Temporal UI is a browser-based user interface that allows you to see the progress and state of the your application. 
+Also, known as the Web UI, it can also help you to quickly isolate, debug, and resolve production problems.
 
 ![Recent Workflows page](/img/how-it-works/workflow-details-page-hiw.avif)
 
 ### The Temporal CLI 
-The Temporal CLI is a command-line interface is another tool for managing, monitoring, and debugging Temporal Applications.
-With this tool, you can:
+The Temporal CLI is a command-line interface tool for managing, monitoring, and debugging Temporal Applications.
+Through your terminal, you can:
 
 - Start your applications
 - Send messages to running applications
 - Cancel specific steps or tasks within your applications
 - And perform other management tasks
 
-The Temporal CLI provides developers with direct access to a Temporal Service.
-It also includes a distribution of the Temporal Service for local development purposes.
-
+The Temporal CLI provides developers with direct access to a Temporal Service for local development purposes.
 
 ## Reliable as Gravity
 In conclusion, Temporal provides effortless durability, allowing applications to run for days, weeks, or even years without interruption. 
-With Temporal, you don't have to write tons of extra code to handle every possible thing that could go wrong.
-Temporal supports multiple programming languages and simplifies state management. 
-Temporal scales up easily, making sure everything runs smoothly, no matter how big your application gets. 
-
-Workflows handle the overall control structure and Activities add retryable pieces that could potentially fail. 
-Temporal handles everything from minor network outages to significant issues like unexpected reboots or hardware failures.
-If your Workflow crashes, it automatically recreates its pre-crash state and continues as if the failure never happened using data from the Event History. 
-The Event History is a detailed log that records every significant action or decision made by the Workflow. 
-Temporal automatically saves and restores your application's state, so you don't have to juggle that yourself.
-This means your application can keep running for days, weeks, or years, even if the underlying infrastructure fails.
-
 Temporal also represents a paradigm shift in software development. 
 It's not just about making existing patterns more reliable; it's about enabling entirely new approaches to building complex, distributed systems. 
+
+Temporal supports multiple programming languages which you can mix-and-match between languages for polyglot teams. 
+It simplifies state management and you don't have to write tons of extra code to handle every possible thing that could go wrong.
+With built-in scalability, Temporal ensures that your application runs smoothly, no matter its size or complexity.
+
+In summary, Workflows handle the overall code structure and Activities are retryable pieces that could potentially fail. 
+Temporal covers everything from minor network outages to significant issues like unexpected reboots or hardware failures.
+If your Workflow crashes, it automatically recreates its pre-crash state and continues as if the failure never happened using data from the Event History. 
+The Event History is a detailed record that holds every significant action or decision made by the Workflow. 
+Temporal automatically saves and restores your application's state, so you don't have to juggle that yourself or undertake manual state management.
+This means your application can keep running for days, weeks, or years, even if the underlying infrastructure fails.
 
 :::tip
 **Follow one of our tutorials to [Get Started](https://learn.temporal.io/getting_started/) learning how to use a Temporal SDK.**
