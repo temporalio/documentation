@@ -104,7 +104,6 @@ You can run the Temporal Service on your own infrastructure or use Temporal Clou
 
 ![Describing a Temporal Application and Temporal Service - How It Works](/img/how-it-works/htw_application_service_server.png)
 
-
 ## Workers
 The real strength of Temporal comes from the combination of your application and the Temporal Service. 
 
@@ -126,6 +125,31 @@ You can run multiple Workers — often dozens, hundreds, or even thousands — t
 :::info 
 For a deep dive into how Temporal Service works, visit the [Temporal Encyclopedia page](/clusters).
 :::
+
+## Observability
+To recap, the Temporal SDK is used to build and run your Temporal applications. 
+The Temporal Service maintains the state of the applications.
+
+We have two other major components: The Temporal Web UI and the Temporal CLI. 
+These are two ways you can see behind the scenes and track your Workflows. 
+Both tools are powerful for debugging uses. 
+
+### The Temporal UI 
+![Recent Workflows page](/img/recent-workflows.avif)
+The Temporal UI is a browser-based user interface that provides access to application state and metadata for a variety of observational purposes.
+It can help you to quickly isolate, debug, and resolve production problems. 
+
+### The Temporal CLI 
+The Temporal CLI is a command-line interface is a powerful tool for managing, monitoring, and debugging Temporal Applications.
+With this tool, you can:
+
+- Start your applications
+- Send messages to running applications
+- Cancel specific steps or tasks within your applications
+- And perform other management tasks
+
+The Temporal CLI provides developers with direct access to a Temporal Service.
+It also includes a distribution of the Temporal Service for local development purposes.
 
 
 ## Reliable as Gravity
