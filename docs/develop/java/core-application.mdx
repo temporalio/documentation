@@ -1,6 +1,6 @@
 ---
 id: core-application
-title: Core application - Temporal Java SDK feature guide
+title: Core application - Java SDK
 sidebar_label: Core application
 description: Learn how to create a Workflow Definition, develop a basic Activity, initiate Activity Execution, and run a Development Worker using the Temporal Java SDK. Master essential concepts such as Workflow interface annotations, Activity definitions, custom Activity Types, and asynchronous Activity invocations to build robust and scalable Temporal applications.
 toc_max_heading_level: 4
@@ -20,20 +20,16 @@ keywords:
   - workers
   - workflow
 tags:
-  - java
-  - api-reference
   - cli
-  - cli-feature
   - code-samples
-  - developer-guide
-  - developer-guide-doc-type
-  - guide-context
   - how-to
-  - how-to-doc-type
   - java
   - options
   - workers
   - workflow
+  - sdk
+  - java-sdk
+  - developer guide
 ---
 
 This page shows how to do the following:
@@ -479,7 +475,7 @@ Using the `name` parameter won't automatically capitalize the result:
 - Method Name: `composeGreeting`
 - Activity Type: `Messaging_ComposeGreeting`
 - Method Name: `composeFarewell`
-- Activity Type: `farewell `
+- Activity Type: `farewell`
 
 Be cautious with names that contain special characters, as these can be used as metric tags.
 Systems such as Prometheus may ignore metrics with tags using unsupported characters.

@@ -200,7 +200,7 @@ You can set up separate scrape endpoints in your Clients that you use to start y
 
 For more examples on setting metrics endpoints in other SDKs, see the metrics samples:
 
-- [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics)
+- [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/metrics)
 - [Go SDK Samples](https://github.com/temporalio/samples-go/tree/main/metrics)
 
 ## SDK metrics Prometheus Configuration {#prometheus-configuration}
@@ -308,5 +308,4 @@ To import a dashboard in Grafana, do the following.
 
 1. Go to **Create&nbsp;> Import**.
 2. You can either copy and paste the JSON from [Temporal Cloud](https://github.com/temporalio/dashboards/tree/master/cloud) and [Temporal SDKs](https://github.com/temporalio/dashboards/tree/master/sdk) sample dashboards, or import the JSON files into Grafana.
-   If you import a dashboard from the repositories, ensure that you update dashboard data sources (`"uid": "${datasource}"`) in the JSON to the names you configured in the [Data sources configuration](#grafana-data-sources-configuration) section.
 3. Save the dashboard and review the metrics data in the graphs.

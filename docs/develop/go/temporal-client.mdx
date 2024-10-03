@@ -1,6 +1,6 @@
 ---
 id: temporal-clients
-title: Temporal Client - Go SDK feature guide
+title: Temporal Client - Go SDK
 sidebar_label: Temporal Client
 description: Learn how to connect to Temporal Service or Cloud, start Workflow Executions, manage Workflow options, and retrieve Workflow results using the Go SDK. Follow detailed steps and code examples to effectively utilize Temporal’s capabilities.
 toc_max_heading_level: 4
@@ -262,6 +262,9 @@ if err != nil {
   // ...
 }
 ```
+
+You can configure Task Queues that are host-specific, Worker-specific or Workflow-specific to distribute your application load.
+For more information, refer to [Task Queues Processing Tuning](/develop/worker-performance#task-queues-processing-tuning) and [Worker Versioning](https://docs.temporal.io/workers#worker-versioning).
 
 ### Set custom Workflow Id {#workflow-id}
 
