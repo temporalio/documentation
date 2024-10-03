@@ -38,7 +38,6 @@ tags:
 
 A Temporal Workflow Definition must be deterministic.
 Temporal uses event sourcing to reconstruct Workflow state by replaying saved History Event data with the Workflow Definition code.
-to reconstruct the Workflow state by replaying the saved history event data on the Workflow definition code.
 This means that any incompatible update to the Workflow definition code could cause a non-deterministic
 issue if not handled correctly.
 
