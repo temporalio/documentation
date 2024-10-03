@@ -1550,7 +1550,7 @@
     },
     {
       "source": "/tctl-next/modifiers#--event-id",
-      "destination": "/cli/workflow#reset"
+      "destination": "/cli"
     },
     {
       "source": "/tctl-next/workflow#reset",
@@ -1734,10 +1734,6 @@
     {
       "source": "/java/:path*",
       "destination": "/develop/java"
-    },
-    {
-      "source": "/tctl-next/workflow#reset",
-      "destination": "/cli/workflow#reset"
     },
     {
       "source": "/kb/additional-resources",
