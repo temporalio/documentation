@@ -36,7 +36,6 @@ tags:
   - workflow-transition
 ---
 
-
 The definition code of a Temporal Workflow must be deterministic because Temporal uses event sourcing
 to reconstruct the Workflow state by replaying the saved history event data on the Workflow definition code.
 This means that any incompatible update to the Workflow definition code could cause a non-deterministic
