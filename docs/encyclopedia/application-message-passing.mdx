@@ -222,17 +222,17 @@ This execution is on a single thread–while this means you don’t have to worr
 
 #### Initializing the Workflow first {#workflow-initializers}
 
-Initialize your Workflow's state before handling messages. This prevents reading uninitialized instance variables.
+Initialize your Workflow's state before handling messages. This prevents your Workflow reading uninitialized instance variables.
 
 To see why, refer to the [diagram](#message-handler-concurrency). It shows that your Workflow processes messages before the first run of your Workflow's main method.
 
-This happens in several scenarios, such as:
+The message handler runs first in several scenarios, such as:
 
-- When using [Signal-with-Start](#signal-with-start), the message handler always runs first.
-- When your Worker experiences delays, such as during backlogs.
+- When using [Signal-with-Start](#signal-with-start).
+- When your Worker experiences delays, such as when the Task Queue it polls gets backlogged.
 - When messages arrive immediately after a Workflow continues as new but before it resumes.
 
-For all languages except Go and TypeScript, use your constructor to set up state. Annotate your constructor as an Workflow Initializer and take the same arguments as your Workflow's main method.
+For all languages except Go and TypeScript, use your constructor to set up state. Annotate your constructor as a Workflow Initializer and take the same arguments as your Workflow's main method.
 
 Note that you can't make blocking calls from your constructor. If you need to block, make your Signal or Update handler [wait](#waiting) for an initialization flag.
 
