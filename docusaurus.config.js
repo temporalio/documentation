@@ -73,7 +73,7 @@ module.exports = async function createConfigAsync() {
         },
         items: [
           {
-            label: "Home",
+            label: "Documentation Home",
             to: "/",
             position: "left",
             activeBasePath: "none",
