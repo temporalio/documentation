@@ -466,13 +466,15 @@ This will result in:
 This section assumes you are already familiar with [how connect a Worker to Temporal Cloud](https://docs.temporal.io/develop/go/core-application#run-a-temporal-cloud-worker).
 The same [source code](https://github.com/temporalio/samples-go/tree/main/nexus) is used in this section, but the `tcld` CLI will be used to create Namespaces and the Nexus Endpoint, and mTLS client certificates will be used to securely connect the caller and handler works to their respective Temporal Cloud Namespaces.
 
-### Install latest tcld CLI and generate certificates
+### Install the latest tcld CLI and generate certificates
 
-Install the latest version of the `tcld` CLI. 
-If you don’t already have certificates, you can generate them for mTLS Worker authentication:
-
+To install the latest version of the `tcld` CLI, run the following command: 
 ```
 brew install temporalio/brew/tcld
+```
+If you don’t already have certificates, you can generate them for mTLS Worker authentication using the command below:
+
+```
 tcld gen ca --org $YOUR_ORG_NAME --validity-period 1y --ca-cert ca.pem --ca-key ca.key
 ```
 
@@ -497,7 +499,7 @@ tcld namespace create \
 	--retention-days 1
 ```
 
-Alternatively, you can create Namespace through the UI: [https://cloud.temporal.io/Namespaces](https://cloud.temporal.io/Namespaces)
+Alternatively, you can create Namespace through the UI: [https://cloud.temporal.io/Namespaces](https://cloud.temporal.io/Namespaces).
 
 ### Create a Nexus Endpoint to route requests from caller to handler
 
@@ -516,6 +518,7 @@ The `--allow-namespace` is used to build an Endpoint allowlist of caller Namespa
 
 
 Alternatively, you can create a Nexus Endpoint through the UI: [https://cloud.temporal.io/nexus](https://cloud.temporal.io/nexus)
+You can also create a Nexus endpoint through the UI in the development server.
 
 ### Run Workers Connected to Temporal Cloud
 
@@ -566,19 +569,19 @@ This will result in:
 2024/07/23 19:57:40 Workflow result: ¡Hola! Nexus 👋
 ```
 
-### Observability
+## Observability
 
-#### Web UI
+### Web UI
 
 A synchronous Nexus Operation will surface in the caller Workflow as follows, with just `NexusOperationScheduled` and `NexusOperationCompleted` events in the caller’s Workflow history:
 
-![Observability in Temporal Cloud Sync](/img/nexus-go/go-sdk-observability-sync.png)
+![Observability Sync](/img/nexus-go/go-sdk-observability-sync.png)
 
 An asynchronous Nexus Operation will surface in the caller Workflow as follows, with `NexusOperationScheduled`, `NexusOperationStarted`, and `NexusOperationCompleted`, in the caller’s Workflow history:
 
-![Observability in Temporal Cloud Async](/img/nexus-go/go-sdk-observability-async.png)
+![Observability Async](/img/nexus-go/go-sdk-observability-async.png)
 
-#### Temporal CLI
+### Temporal CLI
 
 Nexus pending operations and callbacks are included in the Workflow description:
 
