@@ -85,10 +85,10 @@ In a polyglot environment, Protobuf and JSON are common choices. This example us
 
 In this example, there is a service package that describes the Service and Operation names along with input/output types for caller Workflows to use the Nexus Endpoint.
 
-<!--SNIPSTART samples-go-nexus-service-->
+<!--SNIPSTART samples-go-nexus-service {"selectedLines": ["2-13"]}-->
 [nexus/service/api.go](https://github.com/temporalio/samples-go/blob/main/nexus/service/api.go)
 ```go
-package service
+// ...
 
 const HelloServiceName = "my-hello-service"
 
@@ -101,27 +101,6 @@ type EchoInput struct {
 
 type EchoOutput EchoInput
 
-// Hello operation
-const HelloOperationName = "say-hello"
-
-type Language string
-
-const (
-	EN Language = "en"
-	FR Language = "fr"
-	DE Language = "de"
-	ES Language = "es"
-	TR Language = "tr"
-)
-
-type HelloInput struct {
-	Name     string
-	Language Language
-}
-
-type HelloOutput struct {
-	Message string
-}
 ```
 <!--SNIPEND-->
 
@@ -583,7 +562,7 @@ An asynchronous Nexus Operation will surface in the caller Workflow as follows, 
 
 ### Temporal CLI
 
-Nexus pending operations and callbacks are included in the Workflow description:
+Use the `workflow describe` command to show pending Nexus Operations in the caller Workflow and any attached callbacks on the handler Workflow:
 
 ```
 temporal workflow describe -w <ID>
