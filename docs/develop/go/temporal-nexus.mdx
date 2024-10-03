@@ -85,7 +85,44 @@ In a polyglot environment, Protobuf and JSON are common choices. This example us
 
 In this example, there is a service package that describes the Service and Operation names along with input/output types for caller Workflows to use the Nexus Endpoint.
 
-<!--SNIPSTART service-nexus-->
+<!--SNIPSTART samples-go-nexus-service-->
+[nexus/service/api.go](https://github.com/temporalio/samples-go/blob/main/nexus/service/api.go)
+```go
+package service
+
+const HelloServiceName = "my-hello-service"
+
+// Echo operation
+const EchoOperationName = "echo"
+
+type EchoInput struct {
+	Message string
+}
+
+type EchoOutput EchoInput
+
+// Hello operation
+const HelloOperationName = "say-hello"
+
+type Language string
+
+const (
+	EN Language = "en"
+	FR Language = "fr"
+	DE Language = "de"
+	ES Language = "es"
+	TR Language = "tr"
+)
+
+type HelloInput struct {
+	Name     string
+	Language Language
+}
+
+type HelloOutput struct {
+	Message string
+}
+```
 <!--SNIPEND-->
 
 ## Develop a Nexus Service and Operation handlers {#develop-nexus-service-operation-handlers}
@@ -106,7 +143,33 @@ The `temporalnexus.NewSyncOperation` builder function is for exposing simple RPC
 Its handler function is provided with an SDK client that can be used for signaling, querying, and listing Workflows.
 However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
 
-<!--SNIPSTART handler-nexus {"selectedLines": ["2-23"]}-->
+<!--SNIPSTART samples-go-nexus-handler {"selectedLines": ["2-23"]}-->
+[nexus/handler/app.go](https://github.com/temporalio/samples-go/blob/main/nexus/handler/app.go)
+```go
+// ...
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/nexus-rpc/sdk-go/nexus"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/temporalnexus"
+	"go.temporal.io/sdk/workflow"
+
+	"github.com/temporalio/samples-go/nexus/service"
+)
+
+// NewSyncOperation is a meant for exposing simple RPC handlers.
+var EchoOperation = temporalnexus.NewSyncOperation(service.EchoOperationName, func(ctx context.Context, c client.Client, input service.EchoInput, options nexus.StartOperationOptions) (service.EchoOutput, error) {
+	// The method is provided with an SDK client that can be used for arbitrary calls such as signaling, querying,
+	// and listing workflows but implementations are free to make arbitrary calls to other services or databases, or
+	// perform simple computations such as this one.
+	return service.EchoOutput(input), nil
+})
+
+```
 <!--SNIPEND-->
 
 
@@ -115,7 +178,22 @@ However, implementations are free to make arbitrary calls to other services or d
 Use the 'NewWorkflowRunOperation' constructor, which is the easiest way to expose a Workflow as an operation.
 See alternatives [here](https://pkg.go.dev/go.temporal.io/sdk/temporalnexus).
 
-<!--SNIPSTART handler-nexus {"selectedLines": ["25-35"]}-->
+<!--SNIPSTART samples-go-nexus-handler {"selectedLines": ["25-35"]}-->
+[nexus/handler/app.go](https://github.com/temporalio/samples-go/blob/main/nexus/handler/app.go)
+```go
+// ...
+// See alternatives at https://pkg.go.dev/go.temporal.io/sdk/temporalnexus.
+var HelloOperation = temporalnexus.NewWorkflowRunOperation(service.HelloOperationName, HelloHandlerWorkflow, func(ctx context.Context, input service.HelloInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
+	return client.StartWorkflowOptions{
+		// Workflow IDs should typically be business meaningful IDs and are used to dedupe workflow starts.
+		// For this example, we're using the request ID allocated by Temporal when the caller workflow schedules
+		// the operation, this ID is guaranteed to be stable across retries of this operation.
+		ID: options.RequestID,
+		// Task queue defaults to the task queue this operation is handled on.
+	}, nil
+})
+
+```
 <!--SNIPEND-->
 
 
@@ -126,7 +204,55 @@ Here `input.ID` is passed as part of the Nexus Service contract, for the `HelloO
 
 A Nexus Service and its Operation handlers are usually registered in the same Worker as the underlying Temporal primitives they abstract.
 
-<!--SNIPSTART workerhandler-nexus-->
+<!--SNIPSTART samples-go-nexus-handler-worker-->
+[nexus/handler/worker/main.go](https://github.com/temporalio/samples-go/blob/main/nexus/handler/worker/main.go)
+```go
+package main
+
+import (
+	"log"
+	"os"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+
+	"github.com/nexus-rpc/sdk-go/nexus"
+	"github.com/temporalio/samples-go/nexus/handler"
+	"github.com/temporalio/samples-go/nexus/options"
+	"github.com/temporalio/samples-go/nexus/service"
+)
+
+const (
+	taskQueue = "my-handler-task-queue"
+)
+
+func main() {
+	// The client and worker are heavyweight objects that should be created once per process.
+	clientOptions, err := options.ParseClientOptionFlags(os.Args[1:])
+	if err != nil {
+		log.Fatalf("Invalid arguments: %v", err)
+	}
+	c, err := client.Dial(clientOptions)
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+
+	w := worker.New(c, taskQueue, worker.Options{})
+	service := nexus.NewService(service.HelloServiceName)
+	err = service.Register(handler.EchoOperation, handler.HelloOperation)
+	if err != nil {
+		log.Fatalln("Unable to register operations", err)
+	}
+	w.RegisterNexusService(service)
+	w.RegisterWorkflow(handler.HelloHandlerWorkflow)
+
+	err = w.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
+}
+```
 <!--SNIPEND-->
 
 
@@ -134,7 +260,53 @@ A Nexus Service and its Operation handlers are usually registered in the same Wo
 
 Import the Service API package, that has the necessary service and operation names and input/output types to execute a Nexus Operation from the caller Workflow:
 
-<!--SNIPSTART workflowcaller-nexus-->
+<!--SNIPSTART samples-go-nexus-caller-workflow-->
+[nexus/caller/workflows.go](https://github.com/temporalio/samples-go/blob/main/nexus/caller/workflows.go)
+```go
+package caller
+
+import (
+	"github.com/temporalio/samples-go/nexus/service"
+	"go.temporal.io/sdk/workflow"
+)
+
+const (
+	TaskQueue    = "my-caller-workflow-task-queue"
+	endpointName = "my-nexus-endpoint-name"
+)
+
+func EchoCallerWorkflow(ctx workflow.Context, message string) (string, error) {
+	c := workflow.NewNexusClient(endpointName, service.HelloServiceName)
+
+	fut := c.ExecuteOperation(ctx, service.EchoOperationName, service.EchoInput{Message: message}, workflow.NexusOperationOptions{})
+
+	var res service.EchoOutput
+	if err := fut.Get(ctx, &res); err != nil {
+		return "", err
+	}
+
+	return res.Message, nil
+}
+
+func HelloCallerWorkflow(ctx workflow.Context, name string, language service.Language) (string, error) {
+	c := workflow.NewNexusClient(endpointName, service.HelloServiceName)
+
+	fut := c.ExecuteOperation(ctx, service.HelloOperationName, service.HelloInput{Name: name, Language: language}, workflow.NexusOperationOptions{})
+	var res service.HelloOutput
+
+	// Optionally wait for the operation to be started. NexusOperationExecution will contain the operation ID in
+	// case this operation is asynchronous.
+	var exec workflow.NexusOperationExecution
+	if err := fut.GetNexusOperationExecution().Get(ctx, &exec); err != nil {
+		return "", err
+	}
+	if err := fut.Get(ctx, &res); err != nil {
+		return "", err
+	}
+
+	return res.Message, nil
+}
+```
 <!--SNIPEND-->
 
 
@@ -142,14 +314,105 @@ Import the Service API package, that has the necessary service and operation nam
 
 After developing the caller Workflow, the next step is to register it with a Worker.
 
-<!--SNIPSTART workercaller-nexus-->
+<!--SNIPSTART samples-go-nexus-caller-worker-->
+[nexus/caller/worker/main.go](https://github.com/temporalio/samples-go/blob/main/nexus/caller/worker/main.go)
+```go
+package main
+
+import (
+	"log"
+	"os"
+
+	"github.com/temporalio/samples-go/nexus/caller"
+	"github.com/temporalio/samples-go/nexus/options"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+)
+
+func main() {
+	// The client and worker are heavyweight objects that should be created once per process.
+	clientOptions, err := options.ParseClientOptionFlags(os.Args[1:])
+	if err != nil {
+		log.Fatalf("Invalid arguments: %v", err)
+	}
+	c, err := client.Dial(clientOptions)
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+
+	w := worker.New(c, caller.TaskQueue, worker.Options{})
+
+	w.RegisterWorkflow(caller.EchoCallerWorkflow)
+	w.RegisterWorkflow(caller.HelloCallerWorkflow)
+
+	err = w.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
+}
+```
 <!--SNIPEND-->
 
 ### Develop a starter to start the caller Workflow
 
 To initiate the caller Workflow, a starter program is required.
 
-<!--SNIPSTART startercaller-nexus-->
+<!--SNIPSTART samples-go-nexus-caller-starter-->
+[nexus/caller/starter/main.go](https://github.com/temporalio/samples-go/blob/main/nexus/caller/starter/main.go)
+```go
+package main
+
+import (
+	"context"
+	"log"
+	"os"
+	"time"
+
+	"go.temporal.io/sdk/client"
+
+	"github.com/temporalio/samples-go/nexus/caller"
+	"github.com/temporalio/samples-go/nexus/options"
+	"github.com/temporalio/samples-go/nexus/service"
+)
+
+func main() {
+	clientOptions, err := options.ParseClientOptionFlags(os.Args[1:])
+	if err != nil {
+		log.Fatalf("Invalid arguments: %v", err)
+	}
+	c, err := client.Dial(clientOptions)
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+	runWorkflow(c, caller.EchoCallerWorkflow, "Nexus Echo 👋")
+	runWorkflow(c, caller.HelloCallerWorkflow, "Nexus", service.ES)
+}
+
+func runWorkflow(c client.Client, workflow interface{}, args ...interface{}) {
+	ctx := context.Background()
+	workflowOptions := client.StartWorkflowOptions{
+		ID:        "nexus_hello_caller_workflow_" + time.Now().Format("20060102150405"),
+		TaskQueue: caller.TaskQueue,
+	}
+
+	wr, err := c.ExecuteWorkflow(ctx, workflowOptions, workflow, args...)
+	if err != nil {
+		log.Fatalln("Unable to execute workflow", err)
+	}
+	log.Println("Started workflow", "WorkflowID", wr.GetID(), "RunID", wr.GetRunID())
+
+	// Synchronously wait for the workflow completion.
+	var result string
+	err = wr.Get(context.Background(), &result)
+	if err != nil {
+		log.Fatalln("Unable get workflow result", err)
+	}
+	log.Println("Workflow result:", result)
+}
+```
 <!--SNIPEND-->
 
 
