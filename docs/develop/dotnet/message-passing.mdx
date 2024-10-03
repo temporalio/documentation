@@ -316,7 +316,7 @@ To send an Update to a Workflow Execution, you can:
   This code fetches an Update result:
 
   ```csharp
-var previousLanguage = await workflowHandle.ExecuteUpdateAsync(
+  var previousLanguage = await workflowHandle.ExecuteUpdateAsync(
     wf => wf.SetCurrentLanguageAsync(GreetingWorkflow.Language.Chinese));
   ```
 
@@ -479,12 +479,12 @@ Consider a `ReadyForUpdateToExecute` method that runs before your Update handler
 The [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) call waits until your condition is met:
 
 ```csharp
-    [WorkflowUpdate]
-    public async Task<string> MyUpdateAsync(UpdateInput updateInput)
-    {
-        await Workflow.WaitConditionAsync(() => ReadyForUpdateToExecute(updateInput));
-        // ...
-    }
+[WorkflowUpdate]
+public async Task<string> MyUpdateAsync(UpdateInput updateInput)
+{
+    await Workflow.WaitConditionAsync(() => ReadyForUpdateToExecute(updateInput));
+    // ...
+}
 ```
 
 Remember: Handlers can execute before the main Workflow method starts.
