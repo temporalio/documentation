@@ -122,7 +122,9 @@ class MyWorkflow
 }
 ```
 
-When `getVersion()` is run for the new Workflow execution, it records a marker in the Workflow history so that all future calls to `GetVersion()` for this change Id (`Step 1` in the example) on this Workflow execution will always return the given version number, which is `1` in the example.
+When `getVersion()` is run for the new Workflow execution, it records a marker in the Workflow history.
+All future calls to `GetVersion()` for this change Id (`Step 1` in the example) on this Workflow execution will always return the given version number.
+This is `1` in the example.
 
 :::note
 
