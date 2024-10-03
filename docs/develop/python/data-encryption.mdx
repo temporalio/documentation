@@ -1,6 +1,6 @@
 ---
 id: data-encryption
-title: Data encryption
+title: Data encryption - Python SDK
 sidebar_label: Data encryption
 description: Learn how to use custom Payload Codecs and Converters with Temporal Python SDK for enhanced Workflow data handling, including custom encoding steps like compression and encryption. Discover how to implement and set up custom Data Converters to convert Temporal payloads efficiently and support various data types.
 toc_max_heading_level: 2
@@ -13,10 +13,11 @@ keywords:
   - converting custom types
   - custom json encoding
 tags:
-  - python
-  - python-sdk
   - data-encryption
   - data-conversion
+  - sdk
+  - python-sdk
+  - developer guide
 ---
 
 This page shows the following:
@@ -33,7 +34,7 @@ If you only need to change the encoding performed on your payloads -- by adding 
 
 The `PayloadCodec` needs to implement `encode()` and `decode()` functions at a minimum.
 These should loop through all of a Workflow's payloads, perform all of your necessary marshaling, compression, or encryption steps in order, and set an `"encoding"` metadata field.
-Here is an example that marshals and then compresses a payload using Python's [cramjam](https://github.com/milesgranger/cramjam/tree/master/cramjam-python) library to provide `snappy` compression:
+Here is an example that marshals and then compresses a payload using Python's [cramjam](https://github.com/milesgranger/cramjam) library to provide `snappy` compression:
 
 ```python
 import cramjam

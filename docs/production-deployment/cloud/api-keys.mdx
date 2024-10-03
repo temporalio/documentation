@@ -51,6 +51,9 @@ The authentication process follows this pathway:
 - **Keep it secret; keep it safe**: Treat your API key like a password.
   Do not expose it in client-side code, public repositories, or other easily accessible locations.
 - **Rotate keys regularly**: Change your API keys periodically to reduce risks from potential leaks.
+  Keys must be rotated every at least every 90 days.
+- **Design your code for key updates**: Use key management practices that retrieve your API keys without hard-coding them into your apps.
+  This lets you restart your Workers to refresh your rotated keys without recompiling your code.
 - **Monitor API key usage**: Check usage metrics and logs regularly.
   Revoke the key immediately if you detect any unexpected or unauthorized activity.
 - **Use a Key Management System (KMS)**: Employ a Key Management System to minimize the risk of key leaks.
@@ -142,7 +145,7 @@ Create API keys using one of the following methods:
 
 #### Generate API keys with the Temporal Cloud UI
 
-[Login](https://cloud.temporal.io/) to the Temporal Cloud UI and navigate to your [Profile Page → API keys](https://cloud.temporal.io/profile/api-keys).
+[Log in](https://cloud.temporal.io/) to the Temporal Cloud UI and navigate to your [Profile Page → API keys](https://cloud.temporal.io/profile/api-keys).
 Then select **Create API key** and provide the following information:
 
 - API key name: a short identifiable name for the key
@@ -174,7 +177,7 @@ When disabled, an API key cannot authenticate with Temporal Cloud.
 
 Follow these steps:
 
-1. [Login](https://cloud.temporal.io/) to the Temporal Cloud UI.
+1. [Log in](https://cloud.temporal.io/) to the Temporal Cloud UI.
 1. Go to your [Profile Page → API Keys](https://cloud.temporal.io/profile/api-keys).
 1. Select the three vertical dots next to the API key’s row.
 1. Choose **Enable** or **Disable**.
@@ -204,7 +207,7 @@ This can affect long-running Workflows that outlast the API key's lifetime.
 
 Follow these steps to remove API keys:
 
-1. [Login](https://cloud.temporal.io/) to the Temporal Cloud UI.
+1. [Log in](https://cloud.temporal.io/) to the Temporal Cloud UI.
 1. Navigate to your [Profile Page → API keys](https://cloud.temporal.io/profile/api-keys).
 1. Select the three vertical dots next to the API key's row.
 1. Choose **Delete**.
@@ -218,7 +221,19 @@ tcld login
 tcld apikey delete --id <api-key-id>
 ```
 
-## Manage API Keys for Service Accounts {#serviceaccount-api-keys}
+### Rotate an API key
+
+Temporal API keys automatically expire.
+Their maximum life is 90 days.
+Follow these steps to rotate API keys:
+
+1. Create a new key.
+   You may reuse key names if that helps.
+1. Ensure that both the original key and new key function properly before moving to the next step.
+1. Switch clients to load the new key and start using it.
+1. Delete the old key after it is no longer in use.
+
+## Manage API keys for Service Accounts {#serviceaccount-api-keys}
 
 Global Administrators/Account Owners can manage API keys for all Service Accounts in their account and generate API keys for Service Accounts.
 This is different for users, who generate their own API keys.
@@ -238,7 +253,7 @@ Create API keys for Service Accounts using one of the following methods:
 
 #### Generate API Keys with the Temporal Cloud UI
 
-[Login](https://cloud.temporal.io/) to the Temporal Cloud UI and go to [API keys settings](https://cloud.temporal.io/settings/api-keys).
+[Log in](https://cloud.temporal.io/) to the Temporal Cloud UI and go to [API keys settings](https://cloud.temporal.io/settings/api-keys).
 Select **Create API key**, then choose **Service Account** from the "Create an API key for" dropdown.
 In the "Mapped to identity" input box, select a Service account and provide the following information:
 
@@ -310,6 +325,18 @@ The process for deleting an API key is the same for a user or Service Account.
 tcld login
 tcld apikey delete --id <api-key-id>
 ```
+
+### Rotate a Service Account API key
+
+Temporal API keys automatically expire.
+Their maximum life is 90 days.
+Follow these steps to rotate API keys:
+
+1. Create a new key.
+   You may reuse key names if that helps.
+1. Ensure that both the original key and new key function properly before moving to the next step.
+1. Switch clients to load the new key and start using it.
+1. Delete the old key after it is no longer in use.
 
 ## API keys for Namespace authentication {#namespace-authentication}
 
