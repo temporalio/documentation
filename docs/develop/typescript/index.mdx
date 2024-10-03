@@ -1,6 +1,6 @@
 ---
 id: index
-title: Temporal TypeScript SDK Development Documentation
+title: TypeScript SDK developer guide
 sidebar_label: TypeScript SDK
 description: This guide offers a thorough overview of structures, features, and best practices for developing with Temporal's TypeScript SDK, including Workflows, Client, Testing, Failure Detection, and more.
 toc_max_heading_level: 4
@@ -13,113 +13,124 @@ tags:
   - typescript
 ---
 
+
+Build [Temporal Applications](/temporal#temporal-application) with the TypeScript SDK.
+
 This guide provides a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
 
-## Core Application
+## [Core application](/develop/typescript/core-application)
 
-The Core Application section of the Develop with Temporal TypeScript SDK covers the essential concepts and implementation details needed to build and run a Temporal Application.
+Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.
 
 - [Develop a Basic Workflow](/develop/typescript/core-application#develop-workflows)
 - [Develop a Basic Activity](/develop/typescript/core-application#develop-activities)
 - [Start an Activity Execution](/develop/typescript/core-application#activity-execution)
 - [Run Worker Processes](/develop/typescript/core-application#run-a-dev-worker)
 
-## Temporal Client
+## [Temporal Client](/develop/typescript/temporal-clients)
 
-The Temporal Client section of the Develop with Temporal TypeScript SDK describes how to use the Temporal Client to connect and start a Workflow Execution.
+Connect to a Temporal Service and start a Workflow Execution.
 
 - [Connect to Development Temporal Service](/develop/typescript/temporal-clients#connect-to-development-service)
 - [Connect to Temporal Cloud](/develop/typescript/temporal-clients#connect-to-temporal-cloud)
 - [Start a Workflow Execution](/develop/typescript/temporal-clients#start-workflow-execution)
 
-## Test Suites
+## [Testing](/develop/typescript/testing-suite)
 
-The Testing section of the Develop with Temporal TypeScript SDK describes how to test your Temporal Application.
+Set up the testing suite and test Workflows and Activities.
 
 - [Test Frameworks](/develop/typescript/testing-suite#test-frameworks)
 - [Testing Activities](/develop/typescript/testing-suite#test-activities)
 - [Testing Workflows](/develop/typescript/testing-suite#test-workflows)
 - [How to Replay a Workflow Execution](/develop/typescript/testing-suite#replay)
 
-## Failure Detection
+## [Failure detection](/develop/typescript/failure-detection)
 
-The Failure Detection section of the Develop with Temporal TypeScript SDK describes how to configure timeouts and heartbeat intervals for Activities and Workflows.
+Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
 
 - [Workflow Timeouts](/develop/typescript/failure-detection#workflow-timeouts)
 - [Set Activity Timeouts](/develop/typescript/failure-detection#activity-timeouts)
 - [Heartbeat an Activity](/develop/typescript/failure-detection#activity-heartbeats)
 
-## Messages
+## [Workflow message passing](/develop/typescript/message-passing)
 
-The Messages section of the Develop with Temporal TypeScript SDK describes how to use the Temporal Client to send messages to a Workflow Execution.
+Send messages to and read the state of Workflow Executions.
 
 - [Develop with Signals](/develop/typescript/message-passing#signals)
 - [Develop with Queries](/develop/typescript/message-passing#queries)
 - [What is a Dynamic Handler](/develop/typescript/message-passing#dynamic-handler)
 
-## Cancellation
+## [Interrupt a Workflow feature guide](/develop/typescript/cancellation)
 
-The Cancellation section of the Develop with Temporal TypeScript SDK describes how to cancel a Workflow Execution.
+Interrupt a Workflow Execution with a Cancel or Terminate action.
 
 - [Cancellation scopes in Typescript](/develop/typescript/cancellation#cancellation-scopes)
 
-## Asynchronous Activity Completion
+## [Asynchronous Activity Completion](/develop/typescript/asynchronous-activity-completion)
 
-The Asynchronous Activity Completion section of the Develop with Temporal TypeScript SDK describes how to complete Activities asynchronously.
+Complete Activities asynchronously.
 
 - [Asynchronously Complete an Activity](/develop/typescript/asynchronous-activity-completion)
 
-## Versioning
+## [Versioning](/develop/typescript/versioning)
 
-The Versioning section of the Temporal Developer's Guide covers how to update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
+Change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 
 - [Introduction to Versioning](/develop/typescript/versioning)
 - [How to Use the Patching API](/develop/typescript/versioning#typescript-sdk-patching-api)
 - [How to Use Worker Versioning](/develop/typescript/versioning#worker-versioning)
 
-## Observability
+## [Observability](/develop/typescript/observability)
 
-The Observability section of the Temporal Developer's Guide covers how to configure and use the Temporal Observability APIs.
+Configure and use the Temporal Observability APIs.
 
 - [Emit Metrics](/develop/typescript/observability#metrics)
 - [Setup Tracing](/develop/typescript/observability#tracing)
 - [Log from a Workflow](/develop/typescript/observability#logging)
 - [Use Visibility APIs](/develop/typescript/observability#visibility)
 
-## Debugging
+## [Debugging](/develop/typescript/debugging)
 
-The Debugging section of the Temporal Developer's Guide covers the various ways to debug your application.
+Explore various ways to debug your application.
 
 - [Debugging](/develop/typescript/debugging)
 
-## Schedules
+## [Schedules](/develop/typescript/schedules)
 
-The Schedules section of the Develop with Temporal TypeScript SDK covers how to schedule Workflows, run Workflows on a Cron, and configure Workflows to run on a delay.
+Run Workflows on a schedule and delay the start of a Workflow.
 
 - [Schedule a Workflow](/develop/typescript/schedules#schedule-a-workflow)
 - [Temporal Cron Jobs](/develop/typescript/schedules#temporal-cron-jobs)
 - [How to use Start Delay](/develop/typescript/schedules#start-delay)
 
-## Data Encryption
+## [Data encryption](/develop/typescript/data-encryption)
 
-The Converters and Codecs section of the Temporal Developer's Guide provides guidance on how to support compression, encryption, and other special data handling by implementing custom converters and codecs.
+Use compression, encryption, and other data handling by implementing custom converters and codecs.
 
 - [Custom Payload Codec](/develop/typescript/data-encryption#custom-payload-conversion)
 
-## Child Workflows
+## [Durable Timers](/develop/typescript/timers)
 
-The Child Workflows section of the Develop with Temporal TypeScript SDK covers how to spawn a Child Workflow Execution and handle Child Workflow Events.
+Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.
+
+- [What is a Timer](/develop/typescript/timers)
+
+## [Child Workflows](/develop/typescript/child-workflows)
+
+Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.
 
 - [Start a Child Workflow Execution](/develop/typescript/child-workflows)
 
-## Continue-As-New
+## [Continue-As-New](/develop/typescript/continue-as-new)
 
-The Continue-As-New section of the Develop with Temporal TypeScript SDK covers how to create a new Workflow Execution using the same Workflow ID as an existing Workflow Execution.
+Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
 
 - [Continue-As-New](/develop/typescript/continue-as-new)
 
-## Timers
+## [Interceptors](/develop/typescript/interceptors)
 
-The Timers section of the Develop with Temporal TypeScript SDK covers how to use timers and sleeps within Workflows.
+Manage inbound and outbound SDK calls, enhance tracing, and add authorization to your Workflows and Activities.
 
-- [What is a Timer](/develop/typescript/timers)
+- [How to implement interceptors](/develop/typescript/interceptors#interceptors)
+- [Register an interceptor](/develop/typescript/interceptors#register-interceptor)
+

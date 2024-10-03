@@ -1,0 +1,63 @@
+---
+id: nexus-security
+title: Security in Temporal Nexus
+sidebar_label: Security
+description: Explore the security aspects of Temporal Nexus, including managing Nexus Endpoints, runtime access control, secure routing, and payload encryption to ensure safe and reliable cross-namespace operations.
+toc_max_heading_level: 4
+slug: /nexus/security
+keywords:
+  - Nexus security
+  - runtime access control
+  - encryption
+  - secure routing
+  - payload encryption and data converter
+tags:
+  - nexus security
+  - temporal nexus
+  - nexus 
+
+---
+
+This page covers the following:
+
+- [Managing Nexus Endpoints in the Nexus API Registry](#managing-nexus-endpoints)
+- [Runtime Access Control](#runtime-access-control)
+- [Secure Routing](#secure-routing)
+- [Payload Encryption & Data Converter](#payload-encryption-data-converter)
+
+### Managing Nexus Endpoints in the Nexus API Registry {#managing-nexus-endpoints}
+
+Similar to Namespaces, a Nexus Endpoint is an account-scoped resource that is global within your Temporal Cloud account.
+
+Any Developer in an account, who is also a Namespace Admin on the endpoint’s target Namespace, can manage (create/update/delete) a Nexus Endpoint.
+
+All users with a Read-only role or higher in an account, can view and browse the full list of Endpoints.
+
+### Runtime Access Control {#runtime-access-control}
+
+Access to a Nexus Endpoint is controlled by the endpoint's access control policy (allowlist of caller Namespaces) for each endpoint in the Nexus API registry.
+
+Workers in each Namespace may authenticate with Temporal Cloud as they do now with mTLS certificates or API key as allowed by the caller Namespace.
+Once a Worker has authenticated it can send Nexus Operation commands to Temporal Cloud using a Temporal SDK to start a Nexus Operation in a different Namespace.
+For example, in the Temporal Go SDK a caller Workflow would use `nexusClient.ExecuteOperation` to issue a command to start a Nexus Operation.
+
+To process a `ScheduleNexusOperation` command from a caller Workflow, Temporal Cloud obtains the handler Namespace and Task Queue for the handler endpoint, and restricts access by verifying that the caller’s Namespace is in the endpoint’s allowlist.
+
+In this way, Temporal Cloud acts as a trusted broker across Namespace boundaries, and relies on authenticated workers in each Namespace.
+
+### Secure Routing {#secure-routing}
+
+In Temporal Cloud multiple security provisions are in place to ensure it can act as a trusted broker across Namespace boundaries:
+
+- Workers authenticate to their Namespaces via mTLS or an API key as allowed by their Namespace configuration.
+- mTLS is used for all Nexus communication, including across cloud cells and regions, to:
+  - Start or Cancel a Nexus Operation.
+  - Callback on completion of an asynchronous Nexus Operation.
+- Nexus Endpoints are only privately accessible from within a Temporal Cloud account.
+  - Accessible from within a caller Workflow using the Temporal SDK.
+  - Not externally accessible for arbitrary clients yet.
+
+### Payload Encryption and Data Converter {#payload-encryption-data-converter}
+
+The Data Converter works the same for a Nexus Operation as it does for other payloads sent between a Worker and Temporal Cloud.
+There is support for a single Data Converter to be used for inbound inputs and outbound outputs, which means the encryption key often used in a custom Data Converter must be the same for both the caller and the handler.

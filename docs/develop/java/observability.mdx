@@ -1,6 +1,6 @@
 ---
 id: observability
-title: Observability
+title: Observability - Java SDK
 sidebar_label: Observability
 slug: /develop/java/observability
 description: Explore the observability features of Temporal, including Metrics, Tracing, Logging, and Visibility. Learn to emit Metrics with the Java SDK, set up Tracing, and use Search Attributes.
@@ -12,11 +12,9 @@ keywords:
   - java
   - sdk
 tags:
-  - developer-guide
-  - guide-context
-  - how-to
-  - java
   - sdk
+  - java-sdk
+  - developer guide
 ---
 
 The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
@@ -68,7 +66,7 @@ The following example shows how to use `MicrometerClientStatsReporter` to define
 ```
 
 For more details, see the [Java SDK Samples](https://github.com/temporalio/samples-java/tree/637c2e66fd2dab43d9f3f39e5fd9c55e4f3884f0/core/src/main/java/io/temporal/samples/metrics).
-For details on configuring a Prometheus scrape endpoint with Micrometer, see the [Micrometer Prometheus Configuring](https://micrometer.io/docs/registry/prometheus#_configuring) documentation.
+For details on configuring a Prometheus scrape endpoint with Micrometer, see the [Micrometer Prometheus Configuring](https://docs.micrometer.io/micrometer/reference/implementations/prometheus.html#_configuring) documentation.
 
 ## Set up tracing {#tracing}
 
@@ -211,7 +209,7 @@ This method is particularly useful for Workflows whose attributes need to change
 
 ```java
   import io.temporal.workflow.Workflow;
-  
+
   ...
 
   // Existing Workflow Logic
@@ -240,6 +238,6 @@ To remove a Search Attribute that was previously set, set it to an empty Map.
     public static final SearchAttributeKey<Boolean> IS_ORDER_FAILED = SearchAttributeKey.forBoolean("isOrderFailed");
 
     ...
-    
+
     Workflow.upsertTypedSearchAttributes(Constants.IS_ORDER_FAILED.valueUnset());
 ```
