@@ -192,7 +192,8 @@ After you are sure that all of the Workflow executions for version 1 have comple
 
 :::note
 
-Note that we have preserved the call to `GetVersion()`. There are two reasons to preserve this call:
+This preserves the call to `GetVersion()`.
+There are two reasons to preserve this call:
 
 1. This ensures that if there is a Workflow execution still running for an older version, it will fail here and not proceed.
 2. If you need to make additional changes for `Step 1`, such as changing `anotherPatchActivity` to `yetAnotherPatchActivity`, you only need to update `maxVersion` from 2 to 3 and branch from there.
