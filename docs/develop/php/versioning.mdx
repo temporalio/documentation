@@ -99,7 +99,7 @@ class MyWorkflow
 }
 ```
 
-**Problem**: You can't deploy `postPatchActivity` directly until you're certain there are no more running Workflows created using the `prePatchActivity` code.
+Problem: You can't deploy `postPatchActivity` directly until you're certain there are no more running Workflows created using the `prePatchActivity` code.
 Otherwise you are likely to cause a non-deterministic error.
 
 Instead, you'll need to deploy `postPatchActivity` and use the [Workflow::getVersion()](https://php.temporal.io/classes/Temporal-Workflow.html#method_getVersion) method to determine which version of the code to execute.
