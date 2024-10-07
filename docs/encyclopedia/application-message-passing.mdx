@@ -129,7 +129,7 @@ Signal-With-Start is a great tool for lazily initializing Workflows. When you se
 :::tip Support, stability, and dependency info
 
 - In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
-- Coming soon: Available in Public Preview as of Open Source Temporal Server version 1.25.  (Available in [Pre-release](/evaluate/development-production-features/release-stages#pre-release) as of [v1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0))
+- In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Open Source Temporal Server since [v1.25.0](https://github.com/temporalio/temporal/releases/tag/v1.25.0)
 - Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.28.0/client#Client.UpdateWorkflow) since [v1.28.0](https://github.com/temporalio/sdk-go/releases/tag/v1.28.0)
 - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.25.0](https://github.com/temporalio/sdk-java/releases/tag/v1.25.0)
 - Available in [Python SDK](/develop/python/message-passing#send-update-from-client) since [v1.7.0](https://github.com/temporalio/sdk-python/releases/tag/1.7.0)
@@ -141,9 +141,9 @@ Signal-With-Start is a great tool for lazily initializing Workflows. When you se
 
 :::note
 
-Workflow Updates are currently disabled by default on Temporal Server.
+To use the Workflow Update feature in versions prior to v1.25.0, it must be manually enabled.
 
-To enable sending Updates, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) and [frontend.enableUpdateWorkflowExecutionAsyncAccepted](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config values to `true`.
+Set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) and [frontend.enableUpdateWorkflowExecutionAsyncAccepted](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config values to `true`.
 
 For example, with the Temporal CLI, run these commands:
 
@@ -359,7 +359,6 @@ Use these links to see a simple update handler.
     <RelatedReadItem path="/develop/dotnet/message-passing#updates" text="Handle Updates in .NET" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/message-passing#handle-updates" text="Handle Updates in PHP" archetype="feature-guide" />
 </RelatedReadContainer>
-
 
 ### Writing Query Handlers {#writing-query-handlers}
 
