@@ -4,7 +4,10 @@ title: Workflow message passing - PHP SDK
 sidebar_label: Messages
 toc_max_heading_level: 2
 keywords:
-  - messages
+  - message passing
+  - signals
+  - queries
+  - updates
 tags:
   - messages
   - sdk
@@ -255,7 +258,7 @@ Including such logic causes unexpected behavior.
 
 You can add custom Query types to handle Queries such as Querying the current state of a
 Workflow, or Querying how many Activities the Workflow has completed. To do this, you need to set
-up a Query handler using method attribute `QueryMethod` or `Workflow::registerQueryHandler`.
+up a Query handler using method attribute `QueryMethod` or `Workflow::registerQuery`.
 
 ```php
 #[Workflow\WorkflowInterface]
@@ -272,7 +275,6 @@ class YourWorkflow
     {
         // workflow code
     }
-
 }
 ```
 
@@ -346,11 +348,15 @@ var_dump($workflow->getCurrentState());
 
 Queries are sent from a Temporal Client.
 
-## How to develop with Updates {#updates}
+##  Updates {#updates}
+
+**How to develop with Updates using the Temporal PHP SDK**
 
 An [Update](/encyclopedia/workflow-message-passing#sending-updates) is an operation that can mutate the state of a Workflow Execution and return a response.
 
-### How to define an Update {#define-update}
+### Define Update {#define-update}
+
+**How to define an Update using the PHP SDK.**
 
 Workflow Updates handlers are methods in your Workflow Definition designed to handle updates.
 These updates can be triggered during the lifecycle of a Workflow Execution.
@@ -361,19 +367,38 @@ An Update handler has a name, arguments, response, and an optional validator.
 - The arguments and response must be [serializable](/dataconversion).
 
 The [`#[UpdateMethod]`](https://php.temporal.io/classes/Temporal-Workflow-UpdateMethod.html) attribute indicates that the method is used to handle and respond to update requests.
-The Updates type defaults to the name of the method. To overwrite this default naming and assign a custom Update type, use the `#[UpdateMethod]` attribute with the `name` argument.
 
 ```php
-#[UpdateMethod(name: 'my_update')]
-public function myUpdate(string $signalName);
+#[UpdateMethod]
+public function myUpdate(string $value);
 ```
 
-### How to handle Updates in a Workflow {#handle-updates}
+### Handle Update {#handle-updates}
+
+**How to handle Updates in a Workflow using the PHP SDK.**
 
 Workflows listen for Update by the Update's name.
 
+Use the `#[UpdateMethod]` attribute to handle Updates in the Workflow interface.
 The handler method can accept multiple serializable input parameters, but it's recommended using only a single parameter.
 The function can return a [serializable](/dataconversion) value or `void`.
+
+```php
+#[WorkflowInterface]
+interface FileProcessingWorkflow {
+    #[WorkflowMethod]
+    #[ReturnType(ProcessResult::class)]
+    public function processFile(File $file);
+
+    #[UpdateMethod]
+    public function pauseProcessing(): void;
+}
+```
+
+Update handlers, unlike Query handlers, can change Workflow state.
+
+The Updates type defaults to the name of the method.
+To overwrite this default naming and assign a custom Update type, use the `#[UpdateMethod]` attribute with the `name` parameter.
 
 ```php
 #[WorkflowInterface]
@@ -383,16 +408,25 @@ interface FileProcessingWorkflow {
 
     #[UpdateMethod(name: 'pause')]
     public function pauseProcessing(): void;
-
-    #[UpdateMethod]
-    #[ReturnType(AddResult::class)]
-    public function addFile(FileInfo $file);
 }
 ```
 
-Update handlers, unlike Query handlers, can change Workflow state.
+**Register Update Handler dynamically**
 
-### How to validate an Update in a Workflow {#validate-an-update}
+You can register Update handlers dynamically using the `Workflow::registerUpdate()` method.
+The third argument is an optional Update validator. The validator function must have the same parameters as the handler and throw an exception if the validation fails.
+
+```php
+Workflow::registerUpdate(
+    name: 'pause',
+    handler: fn() => $this->paused = true,
+    validator: fn() => $this->paused === false or throw new \Exception('Workflow is already paused'),
+);
+```
+
+### Validate Update {#validate-an-update}
+
+**How to validate Updates in a Workflow using the PHP SDK.**
 
 Validate certain aspects of the data sent to the Workflow using an Update Validator method. For instance, a counter Workflow might never want to accept a non-positive number. Use the [`#[UpdateValidatorMethod]`](https://php.temporal.io/classes/Temporal-Workflow-UpdateValidatorMethod.html) attribute and set the `forUpdate` argument to the name of your Update handler. Your Update Validator should accept the same input parameters as your Update Handler and return `void`.
 
@@ -410,7 +444,9 @@ interface GreetingWorkflow {
 }
 ```
 
-### How to send an Update from a Temporal Client {#send-update-from-client}
+### Send Update from a Client {#send-update-from-client}
+
+**How to send an Update to a Workflow Execution from a Temporal Client using the PHP SDK.**
 
 To send an Update to a Workflow Execution from a Client, call the Update method, annotated with `#[UpdateMethod]` in the Workflow interface, from the Client code.
 
