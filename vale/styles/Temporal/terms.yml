@@ -53,6 +53,8 @@ swap:
   namespace: Namespace
   namespaces: Namespaces
   namespace id: Namespace Id
+  nexus: Temporal Nexus
+  Nexus: Temporal Nexus
   parent close policy: Parent Close Policy
   payload codec: Payload Codec
   payload converter: Payload Converter

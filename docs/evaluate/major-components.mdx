@@ -63,40 +63,70 @@ With the Temporal CLI, developers can start their applications, pass messages, c
 The Temporal CLI provides developers with direct access to a Temporal Service.
 It also includes a distribution of the Temporal Service for local development purposes.
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+The Temporal CLI is available on MacOS, Windows, and Linux.
 
-<Tabs
-defaultValue="macos"
-values={[
-{label: 'MacOS', value: 'macos'},
-{label: 'Windows', value: 'windows'},
-{label: 'Linux', value: 'linux'},
-]
-}>
+### MacOS
 
-<TabItem value="macos">
+**How to install the Temporal CLI on Mac OS**
 
-```shell
-brew install temporal && temporal server start-dev
+Choose one of the following install methods to install the Temporal CLI on MacOS:
+
+**Install the Temporal CLI with Homebrew**
+
+```bash
+brew install temporal
 ```
 
-</TabItem>
-<TabItem value="windows">
+**Install the Temporal CLI from CDN**
 
-```shell
-curl -sSf https://temporal.download/cli.sh | sh
+1. Select the platform and architecture needed.
+
+- Download for Darwin amd64: https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64
+- Download for Darwin arm64: https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64
+
+2. Extract the downloaded archive.
+
+3. Add the `temporal` binary to your PATH.
+
+### Linux
+
+**How to install the Temporal CLI on Linux**
+
+Choose one of the following install methods to install the Temporal CLI on Linux:
+
+**Install the Temporal CLI with Homebrew**
+
+```bash
+brew install temporal
 ```
 
-</TabItem>
-<TabItem value="linux">
+**Install the Temporal CLI from CDN**
 
-```shell
-apt install temporal && temporal server start-dev
-```
+1. Select the platform and architecture needed.
 
-</TabItem>
-</Tabs>
+- Download for Linux amd64: https://temporal.download/cli/archive/latest?platform=linux&arch=amd64
+- Download for Linux arm64: https://temporal.download/cli/archive/latest?platform=linux&arch=arm64
+
+2. Extract the downloaded archive.
+
+3. Add the `temporal` binary to your PATH.
+
+### Windows
+
+**How to install the Temporal CLI on Windows**
+
+Follow these instructions to install the Temporal CLI on Windows:
+
+**Install the Temporal CLI from CDN**
+
+1. Select the platform and architecture needed and download the binary.
+
+- Download for Windows amd64: https://temporal.download/cli/archive/latest?platform=windows&arch=amd64
+- Download for Windows arm64: https://temporal.download/cli/archive/latest?platform=windows&arch=arm64
+
+2. Extract the downloaded archive.
+
+3. Add the `temporal.exe` binary to your PATH.
 
 ## Temporal UI
 
