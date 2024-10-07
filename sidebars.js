@@ -135,6 +135,7 @@ module.exports = {
             "develop/go/schedules",
             "develop/go/data-encryption",
             "develop/go/timers",
+            "develop/go/nexus",
             "develop/go/child-workflows",
             "develop/go/continue-as-new",
             "develop/go/side-effects",
