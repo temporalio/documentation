@@ -53,8 +53,8 @@ The Temporal Server should be available on `localhost:7233` and the Temporal Web
 Before setting up Nexus endpoints, create separate Namespaces for the caller and handler.
 
 ```
-temporal operator namespace create --namespace my-target-namespace
-temporal operator namespace create --namespace my-caller-namespace
+temporal operator namespace create --namespace MyTargetNamespaceName
+temporal operator namespace create --namespace MyCallerNamespaceName
 ```
 
 ## Create a Nexus Endpoint to route requests from caller to handler {#create-nexus-endpoint}
@@ -63,9 +63,9 @@ After establishing caller and handler Namespaces, the next step is to create a N
 
 ```go
 temporal operator nexus endpoint create \
-  --name my-nexus-endpoint-name \
-  --target-namespace my-target-namespace \
-  --target-task-queue my-handler-task-queue
+  --name MyNexusEndpointName \
+  --target-namespace MyTargetNamespaceName \
+  --target-task-queue MyHandlerTaskQueue
 ```
 
 ## Define the Nexus Service API contract {#define-nexus-service-api-contract}
@@ -200,7 +200,7 @@ import (
 )
 
 const (
-	taskQueue = "my-handler-task-queue"
+	taskQueue = "MyHandlerTaskQueue"
 )
 
 func main() {
@@ -249,7 +249,7 @@ import (
 
 const (
 	TaskQueue    = "my-caller-workflow-task-queue"
-	endpointName = "my-nexus-endpoint-name"
+	endpointName = "MyNexusEndpointName"
 )
 
 func EchoCallerWorkflow(ctx workflow.Context, message string) (string, error) {
@@ -405,7 +405,7 @@ In separate terminal window, run the Nexus handler Worker:
 cd handler
 go run ./worker \
     -target-host localhost:7233 \
-    -namespace my-target-namespace
+    -namespace MyTargetNamespaceName
 ```
 
 In another terminal window, run the Nexus caller Worker:
@@ -414,7 +414,7 @@ In another terminal window, run the Nexus caller Worker:
 cd caller
 go run ./worker \
     -target-host localhost:7233 \
-    -namespace my-caller-namespace
+    -namespace MyCallerNamespaceName
 ```
 
 ### Start a caller Workflow
@@ -427,7 +427,7 @@ Run the starter:
 cd caller
 go run ./starter \
     -target-host localhost:7233 \
-    -namespace my-caller-namespace
+    -namespace MyCallerNamespaceName
 ```
 
 This will result in:
@@ -484,10 +484,10 @@ To create a Nexus Endpoint you must have a Developer account role or higher, and
 
 ```
 tcld nexus endpoint create \
-  --name <my-nexus-endpoint-name> \
-  --target-task-queue my-handler-task-queue \
-  --target-namespace <my-target-namespace.account> \
-  --allow-namespace <my-caller-namespace.account> \
+  --name <MyNexusEndpointName> \
+  --target-task-queue MyHandlerTaskQueue \
+  --target-namespace <MyTargetNamespaceName.account> \
+  --allow-namespace <MyCallerNamespaceName.account> \
   --description-file description.md
 ```
 
