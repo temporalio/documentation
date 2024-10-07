@@ -37,7 +37,7 @@ Prerequisites:
 
 ### Start the Temporal Development Server {#start-the-temporal-development-server}
 
-Start the Temporal Development Server by using the server start-dev command, with `system.enableNexus=true`.
+Start the Temporal Development Server by using the `temporal server start-dev`, with `system.enableNexus=true`.
 The HTTP port is required for Nexus communications.
 
 ```
@@ -154,14 +154,13 @@ var EchoOperation = temporalnexus.NewSyncOperation(service.EchoOperationName, fu
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
-Use the 'NewWorkflowRunOperation' constructor, which is the easiest way to expose a Workflow as an operation.
+Use the `NewWorkflowRunOperation` constructor, which is the easiest way to expose a Workflow as an operation.
 See alternatives [here](https://pkg.go.dev/go.temporal.io/sdk/temporalnexus).
 
-<!--SNIPSTART samples-go-nexus-handler {"selectedLines": ["25-35"]}-->
+<!--SNIPSTART samples-go-nexus-handler {"selectedLines": ["26-35"]}-->
 [nexus/handler/app.go](https://github.com/temporalio/samples-go/blob/main/nexus/handler/app.go)
 ```go
 // ...
-// See alternatives at https://pkg.go.dev/go.temporal.io/sdk/temporalnexus.
 var HelloOperation = temporalnexus.NewWorkflowRunOperation(service.HelloOperationName, HelloHandlerWorkflow, func(ctx context.Context, input service.HelloInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
 	return client.StartWorkflowOptions{
 		// Workflow IDs should typically be business meaningful IDs and are used to dedupe workflow starts.
@@ -177,11 +176,10 @@ var HelloOperation = temporalnexus.NewWorkflowRunOperation(service.HelloOperatio
 
 
 Workflow IDs should typically be business meaningful IDs and are used to dedupe Workflow starts. 
-Here `input.ID` is passed as part of the Nexus Service contract, for the `HelloOperation`.
+For the `HelloOperation`, `input.ID` is passed as part of the Nexus Service contract. 
 
 ### Register a Nexus Service in a Worker
-
-A Nexus Service and its Operation handlers are usually registered in the same Worker as the underlying Temporal primitives they abstract.
+After developing an asynchronous Nexus Operation handler to start a Workflow, the next step is to register a Nexus Service in a Worker. 
 
 <!--SNIPSTART samples-go-nexus-handler-worker-->
 [nexus/handler/worker/main.go](https://github.com/temporalio/samples-go/blob/main/nexus/handler/worker/main.go)
@@ -435,9 +433,9 @@ go run ./starter \
 This will result in:
 
 ```
-2024/07/23 19:57:40 Workflow result: Nexus Echo 👋
-2024/07/23 19:57:40 Started workflow WorkflowID nexus_hello_caller_workflow_20240723195740 RunID c9789128-2fcd-4083-829d-95e43279f6d7
-2024/07/23 19:57:40 Workflow result: ¡Hola! Nexus 👋
+2024/10/04 19:57:40 Workflow result: Nexus Echo 👋
+2024/10/04 19:57:40 Started workflow WorkflowID nexus_hello_caller_workflow_20240723195740 RunID c9789128-2fcd-4083-829d-95e43279f6d7
+2024/10/04 19:57:40 Workflow result: ¡Hola! Nexus 👋
 ```
 
 ## Make Nexus calls across Namespaces in Temporal Cloud {#nexus-calls-across-namespaces-temporal-cloud}
@@ -496,7 +494,7 @@ tcld nexus endpoint create \
 The `--allow-namespace` is used to build an Endpoint allowlist of caller Namespaces that can use the Nexus Endpoint, as described in Runtime Access Control.
 
 
-Alternatively, you can create a Nexus Endpoint through the UI: [https://cloud.temporal.io/nexus](https://cloud.temporal.io/nexus)
+Alternatively, you can create a Nexus Endpoint through the UI: [https://cloud.temporal.io/nexus](https://cloud.temporal.io/nexus).
 You can also create a Nexus endpoint through the UI in the development server.
 
 ### Run Workers Connected to Temporal Cloud
@@ -544,8 +542,8 @@ go run ./starter \
 This will result in:
 
 ```
-2024/07/23 19:57:40 Workflow result: Nexus Echo 👋
-2024/07/23 19:57:40 Workflow result: ¡Hola! Nexus 👋
+2024/10/04 19:57:40 Workflow result: Nexus Echo 👋
+2024/10/04 19:57:40 Workflow result: ¡Hola! Nexus 👋
 ```
 
 ## Observability
