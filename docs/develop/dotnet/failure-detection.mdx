@@ -126,7 +126,7 @@ return await Workflow.ExecuteActivityAsync(
 
 Override the Retry interval with `nextRetryDelay` {#next-retry-delay}
 
-You may throw an [Application Failure](/references/failures#application-failure) with the NextRetryDelay field set. This value will replace and override whatever the retry interval would be on the retry policy.
+When you throw an [Application Failure](/references/failures#application-failure) and assign the `nextRetryDelay` field, its value replaces and overrides the Retry interval defined in the active Retry Policy.
 
 For example, if in an activity, you want to base the interval on the number of attempts, you might do:
 
