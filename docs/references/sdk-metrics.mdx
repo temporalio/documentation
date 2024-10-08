@@ -70,11 +70,13 @@ Each metric may have some combination of the following keys attached to them:
 - `poller_type`: One of the following:
   - `workflow_task`
   - `activity_task`
+  - `nexus_task` (Go and Java only)
   - `sticky_workflow_task`
 - `worker_type`: One of the following:
   - `ActivityWorker`
   - `WorkflowWorker`
   - `LocalActivityWorker` (Go and Java only)
+  - `NexusWorker` (Go and Java only)
 - `activity_type`: The name of the Activity Function the metric is associated with
 - `workflow_type`: The name of the Workflow Function the metric is associated with
 - `operation`: RPC method name; available for metrics related to Temporal Client gRPC requests
@@ -123,6 +125,11 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [workflow_task_queue_poll_succeed](#workflow_task_queue_poll_succeed)                   | Worker         | Counter     | Core, Go, Java |
 | [workflow_task_replay_latency](#workflow_task_replay_latency)                           | Worker         | Histogram   | Core, Go, Java |
 | [workflow_task_schedule_to_start_latency](#workflow_task_schedule_to_start_latency)     | Worker         | Histogram   | Core, Go, Java |
+| [nexus_poll_no_task](#nexus_poll_no_task)                                               | Worker         | Counter     | Go, Java |
+| [nexus_task_schedule_to_start_latency](#nexus_task_schedule_to_start_latency)           | Worker         | Histogram   | Go, Java |
+| [nexus_task_execution_failed](#nexus_task_execution_failed)                             | Worker         | Counter     | Go, Java |
+| [nexus_task_execution_latency](#nexus_task_execution_latency)                           | Worker         | Histogram   | Go, Java |
+| [nexus_task_endtoend_latency](#nexus_task_endtoend_latency)                             | Worker         | Histogram   | Go, Java |
 
 ### activity_execution_cancelled
 
@@ -155,7 +162,7 @@ An Activity Worker poll for an Activity Task timed out, and no Activity Task is 
 
 - Type: Counter
 - Available in: Core, Go, Java
-- Tags: `activity_type`, `namespace`, `task_queue`
+- Tags: `namespace`, `task_queue`
 
 ### activity_schedule_to_start_latency
 
@@ -452,3 +459,49 @@ The Schedule-To-Start time of a Workflow Task.
 - Type: Histogram
 - Available in: Core, Go, Java
 - Tags: `namespace`, `task_queue`
+
+### nexus_poll_no_task
+
+A Nexus Worker poll for a Nexus Task timed out, and no Nexus Task is available to pick from the Task Queue.
+
+- Type: Counter
+- Available in: Go, Java
+- Tags: `namespace`, `task_queue`
+
+### nexus_task_schedule_to_start_latency
+
+The Schedule-To-Start time of a Nexus Task in seconds. The schedule time is taken from when the corresponding request
+hit the Frontend service to when the SDK started processing the task.
+
+This time is limited by the `Request-Timeout` header given to the Frontend when handling this request.
+
+- Type: Histogram
+- Available in: Core, Go, Java
+- Tags: `namespace`, `task_queue`, `nexus_service`, `nexus_operation`
+
+### nexus_task_execution_failed
+
+Handling of a Nexus Task resulted in an error. This includes any error returned from a user handler and unexpected
+internal errors in the SDK.
+
+- Type: Counter
+- Available in: Go, Java
+- Tags: `namespace`, `task_queue`, `nexus_service`, `nexus_operation`
+
+### nexus_task_execution_latency
+
+Time to complete a Nexus Task, from the time the Nexus Task processing starts in the SDK to the time the user handler
+completes.
+
+- Type: Histogram
+- Available in: Go, Java
+- Tags: `namespace`, `task_queue`, `nexus_service`, `nexus_operation`
+
+### nexus_task_endtoend_latency
+
+Total latency of Nexus Tasks from the time the corresponding request hit the Frontend to after the SDK gets
+acknowledgment from the server for task completion.
+
+- Type: Histogram
+- Available in: Go, Java
+- Tags: `namespace`, `task_queue`, `nexus_service`, `nexus_operation`
