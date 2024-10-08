@@ -128,7 +128,8 @@ Override the Retry interval with `nextRetryDelay` {#next-retry-delay}
 
 When you throw an [Application Failure](/references/failures#application-failure) and assign the `nextRetryDelay` field, its value replaces and overrides the Retry interval defined in the active Retry Policy.
 
-For example, if in an activity, you want to base the interval on the number of attempts, you might do:
+For example, you might scale the next Retry delay interval based on the current number of attempts.
+Here's how you'd do that in an Activity:
 
 ```csharp
 var attempt = ActivityExecutionContext.Current.Info.Attempt;
