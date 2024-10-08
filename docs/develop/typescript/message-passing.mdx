@@ -128,7 +128,10 @@ export async function greetingWorkflow(): Promise<string> {
   This allows you to use Activities, Child Workflows, durable [`workflow.sleep`](https://typescript.temporal.io/api/namespaces/workflow#sleep) Timers, [`workflow.condition`](https://typescript.temporal.io/api/namespaces/workflow#condition) conditions, and more.
   See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for guidelines on safely using async Signal and Update handlers.
 
-- Delay calling [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler) until the workflow initialization needed by Signal (or Update) handlers has finished. This is safe because the SDK buffers messages when there are no registered handlers for them. Note that [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler) will immediately invoke the handler of buffered Signals (or Updates) with matching types, and this could lead to out-of-order processing of messages with different types.
+- Delay calling [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler) until the Workflow initialization needed by Signal (or Update) handlers has finished.
+  This is safe because the SDK buffers messages when there are no registered handlers for them.
+  Note that [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler) will immediately invoke the handler of buffered Signals (or Updates) with matching types.
+  This could lead to out-of-order processing of messages with different types.
 
 - `setHandler` can take `SignalHandlerOptions` (such as `description` and `unfinishedPolicy`) as described in the API reference docs for [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler).
 
