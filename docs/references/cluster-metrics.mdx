@@ -276,31 +276,31 @@ for more info.
 
 #### In-Memory Buffer
 
-- `dynamic_worker_pool_scheduler_enqueued_tasks`: A counter that's incremented when a task is enqueued to the buffer
-- `dynamic_worker_pool_scheduler_dequeued_tasks`: A counter that's incremented when a task is dequeued from the buffer
+- `dynamic_worker_pool_scheduler_enqueued_tasks`: A counter that's incremented when a task is enqueued to the buffer.
+- `dynamic_worker_pool_scheduler_dequeued_tasks`: A counter that's incremented when a task is dequeued from the buffer.
 - `dynamic_worker_pool_scheduler_rejected_tasks`: A counter that's incremented when the buffer is full and adding the
-  task is rejected
-- `dynamic_worker_pool_scheduler_buffer_size`: A gauge that periodically samples the size of the buffer
+  task is rejected.
+- `dynamic_worker_pool_scheduler_buffer_size`: A gauge that periodically samples the size of the buffer.
 
 ### Concurrency Limiter
 
-- `dynamic_worker_pool_scheduler_active_workers`: A gauge that periodically samples the number of running goroutines
+- `dynamic_worker_pool_scheduler_active_workers`: A gauge that periodically samples the number of running goroutines.
 
 #### Rate Limiter
 
-- `rate_limited_task_runnable_wait_time`: A histogram representing the time a task spends waiting for the rate limiter
+- `rate_limited_task_runnable_wait_time`: A histogram representing the time a task spends waiting for the rate limiter.
 
 #### Circuit Breaker
 
 - `circuit_breaker_executable_blocked`: A counter that's incremented every time a Task Execution is blocked by the
-  circuit breaker
+  circuit breaker.
 
 #### Task Executors
 
-- `nexus_outbound_requests`: A counter representing the number of Nexus outbound requests made by the History Service
-- `nexus_outbound_latency`: A histogram representing the latency of outbound Nexus requests made by the History Service
-- `callback_outbound_requests`: A counter representing the number of callback outbound requests made by the History Service
-- `callback_outbound_latency`: A histogram representing the latency histogram of outbound callback requests made by the History Service
+- `nexus_outbound_requests`: A counter representing the number of Nexus outbound requests made by the History Service.
+- `nexus_outbound_latency`: A histogram representing the latency of outbound Nexus requests made by the History Service.
+- `callback_outbound_requests`: A counter representing the number of callback outbound requests made by the History Service.
+- `callback_outbound_latency`: A histogram representing the latency histogram of outbound callback requests made by the History Service.
 
 ### Nexus Machinery on the Frontend Service
 
