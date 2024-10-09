@@ -43,7 +43,7 @@ For more information, visit the [Billing and Cost](/cloud/billing-and-cost) page
 ## Temporal Cloud pricing model {#pricing-model}
 
 This section explains the basis of the Temporal Cloud pricing model and how it works.
-Your total invoice each calendar month is the combination of Temporal Cloud consumption ([Actions](#action) and [Storage](#storage)), and a Base Plan that includes [Support](/cloud/support#support).
+Your total invoice each calendar month is the combination of Temporal Cloud consumption ([Actions](#action) and [Storage](#storage)), and a [Base Plan](#base-plans) that includes [Support](/cloud/support#support).
 
 ### Base Plans {#base_plans}
 
@@ -55,19 +55,17 @@ Base allocations help you get started on the Temporal platform, so you can bette
 - Packages are charged monthly.
 - Actions or Storage allocations are reset each calendar month.
 
-Temporal offers four service tiers to match your usage and reliability needs: Essential, Business, Enterprise, Mission Critical.
-Choose the tier that aligns best with your current demands.
-Temporal grows with your business, ensuring you're never stuck at a tier that doesn't fit
-
-Prices are outlined in the following table.
-Find a complete description of Support offerings and response times in our [Support](/cloud/support) documentation.
+Temporal offers four plans: Essential, Business, Enterprise, Mission Critical.
+Prices are outlined in the following table:
 
 |                   | Essentials                                                                     | Business                                                                                                                          | Enterprise                                                                                                                      | Mission Critical                                                                                                                |
 | ----------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| Support Targeting | General use                                                                    | Production deployments<br />that scale                                                                                            | Enterprise deployments<br/>w/ stringent uptime demands                                                                          | Mission-critical applications<br />w/ the highest support needs                                                                 |
-| Support Features  | 24h ticket desk                                                                | <li>P0 Response Times</li>                                                                                                        | <li>P0: \<30 Min, 24/7</li><li>Private Slack</li>                                                                               | <li>P0: \<15 Min, 24/7</li><li>Private Slack</li><li>Dedicated DSE</li>                                                         |
+| Support Targeting | Basic use                                                                    | Production deployments<br />that scale                                                                                            | Enterprise deployments<br/>w/ stringent uptime demands                                                                          | Mission-critical applications<br />w/ the highest support needs                                                                 |
+| Support Features  | Access to Support                                                                | <li>P0 Response Times</li>                                                                                                        | <li>P0: \<30 Min, 24/7</li><li>Private Slack</li>                                                                               | <li>P0: \<15 Min, 24/7</li><li>Private Slack</li><li>Dedicated DSE</li>                                                         |
 | Product Features  | <li>1M Actions</li><li>1GBh Active Storage</li><li>40 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO (Add-on)</li><li>2.5M Actions</li><li>2.5GBh Active Storage</li><li>100 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO included</li><li>10M Actions</li><li>10GBh Active Storage</li><li>400 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO included</li><li>10M Actions</li><li>10GBh Active Storage</li><li>400 GB Retained Storage</li> |
 | Pricing           | Greater of<li>&#36;100/mo; or</li><li>5% of Usage Spend</li>                   | Greater of<li>&#36;500/mo; or</li><li>5% of Usage Spend</li>                                                                      | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                    | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                    |
+
+Find a complete description of Support offerings and response times in our [Support](/cloud/support) documentation.
 
 :::info Converting GB to GBH
 
@@ -247,7 +245,7 @@ Total Storage Bill: $30.24 Active Storage + $1.51 Retained Storage = $31.75
 
 ## Base Plan pricing
 
-Your Base Plan costs are the greater of the minimum monthly Price or a Percent (%) of your Consumption Spend:
+Your Base Plan pricing is the greater of the minimum monthly price or a percent (%) of your consumption spend:
 
 - The Essentials tier is priced at the greater of &#36;100/month or 5% of your Temporal Cloud consumption.
 - The Business tier is priced at the greater of &#36;500/month or 10% of Temporal Cloud consumption.
@@ -274,21 +272,12 @@ Key discount levers include:
 - Account Action volume over 200M Actions
 - Duration of your commitment (1, 2, or 3 years)
 
-Meet your commitments with any Temporal Cloud spend, including Actions, Storage and your Base Plan.
-After making a commitment, Temporal locks in your Actions price based on your expected volume and discounts your Active Storage costs.
-This price is used to bill your Actions and Active Storage across your account for the timeframe specified in your commitment.
-
-You must pay for commitments with Temporal Credits.
-These Credits pay towards your Temporal Cloud consumption, including support and base plan charges.
-Each Temporal Credit is equivalent to &#36;1 USD.
-A credit purchase of &#36;20,000 converts to 20,000 Temporal Credits, a 1:1 conversion.
-
-:::note Minimum Purchase Requirements
-
-We require a minimum credit purchase equivalent to the first year of your commitment.
+Commitments must be paid for with Temporal Credits.
+Temporal Credits are used to pay your Temporal Cloud consumption, including support and base plan charges.
+A Temporal Credit is equivalent to &#36;1 USD.
+For example, a credit purchase of &#36;20,000 results in 20,000 Temporal Credits.
+A minimum credit purchase equivalent to the first year of your commitment is required.
 For Multi-year deals please contact [Sales](mailto:sales@temporal.io) for the most accurate pricing.
-
-:::
 
 ### Commitment Pricing Q&A
 
@@ -305,14 +294,13 @@ This amount is multiplied by the months remaining in the annual portion of your 
 If your previous month spend was &#36;5,000, and you're 10 months through your annual term, you'll be invoiced for 10,000 Temporal Credits to cover the remaining two months.
 For multi-year commitments, accelerated credit purchases offset remaining annual credit requirements.
 
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**IS THIS A SPEND OR DRAWING DOWN FROM CREDITS FOR THE NEXT YEAR?**</div>
-
 **What happens if I have unused Temporal Credits at the end of my term?**
 
+Commitments can be difficult to estimate.
 Temporal Cloud offers two ways to roll-over unused credits:
 
-When you renew a commitment of the same or larger amount, Temporal Cloud rolls over any unused credits into your new commitment.
-Should you need to downsize your commitment, Temporal Cloud rolls over up to 10% of your unused initial credit purchase amount into the new commitment.
+- When you renew a commitment for the same or larger amount, Temporal Cloud rolls over any unused credits into your new commitment.
+- Should you need to downsize your commitment, Temporal Cloud rolls over up to 10% of your initial credit purchase amount into the new commitment.
 
 **How do I make a commitment and purchase Temporal Credits?**
 
@@ -475,7 +463,8 @@ We charge applicable sales tax in US jurisdictions as required.
 
 **How do I cancel my account?**
 
-To cancel your Temporal Cloud account, [contact Support](https://temporalsupport.zendesk.com/).
+Account Owners can delete their account and cancel their subscription in the Plans tab in the billing center.
+See our [billing and cost](/cloud/billing-and-cost) page for details on how to access the billing center.
 
 **Will I lose access immediately if I cancel my account?**
 
