@@ -43,7 +43,7 @@ For more information, visit the [Billing and Cost](/cloud/billing-and-cost) page
 ## Temporal Cloud pricing model {#pricing-model}
 
 This section explains the basis of the Temporal Cloud pricing model and how it works.
-Your total invoice each calendar month is the combination of Temporal Cloud consumption ([Actions](#action) and [Storage](#storage)), and a [Base Plan](#base-plans) that includes [Support](/cloud/support#support).
+Your total invoice each calendar month is the combination of Temporal Cloud consumption ([Actions](#action) and [Storage](#storage)), and a [Base Plan](#base_plans) that includes [Support](/cloud/support#support).
 
 ### Base Plans {#base_plans}
 
@@ -181,19 +181,19 @@ Storage costs are measured in gigabyte-hours (GBh) and they are measured per Nam
 
 **How to Pay for Temporal Cloud**
 
-After you exceed your Actions and Storage allocations in your base tier, Temporal Cloud offers two payment options: pay-as-you-go and Commitments.
+After you exceed your Actions and Storage allocations in your base tier, Temporal Cloud offers two payment options: Pay-As-You-Go and Commitments.
 Both models meter and bill for three primary components: [Actions](#action), [Storage](#storage), and [Support](/cloud/support#support).
 
-- With pay-as-you-go, you are invoiced each calendar month based on your consumption.
-  Pay-as-you-go pricing automatically applies volume prices as your Actions scale.
+- With Pay-As-You-Go, you are invoiced each calendar month based on your consumption.
+  Pay-As-You-Go pricing automatically applies volume prices as your Actions scale.
 - With Commitments, you pre-purchase your Temporal Cloud spend with Temporal Credits.
   Temporal Credits pay for your Temporal Cloud consumption, including Support charges.
 
-## Pay-as-you-go {#payg}
+## Pay-As-You-Go {#payg}
 
-**How does pay-as-you-go pricing work?**
+**How does Pay-As-You-Go pricing work?**
 
-Pay-as-you-go is based on consumption.
+Pay-As-You-Go is based on consumption.
 This section explains how you're billed each calendar month and gives examples.
 
 ### Action pricing {#payg-action-pricing}
@@ -249,7 +249,7 @@ Your Base Plan pricing is the greater of the minimum monthly price or a percent 
 
 - The Essentials tier is priced at the greater of &#36;100/month or 5% of your Temporal Cloud consumption.
 - The Business tier is priced at the greater of &#36;500/month or 10% of Temporal Cloud consumption.
-- The Enterprise and Mission Critical Support tiers must be paid annually. Contact [Sales](mailto:sales@temporal.io) to discuss your needs.
+- The Enterprise and Mission Critical Support plans must be paid annually. Contact [Sales](mailto:sales@temporal.io) to discuss your needs.
 
 Your Temporal Cloud consumption combines the costs of Actions and Storage.
 
@@ -271,6 +271,10 @@ Key discount levers include:
 
 - Account Action volume over 200M Actions
 - Duration of your commitment (1, 2, or 3 years)
+
+Meet your commitments with any Temporal Cloud spend, including Actions, Storage and your Base Plan.
+After making a commitment, Temporal locks in your Actions price based on your expected volume and discounts your Active Storage costs.
+This price is used to bill your Actions and Active Storage across your account for the timeframe specified in your commitment.
 
 Commitments must be paid for with Temporal Credits.
 Temporal Credits are used to pay your Temporal Cloud consumption, including support and base plan charges.
@@ -385,13 +389,11 @@ The examples below provide general estimates based on workload size.
 You can also use our calculator on the pricing page to build your estimate.
 Our team is always happy to [help you estimate costs] (https://pages.temporal.io/contact-us) for your specific workloads and requirements.
 
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**TLO will update this**</div>
-
 | Workload size | Cost (monthly) | Characteristics                            | Actions                                            | Typical use cases                                                                                             |
 | ------------- | -------------- | ------------------------------------------ | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Small         | < &#36;25.00   | Modest / transient throughput              | < 1M / month  <br /> _(< 0.38 actions per second)_ | General automation <br /> Human dependent processes <br /> Data pipelines <br /> Nightly batch processes      |
-| Medium        | < &#36;1K      | Steady or burst throughput                 | < 40M / month <br /> _(< 15 actions per second)_   | Transaction & order systems <br /> Infrastructure automation <br /> Payment Processing <br /> Batch processes |
-| Large         | < &#36;10K     | Sustained throughput or multiple use cases | < 400M / month <br /> _(< 150 actions per second)_ | Data processing / sync <br /> Retail order system <br /> KYC & fraud detection                                |
+| Small         | < &#36;50.00   | Modest / transient throughput              | < 1M / month  <br /> _(< 0.38 actions per second)_ | General automation <br /> Human dependent processes <br /> Data pipelines <br /> Nightly batch processes      |
+| Medium        | < &#36;2K      | Steady or burst throughput                 | < 40M / month <br /> _(< 15 actions per second)_   | Transaction & order systems <br /> Infrastructure automation <br /> Payment Processing <br /> Batch processes |
+| Large         | < &#36;15K     | Sustained throughput or multiple use cases | < 400M / month <br /> _(< 150 actions per second)_ | Data processing / sync <br /> Retail order system <br /> KYC & fraud detection                                |
 | Web Scale     | &#36;20K+      | "Web scale" and / or numerous use cases    | 1B+ / month <br /> _(400+ actions per second)_     | Social media application <br /> SaaS application service                                                      |
 
 ## Billing Questions FAQs {#pricing-faq}
@@ -419,7 +421,7 @@ You can purchase Temporal Cloud credits by contacting our team at [sales@tempora
 The Essentials Base plan starts at &#36;100/month.
 Consumption in excess of your base plans allocations are billed on a consumption basis.
 
-**Can I purchase Temporal Cloud through my Amazon, Azure, or Google Cloud Platform marketplace?**
+**Can I purchase Temporal Cloud through my Amazon, Azure, or Google Cloud Platform Marketplace?**
 
 There are two ways to purchase Temporal Cloud through AWS Marketplace:
 
