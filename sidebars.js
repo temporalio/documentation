@@ -11,6 +11,7 @@ module.exports = {
       },
       items: [
         "evaluate/why-temporal",
+        "evaluate/how-temporal-works",
         "evaluate/major-components",
         {
           type: "category",
