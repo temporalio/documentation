@@ -95,7 +95,6 @@ Tasks sent to [Sticky](https://docs.temporal.io/workers#sticky-execution) queues
 Since Tasks remain valid for only a few seconds in Sticky Queues, this inaccuracy diminishes over time, especially as the backlog grows.
 :::
 
-
 #### `ApproximateBacklogAge` {#ApproximateBacklogAge}
 
 Returns the approximate age of the oldest Task in the backlog.
@@ -132,7 +131,7 @@ The actual Task delivery count may be significantly higher than the number repor
 
 #### `BacklogIncreaseRate` {#BacklogIncreaseRate}
 
-Approximates the *net* Tasks per second added to the backlog, averaged over the most recent 30 seconds.
+Approximates the _net_ Tasks per second added to the backlog, averaged over the most recent 30 seconds.
 This is calculated as:
 
 ```

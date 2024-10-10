@@ -30,6 +30,7 @@ You can interrupt a Workflow Execution in one of the following ways:
 
 Terminating a Workflow forcefully stops Workflow Execution.
 This action resembles killing a process.
+
 - The system records a `WorkflowExecutionTerminated` event in the Workflow History.
 - The termination forcefully and immediately stops the Workflow Execution.
 - The Workflow code gets no chance to handle termination.
@@ -128,5 +129,3 @@ To terminate a Workflow Execution in Python, use the [terminate()](https://pytho
 ```python
 await client.get_workflow_handle("your_workflow_id").terminate()
 ```
-
-

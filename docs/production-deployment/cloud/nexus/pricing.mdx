@@ -17,7 +17,7 @@ One Action to start or cancel a Nexus Operation in the caller Namespace.
 The underlying Temporal primitives such as Workflows, Activities, Signals created by a Nexus Operation handler (directly or indirectly) result in the normal Actions for those primitives.
 This includes retries for underlying Temporal primitives like Activities.
 
-No Action results for handling or retrying the Nexus Operation itself. 
+No Action results for handling or retrying the Nexus Operation itself.
 However, while the retry of the Nexus Operation incurs no charge, any billable action initiated by the handler (such as an Activity) will be charged if it fails and is subsequently retried.
 
 See [Pricing](/cloud/pricing) for additional details.
