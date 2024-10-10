@@ -76,7 +76,6 @@ Workers authenticate with Temporal Cloud as they do today with mTLS certificates
 Nexus requests are sent from the caller’s Namespace to the handler’s Namespace over a secure multi-region mTLS Envoy mesh.
 
 For payload encryption, the DataConverter works the same for a Nexus Operation as it does for other payloads sent between a Worker and Temporal Cloud.
-There is support for a single DataConverter for inbound inputs and outbound outputs, which means the encryption key often used in a custom DataConverter must be available in both the caller and the handler.
 
 See [Nexus Security](/nexus/security) for more information.
 
