@@ -77,7 +77,7 @@ They track billable operations within the Temporal Cloud Service, such as starti
 - **Side Effect recorded**.
   For a mutable [Side Effect](/workflows#side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
-- **Workflow Update received**. An [Update](/encyclopedia/workflow-message-passing#sending-updates) is received when you handle it or when your [Update Validator](/encyclopedia/workflow-message-passing#update-validators) rejects it.
+- **Workflow Update received**. An Action occurs when an [Update](/encyclopedia/workflow-message-passing#sending-updates) is received by a Worker and either processed by the Update handler, or rejected by an [Update Validator](/encyclopedia/workflow-message-passing#update-validators).
 
 **CHILD WORKFLOWS**
 
