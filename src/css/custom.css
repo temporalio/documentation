@@ -8,6 +8,10 @@
 /* You can override the default Infima variables here. */
 
 :root {
+  --card-background-color: #ffffff;
+  --card-text-color: #000000;
+  --card-border-color: #777;
+  --card-feature-color: #66a;
   /* --ifm-color-primary: #f2633f;
   --ifm-color-primary-dark: #111827; */
   /* --ifm-color-primary-darker: #093d71;
@@ -27,6 +31,10 @@
 }
 
 html[data-theme="dark"] {
+  --card-background-color: #1a1a1a;
+  --card-text-color: #ffffff;
+  --card-border-color: #777;
+  --card-feature-color: #33C;
   --ifm-color-primary: #bfdbfe;
   --ifm-background-color: #141414;
   --ifm-footer-background-color: #000000;
