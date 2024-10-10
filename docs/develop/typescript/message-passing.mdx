@@ -1,6 +1,6 @@
 ---
 id: message-passing
-title: Messages - Typescript SDK feature guide
+title: Workflow message passing - TypeScript SDK
 sidebar_label: Messages
 description: Develop with Queries, Signals, and Updates with the Temporal Typescript SDK.
 toc_max_heading_level: 3
@@ -17,14 +17,15 @@ keywords:
   - dynamic signals
   - dynamic queries
 tags:
-  - typescript
-  - typescript-sdk
   - workflows
   - messages
   - signals
   - queries
   - updates
   - dynamic-handlers
+  - sdk
+  - typescript-sdk
+  - developer guide
 ---
 
 A Workflow can act like a stateful web service that receives messages: Queries, Signals, and Updates.
@@ -128,6 +129,11 @@ export async function greetingWorkflow(): Promise<string> {
   This allows you to use Activities, Child Workflows, durable [`workflow.sleep`](https://typescript.temporal.io/api/namespaces/workflow#sleep) Timers, [`workflow.condition`](https://typescript.temporal.io/api/namespaces/workflow#condition) conditions, and more.
   See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for guidelines on safely using async Signal and Update handlers.
 
+- Delay calling [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler) until the Workflow initialization needed by Signal (or Update) handlers has finished.
+  This is safe because the SDK buffers messages when there are no registered handlers for them.
+  Note that [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler) will immediately invoke the handler of buffered Signals (or Updates) with matching types.
+  This could lead to out-of-order processing of messages with different types.
+
 - `setHandler` can take `SignalHandlerOptions` (such as `description` and `unfinishedPolicy`) as described in the API reference docs for [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler).
 
 
@@ -195,6 +201,10 @@ wf.setHandler(
   This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
 - Update (and Signal) handlers can be `async`, letting them use Activities, Child Workflows, durable [`workflow.sleep`](https://typescript.temporal.io/api/namespaces/workflow#sleep) Timers, [`workflow.condition`](https://typescript.temporal.io/api/namespaces/workflow#condition) conditions, and more.
   See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for safe usage guidelines.
+- Delay calling [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler) until the Workflow initialization needed by Update (or Signal) handlers has finished.
+  This is safe because the SDK buffers messages when there are no registered handlers for them.
+  Note that [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler) will immediately invoke the handler of buffered Updates (or Signals) with matching types.
+  This could lead to out-of-order processing of messages with different types.
 
 ## Send messages {#send-messages}
 
