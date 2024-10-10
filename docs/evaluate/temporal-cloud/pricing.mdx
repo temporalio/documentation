@@ -71,11 +71,11 @@ They track billable operations within the Temporal Cloud Service, such as starti
 - **Search Attribute upsert requested**.
   Occurs after a Workflow starts and invokes `UpsertSearchAttributes`.
 - **Signal sent**.
-  Includes sending a [Signal](/encyclopedia/workflow-message-passing#sending-signals) from a client or from within a Workflow to another Workflow.
+  An Action occurs for every [Signal](/encyclopedia/workflow-message-passing#sending-signals), whether sent from a Client or from a Workflow.
 - **Query received by Worker**.
-  Includes viewing the call stack in the Temporal Cloud UI, which results in a [Query](/encyclopedia/workflow-message-passing#sending-queries) behind the scenes.
+  An Action occurs for every [Query](/encyclopedia/workflow-message-passing#sending-queries), including viewing the call stack in the Temporal Cloud UI, which results in a Query behind the scenes.
 - **Update received by Worker**.
-  Includes successful [Updates](/encyclopedia/workflow-message-passing#sending-updates) and [rejected](/encyclopedia/workflow-message-passing#update-validators) Updates.
+  An Action occurs for every successful [Update](/encyclopedia/workflow-message-passing#sending-updates) and every [rejected](/encyclopedia/workflow-message-passing#update-validators) Update.
 - **Side Effect recorded**.
   For a mutable [Side Effect](/workflows#side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
