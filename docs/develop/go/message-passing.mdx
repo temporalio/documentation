@@ -358,6 +358,39 @@ if err != nil {
 }
 ```
 
+#### Update-With-Start {#update-with-start}
+
+TBD
+
+```go
+updateOperation := client.NewUpdateWithStartWorkflowOperation(
+    client.UpdateWorkflowOptions{
+        UpdateName:   message.SetLanguageUpdate,
+        WaitForStage: client.WorkflowUpdateStageCompleted,
+    })
+
+workflowOptions := client.StartWorkflowOptions{
+    ID:                 "some-workflow-id",
+    TaskQueue:          "some-task-queue",
+	WithStartOperation: updateOperation,
+}
+we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, MyWorkflow)
+if err != nil {
+    log.Fatalf("Unable to execute workflow: %v", err)
+}
+
+updateHandle, err := updateOperation.Get(context.Background())
+if err != nil {
+    log.Fatalf("Unable to obtain update handle: %v", err)
+}
+
+var previousLang message.Language
+err = updateHandle.Get(context.Background(), &previousLang)
+if err != nil {
+    log.Fatalf("Unable to obtain update result: %v", err)
+}
+```
+
 ## Message handler patterns {#message-handler-patterns}
 
 This section covers common write operations, such as Signal and Update handlers.
