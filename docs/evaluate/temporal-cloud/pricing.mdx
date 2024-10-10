@@ -72,12 +72,13 @@ They track billable operations within the Temporal Cloud Service, such as starti
   Occurs after a Workflow starts and invokes `UpsertSearchAttributes`.
 - **Signal sent**.
   Includes sending a [Signal](/encyclopedia/workflow-message-passing#sending-signals) from a client or from within a Workflow to another Workflow.
-- **Query received**. [Queries](/encyclopedia/workflow-message-passing#sending-queries) aren't recorded in Event History.
-  An operation such as viewing the call stack in the Temporal Cloud UI results in a Query.
+- **Query received by Worker**.
+  Includes viewing the call stack in the Temporal Cloud UI, which results in a [Query](/encyclopedia/workflow-message-passing#sending-queries) behind the scenes.
+- **Update received by Worker**.
+  Includes successful [Updates](/encyclopedia/workflow-message-passing#sending-updates) and [rejected](/encyclopedia/workflow-message-passing#update-validators) Updates.
 - **Side Effect recorded**.
   For a mutable [Side Effect](/workflows#side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
-- **Workflow Update received**. An Action occurs when an [Update](/encyclopedia/workflow-message-passing#sending-updates) is received by a Worker and either processed by the Update handler, or rejected by an [Update Validator](/encyclopedia/workflow-message-passing#update-validators).
 
 **CHILD WORKFLOWS**
 
