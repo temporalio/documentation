@@ -11,8 +11,8 @@ tags:
   - enable-nexus
 ---
 
-Nexus is only supported in single cluster setups for the time being due to endpoint registry replication not being implemented
-yet.
+Nexus is only supported in single cluster setups for the time being due to endpoint registry replication not being implemented yet. 
+Enable Nexus in your self-hosted Temporal Service by updating the server's static configuration file and enabling Nexus through dynamic config, then setting the public callback URL and allowed callback addresses.
 
 ## Enabling Nexus
 
@@ -35,7 +35,7 @@ To enable Nexus in your deployment:
           httpAddress: $PUBLIC_URL:7243
     ```
 
-2. Enable Nexus via dynamic config, set the public callback URL, and set the allowed callback addresses.
+2. Enable Nexus through dynamic config, set the public callback URL, and set the allowed callback addresses.
 
     ```yaml
     system.enableNexus:
