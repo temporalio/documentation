@@ -1,6 +1,6 @@
 ---
 id: core-application
-title: Core application - Temporal Go SDK feature guide
+title: Core application - Go SDK
 sidebar_label: Core application
 toc_max_heading_level: 4
 keywords:
@@ -51,21 +51,12 @@ tags:
   - activity-parameters
   - api
   - cli
-  - cli-feature
   - client
   - client-options
   - temporal service
-  - temporal service-feature
   - code-sample
-  - code-samples
   - deterministic
-  - developer-guide-doc-type
-  - go-sdk
-  - go-sdk
   - how-to
-  - how-to-doc-type
-  - introduction-doc-type
-  - reference-doc-type
   - retry-and-timeout-policies
   - return-values
   - run-id
@@ -83,6 +74,9 @@ tags:
   - workflow-parameters
   - workflow-run
   - workflows
+  - sdk
+  - go-sdk
+  - developer guide
 description: The Foundations section of the Temporal Developer's guide introduces essential concepts for building and running a Temporal Application, outlining steps to start Workflow and Activity Execution, running development Workers, and installing the Temporal CLI.
 ---
 
@@ -651,7 +645,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 ### How to set the required Activity Timeouts {#required-timeout}
 
 Activity Execution semantics rely on several parameters.
-The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
 
 To set an Activity Timeout in Go, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the Activity Timeout field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
