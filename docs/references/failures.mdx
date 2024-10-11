@@ -147,7 +147,7 @@ When an Activity or Workflow throws an Application Failure, the Failure's `type`
 Activities and Workflow can also avoid retrying by setting an Application Failure's `non_retryable` flag to `true`.
 
 When a Nexus Operation handler throws an Application Failure, it is retried by default using a built-in Retry Policy that cannot be customized.
-Nexus Operation handlers can avoid retrying by setting an Application Failure's non_retryable flag to true. 
+Nexus Operation handlers can avoid retrying by setting an Application Failure's non_retryable flag to true.
 When a non-retryable error is returned from a Nexus handler, the overall Nexus Operation Execution is failed and the error is returned to the caller’s Workflow Execution as a **Nexus Operation Failure.**
 
 ### Setting the Next Retry Delay {#next-retry-delay}
@@ -165,7 +165,7 @@ Java: [NextRetryDelay](/develop/java/failure-detection#next-retry-delay)
 
 By default, Application Failures thrown from a Nexus Operation handler will be mapped to the following underlying Nexus Failures, based on what non_retryable is set to:
 
-| non_retryable  | Nexus error                | HTTP status code          |
+| non_retryable   | Nexus error                | HTTP status code          |
 | :-------------- | :------------------------- | :------------------------ |
 | false (default) | HandlerErrorTypeInternal   | 500 Internal Server Error |
 | true            | UnsuccessfulOperationError | 424 Failed Dependency     |
@@ -182,21 +182,21 @@ For example the Nexus Go SDK provides
 #### Retryable Nexus errors
 
 | Nexus error type                  | non_retryable |
-| :-------------------------------- | :------------- |
-| HandlerErrorTypeResourceExhausted | false          |
-| HandlerErrorTypeInternal          | false          |
-| HandlerErrorTypeNotImplemented    | false          |
-| HandlerErrorTypeUnavailable       | false          |
+| :-------------------------------- | :------------ |
+| HandlerErrorTypeResourceExhausted | false         |
+| HandlerErrorTypeInternal          | false         |
+| HandlerErrorTypeNotImplemented    | false         |
+| HandlerErrorTypeUnavailable       | false         |
 
 #### Non-retryable Nexus errors
 
 | Nexus error type                | non_retryable |
-| :------------------------------ | :------------- |
-| HandlerErrorTypeBadRequest      | true           |
-| HandlerErrorTypeUnauthenticated | true           |
-| HandlerErrorTypeUnauthorized    | true           |
-| HandlerErrorTypeNotFound        | true           |
-| UnsuccessfulOperationError      | true           |
+| :------------------------------ | :------------ |
+| HandlerErrorTypeBadRequest      | true          |
+| HandlerErrorTypeUnauthenticated | true          |
+| HandlerErrorTypeUnauthorized    | true          |
+| HandlerErrorTypeNotFound        | true          |
+| UnsuccessfulOperationError      | true          |
 
 ## Cancelled Failure
 
