@@ -81,7 +81,7 @@ Set up PrivateLink connectivity with Temporal Cloud with these steps:
     This can take up to 10 minutes.
 12. Once available, you can use AWS PrivateLink.
     Use the first value under “DNS names” as your hostname to connect to Temporal Cloud using port 7233.
-    To establish a valid mTLS session, you must override the TLS server name used for the connection to `<namespace>.<account>.tmprl.cloud`.
+    To establish a valid mTLS session, you must override the TLS server name used for the connection to `<namespace_id>.<account_id>.tmprl.cloud`.
 
     ![Highlighted DNS names section shows your hostname](/img/aws-privatelink/details.png)
 
@@ -95,7 +95,7 @@ Individual Namespaces do not use separate services.
 :::
 
 Once set up, you can test your PrivateLink connectivity using the following methods.
-When connecting, you must override the TLS server name to target your Namespace’s individual hostname (`<namespace>.<account>.tmprl.cloud`) to establish a valid mTLS session:
+When connecting, you must override the TLS server name to target your Namespace’s individual hostname (`<namespace_id>.<account_id>.tmprl.cloud`) to establish a valid mTLS session:
 
 - The Temporal CLI, using the `--tls-server-name` parameter to override the TLS server name. For example:
 
@@ -104,15 +104,15 @@ When connecting, you must override the TLS server name to target your Namespace�
       --address <DNS associated with VPC endpoint>:7233 \
       --tls-cert-path /path/to/client.pem \
       --tls-key-path /path/to/client.key \
-      --tls-server-name <namespace>.<account>.tmprl.cloud \
-      --namespace <namespace>
+      --tls-server-name <namespace_id>.<account_id>.tmprl.cloud \
+      --namespace <namespace_id>.<account_id>
   ```
 
 - Non-Temporal tools like grpcURL, useful for testing from environments that restrict tool usage, using the `-servername` parameter to override the TLS server name. For example:
 
   ```
   grpcurl \
-      -servername <name>.<account>.tmprl.cloud \
+      -servername <namespace_id>.<account_id>.tmprl.cloud \
       -cert /path/to/client.pem \
       -key /path/to/client.key \
       <DNS ASSOCIATED WITH VPC ENDPOINT>:7233 \

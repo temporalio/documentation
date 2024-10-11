@@ -266,7 +266,7 @@ Finish by selecting **Generate API key**.
 To create an API key for a Service Account, use `tcld apikey create` with the `--service-account-id` flag:
 
 ```
-tcld apikey create --namespace <namespace.accountId> \
+tcld apikey create --namespace <namespace_id>.<account_id> \
     --description "<api-key-description>" \
     --duration <api-key-duration> \
     --service-account-id <service-account-id>
@@ -371,7 +371,7 @@ In addition to the API key, the following client options are required:
   - For API key connections, use the format `<region>.<cloud_provider>.api.temporal.io:7233`.
   - You can set the address using an environment variable.
 - `--namespace`: Provide the `namespace.accountId` from the top of the Namespace page in the UI.
-  - Use the format `<namespace.accountId>`.
+  - Use the format `<namespace_id>.<account_id>`.
   - This can be set using an environment variable.
 - `--grpc-meta "temporal-namespace="`: Provide the `namespace.accountId` again as grpc-metadata.
 - `--tls`: Use for a secure connection with the appropriate options.
@@ -383,8 +383,8 @@ For example, to connect to Temporal Cloud from the CLI using an environment vari
 export TEMPORAL_API_KEY=<key-secret>
 temporal workflow list \
     --address <endpoint> \
-    --namespace <namespace.accountid> \
-    --grpc-meta "temporal-namespace=<namespace.accountid>" \
+    --namespace <namespace_id>.<account_id> \
+    --grpc-meta "temporal-namespace=<namespace_id>.<account_id>" \
     --tls
 ```
 
@@ -400,14 +400,14 @@ Create an initial connection:
 ```go
 clientOptions := client.Options{
     HostPort: <endpoint>,
-    Namespace: <namespace.accountid>,
+    Namespace: <namespace_id>.<account_id>,
     ConnectionOptions: client.ConnectionOptions{
         TLS: &tls.Config{},
         DialOptions: []grpc.DialOption{
             grpc.WithUnaryInterceptor(
                 func(ctx context.Context, method string, req any, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
                     return invoker(
-                        metadata.AppendToOutgoingContext(ctx, "temporal-namespace", <namespace.accountid>),
+                        metadata.AppendToOutgoingContext(ctx, "temporal-namespace", <namespace_id>.<account_id>),
                         method,
                         req,
                         reply,
@@ -453,10 +453,10 @@ func (a *APIKeyProvider) GetHeaders(context.Context) (map[string]string, error) 
 }
 
 // Use headers provider
-apiKeyProvider := &APIKeyProvider{APIKey: <APIKey>, Namespace: <namespace.accountid>}
+apiKeyProvider := &APIKeyProvider{APIKey: <APIKey>, Namespace: <namespace_id>.<account_id>}
 c, err := client.Dial(client.Options{
     HostPort: <endpoint>,
-    Namespace: <namespace.accountid>,
+    Namespace: <namespace_id>.<account_id>,
     HeadersProvider: apiKeyProvider,
     ConnectionOptions: client.ConnectionOptions{TLS: &tls.Config{
     }},
@@ -478,7 +478,7 @@ At a client level:
 Metadata.Key<String> TEMPORAL_NAMESPACE_HEADER_KEY =
     Metadata.Key.of("temporal-namespace", Metadata.ASCII_STRING_MARSHALLER);
 Metadata metadata = new Metadata();
-metadata.put(TEMPORAL_NAMESPACE_HEADER_KEY, <namespace.accountid>);
+metadata.put(TEMPORAL_NAMESPACE_HEADER_KEY, <namespace_id>.<account_id>);
 
 // Create the Workflow service stub.
 WorkflowServiceStubsOptions.Builder stubOptions =
@@ -499,7 +499,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(stubOptions.
  */
 WorkflowClient client =
     WorkflowClient.newInstance(
-        service, WorkflowClientOptions.newBuilder().setNamespace(<namespace.accountid>).build());
+        service, WorkflowClientOptions.newBuilder().setNamespace(<namespace_id>.<account_id>).build());
 ```
 
 At a per-call level:
@@ -522,8 +522,8 @@ Create an initial connection:
 ```python
 client = await Client.connect(
     <endpoint>,
-    namespace=<namespace.accountid>,
-    rpc_metadata={"temporal-namespace": <namespace.accountid>},
+    namespace=<namespace_id>.<account_id>,
+    rpc_metadata={"temporal-namespace": <namespace_id>.<account_id>},
     api_key=<APIKey>,
     tls=True,
 )
@@ -542,8 +542,8 @@ Create an initial connection:
 ```python
 client = await Client.connect(
     <endpoint>,
-    namespace=<namespace.accountid>,
-    rpc_metadata={"temporal-namespace": <namespace.accountid>, "Authorization": f"Bearer {<APIKey>}"},
+    namespace=<namespace_id>.<account_id>,
+    rpc_metadata={"temporal-namespace": <namespace_id>.<account_id>, "Authorization": f"Bearer {<APIKey>}"},
     tls=True,
 )
 ```
@@ -561,11 +561,11 @@ Create an initial connection:
 ```csharp
 var myClient = TemporalClient.ConnectAsync(new(<endpoint>)
 {
-    Namespace = <namespace.accountid>,
+    Namespace = <namespace_id>.<account_id>,
     ApiKey = <APIKey>,
     RpcMetadata = new Dictionary<string, string>()
     {
-        ["temporal-namespace"] = "${<namespace.accountid>}",
+        ["temporal-namespace"] = "${<namespace_id>.<account_id>}",
     },
     Tls = new(),
 });
@@ -584,11 +584,11 @@ Create an initial connection:
 ```csharp
 var myClient = TemporalClient.ConnectAsync(new(<endpoint>)
 {
-    Namespace = <namespace.accountid>,
+    Namespace = <namespace_id>.<account_id>,
     RpcMetadata = new Dictionary<string, string>()
     {
         ["Authorization"] = $"Bearer {<APIKey>}",
-        ["temporal-namespace"] = "${<namespace.accountid>}",
+        ["temporal-namespace"] = "${<namespace_id>.<account_id>}",
     },
     Tls = new(),
 });
@@ -613,12 +613,12 @@ const connection = await Connection.connect(
     tls: true,
     apiKey: <APIKey>,
     metadata: {
-        'temporal-namespace': <namespace.accountid>,
+        'temporal-namespace': <namespace_id>.<account_id>,
     },
 )
 const client = new Client({
     connection,
-    namespace: <namespace.accountid>,
+    namespace: <namespace_id>.<account_id>,
 });
 ```
 
@@ -630,12 +630,12 @@ const connection = await NativeConnection.connect(
     tls: true,
     apiKey: <APIKey>,
     metadata: {
-      'temporal-namespace': <namespace.accountid>,
+      'temporal-namespace': <namespace_id>.<account_id>,
     },
 )
 const worker = await Worker.create({
     connection,
-    namespace: <namespace.accountid>,
+    namespace: <namespace_id>.<account_id>,
     // ...
 });
 ```
@@ -656,12 +656,12 @@ const connection = await Connection.connect(
     tls: true,
     metadata: {
         'Authorization': `Bearer ${<APIKey>}`,
-        'temporal-namespace': <namespace.accountid>,
+        'temporal-namespace': <namespace_id>.<account_id>,
     },
 )
 const client = new Client({
     connection,
-    namespace: <namespace.accountid>,
+    namespace: <namespace_id>.<account_id>,
 });
 ```
 
@@ -673,12 +673,12 @@ const connection = await NativeConnection.connect(
     tls: true,
     metadata: {
         'Authorization': `Bearer ${<APIKey>}`
-        'temporal-namespace': <namespace.accountid>,
+        'temporal-namespace': <namespace_id>.<account_id>,
     },
 )
 const worker = await Worker.create({
     connection,
-    namespace: <namespace.accountid>,
+    namespace: <namespace_id>.<account_id>,
     // ...
 });
 ```

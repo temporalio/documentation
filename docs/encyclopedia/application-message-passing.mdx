@@ -142,9 +142,9 @@ Signal-With-Start is a great tool for lazily initializing Workflows. When you se
 
 :::note
 
-Workflow Updates are currently disabled by default on Temporal Server.
+To use the Workflow Update feature in versions prior to v1.25.0, it must be manually enabled.
 
-To enable sending Updates, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) and [frontend.enableUpdateWorkflowExecutionAsyncAccepted](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config values to `true`.
+Set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) and [frontend.enableUpdateWorkflowExecutionAsyncAccepted](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config values to `true`.
 
 For example, with the Temporal CLI, run these commands:
 
@@ -221,22 +221,44 @@ Every time the Workflow wakes up--generally, it wakes up when it needs to--it wi
 
 This execution is on a single thread–while this means you don’t have to worry about parallelism, you do need to worry about concurrency if you have written Signal and Update handlers that can block. These can run interleaved with the main Workflow and with one another, resulting in potential race conditions. These methods should be made reentrant.
 
+#### Initializing the Workflow first {#workflow-initializers}
+
+Initialize your Workflow's state before handling messages.
+This prevents your handler from reading uninitialized instance variables.
+
+To see why, refer to the [diagram](#message-handler-concurrency).
+It shows that your Workflow processes messages before the first run of your Workflow's main method.
+
+The message handler runs first in several scenarios, such as:
+
+- When using [Signal-with-Start](#signal-with-start).
+- When your Worker experiences delays, such as when the Task Queue it polls gets backlogged.
+- When messages arrive immediately after a Workflow continues as new but before it resumes.
+
+For all languages except Go and TypeScript, use your constructor to set up state.
+Annotate your constructor as a Workflow Initializer and take the same arguments as your Workflow's main method.
+
+Note that you can't make blocking calls from your constructor.
+If you need to block, make your Signal or Update handler [wait](#waiting) for an initialization flag.
+
+In Go and TypeScript, register any message handlers only after completing initialization.
+
 ### Message handler patterns {#message-handler-patterns}
 
 Here are several common patterns for write operations, Signal and Update handlers. They don't apply to pure read operations, i.e. Queries or [Update Validators](#update-validators):
 
-- Synchronous, returning immediately.
-- Waiting for the Workflow to be ready to process them.
+- Returning immediately from a handler
+- Waiting for the Workflow to be ready to process them
 - Kicking off activities and other asynchronous tasks
-- Injecting work into the main Workflow.
-- Finishing handlers before the Workflow completes.
-- Ensuring your messages are processed exactly once.
+- Injecting work into the main Workflow
+- Finishing handlers before the Workflow completes
+- Ensuring your messages are processed exactly once
 
 #### Synchronous handlers
 
 Synchronous handlers don’t kick off any long-running operations or otherwise block. They're guaranteed to run atomically.
 
-#### Waiting
+#### Waiting {#waiting}
 
 A Signal or Update handler can block waiting for the Workflow to reach a certain state using a Wait Condition. See the links below to find out how to use this with your SDK.
 
