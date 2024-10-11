@@ -1,6 +1,6 @@
 ---
 id: core-application
-title: Core application
+title: Core application - PHP SDK
 sidebar_label: Core application
 slug: /develop/php/core-application
 toc_max_heading_level: 2
@@ -8,6 +8,9 @@ keywords:
   - core-application
 tags:
   - core-application
+  - sdk
+  - php-sdk
+  - developer guide
 description: Learn how to develop a basic Workflow and Activity in a Temporal Application using Temporal PHP SDK. Define parameters, customize Workflow and Activity types, and set required timeouts efficiently.
 ---
 
@@ -318,7 +321,7 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities {
 ### How to set the required Activity Timeouts {#required-timeout}
 
 Activity Execution semantics rely on several parameters.
-The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
 
 ### How to get the results of an Activity Execution {#get-activity-results}

@@ -15,10 +15,7 @@ export default function EditThisPageWrapper() {
   return (
     <>
       <div style={feedbackStyle}>
-        <p style={{ margin: 0, fontWeight: "500" }}>Have feedback on our documentation?</p>
-        <a href="https://t.mp/docs-feedback" target="_blank" rel="noopener noreferrer">
-          Post in our Community forum.
-        </a>
+          <p style={{ margin: 0, fontWeight: "500" }}>Help us make Temporal better. Contribute to our <a href="https://github.com/temporalio/documentation">documentation</a>.</p>
       </div>
     </>
   );

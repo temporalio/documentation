@@ -1,6 +1,6 @@
 ---
 id: core-application
-title: Core application - Python SDK feature guide
+title: Core application - Python SDK
 sidebar_label: Core application
 description: Learn to develop and customize Workflows and Activities using the Temporal Python SDK, manage parameters, set timeouts, execute Activities, and run a Worker Process efficiently.
 toc_max_heading_level: 2
@@ -18,11 +18,12 @@ keywords:
   - temporal python worker
   - registering workflow types
 tags:
-  - python
-  - python-sdk
   - workflows
   - activities
   - core-application
+  - sdk
+  - python-sdk
+  - developer guide
 ---
 
 This page shows how to do the following:
@@ -381,7 +382,7 @@ class YourWorkflow:
 **How to set the required Activity Timeouts using the Temporal Python SDK.**
 
 Activity Execution semantics rely on several parameters.
-The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
 
 Activity options are set as keyword arguments after the Activity arguments.
