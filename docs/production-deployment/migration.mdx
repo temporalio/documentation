@@ -40,7 +40,7 @@ Namespace are only a few lines of code, including:
 
 - [Add your SSL certificate and private key](/cloud/saml) associated with your Namespace.
 - [Copy the Cloud-hosted endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint) from the Namespace detail Web page.
-  The endpoint uses this format: `namespace.account_id.tmprl.cloud:port`.
+  The endpoint uses this format: `<namespace_id>.<account_id>.tmprl.cloud:port`.
 - [Connect to Temporal Cloud](/cloud/get-started) with your Client.
 - [Configure tcld, the Cloud CLI](/cloud/tcld), with the same address, Namespace, and
   certificate used to create a Client through code.
@@ -61,7 +61,7 @@ You can also export JSON from your previous execution history, that you can then
 If your Workflow can be completed before any compelling event which drives a move to Temporal Cloud, those Workflows can be automatically restarted on Temporal Cloud.
 If your Workflows need to run continuously, you must migrate Workflows while they are running.
 To accomplish this migration, cancel your current Workflow and pass the current state to a new Workflow in Temporal Cloud.
-Refer to [this repository](https://github.com/temporalio/migration-example/blob/main/src/main/java/io/temporal/migration/example/README.md) for an example of migrating running Workflows in Java.
+Refer to [this repository](https://github.com/temporalio/temporal-migration) for an example of migrating running Workflows in Java.
 
 When performing a live migration, make sure your Worker capacity can support the migration load.
 Both a [Signal](/encyclopedia/workflow-message-passing#sending-signals) and a [Query](/encyclopedia/workflow-message-passing#sending-queries) will be executed during the course of the migration.
