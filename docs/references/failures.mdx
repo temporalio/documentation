@@ -106,21 +106,21 @@ In a Nexus Operation handler, you can throw an Application Failure, a Nexus Erro
 
 Unknown errors are converted to a retryable Application Failure. During conversion, the following fields are set on the Application Failure:
 
-- non\_retryable is set to false.
-- type is set to the error's type name.
-- message is set to the error message.
+- Non_retryable is set to false.
+- Type is set to the error's type name.
+- Message is set to the error message.
 
 #### Retryable failures
 
 Retryable Nexus Operation Task failures, like an unknown error, are automatically retried with a built-in retry policy.
 When a Nexus Task fails, the caller workflow records an event attempt failure on the pending Nexus Operation and sets the following fields:
 
-- state is set to the new state, for example BackingOff
-- attempt is set to an incremented count
-- next\_attempt\_schedule\_time is set when the Nexus Task will be retried
-- last\_attempt\_failure is set with the following fields:
-  - message is set to the error message.
-  - failure\_info is set to the Application Failure
+- State is set to the new state, for example BackingOff
+- Attempt is set to an incremented count
+- Next_attempt_schedule_time is set when the Nexus Task will be retried
+- Last_attempt_failure is set with the following fields:
+  - Message is set to the error message.
+  - Failure_info is set to the Application Failure
 
 For example, an unknown error thrown in a Nexus handler will surface as:
 
@@ -138,7 +138,7 @@ Pending Nexus Operations: 1
   ScheduleToCloseTimeout   0s
   NextAttemptScheduleTime  20 seconds from now
   LastAttemptCompleteTime  11 seconds ago
-  LastAttemptFailure       {"message":"unexpected response status: \"500 Internal Server Error\": internal error","applicationFailureInfo":{}}
+  LastAttemptFailure       {"message":"unexpected response status: "500 Internal Server Error": internal error","applicationFailureInfo":{}}
 ```
 
 ### Non-retryable
@@ -147,7 +147,7 @@ When an Activity or Workflow throws an Application Failure, the Failure's `type`
 Activities and Workflow can also avoid retrying by setting an Application Failure's `non_retryable` flag to `true`.
 
 When a Nexus Operation handler throws an Application Failure, it is retried by default using a built-in Retry Policy that cannot be customized.
-Nexus Operation handlers can avoid retrying by setting an Application Failure's non\_retryable flag to true. When a [non-retryable error](/#nexus-errors) is returned from a Nexus handler, the overall Nexus Operation Execution is failed and the error is returned to the caller’s Workflow Execution as a **Nexus Operation Failure.**
+Nexus Operation handlers can avoid retrying by setting an Application Failure's non_retryable flag to true. When a [non-retryable error](/#nexus-errors) is returned from a Nexus handler, the overall Nexus Operation Execution is failed and the error is returned to the caller’s Workflow Execution as a **Nexus Operation Failure.**
 
 ### Setting the Next Retry Delay {#next-retry-delay}
 
@@ -162,9 +162,9 @@ Java: [NextRetryDelay](/develop/java/failure-detection#next-retry-delay)
 
 #### Default mapping
 
-By default, Application Failures thrown from a Nexus Operation handler will be mapped to the following underlying Nexus Failures, based on what non\_retryable is set to:
+By default, Application Failures thrown from a Nexus Operation handler will be mapped to the following underlying Nexus Failures, based on what non_retryable is set to:
 
-| non\_retryable  | Nexus error                | HTTP status code          |
+| non_retryable  | Nexus error                | HTTP status code          |
 | :-------------- | :------------------------- | :------------------------ |
 | false (default) | HandlerErrorTypeInternal   | 500 Internal Server Error |
 | true            | UnsuccessfulOperationError | 424 Failed Dependency     |
@@ -175,12 +175,12 @@ For improved semantics and mapping to HTTP status codes for external Nexus calle
 
 For example the Nexus Go SDK provides
 
-- `nexus.HandlerErrorf(nexus.HandlerErrorType, msg)`
+- `nexus.HandlerError(nexus.HandlerErrorType, msg)`
 - `nexus.UnsuccessfulOperationError{state, failure}`
 
 #### Retryable Nexus errors
 
-| Nexus error type                  | non\_retryable |
+| Nexus error type                  | non_retryable |
 | :-------------------------------- | :------------- |
 | HandlerErrorTypeResourceExhausted | false          |
 | HandlerErrorTypeInternal          | false          |
@@ -189,7 +189,7 @@ For example the Nexus Go SDK provides
 
 #### Non-retryable Nexus errors
 
-| Nexus error type                | non\_retryable |
+| Nexus error type                | non_retryable |
 | :------------------------------ | :------------- |
 | HandlerErrorTypeBadRequest      | true           |
 | HandlerErrorTypeUnauthenticated | true           |
@@ -202,8 +202,6 @@ For example the Nexus Go SDK provides
 When [Cancellation](/activities#cancellation) of a Workflow, Activity or Nexus Operation is requested, SDKs represent the cancellation to the user in language-specific ways.
 For example, in TypeScript, in some cases a Cancelled Failure is thrown directly by a Workflow API function, and in other cases the Cancelled Failure is wrapped in a different Failure.
 To check both types of cases, TypeScript has the [isCancellation](https://typescript.temporal.io/api/namespaces/workflow#iscancellation) helper.
-
-{/* TODO also link to Workflow Cancellation concept */}
 
 When a Workflow, Activity or Nexus Operation is successfully Cancelled, a Cancelled Failure is the `cause` field of the Activity Failure, Nexus Operation Failure or "Workflow failed" error.
 
@@ -230,7 +228,7 @@ For example, if an Activity Execution times out, the `cause` is a [Timeout Failu
 
 A Nexus Operation Failure is delivered to the Workflow Execution when a Nexus Operation fails. It contains information about the failure and the Nexus Operation Execution; for example, the Nexus Operation name and Nexus Operation Id. The reason for the failure is in the message and cause (typically an Application Error or a Canceled Error).
 
-Go: NexusOperationError\
+Go: NexusOperationError
 Proto: NexusOperationFailureInfo
 
 A **Nexus Operation Failure** includes the following fields:
