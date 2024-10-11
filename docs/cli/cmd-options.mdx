@@ -234,6 +234,10 @@ Identifies the Activity Execution.
 
 The host and port (formatted as host:port) for the Temporal Frontend Service.
 
+## api-key
+
+API key for request.
+
 ## archived
 
 List archived Workflow Executions.
@@ -347,6 +351,10 @@ Backfill end time.
 ## env
 
 Name of the environment to read environmental variables from.
+
+## env-file
+
+Path to environment settings file. (defaults to `$HOME/.config/temporalio/temporal.yaml`).
 
 ## event-id
 
@@ -522,6 +530,10 @@ Namespace Id.
 Disable folding.
 All Child Workflows within the set depth will be fetched and displayed.
 
+## no-json-shorthand-payloads
+
+Raw payload output, even if they are JSON.
+
 ## no-pager
 
 Disables the interactive pager.
@@ -693,9 +705,17 @@ Format time as: relative, iso, raw.
 
 Time zone (IANA name).
 
+## tls-ca-data
+
+Data for server CA certificate. Can't be used with --tls-ca-path.
+
 ## tls-ca-path
 
 Path to server CA certificate.
+
+## tls-cert-data
+
+Data for x509 certificate. Can't be used with --tls-cert-path.
 
 ## tls-cert-path
 
@@ -704,6 +724,10 @@ Path to x509 certificate.
 ## tls-disable-host-verification
 
 Disables TLS host name verification.
+
+## tls-key-data
+
+Private certificate key data. Can't be used with --tls-key-path.
 
 ## tls-key-path
 
