@@ -16,15 +16,9 @@ keywords:
   - tcld cli
   - temporal cloud
 tags:
-  - explanation
-  - how-to
-  - introduction
-  - metrics
-  - observability
-  - promentheus
-  - reference
-  - tcld-cli
-  - temporal-cloud
+  - Metrics
+  - Observability
+  - Temporal Cloud
 ---
 
 Temporal offers two distinct sources of metrics: [Cloud/Server Metrics](/production-deployment/cloud/metrics/reference) and [SDK Metrics](/references/sdk-metrics).
@@ -34,11 +28,11 @@ Before implementing Temporal Cloud observability, decide what you need to measur
 - To measure the health and performance of Temporal infrastructure and user provided infrastructure in the form of Temporal Workers and Temporal Clients.
 
 When measuring the performance of Temporal-backed applications and key business processes, you should rely on Temporal SDK metrics as a source of truth.
-This is because Temporal SDKs provide visibility from the perspective of your application, not from the perspective of the Temporal Service. 
+This is because Temporal SDKs provide visibility from the perspective of your application, not from the perspective of the Temporal Service.
 
 SDK metrics monitor individual workers and your code's behavior.
 Cloud metrics monitor Temporal behavior.
-When used together, Temporal Cloud and SDK metrics measure the health and performance of your full Temporal infrastructure, including the Temporal Cloud Service and user-supplied Temporal Workers. 
+When used together, Temporal Cloud and SDK metrics measure the health and performance of your full Temporal infrastructure, including the Temporal Cloud Service and user-supplied Temporal Workers.
 
 Metrics for all Namespaces in your account are available from your metrics endpoint.
 

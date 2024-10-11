@@ -6,14 +6,14 @@ sidebar_label: Glossary
 sidebar_position: 13
 toc_max_heading_level: 4
 tags:
-  - reference
+  - Reference
 ---
 
 The following terms are used in [Temporal Platform](/temporal) documentation.
 
 #### [Action](/cloud/pricing#action)
 
-An Action is the fundamental pricing unit in Temporal Cloud. 
+An Action is the fundamental pricing unit in Temporal Cloud.
 Temporal Actions are the building blocks for Workflow Executions.
 When you execute a Temporal Workflow, its Actions create the ongoing state and progress of your Temporal Application.
 
@@ -21,9 +21,9 @@ _Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temp
 
 #### [Actions Per Second (APS)](/cloud/limits#throughput)
 
-APS, or Actions per second, is specific to Temporal Cloud. 
+APS, or Actions per second, is specific to Temporal Cloud.
 Each Temporal Cloud Namespace enforces a rate limit, which is measured in Actions per second (APS).
-This is the number of Actions, such as starting or signaling a Workflow, that can be performed per second within a specific Namespace. 
+This is the number of Actions, such as starting or signaling a Workflow, that can be performed per second within a specific Namespace.
 
 _Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_
 
@@ -293,7 +293,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 #### [Multi-region Namespace](/cloud/multi-region)
 
 A multi-region Namespace (MRN) is a [Temporal Cloud](#temporal-cloud) Namespace that is configured to work across an active [region](/cloud/service-availability#regions) and a standby region.
-Each region corresponds to a dedicated Temporal Cloud Service. 
+Each region corresponds to a dedicated Temporal Cloud Service.
 Temporal Cloud automatically replicates Workflow Executions and metadata from the active to the standby region.
 MRNs are designed to respond to service issues as they arise.
 In the event that the Namespace's performance is compromised, a [failover](#failover) transfers control from the active to the standby region.
@@ -314,9 +314,9 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### Nexus API Registry
 
-The Nexus API Registry stores information about Nexus Endpoints. 
-In the open source version of Temporal, the registry is scoped to a cluster, while in Temporal Cloud, it is scoped to an account. 
-Endpoint names must be unique within the registry. 
+The Nexus API Registry stores information about Nexus Endpoints.
+In the open source version of Temporal, the registry is scoped to a cluster, while in Temporal Cloud, it is scoped to an account.
+Endpoint names must be unique within the registry.
 When the Temporal Service dispatches a Nexus request, it resolves the request's Endpoint to a Namespace and Task Queue through the Registry.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -329,8 +329,8 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### Nexus Endpoint
 
-A Nexus Endpoint is an API proxy that can serve one or more Nexus Services from a target such as a Worker listening on a target Temporal Namespace and target Task Queue. 
-This allows service providers to present a clean API contract and hide the underlying implementation, which may consist of many internal Workflows. 
+A Nexus Endpoint is an API proxy that can serve one or more Nexus Services from a target such as a Worker listening on a target Temporal Namespace and target Task Queue.
+This allows service providers to present a clean API contract and hide the underlying implementation, which may consist of many internal Workflows.
 Multiple Nexus Endpoints can target the same Namespace, and over time a Nexus Endpoint will be able to span multiple Namespaces with service routing rules.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -343,7 +343,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### Nexus Operation
 
-An arbitrary-duration operation that may be synchronous or asynchronous, short-lived, or long-lived, and used to connect durable executions within and across Namespaces, clusters, regions, and clouds. 
+An arbitrary-duration operation that may be synchronous or asynchronous, short-lived, or long-lived, and used to connect durable executions within and across Namespaces, clusters, regions, and clouds.
 Unlike a traditional RPC, an asynchronous Nexus Operation has an operation identity that can be used to re-attach to a long-lived Nexus Operation, for example, one backed by a Temporal Workflow.
 Nexus Operations support a uniform interface to get the status of an operation or its result, receive a completion callback, or cancel the operation – all of which are fully integrated into the Temporal Platform.
 
@@ -365,7 +365,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Nexus RPC](https://github.com/nexus-rpc/api/blob/main/SPEC.md)
 
-Nexus RPC is a protocol designed with durable execution in mind. 
+Nexus RPC is a protocol designed with durable execution in mind.
 It supports arbitrary-duration Operations that extend beyond a traditional RPC — a key underpinning to connect durable executions within and across Namespaces, clusters, regions, and cloud boundaries.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -427,7 +427,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Requests Per Second (RPS)](/references/dynamic-configuration#service-level-rps-limits)
 
-RPS, or Requests per second, is used in the Temporal Service (both in self-hosted Temporal and Temporal Cloud). 
+RPS, or Requests per second, is used in the Temporal Service (both in self-hosted Temporal and Temporal Cloud).
 This is a measure that controls the rate of requests at the service level, such as the Frontend, History, or Matching Service.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal](/tags/temporal)_

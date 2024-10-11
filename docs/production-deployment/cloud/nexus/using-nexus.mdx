@@ -5,9 +5,8 @@ title: Using Temporal Nexus
 description: Discover how to implement and use Nexus within Temporal workflows, including creating Nexus Services, Endpoints, and cross-team collaboration.
 sidebar_label: Using Temporal Nexus
 tags:
-  - temporal cloud
-  - nexus
-
+  - Temporal Cloud
+  - Nexus
 keywords:
   - cross-team collaboration
   - cross-Namespace workflows
@@ -43,12 +42,12 @@ Similar to executing an Activity, to execute a Nexus Operation from a Workflow:
 3. Nexus handler Worker sends a `RespondNexusTaskCompleted` through the SDK, with the result of the Nexus request, which may be one of: Started, Completed, Failed, TimedOut, or Canceled. See [Nexus Operation Events](/references/events) for more info
 4. Caller Workflow then processes the Nexus Operation event through `PollWorkflowTaskQueue`.
 
-See the [Temporal Nexus](/nexus) encyclopedia entry for more details. 
+See the [Temporal Nexus](/nexus) encyclopedia entry for more details.
 
 ## Access Control
 
-Like Namespaces, a Nexus Endpoint is an account-scoped resource that is global within a Temporal Cloud account. 
-Any Developer role (or higher) in an account, who is also a Namespace Admin on the endpoint’s target Namespace, can manage (create, update, or delete) a Nexus Endpoint. 
+Like Namespaces, a Nexus Endpoint is an account-scoped resource that is global within a Temporal Cloud account.
+Any Developer role (or higher) in an account, who is also a Namespace Admin on the endpoint’s target Namespace, can manage (create, update, or delete) a Nexus Endpoint.
 All users with a Read-only role (or higher) in an account, can view and browse the full list of Endpoints.
 
 Runtime access from a Workflow in a caller Namespace to a Nexus Endpoint is controlled by an allowlist policy (of caller Namespaces) for each Endpoint in the Nexus API registry.
@@ -59,17 +58,17 @@ See [Nexus Security](/nexus/security) for additional details.
 
 ## Automatic Retries
 
-Once the caller Workflow schedules an Operation with the caller’s Temporal Service, the caller’s Nexus Machinery keeps trying to start the Operation, with automatic retries and exponential backoff. 
+Once the caller Workflow schedules an Operation with the caller’s Temporal Service, the caller’s Nexus Machinery keeps trying to start the Operation, with automatic retries and exponential backoff.
 If a Nexus Operation returns a retryable error when attempting to start, the Operation it will be retried up to the default Retry Policy’s maximum attempts and expiration interval.
 
 See [Nexus Automatic Retries](/nexus/services-operations#automatic-retries) for additional details.
 
 ## Failure Handling
 
-In a Nexus Operation handler, you can throw a Nexus HandlerError with an associated Nexus HandlerErrorType. 
+In a Nexus Operation handler, you can throw a Nexus HandlerError with an associated Nexus HandlerErrorType.
 If an unknown Error is thrown from a Nexus handler, it is treated as a retryable 500 InternalServerError, that Nexus will attempt to retry until the Schedule-to-Close Timeout is exceeded (which is capped at 60 days max by the server). See [Nexus Operation duration limits].
 
-All retryable errors are automatically retried by the Nexus Machinery, as discussed in [Automatic Retries](/nexus/services-operations#automatic-retries). 
+All retryable errors are automatically retried by the Nexus Machinery, as discussed in [Automatic Retries](/nexus/services-operations#automatic-retries).
 If a non-retryable error is returned from the handler, then it is returned as a Nexus Operation Failure to the caller Workflow.
 The list of [non-retryable errors](https://github.com/temporalio/temporal/blob/13d6cd8cf7a4ba0c4660cf98f672bbd645dca3e7/components/nexusoperations/executors.go#L659) is currently not configurable.
 
@@ -90,8 +89,8 @@ See [Failures](/references/failures) and [Automatic Retries](/nexus/services-ope
 ### At-least-once Execution Semantics and Idempotency
 
 Nexus Operations, like Activities, have at-least-once execution semantics.
-The caller's Nexus Machinery will keep trying to start the Operation multiple times. 
-The Nexus Operation handler should be idempotent just like Activities should be idempotent as a general rule. 
+The caller's Nexus Machinery will keep trying to start the Operation multiple times.
+The Nexus Operation handler should be idempotent just like Activities should be idempotent as a general rule.
 It's not required in all cases, but highly recommended in general.
 
 ### At-most-once Execution Semantics through an Underlying WorkflowIdReusePolicy
