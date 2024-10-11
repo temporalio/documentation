@@ -32,6 +32,8 @@ keywords:
   - cron
   - cross-cluster-connection
   - data converters
+  - description
+  - description file
   - endpoint
   - environment
   - event
@@ -55,6 +57,7 @@ keywords:
   - logging and metrics
   - memo
   - metrics
+  - name
   - namespace
   - namespace description
   - namespace id
@@ -88,6 +91,9 @@ keywords:
   - server options and configurations
   - sqlite
   - start-to-close
+  - target namespace
+  - target task queue
+  - target url
   - task queue
   - task queue type
   - temporal cli
@@ -98,6 +104,7 @@ keywords:
   - timeouts and heartbeats
   - tls
   - tls server
+  - unset description
   - uri
   - verification
   - visibility
@@ -140,6 +147,8 @@ tags:
   - cron
   - cross-cluster-connection
   - data-converters
+  - description
+  - description-file
   - endpoint
   - environment
   - event
@@ -163,6 +172,7 @@ tags:
   - logging-and-metrics
   - memo
   - metrics
+  - name
   - namespace
   - namespace-description
   - namespace-id
@@ -196,6 +206,9 @@ tags:
   - server-options-and-configurations
   - sqlite
   - start-to-close
+  - target-namespace
+  - target-task-queue
+  - target-url
   - task-queue
   - task-queue-type
   - temporal-cli
@@ -206,6 +219,7 @@ tags:
   - timeouts-and-heartbeats
   - tls
   - tls-server
+  - unset-description
   - uri
   - verification
   - visibility
@@ -313,7 +327,11 @@ Use `-1` to fetch Child Workflows at any depth.
 
 ## description
 
-Namespace description.
+Namespace description or Endpoint description in markdown format (encoded using the configured codec server).
+
+## description-file
+
+Endpoint description file in markdown format (encoded using the configured codec server).
 
 ## detail
 
@@ -503,7 +521,7 @@ Enabled by default with a randomly assigned port.
 
 ## name
 
-Frontend address of the remote Cluster.
+Frontend address of the remote Cluster or the Endpoint name.
 
 ## namespace
 
@@ -656,6 +674,18 @@ Specify a delay before the workflow starts.
 
 Backfill start time.
 
+## target-namespace
+
+Namespace in which a handler worker will be polling for Nexus tasks on.
+
+## target-task-queue
+
+Task Queue in which a handler worker will be polling for Nexus tasks on.
+
+## target-url
+
+URL to direct Nexus requests to.
+
 ## task-queue-type
 
 Task Queue type, which can be either workflow or activity.
@@ -726,6 +756,10 @@ Default: `--port` + 1000 (for example, 4000).
 ## unpause
 
 Unpauses the Schedule.
+
+## unset-description
+
+Unset the description.
 
 ## verbose
 
