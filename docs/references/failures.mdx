@@ -89,7 +89,8 @@ An error in a Nexus Operation can cause either a Nexus Operation Task Failure (t
 #### Nexus Operation Task Failures
 
 A Nexus Operation Task Failure is an unexpected situation failing to process a Nexus Operation Task in a handler.
-This could be triggered by throwing an unknown error in your Nexus handler code. These types of failures will cause the Nexus Operation Task to be retried.
+This could be triggered by throwing an unknown error in your Nexus handler code. 
+These types of failures will cause the Nexus Operation Task to be retried.
 
 #### Nexus Operation Execution Failures
 
@@ -100,7 +101,7 @@ Nexus Operation Execution Failures put the Nexus Operation Execution into the "F
 
 Application Errors thrown from a Workflow created by a Nexus NewWorkflowRunOperation handler, will be automatically propagated to the caller as a non-retryable error and result in a Nexus Operation Execution Failure.
 
-#### Using Failures in a Nexus hander
+#### Using Failures in a Nexus handler
 
 In a Nexus Operation handler, you can throw an Application Failure, a Nexus Error or another Error to fail the individual Nexus Operation Task or fail the overall Nexus Operation Execution.
 
@@ -112,15 +113,15 @@ Unknown errors are converted to a retryable Application Failure. During conversi
 
 #### Retryable failures
 
-Retryable Nexus Operation Task failures, like an unknown error, are automatically retried with a built-in retry policy.
-When a Nexus Task fails, the caller workflow records an event attempt failure on the pending Nexus Operation and sets the following fields:
+Retryable Nexus Operation Task failures, like an unknown error, are automatically retried with a built-in Retry Policy.
+When a Nexus Task fails, the caller Workflow records an event attempt failure on the pending Nexus Operation and sets the following fields:
 
-- State is set to the new state, for example BackingOff
-- Attempt is set to an incremented count
-- Next_attempt_schedule_time is set when the Nexus Task will be retried
+- State is set to the new state, for example BackingOff.
+- Attempt is set to an incremented count.
+- Next_attempt_schedule_time is set when the Nexus Task will be retried.
 - Last_attempt_failure is set with the following fields:
   - Message is set to the error message.
-  - Failure_info is set to the Application Failure
+  - Failure_info is set to the Application Failure.
 
 For example, an unknown error thrown in a Nexus handler will surface as:
 
@@ -148,7 +149,7 @@ Activities and Workflow can also avoid retrying by setting an Application Failur
 
 When a Nexus Operation handler throws an Application Failure, it is retried by default using a built-in Retry Policy that cannot be customized.
 Nexus Operation handlers can avoid retrying by setting an Application Failure's non_retryable flag to true.
-When a non-retryable error is returned from a Nexus handler, the overall Nexus Operation Execution is failed and the error is returned to the caller’s Workflow Execution as a **Nexus Operation Failure.**
+When a non-retryable error is returned from a Nexus handler, the overall Nexus Operation Execution is failed and the error is returned to the caller’s Workflow Execution as a Nexus Operation Failure.
 
 ### Setting the Next Retry Delay {#next-retry-delay}
 
@@ -227,24 +228,26 @@ For example, if an Activity Execution times out, the `cause` is a [Timeout Failu
 
 ## Nexus Operation Failure
 
-A Nexus Operation Failure is delivered to the Workflow Execution when a Nexus Operation fails. It contains information about the failure and the Nexus Operation Execution; for example, the Nexus Operation name and Nexus Operation Id. The reason for the failure is in the message and cause (typically an Application Error or a Canceled Error).
+A Nexus Operation Failure is delivered to the Workflow Execution when a Nexus Operation fails. 
+It contains information about the failure and the Nexus Operation Execution; for example, the Nexus Operation name and Nexus Operation ID. 
+The reason for the failure is in the message and cause (typically an Application Error or a Canceled Error).
 
-Go: NexusOperationError
-Proto: NexusOperationFailureInfo
+- Go: NexusOperationError
+- Proto: NexusOperationFailureInfo
 
-A **Nexus Operation Failure** includes the following fields:
+A Nexus Operation Failure includes the following fields:
 
-- endpoint is set to the name of the endpoint
-- service is set to the name of the service
-- operation is set to the name of the operation
-- operation_id is set to the id of the operation, if this is an async operation
-- scheduled_event_id is set to the caller’s event id that scheduled the operation
-- message is set to a generic unsuccessful error message
-- cause is set to the underlying Application Failure with the following fields:
-  - non-retryable is set to true
-  - type is set to the error's type name.
-  - message is set to the error message.
-- nexus_error_code is set the the underlying Nexus error code
+- Endpoint is set to the name of the endpoint.
+- Service is set to the name of the service.
+- Operation is set to the name of the operation.
+- Operation_id is set to the id of the operation, if this is an async operation.
+- Scheduled_event_id is set to the caller’s event id that scheduled the operation.
+- Message is set to a generic unsuccessful error message.
+- Cause is set to the underlying Application Failure with the following fields:
+  - Non-retryable is set to true.
+  - Type is set to the error's type name.
+  - Message is set to the error message.
+- Nexus_error_code is set the the underlying Nexus error code.
 
 ## Child Workflow Failure
 
