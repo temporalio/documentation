@@ -392,7 +392,7 @@ When any non-immediate Activity is executed, the Activity Execution should send 
 
 When an Activity is canceled, an error is raised in the Activity at the next available opportunity.
 If cleanup logic needs to be performed, it can be done in a `finally` clause or inside a caught cancel error.
-However, for the Activity to appear canceled the exception needs to be re-raised.
+However, for the Activity to appear canceled the exception needs to be re-thrown.
 
 :::note
 
