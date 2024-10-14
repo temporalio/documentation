@@ -117,20 +117,21 @@ Callbacks: 1
 ```
 
 ### Bi-directional linking
-To support deep linking for Nexus Operations that may span Workflows across Namespace boundaries, and invoke Update, Signals, and other operations on a Workflow, linking support is available for Workflow history events. 
+
+To support deep linking for Nexus Operations that may span Workflows across Namespace boundaries, and invoke Update, Signals, and other operations on a Workflow, linking support is available for Workflow history events.
 This enables a given history event to link to events in other Workflows, including across Namespace boundaries.
 
-Temporal SDK Nexus Operation builders, like  `NewWorkflowRunOperation`, use this new Event History linking capability to auto-wire bi-directional links from a specific Nexus Operation event in the callers Workflow history to a specific event in the handler’s Workflow history. 
+Temporal SDK Nexus Operation builders, like `NewWorkflowRunOperation`, use this new Event History linking capability to auto-wire bi-directional links from a specific Nexus Operation event in the callers Workflow history to a specific event in the handler’s Workflow history.
 In Public Preview, this is only supported for `NewWorkflowRunOperation`, which does the auto-wiring of bi-directional links for you, but it is not currently supported for `NewSyncOperation`.
 
 This enables bi-directional navigation across Workflow histories:
+
 - Forward through the Nexus Operation execution:
   - From a Nexus Operation event in the callers Workflow history.
   - To the underlying event in the handler’s Workflow.
 - Backwards through the Nexus Operation execution:
   - From the underlying event in the handler’s Workflow.
   - To a Nexus Operation event in the callers Workflow history.
-
 
 ## Metrics
 
@@ -170,7 +171,7 @@ See [Availability](/cloud/service-availability) and [SLA](/cloud/sla) for additi
 
 ### Max Nexus Endpoints
 
-By default, each account is provisioned with a max of 10 Nexus Endpoints. 
+By default, each account is provisioned with a max of 10 Nexus Endpoints.
 You can request further increases beyond the initial 10 Endpoint limit by opening a support ticket.
 
 ### Workflow Max Nexus Operations
@@ -187,8 +188,8 @@ If a handler doesn’t respond within a context deadline, a context deadline exc
 
 ### Nexus Operation Maximum Duration
 
-Each Nexus Operation has a maximum ScheduleToClose duration of 60 days, which is most applicable to asynchronous Nexus Operations that are completed with an asynchronous callback using a separate Nexus request from the handler back to the caller Namespace. 
-The 60 day maximum is a limit we will look to increase at some point in the future. 
+Each Nexus Operation has a maximum ScheduleToClose duration of 60 days, which is most applicable to asynchronous Nexus Operations that are completed with an asynchronous callback using a separate Nexus request from the handler back to the caller Namespace.
+The 60 day maximum is a limit we will look to increase at some point in the future.
 While the caller of a Nexus Operation can configure the ScheduleToClose duration to be shorter than 60 days, the maximum duration can not be extended beyond 60 days and will be capped by the server to 60 days.
 
 ## Secure Routing
@@ -202,4 +203,4 @@ See [Nexus Secure Routing](/nexus/security#secure-routing) for additional detail
 
 For payload encryption, the DataConverter works the same for a Nexus Operation as it does for other payloads sent between a Worker and Temporal Cloud.
 
-See [Nexus Payload Encryption & Data Converter](/nexus/security#payload-encryption-data-converter) for additional details. 
+See [Nexus Payload Encryption & Data Converter](/nexus/security#payload-encryption-data-converter) for additional details.
