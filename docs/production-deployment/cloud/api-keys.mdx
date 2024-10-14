@@ -51,6 +51,9 @@ The authentication process follows this pathway:
 - **Keep it secret; keep it safe**: Treat your API key like a password.
   Do not expose it in client-side code, public repositories, or other easily accessible locations.
 - **Rotate keys regularly**: Change your API keys periodically to reduce risks from potential leaks.
+  Keys must be rotated every at least every 90 days.
+- **Design your code for key updates**: Use key management practices that retrieve your API keys without hard-coding them into your apps.
+  This lets you restart your Workers to refresh your rotated keys without recompiling your code.
 - **Monitor API key usage**: Check usage metrics and logs regularly.
   Revoke the key immediately if you detect any unexpected or unauthorized activity.
 - **Use a Key Management System (KMS)**: Employ a Key Management System to minimize the risk of key leaks.
@@ -142,7 +145,7 @@ Create API keys using one of the following methods:
 
 #### Generate API keys with the Temporal Cloud UI
 
-[Login](https://cloud.temporal.io/) to the Temporal Cloud UI and navigate to your [Profile Page → API keys](https://cloud.temporal.io/profile/api-keys).
+[Log in](https://cloud.temporal.io/) to the Temporal Cloud UI and navigate to your [Profile Page → API keys](https://cloud.temporal.io/profile/api-keys).
 Then select **Create API key** and provide the following information:
 
 - API key name: a short identifiable name for the key
@@ -174,7 +177,7 @@ When disabled, an API key cannot authenticate with Temporal Cloud.
 
 Follow these steps:
 
-1. [Login](https://cloud.temporal.io/) to the Temporal Cloud UI.
+1. [Log in](https://cloud.temporal.io/) to the Temporal Cloud UI.
 1. Go to your [Profile Page → API Keys](https://cloud.temporal.io/profile/api-keys).
 1. Select the three vertical dots next to the API key’s row.
 1. Choose **Enable** or **Disable**.
@@ -204,7 +207,7 @@ This can affect long-running Workflows that outlast the API key's lifetime.
 
 Follow these steps to remove API keys:
 
-1. [Login](https://cloud.temporal.io/) to the Temporal Cloud UI.
+1. [Log in](https://cloud.temporal.io/) to the Temporal Cloud UI.
 1. Navigate to your [Profile Page → API keys](https://cloud.temporal.io/profile/api-keys).
 1. Select the three vertical dots next to the API key's row.
 1. Choose **Delete**.
@@ -218,7 +221,19 @@ tcld login
 tcld apikey delete --id <api-key-id>
 ```
 
-## Manage API Keys for Service Accounts {#serviceaccount-api-keys}
+### Rotate an API key
+
+Temporal API keys automatically expire.
+Their maximum life is 90 days.
+Follow these steps to rotate API keys:
+
+1. Create a new key.
+   You may reuse key names if that helps.
+1. Ensure that both the original key and new key function properly before moving to the next step.
+1. Switch clients to load the new key and start using it.
+1. Delete the old key after it is no longer in use.
+
+## Manage API keys for Service Accounts {#serviceaccount-api-keys}
 
 Global Administrators/Account Owners can manage API keys for all Service Accounts in their account and generate API keys for Service Accounts.
 This is different for users, who generate their own API keys.
@@ -238,7 +253,7 @@ Create API keys for Service Accounts using one of the following methods:
 
 #### Generate API Keys with the Temporal Cloud UI
 
-[Login](https://cloud.temporal.io/) to the Temporal Cloud UI and go to [API keys settings](https://cloud.temporal.io/settings/api-keys).
+[Log in](https://cloud.temporal.io/) to the Temporal Cloud UI and go to [API keys settings](https://cloud.temporal.io/settings/api-keys).
 Select **Create API key**, then choose **Service Account** from the "Create an API key for" dropdown.
 In the "Mapped to identity" input box, select a Service account and provide the following information:
 
@@ -253,7 +268,7 @@ Finish by selecting **Generate API key**.
 To create an API key for a Service Account, use `tcld apikey create` with the `--service-account-id` flag:
 
 ```
-tcld apikey create --namespace <namespace.accountId> \
+tcld apikey create --namespace <namespace_id>.<account_id> \
     --description "<api-key-description>" \
     --duration <api-key-duration> \
     --service-account-id <service-account-id>
@@ -311,6 +326,18 @@ tcld login
 tcld apikey delete --id <api-key-id>
 ```
 
+### Rotate a Service Account API key
+
+Temporal API keys automatically expire.
+Their maximum life is 90 days.
+Follow these steps to rotate API keys:
+
+1. Create a new key.
+   You may reuse key names if that helps.
+1. Ensure that both the original key and new key function properly before moving to the next step.
+1. Switch clients to load the new key and start using it.
+1. Delete the old key after it is no longer in use.
+
 ## API keys for Namespace authentication {#namespace-authentication}
 
 Create a Namespace with API key authentication as an alternative to mTLS-based authentication by selecting "Allow API key authentication" during setup.
@@ -346,7 +373,7 @@ In addition to the API key, the following client options are required:
   - For API key connections, use the format `<region>.<cloud_provider>.api.temporal.io:7233`.
   - You can set the address using an environment variable.
 - `--namespace`: Provide the `namespace.accountId` from the top of the Namespace page in the UI.
-  - Use the format `<namespace.accountId>`.
+  - Use the format `<namespace_id>.<account_id>`.
   - This can be set using an environment variable.
 - `--grpc-meta "temporal-namespace="`: Provide the `namespace.accountId` again as grpc-metadata.
 - `--tls`: Use for a secure connection with the appropriate options.
@@ -358,8 +385,8 @@ For example, to connect to Temporal Cloud from the CLI using an environment vari
 export TEMPORAL_API_KEY=<key-secret>
 temporal workflow list \
     --address <endpoint> \
-    --namespace <namespace.accountid> \
-    --grpc-meta "temporal-namespace=<namespace.accountid>" \
+    --namespace <namespace_id>.<account_id> \
+    --grpc-meta "temporal-namespace=<namespace_id>.<account_id>" \
     --tls
 ```
 
@@ -375,14 +402,14 @@ Create an initial connection:
 ```go
 clientOptions := client.Options{
     HostPort: <endpoint>,
-    Namespace: <namespace.accountid>,
-    Credentials: client.NewAPIKeyStaticCredentials(<API key>),
+    Namespace: <namespace_id>.<account_id>,
     ConnectionOptions: client.ConnectionOptions{
+        TLS: &tls.Config{},
         DialOptions: []grpc.DialOption{
             grpc.WithUnaryInterceptor(
                 func(ctx context.Context, method string, req any, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
                     return invoker(
-                        metadata.AppendToOutgoingContext(ctx, "temporal-namespace", <namespace.accountid>),
+                        metadata.AppendToOutgoingContext(ctx, "temporal-namespace", <namespace_id>.<account_id>),
                         method,
                         req,
                         reply,
@@ -393,8 +420,12 @@ clientOptions := client.Options{
             ),
         },
     },
+    Credentials: client.NewAPIKeyStaticCredentials(apiKey),
 }
 c, err := client.Dial(clientOptions)
+if err != nil {
+  log.Fatalf("error creating temporal client: %v", err)
+}
 ```
 
 Update an API key:
@@ -424,10 +455,10 @@ func (a *APIKeyProvider) GetHeaders(context.Context) (map[string]string, error) 
 }
 
 // Use headers provider
-apiKeyProvider := &APIKeyProvider{APIKey: <APIKey>, Namespace: <namespace.accountid>}
+apiKeyProvider := &APIKeyProvider{APIKey: <APIKey>, Namespace: <namespace_id>.<account_id>}
 c, err := client.Dial(client.Options{
     HostPort: <endpoint>,
-    Namespace: <namespace.accountid>,
+    Namespace: <namespace_id>.<account_id>,
     HeadersProvider: apiKeyProvider,
     ConnectionOptions: client.ConnectionOptions{TLS: &tls.Config{
     }},
@@ -449,7 +480,7 @@ At a client level:
 Metadata.Key<String> TEMPORAL_NAMESPACE_HEADER_KEY =
     Metadata.Key.of("temporal-namespace", Metadata.ASCII_STRING_MARSHALLER);
 Metadata metadata = new Metadata();
-metadata.put(TEMPORAL_NAMESPACE_HEADER_KEY, <namespace.accountid>);
+metadata.put(TEMPORAL_NAMESPACE_HEADER_KEY, <namespace_id>.<account_id>);
 
 // Create the Workflow service stub.
 WorkflowServiceStubsOptions.Builder stubOptions =
@@ -470,7 +501,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(stubOptions.
  */
 WorkflowClient client =
     WorkflowClient.newInstance(
-        service, WorkflowClientOptions.newBuilder().setNamespace(<namespace.accountid>).build());
+        service, WorkflowClientOptions.newBuilder().setNamespace(<namespace_id>.<account_id>).build());
 ```
 
 At a per-call level:
@@ -493,8 +524,8 @@ Create an initial connection:
 ```python
 client = await Client.connect(
     <endpoint>,
-    namespace=<namespace.accountid>,
-    rpc_metadata={"temporal-namespace": <namespace.accountid>},
+    namespace=<namespace_id>.<account_id>,
+    rpc_metadata={"temporal-namespace": <namespace_id>.<account_id>},
     api_key=<APIKey>,
     tls=True,
 )
@@ -513,8 +544,8 @@ Create an initial connection:
 ```python
 client = await Client.connect(
     <endpoint>,
-    namespace=<namespace.accountid>,
-    rpc_metadata={"temporal-namespace": <namespace.accountid>, "Authorization": f"Bearer {<APIKey>}"},
+    namespace=<namespace_id>.<account_id>,
+    rpc_metadata={"temporal-namespace": <namespace_id>.<account_id>, "Authorization": f"Bearer {<APIKey>}"},
     tls=True,
 )
 ```
@@ -532,11 +563,11 @@ Create an initial connection:
 ```csharp
 var myClient = TemporalClient.ConnectAsync(new(<endpoint>)
 {
-    Namespace = <namespace.accountid>,
+    Namespace = <namespace_id>.<account_id>,
     ApiKey = <APIKey>,
     RpcMetadata = new Dictionary<string, string>()
     {
-        ["temporal-namespace"] = "${<namespace.accountid>}",
+        ["temporal-namespace"] = "${<namespace_id>.<account_id>}",
     },
     Tls = new(),
 });
@@ -555,11 +586,11 @@ Create an initial connection:
 ```csharp
 var myClient = TemporalClient.ConnectAsync(new(<endpoint>)
 {
-    Namespace = <namespace.accountid>,
+    Namespace = <namespace_id>.<account_id>,
     RpcMetadata = new Dictionary<string, string>()
     {
         ["Authorization"] = $"Bearer {<APIKey>}",
-        ["temporal-namespace"] = "${<namespace.accountid>}",
+        ["temporal-namespace"] = "${<namespace_id>.<account_id>}",
     },
     Tls = new(),
 });
@@ -584,12 +615,12 @@ const connection = await Connection.connect(
     tls: true,
     apiKey: <APIKey>,
     metadata: {
-        'temporal-namespace': <namespace.accountid>,
+        'temporal-namespace': <namespace_id>.<account_id>,
     },
 )
 const client = new Client({
     connection,
-    namespace: <namespace.accountid>,
+    namespace: <namespace_id>.<account_id>,
 });
 ```
 
@@ -601,12 +632,12 @@ const connection = await NativeConnection.connect(
     tls: true,
     apiKey: <APIKey>,
     metadata: {
-      'temporal-namespace': <namespace.accountid>,
+      'temporal-namespace': <namespace_id>.<account_id>,
     },
 )
 const worker = await Worker.create({
     connection,
-    namespace: <namespace.accountid>,
+    namespace: <namespace_id>.<account_id>,
     // ...
 });
 ```
@@ -627,12 +658,12 @@ const connection = await Connection.connect(
     tls: true,
     metadata: {
         'Authorization': `Bearer ${<APIKey>}`,
-        'temporal-namespace': <namespace.accountid>,
+        'temporal-namespace': <namespace_id>.<account_id>,
     },
 )
 const client = new Client({
     connection,
-    namespace: <namespace.accountid>,
+    namespace: <namespace_id>.<account_id>,
 });
 ```
 
@@ -644,12 +675,12 @@ const connection = await NativeConnection.connect(
     tls: true,
     metadata: {
         'Authorization': `Bearer ${<APIKey>}`
-        'temporal-namespace': <namespace.accountid>,
+        'temporal-namespace': <namespace_id>.<account_id>,
     },
 )
 const worker = await Worker.create({
     connection,
-    namespace: <namespace.accountid>,
+    namespace: <namespace_id>.<account_id>,
     // ...
 });
 ```
